@@ -29,38 +29,15 @@ import java.util.Arrays;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
+/**
+ * A test class for the Oid class
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class OidTest
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger( OidTest.class );
-
-
-    @Test
-    public void speed()
-    {
-        byte[] bytes = new byte[]
-            { 0x2A, ( byte ) 0x86, 0x48, ( byte ) 0x86, ( byte ) 0xF7, 0x12, 0x01, 0x02, 0x02 };
-        String string = new String( "1.2.840.113554.1.2.2" );
-
-        long start = System.nanoTime();
-        for ( int i = 0; i < 1000; i++ )
-        {
-            Arrays.equals( bytes, bytes );
-        }
-        LOGGER.debug( "byte[]: {}", ( System.nanoTime() - start ) );
-
-        start = System.nanoTime();
-        for ( int i = 0; i < 1000; i++ )
-        {
-            string.equals( string );
-        }
-        LOGGER.debug( "String: {}", ( System.nanoTime() - start ) );
-    }
-
-
     @Test
     public void fromBytes() throws DecoderException
     {
@@ -90,22 +67,170 @@ public class OidTest
 
 
     @Test
+    public void fromBytesLongValues() throws DecoderException
+    {
+        // 2.0 -> expected 0x02
+        assertEquals( "2.0", Oid.fromBytes( new byte[] { 0x50 } ).toString() );
+        
+        // 2.40 -> expected 0x78
+        assertEquals( "2.40", Oid.fromBytes( new byte[] { 0x78 } ).toString() );
+        
+        // 2.48 -> expected 0x81 0x00
+        assertEquals( "2.48", Oid.fromBytes( new byte[] { (byte)0x81, 0x00 } ).toString() );
+        
+        // The second arc is below and equal to 16304 : 0x4000 - 0x50
+        assertEquals( "2.16303", Oid.fromBytes( new byte[] { (byte)0xFF, 0x7F } ).toString() );
+        assertEquals( "2.16304", Oid.fromBytes( new byte[] { (byte)0x81, (byte)0x80, 0x00 } ).toString() );
+        
+        // The second arc is below and equal to 2097072 : 0x200000 - 0x50
+        assertEquals( "2.2097071", Oid.fromBytes( new byte[] { (byte)0xFF, (byte)0xFF, 0x7F } ).toString() );
+        assertEquals( "2.2097072", Oid.fromBytes( new byte[] { (byte)0x81, (byte)0x80, (byte)0x80, 0x00 } ).toString() );
+
+        // The second arc is below and equal to 268435376 : 0x10000000 - 0x50
+        assertEquals( "2.268435375", Oid.fromBytes( new byte[] { (byte)0xFF, (byte)0xFF, (byte)0xFF, 0x7F } ).toString() );
+        assertEquals( "2.268435376", 
+            Oid.fromBytes( new byte[] 
+                { 
+                    (byte)0x81, (byte)0x80, (byte)0x80, (byte)0x80, 
+                    0x00 
+                } ).toString() );
+        
+        // The second arc is below and equal to 34359738288 : 0x800000000 - 0x50
+        Oid oid = Oid.fromBytes( new byte[] 
+            { 
+                (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, 0x7F 
+            } );
+        assertEquals( "2.34359738287", oid.toString() );
+        Oid oid1 = Oid.fromString( oid.toString() );
+        assertEquals( oid, oid1 );
+        
+        oid = Oid.fromBytes( new byte[] 
+            { 
+                (byte)0x81, (byte)0x80, (byte)0x80, (byte)0x80, 
+                (byte)0x80, 0x00 
+            } );
+        assertEquals( "2.34359738288", oid.toString() );
+        oid1 = Oid.fromString( oid.toString() );
+        assertEquals( oid, oid1 );
+
+        // The second arc is below and equal to 4398046511024 : 0x40000000000 - 0x50
+        oid = Oid.fromBytes( new byte[] 
+            { 
+                (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, 
+                (byte)0xFF, 0x7F 
+            } );
+        assertEquals( "2.4398046511023", oid.toString() );
+        oid1 = Oid.fromString( oid.toString() );
+        assertEquals( oid, oid1 );
+        
+        oid = Oid.fromBytes( new byte[] 
+            { 
+                (byte)0x81, (byte)0x80, (byte)0x80, (byte)0x80, 
+                (byte)0x80, (byte)0x80, 0x00 
+            } ); 
+        assertEquals( "2.4398046511024", oid.toString() );
+        oid1 = Oid.fromString( oid.toString() );
+        assertEquals( oid, oid1 );
+
+        // The second arc is below and equal to 562949953421232 : 0x2000000000000 - 0x50
+        oid = Oid.fromBytes( new byte[] 
+            { 
+                (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, 
+                (byte)0xFF, (byte)0xFF, 0x7F 
+            } ); 
+        assertEquals( "2.562949953421231", oid.toString() );
+        oid1 = Oid.fromString( oid.toString() );
+        assertEquals( oid, oid1 );
+
+        oid = Oid.fromBytes( new byte[] 
+            { 
+                (byte)0x81, (byte)0x80, (byte)0x80, (byte)0x80, 
+                (byte)0x80, (byte)0x80, (byte)0x80, 0x00 
+            } ); 
+        assertEquals( "2.562949953421232", oid.toString() );
+        oid1 = Oid.fromString( oid.toString() );
+        assertEquals( oid, oid1 );
+
+        // The second arc is below and equal to 72057594037927856 : 0x100000000000000 - 0x50
+        oid = Oid.fromBytes( new byte[] 
+            { 
+                (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, 
+                (byte)0xFF, (byte)0xFF, (byte)0xFF, 0x7F 
+            } ); 
+        assertEquals( "2.72057594037927855", oid.toString() );
+        oid1 = Oid.fromString( oid.toString() );
+        assertEquals( oid, oid1 );
+
+        oid = Oid.fromBytes( new byte[] 
+            { 
+                (byte)0x81, (byte)0x80, (byte)0x80, (byte)0x80, 
+                (byte)0x80, (byte)0x80, (byte)0x80, (byte)0x80, 
+                0x00 
+            } ); 
+        assertEquals( "2.72057594037927856", oid.toString() );
+        oid1 = Oid.fromString( oid.toString() );
+        assertEquals( oid, oid1 );
+
+        // The second arc is below and equal to 9223372036854775728 : 0x8000000000000000 - 0x50
+        oid = Oid.fromBytes( new byte[] 
+            { 
+                (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, 
+                (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, 
+                0x7F 
+            } ); 
+        assertEquals( "2.9223372036854775727", oid.toString() );
+        oid1 = Oid.fromString( oid.toString() );
+        assertEquals( oid, oid1 );
+
+        oid = Oid.fromBytes( new byte[] 
+            { 
+                (byte)0x81, (byte)0x80, (byte)0x80, (byte)0x80, 
+                (byte)0x80, (byte)0x80, (byte)0x80, (byte)0x80, 
+                (byte)0x80, 0x00 
+            } ); 
+        assertEquals( "2.9223372036854775728", oid.toString() );
+        oid1 = Oid.fromString( oid.toString() );
+        assertEquals( oid, oid1 );
+
+        // Check for 9999999999999999999 which is higher than Long.MAX_VALUE
+        oid = Oid.fromBytes( new byte[] 
+            { 
+                (byte)0x81, (byte)0x8A, (byte)0xE3, (byte)0xC8, 
+                (byte)0xE0, (byte)0xC8, (byte)0xCF, (byte)0xA0, 
+                (byte)0x80, 0x4F 
+            } );
+        assertEquals( "2.9999999999999999999", oid.toString() ) ;
+        oid1 = Oid.fromString( oid.toString() );
+        assertEquals( oid, oid1 );
+
+        // A bigger one
+        oid = Oid.fromBytes( new byte[] 
+            { 
+                (byte)0xFA, (byte)0xBE, (byte)0xB7, (byte)0xA2, 
+                (byte)0x8E, (byte)0xF4, (byte)0xC0, (byte)0xC7, 
+                (byte)0xCB, (byte)0x9F, (byte)0xA0, (byte)0xC5, 
+                (byte)0xEA, (byte)0xDA, (byte)0x92, (byte)0x9D, 
+                (byte)0x9E, 0x0C
+            } ); 
+        assertEquals( "2.81407072025111374527560065493494091452", oid.toString() );
+        oid1 = Oid.fromString( oid.toString() );
+        assertEquals( oid, oid1 );
+    }
+
+
+    @Test
     public void test2dot123456() throws DecoderException
     {
         String expectedString = "2.123456";
         byte[] expectedBytes = new byte[]
             { ( byte ) 0x87, ( byte ) 0xC5, 0x10 };
 
-        LOGGER.debug( "b_to_b: " + Arrays.toString( Oid.fromBytes( expectedBytes ).toBytes() ) );
         assertTrue( Arrays.equals( expectedBytes, Oid.fromBytes( expectedBytes ).toBytes() ) );
 
-        LOGGER.debug( "s_to_b: " + Arrays.toString( Oid.fromString( expectedString ).toBytes() ) );
         assertTrue( Arrays.equals( expectedBytes, Oid.fromString( expectedString ).toBytes() ) );
 
-        LOGGER.debug( "b_to_s: " + Oid.fromBytes( expectedBytes ).toString() );
         assertEquals( expectedString, Oid.fromBytes( expectedBytes ).toString() );
 
-        LOGGER.debug( "s_to_s: " + Oid.fromString( expectedString ).toString() );
         assertEquals( expectedString, Oid.fromString( expectedString ).toString() );
     }
 
@@ -432,12 +557,16 @@ public class OidTest
         byte[] oidBytes = oid.toBytes();
         assertEquals( 1, oidBytes.length );
         assertEquals( 80, oidBytes[0] );
+        Oid oid1 = Oid.fromBytes( oidBytes );
+        assertEquals( oid, oid1 );
         
         // 2.40 -> expected 0x78
         oid = Oid.fromString( "2.40" );
         oidBytes = oid.toBytes();
         assertEquals( 1, oidBytes.length );
         assertEquals( 0x78, oidBytes[0] );
+        oid1 = Oid.fromBytes( oidBytes );
+        assertEquals( oid, oid1 );
         
         // 2.48 -> expected 0x80
         oid = Oid.fromString( "2.48" );
@@ -445,6 +574,8 @@ public class OidTest
         assertEquals( 2, oidBytes.length );
         assertEquals( (byte)0x81, oidBytes[0] );
         assertEquals( 0x00, oidBytes[1] );
+        oid1 = Oid.fromBytes( oidBytes );
+        assertEquals( oid, oid1 );
         
         // The second arc is below and equal to 16304 : 0x4000 - 0x50
         oid = Oid.fromString( "2.16303" );
@@ -452,6 +583,8 @@ public class OidTest
         assertEquals( 2, oidBytes.length );
         assertEquals( (byte)0xFF, oidBytes[0] );
         assertEquals( 0x7F, oidBytes[1] );
+        oid1 = Oid.fromBytes( oidBytes );
+        assertEquals( oid, oid1 );
 
         oid = Oid.fromString( "2.16304" );
         oidBytes = oid.toBytes();
@@ -459,6 +592,8 @@ public class OidTest
         assertEquals( (byte)0x81, oidBytes[0] );
         assertEquals( (byte)0x80, oidBytes[1] );
         assertEquals( 0x00, oidBytes[2] );
+        oid1 = Oid.fromBytes( oidBytes );
+        assertEquals( oid, oid1 );
         
         // The second arc is below and equal to 2097072 : 0x200000 - 0x50
         oid = Oid.fromString( "2.2097071" );
@@ -467,6 +602,8 @@ public class OidTest
         assertEquals( (byte)0xFF, oidBytes[0] );
         assertEquals( (byte)0xFF, oidBytes[1] );
         assertEquals( 0x7F, oidBytes[2] );
+        oid1 = Oid.fromBytes( oidBytes );
+        assertEquals( oid, oid1 );
 
         oid = Oid.fromString( "2.2097072" );
         oidBytes = oid.toBytes();
@@ -475,7 +612,9 @@ public class OidTest
         assertEquals( (byte)0x80, oidBytes[1] );
         assertEquals( (byte)0x80, oidBytes[2] );
         assertEquals( 0x00, oidBytes[3] );
-        
+        oid1 = Oid.fromBytes( oidBytes );
+        assertEquals( oid, oid1 );
+
         // The second arc is below and equal to 268435376 : 0x10000000 - 0x50
         oid = Oid.fromString( "2.268435375" );
         oidBytes = oid.toBytes();
@@ -484,6 +623,8 @@ public class OidTest
         assertEquals( (byte)0xFF, oidBytes[1] );
         assertEquals( (byte)0xFF, oidBytes[2] );
         assertEquals( 0x7F, oidBytes[3] );
+        oid1 = Oid.fromBytes( oidBytes );
+        assertEquals( oid, oid1 );
 
         oid = Oid.fromString( "2.268435376" );
         oidBytes = oid.toBytes();
@@ -493,7 +634,9 @@ public class OidTest
         assertEquals( (byte)0x80, oidBytes[2] );
         assertEquals( (byte)0x80, oidBytes[3] );
         assertEquals( 0x00, oidBytes[4] );
-        
+        oid1 = Oid.fromBytes( oidBytes );
+        assertEquals( oid, oid1 );
+
         // The second arc is below and equal to 34359738288 : 0x800000000 - 0x50
         oid = Oid.fromString( "2.34359738287" );
         oidBytes = oid.toBytes();
@@ -503,6 +646,8 @@ public class OidTest
         assertEquals( (byte)0xFF, oidBytes[2] );
         assertEquals( (byte)0xFF, oidBytes[3] );
         assertEquals( 0x7F, oidBytes[4] );
+        oid1 = Oid.fromBytes( oidBytes );
+        assertEquals( oid, oid1 );
 
         oid = Oid.fromString( "2.34359738288" );
         oidBytes = oid.toBytes();
@@ -513,6 +658,8 @@ public class OidTest
         assertEquals( (byte)0x80, oidBytes[3] );
         assertEquals( (byte)0x80, oidBytes[4] );
         assertEquals( 0x00, oidBytes[5] );
+        oid1 = Oid.fromBytes( oidBytes );
+        assertEquals( oid, oid1 );
 
         // The second arc is below and equal to 4398046511024 : 0x40000000000 - 0x50
         oid = Oid.fromString( "2.4398046511023" );
@@ -524,6 +671,8 @@ public class OidTest
         assertEquals( (byte)0xFF, oidBytes[3] );
         assertEquals( (byte)0xFF, oidBytes[4] );
         assertEquals( 0x7F, oidBytes[5] );
+        oid1 = Oid.fromBytes( oidBytes );
+        assertEquals( oid, oid1 );
 
         oid = Oid.fromString( "2.4398046511024" );
         oidBytes = oid.toBytes();
@@ -535,6 +684,8 @@ public class OidTest
         assertEquals( (byte)0x80, oidBytes[4] );
         assertEquals( (byte)0x80, oidBytes[5] );
         assertEquals( 0x00, oidBytes[6] );
+        oid1 = Oid.fromBytes( oidBytes );
+        assertEquals( oid, oid1 );
 
         // The second arc is below and equal to 562949953421232 : 0x2000000000000 - 0x50
         oid = Oid.fromString( "2.562949953421231" );
@@ -547,6 +698,8 @@ public class OidTest
         assertEquals( (byte)0xFF, oidBytes[4] );
         assertEquals( (byte)0xFF, oidBytes[5] );
         assertEquals( 0x7F, oidBytes[6] );
+        oid1 = Oid.fromBytes( oidBytes );
+        assertEquals( oid, oid1 );
 
         oid = Oid.fromString( "2.562949953421232" );
         oidBytes = oid.toBytes();
@@ -559,6 +712,8 @@ public class OidTest
         assertEquals( (byte)0x80, oidBytes[5] );
         assertEquals( (byte)0x80, oidBytes[6] );
         assertEquals( 0x00, oidBytes[7] );
+        oid1 = Oid.fromBytes( oidBytes );
+        assertEquals( oid, oid1 );
 
         // The second arc is below and equal to 72057594037927856 : 0x100000000000000 - 0x50
         oid = Oid.fromString( "2.72057594037927855" );
@@ -572,6 +727,8 @@ public class OidTest
         assertEquals( (byte)0xFF, oidBytes[5] );
         assertEquals( (byte)0xFF, oidBytes[6] );
         assertEquals( 0x7F, oidBytes[7] );
+        oid1 = Oid.fromBytes( oidBytes );
+        assertEquals( oid, oid1 );
 
         oid = Oid.fromString( "2.72057594037927856" );
         oidBytes = oid.toBytes();
@@ -585,6 +742,8 @@ public class OidTest
         assertEquals( (byte)0x80, oidBytes[6] );
         assertEquals( (byte)0x80, oidBytes[7] );
         assertEquals( 0x00, oidBytes[8] );
+        oid1 = Oid.fromBytes( oidBytes );
+        assertEquals( oid, oid1 );
 
         // The second arc is below and equal to 9223372036854775728 : 0x8000000000000000 - 0x50
         oid = Oid.fromString( "2.9223372036854775727" );
@@ -600,6 +759,8 @@ public class OidTest
         assertEquals( (byte)0xFF, oidBytes[6] );
         assertEquals( (byte)0xFF, oidBytes[7] );
         assertEquals( 0x7F, oidBytes[8] );
+        oid1 = Oid.fromBytes( oidBytes );
+        assertEquals( oid, oid1 );
 
         oid = Oid.fromString( "2.9223372036854775728" );
         oidBytes = oid.toBytes();
@@ -614,6 +775,8 @@ public class OidTest
         assertEquals( (byte)0x80, oidBytes[7] );
         assertEquals( (byte)0x80, oidBytes[8] );
         assertEquals( 0x00, oidBytes[9] );
+        oid1 = Oid.fromBytes( oidBytes );
+        assertEquals( oid, oid1 );
 
         // Check for 9999999999999999999 which is higher than Long.MAX_VALUE
         oid = Oid.fromString( "2.9999999999999999999" );
@@ -629,6 +792,8 @@ public class OidTest
         assertEquals( (byte)0xA0, oidBytes[7] );
         assertEquals( (byte)0x80, oidBytes[8] );
         assertEquals( (byte)0x4F, oidBytes[9] );
+        oid1 = Oid.fromBytes( oidBytes );
+        assertEquals( oid, oid1 );
 
         // A bigger one
         oid = Oid.fromString( "2.81407072025111374527560065493494091452" );
@@ -652,6 +817,8 @@ public class OidTest
         assertEquals( (byte)0x9D, oidBytes[15] );
         assertEquals( (byte)0x9E, oidBytes[16] );
         assertEquals( (byte)0x0C, oidBytes[17] );
+        oid1 = Oid.fromBytes( oidBytes );
+        assertEquals( oid, oid1 );
     }
 
 
@@ -663,6 +830,8 @@ public class OidTest
     public void testOidNode2() throws DecoderException
     {
         Oid oid = Oid.fromString( "2.12345" );
+        Oid oid2 = Oid.fromBytes( oid.toBytes() );
+        assertEquals( oid, oid2 );
     }
 
 

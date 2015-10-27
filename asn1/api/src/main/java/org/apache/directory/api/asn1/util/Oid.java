@@ -20,7 +20,6 @@
 package org.apache.directory.api.asn1.util;
 
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigInteger;
@@ -191,9 +190,12 @@ public final class Oid
             throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, Arrays.toString( oidBytes ) ) );
         }
 
-        StringBuilder builder = null;
+        StringBuilder builder = new StringBuilder();
         long value = 0;
-
+        int valStart = 0;
+        int valLength = 0;
+        boolean firstArc = true;
+        
         for ( int i = 0; i < oidBytes.length; i++ )
         {
             value |= oidBytes[i] & 0x7F;
@@ -202,113 +204,167 @@ public final class Oid
             {
                 // leading 1, so value continues
                 value = value << 7;
+                valLength++;
             }
             else
             {
-                // value completed
-                if ( builder == null )
+                valLength++;
+                
+                if ( valLength > 8 )
                 {
-                    builder = new StringBuilder();
-
-                    // first value special processing
-                    if ( value >= 80 )
+                    // Above 9 bytes, we won't be able to store the value in a long...
+                    // Compute the number of necessary bytes
+                    int nbBytes = valLength * 7 / 8;
+                    
+                    if ( valLength % 7 != 0 )
                     {
-                        // starts with 2
-                        builder.append( 2 );
-                        value = value - 80;
+                        nbBytes++;
                     }
-                    else
+                    
+                    byte[] result = new byte[nbBytes];
+                    
+                    // Now iterate on the incoming bytes
+                    int pos = nbBytes - 1;
+                    int valEnd = valStart + valLength - 1;
+                    int j = 0;
+                    
+                    while ( j < valLength - 8 )
                     {
-                        // starts with 0 or 1
-                        long one = value / 40;
-                        long two = value % 40;
-
-                        if ( ( one < 0 ) || ( one > 2 ) || ( two < 0 ) || ( ( one < 2 ) && ( two > 39 ) ) )
-                        {
-                            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID,
-                                Arrays.toString( oidBytes ) ) );
-                        }
-
-                        if ( one < 2 )
-                        {
-                            builder.append( one );
-                            value = two;
-                        }
+                        result[pos--] = ( byte ) ( ( oidBytes[valEnd - j - 1] << 7 ) | ( oidBytes[valEnd - j] & 0x7F ) );
+                        result[pos--] = ( byte ) ( ( oidBytes[valEnd - j - 2] << 6 ) | ( ( oidBytes[valEnd - j - 1] & 0x7E ) >> 1 ) );
+                        result[pos--] = ( byte ) ( ( oidBytes[valEnd - j - 3] << 5 ) | ( ( oidBytes[valEnd - j - 2] & 0x7C ) >> 2 ) );
+                        result[pos--] = ( byte ) ( ( oidBytes[valEnd - j - 4] << 4 ) | ( ( oidBytes[valEnd - j - 3] & 0x78 ) >> 3 ) );
+                        result[pos--] = ( byte ) ( ( oidBytes[valEnd - j - 5] << 3 ) | ( ( oidBytes[valEnd - j - 4] & 0x70 ) >> 4 ) );
+                        result[pos--] = ( byte ) ( ( oidBytes[valEnd - j - 6] << 2 ) | ( ( oidBytes[valEnd - j - 5] & 0x60 ) >> 5 ) );
+                        result[pos--] = ( byte ) ( ( oidBytes[valEnd - j - 7] << 1 ) | ( ( oidBytes[valEnd - j - 6] & 0x40 ) >> 6 ) );
+                        j += 8;
                     }
+                    
+                    switch ( valLength - j )
+                    {
+                        case 7 :
+                            result[pos--] = ( byte ) ( ( oidBytes[5] << 7 ) | ( oidBytes[6] & 0x7F ) );
+                            result[pos--] = ( byte ) ( ( oidBytes[4] << 6 ) | ( ( oidBytes[5] & 0x7E ) >> 1 ) );
+                            result[pos--] = ( byte ) ( ( oidBytes[3] << 5 ) | ( ( oidBytes[4] & 0x7C ) >> 2 ) );
+                            result[pos--] = ( byte ) ( ( oidBytes[2] << 4 ) | ( ( oidBytes[3] & 0x78 ) >> 3 ) );
+                            result[pos--] = ( byte ) ( ( oidBytes[1] << 3 ) | ( ( oidBytes[2] & 0x70 ) >> 4 ) );
+                            result[pos--] = ( byte ) ( ( oidBytes[0] << 2 ) | ( ( oidBytes[1] & 0x60 ) >> 5 ) );
+                            result[pos--] = ( byte ) ( ( oidBytes[0] & 0x40 ) >> 6 );
+                            break;
+                            
+                        case 6 :
+                            result[pos--] = ( byte ) ( ( oidBytes[4] << 7 ) | ( oidBytes[5] & 0x7F ) );
+                            result[pos--] = ( byte ) ( ( oidBytes[3] << 6 ) | ( ( oidBytes[4] & 0x7E ) >> 1 ) );
+                            result[pos--] = ( byte ) ( ( oidBytes[2] << 5 ) | ( ( oidBytes[3] & 0x7C ) >> 2 ) );
+                            result[pos--] = ( byte ) ( ( oidBytes[1] << 4 ) | ( ( oidBytes[2] & 0x78 ) >> 3 ) );
+                            result[pos--] = ( byte ) ( ( oidBytes[0] << 3 ) | ( ( oidBytes[1] & 0x70 ) >> 4 ) );
+                            result[pos--] = ( byte ) ( ( oidBytes[0] & 0x60 ) >> 5 );
+                            break;
+
+                        case 5 :
+                            result[pos--] = ( byte ) ( ( oidBytes[3] << 7 ) | ( oidBytes[4] & 0x7F ) );
+                            result[pos--] = ( byte ) ( ( oidBytes[2] << 6 ) | ( ( oidBytes[3] & 0x7E ) >> 1 ) );
+                            result[pos--] = ( byte ) ( ( oidBytes[1] << 5 ) | ( ( oidBytes[2] & 0x7C ) >> 2 ) );
+                            result[pos--] = ( byte ) ( ( oidBytes[0] << 4 ) | ( ( oidBytes[1] & 0x78 ) >> 3 ) );
+                            result[pos--] = ( byte ) ( ( oidBytes[0] & 0x70 ) >> 4 );
+                            break;
+                            
+                        case 4 :
+                            result[pos--] = ( byte ) ( ( oidBytes[2] << 7 ) | ( oidBytes[3] & 0x7F ) );
+                            result[pos--] = ( byte ) ( ( oidBytes[1] << 6 ) | ( ( oidBytes[2] & 0x7E ) >> 1 ) );
+                            result[pos--] = ( byte ) ( ( oidBytes[0] << 5 ) | ( ( oidBytes[1] & 0x7C ) >> 2 ) );
+                            result[pos--] = ( byte ) ( ( oidBytes[0] & 0x78 ) >> 3 );
+                            break;
+                            
+                        case 3 :
+                            result[pos--] = ( byte ) ( ( oidBytes[1] << 7 ) | ( oidBytes[2] & 0x7F ) );
+                            result[pos--] = ( byte ) ( ( oidBytes[0] << 6 ) | ( ( oidBytes[1] & 0x7E ) >> 1 ) );
+                            result[pos--] = ( byte ) ( ( oidBytes[0] & 0x7C ) >> 2 );
+                            break;
+
+                        case 2 :
+                            result[pos--] = ( byte ) ( ( oidBytes[0] << 7 ) | ( oidBytes[1] & 0x7F ) );
+                            result[pos--] = ( byte ) ( ( oidBytes[0] & 0x7E ) >> 1 );
+                            break;
+                            
+                        case 1 :
+                            result[pos--] = ( byte ) ( oidBytes[0] & 0x7F );
+                            break;
+                            
+                        default :
+                            // Exist to please checkstyle...
+                            break;
+                    }
+                    
+                    BigInteger bigInteger = null;
+                    
+                    if ( ( result[0] & 0x80 ) == 0x80 )
+                    {
+                        byte[] newResult = new byte[result.length + 1];
+                        System.arraycopy( result, 0, newResult, 1, result.length );
+                        result = newResult;
+                    }
+                    
+                    bigInteger = new BigInteger( result );
+                    
+                    if ( firstArc )
+                    {
+                        // This is a joint-iso-itu-t(2) arc
+                        bigInteger = bigInteger.subtract( JOINT_ISO_ITU_T );
+                        builder.append( '2' );
+                    }
+                    
+                    builder.append( '.' ).append( bigInteger.toString() );
                 }
-
-                // normal processing
-                builder.append( '.' ).append( value );
+                else
+                {
+                    // value completed
+                    if ( firstArc )
+                    {
+                        // first value special processing
+                        if ( value >= 80 )
+                        {
+                            // starts with 2
+                            builder.append( '2' );
+                            value = value - 80;
+                        }
+                        else
+                        {
+                            // starts with 0 or 1
+                            long one = value / 40;
+                            long two = value % 40;
+    
+                            if ( ( one < 0 ) || ( one > 2 ) || ( two < 0 ) || ( ( one < 2 ) && ( two > 39 ) ) )
+                            {
+                                throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID,
+                                    Arrays.toString( oidBytes ) ) );
+                            }
+    
+                            if ( one < 2 )
+                            {
+                                builder.append( one );
+                                value = two;
+                            }
+                        }
+                        
+                        firstArc = false;
+                    }
+    
+                    // normal processing
+                    builder.append( '.' ).append( value );
+                    value = 0;
+                }
+                
+                valStart = i;
+                valLength = 0;
                 value = 0;
             }
         }
-
-        if ( builder == null )
-        {
-            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, Arrays.toString( oidBytes ) ) );
-        }
-
+    
         return new Oid( builder.toString(), oidBytes );
     }
 
 
-    /**
-     * Returns an OID object representing <code>oidString</code>.  
-     *  
-     * @param oidString The string representation of the OID
-     * @return A new Oid
-     * @throws DecoderException  When the OID is not valid
-     *
-    public static Oid fromStringLong( String oidString ) throws DecoderException
-    {
-        if ( ( oidString == null ) || oidString.isEmpty() )
-        {
-            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "" ) );
-        }
-
-        Queue<Long> segments = new LinkedList<Long>();
-
-        for ( String segment : oidString.split( "\\.", -1 ) )
-        {
-            try
-            {
-                segments.add( Long.parseLong( segment ) );
-            }
-            catch ( NumberFormatException nfe )
-            {
-                throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, oidString ), nfe );
-            }
-        }
-
-        // first segment special case
-        ByteBuffer buffer = new ByteBuffer();
-        Long segmentOne = segments.poll();
-
-        if ( ( segmentOne == null ) || ( segmentOne < 0 ) || ( segmentOne > 2 ) )
-        {
-            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, oidString ) );
-        }
-
-        // second segment special case
-        Long segment = segments.poll();
-
-        if ( ( segment == null ) || ( segment < 0 ) || ( ( segmentOne < 2 ) && ( segment > 39 ) ) )
-        {
-            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, oidString ) );
-        }
-
-        buffer.append( ( segmentOne * 40 ) + segment );
-
-        // the rest
-        while ( ( segment = segments.poll() ) != null )
-        {
-            buffer.append( segment );
-        }
-
-        return new Oid( oidString, buffer.toByteArray() );
-    }
-
-    
     /**
      * Process state A
      * <pre>
@@ -713,81 +769,6 @@ public final class Oid
 
     
     /**
-     * Compute the number of bytes necessary to store a long
-     */
-    private int getNbBytes( long value )
-    {
-        if ( value > 0x00000000FFFFFFFFL )
-        {
-            if ( value > 0x0000FFFFFFFFFFFFL )
-            {
-                if ( value > 0x00FFFFFFFFFFFFFFL )
-                {
-                    return 8;
-                }
-                else
-                {
-                    return 7;
-                }
-            }
-            else
-            {
-                if ( value > 0x000000FFFFFFFFFFL )
-                {
-                    return 6;
-                }
-                else
-                {
-                    return 5;
-                }
-            }
-                
-        }
-        else
-        {
-            if ( value > 0x00000000000000FFFFL )
-            {
-                if ( value > 0x0000000000FFFFFFL )
-                {
-                    return 4;
-                }
-                else
-                {
-                    return 3;
-                }
-            }
-            else
-            {
-                if ( value > 0x00000000000000FFL )
-                {
-                    return 2;
-                }
-                else
-                {
-                    return 1;
-                }
-                
-            }
-        }
-    }
-    
-    
-    /**
-     * Get a bte[] that will hold the 
-     * TODO getBytes.
-     *
-     * @param value
-     * @return
-     */
-    private byte[] getBytes( long value )
-    {
-        int nbBytes = getNbBytes( value );
-        
-        return new byte[nbBytes];
-
-    }
-
-    /**
      * Convert a list of digits to a list of 7 bits bytes. We must start by the end, and we don't
      * know how many bytes we will need, except when we will be done with the conversion.
      */
@@ -1099,8 +1080,6 @@ public final class Oid
         // The number of bytes in the resulting OID byte[]
         int nbBytes = 0;
         
-        boolean isJointIsoItuT = false;
-        
         for ( int i = 0; i < oidString.length(); i++ )
         {
             switch ( state )
@@ -1150,7 +1129,6 @@ public final class Oid
                     break;
                     
                 case STATE_F :
-                    isJointIsoItuT = true;
                     // (F) --['.']--> (G)
                     state = processStateF( oidString, i );
                     
@@ -1302,6 +1280,7 @@ public final class Oid
                 System.arraycopy( buffer, 0, bytes, 0, bufPos );
                 
                 return new Oid( oidString, bytes );
+                
             default :
                 // This should never happen...
                 throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "Wrong OID" ) );
@@ -1408,62 +1387,5 @@ public final class Oid
     public void writeBytesTo( OutputStream outputStream ) throws IOException
     {
         outputStream.write( oidBytes );
-    }
-
-    /**
-     * 
-     * Internal helper class for converting a long value to a properly encoded byte[]
-     */
-    private static final class ByteBuffer
-    {
-        /** The Buffer the OID will be written in */
-        private ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-
-
-        /**
-         * Writes a Long into a ByteBuffer
-         * 
-         * @param value The long value to write
-         * @return A ByteBufffer containing the converted Long
-         */
-        public ByteBuffer append( long value )
-        {
-            write( value, false );
-            
-            return this;
-        }
-
-
-        /**
-         * Write a long into the buffe, and a flag indicating that there are more 
-         * to write
-         *
-         * @param value The value to write
-         * @param hasMore The flag indicati,ng there is more to write into the buffer
-         */
-        private void write( long value, boolean hasMore )
-        {
-            long remaining = value >> 7;
-        
-            if ( remaining > 0 )
-            {
-                write( remaining, true );
-            }
-            
-            buffer.write( hasMore
-                ? ( byte ) ( ( 0x7F & value ) | 0x80 )
-                : ( byte ) ( 0x7F & value ) );
-        }
-
-
-        /**
-         * Convert the Buffer to a byte[]
-         * 
-         * @return The byte[] containing the Long
-         */
-        public byte[] toByteArray()
-        {
-            return buffer.toByteArray();
-        }
     }
 }
