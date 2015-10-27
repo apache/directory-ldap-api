@@ -418,19 +418,17 @@ public class LdifAnonymizer
             }
         }
         
-        if ( namingContext == null )
-        {
-            throw new LdapException( "No naming context attached with this entry : " + entryDn );
-        }
-
         Rdn[] anonymizedRdns = new Rdn[entryDn.size()];
         int rdnPos = entryDn.size() - 1;
 
-        // Copy the naming contex
-        for ( Rdn ncRdn : namingContext )
+        if ( namingContext != null )
         {
-            anonymizedRdns[rdnPos] = ncRdn;
-            rdnPos--;
+            // Copy the naming contex
+            for ( Rdn ncRdn : namingContext )
+            {
+                anonymizedRdns[rdnPos] = ncRdn;
+                rdnPos--;
+            }
         }
         
         // Iterate on all the RDN
