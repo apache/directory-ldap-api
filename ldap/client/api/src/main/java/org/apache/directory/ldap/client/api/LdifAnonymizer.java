@@ -328,6 +328,14 @@ public class LdifAnonymizer
     
     
     /**
+     * @return The list of configured anonymizers
+     */
+    public Map<String, Anonymizer> getAttributeAnonymizers()
+    {
+        return attributeAnonymizers;
+    }
+    
+    /**
      * Add a new NamingContext
      *
      * @param dn The naming context to add
