@@ -51,4 +51,12 @@ public interface Anonymizer<K>
      * @param schemaManager The SchemaManager instance
      */
     void setSchemaManager( SchemaManager schemaManager );
+    
+    
+    /**
+     * Set the list of existing anonymizers
+     *
+     * @param attributeAnonymizers The list of existing anonymizers
+     */
+    void setAnonymizers( Map<String, Anonymizer> attributeAnonymizers );
 }

@@ -20,6 +20,9 @@
 
 package org.apache.directory.api.ldap.model.ldif.anonymizer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 
 /**
@@ -32,11 +35,25 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
     /** The SchemaManager instance */
     protected SchemaManager schemaManager;
     
+    /** The map of AttributeType'sOID we want to anonymize. They are all associated with anonymizers */
+    protected Map<String, Anonymizer> attributeAnonymizers = new HashMap<String, Anonymizer>();
+
     /**
      * {@inheritDoc}
      */
     public void setSchemaManager( SchemaManager schemaManager )
     {
         this.schemaManager = schemaManager;
+    }
+    
+    
+    /**
+     * Set the list of existing anonymizers
+     *
+     * @param attributeAnonymizers The list of existing anonymizers
+     */
+    public void setAnonymizers( Map<String, Anonymizer> attributeAnonymizers )
+    {
+        this.attributeAnonymizers = attributeAnonymizers;
     }
 }
