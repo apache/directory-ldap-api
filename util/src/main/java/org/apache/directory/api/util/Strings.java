@@ -733,15 +733,7 @@ public final class Strings
         }
         catch ( ArrayIndexOutOfBoundsException aioobe )
         {
-            try
-            {
-                return new String( bytes, "UTF-8" );
-            }
-            catch ( UnsupportedEncodingException uee )
-            {
-                // if this happens something is really strange
-                throw new RuntimeException( uee.getMessage(), uee );
-            }
+            return new String( bytes, StandardCharsets.UTF_8 );
         }
 
         return new String( chars );
@@ -762,15 +754,7 @@ public final class Strings
             return "";
         }
 
-        try
-        {
-            return new String( bytes, 0, length, "UTF-8" );
-        }
-        catch ( UnsupportedEncodingException uee )
-        {
-            // if this happens something is really strange
-            throw new RuntimeException( uee );
-        }
+        return new String( bytes, 0, length, StandardCharsets.UTF_8 );
     }
 
 
@@ -789,15 +773,7 @@ public final class Strings
             return "";
         }
 
-        try
-        {
-            return new String( bytes, start, length, "UTF-8" );
-        }
-        catch ( UnsupportedEncodingException uee )
-        {
-            // if this happens something is really strange
-            throw new RuntimeException( uee );
-        }
+        return new String( bytes, start, length, StandardCharsets.UTF_8 );
     }
 
 
@@ -818,17 +794,9 @@ public final class Strings
         }
         else
         {
-            try
-            {
-                byte[] data = text.getBytes( "UTF-8" );
+            byte[] data = text.getBytes( StandardCharsets.UTF_8 );
 
-                return areEquals( bytes, index, data );
-            }
-            catch ( UnsupportedEncodingException uee )
-            {
-                // if this happens something is really strange
-                throw new RuntimeException( uee );
-            }
+            return areEquals( bytes, index, data );
         }
     }
 

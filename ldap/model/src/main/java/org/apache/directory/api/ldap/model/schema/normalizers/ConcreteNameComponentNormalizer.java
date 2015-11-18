@@ -20,9 +20,6 @@
 package org.apache.directory.api.ldap.model.schema.normalizers;
 
 
-import java.io.UnsupportedEncodingException;
-
-import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.entry.BinaryValue;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
@@ -30,8 +27,7 @@ import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.util.Hex;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -43,9 +39,6 @@ import org.slf4j.LoggerFactory;
  */
 public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
 {
-    /** The LoggerFactory used by this Interceptor */
-    private static final Logger LOG = LoggerFactory.getLogger( ConcreteNameComponentNormalizer.class );
-
     /** the schemaManager used to dynamically resolve Normalizers */
     private final SchemaManager schemaManager;
 
@@ -122,19 +115,10 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
         }
         else
         {
-            try
-            {
-                String unescaped = unescape( value );
-                byte[] valBytes = unescaped.getBytes( "UTF-8" );
+            String unescaped = unescape( value );
+            byte[] valBytes = Strings.getBytesUtf8( unescaped );
 
-                return lookup( name ).normalize( new BinaryValue( valBytes ) );
-            }
-            catch ( UnsupportedEncodingException uee )
-            {
-                String message = I18n.err( I18n.ERR_04222 );
-                LOG.error( message );
-                throw new LdapException( message, uee );
-            }
+            return lookup( name ).normalize( new BinaryValue( valBytes ) );
         }
 
     }
@@ -153,17 +137,8 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
         }
         else
         {
-            try
-            {
-                String valStr = new String( value, "UTF-8" );
-                return lookup( name ).normalize( valStr );
-            }
-            catch ( UnsupportedEncodingException uee )
-            {
-                String message = I18n.err( I18n.ERR_04223 );
-                LOG.error( message );
-                throw new LdapException( message, uee );
-            }
+            String valStr = Strings.utf8ToString( value );
+            return lookup( name ).normalize( valStr );
         }
     }
 

@@ -21,7 +21,6 @@
 package org.apache.directory.api.ldap.model.password;
 
 
-import java.io.UnsupportedEncodingException;
 import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -428,42 +427,25 @@ public final class PasswordUtil
         {
             case HASH_METHOD_MD5:
             case HASH_METHOD_SHA:
-                try
-                {
-                    // We just have the password just after the algorithm, base64 encoded.
-                    // Just decode the password and return it.
-                    return Base64
-                        .decode( new String( credentials, algoLength, credentials.length - algoLength, "UTF-8" )
-                            .toCharArray() );
-                }
-                catch ( UnsupportedEncodingException uee )
-                {
-                    // do nothing
-                    return credentials;
-                }
+                // We just have the password just after the algorithm, base64 encoded.
+                // Just decode the password and return it.
+                return Base64.decode(
+                    Strings.utf8ToString( credentials, algoLength, credentials.length - algoLength ).toCharArray() );
 
             case HASH_METHOD_SMD5:
-                try
-                {
-                    // The password is associated with a salt. Decompose it
-                    // in two parts, after having decoded the password.
-                    // The salt will be stored into the EncryptionMethod structure
-                    // The salt is at the end of the credentials, and is 8 bytes long
-                    byte[] passwordAndSalt = Base64.decode( new String( credentials, algoLength, credentials.length
-                        - algoLength, "UTF-8" ).toCharArray() );
+                // The password is associated with a salt. Decompose it
+                // in two parts, after having decoded the password.
+                // The salt will be stored into the EncryptionMethod structure
+                // The salt is at the end of the credentials, and is 8 bytes long
+                byte[] passwordAndSalt = Base64.decode(
+                    Strings.utf8ToString( credentials, algoLength, credentials.length - algoLength ).toCharArray() );
 
-                    int saltLength = passwordAndSalt.length - MD5_LENGTH;
-                    encryptionMethod.setSalt( new byte[saltLength] );
-                    byte[] password = new byte[MD5_LENGTH];
-                    split( passwordAndSalt, 0, password, encryptionMethod.getSalt() );
+                int saltLength = passwordAndSalt.length - MD5_LENGTH;
+                encryptionMethod.setSalt( new byte[saltLength] );
+                byte[] password = new byte[MD5_LENGTH];
+                split( passwordAndSalt, 0, password, encryptionMethod.getSalt() );
 
-                    return password;
-                }
-                catch ( UnsupportedEncodingException uee )
-                {
-                    // do nothing
-                    return credentials;
-                }
+                return password;
 
             case HASH_METHOD_SSHA:
                 return getCredentials( credentials, algoLength, SHA1_LENGTH, encryptionMethod );
@@ -488,10 +470,10 @@ public final class PasswordUtil
                 // in two parts, storing the salt into the EncryptionMethod structure.
                 // The salt comes first, not like for SSHA and SMD5, and is 2 bytes long
                 encryptionMethod.setSalt( new byte[2] );
-                byte[] password = new byte[credentials.length - encryptionMethod.getSalt().length - algoLength];
-                split( credentials, algoLength, encryptionMethod.getSalt(), password );
+                byte[] password2 = new byte[credentials.length - encryptionMethod.getSalt().length - algoLength];
+                split( credentials, algoLength, encryptionMethod.getSalt(), password2 );
 
-                return password;
+                return password2;
 
             default:
                 // unknown method
@@ -507,27 +489,19 @@ public final class PasswordUtil
     private static byte[] getCredentials( byte[] credentials, int algoLength, int hashLen,
         EncryptionMethod encryptionMethod )
     {
-        try
-        {
-            // The password is associated with a salt. Decompose it
-            // in two parts, after having decoded the password.
-            // The salt will be stored into the EncryptionMethod structure
-            // The salt is at the end of the credentials, and is 8 bytes long
-            byte[] passwordAndSalt = Base64.decode( new String( credentials, algoLength, credentials.length
-                - algoLength, "UTF-8" ).toCharArray() );
+        // The password is associated with a salt. Decompose it
+        // in two parts, after having decoded the password.
+        // The salt will be stored into the EncryptionMethod structure
+        // The salt is at the end of the credentials, and is 8 bytes long
+        byte[] passwordAndSalt = Base64
+            .decode( Strings.utf8ToString( credentials, algoLength, credentials.length - algoLength ).toCharArray() );
 
-            int saltLength = passwordAndSalt.length - hashLen;
-            encryptionMethod.setSalt( new byte[saltLength] );
-            byte[] password = new byte[hashLen];
-            split( passwordAndSalt, 0, password, encryptionMethod.getSalt() );
+        int saltLength = passwordAndSalt.length - hashLen;
+        encryptionMethod.setSalt( new byte[saltLength] );
+        byte[] password = new byte[hashLen];
+        split( passwordAndSalt, 0, password, encryptionMethod.getSalt() );
 
-            return password;
-        }
-        catch ( UnsupportedEncodingException uee )
-        {
-            // do nothing
-            return credentials;
-        }
+        return password;
     }
 
 
@@ -607,28 +581,20 @@ public final class PasswordUtil
      */
     private static byte[] getPbkdf2Credentials( byte[] credentials, int algoLength, EncryptionMethod encryptionMethod )
     {
-        try
-        {
-            // The password is associated with a salt. Decompose it
-            // in two parts, after having decoded the password.
-            // The salt will be stored into the EncryptionMethod structure
-            // The salt is at the *beginning* of the credentials, and is 16 bytes long
-            byte[] passwordAndSalt = Base64.decode( new String( credentials, algoLength, credentials.length
-                - algoLength, "UTF-8" ).toCharArray() );
+        // The password is associated with a salt. Decompose it
+        // in two parts, after having decoded the password.
+        // The salt will be stored into the EncryptionMethod structure
+        // The salt is at the *beginning* of the credentials, and is 16 bytes long
+        byte[] passwordAndSalt = Base64
+            .decode( Strings.utf8ToString( credentials, algoLength, credentials.length - algoLength ).toCharArray() );
 
-            int saltLength = passwordAndSalt.length - PKCS5S2_LENGTH;
-            encryptionMethod.setSalt( new byte[saltLength] );
-            byte[] password = new byte[PKCS5S2_LENGTH];
+        int saltLength = passwordAndSalt.length - PKCS5S2_LENGTH;
+        encryptionMethod.setSalt( new byte[saltLength] );
+        byte[] password = new byte[PKCS5S2_LENGTH];
 
-            split( passwordAndSalt, 0, encryptionMethod.getSalt(), password );
+        split( passwordAndSalt, 0, encryptionMethod.getSalt(), password );
 
-            return password;
-        }
-        catch ( UnsupportedEncodingException uee )
-        {
-            // do nothing
-            return credentials;
-        }
+        return password;
     }
 
 }

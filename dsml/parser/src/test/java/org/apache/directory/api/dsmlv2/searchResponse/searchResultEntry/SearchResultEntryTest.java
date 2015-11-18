@@ -26,7 +26,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -399,10 +399,9 @@ public class SearchResultEntryTest extends AbstractResponseTest
 
     /**
      * Test parsing of a response with 1 Attr 1 Base64 Value
-     * @throws UnsupportedEncodingException
      */
     @Test
-    public void testResponseWith1Attr1Base64Value() throws UnsupportedEncodingException
+    public void testResponseWith1Attr1Base64Value()
     {
         Dsmlv2ResponseParser parser = null;
         try
@@ -437,7 +436,7 @@ public class SearchResultEntryTest extends AbstractResponseTest
 
         String expected = new String( new byte[]
             { 'E', 'm', 'm', 'a', 'n', 'u', 'e', 'l', ' ', 'L', ( byte ) 0xc3, ( byte ) 0xa9, 'c', 'h', 'a', 'r', 'n',
-                'y' }, "UTF-8" );
+                'y' }, StandardCharsets.UTF_8 );
         assertEquals( expected, value.getString() );
     }
 

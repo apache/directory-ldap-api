@@ -33,7 +33,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.RandomAccessFile;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -639,7 +638,7 @@ public class LdifReaderTest
 
 
     @Test
-    public void testLdifParserBase64() throws Exception, UnsupportedEncodingException
+    public void testLdifParserBase64() throws Exception
     {
         String ldif =
             "#comment\n" +
@@ -666,7 +665,7 @@ public class LdifReaderTest
         assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
 
         Attribute attr = entry.get( "cn" );
-        assertTrue( attr.contains( "Emmanuel L\u00e9charny".getBytes( "UTF-8" ) ) );
+        assertTrue( attr.contains( "Emmanuel L\u00e9charny".getBytes( StandardCharsets.UTF_8 ) ) );
 
         attr = entry.get( "objectclass" );
         assertTrue( attr.contains( "top" ) );
@@ -684,7 +683,7 @@ public class LdifReaderTest
 
 
     @Test
-    public void testLdifParserBase64MultiLine() throws Exception, UnsupportedEncodingException
+    public void testLdifParserBase64MultiLine() throws Exception
     {
         String ldif =
             "#comment\n" +
@@ -712,7 +711,7 @@ public class LdifReaderTest
         assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
 
         Attribute attr = entry.get( "cn" );
-        assertTrue( attr.contains( "Emmanuel L\u00e9charny  ".getBytes( "UTF-8" ) ) );
+        assertTrue( attr.contains( "Emmanuel L\u00e9charny  ".getBytes( StandardCharsets.UTF_8 ) ) );
 
         attr = entry.get( "objectclass" );
         assertTrue( attr.contains( "top" ) );
@@ -922,7 +921,7 @@ public class LdifReaderTest
         attr = entry.get( "description" );
         assertTrue( attr
             .contains( "What a careful reader you are!  This value is base-64-encoded because it has a control character in it (a CR).\r  By the way, you should really get out more."
-                .getBytes( "UTF-8" ) ) );
+                .getBytes( StandardCharsets.UTF_8 ) ) );
     }
 
 
@@ -978,7 +977,7 @@ public class LdifReaderTest
         attr = entry.get( "description" );
         assertTrue( attr
             .contains( "What a careful reader you are!  This value is base-64-encoded because it has a control character in it (a CR).\r  By the way, you should really get out more."
-                .getBytes( "UTF-8" ) ) );
+                .getBytes( StandardCharsets.UTF_8 ) ) );
     }
 
 
@@ -1153,7 +1152,7 @@ public class LdifReaderTest
                     }
                     else
                     {
-                        assertTrue( attr.contains( values[i][j][1].getBytes( "UTF-8" ) ) );
+                        assertTrue( attr.contains( values[i][j][1].getBytes( StandardCharsets.UTF_8 ) ) );
                     }
                 }
             }
@@ -1223,7 +1222,7 @@ public class LdifReaderTest
                 }
                 else
                 {
-                    assertTrue( attr.contains( values[i][1].getBytes( "UTF-8" ) ) );
+                    assertTrue( attr.contains( values[i][1].getBytes( StandardCharsets.UTF_8 ) ) );
                 }
             }
         }
@@ -1415,7 +1414,7 @@ public class LdifReaderTest
                 }
                 else
                 {
-                    assertTrue( attr.contains( values[0][i][1].getBytes( "UTF-8" ) ) );
+                    assertTrue( attr.contains( values[0][i][1].getBytes( StandardCharsets.UTF_8 ) ) );
                 }
             }
         }

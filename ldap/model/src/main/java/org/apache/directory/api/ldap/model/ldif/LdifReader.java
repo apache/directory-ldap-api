@@ -31,7 +31,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -543,16 +542,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                     // This is a base 64 encoded Dn.
                     String trimmedLine = line.substring( 4 ).trim();
 
-                    try
-                    {
-                        dn = new String( Base64.decode( trimmedLine.toCharArray() ), "UTF-8" );
-                    }
-                    catch ( UnsupportedEncodingException uee )
-                    {
-                        // The Dn is not base 64 encoded
-                        LOG.error( I18n.err( I18n.ERR_12014_BASE64_DN_EXPECTED, lineNumber ) );
-                        throw new LdapLdifException( I18n.err( I18n.ERR_12015_INVALID_BASE64_DN ), uee );
-                    }
+                    dn = Strings.utf8ToString( Base64.decode( trimmedLine.toCharArray() ) );
                 }
                 else
                 {
