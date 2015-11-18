@@ -666,7 +666,7 @@ public class ExtendedResponseTest extends AbstractResponseTest
 
         ExtendedResponseDsml extendedResponse = ( ExtendedResponseDsml ) parser.getBatchResponse().getCurrentResponse();
 
-        assertEquals( "DSMLv2.0 rocks!!", new String( extendedResponse.getResponseValue() ) );
+        assertEquals( "DSMLv2.0 rocks!!", Strings.utf8ToString( extendedResponse.getResponseValue() ) );
     }
 
 

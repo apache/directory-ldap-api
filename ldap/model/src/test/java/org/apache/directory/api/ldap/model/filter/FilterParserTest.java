@@ -46,6 +46,7 @@ import org.apache.directory.api.ldap.model.filter.OrNode;
 import org.apache.directory.api.ldap.model.filter.PresenceNode;
 import org.apache.directory.api.ldap.model.filter.SimpleNode;
 import org.apache.directory.api.ldap.model.filter.SubstringNode;
+import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -1001,7 +1002,7 @@ public class FilterParserTest
         assertTrue( node instanceof EqualityNode );
         assertEquals( "'~%('$'\\ac", ( ( EqualityNode<?> ) node ).getValue().getString() );
         String str2 = node.toString();
-        assertEquals( str.toUpperCase(), str2.toUpperCase() );
+        assertEquals( Strings.upperCase( str ), Strings.upperCase( str2 ) );
     }
 
 

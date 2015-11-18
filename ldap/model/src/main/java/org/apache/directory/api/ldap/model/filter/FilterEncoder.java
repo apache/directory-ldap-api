@@ -22,6 +22,9 @@ package org.apache.directory.api.ldap.model.filter;
 
 import java.text.Format;
 import java.text.MessageFormat;
+import java.util.Locale;
+
+import org.apache.directory.api.i18n.I18n;
 
 
 /**
@@ -57,7 +60,7 @@ public final class FilterEncoder
             values = EMPTY;
         }
 
-        MessageFormat mf = new MessageFormat( filterTemplate );
+        MessageFormat mf = new MessageFormat( filterTemplate, Locale.ROOT );
 
         // check element count and argument count
         Format[] formats = mf.getFormatsByArgumentIndex();
@@ -65,8 +68,7 @@ public final class FilterEncoder
         {
             // TODO: I18n
             String msg = "Filter template {0} has {1} placeholders but {2} arguments provided.";
-            throw new IllegalArgumentException( MessageFormat.format( msg, filterTemplate, formats.length,
-                values.length ) );
+            throw new IllegalArgumentException( I18n.format( msg, filterTemplate, formats.length, values.length ) );
         }
 
         // encode arguments

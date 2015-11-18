@@ -27,6 +27,7 @@ import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.PrintableStringSyntaxChecker;
+import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -69,37 +70,37 @@ public class PrintableStringSyntaxCheckerTest
     {
         for ( int i = 0; i < 0x1F; i++ )
         {
-            assertFalse( checker.isValidSyntax( new String( new byte[]
+            assertFalse( checker.isValidSyntax( Strings.utf8ToString( new byte[]
                 { ( byte ) i } ) ) );
         }
 
         for ( int i = 0x21; i < 0x26; i++ )
         {
-            assertFalse( checker.isValidSyntax( new String( new byte[]
+            assertFalse( checker.isValidSyntax( Strings.utf8ToString( new byte[]
                 { ( byte ) i } ) ) );
         }
 
         for ( int i = 0x5B; i < 0x60; i++ )
         {
-            assertFalse( checker.isValidSyntax( new String( new byte[]
+            assertFalse( checker.isValidSyntax( Strings.utf8ToString( new byte[]
                 { ( byte ) i } ) ) );
         }
 
         for ( int i = 0x7B; i < 0x7F; i++ )
         {
-            assertFalse( checker.isValidSyntax( new String( new byte[]
+            assertFalse( checker.isValidSyntax( Strings.utf8ToString( new byte[]
                 { ( byte ) i } ) ) );
         }
 
-        assertFalse( checker.isValidSyntax( new String( new byte[]
+        assertFalse( checker.isValidSyntax( Strings.utf8ToString( new byte[]
             { ( byte ) 0x2A } ) ) );
-        assertFalse( checker.isValidSyntax( new String( new byte[]
+        assertFalse( checker.isValidSyntax( Strings.utf8ToString( new byte[]
             { ( byte ) 0x3B } ) ) );
-        assertFalse( checker.isValidSyntax( new String( new byte[]
+        assertFalse( checker.isValidSyntax( Strings.utf8ToString( new byte[]
             { ( byte ) 0x3C } ) ) );
-        assertFalse( checker.isValidSyntax( new String( new byte[]
+        assertFalse( checker.isValidSyntax( Strings.utf8ToString( new byte[]
             { ( byte ) 0x3E } ) ) );
-        assertFalse( checker.isValidSyntax( new String( new byte[]
+        assertFalse( checker.isValidSyntax( Strings.utf8ToString( new byte[]
             { ( byte ) 0x40 } ) ) );
     }
 

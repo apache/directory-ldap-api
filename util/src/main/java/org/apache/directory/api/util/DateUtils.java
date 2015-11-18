@@ -20,7 +20,6 @@
 package org.apache.directory.api.util;
 
 
-import java.util.Calendar;
 import java.util.Date;
 
 
@@ -60,7 +59,7 @@ public final class DateUtils
      */
     public static String getGeneralizedTime()
     {
-        return new GeneralizedTime( Calendar.getInstance() ).toGeneralizedTime();
+        return new GeneralizedTime( new Date() ).toGeneralizedTime();
     }
 
 
@@ -73,9 +72,7 @@ public final class DateUtils
      */
     public static String getGeneralizedTime( Date date )
     {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime( date );
-        return new GeneralizedTime( calendar ).toGeneralizedTime();
+        return new GeneralizedTime( date ).toGeneralizedTime();
     }
 
 

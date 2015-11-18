@@ -24,12 +24,9 @@ import static org.apache.directory.api.util.Chars.isHex;
 import static org.apache.directory.api.util.Hex.encodeHex;
 import static org.apache.directory.api.util.Hex.getHexValue;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -52,9 +49,6 @@ public final class Strings
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( Strings.class );
-
-    /** The default charset, because it's not provided by JDK 1.5 */
-    static String defaultCharset = null;
 
     /** Hex chars */
     private static final byte[] HEX_CHAR = new byte[]
@@ -506,7 +500,7 @@ public final class Strings
             buf.append( digit );
         }
 
-        return buf.toString().toUpperCase();
+        return upperCase( buf.toString() );
     }
 
 
@@ -1613,15 +1607,7 @@ public final class Strings
             return EMPTY_BYTES;
         }
 
-        try
-        {
-            return string.getBytes( "UTF-8" );
-        }
-        catch ( UnsupportedEncodingException uee )
-        {
-            // if this happens something is really strange
-            throw new RuntimeException( uee );
-        }
+        return string.getBytes( StandardCharsets.UTF_8 );
     }
 
 
@@ -1641,28 +1627,20 @@ public final class Strings
 
         try
         {
-            try
-            {
-                char[] chars = string.toCharArray();
-                byte[] bytes = new byte[chars.length];
-                int pos = 0;
+            char[] chars = string.toCharArray();
+            byte[] bytes = new byte[chars.length];
+            int pos = 0;
 
-                for ( char c : chars )
-                {
-                    bytes[pos++] = UTF8[c];
-                }
-
-                return bytes;
-            }
-            catch ( ArrayIndexOutOfBoundsException aioobe )
+            for ( char c : chars )
             {
-                return string.getBytes( "UTF-8" );
+                bytes[pos++] = UTF8[c];
             }
+
+            return bytes;
         }
-        catch ( UnsupportedEncodingException uee )
+        catch ( ArrayIndexOutOfBoundsException aioobe )
         {
-            // if this happens something is really strange
-            throw new RuntimeException( uee );
+            return string.getBytes( StandardCharsets.UTF_8 );
         }
     }
 
@@ -1674,32 +1652,7 @@ public final class Strings
      */
     public static String getDefaultCharsetName()
     {
-        if ( null == defaultCharset )
-        {
-            try
-            {
-                // Try with jdk 1.5 method, if we are using a 1.5 jdk :)
-                Method method = Charset.class.getMethod( "defaultCharset", new Class[0] );
-                defaultCharset = ( ( Charset ) method.invoke( null, new Object[0] ) ).name();
-            }
-            catch ( NoSuchMethodException e )
-            {
-                // fall back to old method
-                defaultCharset = new OutputStreamWriter( new ByteArrayOutputStream() ).getEncoding();
-            }
-            catch ( InvocationTargetException e )
-            {
-                // fall back to old method
-                defaultCharset = new OutputStreamWriter( new ByteArrayOutputStream() ).getEncoding();
-            }
-            catch ( IllegalAccessException e )
-            {
-                // fall back to old method
-                defaultCharset = new OutputStreamWriter( new ByteArrayOutputStream() ).getEncoding();
-            }
-        }
-
-        return defaultCharset;
+        return Charset.defaultCharset().name();
     }
 
 
@@ -2025,7 +1978,7 @@ public final class Strings
 
     /**
      * <p>
-     * Converts a String to upper case as per {@link String#toUpperCase()}.
+     * Converts a String to upper case as per {@link String#toUpperCase( Locale.ROOT )}.
      * </p>
      * <p>
      * A <code>null</code> input String returns <code>null</code>.
@@ -2342,7 +2295,7 @@ public final class Strings
         }
         catch ( UnsupportedEncodingException e )
         {
-            return new String( data, offset, length );
+            return new String( data, offset, length, Charset.defaultCharset() );
         }
     }
 

@@ -250,7 +250,7 @@ public class BindResponseTest extends AbstractCodecServiceTest
         PagedResultsDecorator pagedSearchControl = ( PagedResultsDecorator ) control;
 
         assertEquals( 5, pagedSearchControl.getSize() );
-        assertTrue( Arrays.equals( "abcdef".getBytes(), pagedSearchControl.getCookie() ) );
+        assertTrue( Arrays.equals( Strings.getBytesUtf8( "abcdef" ), pagedSearchControl.getCookie() ) );
 
         // Check the encoding
         try

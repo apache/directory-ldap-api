@@ -23,10 +23,12 @@ package org.apache.directory.ldap.client.api;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -713,10 +715,10 @@ public class LdifAnonymizer
 
         LdifAnonymizer anonymizer = new LdifAnonymizer();
 
-        BufferedReader br = new BufferedReader( new FileReader( args[0] ) );
         String ldifString = null;
 
-        try
+        try ( BufferedReader br = new BufferedReader( new InputStreamReader( new FileInputStream( args[0] ),
+            Charset.defaultCharset() ) ) )
         {
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
@@ -729,10 +731,6 @@ public class LdifAnonymizer
             }
 
             ldifString = sb.toString();
-        }
-        finally
-        {
-            br.close();
         }
 
         String result = anonymizer.anonymize( ldifString );

@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.apache.directory.api.ldap.schema.converter.Schema;
 import org.apache.directory.api.ldap.schema.converter.SchemaToLdif;
+import org.apache.directory.api.util.Strings;
 
 
 public class ApiLdapSchemaConverterOsgiTest extends ApiOsgiTestBase
@@ -48,7 +49,7 @@ public class ApiLdapSchemaConverterOsgiTest extends ApiOsgiTestBase
         Schema schema = new Schema();
         schema.setName( "foo" );
         schema.setInput( new ByteArrayInputStream(
-            "attributetype ( 1.3.6.1.4.1.18060.0.4.2.3.14 NAME ( 'at' 'attribute' ) )".getBytes() ) );
+            Strings.getBytesUtf8( "attributetype ( 1.3.6.1.4.1.18060.0.4.2.3.14 NAME ( 'at' 'attribute' ) )" ) ) );
 
         Writer out = new StringWriter( 2048 );
         schema.setOutput( out );

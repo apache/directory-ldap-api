@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.model.schema.comparators;
 import static org.junit.Assert.assertEquals;
 
 import org.apache.directory.api.ldap.model.schema.comparators.BooleanComparator;
+import org.apache.directory.api.util.Strings;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -73,6 +74,6 @@ public class BooleanComparatorTest
         String b1 = "TRUE";
         String b2 = "true";
 
-        assertEquals( 0, comparator.compare( b1, b2.toUpperCase() ) );
+        assertEquals( 0, comparator.compare( b1, Strings.upperCase( b2 ) ) );
     }
 }

@@ -26,7 +26,6 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -306,52 +305,19 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
 
     /**
-     * A constructor which takes a file name
+     * A constructor which takes a file name. Default charset is used.
      *
      * @param ldifFileName A file name containing ldif formated input
      * @throws LdapLdifException If the file cannot be processed or if the format is incorrect
      */
     public LdifReader( String ldifFileName ) throws LdapLdifException
     {
-        File file = new File( ldifFileName );
-
-        if ( !file.exists() )
-        {
-            String msg = I18n.err( I18n.ERR_12010_CANNOT_FIND_FILE, file.getAbsoluteFile() );
-            LOG.error( msg );
-            throw new LdapLdifException( msg );
-        }
-
-        if ( !file.canRead() )
-        {
-            String msg = I18n.err( I18n.ERR_12011_CANNOT_READ_FILE, file.getName() );
-            LOG.error( msg );
-            throw new LdapLdifException( msg );
-        }
-
-        try
-        {
-            initReader( new BufferedReader( new FileReader( file ) ) );
-        }
-        catch ( FileNotFoundException fnfe )
-        {
-            String msg = I18n.err( I18n.ERR_12010_CANNOT_FIND_FILE, file.getAbsoluteFile() );
-            LOG.error( msg );
-            throw new LdapLdifException( msg, fnfe );
-        }
-        catch ( LdapInvalidDnException lide )
-        {
-            throw new LdapLdifException( lide.getMessage(), lide );
-        }
-        catch ( LdapException le )
-        {
-            throw new LdapLdifException( le.getMessage(), le );
-        }
+        this( new File( ldifFileName ) );
     }
 
 
     /**
-     * A constructor which takes a Reader
+     * A constructor which takes a Reader.
      *
      * @param in A Reader containing ldif formated input
      * @throws LdapException If the file cannot be processed or if the format is incorrect
@@ -363,62 +329,31 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
 
     /**
-     * A constructor which takes an InputStream
+     * A constructor which takes an InputStream. Default charset is used.
      *
      * @param in An InputStream containing ldif formated input
      * @throws LdapException If the file cannot be processed or if the format is incorrect
      */
     public LdifReader( InputStream in ) throws LdapException
     {
-        initReader( new BufferedReader( new InputStreamReader( in ) ) );
+        initReader( new BufferedReader( new InputStreamReader( in, Charset.defaultCharset() ) ) );
     }
 
 
     /**
-     * A constructor which takes a File
+     * A constructor which takes a File. Default charset is used.
      *
      * @param file A File containing ldif formated input
      * @throws LdapLdifException If the file cannot be processed or if the format is incorrect
      */
     public LdifReader( File file ) throws LdapLdifException
     {
-        if ( !file.exists() )
-        {
-            String msg = I18n.err( I18n.ERR_12010_CANNOT_FIND_FILE, file.getAbsoluteFile() );
-            LOG.error( msg );
-            throw new LdapLdifException( msg );
-        }
-
-        if ( !file.canRead() )
-        {
-            String msg = I18n.err( I18n.ERR_12011_CANNOT_READ_FILE, file.getName() );
-            LOG.error( msg );
-            throw new LdapLdifException( msg );
-        }
-
-        try
-        {
-            initReader( new BufferedReader( new FileReader( file ) ) );
-        }
-        catch ( FileNotFoundException fnfe )
-        {
-            String msg = I18n.err( I18n.ERR_12010_CANNOT_FIND_FILE, file.getAbsoluteFile() );
-            LOG.error( msg );
-            throw new LdapLdifException( msg, fnfe );
-        }
-        catch ( LdapInvalidDnException lide )
-        {
-            throw new LdapLdifException( lide.getMessage(), lide );
-        }
-        catch ( LdapException le )
-        {
-            throw new LdapLdifException( le.getMessage(), le );
-        }
+        this( file, null );
     }
 
 
     /**
-     * A constructor which takes a File and a SchemaManager
+     * A constructor which takes a File and a SchemaManager. Default charset is used.
      *
      * @param file A File containing ldif formated input
      * @param schemaManager The SchemaManager instance to use
@@ -444,7 +379,8 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
         try
         {
-            initReader( new BufferedReader( new FileReader( file ) ) );
+            initReader(
+                new BufferedReader( new InputStreamReader( new FileInputStream( file ), Charset.defaultCharset() ) ) );
         }
         catch ( FileNotFoundException fnfe )
         {
@@ -1807,7 +1743,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      */
     public List<LdifEntry> parseLdifFile( String fileName ) throws LdapLdifException
     {
-        return parseLdifFile( fileName, Charset.forName( Strings.getDefaultCharsetName() ).toString() );
+        return parseLdifFile( fileName, Strings.getDefaultCharsetName() );
     }
 
 

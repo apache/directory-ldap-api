@@ -22,6 +22,7 @@ package org.apache.directory.api.i18n;
 
 
 import java.text.MessageFormat;
+import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -821,7 +822,7 @@ public enum I18n
     {
         try
         {
-            return err + " " + MessageFormat.format( ERR_BUNDLE.getString( err.getErrorCode() ), args );
+            return err + " " + format( ERR_BUNDLE.getString( err.getErrorCode() ), args );
         }
         catch ( Exception e )
         {
@@ -858,13 +859,13 @@ public enum I18n
     {
         try
         {
-            return MessageFormat.format( MSG_BUNDLE.getString( msg ), args );
+            return format( MSG_BUNDLE.getString( msg ), args );
         }
         catch ( MissingResourceException mre )
         {
             try
             {
-                return MessageFormat.format( msg, args );
+                return format( msg, args );
             }
             catch ( Exception e )
             {
@@ -888,5 +889,11 @@ public enum I18n
                 return msg + " (" + sb.toString() + ")";
             }
         }
+    }
+
+
+    public static String format( String pattern, Object... args )
+    {
+        return new MessageFormat( pattern, Locale.ROOT ).format( args );
     }
 }

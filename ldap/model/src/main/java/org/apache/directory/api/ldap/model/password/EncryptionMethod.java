@@ -85,7 +85,7 @@ public class EncryptionMethod
     @Override
     public String toString()
     {
-        return "EncryptionMethod [algorithm=" + algorithm.getName().toUpperCase() + ", salt="
+        return "EncryptionMethod [algorithm=" + Strings.upperCase( algorithm.getName() ) + ", salt="
             + Strings.dumpBytes( salt ) + "]";
     }
 }

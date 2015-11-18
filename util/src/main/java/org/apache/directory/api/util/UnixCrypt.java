@@ -652,7 +652,6 @@ public class UnixCrypt extends Object
      * @param setting the salt to be used
      * @return the encrypted String
      */
-    @SuppressWarnings("deprecation")
     public static String crypt( String key, String setting )
     {
         /* encryption constant */
@@ -697,7 +696,7 @@ public class UnixCrypt extends Object
             rsltblock >>= 6;
         }
 
-        return new String( cryptresult, 0x00, 0, 13 );
+        return Strings.asciiBytesToString( cryptresult );
     }
 
 

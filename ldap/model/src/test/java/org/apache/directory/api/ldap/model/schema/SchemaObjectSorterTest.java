@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 
 
@@ -114,7 +115,7 @@ public class SchemaObjectSorterTest
         AttributeType next = iterator.next();
         String superiorOid = next.getSuperiorOid();
         if(superiorOid != null) {
-            superiorOid = superiorOid.toLowerCase();
+            superiorOid = Strings.lowerCase( superiorOid );
         }
 
         if ( !Arrays.asList( expected ).contains( superiorOid ) )
@@ -122,7 +123,7 @@ public class SchemaObjectSorterTest
             fail( "Expected that " + Arrays.asList( expected ) + " contains " + superiorOid );
         }
 
-        return next.getName().toLowerCase();
+        return Strings.lowerCase( next.getName() );
     }
 
 
@@ -214,7 +215,7 @@ public class SchemaObjectSorterTest
         List<String> superiorOids = next.getSuperiorOids();
         for ( int i = 0; i < superiorOids.size(); i++ )
         {
-            superiorOids.set( i, superiorOids.get( i ).toLowerCase() );
+            superiorOids.set( i, Strings.lowerCase( superiorOids.get( i ) ) );
         }
 
         if ( !Arrays.asList( expected ).containsAll( superiorOids ) )
@@ -222,7 +223,7 @@ public class SchemaObjectSorterTest
             fail( "Expected that " + Arrays.asList( expected ) + " contains all " + superiorOids );
         }
 
-        return next.getName().toLowerCase();
+        return Strings.lowerCase( next.getName() );
     }
 
 

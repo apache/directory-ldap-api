@@ -20,12 +20,14 @@
 package org.apache.directory.api.dsmlv2;
 
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.nio.charset.Charset;
 
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.api.dsmlv2.request.Dsmlv2Grammar;
@@ -112,7 +114,7 @@ public class Dsmlv2Parser
 
 
     /**
-     * Sets the input file the parser is going to parse
+     * Sets the input file the parser is going to parse. Default charset is used.
      *
      * @param fileName the name of the file
      * @throws FileNotFoundException if the file does not exist
@@ -120,7 +122,7 @@ public class Dsmlv2Parser
      */
     public void setInputFile( String fileName ) throws FileNotFoundException, XmlPullParserException
     {
-        Reader reader = new FileReader( fileName );
+        Reader reader = new InputStreamReader( new FileInputStream( fileName ), Charset.defaultCharset() );
         container.getParser().setInput( reader );
     }
 
@@ -228,7 +230,7 @@ public class Dsmlv2Parser
     {
         XmlPullParser xpp = container.getParser();
 
-        String tagName = Strings.toLowerCase( xpp.getName() );
+        String tagName = Strings.lowerCase( xpp.getName() );
 
         GrammarTransition transition = container.getTransition( container.getState(), new Tag( tagName, tagType ) );
 

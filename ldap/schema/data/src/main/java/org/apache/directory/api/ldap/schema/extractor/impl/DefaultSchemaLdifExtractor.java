@@ -23,11 +23,13 @@ package org.apache.directory.api.ldap.schema.extractor.impl;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InvalidObjectException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -207,13 +209,9 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
             throw new FileNotFoundException( I18n.err( I18n.ERR_08002, source.getAbsolutePath() ) );
         }
 
-        FileWriter out = new FileWriter( destination );
-
-        LdifReader ldifReader = null;
-
-        try
+        try ( Writer out = new OutputStreamWriter( new FileOutputStream( destination ), Charset.defaultCharset() );
+            LdifReader ldifReader = new LdifReader( source ) )
         {
-            ldifReader = new LdifReader( source );
             boolean first = true;
             LdifEntry ldifEntry = null;
 
@@ -258,18 +256,6 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
             String msg = I18n.err( I18n.ERR_08004, source, ne.getLocalizedMessage() );
             LOG.error( msg );
             throw new InvalidObjectException( msg );
-        }
-        finally
-        {
-            if ( ldifReader != null )
-            {
-                ldifReader.close();
-            }
-
-            if ( out != null )
-            {
-                out.close();
-            }
         }
     }
 

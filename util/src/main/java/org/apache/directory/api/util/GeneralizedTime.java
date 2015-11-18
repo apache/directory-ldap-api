@@ -19,6 +19,7 @@
  */
 package org.apache.directory.api.util;
 
+import static org.apache.directory.api.util.TimeZones.GMT;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -155,9 +156,6 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         /** g-differential format, using hour and minute. */
         DIFF_HOUR_MINUTE
     }
-
-    /** The GMT TimeZone */
-    private static final TimeZone GMT = TimeZone.getTimeZone( "GMT" );
 
     /** The user provided value */
     private String upGeneralizedTime;

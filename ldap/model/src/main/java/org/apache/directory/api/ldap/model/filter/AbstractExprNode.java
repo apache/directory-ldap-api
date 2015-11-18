@@ -27,6 +27,7 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.entry.BinaryValue;
 import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
+import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -199,7 +200,7 @@ public abstract class AbstractExprNode implements ExprNode
                         sb.append( '0' );
                     }
 
-                    sb.append( digit.toUpperCase() );
+                    sb.append( Strings.upperCase( digit ) );
                 }
             }
 

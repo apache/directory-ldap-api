@@ -103,7 +103,7 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
         for ( int i = 0; i < ldapUrls.length; i++ )
         {
             stream.put( ( byte ) 0x04 );
-            stream.put( ( byte ) ldapUrls[i].getBytes().length );
+            stream.put( ( byte ) Strings.getBytesUtf8( ldapUrls[i] ).length );
 
             byte[] bytes = Strings.getBytesUtf8( ldapUrls[i] );
 
@@ -138,7 +138,7 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
 
         for ( int i = 0; i < ldapUrls.length; i++ )
         {
-            ldapUrlsSet.add( Strings.utf8ToString( ldapUrls[i].getBytes() ) );
+            ldapUrlsSet.add( ldapUrls[i] );
         }
 
         Referral referral = searchResultReference.getReferral();
@@ -225,9 +225,9 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
         for ( int i = 0; i < ldapUrls.length; i++ )
         {
             stream.put( ( byte ) 0x04 );
-            stream.put( ( byte ) ldapUrls[i].getBytes().length );
+            stream.put( ( byte ) Strings.getBytesUtf8( ldapUrls[i] ).length );
 
-            byte[] bytes = ldapUrls[i].getBytes();
+            byte[] bytes = Strings.getBytesUtf8( ldapUrls[i] );
 
             for ( int j = 0; j < bytes.length; j++ )
             {
@@ -299,7 +299,7 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
 
         for ( int i = 0; i < ldapUrls.length; i++ )
         {
-            ldapUrlsSet.add( Strings.utf8ToString( ldapUrls[i].getBytes() ) );
+            ldapUrlsSet.add( ldapUrls[i] );
         }
 
         Referral referral = searchResultReference.getReferral();

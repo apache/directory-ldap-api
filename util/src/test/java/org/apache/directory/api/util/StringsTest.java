@@ -23,6 +23,7 @@ package org.apache.directory.api.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +46,9 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class StringsTest
 {
+    private static final byte[] AZERTY = "azerty".getBytes( StandardCharsets.US_ASCII );
+
+
     @Test
     public void testTrimConsecutiveToOne()
     {
@@ -208,7 +212,7 @@ public class StringsTest
     public void testAreEqualsFull()
     {
         // Full compare
-        assertEquals( 6, Strings.areEquals( "azerty".getBytes(), 0, "azerty" ) );
+        assertEquals( 6, Strings.areEquals( AZERTY, 0, "azerty" ) );
     }
 
 
@@ -219,7 +223,7 @@ public class StringsTest
     public void testAreEqualsDiff()
     {
         // First character is !=
-        assertEquals( -1, Strings.areEquals( "azerty".getBytes(), 0, "Azerty" ) );
+        assertEquals( -1, Strings.areEquals( AZERTY, 0, "Azerty" ) );
     }
 
 
@@ -230,7 +234,7 @@ public class StringsTest
     public void testAreEqualsEmpty()
     {
         // Compare to an empty string
-        assertEquals( -1, Strings.areEquals( "azerty".getBytes(), 0, "" ) );
+        assertEquals( -1, Strings.areEquals( AZERTY, 0, "" ) );
     }
 
 
@@ -241,7 +245,7 @@ public class StringsTest
     public void testAreEqualsFirstCharDiff()
     {
         // First character is !=
-        assertEquals( -1, Strings.areEquals( "azerty".getBytes(), 0, "Azerty" ) );
+        assertEquals( -1, Strings.areEquals( AZERTY, 0, "Azerty" ) );
     }
 
 
@@ -252,7 +256,7 @@ public class StringsTest
     public void testAreEqualsMiddleCharDiff()
     {
         // First character is !=
-        assertEquals( -1, Strings.areEquals( "azerty".getBytes(), 0, "azeRty" ) );
+        assertEquals( -1, Strings.areEquals( AZERTY, 0, "azeRty" ) );
     }
 
 
@@ -263,7 +267,7 @@ public class StringsTest
     public void testAreEqualsLastCharDiff()
     {
         // First character is !=
-        assertEquals( -1, Strings.areEquals( "azerty".getBytes(), 0, "azertY" ) );
+        assertEquals( -1, Strings.areEquals( AZERTY, 0, "azertY" ) );
     }
 
 
@@ -274,12 +278,12 @@ public class StringsTest
     public void testAreEqualsCharByChar()
     {
         // Index must be incremented after each comparison
-        assertEquals( 1, Strings.areEquals( "azerty".getBytes(), 0, "a" ) );
-        assertEquals( 2, Strings.areEquals( "azerty".getBytes(), 1, "z" ) );
-        assertEquals( 3, Strings.areEquals( "azerty".getBytes(), 2, "e" ) );
-        assertEquals( 4, Strings.areEquals( "azerty".getBytes(), 3, "r" ) );
-        assertEquals( 5, Strings.areEquals( "azerty".getBytes(), 4, "t" ) );
-        assertEquals( 6, Strings.areEquals( "azerty".getBytes(), 5, "y" ) );
+        assertEquals( 1, Strings.areEquals( AZERTY, 0, "a" ) );
+        assertEquals( 2, Strings.areEquals( AZERTY, 1, "z" ) );
+        assertEquals( 3, Strings.areEquals( AZERTY, 2, "e" ) );
+        assertEquals( 4, Strings.areEquals( AZERTY, 3, "r" ) );
+        assertEquals( 5, Strings.areEquals( AZERTY, 4, "t" ) );
+        assertEquals( 6, Strings.areEquals( AZERTY, 5, "y" ) );
     }
 
 
@@ -290,7 +294,7 @@ public class StringsTest
     public void testAreEqualsTooShort()
     {
         // length too short
-        assertEquals( -1, Strings.areEquals( "azerty".getBytes(), 0, "azertyiop" ) );
+        assertEquals( -1, Strings.areEquals( AZERTY, 0, "azertyiop" ) );
     }
 
 
@@ -301,7 +305,7 @@ public class StringsTest
     public void testAreEqualsTooShortMiddle()
     {
         // length too short
-        assertEquals( -1, Strings.areEquals( "azerty".getBytes(), 0, "ertyiop" ) );
+        assertEquals( -1, Strings.areEquals( AZERTY, 0, "ertyiop" ) );
     }
 
 
@@ -312,7 +316,7 @@ public class StringsTest
     public void testAreEqualsLastChar()
     {
         // last character
-        assertEquals( 6, Strings.areEquals( "azerty".getBytes(), 5, "y" ) );
+        assertEquals( 6, Strings.areEquals( AZERTY, 5, "y" ) );
     }
 
 
@@ -323,6 +327,6 @@ public class StringsTest
     public void testAreEqualsMiddle()
     {
         // In the middle
-        assertEquals( 4, Strings.areEquals( "azerty".getBytes(), 2, "er" ) );
+        assertEquals( 4, Strings.areEquals( AZERTY, 2, "er" ) );
     }
 }

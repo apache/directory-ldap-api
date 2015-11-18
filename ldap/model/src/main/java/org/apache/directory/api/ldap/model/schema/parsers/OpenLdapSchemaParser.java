@@ -21,10 +21,11 @@ package org.apache.directory.api.ldap.model.schema.parsers;
 
 
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -302,7 +303,7 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser<SchemaObject>
 
 
     /**
-     * Parses a stream of OpenLDAP schemaObject elements/objects.
+     * Parses a stream of OpenLDAP schemaObject elements/objects. Default charset is used.
      *
      * @param schemaIn a stream of schema objects
      * @throws IOException If the schemaObject can't be transformed to a byteArrayInputStream
@@ -310,7 +311,7 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser<SchemaObject>
      */
     public void parse( InputStream schemaIn ) throws IOException, ParseException
     {
-        InputStreamReader in = new InputStreamReader( schemaIn );
+        InputStreamReader in = new InputStreamReader( schemaIn, Charset.defaultCharset() );
         lexer.prepareNextInput( in );
         parser.resetState();
 
@@ -319,7 +320,7 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser<SchemaObject>
 
 
     /**
-     * Parses a file of OpenLDAP schemaObject elements/objects.
+     * Parses a file of OpenLDAP schemaObject elements/objects. Default charset is used.
      *
      * @param schemaFile a file of schema objects
      * @throws IOException If the schemaObject can't be transformed to a byteArrayInputStream
@@ -327,7 +328,7 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser<SchemaObject>
      */
     public void parse( File schemaFile ) throws IOException, ParseException
     {
-        FileReader in = new FileReader( schemaFile );
+        InputStreamReader in = new InputStreamReader( new FileInputStream( schemaFile ), Charset.defaultCharset() );
         lexer.prepareNextInput( in );
         parser.resetState();
 

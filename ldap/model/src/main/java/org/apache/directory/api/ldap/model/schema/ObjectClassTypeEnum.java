@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.model.schema;
 
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -92,7 +93,7 @@ public enum ObjectClassTypeEnum
      */
     public static ObjectClassTypeEnum getClassType( String name )
     {
-        String upperCase = name.trim().toUpperCase();
+        String upperCase = Strings.upperCase( name.trim() );
 
         if ( upperCase.equals( "STRUCTURAL" ) )
         {

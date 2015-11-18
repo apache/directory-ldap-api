@@ -108,7 +108,7 @@ public final class PasswordUtil
                     return null;
                 }
 
-                String algorithm = Strings.toLowerCase( Strings.utf8ToString( credentials, 1, pos - 1 ) );
+                String algorithm = Strings.toLowerCaseAscii( Strings.utf8ToString( credentials, 1, pos - 1 ) );
 
                 return LdapSecurityConstants.getAlgorithm( algorithm );
             }
@@ -182,7 +182,7 @@ public final class PasswordUtil
         byte[] hashedPassword = encryptPassword( credentials, algorithm, salt );
         StringBuffer sb = new StringBuffer();
 
-        sb.append( '{' ).append( algorithm.getPrefix().toUpperCase() ).append( '}' );
+        sb.append( '{' ).append( Strings.upperCase( algorithm.getPrefix() ) ).append( '}' );
 
         if ( algorithm == LdapSecurityConstants.HASH_METHOD_CRYPT )
         {

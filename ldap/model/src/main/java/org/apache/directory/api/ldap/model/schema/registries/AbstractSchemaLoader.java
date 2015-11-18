@@ -194,7 +194,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
         if ( entry.get( MetaSchemaConstants.M_DISABLED_AT ) != null )
         {
             String value = entry.get( MetaSchemaConstants.M_DISABLED_AT ).getString();
-            value = value.toUpperCase();
+            value = Strings.upperCase( value );
             isDisabled = value.equals( "TRUE" );
         }
 

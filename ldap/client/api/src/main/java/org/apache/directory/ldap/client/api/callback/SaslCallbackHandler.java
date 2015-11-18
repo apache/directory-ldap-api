@@ -22,7 +22,6 @@ package org.apache.directory.ldap.client.api.callback;
 
 
 import java.io.IOException;
-import java.text.MessageFormat;
 
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
@@ -32,6 +31,7 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.sasl.RealmCallback;
 import javax.security.sasl.RealmChoiceCallback;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.ldap.client.api.SaslRequest;
 import org.slf4j.Logger;
@@ -125,10 +125,9 @@ public class SaslCallbackHandler implements CallbackHandler
                 if ( !foundRealmName )
                 {
                     throw new IOException(
-                        MessageFormat
-                            .format(
-                                "Cannot match ''java.naming.security.sasl.realm'' property value ''{0}'' with choices ''{1}'' in RealmChoiceCallback.",
-                                saslReq.getRealmName(), getRealmNamesAsString( realmNames ) ) );
+                        I18n.format(
+                            "Cannot match ''java.naming.security.sasl.realm'' property value ''{0}'' with choices ''{1}'' in RealmChoiceCallback.",
+                            saslReq.getRealmName(), getRealmNamesAsString( realmNames ) ) );
                 }
             }
         }

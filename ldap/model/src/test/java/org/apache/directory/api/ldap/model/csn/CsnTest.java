@@ -27,6 +27,7 @@ import static org.junit.Assert.fail;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import org.apache.directory.api.ldap.model.csn.Csn;
@@ -48,7 +49,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class CsnTest
 {
-    private static final SimpleDateFormat SDF = new SimpleDateFormat( "yyyyMMddHHmmss.123456'Z'" );
+    private static final SimpleDateFormat SDF = new SimpleDateFormat( "yyyyMMddHHmmss.123456'Z'", Locale.ROOT );
 
     private static final TimeZone UTC_TIME_ZONE = TimeZone.getTimeZone( "UTC" );
     

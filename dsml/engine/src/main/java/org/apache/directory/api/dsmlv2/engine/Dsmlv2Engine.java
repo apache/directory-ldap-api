@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
@@ -280,7 +281,7 @@ public class Dsmlv2Engine
 
         if ( outStream != null )
         {
-            respWriter = new BufferedWriter( new OutputStreamWriter( outStream ) );
+            respWriter = new BufferedWriter( new OutputStreamWriter( outStream, StandardCharsets.UTF_8 ) );
 
             if ( generateSoapResp )
             {
