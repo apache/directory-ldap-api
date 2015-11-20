@@ -1590,7 +1590,7 @@ public final class Strings
     {
         if ( string == null )
         {
-            return new byte[0];
+            return EMPTY_BYTES;
         }
 
         try
