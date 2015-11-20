@@ -52,6 +52,7 @@ import org.apache.directory.api.ldap.model.ldif.anonymizer.Anonymizer;
 import org.apache.directory.api.ldap.model.ldif.anonymizer.BinaryAnonymizer;
 import org.apache.directory.api.ldap.model.ldif.anonymizer.IntegerAnonymizer;
 import org.apache.directory.api.ldap.model.ldif.anonymizer.StringAnonymizer;
+import org.apache.directory.api.ldap.model.ldif.anonymizer.TelephoneNumberAnonymizer;
 import org.apache.directory.api.ldap.model.name.Ava;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
@@ -226,7 +227,7 @@ public class LdifAnonymizer
         attributeAnonymizers.put( SchemaConstants.HOME_DIRECTORY_AT_OID,
             new StringAnonymizer() );
         attributeAnonymizers.put( SchemaConstants.HOME_PHONE_AT_OID,
-            new StringAnonymizer() );
+            new TelephoneNumberAnonymizer() );
         attributeAnonymizers.put( SchemaConstants.HOME_POSTAL_ADDRESS_AT_OID,
             new StringAnonymizer() );
         attributeAnonymizers.put( SchemaConstants.HOST_AT_OID, new StringAnonymizer() );
@@ -242,12 +243,12 @@ public class LdifAnonymizer
         attributeAnonymizers.put( SchemaConstants.MANAGER_AT_OID, new StringAnonymizer() );
         attributeAnonymizers.put( SchemaConstants.MEMBER_UID_AT_OID,
             new StringAnonymizer() );
-        attributeAnonymizers.put( SchemaConstants.MOBILE_AT_OID, new StringAnonymizer() );
+        attributeAnonymizers.put( SchemaConstants.MOBILE_AT_OID, new TelephoneNumberAnonymizer() );
         attributeAnonymizers.put( SchemaConstants.ORGANIZATION_NAME_AT_OID,
             new StringAnonymizer() );
         attributeAnonymizers.put( SchemaConstants.ORGANIZATIONAL_UNIT_NAME_AT_OID,
             new StringAnonymizer() );
-        attributeAnonymizers.put( SchemaConstants.PAGER_AT_OID, new StringAnonymizer() );
+        attributeAnonymizers.put( SchemaConstants.PAGER_AT_OID, new TelephoneNumberAnonymizer() );
         attributeAnonymizers.put( SchemaConstants.POSTAL_ADDRESS_AT_OID,
             new StringAnonymizer() );
         attributeAnonymizers.put( SchemaConstants.PHOTO_AT_OID, new StringAnonymizer() );
@@ -257,7 +258,7 @@ public class LdifAnonymizer
             .put( SchemaConstants.SEE_ALSO_AT_OID, new StringAnonymizer() );
         attributeAnonymizers.put( SchemaConstants.SN_AT_OID, new StringAnonymizer() );
         attributeAnonymizers.put( SchemaConstants.TELEPHONE_NUMBER_AT_OID,
-            new StringAnonymizer() );
+            new TelephoneNumberAnonymizer() );
         attributeAnonymizers.put( SchemaConstants.UID_AT_OID, new StringAnonymizer() );
         attributeAnonymizers.put( SchemaConstants.UID_NUMBER_AT_OID,
             new IntegerAnonymizer() );
@@ -271,6 +272,8 @@ public class LdifAnonymizer
             new BinaryAnonymizer() );
         attributeAnonymizers.put( SchemaConstants.X500_UNIQUE_IDENTIFIER_AT_OID,
             new BinaryAnonymizer() );
+        attributeAnonymizers.put( SchemaConstants.FACSIMILE_TELEPHONE_NUMBER_AT_OID,
+            new TelephoneNumberAnonymizer() );
     }
     
     

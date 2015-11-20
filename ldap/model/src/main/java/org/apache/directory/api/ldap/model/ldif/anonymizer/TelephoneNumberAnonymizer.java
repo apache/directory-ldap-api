@@ -32,11 +32,11 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueEx
 
 
 /**
- * A default anonymizer for attributes that are HR. It covers DirectoryString, Ia5String, ...
+ * An anonymizer for the TelephoneNumber attribute. We simply replace the digits by random digits.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StringAnonymizer extends AbstractAnonymizer<String>
+public class TelephoneNumberAnonymizer extends AbstractAnonymizer<String>
 {
     /** Create a random generator */
     Random random = new Random( System.currentTimeMillis() );
@@ -77,7 +77,16 @@ public class StringAnonymizer extends AbstractAnonymizer<String>
     
                     for ( int i = 0; i < length; i++ )
                     {
-                        newValue[i] = ( char ) ( random.nextInt( 'Z' - 'A' ) + 'A' );
+                        char c = ( strValue.charAt( i ) );
+                        
+                        if ( Character.isDigit( c ) )
+                        {
+                            newValue[i] = ( char ) ( random.nextInt( '9' - '0' ) + '0' );
+                        }
+                        else
+                        {
+                            newValue[i] = c;
+                        }
                     }
     
                     try

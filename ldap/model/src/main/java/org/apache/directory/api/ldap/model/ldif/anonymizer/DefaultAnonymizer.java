@@ -32,7 +32,7 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueEx
 
 
 /**
- * A DefaultAnonymizer. It take a value and change it to a random String
+ * A DefaultAnonymizer. It takes a value and change it to a random String
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
