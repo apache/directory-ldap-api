@@ -4015,7 +4015,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             // deal with it immediately.
             if ( sc.hasInitialResponse() )
             {
-                byte[] challengeResponse = sc.evaluateChallenge( new byte[0] );
+                byte[] challengeResponse = sc.evaluateChallenge( Strings.EMPTY_BYTES );
 
                 // Stores the challenge's response, and send it to the server
                 bindRequest.setCredentials( challengeResponse );
