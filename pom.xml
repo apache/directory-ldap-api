@@ -30,7 +30,7 @@
   <artifactId>api-parent</artifactId>
   <name>Apache Directory LDAP API</name>
   <packaging>pom</packaging>
-  <version>1.0.0-M34-SNAPSHOT</version>
+  <version>1.0.0-M33-SNAPSHOT</version>
 
   <properties>
     <additionalparam>-Xdoclint:none</additionalparam>
