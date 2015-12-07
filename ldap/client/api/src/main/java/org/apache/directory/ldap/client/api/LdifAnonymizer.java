@@ -490,6 +490,7 @@ public class LdifAnonymizer
         LdifReader ldifReader = new LdifReader( inputFile, schemaManager );
         int count = 0;
         List<LdifEntry> errors = new ArrayList<LdifEntry>();
+        List<String> errorTexts = new ArrayList<String>();
 
         try
         {
@@ -566,6 +567,7 @@ public class LdifAnonymizer
                     }
                     
                     errors.add( ldifEntry );
+                    errorTexts.add( e.getMessage() );
                 }
             }
 
@@ -574,11 +576,14 @@ public class LdifAnonymizer
             if ( errors.size() != 0 )
             {
                 println( "There are " + errors.size() + " bad entries" );
+                int i = 0;
                 
                 for ( LdifEntry ldifEntry : errors )
                 {
                     println( "---------------------------------------------------" );
+                    println( "error : " + errorTexts.get( i ) );
                     println( ldifEntry.getDn().toString() );
+                    i++;
                 }
             }
         }
