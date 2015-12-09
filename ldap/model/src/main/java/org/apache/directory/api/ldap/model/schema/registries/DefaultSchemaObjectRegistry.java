@@ -214,7 +214,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
         if ( schemaObject == null )
         {
             // let's try with trimming and lowercasing now
-            schemaObject = byName.get( Strings.trim( Strings.toLowerCase( oid ) ) );
+            schemaObject = byName.get( Strings.trim( Strings.toLowerCaseAscii( oid ) ) );
         }
 
         if ( schemaObject == null )
