@@ -147,7 +147,7 @@ public class SchemaManagerEnableDisableLoadTest
 
         for ( Schema schema : enabled )
         {
-            assertTrue( enabledSchemas.contains( Strings.toLowerCase( schema.getSchemaName() ) ) );
+            assertTrue( enabledSchemas.contains( Strings.toLowerCaseAscii( schema.getSchemaName() ) ) );
         }
 
         // The disabled schemas

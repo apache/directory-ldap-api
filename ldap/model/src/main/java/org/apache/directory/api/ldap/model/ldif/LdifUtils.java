@@ -390,7 +390,7 @@ public final class LdifUtils
         sb.append( '\n' );
 
         // Dump the ChangeType
-        String changeType = Strings.toLowerCase( entry.getChangeType().toString() );
+        String changeType = Strings.toLowerCaseAscii( entry.getChangeType().toString() );
 
         if ( entry.getChangeType() != ChangeType.None )
         {

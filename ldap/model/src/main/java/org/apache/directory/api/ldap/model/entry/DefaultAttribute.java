@@ -616,7 +616,7 @@ public class DefaultAttribute implements Attribute, Cloneable
             throw new IllegalArgumentException( "Cannot set a null ID with a null AttributeType" );
         }
 
-        String newId = Strings.toLowerCase( trimmed );
+        String newId = Strings.toLowerCaseAscii( trimmed );
 
         setUpIdInternal( upId, newId, attributeType );
     }
