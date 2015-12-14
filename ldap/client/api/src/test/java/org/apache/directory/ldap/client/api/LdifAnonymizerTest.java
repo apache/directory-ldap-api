@@ -136,4 +136,70 @@ public class LdifAnonymizerTest
         anonymizer.addNamingContext( "dc=example,dc=com" );
         anonymizer.anonymize( ldif );
     }
+
+
+    @Test
+    public void testLdifAnonymizer4() throws Exception, Exception
+    {
+        String ldif =
+            "dn: ou=PD Accountants, ou=Product Development, ou=usa, dc=airius, dc=com\n" +
+            "changetype: modrdn\n" +
+            "newrdn: ou=Product Development Accountants\n" +
+            "deleteoldrdn: 0\n" +
+            "newsuperior: ou=Accounting, ou=usa, dc=airius, dc=com\n" +
+            "\n" +
+            "dn: cn=Paula Jensen, ou=Product Development, dc=airius, dc=com\n" +
+            "changetype: modify\n" +
+            "add: postaladdress\n" +
+            "postaladdress: 123 Anystreet $ Sunnyvale, CA $ 94086\n" +
+            "-\n" +
+            "delete: description\n" +
+            "-\n" +
+            "replace: telephonenumber\n" +
+            "telephonenumber: +1 408 555 1234\n" +
+            "telephonenumber: +1 408 555 5678\n" +
+            "-\n" +
+            "delete: facsimiletelephonenumber\n" +
+            "facsimiletelephonenumber: +1 408 555 9876\n" +
+            "-\n" +
+            "\n" +
+            "dn: cn=cn2,ou=People,o=hp.com\n" +
+            "changetype: add\n" +
+            "ObjectClass: top\n" +
+            "objectClass: person\n" +
+            "cn: cn1\n" +
+            "cn: cn2\n" +
+            "cn: cn3\n" +
+            "userPassword: test\n" +
+            "sn: elecharny\n" +
+            "givenname: test\n" +
+            "\n" +
+            "dn: uid=thayapari.a.wijesundara@hp.com,ou=People,o=hp.com\n" +
+            "changetype: delete\n" +
+            "\n" +
+            "dn: uid=thayapari.a.wijesundara@hp.com,ou=People,o=hp.com\n" +
+            "changetype: modify\n" +
+            "replace: telephoneNumber\n" +
+            "telephoneNumber::KzYxIDIgODI3ODQ2NDQ=\n" +
+            "-\n" +
+            "\n" +
+            "dn: uid=thayapari.a.wijesundara@hp.com,ou=People,o=hp.com\n" +
+            "changetype: modify\n" +
+            "replace: telephoneNumber\n" +
+            "telephoneNumber::KzYxIDIgODI3ODQ2NDQ=\n" +
+            "-\n" +
+            "\n" +
+            "dn: cn=vsmuser_g1u2283c,ou=Groups,o=hp.com\n" +
+            "changetype: modify\n" +
+            "replace: member\n" +
+            "member::Y249dnNtLmhvdXN0b24uaHAuY29tLG91PVNlcnZlcnMsbz1ocC5jb20=\n" +
+            "member::dWlkPXRpbS50dXNzaW5nQGhwLmNvbSxvdT1QZW9wbGUsbz1ocC5jb20=\n" +
+            "member::dWlkPXRpbS50dXNzaW5nQGhwZS5jb20sb3U9UGVvcGxlLG89aHAuY29t\n" +
+            "member::dWlkPW1hcnRoYWxhLm5pci5yZWRkeUBocGUuY29tLG91PVBlb3BsZSxvPWhwLmNvbQ==\n" +
+            "-";
+        
+        LdifAnonymizer anonymizer = new LdifAnonymizer( schemaManager );
+        anonymizer.addNamingContext( "dc=example,dc=com" );
+        anonymizer.anonymize( ldif );
+    }
 }
