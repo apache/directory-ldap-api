@@ -332,7 +332,7 @@ public class LdifAttributesReader extends LdifReader
         {
             // Each line could start either with an OID, an attribute type, with
             // "control:" or with "changetype:"
-            String lowerLine = Strings.toLowerCase( line );
+            String lowerLine = Strings.toLowerCaseAscii( line );
 
             // We have three cases :
             // 1) The first line after the Dn is a "control:" -> this is an error
@@ -394,7 +394,7 @@ public class LdifAttributesReader extends LdifReader
         {
             // Each line could start either with an OID, an attribute type, with
             // "control:" or with "changetype:"
-            String lowerLine = Strings.toLowerCase( line );
+            String lowerLine = Strings.toLowerCaseAscii( line );
 
             // We have three cases :
             // 1) The first line after the Dn is a "control:" -> this is an error

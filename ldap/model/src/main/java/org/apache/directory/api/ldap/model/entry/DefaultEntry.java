@@ -418,7 +418,7 @@ public final class DefaultEntry implements Entry
      */
     private String getId( String upId )
     {
-        String id = Strings.trim( Strings.toLowerCase( upId ) );
+        String id = Strings.trim( Strings.toLowerCaseAscii( upId ) );
 
         // If empty, throw an error
         if ( Strings.isEmpty( id ) )

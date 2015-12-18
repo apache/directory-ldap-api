@@ -224,9 +224,9 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         Attribute attribute = entry.get( "l" );
 
-        assertTrue( expectedTypes.contains( Strings.toLowerCase( attribute.getId() ) ) );
+        assertTrue( expectedTypes.contains( Strings.toLowerCaseAscii( attribute.getId() ) ) );
 
-        Set<String> vals = ( Set<String> ) typesVals.get( Strings.toLowerCase( attribute.getId() ) );
+        Set<String> vals = ( Set<String> ) typesVals.get( Strings.toLowerCaseAscii( attribute.getId() ) );
 
         for ( Value<?> value : attribute )
         {
@@ -237,9 +237,9 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         attribute = entry.get( "attrs" );
 
-        assertTrue( expectedTypes.contains( Strings.toLowerCase( attribute.getId() ) ) );
+        assertTrue( expectedTypes.contains( Strings.toLowerCaseAscii( attribute.getId() ) ) );
 
-        vals = ( Set<String> ) typesVals.get( Strings.toLowerCase( attribute.getId() ) );
+        vals = ( Set<String> ) typesVals.get( Strings.toLowerCaseAscii( attribute.getId() ) );
 
         for ( Value<?> value : attribute )
         {
@@ -1065,7 +1065,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         Attribute attribute = entry.get( "l" );
 
-        assertEquals( "l", Strings.toLowerCase( attribute.getId() ) );
+        assertEquals( "l", Strings.toLowerCaseAscii( attribute.getId() ) );
 
         for ( Value<?> value : attribute )
         {
@@ -1219,7 +1219,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         Attribute attribute = entry.get( "l" );
 
-        assertEquals( "l", Strings.toLowerCase( attribute.getId() ) );
+        assertEquals( "l", Strings.toLowerCaseAscii( attribute.getId() ) );
 
         for ( Value<?> value : attribute )
         {

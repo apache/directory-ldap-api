@@ -163,7 +163,7 @@ public final class TestEntryUtils
             {
                 if ( value.isHumanReadable() )
                 {
-                    return new StringValue( Strings.toLowerCase( value.getString() ) );
+                    return new StringValue( Strings.toLowerCaseAscii( value.getString() ) );
                 }
 
                 throw new IllegalStateException();
@@ -172,7 +172,7 @@ public final class TestEntryUtils
 
             public String normalize( String value ) throws LdapException
             {
-                return Strings.toLowerCase( value );
+                return Strings.toLowerCaseAscii( value );
             }
         };
 

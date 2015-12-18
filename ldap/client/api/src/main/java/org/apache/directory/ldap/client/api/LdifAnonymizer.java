@@ -40,11 +40,15 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
+import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.ldif.ChangeType;
 import org.apache.directory.api.ldap.model.ldif.LdifEntry;
 import org.apache.directory.api.ldap.model.ldif.LdifReader;
 import org.apache.directory.api.ldap.model.ldif.LdifUtils;
@@ -490,6 +494,7 @@ public class LdifAnonymizer
         LdifReader ldifReader = new LdifReader( inputFile, schemaManager );
         int count = 0;
         List<LdifEntry> errors = new ArrayList<LdifEntry>();
+        List<String> errorTexts = new ArrayList<String>();
 
         try
         {
@@ -566,6 +571,7 @@ public class LdifAnonymizer
                     }
                     
                     errors.add( ldifEntry );
+                    errorTexts.add( e.getMessage() );
                 }
             }
 
@@ -574,11 +580,14 @@ public class LdifAnonymizer
             if ( errors.size() != 0 )
             {
                 println( "There are " + errors.size() + " bad entries" );
+                int i = 0;
                 
                 for ( LdifEntry ldifEntry : errors )
                 {
                     println( "---------------------------------------------------" );
+                    println( "error : " + errorTexts.get( i ) );
                     println( ldifEntry.getDn().toString() );
+                    i++;
                 }
             }
         }
@@ -594,6 +603,258 @@ public class LdifAnonymizer
             println( "Nb entries : " + count ); 
             ldifReader.close();
         }
+    }
+    
+    
+    /**
+     * Anonymize a Modify change
+     */
+    private LdifEntry anonymizeChangeModify( LdifEntry ldifEntry ) throws LdapException
+    {
+        Dn entryDn = ldifEntry.getDn();
+        LdifEntry newLdifEntry = new LdifEntry( schemaManager );
+        newLdifEntry.setChangeType( ChangeType.Modify );
+
+        // Process the DN first
+        Dn anonymizedDn = anonymizeDn( entryDn );
+        
+        if ( anonymizedDn == null )
+        {
+            return null;
+        }
+        
+        newLdifEntry.setDn( anonymizedDn );
+        
+        // Now, process the entry's attributes
+        for ( Modification modification : ldifEntry.getModifications() )
+        {
+            Attribute attribute = modification.getAttribute();
+            AttributeType attributeType = schemaManager.getAttributeType( attribute.getId() );
+            attribute.apply( attributeType );
+            
+            // Deal with the special case of a DN syntax
+            
+            if ( attributeType.getSyntax().getSyntaxChecker() instanceof DnSyntaxChecker )
+            {
+                Value<?>[] anonymizedValues = new Value<?>[ attribute.size()];
+                int pos = 0;
+                
+                for ( Value<?> dnValue : modification.getAttribute() )
+                {
+                    Dn dn = new Dn( schemaManager, dnValue.getString() );
+                    Dn newdDn = anonymizeDn( dn );
+                    anonymizedValues[pos++] = new StringValue( newdDn.toString() );
+                }
+                
+                Modification anonymizedModification = new DefaultModification( modification.getOperation(), attributeType, anonymizedValues );
+                newLdifEntry.addModification( anonymizedModification );
+            }
+            else
+            {
+                Anonymizer anonymizer = attributeAnonymizers.get( attributeType.getOid() );
+
+                if ( anonymizer == null )
+                {
+                    newLdifEntry.addModification( modification );
+                }
+                else
+                {
+                    Attribute anonymizedAttribute = anonymizer.anonymize( valueMap, attribute );
+                    
+                    Modification anonymizedModification = new DefaultModification( modification.getOperation(), anonymizedAttribute );
+                    newLdifEntry.addModification( anonymizedModification );
+                }
+            }
+        }
+
+        return newLdifEntry;
+    }
+
+    
+    /**
+     * Anonymize a Add change
+     */
+    private LdifEntry anonymizeChangeAdd( LdifEntry ldifEntry ) throws LdapException
+    {
+        Dn entryDn = ldifEntry.getDn();
+        LdifEntry newLdifEntry = new LdifEntry( schemaManager );
+        newLdifEntry.setChangeType( ChangeType.Add );
+
+        // Process the DN first
+        Dn anonymizedDn = anonymizeDn( entryDn );
+        
+        if ( anonymizedDn == null )
+        {
+            return null;
+        }
+        
+        newLdifEntry.setDn( anonymizedDn );
+        
+        // Now, process the entry's attributes
+        for ( Attribute attribute : ldifEntry )
+        {
+            AttributeType attributeType = attribute.getAttributeType();
+            Attribute anonymizedAttribute = new DefaultAttribute( attributeType );
+            
+            // Deal with the special case of a DN syntax
+            
+            if ( attributeType.getSyntax().getSyntaxChecker() instanceof DnSyntaxChecker )
+            {
+                for ( Value<?> dnValue : attribute )
+                {
+                    Dn dn = new Dn( schemaManager, dnValue.getString() );
+                    Dn newdDn = anonymizeDn( dn );
+                    anonymizedAttribute.add( newdDn.toString() );
+                }
+                
+                newLdifEntry.addAttribute( attribute );
+            }
+            else
+            {
+                Anonymizer anonymizer = attributeAnonymizers.get( attribute.getAttributeType().getOid() );
+
+                if ( anonymizer == null )
+                {
+                    newLdifEntry.addAttribute( attribute );
+                }
+                else
+                {
+                    anonymizedAttribute = anonymizer.anonymize( valueMap, attribute );
+                    
+                    if ( anonymizedAttribute != null )
+                    {
+                        newLdifEntry.addAttribute( anonymizedAttribute );
+                    }
+                }
+            }
+        }
+
+        return newLdifEntry;
+    }
+    
+    
+    /**
+     * Anonymize a Delete change
+     */
+    private LdifEntry anonymizeChangeDelete( LdifEntry ldifEntry ) throws LdapException
+    {
+        Dn entryDn = ldifEntry.getDn();
+
+        // Process the DN, there is nothing more in the entry
+        Dn anonymizedDn = anonymizeDn( entryDn );
+        
+        if ( anonymizedDn == null )
+        {
+            return null;
+        }
+        
+        ldifEntry.setDn( anonymizedDn );
+        
+        return ldifEntry;
+    }
+    
+    
+    /**
+     * Anonymize a Delete change
+     */
+    private LdifEntry anonymizeChangeModDn( LdifEntry ldifEntry ) throws LdapException
+    {
+        Dn entryDn = ldifEntry.getDn();
+
+        // Process the DN
+        Dn anonymizedDn = anonymizeDn( entryDn );
+        
+        if ( anonymizedDn == null )
+        {
+            return null;
+        }
+        
+        ldifEntry.setDn( anonymizedDn );
+        
+        // Anonymize the newRdn if any
+        Dn newRdn = new Dn( schemaManager, ldifEntry.getNewRdn() );
+        Dn anonymizedRdn = anonymizeDn( newRdn );
+        
+        if ( anonymizedRdn == null )
+        {
+            return null;
+        }
+        
+        ldifEntry.setNewRdn( anonymizedRdn.toString() );
+        
+        // Anonymize the neSuperior if any
+        Dn newSuperior = new Dn( schemaManager,  ldifEntry.getNewSuperior() );
+        
+        Dn anonymizedSuperior = anonymizeDn( newSuperior );
+        
+        if ( anonymizedSuperior == null )
+        {
+            return null;
+        }
+        
+        ldifEntry.setNewSuperior( anonymizedSuperior.toString() );
+
+        return ldifEntry;
+    }
+    
+    
+    /**
+     * Anonymize the full entry
+     */
+    private Entry anonymizeEntry( LdifEntry ldifEntry ) throws LdapException
+    {
+        Entry entry = ldifEntry.getEntry();
+        Entry newEntry = new DefaultEntry( schemaManager );
+
+        // Process the DN first
+        Dn entryDn = entry.getDn();
+        
+        Dn anonymizedDn = anonymizeDn( entryDn );
+        
+        if ( anonymizedDn == null )
+        {
+            return null;
+        }
+
+        // Now, process the entry's attributes
+        for ( Attribute attribute : entry )
+        {
+            AttributeType attributeType = attribute.getAttributeType();
+            
+            // Deal with the special case of 
+            
+            if ( attributeType.getSyntax().getSyntaxChecker() instanceof DnSyntaxChecker )
+            {
+                for ( Value<?> dnValue : attribute )
+                {
+                    Dn dn = new Dn( schemaManager, dnValue.getString() );
+                    Dn newdDn = anonymizeDn( dn );
+                    newEntry.add( attributeType, newdDn.toString() );
+                }
+            }
+            else
+            {
+                Anonymizer anonymizer = attributeAnonymizers.get( attribute.getAttributeType().getOid() );
+
+                if ( anonymizer == null )
+                {
+                    newEntry.add( attribute );
+                }
+                else
+                {
+                    Attribute anonymizedAttribute = anonymizer.anonymize( valueMap, attribute );
+                    
+                    if ( anonymizedAttribute != null )
+                    {
+                        newEntry.add( anonymizedAttribute );
+                    }
+                }
+            }
+        }
+
+        newEntry.setDn( anonymizedDn );
+
+        return newEntry;
     }
 
 
@@ -616,58 +877,61 @@ public class LdifAnonymizer
 
             for ( LdifEntry ldifEntry : entries )
             {
-                Entry entry = ldifEntry.getEntry();
-                Entry newEntry = new DefaultEntry( schemaManager );
-
-                // Process the DN first
-                Dn entryDn = entry.getDn();
-                
-                Dn anonymizedDn = anonymizeDn( entryDn );
-                
-                if ( anonymizedDn == null )
+                if ( ldifEntry.isEntry() && !ldifEntry.isChangeAdd() )
                 {
-                    continue;
-                }
-
-                // Now, process the entry
-                for ( Attribute attribute : entry )
-                {
-                    AttributeType attributeType = attribute.getAttributeType();
+                    // process a full entry. Add changes aren't preocessed ghere.
+                    Entry newEntry = anonymizeEntry( ldifEntry );
                     
-                    // Deal with the special case of 
-                    
-                    if ( attributeType.getSyntax().getSyntaxChecker() instanceof DnSyntaxChecker )
+                    if ( newEntry != null )
                     {
-                        for ( Value<?> dnValue : attribute )
-                        {
-                            Dn dn = new Dn( schemaManager, dnValue.getString() );
-                            Dn newdDn = anonymizeDn( dn );
-                            newEntry.add( attributeType, newdDn.toString() );
-                        }
-                    }
-                    else
-                    {
-                        Anonymizer anonymizer = attributeAnonymizers.get( attribute.getAttributeType().getOid() );
-    
-                        if ( anonymizer == null )
-                        {
-                            newEntry.add( attribute );
-                        }
-                        else
-                        {
-                            Attribute anonymizedAttribute = anonymizer.anonymize( valueMap, attribute );
-                            
-                            if ( anonymizedAttribute != null )
-                            {
-                                newEntry.add( anonymizedAttribute );
-                            }
-                        }
+                        result.append( LdifUtils.convertToLdif( newEntry ) );
+                        result.append( "\n" );
                     }
                 }
+                else if ( ldifEntry.isChangeDelete() )
+                {
+                    // A Delete operation
+                    LdifEntry newLdifEntry = anonymizeChangeDelete( ldifEntry );
 
-                newEntry.setDn( anonymizedDn );
-                result.append( LdifUtils.convertToLdif( newEntry ) );
-                result.append( "\n" );
+                    if ( ldifEntry != null )
+                    {
+                        result.append( newLdifEntry );
+                        result.append( "\n" );
+                    }
+                }
+                else if ( ldifEntry.isChangeAdd() )
+                {
+                    // A Add operation
+                    LdifEntry newLdifEntry = anonymizeChangeAdd( ldifEntry );
+
+                    if ( ldifEntry != null )
+                    {
+                        result.append( newLdifEntry );
+                        result.append( "\n" );
+                    }
+                }
+                else if ( ldifEntry.isChangeModify() )
+                {
+                    // A Modify operation
+                    LdifEntry newLdifEntry = anonymizeChangeModify( ldifEntry );
+
+                    if ( ldifEntry != null )
+                    {
+                        result.append( newLdifEntry );
+                        result.append( "\n" );
+                    }
+                }
+                else if ( ldifEntry.isChangeModDn() ||  ldifEntry.isChangeModRdn() )
+                {
+                    // A MODDN operation
+                    LdifEntry newLdifEntry = anonymizeChangeModDn( ldifEntry );
+
+                    if ( ldifEntry != null )
+                    {
+                        result.append( newLdifEntry );
+                        result.append( "\n" );
+                    }
+                }
             }
 
             return result.toString();

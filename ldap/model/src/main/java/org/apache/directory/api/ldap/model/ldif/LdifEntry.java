@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +67,7 @@ import org.apache.directory.api.util.Strings;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdifEntry implements Cloneable, Externalizable
+public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
 {
     /** Used in toArray() */
     public static final Modification[] EMPTY_MODS = new Modification[0];
@@ -969,6 +970,19 @@ public class LdifEntry implements Cloneable, Externalizable
     void setOffset( long offset )
     {
         this.offset = offset;
+    }
+
+
+    /**
+     * Returns an enumeration containing the zero or more attributes in the
+     * collection. The behavior of the enumeration is not specified if the
+     * attribute collection is changed.
+     *
+     * @return an enumeration of all contained attributes
+     */
+    public Iterator<Attribute> iterator()
+    {
+        return entry.iterator();
     }
 
 

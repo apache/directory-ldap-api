@@ -146,7 +146,7 @@ public class DefaultConfigurableBinaryAttributeDetector extends SchemaBinaryAttr
             return true;
         }
 
-        String attrId = Strings.toLowerCase( attributeId );
+        String attrId = Strings.toLowerCaseAscii( attributeId );
 
         return binaryAttributes.contains( attrId );
     }
@@ -161,7 +161,7 @@ public class DefaultConfigurableBinaryAttributeDetector extends SchemaBinaryAttr
         {
             for ( String binaryAttribute : binaryAttributes )
             {
-                String attrId = Strings.toLowerCase( binaryAttribute );
+                String attrId = Strings.toLowerCaseAscii( binaryAttribute );
                 this.binaryAttributes.add( attrId );
             }
         }
@@ -177,7 +177,7 @@ public class DefaultConfigurableBinaryAttributeDetector extends SchemaBinaryAttr
         {
             for ( String binaryAttribute : binaryAttributes )
             {
-                String attrId = Strings.toLowerCase( binaryAttribute );
+                String attrId = Strings.toLowerCaseAscii( binaryAttribute );
                 this.binaryAttributes.remove( attrId );
             }
         }

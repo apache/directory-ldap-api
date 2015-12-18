@@ -144,7 +144,7 @@ public abstract class AbstractGrammar implements Grammar
     {
         XmlPullParser xpp = container.getParser();
 
-        String tagName = Strings.toLowerCase( xpp.getName() );
+        String tagName = Strings.toLowerCaseAscii( xpp.getName() );
 
         GrammarTransition transition = getTransition( container.getState(), new Tag( tagName, tagType ) );
 
