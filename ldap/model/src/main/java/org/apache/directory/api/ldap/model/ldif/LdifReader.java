@@ -604,16 +604,46 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         }
     }
 
+    
+    private Object getValue( String attributeName, byte[] value )
+    {
+        if ( schemaManager != null )
+        {
+            AttributeType attributeType = schemaManager.getAttributeType( attributeName );
+            
+            if ( attributeType != null )
+            {
+                if ( attributeType.getSyntax().isHumanReadable() )
+                {
+                    return Strings.utf8ToString( value );
+                }
+                else
+                {
+                    return value;
+                }
+            }
+            else
+            {
+                return value;
+            }
+        }
+        else
+        {
+            return value;
+        }
+    }
+    
 
     /**
      * Parse the value part.
      *
+     * @param attributeName The attribute name
      * @param line The line which contains the value
      * @param pos The starting position in the line
      * @return A String or a byte[], depending of the kind of value we get
      * @throws LdapLdifException If something went wrong
      */
-    protected Object parseValue( String line, int pos ) throws LdapLdifException
+    protected Object parseValue( String attributeName, String line, int pos ) throws LdapLdifException
     {
         if ( line.length() > pos + 1 )
         {
@@ -623,7 +653,9 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             {
                 String value = Strings.trim( line.substring( pos + 2 ) );
 
-                return Base64.decode( value.toCharArray() );
+                byte[] decoded = Base64.decode( value.toCharArray() );
+                
+                return getValue( attributeName, decoded );
             }
             else if ( c == '<' )
             {
@@ -664,7 +696,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                                     inf = new DataInputStream( new FileInputStream( file ) );
                                     inf.readFully( data );
 
-                                    return data;
+                                    return getValue( attributeName, data );
                                 }
                                 catch ( FileNotFoundException fnfe )
                                 {
@@ -957,7 +989,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             throw new LdapLdifException( I18n.err( I18n.ERR_12003_LDIF_ENTRY_WITH_TWO_DNS ) );
         }
 
-        Object attributeValue = parseValue( line, colonIndex );
+        Object attributeValue = parseValue( attributeType, line, colonIndex );
 
         if ( schemaManager != null )
         {
@@ -1021,7 +1053,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             if ( lowerLine.startsWith( "newrdn::" ) || lowerLine.startsWith( "newrdn:" ) )
             {
                 int colonIndex = line.indexOf( ':' );
-                Object attributeValue = parseValue( line, colonIndex );
+                Object attributeValue = parseValue( null, line, colonIndex );
 
                 if ( attributeValue instanceof String )
                 {
@@ -1052,7 +1084,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             if ( lowerLine.startsWith( "deleteoldrdn:" ) )
             {
                 int colonIndex = line.indexOf( ':' );
-                Object attributeValue = parseValue( line, colonIndex );
+                Object attributeValue = parseValue( null, line, colonIndex );
                 entry.setDeleteOldRdn( "1".equals( attributeValue ) );
             }
             else
@@ -1172,7 +1204,16 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
                 modified = Strings.trim( line.substring( "replace:".length() ) );
                 modificationType = ModificationOperation.REPLACE_ATTRIBUTE;
-                attribute = new DefaultAttribute( modified );
+                
+                if ( schemaManager != null )
+                {
+                    AttributeType attributeType = schemaManager.getAttributeType( modified );
+                    attribute = new DefaultAttribute( attributeType );
+                }
+                else
+                {
+                    attribute = new DefaultAttribute( modified );
+                }
 
                 state = ATTRVAL_SPEC_OR_SEP;
             }
@@ -1202,7 +1243,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                     throw new LdapLdifException( I18n.err( I18n.ERR_12003_LDIF_ENTRY_WITH_TWO_DNS ) );
                 }
 
-                Object attributeValue = parseValue( line, colonIndex );
+                Object attributeValue = parseValue( attributeType, line, colonIndex );
 
                 try
                 {
@@ -1310,7 +1351,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                     if ( lowerLine.startsWith( "newsuperior:" ) )
                     {
                         int colonIndex = line.indexOf( ':' );
-                        Object attributeValue = parseValue( line, colonIndex );
+                        Object attributeValue = parseValue( null, line, colonIndex );
 
                         if ( attributeValue instanceof String )
                         {

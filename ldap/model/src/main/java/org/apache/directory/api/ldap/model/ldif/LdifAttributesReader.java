@@ -185,7 +185,7 @@ public class LdifAttributesReader extends LdifReader
             throw new LdapLdifException( I18n.err( I18n.ERR_12003_LDIF_ENTRY_WITH_TWO_DNS ) );
         }
 
-        Object attributeValue = parseValue( line, colonIndex );
+        Object attributeValue = parseValue( attributeType, line, colonIndex );
 
         // Update the entry
         javax.naming.directory.Attribute attribute = attributes.get( attributeType );
@@ -236,7 +236,7 @@ public class LdifAttributesReader extends LdifReader
             }
         }
 
-        Object attributeValue = parseValue( line, colonIndex );
+        Object attributeValue = parseValue( attributeName, line, colonIndex );
 
         // Update the entry
         Attribute attribute = null;
