@@ -618,11 +618,6 @@ public class LdifAnonymizer
         // Process the DN first
         Dn anonymizedDn = anonymizeDn( entryDn );
         
-        if ( anonymizedDn == null )
-        {
-            return null;
-        }
-        
         newLdifEntry.setDn( anonymizedDn );
         
         // Now, process the entry's attributes
@@ -683,11 +678,6 @@ public class LdifAnonymizer
         // Process the DN first
         Dn anonymizedDn = anonymizeDn( entryDn );
         
-        if ( anonymizedDn == null )
-        {
-            return null;
-        }
-        
         newLdifEntry.setDn( anonymizedDn );
         
         // Now, process the entry's attributes
@@ -743,11 +733,6 @@ public class LdifAnonymizer
         // Process the DN, there is nothing more in the entry
         Dn anonymizedDn = anonymizeDn( entryDn );
         
-        if ( anonymizedDn == null )
-        {
-            return null;
-        }
-        
         ldifEntry.setDn( anonymizedDn );
         
         return ldifEntry;
@@ -764,35 +749,30 @@ public class LdifAnonymizer
         // Process the DN
         Dn anonymizedDn = anonymizeDn( entryDn );
         
-        if ( anonymizedDn == null )
-        {
-            return null;
-        }
-        
         ldifEntry.setDn( anonymizedDn );
         
         // Anonymize the newRdn if any
-        Dn newRdn = new Dn( schemaManager, ldifEntry.getNewRdn() );
-        Dn anonymizedRdn = anonymizeDn( newRdn );
+        String newRdnStr = ldifEntry.getNewRdn();
         
-        if ( anonymizedRdn == null )
+        if ( newRdnStr != null )
         {
-            return null;
+            Dn newRdn = new Dn( schemaManager, newRdnStr );
+            Dn anonymizedRdn = anonymizeDn( newRdn );
+            
+            ldifEntry.setNewRdn( anonymizedRdn.toString() );
         }
-        
-        ldifEntry.setNewRdn( anonymizedRdn.toString() );
         
         // Anonymize the neSuperior if any
-        Dn newSuperior = new Dn( schemaManager,  ldifEntry.getNewSuperior() );
+        String newSuperiorStr = ldifEntry.getNewSuperior();
         
-        Dn anonymizedSuperior = anonymizeDn( newSuperior );
-        
-        if ( anonymizedSuperior == null )
+        if ( newSuperiorStr != null )
         {
-            return null;
+            Dn newSuperior = new Dn( schemaManager, newSuperiorStr );
+            
+            Dn anonymizedSuperior = anonymizeDn( newSuperior );
+            
+            ldifEntry.setNewSuperior( anonymizedSuperior.toString() );
         }
-        
-        ldifEntry.setNewSuperior( anonymizedSuperior.toString() );
 
         return ldifEntry;
     }
@@ -811,11 +791,6 @@ public class LdifAnonymizer
         
         Dn anonymizedDn = anonymizeDn( entryDn );
         
-        if ( anonymizedDn == null )
-        {
-            return null;
-        }
-
         // Now, process the entry's attributes
         for ( Attribute attribute : entry )
         {
@@ -882,11 +857,8 @@ public class LdifAnonymizer
                     // process a full entry. Add changes aren't preocessed ghere.
                     Entry newEntry = anonymizeEntry( ldifEntry );
                     
-                    if ( newEntry != null )
-                    {
-                        result.append( LdifUtils.convertToLdif( newEntry ) );
-                        result.append( "\n" );
-                    }
+                    result.append( LdifUtils.convertToLdif( newEntry ) );
+                    result.append( "\n" );
                 }
                 else if ( ldifEntry.isChangeDelete() )
                 {
