@@ -2641,7 +2641,7 @@ public final class DefaultEntry implements Entry
 
                     if ( attributeType == null )
                     {
-                        sb.append( tabs + "id: " + id );
+                        sb.append( tabs ).append( "id: " ).append( id );
                     }
                     else if ( !attributeType.equals( objectClassAttributeType ) )
                     {
