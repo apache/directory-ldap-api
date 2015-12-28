@@ -697,7 +697,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
 
 
     /**
-     * Set the flage deleteOldRdn
+     * Set the deleteOldRdn flag
      * 
      * @param deleteOldRdn True if the old Rdn should be deleted
      */

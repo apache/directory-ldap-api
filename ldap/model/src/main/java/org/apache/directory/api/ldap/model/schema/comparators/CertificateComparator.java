@@ -20,10 +20,6 @@
 package org.apache.directory.api.ldap.model.schema.comparators;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-
 /**
  * A Comparator for Certificates
  *  
@@ -32,10 +28,6 @@ import org.slf4j.LoggerFactory;
 @SuppressWarnings("serial")
 public class CertificateComparator extends ByteArrayComparator
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( CertificateComparator.class );
-
-
     /**
      * Creates a new instance of CertificateComparator.
      */

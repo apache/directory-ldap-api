@@ -28,7 +28,6 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.util.Position;
-import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -166,7 +165,6 @@ import org.apache.directory.api.util.Strings;
         // here we only match "simple" values
         // stops at \ + # " -> Too Complex Exception
         String upValue = matchValue( chars, pos );
-        String value = Strings.trimRight( upValue );
         // TODO: trim, normalize, etc
 
         // SPACE*

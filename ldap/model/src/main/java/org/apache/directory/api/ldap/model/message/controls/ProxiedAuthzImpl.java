@@ -80,7 +80,7 @@ public class ProxiedAuthzImpl extends AbstractControl implements ProxiedAuthz
 
         if ( !Strings.isEmpty( authzId ) )
         {
-            String lowercaseAuthzId = Strings.toLowerCase( authzId );
+            String lowercaseAuthzId = Strings.toLowerCaseAscii( authzId );
 
             if ( lowercaseAuthzId.startsWith( "dn:" ) )
             {

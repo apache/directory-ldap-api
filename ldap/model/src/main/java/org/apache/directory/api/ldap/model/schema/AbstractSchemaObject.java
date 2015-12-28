@@ -233,14 +233,14 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
             // Fills a set with all the existing names
             for ( String name : this.names )
             {
-                lowerNames.add( Strings.toLowerCase( name ) );
+                lowerNames.add( Strings.toLowerCaseAscii( name ) );
             }
 
             for ( String name : namesToAdd )
             {
                 if ( name != null )
                 {
-                    String lowerName = Strings.toLowerCase( name );
+                    String lowerName = Strings.toLowerCaseAscii( name );
                     // Check that the lower cased names is not already present
                     if ( !lowerNames.contains( lowerName ) )
                     {
@@ -490,7 +490,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      */
     public boolean hasExtension( String extension )
     {
-        return extensions.containsKey( Strings.toUpperCase( extension ) );
+        return extensions.containsKey( Strings.toUpperCaseAscii( extension ) );
     }
 
 
@@ -499,7 +499,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      */
     public List<String> getExtension( String extension )
     {
-        String name = Strings.toUpperCase( extension );
+        String name = Strings.toUpperCaseAscii( extension );
 
         if ( hasExtension( name ) )
         {

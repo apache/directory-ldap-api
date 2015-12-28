@@ -127,7 +127,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     {
         if ( !byName.containsKey( oid ) )
         {
-            return byName.containsKey( Strings.toLowerCase( oid ) );
+            return byName.containsKey( Strings.toLowerCaseAscii( oid ) );
         }
 
         return true;
@@ -258,7 +258,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
          */
         for ( String name : schemaObject.getNames() )
         {
-            String lowerName = Strings.trim( Strings.toLowerCase( name ) );
+            String lowerName = Strings.trim( Strings.toLowerCaseAscii( name ) );
 
             if ( byName.containsKey( lowerName ) )
             {
@@ -339,7 +339,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
          */
         for ( String name : schemaObject.getNames() )
         {
-            byName.remove( Strings.trim( Strings.toLowerCase( name ) ) );
+            byName.remove( Strings.trim( Strings.toLowerCaseAscii( name ) ) );
         }
 
         // And unregister the oid -> schemaObject relation
@@ -387,7 +387,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
         if ( schemaObject == null )
         {
             // last resort before giving up check with lower cased version
-            String lowerCased = Strings.toLowerCase( name );
+            String lowerCased = Strings.toLowerCaseAscii( name );
 
             schemaObject = byName.get( lowerCased );
 

@@ -254,7 +254,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
         // Also inject the attributeType's short names in the map
         for ( String name : attributeType.getNames() )
         {
-            oidNormalizerMap.put( Strings.toLowerCase( name ), oidNormalizer );
+            oidNormalizerMap.put( Strings.toLowerCaseAscii( name ), oidNormalizer );
         }
     }
 
@@ -274,7 +274,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
         // We also have to remove all the short names for this attribute
         for ( String name : attributeType.getNames() )
         {
-            oidNormalizerMap.remove( Strings.toLowerCase( name ) );
+            oidNormalizerMap.remove( Strings.toLowerCaseAscii( name ) );
         }
     }
 

@@ -420,7 +420,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     public Schema getLoadedSchema( String schemaName )
     {
-        return loadedSchemas.get( Strings.toLowerCase( schemaName ) );
+        return loadedSchemas.get( Strings.toLowerCaseAscii( schemaName ) );
     }
 
 
@@ -432,7 +432,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     public boolean isSchemaLoaded( String schemaName )
     {
-        return loadedSchemas.containsKey( Strings.toLowerCase( schemaName ) );
+        return loadedSchemas.containsKey( Strings.toLowerCaseAscii( schemaName ) );
     }
 
 
@@ -1416,7 +1416,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     public void schemaLoaded( Schema schema )
     {
-        this.loadedSchemas.put( Strings.toLowerCase( schema.getSchemaName() ), schema );
+        this.loadedSchemas.put( Strings.toLowerCaseAscii( schema.getSchemaName() ), schema );
     }
 
 
@@ -1428,7 +1428,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     public void schemaUnloaded( Schema schema )
     {
-        this.loadedSchemas.remove( Strings.toLowerCase( schema.getSchemaName() ) );
+        this.loadedSchemas.remove( Strings.toLowerCaseAscii( schema.getSchemaName() ) );
     }
 
 
@@ -1458,7 +1458,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     private String getSchemaName( SchemaObject schemaObject )
     {
-        String schemaName = Strings.toLowerCase( schemaObject.getSchemaName() );
+        String schemaName = Strings.toLowerCaseAscii( schemaObject.getSchemaName() );
 
         if ( loadedSchemas.containsKey( schemaName ) )
         {
@@ -1622,7 +1622,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         if ( content == null )
         {
             content = new HashSet<SchemaObjectWrapper>();
-            schemaObjects.put( Strings.toLowerCase( schemaName ), content );
+            schemaObjects.put( Strings.toLowerCaseAscii( schemaName ), content );
         }
 
         SchemaObjectWrapper schemaObjectWrapper = new SchemaObjectWrapper( schemaObject );
@@ -1813,7 +1813,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     public void dissociateFromSchema( SchemaObject schemaObject ) throws LdapException
     {
         // And unregister the schemaObject within its schema
-        Set<SchemaObjectWrapper> content = schemaObjects.get( Strings.toLowerCase( schemaObject.getSchemaName() ) );
+        Set<SchemaObjectWrapper> content = schemaObjects.get( Strings.toLowerCaseAscii( schemaObject.getSchemaName() ) );
 
         if ( content != null )
         {
