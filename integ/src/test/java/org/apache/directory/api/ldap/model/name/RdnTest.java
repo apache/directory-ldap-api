@@ -203,6 +203,6 @@ public class RdnTest
     @Test
     public void testRdnEscapedValue() throws Exception
     {
-        Rdn rdn = new Rdn( schemaManager, "sn=\\46\\65\\72\\72\\79" );
+         new Rdn( schemaManager, "sn=\\46\\65\\72\\72\\79" );
     }
 }

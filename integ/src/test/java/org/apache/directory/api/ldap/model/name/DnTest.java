@@ -2989,4 +2989,11 @@ public class DnTest
 
         assertEquals( "cn=test,ou=apache,ou=org", dn.getName() );
     }
+    
+    
+    @Test
+    public void testRdnStudio() throws LdapInvalidDnException
+    {
+        new Dn( schemaManager, "cn=\\#\\\\\\+\\, \\\"φι\\\",ou=users,ou=system" );
+    }
 }
