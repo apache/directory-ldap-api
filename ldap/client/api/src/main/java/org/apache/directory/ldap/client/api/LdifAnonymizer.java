@@ -504,6 +504,61 @@ public class LdifAnonymizer
                 
                 try
                 {
+                    if ( ldifEntry.isEntry() && !ldifEntry.isChangeAdd() )
+                    {
+                        // process a full entry. Add changes aren't preocessed ghere.
+                        Entry newEntry = anonymizeEntry( ldifEntry );
+                        
+                        writer.write( LdifUtils.convertToLdif( newEntry ) );
+                        writer.write( "\n" );
+                    }
+                    else if ( ldifEntry.isChangeDelete() )
+                    {
+                        // A Delete operation
+                        LdifEntry newLdifEntry = anonymizeChangeDelete( ldifEntry );
+
+                        if ( ldifEntry != null )
+                        {
+                            writer.write( newLdifEntry.toString() );
+                            writer.write( "\n" );
+                        }
+                    }
+                    else if ( ldifEntry.isChangeAdd() )
+                    {
+                        // A Add operation
+                        LdifEntry newLdifEntry = anonymizeChangeAdd( ldifEntry );
+
+                        if ( ldifEntry != null )
+                        {
+                            writer.write( newLdifEntry.toString() );
+                            writer.write( "\n" );
+                        }
+                    }
+                    else if ( ldifEntry.isChangeModify() )
+                    {
+                        // A Modify operation
+                        LdifEntry newLdifEntry = anonymizeChangeModify( ldifEntry );
+
+                        if ( ldifEntry != null )
+                        {
+                            writer.write( newLdifEntry.toString() );
+                            writer.write( "\n" );
+                        }
+                    }
+                    else if ( ldifEntry.isChangeModDn() ||  ldifEntry.isChangeModRdn() )
+                    {
+                        // A MODDN operation
+                        LdifEntry newLdifEntry = anonymizeChangeModDn( ldifEntry );
+
+                        if ( ldifEntry != null )
+                        {
+                            writer.write( newLdifEntry.toString() );
+                            writer.write( "\n" );
+                        }
+                    }
+
+                    
+                    /*
                     Entry entry = ldifEntry.getEntry();
                     Entry newEntry = new DefaultEntry( schemaManager );
     
@@ -553,6 +608,7 @@ public class LdifAnonymizer
                     newEntry.setDn( anonymizedDn );
                     writer.write( LdifUtils.convertToLdif( newEntry ) );
                     writer.write( "\n" );
+                    */
 
                     System.out.print( '.' );
                     
