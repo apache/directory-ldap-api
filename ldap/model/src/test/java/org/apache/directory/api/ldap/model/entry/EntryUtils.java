@@ -162,7 +162,7 @@ public class EntryUtils
             {
                 if ( value.isHumanReadable() )
                 {
-                    return new StringValue( Strings.toLowerCase( value.getString() ) );
+                    return new StringValue( Strings.toLowerCaseAscii( value.getString() ) );
                 }
 
                 throw new IllegalStateException( I18n.err( I18n.ERR_04474 ) );
@@ -171,7 +171,7 @@ public class EntryUtils
 
             public String normalize( String value ) throws LdapException
             {
-                return Strings.toLowerCase( value );
+                return Strings.toLowerCaseAscii( value );
             }
         };
 

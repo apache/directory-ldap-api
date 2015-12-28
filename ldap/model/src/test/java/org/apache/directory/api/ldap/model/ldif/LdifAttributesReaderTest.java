@@ -100,7 +100,7 @@ public class LdifAttributesReaderTest
 
 
     @Test
-    public void testLdifNull() throws LdapLdifException
+    public void testLdifNull() throws LdapLdifException, IOException
     {
         String ldif = null;
 
@@ -108,11 +108,12 @@ public class LdifAttributesReaderTest
         Entry entry = reader.parseEntry( ldif );
 
         assertEquals( 0, entry.size() );
+        reader.close();
     }
 
 
     @Test
-    public void testLdifEmpty() throws LdapLdifException
+    public void testLdifEmpty() throws LdapLdifException, IOException
     {
         String ldif = "";
 
@@ -120,22 +121,24 @@ public class LdifAttributesReaderTest
         Entry entry = reader.parseEntry( ldif );
 
         assertEquals( 0, entry.size() );
+        reader.close();
     }
 
 
     @Test
-    public void testLdifEmptyLines() throws LdapLdifException
+    public void testLdifEmptyLines() throws LdapLdifException, IOException
     {
         String ldif = "\n\n\r\r\n";
 
         LdifAttributesReader reader = new LdifAttributesReader();
         Entry entry = reader.parseEntry( ldif );
         assertNull( entry );
+        reader.close();
     }
 
 
     @Test
-    public void testLdifComments() throws LdapLdifException
+    public void testLdifComments() throws LdapLdifException, IOException
     {
         String ldif = 
               "#Comment 1\r" 
@@ -148,11 +151,12 @@ public class LdifAttributesReaderTest
         Entry entry = reader.parseEntry( ldif );
 
         assertNull( entry );
+        reader.close();
     }
 
 
     @Test
-    public void testLdifVersionStart() throws LdapLdifException
+    public void testLdifVersionStart() throws LdapLdifException, IOException
     {
         String ldif = 
               "cn: app1\n" 
@@ -170,6 +174,7 @@ public class LdifAttributesReaderTest
 
         Attribute attr = entry.get( "displayname" );
         assertTrue( attr.contains( "app1" ) );
+        reader.close();
     }
 
 
@@ -179,7 +184,7 @@ public class LdifAttributesReaderTest
      * @throws NamingException
      */
     @Test
-    public void testLdifParserEndSpaces() throws LdapLdifException
+    public void testLdifParserEndSpaces() throws LdapLdifException, IOException
     {
         String ldif = 
               "cn: app1\n" 
@@ -196,12 +201,12 @@ public class LdifAttributesReaderTest
 
         Attribute attr = entry.get( "displayname" );
         assertTrue( attr.contains( "app1" ) );
-
+        reader.close();
     }
 
 
     @Test
-    public void testLdifParser() throws LdapLdifException, LdapInvalidAttributeValueException
+    public void testLdifParser() throws LdapLdifException, LdapInvalidAttributeValueException, IOException
     {
         String ldif = 
               "cn: app1\n" 
@@ -231,11 +236,12 @@ public class LdifAttributesReaderTest
 
         attr = entry.get( "envvars" );
         assertNull( attr.get().getValue() );
+        reader.close();
     }
 
 
     @Test
-    public void testLdifParserMuiltiLineComments() throws LdapLdifException
+    public void testLdifParserMuiltiLineComments() throws LdapLdifException, IOException
     {
         String ldif = 
               "#comment\n" 
@@ -270,11 +276,12 @@ public class LdifAttributesReaderTest
 
         attr = entry.get( "envvars" );
         assertNull( attr.get().getValue() );
+        reader.close();
     }
 
 
     @Test
-    public void testLdifParserMultiLineEntries() throws LdapLdifException
+    public void testLdifParserMultiLineEntries() throws LdapLdifException, IOException
     {
         String ldif = 
               "#comment\n" 
@@ -309,11 +316,12 @@ public class LdifAttributesReaderTest
 
         attr = entry.get( "envvars" );
         assertNull( attr.get().getValue() );
+        reader.close();
     }
 
 
     @Test
-    public void testLdifParserBase64() throws LdapLdifException
+    public void testLdifParserBase64() throws LdapLdifException, IOException
     {
         String ldif = 
               "#comment\n" 
@@ -347,11 +355,12 @@ public class LdifAttributesReaderTest
 
         attr = entry.get( "envvars" );
         assertNull( attr.get().getValue() );
+        reader.close();
     }
 
 
     @Test
-    public void testLdifParserBase64MultiLine() throws LdapLdifException
+    public void testLdifParserBase64MultiLine() throws LdapLdifException, IOException
     {
         String ldif = 
               "#comment\n" 
@@ -386,11 +395,12 @@ public class LdifAttributesReaderTest
 
         attr = entry.get( "envvars" );
         assertNull( attr.get().getValue() );
+        reader.close();
     }
 
 
     @Test
-    public void testLdifParserRFC2849Sample1() throws LdapLdifException
+    public void testLdifParserRFC2849Sample1() throws LdapLdifException, IOException
     {
         String ldif = 
               "objectclass: top\n" 
@@ -428,12 +438,12 @@ public class LdifAttributesReaderTest
 
         attr = entry.get( "description" );
         assertTrue( attr.contains( "A big sailing fan." ) );
-
+        reader.close();
     }
 
 
     @Test
-    public void testLdifParserRFC2849Sample2() throws LdapLdifException
+    public void testLdifParserRFC2849Sample2() throws LdapLdifException, IOException
     {
         String ldif = 
               "objectclass: top\n" 
@@ -477,7 +487,7 @@ public class LdifAttributesReaderTest
 
         attr = entry.get( "title" );
         assertTrue( attr.contains( "Product Manager, Rod and Reel Division" ) );
-
+        reader.close();
     }
 
 
@@ -523,6 +533,7 @@ public class LdifAttributesReaderTest
         assertTrue( attr
             .contains( "What a careful reader you are!  This value is base-64-encoded because it has a control character in it (a CR).\r  By the way, you should really get out more."
                 .getBytes( StandardCharsets.UTF_8 ) ) );
+        reader.close();
     }
 
 
@@ -568,6 +579,7 @@ public class LdifAttributesReaderTest
         assertTrue( attr
             .contains( "What a careful reader you are!  This value is base-64-encoded because it has a control character in it (a CR).\r  By the way, you should really get out more."
                 .getBytes( StandardCharsets.UTF_8 ) ) );
+        reader.close();
     }
 
 
@@ -614,6 +626,8 @@ public class LdifAttributesReaderTest
                 assertTrue( attr.contains( values[j][1].getBytes( StandardCharsets.UTF_8 ) ) );
             }
         }
+        
+        reader.close();
     }
 
 
@@ -669,6 +683,8 @@ public class LdifAttributesReaderTest
                 }
             }
         }
+
+        reader.close();
     }
 
 
@@ -701,6 +717,8 @@ public class LdifAttributesReaderTest
             assertTrue( I18n.err( I18n.ERR_12009_ERROR_PARSING_LDIF_BUFFER ), ne.getMessage().startsWith(
                 I18n.ERR_12009_ERROR_PARSING_LDIF_BUFFER.getErrorCode() ) );
         }
+
+        reader.close();
     }
 
 
@@ -748,6 +766,7 @@ public class LdifAttributesReaderTest
 
         attr = attributes.get( "ou" );
         assertTrue( attr.contains( "Users" ) );
+        reader.close();
     }
 
 
@@ -806,5 +825,6 @@ public class LdifAttributesReaderTest
         attr = attributes.get( "prescriptiveACI" );
         assertTrue( attr
             .contains( "{ identificationTag \"browseRoot\", precedence 100, authenticationLevel none, itemOrUserFirst userFirst: { userClasses { allUsers }, userPermissions { { protectedItems {entry}, grantsAndDenials { grantReturnDN, grantBrowse } } } } }" ) );
+        reader.close();
     }
 }

@@ -47,7 +47,7 @@ public class FilterEncoderTest
     @Test
     public void testFormatWithNoPlaceholdersAndCorrectArgumentCount()
     {
-        assertEquals( "(cn=foo)", FilterEncoder.format( "(cn=foo)", null ) );
+        assertEquals( "(cn=foo)", FilterEncoder.format( "(cn=foo)", (String[])null ) );
         assertEquals( "(cn=foo)", FilterEncoder.format( "(cn=foo)", ZERO ) );
     }
 

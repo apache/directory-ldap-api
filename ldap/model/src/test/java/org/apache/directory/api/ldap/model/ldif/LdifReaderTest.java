@@ -2259,8 +2259,10 @@ public class LdifReaderTest
         catch ( Exception e )
         {
         }
-
+        
         assertEquals( 1, reader.getLineNumber() );
+
+        reader.close();
 
         ldif =
             "version:   1\n" +
@@ -2279,6 +2281,8 @@ public class LdifReaderTest
         }
 
         assertEquals( 2, reader.getLineNumber() );
+        
+        reader.close();
 
         // wrong changetype
         ldif =
@@ -2296,7 +2300,7 @@ public class LdifReaderTest
         catch ( Exception e )
         {
         }
-
+        
         assertEquals( 4, reader.getLineNumber() );
 
         ldif =
@@ -2315,6 +2319,7 @@ public class LdifReaderTest
                 "displayName:   app2   \n" +
                 "dependencies:\n" +
                 "envVars:";
+        
         reader = new LdifReader();
 
         try
@@ -2327,6 +2332,7 @@ public class LdifReaderTest
         }
 
         assertEquals( 10, reader.getLineNumber() );
+        reader.close();
     }
 
 
