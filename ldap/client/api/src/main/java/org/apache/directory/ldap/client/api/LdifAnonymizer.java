@@ -684,7 +684,8 @@ public class LdifAnonymizer
             
             if ( attributeType == null )
             {
-                System.out.println( "Unknown AttributeType : " + attribute.getId() + " for entry " + entryDn);
+                System.out.println( "Unknown AttributeType : " + attribute.getId() + " for entry " + entryDn );
+                
                 return null;
             }
             
