@@ -242,4 +242,24 @@ public class LdifAnonymizerTest
         assertEquals( "ACME Inc. Legal Team".length(), value.length() );
         assertNotEquals( "ACME Inc. Legal Team", value );
     }
+    
+    
+    @Test
+    public void testAnonymizeModifyAddDeleteUnknownAttribute() throws Exception
+    {
+        String ldif = 
+            "dn: uid=jdoe@acme.com,ou=People,o=acme.com\n" +
+            "changetype: modify\n" +
+            "delete: acmeAttr\n" +
+            "acmeAttr::dWlkPWpvaG4uZG9lQGFjbWUuY29tLG91PXBlb3BsZSxvPWFjbWUuY29t\n" +
+            "-\n" +
+            "add: acmeAttr\n" +
+            "acmeAttr::dWlkPWpvaG4uZG9lQGFjbWVOZXcuY29tLG91PXBlb3BsZSxvPWFjbWUuY29t\n" +
+            "-";
+        LdifAnonymizer anonymizer = new LdifAnonymizer( schemaManager );
+        anonymizer.addNamingContext( "o=acme.com" );
+        String result = anonymizer.anonymize( ldif );
+        
+        assertEquals( "", result );
+    }
 }

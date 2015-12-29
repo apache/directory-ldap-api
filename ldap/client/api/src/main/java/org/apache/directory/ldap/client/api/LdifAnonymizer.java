@@ -681,6 +681,13 @@ public class LdifAnonymizer
         {
             Attribute attribute = modification.getAttribute();
             AttributeType attributeType = schemaManager.getAttributeType( attribute.getId() );
+            
+            if ( attributeType == null )
+            {
+                System.out.println( "Unknown AttributeType : " + attribute.getId() + " for entry " + entryDn);
+                return null;
+            }
+            
             attribute.apply( attributeType );
             
             // Deal with the special case of a DN syntax
@@ -921,7 +928,7 @@ public class LdifAnonymizer
                     // A Delete operation
                     LdifEntry newLdifEntry = anonymizeChangeDelete( ldifEntry );
 
-                    if ( ldifEntry != null )
+                    if ( newLdifEntry != null )
                     {
                         result.append( newLdifEntry );
                         result.append( "\n" );
@@ -932,7 +939,7 @@ public class LdifAnonymizer
                     // A Add operation
                     LdifEntry newLdifEntry = anonymizeChangeAdd( ldifEntry );
 
-                    if ( ldifEntry != null )
+                    if ( newLdifEntry != null )
                     {
                         result.append( newLdifEntry );
                         result.append( "\n" );
@@ -943,7 +950,7 @@ public class LdifAnonymizer
                     // A Modify operation
                     LdifEntry newLdifEntry = anonymizeChangeModify( ldifEntry );
 
-                    if ( ldifEntry != null )
+                    if ( newLdifEntry != null )
                     {
                         result.append( newLdifEntry );
                         result.append( "\n" );
@@ -954,7 +961,7 @@ public class LdifAnonymizer
                     // A MODDN operation
                     LdifEntry newLdifEntry = anonymizeChangeModDn( ldifEntry );
 
-                    if ( ldifEntry != null )
+                    if ( newLdifEntry != null )
                     {
                         result.append( newLdifEntry );
                         result.append( "\n" );
