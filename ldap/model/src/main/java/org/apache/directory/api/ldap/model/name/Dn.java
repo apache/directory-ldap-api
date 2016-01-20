@@ -286,9 +286,23 @@ public class Dn implements Iterable<Rdn>, Externalizable
         // Stores the representations of a Dn : internal (as a string and as a
         // byte[]) and external.
         upName = sb.toString();
-        parseInternal( upName, rdns );
-
-        apply( schemaManager );
+        
+        try
+        {
+            parseInternal( upName, rdns );
+            apply( schemaManager );
+        }
+        catch ( LdapInvalidDnException e )
+        {
+            if ( schemaManager == null || !schemaManager.isRelaxed() )
+            {
+                throw e;
+            }
+            // Ignore invalid DN formats in relaxed mode.
+            // This is needed to support unbelievably insane
+            // DN formats such as <GUI=abcd...> format used by
+            // Active Directory
+        }
     }
 
 
@@ -1091,12 +1105,24 @@ public class Dn implements Iterable<Rdn>, Externalizable
                 try
                 {
                     AttributeType attributeType = schemaManager.getAttributeType( type );
+                    if ( attributeType == null )
+                    {
+                        // Error should NOT be logged here as exception is thrown. Whoever catches
+                        // the exception should log the error. This exception is caught and ignored
+                        // in the relaxed mode, and it is in fact quite expected to happed for some
+                        // insane DN formats. Logging the error here will only polute the logfiles
+                        throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX,
+                            I18n.err( I18n.ERR_04460_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED, type ) );
+                    }
                     Value<?> atavValue = null;
                     Value<?> value = atav.getValue();
                     
                     if ( value instanceof StringValue )
                     {
-                        if ( attributeType.getSyntax().isHumanReadable() )
+                        // Active Directory specifies syntax OIDs in attributeTypes, but it does not specify
+                        // any syntexes. Therefore attributeType.getSyntax() returns null. Assume human readable
+                        // attribute in such case.
+                        if ( attributeType.getSyntax() == null || attributeType.getSyntax().isHumanReadable() )
                         {
                             atavValue = new StringValue( attributeType, value.getString() );
                         }
