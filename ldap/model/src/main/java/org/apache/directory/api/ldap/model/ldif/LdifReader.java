@@ -1208,7 +1208,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                 if ( schemaManager != null )
                 {
                     AttributeType attributeType = schemaManager.getAttributeType( modified );
-                    attribute = new DefaultAttribute( attributeType );
+                    attribute = new DefaultAttribute( modified, attributeType );
                 }
                 else
                 {

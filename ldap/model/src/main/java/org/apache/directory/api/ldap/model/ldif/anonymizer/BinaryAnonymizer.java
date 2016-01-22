@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.model.ldif.anonymizer;
 
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.BinaryValue;
@@ -45,7 +46,7 @@ public class BinaryAnonymizer extends AbstractAnonymizer<byte[]>
     /**
      * Anonymize an attribute using pure random values (either chars of bytes, depending on the Attribute type)
      */
-    public Attribute anonymize( Map<Value<byte[]>, Value<byte[]>> valueMap, Attribute attribute )
+    public Attribute anonymize( Map<Value<byte[]>, Value<byte[]>> valueMap, Set<Value<byte[]>> valueSet, Attribute attribute )
     {
         Attribute result = new DefaultAttribute( attribute.getAttributeType() );
         random.setSeed( System.nanoTime() );

@@ -49,6 +49,7 @@ import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
 import org.apache.directory.api.ldap.model.schema.SchemaObjectWrapper;
+import org.apache.directory.api.ldap.model.schema.SchemaUtils;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.normalizers.OidNormalizer;
 import org.apache.directory.api.ldap.model.schema.registries.AttributeTypeRegistry;
@@ -1612,7 +1613,9 @@ public class DefaultSchemaManager implements SchemaManager
     {
         try
         {
-            return registries.getAttributeTypeRegistry().lookup( Strings.toLowerCaseAscii( oid ).trim() );
+            // Get rid of the options
+            String attributeTypeNoOptions = SchemaUtils.stripOptions( oid );
+            return registries.getAttributeTypeRegistry().lookup( Strings.toLowerCaseAscii( attributeTypeNoOptions ).trim() );
         }
         catch ( LdapException lnsae )
         {

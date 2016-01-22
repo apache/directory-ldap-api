@@ -21,6 +21,7 @@
 package org.apache.directory.ldap.client.api;
 
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,6 +30,8 @@ import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.entry.Value;
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.ldif.LdifEntry;
 import org.apache.directory.api.ldap.model.ldif.LdifReader;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
@@ -261,5 +264,45 @@ public class LdifAnonymizerTest
         String result = anonymizer.anonymize( ldif );
         
         assertEquals( "", result );
+    }
+    
+    
+    @Test
+    public void testAnonymizerModifyBinaryOptionAttribute() throws LdapException, IOException
+    {
+        String ldif = 
+            "dn: cn=Acme certificate,o=Acme,c=US,ou=IT Infrastructure,o=acme.com\n" +
+            "changetype: modify\n" +
+            "replace: certificateRevocationList;binary\n" +
+            "certificateRevocationList;binary::YmxhaCBibGFo\n" +
+            "-";
+
+        LdifAnonymizer anonymizer = new LdifAnonymizer( schemaManager );
+        anonymizer.addNamingContext( "o=acme.com" );
+        String result = anonymizer.anonymize( ldif );
+        
+        List<LdifEntry> entries = ldifReader.parseLdif( result );
+        
+        assertEquals( 1, entries.size() );
+        
+        LdifEntry entry = entries.get( 0 );
+        assertTrue( entry.isChangeModify() );
+        assertEquals( 1, entry.getModifications().size() );
+        
+        Modification modification = entry.getModifications().get( 0 );
+        assertEquals( ModificationOperation.REPLACE_ATTRIBUTE, modification.getOperation() );
+
+        Attribute attribute = modification.getAttribute();
+        assertEquals( "certificateRevocationList;binary", attribute.getUpId() );
+        assertEquals( 1, attribute.size() );
+        
+        for ( Value<?> value : attribute )
+        {
+            String str = value.getString();
+            
+            // We can only test the length and the fact the values are not equal (as the vale has been anonymized)
+            assertNotSame( 0, value.length() );
+            assertEquals( str.length(), value.length() );
+        }
     }
 }

@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.model.ldif.anonymizer;
 
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
@@ -45,7 +46,7 @@ public class StringAnonymizer extends AbstractAnonymizer<String>
     /**
      * Anonymize an attribute using pure random values (either chars of bytes, depending on the Attribute type)
      */
-    public Attribute anonymize( Map<Value<String>, Value<String>> valueMap, Attribute attribute )
+    public Attribute anonymize( Map<Value<String>, Value<String>> valueMap, Set<Value<String>> valueSet, Attribute attribute )
     {
         Attribute result = new DefaultAttribute( attribute.getAttributeType() );
         random.setSeed( System.nanoTime() );
@@ -75,22 +76,41 @@ public class StringAnonymizer extends AbstractAnonymizer<String>
                     // Same size
                     char[] newValue = new char[length];
     
-                    for ( int i = 0; i < length; i++ )
+                    int count = 1000;
+                    
+                    while ( count > 0 )
                     {
-                        newValue[i] = ( char ) ( random.nextInt( 'Z' - 'A' ) + 'A' );
-                    }
+                        for ( int i = 0; i < length; i++ )
+                        {
+                            newValue[i] = ( char ) ( random.nextInt( 'Z' - 'A' ) + 'A' );
+                        }
     
-                    try
-                    {
-                        String newValueStr = new String( newValue );
-                        result.add( newValueStr );
-                        
-                        Value<String> anonValue = new StringValue( attribute.getAttributeType(), newValueStr );
-                        valueMap.put( ( Value<String> ) value, anonValue );
+                        try
+                        {
+                            String newValueStr = new String( newValue );
+                            
+                            Value<String> anonValue = new StringValue( attribute.getAttributeType(), newValueStr );
+                            
+                            if ( valueSet.contains( anonValue ) )
+                            {
+                                count--;
+                                continue;
+                            }
+                            
+                            result.add( newValueStr );
+                            valueMap.put( ( Value<String> ) value, anonValue );
+                            valueSet.add( anonValue );
+                            break;
+                        }
+                        catch ( LdapInvalidAttributeValueException e )
+                        {
+                            // TODO : handle that
+                        }
                     }
-                    catch ( LdapInvalidAttributeValueException e )
+                    
+                    if ( count == 0 )
                     {
-                        // TODO : handle that
+                        throw new RuntimeException( "Error : too many collisions" );
                     }
                 }
                 else

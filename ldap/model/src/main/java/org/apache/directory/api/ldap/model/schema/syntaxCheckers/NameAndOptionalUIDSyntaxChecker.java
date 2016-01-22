@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
  * NameAndOptionalUID = distinguishedName [ SHARP BitString ]
  * 
  * Both part already have their syntax checkers, so we will just call them
- * after having splitted the element in two ( if necessary)
+ * after having split the element in two ( if necessary)
  * 
  * We just check that the Dn is valid, we don't need to verify each of the Rdn
  * syntax.
@@ -104,10 +104,9 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
                 return false;
             }
 
-            // This is an UID if the '#' is immediatly
+            // This is an UID if the '#' is immediately
             // followed by a BitString, except if the '#' is
             // on the last position
-            // We shoould not find a
             if ( BitStringSyntaxChecker.isValid( strValue.substring( sharpPos + 1 ) )
                 && ( sharpPos < strValue.length() ) )
             {
