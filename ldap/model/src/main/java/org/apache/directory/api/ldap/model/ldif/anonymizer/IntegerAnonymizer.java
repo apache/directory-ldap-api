@@ -62,11 +62,22 @@ public class IntegerAnonymizer extends AbstractAnonymizer<String>
                 // Same size
                 char[] newValue = new char[length];
 
+                boolean isFirst = true;
+                
                 for ( int i = 0; i < length; i++ )
                 {
-                    newValue[i] = ( char ) ( random.nextInt( '9' - '0' ) + '0' );
-                }
+                    if ( isFirst && length > 1 ) 
+                    {
+                        newValue[i] = ( char ) ( random.nextInt( 9 ) + '1' );
+                    }
+                    else
+                    {
+                        newValue[i] = ( char ) ( random.nextInt( 10 ) + '0' );
+                    }
 
+                    isFirst = false;
+                }
+                
                 try
                 {
                     result.add( new String( newValue ) );
