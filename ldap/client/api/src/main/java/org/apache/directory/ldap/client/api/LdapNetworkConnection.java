@@ -3430,7 +3430,15 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             cursor.next();
 
             // And close the cursor
-            cursor.close();
+            try
+            { 
+                cursor.close();
+            }
+            catch ( IOException ioe )
+            {
+                throw new LdapException( ioe.getMessage(), ioe );
+            }
+
         }
         catch ( CursorException e )
         {
@@ -3764,6 +3772,15 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         }
 
         conCloseListeners.add( ccListener );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void inputClosed( IoSession session ) throws Exception 
+    {
+        session.close( true );
     }
 
 
