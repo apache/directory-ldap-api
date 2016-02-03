@@ -19,6 +19,7 @@
 package org.apache.directory.api.ldap.model.cursor;
 
 
+import java.io.IOException;
 import java.util.Comparator;
 
 import org.apache.directory.api.i18n.I18n;
@@ -326,7 +327,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
      * {@inheritDoc}
      */
     @Override
-    public void close()
+    public void close() throws IOException
     {
         if ( IS_DEBUG )
         {
@@ -341,7 +342,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
      * {@inheritDoc}
      */
     @Override
-    public void close( Exception cause )
+    public void close( Exception cause ) throws IOException
     {
         if ( IS_DEBUG )
         {

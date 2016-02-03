@@ -19,6 +19,9 @@
 package org.apache.directory.api.ldap.model.cursor;
 
 
+import java.io.Closeable;
+import java.io.IOException;
+
 import org.apache.directory.api.ldap.model.exception.LdapException;
 
 
@@ -40,7 +43,7 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @param <E> The type of element on which this cursor will iterate
  */
-public interface Cursor<E> extends Iterable<E>
+public interface Cursor<E> extends Iterable<E>, Closeable
 {
     /**
      * Determines whether or not a call to get() will succeed.
@@ -223,21 +226,13 @@ public interface Cursor<E> extends Iterable<E>
     /**
      * Closes this Cursor and frees any resources it my have allocated.
      * Repeated calls to this method after this Cursor has already been
-     * called should not fail with exceptions.
-     */
-    void close();
-
-
-    /**
-     * Closes this Cursor and frees any resources it my have allocated.
-     * Repeated calls to this method after this Cursor has already been
      * called should not fail with exceptions.  The reason argument is 
      * the Exception instance thrown instead of the standard 
      * CursorClosedException.
      *
      * @param reason exception thrown when this Cursor is accessed after close
      */
-    void close( Exception reason );
+    void close( Exception reason ) throws IOException;
 
 
     /**

@@ -19,6 +19,7 @@
 package org.apache.directory.api.ldap.model.cursor;
 
 
+import java.io.IOException;
 import java.util.Iterator;
 
 import org.apache.directory.api.i18n.I18n;
@@ -74,7 +75,7 @@ public abstract class AbstractCursor<E> implements Cursor<E>
     /**
      * {@inheritDoc}
      */
-    public void close( Exception cause )
+    public void close( Exception cause ) throws IOException
     {
         monitor.close( cause );
     }
@@ -83,7 +84,7 @@ public abstract class AbstractCursor<E> implements Cursor<E>
     /**
      * {@inheritDoc}
      */
-    public void close()
+    public void close() throws IOException
     {
         monitor.close();
     }

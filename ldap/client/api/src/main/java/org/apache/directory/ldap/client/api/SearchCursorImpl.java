@@ -21,6 +21,7 @@
 package org.apache.directory.ldap.client.api;
 
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.directory.api.i18n.I18n;
@@ -129,7 +130,14 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
             }
 
             // close the cursor
-            close( ldapException );
+            try 
+            {
+                close( ldapException );
+            }
+            catch ( IOException ioe )
+            {
+                throw new LdapException( ioe.getMessage(), ioe );
+            }
 
             throw ldapException;
         }
@@ -193,7 +201,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
      * {@inheritDoc}
      */
     @Override
-    public void close()
+    public void close() throws IOException
     {
         if ( IS_DEBUG )
         {
@@ -208,7 +216,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
      * {@inheritDoc}
      */
     @Override
-    public void close( Exception cause )
+    public void close( Exception cause ) throws IOException
     {
         if ( IS_DEBUG )
         {

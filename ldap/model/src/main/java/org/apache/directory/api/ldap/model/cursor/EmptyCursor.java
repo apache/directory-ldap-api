@@ -19,6 +19,8 @@
 package org.apache.directory.api.ldap.model.cursor;
 
 
+import java.io.IOException;
+
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.Loggers;
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -149,7 +151,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
      * {@inheritDoc}
      */
     @Override
-    public void close()
+    public void close() throws IOException
     {
         if ( IS_DEBUG )
         {
@@ -164,7 +166,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
      * {@inheritDoc}
      */
     @Override
-    public void close( Exception cause )
+    public void close( Exception cause ) throws IOException
     {
         if ( IS_DEBUG )
         {

@@ -21,6 +21,8 @@
 package org.apache.directory.ldap.client.api;
 
 
+import java.io.IOException;
+
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.Loggers;
 import org.apache.directory.api.ldap.model.cursor.AbstractCursor;
@@ -94,7 +96,6 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
 
         try
         {
-
             do
             {
                 response = searchCursor.get();
@@ -126,7 +127,14 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
             ldapException.initCause( e );
 
             // close the cursor
-            close( ldapException );
+            try
+            {
+                close( ldapException );
+            }
+            catch ( IOException ioe )
+            {
+                throw new LdapException( ioe.getMessage(), ioe );
+            }
 
             throw ldapException;
         }
@@ -194,7 +202,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      * {@inheritDoc}
      */
     @Override
-    public void close()
+    public void close() throws IOException
     {
         if ( IS_DEBUG )
         {
@@ -209,7 +217,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      * {@inheritDoc}
      */
     @Override
-    public void close( Exception cause )
+    public void close( Exception cause ) throws IOException
     {
         if ( IS_DEBUG )
         {
