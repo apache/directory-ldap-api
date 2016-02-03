@@ -1441,6 +1441,8 @@ public class Dn implements Iterable<Rdn>, Externalizable
             normName = upName;
         }
 
+        bytes = Strings.getBytesUtf8Ascii( normName );
+        
         // Read the RDNs. Is it's null, the number will be -1.
         int nbRdns = in.readInt();
 
