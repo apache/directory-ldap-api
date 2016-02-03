@@ -600,6 +600,9 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
         copy.syntax = null;
         copy.syntaxOid = syntaxOid;
         copy.syntaxLength = syntaxLength;
+        
+        // The relaxed flag
+        copy.setRelaxed( isRelaxed );
 
         return copy;
     }
