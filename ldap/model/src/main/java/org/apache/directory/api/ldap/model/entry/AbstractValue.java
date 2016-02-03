@@ -207,23 +207,26 @@ public abstract class AbstractValue<T> implements Value<T>
         }
 
         // and checks that the value syntax is valid
-        try
+        if ( !attributeType.isRelaxed() )
         {
-            LdapSyntax syntax = attributeType.getSyntax();
-
-            // Check the syntax
-            if ( ( syntax != null ) && ( !isValid( syntax.getSyntaxChecker() ) ) )
+            try
             {
-                String message = I18n.err( I18n.ERR_04473_NOT_VALID_VALUE, upValue, attributeType );
-                LOG.info( message );
-                throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
+                LdapSyntax syntax = attributeType.getSyntax();
+    
+                // Check the syntax
+                if ( ( syntax != null ) && ( !isValid( syntax.getSyntaxChecker() ) ) )
+                {
+                    String message = I18n.err( I18n.ERR_04473_NOT_VALID_VALUE, upValue, attributeType );
+                    LOG.info( message );
+                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
+                }
             }
-        }
-        catch ( LdapException le )
-        {
-            String message = I18n.err( I18n.ERR_04447_CANNOT_NORMALIZE_VALUE, le.getLocalizedMessage() );
-            LOG.info( message );
-            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message, le );
+            catch ( LdapException le )
+            {
+                String message = I18n.err( I18n.ERR_04447_CANNOT_NORMALIZE_VALUE, le.getLocalizedMessage() );
+                LOG.info( message );
+                throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message, le );
+            }
         }
 
         // Rehash the Value now
@@ -306,7 +309,14 @@ public abstract class AbstractValue<T> implements Value<T>
             throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
         }
 
-        return syntaxChecker.isValidSyntax( normalizedValue );
+        if ( ( attributeType != null ) && attributeType.isRelaxed() ) 
+        {
+            return true;
+        }
+        else
+        { 
+            return syntaxChecker.isValidSyntax( normalizedValue );
+        }
     }
 
 

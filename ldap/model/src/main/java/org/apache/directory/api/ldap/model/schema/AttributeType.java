@@ -174,6 +174,9 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
     /** the length of this attribute in bytes */
     protected long syntaxLength = 0L;
+    
+    /** A flag set when the SchemaManager is in relaxed mode */
+    private boolean isRelaxed = false;
 
 
     /**
@@ -218,6 +221,26 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     public boolean isCollective()
     {
         return isCollective;
+    }
+
+
+    /**
+     * @return Tells if the AttributeType is relaxed (the SyntaxChecker will not be activated)
+     */
+    public boolean isRelaxed()
+    {
+        return isRelaxed;
+    }
+
+
+    /**
+     * Set this AttributeType mode to relaxed
+     * 
+     * @param isRelaxed <tt>true</tt> if the syntax checker for this AttributeType should not be activated
+     */
+    public void setRelaxed( boolean isRelaxed )
+    {
+        this.isRelaxed = isRelaxed;
     }
 
 

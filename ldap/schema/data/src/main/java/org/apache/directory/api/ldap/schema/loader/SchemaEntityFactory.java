@@ -901,6 +901,11 @@ public class SchemaEntityFactory implements EntityFactory
 
         // Create the new AttributeType
         MutableAttributeType attributeType = new MutableAttributeType( oid );
+        
+        if ( schemaManager.isRelaxed() )
+        {
+            attributeType.setRelaxed( true );
+        }
 
         // Syntax
         Attribute mSyntax = entry.get( MetaSchemaConstants.M_SYNTAX_AT );
