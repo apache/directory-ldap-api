@@ -120,8 +120,6 @@ public class DefaultSchemaManager implements SchemaManager
 
     /**
      * Creates a new instance of DefaultSchemaManager with the default schema schemaLoader
-     *
-     * @param loader The schema loader to use
      */
     public DefaultSchemaManager() throws Exception
     {
@@ -132,6 +130,23 @@ public class DefaultSchemaManager implements SchemaManager
         registries = new Registries();
         factory = new SchemaEntityFactory();
         isRelaxed = STRICT;
+        loadAllEnabled();
+    }
+
+    /**
+     * Creates a new instance of DefaultSchemaManager with the default schema schemaLoader
+     *
+     * @param relaxed If teh schema  manager should be relaxed or not
+     */
+    public DefaultSchemaManager( boolean relaxed ) throws Exception
+    {
+        // Default to the the root (one schemaManager for all the entries
+        namingContext = Dn.ROOT_DSE;
+        this.schemaLoader = new JarLdifSchemaLoader();
+        errors = new ArrayList<Throwable>();
+        registries = new Registries();
+        factory = new SchemaEntityFactory();
+        isRelaxed = relaxed;
         loadAllEnabled();
     }
 
