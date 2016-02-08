@@ -213,7 +213,7 @@ public abstract class AbstractValue<T> implements Value<T>
             {
                 LdapSyntax syntax = attributeType.getSyntax();
     
-                // Check the syntax
+                // Check the syntax if not in relaxed mode
                 if ( ( syntax != null ) && ( !isValid( syntax.getSyntaxChecker() ) ) )
                 {
                     String message = I18n.err( I18n.ERR_04473_NOT_VALID_VALUE, upValue, attributeType );
