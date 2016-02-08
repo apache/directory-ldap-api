@@ -388,7 +388,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
      */
     public boolean isRelaxed()
     {
-        return SchemaManager.RELAXED;
+        return relaxed == SchemaManager.RELAXED;
     }
 
 
