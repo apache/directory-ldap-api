@@ -211,7 +211,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
             dependencies = depsSet.toArray( StringConstants.EMPTY_STRINGS );
         }
 
-        return new DefaultSchema( name, owner, dependencies, isDisabled );
+        return new DefaultSchema( this, name, owner, dependencies, isDisabled );
     }
 
 
