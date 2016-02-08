@@ -53,6 +53,9 @@ public class DefaultSchema implements Schema
 
     /** The set of SchemaObjects declared in this schema */
     protected Set<SchemaObjectWrapper> content;
+    
+    /** The SchemaLoader used to load this schema */
+    protected SchemaLoader schemaLoader;
 
 
     /**
@@ -60,9 +63,9 @@ public class DefaultSchema implements Schema
      *
      * @param name The schema's name
      */
-    public DefaultSchema( String name )
+    public DefaultSchema( SchemaLoader schemaLoader, String name )
     {
-        this( name, null, null, false );
+        this( schemaLoader, name, null, null, false );
     }
 
 
@@ -72,9 +75,9 @@ public class DefaultSchema implements Schema
      * @param name The schema's name
      * @param owner the schema's owner
      */
-    public DefaultSchema( String name, String owner )
+    public DefaultSchema( SchemaLoader schemaLoader, String name, String owner )
     {
-        this( name, owner, null, false );
+        this( schemaLoader, name, owner, null, false );
     }
 
 
@@ -85,9 +88,9 @@ public class DefaultSchema implements Schema
      * @param owner the schema's owner
      * @param dependencies The list of schemas it depends on 
      */
-    public DefaultSchema( String name, String owner, String[] dependencies )
+    public DefaultSchema( SchemaLoader schemaLoader, String name, String owner, String[] dependencies )
     {
-        this( name, owner, dependencies, false );
+        this( schemaLoader, name, owner, dependencies, false );
     }
 
 
@@ -99,7 +102,7 @@ public class DefaultSchema implements Schema
      * @param dependencies The list of schemas it depends on
      * @param disabled Set the status for this schema 
      */
-    public DefaultSchema( String name, String owner, String[] dependencies, boolean disabled )
+    public DefaultSchema( SchemaLoader schemaLoader, String name, String owner, String[] dependencies, boolean disabled )
     {
         if ( name == null )
         {
@@ -130,6 +133,8 @@ public class DefaultSchema implements Schema
         this.disabled = disabled;
 
         content = new HashSet<SchemaObjectWrapper>();
+        
+        this.schemaLoader = schemaLoader;
     }
 
 
@@ -230,6 +235,15 @@ public class DefaultSchema implements Schema
     public Set<SchemaObjectWrapper> getContent()
     {
         return content;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public SchemaLoader getSchemaLoader()
+    {
+        return schemaLoader;
     }
 
 

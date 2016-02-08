@@ -101,4 +101,12 @@ public interface Schema
      * @return The Set of associated SchemaObjects
      */
     Set<SchemaObjectWrapper> getContent();
+    
+    
+    /**
+     * Gets the SchemaLoader this Schema has to be loaded with
+     * 
+     * @return The SchemaLoader in use
+     */
+    SchemaLoader getSchemaLoader();
 }
