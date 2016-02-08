@@ -651,7 +651,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
         if ( schema == null )
         {
-            schema = new DefaultSchema( schemaName );
+            schema = new DefaultSchema( this, schemaName );
 
             schemaMap.put( schemaName, schema );
         }
