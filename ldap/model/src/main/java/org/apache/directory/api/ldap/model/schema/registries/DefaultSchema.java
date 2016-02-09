@@ -261,6 +261,12 @@ public class DefaultSchema implements Schema
         sb.append( owner );
         sb.append( "\n\t\tDependencies: " );
         sb.append( Arrays.toString( dependencies ) );
+        sb.append(  "\n\t\tSchemaLoader : " );
+        
+        if ( schemaLoader != null )
+        {
+            sb.append( schemaLoader.getClass().getSimpleName() );
+        }
 
         // TODO : print the associated ShcemaObjects
         return sb.toString();
