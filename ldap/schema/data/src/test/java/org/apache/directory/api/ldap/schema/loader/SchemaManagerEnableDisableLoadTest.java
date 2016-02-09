@@ -30,6 +30,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -141,7 +142,7 @@ public class SchemaManagerEnableDisableLoadTest
         }
 
         // The enabled schemas
-        List<Schema> enabled = schemaManager.getEnabled();
+        Collection<Schema> enabled = schemaManager.getEnabled();
 
         assertEquals( enabled.size(), enabledSchemas.size() );
 

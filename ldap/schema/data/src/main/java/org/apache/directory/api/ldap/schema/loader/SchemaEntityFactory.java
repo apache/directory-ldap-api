@@ -261,7 +261,7 @@ public class SchemaEntityFactory implements EntityFactory
             dependencies = depsSet.toArray( EMPTY_ARRAY );
         }
 
-        return new DefaultSchema( name, owner, dependencies, isDisabled );
+        return new DefaultSchema( null, name, owner, dependencies, isDisabled );
     }
 
 

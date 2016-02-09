@@ -214,7 +214,7 @@ public class SchemaManagerLoadTest
     // Test the load( String... schemaName) method
     //-------------------------------------------------------------------------
     /**
-     * test loading the "system" schema
+     * test loading the "system" schema amone
      */
     @Test
     public void testLoadSystem() throws Exception
@@ -705,7 +705,7 @@ public class SchemaManagerLoadTest
 
         Schema system = loader.getSchema( "system" );
         Schema core = loader.getSchema( "core" );
-        Schema empty = new DefaultSchema( "empty" );
+        Schema empty = new DefaultSchema( loader, "empty" );
         Schema cosine = loader.getSchema( "cosine" );
         Schema inetOrgPerson = loader.getSchema( "InetOrgPerson" );
 
@@ -739,7 +739,7 @@ public class SchemaManagerLoadTest
         LdifSchemaLoader loader = new LdifSchemaLoader( schemaRepository );
         SchemaManager schemaManager = new DefaultSchemaManager( loader );
 
-        Schema dummy = new DefaultSchema( "dummy" );
+        Schema dummy = new DefaultSchema( loader, "dummy" );
 
         assertTrue( schemaManager.load( dummy ) );
 
@@ -767,7 +767,7 @@ public class SchemaManagerLoadTest
         LdifSchemaLoader loader = new LdifSchemaLoader( schemaRepository );
         SchemaManager schemaManager = new DefaultSchemaManager( loader );
 
-        Schema dummy = new DefaultSchema( "dummy" );
+        Schema dummy = new DefaultSchema( loader, "dummy" );
         dummy.addDependencies( "bad" );
 
         assertFalse( schemaManager.load( dummy ) );
@@ -787,16 +787,14 @@ public class SchemaManagerLoadTest
     }
 
 
-    @Ignore("loadDisabled() method need to be fixed")
     @Test
     public void testLoadDisabled() throws Exception
     {
-        LdifSchemaLoader loader = new LdifSchemaLoader( schemaRepository );
-        SchemaManager schemaManager = new DefaultSchemaManager( loader );
+        SchemaManager schemaManager = new DefaultSchemaManager();
 
         assertTrue( schemaManager.loadDisabled( "nis" ) );
 
-        assertFalse( schemaManager.getErrors().isEmpty() );
+        assertTrue( schemaManager.getErrors().isEmpty() );
 
         AttributeType at = schemaManager.getAttributeType( "uidNumber" );
         // if nis schema was loaded then the at will not be null

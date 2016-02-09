@@ -280,7 +280,7 @@ public class SchemaManagerLoadWithDepsTest
     public void testLoadCosine() throws Exception
     {
         LdifSchemaLoader loader = new LdifSchemaLoader( schemaRepository );
-        SchemaManager schemaManager = new DefaultSchemaManager( loader );
+        SchemaManager schemaManager = new DefaultSchemaManager( loader.getAllSchemas() );
 
         schemaManager.loadWithDeps( "cosine" );
 
@@ -585,7 +585,7 @@ public class SchemaManagerLoadWithDepsTest
 
         Schema system = loader.getSchema( "system" );
         Schema core = loader.getSchema( "core" );
-        Schema empty = new DefaultSchema( "empty" );
+        Schema empty = new DefaultSchema( loader, "empty" );
         Schema cosine = loader.getSchema( "cosine" );
         Schema inetOrgPerson = loader.getSchema( "InetOrgPerson" );
 

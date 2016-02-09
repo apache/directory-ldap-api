@@ -22,7 +22,6 @@ package org.apache.directory.api.ldap.model.schema.registries;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -55,32 +54,6 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     
     /** The flag that tells about the SchemaLoader mode : relaxed or strict */
     private boolean relaxed;
-
-    /**
-     * a map implementation which converts the keys to lower case before inserting
-     */
-    private static class LowerCaseKeyMap extends HashMap<String, Schema>
-    {
-        private static final long serialVersionUID = 1L;
-
-
-        @Override
-        public Schema put( String key, Schema value )
-        {
-            return super.put( Strings.toLowerCaseAscii( key ), value );
-        }
-
-
-        @Override
-        public void putAll( Map<? extends String, ? extends Schema> map )
-        {
-            for ( Map.Entry<? extends String, ? extends Schema> e : map.entrySet() )
-            {
-                put( e.getKey(), e.getValue() );
-            }
-        }
-    }
-
 
     /**
      * {@inheritDoc}

@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema;
 
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,7 +41,6 @@ import org.apache.directory.api.ldap.model.schema.registries.ObjectClassRegistry
 import org.apache.directory.api.ldap.model.schema.registries.OidRegistry;
 import org.apache.directory.api.ldap.model.schema.registries.Registries;
 import org.apache.directory.api.ldap.model.schema.registries.Schema;
-import org.apache.directory.api.ldap.model.schema.registries.SchemaLoader;
 import org.apache.directory.api.ldap.model.schema.registries.SyntaxCheckerRegistry;
 
 
@@ -313,7 +313,13 @@ public interface SchemaManager
     /**
      * @return the list of all the enabled schema
      */
-    List<Schema> getEnabled();
+    Collection<Schema> getEnabled();
+
+
+    /**
+     * @return the list of all schemas
+     */
+    Collection<Schema> getAllSchemas();
 
 
     /**
@@ -655,14 +661,6 @@ public interface SchemaManager
 
 
     /**
-     * Associate a Schema loader to this SchemaManager
-     *
-     * @param schemaLoader The schema loader to use
-     */
-    void setSchemaLoader( SchemaLoader schemaLoader );
-
-
-    /**
      * @return the namingContext
      */
     Dn getNamingContext();
@@ -677,12 +675,6 @@ public interface SchemaManager
 
 
     /**
-     * @return The used loader
-     */
-    SchemaLoader getLoader();
-
-
-    /**
      * Registers a new SchemaObject. The registries will be updated only if it's
      * consistent after this addition, if the SchemaManager is in Strict mode.
      * If something went wrong during this operation, the 
@@ -694,6 +686,34 @@ public interface SchemaManager
      * the registration operation is not supported
      */
     boolean add( SchemaObject schemaObject ) throws LdapException;
+    
+    
+    /**
+     * Add a new Schema into the SchemaManager.
+     *
+     * @param schema The schema to add
+     * @return <tt>true</tt> if the Shcema has been correctly loaded, <tt>false</tt> if we had some errors 
+     */
+    //boolean add( Schema schema ) throws LdapException;
+    
+    
+    /**
+     * Add a new Schema from a file into the SchemaManager. We will use the default schemaLoader.
+     *
+     * @param schemaFile The file containing the schema to add
+     * @return <tt>true</tt> if the Shcema has been correctly loaded, <tt>false</tt> if we had some errors 
+     */
+    //boolean add( String schemaFile ) throws LdapException;
+
+    
+    /**
+     * Add a new Schema into the SchemaManager, using a new SchemaLoader.
+     *
+     * @param schemaFile The file containing the schema to add
+     * @param schemaLoader The SchemaLoader to use to load this new schema
+     * @return <tt>true</tt> if the Shcema has been correctly loaded, <tt>false</tt> if we had some errors 
+     */
+    //boolean add( String schemaFile, SchemaLoader schemaLoader ) throws LdapException;
 
 
     /**

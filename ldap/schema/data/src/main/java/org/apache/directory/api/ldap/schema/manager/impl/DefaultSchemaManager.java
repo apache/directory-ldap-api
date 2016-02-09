@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.schema.manager.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -68,6 +69,7 @@ import org.apache.directory.api.ldap.model.schema.registries.ImmutableNormalizer
 import org.apache.directory.api.ldap.model.schema.registries.ImmutableObjectClassRegistry;
 import org.apache.directory.api.ldap.model.schema.registries.ImmutableSyntaxCheckerRegistry;
 import org.apache.directory.api.ldap.model.schema.registries.LdapSyntaxRegistry;
+import org.apache.directory.api.ldap.model.schema.registries.LowerCaseKeyMap;
 import org.apache.directory.api.ldap.model.schema.registries.MatchingRuleRegistry;
 import org.apache.directory.api.ldap.model.schema.registries.MatchingRuleUseRegistry;
 import org.apache.directory.api.ldap.model.schema.registries.NameFormRegistry;
@@ -106,14 +108,18 @@ public class DefaultSchemaManager implements SchemaManager
     /** The list of errors produced when loading some schema elements */
     private List<Throwable> errors;
 
-    /** The Schema schemaLoader used by this SchemaManager */
-    private SchemaLoader schemaLoader;
-
     /** the factory that generates respective SchemaObjects from LDIF entries */
     private final EntityFactory factory;
 
     /** A Map containing all the schema being dependent from a schema */
-    private Map<String, Set<String>> schemaDependences = new HashMap<String, Set<String>>();
+    private Map<String, Set<String>> schemaDependencies = new HashMap<String, Set<String>>();
+    
+    /**
+     * A map of all available schema names to schema objects. This map is
+     * populated when this class is created with all the schemas present in
+     * the LDIF based schema repository.
+     */
+    private Map<String, Schema> schemaMap = new LowerCaseKeyMap();
 
     /** A flag indicating that the SchemaManager is relaxed or not */
     private boolean isRelaxed = STRICT;
@@ -125,7 +131,14 @@ public class DefaultSchemaManager implements SchemaManager
     {
         // Default to the the root (one schemaManager for all the entries
         namingContext = Dn.ROOT_DSE;
-        this.schemaLoader = new JarLdifSchemaLoader();
+        SchemaLoader schemaLoader = new JarLdifSchemaLoader();
+        
+        
+        for ( Schema schema : schemaLoader.getAllSchemas() )
+        {
+            schemaMap.put( schema.getSchemaName(), schema );
+        }
+        
         errors = new ArrayList<Throwable>();
         registries = new Registries();
         factory = new SchemaEntityFactory();
@@ -133,56 +146,74 @@ public class DefaultSchemaManager implements SchemaManager
         loadAllEnabled();
     }
 
+    
     /**
      * Creates a new instance of DefaultSchemaManager with the default schema schemaLoader
-     *
-     * @param relaxed If teh schema  manager should be relaxed or not
+     * 
+     * @param schemas The list of schema to load
      */
-    public DefaultSchemaManager( boolean relaxed ) throws Exception
+    public DefaultSchemaManager( Collection<Schema> schemas ) throws Exception
     {
         // Default to the the root (one schemaManager for all the entries
         namingContext = Dn.ROOT_DSE;
-        this.schemaLoader = new JarLdifSchemaLoader();
+        
+        for ( Schema schema : schemas )
+        {
+            schemaMap.put( schema.getSchemaName(), schema );
+        }
+        
+        //this.schemaLoader = new JarLdifSchemaLoader();
+        errors = new ArrayList<Throwable>();
+        registries = new Registries();
+        factory = new SchemaEntityFactory();
+        isRelaxed = STRICT;
+    }
+
+    
+    /**
+     * Creates a new instance of DefaultSchemaManager with the default schema schemaLoader
+     * 
+     * @param schemaLoader The schemaLoader containing the schemas to load
+     */
+    public DefaultSchemaManager( SchemaLoader schemaLoader ) throws Exception
+    {
+        // Default to the the root (one schemaManager for all the entries
+        namingContext = Dn.ROOT_DSE;
+        
+        for ( Schema schema : schemaLoader.getAllSchemas() )
+        {
+            schemaMap.put( schema.getSchemaName(), schema );
+        }
+        
+        //this.schemaLoader = new JarLdifSchemaLoader();
+        errors = new ArrayList<Throwable>();
+        registries = new Registries();
+        factory = new SchemaEntityFactory();
+        isRelaxed = STRICT;
+    }
+    
+
+    /**
+     * Creates a new instance of DefaultSchemaManager with the default schema schemaLoader
+     *
+     * @param relaxed If the schema  manager should be relaxed or not
+     * @param schemas The list of schema to load
+     */
+    public DefaultSchemaManager( boolean relaxed, Collection<Schema> schemas ) throws Exception
+    {
+        // Default to the the root (one schemaManager for all the entries
+        namingContext = Dn.ROOT_DSE;
+
+        for ( Schema schema : schemas )
+        {
+            schemaMap.put( schema.getSchemaName(), schema );
+        }
+        
+        //this.schemaLoader = new JarLdifSchemaLoader();
         errors = new ArrayList<Throwable>();
         registries = new Registries();
         factory = new SchemaEntityFactory();
         isRelaxed = relaxed;
-        loadAllEnabled();
-    }
-
-
-    /**
-     * Creates a new instance of DefaultSchemaManager with the default schema schemaLoader
-     *
-     * @param loader The schema loader to use
-     */
-    public DefaultSchemaManager( SchemaLoader loader )
-    {
-        // Default to the the root (one schemaManager for all the entries
-        namingContext = Dn.ROOT_DSE;
-        this.schemaLoader = loader;
-        errors = new ArrayList<Throwable>();
-        registries = new Registries();
-        factory = new SchemaEntityFactory();
-        isRelaxed = loader.isRelaxed();
-    }
-
-
-    /**
-     * Creates a new instance of DefaultSchemaManager, for a specific
-     * naming context
-     *
-     * @param loader The schema loader to use
-     * @param namingContext The associated NamingContext
-     */
-    public DefaultSchemaManager( SchemaLoader loader, Dn namingContext )
-    {
-        this.namingContext = namingContext;
-        this.schemaLoader = loader;
-        errors = new ArrayList<Throwable>();
-        registries = new Registries();
-        factory = new SchemaEntityFactory();
-        isRelaxed = loader.isRelaxed();
     }
 
 
@@ -229,7 +260,7 @@ public class DefaultSchemaManager implements SchemaManager
 
         for ( String schemaName : schemas )
         {
-            Schema schema = schemaLoader.getSchema( schemaName );
+            Schema schema = schemaMap.get( schemaName );
 
             if ( schema != null )
             {
@@ -250,6 +281,7 @@ public class DefaultSchemaManager implements SchemaManager
     {
         // Create a content container for this schema
         registries.addSchema( schema.getSchemaName() );
+        schemaMap.put( schema.getSchemaName(), schema );
 
         // And inject any existing SchemaObject into the registries
         try
@@ -434,7 +466,7 @@ public class DefaultSchemaManager implements SchemaManager
             {
                 for ( String dependency : schema.getDependencies() )
                 {
-                    Schema dependencySchema = schemaLoader.getSchema( dependency );
+                    Schema dependencySchema = schema.getSchemaLoader().getSchema( dependency );
 
                     if ( dependencySchema.isDisabled() )
                     {
@@ -543,6 +575,25 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    public List<Schema> getAllSchemas()
+    {
+        List<Schema> schemas = new ArrayList<Schema>();
+
+        for ( Schema schema : schemaMap.values() )
+        {
+            if ( schema.isEnabled() )
+            {
+                schemas.add( schema );
+            }
+        }
+
+        return schemas;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public List<Throwable> getErrors()
     {
         return errors;
@@ -621,12 +672,11 @@ public class DefaultSchemaManager implements SchemaManager
                     load( registries, schema );
 
                     // Update the schema dependences if needed
-
                     if ( schema.getDependencies() != null )
                     {
                         for ( String dep : schema.getDependencies() )
                         {
-                            Set<String> deps = schemaDependences.get( dep );
+                            Set<String> deps = schemaDependencies.get( dep );
 
                             if ( deps == null )
                             {
@@ -635,12 +685,12 @@ public class DefaultSchemaManager implements SchemaManager
                             }
 
                             // Replace the dependences
-                            schemaDependences.put( dep, deps );
+                            schemaDependencies.put( dep, deps );
                         }
                     }
 
-                    // add the schema to the schemaLoader
-                    schemaLoader.addSchema( schema );
+                    // add the schema to the SchemaMap
+                    schemaMap.put( schema.getSchemaName(), schema );
                 }
 
                 // Build the cross references
@@ -716,7 +766,7 @@ public class DefaultSchemaManager implements SchemaManager
             {
                 for ( String dependency : schema.getDependencies() )
                 {
-                    Schema dependencySchema = schemaLoader.getSchema( dependency );
+                    Schema dependencySchema = schemaMap.get( dependency );
 
                     if ( dependencySchema == null )
                     {
@@ -788,7 +838,12 @@ public class DefaultSchemaManager implements SchemaManager
      */
     private void addAttributeTypes( Schema schema, Registries registries ) throws LdapException, IOException
     {
-        for ( Entry entry : schemaLoader.loadAttributeTypes( schema ) )
+        if ( schema.getSchemaLoader() == null )
+        {
+            return;
+        }
+
+        for ( Entry entry : schema.getSchemaLoader().loadAttributeTypes( schema ) )
         {
             AttributeType attributeType = factory.getAttributeType( this, entry, registries, schema.getSchemaName() );
 
@@ -802,7 +857,12 @@ public class DefaultSchemaManager implements SchemaManager
      */
     private void addComparators( Schema schema, Registries registries ) throws LdapException, IOException
     {
-        for ( Entry entry : schemaLoader.loadComparators( schema ) )
+        if ( schema.getSchemaLoader() == null )
+        {
+            return;
+        }
+        
+        for ( Entry entry : schema.getSchemaLoader().loadComparators( schema ) )
         {
             LdapComparator<?> comparator = factory.getLdapComparator( this, entry, registries, schema.getSchemaName() );
 
@@ -818,7 +878,7 @@ public class DefaultSchemaManager implements SchemaManager
     //    @SuppressWarnings("PMD.UnusedFormalParameter")
     //    private void addDitContentRules( Schema schema, Registries registries ) throws LdapException, IOException
     //    {
-    //        if ( !schemaLoader.loadDitContentRules( schema ).isEmpty() )
+    //        if ( !schema.getSchemaLoader().loadDitContentRules( schema ).isEmpty() )
     //        {
     //            throw new NotImplementedException( I18n.err( I18n.ERR_11003 ) );
     //        }
@@ -831,7 +891,7 @@ public class DefaultSchemaManager implements SchemaManager
     //    @SuppressWarnings("PMD.UnusedFormalParameter")
     //    private void addDitStructureRules( Schema schema, Registries registries ) throws LdapException, IOException
     //    {
-    //        if ( !schemaLoader.loadDitStructureRules( schema ).isEmpty() )
+    //        if ( !schema.getSchemaLoader().loadDitStructureRules( schema ).isEmpty() )
     //        {
     //            throw new NotImplementedException( I18n.err( I18n.ERR_11004 ) );
     //        }
@@ -842,7 +902,12 @@ public class DefaultSchemaManager implements SchemaManager
      */
     private void addMatchingRules( Schema schema, Registries registries ) throws LdapException, IOException
     {
-        for ( Entry entry : schemaLoader.loadMatchingRules( schema ) )
+        if ( schema.getSchemaLoader() == null )
+        {
+            return;
+        }
+
+        for ( Entry entry : schema.getSchemaLoader().loadMatchingRules( schema ) )
         {
             MatchingRule matchingRule = factory.getMatchingRule( this, entry, registries, schema.getSchemaName() );
 
@@ -858,11 +923,11 @@ public class DefaultSchemaManager implements SchemaManager
     //    @SuppressWarnings("PMD.UnusedFormalParameter")
     //    private void addMatchingRuleUses( Schema schema, Registries registries ) throws LdapException, IOException
     //    {
-    //        if ( !schemaLoader.loadMatchingRuleUses( schema ).isEmpty() )
+    //        if ( !schema.getSchemaLoader().loadMatchingRuleUses( schema ).isEmpty() )
     //        {
     //            throw new NotImplementedException( I18n.err( I18n.ERR_11005 ) );
     //        }
-    //        // for ( Entry entry : schemaLoader.loadMatchingRuleUses( schema ) )
+    //        // for ( Entry entry : schema.getSchemaLoader().loadMatchingRuleUses( schema ) )
     //        // {
     //        //     throw new NotImplementedException( I18n.err( I18n.ERR_11005 ) );
     //        // }
@@ -875,7 +940,7 @@ public class DefaultSchemaManager implements SchemaManager
     //    @SuppressWarnings("PMD.UnusedFormalParameter")
     //    private void addNameForms( Schema schema, Registries registries ) throws LdapException, IOException
     //    {
-    //        if ( !schemaLoader.loadNameForms( schema ).isEmpty() )
+    //        if ( !schema.getSchemaLoader().loadNameForms( schema ).isEmpty() )
     //        {
     //            throw new NotImplementedException( I18n.err( I18n.ERR_11006 ) );
     //        }
@@ -886,7 +951,12 @@ public class DefaultSchemaManager implements SchemaManager
      */
     private void addNormalizers( Schema schema, Registries registries ) throws LdapException, IOException
     {
-        for ( Entry entry : schemaLoader.loadNormalizers( schema ) )
+        if ( schema.getSchemaLoader() == null )
+        {
+            return;
+        }
+
+        for ( Entry entry : schema.getSchemaLoader().loadNormalizers( schema ) )
         {
             Normalizer normalizer = factory.getNormalizer( this, entry, registries, schema.getSchemaName() );
 
@@ -900,7 +970,12 @@ public class DefaultSchemaManager implements SchemaManager
      */
     private void addObjectClasses( Schema schema, Registries registries ) throws LdapException, IOException
     {
-        for ( Entry entry : schemaLoader.loadObjectClasses( schema ) )
+        if ( schema.getSchemaLoader() == null )
+        {
+            return;
+        }
+
+        for ( Entry entry : schema.getSchemaLoader().loadObjectClasses( schema ) )
         {
             ObjectClass objectClass = factory.getObjectClass( this, entry, registries, schema.getSchemaName() );
 
@@ -914,7 +989,12 @@ public class DefaultSchemaManager implements SchemaManager
      */
     private void addSyntaxes( Schema schema, Registries registries ) throws LdapException, IOException
     {
-        for ( Entry entry : schemaLoader.loadSyntaxes( schema ) )
+        if ( schema.getSchemaLoader() == null )
+        {
+            return;
+        }
+
+        for ( Entry entry : schema.getSchemaLoader().loadSyntaxes( schema ) )
         {
             LdapSyntax syntax = factory.getSyntax( this, entry, registries, schema.getSchemaName() );
 
@@ -928,7 +1008,12 @@ public class DefaultSchemaManager implements SchemaManager
      */
     private void addSyntaxCheckers( Schema schema, Registries registries ) throws LdapException, IOException
     {
-        for ( Entry entry : schemaLoader.loadSyntaxCheckers( schema ) )
+        if ( schema.getSchemaLoader() == null )
+        {
+            return;
+        }
+
+        for ( Entry entry : schema.getSchemaLoader().loadSyntaxCheckers( schema ) )
         {
             SyntaxChecker syntaxChecker = factory.getSyntaxChecker( this, entry, registries, schema.getSchemaName() );
 
@@ -981,9 +1066,21 @@ public class DefaultSchemaManager implements SchemaManager
      */
     public boolean loadAllEnabled() throws Exception
     {
-        Schema[] schemas = schemaLoader.getAllEnabled().toArray( new Schema[0] );
-
-        return loadWithDeps( schemas );
+        Schema[] schemas = new Schema[schemaMap.size()];
+        int i = 0;
+        
+        for ( Schema schema : schemaMap.values() )
+        {
+            if ( schema.isEnabled() )
+            {
+                schemas[i++] = schema;
+            }
+        }
+        
+        Schema[] enabledSchemas = new Schema[i];
+        System.arraycopy( schemas, 0, enabledSchemas, 0, i );
+        
+        return loadWithDeps( enabledSchemas );
     }
 
 
@@ -992,9 +1089,18 @@ public class DefaultSchemaManager implements SchemaManager
      */
     public boolean loadAllEnabledRelaxed() throws Exception
     {
-        Schema[] schemas = schemaLoader.getAllEnabled().toArray( new Schema[0] );
-
-        return loadWithDepsRelaxed( schemas );
+        Schema[] enabledSchemas = new Schema[schemaMap.size()];
+        int i = 0;
+        
+        for ( Schema schema : schemaMap.values() )
+        {
+            if ( schema.isEnabled() )
+            {
+                enabledSchemas[i++] = schema;
+            }
+        }
+        
+        return loadWithDepsRelaxed( enabledSchemas );
     }
 
 
@@ -1195,7 +1301,7 @@ public class DefaultSchemaManager implements SchemaManager
             else
             {
                 // Call recursively this method
-                Schema schemaDep = schemaLoader.getSchema( depName );
+                Schema schemaDep = schemaMap.get( depName );
                 loadDepsFirst( registries, schemaDep );
             }
         }
@@ -1293,7 +1399,7 @@ public class DefaultSchemaManager implements SchemaManager
             else
             {
                 // Call recursively this method
-                Schema schemaDep = schemaLoader.getSchema( depName );
+                Schema schemaDep = schema.getSchemaLoader().getSchema( depName );
                 loadDepsFirstRelaxed( schemaDep );
             }
         }
@@ -1357,7 +1463,7 @@ public class DefaultSchemaManager implements SchemaManager
                     // Update the schema dependences
                     for ( String dep : schema.getDependencies() )
                     {
-                        Set<String> deps = schemaDependences.get( dep );
+                        Set<String> deps = schemaDependencies.get( dep );
 
                         if ( deps != null )
                         {
@@ -1365,7 +1471,7 @@ public class DefaultSchemaManager implements SchemaManager
                         }
                     }
 
-                    schemaLoader.removeSchema( schema );
+                    schemaMap.remove( schema.getSchemaName() );
                 }
 
                 // Build the cross references
@@ -1452,15 +1558,6 @@ public class DefaultSchemaManager implements SchemaManager
 
 
     /**
-     * {@inheritDoc}
-     */
-    public void setSchemaLoader( SchemaLoader schemaLoader )
-    {
-        this.schemaLoader = schemaLoader;
-    }
-
-
-    /**
      * @return the namingContext
      */
     public Dn getNamingContext()
@@ -1476,15 +1573,6 @@ public class DefaultSchemaManager implements SchemaManager
      */
     public void initialize() throws Exception
     {
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public SchemaLoader getLoader()
-    {
-        return schemaLoader;
     }
 
 
@@ -1750,7 +1838,7 @@ public class DefaultSchemaManager implements SchemaManager
             return MetaSchemaConstants.SCHEMA_OTHER;
         }
 
-        if ( schemaLoader.getSchema( schemaName ) == null )
+        if ( schemaMap.get( schemaName ) == null )
         {
             return null;
         }
@@ -2051,7 +2139,7 @@ public class DefaultSchemaManager implements SchemaManager
      */
     public Schema getLoadedSchema( String schemaName )
     {
-        return schemaLoader.getSchema( schemaName );
+        return schemaMap.get( schemaName );
     }
 
 
@@ -2062,7 +2150,8 @@ public class DefaultSchemaManager implements SchemaManager
     {
         try
         {
-            Schema schema = schemaLoader.getSchema( schemaName );
+            Schema schema = schemaMap.get( schemaName );
+            
             return schema != null;
         }
         catch ( Exception e )
@@ -2199,7 +2288,7 @@ public class DefaultSchemaManager implements SchemaManager
      */
     public Set<String> listDependentSchemaNames( String schemaName )
     {
-        return schemaDependences.get( schemaName );
+        return schemaDependencies.get( schemaName );
     }
 
 

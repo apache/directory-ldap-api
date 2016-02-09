@@ -21,6 +21,7 @@
 package org.apache.directory.api.ldap.schema.loader;
 
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -94,7 +95,32 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
         }
     }
 
+    /**
+     * Instantiates a new single LDIF schema loader.
+     */
+    public SingleLdifSchemaLoader( String schemaFile )
+    {
+        try
+        {
+            for ( String s : schemaObjectTypeRdns )
+            {
+                scObjEntryMap.put( s, new HashMap<String, List<Entry>>() );
+            }
 
+            InputStream in = new FileInputStream( schemaFile );
+
+            initializeSchemas( in );
+        }
+        catch ( Exception e )
+        {
+            throw new RuntimeException( e );
+        }
+    }
+
+
+    /**
+     * Initialize the Schema object from a Single LDIF file
+     */
     private void initializeSchemas( InputStream in ) throws Exception
     {
         LdifReader ldifReader = new LdifReader( in );
@@ -105,7 +131,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
         {
             LdifEntry ldifEntry = ldifReader.next();
             String dn = ldifEntry.getDn().getName();
-
+            
             if ( SCHEMA_START_PATTERN.matcher( dn ).matches() )
             {
                 Schema schema = getSchema( ldifEntry.getEntry() );
@@ -122,6 +148,9 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
     }
 
 
+    /**
+     * Load all the schemaObjects
+     */
     private void loadSchemaObject( String schemaName, LdifEntry ldifEntry ) throws Exception
     {
         for ( String scObjTypeRdn : schemaObjectTypeRdns )
@@ -136,6 +165,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
             {
                 Map<String, List<Entry>> m = scObjEntryMap.get( scObjTypeRdn );
                 List<Entry> entryList = m.get( schemaName );
+                
                 if ( entryList == null )
                 {
                     entryList = new ArrayList<Entry>();
@@ -162,6 +192,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
         for ( Schema s : schemas )
         {
             List<Entry> preLoaded = m.get( s.getSchemaName() );
+            
             if ( preLoaded != null )
             {
                 atList.addAll( preLoaded );
