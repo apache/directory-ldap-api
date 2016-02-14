@@ -466,7 +466,7 @@ public class DefaultSchemaManager implements SchemaManager
             {
                 for ( String dependency : schema.getDependencies() )
                 {
-                    Schema dependencySchema = schema.getSchemaLoader().getSchema( dependency );
+                    Schema dependencySchema = schemaMap.get( dependency );
 
                     if ( dependencySchema.isDisabled() )
                     {
