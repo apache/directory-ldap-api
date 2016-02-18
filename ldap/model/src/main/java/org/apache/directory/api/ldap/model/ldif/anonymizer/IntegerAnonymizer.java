@@ -21,8 +21,9 @@
 package org.apache.directory.api.ldap.model.ldif.anonymizer;
 
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 
 import org.apache.directory.api.ldap.model.entry.Attribute;
@@ -39,9 +40,34 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueEx
  */
 public class IntegerAnonymizer extends AbstractAnonymizer<String>
 {
-    /** Create a random generator */
-    Random random = new Random( System.currentTimeMillis() );
+    /** The latest anonymized Integer value map */
+    private Map<Integer, String> latestIntegerMap;
 
+    /**
+     * Creates a new instance of IntegerAnonymizer.
+     */
+    public IntegerAnonymizer()
+    {
+        latestIntegerMap = new HashMap<Integer, String>();
+    }
+
+    
+    /**
+     * Creates a new instance of IntegerAnonymizer.
+     * 
+     * @param latestIntegerMap The map containing the latest integer value for each length 
+     */
+    public IntegerAnonymizer( Map<Integer, String> latestIntegerMap )
+    {
+        if ( latestIntegerMap == null ) 
+        {
+            this.latestIntegerMap = new HashMap<Integer, String>();
+        }
+        else
+        {
+            this.latestIntegerMap = latestIntegerMap;
+        }
+    }
 
     /**
      * Anonymize an attribute using pure random values (either chars of bytes, depending on the Attribute type)
@@ -49,46 +75,126 @@ public class IntegerAnonymizer extends AbstractAnonymizer<String>
     public Attribute anonymize( Map<Value<String>, Value<String>> valueMap, Set<Value<String>> valueSet, Attribute attribute )
     {
         Attribute result = new DefaultAttribute( attribute.getAttributeType() );
-        random.setSeed( System.nanoTime() );
 
         for ( Value<?> value : attribute )
         {
             if ( value instanceof StringValue )
             {
-                String strValue = value.getString();
-
-                int length = strValue.length();
-
-                // Same size
-                char[] newValue = new char[length];
-
-                boolean isFirst = true;
+                Value<String> anonymized =  valueMap.get( value );
                 
-                for ( int i = 0; i < length; i++ )
+                if ( anonymized != null )
                 {
-                    if ( isFirst && length > 1 ) 
+                    try
                     {
-                        newValue[i] = ( char ) ( random.nextInt( 9 ) + '1' );
+                        result.add( anonymized );
                     }
-                    else
+                    catch ( LdapInvalidAttributeValueException e )
                     {
-                        newValue[i] = ( char ) ( random.nextInt( 10 ) + '0' );
+                        // Handle me...
                     }
-
-                    isFirst = false;
                 }
-                
-                try
+                else
                 {
-                    result.add( new String( newValue ) );
-                }
-                catch ( LdapInvalidAttributeValueException e )
-                {
-                    // TODO : handle that
+                    String strValue = value.getNormValue().toString();
+                    String newValue = computeNewIntegerValue( strValue );
+    
+                    try
+                    {
+                        result.add( newValue );
+                        Value<String> anonValue = new StringValue( attribute.getAttributeType(), newValue );
+                        valueMap.put( ( Value<String> ) value, anonValue );
+                        valueSet.add( anonValue );
+                    }
+                    catch ( LdapInvalidAttributeValueException e )
+                    {
+                        // TODO : handle that
+                    }
                 }
             }
         }
 
         return result;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public Map<Integer, String> getLatestIntegerMap()
+    {
+        return latestIntegerMap;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void setLatestIntegerMap( Map<Integer, String> latestIntegerMap )
+    {
+        this.latestIntegerMap = latestIntegerMap;
+    }
+
+    
+    /**
+     * Compute the next Integer value
+     *
+     * @param valStr The original value
+     * @return The anonymized value
+     */
+    private String computeNewIntegerValue( String valStr )
+    {
+        int length = valStr.length();
+        String latestInteger = latestIntegerMap.get( length );
+        
+        if ( latestInteger == null )
+        {
+            // No previous value : create a new one
+            char[] newValue = new char[length];
+            
+            Arrays.fill( newValue, '9' );
+            
+            String anonymizedValue = new String( newValue );
+            latestIntegerMap.put( length, anonymizedValue );
+            
+            return anonymizedValue;
+        }
+        else
+        {
+            // Compute a new value
+            char[] latest = latestInteger.toCharArray();
+            boolean overflow = true;
+            
+            for ( int i = length - 1; i >= 0; i-- )
+            {
+                if ( latest[i] == '0' )
+                {
+                    latest[i] = '9';
+                }
+                else
+                {
+                    latest[i]--;
+                    overflow = false;
+                    break;
+                }
+            }
+            
+            // Corner case : we can't have a value starting with '0' unless its length is 1
+            if ( ( length > 1 ) && ( latest[0] == '0' ) )
+            {
+                throw new RuntimeException( "Overflow for " + valStr );
+            }
+            
+            String anonymizedValue = new String( latest );
+            
+            if ( overflow )
+            {
+                // We have exhausted all the possible values...
+                throw new RuntimeException( "Cannot compute a new value for " + anonymizedValue );
+            }
+            
+            latestIntegerMap.put( length, anonymizedValue );
+            
+            return anonymizedValue;
+        }
     }
 }

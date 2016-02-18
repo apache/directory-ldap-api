@@ -27,16 +27,17 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.directory.api.ldap.model.entry.Attribute;
+import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.ldif.LdifEntry;
 import org.apache.directory.api.ldap.model.ldif.LdifReader;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
-import org.junit.BeforeClass;
+import org.apache.directory.api.util.Strings;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -53,13 +54,13 @@ import static org.junit.Assert.assertNotSame;
  */
 public class LdifAnonymizerTest
 {
-    private static SchemaManager schemaManager;
+    private SchemaManager schemaManager;
     
-    private static LdifReader ldifReader;
+    private LdifReader ldifReader;
 
     
-    @BeforeClass
-    public static void setup()
+    @Before
+    public void setup()
     {
         schemaManager = null;
         
@@ -91,7 +92,7 @@ public class LdifAnonymizerTest
             "ObjectClass: top\n" +
             "objectClass: person\n" +
             "cn: emmanuel\n" +
-            "sn: elecharny\n"+
+            "sn: lecharnye\n"+
             "\n" +
             "dn: cn=emmanuel,dc=test,dc=example,dc=com\n" +
             "ObjectClass: top\n" +
@@ -118,7 +119,59 @@ public class LdifAnonymizerTest
         anonymizer.addNamingContext( "dc=acme,dc=com" );
         anonymizer.removeAnonAttributeType( schemaManager.getAttributeType( "sn" ) );
         
-        anonymizer.anonymize( ldif );
+        String result = anonymizer.anonymize( ldif );
+        
+        List<LdifEntry> entries = ldifReader.parseLdif( result );
+        
+        assertEquals( 3, entries.size() );
+        
+        // First entry
+        LdifEntry ldifEntry = entries.get( 0 );
+        assertTrue( ldifEntry.isEntry() );
+        
+        Entry entry = ldifEntry.getEntry();
+        assertEquals( 3, entry.size() );
+        
+        assertEquals( "cn=AAAA,dc=example,dc=com", entry.getDn().toString() );
+
+        Attribute cn = entry.get( "cn" );
+        assertEquals( "AAAA", cn.getString() );
+
+        Attribute sn = entry.get( "sn" );
+        assertEquals( "AAAA", sn.getString() );
+        
+        // Second entry
+        ldifEntry = entries.get( 1 );
+        assertTrue( ldifEntry.isEntry() );
+        
+        entry = ldifEntry.getEntry();
+        assertEquals( 3, entry.size() );
+        
+        assertEquals( "cn=AAAAAAAA,dc=acme,dc=com", entry.getDn().toString() );
+
+        cn = entry.get( "cn" );
+        assertEquals( "AAAAAAAA", cn.getString() );
+
+        sn = entry.get( "sn" );
+        assertEquals( "AAAAAAAAA", sn.getString() );
+        
+        // Third entry
+        ldifEntry = entries.get( 2 );
+        assertTrue( ldifEntry.isEntry() );
+        
+        entry = ldifEntry.getEntry();
+        assertEquals( 4, entry.size() );
+        
+        assertEquals( "cn=AAAAAAAA,dc=AAAA,dc=example,dc=com", entry.getDn().toString() );
+
+        cn = entry.get( "cn" );
+        assertEquals( "AAAAAAAA", cn.getString() );
+
+        sn = entry.get( "sn" );
+        assertEquals( "AAAAAAAAB", sn.getString() );
+
+        Attribute seeAlso = entry.get( "seeAlso" );
+        assertEquals( "cn=AAAAAAAA,dc=acme,dc=com", seeAlso.getString() );
     }
 
 
@@ -137,7 +190,31 @@ public class LdifAnonymizerTest
 
         LdifAnonymizer anonymizer = new LdifAnonymizer( schemaManager );
         anonymizer.addNamingContext( "dc=example,dc=com" );
-        anonymizer.anonymize( ldif );
+        String result = anonymizer.anonymize( ldif );
+        
+        List<LdifEntry> entries = ldifReader.parseLdif( result );
+        
+        assertEquals( 1, entries.size() );
+        
+        // Check the entry
+        LdifEntry ldifEntry = entries.get( 0 );
+        assertTrue( ldifEntry.isEntry() );
+        
+        Entry entry = ldifEntry.getEntry();
+        assertEquals( 4, entry.size() );
+        
+        // Here, we expect cn2 to be translated to AAA, because it was encountered in teh DN first
+        assertEquals( "cn=AAA+sn=AAAAAAAAA,dc=example,dc=com", entry.getDn().toString() );
+
+        Attribute cn = entry.get( "cn" );
+        assertEquals( 3, cn.size() );
+        assertTrue( cn.contains( "AAA", "AAB", "AAC" ) );
+
+        Attribute sn = entry.get( "sn" );
+        assertEquals( "AAAAAAAAA", sn.getString() );
+
+        Attribute givenname = entry.get( "givenname" );
+        assertEquals( "AAAA", givenname.getString() );
     }
 
 
@@ -152,12 +229,42 @@ public class LdifAnonymizerTest
                 "cn: cn2\n" +
                 "cn: cn3\n" +
                 "userPassword: test\n" +
+                "userPassword: tesu\n" +
                 "sn: elecharny\n" +
                 "givenname: test\n";
 
         LdifAnonymizer anonymizer = new LdifAnonymizer( schemaManager );
         anonymizer.addNamingContext( "dc=example,dc=com" );
-        anonymizer.anonymize( ldif );
+        String result = anonymizer.anonymize( ldif );
+        
+        List<LdifEntry> entries = ldifReader.parseLdif( result );
+        
+        assertEquals( 1, entries.size() );
+        
+        // Check the entry
+        LdifEntry ldifEntry = entries.get( 0 );
+        assertTrue( ldifEntry.isEntry() );
+        
+        Entry entry = ldifEntry.getEntry();
+        assertEquals( 5, entry.size() );
+        
+        // Here, we expect cn2 to be translated to AAA, because it was encountered in teh DN first
+        assertEquals( "cn=AAA+sn=AAAAAAAAA,dc=example,dc=com", entry.getDn().toString() );
+
+        Attribute cn = entry.get( "cn" );
+        assertEquals( 3, cn.size() );
+        assertTrue( cn.contains( "AAA", "AAB", "AAC" ) );
+
+        Attribute sn = entry.get( "sn" );
+        assertEquals( "AAAAAAAAA", sn.getString() );
+
+        Attribute givenname = entry.get( "givenname" );
+        assertEquals( "AAAA", givenname.getString() );
+
+        Attribute userPassword = entry.get( "userPassword" );
+        assertEquals( 2, userPassword.size() );
+        assertTrue( userPassword.contains( Strings.getBytesUtf8( "AAAA" ) ) );
+        assertTrue( userPassword.contains( Strings.getBytesUtf8( "AAAB" ) ) );
     }
 
 
@@ -193,19 +300,18 @@ public class LdifAnonymizerTest
         assertEquals( "member", attribute.getUpId() );
         assertEquals( 4, attribute.size() );
         
-        Set<String> originalValues = new HashSet<String>();
-        originalValues.add( "cn=acme1.com,ou=Servers,o=acme,dc=com" );
-        originalValues.add( "uid=john.doe@acme.com,ou=People,o=acme,dc=com" );
-        originalValues.add( "uid=jack.doe@acme.com,ou=People,o=acme,dc=com" );
-        originalValues.add( "uid=jim.gonzales@acme.com,ou=People,o=acme,dc=com" );
+        Set<String> values = new HashSet<String>();
+        values.add( "cn=AAAAAAAAA,ou=AAAAAAA,o=acme,dc=com" );
+        values.add( "uid=AAAAAAAAAAAAAAAAA,ou=AAAAAB,o=acme,dc=com" );
+        values.add( "uid=AAAAAAAAAAAAAAAAB,ou=AAAAAB,o=acme,dc=com" );
+        values.add( "uid=AAAAAAAAAAAAAAAAAAAAA,ou=AAAAAB,o=acme,dc=com" );
         
         for ( Value<?> value : attribute )
         {
             String str = value.getString();
             
             // We can only test the length and teh fact teh values are not equal (as the vale has been anonymized)
-            assertNotSame( 0, value.length() );
-            assertFalse( originalValues.contains( str ) );
+            assertTrue( values.contains( str ) );
             assertTrue( str.endsWith( ",o=acme,dc=com" ) );
         }
     }
@@ -241,9 +347,9 @@ public class LdifAnonymizerTest
         
         String value = attribute.getString();
         
-        // We can only test the length and teh fact teh values are not equal (as the vale has been anonymized)
-        assertEquals( "ACME Inc. Legal Team".length(), value.length() );
-        assertNotEquals( "ACME Inc. Legal Team", value );
+        // We can only test the length and the fact the values are not equal (as the vale has been anonymized)
+        assertEquals( "AAAAAAAAAAAAAAAAAAAA".length(), value.length() );
+        assertEquals( "AAAAAAAAAAAAAAAAAAAA", value );
     }
     
     

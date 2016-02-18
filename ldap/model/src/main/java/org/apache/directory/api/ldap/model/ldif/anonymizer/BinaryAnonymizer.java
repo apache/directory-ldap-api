@@ -21,8 +21,8 @@
 package org.apache.directory.api.ldap.model.ldif.anonymizer;
 
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 
 import org.apache.directory.api.ldap.model.entry.Attribute;
@@ -39,9 +39,34 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueEx
  */
 public class BinaryAnonymizer extends AbstractAnonymizer<byte[]>
 {
-    /** Create a random generator */
-    Random random = new Random( System.currentTimeMillis() );
+    /** The latest anonymized byte[] value map */
+    protected Map<Integer, byte[]> latestBytesMap = new HashMap<Integer, byte[]>();
 
+    /**
+     * Creates a new instance of BinaryAnonymizer.
+     */
+    public BinaryAnonymizer()
+    {
+        latestBytesMap = new HashMap<Integer, byte[]>();
+    }
+
+    
+    /**
+     * Creates a new instance of BinaryAnonymizer.
+     * 
+     * @param latestBytesMap The map containing the latest value for each length 
+     */
+    public BinaryAnonymizer( Map<Integer, byte[]> latestBytesMap )
+    {
+        if ( latestBytesMap == null )
+        {
+            this.latestBytesMap = new HashMap<Integer, byte[]>();
+        }
+        else
+        {
+            this.latestBytesMap = latestBytesMap;
+        }
+    }
 
     /**
      * Anonymize an attribute using pure random values (either chars of bytes, depending on the Attribute type)
@@ -49,56 +74,44 @@ public class BinaryAnonymizer extends AbstractAnonymizer<byte[]>
     public Attribute anonymize( Map<Value<byte[]>, Value<byte[]>> valueMap, Set<Value<byte[]>> valueSet, Attribute attribute )
     {
         Attribute result = new DefaultAttribute( attribute.getAttributeType() );
-        random.setSeed( System.nanoTime() );
 
         for ( Value<?> value : attribute )
         {
-            if ( value instanceof BinaryValue )
+            byte[] bytesValue = ( byte[] ) value.getNormValue();
+            byte[] newValue = computeNewValue( bytesValue );
+            
+            try
             {
-                byte[] bytesValue = value.getBytes();
-
-                int length = bytesValue.length;
-
-                // Same size
-                byte[] newValue = new byte[length];
-
-                for ( int i = 0; i < length; i++ )
-                {
-                    newValue[i] = ( byte ) ( random.nextInt( 'Z' - 'A' ) + 'A' );
-                }
-
-                try
-                {
-                    result.add( newValue );
-                }
-                catch ( LdapInvalidAttributeValueException e )
-                {
-                    // TODO : handle that
-                }
+                result.add( newValue );
+                Value<byte[]> anonValue = new BinaryValue( attribute.getAttributeType(), newValue );
+                valueMap.put( ( Value<byte[]> ) value, anonValue );
+                valueSet.add( anonValue );
             }
-            else
+            catch ( LdapInvalidAttributeValueException e )
             {
-                byte[] byteValue = value.getBytes();
-
-                // Same size
-                byte[] newValue = new byte[byteValue.length];
-
-                for ( int i = 0; i < byteValue.length; i++ )
-                {
-                    newValue[i] = ( byte ) random.nextInt();
-                }
-
-                try
-                {
-                    result.add( newValue );
-                }
-                catch ( LdapInvalidAttributeValueException e )
-                {
-                    // TODO : handle that
-                }
+                // TODO Auto-generated catch block
+                throw new RuntimeException( "Error while anonymizing the value" + value );
             }
         }
 
         return result;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public Map<Integer, byte[]> getLatestBytesMap()
+    {
+        return latestBytesMap;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void setLatestBytesgMap( Map<Integer, byte[]> latestBytesMap )
+    {
+        this.latestBytesMap = latestBytesMap;
     }
 }

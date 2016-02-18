@@ -22,14 +22,6 @@ package org.apache.directory.api.ldap.model.ldif.anonymizer;
 
 
 import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-
-import org.apache.directory.api.ldap.model.entry.Attribute;
-import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
-import org.apache.directory.api.ldap.model.entry.StringValue;
-import org.apache.directory.api.ldap.model.entry.Value;
-import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 
 
 /**
@@ -37,19 +29,34 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueEx
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class TelephoneNumberAnonymizer extends AbstractAnonymizer<String>
+public class TelephoneNumberAnonymizer extends IntegerAnonymizer
 {
-    /** Create a random generator */
-    Random random = new Random( System.currentTimeMillis() );
 
+    /**
+     * Creates a new instance of TelephoneNumberAnonymizer.
+     */
+    public TelephoneNumberAnonymizer()
+    {
+        super();
+    }
+
+    
+    /**
+     * Creates a new instance of TelephoneNumberAnonymizer.
+     * 
+     * @param latestIntegerMap The map containing the latest integer value for each length 
+     */
+    public TelephoneNumberAnonymizer( Map<Integer, String> latestIntegerMap )
+    {
+        super( latestIntegerMap );
+    }
 
     /**
      * Anonymize an attribute using pure random values (either chars of bytes, depending on the Attribute type)
-     */
+     *
     public Attribute anonymize( Map<Value<String>, Value<String>> valueMap, Set<Value<String>> valueSet, Attribute attribute )
     {
         Attribute result = new DefaultAttribute( attribute.getAttributeType() );
-        random.setSeed( System.nanoTime() );
 
         for ( Value<?> value : attribute )
         {
@@ -128,5 +135,5 @@ public class TelephoneNumberAnonymizer extends AbstractAnonymizer<String>
         }
 
         return result;
-    }
+    }*/
 }

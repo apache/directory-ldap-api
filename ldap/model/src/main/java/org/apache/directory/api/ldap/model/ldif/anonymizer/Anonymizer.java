@@ -61,4 +61,28 @@ public interface Anonymizer<K>
      * @param attributeAnonymizers The list of existing anonymizers
      */
     void setAnonymizers( Map<String, Anonymizer> attributeAnonymizers );
+    
+    
+    /**
+     * @return The latest String anonymized value map
+     */
+    Map<Integer, String> getLatestStringMap();
+    
+    
+    /**
+     * @param latestValueMap The latest String anonymized value map
+     */
+    void setLatestStringMap( Map<Integer, String> latestStringMap );
+    
+    
+    /**
+     * @return The latest byte[] anonymized value map
+     */
+    Map<Integer, byte[]> getLatestBytesMap();
+    
+    
+    /**
+     * @param latestBytesMap The latest byte[] anonymized value map
+     */
+    void setLatestBytesMap( Map<Integer, byte[]> latestBytesMap );
 }

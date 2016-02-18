@@ -38,7 +38,7 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StringAnonymizer extends AbstractAnonymizer<String>
+public class CaseSensitiveStringAnonymizer extends AbstractAnonymizer<String>
 {
     /** The latest anonymized String value map */
     private Map<Integer, String> latestStringMap;
@@ -46,10 +46,10 @@ public class StringAnonymizer extends AbstractAnonymizer<String>
     /**
      * Creates a new instance of StringAnonymizer.
      */
-    public StringAnonymizer()
+    public CaseSensitiveStringAnonymizer()
     {
         latestStringMap = new HashMap<Integer, String>();
-        caseSensitive = false;
+        caseSensitive = true;
     }
 
     
@@ -58,7 +58,7 @@ public class StringAnonymizer extends AbstractAnonymizer<String>
      * 
      * @param latestStringMap The map containing the latest value for each length 
      */
-    public StringAnonymizer( Map<Integer, String> latestStringMap )
+    public CaseSensitiveStringAnonymizer( Map<Integer, String> latestStringMap )
     {
         if ( latestStringMap == null ) 
         {
@@ -69,7 +69,7 @@ public class StringAnonymizer extends AbstractAnonymizer<String>
             this.latestStringMap = latestStringMap;
         }
 
-        caseSensitive = false;
+        caseSensitive = true ;
     }
     
     
