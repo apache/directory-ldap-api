@@ -69,7 +69,7 @@ public class CaseSensitiveStringAnonymizer extends AbstractAnonymizer<String>
             this.latestStringMap = latestStringMap;
         }
 
-        caseSensitive = true ;
+        caseSensitive = true;
     }
     
     
