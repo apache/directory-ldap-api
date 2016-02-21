@@ -22,70 +22,63 @@ package org.apache.directory.api.ldap.model.password;
 
 
 import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
-import org.apache.directory.api.util.Strings;
 
 
 /**
- * A class to store all informations about the existing
- * password found in the cache or get from the backend.
+ * A class to store all informations about an password.
  *
- * This is necessary as we have to compute :
+ * This includes:
  * - the used algorithm
  * - the salt if any
  * - the password itself.
  *
- * If we have a on-way encrypted password, it is stored using this
- * format :
- * {<algorithm>}<encrypted password>
- * where the encrypted password format can be :
- * - MD5/SHA : base64(<password>)
- * - SMD5/SSH/PKCS5S2 : base64(<salted-password-digest><salt (4 or 8 bytes)>)
- * - crypt : <salt (2 btytes)><password>
- *
- * Algorithm are currently MD5, SMD5, SHA, SSHA, SHA2, SSHA-2 (except SHA-224), PKCS5S2, CRYPT and empty
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class EncryptionMethod
+public class PasswordDetails
 {
-    private byte[] salt;
-    private LdapSecurityConstants algorithm;
+    private final LdapSecurityConstants algorithm;
+    private final byte[] salt;
+    private final byte[] password;
 
 
-    public EncryptionMethod( LdapSecurityConstants algorithm, byte[] salt )
+    public PasswordDetails( LdapSecurityConstants algorithm, byte[] salt, byte[] password )
     {
         this.algorithm = algorithm;
         this.salt = salt;
+        this.password = password;
     }
 
 
+    /**
+     * The hash algorithm used to hash the password, null for plain text passwords.
+     * 
+     * @return the hash algorithm used to hash the password, null for plain text passwords
+     */
     public LdapSecurityConstants getAlgorithm()
     {
         return algorithm;
     }
 
 
+    /**
+     * The salt used to hash the password, null if no salt was used.
+     * 
+     * @return the salt used to hash the password, null if no salt was used
+     */
     public byte[] getSalt()
     {
         return salt;
     }
 
 
-    public void setSalt( byte[] salt )
+    /**
+     * The hashed or plain text password.
+     * 
+     * @return the hashed or plain text password
+     */
+    public byte[] getPassword()
     {
-        // just to make this class immutable, though we have a setter
-        if ( this.salt != null )
-        {
-            throw new IllegalStateException( "salt will only be allowed to set once" );
-        }
-
-        this.salt = salt;
+        return password;
     }
 
-
-    @Override
-    public String toString()
-    {
-        return "EncryptionMethod [algorithm=" + Strings.upperCase( algorithm.getName() ) + ", salt="
-            + Strings.dumpBytes( salt ) + "]";
-    }
 }
