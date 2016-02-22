@@ -87,6 +87,11 @@
     </dependency>
 
     <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>findbugs</groupId>
       <artifactId>annotations</artifactId>
       <scope>provided</scope>
@@ -180,6 +185,7 @@
             <Import-Package>
               antlr;version=${antlr.version},
               antlr.collections.impl;version=${antlr.version},
+              org.apache.commons.codec.digest;version=${commons.codec.version},
               org.apache.commons.collections;version=${commons.collections.version},
               org.apache.commons.collections.list;version=${commons.collections.version},
               org.apache.commons.collections.map;version=${commons.collections.version},

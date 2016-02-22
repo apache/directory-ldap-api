@@ -59,6 +59,15 @@ public enum LdapSecurityConstants
 
     /** The crypt encryption method */
     HASH_METHOD_CRYPT("CRYPT", "CRYPT", "crypt"),
+    
+    /** The crypt (MD5) encryption method */
+    HASH_METHOD_CRYPT_MD5("CRYPT-MD5", "MD5", "crypt", "$1$"),
+    
+    /** The crypt (SHA-256) encryption method */
+    HASH_METHOD_CRYPT_SHA256("CRYPT-SHA-256", "SHA-256", "crypt", "$5$"),
+    
+    /** The crypt (SHA-512) encryption method */
+    HASH_METHOD_CRYPT_SHA512("CRYPT-SHA-512", "SHA-512", "crypt", "$6$"),
 
     /** The PBKDF2-based encryption method */
     HASH_METHOD_PKCS5S2("PKCS5S2", "PBKDF2WithHmacSHA1", "PKCS5S2");
@@ -85,8 +94,11 @@ public enum LdapSecurityConstants
 
     /** The associated prefix */
     private String prefix;
+    
+    /** The optional sub-prefix */
+    private String subPrefix;
 
-
+    
     /**
      * Creates a new instance of LdapSecurityConstants.
      * 
@@ -96,9 +108,23 @@ public enum LdapSecurityConstants
      */
     private LdapSecurityConstants( String name, String algorithm, String prefix )
     {
+        this( name, algorithm, prefix, "" );
+    }
+
+    /**
+     * Creates a new instance of LdapSecurityConstants.
+     * 
+     * @param name the associated name
+     * @param algorithm the associated algorithm
+     * @param prefix the associated prefix
+     * @param subPrefix the optional sub-prefix
+     */
+    private LdapSecurityConstants( String name, String algorithm, String prefix, String subPrefix )
+    {
         this.name = name;
         this.algorithm = algorithm;
         this.prefix = prefix;
+        this.subPrefix = subPrefix;
     }
 
 
@@ -130,6 +156,15 @@ public enum LdapSecurityConstants
 
 
     /**
+     * @return the optional sub-prefix associated with the constant.
+     */
+    public String getSubPrefix()
+    {
+        return subPrefix;
+    }
+
+
+    /**
      * Get the associated constant from a string
      *
      * @param algorithm The algorithm's name
@@ -137,86 +172,76 @@ public enum LdapSecurityConstants
      */
     public static LdapSecurityConstants getAlgorithm( String algorithm )
     {
-        if ( HASH_METHOD_SHA.name.equalsIgnoreCase( algorithm )
-            || HASH_METHOD_SHA.prefix.equalsIgnoreCase( algorithm ) )
+        if ( matches( algorithm, HASH_METHOD_SHA ) )
         {
             return HASH_METHOD_SHA;
         }
 
-        if ( HASH_METHOD_SSHA.name.equalsIgnoreCase( algorithm )
-            || HASH_METHOD_SSHA.prefix.equalsIgnoreCase( algorithm ) )
+        if ( matches( algorithm, HASH_METHOD_SSHA ) )
         {
             return HASH_METHOD_SSHA;
         }
-
-        if ( HASH_METHOD_MD5.name.equalsIgnoreCase( algorithm )
-            || HASH_METHOD_MD5.prefix.equalsIgnoreCase( algorithm ) )
+        if ( matches( algorithm, HASH_METHOD_MD5 ) )
         {
             return HASH_METHOD_MD5;
         }
 
-        if ( HASH_METHOD_SMD5.name.equalsIgnoreCase( algorithm )
-            || HASH_METHOD_SMD5.prefix.equalsIgnoreCase( algorithm ) )
+        if ( matches( algorithm, HASH_METHOD_SMD5 ) )
         {
             return HASH_METHOD_SMD5;
         }
 
-        if ( HASH_METHOD_CRYPT.name.equalsIgnoreCase( algorithm )
-            || HASH_METHOD_CRYPT.prefix.equalsIgnoreCase( algorithm ) )
+        if ( matches( algorithm, HASH_METHOD_CRYPT ) )
         {
             return HASH_METHOD_CRYPT;
         }
 
-        if ( ( HASH_METHOD_SHA256.name.equalsIgnoreCase( algorithm ) )
-            || ( HASH_METHOD_SHA256.prefix.equalsIgnoreCase( algorithm ) )
-            // "sha-256" used for backwards compatibility
-            || ( "sha-256".equalsIgnoreCase( algorithm ) ) )
+        if ( matches( algorithm, HASH_METHOD_CRYPT_MD5 ) )
+        {
+            return HASH_METHOD_CRYPT_MD5;
+        }
+
+        if ( matches( algorithm, HASH_METHOD_CRYPT_SHA256 ) )
+        {
+            return HASH_METHOD_CRYPT_SHA256;
+        }
+
+        if ( matches( algorithm, HASH_METHOD_CRYPT_SHA512 ) )
+        {
+            return HASH_METHOD_CRYPT_SHA512;
+        }
+
+        if ( matches( algorithm, HASH_METHOD_SHA256 ) )
         {
             return HASH_METHOD_SHA256;
         }
 
-        if ( ( HASH_METHOD_SSHA256.name.equalsIgnoreCase( algorithm ) )
-            || ( HASH_METHOD_SSHA256.prefix.equalsIgnoreCase( algorithm ) )
-            // "ssha-256" used for backwards compatibility
-            || ( "ssha-256".equalsIgnoreCase( algorithm ) ) )
+        if ( matches( algorithm, HASH_METHOD_SSHA256 ) )
         {
             return HASH_METHOD_SSHA256;
         }
 
-        if ( ( HASH_METHOD_SHA384.name.equalsIgnoreCase( algorithm ) )
-            || ( HASH_METHOD_SHA384.prefix.equalsIgnoreCase( algorithm ) )
-            // "sha-384" used for backwards compatibility
-            || ( "sha-384".equalsIgnoreCase( algorithm ) ) )
+        if ( matches( algorithm, HASH_METHOD_SHA384 ) )
         {
             return HASH_METHOD_SHA384;
         }
 
-        if ( ( HASH_METHOD_SSHA384.name.equalsIgnoreCase( algorithm ) )
-            || ( HASH_METHOD_SSHA384.prefix.equalsIgnoreCase( algorithm ) )
-            // "ssha-384" used for backwards compatibility
-            || ( "ssha-384".equalsIgnoreCase( algorithm ) ) )
+        if ( matches( algorithm, HASH_METHOD_SSHA384 ) )
         {
             return HASH_METHOD_SSHA384;
         }
 
-        if ( ( HASH_METHOD_SHA512.name.equalsIgnoreCase( algorithm ) )
-            || ( HASH_METHOD_SHA512.prefix.equalsIgnoreCase( algorithm ) )
-            // "sha-512" used for backwards compatibility
-            || ( "sha-512".equalsIgnoreCase( algorithm ) ) )
+        if ( matches( algorithm, HASH_METHOD_SHA512 ) )
         {
             return HASH_METHOD_SHA512;
         }
 
-        if ( ( HASH_METHOD_SSHA512.name.equalsIgnoreCase( algorithm ) )
-            || ( HASH_METHOD_SSHA512.prefix.equalsIgnoreCase( algorithm ) )
-            // "ssha-512" used for backwards compatibility
-            || ( "ssha-512".equalsIgnoreCase( algorithm ) ) )
+        if ( matches( algorithm, HASH_METHOD_SSHA512 ) )
         {
             return HASH_METHOD_SSHA512;
         }
 
-        if ( HASH_METHOD_PKCS5S2.name.equalsIgnoreCase( algorithm )
-            || HASH_METHOD_PKCS5S2.prefix.equalsIgnoreCase( algorithm ) )
+        if ( matches( algorithm, HASH_METHOD_PKCS5S2 ) )
         {
             return HASH_METHOD_PKCS5S2;
         }
@@ -245,4 +270,12 @@ public enum LdapSecurityConstants
 
         return null;
     }
+
+
+    private static boolean matches( String algorithm, LdapSecurityConstants constant )
+    {
+        return constant.name.equalsIgnoreCase( algorithm )
+            || ( constant.prefix + constant.subPrefix ).equalsIgnoreCase( algorithm );
+    }
+
 }

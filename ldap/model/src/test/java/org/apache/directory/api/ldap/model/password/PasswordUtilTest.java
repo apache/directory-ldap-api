@@ -22,6 +22,9 @@ package org.apache.directory.api.ldap.model.password;
 
 
 import static org.apache.directory.api.ldap.model.constants.LdapSecurityConstants.HASH_METHOD_CRYPT;
+import static org.apache.directory.api.ldap.model.constants.LdapSecurityConstants.HASH_METHOD_CRYPT_MD5;
+import static org.apache.directory.api.ldap.model.constants.LdapSecurityConstants.HASH_METHOD_CRYPT_SHA256;
+import static org.apache.directory.api.ldap.model.constants.LdapSecurityConstants.HASH_METHOD_CRYPT_SHA512;
 import static org.apache.directory.api.ldap.model.constants.LdapSecurityConstants.HASH_METHOD_MD5;
 import static org.apache.directory.api.ldap.model.constants.LdapSecurityConstants.HASH_METHOD_PKCS5S2;
 import static org.apache.directory.api.ldap.model.constants.LdapSecurityConstants.HASH_METHOD_SHA;
@@ -33,6 +36,10 @@ import static org.apache.directory.api.ldap.model.constants.LdapSecurityConstant
 import static org.apache.directory.api.ldap.model.constants.LdapSecurityConstants.HASH_METHOD_SSHA256;
 import static org.apache.directory.api.ldap.model.constants.LdapSecurityConstants.HASH_METHOD_SSHA384;
 import static org.apache.directory.api.ldap.model.constants.LdapSecurityConstants.HASH_METHOD_SSHA512;
+import static org.apache.directory.api.ldap.model.password.PasswordUtil.CRYPT_LENGTH;
+import static org.apache.directory.api.ldap.model.password.PasswordUtil.CRYPT_MD5_LENGTH;
+import static org.apache.directory.api.ldap.model.password.PasswordUtil.CRYPT_SHA256_LENGTH;
+import static org.apache.directory.api.ldap.model.password.PasswordUtil.CRYPT_SHA512_LENGTH;
 import static org.apache.directory.api.ldap.model.password.PasswordUtil.MD5_LENGTH;
 import static org.apache.directory.api.ldap.model.password.PasswordUtil.PKCS5S2_LENGTH;
 import static org.apache.directory.api.ldap.model.password.PasswordUtil.SHA1_LENGTH;
@@ -97,6 +104,13 @@ public class PasswordUtilTest
     public void testPasswordPlainText()
     {
         testPassword( "secret", "secret", null, 6, 0 );
+    }
+
+
+    @Test
+    public void testUnsupportedHashMethodIsHandledAsPlainText()
+    {
+        testPassword( "{XXX}abc", "{XXX}abc", null, 8, 0 );
     }
 
 
@@ -275,14 +289,62 @@ public class PasswordUtilTest
     @Test
     public void testPasswordCRYPTEncrypted()
     {
-        testPassword( "secret", "{CRYPT}qFkH8Z1woBlXw", HASH_METHOD_CRYPT, 11, 2 );
+        testPassword( "secret", "{CRYPT}qFkH8Z1woBlXw", HASH_METHOD_CRYPT, CRYPT_LENGTH, 2 );
     }
 
 
     @Test
     public void testPasswordCRYPTEncryptedLowercase()
     {
-        testPassword( "secret", "{crypt}qFkH8Z1woBlXw", HASH_METHOD_CRYPT, 11, 2 );
+        testPassword( "secret", "{crypt}qFkH8Z1woBlXw", HASH_METHOD_CRYPT, CRYPT_LENGTH, 2 );
+    }
+
+
+    @Test
+    public void testPasswordCRYPT1Encrypted()
+    {
+        testPassword( "secret", "{CRYPT}$1$salt$ez2vlPGdaLYkJam5pWs/Y1", HASH_METHOD_CRYPT_MD5, CRYPT_MD5_LENGTH, 4 );
+    }
+
+
+    @Test
+    public void testPasswordCRYPT1EncryptedLowercase()
+    {
+        testPassword( "secret", "{crypt}$1$salt$ez2vlPGdaLYkJam5pWs/Y1", HASH_METHOD_CRYPT_MD5, CRYPT_MD5_LENGTH, 4 );
+    }
+
+
+    @Test
+    public void testPasswordCRYPT5Encrypted()
+    {
+        testPassword( "secret", "{CRYPT}$5$salt$kpa26zwgX83BPSR8d7w93OIXbFt/d3UOTZaAu5vsTM6", HASH_METHOD_CRYPT_SHA256, CRYPT_SHA256_LENGTH,
+            4 );
+    }
+
+
+    @Test
+    public void testPasswordCRYPT5EncryptedLowercase()
+    {
+        testPassword( "secret", "{crypt}$5$salt$kpa26zwgX83BPSR8d7w93OIXbFt/d3UOTZaAu5vsTM6", HASH_METHOD_CRYPT_SHA256, CRYPT_SHA256_LENGTH,
+            4 );
+    }
+
+
+    @Test
+    public void testPasswordCRYPT6Encrypted()
+    {
+        testPassword( "secret",
+            "{CRYPT}$6$salt$egUxKNxDs8kPfh8iPMNcosMhb2eWah6d3R44JDm5Rj/j/XWR5E33QPd0YmHXoDHOIDR6kL5D3JcQcz0O8FHE00",
+            HASH_METHOD_CRYPT_SHA512, CRYPT_SHA512_LENGTH, 4 );
+    }
+
+
+    @Test
+    public void testPasswordCRYPT6EncryptedLowercase()
+    {
+        testPassword( "secret",
+            "{crypt}$6$salt$egUxKNxDs8kPfh8iPMNcosMhb2eWah6d3R44JDm5Rj/j/XWR5E33QPd0YmHXoDHOIDR6kL5D3JcQcz0O8FHE00",
+            HASH_METHOD_CRYPT_SHA512, CRYPT_SHA512_LENGTH, 4 );
     }
 
 
