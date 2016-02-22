@@ -54,6 +54,7 @@ import org.apache.directory.api.ldap.model.ldif.LdifReader;
 import org.apache.directory.api.ldap.model.ldif.LdifUtils;
 import org.apache.directory.api.ldap.model.ldif.anonymizer.Anonymizer;
 import org.apache.directory.api.ldap.model.ldif.anonymizer.BinaryAnonymizer;
+import org.apache.directory.api.ldap.model.ldif.anonymizer.CaseSensitiveStringAnonymizer;
 import org.apache.directory.api.ldap.model.ldif.anonymizer.IntegerAnonymizer;
 import org.apache.directory.api.ldap.model.ldif.anonymizer.StringAnonymizer;
 import org.apache.directory.api.ldap.model.ldif.anonymizer.TelephoneNumberAnonymizer;
@@ -119,6 +120,12 @@ public class LdifAnonymizer
     /** The set that contains all the values we already have anonymized */
     private Set<Value<?>> valueSet = new HashSet<Value<?>>();
     
+    /** The latest anonymized String value Map */
+    private Map<Integer, String> latestStringMap;
+    
+    /** The latest anonymized byte[] value Map */
+    private Map<Integer, byte[]> latestBytesMap;
+    
     /** The map of AttributeType'sOID we want to anonymize. They are all associated with anonymizers */
     private Map<String, Anonymizer> attributeAnonymizers = new HashMap<String, Anonymizer>();
     
@@ -149,7 +156,7 @@ public class LdifAnonymizer
             System.exit( -1 );
         }
 
-        init();
+        init( null, null, null, null );
     }
     
     
@@ -210,78 +217,105 @@ public class LdifAnonymizer
     {
         this.schemaManager = schemaManager;
 
-        init();
+        init( null, null, null, null );
     }
     
     
     /**
      * Initialize the anonymizer, filling the maps we use.
      */
-    private void init()
+    private void init( Map<Integer, String> stringLatestValueMap, Map<Integer, byte[]> binaryLatestValueMap, 
+        Map<Integer, String> integerLatestValueMap, Map<Integer, String> telephoneNumberLatestValueMap )
     {
         // Load the anonymizers
         attributeAnonymizers.put( SchemaConstants.CAR_LICENSE_AT_OID,
-            new StringAnonymizer() );
-        attributeAnonymizers.put( SchemaConstants.CN_AT_OID, new StringAnonymizer() );
+            new StringAnonymizer( stringLatestValueMap ) );
+        attributeAnonymizers.put( SchemaConstants.DOMAIN_COMPONENT_AT_OID,
+            new StringAnonymizer( stringLatestValueMap ) );
+        attributeAnonymizers.put( SchemaConstants.CN_AT_OID, new StringAnonymizer( stringLatestValueMap ) );
         attributeAnonymizers.put( SchemaConstants.DESCRIPTION_AT_OID,
-            new StringAnonymizer() );
+            new StringAnonymizer( stringLatestValueMap ) );
         attributeAnonymizers.put( SchemaConstants.DISPLAY_NAME_AT_OID,
-            new StringAnonymizer() );
-        attributeAnonymizers.put( SchemaConstants.GECOS_AT_OID, new StringAnonymizer() );
+            new StringAnonymizer( stringLatestValueMap ) );
+        attributeAnonymizers.put( SchemaConstants.GECOS_AT_OID, new StringAnonymizer( stringLatestValueMap ) );
         attributeAnonymizers.put( SchemaConstants.GID_NUMBER_AT_OID,
-            new IntegerAnonymizer() );
+            new IntegerAnonymizer( integerLatestValueMap ) );
         attributeAnonymizers.put( SchemaConstants.GIVENNAME_AT_OID,
-            new StringAnonymizer() );
+            new StringAnonymizer( stringLatestValueMap ) );
         attributeAnonymizers.put( SchemaConstants.HOME_DIRECTORY_AT_OID,
-            new StringAnonymizer() );
+            new CaseSensitiveStringAnonymizer( stringLatestValueMap ) );
         attributeAnonymizers.put( SchemaConstants.HOME_PHONE_AT_OID,
             new TelephoneNumberAnonymizer() );
         attributeAnonymizers.put( SchemaConstants.HOME_POSTAL_ADDRESS_AT_OID,
-            new StringAnonymizer() );
-        attributeAnonymizers.put( SchemaConstants.HOST_AT_OID, new StringAnonymizer() );
+            new StringAnonymizer( stringLatestValueMap ) );
+        attributeAnonymizers.put( SchemaConstants.HOST_AT_OID, new StringAnonymizer( stringLatestValueMap ) );
         attributeAnonymizers.put( SchemaConstants.HOUSE_IDENTIFIER_AT_OID,
-            new StringAnonymizer() );
+            new StringAnonymizer( stringLatestValueMap ) );
         attributeAnonymizers.put( SchemaConstants.JPEG_PHOTO_AT_OID,
-            new BinaryAnonymizer() );
+            new BinaryAnonymizer( binaryLatestValueMap ) );
         attributeAnonymizers.put( SchemaConstants.LABELED_URI_AT_OID,
-            new StringAnonymizer() );
+            new CaseSensitiveStringAnonymizer( stringLatestValueMap ) );
         attributeAnonymizers.put( SchemaConstants.LOCALITY_NAME_AT_OID,
-            new StringAnonymizer() );
-        attributeAnonymizers.put( SchemaConstants.MAIL_AT_OID, new StringAnonymizer() );
-        attributeAnonymizers.put( SchemaConstants.MANAGER_AT_OID, new StringAnonymizer() );
+            new StringAnonymizer( stringLatestValueMap ) );
+        attributeAnonymizers.put( SchemaConstants.MAIL_AT_OID, new StringAnonymizer( stringLatestValueMap ) );
+        attributeAnonymizers.put( SchemaConstants.MANAGER_AT_OID, new StringAnonymizer( stringLatestValueMap ) );
         attributeAnonymizers.put( SchemaConstants.MEMBER_UID_AT_OID,
-            new StringAnonymizer() );
+            new StringAnonymizer( stringLatestValueMap ) );
         attributeAnonymizers.put( SchemaConstants.MOBILE_AT_OID, new TelephoneNumberAnonymizer() );
         attributeAnonymizers.put( SchemaConstants.ORGANIZATION_NAME_AT_OID,
-            new StringAnonymizer() );
+            new StringAnonymizer( stringLatestValueMap ) );
         attributeAnonymizers.put( SchemaConstants.ORGANIZATIONAL_UNIT_NAME_AT_OID,
-            new StringAnonymizer() );
+            new StringAnonymizer( stringLatestValueMap ) );
         attributeAnonymizers.put( SchemaConstants.PAGER_AT_OID, new TelephoneNumberAnonymizer() );
         attributeAnonymizers.put( SchemaConstants.POSTAL_ADDRESS_AT_OID,
-            new StringAnonymizer() );
-        attributeAnonymizers.put( SchemaConstants.PHOTO_AT_OID, new StringAnonymizer() );
+            new StringAnonymizer( stringLatestValueMap ) );
+        attributeAnonymizers.put( SchemaConstants.PHOTO_AT_OID, new BinaryAnonymizer( binaryLatestValueMap ) );
         attributeAnonymizers.put( SchemaConstants.SECRETARY_AT_OID,
-            new StringAnonymizer() );
+            new StringAnonymizer( stringLatestValueMap ) );
         attributeAnonymizers
-            .put( SchemaConstants.SEE_ALSO_AT_OID, new StringAnonymizer() );
-        attributeAnonymizers.put( SchemaConstants.SN_AT_OID, new StringAnonymizer() );
+            .put( SchemaConstants.SEE_ALSO_AT_OID, new StringAnonymizer( stringLatestValueMap ) );
+        attributeAnonymizers.put( SchemaConstants.SN_AT_OID, new StringAnonymizer( stringLatestValueMap ) );
         attributeAnonymizers.put( SchemaConstants.TELEPHONE_NUMBER_AT_OID,
-            new TelephoneNumberAnonymizer() );
-        attributeAnonymizers.put( SchemaConstants.UID_AT_OID, new StringAnonymizer() );
+            new TelephoneNumberAnonymizer( telephoneNumberLatestValueMap ) );
+        attributeAnonymizers.put( SchemaConstants.UID_AT_OID, new StringAnonymizer( stringLatestValueMap ) );
         attributeAnonymizers.put( SchemaConstants.UID_NUMBER_AT_OID,
-            new IntegerAnonymizer() );
+            new IntegerAnonymizer( integerLatestValueMap ) );
         attributeAnonymizers.put( SchemaConstants.USER_CERTIFICATE_AT_OID,
-            new StringAnonymizer() );
+            new BinaryAnonymizer( binaryLatestValueMap ) );
         attributeAnonymizers.put( SchemaConstants.USER_PASSWORD_AT_OID,
-            new BinaryAnonymizer() );
+            new BinaryAnonymizer( binaryLatestValueMap ) );
         attributeAnonymizers.put( SchemaConstants.USER_PKCS12_AT_OID,
-            new BinaryAnonymizer() );
+            new BinaryAnonymizer( binaryLatestValueMap ) );
         attributeAnonymizers.put( SchemaConstants.USER_SMIME_CERTIFICATE_AT_OID,
-            new BinaryAnonymizer() );
+            new BinaryAnonymizer( binaryLatestValueMap ) );
         attributeAnonymizers.put( SchemaConstants.X500_UNIQUE_IDENTIFIER_AT_OID,
-            new BinaryAnonymizer() );
+            new BinaryAnonymizer( binaryLatestValueMap ) );
         attributeAnonymizers.put( SchemaConstants.FACSIMILE_TELEPHONE_NUMBER_AT_OID,
-            new TelephoneNumberAnonymizer() );
+            new TelephoneNumberAnonymizer( telephoneNumberLatestValueMap ) );
+    }
+    
+    
+    /**
+     * Set the latest value map to a defined anonymizer - if it exists -.
+     *
+     * @param attributeType The AttributeType we are targetting
+     * @param latestValueMap The latest value map for this attribute
+     */
+    public void setAttributeLatestValueMap( AttributeType attributeType, Map<Integer, ?> latestValueMap )
+    {
+        Anonymizer anonymizer = attributeAnonymizers.get( attributeType.getOid() );
+        
+        if ( anonymizer != null )
+        {
+            if ( attributeType.getSyntax().isHumanReadable() )
+            {
+                anonymizer.setLatestStringMap( latestValueMap );
+            }
+            else
+            {
+                anonymizer.setLatestBytesMap( latestValueMap );
+            }
+        }
     }
     
     
@@ -302,9 +336,13 @@ public class LdifAnonymizer
             {
                 attributeAnonymizers.put( attributeType.getOid(), new IntegerAnonymizer() );
             }
-            if ( syntax.getOid().equals( SchemaConstants.DIRECTORY_STRING_SYNTAX ) )
+            else if ( syntax.getOid().equals( SchemaConstants.DIRECTORY_STRING_SYNTAX ) )
             {
                 attributeAnonymizers.put( attributeType.getOid(), new StringAnonymizer() );
+            }
+            else if ( syntax.getOid().equals( SchemaConstants.TELEPHONE_NUMBER_SYNTAX ) )
+            {
+                attributeAnonymizers.put( attributeType.getOid(), new TelephoneNumberAnonymizer() );
             }
         }
         else
@@ -509,7 +547,7 @@ public class LdifAnonymizer
                 {
                     if ( ldifEntry.isEntry() && !ldifEntry.isChangeAdd() )
                     {
-                        // process a full entry. Add changes aren't preocessed ghere.
+                        // process a full entry. Add changes aren't processed here.
                         Entry newEntry = anonymizeEntry( ldifEntry );
                         
                         writer.write( LdifUtils.convertToLdif( newEntry ) );
@@ -622,6 +660,7 @@ public class LdifAnonymizer
                 }
                 catch ( Exception e )
                 {
+                    e.printStackTrace();
                     System.out.print( '*' );
 
                     if ( count % 100  == 0 )
@@ -1028,6 +1067,42 @@ public class LdifAnonymizer
     public void setValueMap( Map<Value<?>, Value<?>> valueMap )
     {
         this.valueMap = valueMap;
+    }
+
+
+    /**
+     * @return the latest String Value Map
+     */
+    public Map<Integer, String> getLatestStringMap()
+    {
+        return latestStringMap;
+    }
+
+
+    /**
+     * @param latestStringMap the latest String Value Map to set
+     */
+    public void setLatestStringMap( Map<Integer, String> latestStringMap )
+    {
+        this.latestStringMap = latestStringMap;
+    }
+
+
+    /**
+     * @return the latest byte[] Value Map
+     */
+    public Map<Integer, byte[]> getLatestBytesMap()
+    {
+        return latestBytesMap;
+    }
+
+
+    /**
+     * @param latestBytesMap the latest byte[] Value Map to set
+     */
+    public void setLatestBytesMap( Map<Integer, byte[]> latestBytesMap )
+    {
+        this.latestBytesMap = latestBytesMap;
     }
 
 

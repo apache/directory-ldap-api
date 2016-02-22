@@ -108,7 +108,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
      * Creates a new instance of DefaultSchemaLoader.
      *
      * @param connection the LDAP connection
-     * @throws Exception if the connection is not authenticated or if there are any problems
+     * @throws LdapException if the connection is not authenticated or if there are any problems
      *                   while loading the schema entries
      */
     public DefaultSchemaLoader( LdapConnection connection ) throws LdapException
@@ -122,7 +122,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
      *
      * @param connection the LDAP connection
      * @param initial setting for the relaxed mode
-     * @throws Exception if the connection is not authenticated or if there are any problems
+     * @throws LdapException if the connection is not authenticated or if there are any problems
      *                   while loading the schema entries
      */
     public DefaultSchemaLoader( LdapConnection connection, boolean relaxed ) throws LdapException
@@ -259,7 +259,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
      * Load all the schemas.
      * 
      * @param subschemaSubentryDn
-     * @throws Exception
+     * @throws LdapException
      */
     private void loadSchemas() throws LdapException
     {
