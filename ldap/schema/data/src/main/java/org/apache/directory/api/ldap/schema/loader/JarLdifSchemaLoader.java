@@ -79,10 +79,10 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
      * sure the supplied base directory exists and contains a schema.ldif file
      * and if not complains about it.
      *
-     * @throws Exception if the base directory does not exist or does not
+     * @throws LdapException if the base directory does not exist or does not
      * a valid schema.ldif file
      */
-    public JarLdifSchemaLoader() throws Exception
+    public JarLdifSchemaLoader() throws IOException, LdapException
     {
         initializeSchemas();
     }
@@ -105,9 +105,9 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
      * Scans for LDIF files just describing the various schema contained in
      * the schema repository.
      *
-     * @throws Exception
+     * @throws LdapException
      */
-    private void initializeSchemas() throws Exception
+    private void initializeSchemas() throws IOException, LdapException
     {
         if ( IS_DEBUG )
         {
@@ -137,10 +137,10 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
                         LOG.debug( "Schema Initialized ... \n{}", schema );
                     }
                 }
-                catch ( Exception e )
+                catch ( LdapException le )
                 {
-                    LOG.error( I18n.err( I18n.ERR_10003, file ), e );
-                    throw e;
+                    LOG.error( I18n.err( I18n.ERR_10003, file ), le );
+                    throw le;
                 }
                 finally
                 {

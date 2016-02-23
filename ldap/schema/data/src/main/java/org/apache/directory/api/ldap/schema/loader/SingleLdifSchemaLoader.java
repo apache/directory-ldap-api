@@ -89,7 +89,11 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
 
             initializeSchemas( in );
         }
-        catch ( Exception e )
+        catch ( LdapException e )
+        {
+            throw new RuntimeException( e );
+        }
+        catch ( IOException e )
         {
             throw new RuntimeException( e );
         }
@@ -111,7 +115,11 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
 
             initializeSchemas( in );
         }
-        catch ( Exception e )
+        catch ( LdapException e )
+        {
+            throw new RuntimeException( e );
+        }
+        catch ( IOException e )
         {
             throw new RuntimeException( e );
         }
@@ -121,7 +129,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
     /**
      * Initialize the Schema object from a Single LDIF file
      */
-    private void initializeSchemas( InputStream in ) throws Exception
+    private void initializeSchemas( InputStream in ) throws LdapException, IOException
     {
         LdifReader ldifReader = new LdifReader( in );
 
@@ -151,7 +159,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
     /**
      * Load all the schemaObjects
      */
-    private void loadSchemaObject( String schemaName, LdifEntry ldifEntry ) throws Exception
+    private void loadSchemaObject( String schemaName, LdifEntry ldifEntry ) throws LdapException
     {
         for ( String scObjTypeRdn : schemaObjectTypeRdns )
         {

@@ -44,9 +44,9 @@ public interface EntityFactory
      *
      * @param entry The Schema entry
      * @return An instance of a Schema
-     * @throws Exception If the instance can't be created
+     * @throws LdapException If the instance can't be created
      */
-    Schema getSchema( Entry entry ) throws Exception;
+    Schema getSchema( Entry entry ) throws LdapException;
 
 
     /**
@@ -71,11 +71,11 @@ public interface EntityFactory
      * @param targetRegistries The registries containing all the enabled SchemaObjects
      * @param schemaName The schema this SchemaObject will be part of
      * @return A new instance of a LdapComparator
-     * @throws Exception If the creation has failed
+     * @throws LdapException If the creation has failed
      */
     LdapComparator<?> getLdapComparator( SchemaManager schemaManager,
         LdapComparatorDescription comparatorDescription,
-        Registries targetRegistries, String schemaName ) throws Exception;
+        Registries targetRegistries, String schemaName ) throws LdapException;
 
 
     /**
@@ -114,10 +114,10 @@ public interface EntityFactory
      * @param targetRegistries The registries containing all the enabled SchemaObjects
      * @param schemaName The schema this SchemaObject will be part of
      * @return A new instance of a normalizer
-     * @throws Exception If the creation has failed
+     * @throws LdapException If the creation has failed
      */
     Normalizer getNormalizer( SchemaManager schemaManager, NormalizerDescription normalizerDescription,
-        Registries targetRegistries, String schemaName ) throws Exception;
+        Registries targetRegistries, String schemaName ) throws LdapException;
 
 
     /**
@@ -141,7 +141,7 @@ public interface EntityFactory
      * @param targetRegistries The registries containing all the enabled SchemaObjects
      * @param schemaName The schema this SchemaObject will be part of
      * @return
-     * @throws Exception
+     * @throws LdapException
      */
     ObjectClass getObjectClass( SchemaManager schemaManager, Entry entry, Registries targetRegistries, String schemaName )
         throws LdapException;
@@ -182,8 +182,8 @@ public interface EntityFactory
      * @param targetRegistries The registries containing all the enabled SchemaObjects
      * @param schemaName The schema this SchemaObject will be part of
      * @return A new instance of a syntaxChecker
-     * @throws Exception If the creation has failed
+     * @throws LdapException If the creation has failed
      */
     SyntaxChecker getSyntaxChecker( SchemaManager schemaManager, SyntaxCheckerDescription syntaxCheckerDescription,
-        Registries targetRegistries, String schemaName ) throws Exception;
+        Registries targetRegistries, String schemaName ) throws LdapException;
 }

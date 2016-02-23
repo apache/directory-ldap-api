@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.registries;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -33,6 +34,7 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Value;
+import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
@@ -58,7 +60,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public final Collection<Schema> getAllEnabled() throws Exception
+    public final Collection<Schema> getAllEnabled()
     {
         Collection<Schema> enabledSchemas = new ArrayList<Schema>();
 
@@ -77,7 +79,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public final Collection<Schema> getAllSchemas() throws Exception
+    public final Collection<Schema> getAllSchemas()
     {
         return schemaMap.values();
     }
@@ -115,9 +117,9 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
      *
      * @param entry the entry
      * @return the schema
-     * @throws Exception the exception
+     * @throws LdapException the exception
      */
-    protected Schema getSchema( Entry entry ) throws Exception
+    protected Schema getSchema( Entry entry ) throws LdapException
     {
         if ( entry == null )
         {
@@ -188,7 +190,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     }
 
 
-    private Schema[] buildSchemaArray( String... schemaNames ) throws Exception
+    private Schema[] buildSchemaArray( String... schemaNames ) throws LdapException
     {
         Schema[] schemas = new Schema[schemaNames.length];
         int pos = 0;
@@ -205,7 +207,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public List<Entry> loadAttributeTypes( String... schemaNames ) throws Exception
+    public List<Entry> loadAttributeTypes( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
@@ -219,7 +221,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public List<Entry> loadComparators( String... schemaNames ) throws Exception
+    public List<Entry> loadComparators( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
@@ -233,7 +235,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public List<Entry> loadDitContentRules( String... schemaNames ) throws Exception
+    public List<Entry> loadDitContentRules( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
@@ -247,7 +249,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public List<Entry> loadDitStructureRules( String... schemaNames ) throws Exception
+    public List<Entry> loadDitStructureRules( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
@@ -261,7 +263,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public List<Entry> loadMatchingRules( String... schemaNames ) throws Exception
+    public List<Entry> loadMatchingRules( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
@@ -275,7 +277,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public List<Entry> loadMatchingRuleUses( String... schemaNames ) throws Exception
+    public List<Entry> loadMatchingRuleUses( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
@@ -289,7 +291,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public List<Entry> loadNameForms( String... schemaNames ) throws Exception
+    public List<Entry> loadNameForms( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
@@ -303,7 +305,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public List<Entry> loadNormalizers( String... schemaNames ) throws Exception
+    public List<Entry> loadNormalizers( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
@@ -317,7 +319,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public List<Entry> loadObjectClasses( String... schemaNames ) throws Exception
+    public List<Entry> loadObjectClasses( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
@@ -331,7 +333,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public List<Entry> loadSyntaxes( String... schemaNames ) throws Exception
+    public List<Entry> loadSyntaxes( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
@@ -345,7 +347,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public List<Entry> loadSyntaxCheckers( String... schemaNames ) throws Exception
+    public List<Entry> loadSyntaxCheckers( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {

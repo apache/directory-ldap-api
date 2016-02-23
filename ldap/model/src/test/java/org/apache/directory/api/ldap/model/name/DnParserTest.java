@@ -687,4 +687,10 @@ public class DnParserTest
         }
     }
 
+    
+    @Test
+    public void testSameAttributeInDn() throws LdapInvalidDnException
+    {
+        //Dn dn = new Dn( "l=eu + l=de + l=Berlin + l=Brandenburger Tor,dc=example,dc=org" );
+    }
 }

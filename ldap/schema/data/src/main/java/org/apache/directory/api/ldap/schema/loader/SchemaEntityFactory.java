@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.schema.loader;
 
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
+import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.api.ldap.model.exception.LdapUnwillingToPerformException;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
@@ -269,8 +271,7 @@ public class SchemaEntityFactory implements EntityFactory
      * Class load a syntaxChecker instance
      */
     private SyntaxChecker classLoadSyntaxChecker( SchemaManager schemaManager, String oid, String className,
-        Attribute byteCode )
-        throws Exception
+        Attribute byteCode ) throws LdapException
     {
         // Try to class load the syntaxChecker
         Class<?> clazz = null;
@@ -279,17 +280,48 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( byteCode == null )
         {
-            clazz = Class.forName( className );
+            try
+            {
+                clazz = Class.forName( className );
+            }
+            catch ( ClassNotFoundException cnfe )
+            {
+                LOG.error( "Cannot find the syntax checker class constructor for class {}", className );
+                throw new LdapSchemaException( "Cannot find the syntax checker class " + cnfe.getMessage() );
+            }
         }
         else
         {
             classLoader.setAttribute( byteCode );
-            clazz = classLoader.loadClass( className );
+            
+            try
+            {
+                clazz = classLoader.loadClass( className );
+            }
+            catch ( ClassNotFoundException cnfe )
+            {
+                LOG.error( "Cannot load the syntax checker class constructor for class {}", className );
+                throw new LdapSchemaException( "Cannot load the syntax checker class " + cnfe.getMessage() );
+            }
+                
             byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
         }
 
         // Create the syntaxChecker instance
-        syntaxChecker = ( SyntaxChecker ) clazz.newInstance();
+        try
+        {
+            syntaxChecker = ( SyntaxChecker ) clazz.newInstance();
+        }
+        catch ( InstantiationException ie )
+        {
+            LOG.error( "Cannot instantiate the syntax checker class constructor for class {}", className );
+            throw new LdapSchemaException( "Cannot instantiate the syntax checker class " + ie.getMessage() );
+        }
+        catch ( IllegalAccessException iae )
+        {
+            LOG.error( "Cannot access the syntax checker class constructor for class {}", className );
+            throw new LdapSchemaException( "Cannot access the syntax checker class constructor " + iae.getMessage() );
+        }
 
         // Update the common fields
         syntaxChecker.setBytecode( byteCodeStr );
@@ -364,7 +396,7 @@ public class SchemaEntityFactory implements EntityFactory
      */
     public SyntaxChecker getSyntaxChecker( SchemaManager schemaManager,
         SyntaxCheckerDescription syntaxCheckerDescription, Registries targetRegistries, String schemaName )
-        throws Exception
+        throws LdapException
     {
         checkDescription( syntaxCheckerDescription, SchemaConstants.SYNTAX_CHECKER );
 
@@ -402,7 +434,7 @@ public class SchemaEntityFactory implements EntityFactory
      * Class load a comparator instances
      */
     private LdapComparator<?> classLoadComparator( SchemaManager schemaManager, String oid, String className,
-        Attribute byteCode ) throws Exception
+        Attribute byteCode ) throws LdapException
     {
         // Try to class load the comparator
         LdapComparator<?> comparator = null;
@@ -411,12 +443,30 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( byteCode == null )
         {
-            clazz = Class.forName( className );
+            try
+            {
+                clazz = Class.forName( className );
+            }
+            catch ( ClassNotFoundException cnfe )
+            {
+                LOG.error( "Cannot find the comparator class constructor for class {}", className );
+                throw new LdapSchemaException( "Cannot find the comparator class " + cnfe.getMessage() );
+            }
         }
         else
         {
             classLoader.setAttribute( byteCode );
-            clazz = classLoader.loadClass( className );
+            
+            try
+            {
+                clazz = classLoader.loadClass( className );
+            }
+            catch ( ClassNotFoundException cnfe )
+            {
+                LOG.error( "Cannot load the comparator class constructor for class {}", className );
+                throw new LdapSchemaException( "Cannot load the comparator class " + cnfe.getMessage() );
+            }
+
             byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
         }
 
@@ -426,16 +476,57 @@ public class SchemaEntityFactory implements EntityFactory
         {
             Constructor<?> constructor = clazz.getConstructor( new Class[]
                 { String.class } );
-            comparator = ( LdapComparator<?> ) constructor.newInstance( new Object[]
-                { oid } );
+            
+            try
+            {
+                comparator = ( LdapComparator<?> ) constructor.newInstance( new Object[]
+                    { oid } );
+            }
+            catch ( InvocationTargetException ite )
+            {
+                LOG.error( "Cannot invoke the comparator class constructor for class {}", className );
+                throw new LdapSchemaException( "Cannot invoke the comparator class " + ite.getMessage() );
+            }
+            catch ( InstantiationException ie )
+            {
+                LOG.error( "Cannot instanciate the comparator class constructor for class {}", className );
+                throw new LdapSchemaException( "Cannot instanciate the comparator class " + ie.getMessage() );
+            }
+            catch ( IllegalAccessException ie )
+            {
+                LOG.error( "Cannot access the comparator class constructor for class {}", className );
+                throw new LdapSchemaException( "Cannot access the comparator class " + ie.getMessage() );
+            }
         }
         catch ( NoSuchMethodException nsme )
         {
             // Ok, let's try with the constructor without argument.
             // In this case, we will have to check that the OID is the same than
             // the one we got in the Comparator entry
-            clazz.getConstructor();
-            comparator = ( LdapComparator<?> ) clazz.newInstance();
+            try
+            {
+                clazz.getConstructor();
+            }
+            catch ( NoSuchMethodException nsme2 )
+            {
+                LOG.error( "Cannot find the comparator class constructor method for class {}", className );
+                throw new LdapSchemaException( "Cannot find the comparator class constructor method" + nsme2.getMessage() );
+            }
+            
+            try
+            { 
+                comparator = ( LdapComparator<?> ) clazz.newInstance();
+            }
+            catch ( InstantiationException ie )
+            {
+                LOG.error( "Cannot instantiate the comparator class constructor for class {}", className );
+                throw new LdapSchemaException( "Cannot instantiate the comparator class " + ie.getMessage() );
+            }
+            catch ( IllegalAccessException iae )
+            {
+                LOG.error( "Cannot access the comparator class constructor for class {}", className );
+                throw new LdapSchemaException( "Cannot access the comparator class constructor " + iae.getMessage() );
+            }
 
             if ( !comparator.getOid().equals( oid ) )
             {
@@ -460,7 +551,7 @@ public class SchemaEntityFactory implements EntityFactory
      */
     public LdapComparator<?> getLdapComparator( SchemaManager schemaManager,
         LdapComparatorDescription comparatorDescription, Registries targetRegistries, String schemaName )
-        throws Exception
+        throws LdapException
     {
         checkDescription( comparatorDescription, SchemaConstants.COMPARATOR );
 
@@ -552,7 +643,7 @@ public class SchemaEntityFactory implements EntityFactory
      * Class load a normalizer instances
      */
     private Normalizer classLoadNormalizer( SchemaManager schemaManager, String oid, String className,
-        Attribute byteCode ) throws Exception
+        Attribute byteCode ) throws LdapException
     {
         // Try to class load the normalizer
         Class<?> clazz = null;
@@ -561,17 +652,48 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( byteCode == null )
         {
-            clazz = Class.forName( className );
+            try
+            {  
+                clazz = Class.forName( className );
+            }
+            catch ( ClassNotFoundException cnfe )
+            {
+                LOG.error( "Cannot find the normalizer class constructor for class {}", className );
+                throw new LdapSchemaException( "Cannot find the normalizer class " + cnfe.getMessage() );
+            }
         }
         else
         {
             classLoader.setAttribute( byteCode );
-            clazz = classLoader.loadClass( className );
+            
+            try
+            {
+                clazz = classLoader.loadClass( className );
+            }
+            catch ( ClassNotFoundException cnfe )
+            {
+                LOG.error( "Cannot load the normalizer class constructor for class {}", className );
+                throw new LdapSchemaException( "Cannot load the normalizer class " + cnfe.getMessage() );
+            }
+
             byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
         }
 
         // Create the normalizer instance
-        normalizer = ( Normalizer ) clazz.newInstance();
+        try
+        { 
+            normalizer = ( Normalizer ) clazz.newInstance();
+        }
+        catch ( InstantiationException ie )
+        {
+            LOG.error( "Cannot instantiate the normalizer class constructor for class {}", className );
+            throw new LdapSchemaException( "Cannot instantiate the normalizer class " + ie.getMessage() );
+        }
+        catch ( IllegalAccessException iae )
+        {
+            LOG.error( "Cannot access the normalizer class constructor for class {}", className );
+            throw new LdapSchemaException( "Cannot access the normalizer class constructor " + iae.getMessage() );
+        }
 
         // Update the common fields
         normalizer.setBytecode( byteCodeStr );
@@ -591,7 +713,7 @@ public class SchemaEntityFactory implements EntityFactory
      * {@inheritDoc}
      */
     public Normalizer getNormalizer( SchemaManager schemaManager, NormalizerDescription normalizerDescription,
-        Registries targetRegistries, String schemaName ) throws Exception
+        Registries targetRegistries, String schemaName ) throws LdapException
     {
         checkDescription( normalizerDescription, SchemaConstants.NORMALIZER );
 

@@ -20,6 +20,9 @@
 package org.apache.directory.api.osgi;
 
 
+import java.io.IOException;
+
+import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.schema.loader.JarLdifSchemaLoader;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
@@ -36,7 +39,7 @@ public class ApiLdapSchemaDataOsgiTest extends ApiOsgiTestBase
 
 
     @Override
-    protected void useBundleClasses() throws Exception
+    protected void useBundleClasses() throws LdapException, IOException
     {
         JarLdifSchemaLoader loader = new JarLdifSchemaLoader();
         loader.getAllEnabled();

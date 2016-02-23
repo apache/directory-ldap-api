@@ -127,23 +127,36 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * Creates a new instance of DefaultSchemaManager with the default schema schemaLoader
      */
-    public DefaultSchemaManager() throws Exception
+    public DefaultSchemaManager()
     {
         // Default to the the root (one schemaManager for all the entries
         namingContext = Dn.ROOT_DSE;
-        SchemaLoader schemaLoader = new JarLdifSchemaLoader();
-        
-        
-        for ( Schema schema : schemaLoader.getAllSchemas() )
-        {
-            schemaMap.put( schema.getSchemaName(), schema );
-        }
-        
         errors = new ArrayList<Throwable>();
         registries = new Registries();
         factory = new SchemaEntityFactory();
         isRelaxed = STRICT;
-        loadAllEnabled();
+        
+        try
+        {
+            SchemaLoader schemaLoader = new JarLdifSchemaLoader();
+            
+            for ( Schema schema : schemaLoader.getAllSchemas() )
+            {
+                schemaMap.put( schema.getSchemaName(), schema );
+            }
+            
+            loadAllEnabled();
+        }
+        catch ( LdapException le )
+        {
+            LOG.error( "SchemaManager can't be loaded : {}", le.getMessage() );
+            throw new RuntimeException( le.getMessage() );
+        }
+        catch ( IOException ioe )
+        {
+            LOG.error( "SchemaManager can't be loaded : {}", ioe.getMessage() );
+            throw new RuntimeException( ioe.getMessage() );
+        }
     }
 
     
@@ -152,7 +165,7 @@ public class DefaultSchemaManager implements SchemaManager
      * 
      * @param schemas The list of schema to load
      */
-    public DefaultSchemaManager( Collection<Schema> schemas ) throws Exception
+    public DefaultSchemaManager( Collection<Schema> schemas )
     {
         // Default to the the root (one schemaManager for all the entries
         namingContext = Dn.ROOT_DSE;
@@ -175,7 +188,7 @@ public class DefaultSchemaManager implements SchemaManager
      * 
      * @param schemaLoader The schemaLoader containing the schemas to load
      */
-    public DefaultSchemaManager( SchemaLoader schemaLoader ) throws Exception
+    public DefaultSchemaManager( SchemaLoader schemaLoader )
     {
         // Default to the the root (one schemaManager for all the entries
         namingContext = Dn.ROOT_DSE;
@@ -199,7 +212,7 @@ public class DefaultSchemaManager implements SchemaManager
      * @param relaxed If the schema  manager should be relaxed or not
      * @param schemas The list of schema to load
      */
-    public DefaultSchemaManager( boolean relaxed, Collection<Schema> schemas ) throws Exception
+    public DefaultSchemaManager( boolean relaxed, Collection<Schema> schemas )
     {
         // Default to the the root (one schemaManager for all the entries
         namingContext = Dn.ROOT_DSE;
@@ -711,7 +724,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public boolean load( String... schemaNames ) throws Exception
+    public boolean load( String... schemaNames ) throws LdapException
     {
         if ( schemaNames.length == 0 )
         {
@@ -1064,7 +1077,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public boolean loadAllEnabled() throws Exception
+    public boolean loadAllEnabled() throws LdapException
     {
         Schema[] schemas = new Schema[schemaMap.size()];
         int i = 0;
@@ -1087,7 +1100,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public boolean loadAllEnabledRelaxed() throws Exception
+    public boolean loadAllEnabledRelaxed() throws LdapException
     {
         Schema[] enabledSchemas = new Schema[schemaMap.size()];
         int i = 0;
@@ -1162,7 +1175,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public boolean loadRelaxed( Schema... schemas ) throws Exception
+    public boolean loadRelaxed( Schema... schemas ) throws LdapException
     {
         // TODO Auto-generated method stub
         return false;
@@ -1172,7 +1185,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public boolean loadRelaxed( String... schemaNames ) throws Exception
+    public boolean loadRelaxed( String... schemaNames ) throws LdapException
     {
         Schema[] schemas = toArray( schemaNames );
         return loadRelaxed( schemas );
@@ -1182,7 +1195,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public boolean loadWithDeps( Schema... schemas ) throws Exception
+    public boolean loadWithDeps( Schema... schemas ) throws LdapException
     {
         boolean loaded = false;
 
@@ -1238,7 +1251,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public boolean loadWithDeps( String... schemas ) throws Exception
+    public boolean loadWithDeps( String... schemas ) throws LdapException
     {
         return loadWithDeps( toArray( schemas ) );
     }
@@ -1254,7 +1267,7 @@ public class DefaultSchemaManager implements SchemaManager
      * @throws Exception if there is a cycle detected and/or another
      * failure results while loading, producing and or registering schema objects
      */
-    private void loadDepsFirst( Registries registries, Schema schema ) throws Exception
+    private void loadDepsFirst( Registries registries, Schema schema ) throws LdapException
     {
         if ( schema == null )
         {
@@ -1314,7 +1327,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public boolean loadWithDepsRelaxed( Schema... schemas ) throws Exception
+    public boolean loadWithDepsRelaxed( Schema... schemas ) throws LdapException
     {
         registries.setRelaxed();
 
@@ -1337,7 +1350,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public boolean loadWithDepsRelaxed( String... schemas ) throws Exception
+    public boolean loadWithDepsRelaxed( String... schemas ) throws LdapException
     {
         return loadWithDepsRelaxed( toArray( schemas ) );
     }
@@ -1352,7 +1365,7 @@ public class DefaultSchemaManager implements SchemaManager
      * @throws Exception if there is a cycle detected and/or another
      * failure results while loading, producing and or registering schema objects
      */
-    private void loadDepsFirstRelaxed( Schema schema ) throws Exception
+    private void loadDepsFirstRelaxed( Schema schema ) throws LdapException
     {
         if ( schema == null )
         {
@@ -1503,7 +1516,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public boolean verify( Schema... schemas ) throws Exception
+    public boolean verify( Schema... schemas ) throws LdapException
     {
         // Work on a cloned registries
         Registries clonedRegistries = cloneRegistries();
@@ -1551,7 +1564,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public boolean verify( String... schemas ) throws Exception
+    public boolean verify( String... schemas ) throws LdapException
     {
         return verify( toArray( schemas ) );
     }
@@ -1571,7 +1584,7 @@ public class DefaultSchemaManager implements SchemaManager
      *
      * @throws Exception If the initialization fails
      */
-    public void initialize() throws Exception
+    public void initialize() throws LdapException
     {
     }
 
