@@ -2735,6 +2735,21 @@ public class DnTest
 
 
     @Test
+    public void testNormalizeBackSlash() throws Exception
+    {
+        Dn dn = new Dn( "cn=A\\,b,dc=com" );
+        dn.apply( schemaManager );
+        
+        System.out.println( dn.toString() );
+        System.out.println( dn );
+        System.out.println( dn.getName() );
+        System.out.println( dn.getNormName() );
+        
+        System.out.println( dn.getRdn().getAva().getValue().getString() );
+    }
+
+
+    @Test
     public void testNormalizeCompositeWithEscaped() throws Exception
     {
         Dn dn = new Dn( "  OU  =  Ex\\+mple + cn = T\\+ST\\  ,  ou  =  COM " );

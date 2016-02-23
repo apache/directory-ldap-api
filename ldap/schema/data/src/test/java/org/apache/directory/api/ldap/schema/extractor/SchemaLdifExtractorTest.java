@@ -23,8 +23,8 @@ package org.apache.directory.api.ldap.schema.extractor;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.directory.api.ldap.schema.extractor.impl.DefaultSchemaLdifExtractor;
+import org.apache.directory.api.util.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

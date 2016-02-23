@@ -878,10 +878,10 @@ public class SchemaAwareRdnTest
         Rdn rdn = new Rdn( schemaManager, "cn=a\\ b\\ c" );
         assertEquals( "2.5.4.3=a b c", rdn.getNormName() );
     }
-
-
+    
+    /*
     @Test
-    public void testEscapedSpaceInValue() throws LdapException
+        public void testEscapedSpaceInValue() throws LdapException
     {
         Rdn rdn1 = new Rdn( schemaManager, "cn=a b c" );
         Rdn rdn2 = new Rdn( schemaManager, "cn=a\\ b\\ c" );
@@ -891,11 +891,73 @@ public class SchemaAwareRdnTest
 
         Rdn rdn3 = new Rdn( schemaManager, "cn=\\ a b c\\ " );
         Rdn rdn4 = new Rdn( schemaManager, "cn=\\ a\\ b\\ c\\ " );
-        assertEquals( "2.5.4.3=\\ a b c\\ ", rdn3.getNormName() );
+        assertEquals( "2.5.4.3= a b c ", rdn3.getNormName() );
         assertEquals( "cn=\\ a b c\\ ", rdn3.getName() );
         assertEquals( "2.5.4.3=\\ a b c\\ ", rdn4.getNormName() );
         assertEquals( "cn=\\ a\\ b\\ c\\ ", rdn4.getName() );
         assertTrue( rdn3.equals( rdn4 ) );
+    }
+    */
+    
+    /*
+    public void testEscapedSpaceInValue2() throws LdapException
+    {
+        Rdn rdn = new Rdn( schemaManager, "cn=\\ a\\ " );
+
+        assertEquals( "cn=\\ a\\ ", rdn.getName() );
+        assertEquals( "2.5.4.3=\\ a\\ ", rdn.getNormName() );
+    }
+    */
+
+
+    @Test
+    public void testEscapedSpaceInValue() throws LdapException
+    {
+        Rdn rdn1 = new Rdn( schemaManager, "cn=a b c" );
+        assertEquals( "2.5.4.3=a b c", rdn1.getNormName() );
+
+        Rdn rdn2 = new Rdn( schemaManager, "cn=a\\ b\\ c" );
+        assertEquals( "2.5.4.3=a b c", rdn2.getNormName() );
+        
+        assertTrue( rdn1.equals( rdn2 ) );
+
+        Rdn rdn3 = new Rdn( schemaManager, "cn=\\ a b c\\ " );
+        assertEquals( "2.5.4.3=\\ a b c\\ ", rdn3.getNormName() );
+        assertEquals( "cn=\\ a b c\\ ", rdn3.getName() );
+
+        Rdn rdn4 = new Rdn( schemaManager, "cn=\\ a\\ b\\ c\\ " );
+        assertEquals( "2.5.4.3=\\ a b c\\ ", rdn4.getNormName() );
+        assertEquals( "cn=\\ a\\ b\\ c\\ ", rdn4.getName() );
+        assertTrue( rdn3.equals( rdn4 ) );
+    }
+
+
+    /**
+     * attributeValue = string / hexstring
+     * string =   [ ( leadchar / pair ) [ *( stringchar / pair )
+     *   ( trailchar / pair ) ] ]
+     * leadchar = LUTF1 / UTFMB
+     * pair = ESC ( ESC / special / hexpair )
+     * special = escaped / SPACE / SHARP / EQUALS
+     * 
+     * --> replace <ESC><special> with <special>
+     * 
+     * '\#' will be replaced by '#'
+     */
+    @Test
+    public void testEscapedHashInValue2() throws LdapException
+    {
+        Rdn rdn = new Rdn( schemaManager, "cn=a\\#b" );
+        assertEquals( "2.5.4.3=a#b", rdn.getNormName() );
+        assertEquals( "cn=a\\#b", rdn.getName() );
+        
+        // Check the AVA
+        assertEquals( "2.5.4.3=a#b", rdn.getAva().getNormName() );
+        assertEquals( "cn=a\\#b", rdn.getAva().getName() );
+        
+        // Check the value
+        assertEquals( "a#b", rdn.getAva().getValue().getNormValue() );
+        assertEquals( "a\\#b", rdn.getAva().getValue().getString() );
     }
 
 
