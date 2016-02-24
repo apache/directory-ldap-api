@@ -28,10 +28,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.ConnectException;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.net.UnknownHostException;
 import java.nio.channels.UnresolvedAddressException;
 import java.nio.charset.Charset;
 import java.security.PrivilegedExceptionAction;
@@ -144,6 +142,7 @@ import org.apache.directory.api.ldap.model.schema.parsers.OpenLdapSchemaParser;
 import org.apache.directory.api.ldap.model.schema.registries.Registries;
 import org.apache.directory.api.ldap.model.schema.registries.SchemaLoader;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
+import org.apache.directory.api.util.Network;
 import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.ldap.client.api.callback.SaslCallbackHandler;
@@ -496,14 +495,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         // Default to localhost if null
         if ( Strings.isEmpty( server ) )
         {
-            try
-            {
-                config.setLdapHost( InetAddress.getLocalHost().getHostName() );
-            }
-            catch ( UnknownHostException uhe )
-            {
-                config.setLdapHost( LdapConnectionConfig.DEFAULT_LDAP_HOST );
-            }
+            config.setLdapHost( Network.LOOPBACK_HOSTNAME );
             
         }
         else

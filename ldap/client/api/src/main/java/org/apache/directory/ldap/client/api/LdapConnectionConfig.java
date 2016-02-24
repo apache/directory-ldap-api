@@ -21,8 +21,6 @@
 package org.apache.directory.ldap.client.api;
 
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -35,6 +33,7 @@ import javax.net.ssl.X509TrustManager;
 
 import org.apache.directory.api.ldap.codec.api.BinaryAttributeDetector;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.util.Network;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -298,14 +297,7 @@ public class LdapConnectionConfig
      */
     public String getDefaultLdapHost()
     {
-        try
-        {
-            return InetAddress.getLocalHost().getHostName();
-        }
-        catch ( UnknownHostException uhe )
-        {
-            return DEFAULT_LDAP_HOST;
-        }
+        return Network.LOOPBACK_HOSTNAME;
     }
 
 
