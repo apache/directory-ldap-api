@@ -412,4 +412,17 @@ public final class FileUtils
         
         return new FileOutputStream( file, append );
     }
+    
+    
+    /**
+     * Returns a {@link File} representing the system temporary directory.
+     *
+     * @return the system temporary directory.
+     *
+     * @since 2.0
+     */
+    public static File getTempDirectory() 
+    {
+        return new File( getTempDirectoryPath() );
+    }
 }
