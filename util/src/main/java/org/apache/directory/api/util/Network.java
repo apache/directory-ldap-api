@@ -57,7 +57,7 @@ public final class Network
     }
 
 
-    public static String ldapLooopbackUrl( int port )
+    public static String ldapLoopbackUrl( int port )
     {
         return "ldap://" + LOOPBACK_HOSTNAME + ":" + port;
     }
