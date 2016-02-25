@@ -419,25 +419,25 @@ public class LdifAnonymizer
             {
                 if ( anonymizer == null )
                 {
-                    anonymizedAva = new Ava( schemaManager, attributeType.getName(), value.getString() );
+                    anonymizedAva = new Ava( schemaManager, ava.getType(), value.getString() );
                 }
                 else
                 {
                     Attribute anonymizedAttribute = anonymizer.anonymize( valueMap, valueSet, attribute );
-                    anonymizedAva = new Ava( schemaManager, attributeType.getName(), anonymizedAttribute.getString() );
+                    anonymizedAva = new Ava( schemaManager, ava.getType(), anonymizedAttribute.getString() );
                 }
             }
             else
             {
                 if ( anonymizer == null )
                 {
-                    anonymizedAva = new Ava( schemaManager, attributeType.getName(), value.getBytes() );
+                    anonymizedAva = new Ava( schemaManager, ava.getType(), value.getBytes() );
                 }
                 else
                 {
                     Attribute anonymizedAttribute = anonymizer.anonymize( valueMap, valueSet, attribute );
 
-                    anonymizedAva = new Ava( schemaManager, attributeType.getName(), anonymizedAttribute.getBytes() );
+                    anonymizedAva = new Ava( schemaManager, ava.getType(), anonymizedAttribute.getBytes() );
                 }
             }
         }
@@ -445,11 +445,11 @@ public class LdifAnonymizer
         {
             if ( value.isHumanReadable() )
             {
-                anonymizedAva = new Ava( schemaManager, attributeType.getName(), anonymizedValue.getString() );
+                anonymizedAva = new Ava( schemaManager, ava.getType(), anonymizedValue.getString() );
             }
             else
             {
-                anonymizedAva = new Ava( schemaManager, attributeType.getName(), anonymizedValue.getBytes() );
+                anonymizedAva = new Ava( schemaManager, ava.getType(), anonymizedValue.getBytes() );
             }
         }
 

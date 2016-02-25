@@ -466,9 +466,17 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             }
             catch ( LdapException le )
             {
-                String message = I18n.err( I18n.ERR_04188 );
-                LOG.error( message );
-                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
+                if ( schemaManager.isRelaxed() )
+                {
+                    // No attribute in the schema, but the schema is relaxed : get out
+                    return;
+                }
+                else
+                {
+                    String message = I18n.err( I18n.ERR_04188 );
+                    LOG.error( message );
+                    throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
+                }
             }
 
             if ( this.attributeType == tmpAttributeType )

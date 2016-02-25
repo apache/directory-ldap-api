@@ -633,8 +633,11 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 // Check that the first AVA is not for the same attribute
                 if ( avaType.equals( normalizedType ) )
                 {
-                    throw new LdapInvalidDnException( "Invalid RDN: the " + normalizedType
-                        + " is already present in the RDN" );
+                    if ( ava.getValue().equals( value.getValue() ) )
+                    {
+                        throw new LdapInvalidDnException( "Invalid RDN: the " + normalizedType
+                            + " is already present in the RDN" );
+                    }
                 }
 
                 // First, create the HashMap,
@@ -654,15 +657,28 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 // Check that the AT is not already present
                 if ( avaTypes.containsKey( normalizedType ) )
                 {
-                    throw new LdapInvalidDnException( "Invalid RDN: the " + normalizedType
-                        + " is already present in the RDN" );
+                    Collection<Ava> atavList = ( Collection<Ava> ) avaTypes.get( normalizedType );
+                    
+                    if ( atavList.contains( value ) )
+                    {
+                        throw new LdapInvalidDnException( "Invalid RDN: the " + normalizedType
+                            + " is already present in the RDN" );
+                    }
+                    else
+                    {
+                        // Add the value to the list
+                        atavList.add( value );
+                        nbAvas++;
+                    }
                 }
-
-                // add a new Ava
-                avas.add( value );
-                avaTypes.put( normalizedType, value );
-                nbAvas++;
-                hashCode();
+                else
+                {
+                    // add a new Ava
+                    avas.add( value );
+                    avaTypes.put( normalizedType, value );
+                    nbAvas++;
+                    hashCode();
+                }
 
                 break;
         }
