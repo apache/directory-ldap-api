@@ -1553,7 +1553,7 @@ public final class SchemaConstants
     public static final String REF_AT_OID = "2.16.840.1.113730.3.1.34";
 
     //-------------------------------------------------------------------------
-    // Various other ATtributeTypes
+    // Various other AttributeTypes
     //-------------------------------------------------------------------------
     // apache AttributeTypes
     //-------------------------------------------------------------------------
@@ -1573,13 +1573,17 @@ public final class SchemaConstants
     public static final String CONTEXT_CSN_AT = "contextCSN";
     public static final String CONTEXT_CSN_AT_OID = "1.3.6.1.4.1.4203.666.1.25";
 
-    // AccessControlSubentries
-    public static final String ACCESS_CONTROL_SUBENTRIES_AT = "accessControlSubentries";
-    public static final String ACCESS_CONTROL_SUBENTRIES_AT_OID = "1.3.6.1.4.1.18060.0.4.1.2.11";
+    // PrescriptiveACI
+    public static final String PRESCRIPTIVE_ACI_AT = "prescriptiveACI";
+    public static final String PRESCRIPTIVE_ACI_AT_OID = "2.5.24.4";
 
-    // TriggerExecutionSubentries
-    public static final String TRIGGER_EXECUTION_SUBENTRIES_AT = "triggerExecutionSubentries";
-    public static final String TRIGGER_EXECUTION_SUBENTRIES_AT_OID = "1.3.6.1.4.1.18060.0.4.1.2.27";
+    // EntryACI
+    public static final String ENTRY_ACI_AT = "entryACI";
+    public static final String ENTRY_ACI_AT_OID = "2.5.24.5";
+
+    // SubentryACI
+    public static final String SUBENTRY_ACI_AT = "subentryACI";
+    public static final String SUBENTRY_ACI_AT_OID = "2.5.24.6";
 
     // Comparators
     public static final String COMPARATORS_AT = "comparators";
@@ -1592,26 +1596,6 @@ public final class SchemaConstants
     // SyntaxCheckers
     public static final String SYNTAX_CHECKERS_AT = "syntaxCheckers";
     public static final String SYNTAX_CHECKERS_AT_OID = "1.3.6.1.4.1.18060.0.4.1.2.34";
-
-    // ChangeLogContext
-    public static final String CHANGELOG_CONTEXT_AT = "changeLogContext";
-    public static final String CHANGELOG_CONTEXT_AT_OID = "1.3.6.1.4.1.18060.0.4.1.2.49";
-
-    // entryParentId
-    public static final String ENTRY_PARENT_ID_AT = "entryParentId";
-    public static final String ENTRY_PARENT_ID_OID = "1.3.6.1.4.1.18060.0.4.1.2.51";
-
-    // PrescriptiveACI
-    public static final String PRESCRIPTIVE_ACI_AT = "prescriptiveACI";
-    public static final String PRESCRIPTIVE_ACI_AT_OID = "2.5.24.4";
-
-    // EntryACI
-    public static final String ENTRY_ACI_AT = "entryACI";
-    public static final String ENTRY_ACI_AT_OID = "2.5.24.5";
-
-    // SubentryACI
-    public static final String SUBENTRY_ACI_AT = "subentryACI";
-    public static final String SUBENTRY_ACI_AT_OID = "2.5.24.6";
 
     //-------------------------------------------------------------------------
     // Unkown schema AttributeTypes
