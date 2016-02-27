@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.name;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.junit.BeforeClass;
@@ -199,6 +200,31 @@ public class RdnTest
         assertEquals( rdn1.getNormName(), rdn2.getNormName() );
     }
     
+    
+    /**
+     * test that a RDN with an attributeType used twice with the same value
+     * throws an exception
+     */
+    @Test( expected=LdapInvalidDnException.class )
+    public void testWrongRdnAtUsedTwiceSameValue() throws LdapException
+    {
+        new Rdn( schemaManager, " cn = b + cn = b " );
+    }
+    
+    
+    /**
+     * test that a RDN with an attributeType used twice but with different value
+     * is accepted
+     */
+    @Test
+    public void testRdnAtUsedTwiceDifferentValue() throws LdapException
+    {
+        Rdn rdn1 = new Rdn( schemaManager, " cn = c + cn = b " );
+        Rdn rdn2 = new Rdn( schemaManager, " cn = b + cn = c " );
+        
+        //assertEquals( rdn1, rdn2 );
+    }
+
     
     @Test
     public void testRdnEscapedValue() throws Exception
