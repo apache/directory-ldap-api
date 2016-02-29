@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.util.List;
 
 
 /**
@@ -818,5 +819,48 @@ public final class FileUtils
     public static FileOutputStream openOutputStream( File file ) throws IOException 
     {
         return openOutputStream( file, false );
+    }
+    
+    
+    /**
+     * Reads the contents of a file line by line to a List of Strings using the default encoding for the VM.
+     * The file is always closed.
+     *
+     * @param file  the file to read, must not be {@code null}
+     * @return the list of Strings representing each line in the file, never {@code null}
+     * @throws IOException in case of an I/O error
+     * @since 1.3
+     * @deprecated 2.5 use {@link #readLines(File, Charset)} instead
+     */
+    @Deprecated
+    public static List<String> readLines( File file ) throws IOException 
+    {
+        return readLines( file, Charset.defaultCharset() );
+    }
+    
+    
+    /**
+     * Reads the contents of a file line by line to a List of Strings.
+     * The file is always closed.
+     *
+     * @param file  the file to read, must not be {@code null}
+     * @param encoding  the encoding to use, {@code null} means platform default
+     * @return the list of Strings representing each line in the file, never {@code null}
+     * @throws IOException in case of an I/O error
+     * @since 2.3
+     */
+    public static List<String> readLines( File file, Charset encoding ) throws IOException 
+    {
+        InputStream in = null;
+        
+        try 
+        {
+            in = openInputStream( file );
+            return IOUtils.readLines( in, IOUtils.toCharset( encoding ) );
+        } 
+        finally 
+        {
+            IOUtils.closeQuietly( in );
+        }
     }
 }
