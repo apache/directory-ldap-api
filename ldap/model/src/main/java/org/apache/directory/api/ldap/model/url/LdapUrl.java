@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.model.url;
 import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -137,7 +138,7 @@ public class LdapUrl
 
     /** modal parameter that forces explicit scope rendering in toString */
     private boolean forceScopeRendering;
-    
+
     /** The type of host we use */
     private HostTypeEnum hostType = HostTypeEnum.REGULAR_NAME;
 
@@ -377,32 +378,32 @@ public class LdapUrl
         // elements.
         switch ( chars[pos] )
         {
-            case '[' :
+            case '[':
                 // This is an IP Literal address
                 return parseIpLiteral( chars, pos + 1 );
-                
-            case '0' :
-            case '1' :
-            case '2' :
-            case '3' :
-            case '4' :
-            case '5' :
-            case '6' :
-            case '7' :
-            case '8' :
-            case '9' :
+
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
                 // Probably an IPV4 address, but may be a reg-name
                 // try to parse an IPV4 address first
                 int currentPos = parseIPV4( chars, pos );
-                
+
                 if ( currentPos != -1 )
                 {
                     host = new String( chars, start, currentPos - start );
-                    
+
                     return currentPos;
                 }
                 //fallback to reg-name
-                
+
             case 'a' : case 'b' : case 'c' : case 'd' : case 'e' :
             case 'A' : case 'B' : case 'C' : case 'D' : case 'E' :
             case 'f' : case 'g' : case 'h' : case 'i' : case 'j' :
@@ -423,13 +424,13 @@ public class LdapUrl
             default:
                 break;
         }
-        
+
         host = new String( chars, start, pos - start );
 
         return pos;
     }
-    
-    
+
+
     /**
      * parse these rules :
      * <pre>
@@ -450,21 +451,21 @@ public class LdapUrl
     private int parseIpLiteral( char[] chars, int pos )
     {
         int start = pos;
-        
+
         if ( Chars.isCharASCII( chars, pos, 'v' ) )
         {
             // This is an IPvFuture
             pos++;
             hostType = HostTypeEnum.IPV_FUTURE;
-            
+
             pos = parseIPvFuture( chars, pos );
-            
+
             if ( pos != -1 )
             {
                 // We don't keep the last char, which is a ']'
                 host = new String( chars, start, pos - start - 1 );
             }
-            
+
             return pos;
         }
         else
@@ -475,8 +476,144 @@ public class LdapUrl
             return parseIPV6( chars, pos );
         }
     }
-    
-    
+
+
+    /**
+     * Validates an IPv4 address. Returns true if valid.
+     * @param inet4Address the IPv4 address to validate
+     * @return true if the argument contains a valid IPv4 address
+     */
+    public boolean isValidInet4Address( String inet4Address )
+    {
+        return parseIPV4( inet4Address.toCharArray(), 0 ) != -1;
+    }
+
+
+    /**
+     * This code source was taken from commons.validator 1.5.0
+     * 
+     * Validates an IPv6 address. Returns true if valid.
+     * @param inet6Address the IPv6 address to validate
+     * @return true if the argument contains a valid IPv6 address
+     * 
+     * @since 1.4.1
+     */
+    public boolean isValidInet6Address( String inet6Address )
+    {
+        boolean containsCompressedZeroes = inet6Address.contains( "::" );
+
+        if ( containsCompressedZeroes && ( inet6Address.indexOf( "::" ) != inet6Address.lastIndexOf( "::" ) ) )
+        {
+            return false;
+        }
+
+        if ( ( inet6Address.startsWith( ":" ) && !inet6Address.startsWith( "::" ) )
+            || ( inet6Address.endsWith( ":" ) && !inet6Address.endsWith( "::" ) ) )
+        {
+            return false;
+        }
+
+        String[] octets = inet6Address.split( ":" );
+
+        if ( containsCompressedZeroes )
+        {
+            List<String> octetList = new ArrayList<String>( Arrays.asList( octets ) );
+
+            if ( inet6Address.endsWith( "::" ) )
+            {
+                // String.split() drops ending empty segments
+                octetList.add( "" );
+            }
+            else if ( inet6Address.startsWith( "::" ) && !octetList.isEmpty() )
+            {
+                octetList.remove( 0 );
+            }
+
+            octets = octetList.toArray( new String[octetList.size()] );
+        }
+
+        if ( octets.length > 8 )
+        {
+            return false;
+        }
+
+        int validOctets = 0;
+        int emptyOctets = 0;
+
+        for ( int index = 0; index < octets.length; index++ )
+        {
+            String octet = ( String ) octets[index];
+
+            if ( octet.length() == 0 )
+            {
+                emptyOctets++;
+
+                if ( emptyOctets > 1 )
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                emptyOctets = 0;
+
+                if ( octet.contains( "." ) )
+                { // contains is Java 1.5+
+                    if ( !inet6Address.endsWith( octet ) )
+                    {
+                        return false;
+                    }
+
+                    if ( index > octets.length - 1 || index > 6 )
+                    {
+                        // IPV4 occupies last two octets
+                        return false;
+                    }
+
+                    if ( !isValidInet4Address( octet ) )
+                    {
+                        return false;
+                    }
+
+                    validOctets += 2;
+
+                    continue;
+                }
+
+                if ( octet.length() > 4 )
+                {
+                    return false;
+                }
+
+                int octetInt = 0;
+
+                try
+                {
+                    octetInt = Integer.valueOf( octet, 16 ).intValue();
+                }
+                catch ( NumberFormatException e )
+                {
+                    return false;
+                }
+
+                if ( octetInt < 0 || octetInt > 0xffff )
+                {
+                    return false;
+                }
+            }
+
+            validOctets++;
+        }
+
+        if ( validOctets < 8 && !containsCompressedZeroes )
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+
     /**
      * Parse the following rules :
      * <pre>
@@ -506,22 +643,22 @@ public class LdapUrl
         if ( Chars.isCharASCII( chars, pos, ']' ) )
         {
             String hostString = new String( chars, start, pos - start );
-            
-            if ( sun.net.util.IPAddressUtil.isIPv6LiteralAddress( hostString ) )
+
+            if ( isValidInet6Address( hostString ) )
             {
                 host = hostString;
-                
-                return  pos + 1;
+
+                return pos + 1;
             }
             else
             {
                 return -1;
             }
         }
-        
+
         return -1;
     }
-    
+
 
     /**
      * Parse these rules :
@@ -534,33 +671,33 @@ public class LdapUrl
     {
         // We should have at least one hex digit
         boolean hexFound = false;
-        
+
         while ( Chars.isHex( chars, pos ) )
         {
             hexFound = true;
             pos++;
         }
-        
+
         if ( !hexFound )
         {
             return -1;
         }
-        
+
         // a dot is expected
         if ( !Chars.isCharASCII( chars, pos, '.' ) )
         {
             return -1;
         }
-        
+
         // Now, we should have at least one char in unreserved / sub-delims / ":"
         boolean valueFound = false;
-        
+
         while ( !Chars.isCharASCII( chars, pos, ']' ) )
         {
             switch ( chars[pos] )
             {
-                // Unserserved
-                // ALPHA
+            // Unserserved
+            // ALPHA
                 case 'a' : case 'b' : case 'c' : case 'd' : case 'e' :
                 case 'A' : case 'B' : case 'C' : case 'D' : case 'E' :
                 case 'f' : case 'g' : case 'h' : case 'i' : case 'j' :
@@ -572,40 +709,40 @@ public class LdapUrl
                 case 'u' : case 'v' : case 'w' : case 'x' : case 'y' :
                 case 'U' : case 'V' : case 'W' : case 'X' : case 'Y' :
                 case 'z' : case 'Z' : 
-                    
-                // DIGITs
+
+                    // DIGITs
                 case '0' : case '1' : case '2' : case '3' : case '4' : 
                 case '5' : case '6' : case '7' : case '8' : case '9' :
-                    
-                // others
+
+                    // others
                 case '-' : case '.' : case '_' : case '~' :  
-                
-                // sub-delims
+
+                    // sub-delims
                 case '!' : case '$' : case '&' : case '\'' : 
                 case '(' : case ')' : case '*' : case '+' : case ',' : 
                 case ';' : case '=' :
-                    
-                // Special case for ':'
-                case ':' :
+
+                    // Special case for ':'
+                case ':':
                     pos++;
                     valueFound = true;
                     break;
-                    
-                default :
+
+                default:
                     // Wrong char
                     return -1;
             }
         }
-        
+
         if ( !valueFound )
         {
             return -1;
         }
-        
+
         return pos;
     }
-    
-    
+
+
     /**
      * parse these rules :
      * <pre>
@@ -619,13 +756,13 @@ public class LdapUrl
     private int parseRegName( char[] chars, int pos )
     {
         int start = pos;
-        
+
         while ( !Chars.isCharASCII( chars, pos, ':' ) && !Chars.isCharASCII( chars, pos, '/' ) && ( pos < chars.length ) )
         {
             switch ( chars[pos] )
             {
-                // Unserserved
-                // ALPHA
+            // Unserserved
+            // ALPHA
                 case 'a' : case 'b' : case 'c' : case 'd' : case 'e' :
                 case 'A' : case 'B' : case 'C' : case 'D' : case 'E' :
                 case 'f' : case 'g' : case 'h' : case 'i' : case 'j' :
@@ -637,23 +774,23 @@ public class LdapUrl
                 case 'u' : case 'v' : case 'w' : case 'x' : case 'y' :
                 case 'U' : case 'V' : case 'W' : case 'X' : case 'Y' :
                 case 'z' : case 'Z' : 
-                    
-                // DIGITs
+
+                    // DIGITs
                 case '0' : case '1' : case '2' : case '3' : case '4' : 
                 case '5' : case '6' : case '7' : case '8' : case '9' :
-                    
-                // others
+
+                    // others
                 case '-' : case '.' : case '_' : case '~' :  
-                
-                // sub-delims
+
+                    // sub-delims
                 case '!' : case '$' : case '&' : case '\'' : 
                 case '(' : case ')' : case '*' : case '+' : case ',' : 
                 case ';' : case '=' :
                     pos++;
                     break;
-                    
+
                 // pct-encoded
-                case '%' : 
+                case '%':
                     if ( Chars.isHex( chars, pos + 1 ) && Chars.isHex( chars, pos + 2 ) )
                     {
                         pos += 3;
@@ -662,20 +799,20 @@ public class LdapUrl
                     {
                         return -1;
                     }
-                    
-                default :
+
+                default:
                     // Wrong char
                     return -1;
             }
         }
-        
+
         host = new String( chars, start, pos - start );
         hostType = HostTypeEnum.REGULAR_NAME;
-        
+
         return pos;
     }
 
-    
+
     /**
      * Parse these rules :
      * <pre>
@@ -696,13 +833,13 @@ public class LdapUrl
         for ( int i = 0; i < 3; i++ )
         {
             ipPos = parseDecOctet( chars, ipPos, ipElem, i );
-            
+
             if ( ipPos == -1 )
             {
                 // Not an IPV4 address
                 return -1;
             }
-            
+
             if ( chars[ipPos] != '.' )
             {
                 // Not an IPV4 address
@@ -715,7 +852,7 @@ public class LdapUrl
         }
 
         ipPos = parseDecOctet( chars, ipPos, ipElem, 3 );
-        
+
         if ( ipPos == -1 )
         {
             // Not an IPV4 address
@@ -726,12 +863,12 @@ public class LdapUrl
             pos = ipPos;
             host = new String( chars, start, pos - start );
             hostType = HostTypeEnum.IPV4;
-            
+
             return pos;
         }
     }
-    
-    
+
+
     /**
      * Parse this rule :
      * <pre>
@@ -743,18 +880,18 @@ public class LdapUrl
         int ipElemValue = 0;
         boolean ipElemSeen = false;
         boolean hasTailingZeroes = false;
-        
+
         while ( Chars.isDigit( chars, pos ) )
         {
             ipElemSeen = true;
             ipElemValue = ( ipElemValue * 10 ) + ( chars[pos] - '0' );
-            
+
             if ( ( chars[pos] == '0' ) && hasTailingZeroes && ( ipElemValue > 0 ) )
             {
                 // Two 0 at the beginning : not allowed
                 return -1;
             }
-            
+
             if ( ipElemValue > 255 )
             {
                 // We don't allow IPV4 address with values > 255
@@ -763,11 +900,11 @@ public class LdapUrl
 
             pos++;
         }
-        
+
         if ( ipElemSeen )
         {
             ipElem[octetNb] = ipElemValue;
-            
+
             return pos;
         }
         else
@@ -775,7 +912,7 @@ public class LdapUrl
             return -1;
         }
     }
-    
+
 
     /**
      * Parse this rule : <br>
@@ -922,7 +1059,7 @@ public class LdapUrl
                 }
                 catch ( ArrayIndexOutOfBoundsException aioobe )
                 {
-                    throw new UrlDecoderException( I18n.err( I18n.ERR_04414 ) , aioobe );
+                    throw new UrlDecoderException( I18n.err( I18n.ERR_04414 ), aioobe );
                 }
             }
             else
@@ -1591,13 +1728,13 @@ public class LdapUrl
         {
             switch ( hostType )
             {
-                case IPV4 :
-                case REGULAR_NAME :
+                case IPV4:
+                case REGULAR_NAME:
                     sb.append( host );
                     break;
-                    
-                case IPV6 :
-                case IPV_FUTURE :
+
+                case IPV6:
+                case IPV_FUTURE:
                     sb.append( '[' ).append( host ).append( ']' );
                     break;
 
