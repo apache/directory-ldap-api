@@ -156,6 +156,7 @@
               org.apache.directory.api.ldap.model.cursor;version=${project.version},
               org.apache.directory.api.ldap.model.entry;version=${project.version},
               org.apache.directory.api.ldap.model.exception;version=${project.version},
+              org.apache.directory.api.ldap.model.filter;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.model.ldif.anonymizer;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.model.message;version=${project.version},
               org.apache.directory.api.ldap.model.message.controls;version=${project.version},
