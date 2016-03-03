@@ -58,7 +58,7 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
-            <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+            <!-- Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy -->
             <Bundle-SymbolicName>${project.groupId}.ldap.net.mina</Bundle-SymbolicName>
             <Export-Package>
               org.apache.directory.api.ldap.codec.protocol.mina;version=${project.version};-noimport:=true

@@ -118,7 +118,7 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
-            <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+            <!-- bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy -->
             <Bundle-SymbolicName>${project.groupId}.ldap.codec.core</Bundle-SymbolicName>
             <Export-Package>
               org.apache.directory.api.ldap.codec;version=${project.version};-noimport:=true,
