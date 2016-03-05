@@ -1239,12 +1239,14 @@ public class RdnTest
 
 
     /**
-     * test that a RDN with an attributeType used twice throws an exception
+     * test that a RDN can have an attributeType twice
      */
-    @Test( expected=LdapInvalidDnException.class )
-    public void testWrongRdnAtUsedTwice() throws LdapException
+    @Test
+    public void testRdnAtUsedTwice() throws LdapException
     {
-        new Rdn( " A = b + A = d " );
+        Rdn rdn = new Rdn( " A = b + A = d " );
+
+        assertEquals( " A = b + A = d ", rdn.getName() );
     }
 
 
@@ -1263,11 +1265,13 @@ public class RdnTest
 
 
     /**
-     * test that a RDN with an attributeType used twice throws an exception
+     * test that a RDN can have an attributeType twice
      */
-    @Test(expected = LdapInvalidDnException.class)
-    public void testAvaConstructorWrongRdnAtUsedTwice() throws LdapException
+    @Test
+    public void testAvaConstructorRdnAtUsedTwice() throws LdapException
     {
-        new Rdn( new Ava( "A", "b" ), new Ava( "A", "d" ) );
+        Rdn rdn = new Rdn( new Ava( "A", "b" ), new Ava( "A", "d" ) );
+
+        assertEquals( "A=b+A=d", rdn.getName() );
     }
 }
