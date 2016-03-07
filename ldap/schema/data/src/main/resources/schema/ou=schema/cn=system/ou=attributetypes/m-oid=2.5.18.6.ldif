@@ -11,4 +11,5 @@ objectclass: top
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.45
 m-usage: DIRECTORY_OPERATION
 m-name: subtreeSpecification
+m-description: RFC3672: defines a collection of entries within an administrative area
 creatorsname: uid=admin,ou=system
