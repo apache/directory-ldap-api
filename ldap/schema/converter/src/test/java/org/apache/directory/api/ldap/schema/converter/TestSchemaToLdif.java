@@ -822,7 +822,7 @@ public class TestSchemaToLdif
                 "objectclass: metaTop\n" +
                 "objectclass: top\n" +
                 "m-oid: 1.3.6.1.4.1.18060.0.4.2.3.14\n" +
-                "m-usage: directoryOperation\n\n";
+                "m-usage: DIRECTORY_OPERATION\n\n";
 
         assertEquals( expected, transform( "testATUsageDirOp" ) );
     }
@@ -839,7 +839,7 @@ public class TestSchemaToLdif
                 "objectclass: metaTop\n" +
                 "objectclass: top\n" +
                 "m-oid: 1.3.6.1.4.1.18060.0.4.2.3.14\n" +
-                "m-usage: distributedOperation\n\n";
+                "m-usage: DISTRIBUTED_OPERATION\n\n";
 
         assertEquals( expected, transform( "testATUsageDistrOp" ) );
     }
@@ -856,7 +856,7 @@ public class TestSchemaToLdif
                 "objectclass: metaTop\n" +
                 "objectclass: top\n" +
                 "m-oid: 1.3.6.1.4.1.18060.0.4.2.3.14\n" +
-                "m-usage: dSAOperation\n\n";
+                "m-usage: DSA_OPERATION\n\n";
 
         assertEquals( expected, transform( "testATUsageDsaOp" ) );
     }

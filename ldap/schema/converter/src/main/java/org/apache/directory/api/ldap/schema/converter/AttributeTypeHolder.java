@@ -368,7 +368,7 @@ public class AttributeTypeHolder extends SchemaElementImpl
         // The usage value
         if ( usage != UsageEnum.USER_APPLICATIONS )
         {
-            sb.append( "m-usage: " ).append( usage.render() ).append( '\n' );
+            sb.append( "m-usage: " ).append( usage.toString() ).append( '\n' );
         }
 
         // The extensions
