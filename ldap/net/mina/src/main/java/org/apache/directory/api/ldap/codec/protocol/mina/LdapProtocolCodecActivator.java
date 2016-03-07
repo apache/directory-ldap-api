@@ -87,16 +87,6 @@ public class LdapProtocolCodecActivator implements BundleActivator
 
 
     /**
-     * This class does nothing. It's just a nasty hack to force the bundle
-     * to get started lazy by calling this method.
-     */
-    public static void lazyStart()
-    {
-        // Does nothing
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     public void start( BundleContext bundleContext ) throws Exception
