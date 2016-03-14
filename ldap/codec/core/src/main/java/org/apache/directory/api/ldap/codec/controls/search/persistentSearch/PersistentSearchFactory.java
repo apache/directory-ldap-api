@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.codec.controls.search.persistentSearch;
 
 
+import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.controls.PersistentSearch;
@@ -31,7 +32,7 @@ import org.apache.directory.api.ldap.model.message.controls.PersistentSearch;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class PersistentSearchFactory implements ControlFactory<PersistentSearch, PersistentSearchDecorator>
+public class PersistentSearchFactory implements ControlFactory<PersistentSearch>
 {
     private LdapApiService codec;
 
@@ -54,7 +55,7 @@ public class PersistentSearchFactory implements ControlFactory<PersistentSearch,
     /**
      * {@inheritDoc}
      */
-    public PersistentSearchDecorator newCodecControl()
+    public CodecControl<PersistentSearch> newCodecControl()
     {
         return new PersistentSearchDecorator( codec );
     }
@@ -63,7 +64,7 @@ public class PersistentSearchFactory implements ControlFactory<PersistentSearch,
     /**
      * {@inheritDoc}
      */
-    public PersistentSearchDecorator newCodecControl( PersistentSearch control )
+    public CodecControl<PersistentSearch> newCodecControl( PersistentSearch control )
     {
         return new PersistentSearchDecorator( codec, control );
     }

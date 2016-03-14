@@ -68,13 +68,14 @@ import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
  * @see DescriptionUtils#getDescription(Syntax)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-// super.hashCode is final
-@SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class LdapSyntax extends AbstractSchemaObject
 {
+    /** The mandatory serialVersionUID */
+    public static final long serialVersionUID = 1L;
+
     /** the human readable flag */
     protected boolean isHumanReadable = false;
-    
+
     /** A flag set to true if the Syntax has a X-NOT-HUMAN-READABLE extension */
     private boolean hasHumanReadableFlag = false;
 
@@ -136,18 +137,18 @@ public class LdapSyntax extends AbstractSchemaObject
         }
         else
         {
-            List<String> values = extensions.get( MetaSchemaConstants.X_NOT_HUMAN_READABLE_AT );
+            List<String> values = getExtension( MetaSchemaConstants.X_NOT_HUMAN_READABLE_AT );
 
             if ( ( values == null ) || ( values.size() == 0 ) )
             {
                 // Default to String if the flag is not set
-                return false;
+                return true;
             }
             else
             {
                 String value = values.get( 0 );
                 hasHumanReadableFlag = true;
-                
+
                 if ( value.equalsIgnoreCase( "FALSE" ) )
                 {
                     isHumanReadable = true;
@@ -180,26 +181,6 @@ public class LdapSyntax extends AbstractSchemaObject
             this.isHumanReadable = humanReadable;
             this.hasHumanReadableFlag = true;
         }
-    }
-
-
-    /**
-     * Gets whether or not the Human Readable extension is present in the Syntax.
-     * 
-     * @return true if the syntax contains teh X-NOT-HUMAN-READABLE extension
-     *
-    public boolean hasHumanReadableFlag()
-    {
-        return hasHumanReadableFlag;
-    }
-
-
-    /**
-     * Sets the hasHumanReadableFlag to true if we have a X-NOT-HUMAN-READABLE extension
-     *
-    public void setHasHumanReadableFlag()
-    {
-        hasHumanReadableFlag = true;
     }
 
 
@@ -256,7 +237,7 @@ public class LdapSyntax extends AbstractSchemaObject
     @Override
     public String toString()
     {
-        return objectType + " " + DescriptionUtils.getDescription( this );
+        return SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( this );
     }
 
 

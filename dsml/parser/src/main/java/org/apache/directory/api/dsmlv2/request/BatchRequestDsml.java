@@ -98,7 +98,7 @@ public class BatchRequestDsml
      */
     private boolean storeReq = true;
 
-    private DsmlDecorator currentReq;
+    private DsmlDecorator<? extends Request> currentReq;
 
 
     /**

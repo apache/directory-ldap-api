@@ -27,7 +27,6 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.Set;
 
-import org.apache.directory.api.util.OsgiUtils;
 import org.junit.Test;
 
 
@@ -50,8 +49,7 @@ public class OsgiUtilsTest
     {
         public boolean accept( File pathname )
         {
-            return pathname.getAbsolutePath().contains( "junit" ) ||
-                pathname.getAbsolutePath().contains( "slf4j" );
+            return pathname.getAbsolutePath().contains( "junit" ) || pathname.getAbsolutePath().contains( "slf4j" );
         }
     };
 
@@ -77,9 +75,8 @@ public class OsgiUtilsTest
     public void testSplitIntoPackageVersions()
     {
         Set<String> pkgs = OsgiUtils.splitIntoPackages(
-            "org.ops4j.store.intern;uses:=\"org.ops4j.store,org.ops4j.io,org.apache.commons.logging\";" +
-                "version=\"1.2.2\",org.ops4j.store;uses:=\"org.ops4j.store.intern\";version=\"1.2.2",
-            null );
+            "org.ops4j.store.intern;uses:=\"org.ops4j.store,org.ops4j.io,org.apache.commons.logging\";"
+                + "version=\"1.2.2\",org.ops4j.store;uses:=\"org.ops4j.store.intern\";version=\"1.2.2", null );
 
         assertTrue( "org.ops4j.store.intern", pkgs.contains( "org.ops4j.store.intern" ) );
         assertTrue( "org.ops4j.store", pkgs.contains( "org.ops4j.store" ) );
@@ -92,29 +89,29 @@ public class OsgiUtilsTest
     public void testSplitIntoPackages()
     {
         Set<String> pkgs = OsgiUtils.splitIntoPackages(
-            "org.apache.log4j.net;uses:=\"org.apache.log4j,org.apache.log4j.spi," +
-                "javax.naming,org.apache.log4j.helpers,javax.jms,org.apache.log4j.xml," +
-                "javax.mail,javax.mail.internet,org.w3c.dom,javax.jmdns\"," +
-                "org.apache.log4j.jmx;uses:=\"org.apache.log4j,javax.management," +
-                "com.sun.jdmk.comm,org.apache.log4j.helpers,org.apache.log4j.spi\"," +
-                "org.apache.log4j.jdbc;uses:=\"org.apache.log4j,org.apache.log4j.spi\"," +
-                "org.apache.log4j.config;uses:=\"org.apache.log4j.helpers,org.apache.log4j," +
-                "org.apache.log4j.spi\",org.apache.log4j.helpers;uses:=\"org.apache.log4j," +
-                "org.apache.log4j.spi,org.apache.log4j.pattern\",org.apache.log4j;uses:=\"" +
-                "org.apache.log4j.spi,org.apache.log4j.helpers,org.apache.log4j.pattern," +
-                "org.apache.log4j.or,org.apache.log4j.config\",org.apache.log4j.or.jms;" +
-                "uses:=\"org.apache.log4j.helpers,javax.jms,org.apache.log4j.or\"," +
-                "org.apache.log4j.nt;uses:=\"org.apache.log4j.helpers,org.apache.log4j," +
-                "org.apache.log4j.spi\",org.apache.log4j.or.sax;uses:=\"org.apache.log4j.or," +
-                "org.xml.sax\",org.apache.log4j.pattern;uses:=\"org.apache.log4j.helpers," +
-                "org.apache.log4j.spi,org.apache.log4j,org.apache.log4j.or\"," +
-                "org.apache.log4j.spi;uses:=\"org.apache.log4j,org.apache.log4j.helpers," +
-                "com.ibm.uvm.tools,org.apache.log4j.or\",org.apache.log4j.or;uses:=\"" +
-                "org.apache.log4j.helpers,org.apache.log4j.spi,org.apache.log4j\"," +
-                "org.apache.log4j.xml;uses:=\"javax.xml.parsers,org.w3c.dom,org.xml.sax," +
-                "org.apache.log4j.config,org.apache.log4j.helpers,org.apache.log4j," +
-                "org.apache.log4j.spi,org.apache.log4j.or\",org.apache.log4j.varia;uses:=\"" +
-                "org.apache.log4j.spi,org.apache.log4j,org.apache.log4j.helpers\"", null );
+            "org.apache.log4j.net;uses:=\"org.apache.log4j,org.apache.log4j.spi,"
+                + "javax.naming,org.apache.log4j.helpers,javax.jms,org.apache.log4j.xml,"
+                + "javax.mail,javax.mail.internet,org.w3c.dom,javax.jmdns\","
+                + "org.apache.log4j.jmx;uses:=\"org.apache.log4j,javax.management,"
+                + "com.sun.jdmk.comm,org.apache.log4j.helpers,org.apache.log4j.spi\","
+                + "org.apache.log4j.jdbc;uses:=\"org.apache.log4j,org.apache.log4j.spi\","
+                + "org.apache.log4j.config;uses:=\"org.apache.log4j.helpers,org.apache.log4j,"
+                + "org.apache.log4j.spi\",org.apache.log4j.helpers;uses:=\"org.apache.log4j,"
+                + "org.apache.log4j.spi,org.apache.log4j.pattern\",org.apache.log4j;uses:=\""
+                + "org.apache.log4j.spi,org.apache.log4j.helpers,org.apache.log4j.pattern,"
+                + "org.apache.log4j.or,org.apache.log4j.config\",org.apache.log4j.or.jms;"
+                + "uses:=\"org.apache.log4j.helpers,javax.jms,org.apache.log4j.or\","
+                + "org.apache.log4j.nt;uses:=\"org.apache.log4j.helpers,org.apache.log4j,"
+                + "org.apache.log4j.spi\",org.apache.log4j.or.sax;uses:=\"org.apache.log4j.or,"
+                + "org.xml.sax\",org.apache.log4j.pattern;uses:=\"org.apache.log4j.helpers,"
+                + "org.apache.log4j.spi,org.apache.log4j,org.apache.log4j.or\","
+                + "org.apache.log4j.spi;uses:=\"org.apache.log4j,org.apache.log4j.helpers,"
+                + "com.ibm.uvm.tools,org.apache.log4j.or\",org.apache.log4j.or;uses:=\""
+                + "org.apache.log4j.helpers,org.apache.log4j.spi,org.apache.log4j\","
+                + "org.apache.log4j.xml;uses:=\"javax.xml.parsers,org.w3c.dom,org.xml.sax,"
+                + "org.apache.log4j.config,org.apache.log4j.helpers,org.apache.log4j,"
+                + "org.apache.log4j.spi,org.apache.log4j.or\",org.apache.log4j.varia;uses:=\""
+                + "org.apache.log4j.spi,org.apache.log4j,org.apache.log4j.helpers\"", null );
 
         assertTrue( "org.apache.log4j.net", pkgs.contains( "org.apache.log4j.net" ) );
         assertTrue( "org.apache.log4j.jmx", pkgs.contains( "org.apache.log4j.jmx" ) );

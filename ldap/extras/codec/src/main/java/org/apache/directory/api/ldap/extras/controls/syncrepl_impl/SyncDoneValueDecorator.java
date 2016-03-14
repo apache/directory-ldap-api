@@ -32,8 +32,8 @@ import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ControlDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.controls.SyncDoneValue;
-import org.apache.directory.api.ldap.extras.controls.SyncDoneValueImpl;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValue;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValueImpl;
 import org.apache.directory.api.util.Strings;
 
 
@@ -48,7 +48,7 @@ public class SyncDoneValueDecorator extends ControlDecorator<SyncDoneValue> impl
     private int syncDoneValueLength;
 
     /** An instance of this decoder */
-    private static final Asn1Decoder decoder = new Asn1Decoder();
+    private static final Asn1Decoder DECODER = new Asn1Decoder();
 
 
     /**
@@ -226,7 +226,7 @@ public class SyncDoneValueDecorator extends ControlDecorator<SyncDoneValue> impl
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );
         SyncDoneValueContainer container = new SyncDoneValueContainer( getCodecService(), this );
-        decoder.decode( bb, container );
+        DECODER.decode( bb, container );
         return this;
     }
 }

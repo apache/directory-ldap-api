@@ -21,8 +21,6 @@ package org.apache.directory.api.ldap.model.schema;
 
 
 import org.apache.directory.api.i18n.I18n;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -75,12 +73,11 @@ import org.slf4j.LoggerFactory;
  * @see DescriptionUtils#getDescription(MutableMatchingRule)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-// super.hashCode is final
-@SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class MutableMatchingRule extends MatchingRule
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( MutableMatchingRule.class );
+    /** The mandatory serialVersionUID */
+    public static final long serialVersionUID = 1L;
+
 
     /**
      * Creates a new instance of MatchingRule.
@@ -218,15 +215,6 @@ public class MutableMatchingRule extends MatchingRule
         }
 
         this.normalizer = normalizer;
-    }
-
-
-    /**
-     * @see Object#toString()
-     */
-    public String toString()
-    {
-        return objectType + " " + DescriptionUtils.getDescription( this );
     }
 
 

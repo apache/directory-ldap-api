@@ -22,7 +22,7 @@ package org.apache.directory.api.ldap.extras.controls.syncrepl_impl;
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.controls.SyncDoneValue;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValue;
 
 
 /**
@@ -49,8 +49,7 @@ public class SyncDoneValueContainer extends AbstractContainer
         super();
         this.codec = codec;
         this.control = new SyncDoneValueDecorator( codec );
-        stateStack = new int[1];
-        grammar = SyncDoneValueGrammar.getInstance();
+        setGrammar( SyncDoneValueGrammar.getInstance() );
         setTransition( SyncDoneValueStatesEnum.START_STATE );
     }
 
@@ -65,8 +64,7 @@ public class SyncDoneValueContainer extends AbstractContainer
         super();
         this.codec = codec;
         this.control = control;
-        stateStack = new int[1];
-        grammar = SyncDoneValueGrammar.getInstance();
+        setGrammar( SyncDoneValueGrammar.getInstance() );
         setTransition( SyncDoneValueStatesEnum.START_STATE );
     }
 

@@ -8,7 +8,7 @@ m-substr: caseExactSubstringsMatch
 objectclass: metaTop
 objectclass: metaAttributeType
 objectclass: top
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.44
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
 m-name: ads-keystoreFile
 creatorsname: uid=admin,ou=system
 m-equality: caseExactMatch

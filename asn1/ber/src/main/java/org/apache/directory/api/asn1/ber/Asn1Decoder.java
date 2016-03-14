@@ -588,6 +588,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
      * </code> otherwise
      * @throws DecoderException Thrown if anything went wrong
      */
+    @SuppressWarnings("unchecked")
     private boolean treatTLVDoneState( ByteBuffer stream, Asn1Container container ) throws DecoderException
     {
         if ( IS_DEBUG )
@@ -656,11 +657,11 @@ public class Asn1Decoder implements TLVBerDecoderMBean
         boolean hasRemaining = stream.hasRemaining();
 
         // Increment the PDU size counter.
-        container.incrementDecodeBytes( stream.remaining() );
+        container.incrementDecodedBytes( stream.remaining() );
 
-        if ( container.getDecodeBytes() > container.getMaxPDUSize() )
+        if ( container.getDecodedBytes() > container.getMaxPDUSize() )
         {
-            String message = I18n.err( I18n.ERR_00042_PDU_SIZE_TOO_LONG, container.getDecodeBytes(), container
+            String message = I18n.err( I18n.ERR_00042_PDU_SIZE_TOO_LONG, container.getDecodedBytes(), container
                 .getMaxPDUSize() );
             LOG.error( message );
             throw new DecoderException( message );
@@ -739,7 +740,10 @@ public class Asn1Decoder implements TLVBerDecoderMBean
                 case PDU_DECODED:
                     // We have to deal with the case where there are
                     // more bytes in the buffer, but the PDU has been decoded.
-                    LOG.debug( I18n.err( I18n.ERR_00043_REMAINING_BYTES_FOR_DECODED_PDU ) );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( I18n.err( I18n.ERR_00043_REMAINING_BYTES_FOR_DECODED_PDU ) );
+                    }
 
                     hasRemaining = false;
 

@@ -40,7 +40,7 @@ import org.apache.directory.api.util.Strings;
  * A server side schema aware wrapper around a binary attribute value.
  * This value wrapper uses schema information to syntax check values,
  * and to compare them for equality and ordering.  It caches results
- * and invalidates them when the wrapped value changes.
+ * and invalidates them when the user provided value changes.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -51,7 +51,7 @@ public class BinaryValue extends AbstractValue<byte[]>
 
 
     /**
-     * Creates a BinaryValue without an initial wrapped value.
+     * Creates a BinaryValue without an initial user provided value.
      *
      * @param attributeType the schema type associated with this BinaryValue
      */
@@ -76,7 +76,7 @@ public class BinaryValue extends AbstractValue<byte[]>
 
 
     /**
-     * Creates a BinaryValue with an initial wrapped binary value.
+     * Creates a BinaryValue with an initial user provided binary value.
      *
      * @param value the binary value to wrap which may be null, or a zero length byte array
      */
@@ -84,21 +84,21 @@ public class BinaryValue extends AbstractValue<byte[]>
     {
         if ( value != null )
         {
-            this.wrappedValue = new byte[value.length];
+            this.upValue = new byte[value.length];
             this.normalizedValue = new byte[value.length];
-            System.arraycopy( value, 0, this.wrappedValue, 0, value.length );
+            System.arraycopy( value, 0, this.upValue, 0, value.length );
             System.arraycopy( value, 0, this.normalizedValue, 0, value.length );
         }
         else
         {
-            this.wrappedValue = null;
+            this.upValue = null;
             this.normalizedValue = null;
         }
     }
 
 
     /**
-     * Creates a BinaryValue with an initial wrapped binary value.
+     * Creates a BinaryValue with an initial user provided binary value.
      *
      * @param attributeType the schema type associated with this BinaryValue
      * @param value the binary value to wrap which may be null, or a zero length byte array
@@ -114,11 +114,11 @@ public class BinaryValue extends AbstractValue<byte[]>
 
     /**
      * Gets a direct reference to the normalized representation for the
-     * wrapped value of this ServerValue wrapper. Implementations will most
+     * user provided value of this ServerValue wrapper. Implementations will most
      * likely leverage the attributeType this value is associated with to
-     * determine how to properly normalize the wrapped value.
+     * determine how to properly normalize the user provided value.
      *
-     * @return the normalized version of the wrapped value
+     * @return the normalized version of the user provided value
      */
     public byte[] getNormValue()
     {
@@ -236,7 +236,7 @@ public class BinaryValue extends AbstractValue<byte[]>
         }
 
         BinaryValue other = ( BinaryValue ) obj;
-        
+
         // First check if we have an attrbuteType.
         if ( attributeType != null )
         {
@@ -256,15 +256,15 @@ public class BinaryValue extends AbstractValue<byte[]>
 
                     // Shortcut : if we have an AT for both the values, check the 
                     // already normalized values
-                    if ( Arrays.equals( wrappedValue, other.wrappedValue ) )
+                    if ( Arrays.equals( upValue, other.upValue ) )
                     {
                         return true;
                     }
-                    
+
                     // We have an AttributeType, we use the associated comparator
                     try
                     {
-                        Comparator<byte[]> comparator = ( Comparator<byte[]> ) getLdapComparator();
+                        Comparator<byte[]> comparator = getLdapComparator();
 
                         // Compare normalized values
                         if ( comparator == null )
@@ -300,22 +300,22 @@ public class BinaryValue extends AbstractValue<byte[]>
                 // We have an AttributeType on the base value, we need to use its comparator
                 try
                 {
-                    Comparator<byte[]> comparator = ( Comparator<byte[]> ) getLdapComparator();
+                    Comparator<byte[]> comparator = getLdapComparator();
 
                     // Compare normalized values. We have to normalized the other value,
                     // as it has no AT
                     MatchingRule equality = getAttributeType().getEquality();
-                    
+
                     if ( equality == null )
                     {
                         // No matching rule : compare the raw values
                         return Arrays.equals( getNormReference(), other.getNormReference() );
                     }
-                    
+
                     Normalizer normalizer = equality.getNormalizer();
-                    
-                    BinaryValue otherValue = (BinaryValue)normalizer.normalize( other );
-                    
+
+                    BinaryValue otherValue = ( BinaryValue ) normalizer.normalize( other );
+
                     if ( comparator == null )
                     {
                         return Arrays.equals( getNormReference(), otherValue.getNormReference() );
@@ -343,25 +343,25 @@ public class BinaryValue extends AbstractValue<byte[]>
                 {
                     return other.isNull();
                 }
-                
+
                 try
                 {
-                    Comparator<byte[]> comparator = ( Comparator<byte[]> ) other.getLdapComparator();
+                    Comparator<byte[]> comparator = other.getLdapComparator();
 
                     // Compare normalized values. We have to normalized the other value,
                     // as it has no AT
                     MatchingRule equality = other.getAttributeType().getEquality();
-                    
+
                     if ( equality == null )
                     {
                         // No matching rule : compare the raw values
                         return Arrays.equals( getNormReference(), other.getNormReference() );
                     }
-                    
+
                     Normalizer normalizer = equality.getNormalizer();
-                    
-                    BinaryValue thisValue = (BinaryValue)normalizer.normalize( this );
-                    
+
+                    BinaryValue thisValue = ( BinaryValue ) normalizer.normalize( this );
+
                     if ( comparator == null )
                     {
                         return Arrays.equals( thisValue.getNormReference(), other.getNormReference() );
@@ -383,7 +383,7 @@ public class BinaryValue extends AbstractValue<byte[]>
                 {
                     return other.isNull();
                 }
-                
+
                 // Now check the normalized values
                 return Arrays.equals( getNormReference(), other.getNormReference() );
             }
@@ -408,10 +408,10 @@ public class BinaryValue extends AbstractValue<byte[]>
             System.arraycopy( normalizedValue, 0, clone.normalizedValue, 0, normalizedValue.length );
         }
 
-        if ( wrappedValue != null )
+        if ( upValue != null )
         {
-            clone.wrappedValue = new byte[wrappedValue.length];
-            System.arraycopy( wrappedValue, 0, clone.wrappedValue, 0, wrappedValue.length );
+            clone.upValue = new byte[upValue.length];
+            System.arraycopy( upValue, 0, clone.upValue, 0, upValue.length );
         }
 
         return clone;
@@ -423,13 +423,13 @@ public class BinaryValue extends AbstractValue<byte[]>
      */
     public byte[] getValue()
     {
-        if ( wrappedValue == null )
+        if ( upValue == null )
         {
             return null;
         }
 
-        final byte[] copy = new byte[wrappedValue.length];
-        System.arraycopy( wrappedValue, 0, copy, 0, wrappedValue.length );
+        final byte[] copy = new byte[upValue.length];
+        System.arraycopy( upValue, 0, copy, 0, upValue.length );
 
         return copy;
     }
@@ -451,15 +451,15 @@ public class BinaryValue extends AbstractValue<byte[]>
      */
     public int length()
     {
-        return wrappedValue != null ? wrappedValue.length : 0;
+        return upValue != null ? upValue.length : 0;
     }
 
 
     /**
-     * Get the wrapped value as a byte[]. This method returns a copy of 
-     * the wrapped byte[].
+     * Get the user provided value as a byte[]. This method returns a copy of 
+     * the user provided byte[].
      * 
-     * @return the wrapped value as a byte[]
+     * @return the user provided value as a byte[]
      */
     public byte[] getBytes()
     {
@@ -468,13 +468,13 @@ public class BinaryValue extends AbstractValue<byte[]>
 
 
     /**
-     * Get the wrapped value as a String.
+     * Get the user provided value as a String.
      *
-     * @return the wrapped value as a String
+     * @return the user provided value as a String
      */
     public String getString()
     {
-        return Strings.utf8ToString( wrappedValue );
+        return Strings.utf8ToString( upValue );
     }
 
 
@@ -527,14 +527,14 @@ public class BinaryValue extends AbstractValue<byte[]>
         {
             throw new IOException( "The serialized value is not a Binary value" );
         }
-        // Read the wrapped value, if it's not null
-        int wrappedLength = in.readInt();
+        // Read the user provided value, if it's not null
+        int upLength = in.readInt();
 
-        if ( wrappedLength >= 0 )
+        if ( upLength >= 0 )
         {
-            wrappedValue = new byte[wrappedLength];
+            upValue = new byte[upLength];
 
-            in.readFully( wrappedValue );
+            in.readFully( upValue );
         }
 
         // Read the isNormalized flag
@@ -558,26 +558,55 @@ public class BinaryValue extends AbstractValue<byte[]>
                 try
                 {
                     normalizedValue = attributeType.getEquality().getNormalizer().normalize( this ).getBytes();
+                    MatchingRule equality = attributeType.getEquality();
+
+                    if ( equality == null )
+                    {
+                        if ( upLength >= 0 )
+                        {
+                            normalizedValue = new byte[upLength];
+
+                            System.arraycopy( upValue, 0, normalizedValue, 0, upLength );
+                        }
+                    }
+                    else
+                    {
+                        Normalizer normalizer = equality.getNormalizer();
+
+                        if ( normalizer != null )
+                        {
+                            normalizedValue = normalizer.normalize( this ).getBytes();
+                        }
+                        else
+                        {
+                            if ( upLength >= 0 )
+                            {
+                                normalizedValue = new byte[upLength];
+
+                                System.arraycopy( upValue, 0, normalizedValue, 0, upLength );
+                            }
+                        }
+                    }
                 }
                 catch ( LdapException le )
                 {
-                    // Copy the wrappedValue into the normalizedValue
-                    if ( wrappedLength >= 0 )
+                    // Copy the upValue into the normalizedValue
+                    if ( upLength >= 0 )
                     {
-                        normalizedValue = new byte[wrappedLength];
+                        normalizedValue = new byte[upLength];
 
-                        System.arraycopy( wrappedValue, 0, normalizedValue, 0, wrappedLength );
+                        System.arraycopy( upValue, 0, normalizedValue, 0, upLength );
                     }
                 }
             }
             else
             {
-                // Copy the wrappedValue into the normalizedValue
-                if ( wrappedLength >= 0 )
+                // Copy the upValue into the normalizedValue
+                if ( upLength >= 0 )
                 {
-                    normalizedValue = new byte[wrappedLength];
+                    normalizedValue = new byte[upLength];
 
-                    System.arraycopy( wrappedValue, 0, normalizedValue, 0, wrappedLength );
+                    System.arraycopy( upValue, 0, normalizedValue, 0, upLength );
                 }
             }
         }
@@ -595,14 +624,14 @@ public class BinaryValue extends AbstractValue<byte[]>
         // Write the BINARY flag
         out.writeBoolean( BINARY );
 
-        // Write the wrapped value, if it's not null
-        if ( wrappedValue != null )
+        // Write the user provided value, if it's not null
+        if ( upValue != null )
         {
-            out.writeInt( wrappedValue.length );
+            out.writeInt( upValue.length );
 
-            if ( wrappedValue.length > 0 )
+            if ( upValue.length > 0 )
             {
-                out.write( wrappedValue, 0, wrappedValue.length );
+                out.write( upValue, 0, upValue.length );
             }
         }
         else
@@ -649,22 +678,22 @@ public class BinaryValue extends AbstractValue<byte[]>
      */
     public String toString()
     {
-        if ( wrappedValue == null )
+        if ( upValue == null )
         {
             return "null";
         }
-        else if ( wrappedValue.length > 16 )
+        else if ( upValue.length > 16 )
         {
             // Just dump the first 16 bytes...
             byte[] copy = new byte[16];
 
-            System.arraycopy( wrappedValue, 0, copy, 0, 16 );
+            System.arraycopy( upValue, 0, copy, 0, 16 );
 
-            return "'" + Strings.dumpBytes( copy ) + "...'";
+            return Strings.dumpBytes( copy ) + "...";
         }
         else
         {
-            return "'" + Strings.dumpBytes( wrappedValue ) + "'";
+            return Strings.dumpBytes( upValue );
         }
     }
 }

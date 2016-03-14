@@ -28,7 +28,7 @@ import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.directory.api.ldap.codec.api.MessageDecorator;
 import org.apache.directory.api.ldap.model.message.Referral;
@@ -43,9 +43,6 @@ import org.apache.directory.api.ldap.model.message.SearchResultReference;
 public class SearchResultReferenceDecorator extends MessageDecorator<SearchResultReference>
     implements SearchResultReference
 {
-    /** The length of the referral */
-    private int referralLength;
-
     /** The search result reference length */
     private int searchResultReferenceLength;
 
@@ -58,44 +55,6 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
     public SearchResultReferenceDecorator( LdapApiService codec, SearchResultReference decoratedMessage )
     {
         super( codec, decoratedMessage );
-    }
-
-
-    /**
-     * @return The encoded Referral's length
-     */
-    public int getReferralLength()
-    {
-        return referralLength;
-    }
-
-
-    /**
-     * Stores the encoded length for the Referrals
-     * @param referralLength The encoded length
-     */
-    public void setReferralLength( int referralLength )
-    {
-        this.referralLength = referralLength;
-    }
-
-
-    /**
-     * @return The encoded SearchResultReference's length
-     */
-    public int getSearchResultReferenceLength()
-    {
-        return searchResultReferenceLength;
-    }
-
-
-    /**
-     * Stores the encoded length for the SearchResultReference's
-     * @param searchResultReferenceLength The encoded length
-     */
-    public void setSearchResultReferenceLength( int searchResultReferenceLength )
-    {
-        this.searchResultReferenceLength = searchResultReferenceLength;
     }
 
 
@@ -146,7 +105,7 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
      */
     public int computeLength()
     {
-        int searchResultReferenceLength = 0;
+        searchResultReferenceLength = 0;
 
         // We may have more than one reference.
         Referral referral = getReferral();
@@ -159,9 +118,6 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
 
             searchResultReferenceLength = referralLength;
         }
-
-        // Store the length of the response 
-        setSearchResultReferenceLength( searchResultReferenceLength );
 
         return 1 + TLV.getNbBytes( searchResultReferenceLength ) + searchResultReferenceLength;
     }
@@ -186,8 +142,8 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
         try
         {
             // The SearchResultReference Tag
-            buffer.put( LdapConstants.SEARCH_RESULT_REFERENCE_TAG );
-            buffer.put( TLV.getBytes( getSearchResultReferenceLength() ) );
+            buffer.put( LdapCodecConstants.SEARCH_RESULT_REFERENCE_TAG );
+            buffer.put( TLV.getBytes( searchResultReferenceLength ) );
 
             // The referrals, if any
             Referral referral = searchResultReference.getReferral();
@@ -204,7 +160,7 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
 
         return buffer;

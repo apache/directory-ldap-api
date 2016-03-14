@@ -38,10 +38,7 @@ import org.apache.directory.api.asn1.ber.tlv.TLVStateEnum;
 public abstract class AbstractContainer implements Asn1Container
 {
     /** All the possible grammars */
-    protected Grammar<?> grammar;
-
-    /** Store a stack of the current states used when switching grammars */
-    protected int[] stateStack;
+    private Grammar<?> grammar;
 
     /** The current state of the decoding */
     private TLVStateEnum state;
@@ -59,7 +56,7 @@ public abstract class AbstractContainer implements Asn1Container
     private boolean grammarEndAllowed;
 
     /** A counter for the decoded bytes */
-    protected int decodeBytes;
+    private int decodedBytes;
 
     /** The maximum allowed size for a PDU. Default to MAX int value */
     private int maxPDUSize = Integer.MAX_VALUE;
@@ -72,7 +69,7 @@ public abstract class AbstractContainer implements Asn1Container
 
     /** A flag telling if the Value should be accumulated before being decoded
      * for constructed types */
-    private boolean isGathering = false;
+    private boolean gathering = false;
 
 
     /**
@@ -100,10 +97,18 @@ public abstract class AbstractContainer implements Asn1Container
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("rawtypes")
-    public Grammar getGrammar()
+    public Grammar<?> getGrammar()
     {
         return grammar;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setGrammar( Grammar<?> grammar )
+    {
+        this.grammar = grammar;
     }
 
 
@@ -230,18 +235,27 @@ public abstract class AbstractContainer implements Asn1Container
     /**
      * {@inheritDoc}
      */
-    public int getDecodeBytes()
+    public int getDecodedBytes()
     {
-        return decodeBytes;
+        return decodedBytes;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void incrementDecodeBytes( int nb )
+    public void setDecodedBytes( int decodedBytes )
     {
-        decodeBytes += nb;
+        this.decodedBytes = decodedBytes;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void incrementDecodedBytes( int nb )
+    {
+        decodedBytes += nb;
     }
 
 
@@ -320,16 +334,16 @@ public abstract class AbstractContainer implements Asn1Container
      */
     public boolean isGathering()
     {
-        return isGathering;
+        return gathering;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void setGathering( boolean isGathering )
+    public void setGathering( boolean gathering )
     {
-        this.isGathering = isGathering;
+        this.gathering = gathering;
     }
 
 }

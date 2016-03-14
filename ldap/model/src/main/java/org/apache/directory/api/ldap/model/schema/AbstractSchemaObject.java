@@ -233,14 +233,14 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
             // Fills a set with all the existing names
             for ( String name : this.names )
             {
-                lowerNames.add( Strings.toLowerCase( name ) );
+                lowerNames.add( Strings.toLowerCaseAscii( name ) );
             }
 
             for ( String name : namesToAdd )
             {
                 if ( name != null )
                 {
-                    String lowerName = Strings.toLowerCase( name );
+                    String lowerName = Strings.toLowerCaseAscii( name );
                     // Check that the lower cased names is not already present
                     if ( !lowerNames.contains( lowerName ) )
                     {
@@ -477,11 +477,44 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
 
     /**
-     * @return The SchemaObject extensions, as a Map of [extension, values]
+     * {@inheritDoc}
      */
     public Map<String, List<String>> getExtensions()
     {
         return extensions;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean hasExtension( String extension )
+    {
+        return extensions.containsKey( Strings.toUpperCaseAscii( extension ) );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<String> getExtension( String extension )
+    {
+        String name = Strings.toUpperCaseAscii( extension );
+
+        if ( hasExtension( name ) )
+        {
+            for ( Map.Entry<String, List<String>> entry : extensions.entrySet() )
+            {
+                String key = entry.getKey();
+                
+                if ( name.equalsIgnoreCase( key ) )
+                {
+                    return entry.getValue();
+                }
+            }
+        }
+
+        return null;
     }
 
 
@@ -500,13 +533,13 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         if ( !isReadOnly )
         {
             List<String> valueList = new ArrayList<String>();
-            
+
             for ( String value : values )
             {
                 valueList.add( value );
             }
-            
-            extensions.put( key, valueList );
+
+            extensions.put( Strings.toUpperCaseAscii( key ), valueList );
         }
     }
 
@@ -525,7 +558,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
         if ( !isReadOnly )
         {
-            extensions.put( key, values );
+            extensions.put( Strings.toUpperCaseAscii( key ), values );
         }
     }
 
@@ -555,7 +588,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
                     values.add( value );
                 }
 
-                this.extensions.put( entry.getKey(), values );
+                this.extensions.put( Strings.toUpperCaseAscii( entry.getKey() ), values );
             }
 
         }
@@ -720,14 +753,16 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
             }
             else
             {
-                for ( String key : extensions.keySet() )
+                for ( Map.Entry<String, List<String>> entry : extensions.entrySet() )
                 {
+                    String key = entry.getKey();
+                    
                     if ( !that.extensions.containsKey( key ) )
                     {
                         return false;
                     }
 
-                    List<String> thisValues = extensions.get( key );
+                    List<String> thisValues = entry.getValue();
                     List<String> thatValues = that.extensions.get( key );
 
                     if ( thisValues != null )
@@ -838,7 +873,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
         for ( String key : original.getExtensions().keySet() )
         {
-            List<String> extensionValues = original.getExtensions().get( key );
+            List<String> extensionValues = original.getExtension( key );
 
             List<String> cloneExtension = new ArrayList<String>();
 
@@ -867,9 +902,9 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     public void clear()
     {
         // Clear the extensions
-        for ( String extension : extensions.keySet() )
+        for ( Map.Entry<String, List<String>> entry : extensions.entrySet() )
         {
-            List<String> extensionList = extensions.get( extension );
+            List<String> extensionList = entry.getValue();
 
             extensionList.clear();
         }
@@ -879,8 +914,8 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         // Clear the names
         names.clear();
     }
-    
-    
+
+
     public void unlock()
     {
         locked = false;
@@ -930,11 +965,12 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         }
 
         // The extensions, if any
-        for ( String key : extensions.keySet() )
+        for ( Map.Entry<String, List<String>> entry : extensions.entrySet() )
         {
+            String key = entry.getKey();
             h += h * 17 + key.hashCode();
 
-            List<String> values = extensions.get( key );
+            List<String> values = entry.getValue();
 
             if ( values != null )
             {

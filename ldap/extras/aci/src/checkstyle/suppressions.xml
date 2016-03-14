@@ -41,4 +41,7 @@
 
     <!-- Classes in org.apache.directory.api.asn1.der are forked from Bouncy Castle -->
     <suppress files="org.apache.directory.api.asn1.der" checks="[A-Za-z0-9]" />
+
+    <!-- Exclude Antlr generated sources -->
+    <suppress files="[\\/]generated-sources[\\/]" checks="[a-zA-Z0-9]*"/>
 </suppressions>

@@ -97,7 +97,7 @@ public class StoreControlCriticality extends GrammarAction<LdapMessageContainer<
                 .err( I18n.ERR_04100, Strings.dumpBytes( value.getData() ), bde.getMessage() ) );
 
             // This will generate a PROTOCOL_ERROR
-            throw new DecoderException( bde.getMessage() );
+            throw new DecoderException( bde.getMessage(), bde );
         }
 
         // We can have an END transition

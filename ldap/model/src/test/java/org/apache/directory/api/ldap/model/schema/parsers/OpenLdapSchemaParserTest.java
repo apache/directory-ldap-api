@@ -30,20 +30,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
-import org.apache.directory.api.ldap.model.schema.parsers.ConsoleParserMonitor;
-import org.apache.directory.api.ldap.model.schema.parsers.OpenLdapSchemaParser;
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.OpenLdapObjectIdentifierMacro;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -267,12 +265,12 @@ public class OpenLdapSchemaParserTest
 
         assertNotNull( extensions );
 
-        List<String> ext1 = extensions.get( "X-extension" );
+        List<String> ext1 = objectClass.getExtension( "X-extension" );
         assertNotNull( ext1 );
         assertEquals( 1, ext1.size() );
         assertTrue( ext1.contains( "test" ) );
 
-        List<String> ext2 = extensions.get( "X-otherExtension" );
+        List<String> ext2 = objectClass.getExtension( "X-otherExtension" );
         assertNotNull( ext2 );
         assertEquals( 2, ext2.size() );
         assertTrue( ext2.contains( "test1" ) );

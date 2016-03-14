@@ -21,7 +21,6 @@ package org.apache.directory.api.ldap.codec.api;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
-import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.api.ldap.codec.LdapMessageGrammar;
 import org.apache.directory.api.ldap.codec.LdapStatesEnum;
 import org.apache.directory.api.ldap.model.message.Control;
@@ -41,7 +40,7 @@ public class LdapMessageContainer<E extends MessageDecorator<? extends Message>>
     private E messageDecorator;
 
     /** checks if attribute is binary */
-    private final BinaryAttributeDetector binaryAttributeDetector;
+    private BinaryAttributeDetector binaryAttributeDetector;
 
     /** The message ID */
     private int messageId;
@@ -73,15 +72,14 @@ public class LdapMessageContainer<E extends MessageDecorator<? extends Message>>
     {
         super();
         this.codec = codec;
-        this.stateStack = new int[10];
-        this.grammar = LdapMessageGrammar.getInstance();
+        setGrammar( LdapMessageGrammar.getInstance() );
         this.binaryAttributeDetector = binaryAttributeDetector;
         setTransition( LdapStatesEnum.START_STATE );
     }
 
 
     /**
-     * Gets the {@link LdapApiService} associated with this {@link Asn1Container}.
+     * Gets the {@link LdapApiService} associated with this Container.
      *
      * @return
      */
@@ -123,7 +121,7 @@ public class LdapMessageContainer<E extends MessageDecorator<? extends Message>>
         messageDecorator = null;
         messageId = 0;
         currentControl = null;
-        decodeBytes = 0;
+        setDecodedBytes( 0 );
     }
 
 
@@ -172,5 +170,25 @@ public class LdapMessageContainer<E extends MessageDecorator<? extends Message>>
     public void setCurrentControl( ControlDecorator<? extends Control> currentControl )
     {
         this.currentControl = currentControl;
+    }
+
+
+    /**
+     * Sets the binary attribute detector
+     * 
+     * @param binaryAttributeDetector the binary attribute detector
+     */
+    public void setBinaryAttributeDetector( BinaryAttributeDetector binaryAttributeDetector )
+    {
+        this.binaryAttributeDetector = binaryAttributeDetector;
+    }
+
+
+    /**
+     * @return the binary attribute detector
+     */
+    public BinaryAttributeDetector getBinaryAttributeDetector()
+    {
+        return binaryAttributeDetector;
     }
 }

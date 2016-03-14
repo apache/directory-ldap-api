@@ -46,7 +46,7 @@ public class BindResponseImpl extends AbstractResultResponse implements BindResp
      */
     public BindResponseImpl()
     {
-        super( -1, TYPE );
+        super( -1, MessageTypeEnum.BIND_RESPONSE );
     }
 
 
@@ -57,7 +57,7 @@ public class BindResponseImpl extends AbstractResultResponse implements BindResp
      */
     public BindResponseImpl( final int id )
     {
-        super( id, TYPE );
+        super( id, MessageTypeEnum.BIND_RESPONSE );
     }
 
 

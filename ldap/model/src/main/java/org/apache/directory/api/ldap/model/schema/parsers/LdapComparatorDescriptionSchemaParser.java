@@ -23,8 +23,6 @@ package org.apache.directory.api.ldap.model.schema.parsers;
 import java.text.ParseException;
 
 import org.apache.directory.api.i18n.I18n;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
@@ -35,18 +33,15 @@ import antlr.TokenStreamException;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdapComparatorDescriptionSchemaParser extends AbstractSchemaParser
+public class LdapComparatorDescriptionSchemaParser extends AbstractSchemaParser<LdapComparatorDescription>
 {
-    /** The LoggerFactory used by this class */
-    protected static final Logger LOG = LoggerFactory.getLogger( LdapComparatorDescriptionSchemaParser.class );
-
 
     /**
      * Creates a schema parser instance.
      */
     public LdapComparatorDescriptionSchemaParser()
     {
-        super();
+        super( LdapComparatorDescription.class, I18n.ERR_04236, I18n.ERR_04237, I18n.ERR_04238 );
     }
 
 
@@ -74,56 +69,19 @@ public class LdapComparatorDescriptionSchemaParser extends AbstractSchemaParser
      * @return the parsed ComparatorDescription bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public LdapComparatorDescription parseComparatorDescription( String comparatorDescription )
-        throws ParseException
+    public LdapComparatorDescription parseComparatorDescription( String comparatorDescription ) throws ParseException
     {
-        LOG.debug( "Parsing a Comparator : {}", comparatorDescription );
-
-        if ( comparatorDescription == null )
-        {
-            LOG.error( I18n.err( I18n.ERR_04236 ) );
-            throw new ParseException( "Null", 0 );
-        }
-
-        synchronized ( parser )
-        {
-            reset( comparatorDescription ); // reset and initialize the parser / lexer pair
-
-            try
-            {
-                LdapComparatorDescription ldapComparatorDescription = parser.ldapComparator();
-                LOG.debug( "Parsed a LdapComparator : {}", ldapComparatorDescription );
-
-                // Update the schemaName
-                updateSchemaName( ldapComparatorDescription );
-
-                return ldapComparatorDescription;
-            }
-            catch ( RecognitionException re )
-            {
-                String msg = I18n.err( I18n.ERR_04273, comparatorDescription, re.getMessage(), re.getColumn() );
-                LOG.error( msg );
-                throw new ParseException( msg, re.getColumn() );
-            }
-            catch ( TokenStreamException tse )
-            {
-                String msg = I18n.err( I18n.ERR_04238, comparatorDescription, tse.getMessage() );
-                LOG.error( msg );
-                throw new ParseException( msg, 0 );
-            }
-        }
+        return super.parse( comparatorDescription );
     }
 
 
     /**
-     * Parses a LdapComparator description.
-     * 
-     * @param schemaDescription The LdapComparator description to parse
-     * @return An instance of LdapComparatorDescription
-     * @throws ParseException {@inheritDoc}
+     * {@inheritDoc}
      */
-    public LdapComparatorDescription parse( String schemaDescription ) throws ParseException
+    @Override
+    protected LdapComparatorDescription doParse() throws RecognitionException, TokenStreamException
     {
-        return parseComparatorDescription( schemaDescription );
+        return parser.ldapComparator();
     }
+
 }

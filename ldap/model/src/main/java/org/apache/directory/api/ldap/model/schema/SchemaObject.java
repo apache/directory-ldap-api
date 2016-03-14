@@ -219,6 +219,24 @@ public interface SchemaObject
 
 
     /**
+     * Check if a given extension is part of the SchemaObject. Extensions are case insensitive.
+     * 
+     * @param extension The extension we are looking for.
+     * @return <code>true</code> if the extension is present.
+     */
+    boolean hasExtension( String extension );
+
+
+    /**
+     * Get back the values associated with a given extension.
+     * 
+     * @param extension The extension we are looking for.
+     * @return The list of values associated with the extension
+     */
+    List<String> getExtension( String extension );
+
+
+    /**
      * Add an extension with its values
      * @param key The extension key
      * @param values The associated values

@@ -29,12 +29,10 @@ import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.entry.BinaryValue;
 import org.apache.directory.api.ldap.model.entry.Value;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.message.CompareRequest;
-import org.apache.directory.api.ldap.model.message.CompareResponse;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
@@ -45,7 +43,7 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CompareRequestDecorator extends SingleReplyRequestDecorator<CompareRequest, CompareResponse>
+public class CompareRequestDecorator extends SingleReplyRequestDecorator<CompareRequest>
     implements CompareRequest
 {
     /** The bytes of the attribute id used in the comparison */
@@ -69,88 +67,6 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     public CompareRequestDecorator( LdapApiService codec, CompareRequest decoratedMessage )
     {
         super( codec, decoratedMessage );
-    }
-
-
-    /**
-     * Stores the encoded length for the CompareRequest
-     * @param compareRequestLength The encoded length
-     */
-    public void setCompareRequestLength( int compareRequestLength )
-    {
-        this.compareRequestLength = compareRequestLength;
-    }
-
-
-    /**
-     * @return The encoded CompareRequest length
-     */
-    public int getCompareRequestLength()
-    {
-        return compareRequestLength;
-    }
-
-
-    /**
-     * Stores the encoded length for the ava
-     * @param avaLength The encoded length
-     */
-    public void setAvaLength( int avaLength )
-    {
-        this.avaLength = avaLength;
-    }
-
-
-    /**
-     * @return The encoded ava length
-     */
-    public int getAvaLength()
-    {
-        return avaLength;
-    }
-
-
-    /**
-     * Gets the attribute id bytes use in making the comparison.
-     *
-     * @return the attribute id bytes used in comparison.
-     */
-    public byte[] getAttrIdBytes()
-    {
-        return attrIdBytes;
-    }
-
-
-    /**
-     * Sets the attribute id bytes used in the comparison.
-     *
-     * @param attrIdBytes the attribute id bytes used in comparison.
-     */
-    public void setAttrIdBytes( byte[] attrIdBytes )
-    {
-        this.attrIdBytes = attrIdBytes;
-    }
-
-
-    /**
-     * Gets the attribute value bytes use in making the comparison.
-     *
-     * @return the attribute value bytes used in comparison.
-     */
-    public byte[] getAttrValBytes()
-    {
-        return attrValBytes;
-    }
-
-
-    /**
-     * Sets the attribute value bytes used in the comparison.
-     *
-     * @param attrValBytes the attribute value bytes used in comparison.
-     */
-    public void setAttrValBytes( byte[] attrValBytes )
-    {
-        this.attrValBytes = attrValBytes;
     }
 
 
@@ -243,7 +159,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
-    public CompareRequest addControl( Control control ) throws MessageException
+    public CompareRequest addControl( Control control )
     {
         return ( CompareRequest ) super.addControl( control );
     }
@@ -252,7 +168,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
-    public CompareRequest addAllControls( Control[] controls ) throws MessageException
+    public CompareRequest addAllControls( Control[] controls )
     {
         return ( CompareRequest ) super.addAllControls( controls );
     }
@@ -261,7 +177,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
-    public CompareRequest removeControl( Control control ) throws MessageException
+    public CompareRequest removeControl( Control control )
     {
         return ( CompareRequest ) super.removeControl( control );
     }
@@ -293,31 +209,26 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     {
         // The entry Dn
         Dn entry = getName();
-        int compareRequestLength = 1 + TLV.getNbBytes( Dn.getNbBytes( entry ) ) + Dn.getNbBytes( entry );
+        compareRequestLength = 1 + TLV.getNbBytes( Dn.getNbBytes( entry ) ) + Dn.getNbBytes( entry );
 
         // The attribute value assertion
-        byte[] attributeIdBytes = Strings.getBytesUtf8( getAttributeId() );
-        int avaLength = 1 + TLV.getNbBytes( attributeIdBytes.length ) + attributeIdBytes.length;
-        setAttrIdBytes( attributeIdBytes );
+        attrIdBytes = Strings.getBytesUtf8( getAttributeId() );
+        avaLength = 1 + TLV.getNbBytes( attrIdBytes.length ) + attrIdBytes.length;
 
         org.apache.directory.api.ldap.model.entry.Value<?> assertionValue = getAssertionValue();
 
         if ( assertionValue instanceof BinaryValue )
         {
-            byte[] value = getAssertionValue().getBytes();
-            avaLength += 1 + TLV.getNbBytes( value.length ) + value.length;
-            setAttrValBytes( value );
+            attrValBytes = getAssertionValue().getBytes();
+            avaLength += 1 + TLV.getNbBytes( attrValBytes.length ) + attrValBytes.length;
         }
         else
         {
-            byte[] value = Strings.getBytesUtf8( getAssertionValue().getString() );
-            avaLength += 1 + TLV.getNbBytes( value.length ) + value.length;
-            setAttrValBytes( value );
+            attrValBytes = Strings.getBytesUtf8( getAssertionValue().getString() );
+            avaLength += 1 + TLV.getNbBytes( attrValBytes.length ) + attrValBytes.length;
         }
 
-        setAvaLength( avaLength );
         compareRequestLength += 1 + TLV.getNbBytes( avaLength ) + avaLength;
-        setCompareRequestLength( compareRequestLength );
 
         return 1 + TLV.getNbBytes( compareRequestLength ) + compareRequestLength;
     }
@@ -340,26 +251,26 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
         try
         {
             // The CompareRequest Tag
-            buffer.put( LdapConstants.COMPARE_REQUEST_TAG );
-            buffer.put( TLV.getBytes( getCompareRequestLength() ) );
+            buffer.put( LdapCodecConstants.COMPARE_REQUEST_TAG );
+            buffer.put( TLV.getBytes( compareRequestLength ) );
 
             // The entry
             BerValue.encode( buffer, Dn.getBytes( getName() ) );
 
             // The attributeValueAssertion sequence Tag
             buffer.put( UniversalTag.SEQUENCE.getValue() );
-            buffer.put( TLV.getBytes( getAvaLength() ) );
+            buffer.put( TLV.getBytes( avaLength ) );
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
 
         // The attributeDesc
-        BerValue.encode( buffer, getAttrIdBytes() );
+        BerValue.encode( buffer, attrIdBytes );
 
         // The assertionValue
-        BerValue.encode( buffer, getAttrValBytes() );
+        BerValue.encode( buffer, attrValBytes );
 
         return buffer;
     }

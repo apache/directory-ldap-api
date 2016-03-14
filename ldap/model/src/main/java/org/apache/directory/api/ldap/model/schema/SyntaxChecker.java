@@ -20,11 +20,6 @@
 package org.apache.directory.api.ldap.model.schema;
 
 
-import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
-import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
-
-
 /**
  * Used to validate values of a particular syntax. This interface does not
  * correlate to any LDAP or X.500 construct. It has been created as a means to
@@ -32,11 +27,12 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-// super.hashCode is final
-@SuppressWarnings(
-    { "PMD.OverrideBothEqualsAndHashcode", "serial" })
 public abstract class SyntaxChecker extends LoadableSchemaObject
 {
+    /** The mandatory serialVersionUID */
+    public static final long serialVersionUID = 1L;
+
+
     /**
      * The SyntaxChecker base constructor
      * @param oid The associated OID
@@ -64,22 +60,6 @@ public abstract class SyntaxChecker extends LoadableSchemaObject
      * @return true if the value is in the valid syntax, false otherwise
      */
     public abstract boolean isValidSyntax( Object value );
-
-
-    /**
-     * Asserts whether or not the attribute's value conforms to the attribute
-     * syntax.
-     * 
-     * @param value the value of some attribute with the syntax
-     * @throws LdapException if the value does not conform to the attribute syntax.
-     */
-    public void assertSyntax( Object value ) throws LdapException
-    {
-        if ( !isValidSyntax( value ) )
-        {
-            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX );
-        }
-    }
 
 
     /**

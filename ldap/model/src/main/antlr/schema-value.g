@@ -69,7 +69,7 @@ protected NUMBER : DIGIT | ( LDIGIT (DIGIT)+ ) ;
 protected NUMBER2 : (DIGIT)+ ;
 protected NUMERICOID : NUMBER2 ( '.' NUMBER2 )+ ;
 protected HYPEN : '-';
-protected OTHER : '_' | ';' | '.' | ':' ;
+protected OTHER : '_' | ';' | '.' | ':' | '#' ;
 protected DESCR: CHAR ( CHAR | DIGIT | HYPEN )* ;
 protected QUIRKS_DESCR: ( CHAR | DIGIT | HYPEN | OTHER )+ ;
 

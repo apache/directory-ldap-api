@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.api</groupId>
     <artifactId>api-ldap-extras-parent</artifactId>
-    <version>1.0.0-M17-SNAPSHOT</version>
+    <version>1.0.0-M34-SNAPSHOT</version>
   </parent>
   
   <artifactId>api-ldap-extras-util</artifactId>
@@ -65,8 +65,20 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.ldap.extras.util</Bundle-SymbolicName>
             <Export-Package>
-                {local-packages};version=${project.version};-noimport:=true
+              org.apache.directory.api.ldap.util;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.util.tree;version=${project.version};-noimport:=true
             </Export-Package>
+            <Import-Package>
+              org.apache.directory.api.asn1;version=${project.version},
+              org.apache.directory.api.ldap.codec.api;version=${project.version},
+              org.apache.directory.api.ldap.model.exception;version=${project.version},
+              org.apache.directory.api.ldap.model.message;version=${project.version},
+              org.apache.directory.api.ldap.model.name;version=${project.version},
+              org.slf4j;version=${slf4j.api.bundleversion},
+              javax.naming,
+              javax.naming.directory,
+              javax.naming.ldap
+            </Import-Package>
           </instructions>
         </configuration>
       </plugin>

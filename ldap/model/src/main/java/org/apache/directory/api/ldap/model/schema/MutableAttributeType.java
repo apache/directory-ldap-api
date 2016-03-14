@@ -21,8 +21,6 @@ package org.apache.directory.api.ldap.model.schema;
 
 
 import org.apache.directory.api.i18n.I18n;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -132,8 +130,8 @@ import org.slf4j.LoggerFactory;
  */
 public class MutableAttributeType extends AttributeType
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( MutableAttributeType.class );
+    /** The mandatory serialVersionUID */
+    public static final long serialVersionUID = 1L;
 
 
     /**

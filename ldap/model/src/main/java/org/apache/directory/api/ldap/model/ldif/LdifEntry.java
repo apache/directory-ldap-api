@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,7 @@ import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
+import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.util.Base64;
 import org.apache.directory.api.util.Strings;
 
@@ -65,7 +67,7 @@ import org.apache.directory.api.util.Strings;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdifEntry implements Cloneable, Externalizable
+public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
 {
     /** Used in toArray() */
     public static final Modification[] EMPTY_MODS = new Modification[0];
@@ -97,16 +99,42 @@ public class LdifEntry implements Cloneable, Externalizable
     /** The controls */
     private Map<String, LdifControl> controls;
 
+    /** The lengthBeforeParsing of the entry at the time of parsing. This includes
+     *  the lengthBeforeParsing of the comments present in entry at the time of parsing
+     *  so this lengthBeforeParsing may not always match with the lengthBeforeParsing of the entry
+     *  data present in memory.
+     */
+    private int lengthBeforeParsing = 0;
+
+    /** the position of the entry in the file or given input string*/
+    private long offset = 0;
+
 
     /**
      * Creates a new LdifEntry object.
      */
     public LdifEntry()
     {
-        changeType = ChangeType.None; // Default LDIF content
+        // Default LDIF content
+        changeType = ChangeType.None;
         modificationList = new LinkedList<Modification>();
         modifications = new HashMap<String, Modification>();
         entry = new DefaultEntry( ( Dn ) null );
+        entryDn = null;
+        controls = null;
+    }
+
+
+    /**
+     * Creates a new schema aware LdifEntry object.
+     */
+    public LdifEntry( SchemaManager schemaManager )
+    {
+        // Default LDIF content
+        changeType = ChangeType.None;
+        modificationList = new LinkedList<Modification>();
+        modifications = new HashMap<String, Modification>();
+        entry = new DefaultEntry( schemaManager, ( Dn ) null );
         entryDn = null;
         controls = null;
     }
@@ -117,7 +145,8 @@ public class LdifEntry implements Cloneable, Externalizable
      */
     public LdifEntry( Entry entry )
     {
-        changeType = ChangeType.None; // Default LDIF content
+        // Default LDIF content
+        changeType = ChangeType.None;
         modificationList = new LinkedList<Modification>();
         modifications = new HashMap<String, Modification>();
         this.entry = entry;
@@ -215,6 +244,15 @@ public class LdifEntry implements Cloneable, Externalizable
         LdifReader reader = new LdifReader();
         List<LdifEntry> ldifEntries = reader.parseLdif( sb.toString() );
 
+        try
+        {
+            reader.close();
+        }
+        catch ( IOException e )
+        {
+            e.printStackTrace();
+        }
+
         if ( ( ldifEntries != null ) && ( ldifEntries.size() == 1 ) )
         {
             LdifEntry ldifEntry = ldifEntries.get( 0 );
@@ -249,7 +287,11 @@ public class LdifEntry implements Cloneable, Externalizable
                     {
                         modifications.put( modification.getAttribute().getId(), modification );
                     }
+
                     break;
+
+                default:
+                    throw new IllegalArgumentException( "Unexpected ChangeType: " + changeType );
             }
         }
     }
@@ -378,6 +420,31 @@ public class LdifEntry implements Cloneable, Externalizable
 
 
     /**
+     * Add a modification with no value
+     * 
+     * @param modOp The modification operation value. One of : 
+     * <ul>
+     * <li>ModificationOperation.ADD_ATTRIBUTE</li>
+     * <li>ModificationOperation.REMOVE_ATTRIBUTE</li>
+     * <li>ModificationOperation.REPLACE_ATTRIBUTE</li>
+     * </ul>
+     * 
+     * @param id The attribute's ID
+     */
+    public void addModification( ModificationOperation modOp, String id )
+    {
+        if ( changeType == ChangeType.Modify )
+        {
+            Attribute attr = new DefaultAttribute( id );
+
+            Modification item = new DefaultModification( modOp, attr );
+            modificationList.add( item );
+            modifications.put( id, item );
+        }
+    }
+
+
+    /**
      * Add a modification
      * 
      * @param modOp The modification operation value. One of : 
@@ -435,17 +502,53 @@ public class LdifEntry implements Cloneable, Externalizable
      */
     public void addAttribute( String id, Object... values ) throws LdapException
     {
+        Attribute attribute = entry.get( id );
+        Boolean isHR = null;
+
+        if ( attribute != null )
+        {
+            isHR = attribute.isHumanReadable();
+        }
+
         if ( values != null )
         {
             for ( Object value : values )
             {
                 if ( value instanceof String )
                 {
-                    entry.add( id, ( String ) value );
+                    if ( isHR != null )
+                    {
+                        if ( isHR )
+                        {
+                            entry.add( id, ( String ) value );
+                        }
+                        else
+                        {
+                            entry.add( id, Strings.getBytesUtf8( ( String ) value ) );
+                        }
+                    }
+                    else
+                    {
+                        entry.add( id, ( String ) value );
+                    }
                 }
                 else
                 {
-                    entry.add( id, ( byte[] ) value );
+                    if ( isHR != null )
+                    {
+                        if ( isHR )
+                        {
+                            entry.add( id, Strings.utf8ToString( ( byte[] ) value ) );
+                        }
+                        else
+                        {
+                            entry.add( id, ( byte[] ) value );
+                        }
+                    }
+                    else
+                    {
+                        entry.add( id, ( byte[] ) value );
+                    }
                 }
             }
         }
@@ -594,7 +697,7 @@ public class LdifEntry implements Cloneable, Externalizable
 
 
     /**
-     * Set the flage deleteOldRdn
+     * Set the deleteOldRdn flag
      * 
      * @param deleteOldRdn True if the old Rdn should be deleted
      */
@@ -810,12 +913,12 @@ public class LdifEntry implements Cloneable, Externalizable
 
         if ( modifications != null )
         {
-            for ( String key : modifications.keySet() )
+            for ( Map.Entry<String, Modification> entry : modifications.entrySet() )
             {
-                Modification modif = modifications.get( key );
+                Modification modif = entry.getValue();
                 Modification modifClone = new DefaultModification( modif.getOperation(),
                     modif.getAttribute().clone() );
-                clone.modifications.put( key, modifClone );
+                clone.modifications.put( entry.getKey(), modifClone );
             }
 
         }
@@ -826,6 +929,60 @@ public class LdifEntry implements Cloneable, Externalizable
         }
 
         return clone;
+    }
+
+
+    /** 
+     *  Returns the lengthBeforeParsing of the entry at the time of parsing. This includes
+     *  the lengthBeforeParsing of the comments present in entry at the time of parsing
+     *  so this lengthBeforeParsing may not always match with the lengthBeforeParsing of the entry
+     *  data present in memory.
+     */
+    public int getLengthBeforeParsing()
+    {
+        return lengthBeforeParsing;
+    }
+
+
+    /**
+     * @param lengthBeforeParsing the lengthBeforeParsing to set
+     */
+    /**No qualifier*/
+    void setLengthBeforeParsing( int length )
+    {
+        this.lengthBeforeParsing = length;
+    }
+
+
+    /**
+     * @return the offset
+     */
+    public long getOffset()
+    {
+        return offset;
+    }
+
+
+    /**
+     * @param offset the offset to set
+     */
+    /**No qualifier*/
+    void setOffset( long offset )
+    {
+        this.offset = offset;
+    }
+
+
+    /**
+     * Returns an enumeration containing the zero or more attributes in the
+     * collection. The behavior of the enumeration is not specified if the
+     * attribute collection is changed.
+     *
+     * @return an enumeration of all contained attributes
+     */
+    public Iterator<Attribute> iterator()
+    {
+        return entry.iterator();
     }
 
 
@@ -866,6 +1023,8 @@ public class LdifEntry implements Cloneable, Externalizable
             // Check each different cases
             switch ( changeType )
             {
+                case None:
+                    // Fall through
                 case Add:
                     // Checks the attributes
                     if ( entry != null )
@@ -918,7 +1077,8 @@ public class LdifEntry implements Cloneable, Externalizable
                     break;
 
                 default:
-                    break; // do nothing
+                    // do nothing
+                    break;
             }
         }
 
@@ -975,6 +1135,8 @@ public class LdifEntry implements Cloneable, Externalizable
         // Check each different cases
         switch ( changeType )
         {
+            case None:
+                // Fall through
             case Add:
                 // Checks the attributes
                 if ( entry.size() != otherEntry.entry.size() )
@@ -1077,7 +1239,8 @@ public class LdifEntry implements Cloneable, Externalizable
                 break;
 
             default:
-                break; // do nothing
+                // do nothing
+                break;
         }
 
         if ( controls != null )
@@ -1094,14 +1257,16 @@ public class LdifEntry implements Cloneable, Externalizable
                 return false;
             }
 
-            for ( String controlOid : controls.keySet() )
+            for ( Map.Entry<String, LdifControl> entry : controls.entrySet() )
             {
+                String controlOid = entry.getKey();
+
                 if ( !otherControls.containsKey( controlOid ) )
                 {
                     return false;
                 }
 
-                Control thisControl = controls.get( controlOid );
+                Control thisControl = entry.getValue();
                 Control otherControl = otherControls.get( controlOid );
 
                 if ( thisControl == null )
@@ -1198,6 +1363,9 @@ public class LdifEntry implements Cloneable, Externalizable
                 }
 
                 break;
+
+            default:
+                throw new IllegalArgumentException( "Unexpected ChangeType: " + changeType );
         }
 
         int nbControls = in.readInt();
@@ -1285,6 +1453,9 @@ public class LdifEntry implements Cloneable, Externalizable
                 }
 
                 break;
+
+            default:
+                throw new IllegalArgumentException( "Unexpected ChangeType: " + changeType );
         }
 
         // The controls

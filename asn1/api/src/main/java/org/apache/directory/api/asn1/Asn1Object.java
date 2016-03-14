@@ -31,15 +31,6 @@ import java.nio.ByteBuffer;
 public interface Asn1Object
 {
     /**
-     * Add a length to the object
-     * 
-     * @param length The length to add.
-     * @throws DecoderException Thrown if the current length exceed the expected length
-     */
-    void addLength( int length ) throws DecoderException;
-
-
-    /**
      * Compute the object length, which is the sum of all inner length.
      * 
      * @return The object's computed length
@@ -55,45 +46,4 @@ public interface Asn1Object
      * @throws EncoderException if the buffer can't be encoded
      */
     ByteBuffer encode( ByteBuffer buffer ) throws EncoderException;
-
-
-    /**
-     * Get the current object length, which is the sum of all inner length
-     * already decoded.
-     * 
-     * @return The current object's length
-     */
-    int getCurrentLength();
-
-
-    /**
-     * Get the expected object length.
-     * 
-     * @return The expected object's length
-     */
-    int getExpectedLength();
-
-
-    /**
-     * Get the parent
-     * 
-     * @return Returns the parent.
-     */
-    Asn1Object getParent();
-
-
-    /**
-     * Set the current length
-     * 
-     * @param currentLength The currentLength to set.
-     */
-    void setCurrentLength( int currentLength );
-
-
-    /**
-     * Set the expected length
-     * 
-     * @param expectedLength The expectedLength to set.
-     */
-    void setExpectedLength( int expectedLength );
 }

@@ -27,7 +27,7 @@ import static org.junit.Assert.fail;
 
 import org.apache.directory.api.dsmlv2.AbstractResponseTest;
 import org.apache.directory.api.dsmlv2.Dsmlv2ResponseParser;
-import org.apache.directory.api.dsmlv2.reponse.SearchResponse;
+import org.apache.directory.api.dsmlv2.response.SearchResponse;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

@@ -21,37 +21,14 @@ package org.apache.directory.api.ldap.codec.standalone;
 
 
 import java.lang.reflect.Constructor;
-import java.nio.ByteBuffer;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.naming.NamingException;
-import javax.naming.ldap.BasicControl;
-
-import org.apache.directory.api.asn1.DecoderException;
-import org.apache.directory.api.asn1.EncoderException;
-import org.apache.directory.api.asn1.ber.Asn1Container;
-import org.apache.directory.api.ldap.codec.BasicControlDecorator;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestFactory;
-import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
+import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.api.MessageDecorator;
-import org.apache.directory.api.ldap.codec.api.UnsolicitedResponseFactory;
-import org.apache.directory.api.ldap.model.message.Control;
-import org.apache.directory.api.ldap.model.message.ExtendedRequest;
-import org.apache.directory.api.ldap.model.message.ExtendedRequestImpl;
-import org.apache.directory.api.ldap.model.message.ExtendedResponse;
-import org.apache.directory.api.ldap.model.message.ExtendedResponseImpl;
-import org.apache.directory.api.ldap.model.message.Message;
-import org.apache.directory.api.ldap.model.message.controls.OpaqueControl;
+import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
 import org.apache.directory.api.util.Strings;
-import org.apache.directory.api.util.exception.NotImplementedException;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,47 +36,48 @@ import org.slf4j.LoggerFactory;
 
 /**
  * The default {@link org.apache.directory.api.ldap.codec.api.LdapApiService} implementation.
+ * It loads the Controls and ExtendedOperations as defined in the following system parameters :
+ * <li>Controls :
+ * <ul>
+ * <li>apacheds.controls</li> ok
+ * <li>default.controls</li>
+ * </ul>
+ * </li>
+ * <li>ExtendedOperations
+ * <ul>
+ * <li>apacheds.extendedOperations</li> ok
+ * <li>default.extendedOperation.responses</li>
+ * <li>extra.extendedOperations</ul>
+ * </ul>
+ * </li>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class StandaloneLdapApiService implements LdapApiService
+public class StandaloneLdapApiService extends DefaultLdapCodecService
 {
     /** A logger */
     private static final Logger LOG = LoggerFactory.getLogger( StandaloneLdapApiService.class );
 
-    /** The map of registered {@link org.apache.directory.api.ldap.codec.api.ControlFactory}'s */
-    private Map<String, ControlFactory<?, ?>> controlFactories = new HashMap<String, ControlFactory<?, ?>>();
+    /** The list of controls to load at startup */
+    public static final String CONTROLS_LIST = "apacheds.controls";
 
-    /** The map of registered {@link org.apache.directory.api.ldap.codec.api.ExtendedRequestFactory}'s by request OID */
-    private Map<String, ExtendedRequestFactory<?, ?>> extReqFactories = new HashMap<String, ExtendedRequestFactory<?, ?>>();
+    /** The list of extended operations to load at startup */
+    public static final String EXTENDED_OPERATIONS_LIST = "apacheds.extendedOperations";
 
-    /** The map of registered {@link UnsolicitedResponseFactory}'s by request OID */
-    private Map<String, UnsolicitedResponseFactory<?>> unsolicitedFactories = new HashMap<String, UnsolicitedResponseFactory<?>>();
+    /** The (old) list of default controls to load at startup */
+    private static final String OLD_DEFAULT_CONTROLS_LIST = "default.controls";
 
-    /** The LDAP {@link ProtocolCodecFactory} implementation used */
-    private ProtocolCodecFactory protocolCodecFactory;
-
-    /** The list of default controls to load at startup */
-    public static final String DEFAULT_CONTROLS_LIST = "default.controls";
-
-    /** The list of extra controls to load at startup */
-    public static final String EXTRA_CONTROLS_LIST = "extra.controls";
-
-    /** The list of default extended operation requests to load at startup */
-    public static final String DEFAULT_EXTENDED_OPERATION_REQUESTS_LIST = "default.extendedOperation.requests";
-
-    /** The list of default extended operation responses to load at startup */
-    public static final String DEFAULT_EXTENDED_OPERATION_RESPONSES_LIST = "default.extendedOperation.responses";
-
-    /** The list of extra controls to load at startup */
-    public static final String EXTRA_EXTENDED_OPERATION_LIST = "extra.extendedOperations";
+    /** The (old) list of extra extended operations to load at startup */
+    private static final String OLD_EXTRA_EXTENDED_OPERATION_LIST = "extra.extendedOperations";
 
 
     /**
      * Creates a new instance of StandaloneLdapCodecService. Optionally checks for
-     * system property {@link #PLUGIN_DIRECTORY_PROPERTY}. Intended for use by 
-     * unit test running tools like Maven's surefire:
+     * system property {@link #PLUGIN_DIRECTORY_PROPERTY}. 
+     * <br /><br />
+     * The following pom configuration is intended for use by unit test running 
+     * tools like Maven's surefire:
      * <pre>
      *   &lt;properties&gt;
      *     &lt;codec.plugin.directory&gt;${project.build.directory}/pluginDirectory&lt;/codec.plugin.directory&gt;
@@ -161,26 +139,39 @@ public class StandaloneLdapApiService implements LdapApiService
      */
     public StandaloneLdapApiService() throws Exception
     {
+        this( getControlsFromSystemProperties(), getExtendedOperationsFromSystemProperties() );
+    }
+
+
+    public StandaloneLdapApiService( List<String> controls, List<String> extendedOperations ) throws Exception
+    {
+        CodecFactoryUtil.loadStockControls( getControlFactories(), this );
+
+        CodecFactoryUtil.loadStockExtendedOperations( getExtendedOperationsFactories(), this );
+
         // Load the controls
-        loadControls();
+        loadControls( controls );
 
         // Load the extended operations
-        loadExtendedOperations();
+        loadExtendedOperations( extendedOperations );
 
-        // Load the schema elements
-        //loadSchemaElements();
-
-        // Load the network layer
-        //loadNetworkLayer()
-
-        if ( protocolCodecFactory == null )
+        if ( getProtocolCodecFactory() == null )
         {
             try
             {
                 @SuppressWarnings("unchecked")
                 Class<? extends ProtocolCodecFactory> clazz = ( Class<? extends ProtocolCodecFactory> )
                     Class.forName( DEFAULT_PROTOCOL_CODEC_FACTORY );
-                protocolCodecFactory = clazz.newInstance();
+                Constructor<? extends ProtocolCodecFactory> constructor =
+                    clazz.getConstructor( LdapApiService.class );
+                if ( constructor != null )
+                {
+                    setProtocolCodecFactory( constructor.newInstance( this ) );
+                }
+                else
+                {
+                    setProtocolCodecFactory( clazz.newInstance() );
+                }
             }
             catch ( Exception cause )
             {
@@ -191,601 +182,165 @@ public class StandaloneLdapApiService implements LdapApiService
 
 
     /**
-     * Load the controls
+     * Parses the system properties to obtain the controls list.
      * 
      * @throws Exception
      */
-    private void loadControls() throws Exception
+    private static List<String> getControlsFromSystemProperties() throws Exception
     {
-        // first load the default controls
-        loadDefaultControls();
+        List<String> controlsList = new ArrayList<String>();
 
-        // The load the extra controls
-        loadExtraControls();
+        // Loading controls list from command line properties if it exists
+        String controlsString = System.getProperty( CONTROLS_LIST );
+
+        if ( !Strings.isEmpty( controlsString ) )
+        {
+            for ( String control : controlsString.split( "," ) )
+            {
+                controlsList.add( control );
+            }
+        }
+        else
+        {
+            // Loading old default controls list from command line properties if it exists
+            String oldDefaultControlsString = System.getProperty( OLD_DEFAULT_CONTROLS_LIST );
+
+            if ( !Strings.isEmpty( oldDefaultControlsString ) )
+            {
+                for ( String control : oldDefaultControlsString.split( "," ) )
+                {
+                    controlsList.add( control );
+                }
+            }
+        }
+
+        return controlsList;
     }
 
 
     /**
-     * Loads the Controls implemented out of the box in the codec.
+     * Parses the system properties to obtain the extended operations.
+     * Such extended operations are stored in the <b>apacheds.extendedOperations</b>
+     * and <b>default.extendedOperation.requests</b> system properties.
      */
-    private void loadDefaultControls() throws Exception
+    private static List<String> getExtendedOperationsFromSystemProperties() throws Exception
     {
-        // Load defaults from command line properties if it exists
-        String defaultControlsList = System.getProperty( DEFAULT_CONTROLS_LIST );
+        List<String> extendedOperationsList = new ArrayList<String>();
 
-        if ( Strings.isEmpty( defaultControlsList ) )
+        // Loading extended operations from command line properties if it exists
+        String defaultExtendedOperationsList = System.getProperty( EXTENDED_OPERATIONS_LIST );
+
+        if ( !Strings.isEmpty( defaultExtendedOperationsList ) )
         {
+            for ( String extendedOperation : defaultExtendedOperationsList.split( "," ) )
+            {
+                extendedOperationsList.add( extendedOperation );
+            }
+        }
+        else
+        {
+            // Loading old extra extended operations list from command line properties if it exists
+            String oldDefaultControlsString = System.getProperty( OLD_EXTRA_EXTENDED_OPERATION_LIST );
+
+            if ( !Strings.isEmpty( oldDefaultControlsString ) )
+            {
+                for ( String extendedOperation : oldDefaultControlsString.split( "," ) )
+                {
+                    extendedOperationsList.add( extendedOperation );
+                }
+            }
+        }
+
+        return extendedOperationsList;
+    }
+
+
+    /**
+     * Loads a list of controls from their FQCN.
+     */
+    private void loadControls( List<String> controlsList ) throws Exception
+    {
+        // Adding all controls
+        if ( controlsList.size() > 0 )
+        {
+            for ( String controlFQCN : controlsList )
+            {
+                loadControl( controlFQCN );
+            }
+        }
+    }
+
+
+    /**
+     * Loads a control from its FQCN.
+     */
+    private void loadControl( String controlFQCN ) throws Exception
+    {
+        if ( getControlFactories().containsKey( controlFQCN ) )
+        {
+            LOG.debug( "Factory for control {} was already loaded", controlFQCN );
             return;
         }
 
-        for ( String control : defaultControlsList.split( "," ) )
-        {
-            Class<?>[] types = new Class<?>[]
-                { LdapApiService.class };
-            Class<? extends ControlFactory<?, ?>> clazz = ( Class<? extends ControlFactory<?, ?>> ) Class
-                .forName( control );
-            Constructor<?> constructor = clazz.getConstructor( types );
-
-            ControlFactory<?, ?> factory = ( ControlFactory<?, ?> ) constructor.newInstance( new Object[]
-                { this } );
-            controlFactories.put( factory.getOid(), factory );
-            LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
-        }
-    }
-
-
-    /**
-     * Loads the extra Controls
-     */
-    private void loadExtraControls() throws Exception
-    {
-        // Load extra from command line properties if it exists
-        String extraControlsList = System.getProperty( EXTRA_CONTROLS_LIST );
-
-        if ( Strings.isEmpty( extraControlsList ) )
-        {
-            return;
-        }
-
-        for ( String control : extraControlsList.split( "," ) )
-        {
-            Class<?>[] types = new Class<?>[]
-                { LdapApiService.class };
-            Class<? extends ControlFactory<?, ?>> clazz = ( Class<? extends ControlFactory<?, ?>> ) Class
-                .forName( control );
-            Constructor<?> constructor = clazz.getConstructor( types );
-
-            ControlFactory<?, ?> factory = ( ControlFactory<?, ?> ) constructor.newInstance( new Object[]
-                { this } );
-            controlFactories.put( factory.getOid(), factory );
-            LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
-        }
-    }
-
-
-    /**
-     * Load the extended operations
-     * 
-     * @throws Exception
-     */
-    private void loadExtendedOperations() throws Exception
-    {
-        loadDefaultExtendedOperationRequests();
-        loadDefaultExtendedOperationResponses();
-        loadExtraExtendedOperations();
-    }
-
-
-    /**
-     * Loads the default extended operation requests
-     */
-    private void loadDefaultExtendedOperationRequests() throws Exception
-    {
-        // Load from command line properties if it exists
-        String defaultExtendedOperationsList = System.getProperty( DEFAULT_EXTENDED_OPERATION_REQUESTS_LIST );
-
-        if ( Strings.isEmpty( defaultExtendedOperationsList ) )
-        {
-            return;
-        }
-
-        for ( String extendedOperation : defaultExtendedOperationsList.split( "," ) )
-        {
-            Class<?>[] types = new Class<?>[]
-                { LdapApiService.class };
-            Class<? extends ExtendedRequestFactory<?, ?>> clazz = ( Class<? extends ExtendedRequestFactory<?, ?>> ) Class
-                .forName( extendedOperation );
-            Constructor<?> constructor = clazz.getConstructor( types );
-
-            ExtendedRequestFactory<?, ?> factory = ( ExtendedRequestFactory<?, ?> ) constructor
-                .newInstance( new Object[]
-                    { this } );
-            extReqFactories.put( factory.getOid(), factory );
-            LOG.info( "Registered pre-bundled extended operation factory: {}", factory.getOid() );
-        }
-    }
-
-
-    /**
-     * Loads the default extended operation responses
-     */
-    private void loadDefaultExtendedOperationResponses() throws Exception
-    {
-        // Load from command line properties if it exists
-        String defaultExtendedOperationsList = System.getProperty( DEFAULT_EXTENDED_OPERATION_RESPONSES_LIST );
-
-        if ( Strings.isEmpty( defaultExtendedOperationsList ) )
-        {
-            return;
-        }
-
-        for ( String extendedOperation : defaultExtendedOperationsList.split( "," ) )
-        {
-            Class<?>[] types = new Class<?>[]
-                { LdapApiService.class };
-            Class<? extends UnsolicitedResponseFactory<?>> clazz = ( Class<? extends UnsolicitedResponseFactory<?>> ) Class
-                .forName( extendedOperation );
-            Constructor<?> constructor = clazz.getConstructor( types );
-
-            UnsolicitedResponseFactory<?> factory = ( UnsolicitedResponseFactory<?> ) constructor
-                .newInstance( new Object[]
-                    { this } );
-            unsolicitedFactories.put( factory.getOid(), factory );
-            LOG.info( "Registered pre-bundled extended operation factory: {}", factory.getOid() );
-        }
-    }
-
-
-    /**
-     * Loads the extra extended operations
-     */
-    private void loadExtraExtendedOperations()
-    {
-
-    }
-
-
-    //-------------------------------------------------------------------------
-    // LdapCodecService implementation methods
-    //-------------------------------------------------------------------------
-    /**
-     * {@inheritDoc}
-     */
-    public ControlFactory<?, ?> registerControl( ControlFactory<?, ?> factory )
-    {
-        return controlFactories.put( factory.getOid(), factory );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public ControlFactory<?, ?> unregisterControl( String oid )
-    {
-        return controlFactories.remove( oid );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public Iterator<String> registeredControls()
-    {
-        return Collections.unmodifiableSet( controlFactories.keySet() ).iterator();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isControlRegistered( String oid )
-    {
-        return controlFactories.containsKey( oid );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public Iterator<String> registeredExtendedRequests()
-    {
-        return Collections.unmodifiableSet( extReqFactories.keySet() ).iterator();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public ExtendedRequestFactory<?, ?> registerExtendedRequest( ExtendedRequestFactory<?, ?> factory )
-    {
-        return extReqFactories.put( factory.getOid(), factory );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public ProtocolCodecFactory getProtocolCodecFactory()
-    {
-        return protocolCodecFactory;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public ProtocolCodecFactory registerProtocolCodecFactory( ProtocolCodecFactory protocolCodecFactory )
-    {
-        ProtocolCodecFactory old = this.protocolCodecFactory;
-        this.protocolCodecFactory = protocolCodecFactory;
-        return old;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public CodecControl<? extends Control> newControl( String oid )
-    {
-        ControlFactory<?, ?> factory = controlFactories.get( oid );
-
-        if ( factory == null )
-        {
-            return new BasicControlDecorator<Control>( this, new OpaqueControl( oid ) );
-        }
-
-        return factory.newCodecControl();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    public CodecControl<? extends Control> newControl( Control control )
-    {
-        if ( control == null )
-        {
-            throw new NullPointerException( "Control argument was null." );
-        }
-
-        // protect agains being multiply decorated
-        if ( control instanceof CodecControl )
-        {
-            return ( org.apache.directory.api.ldap.codec.api.CodecControl<?> ) control;
-        }
-
-        @SuppressWarnings("rawtypes")
-        ControlFactory factory = controlFactories.get( control.getOid() );
-
-        if ( factory == null )
-        {
-            return new BasicControlDecorator<Control>( this, control );
-        }
-
-        return factory.newCodecControl( control );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public javax.naming.ldap.Control toJndiControl( Control control ) throws EncoderException
-    {
-        CodecControl<? extends Control> decorator = newControl( control );
-        ByteBuffer bb = ByteBuffer.allocate( decorator.computeLength() );
-        decorator.encode( bb );
-        bb.flip();
-        BasicControl jndiControl =
-            new BasicControl( control.getOid(), control.isCritical(), bb.array() );
-        return jndiControl;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public Control fromJndiControl( javax.naming.ldap.Control control ) throws DecoderException
-    {
-        @SuppressWarnings("rawtypes")
-        ControlFactory factory = controlFactories.get( control.getID() );
-
-        if ( factory == null )
-        {
-            OpaqueControl ourControl = new OpaqueControl( control.getID() );
-            ourControl.setCritical( control.isCritical() );
-            BasicControlDecorator<Control> decorator =
-                new BasicControlDecorator<Control>( this, ourControl );
-            decorator.setValue( control.getEncodedValue() );
-            return decorator;
-        }
-
+        Class<?>[] types = new Class<?>[]
+            { LdapApiService.class };
+        // note, trimming whitespace doesnt hurt as it is a class name and
+        // helps DI containers that use xml config as xml ignores whitespace
         @SuppressWarnings("unchecked")
-        CodecControl<? extends Control> ourControl = factory.newCodecControl();
-        ourControl.setCritical( control.isCritical() );
-        ourControl.setValue( control.getEncodedValue() );
-        ourControl.decode( control.getEncodedValue() );
+        Class<? extends ControlFactory<?>> clazz = ( Class<? extends ControlFactory<?>> ) Class
+            .forName( controlFQCN.trim() );
+        Constructor<?> constructor = clazz.getConstructor( types );
 
-        return ourControl;
+        ControlFactory<?> factory = ( ControlFactory<?> ) constructor.newInstance( new Object[]
+            { this } );
+        getControlFactories().put( factory.getOid(), factory );
+
+        LOG.info( "Registered control factory: {}", factory.getOid() );
     }
 
 
     /**
-     * {@inheritDoc}
+     * Loads a list of extended operation from their FQCN
      */
-    public Asn1Container newMessageContainer()
+    private void loadExtendedOperations( List<String> extendedOperationsList ) throws Exception
     {
-        return new LdapMessageContainer<MessageDecorator<? extends Message>>( this );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public Iterator<String> registeredUnsolicitedResponses()
-    {
-        return Collections.unmodifiableSet( unsolicitedFactories.keySet() ).iterator();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public UnsolicitedResponseFactory<?> registerUnsolicitedResponse( UnsolicitedResponseFactory<?> factory )
-    {
-        return unsolicitedFactories.put( factory.getOid(), factory );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public javax.naming.ldap.ExtendedResponse toJndi( final ExtendedResponse modelResponse ) throws EncoderException
-    {
-        throw new NotImplementedException( "Figure out how to transform" );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public ExtendedResponse fromJndi( javax.naming.ldap.ExtendedResponse jndiResponse ) throws DecoderException
-    {
-        throw new NotImplementedException( "Figure out how to transform" );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public ExtendedRequestFactory<?, ?> unregisterExtendedRequest( String oid )
-    {
-        return extReqFactories.remove( oid );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public UnsolicitedResponseFactory<?> unregisterUnsolicitedResponse( String oid )
-    {
-        return unsolicitedFactories.remove( oid );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public ExtendedRequest<?> fromJndi( javax.naming.ldap.ExtendedRequest jndiRequest ) throws DecoderException
-    {
-        ExtendedRequestDecorator<?, ?> decorator =
-            ( ExtendedRequestDecorator<?, ?> ) newExtendedRequest( jndiRequest.getID(), jndiRequest.getEncodedValue() );
-        return decorator;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public javax.naming.ldap.ExtendedRequest toJndi( final ExtendedRequest<?> modelRequest ) throws EncoderException
-    {
-        final String oid = modelRequest.getRequestName();
-        final byte[] value;
-
-        if ( modelRequest instanceof ExtendedRequestDecorator )
+        // Adding all extended operations
+        if ( extendedOperationsList.size() > 0 )
         {
-            ExtendedRequestDecorator<?, ?> decorator = ( ExtendedRequestDecorator<?, ?> ) modelRequest;
-            value = decorator.getRequestValue();
-        }
-        else
-        {
-            // have to ask the factory to decorate for us - can't do it ourselves
-            ExtendedRequestFactory<?, ?> extendedRequestFactory = extReqFactories.get( modelRequest.getRequestName() );
-            ExtendedRequestDecorator<?, ?> decorator = extendedRequestFactory.decorate( modelRequest );
-            value = decorator.getRequestValue();
-        }
-
-        javax.naming.ldap.ExtendedRequest jndiRequest = new javax.naming.ldap.ExtendedRequest()
-        {
-            private static final long serialVersionUID = -4160980385909987475L;
-
-
-            public String getID()
+            for ( String extendedOperationFQCN : extendedOperationsList )
             {
-                return oid;
-            }
-
-
-            public byte[] getEncodedValue()
-            {
-                return value;
-            }
-
-
-            public javax.naming.ldap.ExtendedResponse createExtendedResponse( String id, byte[] berValue, int offset,
-                int length ) throws NamingException
-            {
-                ExtendedRequestFactory<?, ?> factory = extReqFactories.get( modelRequest.getRequestName() );
-
-                try
-                {
-                    final ExtendedResponseDecorator<?> resp = ( ExtendedResponseDecorator<?> ) factory
-                        .newResponse( berValue );
-                    javax.naming.ldap.ExtendedResponse jndiResponse = new javax.naming.ldap.ExtendedResponse()
-                    {
-                        private static final long serialVersionUID = -7686354122066100703L;
-
-
-                        public String getID()
-                        {
-                            return oid;
-                        }
-
-
-                        public byte[] getEncodedValue()
-                        {
-                            return resp.getResponseValue();
-                        }
-                    };
-
-                    return jndiResponse;
-                }
-                catch ( DecoderException e )
-                {
-                    NamingException ne = new NamingException( "Unable to decode encoded response value: " +
-                        Strings.dumpBytes( berValue ) );
-                    ne.setRootCause( e );
-                    throw ne;
-                }
-            }
-        };
-
-        return jndiRequest;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * @throws DecoderException 
-     */
-    @SuppressWarnings("unchecked")
-    public <E extends ExtendedResponse> E newExtendedResponse( ExtendedRequest<E> req, byte[] serializedResponse )
-        throws DecoderException
-    {
-        ExtendedResponseDecorator<ExtendedResponse> resp;
-
-        ExtendedRequestFactory<?, ?> extendedRequestFactory = extReqFactories.get( req.getRequestName() );
-
-        if ( extendedRequestFactory != null )
-        {
-            resp = ( ExtendedResponseDecorator<ExtendedResponse> ) extendedRequestFactory
-                .newResponse( serializedResponse );
-        }
-        else
-        {
-            resp = new ExtendedResponseDecorator<ExtendedResponse>( this,
-                new ExtendedResponseImpl( req.getRequestName() ) );
-            resp.setResponseValue( serializedResponse );
-            resp.setResponseName( req.getRequestName() );
-        }
-
-        resp.setMessageId( req.getMessageId() );
-
-        return ( E ) resp;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public ExtendedRequest<?> newExtendedRequest( String oid, byte[] value )
-    {
-        ExtendedRequest<?> req = null;
-
-        ExtendedRequestFactory<?, ?> extendedRequestFactory = extReqFactories.get( oid );
-
-        if ( extendedRequestFactory != null )
-        {
-            if ( value == null )
-            {
-                req = extendedRequestFactory.newRequest();
-            }
-            else
-            {
-                req = extendedRequestFactory.newRequest( value );
+                loadExtendedOperation( extendedOperationFQCN );
             }
         }
-        else
-        {
-            ExtendedRequestDecorator<ExtendedRequest<ExtendedResponse>, ExtendedResponse> decorator =
-                new ExtendedRequestDecorator<ExtendedRequest<ExtendedResponse>, ExtendedResponse>( this,
-                    new ExtendedRequestImpl() );
-            decorator.setRequestName( oid );
-            decorator.setRequestValue( value );
-            req = decorator;
-        }
-
-        return req;
     }
 
 
     /**
-     * {@inheritDoc}
+     * Loads an of extended operations from its FQCN
      */
-    @SuppressWarnings("unchecked")
-    public ExtendedRequestDecorator<?, ?> decorate( ExtendedRequest<?> decoratedMessage )
+    private void loadExtendedOperation( String extendedOperationFQCN ) throws Exception
     {
-        ExtendedRequestDecorator<?, ?> req = null;
-
-        ExtendedRequestFactory<?, ?> extendedRequestFactory = extReqFactories.get( decoratedMessage.getRequestName() );
-
-        if ( extendedRequestFactory != null )
+        if ( getExtendedOperationsFactories().containsKey( extendedOperationFQCN ) )
         {
-            req = extendedRequestFactory.decorate( decoratedMessage );
-        }
-        else
-        {
-            req = new ExtendedRequestDecorator<ExtendedRequest<ExtendedResponse>, ExtendedResponse>( this,
-                ( ExtendedRequest<ExtendedResponse> ) decoratedMessage );
+            LOG.debug( "Factory for extended operation {} was already loaded", extendedOperationFQCN );
+            return;
         }
 
-        return req;
-    }
+        Class<?>[] types = new Class<?>[]
+            { LdapApiService.class };
 
+        // note, trimming whitespace doesn't hurt as it is a class name and
+        // helps DI containers that use xml config as xml ignores whitespace
+        @SuppressWarnings("unchecked")
+        Class<? extends ExtendedOperationFactory> clazz = ( Class<? extends ExtendedOperationFactory> ) Class
+            .forName( extendedOperationFQCN.trim() );
+        Constructor<?> constructor = clazz.getConstructor( types );
 
-    /**
-     * {@inheritDoc}
-     */
-    public ExtendedResponseDecorator<?> decorate( ExtendedResponse decoratedMessage )
-    {
-        ExtendedResponseDecorator<?> resp = null;
+        ExtendedOperationFactory factory = ( ExtendedOperationFactory ) constructor
+            .newInstance( new Object[]
+                { this } );
+        getExtendedOperationsFactories().put( factory.getOid(), factory );
 
-        UnsolicitedResponseFactory<?> unsolicitedResponseFactory = unsolicitedFactories.get( decoratedMessage
-            .getResponseName() );
-        ExtendedRequestFactory<?, ?> extendedRequestFactory = extReqFactories.get( decoratedMessage.getResponseName() );
-
-        if ( extendedRequestFactory != null )
-        {
-            resp = extendedRequestFactory.decorate( decoratedMessage );
-        }
-        else if ( unsolicitedResponseFactory != null )
-        {
-            resp = unsolicitedResponseFactory.decorate( decoratedMessage );
-        }
-        else
-        {
-            resp = new ExtendedResponseDecorator<ExtendedResponse>( this, decoratedMessage );
-        }
-
-        return resp;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isExtendedOperationRegistered( String oid )
-    {
-        return extReqFactories.containsKey( oid ) || unsolicitedFactories.containsKey( oid );
+        LOG.info( "Registered pre-bundled extended operation factory: {}", factory.getOid() );
     }
 }

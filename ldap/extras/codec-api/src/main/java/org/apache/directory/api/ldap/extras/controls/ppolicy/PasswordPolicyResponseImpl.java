@@ -32,7 +32,7 @@ public class PasswordPolicyResponseImpl implements PasswordPolicyResponse
     private int timeBeforeExpiration = -1;
 
     /** number of remaining grace authentications */
-    private int graceAuthNsRemaining = -1;
+    private int graceAuthNRemaining = -1;
 
     /** number representing the password policy error */
     private PasswordPolicyErrorEnum ppolicyError;
@@ -59,18 +59,18 @@ public class PasswordPolicyResponseImpl implements PasswordPolicyResponse
     /**
      * {@inheritDoc}
      */
-    public int getGraceAuthNsRemaining()
+    public int getGraceAuthNRemaining()
     {
-        return graceAuthNsRemaining;
+        return graceAuthNRemaining;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void setGraceAuthNsRemaining( int graceAuthNsRemaining )
+    public void setGraceAuthNRemaining( int graceAuthNRemaining )
     {
-        this.graceAuthNsRemaining = graceAuthNsRemaining;
+        this.graceAuthNRemaining = graceAuthNRemaining;
     }
 
 
@@ -89,5 +89,13 @@ public class PasswordPolicyResponseImpl implements PasswordPolicyResponse
     public void setPasswordPolicyError( PasswordPolicyErrorEnum ppolicyError )
     {
         this.ppolicyError = ppolicyError;
+    }
+
+
+    @Override
+    public String toString()
+    {
+        return "PasswordPolicyResponseImpl [timeBeforeExpiration=" + timeBeforeExpiration + ", graceAuthNRemaining="
+            + graceAuthNRemaining + ", ppolicyError=" + ppolicyError + "]";
     }
 }

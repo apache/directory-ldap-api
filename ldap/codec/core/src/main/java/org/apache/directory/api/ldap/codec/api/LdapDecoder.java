@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
 public class LdapDecoder
 {
     /** The logger */
-    private static Logger LOG = LoggerFactory.getLogger( LdapDecoder.class );
+    private static final Logger LOG = LoggerFactory.getLogger( LdapDecoder.class );
 
     /** A speedup for logger */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
@@ -82,7 +82,8 @@ public class LdapDecoder
             {
                 byte[] buf = new byte[in.available()];
 
-                if ( ( amount = in.read( buf ) ) == -1 )
+                amount = in.read( buf );
+                if ( amount == -1 )
                 {
                     break;
                 }

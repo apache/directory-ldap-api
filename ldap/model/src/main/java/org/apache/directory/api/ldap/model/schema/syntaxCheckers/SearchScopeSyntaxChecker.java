@@ -81,7 +81,7 @@ public class SearchScopeSyntaxChecker extends SyntaxChecker
             strValue = value.toString();
         }
 
-        strValue = Strings.trim( Strings.toLowerCase( strValue ) );
+        strValue = Strings.trim( Strings.toLowerCaseAscii( strValue ) );
 
         return ( "base".equals( strValue ) || "one".equals( strValue ) || "sub".equals( strValue ) );
     }

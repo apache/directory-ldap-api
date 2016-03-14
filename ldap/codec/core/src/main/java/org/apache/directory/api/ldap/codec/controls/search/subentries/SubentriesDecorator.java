@@ -43,7 +43,7 @@ import org.apache.directory.api.ldap.model.message.controls.SubentriesImpl;
 public class SubentriesDecorator extends ControlDecorator<Subentries> implements Subentries
 {
     /** The sub entry decoder */
-    private static final Asn1Decoder decoder = new Asn1Decoder();
+    private static final Asn1Decoder DECODER = new Asn1Decoder();
 
 
     /**
@@ -143,7 +143,7 @@ public class SubentriesDecorator extends ControlDecorator<Subentries> implements
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );
         SubentriesContainer container = new SubentriesContainer( this );
-        decoder.decode( bb, container );
+        DECODER.decode( bb, container );
 
         return this;
     }

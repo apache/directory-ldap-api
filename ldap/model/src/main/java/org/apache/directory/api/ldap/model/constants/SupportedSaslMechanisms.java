@@ -39,20 +39,20 @@ public final class SupportedSaslMechanisms
     }
 
     /** CRAM-MD5 mechanism */
-    public final static String CRAM_MD5 = "CRAM-MD5";
+    public static final String CRAM_MD5 = "CRAM-MD5";
 
     /** DIGEST_MD5-MD5 mechanism */
-    public final static String DIGEST_MD5 = "DIGEST-MD5";
+    public static final String DIGEST_MD5 = "DIGEST-MD5";
 
     /** GSSAPI mechanism */
-    public final static String GSSAPI = "GSSAPI";
+    public static final String GSSAPI = "GSSAPI";
 
     /** PLAIN mechanism */
-    public final static String PLAIN = "PLAIN";
+    public static final String PLAIN = "PLAIN";
 
     /** Not a SASL JDK supported mechanism */
-    public final static String NTLM = "NTLM";
+    public static final String NTLM = "NTLM";
 
     /** Not a SASL JDK supported mechanism */
-    public final static String GSS_SPNEGO = "GSS-SPNEGO";
+    public static final String GSS_SPNEGO = "GSS-SPNEGO";
 }

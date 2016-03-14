@@ -35,7 +35,7 @@ public class ModifyDnResponseImpl extends AbstractResultResponse implements Modi
      */
     public ModifyDnResponseImpl()
     {
-        super( -1, TYPE );
+        super( -1, MessageTypeEnum.MODIFYDN_RESPONSE );
     }
 
 
@@ -46,7 +46,7 @@ public class ModifyDnResponseImpl extends AbstractResultResponse implements Modi
      */
     public ModifyDnResponseImpl( final int id )
     {
-        super( id, TYPE );
+        super( id, MessageTypeEnum.MODIFYDN_RESPONSE );
     }
 
 

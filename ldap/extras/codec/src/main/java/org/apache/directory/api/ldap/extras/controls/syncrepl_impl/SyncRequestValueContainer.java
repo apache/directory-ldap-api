@@ -21,7 +21,7 @@ package org.apache.directory.api.ldap.extras.controls.syncrepl_impl;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
-import org.apache.directory.api.ldap.extras.controls.SyncRequestValue;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncRequestValue;
 
 
 /**
@@ -42,8 +42,7 @@ public class SyncRequestValueContainer extends AbstractContainer
     public SyncRequestValueContainer()
     {
         super();
-        stateStack = new int[1];
-        grammar = SyncRequestValueGrammar.getInstance();
+        setGrammar( SyncRequestValueGrammar.getInstance() );
         setTransition( SyncRequestValueStatesEnum.START_STATE );
     }
 
@@ -56,8 +55,7 @@ public class SyncRequestValueContainer extends AbstractContainer
     {
         super();
         this.control = control;
-        stateStack = new int[1];
-        grammar = SyncRequestValueGrammar.getInstance();
+        setGrammar( SyncRequestValueGrammar.getInstance() );
         setTransition( SyncRequestValueStatesEnum.START_STATE );
     }
 

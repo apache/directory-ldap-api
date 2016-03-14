@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.codec.controls.search.entryChange;
 
 
+import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.controls.EntryChange;
@@ -31,7 +32,7 @@ import org.apache.directory.api.ldap.model.message.controls.EntryChange;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class EntryChangeFactory implements ControlFactory<EntryChange, EntryChangeDecorator>
+public class EntryChangeFactory implements ControlFactory<EntryChange>
 {
     /** The LDAP codec service */
     private LdapApiService codec;
@@ -60,7 +61,7 @@ public class EntryChangeFactory implements ControlFactory<EntryChange, EntryChan
     /**
      * {@inheritDoc}
      */
-    public EntryChangeDecorator newCodecControl()
+    public CodecControl<EntryChange> newCodecControl()
     {
         return new EntryChangeDecorator( codec );
     }
@@ -69,7 +70,7 @@ public class EntryChangeFactory implements ControlFactory<EntryChange, EntryChan
     /**
      * {@inheritDoc}
      */
-    public EntryChangeDecorator newCodecControl( EntryChange control )
+    public CodecControl<EntryChange> newCodecControl( EntryChange control )
     {
         return new EntryChangeDecorator( codec, control );
     }

@@ -19,6 +19,7 @@
  */
 package org.apache.directory.api.ldap.model.schema.registries.helper;
 
+
 import java.util.List;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -26,8 +27,7 @@ import org.apache.directory.api.ldap.model.schema.DitContentRule;
 import org.apache.directory.api.ldap.model.schema.registries.AttributeTypeRegistry;
 import org.apache.directory.api.ldap.model.schema.registries.ObjectClassRegistry;
 import org.apache.directory.api.ldap.model.schema.registries.Registries;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 /**
  * An helper class used to store all the methods associated with an DitContentRule
@@ -35,10 +35,12 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DitContentRuleHelper
+public final class DitContentRuleHelper
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( DitContentRuleHelper.class );
+    private DitContentRuleHelper()
+    {
+    }
+
 
     /**
      * Inject the DitContentRule into the registries, updating the references to
@@ -49,7 +51,8 @@ public class DitContentRuleHelper
      * @param registries The Registries
      * @exception If the addition failed
      */
-    public static void addToRegistries( DitContentRule ditContentRule, List<Throwable> errors,  Registries registries ) throws LdapException
+    public static void addToRegistries( DitContentRule ditContentRule, List<Throwable> errors, Registries registries )
+        throws LdapException
     {
         if ( registries != null )
         {
@@ -58,41 +61,41 @@ public class DitContentRuleHelper
                 ditContentRule.unlock();
                 AttributeTypeRegistry atRegistry = registries.getAttributeTypeRegistry();
                 ObjectClassRegistry ocRegistry = registries.getObjectClassRegistry();
-    
+
                 if ( ditContentRule.getMayAttributeTypeOids() != null )
                 {
                     ditContentRule.getMayAttributeTypes().clear();
-    
+
                     for ( String oid : ditContentRule.getMayAttributeTypeOids() )
                     {
                         ditContentRule.getMayAttributeTypes().add( atRegistry.lookup( oid ) );
                     }
                 }
-    
+
                 if ( ditContentRule.getMustAttributeTypeOids() != null )
                 {
                     ditContentRule.getMustAttributeTypes().clear();
-    
+
                     for ( String oid : ditContentRule.getMustAttributeTypeOids() )
                     {
                         ditContentRule.getMustAttributeTypes().add( atRegistry.lookup( oid ) );
                     }
                 }
-    
+
                 if ( ditContentRule.getNotAttributeTypeOids() != null )
                 {
                     ditContentRule.getNotAttributeTypes().clear();
-    
+
                     for ( String oid : ditContentRule.getNotAttributeTypeOids() )
                     {
                         ditContentRule.getNotAttributeTypes().add( atRegistry.lookup( oid ) );
                     }
                 }
-    
+
                 if ( ditContentRule.getAuxObjectClassOids() != null )
                 {
                     ditContentRule.getAuxObjectClasses().clear();
-    
+
                     for ( String oid : ditContentRule.getAuxObjectClassOids() )
                     {
                         ditContentRule.getAuxObjectClasses().add( ocRegistry.lookup( oid ) );

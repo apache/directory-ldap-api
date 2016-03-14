@@ -27,10 +27,8 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.decorators.SingleReplyRequestDecorator;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
-import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.api.util.Strings;
 
 
@@ -39,15 +37,16 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ExtendedRequestDecorator<Q extends ExtendedRequest<P>, P extends ExtendedResponse>
-    extends SingleReplyRequestDecorator<Q, P> implements ExtendedRequest<P>
+public class ExtendedRequestDecorator<Q extends ExtendedRequest>
+    extends SingleReplyRequestDecorator<Q> implements ExtendedRequest
 {
     /** The extended request length */
     private int extendedRequestLength;
 
-    /** The OID length */
+    /** The OID bytes */
     private byte[] requestNameBytes;
 
+    /** The ExtendedRequest value */
     protected byte[] requestValue;
 
 
@@ -59,48 +58,6 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest<P>, P extends Ex
     public ExtendedRequestDecorator( LdapApiService codec, Q decoratedMessage )
     {
         super( codec, decoratedMessage );
-    }
-
-
-    /**
-     * Stores the encoded length for the ExtendedRequest
-     *
-     * @param extendedRequestLength The encoded length
-     */
-    public void setExtendedRequestLength( int extendedRequestLength )
-    {
-        this.extendedRequestLength = extendedRequestLength;
-    }
-
-
-    /**
-     * @return The encoded ExtendedRequest's length
-     */
-    public int getExtendedRequestLength()
-    {
-        return extendedRequestLength;
-    }
-
-
-    /**
-     * Gets the requestName bytes.
-     *
-     * @return the requestName bytes of the extended request type.
-     */
-    public byte[] getRequestNameBytes()
-    {
-        return requestNameBytes;
-    }
-
-
-    /**
-     * Sets the requestName bytes.
-     *
-     * @param requestNameBytes the OID bytes of the extended request type.
-     */
-    public void setRequestNameBytes( byte[] requestNameBytes )
-    {
-        this.requestNameBytes = requestNameBytes;
     }
 
 
@@ -120,7 +77,7 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest<P>, P extends Ex
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequest<P> setRequestName( String oid )
+    public ExtendedRequest setRequestName( String oid )
     {
         getDecorated().setRequestName( oid );
 
@@ -149,7 +106,7 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest<P>, P extends Ex
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequest<P> setMessageId( int messageId )
+    public ExtendedRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
 
@@ -160,27 +117,27 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest<P>, P extends Ex
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequest<P> addControl( Control control ) throws MessageException
+    public ExtendedRequest addControl( Control control )
     {
-        return ( ExtendedRequest<P> ) super.addControl( control );
+        return ( ExtendedRequest ) super.addControl( control );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequest<P> addAllControls( Control[] controls ) throws MessageException
+    public ExtendedRequest addAllControls( Control[] controls )
     {
-        return ( ExtendedRequest<P> ) super.addAllControls( controls );
+        return ( ExtendedRequest ) super.addAllControls( controls );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequest<P> removeControl( Control control ) throws MessageException
+    public ExtendedRequest removeControl( Control control )
     {
-        return ( ExtendedRequest<P> ) super.removeControl( control );
+        return ( ExtendedRequest ) super.removeControl( control );
     }
 
 
@@ -205,19 +162,15 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest<P>, P extends Ex
      */
     public int computeLength()
     {
-        byte[] requestNameBytes = Strings.getBytesUtf8( getRequestName() );
+        requestNameBytes = Strings.getBytesUtf8( getRequestName() );
 
-        setRequestNameBytes( requestNameBytes );
-
-        int extendedRequestLength = 1 + TLV.getNbBytes( requestNameBytes.length ) + requestNameBytes.length;
+        extendedRequestLength = 1 + TLV.getNbBytes( requestNameBytes.length ) + requestNameBytes.length;
 
         if ( getRequestValue() != null )
         {
             extendedRequestLength += 1 + TLV.getNbBytes( getRequestValue().length )
                 + getRequestValue().length;
         }
-
-        setExtendedRequestLength( extendedRequestLength );
 
         return 1 + TLV.getNbBytes( extendedRequestLength ) + extendedRequestLength;
     }
@@ -239,27 +192,27 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest<P>, P extends Ex
         try
         {
             // The BindResponse Tag
-            buffer.put( LdapConstants.EXTENDED_REQUEST_TAG );
-            buffer.put( TLV.getBytes( getExtendedRequestLength() ) );
+            buffer.put( LdapCodecConstants.EXTENDED_REQUEST_TAG );
+            buffer.put( TLV.getBytes( extendedRequestLength ) );
 
             // The requestName, if any
-            if ( getRequestNameBytes() == null )
+            if ( requestNameBytes == null )
             {
                 throw new EncoderException( I18n.err( I18n.ERR_04043 ) );
             }
 
-            buffer.put( ( byte ) LdapConstants.EXTENDED_REQUEST_NAME_TAG );
-            buffer.put( TLV.getBytes( getRequestNameBytes().length ) );
+            buffer.put( ( byte ) LdapCodecConstants.EXTENDED_REQUEST_NAME_TAG );
+            buffer.put( TLV.getBytes( requestNameBytes.length ) );
 
-            if ( getRequestNameBytes().length != 0 )
+            if ( requestNameBytes.length != 0 )
             {
-                buffer.put( getRequestNameBytes() );
+                buffer.put( requestNameBytes );
             }
 
             // The requestValue, if any
             if ( getRequestValue() != null )
             {
-                buffer.put( ( byte ) LdapConstants.EXTENDED_REQUEST_VALUE_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.EXTENDED_REQUEST_VALUE_TAG );
 
                 buffer.put( TLV.getBytes( getRequestValue().length ) );
 
@@ -271,7 +224,7 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest<P>, P extends Ex
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
 
         return buffer;

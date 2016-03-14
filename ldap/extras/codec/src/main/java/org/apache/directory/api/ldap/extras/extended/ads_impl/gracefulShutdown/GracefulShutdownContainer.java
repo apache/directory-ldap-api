@@ -31,7 +31,7 @@ import org.apache.directory.api.asn1.ber.AbstractContainer;
 public class GracefulShutdownContainer extends AbstractContainer
 {
     /** GracefulShutdown */
-    private GracefulShutdown gracefulShutdown;
+    private GracefulShutdownRequestDecorator gracefulShutdownRequest;
 
 
     /**
@@ -41,8 +41,7 @@ public class GracefulShutdownContainer extends AbstractContainer
     public GracefulShutdownContainer()
     {
         super();
-        stateStack = new int[1];
-        grammar = GracefulShutdownGrammar.getInstance();
+        setGrammar( GracefulShutdownGrammar.getInstance() );
         setTransition( GracefulShutdownStatesEnum.START_STATE );
     }
 
@@ -50,9 +49,9 @@ public class GracefulShutdownContainer extends AbstractContainer
     /**
      * @return Returns the Graceful Shutdown object.
      */
-    public GracefulShutdown getGracefulShutdown()
+    public GracefulShutdownRequestDecorator getGracefulShutdownRequest()
     {
-        return gracefulShutdown;
+        return gracefulShutdownRequest;
     }
 
 
@@ -62,9 +61,9 @@ public class GracefulShutdownContainer extends AbstractContainer
      * 
      * @param gracefulShutdown the GracefulShutdown to set.
      */
-    public void setGracefulShutdown( GracefulShutdown gracefulShutdown )
+    public void setGracefulShutdownRequest( GracefulShutdownRequestDecorator gracefulShutdown )
     {
-        this.gracefulShutdown = gracefulShutdown;
+        this.gracefulShutdownRequest = gracefulShutdown;
     }
 
 
@@ -74,6 +73,6 @@ public class GracefulShutdownContainer extends AbstractContainer
     public void clean()
     {
         super.clean();
-        gracefulShutdown = null;
+        gracefulShutdownRequest = null;
     }
 }

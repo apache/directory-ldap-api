@@ -32,6 +32,10 @@ import org.apache.directory.api.ldap.model.schema.SchemaObjectType;
  */
 public class SyntaxCheckerDescription extends LoadableSchemaObject
 {
+    /** The mandatory serialVersionUID */
+    public static final long serialVersionUID = 1L;
+
+
     /**
      * Default constructor for a SyntaxCheckerDecription
      * @param oid The SyntaxChecker OID

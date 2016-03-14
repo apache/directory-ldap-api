@@ -45,15 +45,4 @@ public class CascadeImpl extends AbstractControl implements Cascade
         super( OID );
         setCritical( isCritical );
     }
-
-
-    public void setValue( byte[] value )
-    {
-    }
-
-
-    public boolean hasValue()
-    {
-        return false;
-    }
 }

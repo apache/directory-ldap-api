@@ -26,8 +26,7 @@ import java.nio.ByteBuffer;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
-import org.apache.directory.api.ldap.model.exception.MessageException;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.UnbindRequest;
 
@@ -64,7 +63,7 @@ public class UnbindRequestDecorator extends RequestDecorator<UnbindRequest> impl
     /**
      * {@inheritDoc}
      */
-    public UnbindRequest addControl( Control control ) throws MessageException
+    public UnbindRequest addControl( Control control )
     {
         return ( UnbindRequest ) super.addControl( control );
     }
@@ -73,7 +72,7 @@ public class UnbindRequestDecorator extends RequestDecorator<UnbindRequest> impl
     /**
      * {@inheritDoc}
      */
-    public UnbindRequest addAllControls( Control[] controls ) throws MessageException
+    public UnbindRequest addAllControls( Control[] controls )
     {
         return ( UnbindRequest ) super.addAllControls( controls );
     }
@@ -82,7 +81,7 @@ public class UnbindRequestDecorator extends RequestDecorator<UnbindRequest> impl
     /**
      * {@inheritDoc}
      */
-    public UnbindRequest removeControl( Control control ) throws MessageException
+    public UnbindRequest removeControl( Control control )
     {
         return ( UnbindRequest ) super.removeControl( control );
     }
@@ -100,7 +99,8 @@ public class UnbindRequestDecorator extends RequestDecorator<UnbindRequest> impl
      */
     public int computeLength()
     {
-        return 2; // Always 2
+        // Always 2
+        return 2;
     }
 
 
@@ -112,7 +112,7 @@ public class UnbindRequestDecorator extends RequestDecorator<UnbindRequest> impl
         try
         {
             // The tag
-            buffer.put( LdapConstants.UNBIND_REQUEST_TAG );
+            buffer.put( LdapCodecConstants.UNBIND_REQUEST_TAG );
 
             // The length is always null.
             buffer.put( ( byte ) 0 );
@@ -120,7 +120,7 @@ public class UnbindRequestDecorator extends RequestDecorator<UnbindRequest> impl
         catch ( BufferOverflowException boe )
         {
             String msg = I18n.err( I18n.ERR_04005 );
-            throw new EncoderException( msg );
+            throw new EncoderException( msg, boe );
         }
 
         return buffer;

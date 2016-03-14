@@ -18,6 +18,8 @@
  */
 package org.apache.directory.api.ldap.model.cursor;
 
+
+import java.io.Closeable;
 import java.io.IOException;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -41,7 +43,7 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @param <E> The type of element on which this cursor will iterate
  */
-public interface Cursor<E> extends Iterable<E>
+public interface Cursor<E> extends Iterable<E>, Closeable
 {
     /**
      * Determines whether or not a call to get() will succeed.
@@ -66,7 +68,7 @@ public interface Cursor<E> extends Iterable<E>
      * @param element the element to be positioned before
      * @throws Exception with problems accessing the underlying btree
      */
-    void before( E element ) throws LdapException, CursorException, IOException;
+    void before( E element ) throws LdapException, CursorException;
 
 
     /**
@@ -84,7 +86,7 @@ public interface Cursor<E> extends Iterable<E>
      * @throws Exception if there are problems positioning this cursor or if
      * this Cursor is closed
      */
-    void after( E element ) throws LdapException, CursorException, IOException;
+    void after( E element ) throws LdapException, CursorException;
 
 
     /**
@@ -93,7 +95,7 @@ public interface Cursor<E> extends Iterable<E>
      * @throws Exception if there are problems positioning this cursor or if
      * this Cursor is closed
      */
-    void beforeFirst() throws LdapException, CursorException, IOException;
+    void beforeFirst() throws LdapException, CursorException;
 
 
     /**
@@ -102,7 +104,7 @@ public interface Cursor<E> extends Iterable<E>
      * @throws Exception if there are problems positioning this Cursor or if
      * this Cursor is closed
      */
-    void afterLast() throws LdapException, CursorException, IOException;
+    void afterLast() throws LdapException, CursorException;
 
 
     /**
@@ -113,7 +115,7 @@ public interface Cursor<E> extends Iterable<E>
      * @throws Exception if there are problems positioning this Cursor or if
      * this Cursor is closed
      */
-    boolean first() throws LdapException, CursorException, IOException;
+    boolean first() throws LdapException, CursorException;
 
 
     /**
@@ -146,7 +148,7 @@ public interface Cursor<E> extends Iterable<E>
      * @throws Exception if there are problems positioning this Cursor or if
      * this Cursor is closed
      */
-    boolean last() throws LdapException, CursorException, IOException;
+    boolean last() throws LdapException, CursorException;
 
 
     /**
@@ -189,7 +191,7 @@ public interface Cursor<E> extends Iterable<E>
      * @return true if the advance succeeded, false otherwise
      * @throws Exception if there are problems advancing to the next position
      */
-    boolean previous() throws LdapException, CursorException, IOException;
+    boolean previous() throws LdapException, CursorException;
 
 
     /**
@@ -205,7 +207,7 @@ public interface Cursor<E> extends Iterable<E>
      * the next position, or if this Cursor is closed 
      * @throws IOException If we have had any IO Exception
      */
-    boolean next() throws LdapException, CursorException, IOException;
+    boolean next() throws LdapException, CursorException;
 
 
     /**
@@ -218,15 +220,7 @@ public interface Cursor<E> extends Iterable<E>
      * cannot be retrieved, or if this Cursor is closed
      * @throws IOException If we have had any IO Exception
      */
-    E get() throws CursorException, IOException;
-
-
-    /**
-     * Closes this Cursor and frees any resources it my have allocated.
-     * Repeated calls to this method after this Cursor has already been
-     * called should not fail with exceptions.
-     */
-    void close();
+    E get() throws CursorException;
 
 
     /**
@@ -238,7 +232,7 @@ public interface Cursor<E> extends Iterable<E>
      *
      * @param reason exception thrown when this Cursor is accessed after close
      */
-    void close( Exception reason );
+    void close( Exception reason ) throws IOException;
 
 
     /**

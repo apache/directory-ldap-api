@@ -21,7 +21,6 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.cancel;
 
 
 import org.apache.directory.api.asn1.DecoderException;
-import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.api.asn1.ber.grammar.AbstractGrammar;
 import org.apache.directory.api.asn1.ber.grammar.Grammar;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
@@ -31,6 +30,8 @@ import org.apache.directory.api.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
+import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequestImpl;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,8 +66,7 @@ public final class CancelGrammar extends AbstractGrammar<CancelContainer>
     /**
      * Creates a new GracefulDisconnectGrammar object.
      */
-    @SuppressWarnings(
-        { "unchecked", "rawtypes" })
+    @SuppressWarnings("unchecked")
     private CancelGrammar()
     {
         setName( CancelGrammar.class.getName() );
@@ -85,12 +85,14 @@ public final class CancelGrammar extends AbstractGrammar<CancelContainer>
             new GrammarTransition<CancelContainer>( CancelStatesEnum.START_STATE,
                 CancelStatesEnum.CANCEL_SEQUENCE_STATE,
                 UniversalTag.SEQUENCE.getValue(),
-                new GrammarAction( "Init Cancel" )
+                new GrammarAction<CancelContainer>( "Init Cancel" )
                 {
-                    public void action( Asn1Container container )
+                    public void action( CancelContainer cancelContainer )
                     {
-                        CancelContainer cancelContainer = ( CancelContainer ) container;
-                        Cancel cancel = new Cancel();
+                        CancelRequestDecorator cancel = new CancelRequestDecorator(
+                            LdapApiServiceFactory.getSingleton(),
+                            new CancelRequestImpl() );
+
                         cancelContainer.setCancel( cancel );
                     }
                 } );
@@ -108,11 +110,10 @@ public final class CancelGrammar extends AbstractGrammar<CancelContainer>
             new GrammarTransition<CancelContainer>( CancelStatesEnum.CANCEL_SEQUENCE_STATE,
                 CancelStatesEnum.CANCEL_ID_STATE,
                 UniversalTag.INTEGER.getValue(),
-                new GrammarAction( "Stores CancelId" )
+                new GrammarAction<CancelContainer>( "Stores CancelId" )
                 {
-                    public void action( Asn1Container container ) throws DecoderException
+                    public void action( CancelContainer cancelContainer ) throws DecoderException
                     {
-                        CancelContainer cancelContainer = ( CancelContainer ) container;
                         BerValue value = cancelContainer.getCurrentTLV().getValue();
 
                         try
@@ -127,11 +128,11 @@ public final class CancelGrammar extends AbstractGrammar<CancelContainer>
                             cancelContainer.getCancel().setCancelId( cancelId );
                             cancelContainer.setGrammarEndAllowed( true );
                         }
-                        catch ( IntegerDecoderException e )
+                        catch ( IntegerDecoderException ide )
                         {
                             String msg = I18n.err( I18n.ERR_04031, Strings.dumpBytes( value.getData() ) );
                             LOG.error( msg );
-                            throw new DecoderException( msg );
+                            throw new DecoderException( msg, ide );
                         }
                     }
                 } );

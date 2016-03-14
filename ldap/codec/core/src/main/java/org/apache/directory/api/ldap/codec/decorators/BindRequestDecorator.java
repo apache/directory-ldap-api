@@ -28,10 +28,8 @@ import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
-import org.apache.directory.api.ldap.model.exception.MessageException;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.BindRequest;
-import org.apache.directory.api.ldap.model.message.BindResponse;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
@@ -42,8 +40,7 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class BindRequestDecorator extends SingleReplyRequestDecorator<BindRequest, BindResponse>
-    implements BindRequest
+public class BindRequestDecorator extends SingleReplyRequestDecorator<BindRequest> implements BindRequest
 {
     /** The bind request length */
     private int bindRequestLength;
@@ -53,13 +50,13 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
 
     /** The SASL credentials length */
     private int saslCredentialsLength;
-    
+
     /** The bytes containing the Dn */
     private byte[] dnBytes;
-    
+
     /** The bytes containing the Name */
     private byte[] nameBytes;
-    
+
     /** The bytes containing the SaslMechanism */
     private byte[] mechanismBytes;
 
@@ -72,63 +69,6 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     public BindRequestDecorator( LdapApiService codec, BindRequest decoratedMessage )
     {
         super( codec, decoratedMessage );
-    }
-
-
-    /**
-     * Stores the encoded length for the BindRequest
-     * @param bindRequestLength The encoded length
-     */
-    public void setBindRequestLength( int bindRequestLength )
-    {
-        this.bindRequestLength = bindRequestLength;
-    }
-
-
-    /**
-     * @return The encoded BindRequest's length
-     */
-    public int getBindRequestLength()
-    {
-        return bindRequestLength;
-    }
-
-
-    /**
-     * Stores the encoded length for the SaslCredentials
-     * @param saslCredentialsLength The encoded length
-     */
-    public void setSaslCredentialsLength( int saslCredentialsLength )
-    {
-        this.saslCredentialsLength = saslCredentialsLength;
-    }
-
-
-    /**
-     * @return The encoded SaslCredentials's length
-     */
-    public int getSaslCredentialsLength()
-    {
-        return saslCredentialsLength;
-    }
-
-
-    /**
-     * Stores the encoded length for the Mechanism
-     * @param saslMechanismLength The encoded length
-     */
-    public void setSaslMechanismLength( int saslMechanismLength )
-    {
-        this.saslMechanismLength = saslMechanismLength;
-    }
-
-
-    /**
-     * @return The encoded SaslMechanism's length
-     */
-    public int getSaslMechanismLength()
-    {
-        return saslMechanismLength;
     }
 
 
@@ -146,7 +86,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
-    public BindRequest addControl( Control control ) throws MessageException
+    public BindRequest addControl( Control control )
     {
         return ( BindRequest ) super.addControl( control );
     }
@@ -155,7 +95,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
-    public BindRequest addAllControls( Control[] controls ) throws MessageException
+    public BindRequest addAllControls( Control[] controls )
     {
         return ( BindRequest ) super.addAllControls( controls );
     }
@@ -164,7 +104,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
-    public BindRequest removeControl( Control control ) throws MessageException
+    public BindRequest removeControl( Control control )
     {
         return ( BindRequest ) super.removeControl( control );
     }
@@ -345,7 +285,8 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
      */
     public int computeLength()
     {
-        int bindRequestLength = 1 + 1 + 1; // Initialized with version
+        // Initialized with version
+        bindRequestLength = 1 + 1 + 1;
 
         Dn dn = getDn();
 
@@ -368,9 +309,8 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
             }
 
             nameBytes = Strings.getBytesUtf8( name );
-            int nameLength = nameBytes.length;
 
-            bindRequestLength += 1 + TLV.getNbBytes( nameLength ) + nameLength;
+            bindRequestLength += 1 + TLV.getNbBytes( nameBytes.length ) + nameBytes.length;
         }
 
         byte[] credentials = getCredentials();
@@ -404,8 +344,6 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
             bindRequestLength += saslLength;
         }
 
-        setBindRequestLength( bindRequestLength );
-
         // Return the result.
         return 1 + TLV.getNbBytes( bindRequestLength ) + bindRequestLength;
     }
@@ -431,13 +369,13 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
         try
         {
             // The BindRequest Tag
-            buffer.put( LdapConstants.BIND_REQUEST_TAG );
-            buffer.put( TLV.getBytes( getBindRequestLength() ) );
+            buffer.put( LdapCodecConstants.BIND_REQUEST_TAG );
+            buffer.put( TLV.getBytes( bindRequestLength ) );
 
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
 
         // The version (LDAP V3 only)
@@ -465,7 +403,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
             try
             {
                 // The simpleAuthentication Tag
-                buffer.put( ( byte ) LdapConstants.BIND_REQUEST_SIMPLE_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.BIND_REQUEST_SIMPLE_TAG );
 
                 if ( credentials != null )
                 {
@@ -484,7 +422,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
             catch ( BufferOverflowException boe )
             {
                 String msg = I18n.err( I18n.ERR_04005 );
-                throw new EncoderException( msg );
+                throw new EncoderException( msg, boe );
             }
         }
         else
@@ -493,7 +431,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
             try
             {
                 // The saslAuthentication Tag
-                buffer.put( ( byte ) LdapConstants.BIND_REQUEST_SASL_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.BIND_REQUEST_SASL_TAG );
 
                 buffer.put( TLV
                     .getBytes( saslMechanismLength + saslCredentialsLength ) );
@@ -508,7 +446,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
             catch ( BufferOverflowException boe )
             {
                 String msg = I18n.err( I18n.ERR_04005 );
-                throw new EncoderException( msg );
+                throw new EncoderException( msg, boe );
             }
         }
 

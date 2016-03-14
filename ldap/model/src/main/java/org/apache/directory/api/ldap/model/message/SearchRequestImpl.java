@@ -28,7 +28,6 @@ import java.util.List;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapProtocolErrorException;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.filter.BranchNormalizedVisitor;
 import org.apache.directory.api.ldap.model.filter.ExprNode;
 import org.apache.directory.api.ldap.model.filter.FilterParser;
@@ -71,6 +70,9 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
 
     /** The final result containing SearchResponseDone response */
     private SearchResultDone response;
+
+    /** A flag set to tell the search what to do wth referrals */
+    private ReferralsPolicyEnum referralHandling = ReferralsPolicyEnum.THROW;
 
 
     // -----------------------------------------------------------------------
@@ -318,7 +320,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
-    public SearchRequest addControl( Control control ) throws MessageException
+    public SearchRequest addControl( Control control )
     {
         return ( SearchRequest ) super.addControl( control );
     }
@@ -327,7 +329,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
-    public SearchRequest addAllControls( Control[] controls ) throws MessageException
+    public SearchRequest addAllControls( Control[] controls )
     {
         return ( SearchRequest ) super.addAllControls( controls );
     }
@@ -336,7 +338,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
-    public SearchRequest removeControl( Control control ) throws MessageException
+    public SearchRequest removeControl( Control control )
     {
         return ( SearchRequest ) super.removeControl( control );
     }
@@ -368,7 +370,10 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
             // Order doesn't matter, thus just add hashCode
             for ( String attr : attributes )
             {
-                hash = hash + attr.hashCode();
+                if ( attr != null )
+                {
+                    hash = hash + attr.hashCode();
+                }
             }
         }
 
@@ -507,6 +512,9 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
             case SUBTREE:
                 sb.append( "whole subtree" );
                 break;
+
+            default:
+                throw new IllegalArgumentException( "Unexpected scope " + scope );
         }
 
         sb.append( '\n' );
@@ -558,6 +566,9 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
             case DEREF_ALWAYS:
                 sb.append( "deref Always" );
                 break;
+
+            default:
+                throw new IllegalArgumentException( "Unexpected aliasDerefMode " + aliasDerefMode );
         }
 
         sb.append( '\n' );
@@ -588,5 +599,45 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
         sb.append( super.toString() );
 
         return super.toString( sb.toString() );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isFollowReferrals()
+    {
+        return referralHandling == ReferralsPolicyEnum.FOLLOW;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest followReferrals()
+    {
+        referralHandling = ReferralsPolicyEnum.FOLLOW;
+
+        return this;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isIgnoreReferrals()
+    {
+        return referralHandling == ReferralsPolicyEnum.IGNORE;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest ignoreReferrals()
+    {
+        referralHandling = ReferralsPolicyEnum.IGNORE;
+
+        return this;
     }
 }

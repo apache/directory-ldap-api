@@ -20,9 +20,6 @@
 package org.apache.directory.api.ldap.model.message;
 
 
-import org.apache.directory.api.ldap.model.exception.MessageException;
-
-
 /**
  * Extended protocol request message used to add to more operations to the
  * protocol. Here's what <a href="http://www.faqs.org/rfcs/rfc2251.html"> RFC
@@ -55,15 +52,8 @@ import org.apache.directory.api.ldap.model.exception.MessageException;
  *  @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * 
  */
-public interface ExtendedRequest<R extends ExtendedResponse> extends SingleReplyRequest<R>
+public interface ExtendedRequest extends SingleReplyRequest
 {
-    /** Extended request message type enumeration value */
-    MessageTypeEnum TYPE = MessageTypeEnum.EXTENDED_REQUEST;
-
-    /** Extended response message type enumeration value */
-    MessageTypeEnum RESP_TYPE = ExtendedResponse.TYPE;
-
-
     /**
      * Gets the Object Identifier corresponding to the extended request type.
      * This is the <b>requestName</b> portion of the ExtendedRequst PDU.
@@ -79,29 +69,29 @@ public interface ExtendedRequest<R extends ExtendedResponse> extends SingleReply
      * @param oid the dotted-decimal representation as a String of the OID
      * @return The ExtendedRequest instance
      */
-    ExtendedRequest<R> setRequestName( String oid );
+    ExtendedRequest setRequestName( String oid );
 
 
     /**
      * {@inheritDoc}
      */
-    ExtendedRequest<R> setMessageId( int messageId );
+    ExtendedRequest setMessageId( int messageId );
 
 
     /**
      * {@inheritDoc}
      */
-    ExtendedRequest<R> addControl( Control control ) throws MessageException;
+    ExtendedRequest addControl( Control control );
 
 
     /**
      * {@inheritDoc}
      */
-    ExtendedRequest<R> addAllControls( Control[] controls ) throws MessageException;
+    ExtendedRequest addAllControls( Control[] controls );
 
 
     /**
      * {@inheritDoc}
      */
-    ExtendedRequest<R> removeControl( Control control ) throws MessageException;
+    ExtendedRequest removeControl( Control control );
 }

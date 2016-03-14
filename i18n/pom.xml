@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.api</groupId>
     <artifactId>api-parent</artifactId>
-    <version>1.0.0-M17-SNAPSHOT</version>
+    <version>1.0.0-M34-SNAPSHOT</version>
   </parent>
   
   <artifactId>api-i18n</artifactId>
@@ -61,7 +61,7 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.i18n</Bundle-SymbolicName>
             <Export-Package>
-                {local-packages};version=${project.version};-noimport:=true
+              org.apache.directory.api.i18n;version=${project.version};-noimport:=true
             </Export-Package>
           </instructions>
         </configuration>

@@ -29,31 +29,32 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.dsmlv2.DsmlDecorator;
 import org.apache.directory.api.dsmlv2.Dsmlv2Parser;
 import org.apache.directory.api.dsmlv2.ParserUtils;
-import org.apache.directory.api.dsmlv2.reponse.AddResponseDsml;
-import org.apache.directory.api.dsmlv2.reponse.BatchResponseDsml;
-import org.apache.directory.api.dsmlv2.reponse.BindResponseDsml;
-import org.apache.directory.api.dsmlv2.reponse.CompareResponseDsml;
-import org.apache.directory.api.dsmlv2.reponse.DelResponseDsml;
-import org.apache.directory.api.dsmlv2.reponse.ErrorResponse;
-import org.apache.directory.api.dsmlv2.reponse.ExtendedResponseDsml;
-import org.apache.directory.api.dsmlv2.reponse.ModDNResponseDsml;
-import org.apache.directory.api.dsmlv2.reponse.ModifyResponseDsml;
-import org.apache.directory.api.dsmlv2.reponse.SearchResponseDsml;
-import org.apache.directory.api.dsmlv2.reponse.SearchResultDoneDsml;
-import org.apache.directory.api.dsmlv2.reponse.SearchResultEntryDsml;
-import org.apache.directory.api.dsmlv2.reponse.SearchResultReferenceDsml;
-import org.apache.directory.api.dsmlv2.reponse.ErrorResponse.ErrorResponseType;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml;
-import org.apache.directory.api.dsmlv2.request.Dsmlv2Grammar;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml.OnError;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml.Processing;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml.ResponseOrder;
+import org.apache.directory.api.dsmlv2.request.Dsmlv2Grammar;
+import org.apache.directory.api.dsmlv2.response.AddResponseDsml;
+import org.apache.directory.api.dsmlv2.response.BatchResponseDsml;
+import org.apache.directory.api.dsmlv2.response.BindResponseDsml;
+import org.apache.directory.api.dsmlv2.response.CompareResponseDsml;
+import org.apache.directory.api.dsmlv2.response.DelResponseDsml;
+import org.apache.directory.api.dsmlv2.response.ErrorResponse;
+import org.apache.directory.api.dsmlv2.response.ErrorResponse.ErrorResponseType;
+import org.apache.directory.api.dsmlv2.response.ExtendedResponseDsml;
+import org.apache.directory.api.dsmlv2.response.ModDNResponseDsml;
+import org.apache.directory.api.dsmlv2.response.ModifyResponseDsml;
+import org.apache.directory.api.dsmlv2.response.SearchResponseDsml;
+import org.apache.directory.api.dsmlv2.response.SearchResultDoneDsml;
+import org.apache.directory.api.dsmlv2.response.SearchResultEntryDsml;
+import org.apache.directory.api.dsmlv2.response.SearchResultReferenceDsml;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.cursor.SearchCursor;
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -130,6 +131,8 @@ public class Dsmlv2Engine
 
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( Dsmlv2Engine.class );
+    
+    private static final String BODY_ENVELOPE = "</Body></Envelope>";
 
 
     /**
@@ -278,7 +281,7 @@ public class Dsmlv2Engine
 
         if ( outStream != null )
         {
-            respWriter = new BufferedWriter( new OutputStreamWriter( outStream ) );
+            respWriter = new BufferedWriter( new OutputStreamWriter( outStream, StandardCharsets.UTF_8 ) );
 
             if ( generateSoapResp )
             {
@@ -289,20 +292,6 @@ public class Dsmlv2Engine
 
                 respWriter.write( "><Body>" );
             }
-
-            respWriter.write( "<batchResponse " );
-
-            ParserUtils.DSML_NAMESPACE.write( respWriter );
-
-            respWriter.write( " " ); // a space to separate the namespace declarations
-
-            ParserUtils.XSD_NAMESPACE.write( respWriter );
-
-            respWriter.write( " " ); // a space to separate the namespace declarations
-
-            ParserUtils.XSI_NAMESPACE.write( respWriter );
-
-            respWriter.write( '>' ); // the end tag
         }
 
         // Binding to LDAP Server
@@ -318,16 +307,18 @@ public class Dsmlv2Engine
             // We create a new ErrorResponse and return the XML response.
             ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.COULD_NOT_CONNECT, e
                 .getLocalizedMessage() );
-            
+
+            batchResponse.addResponse( errorResponse );
+
             if ( respWriter != null )
             {
-                writeResponse( respWriter, errorResponse );
-                respWriter.write( "</batchResponse>" );
+                respWriter.write( batchResponse.toDsml() );
+                if ( generateSoapResp )
+                {
+                    respWriter.write( BODY_ENVELOPE );
+                }
+
                 respWriter.flush();
-            }
-            else
-            {
-                batchResponse.addResponse( errorResponse );
             }
 
             return;
@@ -346,18 +337,45 @@ public class Dsmlv2Engine
             ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.MALFORMED_REQUEST, I18n.err(
                 I18n.ERR_03001, e.getLocalizedMessage(), e.getLineNumber(), e.getColumnNumber() ) );
 
+            batchResponse.addResponse( errorResponse );
+
             if ( respWriter != null )
             {
-                writeResponse( respWriter, errorResponse );
-                respWriter.write( "</batchResponse>" );
+                respWriter.write( batchResponse.toDsml() );
+                if ( generateSoapResp )
+                {
+                    respWriter.write( BODY_ENVELOPE );
+                }
+
                 respWriter.flush();
-            }
-            else
-            {
-                batchResponse.addResponse( errorResponse );
             }
 
             return;
+        }
+
+        if ( respWriter != null )
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.append( "<batchResponse " );
+
+            sb.append( ParserUtils.DSML_NAMESPACE.asXML() );
+
+            // a space to separate the namespace declarations
+            sb.append( " " );
+
+            sb.append( ParserUtils.XSD_NAMESPACE.asXML() );
+
+            // a space to separate the namespace declarations
+            sb.append( " " );
+
+            sb.append( ParserUtils.XSI_NAMESPACE.asXML() );
+
+            sb.append( " requestID=\"" );
+            sb.append( batchRequest.getRequestID() );
+            sb.append( "\">" );
+
+            respWriter.write( sb.toString() );
         }
 
         // Processing each request:
@@ -381,22 +399,26 @@ public class Dsmlv2Engine
             // We create a new ErrorResponse and return the XML response.
             ErrorResponse errorResponse = new ErrorResponse( reqId, ErrorResponseType.MALFORMED_REQUEST, I18n.err(
                 I18n.ERR_03001, e.getLocalizedMessage(), e.getLineNumber(), e.getColumnNumber() ) );
-            
+
+            batchResponse.addResponse( errorResponse );
+
             if ( respWriter != null )
             {
-                writeResponse( respWriter, errorResponse );
-                respWriter.write( "</batchResponse>" );
+                respWriter.write( batchResponse.toDsml() );
+
+                if ( generateSoapResp )
+                {
+                    respWriter.write( BODY_ENVELOPE );
+                }
+
                 respWriter.flush();
-            }
-            else
-            {
-                batchResponse.addResponse( errorResponse );
             }
 
             return;
         }
 
-        while ( request != null ) // (Request == null when there's no more request to process)
+        // (Request == null when there's no more request to process)
+        while ( request != null )
         {
             // Checking the request has a requestID attribute if Processing = Parallel and ResponseOrder = Unordered
             if ( ( batchRequest.getProcessing().equals( Processing.PARALLEL ) )
@@ -431,7 +453,7 @@ public class Dsmlv2Engine
                 ErrorResponse errorResponse = new ErrorResponse( request.getDecorated().getMessageId(),
                     ErrorResponseType.GATEWAY_INTERNAL_ERROR, I18n.err(
                         I18n.ERR_03003, e.getMessage() ) );
-                
+
                 if ( respWriter != null )
                 {
                     writeResponse( respWriter, errorResponse );
@@ -460,7 +482,7 @@ public class Dsmlv2Engine
                 // We create a new ErrorResponse and return the XML response.
                 ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.MALFORMED_REQUEST, I18n.err(
                     I18n.ERR_03001, e.getLocalizedMessage(), e.getLineNumber(), e.getColumnNumber() ) );
-                
+
                 if ( respWriter != null )
                 {
                     writeResponse( respWriter, errorResponse );
@@ -480,8 +502,7 @@ public class Dsmlv2Engine
 
             if ( generateSoapResp )
             {
-                respWriter.write( "</Body>" );
-                respWriter.write( "</Envelope>" );
+                respWriter.write( BODY_ENVELOPE );
             }
 
             respWriter.flush();
@@ -594,7 +615,7 @@ public class Dsmlv2Engine
                 break;
 
             case EXTENDED_REQUEST:
-                ExtendedResponse extendedResponse = connection.extended( ( ExtendedRequest<?> ) request );
+                ExtendedResponse extendedResponse = connection.extended( ( ExtendedRequest ) request );
                 resultCode = extendedResponse.getLdapResult().getResultCode();
                 ExtendedResponseDsml extendedResponseDsml = new ExtendedResponseDsml( connection.getCodecService(),
                     extendedResponse );

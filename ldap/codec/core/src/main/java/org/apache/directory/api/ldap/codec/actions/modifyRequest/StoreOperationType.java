@@ -26,7 +26,7 @@ import org.apache.directory.api.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.ModifyRequestDecorator;
 import org.apache.directory.api.util.Strings;
@@ -85,7 +85,7 @@ public class StoreOperationType extends GrammarAction<LdapMessageContainer<Modif
             LOG.error( msg );
 
             // This will generate a PROTOCOL_ERROR
-            throw new DecoderException( msg );
+            throw new DecoderException( msg, ide );
         }
 
         // Store the current operation.
@@ -95,17 +95,20 @@ public class StoreOperationType extends GrammarAction<LdapMessageContainer<Modif
         {
             switch ( operation )
             {
-                case LdapConstants.OPERATION_ADD:
+                case LdapCodecConstants.OPERATION_ADD:
                     LOG.debug( "Modification operation : ADD" );
                     break;
 
-                case LdapConstants.OPERATION_DELETE:
+                case LdapCodecConstants.OPERATION_DELETE:
                     LOG.debug( "Modification operation : DELETE" );
                     break;
 
-                case LdapConstants.OPERATION_REPLACE:
+                case LdapCodecConstants.OPERATION_REPLACE:
                     LOG.debug( "Modification operation : REPLACE" );
                     break;
+
+                default:
+                    LOG.debug( "Modification operation : UNKNOWN" );
             }
         }
     }

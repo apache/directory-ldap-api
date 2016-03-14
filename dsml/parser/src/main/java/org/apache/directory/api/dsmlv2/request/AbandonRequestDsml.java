@@ -21,7 +21,6 @@ package org.apache.directory.api.dsmlv2.request;
 
 
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.message.AbandonRequest;
 import org.apache.directory.api.ldap.model.message.AbandonRequestImpl;
 import org.apache.directory.api.ldap.model.message.Control;
@@ -141,7 +140,7 @@ public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
     /**
      * {@inheritDoc}
      */
-    public AbandonRequest addControl( Control control ) throws MessageException
+    public AbandonRequest addControl( Control control )
     {
         return ( AbandonRequest ) super.addControl( control );
     }
@@ -150,7 +149,7 @@ public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
     /**
      * {@inheritDoc}
      */
-    public AbandonRequest addAllControls( Control[] controls ) throws MessageException
+    public AbandonRequest addAllControls( Control[] controls )
     {
         return ( AbandonRequest ) super.addAllControls( controls );
     }
@@ -159,7 +158,7 @@ public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
     /**
      * {@inheritDoc}
      */
-    public AbandonRequest removeControl( Control control ) throws MessageException
+    public AbandonRequest removeControl( Control control )
     {
         return ( AbandonRequest ) super.removeControl( control );
     }

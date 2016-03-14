@@ -27,7 +27,7 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.AddResponse;
 
 
@@ -62,25 +62,6 @@ public class AddResponseDecorator extends ResponseDecorator<AddResponse> impleme
     }
 
 
-    /**
-     * Stores the encoded length for the AddResponse
-     * @param addResponseLength The encoded length
-     */
-    public void setAddResponseLength( int addResponseLength )
-    {
-        this.addResponseLength = addResponseLength;
-    }
-
-
-    /**
-     * @return The encoded AddResponse's length
-     */
-    public int getAddResponseLength()
-    {
-        return addResponseLength;
-    }
-
-
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
@@ -100,10 +81,8 @@ public class AddResponseDecorator extends ResponseDecorator<AddResponse> impleme
     public int computeLength()
     {
         AddResponse addResponse = getAddResponse();
-        setLdapResult( new LdapResultDecorator( addResponse.getLdapResult() ) );
-        int addResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
-
-        setAddResponseLength( addResponseLength );
+        setLdapResult( new LdapResultDecorator( getCodecService(), addResponse.getLdapResult() ) );
+        addResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
 
         return 1 + TLV.getNbBytes( addResponseLength ) + addResponseLength;
     }
@@ -120,8 +99,8 @@ public class AddResponseDecorator extends ResponseDecorator<AddResponse> impleme
         try
         {
             // The AddResponse Tag
-            buffer.put( LdapConstants.ADD_RESPONSE_TAG );
-            buffer.put( TLV.getBytes( getAddResponseLength() ) );
+            buffer.put( LdapCodecConstants.ADD_RESPONSE_TAG );
+            buffer.put( TLV.getBytes( addResponseLength ) );
 
             // The LdapResult
             ( ( LdapResultDecorator ) getLdapResult() ).encode( buffer );
@@ -130,7 +109,7 @@ public class AddResponseDecorator extends ResponseDecorator<AddResponse> impleme
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
     }
 }

@@ -41,25 +41,9 @@ public class DeleteFuture extends ResponseFuture<DeleteResponse>
      * @param connection the LDAP connection
      * @param messageId The associated messageId
      */
-    // Implicit super constructor ResponseFuture<BindResponse>() is undefined for default constructor. 
-    @SuppressWarnings("PMD.UselessOverridingMethod")
     public DeleteFuture( LdapConnection connection, int messageId )
     {
         super( connection, messageId );
-    }
-
-
-    /**
-     * Get the DeleteResponse, blocking until one is received.
-     * 
-     * @return the delete response
-     * @throws InterruptedException {@inheritDoc}
-     * @throws ExecutionException {@inheritDoc}
-     */
-    @SuppressWarnings("PMD.UselessOverridingMethod")
-    public DeleteResponse get() throws InterruptedException, ExecutionException
-    {
-        return super.get();
     }
 
 

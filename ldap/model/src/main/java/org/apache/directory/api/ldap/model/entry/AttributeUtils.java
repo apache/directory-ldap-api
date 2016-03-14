@@ -47,6 +47,10 @@ import org.apache.directory.api.util.Strings;
  */
 public final class AttributeUtils
 {
+    private AttributeUtils()
+    {
+    }
+
 
     /**
      * Check if an attribute contains a value. The test is case insensitive,
@@ -298,7 +302,8 @@ public final class AttributeUtils
      * @param pos The position of the attribute in the current string
      * @return The parsed attribute if valid
      */
-    public static String parseAttribute( byte[] str, Position pos, boolean withOption ) throws ParseException
+    public static String parseAttribute( byte[] str, Position pos, boolean withOption, boolean relaxed )
+        throws ParseException
     {
         // We must have an OID or an DESCR first
         byte b = Strings.byteAt( str, pos.start );
@@ -315,7 +320,7 @@ public final class AttributeUtils
             // A DESCR
             pos.start++;
 
-            while ( Chars.isAlphaDigitMinus( str, pos.start ) )
+            while ( Chars.isAlphaDigitMinus( str, pos.start ) || ( relaxed && Chars.isUnderscore( str, pos.start ) ) )
             {
                 pos.start++;
             }

@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.codec.api;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.directory.api.asn1.Asn1Object;
 import org.apache.directory.api.ldap.codec.decorators.AbandonRequestDecorator;
 import org.apache.directory.api.ldap.codec.decorators.AddRequestDecorator;
 import org.apache.directory.api.ldap.codec.decorators.AddResponseDecorator;
@@ -42,7 +43,6 @@ import org.apache.directory.api.ldap.codec.decorators.SearchResultDoneDecorator;
 import org.apache.directory.api.ldap.codec.decorators.SearchResultEntryDecorator;
 import org.apache.directory.api.ldap.codec.decorators.SearchResultReferenceDecorator;
 import org.apache.directory.api.ldap.codec.decorators.UnbindRequestDecorator;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.message.AbandonRequest;
 import org.apache.directory.api.ldap.model.message.AddRequest;
 import org.apache.directory.api.ldap.model.message.AddResponse;
@@ -75,7 +75,7 @@ import org.apache.directory.api.ldap.model.message.UnbindRequest;
  * @TODO make this class abstract, after finishing switch and all types and make default blow an EncoderException
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class MessageDecorator<E extends Message> implements Message, Decorator<E>
+public abstract class MessageDecorator<E extends Message> implements Message, Decorator<E>, Asn1Object
 {
     /** The decorated Control */
     private final E decoratedMessage;
@@ -100,7 +100,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     {
         if ( decoratedMessage instanceof MessageDecorator )
         {
-            return ( org.apache.directory.api.ldap.codec.api.MessageDecorator<?> ) decoratedMessage;
+            return ( MessageDecorator<?> ) decoratedMessage;
         }
 
         MessageDecorator<?> decorator = null;
@@ -144,7 +144,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
                 break;
 
             case EXTENDED_REQUEST:
-                decorator = codec.decorate( ( ExtendedRequest<?> ) decoratedMessage );
+                decorator = codec.decorate( ( ExtendedRequest ) decoratedMessage );
                 break;
 
             case EXTENDED_RESPONSE:
@@ -311,7 +311,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    public Message addControl( Control control ) throws MessageException
+    public Message addControl( Control control )
     {
         Control decorated;
         CodecControl<? extends Control> controlDecorator;
@@ -338,7 +338,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     /**
      * {@inheritDoc}
      */
-    public Message addAllControls( Control[] controls ) throws MessageException
+    public Message addAllControls( Control[] controls )
     {
         for ( Control control : controls )
         {
@@ -352,7 +352,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     /**
      * {@inheritDoc}
      */
-    public Message removeControl( Control control ) throws MessageException
+    public Message removeControl( Control control )
     {
         decoratedMessage.removeControl( control );
         controls.remove( control.getOid() );

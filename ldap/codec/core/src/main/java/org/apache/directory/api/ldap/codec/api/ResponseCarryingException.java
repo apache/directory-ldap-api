@@ -63,6 +63,18 @@ public class ResponseCarryingException extends DecoderException
      * Creates a DecoderException
      * 
      * @param message A message with meaning to a human
+     * @param cause The original cause
+     */
+    public ResponseCarryingException( String message, Throwable cause )
+    {
+        super( message, cause );
+    }
+
+
+    /**
+     * Creates a DecoderException
+     * 
+     * @param message A message with meaning to a human
      * @param cause The Exception which caused the error
      */
     public ResponseCarryingException( String message, ResultResponse response, ResultCodeEnum code,

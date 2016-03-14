@@ -25,14 +25,14 @@ package org.apache.directory.api.ldap.model.message;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface ResultResponseRequest<R extends ResultResponse> extends Request
+public interface ResultResponseRequest extends Request
 {
     /**
-     * If called for the first time, this methohd creates a result containing
+     * If called for the first time, this method creates a result containing
      * response object for this request.
      * 
      * @return a result containing response with defaults and the messageId set
      *         in response to this specific request
      */
-    R getResultResponse();
+    ResultResponse getResultResponse();
 }

@@ -20,16 +20,12 @@
 package org.apache.directory.api.ldap.model.message;
 
 
-import org.apache.directory.api.ldap.model.exception.MessageException;
-
-
 /**
  * ExtendedRequest implementation.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractExtendedRequest<R extends ExtendedResponse> extends AbstractRequest implements
-    ExtendedRequest<R>
+public abstract class AbstractExtendedRequest extends AbstractRequest implements ExtendedRequest
 {
     static final long serialVersionUID = 7916990159044177480L;
 
@@ -37,7 +33,7 @@ public abstract class AbstractExtendedRequest<R extends ExtendedResponse> extend
     private String oid;
 
     /** The associated response */
-    protected R response;
+    private ExtendedResponse response;
 
 
     /**
@@ -46,7 +42,7 @@ public abstract class AbstractExtendedRequest<R extends ExtendedResponse> extend
      */
     public AbstractExtendedRequest()
     {
-        super( -1, TYPE, true );
+        super( -1, MessageTypeEnum.EXTENDED_REQUEST, true );
     }
 
 
@@ -58,7 +54,7 @@ public abstract class AbstractExtendedRequest<R extends ExtendedResponse> extend
      */
     public AbstractExtendedRequest( final int id )
     {
-        super( id, TYPE, true );
+        super( id, MessageTypeEnum.EXTENDED_REQUEST, true );
     }
 
 
@@ -83,7 +79,7 @@ public abstract class AbstractExtendedRequest<R extends ExtendedResponse> extend
      * 
      * @param newOid the dotted-decimal representation as a String of the OID
      */
-    public ExtendedRequest<R> setRequestName( String newOid )
+    public ExtendedRequest setRequestName( String newOid )
     {
         this.oid = newOid;
 
@@ -94,7 +90,7 @@ public abstract class AbstractExtendedRequest<R extends ExtendedResponse> extend
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequest<R> setMessageId( int messageId )
+    public ExtendedRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
 
@@ -105,27 +101,27 @@ public abstract class AbstractExtendedRequest<R extends ExtendedResponse> extend
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequest<R> addControl( Control control ) throws MessageException
+    public ExtendedRequest addControl( Control control )
     {
-        return ( ExtendedRequest<R> ) super.addControl( control );
+        return ( ExtendedRequest ) super.addControl( control );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequest<R> addAllControls( Control[] controls ) throws MessageException
+    public ExtendedRequest addAllControls( Control[] controls )
     {
-        return ( ExtendedRequest<R> ) super.addAllControls( controls );
+        return ( ExtendedRequest ) super.addAllControls( controls );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequest<R> removeControl( Control control ) throws MessageException
+    public ExtendedRequest removeControl( Control control )
     {
-        return ( ExtendedRequest<R> ) super.removeControl( control );
+        return ( ExtendedRequest ) super.removeControl( control );
     }
 
 
@@ -141,7 +137,7 @@ public abstract class AbstractExtendedRequest<R extends ExtendedResponse> extend
      */
     public MessageTypeEnum getResponseType()
     {
-        return RESP_TYPE;
+        return MessageTypeEnum.EXTENDED_RESPONSE;
     }
 
 
@@ -150,7 +146,25 @@ public abstract class AbstractExtendedRequest<R extends ExtendedResponse> extend
      * 
      * @return the result containing response for this request
      */
-    public abstract R getResultResponse();
+    public abstract ExtendedResponse getResultResponse();
+
+
+    /**
+     * @return the response
+     */
+    public ExtendedResponse getResponse()
+    {
+        return response;
+    }
+
+
+    /**
+     * @param response the response to set
+     */
+    public void setResponse( ExtendedResponse response )
+    {
+        this.response = response;
+    }
 
 
     /**
@@ -193,7 +207,7 @@ public abstract class AbstractExtendedRequest<R extends ExtendedResponse> extend
             return false;
         }
 
-        ExtendedRequest<?> req = ( ExtendedRequest<?> ) obj;
+        ExtendedRequest req = ( ExtendedRequest ) obj;
 
         if ( ( oid != null ) && ( req.getRequestName() == null ) )
         {

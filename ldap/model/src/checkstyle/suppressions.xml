@@ -30,9 +30,36 @@
     <suppress files="org.apache.directory.api.ldap.model.schema.LoadableSchemaObject" checks="EqualsHashCode" />
     <suppress files="org.apache.directory.api.ldap.model.schema.LdapComparator" checks="EqualsHashCode" />
     <suppress files="org.apache.directory.api.ldap.model.schema.DITStructureRule" checks="EqualsHashCode" />
-    
+    <suppress files="org.apache.directory.api.ldap.model.schema.LdapSyntax" checks="EqualsHashCode" />
+    <suppress files="org.apache.directory.api.ldap.model.schema.NameForm" checks="EqualsHashCode" />
+    <suppress files="org.apache.directory.api.ldap.model.schema.DitContentRule" checks="EqualsHashCode" />
+    <suppress files="org.apache.directory.api.ldap.model.schema.MatchingRule" checks="EqualsHashCode" />
+    <suppress files="org.apache.directory.api.ldap.model.schema.AttributeType" checks="EqualsHashCode" />
+    <suppress files="org.apache.directory.api.ldap.model.schema.DitStructureRule" checks="EqualsHashCode" />
+    <suppress files="org.apache.directory.api.ldap.model.schema.MatchingRuleUse" checks="EqualsHashCode" />
+    <suppress files="org.apache.directory.api.ldap.model.schema.ObjectClass" checks="EqualsHashCode" />
+
     <!-- No Javadoc for schema constants required -->
     <suppress files="org.apache.directory.api.ldap.model.constants.SchemaConstants" checks="JavadocVariable" />
     <suppress files="org.apache.directory.api.ldap.model.constants.MetaSchemaConstants" checks="JavadocVariable" />
     <suppress files="org.apache.directory.api.ldap.model.constants.PasswordPolicySchemaConstants" checks="JavadocVariable" />
+
+    <!-- We have some long files -->
+    <suppress files="org.apache.directory.api.ldap.model.constants.SchemaConstants" checks="FileLength" />
+    <suppress files="org.apache.directory.api.ldap.model.message.ResultCodeEnum" checks="FileLength" />
+    <suppress files="org.apache.directory.api.ldap.model.schema.PrepareString" checks="FileLength" />
+    <suppress files="org.apache.directory.api.ldap.model.url.LdapUrl" checks="FileLength" />
+    <suppress files="org.apache.directory.api.ldap.model.schema.registries.Registries" checks="FileLength" />
+    <suppress files="org.apache.directory.api.ldap.model.entry.DefaultAttribute" checks="FileLength" />
+    <suppress files="org.apache.directory.api.ldap.model.entry.DefaultEntry" checks="FileLength" />
+    <suppress files="org.apache.directory.api.ldap.model.ldif.LdifReader" checks="FileLength" />
+
+    <!-- Setter return super type, which is not recognized by Checkstyle -->
+    <suppress files="org.apache.directory.api.ldap.model.message" checks="HiddenField" />
+
+    <!-- Contol inferfaces that don't declare any new method -->
+    <suppress files="org.apache.directory.api.ldap.model.message.controls" checks="InterfaceIsType" />
+
+    <!-- Exclude Antlr generated sources -->
+    <suppress files="[\\/]generated-sources[\\/]" checks="[a-zA-Z0-9]*"/>
 </suppressions>

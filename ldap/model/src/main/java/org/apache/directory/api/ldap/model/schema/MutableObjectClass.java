@@ -68,10 +68,12 @@ import org.apache.directory.api.i18n.I18n;
  * @see DescriptionUtils#getDescription(MutableObjectClass)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-// super.hashCode is final
-@SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class MutableObjectClass extends ObjectClass
 {
+    /** The mandatory serialVersionUID */
+    public static final long serialVersionUID = 1L;
+
+
     /**
      * Creates a new instance of MatchingRuleUseDescription
      * @param oid the OID for this objectClass

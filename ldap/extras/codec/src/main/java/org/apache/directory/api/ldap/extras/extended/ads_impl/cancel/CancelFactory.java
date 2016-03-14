@@ -21,25 +21,23 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.cancel;
 
 
 import org.apache.directory.api.asn1.DecoderException;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestFactory;
-import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
+import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.extended.CancelRequest;
-import org.apache.directory.api.ldap.extras.extended.CancelRequestImpl;
-import org.apache.directory.api.ldap.extras.extended.CancelResponse;
-import org.apache.directory.api.ldap.extras.extended.CancelResponseImpl;
+import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequest;
+import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequestImpl;
+import org.apache.directory.api.ldap.extras.extended.cancel.CancelResponse;
+import org.apache.directory.api.ldap.extras.extended.cancel.CancelResponseImpl;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 
 
 /**
- * An {@link ExtendedRequestFactory} for creating cancel extended request response 
+ * An {@link ExtendedOperationFactory} for creating cancel extended request response 
  * pairs.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CancelFactory implements ExtendedRequestFactory<CancelRequest, CancelResponse>
+public class CancelFactory implements ExtendedOperationFactory
 {
     private LdapApiService codec;
 
@@ -62,19 +60,11 @@ public class CancelFactory implements ExtendedRequestFactory<CancelRequest, Canc
     /**
      * {@inheritDoc}
      */
-    public CancelRequest newRequest()
-    {
-        return new CancelRequestDecorator( codec, new CancelRequestImpl() );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     public CancelResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
         CancelResponseDecorator response = new CancelResponseDecorator( codec, new CancelResponseImpl() );
         response.setResponseValue( encodedValue );
+
         return response;
     }
 
@@ -86,6 +76,7 @@ public class CancelFactory implements ExtendedRequestFactory<CancelRequest, Canc
     {
         CancelRequestDecorator req = new CancelRequestDecorator( codec, new CancelRequestImpl() );
         req.setRequestValue( value );
+
         return req;
     }
 
@@ -93,7 +84,7 @@ public class CancelFactory implements ExtendedRequestFactory<CancelRequest, Canc
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequestDecorator<CancelRequest, CancelResponse> decorate( ExtendedRequest<?> modelRequest )
+    public CancelRequestDecorator decorate( ExtendedRequest modelRequest )
     {
         if ( modelRequest instanceof CancelRequestDecorator )
         {
@@ -107,7 +98,7 @@ public class CancelFactory implements ExtendedRequestFactory<CancelRequest, Canc
     /**
      * {@inheritDoc}
      */
-    public ExtendedResponseDecorator<CancelResponse> decorate( ExtendedResponse decoratedMessage )
+    public CancelResponseDecorator decorate( ExtendedResponse decoratedMessage )
     {
         if ( decoratedMessage instanceof CancelResponseDecorator )
         {

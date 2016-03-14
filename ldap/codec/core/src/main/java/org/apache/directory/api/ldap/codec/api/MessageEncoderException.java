@@ -51,6 +51,20 @@ public class MessageEncoderException extends EncoderException
 
 
     /**
+     * Creates a new instance of MessageEncoderException.
+     *
+     * @param messageId The message ID
+     * @param message The exception message
+     * @param cause The parent exception
+     */
+    public MessageEncoderException( int messageId, String message, Exception cause )
+    {
+        super( message, cause );
+        this.messageId = messageId;
+    }
+
+
+    /**
      * @return the messageId
      */
     public int getMessageId()

@@ -54,6 +54,7 @@ COMMA : ',' ;
 EQUALS : '=' ;
 PLUS : '+' ;
 HYPHEN : '-' ;
+UNDERSCORE : '_' ;
 DQUOTE : '"' ;
 SEMI : ';' ;
 LANGLE : '<' ;
@@ -101,8 +102,9 @@ UTFMB : '\u0080'..'\uFFFE' ;
  * To avoid nondeterminism the following 
  * rules are excluded. These rules are 
  * explicitly added in the productions.
- *   EQUALS (0x3D) 
- *   HYPHEN (0x2D)  
+ *   EQUALS (0x3D)
+ *   HYPHEN (0x2D)
+ *   UNDERSCORE (0x5F)
  *   DIGIT (0x30-0x39)
  *   ALPHA (0x41-0x5A and 0x61-0x7A)
  */
@@ -114,7 +116,8 @@ LUTF1_REST :
     '\u003A' |
     '\u003F'..'\u0040' |
     '\u005B' |
-    '\u005D'..'\u0060' | 
+    '\u005D'..'\u005E' | 
+    '\u0060' | 
     '\u007B'..'\u007F' 
     ;
 
@@ -148,6 +151,7 @@ options    {
     {
         Object value = "";
         String rawValue = "";
+		int lastEscapedSpace = -1;
     }
 }
 
@@ -348,15 +352,63 @@ attributeTypeAndValue [Rdn rdn] returns [String upName = ""]
                         value.rawValue = upValue + value.rawValue;
                     }
                     
-                    Object unescapedValue = Rdn.unescapeValue( Strings.trim( (String)value.rawValue ) );
+					int start = 0;
+		
+					for ( int pos = 0; pos < value.rawValue.length(); pos++ )
+					{
+					    if ( value.rawValue.charAt( pos ) == ' ' )
+					    {
+					        start++;
+					    }
+					    else
+					    {
+					        break;
+					    }
+					}
+		
+					boolean escape = false;
+					int lastEscapedSpace = -1;
+					
+					for ( int pos = start; pos< value.rawValue.length(); pos++ )
+					{
+					    if ( escape )
+					    {
+					        escape = false;
+		        
+					        if ( value.rawValue.charAt( pos ) == ' ' )
+					        {
+					            lastEscapedSpace = pos;
+					        }
+					    }
+					    else if ( value.rawValue.charAt( pos ) == '\\' )
+					    {
+					        escape = true;
+					    }
+					}
+		
+					// Remove spaces from the right if needed
+					int pos = value.rawValue.length() - 1;
+		
+					while ( ( value.rawValue.charAt( pos ) == ' ' ) && ( pos > lastEscapedSpace ) )
+					{
+					    pos--;
+					}
+					
+					String trimmedValue = value.rawValue;
+					
+					if ( ( start > 0 ) || ( pos + 1 < value.rawValue.length() ) )
+					{
+						trimmedValue = value.rawValue.substring( start, pos + 1 );
+					}
+					
+					Object unescapedValue = Rdn.unescapeValue( trimmedValue );
                     
                     if ( unescapedValue instanceof String )
                     {
                         ava = new Ava(
                             type,
                             type,
-                            new StringValue( (String)unescapedValue ),
-                            new StringValue( (String)value.value ), 
+                            new StringValue( trimmedValue, (String)unescapedValue ),
                             upName
                         );
                     }
@@ -366,7 +418,6 @@ attributeTypeAndValue [Rdn rdn] returns [String upName = ""]
                             type,
                             type,
                             new BinaryValue( (byte[])unescapedValue ),
-                            new StringValue( (String)value.value ), 
                             upName
                         );
                     }
@@ -377,7 +428,6 @@ attributeTypeAndValue [Rdn rdn] returns [String upName = ""]
                         type,
                         type,
                         new BinaryValue( (byte[])value.value ), 
-                        new BinaryValue( (byte[])value.value ),
                         upName
                     );
                 }
@@ -420,6 +470,8 @@ attributeType returns [String attributeType]
      * leadkeychar = ALPHA
      * keychar = ALPHA / DIGIT / HYPHEN
      *
+     * We additionally add UNDERSCORE because some servers allow them.
+     *
      */    
 descr returns [String descr]
     {
@@ -433,6 +485,8 @@ descr returns [String descr]
         digit:DIGIT { descr += digit.getText(); }
         |
         hyphen:HYPHEN { descr += hyphen.getText(); }
+        |
+        underscore:UNDERSCORE { descr += underscore.getText(); }
     )*
     ;
 
@@ -578,7 +632,10 @@ string [UpAndNormValue value]
                 bb.append( Strings.getBytesUtf8( tmp ) );
             }
             |
-            bytes = pair [value] { bb.append( bytes ); }
+            bytes = pair [value] 
+			{ 
+				bb.append( bytes );
+			}
         )
         ( 
             tmp = sutf1
@@ -593,10 +650,14 @@ string [UpAndNormValue value]
                 bb.append( Strings.getBytesUtf8( tmp ) );
             }
             |
-            bytes = pair [value] { bb.append( bytes ); }
+            bytes = pair [value] 
+			{ 
+				bb.append( bytes ); 
+			}
         )*
     )
     {
+		/*
         String string = Strings.utf8ToString( bb.copyOfUsedBytes() );
         
         // trim trailing space characters manually
@@ -611,6 +672,7 @@ string [UpAndNormValue value]
         }
         
         value.value = string;
+		*/
     }
     ;
 
@@ -622,8 +684,9 @@ string [UpAndNormValue value]
  *
  * The rule LUTF1_REST doesn't contain the following charcters,
  * so we must check them additionally
- *   EQUALS (0x3D) 
- *   HYPHEN (0x2D)  
+ *   EQUALS (0x3D)
+ *   HYPHEN (0x2D)
+ *   UNDERSCORE (0x5F)
  *   DIGIT (0x30-0x39)
  *   ALPHA (0x41-0x5A and 0x61-0x7A)
  */
@@ -637,6 +700,8 @@ lutf1 returns [String lutf1=""]
     equals:EQUALS { lutf1 = equals.getText(); }
     |
     hyphen:HYPHEN { lutf1 = hyphen.getText(); }
+    |
+    underscore:UNDERSCORE { lutf1 = underscore.getText(); }
     |
     digit:DIGIT { lutf1 = digit.getText(); }
     |
@@ -652,8 +717,9 @@ lutf1 returns [String lutf1=""]
  *
  * The rule LUTF1_REST doesn't contain the following charcters,
  * so we must check them additionally
- *   EQUALS (0x3D) 
- *   HYPHEN (0x2D)  
+ *   EQUALS (0x3D)
+ *   HYPHEN (0x2D)
+ *   UNDERSCORE (0x5F)
  *   DIGIT (0x30-0x39)
  *   ALPHA (0x41-0x5A and 0x61-0x7A)
  *   SHARP
@@ -669,6 +735,8 @@ sutf1 returns [String sutf1=""]
     equals:EQUALS { sutf1 = equals.getText(); }
     |
     hyphen:HYPHEN { sutf1 = hyphen.getText(); }
+    |
+    underscore:UNDERSCORE { sutf1 = underscore.getText(); }
     |
     digit:DIGIT { sutf1 = digit.getText(); }
     |

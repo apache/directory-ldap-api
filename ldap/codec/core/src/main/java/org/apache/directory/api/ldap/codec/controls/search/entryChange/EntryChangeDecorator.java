@@ -58,7 +58,7 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
     private int eccSeqLength;
 
     /** An instance of this decoder */
-    private static final Asn1Decoder decoder = new Asn1Decoder();
+    private static final Asn1Decoder DECODER = new Asn1Decoder();
 
 
     /**
@@ -265,7 +265,7 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );
         EntryChangeContainer container = new EntryChangeContainer( getCodecService(), this );
-        decoder.decode( bb, container );
+        DECODER.decode( bb, container );
         return this;
     }
 }

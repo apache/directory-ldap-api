@@ -121,11 +121,11 @@ public final class PagedResultsGrammar extends AbstractGrammar<PagedResultsConta
 
                             container.getDecorator().setSize( size );
                         }
-                        catch ( IntegerDecoderException e )
+                        catch ( IntegerDecoderException ide )
                         {
                             String msg = I18n.err( I18n.ERR_04050 );
-                            LOG.error( msg, e );
-                            throw new DecoderException( msg );
+                            LOG.error( msg, ide );
+                            throw new DecoderException( msg, ide );
                         }
                     }
                 } );

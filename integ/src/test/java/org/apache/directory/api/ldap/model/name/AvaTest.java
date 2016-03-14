@@ -28,9 +28,8 @@ import java.util.Arrays;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.api.ldap.model.name.Ava;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
-import org.apache.directory.api.ldap.schemamanager.impl.DefaultSchemaManager;
+import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -229,7 +228,7 @@ public class AvaTest
         
         Ava ava = new Ava( "OU", "Exemple + Rdn\u00E4 " );
         
-        if ( !"ou=Exemple \\+ Rdn\\C3\\A4\\ ".equals( ava.getNormName() ) )
+        if ( !"ou=Exemple \\+ Rdn\u00E4\\ ".equals( ava.getNormName() ) )
         {
             errors = "\nAva.getNormName fails '" + ava.getNormName() + "'";
         }
@@ -239,12 +238,12 @@ public class AvaTest
             errors += "\nAva.getNormType fails '" + ava.getNormType() + "'";
         }
         
-        if ( !"Exemple + Rdn\u00E4 ".equals( ava.getNormValue().getString() ) )
+        if ( !"Exemple + Rdn\u00E4 ".equals( ava.getValue().getNormValue().toString() ) )
         {
-            errors += "\nAva.getNormValue fails '" + ava.getNormValue().getString() + "'";
+            errors += "\nAva.getNormValue fails '" + ava.getValue().getNormValue().toString() + "'";
         }
         
-        if ( !"OU=Exemple \\+ Rdn\\C3\\A4\\ ".equals( ava.getName() ) )
+        if ( !"OU=Exemple \\+ Rdn\u00E4\\ ".equals( ava.getName() ) )
         {
             errors += "\nAva.getUpName fails '" + ava.getName() + "'";
         }
@@ -259,12 +258,12 @@ public class AvaTest
             errors += "\nAva.getUpValue fails '" + ava.getValue() .getString() + "'";
         }
         
-        if ( !"ou=Exemple \\+ Rdn\\C3\\A4\\ ".equals( ava.normalize() ) )
+        if ( !"ou=Exemple \\+ Rdn\u00E4\\ ".equals( ava.normalize() ) )
         {
             errors += "\nAva.normalize fails '" + ava.normalize() + "'";
         }
         
-        if ( !"OU=Exemple \\+ Rdn\\C3\\A4\\ ".equals( ava.toString() ) )
+        if ( !"OU=Exemple \\+ Rdn\u00E4\\ ".equals( ava.toString() ) )
         {
             errors += "\nAva.toString fails '" + ava.toString() + "'";
         }
@@ -282,9 +281,9 @@ public class AvaTest
     {
         String errors = null;
         
-        Ava ava = new Ava( schemaManager, "OU", "Exemple + Rdn\u00E4 " );
+        Ava ava = new Ava( schemaManager, "OU", "Exemple + Rdn\u002B " );
         
-        if ( !"2.5.4.11=exemple \\+ rdn\\C3\\A4".equals( ava.getNormName() ) )
+        if ( !"2.5.4.11=exemple \\+ rdn\\+".equals( ava.getNormName() ) )
         {
             errors = "\nAva.getNormName fails '" + ava.getNormName() + "'";
         }
@@ -294,12 +293,12 @@ public class AvaTest
             errors += "\nAva.getNormType fails '" + ava.getNormType() + "'";
         }
         
-        if ( !"exemple + rdn\u00E4".equals( ava.getNormValue().getString() ) )
+        if ( !"exemple + rdn\u002B".equals( ava.getValue().getNormValue().toString() ) )
         {
-            errors += "\nAva.getNormValue fails '" + ava.getNormValue().getString() + "'";
+            errors += "\nAva.getNormValue fails '" + ava.getValue().getNormValue().toString() + "'";
         }
         
-        if ( !"OU=Exemple \\+ Rdn\\C3\\A4\\ ".equals( ava.getName() ) )
+        if ( !"OU=Exemple \\+ Rdn\\+\\ ".equals( ava.getName() ) )
         {
             errors += "\nAva.getUpName fails '" + ava.getName() + "'";
         }
@@ -309,17 +308,17 @@ public class AvaTest
             errors += "\nAva.getUpType fails '" + ava.getType() + "'";
         }
         
-        if ( !"Exemple + Rdn\u00E4 ".equals( ava.getValue().getString() ) )
+        if ( !"Exemple + Rdn\u002B ".equals( ava.getValue().getString() ) )
         {
             errors += "\nAva.getUpValue fails '" + ava.getValue().getString() + "'";
         }
         
-        if ( !"2.5.4.11=exemple \\+ rdn\\C3\\A4".equals( ava.normalize() ) )
+        if ( !"2.5.4.11=exemple \\+ rdn\\+".equals( ava.normalize() ) )
         {
             errors += "\nAva.normalize fails '" + ava.normalize() + "'";
         }
         
-        if ( !"OU=Exemple \\+ Rdn\\C3\\A4\\ ".equals( ava.toString() ) )
+        if ( !"OU=Exemple \\+ Rdn\\+\\ ".equals( ava.toString() ) )
         {
             errors += "\nAva.toString fails '" + ava.toString() + "'";
         }

@@ -25,6 +25,7 @@ import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
+import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -57,7 +58,7 @@ public class BooleanNormalizer extends Normalizer
 
         String strValue = value.getString();
 
-        return new StringValue( strValue.trim().toUpperCase() );
+        return new StringValue( Strings.upperCase( strValue.trim() ) );
     }
 
 
@@ -71,6 +72,6 @@ public class BooleanNormalizer extends Normalizer
             return null;
         }
 
-        return value.trim().toUpperCase();
+        return Strings.upperCase( value.trim() );
     }
 }

@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.api</groupId>
     <artifactId>api-ldap-schema-parent</artifactId>
-    <version>1.0.0-M17-SNAPSHOT</version>
+    <version>1.0.0-M34-SNAPSHOT</version>
   </parent>
   
   <artifactId>api-ldap-schema-data</artifactId>
@@ -54,13 +54,6 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>api-ldap-extras-aci</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>${commons.io.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -145,18 +138,29 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.ldap.schema</Bundle-SymbolicName>
             <Export-Package>
-                {local-packages};version=${project.version};-noimport:=true,
-                org.apache.directory.api.ldap.schemaextractor.impl;version="${project.version}";-noimport:=true,
-                org.apache.directory.api.ldap.schemamanager.impl;version="${project.version}";-noimport:=true
+              org.apache.directory.api.ldap.schema.extractor;version="${project.version}";-noimport:=true,
+              org.apache.directory.api.ldap.schema.extractor.impl;version="${project.version}";-noimport:=true,
+              org.apache.directory.api.ldap.schema.loader;version="${project.version}";-noimport:=true,
+              org.apache.directory.api.ldap.schema.manager.impl;version="${project.version}";-noimport:=true
             </Export-Package>
             <Import-Package>
-              *,
-              org.apache.directory.api.ldap.aci,
-              org.apache.directory.api.ldap.model.schema.comparators,
-              org.apache.directory.api.ldap.model.schema.normalizers,
-              org.apache.directory.api.ldap.model.schema.parsers,
-              org.apache.directory.api.ldap.model.schema.registries,
-              org.apache.directory.api.ldap.model.schema.syntaxCheckers
+              org.apache.directory.api.asn1.util;version=${project.version},
+              org.apache.directory.api.i18n;version=${project.version},
+              org.apache.directory.api.ldap.aci;version=${project.version},
+              org.apache.directory.api.ldap.model.constants;version=${project.version},
+              org.apache.directory.api.ldap.model.entry;version=${project.version},
+              org.apache.directory.api.ldap.model.exception;version=${project.version},
+              org.apache.directory.api.ldap.model.ldif;version=${project.version},
+              org.apache.directory.api.ldap.model.message;version=${project.version},
+              org.apache.directory.api.ldap.model.name;version=${project.version},
+              org.apache.directory.api.ldap.model.schema;version=${project.version},
+              org.apache.directory.api.ldap.model.schema.comparators;version=${project.version},
+              org.apache.directory.api.ldap.model.schema.syntaxCheckers;version=${project.version},
+              org.apache.directory.api.ldap.model.schema.normalizers;version=${project.version},
+              org.apache.directory.api.ldap.model.schema.parsers;version=${project.version},
+              org.apache.directory.api.ldap.model.schema.registries;version=${project.version},
+              org.apache.directory.api.util;version=${project.version},
+              org.slf4j;version=${slf4j.api.bundleversion}
             </Import-Package>
           </instructions>
         </configuration>

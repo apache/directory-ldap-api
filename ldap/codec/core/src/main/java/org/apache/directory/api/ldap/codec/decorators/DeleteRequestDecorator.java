@@ -27,11 +27,9 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
-import org.apache.directory.api.ldap.model.exception.MessageException;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.DeleteRequest;
-import org.apache.directory.api.ldap.model.message.DeleteResponse;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 
@@ -41,12 +39,12 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRequest, DeleteResponse>
+public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRequest>
     implements DeleteRequest
 {
-    
     /** The bytes containing the Dn */
     private byte[] dnBytes;
+
 
     /**
      * Makes a DeleteRequest a MessageDecorator.
@@ -97,7 +95,7 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
     /**
      * {@inheritDoc}
      */
-    public DeleteRequest addControl( Control control ) throws MessageException
+    public DeleteRequest addControl( Control control )
     {
         return ( DeleteRequest ) super.addControl( control );
     }
@@ -106,7 +104,7 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
     /**
      * {@inheritDoc}
      */
-    public DeleteRequest addAllControls( Control[] controls ) throws MessageException
+    public DeleteRequest addAllControls( Control[] controls )
     {
         return ( DeleteRequest ) super.addAllControls( controls );
     }
@@ -115,7 +113,7 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
     /**
      * {@inheritDoc}
      */
-    public DeleteRequest removeControl( Control control ) throws MessageException
+    public DeleteRequest removeControl( Control control )
     {
         return ( DeleteRequest ) super.removeControl( control );
     }
@@ -137,7 +135,7 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
     {
         dnBytes = Strings.getBytesUtf8( getName().getName() );
         int dnLength = dnBytes.length;
-        
+
         // The entry
         return 1 + TLV.getNbBytes( dnLength ) + dnLength;
     }
@@ -156,7 +154,7 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
         try
         {
             // The DelRequest Tag
-            buffer.put( LdapConstants.DEL_REQUEST_TAG );
+            buffer.put( LdapCodecConstants.DEL_REQUEST_TAG );
 
             // The entry
             buffer.put( TLV.getBytes( dnBytes.length ) );
@@ -164,7 +162,7 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
 
         return buffer;

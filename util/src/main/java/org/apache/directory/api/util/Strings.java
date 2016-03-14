@@ -24,12 +24,9 @@ import static org.apache.directory.api.util.Chars.isHex;
 import static org.apache.directory.api.util.Hex.encodeHex;
 import static org.apache.directory.api.util.Hex.getHexValue;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -53,157 +50,65 @@ public final class Strings
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( Strings.class );
 
-    /** The default charset, because it's not provided by JDK 1.5 */
-    static String defaultCharset = null;
-
     /** Hex chars */
     private static final byte[] HEX_CHAR = new byte[]
         { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
     /** A table containing booleans when the corresponding char is printable */
-    public static final boolean[] IS_PRINTABLE_CHAR =
+    private static final boolean[] IS_PRINTABLE_CHAR =
         {
-            false, false, false, false, false, false, false, false, // ---, ---, ---, ---, ---, ---, ---, ---
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false, // ---, ---, ---, ---, ---, ---, ---, ---
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false, // ---, ---, ---, ---, ---, ---, ---, ---
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false, // ---, ---, ---, ---, ---, ---, ---, ---
-            true,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            true, // ' ', ---, ---, ---, ---, ---, ---, "'"
-            true,
-            true,
-            false,
-            true,
-            true,
-            true,
-            true,
-            true, // '(', ')', ---, '+', ',', '-', '.', '/'
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true, // '0', '1', '2', '3', '4', '5', '6', '7',
-            true,
-            true,
-            true,
-            false,
-            false,
-            true,
-            false,
-            true, // '8', '9', ':', ---, ---, '=', ---, '?'
-            false,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true, // ---, 'A', 'B', 'C', 'D', 'E', 'F', 'G',
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true, // 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true, // 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W'
-            true,
-            true,
-            true,
-            false,
-            false,
-            false,
-            false,
-            false, // 'X', 'Y', 'Z', ---, ---, ---, ---, ---
-            false,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true, // ---, 'a', 'b', 'c', 'd', 'e', 'f', 'g'
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true, // 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o'
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true, // 'p', 'q', 'r', 's', 't', 'u', 'v', 'w'
-            true,
-            true,
-            true,
-            false,
-            false,
-            false,
-            false,
-            false // 'x', 'y', 'z', ---, ---, ---, ---, ---
+            // ---, ---, ---, ---, ---, ---, ---, ---
+            false, false, false, false, false, false, false, false, 
+            // ---, ---, ---, ---, ---, ---, ---, ---
+            false, false, false, false, false, false, false, false, 
+            // ---, ---, ---, ---, ---, ---, ---, ---
+            false, false, false, false, false, false, false, false, 
+            // ---, ---, ---, ---, ---, ---, ---, ---
+            false, false, false, false, false, false, false, false, 
+            // ' ', ---, ---, ---, ---, ---, ---, "'"
+            true,  false, false, false, false, false, false, true,  
+            // '(', ')', ---, '+', ',', '-', '.', '/'
+            true,  true,  false, true,  true,  true,  true,  true,  
+            // '0', '1', '2', '3', '4', '5', '6', '7',
+            true,  true,  true,  true,  true,  true,  true,  true,  
+            // '8', '9', ':', ---, ---, '=', ---, '?'
+            true,  true,  true,  false, false, true,  false, true,  
+            // ---, 'A', 'B', 'C', 'D', 'E', 'F', 'G',
+            false, true,  true,  true,  true,  true,  true,  true,  
+            // 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'
+            true,  true,  true,  true,  true,  true,  true,  true,  
+            // 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W'
+            true,  true,  true,  true,  true,  true,  true,  true,  
+            // 'X', 'Y', 'Z', ---, ---, ---, ---, ---
+            true,  true,  true,  false, false, false, false, false, 
+            // ---, 'a', 'b', 'c', 'd', 'e', 'f', 'g'
+            false, true,  true,  true,  true,  true,  true,  true,  
+            // 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o'
+            true,  true,  true,  true,  true,  true,  true,  true,  
+            // 'p', 'q', 'r', 's', 't', 'u', 'v', 'w'
+            true,  true,  true,  true,  true,  true,  true,  true, 
+            // 'x', 'y', 'z', ---, ---, ---, ---, ---
+            true,  true,  true,  false, false, false, false, false 
     };
 
-    public static final char[] TO_LOWER_CASE =
+    private static final char[] TO_LOWER_CASE =
         {
             0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
             0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
             0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
             0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
-            ' ', 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, '\'',
-            '(', ')', 0x2A, '+', ',', '-', '.', '/',
-            '0', '1', '2', '3', '4', '5', '6', '7',
-            '8', '9', ':', 0x3B, 0x3C, '=', 0x3E, '?',
-            0x40, 'a', 'b', 'c', 'd', 'e', 'f', 'g',
-            'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
-            'p', 'q', 'r', 's', 't', 'u', 'v', 'w',
-            'x', 'y', 'z', 0x5B, 0x5C, 0x5D, 0x5E, 0x5F,
-            0x60, 'a', 'b', 'c', 'd', 'e', 'f', 'g',
-            'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
-            'p', 'q', 'r', 's', 't', 'u', 'v', 'w',
-            'x', 'y', 'z', 0x7B, 0x7C, 0x7D, 0x7E, 0x7F,
+            ' ',  0x21, 0x22, 0x23, 0x24, 0x25, 0x26, '\'',
+            '(',  ')',  0x2A, '+',  ',',  '-',  '.',  '/',
+            '0',  '1',  '2',  '3',  '4',  '5',  '6',  '7',
+            '8',  '9',  ':',  0x3B, 0x3C, '=',  0x3E, '?',
+            0x40, 'a',  'b',  'c',  'd',  'e',  'f',  'g',
+            'h',  'i',  'j',  'k',  'l',  'm',  'n',  'o',
+            'p',  'q',  'r',  's',  't',  'u',  'v',  'w',
+            'x',  'y',  'z',  0x5B, 0x5C, 0x5D, 0x5E, 0x5F,
+            0x60, 'a',  'b',  'c',  'd',  'e',  'f',  'g',
+            'h',  'i',  'j',  'k',  'l',  'm',  'n',  'o',
+            'p',  'q',  'r',  's',  't',  'u',  'v',  'w',
+            'x',  'y',  'z',  0x7B, 0x7C, 0x7D, 0x7E, 0x7F,
             0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87,
             0x88, 0x89, 0x8A, 0x8B, 0x8C, 0x8D, 0x8E, 0x8F,
             0x90, 0x91, 0x92, 0x93, 0x94, 0x95, 0x96, 0x97,
@@ -222,8 +127,60 @@ public final class Strings
             0xF8, 0xF9, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE, 0xFF,
     };
 
+    private static final byte[] TO_LOWER_CASE_BYTE =
+        {
+            0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+            0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+            0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
+            0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
+            ' ',  0x21, 0x22, 0x23, 0x24, 0x25, 0x26, '\'',
+            '(',  ')',  0x2A, '+',  ',',  '-',  '.',  '/',
+            '0',  '1',  '2',  '3',  '4',  '5',  '6',  '7',
+            '8',  '9',  ':',  0x3B, 0x3C, '=',  0x3E, '?',
+            0x40, 'a',  'b',  'c',  'd',  'e',  'f',  'g',
+            'h',  'i',  'j',  'k',  'l',  'm',  'n',  'o',
+            'p',  'q',  'r',  's',  't',  'u',  'v',  'w',
+            'x',  'y',  'z',  0x5B, 0x5C, 0x5D, 0x5E, 0x5F,
+            0x60, 'a',  'b',  'c',  'd',  'e',  'f',  'g',
+            'h',  'i',  'j',  'k',  'l',  'm',  'n',  'o',
+            'p',  'q',  'r',  's',  't',  'u',  'v',  'w',
+            'x',  'y',  'z',  0x7B, 0x7C, 0x7D, 0x7E, 0x7F,
+            ( byte ) 0x80, ( byte ) 0x81, ( byte ) 0x82, ( byte ) 0x83,
+            ( byte ) 0x84, ( byte ) 0x85, ( byte ) 0x86, ( byte ) 0x87,
+            ( byte ) 0x88, ( byte ) 0x89, ( byte ) 0x8A, ( byte ) 0x8B,
+            ( byte ) 0x8C, ( byte ) 0x8D, ( byte ) 0x8E, ( byte ) 0x8F,
+            ( byte ) 0x90, ( byte ) 0x91, ( byte ) 0x92, ( byte ) 0x93,
+            ( byte ) 0x94, ( byte ) 0x95, ( byte ) 0x96, ( byte ) 0x97,
+            ( byte ) 0x98, ( byte ) 0x99, ( byte ) 0x9A, ( byte ) 0x9B,
+            ( byte ) 0x9C, ( byte ) 0x9D, ( byte ) 0x9E, ( byte ) 0x9F,
+            ( byte ) 0xA0, ( byte ) 0xA1, ( byte ) 0xA2, ( byte ) 0xA3,
+            ( byte ) 0xA4, ( byte ) 0xA5, ( byte ) 0xA6, ( byte ) 0xA7,
+            ( byte ) 0xA8, ( byte ) 0xA9, ( byte ) 0xAA, ( byte ) 0xAB,
+            ( byte ) 0xAC, ( byte ) 0xAD, ( byte ) 0xAE, ( byte ) 0xAF,
+            ( byte ) 0xB0, ( byte ) 0xB1, ( byte ) 0xB2, ( byte ) 0xB3,
+            ( byte ) 0xB4, ( byte ) 0xB5, ( byte ) 0xB6, ( byte ) 0xB7,
+            ( byte ) 0xB8, ( byte ) 0xB9, ( byte ) 0xBA, ( byte ) 0xBB,
+            ( byte ) 0xBC, ( byte ) 0xBD, ( byte ) 0xBE, ( byte ) 0xBF,
+            ( byte ) 0xC0, ( byte ) 0xC1, ( byte ) 0xC2, ( byte ) 0xC3,
+            ( byte ) 0xC4, ( byte ) 0xC5, ( byte ) 0xC6, ( byte ) 0xC7,
+            ( byte ) 0xC8, ( byte ) 0xC9, ( byte ) 0xCA, ( byte ) 0xCB,
+            ( byte ) 0xCC, ( byte ) 0xCD, ( byte ) 0xCE, ( byte ) 0xCF,
+            ( byte ) 0xD0, ( byte ) 0xD1, ( byte ) 0xD2, ( byte ) 0xD3,
+            ( byte ) 0xD4, ( byte ) 0xD5, ( byte ) 0xD6, ( byte ) 0xD7,
+            ( byte ) 0xD8, ( byte ) 0xD9, ( byte ) 0xDA, ( byte ) 0xDB,
+            ( byte ) 0xDC, ( byte ) 0xDD, ( byte ) 0xDE, ( byte ) 0xDF,
+            ( byte ) 0xE0, ( byte ) 0xE1, ( byte ) 0xE2, ( byte ) 0xE3,
+            ( byte ) 0xE4, ( byte ) 0xE5, ( byte ) 0xE6, ( byte ) 0xE7,
+            ( byte ) 0xE8, ( byte ) 0xE9, ( byte ) 0xEA, ( byte ) 0xEB,
+            ( byte ) 0xEC, ( byte ) 0xED, ( byte ) 0xEE, ( byte ) 0xEF,
+            ( byte ) 0xF0, ( byte ) 0xF1, ( byte ) 0xF2, ( byte ) 0xF3,
+            ( byte ) 0xF4, ( byte ) 0xF5, ( byte ) 0xF6, ( byte ) 0xF7,
+            ( byte ) 0xF8, ( byte ) 0xF9, ( byte ) 0xFA, ( byte ) 0xFB,
+            ( byte ) 0xFC, ( byte ) 0xFD, ( byte ) 0xFE, ( byte ) 0xFF
+    };
+
     /** upperCase = 'A' .. 'Z', '0'..'9', '-' */
-    public static final char[] UPPER_CASE =
+    private static final char[] UPPER_CASE =
         {
             0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0,
@@ -251,8 +208,11 @@ public final class Strings
             0, 0, 0, 0, 0, 0, 0, 0
     };
 
-    /** A empty byte array */
+    /** An empty byte array */
     public static final byte[] EMPTY_BYTES = new byte[0];
+    
+    /** An empty String */
+    public static final String EMPTY_STRING = "";
 
 
     /**
@@ -296,7 +256,7 @@ public final class Strings
      */
     public static String dumpByte( byte octet )
     {
-        return new String( new byte[]
+        return Strings.utf8ToString( new byte[]
             { '0', 'x', HEX_CHAR[( octet & 0x00F0 ) >> 4], HEX_CHAR[octet & 0x000F] } );
     }
 
@@ -428,7 +388,7 @@ public final class Strings
      * A deep trim of a string remove whitespace from the ends as well as
      * excessive whitespace within the inside of the string between
      * non-whitespace characters. A deep trim reduces internal whitespace down
-     * to a single space to perserve the whitespace separated tokenization order
+     * to a single space to preserve the whitespace separated tokenization order
      * of the String.
      *
      * @param string the string to deep trim.
@@ -540,7 +500,7 @@ public final class Strings
             buf.append( digit );
         }
 
-        return buf.toString().toUpperCase();
+        return upperCase( buf.toString() );
     }
 
 
@@ -773,15 +733,7 @@ public final class Strings
         }
         catch ( ArrayIndexOutOfBoundsException aioobe )
         {
-            try
-            {
-                return new String( bytes, "UTF-8" );
-            }
-            catch ( UnsupportedEncodingException uee )
-            {
-                // if this happens something is really strange
-                throw new RuntimeException( uee );
-            }
+            return new String( bytes, StandardCharsets.UTF_8 );
         }
 
         return new String( chars );
@@ -802,15 +754,7 @@ public final class Strings
             return "";
         }
 
-        try
-        {
-            return new String( bytes, 0, length, "UTF-8" );
-        }
-        catch ( UnsupportedEncodingException uee )
-        {
-            // if this happens something is really strange
-            throw new RuntimeException( uee );
-        }
+        return new String( bytes, 0, length, StandardCharsets.UTF_8 );
     }
 
 
@@ -829,15 +773,7 @@ public final class Strings
             return "";
         }
 
-        try
-        {
-            return new String( bytes, start, length, "UTF-8" );
-        }
-        catch ( UnsupportedEncodingException uee )
-        {
-            // if this happens something is really strange
-            throw new RuntimeException( uee );
-        }
+        return new String( bytes, start, length, StandardCharsets.UTF_8 );
     }
 
 
@@ -858,17 +794,9 @@ public final class Strings
         }
         else
         {
-            try
-            {
-                byte[] data = text.getBytes( "UTF-8" );
+            byte[] data = text.getBytes( StandardCharsets.UTF_8 );
 
-                return areEquals( bytes, index, data );
-            }
-            catch ( UnsupportedEncodingException uee )
-            {
-                // if this happens something is really strange
-                throw new RuntimeException( uee );
-            }
+            return areEquals( bytes, index, data );
         }
     }
 
@@ -883,6 +811,21 @@ public final class Strings
      */
     public static int areEquals( char[] chars, int index, String text )
     {
+        return areEquals( chars, index, text, true );
+    }
+
+
+    /**
+     * Check if a text is present at the current position in a buffer.
+     *
+     * @param chars The buffer which contains the data
+     * @param index Current position in the buffer
+     * @param text The text we want to check
+     * @param caseSensitive If the comparison is case-sensitive
+     * @return <code>true</code> if the buffer contains the text.
+     */
+    public static int areEquals( char[] chars, int index, String text, boolean caseSensitive )
+    {
         if ( ( chars == null ) || ( chars.length == 0 ) || ( chars.length <= index ) || ( index < 0 )
             || ( text == null ) )
         {
@@ -892,7 +835,7 @@ public final class Strings
         {
             char[] data = text.toCharArray();
 
-            return areEquals( chars, index, data );
+            return areEquals( chars, index, data, caseSensitive );
         }
     }
 
@@ -907,6 +850,21 @@ public final class Strings
      */
     public static int areEquals( char[] chars, int index, char[] chars2 )
     {
+        return areEquals( chars, index, chars2, true );
+    }
+
+
+    /**
+     * Check if a text is present at the current position in a buffer.
+     *
+     * @param chars The buffer which contains the data
+     * @param index Current position in the buffer
+     * @param chars2 The text we want to check
+     * @param caseSensitive If the comparison is case-sensitive
+     * @return <code>true</code> if the buffer contains the text.
+     */
+    public static int areEquals( char[] chars, int index, char[] chars2, boolean caseSensitive )
+    {
         if ( ( chars == null ) || ( chars.length == 0 ) || ( chars.length <= index ) || ( index < 0 )
             || ( chars2 == null ) || ( chars2.length == 0 )
             || ( chars2.length > ( chars.length - index ) ) )
@@ -917,7 +875,16 @@ public final class Strings
         {
             for ( int i = 0; i < chars2.length; i++ )
             {
-                if ( chars[index++] != chars2[i] )
+                char c1 = chars[index++];
+                char c2 = chars2[i];
+
+                if ( !caseSensitive )
+                {
+                    c1 = Character.toLowerCase( c1 );
+                    c2 = Character.toLowerCase( c2 );
+                }
+
+                if ( c1 != c2 )
                 {
                     return StringConstants.NOT_EQUAL;
                 }
@@ -1571,7 +1538,7 @@ public final class Strings
 
 
     /**
-     * Thansform an array of ASCII bytes to a string. the byte array should contains
+     * Transform an array of ASCII bytes to a string. the byte array should contains
      * only values in [0, 127].
      *
      * @param bytes The byte array to transform
@@ -1608,21 +1575,13 @@ public final class Strings
             return EMPTY_BYTES;
         }
 
-        try
-        {
-            return string.getBytes( "UTF-8" );
-        }
-        catch ( UnsupportedEncodingException uee )
-        {
-            // if this happens something is really strange
-            throw new RuntimeException( uee );
-        }
+        return string.getBytes( StandardCharsets.UTF_8 );
     }
 
 
     /**
-     * When the string to convert to bytes is pure ascii, ths is a faster 
-     * method than the getBytesUtf8. Otherwis, it's slower.
+     * When the string to convert to bytes is pure ascii, this is a faster 
+     * method than the getBytesUtf8. Otherwise, it's slower.
      * 
      * @param string The string to convert to byte[]
      * @return The bytes 
@@ -1631,33 +1590,25 @@ public final class Strings
     {
         if ( string == null )
         {
-            return new byte[0];
+            return EMPTY_BYTES;
         }
 
         try
         {
-            try
-            {
-                char[] chars = string.toCharArray();
-                byte[] bytes = new byte[chars.length];
-                int pos = 0;
+            char[] chars = string.toCharArray();
+            byte[] bytes = new byte[chars.length];
+            int pos = 0;
 
-                for ( char c : chars )
-                {
-                    bytes[pos++] = UTF8[c];
-                }
-
-                return bytes;
-            }
-            catch ( ArrayIndexOutOfBoundsException aioobe )
+            for ( char c : chars )
             {
-                return string.getBytes( "UTF-8" );
+                bytes[pos++] = UTF8[c];
             }
+
+            return bytes;
         }
-        catch ( UnsupportedEncodingException uee )
+        catch ( ArrayIndexOutOfBoundsException aioobe )
         {
-            // if this happens something is really strange
-            throw new RuntimeException( uee );
+            return string.getBytes( StandardCharsets.UTF_8 );
         }
     }
 
@@ -1669,32 +1620,7 @@ public final class Strings
      */
     public static String getDefaultCharsetName()
     {
-        if ( null == defaultCharset )
-        {
-            try
-            {
-                // Try with jdk 1.5 method, if we are using a 1.5 jdk :)
-                Method method = Charset.class.getMethod( "defaultCharset", new Class[0] );
-                defaultCharset = ( ( Charset ) method.invoke( null, new Object[0] ) ).name();
-            }
-            catch ( NoSuchMethodException e )
-            {
-                // fall back to old method
-                defaultCharset = new OutputStreamWriter( new ByteArrayOutputStream() ).getEncoding();
-            }
-            catch ( InvocationTargetException e )
-            {
-                // fall back to old method
-                defaultCharset = new OutputStreamWriter( new ByteArrayOutputStream() ).getEncoding();
-            }
-            catch ( IllegalAccessException e )
-            {
-                // fall back to old method
-                defaultCharset = new OutputStreamWriter( new ByteArrayOutputStream() ).getEncoding();
-            }
-        }
-
-        return defaultCharset;
+        return Charset.defaultCharset().name();
     }
 
 
@@ -1800,7 +1726,7 @@ public final class Strings
      * Utility method that return a String representation of a list
      *
      * @param list The list to transform to a string
-     * @param tabs The tabs to add in ffront of the elements
+     * @param tabs The tabs to add in front of the elements
      * @return A csv string
      */
     public static String listToString( List<?> list, String tabs )
@@ -1895,6 +1821,7 @@ public final class Strings
      *
      * @param value The String to lowercase
      * @return The lowercase string
+     * @deprecated Use {@link #toLowerCaseAscii(String)}
      */
     public static String toLowerCase( String value )
     {
@@ -1919,8 +1846,59 @@ public final class Strings
      * In Ldap, attributesType are supposed to use ASCII chars :
      * 'a'-'z', 'A'-'Z', '0'-'9', '.' and '-' only.
      *
+     * @param value The String to lowercase
+     * @return The lowercase string
+     */
+    public static String toLowerCaseAscii( String value )
+    {
+        if ( ( null == value ) || ( value.length() == 0 ) )
+        {
+            return "";
+        }
+
+        char[] chars = value.toCharArray();
+
+        for ( int i = 0; i < chars.length; i++ )
+        {
+            chars[i] = TO_LOWER_CASE[chars[i]];
+        }
+
+        return new String( chars );
+    }
+
+
+    /**
+     * Rewrote the toLowercase method to improve performances.
+     * In Ldap, attributesType are supposed to use ASCII chars :
+     * 'a'-'z', 'A'-'Z', '0'-'9', '.' and '-' only.
+     *
+     * @param value The byte[] to lowercase
+     * @return The lowercase string
+     */
+    public static String toLowerCase( byte[] value )
+    {
+        if ( ( null == value ) || ( value.length == 0 ) )
+        {
+            return "";
+        }
+
+        for ( int i = 0; i < value.length; i++ )
+        {
+            value[i] = TO_LOWER_CASE_BYTE[value[i]];
+        }
+
+        return Strings.utf8ToString( value );
+    }
+
+
+    /**
+     * Rewrote the toLowercase method to improve performances.
+     * In Ldap, attributesType are supposed to use ASCII chars :
+     * 'a'-'z', 'A'-'Z', '0'-'9', '.' and '-' only.
+     *
      * @param value The String to uppercase
      * @return The uppercase string
+     * @deprecated Use {@link toUpperCaseAscii(String)}
      */
     public static String toUpperCase( String value )
     {
@@ -1941,8 +1919,34 @@ public final class Strings
 
 
     /**
+     * Rewrote the toLowercase method to improve performances.
+     * In Ldap, attributesType are supposed to use ASCII chars :
+     * 'a'-'z', 'A'-'Z', '0'-'9', '.' and '-' only.
+     *
+     * @param value The String to uppercase
+     * @return The uppercase string
+     */
+    public static String toUpperCaseAscii( String value )
+    {
+        if ( ( null == value ) || ( value.length() == 0 ) )
+        {
+            return "";
+        }
+
+        char[] chars = value.toCharArray();
+
+        for ( int i = 0; i < chars.length; i++ )
+        {
+            chars[i] = UPPER_CASE[chars[i]];
+        }
+
+        return new String( chars );
+    }
+
+
+    /**
      * <p>
-     * Converts a String to upper case as per {@link String#toUpperCase()}.
+     * Converts a String to upper case as per {@link String#toUpperCase( Locale.ROOT )}.
      * </p>
      * <p>
      * A <code>null</code> input String returns <code>null</code>.
@@ -1964,7 +1968,7 @@ public final class Strings
             return null;
         }
 
-        return str.toUpperCase();
+        return str.toUpperCase( Locale.ROOT );
     }
 
 
@@ -1992,7 +1996,7 @@ public final class Strings
             return null;
         }
 
-        return str.toLowerCase( Locale.ENGLISH );
+        return str.toLowerCase( Locale.ROOT );
     }
 
 
@@ -2112,25 +2116,23 @@ public final class Strings
      */
     public static boolean isValidUuid( String uuid )
     {
-        byte[] b = uuid.getBytes();
-
-        if ( b.length < 36 )
+        if ( uuid.length() < 36 )
         {
             return false;
         }
 
-        if ( isHex( b[0] ) && isHex( b[1] ) && isHex( b[2] ) && isHex( b[3] )
-            && isHex( b[4] ) && isHex( b[5] ) && isHex( b[6] ) && isHex( b[7] )
-            && ( b[8] == '-' )
-            && isHex( b[9] ) && isHex( b[10] ) && isHex( b[11] ) && isHex( b[12] )
-            && ( b[13] == '-' )
-            && isHex( b[14] ) && isHex( b[15] ) && isHex( b[16] ) && isHex( b[17] )
-            && ( b[18] == '-' )
-            && isHex( b[19] ) && isHex( b[20] ) && isHex( b[21] ) && isHex( b[22] )
-            && ( b[23] == '-' )
-            && isHex( b[24] ) && isHex( b[25] ) && isHex( b[26] ) && isHex( b[27] )
-            && isHex( b[28] ) && isHex( b[29] ) && isHex( b[30] ) && isHex( b[31] )
-            && isHex( b[32] ) && isHex( b[33] ) && isHex( b[34] ) && isHex( b[35] ) )
+        if ( isHex( uuid.charAt( 0 ) ) && isHex( uuid.charAt( 1 ) ) && isHex( uuid.charAt( 2 ) )
+            && isHex( uuid.charAt( 3 ) ) && isHex( uuid.charAt( 4 ) ) && isHex( uuid.charAt( 5 ) )
+            && isHex( uuid.charAt( 6 ) ) && isHex( uuid.charAt( 7 ) ) && ( uuid.charAt( 8 ) == '-' )
+            && isHex( uuid.charAt( 9 ) ) && isHex( uuid.charAt( 10 ) ) && isHex( uuid.charAt( 11 ) )
+            && isHex( uuid.charAt( 12 ) ) && ( uuid.charAt( 13 ) == '-' ) && isHex( uuid.charAt( 14 ) )
+            && isHex( uuid.charAt( 15 ) ) && isHex( uuid.charAt( 16 ) ) && isHex( uuid.charAt( 17 ) )
+            && ( uuid.charAt( 18 ) == '-' ) && isHex( uuid.charAt( 19 ) ) && isHex( uuid.charAt( 20 ) )
+            && isHex( uuid.charAt( 21 ) ) && isHex( uuid.charAt( 22 ) ) && ( uuid.charAt( 23 ) == '-' )
+            && isHex( uuid.charAt( 24 ) ) && isHex( uuid.charAt( 25 ) ) && isHex( uuid.charAt( 26 ) )
+            && isHex( uuid.charAt( 27 ) ) && isHex( uuid.charAt( 28 ) ) && isHex( uuid.charAt( 29 ) )
+            && isHex( uuid.charAt( 30 ) ) && isHex( uuid.charAt( 31 ) ) && isHex( uuid.charAt( 32 ) )
+            && isHex( uuid.charAt( 33 ) ) && isHex( uuid.charAt( 34 ) ) && isHex( uuid.charAt( 35 ) ) )
         {
             // There is not that much more we can check.
             LOG.debug( "Syntax valid for '{}'", uuid );
@@ -2261,7 +2263,7 @@ public final class Strings
         }
         catch ( UnsupportedEncodingException e )
         {
-            return new String( data, offset, length );
+            return new String( data, offset, length, Charset.defaultCharset() );
         }
     }
 
@@ -2291,5 +2293,37 @@ public final class Strings
     public static String getUUID( long value )
     {
         return new UUID( 0, value ).toString();
+    }
+    
+    
+    /**
+     * Past an ASCII String to a number
+     *
+     * @param value The string to parse
+     * @return the parsed value.
+     * @throws NumberFormatException If we don't have a number
+     */
+    public static int parseInt( String value ) throws NumberFormatException
+    {
+        long res = 0;
+        
+        for ( char c : value.toCharArray() )
+        {
+            if ( ( c >= '0' ) && ( c <= '9' ) )
+            {
+                res = res * 10 + ( c - '0' );
+                
+                if ( res > Integer.MAX_VALUE )
+                {
+                    throw new NumberFormatException( "Integer " + value + " is too big" );
+                }
+            }
+            else
+            {
+                throw new NumberFormatException( "Integer " + value + " is not valid" );
+            }
+        }
+        
+        return ( int ) res;
     }
 }

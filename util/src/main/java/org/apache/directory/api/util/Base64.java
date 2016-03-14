@@ -114,7 +114,8 @@ public final class Base64
         {
             if ( ( c > 255 ) || CODES[c] < 0 )
             {
-                --tempLen; // ignore non-valid chars and padding
+                // ignore non-valid chars and padding
+                --tempLen;
             }
         }
         // calculate required length:
@@ -136,8 +137,9 @@ public final class Base64
 
         byte[] out = new byte[len];
 
-        int shift = 0; // # of excess bits stored in accum
-        int accum = 0; // excess bits
+        // # of excess bits stored in accum excess bits
+        int shift = 0;
+        int accum = 0;
         int index = 0;
 
         // we now go through the entire array (NOT using the 'tempLen' value)
@@ -145,27 +147,30 @@ public final class Base64
         {
             int value = ( c > 255 ) ? -1 : CODES[c];
 
-            if ( value >= 0 ) // skip over non-code
+            // skip over non-code bits 
+            if ( value >= 0 )
             {
-                accum <<= 6; // bits shift up by 6 each time thru
-                shift += 6; // loop, with new bits being put in
-                accum |= value; // at the bottom. whenever there
-                if ( shift >= 8 ) // are 8 or more shifted in, write them
+                // shift up by 6 each time thru
+                // loop, with new bits being put in
+                // at the bottom. whenever there
+                // are 8 or more shifted in, write them
+                // out (from the top, leaving any excess
+                // at the bottom for next iteration.
+                accum <<= 6;
+                shift += 6;
+                accum |= value;
+
+                if ( shift >= 8 )
                 {
-                    shift -= 8; // out (from the top, leaving any excess
-                    out[index++] = // at the bottom for next iteration.
-                    ( byte ) ( ( accum >> shift ) & 0xff );
+                    shift -= 8;
+                    out[index++] = ( byte ) ( ( accum >> shift ) & 0xff );
                 }
             }
-            // we will also have skipped processing a padding null byte ('=')
-            // here;
-            // these are used ONLY for padding to an even length and do not
-            // legally
+            // we will also have skipped processing a padding null byte ('=') here;
+            // these are used ONLY for padding to an even length and do not legally
             // occur as encoded data. for this reason we can ignore the fact
-            // that
-            // no index++ operation occurs in that special case: the out[] array
-            // is
-            // initialized to all-zero bytes to start with and that works to our
+            // that no index++ operation occurs in that special case: the out[] array
+            // is initialized to all-zero bytes to start with and that works to our
             // advantage in this combination.
         }
 

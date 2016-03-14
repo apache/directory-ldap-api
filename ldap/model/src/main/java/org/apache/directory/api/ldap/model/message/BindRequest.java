@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.model.message;
 
 
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.name.Dn;
 
 
@@ -30,15 +29,8 @@ import org.apache.directory.api.ldap.model.name.Dn;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface BindRequest extends SingleReplyRequest<BindResponse>, AbandonableRequest
+public interface BindRequest extends SingleReplyRequest, AbandonableRequest
 {
-    /** Bind request message type enumeration value */
-    MessageTypeEnum TYPE = MessageTypeEnum.BIND_REQUEST;
-
-    /** Bind response message type enumeration value */
-    MessageTypeEnum RESP_TYPE = BindResponse.TYPE;
-
-
     /**
      * Checks to see if the authentication mechanism is simple and not SASL
      * based.
@@ -218,17 +210,17 @@ public interface BindRequest extends SingleReplyRequest<BindResponse>, Abandonab
     /**
      * {@inheritDoc}
      */
-    BindRequest addControl( Control control ) throws MessageException;
+    BindRequest addControl( Control control );
 
 
     /**
      * {@inheritDoc}
      */
-    BindRequest addAllControls( Control[] controls ) throws MessageException;
+    BindRequest addAllControls( Control[] controls );
 
 
     /**
      * {@inheritDoc}
      */
-    BindRequest removeControl( Control control ) throws MessageException;
+    BindRequest removeControl( Control control );
 }

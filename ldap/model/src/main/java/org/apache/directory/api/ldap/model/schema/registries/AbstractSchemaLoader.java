@@ -20,9 +20,9 @@
 package org.apache.directory.api.ldap.model.schema.registries;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +34,7 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Value;
+import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
@@ -46,76 +47,20 @@ import org.apache.directory.api.util.Strings;
  */
 public abstract class AbstractSchemaLoader implements SchemaLoader
 {
-
-    /** The listener. */
-    protected SchemaLoaderListener listener;
-
     /**
      * A map of all available schema names to schema objects. This map is
      * populated when this class is created with all the schemas present in
      * the LDIF based schema repository.
      */
     protected final Map<String, Schema> schemaMap = new LowerCaseKeyMap();
-
-    /**
-     * a map implementation which converts the keys to lower case before inserting
-     */
-    private static class LowerCaseKeyMap extends HashMap<String, Schema>
-    {
-        private static final long serialVersionUID = 1L;
-
-
-        @Override
-        public Schema put( String key, Schema value )
-        {
-            return super.put( Strings.lowerCase( key ), value );
-        }
-
-
-        @Override
-        public void putAll( Map<? extends String, ? extends Schema> map )
-        {
-            for ( Map.Entry<? extends String, ? extends Schema> e : map.entrySet() )
-            {
-                put( e.getKey(), e.getValue() );
-            }
-        }
-    }
-
+    
+    /** The flag that tells about the SchemaLoader mode : relaxed or strict */
+    private boolean relaxed;
 
     /**
      * {@inheritDoc}
      */
-    public void setListener( SchemaLoaderListener listener )
-    {
-        this.listener = listener;
-    }
-
-
-    /**
-     * Notify listener or registries.
-     *
-     * @param schema the schema
-     * @param registries the registries
-     */
-    protected final void notifyListenerOrRegistries( Schema schema, SchemaManager schemaManager )
-    {
-        if ( listener != null )
-        {
-            listener.schemaLoaded( schema );
-        }
-
-        if ( schemaManager != listener )
-        {
-            schemaManager.getRegistries().schemaLoaded( schema );
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public final Collection<Schema> getAllEnabled() throws Exception
+    public final Collection<Schema> getAllEnabled()
     {
         Collection<Schema> enabledSchemas = new ArrayList<Schema>();
 
@@ -134,7 +79,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public final Collection<Schema> getAllSchemas() throws Exception
+    public final Collection<Schema> getAllSchemas()
     {
         return schemaMap.values();
     }
@@ -145,7 +90,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
      */
     public Schema getSchema( String schemaName )
     {
-        return schemaMap.get( Strings.toLowerCase( schemaName ) );
+        return schemaMap.get( Strings.toLowerCaseAscii( schemaName ) );
     }
 
 
@@ -163,7 +108,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
      */
     public void removeSchema( Schema schema )
     {
-        schemaMap.remove( Strings.toLowerCase( schema.getSchemaName() ) );
+        schemaMap.remove( Strings.toLowerCaseAscii( schema.getSchemaName() ) );
     }
 
 
@@ -172,9 +117,9 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
      *
      * @param entry the entry
      * @return the schema
-     * @throws Exception the exception
+     * @throws LdapException the exception
      */
-    protected Schema getSchema( Entry entry ) throws Exception
+    protected Schema getSchema( Entry entry ) throws LdapException
     {
         if ( entry == null )
         {
@@ -210,18 +155,21 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
 
         name = entry.get( SchemaConstants.CN_AT ).getString();
 
-        if ( entry.get( SchemaConstants.CREATORS_NAME_AT ) == null )
-        {
-            throw new IllegalArgumentException( "entry must have a valid " + SchemaConstants.CREATORS_NAME_AT
-                + " attribute" );
-        }
+        Attribute creatorsName = entry.get( SchemaConstants.CREATORS_NAME_AT );
 
-        owner = entry.get( SchemaConstants.CREATORS_NAME_AT ).getString();
+        if ( creatorsName == null )
+        {
+            owner = null;
+        }
+        else
+        {
+            owner = creatorsName.getString();
+        }
 
         if ( entry.get( MetaSchemaConstants.M_DISABLED_AT ) != null )
         {
             String value = entry.get( MetaSchemaConstants.M_DISABLED_AT ).getString();
-            value = value.toUpperCase();
+            value = Strings.upperCase( value );
             isDisabled = value.equals( "TRUE" );
         }
 
@@ -238,429 +186,11 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
             dependencies = depsSet.toArray( StringConstants.EMPTY_STRINGS );
         }
 
-        return new DefaultSchema( name, owner, dependencies, isDisabled );
+        return new DefaultSchema( this, name, owner, dependencies, isDisabled );
     }
 
 
-    // TODO: clean commented code
-
-    /*
-     * {@inheritDoc}
-     *
-    public List<Throwable> loadWithDependencies( Registries registries, boolean check, Schema... schemas ) throws Exception
-    {
-        // Relax the controls at first
-        List<Throwable> errors = new ArrayList<Throwable>();
-        boolean wasRelaxed = registries.isRelaxed();
-        registries.setRelaxed( true );
-
-        Map<String,Schema> notLoaded = new HashMap<String,Schema>();
-        
-        for ( Schema schema : schemas )
-        {
-            if ( ! registries.isSchemaLoaded( schema.getSchemaName() ) )
-            {
-                notLoaded.put( schema.getSchemaName(), schema );
-            }
-        }
-        
-        for ( Schema schema : notLoaded.values() )
-        {
-            Stack<String> beenthere = new Stack<String>();
-            loadDepsFirst( schema, beenthere, notLoaded, schema, registries );
-        }
-        
-        // At the end, check the registries if required
-        if ( check )
-        {
-            errors = registries.checkRefInteg();
-        }
-        
-        // Restore the Registries isRelaxed flag
-        registries.setRelaxed( wasRelaxed );
-        
-        return errors;
-    }
-    
-    
-    /**
-     * Register the comparator contained in the given LdifEntry into the registries.
-     *
-     * @param registries The Registries
-     * @param entry The LdifEntry containing the comparator description
-     * @param schema The associated schema
-     * @throws Exception If the registering failed
-     *
-    protected LdapComparator<?> registerComparator( Registries registries, LdifEntry entry, Schema schema )
-        throws Exception
-    {
-        return registerComparator( registries, entry.getEntry(), schema );
-    }
-    
-    
-    /**
-     * Register the comparator contained in the given Entry into the registries.
-     *
-     * @param registries The Registries
-     * @param entry The Entry containing the comparator description
-     * @param schema The associated schema
-     * @throws Exception If the registering failed
-     *
-    protected LdapComparator<?> registerComparator( Registries registries, Entry entry, Schema schema )
-        throws Exception
-    {
-        LdapComparator<?> comparator =
-            factory.getLdapComparator( entry, registries, schema.getSchemaName() );
-        comparator.setOid( entry.get( MetaSchemaConstants.M_OID_AT ).getString() );
-
-        if ( registries.isRelaxed() )
-        {
-            if ( registries.acceptDisabled() )
-            {
-                registries.register( comparator );
-            }
-            else if ( schema.isEnabled() && comparator.isEnabled() )
-            {
-                registries.register( comparator );
-            }
-        }
-        else
-        {
-            if ( schema.isEnabled() && comparator.isEnabled() )
-            {
-                registries.register( comparator );
-            }
-        }
-        
-        return comparator;
-    }
-    
-    
-    /**
-     * Register the SyntaxChecker contained in the given LdifEntry into the registries.
-     *
-     * @param registries The Registries
-     * @param entry The LdifEntry containing the SyntaxChecker description
-     * @param schema The associated schema
-     * @return the created SyntaxChecker instance
-     * @throws Exception If the registering failed
-     *
-    protected SyntaxChecker registerSyntaxChecker( Registries registries, LdifEntry entry, Schema schema)
-        throws Exception
-    {
-        SyntaxChecker syntaxChecker =
-            factory.getSyntaxChecker( entry.getEntry(), registries, schema.getSchemaName() );
-        syntaxChecker.setOid( entry.get( MetaSchemaConstants.M_OID_AT ).getString() );
-
-        if ( registries.isRelaxed() )
-        {
-            if ( registries.acceptDisabled() )
-            {
-                registries.register( syntaxChecker );
-            }
-            else if ( schema.isEnabled() && syntaxChecker.isEnabled() )
-            {
-                registries.register( syntaxChecker );
-            }
-        }
-        else
-        {
-            if ( schema.isEnabled() && syntaxChecker.isEnabled() )
-            {
-                registries.register( syntaxChecker );
-            }
-        }
-        
-        return syntaxChecker;
-    }
-    
-    
-    /**
-     * Register the Normalizer contained in the given LdifEntry into the registries.
-     *
-     * @param registries The Registries
-     * @param entry The LdifEntry containing the Normalizer description
-     * @param schema The associated schema
-     * @return the created Normalizer instance
-     * @throws Exception If the registering failed
-     *
-    protected Normalizer registerNormalizer( Registries registries, LdifEntry entry, Schema schema)
-        throws Exception
-    {
-        Normalizer normalizer =
-            factory.getNormalizer( entry.getEntry(), registries, schema.getSchemaName() );
-        
-        if ( registries.isRelaxed() )
-        {
-            if ( registries.acceptDisabled() )
-            {
-                registries.register( normalizer );
-            }
-            else if ( schema.isEnabled() && normalizer.isEnabled() )
-            {
-                registries.register( normalizer );
-            }
-        }
-        else
-        {
-            if ( schema.isEnabled() && normalizer.isEnabled() )
-            {
-                registries.register( normalizer );
-            }
-        }
-        
-        return normalizer;
-    }
-    
-    
-    /**
-     * Register the MatchingRule contained in the given LdifEntry into the registries.
-     *
-     * @param registries The Registries
-     * @param entry The LdifEntry containing the MatchingRule description
-     * @param schema The associated schema
-     * @return the created MatchingRule instance
-     * @throws Exception If the registering failed
-     *
-    protected MatchingRule registerMatchingRule( Registries registries, LdifEntry entry, Schema schema)
-        throws Exception
-    {
-        MatchingRule matchingRule = factory.getMatchingRule(
-            entry.getEntry(), registries, schema.getSchemaName() );
-
-        if ( registries.isRelaxed() )
-        {
-            if ( registries.acceptDisabled() )
-            {
-                registries.register( matchingRule );
-            }
-            else if ( schema.isEnabled() && matchingRule.isEnabled() )
-            {
-                registries.register( matchingRule );
-            }
-        }
-        else
-        {
-            if ( schema.isEnabled() && matchingRule.isEnabled() )
-            {
-                registries.register( matchingRule );
-            }
-        }
-        
-        return matchingRule;
-    }
-    
-    
-    /**
-     * Register the Syntax contained in the given LdifEntry into the registries.
-     *
-     * @param registries The Registries
-     * @param entry The LdifEntry containing the Syntax description
-     * @param schema The associated schema
-     * @return the created Syntax instance
-     * @throws Exception If the registering failed
-     *
-    protected LdapSyntax registerSyntax( Registries registries, LdifEntry entry, Schema schema)
-        throws Exception
-    {
-        LdapSyntax syntax = factory.getSyntax(
-            entry.getEntry(), registries, schema.getSchemaName() );
-
-        if ( registries.isRelaxed() )
-        {
-            if ( registries.acceptDisabled() )
-            {
-                registries.register( syntax );
-            }
-            else if ( schema.isEnabled() && syntax.isEnabled() )
-            {
-                registries.register( syntax );
-            }
-        }
-        else
-        {
-            if ( schema.isEnabled() && syntax.isEnabled() )
-            {
-                registries.register( syntax );
-            }
-        }
-        
-        return syntax;
-    }
-    
-    
-    /**
-     * Register the AttributeType contained in the given LdifEntry into the registries.
-     *
-     * @param registries The Registries
-     * @param entry The LdifEntry containing the AttributeType description
-     * @param schema The associated schema
-     * @return the created AttributeType instance
-     * @throws Exception If the registering failed
-     *
-    protected AttributeType registerAttributeType( Registries registries, LdifEntry entry, Schema schema )
-        throws Exception
-    {
-        AttributeType attributeType = factory.getAttributeType( entry.getEntry(), registries, schema.getSchemaName() );
-        
-        if ( registries.isRelaxed() )
-        {
-            if ( registries.acceptDisabled() )
-            {
-                registries.register( attributeType );
-            }
-            else if ( schema.isEnabled() && attributeType.isEnabled() )
-            {
-                registries.register( attributeType );
-            }
-        }
-        else
-        {
-            if ( schema.isEnabled() && attributeType.isEnabled() )
-            {
-                registries.register( attributeType );
-            }
-        }
-        
-        return attributeType;
-    }
-    
-    
-    /**
-     * Register the MatchingRuleUse contained in the given LdifEntry into the registries.
-     *
-     * @param registries The Registries
-     * @param entry The LdifEntry containing the MatchingRuleUse description
-     * @param schema The associated schema
-     * @return the created MatchingRuleUse instance
-     * @throws Exception If the registering failed
-     *
-    protected MatchingRuleUse registerMatchingRuleUse( Registries registries, LdifEntry entry, Schema schema)
-        throws Exception
-    {
-        throw new NotImplementedException( "Need to implement factory " +
-                "method for creating a MatchingRuleUse" );
-    }
-    
-    
-    /**
-     * Register the NameForm contained in the given LdifEntry into the registries.
-     *
-     * @param registries The Registries
-     * @param entry The LdifEntry containing the NameForm description
-     * @param schema The associated schema
-     * @return the created NameForm instance
-     * @throws Exception If the registering failed
-     *
-    protected NameForm registerNameForm( Registries registries, LdifEntry entry, Schema schema)
-        throws Exception
-    {
-        throw new NotImplementedException( "Need to implement factory " +
-                "method for creating a NameForm" );
-    }
-    
-    
-    /**
-     * Register the DitContentRule contained in the given LdifEntry into the registries.
-     *
-     * @param registries The Registries
-     * @param entry The LdifEntry containing the DitContentRule description
-     * @param schema The associated schema
-     * @return the created DitContentRule instance
-     * @throws Exception If the registering failed
-     *
-    protected DitContentRule registerDitContentRule( Registries registries, LdifEntry entry, Schema schema)
-        throws Exception
-    {
-        throw new NotImplementedException( "Need to implement factory " +
-                "method for creating a DitContentRule" );
-    }
-    
-    
-    /**
-     * Register the DitStructureRule contained in the given LdifEntry into the registries.
-     *
-     * @param registries The Registries
-     * @param entry The LdifEntry containing the DitStructureRule description
-     * @param schema The associated schema
-     * @return the created DitStructureRule instance
-     * @throws Exception If the registering failed
-     *
-    protected DitStructureRule registerDitStructureRule( Registries registries, LdifEntry entry, Schema schema)
-        throws Exception
-    {
-        throw new NotImplementedException( "Need to implement factory " +
-                "method for creating a DitStructureRule" );
-    }
-
-
-    /**
-     * Register the ObjectClass contained in the given LdifEntry into the registries.
-     *
-     * @param registries The Registries
-     * @param entry The LdifEntry containing the ObjectClass description
-     * @param schema The associated schema
-     * @return the created ObjectClass instance
-     * @throws Exception If the registering failed
-     *
-    protected ObjectClass registerObjectClass( Registries registries, LdifEntry entry, Schema schema)
-        throws Exception
-    {
-        return registerObjectClass( registries, entry.getEntry(), schema );
-    }
-
-
-    /**
-     * Register the ObjectClass contained in the given LdifEntry into the registries.
-     *
-     * @param registries The Registries
-     * @param entry The Entry containing the ObjectClass description
-     * @param schema The associated schema
-     * @return the created ObjectClass instance
-     * @throws Exception If the registering failed
-     *
-    protected ObjectClass registerObjectClass( Registries registries, Entry entry, Schema schema)
-        throws Exception
-    {
-        ObjectClass objectClass = factory.getObjectClass( entry, registries, schema.getSchemaName() );
-
-        if ( registries.isRelaxed() )
-        {
-            if ( registries.acceptDisabled() )
-            {
-                registries.register( objectClass );
-            }
-            else if ( schema.isEnabled() && objectClass.isEnabled() )
-            {
-                registries.register( objectClass );
-            }
-        }
-        else
-        {
-            if ( schema.isEnabled() && objectClass.isEnabled() )
-            {
-                registries.register( objectClass );
-            }
-        }
-        
-        return objectClass;
-    }
-    
-    
-    public EntityFactory getFactory()
-    {
-        return factory;
-    }
-    */
-
-    // TODO: is this used?
-    public Object getDao()
-    {
-        return null;
-    }
-
-
-    private Schema[] buildSchemaArray( String... schemaNames ) throws Exception
+    private Schema[] buildSchemaArray( String... schemaNames ) throws LdapException
     {
         Schema[] schemas = new Schema[schemaNames.length];
         int pos = 0;
@@ -677,7 +207,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public List<Entry> loadAttributeTypes( String... schemaNames ) throws Exception
+    public List<Entry> loadAttributeTypes( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
@@ -691,7 +221,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public List<Entry> loadComparators( String... schemaNames ) throws Exception
+    public List<Entry> loadComparators( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
@@ -705,7 +235,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public List<Entry> loadDitContentRules( String... schemaNames ) throws Exception
+    public List<Entry> loadDitContentRules( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
@@ -719,7 +249,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public List<Entry> loadDitStructureRules( String... schemaNames ) throws Exception
+    public List<Entry> loadDitStructureRules( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
@@ -733,7 +263,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public List<Entry> loadMatchingRules( String... schemaNames ) throws Exception
+    public List<Entry> loadMatchingRules( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
@@ -747,7 +277,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public List<Entry> loadMatchingRuleUses( String... schemaNames ) throws Exception
+    public List<Entry> loadMatchingRuleUses( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
@@ -761,7 +291,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public List<Entry> loadNameForms( String... schemaNames ) throws Exception
+    public List<Entry> loadNameForms( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
@@ -775,7 +305,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public List<Entry> loadNormalizers( String... schemaNames ) throws Exception
+    public List<Entry> loadNormalizers( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
@@ -789,7 +319,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public List<Entry> loadObjectClasses( String... schemaNames ) throws Exception
+    public List<Entry> loadObjectClasses( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
@@ -803,7 +333,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public List<Entry> loadSyntaxes( String... schemaNames ) throws Exception
+    public List<Entry> loadSyntaxes( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
@@ -817,7 +347,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
-    public List<Entry> loadSyntaxCheckers( String... schemaNames ) throws Exception
+    public List<Entry> loadSyntaxCheckers( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
@@ -825,5 +355,32 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
         }
 
         return loadSyntaxCheckers( buildSchemaArray( schemaNames ) );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isRelaxed()
+    {
+        return relaxed == SchemaManager.RELAXED;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isStrict()
+    {
+        return relaxed == SchemaManager.STRICT;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setRelaxed( boolean relaxed )
+    {
+        this.relaxed = relaxed;
     }
 }

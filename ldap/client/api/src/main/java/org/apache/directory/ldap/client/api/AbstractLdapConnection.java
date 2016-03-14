@@ -19,9 +19,9 @@
  */
 package org.apache.directory.ldap.client.api;
 
+
 import static org.apache.directory.api.ldap.model.message.ResultCodeEnum.processResponse;
 
-import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
@@ -38,6 +38,7 @@ import org.apache.directory.api.util.Strings;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 /**
  * An abstract LdapConnection class gathering the common behavior of LdapConnection
@@ -57,22 +58,28 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
     protected AtomicInteger messageId;
 
     /** the ldap codec service */
-    protected LdapApiService codec = LdapApiServiceFactory.getSingleton();
+    protected LdapApiService codec;
 
-    
+
     /**
      * Creates a new instance of an AbstractLdapConnection
      */
     protected AbstractLdapConnection()
     {
-        messageId = new AtomicInteger( 0 );
+        this( LdapApiServiceFactory.getSingleton() );
     }
-    
-    
+
+    protected AbstractLdapConnection( LdapApiService codec )
+    {
+        messageId = new AtomicInteger( 0 );
+        this.codec = codec;
+    }
+
+
     /**
      * {@inheritDoc}
      */
-    public void bind( Dn name ) throws LdapException, IOException
+    public void bind( Dn name ) throws LdapException
     {
         byte[] credBytes = StringConstants.EMPTY_BYTES;
 
@@ -89,7 +96,7 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
     /**
      * {@inheritDoc}
      */
-    public void bind( String name ) throws LdapException, IOException
+    public void bind( String name ) throws LdapException
     {
         LOG.debug( "Bind request : {}", name );
 
@@ -100,7 +107,7 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
     /**
      * {@inheritDoc}
      */
-    public void bind( String name, String credentials ) throws LdapException, IOException
+    public void bind( String name, String credentials ) throws LdapException
     {
         bind( new Dn( schemaManager, name ), credentials );
     }
@@ -109,7 +116,7 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
     /**
      * {@inheritDoc}
      */
-    public void bind( Dn name, String credentials ) throws LdapException, IOException
+    public void bind( Dn name, String credentials ) throws LdapException
     {
         byte[] credBytes = ( credentials == null ? StringConstants.EMPTY_BYTES : Strings.getBytesUtf8( credentials ) );
 

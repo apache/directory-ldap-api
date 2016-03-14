@@ -32,16 +32,12 @@ import org.osgi.framework.ServiceRegistration;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@SuppressWarnings(
-    { "UnusedDeclaration" })
 public class DefaultActivator implements BundleActivator
 {
     private DefaultLdapCodecService codec;
-    private ServiceRegistration registration;
+    private ServiceRegistration<?> registration;
 
 
-    @SuppressWarnings(
-        { "UnusedDeclaration" })
     public DefaultActivator()
     {
         this.codec = new DefaultLdapCodecService();

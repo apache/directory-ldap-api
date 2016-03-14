@@ -20,15 +20,17 @@
 package org.apache.directory.api.dsmlv2;
 
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.nio.charset.Charset;
 
-import org.apache.directory.api.dsmlv2.reponse.BatchResponseDsml;
-import org.apache.directory.api.dsmlv2.reponse.Dsmlv2ResponseGrammar;
+import org.apache.directory.api.dsmlv2.response.BatchResponseDsml;
+import org.apache.directory.api.dsmlv2.response.Dsmlv2ResponseGrammar;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Response;
@@ -82,7 +84,7 @@ public class Dsmlv2ResponseParser
 
 
     /**
-     * Sets the input file the parser is going to parse
+     * Sets the input file the parser is going to parse. Default charset is used.
      *
      * @param fileName the name of the file
      * @throws FileNotFoundException if the file does not exist
@@ -90,7 +92,7 @@ public class Dsmlv2ResponseParser
      */
     public void setInputFile( String fileName ) throws FileNotFoundException, XmlPullParserException
     {
-        Reader reader = new FileReader( fileName );
+        Reader reader = new InputStreamReader( new FileInputStream( fileName ), Charset.defaultCharset() );
         container.getParser().setInput( reader );
     }
 
@@ -152,15 +154,18 @@ public class Dsmlv2ResponseParser
                 case XmlPullParser.END_TAG :
                     processTag( container, Tag.END );
                     break;
+
+                default:
+                    break;
             }
             
             try
             {
                 eventType = xpp.next();
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03037, e.getLocalizedMessage() ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03037, ioe.getLocalizedMessage() ), xpp, ioe );
             }
         }
         while ( container.getState() != Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP );
@@ -178,7 +183,7 @@ public class Dsmlv2ResponseParser
     {
         XmlPullParser xpp = container.getParser();
 
-        String tagName = Strings.toLowerCase( xpp.getName() );
+        String tagName = Strings.lowerCase( xpp.getName() );
 
         GrammarTransition transition = container.getTransition( container.getState(), new Tag( tagName, tagType ) );
 
@@ -232,9 +237,9 @@ public class Dsmlv2ResponseParser
                 {
                     xpp.next();
                 }
-                catch ( IOException e )
+                catch ( IOException ioe )
                 {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03037, e.getLocalizedMessage() ), xpp, null );
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03037, ioe.getLocalizedMessage() ), xpp, ioe );
                 }
                 eventType = xpp.getEventType();
             }
@@ -256,15 +261,18 @@ public class Dsmlv2ResponseParser
                 case XmlPullParser.END_TAG :
                     processTag( container, Tag.END );
                     break;
+
+                default:
+                    break;
             }
             
             try
             {
                 eventType = xpp.next();
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03037, e.getLocalizedMessage() ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03037, ioe.getLocalizedMessage() ), xpp, ioe );
             }
         }
         while ( container.getState() != Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP );

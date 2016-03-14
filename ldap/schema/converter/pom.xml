@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.api</groupId>
     <artifactId>api-ldap-schema-parent</artifactId>
-    <version>1.0.0-M17-SNAPSHOT</version>
+    <version>1.0.0-M34-SNAPSHOT</version>
   </parent>
   
   <artifactId>api-ldap-schema-converter</artifactId>
@@ -56,10 +56,19 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>api-util</artifactId>
     </dependency>
-    
+
+  <!-- The original antlr artifact is needed by the antlr-maven-plugin which 
+    checks for its existence within the classpath. Use scope provided to avoid 
+    propagation to dependent projects. Choosen artifact is a valid OSGi bundle 
+    repackaged by ServiceMix team, kudos to them. -->
     <dependency>
       <groupId>antlr</groupId>
       <artifactId>antlr</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.servicemix.bundles</groupId>
+      <artifactId>org.apache.servicemix.bundles.antlr</artifactId>
     </dependency>
   </dependencies>
 
@@ -113,8 +122,23 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.ldap.schema.converter</Bundle-SymbolicName>
             <Export-Package>
-                {local-packages};version=${project.version};-noimport:=true
+              org.apache.directory.api.ldap.schema.converter;version="${project.version}";-noimport:=true
             </Export-Package>
+            <Import-Package>
+              <![CDATA[
+              org.apache.directory.api.i18n;version=${project.version},
+              org.apache.directory.api.ldap.model.constants;version=${project.version},
+              org.apache.directory.api.ldap.model.entry;version=${project.version},
+              org.apache.directory.api.ldap.model.exception;version=${project.version},
+              org.apache.directory.api.ldap.model.ldif;version=${project.version},
+              org.apache.directory.api.ldap.model.name;version=${project.version},
+              org.apache.directory.api.ldap.model.schema;version=${project.version},
+              org.apache.directory.api.util;version=${project.version},
+              org.slf4j;version=${slf4j.api.bundleversion},
+              antlr;version=${antlr.version},
+              *
+              ]]>
+            </Import-Package>
           </instructions>
         </configuration>
       </plugin>

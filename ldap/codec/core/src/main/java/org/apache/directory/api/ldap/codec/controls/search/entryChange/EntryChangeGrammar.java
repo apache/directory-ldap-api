@@ -128,15 +128,15 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
                             // We can have an END transition
                             container.setGrammarEndAllowed( true );
                         }
-                        catch ( IntegerDecoderException e )
+                        catch ( IntegerDecoderException ide )
                         {
                             String msg = I18n.err( I18n.ERR_04044 );
-                            LOG.error( msg, e );
-                            throw new DecoderException( msg );
+                            LOG.error( msg, ide );
+                            throw new DecoderException( msg, ide );
                         }
-                        catch ( IllegalArgumentException e )
+                        catch ( IllegalArgumentException iae )
                         {
-                            throw new DecoderException( e.getLocalizedMessage() );
+                            throw new DecoderException( iae.getLocalizedMessage(), iae );
                         }
                     }
                 } );
@@ -178,7 +178,7 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
                             catch ( LdapInvalidDnException ine )
                             {
                                 LOG.error( I18n.err( I18n.ERR_04047, Strings.dumpBytes( value.getData() ) ) );
-                                throw new DecoderException( I18n.err( I18n.ERR_04048 ) );
+                                throw new DecoderException( I18n.err( I18n.ERR_04048 ), ine );
                             }
 
                             if ( IS_DEBUG )
@@ -216,11 +216,11 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
                     // We can have an END transition
                     container.setGrammarEndAllowed( true );
                 }
-                catch ( LongDecoderException e )
+                catch ( LongDecoderException lde )
                 {
                     String msg = I18n.err( I18n.ERR_04049 );
-                    LOG.error( msg, e );
-                    throw new DecoderException( msg );
+                    LOG.error( msg, lde );
+                    throw new DecoderException( msg, lde );
                 }
             }
         };

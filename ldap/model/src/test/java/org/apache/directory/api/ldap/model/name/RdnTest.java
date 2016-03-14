@@ -228,7 +228,7 @@ public class RdnTest
         String rdn = Strings.utf8ToString( new byte[]
             { 'a', '=', '\\', ',', '\\', '=', '\\', '+', '\\', '<', '\\', '>', '#', '\\', ';', '\\', '\\', '\\', '"', '\\',
                 'C', '3', '\\', 'A', '9' } );
-        assertEquals( "a=\\,\\=\\+\\<\\>#\\;\\\\\\\"\\C3\\A9", new Rdn( rdn ).getNormName() );
+        assertEquals( "a=\\,\\=\\+\\<\\>#\\;\\\\\\\"\u00e9", new Rdn( rdn ).getNormName() );
     }
 
 
@@ -268,8 +268,10 @@ public class RdnTest
     @Test
     public void testRdnQuotedAttributeValue() throws LdapException
     {
-        assertEquals( "a=quoted \\\"value", new Rdn( "a = quoted \\\"value" ).getNormName() );
-        assertEquals( "quoted \"value", new Rdn( "a = quoted \\\"value" ).getValue( "a" ) );
+        Rdn rdn = new Rdn( "a = quoted \\\"value" );
+        assertEquals( "a=quoted \\\"value", rdn.getNormName() );
+        assertEquals( "quoted \\\"value", rdn.getValue( "a" ) );
+        assertEquals( "quoted \"value", rdn.getNormValue( "a" ) );
     }
 
 
@@ -605,7 +607,7 @@ public class RdnTest
     {
         Rdn rdn = new Rdn( " a = b + b = f + g = h + c = d " );
 
-        assertEquals( "b", rdn.getNormValue().getString() );
+        assertEquals( "b", rdn.getNormValue() );
     }
 
 
@@ -860,7 +862,7 @@ public class RdnTest
         assertEquals( "cn=a b c", rdn2.getNormName() );
         assertTrue( rdn1.equals( rdn2 ) );
 
-        Rdn rdn3 = new Rdn( "cn=\\ a b c\\ " );
+        Rdn rdn3 = new Rdn( "cn= \\ a b c\\  " );
         Rdn rdn4 = new Rdn( "cn=\\ a\\ b\\ c\\ " );
         assertEquals( "cn=\\ a b c\\ ", rdn3.getNormName() );
         assertEquals( "cn=\\ a b c\\ ", rdn4.getNormName() );
@@ -910,6 +912,16 @@ public class RdnTest
         // hash must be escaped at the beginning of a string
         assertEquals( "\\#a#b", Rdn.escapeValue( "#a#b" ) );
         assertEquals( "\\##a#b", Rdn.escapeValue( "##a#b" ) );
+
+        // other characters that need to be escaped
+        // '"', '+', ',', ';', '<', '>', '\', the null (U+0000) character
+        assertEquals( "\\\"\\+\\,\\;\\<\\>\\\\\\00", Rdn.escapeValue( "\"+,;<>\\\u0000" ) );
+
+        // unicode characters don't need to be escaped
+        // \u00e9 - e with acute - 2 bytes in UTF-8
+        // \u20ac - Euro character - 3 bytes in UTF-8
+        // \uD83D\uDE08 - Smiley - 4 bytes in UTF-8
+        assertEquals( "\u00e9\u20AC\uD83D\uDE08", Rdn.escapeValue( "\u00e9\u20AC\uD83D\uDE08" ) );
     }
 
 
@@ -1144,7 +1156,7 @@ public class RdnTest
         assertTrue( Rdn.isValid( "a=\"b\\,c\"" ) );
         Rdn rdn = new Rdn( "a=\"b\\,c\"" );
         assertEquals( "a=\"b\\,c\"", rdn.getName() );
-        assertEquals( "a=b\\,c", rdn.getNormName() );
+        assertEquals( "a=b\\\\\\,c", rdn.getNormName() );
     }
 
 
@@ -1227,11 +1239,39 @@ public class RdnTest
 
 
     /**
-     * test that a RDN with an attributeType used twice throws an exception
+     * test that a RDN can have an attributeType twice
      */
-    @Test( expected=LdapInvalidDnException.class )
-    public void testWrongRdnAtUsedTwice() throws LdapException
+    @Test
+    public void testRdnAtUsedTwice() throws LdapException
     {
-        new Rdn( " A = b + A = d " );
+        Rdn rdn = new Rdn( " A = b + A = d " );
+
+        assertEquals( " A = b + A = d ", rdn.getName() );
+    }
+
+
+    @Test
+    public void testAvaConstructor() throws LdapInvalidDnException
+    {
+        Rdn rdn = new Rdn( new Ava( "CN", "\u00E4" ), new Ava( "A", "d" ) );
+        assertEquals( "CN=\u00E4+A=d", rdn.getName() );
+        assertEquals( "cn=\u00E4+a=d", rdn.getNormName() );
+        assertEquals( "\u00E4", rdn.getValue( "CN" ) );
+        assertEquals( "\u00E4", rdn.getValue() );
+        assertEquals( "\u00E4", rdn.getValue() );
+        assertEquals( "CN", rdn.getType() );
+        assertEquals( "cn", rdn.getNormType() );
+    }
+
+
+    /**
+     * test that a RDN can have an attributeType twice
+     */
+    @Test
+    public void testAvaConstructorRdnAtUsedTwice() throws LdapException
+    {
+        Rdn rdn = new Rdn( new Ava( "A", "b" ), new Ava( "A", "d" ) );
+
+        assertEquals( "A=b+A=d", rdn.getName() );
     }
 }

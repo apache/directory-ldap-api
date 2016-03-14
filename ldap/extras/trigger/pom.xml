@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.api</groupId>
     <artifactId>api-ldap-extras-parent</artifactId>
-    <version>1.0.0-M17-SNAPSHOT</version>
+    <version>1.0.0-M34-SNAPSHOT</version>
   </parent>
   
   <artifactId>api-ldap-extras-trigger</artifactId>
@@ -50,11 +50,20 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>api-ldap-model</artifactId>
-    </dependency> 
-    
+    </dependency>
+
+  <!-- The original antlr artifact is needed by the antlr-maven-plugin which 
+    checks for its existence within the classpath. Use scope provided to avoid 
+    propagation to dependent projects. Choosen artifact is a valid OSGi bundle 
+    repackaged by ServiceMix team, kudos to them. -->
     <dependency>
       <groupId>antlr</groupId>
       <artifactId>antlr</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.servicemix.bundles</groupId>
+      <artifactId>org.apache.servicemix.bundles.antlr</artifactId>
     </dependency>
 
     <dependency>
@@ -90,8 +99,23 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.ldap.extras.trigger</Bundle-SymbolicName>
             <Export-Package>
-                {local-packages};version=${project.version};-noimport:=true
+              org.apache.directory.api.ldap.trigger;version=${project.version};-noimport:=true
             </Export-Package>
+            <Import-Package>
+              antlr;version=${antlr.version},
+              antlr.collections.impl;version=${antlr.version},
+              org.apache.commons.lang;version=${commons.lang.version},
+              org.apache.directory.api.i18n;version=${project.version},
+              org.apache.directory.api.ldap.model.constants;version=${project.version},
+              org.apache.directory.api.ldap.model.entry;version=${project.version},
+              org.apache.directory.api.ldap.model.message;version=${project.version},
+              org.apache.directory.api.ldap.model.name;version=${project.version},
+              org.apache.directory.api.ldap.model.schema;version=${project.version},
+              org.slf4j;version=${slf4j.api.bundleversion},
+              javax.naming,
+              javax.naming.directory,
+              javax.naming.ldap
+            </Import-Package>
           </instructions>
         </configuration>
       </plugin>

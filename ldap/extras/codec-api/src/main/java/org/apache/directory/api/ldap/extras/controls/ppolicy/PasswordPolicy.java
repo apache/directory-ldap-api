@@ -32,7 +32,7 @@ import org.apache.directory.api.ldap.model.message.Control;
 public interface PasswordPolicy extends Control
 {
     /** the password policy request control */
-    public static final String OID = "1.3.6.1.4.1.42.2.27.8.5.1";
+    String OID = "1.3.6.1.4.1.42.2.27.8.5.1";
 
 
     /**

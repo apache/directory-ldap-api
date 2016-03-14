@@ -11,5 +11,6 @@ objectclass: top
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.35
 m-usage: DIRECTORY_OPERATION
 m-name: nameForms
+m-description: RFC2252: Name Forms 
 creatorsname: uid=admin,ou=system
 m-equality: objectIdentifierFirstComponentMatch

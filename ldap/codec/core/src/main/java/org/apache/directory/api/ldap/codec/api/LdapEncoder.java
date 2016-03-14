@@ -80,7 +80,8 @@ public class LdapEncoder
         // The criticality, only if true
         if ( control.isCritical() )
         {
-            controlLength += 1 + 1 + 1; // Always 3 for a boolean
+            // Always 3 for a boolean
+            controlLength += 1 + 1 + 1;
         }
 
         if ( controlValueLength != 0 )
@@ -113,11 +114,11 @@ public class LdapEncoder
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
 
         // The control type
-        BerValue.encode( buffer, control.getOid().getBytes() );
+        BerValue.encode( buffer, Strings.getBytesUtf8( control.getOid() ) );
 
         // The control criticality, if true
         if ( control.isCritical() )
@@ -171,7 +172,7 @@ public class LdapEncoder
             }
             catch ( BufferOverflowException boe )
             {
-                throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+                throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
             }
 
             // The message Id
@@ -186,7 +187,7 @@ public class LdapEncoder
             if ( ( controls != null ) && ( controls.size() > 0 ) )
             {
                 // Encode the controls
-                buffer.put( ( byte ) LdapConstants.CONTROLS_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.CONTROLS_TAG );
                 buffer.put( TLV.getBytes( decorator.getControlsLength() ) );
 
                 // Encode each control
@@ -210,7 +211,7 @@ public class LdapEncoder
         }
         catch ( EncoderException ee )
         {
-            MessageEncoderException exception = new MessageEncoderException( message.getMessageId(), ee.getMessage() );
+            MessageEncoderException exception = new MessageEncoderException( message.getMessageId(), ee.getMessage(), ee );
 
             throw exception;
         }
@@ -314,7 +315,7 @@ public class LdapEncoder
         {
             // Encode the referrals sequence
             // The referrals length MUST have been computed before !
-            buffer.put( ( byte ) LdapConstants.LDAP_RESULT_REFERRAL_SEQUENCE_TAG );
+            buffer.put( ( byte ) LdapCodecConstants.LDAP_RESULT_REFERRAL_SEQUENCE_TAG );
             buffer.put( TLV.getBytes( referral.getReferralLength() ) );
 
             // Each referral

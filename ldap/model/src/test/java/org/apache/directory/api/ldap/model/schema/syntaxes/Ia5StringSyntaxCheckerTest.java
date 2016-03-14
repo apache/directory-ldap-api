@@ -27,6 +27,7 @@ import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.Ia5StringSyntaxChecker;
+import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -89,6 +90,6 @@ public class Ia5StringSyntaxCheckerTest
             bytes[i] = ( byte ) i;
         }
 
-        assertTrue( checker.isValidSyntax( new String( bytes ) ) );
+        assertTrue( checker.isValidSyntax( Strings.utf8ToString( bytes ) ) );
     }
 }

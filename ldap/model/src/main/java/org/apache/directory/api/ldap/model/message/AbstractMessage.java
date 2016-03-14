@@ -24,8 +24,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.directory.api.ldap.model.exception.MessageException;
-
 
 /**
  * Abstract message base class.
@@ -34,8 +32,6 @@ import org.apache.directory.api.ldap.model.exception.MessageException;
  */
 public abstract class AbstractMessage implements Message
 {
-    private static final long serialVersionUID = 7601738291101182094L;
-
     /** Map of message controls using OID Strings for keys and Control values */
     protected final Map<String, Control> controls;
 
@@ -119,7 +115,7 @@ public abstract class AbstractMessage implements Message
     /**
      * {@inheritDoc}
      */
-    public Message addControl( Control control ) throws MessageException
+    public Message addControl( Control control )
     {
         controls.put( control.getOid(), control );
 
@@ -131,10 +127,8 @@ public abstract class AbstractMessage implements Message
      * Deletes a control removing it from this Message.
      * 
      * @param control the control to remove.
-     * @throws MessageException if controls cannot be added to this Message or the control is
-     *             not known etc.
      */
-    public Message removeControl( Control control ) throws MessageException
+    public Message removeControl( Control control )
     {
         controls.remove( control.getOid() );
 
@@ -221,16 +215,16 @@ public abstract class AbstractMessage implements Message
             return false;
         }
 
-        Map<String, Control> controls = msg.getControls();
+        Map<String, Control> controlMap = msg.getControls();
 
-        if ( controls.size() != this.controls.size() )
+        if ( controlMap.size() != controls.size() )
         {
             return false;
         }
 
-        for ( String key : this.controls.keySet() )
+        for ( String key : controls.keySet() )
         {
-            if ( !controls.containsKey( key ) )
+            if ( !controlMap.containsKey( key ) )
             {
                 return false;
             }
@@ -259,7 +253,7 @@ public abstract class AbstractMessage implements Message
     /**
      * {@inheritDoc}
      */
-    public Message addAllControls( Control[] controls ) throws MessageException
+    public Message addAllControls( Control[] controls )
     {
         for ( Control c : controls )
         {

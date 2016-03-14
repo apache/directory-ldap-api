@@ -26,10 +26,9 @@ import java.util.List;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.dsmlv2.ParserUtils;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.filter.AndNode;
 import org.apache.directory.api.ldap.model.filter.ApproximateNode;
 import org.apache.directory.api.ldap.model.filter.BranchNode;
@@ -66,6 +65,11 @@ public class SearchRequestDsml
     extends AbstractResultResponseRequestDsml<SearchRequest, SearchResultDone>
     implements SearchRequest
 {
+    /** Some string constants */
+    private static final String DEREF_ALIASES = "derefAliases";
+    private static final String NAME = "name";
+    private static final String VALUE = "value";
+    
     /** A temporary storage for a terminal Filter */
     private Filter terminalFilter;
 
@@ -144,7 +148,7 @@ public class SearchRequestDsml
     /**
      * set the currentFilter to its parent
      */
-    public void endCurrentConnectorFilter( )
+    public void endCurrentConnectorFilter()
     {
         currentFilter = currentFilter.getParent();
     }
@@ -240,30 +244,32 @@ public class SearchRequestDsml
                 }
                 else if ( filter instanceof AttributeValueAssertionFilter )
                 {
-                    AttributeValueAssertion ava = ( ( AttributeValueAssertionFilter ) filter ).getAssertion();
+                    AttributeValueAssertionFilter avaFilter = ( AttributeValueAssertionFilter ) filter;
+
+                    AttributeValueAssertion ava = avaFilter.getAssertion();
 
                     // Transform =, >=, <=, ~= filters
-                    switch ( ( ( AttributeValueAssertionFilter ) filter ).getFilterType() )
+                    int filterType = avaFilter.getFilterType();
+                    switch ( filterType )
                     {
-                        case LdapConstants.EQUALITY_MATCH_FILTER:
+                        case LdapCodecConstants.EQUALITY_MATCH_FILTER:
                             branch = new EqualityNode( ava.getAttributeDesc(), ava.getAssertionValue() );
-
                             break;
 
-                        case LdapConstants.GREATER_OR_EQUAL_FILTER:
+                        case LdapCodecConstants.GREATER_OR_EQUAL_FILTER:
                             branch = new GreaterEqNode( ava.getAttributeDesc(), ava.getAssertionValue() );
-
                             break;
 
-                        case LdapConstants.LESS_OR_EQUAL_FILTER:
+                        case LdapCodecConstants.LESS_OR_EQUAL_FILTER:
                             branch = new LessEqNode( ava.getAttributeDesc(), ava.getAssertionValue() );
-
                             break;
 
-                        case LdapConstants.APPROX_MATCH_FILTER:
+                        case LdapCodecConstants.APPROX_MATCH_FILTER:
                             branch = new ApproximateNode( ava.getAttributeDesc(), ava.getAssertionValue() );
-
                             break;
+
+                        default:
+                            throw new IllegalStateException( "Unexpected filter type " + filterType );
                     }
 
                 }
@@ -340,7 +346,7 @@ public class SearchRequestDsml
     {
         Element element = super.toDsml( root );
 
-        SearchRequest request = ( SearchRequest ) getDecorated();
+        SearchRequest request = getDecorated();
 
         // Dn
         if ( request.getBase() != null )
@@ -372,19 +378,19 @@ public class SearchRequestDsml
         switch ( derefAliases )
         {
             case NEVER_DEREF_ALIASES:
-                element.addAttribute( "derefAliases", "neverDerefAliases" );
+                element.addAttribute( DEREF_ALIASES, "neverDerefAliases" );
                 break;
 
             case DEREF_ALWAYS:
-                element.addAttribute( "derefAliases", "derefAlways" );
+                element.addAttribute( DEREF_ALIASES, "derefAlways" );
                 break;
 
             case DEREF_FINDING_BASE_OBJ:
-                element.addAttribute( "derefAliases", "derefFindingBaseObj" );
+                element.addAttribute( DEREF_ALIASES, "derefFindingBaseObj" );
                 break;
 
             case DEREF_IN_SEARCHING:
-                element.addAttribute( "derefAliases", "derefInSearching" );
+                element.addAttribute( DEREF_ALIASES, "derefInSearching" );
                 break;
 
             default:
@@ -422,7 +428,7 @@ public class SearchRequestDsml
 
             for ( String entryAttribute : attributes )
             {
-                attributesElement.addElement( "attribute" ).addAttribute( "name", entryAttribute );
+                attributesElement.addElement( "attribute" ).addAttribute( NAME, entryAttribute );
             }
         }
 
@@ -482,7 +488,7 @@ public class SearchRequestDsml
 
             SubstringNode substringFilter = ( SubstringNode ) filter;
 
-            newElement.addAttribute( "name", substringFilter.getAttribute() );
+            newElement.addAttribute( NAME, substringFilter.getAttribute() );
 
             String initial = substringFilter.getInitial();
 
@@ -510,6 +516,7 @@ public class SearchRequestDsml
         else if ( filter instanceof SimpleNode )
         {
             Element newElement = null;
+
             if ( filter instanceof ApproximateNode )
             {
                 newElement = element.addElement( "approxMatch" );
@@ -522,15 +529,16 @@ public class SearchRequestDsml
             {
                 newElement = element.addElement( "greaterOrEqual" );
             }
-            else if ( filter instanceof LessEqNode )
+            else
+            // it is a LessEqNode )
             {
                 newElement = element.addElement( "lessOrEqual" );
             }
 
-            String attributeName = ( ( SimpleNode ) filter ).getAttribute();
-            newElement.addAttribute( "name", attributeName );
-            
-            Value<?> value = ( ( SimpleNode ) filter ).getValue();
+            String attributeName = ( ( SimpleNode<?> ) filter ).getAttribute();
+            newElement.addAttribute( NAME, attributeName );
+
+            Value<?> value = ( ( SimpleNode<?> ) filter ).getValue();
             if ( value != null )
             {
                 if ( ParserUtils.needsBase64Encoding( value ) )
@@ -539,15 +547,15 @@ public class SearchRequestDsml
                     Namespace xsiNamespace = new Namespace( "xsi", ParserUtils.XML_SCHEMA_INSTANCE_URI );
                     element.getDocument().getRootElement().add( xsdNamespace );
                     element.getDocument().getRootElement().add( xsiNamespace );
-                    
-                    Element valueElement = newElement.addElement( "value" ).addText(
+
+                    Element valueElement = newElement.addElement( VALUE ).addText(
                         ParserUtils.base64Encode( value ) );
                     valueElement
-                    .addAttribute( new QName( "type", xsiNamespace ), "xsd:" + ParserUtils.BASE64BINARY );
+                        .addAttribute( new QName( "type", xsiNamespace ), "xsd:" + ParserUtils.BASE64BINARY );
                 }
                 else
                 {
-                    newElement.addElement( "value" ).setText( value.getString() );
+                    newElement.addElement( VALUE ).setText( value.getString() );
                 }
             }
         }
@@ -557,7 +565,7 @@ public class SearchRequestDsml
         {
             Element newElement = element.addElement( "present" );
 
-            newElement.addAttribute( "name", ( ( PresenceNode ) filter ).getAttribute() );
+            newElement.addAttribute( NAME, ( ( PresenceNode ) filter ).getAttribute() );
         }
 
         // EXTENSIBLEMATCH
@@ -575,12 +583,13 @@ public class SearchRequestDsml
                     element.getDocument().getRootElement().add( xsdNamespace );
                     element.getDocument().getRootElement().add( xsiNamespace );
 
-                    Element valueElement = newElement.addElement( "value" ).addText( ParserUtils.base64Encode( value.getValue() ) );
+                    Element valueElement = newElement.addElement( VALUE ).addText(
+                        ParserUtils.base64Encode( value.getValue() ) );
                     valueElement.addAttribute( new QName( "type", xsiNamespace ), "xsd:" + ParserUtils.BASE64BINARY );
                 }
                 else
                 {
-                    newElement.addElement( "value" ).setText( value.getString() );
+                    newElement.addElement( VALUE ).setText( value.getString() );
                 }
             }
 
@@ -801,7 +810,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
-    public SearchRequest addControl( Control control ) throws MessageException
+    public SearchRequest addControl( Control control )
     {
         return ( SearchRequest ) super.addControl( control );
     }
@@ -810,7 +819,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
-    public SearchRequest addAllControls( Control[] controls ) throws MessageException
+    public SearchRequest addAllControls( Control[] controls )
     {
         return ( SearchRequest ) super.addAllControls( controls );
     }
@@ -819,8 +828,44 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
-    public SearchRequest removeControl( Control control ) throws MessageException
+    public SearchRequest removeControl( Control control )
     {
         return ( SearchRequest ) super.removeControl( control );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isFollowReferrals()
+    {
+        return getDecorated().isFollowReferrals();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest followReferrals()
+    {
+        return getDecorated().followReferrals();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isIgnoreReferrals()
+    {
+        return getDecorated().isIgnoreReferrals();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest ignoreReferrals()
+    {
+        return getDecorated().ignoreReferrals();
     }
 }

@@ -35,8 +35,10 @@ public class ByteBuffer
 
     /** the initial size of the buffer in number of bytes: also increment for allocations */
     private final int initialSize;
+
     /** the position into the buffer */
     private int pos = 0;
+
     /** the bytes of the buffer */
     private byte[] buf;
 
@@ -53,6 +55,7 @@ public class ByteBuffer
         {
             throw new IllegalArgumentException( I18n.err( I18n.ERR_04354 ) );
         }
+
         this.initialSize = initialSize;
         this.buf = new byte[initialSize];
     }
@@ -76,9 +79,9 @@ public class ByteBuffer
     }
 
 
-    public final byte get( int ii )
+    public final byte get( int i )
     {
-        return buf[ii];
+        return buf[i];
     }
 
 
@@ -109,24 +112,27 @@ public class ByteBuffer
      */
     public final void append( byte[] bytes )
     {
-        for ( byte b : bytes )
+        if ( pos + bytes.length > buf.length )
         {
-            append( b );
+            growBuffer( bytes.length );
         }
+
+        System.arraycopy( bytes, 0, buf, pos, bytes.length );
+        pos += bytes.length;
     }
 
 
     /**
      * Appends a byte to this buffer.
      */
-    public final void append( byte bite )
+    public final void append( byte b )
     {
         if ( pos >= buf.length )
         {
             growBuffer();
         }
 
-        buf[pos] = bite;
+        buf[pos] = b;
         pos++;
     }
 
@@ -144,6 +150,23 @@ public class ByteBuffer
 
         buf[pos] = ( byte ) val;
         pos++;
+    }
+
+
+    private void growBuffer( int size )
+    {
+        if ( size > initialSize )
+        {
+            byte[] copy = new byte[buf.length + size];
+            System.arraycopy( buf, 0, copy, 0, pos );
+            this.buf = copy;
+        }
+        else
+        {
+            byte[] copy = new byte[buf.length + initialSize];
+            System.arraycopy( buf, 0, copy, 0, pos );
+            this.buf = copy;
+        }
     }
 
 

@@ -19,8 +19,13 @@
  */
 package org.apache.directory.api.ldap.model.schema.registries.helper;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.List;
+
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.schema.DitStructureRule;
+import org.apache.directory.api.ldap.model.schema.registries.Registries;
+
 
 /**
  * An helper class used to store all the methods associated with an DitStructureRule
@@ -28,8 +33,37 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DitStructureRuleHelper
+public final class DitStructureRuleHelper
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( DitStructureRuleHelper.class );
+    private DitStructureRuleHelper()
+    {
+    }
+
+
+    /**
+     * Inject the DitContentRule into the registries, updating the references to
+     * other SchemaObject
+     *
+     * @param ditStructureRule The DitStructureRule to add to the Registries
+     * @param errors The errors we got while adding the DitContentRule to the Registries
+     * @param registries The Registries
+     * @exception If the addition failed
+     */
+    public static void addToRegistries( DitStructureRule ditStructureRule, List<Throwable> errors, Registries registries )
+        throws LdapException
+    {
+        if ( registries != null )
+        {
+            try
+            {
+                ditStructureRule.unlock();
+
+                // NOT YET IMPLEMENTED
+            }
+            finally
+            {
+                ditStructureRule.lock();
+            }
+        }
+    }
 }

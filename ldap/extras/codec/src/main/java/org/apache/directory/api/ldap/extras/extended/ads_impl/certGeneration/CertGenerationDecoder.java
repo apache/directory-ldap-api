@@ -22,13 +22,12 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration;
 
 import java.nio.ByteBuffer;
 
-import org.apache.directory.api.asn1.Asn1Object;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
+import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationRequest;
 
 
 /**
- * 
  * A decoder for CertGenerationObject.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -36,7 +35,7 @@ import org.apache.directory.api.asn1.ber.Asn1Decoder;
 public class CertGenerationDecoder extends Asn1Decoder
 {
     /** The decoder */
-    private static final Asn1Decoder decoder = new Asn1Decoder();
+    private static final Asn1Decoder DECODER = new Asn1Decoder();
 
 
     /**
@@ -47,16 +46,16 @@ public class CertGenerationDecoder extends Asn1Decoder
      * @return a CertGenerationObject object
      * @throws org.apache.directory.api.asn1.DecoderException If the decoding failed
      */
-    public Asn1Object decode( byte[] stream ) throws DecoderException
+    public CertGenerationRequest decode( byte[] stream ) throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.wrap( stream );
         CertGenerationContainer container = new CertGenerationContainer();
-        decoder.decode( bb, container );
-        CertGenerationRequestDecorator certGenObj = container.getCertGenerationObject();
+        DECODER.decode( bb, container );
+        CertGenerationRequestDecorator certGenerationRequestDecorator = container.getCertGenerationRequest();
 
         // Clean the container for the next decoding
         container.clean();
 
-        return certGenObj.getCertGenerationObject();
+        return certGenerationRequestDecorator.getCertGenerationRequest();
     }
 }

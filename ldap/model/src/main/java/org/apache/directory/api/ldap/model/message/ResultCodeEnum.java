@@ -514,7 +514,7 @@ public enum ResultCodeEnum
     // A name error reports a problem related to the distinguished name
     // provided as an argument to an operation [X511, Section 12.5].
     //
-    // For result codes of NO_SUCH_OBJECT, aliasProblem, invalidDNSyntax and
+    // For result codes of noSuchObject, aliasProblem, invalidDNSyntax and
     // aliasDereferencingProblem (see Section 5.2.2.3.7), the matchedDN
     // field is set to the name of the lowest entry (object or alias) in the
     // directory that was matched. If no aliases were dereferenced while
@@ -536,7 +536,7 @@ public enum ResultCodeEnum
      * does not have permission to view or modify the entry. Applicable
      * operations: all except for Bind. Result code type: Specific (Name)
      */
-    NO_SUCH_OBJECT(32, "NO_SUCH_OBJECT"),
+    NO_SUCH_OBJECT(32, "noSuchObject"),
 
     /**
      * An alias has been dereferenced which names no object [X511, Section 12.5]
@@ -1374,7 +1374,7 @@ public enum ResultCodeEnum
                 return OTHER;
             case 118:
                 return CANCELED;
-            case 129:
+            case 119:
                 return NO_SUCH_OPERATION;
             case 120:
                 return TOO_LATE;
@@ -1693,6 +1693,13 @@ public enum ResultCodeEnum
 
             case UNBIND_REQUEST:
                 return set.iterator().next();
+
+            case INTERMEDIATE_RESPONSE:
+                candidates = intersection( set, SEARCH_CODES );
+                break;
+
+            default:
+                throw new IllegalArgumentException( "Unexpected MessageTypeEnum " + type );
         }
 
         // we don't want any codes that do not have anything to do w/ errors
@@ -1828,9 +1835,8 @@ public enum ResultCodeEnum
      */
     private static Set<ResultCodeEnum> getResultCodes( Throwable t )
     {
-        ResultCodeEnum rc;
-
-        if ( ( rc = getResultCode( t ) ) != null )
+        ResultCodeEnum rc = getResultCode( t );
+        if ( rc != null )
         {
             return Collections.singleton( rc );
         }

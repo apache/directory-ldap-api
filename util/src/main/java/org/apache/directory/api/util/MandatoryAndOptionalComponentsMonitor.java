@@ -88,7 +88,7 @@ public class MandatoryAndOptionalComponentsMonitor implements ComponentsMonitor
             }
             catch ( IllegalArgumentException e2 )
             {
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_04416, component ) );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_04416, component ), e1 );
             }
         }
 

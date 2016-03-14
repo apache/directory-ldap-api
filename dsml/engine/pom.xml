@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.api</groupId>
     <artifactId>api-dsml-parent</artifactId>
-    <version>1.0.0-M17-SNAPSHOT</version>
+    <version>1.0.0-M34-SNAPSHOT</version>
   </parent>
 
   <artifactId>api-dsml-engine</artifactId>
@@ -46,13 +46,13 @@
     </dependency>
     
     <dependency>
-      <groupId>xpp3</groupId>
-      <artifactId>xpp3</artifactId>
+      <groupId>org.apache.servicemix.bundles</groupId>
+      <artifactId>org.apache.servicemix.bundles.xpp3</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>dom4j</groupId>
-      <artifactId>dom4j</artifactId>
+      <groupId>org.apache.servicemix.bundles</groupId>
+      <artifactId>org.apache.servicemix.bundles.dom4j</artifactId>
     </dependency>
   </dependencies>
 
@@ -79,8 +79,23 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.dsmlv2.engine</Bundle-SymbolicName>
             <Export-Package>
-                {local-packages};version=${project.version};-noimport:=true
+              org.apache.directory.api.dsmlv2.engine;version=${project.version};-noimport:=true
             </Export-Package>
+            <Import-Package>
+              org.apache.directory.api.asn1;version=${project.version},
+              org.apache.directory.api.dsmlv2;version=${project.version},
+              org.apache.directory.api.dsmlv2.response;version=${project.version},
+              org.apache.directory.api.dsmlv2.request;version=${project.version},
+              org.apache.directory.api.i18n;version=${project.version},
+              org.apache.directory.api.ldap.model.cursor;version=${project.version},
+              org.apache.directory.api.ldap.model.exception;version=${project.version},
+              org.apache.directory.api.ldap.model.message;version=${project.version},
+              org.apache.directory.api.util;version=${project.version},
+              org.apache.directory.ldap.client.api;version=${project.version},
+              org.dom4j;version=${dom4j.version},
+              org.slf4j;version=${slf4j.api.bundleversion},
+              org.xmlpull.v1;version=${xpp3.version}
+            </Import-Package>
           </instructions>
         </configuration>
       </plugin>

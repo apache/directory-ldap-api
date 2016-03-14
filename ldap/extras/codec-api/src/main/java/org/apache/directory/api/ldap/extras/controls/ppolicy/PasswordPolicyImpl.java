@@ -20,9 +20,6 @@
 package org.apache.directory.api.ldap.extras.controls.ppolicy;
 
 
-import org.apache.directory.api.ldap.model.message.Control;
-
-
 /**
  * A simple {@link PasswordPolicy} {@link Control} implementation.
  *

@@ -92,7 +92,7 @@ public class AddReferral extends GrammarAction<LdapMessageContainer<MessageDecor
                 {
                     String badUrl = Strings.utf8ToString( tlv.getValue().getData() );
                     LOG.error( I18n.err( I18n.ERR_04015, badUrl, luee.getMessage() ) );
-                    throw new DecoderException( I18n.err( I18n.ERR_04016, luee.getMessage() ) );
+                    throw new DecoderException( I18n.err( I18n.ERR_04016, luee.getMessage() ), luee );
                 }
             }
             else

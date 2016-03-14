@@ -36,8 +36,8 @@ import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>>
 {
     /** Two flags used to tell if the value is HR or not in serialization */
-    public static final boolean STRING = true;
-    public static final boolean BINARY = false;
+    boolean STRING = true;
+    boolean BINARY = false;
 
 
     /**
@@ -79,7 +79,7 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
 
 
     /**
-     * Get the wrapped value. It will return a copy, not a reference.
+     * Get the User Provided value. It will return a copy, not a reference.
      *
      * @return a copy of the wrapped value
      */
@@ -96,7 +96,7 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
 
 
     /**
-     * Get the wrapped value as a String. If the original value
+     * Get the user provided value as a String. If the original value
      * is binary, this method will return the value as if it was
      * an UTF-8 encoded String.
      *
@@ -166,4 +166,12 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      * @return The length of the interned value
      */
     int length();
+    
+    
+    /**
+     * Apply the AttributeType to this value. Note that this can't be done twice.
+     *
+     * @param attributeType The AttributeType to apply
+     */
+    void apply( AttributeType attributeType ) throws LdapInvalidAttributeValueException;
 }

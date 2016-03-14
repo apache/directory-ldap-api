@@ -36,6 +36,11 @@ public final class LongDecoder
             0x0000FFFFFFFFFFFFL, 0x00FFFFFFFFFFFFFFL, 0xFFFFFFFFFFFFFFFFL };
 
 
+    private LongDecoder()
+    {
+    }
+
+
     /**
      * Parse a byte buffer and send back an long, controlling that this number
      * is in a specified interval.

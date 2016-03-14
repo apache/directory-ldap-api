@@ -60,7 +60,7 @@ public class SchemaBinaryAttributeDetector implements BinaryAttributeDetector
      */
     public boolean isBinary( String attributeId )
     {
-        String attrId = Strings.toLowerCase( attributeId );
+        String attrId = Strings.toLowerCaseAscii( attributeId );
 
         if ( attrId.endsWith( ";binary" ) )
         {

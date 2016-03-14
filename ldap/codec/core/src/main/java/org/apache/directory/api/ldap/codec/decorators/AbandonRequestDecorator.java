@@ -27,8 +27,7 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
-import org.apache.directory.api.ldap.model.exception.MessageException;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.AbandonRequest;
 import org.apache.directory.api.ldap.model.message.Control;
 
@@ -38,8 +37,7 @@ import org.apache.directory.api.ldap.model.message.Control;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public final class AbandonRequestDecorator extends RequestDecorator<AbandonRequest>
-    implements AbandonRequest
+public final class AbandonRequestDecorator extends RequestDecorator<AbandonRequest> implements AbandonRequest
 {
     /**
      * Makes a AddRequest a MessageDecorator.
@@ -90,7 +88,7 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
     /**
      * {@inheritDoc}
      */
-    public AbandonRequest addControl( Control control ) throws MessageException
+    public AbandonRequest addControl( Control control )
     {
         return ( AbandonRequest ) super.addControl( control );
     }
@@ -99,7 +97,7 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
     /**
      * {@inheritDoc}
      */
-    public AbandonRequest addAllControls( Control[] controls ) throws MessageException
+    public AbandonRequest addAllControls( Control[] controls )
     {
         return ( AbandonRequest ) super.addAllControls( controls );
     }
@@ -108,7 +106,7 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
     /**
      * {@inheritDoc}
      */
-    public AbandonRequest removeControl( Control control ) throws MessageException
+    public AbandonRequest removeControl( Control control )
     {
         return ( AbandonRequest ) super.removeControl( control );
     }
@@ -126,7 +124,7 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
         try
         {
             // The tag
-            buffer.put( LdapConstants.ABANDON_REQUEST_TAG );
+            buffer.put( LdapCodecConstants.ABANDON_REQUEST_TAG );
 
             // The length. It has to be evaluated depending on
             // the abandoned messageId value.
@@ -138,7 +136,7 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
         catch ( BufferOverflowException boe )
         {
             String msg = I18n.err( I18n.ERR_04005 );
-            throw new EncoderException( msg );
+            throw new EncoderException( msg, boe );
         }
 
         return buffer;

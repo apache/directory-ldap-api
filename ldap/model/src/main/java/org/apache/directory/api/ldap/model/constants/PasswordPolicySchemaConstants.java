@@ -22,7 +22,7 @@ package org.apache.directory.api.ldap.model.constants;
 
 
 /**
- * PasswordPolicySchemaConstants.
+ * The PasswordPolicy schema ObjectClasses and AttributeTypes.
  * Final reference -> class shouldn't be extended
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -38,65 +38,129 @@ public final class PasswordPolicySchemaConstants
     {
     }
 
-    public final static String PWD_POLICY_OC = "pwdPolicy";
+    // ---- ObjectClasses -----------------------------------------------------
+    // pwdPolicy
+    public static final String PWD_POLICY_OC = "pwdPolicy";
+    public static final String PWD_POLICY_OC_OID = "1.3.6.1.4.1.42.2.27.8.2.1";
 
-    public final static String PWD_ATTRIBUTE_AT = "pwdAttribute";
+    // ---- AttributeTypes ----------------------------------------------------
+    // pwdAttribute
+    public static final String PWD_ATTRIBUTE_AT = "pwdAttribute";
+    public static final String PWD_ATTRIBUTE_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.1";
 
-    public final static String PWD_LOCKOUT_DURATION_AT = "pwdLockoutDuration";
+    // pwdMinAge
+    public static final String PWD_MIN_AGE_AT = "pwdMinAge";
+    public static final String PWD_MIN_AGE_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.2";
 
-    public final static String PWD_MAX_FAILURE_AT = "pwdMaxFailure";
+    // pwdMaxAge
+    public static final String PWD_MAX_AGE_AT = "pwdMaxAge";
+    public static final String PWD_MAX_AGE_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.3";
 
-    public final static String PWD_FAILURE_COUNT_INTERVAL_AT = "pwdFailureCountInterval";
+    // pwdLockoutDuration
+    public static final String PWD_LOCKOUT_DURATION_AT = "pwdLockoutDuration";
+    public static final String PWD_LOCKOUT_DURATION_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.10";
 
-    public final static String PWD_MUST_CHANGE_AT = "pwdMustChange";
+    // pwdInHistory
+    public static final String PWD_IN_HISTORY_AT = "pwdInHistory";
+    public static final String PWD_IN_HISTORY_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.4";
 
-    public final static String PWD_ALLOW_USER_CHANGE_AT = "pwdAllowUserChange";
+    // pwdCheckQuality
+    public static final String PWD_CHECK_QUALITY_AT = "pwdCheckQuality";
+    public static final String PWD_CHECK_QUALITY_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.5";
 
-    public final static String PWD_SAFE_MODIFY_AT = "pwdSafeModify";
+    // pwdMinLength
+    public static final String PWD_MIN_LENGTH_AT = "pwdMinLength";
+    public static final String PWD_MIN_LENGTH_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.6;";
 
-    public final static String PWD_CHANGED_TIME_AT = "pwdChangedTime";
+    // pwdExpireWarning
+    public static final String PWD_EXPIRE_WARNING_AT = "pwdExpireWarning";
+    public static final String PWD_EXPIRE_WARNING_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.7;";
 
-    public final static String PWD_ACCOUNT_LOCKED_TIME_AT = "pwdAccountLockedTime";
+    // pwdGraceAuthNLimit
+    public static final String PWD_GRACE_AUTHN_LIMIT_AT = "pwdGraceAuthNLimit";
+    public static final String PWD_GRACE_AUTHN_LIMIT_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.;";
 
-    public final static String PWD_FAILURE_TIME_AT = "pwdFailureTime";
+    // pwdLockout
+    public static final String PWD_LOCKOUT_AT = "pwdLockout";
+    public static final String PWD_LOCKOUT_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.9";
 
-    public final static String PWD_MIN_AGE_AT = "pwdMinAge";
+    // pwdMaxFailure
+    public static final String PWD_MAX_FAILURE_AT = "pwdMaxFailure";
+    public static final String PWD_MAX_FAILURE_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.11";
 
-    public final static String PWD_HISTORY_AT = "pwdHistory";
+    // pwdFailureCountInterval
+    public static final String PWD_FAILURE_COUNT_INTERVAL_AT = "pwdFailureCountInterval";
+    public static final String PWD_FAILURE_COUNT_INTERVAL_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.12";
 
-    public final static String PWD_GRACE_USE_TIME_AT = "pwdGraceUseTime";
+    // public static final String PWD_MUST_CHANGE_AT = 
+    public static final String PWD_MUST_CHANGE_AT = "pwdMustChange";
+    public static final String PWD_MUST_CHANGE_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.13";
 
-    public final static String PWD_RESET_AT = "pwdReset";
+    // pwdAllowUserChange
+    public static final String PWD_ALLOW_USER_CHANGE_AT = "pwdAllowUserChange";
+    public static final String PWD_ALLOW_USER_CHANGE_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.14";
 
-    public final static String PWD_POLICY_SUBENTRY_AT = "pwdPolicySubentry";
+    // pwdSafeModify
+    public static final String PWD_SAFE_MODIFY_AT = "pwdSafeModify";
+    public static final String PWD_SAFE_MODIFY_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.15";
 
-    public final static String PWD_MIN_DELAY_AT = "pwdMinDelay";
+    // pwdChangedTime
+    public static final String PWD_CHANGED_TIME_AT = "pwdChangedTime";
+    public static final String PWD_CHANGED_TIME_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.16";
 
-    public final static String PWD_MAX_DELAY_AT = "pwdMaxDelay";
+    // pwdAccountLockedTime
+    public static final String PWD_ACCOUNT_LOCKED_TIME_AT = "pwdAccountLockedTime";
+    public static final String PWD_ACCOUNT_LOCKED_TIME_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.17";
 
-    public final static String PWD_MAX_IDLE_AT = "pwdMaxIdle";
+    // pwdFailureTime
+    public static final String PWD_FAILURE_TIME_AT = "pwdFailureTime";
+    public static final String PWD_FAILURE_TIME_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.19";
 
-    public final static String PWD_START_TIME_AT = "pwdStartTime";
+    // pwdHistory
+    public static final String PWD_HISTORY_AT = "pwdHistory";
+    public static final String PWD_HISTORY_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.20";
 
-    public final static String PWD_END_TIME_AT = "pwdEndTime";
+    // pwdGraceUseTime
+    public static final String PWD_GRACE_USE_TIME_AT = "pwdGraceUseTime";
+    public static final String PWD_GRACE_USE_TIME_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.21";
 
-    public final static String PWD_LAST_SUCCESS_AT = "pwdLastSuccess";
+    // pwdReset
+    public static final String PWD_RESET_AT = "pwdReset";
+    public static final String PWD_RESET_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.22";
 
-    public final static String PWD_MAX_AGE_AT = "pwdMaxAge";
+    // pwdPolicySubentry
+    public static final String PWD_POLICY_SUBENTRY_AT = "pwdPolicySubentry";
+    public static final String PWD_POLICY_SUBENTRY_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.23";
 
-    public final static String PWD_GRACE_EXPIRE_AT = "pwdGraceExpire";
+    // pwdMinDelay
+    public static final String PWD_MIN_DELAY_AT = "pwdMinDelay";
+    public static final String PWD_MIN_DELAY_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.24";
 
-    public final static String PWD_MAX_LENGTH_AT = "pwdMaxLength";
+    // pwdMaxDelay
+    public static final String PWD_MAX_DELAY_AT = "pwdMaxDelay";
+    public static final String PWD_MAX_DELAY_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.25";
 
-    public final static String PWD_IN_HISTORY_AT = "pwdInHistory";
+    // pwdMaxIdle
+    public static final String PWD_MAX_IDLE_AT = "pwdMaxIdle";
+    public static final String PWD_MAX_IDLE_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.26";
 
-    public final static String PWD_CHECK_QUALITY_AT = "pwdCheckQuality";
+    // pwdStartTime
+    public static final String PWD_START_TIME_AT = "pwdStartTime";
+    public static final String PWD_START_TIME_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.27";
 
-    public final static String PWD_MIN_LENGTH_AT = "pwdMinLength";
+    // pwdEndTime
+    public static final String PWD_END_TIME_AT = "pwdEndTime";
+    public static final String PWD_END_TIME_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.28";
 
-    public final static String PWD_EXPIRE_WARNING_AT = "pwdExpireWarning";
+    // pwdLastSuccess
+    public static final String PWD_LAST_SUCCESS_AT = "pwdLastSuccess";
+    public static final String PWD_LAST_SUCCESS_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.29";
 
-    public final static String PWD_GRACE_AUTHN_LIMIT_AT = "pwdGraceAuthNLimit";
+    // pwdGraceExpire
+    public static final String PWD_GRACE_EXPIRE_AT = "pwdGraceExpire";
+    public static final String PWD_GRACE_EXPIRE_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.30";
 
-    public final static String PWD_LOCKOUT_AT = "pwdLockout";
+    // pwdMaxLength
+    public static final String PWD_MAX_LENGTH_AT = "pwdMaxLength";
+    public static final String PWD_MAX_LENGTH_AT_OID = "1.3.6.1.4.1.42.2.27.8.1.31";
 }

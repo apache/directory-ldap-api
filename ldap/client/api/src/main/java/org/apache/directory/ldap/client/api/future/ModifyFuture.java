@@ -41,25 +41,9 @@ public class ModifyFuture extends ResponseFuture<ModifyResponse>
      * @param connection the LDAP connection
      * @param messageId The associated messageId
      */
-    // Implicit super constructor ResponseFuture<BindResponse>() is undefined for default constructor. 
-    @SuppressWarnings("PMD.UselessOverridingMethod")
     public ModifyFuture( LdapConnection connection, int messageId )
     {
         super( connection, messageId );
-    }
-
-
-    /**
-     * Get the ModifyResponse, blocking until one is received.
-     *
-     * @return the modify response
-     * @throws InterruptedException {@inheritDoc}
-     * @throws ExecutionException {@inheritDoc}
-     */
-    @SuppressWarnings("PMD.UselessOverridingMethod")
-    public ModifyResponse get() throws InterruptedException, ExecutionException
-    {
-        return super.get();
     }
 
 

@@ -27,7 +27,7 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.CompareResponse;
 
 
@@ -51,25 +51,6 @@ public class CompareResponseDecorator extends ResponseDecorator<CompareResponse>
     public CompareResponseDecorator( LdapApiService codec, CompareResponse decoratedMessage )
     {
         super( codec, decoratedMessage );
-    }
-
-
-    /**
-     * Stores the encoded length for the CompareResponse
-     * @param compareResponseLength The encoded length
-     */
-    public void setCompareResponseLength( int compareResponseLength )
-    {
-        this.compareResponseLength = compareResponseLength;
-    }
-
-
-    /**
-     * @return The encoded CompareResponse's length
-     */
-    public int getCompareResponseLength()
-    {
-        return compareResponseLength;
     }
 
 
@@ -105,9 +86,7 @@ public class CompareResponseDecorator extends ResponseDecorator<CompareResponse>
      */
     public int computeLength()
     {
-        int compareResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
-
-        setCompareResponseLength( compareResponseLength );
+        compareResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
 
         return 1 + TLV.getNbBytes( compareResponseLength ) + compareResponseLength;
     }
@@ -124,15 +103,15 @@ public class CompareResponseDecorator extends ResponseDecorator<CompareResponse>
         try
         {
             // The CompareResponse Tag
-            buffer.put( LdapConstants.COMPARE_RESPONSE_TAG );
-            buffer.put( TLV.getBytes( getCompareResponseLength() ) );
+            buffer.put( LdapCodecConstants.COMPARE_RESPONSE_TAG );
+            buffer.put( TLV.getBytes( compareResponseLength ) );
 
             // The LdapResult
             ( ( LdapResultDecorator ) getLdapResult() ).encode( buffer );
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
 
         return buffer;

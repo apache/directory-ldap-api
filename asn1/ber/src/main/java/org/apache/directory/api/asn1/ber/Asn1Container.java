@@ -92,6 +92,14 @@ public interface Asn1Container
 
 
     /**
+     * Sets the grammar
+     *
+     * @param grammar The grammar to set
+     */
+    void setGrammar( Grammar<?> grammar );
+
+
+    /**
      * Gets the transition
      *
      * @return Returns the transition from the previous state to the new state
@@ -157,14 +165,20 @@ public interface Asn1Container
      * to control the PDU size and avoid PDU exceeding the maximum allowed
      * size to break the server.
      */
-    int getDecodeBytes();
+    int getDecodedBytes();
+
+
+    /**
+     * @param decodedBytes The number of decoded bytes for this message.
+     */
+    void setDecodedBytes( int decodeBytes );
 
 
     /**
      * Increment the decodedBytes by the latest received buffer's size.
      * @param nb The buffer size.
      */
-    void incrementDecodeBytes( int nb );
+    void incrementDecodedBytes( int nb );
 
 
     /**

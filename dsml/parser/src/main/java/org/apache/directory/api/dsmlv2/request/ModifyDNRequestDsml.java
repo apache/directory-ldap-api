@@ -21,7 +21,6 @@ package org.apache.directory.api.dsmlv2.request;
 
 
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.api.ldap.model.message.ModifyDnRequest;
@@ -78,7 +77,7 @@ public class ModifyDNRequestDsml
     {
         Element element = super.toDsml( root );
 
-        ModifyDnRequest request = ( ModifyDnRequest ) getDecorated();
+        ModifyDnRequest request = getDecorated();
 
         // Dn
         if ( request.getName() != null )
@@ -278,7 +277,7 @@ public class ModifyDNRequestDsml
     /**
      * {@inheritDoc}
      */
-    public ModifyDnRequest addControl( Control control ) throws MessageException
+    public ModifyDnRequest addControl( Control control )
     {
         return ( ModifyDnRequest ) super.addControl( control );
     }
@@ -287,7 +286,7 @@ public class ModifyDNRequestDsml
     /**
      * {@inheritDoc}
      */
-    public ModifyDnRequest addAllControls( Control[] controls ) throws MessageException
+    public ModifyDnRequest addAllControls( Control[] controls )
     {
         return ( ModifyDnRequest ) super.addAllControls( controls );
     }
@@ -296,7 +295,7 @@ public class ModifyDNRequestDsml
     /**
      * {@inheritDoc}
      */
-    public ModifyDnRequest removeControl( Control control ) throws MessageException
+    public ModifyDnRequest removeControl( Control control )
     {
         return ( ModifyDnRequest ) super.removeControl( control );
     }

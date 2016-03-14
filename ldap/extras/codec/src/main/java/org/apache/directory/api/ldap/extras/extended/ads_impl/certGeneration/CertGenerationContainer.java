@@ -31,7 +31,7 @@ import org.apache.directory.api.asn1.ber.AbstractContainer;
 public class CertGenerationContainer extends AbstractContainer
 {
     /** CertGenerationObject */
-    private CertGenerationRequestDecorator certGenObj;
+    private CertGenerationRequestDecorator certGenerationRequest;
 
 
     /**
@@ -41,30 +41,29 @@ public class CertGenerationContainer extends AbstractContainer
     public CertGenerationContainer()
     {
         super();
-        stateStack = new int[1];
-        grammar = CertGenerationGrammar.getInstance();
+        setGrammar( CertGenerationGrammar.getInstance() );
         setTransition( CertGenerationStatesEnum.START_STATE );
     }
 
 
     /**
-     * @return Returns the CertGenerationObject instance.
+     * @return Returns the CertGenerationRequest instance.
      */
-    public CertGenerationRequestDecorator getCertGenerationObject()
+    public CertGenerationRequestDecorator getCertGenerationRequest()
     {
-        return certGenObj;
+        return certGenerationRequest;
     }
 
 
     /**
-     * Set a CertGenerationObject Object into the container. It will be completed by
+     * Set a CertGenerationRequest instance into the container. It will be completed by
      * the ldapDecoder.
      * 
-     * @param certGenObj the CertGenerationObject to set.
+     * @param certGenerationRequest the CertGenerationRequest to set.
      */
-    public void setCertGenerationObject( CertGenerationRequestDecorator certGenObj )
+    public void setCertGenerationRequest( CertGenerationRequestDecorator certGenerationRequest )
     {
-        this.certGenObj = certGenObj;
+        this.certGenerationRequest = certGenerationRequest;
     }
 
 
@@ -74,6 +73,6 @@ public class CertGenerationContainer extends AbstractContainer
     public void clean()
     {
         super.clean();
-        certGenObj = null;
+        certGenerationRequest = null;
     }
 }

@@ -27,6 +27,7 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.entry.BinaryValue;
 import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
+import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -103,14 +104,16 @@ public abstract class AbstractExprNode implements ExprNode
         }
 
         // Check all the annotation
-        for ( String key : annotations.keySet() )
+        for ( Map.Entry<String, Object> entry : annotations.entrySet() )
         {
+            String key = entry.getKey();
+        
             if ( !that.annotations.containsKey( key ) )
             {
                 return false;
             }
 
-            Object thisAnnotation = annotations.get( key );
+            Object thisAnnotation = entry.getValue();
             Object thatAnnotation = that.annotations.get( key );
 
             if ( thisAnnotation == null )
@@ -197,7 +200,7 @@ public abstract class AbstractExprNode implements ExprNode
                         sb.append( '0' );
                     }
 
-                    sb.append( digit.toUpperCase() );
+                    sb.append( Strings.upperCase( digit ) );
                 }
             }
 
@@ -227,9 +230,10 @@ public abstract class AbstractExprNode implements ExprNode
 
         if ( annotations != null )
         {
-            for ( String key : annotations.keySet() )
+            for ( Map.Entry<String, Object> entry : annotations.entrySet() )
             {
-                Object value = annotations.get( key );
+                String key = entry.getKey();
+                Object value = entry.getValue();
 
                 h = h * 17 + key.hashCode();
                 h = h * 17 + ( value == null ? 0 : value.hashCode() );
@@ -318,12 +322,10 @@ public abstract class AbstractExprNode implements ExprNode
 
             if ( annotations != null )
             {
-                for ( String key : annotations.keySet() )
+                for ( Map.Entry<String, Object> entry : annotations.entrySet() )
                 {
-                    Object value = annotations.get( key );
-
                     // Note : the value aren't cloned ! 
-                    ( ( AbstractExprNode ) clone ).annotations.put( key, value );
+                    ( ( AbstractExprNode ) clone ).annotations.put( entry.getKey(), entry.getValue() );
                 }
             }
 

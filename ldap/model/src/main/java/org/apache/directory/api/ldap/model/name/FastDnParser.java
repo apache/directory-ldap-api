@@ -28,7 +28,6 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.util.Position;
-import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -81,8 +80,10 @@ import org.apache.directory.api.util.Strings;
         }
 
         Position pos = new Position();
+        char[] chars = name.toCharArray();
+
         pos.start = 0;
-        pos.length = name.length();
+        pos.length = chars.length;
 
         while ( true )
         {
@@ -95,7 +96,9 @@ import org.apache.directory.api.util.Strings;
                 // end of line reached
                 break;
             }
-            char c = nextChar( name, pos, true );
+
+            char c = nextChar( chars, pos, true );
+
             switch ( c )
             {
                 case ',':
@@ -125,6 +128,7 @@ import org.apache.directory.api.util.Strings;
         {
             throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04193 ) );
         }
+
         if ( rdn == null )
         {
             throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04194 ) );
@@ -141,35 +145,34 @@ import org.apache.directory.api.util.Strings;
     private static void parseRdnInternal( String name, Position pos, Rdn rdn ) throws LdapInvalidDnException
     {
         int rdnStart = pos.start;
+        char[] chars = name.toCharArray();
 
         // SPACE*
-        matchSpaces( name, pos );
+        matchSpaces( chars, pos );
 
         // attributeType: ALPHA (ALPHA|DIGIT|HYPEN) | NUMERICOID
-        String type = matchAttributeType( name, pos );
+        String type = matchAttributeType( chars, pos );
 
         // SPACE*
-        matchSpaces( name, pos );
+        matchSpaces( chars, pos );
 
         // EQUALS
-        matchEquals( name, pos );
+        matchEquals( chars, pos );
 
         // SPACE*
-        matchSpaces( name, pos );
+        matchSpaces( chars, pos );
 
         // here we only match "simple" values
         // stops at \ + # " -> Too Complex Exception
-        String upValue = matchValue( name, pos );
-        String value = Strings.trimRight( upValue );
+        String upValue = matchValue( chars, pos );
         // TODO: trim, normalize, etc
 
         // SPACE*
-        matchSpaces( name, pos );
+        matchSpaces( chars, pos );
 
         String upName = name.substring( rdnStart, pos.start );
 
-        Ava ava = new Ava( type, type, new StringValue( upValue ),
-            new StringValue( value ), upName );
+        Ava ava = new Ava( type, type, new StringValue( upValue ), upName );
         rdn.addAVA( null, ava );
 
         rdn.setUpName( upName );
@@ -184,11 +187,12 @@ import org.apache.directory.api.util.Strings;
      * @param pos the pos
      * @throws LdapInvalidDnException 
      */
-    private static void matchSpaces( String name, Position pos ) throws LdapInvalidDnException
+    private static void matchSpaces( char[] name, Position pos ) throws LdapInvalidDnException
     {
         while ( hasMoreChars( pos ) )
         {
             char c = nextChar( name, pos, true );
+
             if ( c != ' ' )
             {
                 pos.start--;
@@ -208,9 +212,10 @@ import org.apache.directory.api.util.Strings;
      * 
      * @throws LdapInvalidDnException the invalid name exception
      */
-    private static String matchAttributeType( String name, Position pos ) throws LdapInvalidDnException
+    private static String matchAttributeType( char[] name, Position pos ) throws LdapInvalidDnException
     {
         char c = nextChar( name, pos, false );
+
         switch ( c )
         {
             case 'A':
@@ -299,12 +304,14 @@ import org.apache.directory.api.util.Strings;
      * 
      * @throws LdapInvalidDnException the invalid name exception
      */
-    private static String matchAttributeTypeDescr( String name, Position pos ) throws LdapInvalidDnException
+    private static String matchAttributeTypeDescr( char[] name, Position pos ) throws LdapInvalidDnException
     {
-        StringBuilder descr = new StringBuilder();
+        int start = pos.start;
+
         while ( hasMoreChars( pos ) )
         {
             char c = nextChar( name, pos, true );
+
             switch ( c )
             {
                 case 'A':
@@ -370,17 +377,18 @@ import org.apache.directory.api.util.Strings;
                 case '8':
                 case '9':
                 case '-':
-                    descr.append( c );
+                case '_':
+                    // Violation of the RFC, just because those idiots at Microsoft decided to support it...
                     break;
 
                 case ' ':
                 case '=':
                     pos.start--;
-                    return descr.toString();
+                    return new String( name, start, pos.start - start );
 
                 case '.':
                     // occurs for RDNs of form "oid.1.2.3=test"
-                    throw new TooComplexException();
+                    throw TooComplexDnException.INSTANCE;
 
                 default:
                     // error
@@ -388,7 +396,8 @@ import org.apache.directory.api.util.Strings;
                         pos.start ) );
             }
         }
-        return descr.toString();
+
+        return new String( name, start, pos.start - start );
     }
 
 
@@ -402,33 +411,37 @@ import org.apache.directory.api.util.Strings;
      * 
      * @throws org.apache.directory.api.ldap.model.exception.LdapInvalidDnException the invalid name exception
      */
-    private static String matchAttributeTypeNumericOid( String name, Position pos ) throws LdapInvalidDnException
+    private static String matchAttributeTypeNumericOid( char[] name, Position pos ) throws LdapInvalidDnException
     {
-        StringBuilder numericOid = new StringBuilder();
         int dotCount = 0;
+        int start = pos.start;
+
         while ( true )
         {
             char c = nextChar( name, pos, true );
+
             switch ( c )
             {
                 case '0':
                     // leading '0', no other digit may follow!
-                    numericOid.append( c );
                     c = nextChar( name, pos, true );
+
                     switch ( c )
                     {
                         case '.':
-                            numericOid.append( c );
                             dotCount++;
                             break;
+
                         case ' ':
                         case '=':
                             pos.start--;
                             break;
+
                         default:
                             throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err(
                                 I18n.ERR_04197, c, pos.start ) );
                     }
+
                     break;
 
                 case '1':
@@ -440,11 +453,12 @@ import org.apache.directory.api.util.Strings;
                 case '7':
                 case '8':
                 case '9':
-                    numericOid.append( c );
                     boolean inInnerLoop = true;
+
                     while ( inInnerLoop )
                     {
                         c = nextChar( name, pos, true );
+
                         switch ( c )
                         {
                             case ' ':
@@ -452,6 +466,7 @@ import org.apache.directory.api.util.Strings;
                                 inInnerLoop = false;
                                 pos.start--;
                                 break;
+
                             case '.':
                                 inInnerLoop = false;
                                 dotCount++;
@@ -466,25 +481,29 @@ import org.apache.directory.api.util.Strings;
                             case '7':
                             case '8':
                             case '9':
-                                numericOid.append( c );
                                 break;
+
                             default:
                                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err(
                                     I18n.ERR_04197, c, pos.start ) );
                         }
                     }
+
                     break;
+
                 case ' ':
                 case '=':
                     pos.start--;
+
                     if ( dotCount > 0 )
                     {
-                        return numericOid.toString();
+                        return new String( name, start, pos.start - start );
                     }
                     else
                     {
                         throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04198 ) );
                     }
+
                 default:
                     throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04199, c,
                         pos.start ) );
@@ -501,9 +520,10 @@ import org.apache.directory.api.util.Strings;
      * 
      * @throws LdapInvalidDnException the invalid name exception
      */
-    private static void matchEquals( String name, Position pos ) throws LdapInvalidDnException
+    private static void matchEquals( char[] name, Position pos ) throws LdapInvalidDnException
     {
         char c = nextChar( name, pos, true );
+
         if ( c != '=' )
         {
             throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04200, c, pos.start ) );
@@ -523,37 +543,42 @@ import org.apache.directory.api.util.Strings;
      * 
      * @throws LdapInvalidDnException the invalid name exception
      */
-    private static String matchValue( String name, Position pos ) throws LdapInvalidDnException
+    private static String matchValue( char[] name, Position pos ) throws LdapInvalidDnException
     {
-        StringBuilder value = new StringBuilder();
+        //StringBuilder value = new StringBuilder();
+        int start = pos.start;
         int numTrailingSpaces = 0;
+
         while ( true )
         {
             if ( !hasMoreChars( pos ) )
             {
                 pos.start -= numTrailingSpaces;
-                return value.substring( 0, value.length() - numTrailingSpaces );
+                return new String( name, start, pos.start - start );
             }
+
             char c = nextChar( name, pos, true );
+
             switch ( c )
             {
                 case '\\':
                 case '+':
                 case '#':
                 case '"':
-                    throw new TooComplexException();
+                    throw TooComplexDnException.INSTANCE;
+
                 case ',':
                 case ';':
                     pos.start--;
                     pos.start -= numTrailingSpaces;
-                    return value.substring( 0, value.length() - numTrailingSpaces );
+                    return new String( name, start, pos.start - start );
+
                 case ' ':
                     numTrailingSpaces++;
-                    value.append( c );
                     break;
+
                 default:
                     numTrailingSpaces = 0;
-                    value.append( c );
             }
         }
     }
@@ -569,17 +594,20 @@ import org.apache.directory.api.util.Strings;
      * @return the character
      * @throws LdapInvalidDnException If no more characters are available
      */
-    private static char nextChar( String name, Position pos, boolean increment ) throws LdapInvalidDnException
+    private static char nextChar( char[] name, Position pos, boolean increment ) throws LdapInvalidDnException
     {
         if ( !hasMoreChars( pos ) )
         {
             throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04201, pos.start ) );
         }
-        char c = name.charAt( pos.start );
+
+        char c = name[pos.start];
+
         if ( increment )
         {
             pos.start++;
         }
+
         return c;
     }
 

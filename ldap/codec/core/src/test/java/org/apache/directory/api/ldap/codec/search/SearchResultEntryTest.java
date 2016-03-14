@@ -190,7 +190,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         {
             Attribute attribute = entry.get( "objectclass" );
 
-            assertEquals( Strings.toLowerCase( "objectClass" ), Strings.toLowerCase( attribute.getUpId() ) );
+            assertEquals( Strings.toLowerCaseAscii( "objectClass" ), Strings.toLowerCaseAscii( attribute.getUpId() ) );
 
             assertTrue( attribute.contains( "top" ) );
             assertTrue( attribute.contains( "organizationalUnit" ) );
@@ -398,8 +398,8 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
             Attribute attribute = entry.get( expectedAttributes[i] );
 
             assertEquals(
-                Strings.toLowerCase( expectedAttributes[i] ),
-                Strings.toLowerCase( attribute.getUpId() ) );
+                Strings.toLowerCaseAscii( expectedAttributes[i] ),
+                Strings.toLowerCaseAscii( attribute.getUpId() ) );
 
             assertTrue( attribute.contains( "top" ) );
             assertTrue( attribute.contains( "organizationalUnit" ) );
@@ -585,7 +585,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         {
             Attribute attribute = entry.get( "objectclass" );
 
-            assertEquals( Strings.toLowerCase( "objectClass" ), Strings.toLowerCase( attribute.getUpId() ) );
+            assertEquals( Strings.toLowerCaseAscii( "objectClass" ), Strings.toLowerCaseAscii( attribute.getUpId() ) );
 
             assertTrue( attribute.contains( "top" ) );
             assertTrue( attribute.contains( "person" ) );
@@ -1350,7 +1350,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         {
             Attribute attribute = entry.get( "objectclass" );
 
-            assertEquals( Strings.toLowerCase( "objectClass" ), Strings.toLowerCase( attribute.getUpId() ) );
+            assertEquals( Strings.toLowerCaseAscii( "objectClass" ), Strings.toLowerCaseAscii( attribute.getUpId() ) );
             assertEquals( 0, attribute.size() );
         }
 
@@ -1494,11 +1494,11 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         assertEquals( 2, entry.size() );
 
         Attribute attribute = entry.get( "objectclass" );
-        assertEquals( Strings.toLowerCase( "objectClass" ), Strings.toLowerCase( attribute.getUpId() ) );
+        assertEquals( Strings.toLowerCaseAscii( "objectClass" ), Strings.toLowerCaseAscii( attribute.getUpId() ) );
         assertEquals( 0, attribute.size() );
 
         attribute = entry.get( "objectclazz" );
-        assertEquals( Strings.toLowerCase( "objectClazz" ), Strings.toLowerCase( attribute.getUpId() ) );
+        assertEquals( Strings.toLowerCaseAscii( "objectClazz" ), Strings.toLowerCaseAscii( attribute.getUpId() ) );
         assertEquals( 0, attribute.size() );
 
         // Check the encoding
@@ -1656,7 +1656,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         {
             Attribute attribute = entry.get( "objectclass" );
 
-            assertEquals( Strings.toLowerCase( "objectClass" ), Strings.toLowerCase( attribute.getUpId() ) );
+            assertEquals( Strings.toLowerCaseAscii( "objectClass" ), Strings.toLowerCaseAscii( attribute.getUpId() ) );
 
             assertEquals( 0, attribute.size() );
         }
@@ -1799,7 +1799,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         {
             Attribute attribute = entry.get( "objectclass" );
 
-            assertEquals( Strings.toLowerCase( "objectClass" ), Strings.toLowerCase( attribute.getUpId() ) );
+            assertEquals( Strings.toLowerCaseAscii( "objectClass" ), Strings.toLowerCaseAscii( attribute.getUpId() ) );
 
             assertTrue( attribute.contains( "" ) );
         }
@@ -1962,7 +1962,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         {
             Attribute attribute = entry.get( "objectclass" );
 
-            assertEquals( Strings.toLowerCase( "objectClass" ), Strings.toLowerCase( attribute.getUpId() ) );
+            assertEquals( Strings.toLowerCaseAscii( "objectClass" ), Strings.toLowerCaseAscii( attribute.getUpId() ) );
 
             assertTrue( attribute.contains( "" ) );
         }

@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.api</groupId>
     <artifactId>api-ldap-parent</artifactId>
-    <version>1.0.0-M17-SNAPSHOT</version>
+    <version>1.0.0-M34-SNAPSHOT</version>
   </parent>
   
   <artifactId>api-ldap-model</artifactId>
@@ -61,12 +61,21 @@
       <groupId>org.apache.mina</groupId>
       <artifactId>mina-core</artifactId>
     </dependency>
-    
+
+  <!-- The original antlr artifact is needed by the antlr-maven-plugin which 
+    checks for its existence within the classpath. Use scope provided to avoid 
+    propagation to dependent projects. Choosen artifact is a valid OSGi bundle 
+    repackaged by ServiceMix team, kudos to them. -->
     <dependency>
       <groupId>antlr</groupId>
       <artifactId>antlr</artifactId>
+      <scope>provided</scope>
     </dependency>
-    
+    <dependency>
+      <groupId>org.apache.servicemix.bundles</groupId>
+      <artifactId>org.apache.servicemix.bundles.antlr</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
@@ -75,6 +84,17 @@
     <dependency>
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>findbugs</groupId>
+      <artifactId>annotations</artifactId>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
@@ -139,8 +159,48 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.ldap.model</Bundle-SymbolicName>
             <Export-Package>
-                {local-packages};version=${project.version};-noimport:=true
+              org.apache.directory.api.ldap.model.constants;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.model.csn;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.model.cursor;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.model.entry;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.model.exception;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.model.filter;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.model.ldif;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.model.ldif.anonymizer;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.model.message;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.model.message.controls;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.model.message.extended;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.model.name;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.model.password;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.model.schema;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.model.schema.comparators;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.model.schema.normalizers;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.model.schema.parsers;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.model.schema.registries;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.model.schema.registries.helper;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.model.schema.syntaxCheckers;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.model.subtree;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.model.url;version=${project.version};-noimport:=true
             </Export-Package>
+            <Import-Package>
+              antlr;version=${antlr.version},
+              antlr.collections.impl;version=${antlr.version},
+              org.apache.commons.codec.digest;version=${commons.codec.version},
+              org.apache.commons.collections;version=${commons.collections.version},
+              org.apache.commons.collections.list;version=${commons.collections.version},
+              org.apache.commons.collections.map;version=${commons.collections.version},
+              org.apache.commons.lang;version=${commons.lang.version},
+              org.apache.commons.lang.exception;version=${commons.lang.version},
+              org.apache.directory.api.asn1;version=${project.version},
+              org.apache.directory.api.asn1.util;version=${project.version},
+              org.apache.directory.api.i18n;version=${project.version},
+              org.apache.directory.api.util;version=${project.version},
+              org.apache.directory.api.util.exception;version=${project.version},
+              org.slf4j;version=${slf4j.api.bundleversion},
+              javax.naming,
+              javax.naming.directory,
+              javax.naming.ldap
+            </Import-Package>
           </instructions>
         </configuration>
       </plugin>

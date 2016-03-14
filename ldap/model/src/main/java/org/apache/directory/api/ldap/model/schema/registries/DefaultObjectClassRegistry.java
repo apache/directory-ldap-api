@@ -235,9 +235,9 @@ public class DefaultObjectClassRegistry extends DefaultSchemaObjectRegistry<Obje
         super.clear();
 
         // and clear the descendant
-        for ( String oid : oidToDescendants.keySet() )
+        for ( Map.Entry<String, Set<ObjectClass>> entry : oidToDescendants.entrySet() )
         {
-            Set<ObjectClass> descendants = oidToDescendants.get( oid );
+            Set<ObjectClass> descendants = entry.getValue();
 
             if ( descendants != null )
             {

@@ -71,13 +71,13 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
     /** Initialization of the fax parameters set of values */
     static
     {
-        faxParameters.add( Strings.toLowerCase( TWO_DIMENSIONAL ) );
-        faxParameters.add( Strings.toLowerCase( FINE_RESOLUTION ) );
-        faxParameters.add( Strings.toLowerCase( UNLIMITED_LENGTH ) );
-        faxParameters.add( Strings.toLowerCase( B4_LENGTH ) );
-        faxParameters.add( Strings.toLowerCase( A3_LENGTH ) );
-        faxParameters.add( Strings.toLowerCase( B4_WIDTH ) );
-        faxParameters.add( Strings.toLowerCase( UNCOMPRESSED ) );
+        faxParameters.add( Strings.toLowerCaseAscii( TWO_DIMENSIONAL ) );
+        faxParameters.add( Strings.toLowerCaseAscii( FINE_RESOLUTION ) );
+        faxParameters.add( Strings.toLowerCaseAscii( UNLIMITED_LENGTH ) );
+        faxParameters.add( Strings.toLowerCaseAscii( B4_LENGTH ) );
+        faxParameters.add( Strings.toLowerCaseAscii( A3_LENGTH ) );
+        faxParameters.add( Strings.toLowerCaseAscii( B4_WIDTH ) );
+        faxParameters.add( Strings.toLowerCaseAscii( UNCOMPRESSED ) );
     }
 
 
@@ -172,7 +172,7 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
                     faxParam = strValue.substring( dollarPos + 1, newDollar );
                 }
 
-                if ( faxParam == null )
+                if ( faxParam.length() == 0 )
                 {
                     // Not allowed
                     LOG.debug( "Syntax invalid for '{}'", value );
@@ -180,7 +180,7 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
                 }
 
                 // Relax a little bit the syntax by lowercasing the param
-                faxParam = Strings.toLowerCase( faxParam );
+                faxParam = Strings.toLowerCaseAscii( faxParam );
 
                 if ( !faxParameters.contains( faxParam ) )
                 {

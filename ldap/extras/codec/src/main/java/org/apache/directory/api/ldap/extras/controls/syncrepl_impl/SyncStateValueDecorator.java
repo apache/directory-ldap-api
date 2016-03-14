@@ -32,9 +32,9 @@ import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ControlDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.controls.SyncStateTypeEnum;
-import org.apache.directory.api.ldap.extras.controls.SyncStateValue;
-import org.apache.directory.api.ldap.extras.controls.SyncStateValueImpl;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateTypeEnum;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateValue;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateValueImpl;
 
 
 /**
@@ -48,7 +48,7 @@ public class SyncStateValueDecorator extends ControlDecorator<SyncStateValue> im
     private int syncStateSeqLength;
 
     /** An instance of this decoder */
-    private static final Asn1Decoder decoder = new Asn1Decoder();
+    private static final Asn1Decoder DECODER = new Asn1Decoder();
 
 
     public SyncStateValueDecorator( LdapApiService codec )
@@ -235,7 +235,7 @@ public class SyncStateValueDecorator extends ControlDecorator<SyncStateValue> im
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );
         SyncStateValueContainer container = new SyncStateValueContainer( this );
-        decoder.decode( bb, container );
+        DECODER.decode( bb, container );
         return this;
     }
 }

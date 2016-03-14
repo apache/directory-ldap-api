@@ -28,7 +28,7 @@ package org.apache.directory.api.util;
 public final class Chars
 {
     /** &lt;alpha> ::= [0x41-0x5A] | [0x61-0x7A] */
-    public static final boolean[] ALPHA =
+    private static final boolean[] ALPHA =
         {
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
@@ -48,7 +48,7 @@ public final class Chars
             true, true, true, false, false, false, false, false
     };
     /** &lt;alpha-lower-case> ::= [0x61-0x7A] */
-    public static final boolean[] ALPHA_LOWER_CASE =
+    private static final boolean[] ALPHA_LOWER_CASE =
         {
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
@@ -68,7 +68,7 @@ public final class Chars
             true, true, true, false, false, false, false, false
     };
     /** &lt;alpha-upper-case> ::= [0x41-0x5A] */
-    public static final boolean[] ALPHA_UPPER_CASE =
+    private static final boolean[] ALPHA_UPPER_CASE =
         {
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
@@ -88,7 +88,7 @@ public final class Chars
             false, false, false, false, false, false, false, false,
     };
     /** &lt;alpha-digit> | &lt;digit> */
-    public static final boolean[] ALPHA_DIGIT =
+    private static final boolean[] ALPHA_DIGIT =
         {
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
@@ -108,27 +108,27 @@ public final class Chars
             true, true, true, false, false, false, false, false
     };
     /** &lt;alpha> | &lt;digit> | '-' */
-    public static final boolean[] CHAR =
+    private static final boolean[] CHAR =
         {
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
-            false, false, false, false, false, true, false, false,
-            true, true, true, true, true, true, true, true,
-            true, true, false, false, false, false, false, false,
-            false, true, true, true, true, true, true, true,
-            true, true, true, true, true, true, true, true,
-            true, true, true, true, true, true, true, true,
-            true, true, true, false, false, false, false, false,
-            false, true, true, true, true, true, true, true,
-            true, true, true, true, true, true, true, true,
-            true, true, true, true, true, true, true, true,
-            true, true, true, false, false, false, false, false
+            false, false, false, false, false, true,  false, false,
+            true,  true,  true,  true,  true,  true,  true,  true,
+            true,  true,  false, false, false, false, false, false,
+            false, true,  true,  true,  true,  true,  true,  true,
+            true,  true,  true,  true,  true,  true,  true,  true,
+            true,  true,  true,  true,  true,  true,  true,  true,
+            true,  true,  true,  false, false, false, false, false,
+            false, true,  true,  true,  true,  true,  true,  true,
+            true,  true,  true,  true,  true,  true,  true,  true,
+            true,  true,  true,  true,  true,  true,  true,  true,
+            true,  true,  true,  false, false, false, false, false
     };
     /** '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' */
-    public static final boolean[] DIGIT =
+    private static final boolean[] DIGIT =
         {
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
@@ -148,7 +148,7 @@ public final class Chars
             false, false, false, false, false, false, false, false
     };
     /** &lt;hex> ::= [0x30-0x39] | [0x41-0x46] | [0x61-0x66] */
-    public static final boolean[] HEX =
+    private static final boolean[] HEX =
         {
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
@@ -168,7 +168,12 @@ public final class Chars
             false, false, false, false, false, false, false, false };
 
 
-    /* *
+    private Chars()
+    {
+    }
+
+
+    /**
     * Test if the current character is equal to a specific character.
     *
     * @param chars The buffer which contains the data
@@ -622,6 +627,19 @@ public final class Chars
 
 
     /**
+     * Check if the current character is an 7 bits ASCII CHAR (between 0 and
+     * 127). &lt;char> ::= &lt;alpha> | &lt;digit> | '-'
+     *
+     * @param c The char we want to check
+     * @return The position of the next character, if the current one is a CHAR.
+     */
+    public static boolean isAlphaDigitMinus( char c )
+    {
+        return ( ( c & 0x007F ) == c ) && CHAR[c];
+    }
+
+
+    /**
      * Test if the current character is a bit, ie 0 or 1.
      *
      * @param string
@@ -791,6 +809,19 @@ public final class Chars
 
 
     /**
+     * Check if the current char is an Hex Char
+     * &lt;hex> ::= [0x30-0x39] | [0x41-0x46] | [0x61-0x66]
+     *
+     * @param c The char we want to check
+     * @return <code>true</code> if the current char is a Hex char
+     */
+    public static boolean isHex( char c )
+    {
+        return ( ( c | 0x007F ) == 0x007F ) && HEX[c];
+    }
+
+
+    /**
      * Check if the current byte is an Hex Char
      * &lt;hex> ::= [0x30-0x39] | [0x41-0x46] | [0x61-0x66]
      *
@@ -799,7 +830,7 @@ public final class Chars
      */
     public static boolean isHex( byte b )
     {
-        return ( ( b | 0x7F ) == 0x7F ) || HEX[b];
+        return ( ( b | 0x7F ) == 0x7F ) && HEX[b];
     }
 
 
@@ -821,14 +852,7 @@ public final class Chars
         {
             byte c = bytes[index];
 
-            if ( ( ( c | 0x7F ) != 0x7F ) || !HEX[c] )
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return ( ( ( c | 0x7F ) == 0x7F ) && HEX[c] );
         }
     }
 
@@ -851,14 +875,7 @@ public final class Chars
         {
             char c = chars[index];
 
-            if ( ( c > 127 ) || !HEX[c] )
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return ( ( ( c | 0x007F ) == 0x007F ) && HEX[c] );
         }
     }
 
@@ -888,14 +905,30 @@ public final class Chars
         {
             char c = string.charAt( index );
 
-            if ( ( c > 127 ) || !HEX[c] )
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return ( ( ( c | 0x007F ) == 0x007F ) && HEX[c] );
         }
     }
+    
+    
+    /**
+     * Check if the current character is the ASCII character underscore 0x5F.
+     *
+     * @param bytes The buffer which contains the data
+     * @param index Current position in the buffer
+     * @return <code>true</code> if the current character is a the underscore
+     */
+    public static boolean isUnderscore( byte[] bytes, int index )
+    {
+        if ( ( bytes == null ) || ( bytes.length == 0 ) || ( index < 0 ) || ( index >= bytes.length ) )
+        {
+            return false;
+        }
+        else
+        {
+            byte c = bytes[index];
+
+            return c == 0x5F;
+        }
+    }
+
 }

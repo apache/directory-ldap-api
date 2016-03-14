@@ -49,7 +49,7 @@ public class PagedResultsDecorator extends ControlDecorator<PagedResults> implem
     private int pscSeqLength;
 
     /** An instance of this decoder */
-    private static final Asn1Decoder decoder = new Asn1Decoder();
+    private static final Asn1Decoder DECODER = new Asn1Decoder();
 
 
     /**
@@ -242,6 +242,9 @@ public class PagedResultsDecorator extends ControlDecorator<PagedResults> implem
                     + ( ( getCookie()[2] & 0x00FF ) << 8 ) + ( getCookie()[3] & 0x00FF );
                 break;
 
+            default:
+                break;
+
         }
 
         return value;
@@ -303,7 +306,7 @@ public class PagedResultsDecorator extends ControlDecorator<PagedResults> implem
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );
         PagedResultsContainer container = new PagedResultsContainer( getCodecService(), this );
-        decoder.decode( bb, container );
+        DECODER.decode( bb, container );
         return this;
     }
 }

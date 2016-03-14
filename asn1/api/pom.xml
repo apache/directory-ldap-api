@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.api</groupId>
     <artifactId>api-asn1-parent</artifactId>
-    <version>1.0.0-M17-SNAPSHOT</version>
+    <version>1.0.0-M34-SNAPSHOT</version>
   </parent>
   
   <artifactId>api-asn1-api</artifactId>
@@ -35,6 +35,21 @@
     <dependency>
       <groupId>org.apache.directory.junit</groupId>
       <artifactId>junit-addons</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
       <scope>test</scope>
     </dependency>
 
@@ -67,8 +82,12 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.asn1.api</Bundle-SymbolicName>
             <Export-Package>
-                {local-packages};version=${project.version};-noimport:=true
+              org.apache.directory.api.asn1;version=${project.version};-noimport:=true,
+              org.apache.directory.api.asn1.util;version=${project.version};-noimport:=true
             </Export-Package>
+            <Import-Package>
+              org.apache.directory.api.i18n;version=${project.version}
+            </Import-Package>
           </instructions>
         </configuration>
       </plugin>

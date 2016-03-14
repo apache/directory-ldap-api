@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.model.exception.LdapException;
 
 
 /**
@@ -92,10 +91,11 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
  * @see DescriptionUtils#getDescription(NameForm)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-// super.hashCode is final
-@SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class NameForm extends AbstractSchemaObject
 {
+    /** The mandatory serialVersionUID */
+    public static final long serialVersionUID = 1L;
+
     /** The structural object class OID this rule applies to */
     private String structuralObjectClassOid;
 
@@ -149,7 +149,6 @@ public class NameForm extends AbstractSchemaObject
      * attributes for.
      * 
      * @return the ObjectClass this NameForm is for
-     * @throws org.apache.directory.api.ldap.model.exception.LdapException If the structuralObjectClass is invalid
      */
     public ObjectClass getStructuralObjectClass()
     {
@@ -202,7 +201,6 @@ public class NameForm extends AbstractSchemaObject
      * Rdn.
      * 
      * @return the AttributeTypes OIDs of the must use attributes
-     * @throws LdapException if there is a failure resolving one AttributeTyoe
      */
     public List<String> getMustAttributeTypeOids()
     {
@@ -314,7 +312,6 @@ public class NameForm extends AbstractSchemaObject
      * part of the Rdn.
      * 
      * @return the AttributeTypes OIDs of the may use attributes
-     * @throws LdapException if there is a failure resolving one AttributeTyoe
      */
     public List<String> getMayAttributeTypeOids()
     {
@@ -425,7 +422,7 @@ public class NameForm extends AbstractSchemaObject
      */
     public String toString()
     {
-        return objectType + " " + DescriptionUtils.getDescription( this );
+        return SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( this );
     }
 
 
@@ -475,8 +472,6 @@ public class NameForm extends AbstractSchemaObject
      * @see Object#equals(Object)
      */
     @Override
-    @SuppressWarnings("PMD.UnusedLocalVariable")
-    // Remove me when the TODO is fixed
     public boolean equals( Object o )
     {
         if ( !super.equals( o ) )

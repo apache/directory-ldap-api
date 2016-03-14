@@ -22,7 +22,7 @@ package org.apache.directory.api.ldap.codec.actions.searchRequest.filter;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
 import org.apache.directory.api.ldap.codec.search.AttributeValueAssertionFilter;
@@ -63,7 +63,7 @@ public class InitLessOrEqualFilter extends GrammarAction<LdapMessageContainer<Se
 
         // We can allocate the Attribute Value Assertion
         Filter filter = new AttributeValueAssertionFilter( container.getTlvId(),
-            LdapConstants.LESS_OR_EQUAL_FILTER );
+            LdapCodecConstants.LESS_OR_EQUAL_FILTER );
 
         searchRequestDecorator.addCurrentFilter( filter );
 

@@ -44,4 +44,16 @@ public class EncoderException extends Exception
     {
         super( message );
     }
+
+
+    /**
+     * Creates a new instance of this exception with an useful message.
+     * 
+     * @param message a useful message relating to the encoder specific error.
+     * @param cause The parent exception
+     */
+    public EncoderException( String message, Exception cause )
+    {
+        super( message, cause );
+    }
 }

@@ -27,7 +27,7 @@ import org.apache.directory.api.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
 import org.apache.directory.api.ldap.model.message.AliasDerefMode;
@@ -83,14 +83,14 @@ public class StoreSearchRequestDerefAlias extends GrammarAction<LdapMessageConta
 
         try
         {
-            derefAliases = IntegerDecoder.parse( value, LdapConstants.NEVER_DEREF_ALIASES,
-                LdapConstants.DEREF_ALWAYS );
+            derefAliases = IntegerDecoder.parse( value, LdapCodecConstants.NEVER_DEREF_ALIASES,
+                LdapCodecConstants.DEREF_ALWAYS );
         }
         catch ( IntegerDecoderException ide )
         {
             String msg = I18n.err( I18n.ERR_04102, value.toString() );
             LOG.error( msg );
-            throw new DecoderException( msg );
+            throw new DecoderException( msg, ide );
         }
 
         searchRequest.setDerefAliases( AliasDerefMode.getDerefMode( derefAliases ) );
@@ -99,21 +99,24 @@ public class StoreSearchRequestDerefAlias extends GrammarAction<LdapMessageConta
         {
             switch ( derefAliases )
             {
-                case LdapConstants.NEVER_DEREF_ALIASES:
+                case LdapCodecConstants.NEVER_DEREF_ALIASES:
                     LOG.debug( "Handling object strategy : NEVER_DEREF_ALIASES" );
                     break;
 
-                case LdapConstants.DEREF_IN_SEARCHING:
+                case LdapCodecConstants.DEREF_IN_SEARCHING:
                     LOG.debug( "Handling object strategy : DEREF_IN_SEARCHING" );
                     break;
 
-                case LdapConstants.DEREF_FINDING_BASE_OBJ:
+                case LdapCodecConstants.DEREF_FINDING_BASE_OBJ:
                     LOG.debug( "Handling object strategy : DEREF_FINDING_BASE_OBJ" );
                     break;
 
-                case LdapConstants.DEREF_ALWAYS:
+                case LdapCodecConstants.DEREF_ALWAYS:
                     LOG.debug( "Handling object strategy : DEREF_ALWAYS" );
                     break;
+
+                default:
+                    LOG.debug( "Handling object strategy : UNKNOWN" );
             }
         }
     }

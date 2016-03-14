@@ -31,17 +31,17 @@ public interface ConfigurableBinaryAttributeDetector extends BinaryAttributeDete
      * 
      * @param binaryAttributes The added binary attributes Id
      */
-    public void addBinaryAttribute( String... binaryAttributes );
+    void addBinaryAttribute( String... binaryAttributes );
 
-    
+
     /**
      * Remove some binary Attributes Id from the list of attributes
      * 
      * @param binaryAttributes The binary attributes Id to remove
      */
-    public void removeBinaryAttribute( String... binaryAttributes );
+    void removeBinaryAttribute( String... binaryAttributes );
 
-    
+
     /**
      * Inject a new set of binary attributes that will replace the old one.
      * If one inject a null set of attributes, the list of attributes will be
@@ -51,5 +51,5 @@ public interface ConfigurableBinaryAttributeDetector extends BinaryAttributeDete
      * 
      * @param binaryAttributes The new set of binary attributes
      */
-    public void setBinaryAttributes( String... binaryAttributes );
+    void setBinaryAttributes( String... binaryAttributes );
 }

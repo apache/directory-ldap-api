@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.model.message.extended;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.message.ModifyResponseImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -30,13 +31,10 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
  * disconnection for the Modify response. 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ModifyNoDResponse extends ModifyResponseImpl
+public final class ModifyNoDResponse extends ModifyResponseImpl
 {
     /** The OID of the NotiveOfDisconnect extended operation. */
     public static final String EXTENSION_OID = NoticeOfDisconnect.EXTENSION_OID;
-
-    /** The empty response */
-    private static final byte[] EMPTY_RESPONSE = new byte[0];
 
     /** The single instance with unavailable result code. */
     public static final ModifyNoDResponse UNAVAILABLE = new ModifyNoDResponse( ResultCodeEnum.UNAVAILABLE );
@@ -88,7 +86,7 @@ public class ModifyNoDResponse extends ModifyResponseImpl
      */
     public byte[] getResponse()
     {
-        return EMPTY_RESPONSE;
+        return Strings.EMPTY_BYTES;
     }
 
 

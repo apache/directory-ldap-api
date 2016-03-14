@@ -26,12 +26,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.directory.api.ldap.model.exception.MessageException;
-import org.apache.directory.api.ldap.model.message.Control;
-import org.apache.directory.api.ldap.model.message.ExtendedRequest;
-import org.apache.directory.api.ldap.model.message.ExtendedRequestImpl;
-import org.apache.directory.api.ldap.model.message.ExtendedResponse;
-import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -173,12 +167,9 @@ public class ExtendedRequestImplTest
     @Test
     public void testEqualsDiffImpl()
     {
-        ExtendedRequest<ExtendedResponse> req0 = new ExtendedRequest<ExtendedResponse>()
+        ExtendedRequest req0 = new ExtendedRequest()
         {
-            private static final long serialVersionUID = 1L;
-
-
-            public ExtendedRequest<ExtendedResponse> setRequestName( String oid )
+            public ExtendedRequest setRequestName( String oid )
             {
                 return this;
             }
@@ -208,13 +199,13 @@ public class ExtendedRequestImplTest
             }
 
 
-            public ExtendedRequest<ExtendedResponse> addControl( Control control ) throws MessageException
+            public ExtendedRequest addControl( Control control )
             {
                 return this;
             }
 
 
-            public ExtendedRequest<ExtendedResponse> removeControl( Control control ) throws MessageException
+            public ExtendedRequest removeControl( Control control )
             {
                 return this;
             }
@@ -250,7 +241,7 @@ public class ExtendedRequestImplTest
             }
 
 
-            public ExtendedRequest<ExtendedResponse> addAllControls( Control[] controls ) throws MessageException
+            public ExtendedRequest addAllControls( Control[] controls )
             {
                 return this;
             }
@@ -268,7 +259,7 @@ public class ExtendedRequestImplTest
             }
 
 
-            public ExtendedRequest<ExtendedResponse> setMessageId( int messageId )
+            public ExtendedRequest setMessageId( int messageId )
             {
                 return this;
             }

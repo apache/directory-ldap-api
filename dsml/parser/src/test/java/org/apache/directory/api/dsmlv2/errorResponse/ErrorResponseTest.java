@@ -30,8 +30,8 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 import org.apache.directory.api.dsmlv2.AbstractResponseTest;
 import org.apache.directory.api.dsmlv2.Dsmlv2ResponseParser;
-import org.apache.directory.api.dsmlv2.reponse.ErrorResponse;
-import org.apache.directory.api.dsmlv2.reponse.ErrorResponse.ErrorResponseType;
+import org.apache.directory.api.dsmlv2.response.ErrorResponse;
+import org.apache.directory.api.dsmlv2.response.ErrorResponse.ErrorResponseType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

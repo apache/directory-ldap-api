@@ -23,7 +23,6 @@ package org.apache.directory.api.ldap.model.message;
 import java.util.List;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.filter.ExprNode;
 import org.apache.directory.api.ldap.model.name.Dn;
 
@@ -33,7 +32,7 @@ import org.apache.directory.api.ldap.model.name.Dn;
  * 
  * @author <a href="mailto:dev@directory.apache.org"> Apache Directory Project</a>
  */
-public interface SearchRequest extends ManyReplyRequest<SearchResultDone>, AbandonableRequest
+public interface SearchRequest extends ManyReplyRequest, AbandonableRequest
 {
     /**
      * Different response types that a search request may return. A search
@@ -45,7 +44,12 @@ public interface SearchRequest extends ManyReplyRequest<SearchResultDone>, Aband
      * @see #getResponseTypes()
      */
     MessageTypeEnum[] RESPONSE_TYPES =
-        { SearchResultDone.TYPE, SearchResultEntry.TYPE, SearchResultReference.TYPE, ExtendedResponse.TYPE };
+        {
+            MessageTypeEnum.SEARCH_RESULT_DONE,
+            MessageTypeEnum.SEARCH_RESULT_ENTRY,
+            MessageTypeEnum.SEARCH_RESULT_REFERENCE,
+            MessageTypeEnum.EXTENDED_RESPONSE
+    };
 
 
     /**
@@ -253,17 +257,47 @@ public interface SearchRequest extends ManyReplyRequest<SearchResultDone>, Aband
     /**
      * {@inheritDoc}
      */
-    SearchRequest addControl( Control control ) throws MessageException;
+    SearchRequest addControl( Control control );
 
 
     /**
      * {@inheritDoc}
      */
-    SearchRequest addAllControls( Control[] controls ) throws MessageException;
+    SearchRequest addAllControls( Control[] controls );
 
 
     /**
      * {@inheritDoc}
      */
-    SearchRequest removeControl( Control control ) throws MessageException;
+    SearchRequest removeControl( Control control );
+    
+    
+    /**
+     * Tells the client if it should follow referrals instead of throwing exceptions
+     * @return true if we should follow the referrals
+     */
+    boolean isFollowReferrals();
+    
+    
+    /**
+     * Tells the client to follow referrals instead of throwing exceptions
+     * @return The SearchRequest instance
+     */
+    SearchRequest followReferrals();
+    
+    
+    /**
+     * Tells the client if it should ignore referrals instead of throwing exceptions
+     * @return true if we should ignore the referrals
+     */
+    boolean isIgnoreReferrals();
+    
+    
+    /**
+     * Tells the client to ignore referrals instead of throwing exceptions. The entry
+     * will contain the referral attributeType with the link.
+     * 
+     * @return The SearchRequest instance
+     */
+    SearchRequest ignoreReferrals();
 }

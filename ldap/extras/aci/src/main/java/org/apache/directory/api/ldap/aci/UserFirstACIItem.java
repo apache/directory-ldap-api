@@ -36,9 +36,6 @@ import org.apache.directory.api.ldap.model.constants.AuthenticationLevel;
  */
 public class UserFirstACIItem extends ACIItem
 {
-    /** The serialVersionUID. */
-    private static final long serialVersionUID = 5587483838404246148L;
-
     /** The user classes. */
     private final Collection<UserClass> userClasses;
 

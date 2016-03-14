@@ -33,9 +33,11 @@ import java.util.Arrays;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
-import org.apache.directory.api.util.Strings;
-import org.apache.directory.api.util.Unicode;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 
 
@@ -48,24 +50,43 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class UnicodeTest
 {
+    /** Uses a temporary folder rule */
+    @Rule 
+    public TemporaryFolder tmpFolder= new TemporaryFolder();
 
+    /** The file stream we use for this test */
     private FileOutputStream fos = null;
     private FileInputStream fis = null;
 
 
     /**
-     * 
-     * Creates a new instance of UnicodeTest.
-     *
+     * Initialize the temporary folder and the associated streams
      */
-    public UnicodeTest()
+    @Before
+    public void init()
     {
         try
         {
-            File tmpFile = File.createTempFile( "UTFUtils", "test" );
-            tmpFile.deleteOnExit();
+            File tmpFile = tmpFolder.newFile( "UTFUtils.test" );
             fos = new FileOutputStream( tmpFile );
             fis = new FileInputStream( tmpFile );
+        }
+        catch ( IOException e )
+        {
+        }
+    }
+    
+    
+    /**
+     * Cleanup the streams after each test
+     */
+    @After
+    public void reset()
+    {
+        try
+        {
+            fos.close();
+            fis.close();
         }
         catch ( IOException e )
         {

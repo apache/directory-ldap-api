@@ -29,6 +29,4 @@ package org.apache.directory.api.ldap.model.message;
  */
 public interface AddResponse extends ResultResponse
 {
-    /** Add response message type enumeration value */
-    MessageTypeEnum TYPE = MessageTypeEnum.ADD_RESPONSE;
 }

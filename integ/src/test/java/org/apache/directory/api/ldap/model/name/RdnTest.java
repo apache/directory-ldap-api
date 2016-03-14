@@ -20,12 +20,13 @@
 package org.apache.directory.api.ldap.model.name;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.name.Rdn;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
-import org.apache.directory.api.ldap.schemamanager.impl.DefaultSchemaManager;
+import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import static org.junit.Assert.assertEquals;
 
 import com.mycila.junit.concurrent.Concurrency;
@@ -49,6 +50,34 @@ public class RdnTest
         schemaManager = new DefaultSchemaManager();
     }
 
+    
+    
+    @Test
+    public void testRdnValueSchemaAware() throws LdapException
+    {
+        String errors = null;
+        
+        Rdn rdn = new Rdn( schemaManager, "cn= TEST\\ " );
+        
+        if ( !"cn= TEST\\ ".equals( rdn.getName() ) )
+        {
+            errors += "\nRdn.getName fails '" + rdn.getName() + "'";
+        }
+        
+        if ( !"2.5.4.3=test\\ ".equals( rdn.getNormName() ) )
+        {
+            errors = "\nRdn.getNormName fails '" + rdn.getNormName() + "'";
+        }
+        
+        if ( !"test ".equals( rdn.getNormValue( "cn" ) ) )
+        {
+            errors += "\nRdn.getNormValue( 'cn' ) fails '" + ( String ) rdn.getNormValue( "cn" ) + "'";
+        }
+        
+        assertEquals( null, errors );
+    }
+
+    
     @Test
     public void testRdnValuesNoSchema() throws LdapException
     {
@@ -61,7 +90,7 @@ public class RdnTest
             errors += "\nRdn.getName fails '" + rdn.getName() + "'";
         }
         
-        if ( !"ou=Exemple \\+ Rdn\\C3\\A4\\ +cn=TEST" .equals( rdn.getNormName() ) )
+        if ( !"ou=Exemple \\+ Rdn\u00E4\\ +cn=TEST" .equals( rdn.getNormName() ) )
         {
             errors = "\nRdn.getNormName fails '" + rdn.getNormName() + "'";
         }
@@ -71,9 +100,9 @@ public class RdnTest
             errors += "\nRdn.getNormType fails '" + rdn.getNormType() + "'";
         }
         
-        if ( !"Exemple + Rdn\u00E4 ".equals( rdn.getNormValue().getString() ) )
+        if ( !"Exemple + Rdn\u00E4 ".equals( rdn.getNormValue() ) )
         {
-            errors += "\nRdn.getNormValue fails '" + rdn.getNormValue().getString() + "'";
+            errors += "\nRdn.getNormValue fails '" + rdn.getNormValue() + "'";
         }
         
         if ( !"OU".equals( rdn.getType() ) )
@@ -81,14 +110,14 @@ public class RdnTest
             errors += "\nRdn.getUpType fails '" + rdn.getType() + "'";
         }
         
-        if ( !"Exemple + Rdn\u00E4".equals( rdn.getValue().getString() ) )
+        if ( !"Exemple + Rdn\u00E4 ".equals( rdn.getNormValue() ) )
         {
-            errors += "\nRdn.getUpValue fails '" + rdn.getValue() + "'";
+            errors += "\nRdn.getNormValue fails '" + rdn.getNormValue() + "'";
         }
         
-        if ( !"Exemple + Rdn\u00E4 ".equals( rdn.getValue( "ou" ) ) )
+        if ( !"Exemple + Rdn\u00E4 ".equals( rdn.getNormValue( "ou" ) ) )
         {
-            errors += "\nRdn.getValue( 'ou' ) fails '" + rdn.getValue( "ou" ) + "'";
+            errors += "\nRdn.getNormValue( 'ou' ) fails '" + rdn.getNormValue( "ou" ) + "'";
         }
         
         if ( !"TEST".equals( rdn.getValue( "cn" ) ) )
@@ -117,7 +146,7 @@ public class RdnTest
             errors += "\nRdn.getName fails '" + rdn.getName() + "'";
         }
         
-        if ( !"2.5.4.11=exemple \\+ rdn\\C3\\A4+2.5.4.3=test" .equals( rdn.getNormName() ) )
+        if ( !"2.5.4.11=exemple \\+ rdn\u00E4\\ +2.5.4.3=test" .equals( rdn.getNormName() ) )
         {
             errors = "\nRdn.getNormName fails '" + rdn.getNormName() + "'";
         }
@@ -127,9 +156,9 @@ public class RdnTest
             errors += "\nRdn.getNormType fails '" + rdn.getNormType() + "'";
         }
         
-        if ( !"exemple + rdn\u00E4".equals( rdn.getNormValue().getString() ) )
+        if ( !"exemple + rdn\u00E4 ".equals( rdn.getNormValue() ) )
         {
-            errors += "\nRdn.getNormValue fails '" + rdn.getNormValue().getString() + "'";
+            errors += "\nRdn.getNormValue fails '" + rdn.getNormValue() + "'";
         }
         
         if ( !"OU".equals( rdn.getType() ) )
@@ -137,19 +166,19 @@ public class RdnTest
             errors += "\nRdn.getUpType fails '" + rdn.getType() + "'";
         }
         
-        if ( !"Exemple + Rdn\u00E4".equals( rdn.getValue().getString() ) )
+        if ( !"Exemple \\+ Rdn\\C3\\A4\\ ".equals( rdn.getValue() ) )
         {
-            errors += "\nRdn.getUpValue fails '" + rdn.getValue().getString() + "'";
+            errors += "\nRdn.getUpValue fails '" + rdn.getValue() + "'";
         }
         
-        if ( !"exemple + rdn\u00E4".equals( rdn.getValue( "ou" ) ) )
+        if ( !"exemple + rdn\u00E4 ".equals( rdn.getNormValue( "ou" ) ) )
         {
-            errors += "\nRdn.getValue( 'ou' ) fails '" + (String)rdn.getValue( "ou" ) + "'";
+            errors += "\nRdn.getNormValue( 'ou' ) fails '" + ( String ) rdn.getNormValue( "ou" ) + "'";
         }
         
-        if ( !"test".equals( rdn.getValue( "cn" ) ) )
+        if ( !"test".equals( rdn.getNormValue( "cn" ) ) )
         {
-            errors += "\nRdn.getValue( 'cn' ) fails '" + (String)rdn.getValue( "cn" ) + "'";
+            errors += "\nRdn.getNormValue( 'cn' ) fails '" + ( String ) rdn.getNormValue( "cn" ) + "'";
         }
         
         if ( !"OU = Exemple \\+ Rdn\\C3\\A4\\ +cn= TEST".equals( rdn.toString() ) )
@@ -169,5 +198,37 @@ public class RdnTest
         
         assertEquals( rdn1, rdn2 );
         assertEquals( rdn1.getNormName(), rdn2.getNormName() );
+    }
+    
+    
+    /**
+     * test that a RDN with an attributeType used twice with the same value
+     * throws an exception
+     */
+    @Test( expected=LdapInvalidDnException.class )
+    public void testWrongRdnAtUsedTwiceSameValue() throws LdapException
+    {
+        new Rdn( schemaManager, " cn = b + cn = b " );
+    }
+    
+    
+    /**
+     * test that a RDN with an attributeType used twice but with different value
+     * is accepted
+     */
+    @Test
+    public void testRdnAtUsedTwiceDifferentValue() throws LdapException
+    {
+        Rdn rdn1 = new Rdn( schemaManager, " cn = c + cn = b " );
+        Rdn rdn2 = new Rdn( schemaManager, " cn = b + cn = c " );
+        
+        //assertEquals( rdn1, rdn2 );
+    }
+
+    
+    @Test
+    public void testRdnEscapedValue() throws Exception
+    {
+         new Rdn( schemaManager, "sn=\\46\\65\\72\\72\\79" );
     }
 }

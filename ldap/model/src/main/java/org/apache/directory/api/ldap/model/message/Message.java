@@ -22,8 +22,6 @@ package org.apache.directory.api.ldap.model.message;
 
 import java.util.Map;
 
-import org.apache.directory.api.ldap.model.exception.MessageException;
-
 
 /**
  * Root interface for all LDAP message type interfaces.
@@ -73,20 +71,17 @@ public interface Message
      * 
      * @param control the control to add.
      * @return A Message reference
-     * @throws org.apache.directory.api.ldap.model.exception.MessageException if controls cannot be added to this Message or the control is
-     *             not known etc.
      */
-    Message addControl( Control control ) throws MessageException;
+    Message addControl( Control control );
 
 
     /**
      * Adds an array of controls to this Message.
      * 
-     * @param controls the controls to add.
+     * @param controlsToAdd the controls to add.
      * @return A Message reference
-     * @throws MessageException if controls cannot be added to this Message or they are not known etc.
      */
-    Message addAllControls( Control[] controls ) throws MessageException;
+    Message addAllControls( Control[] controlsToAdd );
 
 
     /**
@@ -94,10 +89,8 @@ public interface Message
      * 
      * @param control the control to remove.
      * @return A Message reference
-     * @throws MessageException if controls cannot be added to this Message or the control is
-     *             not known etc.
      */
-    Message removeControl( Control control ) throws MessageException;
+    Message removeControl( Control control );
 
 
     /**

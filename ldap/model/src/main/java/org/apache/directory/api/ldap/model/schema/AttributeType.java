@@ -20,10 +20,6 @@
 package org.apache.directory.api.ldap.model.schema;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-
 /**
  * An attributeType specification. attributeType specifications describe the
  * nature of attributes within the directory. The attributeType specification's
@@ -131,8 +127,8 @@ import org.slf4j.LoggerFactory;
  */
 public class AttributeType extends AbstractSchemaObject implements Cloneable
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( AttributeType.class );
+    /** The mandatory serialVersionUID */
+    public static final long serialVersionUID = 1L;
 
     /** The syntax OID associated with this AttributeType */
     protected String syntaxOid;
@@ -178,6 +174,9 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
     /** the length of this attribute in bytes */
     protected long syntaxLength = 0L;
+    
+    /** A flag set when the SchemaManager is in relaxed mode */
+    private boolean isRelaxed = false;
 
 
     /**
@@ -222,6 +221,26 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     public boolean isCollective()
     {
         return isCollective;
+    }
+
+
+    /**
+     * @return Tells if the AttributeType is relaxed (the SyntaxChecker will not be activated)
+     */
+    public boolean isRelaxed()
+    {
+        return isRelaxed;
+    }
+
+
+    /**
+     * Set this AttributeType mode to relaxed
+     * 
+     * @param isRelaxed <tt>true</tt> if the syntax checker for this AttributeType should not be activated
+     */
+    public void setRelaxed( boolean isRelaxed )
+    {
+        this.isRelaxed = isRelaxed;
     }
 
 
@@ -445,8 +464,8 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     {
         return substringOid;
     }
-    
-    
+
+
     /**
      * Tells if the attributeType is a USER attribute or not
      * @return true if this is a USER attributeType
@@ -455,8 +474,8 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     {
         return usage == UsageEnum.USER_APPLICATIONS;
     }
-    
-    
+
+
     /**
      * Tells if the attributeType is an OPERATIONAL attribute or not
      * @return true if this is an OPERATIONAL attributeType
@@ -533,7 +552,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
      */
     public String toString()
     {
-        return objectType + " " + DescriptionUtils.getDescription( this );
+        return SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( this );
     }
 
 
@@ -581,6 +600,9 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
         copy.syntax = null;
         copy.syntaxOid = syntaxOid;
         copy.syntaxLength = syntaxLength;
+        
+        // The relaxed flag
+        copy.setRelaxed( isRelaxed );
 
         return copy;
     }

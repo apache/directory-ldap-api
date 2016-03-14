@@ -23,8 +23,6 @@ package org.apache.directory.api.ldap.model.schema.parsers;
 import java.text.ParseException;
 
 import org.apache.directory.api.i18n.I18n;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
@@ -35,18 +33,15 @@ import antlr.TokenStreamException;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SyntaxCheckerDescriptionSchemaParser extends AbstractSchemaParser
+public class SyntaxCheckerDescriptionSchemaParser extends AbstractSchemaParser<SyntaxCheckerDescription>
 {
-    /** The LoggerFactory used by this class */
-    protected static final Logger LOG = LoggerFactory.getLogger( SyntaxCheckerDescriptionSchemaParser.class );
-
 
     /**
      * Creates a schema parser instance.
      */
     public SyntaxCheckerDescriptionSchemaParser()
     {
-        super();
+        super( SyntaxCheckerDescription.class, I18n.ERR_04258, I18n.ERR_04259, I18n.ERR_04260 );
     }
 
 
@@ -74,52 +69,20 @@ public class SyntaxCheckerDescriptionSchemaParser extends AbstractSchemaParser
      * @return the parsed SyntaxCheckerDescription bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public synchronized SyntaxCheckerDescription parseSyntaxCheckerDescription( String syntaxCheckerDescription )
+    public SyntaxCheckerDescription parseSyntaxCheckerDescription( String syntaxCheckerDescription )
         throws ParseException
     {
-        LOG.debug( "Parsing a SyntaxChecker : {}", syntaxCheckerDescription );
-
-        if ( syntaxCheckerDescription == null )
-        {
-            throw new ParseException( "Null", 0 );
-        }
-
-        reset( syntaxCheckerDescription ); // reset and initialize the parser / lexer pair
-
-        try
-        {
-            SyntaxCheckerDescription syntaxChecker = parser.syntaxCheckerDescription();
-
-            // Update the schemaName
-            updateSchemaName( syntaxChecker );
-
-            return syntaxChecker;
-        }
-        catch ( RecognitionException re )
-        {
-            String msg = I18n.err( I18n.ERR_04259, syntaxCheckerDescription, re.getMessage(), re.getColumn() );
-            LOG.error( msg );
-            throw new ParseException( msg, re.getColumn() );
-        }
-        catch ( TokenStreamException tse )
-        {
-            String msg = I18n.err( I18n.ERR_04260, syntaxCheckerDescription, tse.getMessage() );
-            LOG.error( msg );
-            throw new ParseException( msg, 0 );
-        }
-
+        return super.parse( syntaxCheckerDescription );
     }
 
 
     /**
-     * Parses a SyntaxChecker description
-     * 
-     * @param schemaDescription The SyntaxChecker description to parse
-     * @return An instance of SyntaxCheckerDescription
-     * @throws ParseException {@inheritDoc}
+     * {@inheritDoc}
      */
-    public SyntaxCheckerDescription parse( String schemaDescription ) throws ParseException
+    @Override
+    protected SyntaxCheckerDescription doParse() throws RecognitionException, TokenStreamException
     {
-        return parseSyntaxCheckerDescription( schemaDescription );
+        return parser.syntaxCheckerDescription();
     }
+
 }

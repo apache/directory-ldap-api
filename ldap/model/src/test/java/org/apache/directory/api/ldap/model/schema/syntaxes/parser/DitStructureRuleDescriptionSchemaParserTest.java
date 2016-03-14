@@ -27,15 +27,15 @@ import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
 import org.apache.directory.api.ldap.model.schema.DitStructureRule;
 import org.apache.directory.api.ldap.model.schema.parsers.DitStructureRuleDescriptionSchemaParser;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -379,14 +379,14 @@ public class DitStructureRuleDescriptionSchemaParserTest
         assertEquals( Integer.valueOf( 1234567890 ), ditStructureRule.getSuperRules().get( 1 ) );
         assertEquals( Integer.valueOf( 5 ), ditStructureRule.getSuperRules().get( 2 ) );
         assertEquals( 2, ditStructureRule.getExtensions().size() );
-        assertNotNull( ditStructureRule.getExtensions().get( "X-TEST-a" ) );
-        assertEquals( 2, ditStructureRule.getExtensions().get( "X-TEST-a" ).size() );
-        assertEquals( "test1-1", ditStructureRule.getExtensions().get( "X-TEST-a" ).get( 0 ) );
-        assertEquals( "test1-2", ditStructureRule.getExtensions().get( "X-TEST-a" ).get( 1 ) );
-        assertNotNull( ditStructureRule.getExtensions().get( "X-TEST-b" ) );
-        assertEquals( 2, ditStructureRule.getExtensions().get( "X-TEST-b" ).size() );
-        assertEquals( "test2-1", ditStructureRule.getExtensions().get( "X-TEST-b" ).get( 0 ) );
-        assertEquals( "test2-2", ditStructureRule.getExtensions().get( "X-TEST-b" ).get( 1 ) );
+        assertNotNull( ditStructureRule.getExtension( "X-TEST-a" ) );
+        assertEquals( 2, ditStructureRule.getExtension( "X-TEST-a" ).size() );
+        assertEquals( "test1-1", ditStructureRule.getExtension( "X-TEST-a" ).get( 0 ) );
+        assertEquals( "test1-2", ditStructureRule.getExtension( "X-TEST-a" ).get( 1 ) );
+        assertNotNull( ditStructureRule.getExtension( "X-TEST-b" ) );
+        assertEquals( 2, ditStructureRule.getExtension( "X-TEST-b" ).size() );
+        assertEquals( "test2-1", ditStructureRule.getExtension( "X-TEST-b" ).get( 0 ) );
+        assertEquals( "test2-2", ditStructureRule.getExtension( "X-TEST-b" ).get( 1 ) );
     }
 
 

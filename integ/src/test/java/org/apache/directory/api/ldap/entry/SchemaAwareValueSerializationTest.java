@@ -33,7 +33,7 @@ import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
-import org.apache.directory.api.ldap.schemamanager.impl.DefaultSchemaManager;
+import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.apache.directory.api.util.StringConstants;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -52,7 +52,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class SchemaAwareValueSerializationTest
 {
-    private static byte[] data = new byte[]
+    private static final byte[] DATA = new byte[]
         { 0x01, 0x02, 0x03, 0x04 };
     private static BinaryValue bv1;
     private static BinaryValue bv2;
@@ -84,10 +84,10 @@ public class SchemaAwareValueSerializationTest
         dc = schemaManager.getAttributeType( "dc" );
         userCertificate = schemaManager.getAttributeType( "userCertificate" );
 
-        bv1 = new BinaryValue( userCertificate, data );
+        bv1 = new BinaryValue( userCertificate, DATA );
         bv2 = new BinaryValue( userCertificate, StringConstants.EMPTY_BYTES );
         bv3 = new BinaryValue( userCertificate, null );
-        bv1n = new BinaryValue( userCertificate, data );
+        bv1n = new BinaryValue( userCertificate, DATA );
         bv2n = new BinaryValue( userCertificate, StringConstants.EMPTY_BYTES );
         bv3n = new BinaryValue( userCertificate, null );
         sv1 = new StringValue( cn, "test" );

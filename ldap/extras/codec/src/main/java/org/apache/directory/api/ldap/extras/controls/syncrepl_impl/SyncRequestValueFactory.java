@@ -20,9 +20,10 @@
 package org.apache.directory.api.ldap.extras.controls.syncrepl_impl;
 
 
+import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.controls.SyncRequestValue;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncRequestValue;
 
 
 /**
@@ -31,7 +32,7 @@ import org.apache.directory.api.ldap.extras.controls.SyncRequestValue;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SyncRequestValueFactory implements ControlFactory<SyncRequestValue, SyncRequestValueDecorator>
+public class SyncRequestValueFactory implements ControlFactory<SyncRequestValue>
 {
     /** The codec for this factory */
     private LdapApiService codec;
@@ -60,7 +61,7 @@ public class SyncRequestValueFactory implements ControlFactory<SyncRequestValue,
     /**
      * {@inheritDoc}
      */
-    public SyncRequestValueDecorator newCodecControl()
+    public CodecControl<SyncRequestValue> newCodecControl()
     {
         return new SyncRequestValueDecorator( codec );
     }
@@ -69,7 +70,7 @@ public class SyncRequestValueFactory implements ControlFactory<SyncRequestValue,
     /**
      * {@inheritDoc}
      */
-    public SyncRequestValueDecorator newCodecControl( SyncRequestValue control )
+    public CodecControl<SyncRequestValue> newCodecControl( SyncRequestValue control )
     {
         return new SyncRequestValueDecorator( codec, control );
     }

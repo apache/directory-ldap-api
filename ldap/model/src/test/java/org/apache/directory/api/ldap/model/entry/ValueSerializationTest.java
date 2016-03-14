@@ -28,9 +28,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
-import org.apache.directory.api.ldap.model.entry.StringValue;
-import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
@@ -41,6 +38,7 @@ import org.apache.directory.api.ldap.model.schema.syntaxCheckers.OctetStringSynt
 import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -96,6 +94,9 @@ public class ValueSerializationTest
         mrb.setLdapComparator( new ByteArrayComparator( "1.1.1" ) );
         mrb.setNormalizer( new Normalizer( "1.1.1" )
         {
+            public static final long serialVersionUID = 1L;
+
+
             public Value<?> normalize( Value<?> value ) throws LdapException
             {
                 if ( !value.isHumanReadable() )
@@ -344,7 +345,7 @@ public class ValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        StringValue svDeser = new StringValue( ( AttributeType ) null );
+        StringValue svDeser = new StringValue( ats );
         svDeser.readExternal( in );
 
         assertEquals( sv1n, svDeser );
@@ -366,7 +367,7 @@ public class ValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        StringValue svDeser = new StringValue( ( AttributeType ) null );
+        StringValue svDeser = new StringValue( ats );
         svDeser.readExternal( in );
 
         assertEquals( sv2n, svDeser );
@@ -388,9 +389,161 @@ public class ValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        StringValue svDeser = new StringValue( ( AttributeType ) null );
+        StringValue svDeser = new StringValue( ats );
         svDeser.readExternal( in );
 
         assertEquals( sv3n, svDeser );
+    }
+
+
+    @Test
+    public void testStringValueWithDataNormalizedSerializationBytes() throws IOException, LdapException,
+        ClassNotFoundException
+    {
+        byte[] buffer = new byte[128];
+        sv1n.apply( ats );
+
+        int pos = sv1n.serialize( buffer, 0 );
+
+        StringValue svDeser = new StringValue( ats );
+
+        int pos2 = svDeser.deserialize( buffer, 0 );
+
+        assertEquals( pos, pos2 );
+        assertEquals( sv1n, svDeser );
+    }
+
+
+    @Test
+    public void testStringValueWithEmptyDataNormalizedSerializationBytes() throws IOException, LdapException,
+        ClassNotFoundException
+    {
+        byte[] buffer = new byte[128];
+        sv2n.apply( ats );
+
+        int pos = sv2n.serialize( buffer, 0 );
+
+        StringValue svDeser = new StringValue( ats );
+
+        int pos2 = svDeser.deserialize( buffer, 0 );
+
+        assertEquals( pos, pos2 );
+        assertEquals( sv2n, svDeser );
+    }
+
+
+    @Test
+    public void testStringValueNoDataNormalizedSerializationBytes() throws IOException, LdapException,
+        ClassNotFoundException
+    {
+        byte[] buffer = new byte[128];
+        sv3n.apply( ats );
+
+        int pos = sv3n.serialize( buffer, 0 );
+
+        StringValue svDeser = new StringValue( ats );
+        int pos2 = svDeser.deserialize( buffer, 0 );
+
+        assertEquals( pos, pos2 );
+        assertEquals( sv3n, svDeser );
+    }
+
+
+    @Test
+    public void testStringValueWithDataSerializationBytes() throws IOException, ClassNotFoundException
+    {
+        byte[] buffer = new byte[128];
+
+        int pos = sv1.serialize( buffer, 0 );
+
+        StringValue svDeser = new StringValue( ( AttributeType ) null );
+
+        int pos2 = svDeser.deserialize( buffer, 0 );
+
+        assertEquals( pos, pos2 );
+        assertEquals( sv1, svDeser );
+    }
+
+
+    @Test
+    public void testStringValueWithEmptyDataSerializationBytes() throws IOException, ClassNotFoundException
+    {
+        byte[] buffer = new byte[128];
+
+        int pos = sv2.serialize( buffer, 0 );
+
+        StringValue svDeser = new StringValue( ( AttributeType ) null );
+
+        int pos2 = svDeser.deserialize( buffer, 0 );
+
+        assertEquals( pos, pos2 );
+        assertEquals( sv2, svDeser );
+    }
+
+
+    @Test
+    public void testStringValueNoDataSerializationBytes() throws IOException, ClassNotFoundException
+    {
+        byte[] buffer = new byte[128];
+
+        int pos = sv3.serialize( buffer, 0 );
+
+        StringValue svDeser = new StringValue( ( AttributeType ) null );
+
+        int pos2 = svDeser.deserialize( buffer, 0 );
+
+        assertEquals( pos, pos2 );
+        assertEquals( sv3, svDeser );
+    }
+
+
+    @Ignore
+    @Test
+    public void testStringValueWithDataNormalizedSerializationPerf() throws IOException, LdapException,
+        ClassNotFoundException
+    {
+        sv1n.apply( ats );
+        StringValue svDeser = new StringValue( ats );
+
+        long t0 = System.currentTimeMillis();
+
+        for ( int i = 0; i < 10000000; i++ )
+        {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream( baos );
+            sv1n.writeExternal( out );
+            out.close();
+            byte[] data = baos.toByteArray();
+            ObjectInputStream in = new ObjectInputStream( new ByteArrayInputStream( data ) );
+            svDeser.readExternal( in );
+            in.close();
+        }
+
+        long t1 = System.currentTimeMillis();
+
+        System.out.println( "Delta ser slow = " + ( t1 - t0 ) );
+    }
+
+
+    @Ignore
+    @Test
+    public void testStringValueWithDataNormalizedSerializationBytesPerf() throws IOException, LdapException,
+        ClassNotFoundException
+    {
+        sv1n.apply( ats );
+        StringValue svDeser = new StringValue( ats );
+
+        long t0 = System.currentTimeMillis();
+
+        for ( int i = 0; i < 10000000; i++ )
+        {
+            byte[] buffer = new byte[128];
+            sv1n.serialize( buffer, 0 );
+            svDeser.deserialize( buffer, 0 );
+        }
+
+        long t1 = System.currentTimeMillis();
+
+        System.out.println( "Delta ser fast = " + ( t1 - t0 ) );
     }
 }

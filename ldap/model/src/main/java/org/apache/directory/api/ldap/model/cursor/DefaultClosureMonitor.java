@@ -19,8 +19,6 @@
  */
 package org.apache.directory.api.ldap.model.cursor;
 
-import java.nio.channels.ClosedChannelException;
-
 
 /**
  * A basic ClosureMonitor that simply uses a boolean for state and a cause

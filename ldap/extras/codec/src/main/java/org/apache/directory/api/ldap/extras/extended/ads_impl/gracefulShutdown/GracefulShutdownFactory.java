@@ -21,26 +21,23 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown;
 
 
 import org.apache.directory.api.asn1.DecoderException;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestFactory;
-import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
+import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.extended.GracefulShutdownRequest;
-import org.apache.directory.api.ldap.extras.extended.GracefulShutdownRequestImpl;
-import org.apache.directory.api.ldap.extras.extended.GracefulShutdownResponse;
-import org.apache.directory.api.ldap.extras.extended.GracefulShutdownResponseImpl;
+import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownRequest;
+import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownRequestImpl;
+import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownResponse;
+import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownResponseImpl;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 
 
 /**
- * An {@link ExtendedRequestFactory} for creating cancel extended request response 
+ * An {@link ExtendedOperationFactory} for creating cancel extended request response 
  * pairs.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class GracefulShutdownFactory
-    implements ExtendedRequestFactory<GracefulShutdownRequest, GracefulShutdownResponse>
+public class GracefulShutdownFactory implements ExtendedOperationFactory
 {
     private LdapApiService codec;
 
@@ -57,15 +54,6 @@ public class GracefulShutdownFactory
     public String getOid()
     {
         return GracefulShutdownRequest.EXTENSION_OID;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public GracefulShutdownRequest newRequest()
-    {
-        return new GracefulShutdownRequestDecorator( codec, new GracefulShutdownRequestImpl() );
     }
 
 
@@ -96,12 +84,11 @@ public class GracefulShutdownFactory
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequestDecorator<GracefulShutdownRequest, GracefulShutdownResponse> decorate(
-        ExtendedRequest<?> modelRequest )
+    public ExtendedRequest decorate( ExtendedRequest modelRequest )
     {
         if ( modelRequest instanceof GracefulShutdownRequestDecorator )
         {
-            return ( GracefulShutdownRequestDecorator ) modelRequest;
+            return modelRequest;
         }
 
         return new GracefulShutdownRequestDecorator( codec, ( GracefulShutdownRequest ) modelRequest );
@@ -111,11 +98,11 @@ public class GracefulShutdownFactory
     /**
      * {@inheritDoc}
      */
-    public ExtendedResponseDecorator<GracefulShutdownResponse> decorate( ExtendedResponse decoratedMessage )
+    public ExtendedResponse decorate( ExtendedResponse decoratedMessage )
     {
         if ( decoratedMessage instanceof GracefulShutdownResponseDecorator )
         {
-            return ( GracefulShutdownResponseDecorator ) decoratedMessage;
+            return decoratedMessage;
         }
 
         return new GracefulShutdownResponseDecorator( codec, ( GracefulShutdownResponse ) decoratedMessage );

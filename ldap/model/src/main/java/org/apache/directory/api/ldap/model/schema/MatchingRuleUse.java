@@ -81,10 +81,11 @@ import org.apache.directory.api.i18n.I18n;
  *      [SYNTAXES]</a>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-// super.hashCode is final
-@SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class MatchingRuleUse extends AbstractSchemaObject
 {
+    /** The mandatory serialVersionUID */
+    public static final long serialVersionUID = 1L;
+
     /** The list of attributes types OID the matching rule applies to */
     private List<String> applicableAttributeOids;
 
@@ -212,7 +213,7 @@ public class MatchingRuleUse extends AbstractSchemaObject
      */
     public String toString()
     {
-        return objectType + " " + DescriptionUtils.getDescription( this );
+        return SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( this );
     }
 
 
@@ -246,8 +247,6 @@ public class MatchingRuleUse extends AbstractSchemaObject
      * @see Object#equals(Object)
      */
     @Override
-    @SuppressWarnings("PMD.UnusedLocalVariable")
-    // Remove me when the TODO is fixed
     public boolean equals( Object o )
     {
         if ( !super.equals( o ) )

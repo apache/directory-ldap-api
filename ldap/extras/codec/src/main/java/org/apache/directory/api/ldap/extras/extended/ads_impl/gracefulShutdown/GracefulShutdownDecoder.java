@@ -22,9 +22,9 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown;
 
 import java.nio.ByteBuffer;
 
-import org.apache.directory.api.asn1.Asn1Object;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
+import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownRequest;
 
 
 /**
@@ -35,7 +35,7 @@ import org.apache.directory.api.asn1.ber.Asn1Decoder;
 public class GracefulShutdownDecoder extends Asn1Decoder
 {
     /** The decoder */
-    private static final Asn1Decoder decoder = new Asn1Decoder();
+    private static final Asn1Decoder DECODER = new Asn1Decoder();
 
 
     /**
@@ -46,12 +46,12 @@ public class GracefulShutdownDecoder extends Asn1Decoder
      * @return An GracefulShutdown object
      * @throws org.apache.directory.api.asn1.DecoderException If the decoding failed
      */
-    public Asn1Object decode( byte[] stream ) throws DecoderException
+    public GracefulShutdownRequest decode( byte[] stream ) throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.wrap( stream );
         GracefulShutdownContainer container = new GracefulShutdownContainer();
-        decoder.decode( bb, container );
-        GracefulShutdown gracefulShutdown = container.getGracefulShutdown();
+        DECODER.decode( bb, container );
+        GracefulShutdownRequestDecorator gracefulShutdown = container.getGracefulShutdownRequest();
 
         // Clean the container for the next decoding
         container.clean();

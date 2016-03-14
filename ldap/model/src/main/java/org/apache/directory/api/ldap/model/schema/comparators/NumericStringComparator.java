@@ -56,8 +56,6 @@ public class NumericStringComparator extends LdapComparator<String>
     /**
      * Implementation of the Compare method
      */
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "ES_COMPARING_PARAMETER_STRING_WITH_EQ",
-        justification = "false positive")
     public int compare( String backendValue, String assertValue )
     {
         LOG.debug( "comparing numericStringOrdering objects '{}' with '{}'", backendValue, assertValue );
@@ -84,17 +82,17 @@ public class NumericStringComparator extends LdapComparator<String>
         {
             backendValue = PrepareString.normalize( backendValue, PrepareString.StringType.NUMERIC_STRING );
         }
-        catch ( IOException e )
+        catch ( IOException ioe )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, backendValue ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, backendValue ), ioe );
         }
         try
         {
             assertValue = PrepareString.normalize( assertValue, PrepareString.StringType.NUMERIC_STRING );
         }
-        catch ( IOException e )
+        catch ( IOException ioe )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, assertValue ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, assertValue ), ioe );
         }
 
         return backendValue.compareTo( assertValue );

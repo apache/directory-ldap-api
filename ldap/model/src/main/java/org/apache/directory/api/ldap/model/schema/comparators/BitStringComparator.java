@@ -52,8 +52,6 @@ public class BitStringComparator extends LdapComparator<String>
     /**
      * Implementation of the Compare method
      */
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "ES_COMPARING_PARAMETER_STRING_WITH_EQ",
-        justification = "false positive")
     public int compare( String bs1, String bs2 )
     {
         LOG.debug( "comparing BitString objects '{}' with '{}'", bs1, bs2 );

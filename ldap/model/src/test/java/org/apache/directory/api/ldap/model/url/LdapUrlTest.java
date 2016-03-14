@@ -146,49 +146,50 @@ public class LdapUrlTest
     /**
      * test a LdapUrl with a bad host 2
      */
-    @Test(expected = LdapURLEncodingException.class)
+    @Test
     public void testDnBadHost2() throws LdapURLEncodingException
     {
-        new LdapUrl( "ldap://./" );
+        assertEquals( "ldap://./", new LdapUrl( "ldap://./" ).toString() );
     }
 
 
     /**
      * test a LdapUrl with a bad host 3
      */
-    @Test(expected = LdapURLEncodingException.class)
+    @Test
     public void testDnBadHost3() throws LdapURLEncodingException
     {
-        new LdapUrl( "ldap://a..b/" );
+        assertEquals( "ldap://a..b/", new LdapUrl( "ldap://a..b/" ).toString() );
     }
 
 
     /**
      * test a LdapUrl with a bad host 4
      */
-    @Test(expected = LdapURLEncodingException.class)
+    @Test
     public void testDnBadHost4() throws LdapURLEncodingException
     {
-        new LdapUrl( "ldap://-/" );
+        assertEquals( "ldap://-/", new LdapUrl( "ldap://-/" ).toString() );
     }
 
 
     /**
      * test a LdapUrl with a bad host 5
      */
-    @Test(expected = LdapURLEncodingException.class)
+    @Test
     public void testDnBadHost5() throws LdapURLEncodingException
     {
-        new LdapUrl( "ldap://a.b.c-/" );
+        assertEquals( "ldap://a.b.c-/", new LdapUrl( "ldap://a.b.c-/" ).toString() );
     }
 
 
     /**
      * test a LdapUrl with a bad host 6
      */
-    @Test(expected = LdapURLEncodingException.class)
+    @Test
     public void testDnBadHost6() throws LdapURLEncodingException
     {
+        assertEquals( "ldap://a.b.-c/", new LdapUrl( "ldap://a.b.-c/" ).toString() );
         new LdapUrl( "ldap://a.b.-c/" );
     }
 
@@ -196,10 +197,10 @@ public class LdapUrlTest
     /**
      * test a LdapUrl with a bad host 7
      */
-    @Test(expected = LdapURLEncodingException.class)
+    @Test
     public void testDnBadHost7() throws LdapURLEncodingException
     {
-        new LdapUrl( "ldap://a.-.c/" );
+        assertEquals( "ldap://a.-.c/", new LdapUrl( "ldap://a.-.c/" ).toString() );
     }
 
 
@@ -207,7 +208,7 @@ public class LdapUrlTest
      * test a LdapUrl IP host
      */
     @Test
-    public void testDnIPHost() throws LdapURLEncodingException
+    public void testDnIPV4Host() throws LdapURLEncodingException
     {
         assertEquals( "ldap://1.2.3.4/", new LdapUrl( "ldap://1.2.3.4/" ).toString() );
     }
@@ -217,39 +218,42 @@ public class LdapUrlTest
      * test a LdapUrl IP host and port
      */
     @Test
-    public void testDnIPHostPort() throws LdapURLEncodingException
+    public void testDnIPV4HostPort() throws LdapURLEncodingException
     {
         assertEquals( "ldap://1.2.3.4:80/", new LdapUrl( "ldap://1.2.3.4:80/" ).toString() );
     }
 
 
     /**
-     * test a LdapUrl with a bad IP host 1
+     * test a LdapUrl with a bad IP host 1 : we should not get an error, but the host will not be considered 
+     * as an IPV4 address
      */
-    @Test(expected = LdapURLEncodingException.class)
+    @Test
     public void testDnBadHostIP1() throws LdapURLEncodingException
     {
-        new LdapUrl( "ldap://1.1.1/" );
+        assertEquals( "ldap://1.1.1/", new LdapUrl( "ldap://1.1.1/" ).toString() );
     }
 
 
     /**
-     * test a LdapUrl with a bad IP host 2
+     * test a LdapUrl with a bad IP host 1 : we should not get an error, but the host will not be considered 
+     * as an IPV4 address
      */
-    @Test(expected = LdapURLEncodingException.class)
+    @Test
     public void testDnBadHostIP2() throws LdapURLEncodingException
     {
-        new LdapUrl( "ldap://1.1.1./" );
+        assertEquals( "ldap://1.1.1./", new LdapUrl( "ldap://1.1.1./" ).toString() );
     }
 
 
     /**
-     * test a LdapUrl with a bad IP host 3
+     * test a LdapUrl with a bad IP host 1 : we should not get an error, but the host will not be considered 
+     * as an IPV4 address
      */
-    @Test(expected = LdapURLEncodingException.class)
+    @Test
     public void testDnBadHostIP3() throws LdapURLEncodingException
     {
-        new LdapUrl( "ldap://1.1.1.100000/" );
+        assertEquals( "ldap://1.1.1.100000/", new LdapUrl( "ldap://1.1.1.100000/" ).toString() );
     }
 
 
@@ -270,6 +274,43 @@ public class LdapUrlTest
     public void testDnNotAnIP() throws LdapURLEncodingException
     {
         assertEquals( "ldap://1.1.1.100000.a/", new LdapUrl( "ldap://1.1.1.100000.a/" ).toString() );
+    }
+
+
+    /**
+     * test a LdapUrl IPv6 host
+     */
+    @Test
+    public void testDnIPv6Host() throws LdapURLEncodingException
+    {
+        assertEquals( "ldap://[::]/", new LdapUrl( "ldap://[::]/" ).toString() );
+        assertEquals( "ldap://[1::2]/", new LdapUrl( "ldap://[1::2]/" ).toString() );
+        assertEquals( "ldap://[abcd:EF01:0234:5678:abcd:EF01:0234:5678]/", new LdapUrl( "ldap://[abcd:EF01:0234:5678:abcd:EF01:0234:5678]/" ).toString() );
+        assertEquals( "ldap://[::2]/", new LdapUrl( "ldap://[::2]/" ).toString() );
+        assertEquals( "ldap://[1:2::3:4]/", new LdapUrl( "ldap://[1:2::3:4]/" ).toString() );
+        assertEquals( "ldap://[1:2:3:4:5:6::]/", new LdapUrl( "ldap://[1:2:3:4:5:6::]/" ).toString() );
+    }
+
+
+    /**
+     * test a bad LdapUrl IPv6 host
+     * @throws LdapURLEncodingException 
+     */
+    @Test( expected=LdapURLEncodingException.class )
+    public void testDnIPv6BadHost() throws LdapURLEncodingException
+    {
+        new LdapUrl( "ldap://[:]/" );
+    }
+
+
+    /**
+     * test a bad LdapUrl IPv6 host
+     * @throws LdapURLEncodingException 
+     */
+    @Test( expected=LdapURLEncodingException.class )
+    public void testDnIPv6BadHost2() throws LdapURLEncodingException
+    {
+        new LdapUrl( "ldap://[1::2::3]/" );
     }
 
 

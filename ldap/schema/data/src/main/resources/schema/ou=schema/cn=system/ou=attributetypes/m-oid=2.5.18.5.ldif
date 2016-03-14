@@ -11,5 +11,6 @@ objectclass: top
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.38
 m-usage: DIRECTORY_OPERATION
 m-name: administrativeRole
+m-description: RFC3672: indicate that the associated administrative area is concerned withone or more administrative roles
 creatorsname: uid=admin,ou=system
 m-equality: objectIdentifierMatch

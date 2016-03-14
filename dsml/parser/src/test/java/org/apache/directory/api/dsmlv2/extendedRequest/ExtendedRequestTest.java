@@ -293,7 +293,7 @@ public class ExtendedRequestTest extends AbstractTest
         ExtendedRequestDsml<?, ?> extendedRequest =
             ( ExtendedRequestDsml<?, ?> ) parser.getBatchRequest().getCurrentRequest();
 
-        assertEquals( "foobar", new String( extendedRequest.getRequestValue() ) );
+        assertEquals( "foobar", Strings.utf8ToString( extendedRequest.getRequestValue() ) );
     }
 
 
@@ -321,7 +321,7 @@ public class ExtendedRequestTest extends AbstractTest
         ExtendedRequestDsml<?, ?> extendedRequest =
             ( ExtendedRequestDsml<?, ?> ) parser.getBatchRequest().getCurrentRequest();
 
-        assertEquals( "DSMLv2.0 rocks!!", new String( extendedRequest.getRequestValue() ) );
+        assertEquals( "DSMLv2.0 rocks!!", Strings.utf8ToString( extendedRequest.getRequestValue() ) );
     }
 
 

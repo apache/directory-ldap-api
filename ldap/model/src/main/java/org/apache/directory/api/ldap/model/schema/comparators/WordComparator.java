@@ -66,8 +66,6 @@ public class WordComparator extends LdapComparator<String>
     /**
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "ES_COMPARING_PARAMETER_STRING_WITH_EQ",
-        justification = "false positive")
     public int compare( String value, String assertion )
     {
         LOG.debug( "comparing String objects '{}' with '{}'", value, assertion );

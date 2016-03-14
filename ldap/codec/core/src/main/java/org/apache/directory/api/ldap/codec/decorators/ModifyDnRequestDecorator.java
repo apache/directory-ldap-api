@@ -28,11 +28,9 @@ import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
-import org.apache.directory.api.ldap.model.exception.MessageException;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ModifyDnRequest;
-import org.apache.directory.api.ldap.model.message.ModifyDnResponse;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.util.Strings;
@@ -43,7 +41,7 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<ModifyDnRequest, ModifyDnResponse>
+public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<ModifyDnRequest>
     implements ModifyDnRequest
 {
     /** The modify Dn request length */
@@ -58,25 +56,6 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     public ModifyDnRequestDecorator( LdapApiService codec, ModifyDnRequest decoratedMessage )
     {
         super( codec, decoratedMessage );
-    }
-
-
-    /**
-     * @param modifyDnRequestLength The encoded ModifyDnRequest's length
-     */
-    public void setModifyDnRequestLength( int modifyDnRequestLength )
-    {
-        this.modifyDnRequestLength = modifyDnRequestLength;
-    }
-
-
-    /**
-     * Stores the encoded length for the ModifyDnRequest
-     * @return the encoded length
-     */
-    public int getModifyDnResponseLength()
-    {
-        return modifyDnRequestLength;
     }
 
 
@@ -187,7 +166,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     /**
      * {@inheritDoc}
      */
-    public ModifyDnRequest addControl( Control control ) throws MessageException
+    public ModifyDnRequest addControl( Control control )
     {
         return ( ModifyDnRequest ) super.addControl( control );
     }
@@ -196,7 +175,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     /**
      * {@inheritDoc}
      */
-    public ModifyDnRequest addAllControls( Control[] controls ) throws MessageException
+    public ModifyDnRequest addAllControls( Control[] controls )
     {
         return ( ModifyDnRequest ) super.addAllControls( controls );
     }
@@ -205,7 +184,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     /**
      * {@inheritDoc}
      */
-    public ModifyDnRequest removeControl( Control control ) throws MessageException
+    public ModifyDnRequest removeControl( Control control )
     {
         return ( ModifyDnRequest ) super.removeControl( control );
     }
@@ -241,19 +220,18 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     {
         int newRdnlength = Strings.getBytesUtf8( getNewRdn().getName() ).length;
 
-        int modifyDNRequestLength = 1 + TLV.getNbBytes( Dn.getNbBytes( getName() ) )
+        // deleteOldRDN
+        modifyDnRequestLength = 1 + TLV.getNbBytes( Dn.getNbBytes( getName() ) )
             + Dn.getNbBytes( getName() ) + 1 + TLV.getNbBytes( newRdnlength ) + newRdnlength + 1 + 1
-            + 1; // deleteOldRDN
+            + 1;
 
         if ( getNewSuperior() != null )
         {
-            modifyDNRequestLength += 1 + TLV.getNbBytes( Dn.getNbBytes( getNewSuperior() ) )
+            modifyDnRequestLength += 1 + TLV.getNbBytes( Dn.getNbBytes( getNewSuperior() ) )
                 + Dn.getNbBytes( getNewSuperior() );
         }
 
-        setModifyDnRequestLength( modifyDNRequestLength );
-
-        return 1 + TLV.getNbBytes( modifyDNRequestLength ) + modifyDNRequestLength;
+        return 1 + TLV.getNbBytes( modifyDnRequestLength ) + modifyDnRequestLength;
     }
 
 
@@ -276,8 +254,8 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
         try
         {
             // The ModifyDNRequest Tag
-            buffer.put( LdapConstants.MODIFY_DN_REQUEST_TAG );
-            buffer.put( TLV.getBytes( getModifyDnResponseLength() ) );
+            buffer.put( LdapCodecConstants.MODIFY_DN_REQUEST_TAG );
+            buffer.put( TLV.getBytes( modifyDnRequestLength ) );
 
             // The entry
 
@@ -293,7 +271,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
             if ( getNewSuperior() != null )
             {
                 // Encode the reference
-                buffer.put( ( byte ) LdapConstants.MODIFY_DN_REQUEST_NEW_SUPERIOR_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.MODIFY_DN_REQUEST_NEW_SUPERIOR_TAG );
 
                 int newSuperiorLength = Dn.getNbBytes( getNewSuperior() );
 
@@ -307,7 +285,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
 
         return buffer;

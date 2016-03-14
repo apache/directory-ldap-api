@@ -25,7 +25,6 @@ import java.io.ObjectOutput;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
@@ -71,7 +70,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( AttributeType attributeType, byte[]... values ) throws LdapException
+    public Entry add( AttributeType attributeType, byte[]... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
@@ -81,7 +80,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( AttributeType attributeType, String... values ) throws LdapException
+    public Entry add( AttributeType attributeType, String... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
@@ -91,7 +90,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( AttributeType attributeType, Value<?>... values ) throws LdapException
+    public Entry add( AttributeType attributeType, Value<?>... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
@@ -101,7 +100,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( String upId, AttributeType attributeType, byte[]... values ) throws LdapException
+    public Entry add( String upId, AttributeType attributeType, byte[]... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
@@ -111,7 +110,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException
+    public Entry add( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
@@ -121,7 +120,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( String upId, AttributeType attributeType, String... values ) throws LdapException
+    public Entry add( String upId, AttributeType attributeType, String... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
@@ -131,7 +130,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( Attribute... attributes ) throws LdapException
+    public Entry add( Attribute... attributes ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
@@ -141,7 +140,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( String upId, byte[]... values ) throws LdapException
+    public Entry add( String upId, byte[]... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
@@ -151,7 +150,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( String upId, String... values ) throws LdapException
+    public Entry add( String upId, String... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
@@ -161,7 +160,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( String upId, Value<?>... values ) throws LdapException
+    public Entry add( String upId, Value<?>... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
@@ -176,6 +175,15 @@ public class ImmutableEntry implements Entry
     public Entry clone()
     {
         return entry.clone();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Entry shallowClone()
+    {
+        return entry.shallowClone();
     }
 
 

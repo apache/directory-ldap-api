@@ -63,7 +63,7 @@ public enum AdministrativeRole
      */
     private AdministrativeRole( String role )
     {
-        this.role = Strings.toLowerCase( Strings.trim( role ) );
+        this.role = Strings.toLowerCaseAscii( Strings.trim( role ) );
     }
 
 

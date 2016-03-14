@@ -122,6 +122,8 @@ public class PagedResultsImpl extends AbstractControl implements PagedResults
                     + ( ( cookie[2] & 0x00FF ) << 8 ) + ( cookie[3] & 0x00FF );
                 break;
 
+            default:
+                break;
         }
 
         return value;

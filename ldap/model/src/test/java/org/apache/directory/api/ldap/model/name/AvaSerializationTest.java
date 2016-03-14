@@ -146,7 +146,7 @@ public class AvaSerializationTest
         catch ( IOException ioe )
         {
             String message = ioe.getMessage();
-            assertEquals( "Cannot serialize an wrong ATAV, the upValue should not be null", message );
+            assertEquals( "Cannot serialize a wrong ATAV, the value should not be null", message );
         }
     }
 
@@ -167,7 +167,7 @@ public class AvaSerializationTest
         catch ( IOException ioe )
         {
             String message = ioe.getMessage();
-            assertEquals( "Cannot serialize an wrong ATAV, the upValue should not be null", message );
+            assertEquals( "Cannot serialize a wrong ATAV, the value should not be null", message );
         }
     }
 
@@ -308,7 +308,7 @@ public class AvaSerializationTest
         catch ( IOException ioe )
         {
             String message = ioe.getMessage();
-            assertEquals( "Cannot serialize an wrong ATAV, the upValue should not be null", message );
+            assertEquals( "Cannot serialize a wrong ATAV, the value should not be null", message );
         }
     }
 

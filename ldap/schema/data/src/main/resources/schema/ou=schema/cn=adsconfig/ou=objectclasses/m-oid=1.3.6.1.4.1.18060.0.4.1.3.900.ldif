@@ -28,4 +28,5 @@ m-may: ads-pwdSafeModify
 m-may: ads-pwdMinDelay
 m-may: ads-pwdMaxDelay
 m-may: ads-pwdMaxIdle
+m-may: ads-pwdValidator
 creatorsname: uid=admin,ou=system

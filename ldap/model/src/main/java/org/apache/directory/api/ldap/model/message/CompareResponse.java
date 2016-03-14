@@ -28,10 +28,6 @@ package org.apache.directory.api.ldap.model.message;
  */
 public interface CompareResponse extends ResultResponse
 {
-    /** Compare response message type enumeration value */
-    MessageTypeEnum TYPE = MessageTypeEnum.COMPARE_RESPONSE;
-
-
     /**
      * @return True if the compared response is a success
      * @return

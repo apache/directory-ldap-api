@@ -27,7 +27,7 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.codec.api.MessageDecorator;
 import org.apache.directory.api.ldap.model.message.IntermediateResponse;
 import org.apache.directory.api.util.Strings;
@@ -46,6 +46,9 @@ public class IntermediateResponseDecorator extends MessageDecorator<Intermediate
 
     /** The encoded intermediateResponse length */
     private int intermediateResponseLength;
+    
+    /** The encoded value as a byte[] */
+    private byte[] encodedValueBytes;
 
 
     /**
@@ -56,48 +59,6 @@ public class IntermediateResponseDecorator extends MessageDecorator<Intermediate
     public IntermediateResponseDecorator( LdapApiService codec, IntermediateResponse decoratedMessage )
     {
         super( codec, decoratedMessage );
-    }
-
-
-    /**
-     * Stores the encoded length for the IntermediateResponse
-     *
-     * @param intermediateResponseLength The encoded length
-     */
-    public void setIntermediateResponseLength( int intermediateResponseLength )
-    {
-        this.intermediateResponseLength = intermediateResponseLength;
-    }
-
-
-    /**
-     * @return The encoded IntermediateResponse's length
-     */
-    public int getIntermediateResponseLength()
-    {
-        return intermediateResponseLength;
-    }
-
-
-    /**
-     * Gets the ResponseName bytes
-     *
-     * @return the ResponseName bytes of the Intermediate response type.
-     */
-    public byte[] getResponseNameBytes()
-    {
-        return responseNameBytes;
-    }
-
-
-    /**
-     * Sets the ResponseName bytes
-     *
-     * @param responseNameBytes the ResponseName bytes of the Intermediate response type.
-     */
-    public void setResponseNameBytes( byte[] responseNameBytes )
-    {
-        this.responseNameBytes = responseNameBytes;
     }
 
 
@@ -163,25 +124,22 @@ public class IntermediateResponseDecorator extends MessageDecorator<Intermediate
      */
     public int computeLength()
     {
-        int intermediateResponseLength = 0;
+        intermediateResponseLength = 0;
 
         if ( !Strings.isEmpty( getResponseName() ) )
         {
-            byte[] responseNameBytes = Strings.getBytesUtf8( getResponseName() );
+            responseNameBytes = Strings.getBytesUtf8( getResponseName() );
 
             int responseNameLength = responseNameBytes.length;
             intermediateResponseLength += 1 + TLV.getNbBytes( responseNameLength ) + responseNameLength;
-            setResponseNameBytes( responseNameBytes );
         }
 
-        byte[] encodedValue = getResponseValue();
+        encodedValueBytes = getResponseValue();
 
-        if ( encodedValue != null )
+        if ( encodedValueBytes != null )
         {
-            intermediateResponseLength += 1 + TLV.getNbBytes( encodedValue.length ) + encodedValue.length;
+            intermediateResponseLength += 1 + TLV.getNbBytes( encodedValueBytes.length ) + encodedValueBytes.length;
         }
-
-        setIntermediateResponseLength( intermediateResponseLength );
 
         return 1 + TLV.getNbBytes( intermediateResponseLength ) + intermediateResponseLength;
     }
@@ -201,37 +159,33 @@ public class IntermediateResponseDecorator extends MessageDecorator<Intermediate
         try
         {
             // The ExtendedResponse Tag
-            buffer.put( LdapConstants.INTERMEDIATE_RESPONSE_TAG );
-            buffer.put( TLV.getBytes( getIntermediateResponseLength() ) );
+            buffer.put( LdapCodecConstants.INTERMEDIATE_RESPONSE_TAG );
+            buffer.put( TLV.getBytes( intermediateResponseLength ) );
 
             // The responseName, if any
-            byte[] responseNameBytes = getResponseNameBytes();
-
             if ( ( responseNameBytes != null ) && ( responseNameBytes.length != 0 ) )
             {
-                buffer.put( ( byte ) LdapConstants.INTERMEDIATE_RESPONSE_NAME_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.INTERMEDIATE_RESPONSE_NAME_TAG );
                 buffer.put( TLV.getBytes( responseNameBytes.length ) );
                 buffer.put( responseNameBytes );
             }
 
             // The encodedValue, if any
-            byte[] encodedValue = getResponseValue();
-
-            if ( encodedValue != null )
+            if ( encodedValueBytes != null )
             {
-                buffer.put( ( byte ) LdapConstants.INTERMEDIATE_RESPONSE_VALUE_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.INTERMEDIATE_RESPONSE_VALUE_TAG );
 
-                buffer.put( TLV.getBytes( encodedValue.length ) );
+                buffer.put( TLV.getBytes( encodedValueBytes.length ) );
 
-                if ( encodedValue.length != 0 )
+                if ( encodedValueBytes.length != 0 )
                 {
-                    buffer.put( encodedValue );
+                    buffer.put( encodedValueBytes );
                 }
             }
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
 
         return buffer;

@@ -20,6 +20,8 @@
 package org.apache.directory.api.ldap.model.schema.registries;
 
 
+import java.util.Map;
+
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
 import org.apache.directory.api.ldap.model.schema.SchemaObjectType;
@@ -104,7 +106,7 @@ public class DefaultSyntaxCheckerRegistry extends DefaultSchemaObjectRegistry<Sy
         sb.append( schemaObjectType ).append( ": " );
         boolean isFirst = true;
 
-        for ( String name : byName.keySet() )
+        for ( Map.Entry<String, SyntaxChecker> entry : byName.entrySet() )
         {
             if ( isFirst )
             {
@@ -115,7 +117,7 @@ public class DefaultSyntaxCheckerRegistry extends DefaultSchemaObjectRegistry<Sy
                 sb.append( ", " );
             }
 
-            SyntaxChecker syntaxChecker = byName.get( name );
+            SyntaxChecker syntaxChecker = entry.getValue();
 
             String fqcn = syntaxChecker.getFqcn();
             int lastDotPos = fqcn.lastIndexOf( '.' );

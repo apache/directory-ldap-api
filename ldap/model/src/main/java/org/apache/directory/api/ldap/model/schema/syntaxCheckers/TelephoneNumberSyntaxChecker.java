@@ -36,9 +36,9 @@ import org.slf4j.LoggerFactory;
  * A SyntaxChecker which verifies that a value is a TelephoneNumber according to ITU
  * recommendation E.123 (which is quite vague ...).
  * 
- * A valid Telephone number respect more or less this syntax :
+ * A valid Telephone number respects more or less this syntax :
  * 
- * " *[+]? *((\([0-9- ]+\))|[0-9- ]+)+"
+ * " *[+]? *((\([0-9- ,;/#*]+\))|[0-9- ,;/#*]+)+"
  * 
  * If needed, and to allow more syntaxes, a list of regexps has been added
  * which can be initialized to other values
@@ -58,7 +58,7 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
     private List<Pattern> compiledREs;
 
     /** The default pattern used to check a TelephoneNumber */
-    private static final String DEFAULT_REGEXP = "^ *[+]? *((\\([0-9- ,;#*]+\\))|[0-9- ,;#*]+)+$";
+    private static final String DEFAULT_REGEXP = "^ *[+]? *((\\([0-9- ,;/#*]+\\))|[0-9- ,;/#*]+)+$";
 
     /** The compiled default pattern */
     private Pattern defaultPattern = Pattern.compile( DEFAULT_REGEXP );

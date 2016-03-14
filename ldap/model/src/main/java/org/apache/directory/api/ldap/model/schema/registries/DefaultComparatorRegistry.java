@@ -20,6 +20,8 @@
 package org.apache.directory.api.ldap.model.schema.registries;
 
 
+import java.util.Map;
+
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
@@ -104,7 +106,7 @@ public class DefaultComparatorRegistry extends DefaultSchemaObjectRegistry<LdapC
         sb.append( schemaObjectType ).append( ": " );
         boolean isFirst = true;
 
-        for ( String name : byName.keySet() )
+        for ( Map.Entry<String, LdapComparator<?>> entry : byName.entrySet() )
         {
             if ( isFirst )
             {
@@ -115,7 +117,7 @@ public class DefaultComparatorRegistry extends DefaultSchemaObjectRegistry<LdapC
                 sb.append( ", " );
             }
 
-            LdapComparator<?> comparator = byName.get( name );
+            LdapComparator<?> comparator = entry.getValue();
 
             String fqcn = comparator.getFqcn();
             int lastDotPos = fqcn.lastIndexOf( '.' );

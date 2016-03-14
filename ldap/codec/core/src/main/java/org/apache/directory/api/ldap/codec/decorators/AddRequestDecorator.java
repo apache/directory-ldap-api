@@ -31,15 +31,13 @@ import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.message.AddRequest;
-import org.apache.directory.api.ldap.model.message.AddResponse;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
@@ -50,7 +48,7 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRequest, AddResponse> implements
+public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRequest> implements
     AddRequest
 {
     /** The add request length */
@@ -70,7 +68,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
 
     /** The current attribute being decoded */
     private Attribute currentAttribute;
-    
+
     /** The bytes containing the Dn */
     private byte[] dnBytes;
 
@@ -83,82 +81,6 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     public AddRequestDecorator( LdapApiService codec, AddRequest decoratedMessage )
     {
         super( codec, decoratedMessage );
-    }
-
-
-    /**
-     * Stores the encoded length for the AddRequest
-     * @param addRequestLength The encoded length
-     */
-    public void setAddRequestLength( int addRequestLength )
-    {
-        this.addRequestLength = addRequestLength;
-    }
-
-
-    /**
-     * @return The encoded AddRequest's length
-     */
-    public int getAddRequestLength()
-    {
-        return addRequestLength;
-    }
-
-
-    /**
-     * Stores the encoded length for the Entry
-     * @param entryLength The encoded length
-     */
-    public void setEntryLength( int entryLength )
-    {
-        this.entryLength = entryLength;
-    }
-
-
-    /**
-     * @return The encoded Entry's length
-     */
-    public int getEntryLength()
-    {
-        return entryLength;
-    }
-
-
-    /**
-     * Stores the encoded length for the attributes
-     * @param attributesLength The encoded length
-     */
-    public void setAttributesLength( List<Integer> attributesLength )
-    {
-        this.attributesLength = attributesLength;
-    }
-
-
-    /**
-     * @return The encoded values length
-     */
-    public List<Integer> getAttributesLength()
-    {
-        return attributesLength;
-    }
-
-
-    /**
-     * Stores the encoded length for the values
-     * @param valuesLength The encoded length
-     */
-    public void setValuesLength( List<Integer> valuesLength )
-    {
-        this.valuesLength = valuesLength;
-    }
-
-
-    /**
-     * @return The encoded values length
-     */
-    public List<Integer> getValuesLength()
-    {
-        return valuesLength;
     }
 
 
@@ -176,7 +98,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     /**
      * {@inheritDoc}
      */
-    public AddRequest addControl( Control control ) throws MessageException
+    public AddRequest addControl( Control control )
     {
         return ( AddRequest ) super.addControl( control );
     }
@@ -185,7 +107,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     /**
      * {@inheritDoc}
      */
-    public AddRequest addAllControls( Control[] controls ) throws MessageException
+    public AddRequest addAllControls( Control[] controls )
     {
         return ( AddRequest ) super.addAllControls( controls );
     }
@@ -194,7 +116,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     /**
      * {@inheritDoc}
      */
-    public AddRequest removeControl( Control control ) throws MessageException
+    public AddRequest removeControl( Control control )
     {
         return ( AddRequest ) super.removeControl( control );
     }
@@ -360,12 +282,12 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
 
         dnBytes = Strings.getBytesUtf8( entry.getDn().getName() );
         int dnLen = dnBytes.length;
-        
+
         // The entry Dn
-        int addRequestLength = 1 + TLV.getNbBytes( dnLen ) + dnLen;
+        addRequestLength = 1 + TLV.getNbBytes( dnLen ) + dnLen;
 
         // The attributes sequence
-        int entryLength = 0;
+        entryLength = 0;
 
         if ( entry.size() != 0 )
         {
@@ -393,11 +315,24 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
 
                     for ( Value<?> value : attribute )
                     {
-                        int valueLength = value.getBytes().length;
-                        localValuesLength += 1 + TLV.getNbBytes( valueLength ) + valueLength;
+                        if ( value.getBytes() == null )
+                        {
+                            localValuesLength += 1 + 1;
+                        }
+                        else
+                        {
+                            int valueLength = value.getBytes().length;
+                            localValuesLength += 1 + TLV.getNbBytes( valueLength ) + valueLength;
+                        }
                     }
 
                     localAttributeLength += 1 + TLV.getNbBytes( localValuesLength ) + localValuesLength;
+                }
+                else
+                {
+                    // No value : we still have to store the encapsulating Sequence
+                    localValuesLength = 1 + 1;
+                    localAttributeLength += 1 + 1 + localValuesLength;
                 }
 
                 // add the attribute length to the attributes length
@@ -406,14 +341,9 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
                 attributesLength.add( localAttributeLength );
                 valuesLength.add( localValuesLength );
             }
-
-            setAttributesLength( attributesLength );
-            setValuesLength( valuesLength );
-            setEntryLength( entryLength );
         }
 
         addRequestLength += 1 + TLV.getNbBytes( entryLength ) + entryLength;
-        setAddRequestLength( addRequestLength );
 
         // Return the result.
         return 1 + TLV.getNbBytes( addRequestLength ) + addRequestLength;
@@ -449,15 +379,15 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
         try
         {
             // The AddRequest Tag
-            buffer.put( LdapConstants.ADD_REQUEST_TAG );
-            buffer.put( TLV.getBytes( getAddRequestLength() ) );
+            buffer.put( LdapCodecConstants.ADD_REQUEST_TAG );
+            buffer.put( TLV.getBytes( addRequestLength ) );
 
             // The entry
             BerValue.encode( buffer, dnBytes );
 
             // The attributes sequence
             buffer.put( UniversalTag.SEQUENCE.getValue() );
-            buffer.put( TLV.getBytes( getEntryLength() ) );
+            buffer.put( TLV.getBytes( entryLength ) );
 
             // The partial attribute list
             Entry entry = getEntry();
@@ -489,6 +419,10 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
                             BerValue.encode( buffer, value.getBytes() );
                         }
                     }
+                    else
+                    {
+                        BerValue.encode( buffer, Strings.EMPTY_BYTES );
+                    }
 
                     // Go to the next attribute number;
                     attributeNumber++;
@@ -499,7 +433,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( "The PDU buffer size is too small !" );
+            throw new EncoderException( "The PDU buffer size is too small !", boe );
         }
     }
 }

@@ -57,7 +57,7 @@ public class CsnFactory
      */
     public Csn newInstance()
     {
-        int changeCount = 0;
+        int tmpChangeCount = 0;
 
         synchronized ( lock )
         {
@@ -66,18 +66,18 @@ public class CsnFactory
             // We will be able to generate 2 147 483 647 CSNs each 10 ms max
             if ( lastTimestamp == newTimestamp )
             {
-                this.changeCount++;
+                changeCount++;
             }
             else
             {
                 lastTimestamp = newTimestamp;
-                this.changeCount = 0;
+                changeCount = 0;
             }
 
-            changeCount = this.changeCount;
+            tmpChangeCount = changeCount;
         }
 
-        return new Csn( lastTimestamp, changeCount, replicaId, 0 );
+        return new Csn( lastTimestamp, tmpChangeCount, replicaId, 0 );
     }
 
 

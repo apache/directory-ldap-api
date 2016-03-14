@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.api</groupId>
     <artifactId>api-ldap-codec-parent</artifactId>
-    <version>1.0.0-M17-SNAPSHOT</version>
+    <version>1.0.0-M34-SNAPSHOT</version>
   </parent>
   
   <artifactId>api-ldap-codec-standalone</artifactId>
@@ -57,6 +57,11 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>api-ldap-codec-core</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>api-ldap-extras-codec</artifactId>
+    </dependency> 
 
     <dependency>
       <groupId>org.apache.mina</groupId>
