@@ -29,6 +29,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.comparators.ByteArrayComparator;
@@ -57,18 +58,18 @@ public class ValueSerializationTest
 {
     private static byte[] data = new byte[]
         { 0x01, 0x02, 0x03, 0x04 };
-    BinaryValue bv1 = new BinaryValue( data );
-    BinaryValue bv2 = new BinaryValue( StringConstants.EMPTY_BYTES );
-    BinaryValue bv3 = new BinaryValue( ( byte[] ) null );
-    BinaryValue bv1n = new BinaryValue( data );
-    BinaryValue bv2n = new BinaryValue( StringConstants.EMPTY_BYTES );
-    BinaryValue bv3n = new BinaryValue( ( byte[] ) null );
-    StringValue sv1 = new StringValue( "test" );
-    StringValue sv2 = new StringValue( "" );
-    StringValue sv3 = new StringValue( ( String ) null );
-    StringValue sv1n = new StringValue( "test" );
-    StringValue sv2n = new StringValue( "" );
-    StringValue sv3n = new StringValue( ( String ) null );
+    Value bv1 = new Value( data );
+    Value bv2 = new Value( StringConstants.EMPTY_BYTES );
+    Value bv3 = new Value( ( byte[] ) null );
+    Value bv1n = new Value( data );
+    Value bv2n = new Value( StringConstants.EMPTY_BYTES );
+    Value bv3n = new Value( ( byte[] ) null );
+    Value sv1 = new Value( "test" );
+    Value sv2 = new Value( "" );
+    Value sv3 = new Value( ( String ) null );
+    Value sv1n = new Value( "test" );
+    Value sv2n = new Value( "" );
+    Value sv3n = new Value( ( String ) null );
 
     private EntryUtils.S sb;
     private EntryUtils.AT atb;
@@ -97,7 +98,7 @@ public class ValueSerializationTest
             public static final long serialVersionUID = 1L;
 
 
-            public Value<?> normalize( Value<?> value ) throws LdapException
+            public Value normalize( Value value ) throws LdapException
             {
                 if ( !value.isHumanReadable() )
                 {
@@ -111,7 +112,7 @@ public class ValueSerializationTest
                         newVal[i++] = ( byte ) ( b & 0x007F );
                     }
 
-                    return new BinaryValue( Strings.trim( newVal ) );
+                    return new Value( Strings.trim( newVal ) );
                 }
 
                 throw new IllegalStateException( "expected byte[] to normalize" );
@@ -157,7 +158,7 @@ public class ValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        BinaryValue bvDeser = new BinaryValue( ( AttributeType ) null );
+        Value bvDeser = new Value( ( AttributeType ) null );
         bvDeser.readExternal( in );
 
         assertEquals( bv1, bvDeser );
@@ -177,7 +178,7 @@ public class ValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        BinaryValue bvDeser = new BinaryValue( ( AttributeType ) null );
+        Value bvDeser = new Value( ( AttributeType ) null );
         bvDeser.readExternal( in );
 
         assertEquals( bv2, bvDeser );
@@ -197,7 +198,7 @@ public class ValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        BinaryValue bvDeser = new BinaryValue( ( AttributeType ) null );
+        Value bvDeser = new Value( ( AttributeType ) null );
         bvDeser.readExternal( in );
 
         assertEquals( bv3, bvDeser );
@@ -217,7 +218,7 @@ public class ValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        StringValue svDeser = new StringValue( ( AttributeType ) null );
+        Value svDeser = new Value( ( AttributeType ) null );
         svDeser.readExternal( in );
 
         assertEquals( sv1, svDeser );
@@ -237,7 +238,7 @@ public class ValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        StringValue svDeser = new StringValue( ( AttributeType ) null );
+        Value svDeser = new Value( ( AttributeType ) null );
         svDeser.readExternal( in );
 
         assertEquals( sv2, svDeser );
@@ -257,7 +258,7 @@ public class ValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        StringValue svDeser = new StringValue( ( AttributeType ) null );
+        Value svDeser = new Value( ( AttributeType ) null );
         svDeser.readExternal( in );
 
         assertEquals( sv3, svDeser );
@@ -279,7 +280,7 @@ public class ValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        BinaryValue bvDeser = new BinaryValue( ( AttributeType ) null );
+        Value bvDeser = new Value( ( AttributeType ) null );
         bvDeser.readExternal( in );
 
         assertEquals( bv1n, bvDeser );
@@ -301,7 +302,7 @@ public class ValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        BinaryValue bvDeser = new BinaryValue( ( AttributeType ) null );
+        Value bvDeser = new Value( ( AttributeType ) null );
         bvDeser.readExternal( in );
 
         assertEquals( bv2n, bvDeser );
@@ -323,7 +324,7 @@ public class ValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        BinaryValue bvDeser = new BinaryValue( ( AttributeType ) null );
+        Value bvDeser = new Value( ( AttributeType ) null );
         bvDeser.readExternal( in );
 
         assertEquals( bv3n, bvDeser );
@@ -345,7 +346,7 @@ public class ValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        StringValue svDeser = new StringValue( ats );
+        Value svDeser = new Value( ats );
         svDeser.readExternal( in );
 
         assertEquals( sv1n, svDeser );
@@ -367,7 +368,7 @@ public class ValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        StringValue svDeser = new StringValue( ats );
+        Value svDeser = new Value( ats );
         svDeser.readExternal( in );
 
         assertEquals( sv2n, svDeser );
@@ -389,7 +390,7 @@ public class ValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        StringValue svDeser = new StringValue( ats );
+        Value svDeser = new Value( ats );
         svDeser.readExternal( in );
 
         assertEquals( sv3n, svDeser );
@@ -405,7 +406,7 @@ public class ValueSerializationTest
 
         int pos = sv1n.serialize( buffer, 0 );
 
-        StringValue svDeser = new StringValue( ats );
+        Value svDeser = new Value( ats );
 
         int pos2 = svDeser.deserialize( buffer, 0 );
 
@@ -423,7 +424,7 @@ public class ValueSerializationTest
 
         int pos = sv2n.serialize( buffer, 0 );
 
-        StringValue svDeser = new StringValue( ats );
+        Value svDeser = new Value( ats );
 
         int pos2 = svDeser.deserialize( buffer, 0 );
 
@@ -441,7 +442,7 @@ public class ValueSerializationTest
 
         int pos = sv3n.serialize( buffer, 0 );
 
-        StringValue svDeser = new StringValue( ats );
+        Value svDeser = new Value( ats );
         int pos2 = svDeser.deserialize( buffer, 0 );
 
         assertEquals( pos, pos2 );
@@ -450,13 +451,13 @@ public class ValueSerializationTest
 
 
     @Test
-    public void testStringValueWithDataSerializationBytes() throws IOException, ClassNotFoundException
+    public void testStringValueWithDataSerializationBytes() throws IOException, ClassNotFoundException, LdapInvalidAttributeValueException
     {
         byte[] buffer = new byte[128];
 
         int pos = sv1.serialize( buffer, 0 );
 
-        StringValue svDeser = new StringValue( ( AttributeType ) null );
+        Value svDeser = new Value( ( AttributeType ) null );
 
         int pos2 = svDeser.deserialize( buffer, 0 );
 
@@ -466,13 +467,13 @@ public class ValueSerializationTest
 
 
     @Test
-    public void testStringValueWithEmptyDataSerializationBytes() throws IOException, ClassNotFoundException
+    public void testStringValueWithEmptyDataSerializationBytes() throws IOException, ClassNotFoundException, LdapInvalidAttributeValueException
     {
         byte[] buffer = new byte[128];
 
         int pos = sv2.serialize( buffer, 0 );
 
-        StringValue svDeser = new StringValue( ( AttributeType ) null );
+        Value svDeser = new Value( ( AttributeType ) null );
 
         int pos2 = svDeser.deserialize( buffer, 0 );
 
@@ -482,13 +483,13 @@ public class ValueSerializationTest
 
 
     @Test
-    public void testStringValueNoDataSerializationBytes() throws IOException, ClassNotFoundException
+    public void testStringValueNoDataSerializationBytes() throws IOException, ClassNotFoundException, LdapInvalidAttributeValueException
     {
         byte[] buffer = new byte[128];
 
         int pos = sv3.serialize( buffer, 0 );
 
-        StringValue svDeser = new StringValue( ( AttributeType ) null );
+        Value svDeser = new Value( ( AttributeType ) null );
 
         int pos2 = svDeser.deserialize( buffer, 0 );
 
@@ -503,7 +504,7 @@ public class ValueSerializationTest
         ClassNotFoundException
     {
         sv1n.apply( ats );
-        StringValue svDeser = new StringValue( ats );
+        Value svDeser = new Value( ats );
 
         long t0 = System.currentTimeMillis();
 
@@ -531,7 +532,7 @@ public class ValueSerializationTest
         ClassNotFoundException
     {
         sv1n.apply( ats );
-        StringValue svDeser = new StringValue( ats );
+        Value svDeser = new Value( ats );
 
         long t0 = System.currentTimeMillis();
 

@@ -441,7 +441,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
                 // Get all the values
                 if ( modification.getAttribute().size() != 0 )
                 {
-                    for ( Value<?> value : modification.getAttribute() )
+                    for ( Value value : modification.getAttribute() )
                     {
                         localValuesLength += 1 + TLV.getNbBytes( value.getBytes().length ) + value.getBytes().length;
                     }
@@ -552,7 +552,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
 
                     if ( modification.getAttribute().size() != 0 )
                     {
-                        for ( org.apache.directory.api.ldap.model.entry.Value<?> value : modification.getAttribute() )
+                        for ( org.apache.directory.api.ldap.model.entry.Value value : modification.getAttribute() )
                         {
                             if ( value.isHumanReadable() )
                             {

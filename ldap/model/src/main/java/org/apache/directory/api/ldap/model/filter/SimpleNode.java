@@ -34,7 +34,7 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
 public abstract class SimpleNode<T> extends LeafNode
 {
     /** the value */
-    protected Value<T> value;
+    protected Value value;
 
     /** Constants for comparisons : > */
     public static final boolean EVAL_GREATER = true;
@@ -50,7 +50,7 @@ public abstract class SimpleNode<T> extends LeafNode
      * @param value the value to test for
      * @param assertionType the type of assertion represented by this ExprNode
      */
-    protected SimpleNode( String attribute, Value<T> value, AssertionType assertionType )
+    protected SimpleNode( String attribute, Value value, AssertionType assertionType )
     {
         super( attribute, assertionType );
         this.value = value;
@@ -64,7 +64,7 @@ public abstract class SimpleNode<T> extends LeafNode
      * @param value the value to test for
      * @param assertionType the type of assertion represented by this ExprNode
      */
-    protected SimpleNode( AttributeType attributeType, Value<T> value, AssertionType assertionType )
+    protected SimpleNode( AttributeType attributeType, Value value, AssertionType assertionType )
     {
         super( attributeType, assertionType );
         this.value = value;
@@ -92,7 +92,7 @@ public abstract class SimpleNode<T> extends LeafNode
      * 
      * @return the value
      */
-    public final Value<T> getValue()
+    public final Value getValue()
     {
         return value;
     }
@@ -101,7 +101,7 @@ public abstract class SimpleNode<T> extends LeafNode
     /** 
      * @return representation of value, escaped for use in a filter if required 
      */
-    public Value<?> getEscapedValue()
+    public Value getEscapedValue()
     {
         return escapeFilterValue( value );
     }
@@ -112,7 +112,7 @@ public abstract class SimpleNode<T> extends LeafNode
      * 
      * @param value the value for this node
      */
-    public void setValue( Value<T> value )
+    public void setValue( Value value )
     {
         this.value = value;
     }

@@ -34,7 +34,6 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Value;
@@ -255,7 +254,7 @@ public class SchemaEntityFactory implements EntityFactory
             Set<String> depsSet = new HashSet<String>();
             Attribute depsAttr = entry.get( MetaSchemaConstants.M_DEPENDENCIES_AT );
 
-            for ( Value<?> value : depsAttr )
+            for ( Value value : depsAttr )
             {
                 depsSet.add( value.getString() );
             }
@@ -907,7 +906,7 @@ public class SchemaEntityFactory implements EntityFactory
 
         List<String> strings = new ArrayList<String>( attr.size() );
 
-        for ( Value<?> value : attr )
+        for ( Value value : attr )
         {
             strings.add( value.getString() );
         }
@@ -1184,17 +1183,9 @@ public class SchemaEntityFactory implements EntityFactory
      */
     private String getStringValue( Attribute attribute )
     {
-        Value<?> value = attribute.get();
+        Value value = attribute.get();
 
-        if ( value instanceof BinaryValue )
-        {
-            // We have to transform the value to a String
-            return Strings.utf8ToString( value.getBytes() );
-        }
-        else
-        {
-            return value.getString();
-        }
+        return value.getString();
     }
 
 
@@ -1237,7 +1228,7 @@ public class SchemaEntityFactory implements EntityFactory
         {
             List<String> values = new ArrayList<String>();
 
-            for ( Value<?> name : names )
+            for ( Value name : names )
             {
                 values.add( name.getString() );
             }

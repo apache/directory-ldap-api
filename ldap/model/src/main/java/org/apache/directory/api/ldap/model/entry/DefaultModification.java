@@ -110,7 +110,7 @@ public class DefaultModification implements Modification
      * @param attributeId The associated attribute ID
      * @param values the associated values
      */
-    public DefaultModification( ModificationOperation operation, String attributeId, Value<?>... values )
+    public DefaultModification( ModificationOperation operation, String attributeId, Value... values )
     {
         this.operation = operation;
         this.attribute = new DefaultAttribute( attributeId, values );
@@ -167,7 +167,7 @@ public class DefaultModification implements Modification
      * @param attributeType The associated attributeType
      * @param values the associated values
      */
-    public DefaultModification( ModificationOperation operation, AttributeType attributeType, Value<?>... values )
+    public DefaultModification( ModificationOperation operation, AttributeType attributeType, Value... values )
         throws LdapInvalidAttributeValueException
     {
         this.operation = operation;

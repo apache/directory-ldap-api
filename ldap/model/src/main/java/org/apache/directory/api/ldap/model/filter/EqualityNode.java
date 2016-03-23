@@ -37,7 +37,7 @@ public class EqualityNode<T> extends SimpleNode<T>
      * @param attributeType the attributeType
      * @param value the value to test for
      */
-    public EqualityNode( AttributeType attributeType, Value<T> value )
+    public EqualityNode( AttributeType attributeType, Value value )
     {
         super( attributeType, value, AssertionType.EQUALITY );
     }
@@ -49,7 +49,7 @@ public class EqualityNode<T> extends SimpleNode<T>
      * @param attribute the attribute name
      * @param value the value to test for
      */
-    public EqualityNode( String attribute, Value<T> value )
+    public EqualityNode( String attribute, Value value )
     {
         super( attribute, value, AssertionType.EQUALITY );
     }
@@ -76,7 +76,8 @@ public class EqualityNode<T> extends SimpleNode<T>
 
         buf.append( "=" );
 
-        Value<?> escapedValue = getEscapedValue();
+        Value escapedValue = getEscapedValue();
+        
         if ( !escapedValue.isNull() )
         {
             buf.append( escapedValue );

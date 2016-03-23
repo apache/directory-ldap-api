@@ -22,8 +22,6 @@ package org.apache.directory.api.ldap.model.schema.comparators;
 
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -35,10 +33,6 @@ public class ByteArrayComparator extends LdapComparator<byte[]>
 {
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
-
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( ByteArrayComparator.class );
-
 
     /**
      * The ByteArrayComparator constructor. Its OID is the OctetStringMatch matching
@@ -55,66 +49,6 @@ public class ByteArrayComparator extends LdapComparator<byte[]>
      */
     public int compare( byte[] b1, byte[] b2 )
     {
-        LOG.debug( "comparing OctetString objects '{}' with '{}'",
-            Strings.dumpBytes( b1 ), Strings.dumpBytes( b2 ) );
-
-        // -------------------------------------------------------------------
-        // Handle some basis cases
-        // -------------------------------------------------------------------
-
-        if ( b1 == null )
-        {
-            return ( b2 == null ) ? 0 : -1;
-        }
-
-        if ( b2 == null )
-        {
-            return 1;
-        }
-
-        if ( b1.length == b2.length )
-        {
-            for ( int i = 0; i < b1.length; i++ )
-            {
-                if ( b1[i] > b2[i] )
-                {
-                    return 1;
-                }
-                else if ( b1[i] < b2[i] )
-                {
-                    return -1;
-                }
-            }
-
-            return 0;
-        }
-
-        int minLength = Math.min( b1.length, b2.length );
-
-        for ( int i = 0; i < minLength; i++ )
-        {
-            if ( b1[i] > b2[i] )
-            {
-                return 1;
-            }
-            else if ( b1[i] < b2[i] )
-            {
-                return -1;
-            }
-        }
-
-        // b2 is longer w/ b1 as prefix 
-        if ( b1.length == minLength )
-        {
-            return -1;
-        }
-
-        // b1 is longer w/ b2 as prefix
-        if ( b2.length == minLength )
-        {
-            return 1;
-        }
-
-        return 0;
+        return Strings.compare( b1, b2 );
     }
 }

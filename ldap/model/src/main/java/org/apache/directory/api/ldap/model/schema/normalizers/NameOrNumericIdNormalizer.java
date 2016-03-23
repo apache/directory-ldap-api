@@ -22,7 +22,6 @@ package org.apache.directory.api.ldap.model.schema.normalizers;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapOtherException;
@@ -63,7 +62,7 @@ public class NameOrNumericIdNormalizer extends Normalizer
     /**
      * {@inheritDoc} 
      */
-    public Value<?> normalize( Value<?> value ) throws LdapException
+    public Value normalize( Value value ) throws LdapException
     {
         if ( value == null )
         {
@@ -74,7 +73,7 @@ public class NameOrNumericIdNormalizer extends Normalizer
 
         if ( strValue.length() == 0 )
         {
-            return new StringValue( "" );
+            return new Value( "" );
         }
 
         // if value is a numeric id then return it as is
@@ -88,7 +87,7 @@ public class NameOrNumericIdNormalizer extends Normalizer
 
         if ( oid != null )
         {
-            return new StringValue( oid );
+            return new Value( oid );
         }
 
         // if all else fails

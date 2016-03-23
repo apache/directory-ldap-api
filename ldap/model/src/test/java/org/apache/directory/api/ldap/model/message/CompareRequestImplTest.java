@@ -191,7 +191,7 @@ public class CompareRequestImplTest
     {
         CompareRequest req0 = new CompareRequest()
         {
-            public Value<?> getAssertionValue()
+            public Value getAssertionValue()
             {
                 return null;
             }

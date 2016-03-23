@@ -31,14 +31,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Arrays;
 
-import org.apache.directory.api.ldap.model.entry.StringValue;
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.comparators.StringComparator;
 import org.apache.directory.api.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.Ia5StringSyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.OctetStringSyntaxChecker;
+import org.apache.directory.api.util.Strings;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,7 +51,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 /**
  * 
- * Test the StringValue class
+ * Test the Value class
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -87,9 +89,9 @@ public class StringValueTest
     // Helper method
     //----------------------------------------------------------------------------------
     /**
-     * Serialize a StringValue
+     * Serialize a Value
      */
-    private ByteArrayOutputStream serializeValue( StringValue value ) throws IOException
+    private ByteArrayOutputStream serializeValue( Value value ) throws IOException
     {
         ObjectOutputStream oOut = null;
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -102,9 +104,9 @@ public class StringValueTest
 
 
     /**
-     * Deserialize a StringValue
+     * Deserialize a Value
      */
-    private StringValue deserializeValue( AttributeType at, ByteArrayOutputStream out ) throws IOException,
+    private Value deserializeValue( AttributeType at, ByteArrayOutputStream out ) throws IOException,
         ClassNotFoundException
     {
         ObjectInputStream oIn = null;
@@ -114,7 +116,7 @@ public class StringValueTest
         {
             oIn = new ObjectInputStream( in );
 
-            StringValue value = new StringValue( at );
+            Value value = Value.createValue( at );
             value.readExternal( oIn );
 
             return value;
@@ -149,13 +151,13 @@ public class StringValueTest
     @Test
     public void testCloneEmptyValue() throws LdapException
     {
-        StringValue sv = new StringValue( ( String ) null );
+        Value sv = new Value( ( String ) null );
 
-        StringValue sv1 = ( StringValue ) sv.clone();
+        Value sv1 = ( Value ) sv.clone();
 
         assertEquals( sv, sv1 );
 
-        StringValue sv2 = new StringValue( "" );
+        Value sv2 = new Value( "" );
 
         assertNotSame( sv2, sv1 );
         assertNull( sv1.getValue() );
@@ -169,16 +171,16 @@ public class StringValueTest
     @Test
     public void testCloneValue() throws LdapException
     {
-        StringValue sv = new StringValue( "  This is    a   TEST  " );
+        Value sv = new Value( "  This is    a   TEST  " );
 
-        StringValue sv1 = ( StringValue ) sv.clone();
+        Value sv1 = ( Value ) sv.clone();
 
         sv1 = sv.clone();
 
         assertEquals( sv, sv1 );
         assertEquals( "  This is    a   TEST  ", sv.getString() );
 
-        sv.apply( at );
+        sv = new Value( at, sv );
 
         assertNotSame( sv, sv1 );
         assertEquals( "  This is    a   TEST  ", sv1.getString() );
@@ -189,45 +191,44 @@ public class StringValueTest
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.StringValue#hashCode()}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#hashCode()}.
      */
     @Test
     public void testHashCode()
     {
-        StringValue csv = new StringValue( "test" );
+        Value csv = new Value( "test" );
 
-        int hash = "test".hashCode();
+        int hash = Arrays.hashCode( Strings.getBytesUtf8( "test" ) );
         assertEquals( hash, csv.hashCode() );
 
-        csv = new StringValue( ( String ) null );
-        hash = "".hashCode();
-        assertEquals( hash, csv.hashCode() );
+        csv = new Value( ( String ) null );
+        assertEquals( 0, csv.hashCode() );
     }
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.StringValue#ClientStringValue()}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#ClientStringValue()}.
      */
     @Test
     public void testClientStringValueNull() throws LdapException
     {
-        StringValue csv = new StringValue( ( String ) null );
+        Value csv = new Value( ( String ) null );
 
         assertNull( csv.getValue() );
         assertFalse( csv.isSchemaAware() );
         assertTrue( csv.isValid( new Ia5StringSyntaxChecker() ) );
         assertTrue( csv.isNull() );
-        assertNull( csv.getNormValue() );
+        assertEquals( null, csv.getNormValue() );
     }
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.StringValue#ClientStringValue(java.lang.String)}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#ClientStringValue(java.lang.String)}.
      */
     @Test
     public void testClientStringValueEmpty() throws LdapException
     {
-        StringValue csv = new StringValue( "" );
+        Value csv = new Value( "" );
 
         assertNotNull( csv.getValue() );
         assertEquals( "", csv.getString() );
@@ -240,12 +241,12 @@ public class StringValueTest
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.StringValue#ClientStringValue(java.lang.String)}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#ClientStringValue(java.lang.String)}.
      */
     @Test
     public void testClientStringValueString() throws LdapException
     {
-        StringValue csv = new StringValue( "test" );
+        Value csv = new Value( "test" );
 
         assertEquals( "test", csv.getValue() );
         assertFalse( csv.isSchemaAware() );
@@ -257,55 +258,55 @@ public class StringValueTest
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.StringValue#getValue()}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#getValue()}.
      */
     @Test
     public void testGet()
     {
-        StringValue sv = new StringValue( "test" );
+        Value sv = new Value( "test" );
         assertEquals( "test", sv.getValue() );
 
-        StringValue sv2 = new StringValue( "" );
+        Value sv2 = new Value( "" );
         assertEquals( "", sv2.getValue() );
     }
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.StringValue#getCopy()}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#getCopy()}.
      */
     @Test
     public void testGetCopy()
     {
-        StringValue sv = new StringValue( "test" );
+        Value sv = new Value( "test" );
 
         assertEquals( "test", sv.getValue() );
 
-        StringValue sv2 = new StringValue( "" );
+        Value sv2 = new Value( "" );
         assertEquals( "", sv2.getValue() );
     }
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.StringValue#set(java.lang.String)}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#set(java.lang.String)}.
      */
     @Test
     public void testSet() throws LdapException
     {
-        StringValue sv = new StringValue( ( String ) null );
+        Value sv = new Value( ( String ) null );
 
         assertNull( sv.getValue() );
         assertFalse( sv.isSchemaAware() );
         assertTrue( sv.isValid( new Ia5StringSyntaxChecker() ) );
         assertTrue( sv.isNull() );
 
-        sv = new StringValue( "" );
+        sv = new Value( "" );
         assertNotNull( sv.getValue() );
         assertEquals( "", sv.getValue() );
         assertFalse( sv.isSchemaAware() );
         assertTrue( sv.isValid( new Ia5StringSyntaxChecker() ) );
         assertFalse( sv.isNull() );
 
-        sv = new StringValue( "Test" );
+        sv = new Value( "Test" );
         assertNotNull( sv.getValue() );
         assertEquals( "Test", sv.getValue() );
         assertFalse( sv.isSchemaAware() );
@@ -315,53 +316,53 @@ public class StringValueTest
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.StringValue#isNull()}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#isNull()}.
      */
     @Test
     public void testIsNull()
     {
-        StringValue sv = new StringValue( ( String ) null );
+        Value sv = new Value( ( String ) null );
         assertTrue( sv.isNull() );
 
-        sv = new StringValue( "test" );
+        sv = new Value( "test" );
         assertFalse( sv.isNull() );
     }
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.StringValue#isSchemaAware()}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#isSchemaAware()}.
      */
     @Test
     public void testIsNormalized() throws LdapException
     {
-        StringValue sv = new StringValue( "  This is    a   TEST  " );
+        Value sv = new Value( "  This is    a   TEST  " );
 
         assertFalse( sv.isSchemaAware() );
 
-        sv.apply( at );
+        sv = new Value( at, sv );
 
         assertEquals( "this is a test", sv.getNormValue() );
         assertTrue( sv.isSchemaAware() );
 
-        sv = new StringValue( "test" );
+        sv = new Value( "test" );
         assertFalse( sv.isSchemaAware() );
     }
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.StringValue#setNormalized(boolean)}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#setNormalized(boolean)}.
      */
     @Test
     public void testSetNormalized() throws LdapException
     {
-        StringValue sv = new StringValue( ( String ) null );
+        Value sv = new Value( ( String ) null );
 
         assertFalse( sv.isSchemaAware() );
 
-        sv = new StringValue( "  This is    a   TEST  " );
+        sv = new Value( "  This is    a   TEST  " );
         assertFalse( sv.isSchemaAware() );
 
-        sv.apply( at );
+        sv = new Value( at, sv );
 
         assertEquals( "this is a test", sv.getNormValue() );
         assertTrue( sv.isSchemaAware() );
@@ -369,155 +370,154 @@ public class StringValueTest
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.StringValue#getNormValue()}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#getNormValue()}.
      */
     @Test
     public void testGetNormalizedValue() throws LdapException
     {
-        StringValue sv = new StringValue( ( String ) null );
+        Value sv = new Value( ( String ) null );
 
         assertEquals( null, sv.getNormValue() );
 
-        sv = new StringValue( "  This is    a   TEST  " );
+        sv = new Value( "  This is    a   TEST  " );
         assertEquals( "  This is    a   TEST  ", sv.getNormValue() );
 
-        sv.apply( at );
+        sv = new Value( at, sv );
 
         assertEquals( "this is a test", sv.getNormValue() );
     }
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.StringValue#getNormValue()}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#getNormValue()}.
      */
     @Test
     public void getNormValueCopy() throws LdapException
     {
-        StringValue sv = new StringValue( ( String ) null );
+        Value sv = new Value( ( String ) null );
 
         assertEquals( null, sv.getNormValue() );
 
-        sv = new StringValue( "  This is    a   TEST  " );
+        sv = new Value( "  This is    a   TEST  " );
         assertEquals( "  This is    a   TEST  ", sv.getNormValue() );
 
-        sv.apply( at );
+        sv = new Value( at, sv );
 
         assertEquals( "this is a test", sv.getNormValue() );
     }
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.StringValue#normalize(org.apache.directory.api.ldap.model.schema.Normalizer)}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#normalize(org.apache.directory.api.ldap.model.schema.Normalizer)}.
      */
     @Test
     public void testNormalize() throws LdapException
     {
-        StringValue sv = new StringValue( ( String ) null );
+        Value sv = new Value( ( String ) null );
 
-        sv.apply( at );
+        sv = new Value( at, sv );
         assertEquals( null, sv.getNormValue() );
 
-        sv = new StringValue( "" );
-        sv.apply( at );
+        sv = new Value( "" );
+        sv = new Value( at, sv );
         assertEquals( "", sv.getNormValue() );
 
-        sv = new StringValue( "  This is    a   TEST  " );
+        sv = new Value( "  This is    a   TEST  " );
         assertEquals( "  This is    a   TEST  ", sv.getNormValue() );
 
-        sv.apply( at );
+        sv = new Value( at, sv );
 
         assertEquals( "this is a test", sv.getNormValue() );
     }
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.StringValue#isValid(org.apache.directory.api.ldap.model.schema.SyntaxChecker)}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#isValid(org.apache.directory.api.ldap.model.schema.SyntaxChecker)}.
      */
     @Test
     public void testIsValid() throws LdapException
     {
-        StringValue sv = new StringValue( "Test" );
+        Value sv = new Value( "Test" );
 
         assertTrue( sv.isValid( new Ia5StringSyntaxChecker() ) );
 
-        sv = new StringValue( "é" );
+        sv = new Value( "é" );
         assertFalse( sv.isValid( new Ia5StringSyntaxChecker() ) );
     }
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.StringValue#compareTo(org.apache.directory.api.ldap.model.entry.Value)}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#compareTo(org.apache.directory.api.ldap.model.entry.Value)}.
      */
     @Test
     public void testCompareTo() throws LdapException
     {
-        StringValue sv1 = new StringValue( ( String ) null );
-        StringValue sv2 = new StringValue( ( String ) null );
+        Value sv1 = new Value( ( String ) null );
+        Value sv2 = new Value( ( String ) null );
 
         assertEquals( 0, sv1.compareTo( sv2 ) );
 
-        sv1 = new StringValue( "Test" );
+        sv1 = new Value( "Test" );
         assertEquals( 1, sv1.compareTo( sv2 ) );
         assertEquals( -1, sv2.compareTo( sv1 ) );
 
-        sv2 = new StringValue( "Test" );
+        sv2 = new Value( "Test" );
         assertEquals( 0, sv1.compareTo( sv2 ) );
 
         // Now check that the equals method works on normalized values.
-        sv1 = new StringValue( "  This is    a TEST   " );
-        sv2 = new StringValue( "this is a test" );
-        sv1.apply( at );
+        sv1 = new Value( "  This is    a TEST   " );
+        sv2 = new Value( "this is a test" );
+        sv1 = new Value( at, sv1 );
         assertEquals( 0, sv1.compareTo( sv2 ) );
 
-        sv1 = new StringValue( "a" );
-        sv2 = new StringValue( "b" );
+        sv1 = new Value( "a" );
+        sv2 = new Value( "b" );
         assertEquals( -1, sv1.compareTo( sv2 ) );
 
-        sv1 = new StringValue( "b" );
-        sv2 = new StringValue( "a" );
+        sv1 = new Value( "b" );
+        sv2 = new Value( "a" );
         assertEquals( 1, sv1.compareTo( sv2 ) );
     }
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.StringValue#equals(java.lang.Object)}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#equals(java.lang.Object)}.
      */
     @Test
     public void testEquals() throws LdapException
     {
-        StringValue sv1 = new StringValue( ( String ) null );
-        StringValue sv2 = new StringValue( ( String ) null );
+        Value sv1 = new Value( ( String ) null );
+        Value sv2 = new Value( ( String ) null );
 
         assertEquals( sv1, sv2 );
 
-        sv1 = new StringValue( "Test" );
+        sv1 = new Value( "Test" );
         assertNotSame( sv1, sv2 );
 
-        sv2 = new StringValue( "Test" );
+        sv2 = new Value( "Test" );
         assertEquals( sv1, sv2 );
 
         // Now check that the equals method works on normalized values.
-        sv1 = new StringValue( "  This is    a TEST   " );
-        sv2 = new StringValue( "this is a test" );
-        sv1.apply( at );
+        sv1 = new Value( at, "  This is    a TEST   " );
+        sv2 = new Value( at,  "this is a test" );
         assertEquals( sv1, sv2 );
     }
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.StringValue#toString()}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#toString()}.
      */
     @Test
     public void testToString()
     {
-        StringValue sv = new StringValue( ( String ) null );
+        Value sv = new Value( ( String ) null );
 
         assertEquals( "null", sv.toString() );
 
-        sv = new StringValue( "" );
+        sv = new Value( "" );
         assertEquals( "", sv.toString() );
 
-        sv = new StringValue( "Test" );
+        sv = new Value( "Test" );
         assertEquals( "Test", sv.toString() );
     }
 
@@ -528,11 +528,11 @@ public class StringValueTest
     @Test
     public void testSerializeStandard() throws LdapException, IOException, ClassNotFoundException
     {
-        StringValue csv = new StringValue( "TEST" );
-        csv.apply( at );
+        Value csv = new Value( "TEST" );
+        csv = new Value( at, csv );
         csv.isValid( new Ia5StringSyntaxChecker() );
 
-        StringValue csvSer = deserializeValue( at, serializeValue( csv ) );
+        Value csvSer = deserializeValue( at, serializeValue( csv ) );
         assertNotSame( csv, csvSer );
         assertEquals( csv.getValue(), csvSer.getValue() );
         assertEquals( csv.getNormValue(), csvSer.getNormValue() );
@@ -546,10 +546,10 @@ public class StringValueTest
     @Test
     public void testSerializeNotNormalized() throws LdapException, IOException, ClassNotFoundException
     {
-        StringValue csv = new StringValue( "Test" );
+        Value csv = new Value( "Test" );
         csv.isValid( new Ia5StringSyntaxChecker() );
 
-        StringValue csvSer = deserializeValue( null, serializeValue( csv ) );
+        Value csvSer = deserializeValue( null, serializeValue( csv ) );
         assertNotSame( csv, csvSer );
         assertEquals( csv.getValue(), csvSer.getValue() );
         assertEquals( csv.getValue(), csvSer.getNormValue() );
@@ -563,11 +563,11 @@ public class StringValueTest
     @Test
     public void testSerializeEmptyNormalized() throws LdapException, IOException, ClassNotFoundException
     {
-        StringValue csv = new StringValue( "  " );
+        Value csv = new Value( "  " );
         csv.isValid( new Ia5StringSyntaxChecker() );
-        csv.apply( at );
+        csv = new Value( at, csv );
 
-        StringValue csvSer = deserializeValue( at, serializeValue( csv ) );
+        Value csvSer = deserializeValue( at, serializeValue( csv ) );
         assertNotSame( csv, csvSer );
         assertEquals( csv.getValue(), csvSer.getValue() );
         assertEquals( csv.getNormValue(), csvSer.getNormValue() );
@@ -581,11 +581,11 @@ public class StringValueTest
     @Test
     public void testSerializeNullValue() throws LdapException, IOException, ClassNotFoundException
     {
-        StringValue csv = new StringValue( ( String ) null );
+        Value csv = new Value( ( String ) null );
         csv.isValid( new Ia5StringSyntaxChecker() );
-        csv.apply( at );
+        csv = new Value( at, csv );
 
-        StringValue csvSer = deserializeValue( at, serializeValue( csv ) );
+        Value csvSer = deserializeValue( at, serializeValue( csv ) );
         assertNotSame( csv, csvSer );
         assertEquals( csv.getValue(), csvSer.getValue() );
         assertEquals( csv.getNormValue(), csvSer.getNormValue() );
@@ -599,11 +599,11 @@ public class StringValueTest
     @Test
     public void testSerializeEmptyValue() throws LdapException, IOException, ClassNotFoundException
     {
-        StringValue csv = new StringValue( "" );
+        Value csv = new Value( "" );
         csv.isValid( new Ia5StringSyntaxChecker() );
-        csv.apply( at );
+        csv = new Value( at, csv );
 
-        StringValue csvSer = deserializeValue( at, serializeValue( csv ) );
+        Value csvSer = deserializeValue( at, serializeValue( csv ) );
         assertNotSame( csv, csvSer );
         assertEquals( csv.getValue(), csvSer.getValue() );
         assertEquals( csv.getNormValue(), csvSer.getNormValue() );
@@ -617,10 +617,10 @@ public class StringValueTest
     @Test
     public void testSerializeEmptyValueNotNormalized() throws LdapException, IOException, ClassNotFoundException
     {
-        StringValue csv = new StringValue( "" );
+        Value csv = new Value( "" );
         csv.isValid( new Ia5StringSyntaxChecker() );
 
-        StringValue csvSer = deserializeValue( null, serializeValue( csv ) );
+        Value csvSer = deserializeValue( null, serializeValue( csv ) );
         assertNotSame( csv, csvSer );
         assertEquals( csv.getValue(), csvSer.getValue() );
         assertEquals( csv.getNormValue(), csvSer.getNormValue() );

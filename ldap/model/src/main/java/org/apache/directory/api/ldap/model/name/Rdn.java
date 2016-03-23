@@ -32,7 +32,6 @@ import java.util.List;
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
@@ -293,7 +292,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      */
     public Rdn( SchemaManager schemaManager, String upType, String upValue ) throws LdapInvalidDnException
     {
-        addAVA( schemaManager, upType, upType, new StringValue( upValue ) );
+        addAVA( schemaManager, upType, upType, new Value( upValue ) );
 
         upName = upType + '=' + upValue;
 
@@ -499,7 +498,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      * @throws LdapInvalidDnException
      *             If the Rdn is invalid
      */
-    private void addAVA( SchemaManager schemaManager, String upType, String type, Value<?> value ) throws LdapInvalidDnException
+    private void addAVA( SchemaManager schemaManager, String upType, String type, Value value ) throws LdapInvalidDnException
     {
         // First, let's normalize the type
         AttributeType attributeType = null;
@@ -512,7 +511,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
             
             try
             {
-                value.apply( attributeType );
+                value = new Value( attributeType, value );
             }
             catch ( LdapInvalidAttributeValueException liave )
             {

@@ -39,11 +39,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.directory.api.ldap.model.entry.Attribute;
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
-import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -327,14 +325,14 @@ public class SchemaAwareEntryTest
 
 
     /**
-     * Test method for add( String, Value<?>... )
+     * Test method for add( String, Value... )
      */
     @Test
     public void testAddStringValueArray() throws LdapException
     {
         Entry entry = new DefaultEntry();
 
-        Value<String> value = new StringValue( ( String ) null );
+        Value value = new Value( ( String ) null );
 
         entry.add( "cn", value );
         assertEquals( 1, entry.size() );
@@ -343,9 +341,9 @@ public class SchemaAwareEntryTest
         assertNotNull( attributeCN.get() );
         assertNull( attributeCN.get().getValue() );
 
-        Value<String> value1 = new StringValue( "test1" );
-        Value<String> value2 = new StringValue( "test2" );
-        Value<String> value3 = new StringValue( "test1" );
+        Value value1 = new Value( "test1" );
+        Value value2 = new Value( "test2" );
+        Value value3 = new Value( "test1" );
 
         entry.add( "sn", value1, value2, value3 );
         assertEquals( 2, entry.size() );
@@ -355,7 +353,7 @@ public class SchemaAwareEntryTest
         assertTrue( attributeSN.contains( value1 ) );
         assertTrue( attributeSN.contains( value2 ) );
 
-        Value<byte[]> value4 = new BinaryValue( BYTES1 );
+        Value value4 = new Value( BYTES1 );
         entry.add( "l", value1, value4 );
         assertEquals( 3, entry.size() );
         Attribute attributeL = entry.get( "l" );
@@ -506,7 +504,7 @@ public class SchemaAwareEntryTest
 
 
     /**
-     * Test method for contains( Sring, Value<?>... )
+     * Test method for contains( Sring, Value... )
      */
     @Test
     public void testContainsStringValueArray() throws LdapException
@@ -520,15 +518,15 @@ public class SchemaAwareEntryTest
 
         entry.add( attrCN, attrPWD );
 
-        Value<String> strValue1 = new StringValue( "test1" );
-        Value<String> strValue2 = new StringValue( "test2" );
-        Value<String> strValue3 = new StringValue( "test3" );
-        Value<String> strNullValue = new StringValue( ( String ) null );
+        Value strValue1 = new Value( "test1" );
+        Value strValue2 = new Value( "test2" );
+        Value strValue3 = new Value( "test3" );
+        Value strNullValue = new Value( ( String ) null );
 
-        Value<byte[]> binValue1 = new BinaryValue( BYTES1 );
-        Value<byte[]> binValue2 = new BinaryValue( BYTES2 );
-        Value<byte[]> binValue3 = new BinaryValue( BYTES3 );
-        Value<byte[]> binNullValue = new BinaryValue( ( byte[] ) null );
+        Value binValue1 = new Value( BYTES1 );
+        Value binValue2 = new Value( BYTES2 );
+        Value binValue3 = new Value( BYTES3 );
+        Value binNullValue = new Value( ( byte[] ) null );
 
         assertTrue( entry.contains( "CN", strValue1, strValue2, strNullValue ) );
         assertTrue( entry.contains( "userpassword", binValue1, binValue2, binNullValue ) );
@@ -872,22 +870,22 @@ public class SchemaAwareEntryTest
 
 
     /**
-     * Test method for pu( String, Value<?>... )
+     * Test method for pu( String, Value... )
      */
     @Test
     public void testPutStringValueArray()
     {
         Entry entry = new DefaultEntry( exampleDn );
 
-        Value<String> strValueTop = new StringValue( "top" );
-        Value<String> strValuePerson = new StringValue( "person" );
-        Value<String> strValueTop2 = new StringValue( "top" );
-        Value<String> strNullValue = new StringValue( ( String ) null );
+        Value strValueTop = new Value( "top" );
+        Value strValuePerson = new Value( "person" );
+        Value strValueTop2 = new Value( "top" );
+        Value strNullValue = new Value( ( String ) null );
 
-        Value<byte[]> binValue1 = new BinaryValue( BYTES1 );
-        Value<byte[]> binValue2 = new BinaryValue( BYTES2 );
-        Value<byte[]> binValue3 = new BinaryValue( BYTES1 );
-        Value<byte[]> binNullValue = new BinaryValue( ( byte[] ) null );
+        Value binValue1 = new Value( BYTES1 );
+        Value binValue2 = new Value( BYTES2 );
+        Value binValue3 = new Value( BYTES1 );
+        Value binNullValue = new Value( ( byte[] ) null );
 
         try
         {
@@ -1061,7 +1059,7 @@ public class SchemaAwareEntryTest
 
 
     /**
-     * Test method for remove(String, Value<?>... )
+     * Test method for remove(String, Value... )
      */
     @Test
     public void testRemoveStringValueArray() throws LdapException
@@ -1073,15 +1071,15 @@ public class SchemaAwareEntryTest
 
         entry.add( attrCN, attrPWD );
 
-        Value<String> strValue1 = new StringValue( "test1" );
-        Value<String> strValue2 = new StringValue( "test2" );
-        Value<String> strValue3 = new StringValue( "test3" );
-        Value<String> strNullValue = new StringValue( ( String ) null );
+        Value strValue1 = new Value( "test1" );
+        Value strValue2 = new Value( "test2" );
+        Value strValue3 = new Value( "test3" );
+        Value strNullValue = new Value( ( String ) null );
 
-        Value<byte[]> binValue1 = new BinaryValue( BYTES1 );
-        Value<byte[]> binValue2 = new BinaryValue( BYTES2 );
-        Value<byte[]> binValue3 = new BinaryValue( BYTES3 );
-        Value<byte[]> binNullValue = new BinaryValue( ( byte[] ) null );
+        Value binValue1 = new Value( BYTES1 );
+        Value binValue2 = new Value( BYTES2 );
+        Value binValue3 = new Value( BYTES3 );
+        Value binNullValue = new Value( ( byte[] ) null );
 
         assertTrue( entry.remove( "cn", strValue1, strNullValue ) );
         assertTrue( entry.contains( "cn", strValue2 ) );
@@ -1144,13 +1142,13 @@ public class SchemaAwareEntryTest
 
         assertEquals( "Entry\n    dn: dc=example,dc=com\n\n", entry.toString() );
 
-        Value<String> strValueTop = new StringValue( "top" );
-        Value<String> strValuePerson = new StringValue( "person" );
-        Value<String> strNullValue = new StringValue( ( String ) null );
+        Value strValueTop = new Value( "top" );
+        Value strValuePerson = new Value( "person" );
+        Value strNullValue = new Value( ( String ) null );
 
-        Value<byte[]> binValue1 = new BinaryValue( BYTES1 );
-        Value<byte[]> binValue2 = new BinaryValue( BYTES2 );
-        Value<byte[]> binNullValue = new BinaryValue( ( byte[] ) null );
+        Value binValue1 = new Value( BYTES1 );
+        Value binValue2 = new Value( BYTES2 );
+        Value binNullValue = new Value( ( byte[] ) null );
 
         entry.put( "ObjectClass", strValueTop, strValuePerson, strNullValue );
         entry.put( "UserPassword", binValue1, binValue2, binNullValue );

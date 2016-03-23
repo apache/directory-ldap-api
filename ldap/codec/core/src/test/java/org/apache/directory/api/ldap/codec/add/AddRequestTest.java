@@ -228,7 +228,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         Set<String> vals = ( Set<String> ) typesVals.get( Strings.toLowerCaseAscii( attribute.getId() ) );
 
-        for ( Value<?> value : attribute )
+        for ( Value value : attribute )
         {
             assertTrue( vals.contains( value.getValue() ) );
 
@@ -241,7 +241,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         vals = ( Set<String> ) typesVals.get( Strings.toLowerCaseAscii( attribute.getId() ) );
 
-        for ( Value<?> value : attribute )
+        for ( Value value : attribute )
         {
             assertTrue( vals.contains( value.getValue() ) );
 
@@ -1067,7 +1067,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         assertEquals( "l", Strings.toLowerCaseAscii( attribute.getId() ) );
 
-        for ( Value<?> value : attribute )
+        for ( Value value : attribute )
         {
             assertEquals( "", value.getString() );
         }
@@ -1221,7 +1221,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         assertEquals( "l", Strings.toLowerCaseAscii( attribute.getId() ) );
 
-        for ( Value<?> value : attribute )
+        for ( Value value : attribute )
         {
             assertEquals( "", value.getString() );
         }

@@ -429,7 +429,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
                     ExtensibleMatchFilter extFilter = ( ExtensibleMatchFilter ) filter;
                     String matchingRule = null;
 
-                    Value<?> value = extFilter.getMatchValue();
+                    Value value = extFilter.getMatchValue();
 
                     if ( extFilter.getMatchingRule() != null )
                     {
@@ -575,7 +575,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
                     String attribute = ( ( ExtensibleNode ) exprNode ).getAttribute();
                     String matchingRule = ( ( ExtensibleNode ) exprNode ).getMatchingRuleId();
                     boolean dnAttributes = ( ( ExtensibleNode ) exprNode ).hasDnAttributes();
-                    Value<?> value = ( ( ExtensibleNode ) exprNode ).getValue();
+                    Value value = ( ( ExtensibleNode ) exprNode ).getValue();
 
                     if ( attribute != null )
                     {

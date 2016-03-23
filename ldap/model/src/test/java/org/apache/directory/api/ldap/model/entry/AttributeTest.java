@@ -57,8 +57,8 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class AttributeTest
 {
-    private static final Value<String> NULL_STRING_VALUE = new StringValue( ( String ) null );
-    private static final Value<byte[]> NULL_BINARY_VALUE = new BinaryValue( ( byte[] ) null );
+    private static final Value NULL_STRING_VALUE = new Value( ( String ) null );
+    private static final Value NULL_BINARY_VALUE = new Value( ( byte[] ) null );
     private static final byte[] BYTES1 = new byte[]
         { 'a', 'b' };
     private static final byte[] BYTES2 = new byte[]
@@ -68,15 +68,15 @@ public class AttributeTest
     private static final byte[] BYTES4 = new byte[]
         { 'd' };
 
-    private static final StringValue STR_VALUE1 = new StringValue( "a" );
-    private static final StringValue STR_VALUE2 = new StringValue( "b" );
-    private static final StringValue STR_VALUE3 = new StringValue( "c" );
-    private static final StringValue STR_VALUE4 = new StringValue( "d" );
+    private static final Value STR_VALUE1 = new Value( "a" );
+    private static final Value STR_VALUE2 = new Value( "b" );
+    private static final Value STR_VALUE3 = new Value( "c" );
+    private static final Value STR_VALUE4 = new Value( "d" );
 
-    private static final BinaryValue BIN_VALUE1 = new BinaryValue( BYTES1 );
-    private static final BinaryValue BIN_VALUE2 = new BinaryValue( BYTES2 );
-    private static final BinaryValue BIN_VALUE3 = new BinaryValue( BYTES3 );
-    private static final BinaryValue BIN_VALUE4 = new BinaryValue( BYTES4 );
+    private static final Value BIN_VALUE1 = new Value( BYTES1 );
+    private static final Value BIN_VALUE2 = new Value( BYTES2 );
+    private static final Value BIN_VALUE3 = new Value( BYTES3 );
+    private static final Value BIN_VALUE4 = new Value( BYTES4 );
 
 
     /**
@@ -447,7 +447,7 @@ public class AttributeTest
         Attribute attr = new DefaultAttribute();
         attr.add( "a", "b", "c" );
 
-        Iterator<Value<?>> iter = attr.iterator();
+        Iterator<Value> iter = attr.iterator();
 
         assertTrue( iter.hasNext() );
 
@@ -455,9 +455,9 @@ public class AttributeTest
             { "a", "b", "c" };
         int pos = 0;
 
-        for ( Value<?> val : attr )
+        for ( Value val : attr )
         {
-            assertTrue( val instanceof StringValue );
+            assertTrue( val instanceof Value );
             assertEquals( values[pos++], val.getString() );
         }
     }
@@ -471,21 +471,21 @@ public class AttributeTest
     {
         Attribute attr1 = new DefaultAttribute( "test" );
 
-        int nbAdded = attr1.add( new StringValue( ( String ) null ) );
+        int nbAdded = attr1.add( new Value( ( String ) null ) );
         assertEquals( 1, nbAdded );
         assertTrue( attr1.isHumanReadable() );
         assertEquals( NULL_STRING_VALUE, attr1.get() );
 
         Attribute attr2 = new DefaultAttribute( "test" );
 
-        nbAdded = attr2.add( new BinaryValue( ( byte[] ) null ) );
+        nbAdded = attr2.add( new Value( ( byte[] ) null ) );
         assertEquals( 1, nbAdded );
         assertFalse( attr2.isHumanReadable() );
         assertEquals( NULL_BINARY_VALUE, attr2.get() );
 
         Attribute attr3 = new DefaultAttribute( "test" );
 
-        nbAdded = attr3.add( new StringValue( "a" ), new StringValue( "b" ) );
+        nbAdded = attr3.add( new Value( "a" ), new Value( "b" ) );
         assertEquals( 2, nbAdded );
         assertTrue( attr3.isHumanReadable() );
         assertTrue( attr3.contains( "a" ) );
@@ -493,7 +493,7 @@ public class AttributeTest
 
         Attribute attr4 = new DefaultAttribute( "test" );
 
-        nbAdded = attr4.add( new BinaryValue( BYTES1 ), new BinaryValue( BYTES2 ) );
+        nbAdded = attr4.add( new Value( BYTES1 ), new Value( BYTES2 ) );
         assertEquals( 2, nbAdded );
         assertFalse( attr4.isHumanReadable() );
         assertTrue( attr4.contains( BYTES1 ) );
@@ -501,7 +501,7 @@ public class AttributeTest
 
         Attribute attr5 = new DefaultAttribute( "test" );
 
-        nbAdded = attr5.add( new StringValue( "c" ), new BinaryValue( BYTES1 ) );
+        nbAdded = attr5.add( new Value( "c" ), new Value( BYTES1 ) );
         assertEquals( 2, nbAdded );
         assertTrue( attr5.isHumanReadable() );
         assertTrue( attr5.contains( "ab" ) );
@@ -509,7 +509,7 @@ public class AttributeTest
 
         Attribute attr6 = new DefaultAttribute( "test" );
 
-        nbAdded = attr6.add( new BinaryValue( BYTES1 ), new StringValue( "c" ) );
+        nbAdded = attr6.add( new Value( BYTES1 ), new Value( "c" ) );
         assertEquals( 2, nbAdded );
         assertFalse( attr6.isHumanReadable() );
         assertTrue( attr6.contains( BYTES1 ) );
@@ -517,7 +517,7 @@ public class AttributeTest
 
         Attribute attr7 = new DefaultAttribute( "test" );
 
-        nbAdded = attr7.add( new BinaryValue( ( byte[] ) null ), new StringValue( "c" ) );
+        nbAdded = attr7.add( new Value( ( byte[] ) null ), new Value( "c" ) );
         assertEquals( 2, nbAdded );
         assertFalse( attr7.isHumanReadable() );
         assertTrue( attr7.contains( NULL_BINARY_VALUE ) );
@@ -525,7 +525,7 @@ public class AttributeTest
 
         Attribute attr8 = new DefaultAttribute( "test" );
 
-        nbAdded = attr8.add( new StringValue( ( String ) null ), new BinaryValue( BYTES1 ) );
+        nbAdded = attr8.add( new Value( ( String ) null ), new Value( BYTES1 ) );
         assertEquals( 2, nbAdded );
         assertTrue( attr8.isHumanReadable() );
         assertTrue( attr8.contains( NULL_STRING_VALUE ) );
@@ -913,14 +913,14 @@ public class AttributeTest
     {
         Attribute attr = new DefaultAttribute( "test" );
 
-        Iterator<Value<?>> iterator = attr.iterator();
+        Iterator<Value> iterator = attr.iterator();
         assertFalse( iterator.hasNext() );
 
         attr.add( NULL_STRING_VALUE );
         iterator = attr.iterator();
         assertTrue( iterator.hasNext() );
 
-        Value<?> value = iterator.next();
+        Value value = iterator.next();
         assertEquals( NULL_STRING_VALUE, value );
 
         attr.clear();

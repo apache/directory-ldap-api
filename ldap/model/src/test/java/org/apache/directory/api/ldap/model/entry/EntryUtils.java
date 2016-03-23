@@ -31,6 +31,7 @@ import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.comparators.ByteArrayComparator;
 import org.apache.directory.api.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
+import org.apache.directory.api.ldap.model.schema.normalizers.NoOpNormalizer;
 import org.apache.directory.api.util.Strings;
 
 
@@ -158,11 +159,11 @@ public class EntryUtils
             public static final long serialVersionUID = 1L;
 
 
-            public Value<?> normalize( Value<?> value ) throws LdapException
+            public Value normalize( Value value ) throws LdapException
             {
                 if ( value.isHumanReadable() )
                 {
-                    return new StringValue( Strings.toLowerCaseAscii( value.getString() ) );
+                    return new Value( Strings.toLowerCaseAscii( value.getString() ) );
                 }
 
                 throw new IllegalStateException( I18n.err( I18n.ERR_04474 ) );
@@ -247,39 +248,7 @@ public class EntryUtils
 
         matchingRule.setLdapComparator( new ByteArrayComparator( "1.2.2" ) );
 
-        matchingRule.setNormalizer( new Normalizer( "1.1.1" )
-        {
-            public static final long serialVersionUID = 1L;
-
-
-            public Value<?> normalize( Value<?> value ) throws LdapException
-            {
-                if ( !value.isHumanReadable() )
-                {
-                    byte[] val = value.getBytes();
-
-                    // each byte will be changed to be > 0, and spaces will be trimmed
-                    byte[] newVal = new byte[val.length];
-
-                    int i = 0;
-
-                    for ( byte b : val )
-                    {
-                        newVal[i++] = ( byte ) ( b & 0x007F );
-                    }
-
-                    return new BinaryValue( Strings.trim( newVal ) );
-                }
-
-                throw new IllegalStateException( I18n.err( I18n.ERR_04475 ) );
-            }
-
-
-            public String normalize( String value ) throws LdapException
-            {
-                throw new IllegalStateException( I18n.err( I18n.ERR_04475 ) );
-            }
-        } );
+        matchingRule.setNormalizer( new NoOpNormalizer( "1.1.1" ) );
 
         attributeType.setEquality( matchingRule );
         attributeType.setSyntax( syntax );

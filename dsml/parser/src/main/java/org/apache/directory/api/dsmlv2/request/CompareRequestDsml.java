@@ -218,7 +218,7 @@ public class CompareRequestDsml
     /**
      * {@inheritDoc}
      */
-    public Value<?> getAssertionValue()
+    public Value getAssertionValue()
     {
         return getDecorated().getAssertionValue();
     }

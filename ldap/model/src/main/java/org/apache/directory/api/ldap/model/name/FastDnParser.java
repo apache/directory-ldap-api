@@ -23,7 +23,7 @@ package org.apache.directory.api.ldap.model.name;
 import java.util.List;
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.model.entry.StringValue;
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
@@ -172,7 +172,7 @@ import org.apache.directory.api.util.Position;
 
         String upName = name.substring( rdnStart, pos.start );
 
-        Ava ava = new Ava( type, type, new StringValue( upValue ), upName );
+        Ava ava = new Ava( type, type, new Value( upValue ), upName );
         rdn.addAVA( null, ava );
 
         rdn.setUpName( upName );

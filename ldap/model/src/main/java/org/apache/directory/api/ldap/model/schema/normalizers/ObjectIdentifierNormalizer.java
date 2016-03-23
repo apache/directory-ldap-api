@@ -21,7 +21,6 @@ package org.apache.directory.api.ldap.model.schema.normalizers;
 
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
@@ -48,7 +47,7 @@ public class ObjectIdentifierNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
-    public Value<?> normalize( Value<?> value ) throws LdapException
+    public Value normalize( Value value ) throws LdapException
     {
         if ( value == null )
         {
@@ -59,16 +58,16 @@ public class ObjectIdentifierNormalizer extends Normalizer
 
         if ( str.length() == 0 )
         {
-            return new StringValue( "" );
+            return new Value( "" );
         }
         else if ( Character.isDigit( str.charAt( 0 ) ) )
         {
             // We do this test to avoid a lowerCasing which cost time
-            return new StringValue( str );
+            return new Value( str );
         }
         else
         {
-            return new StringValue( Strings.toLowerCaseAscii( str ) );
+            return new Value( Strings.toLowerCaseAscii( str ) );
         }
     }
 

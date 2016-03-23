@@ -32,7 +32,7 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
 public class ExtensibleNode extends LeafNode
 {
     /** The value of the attribute to match for */
-    private Value<?> value;
+    private Value value;
 
     /** The matching rules id */
     private String matchingRuleId;
@@ -75,7 +75,7 @@ public class ExtensibleNode extends LeafNode
      * @param matchingRuleId the OID of the matching rule
      * @param dnAttributes the dn attributes
      */
-    public ExtensibleNode( AttributeType attributeType, Value<?> value, String matchingRuleId, boolean dnAttributes )
+    public ExtensibleNode( AttributeType attributeType, Value value, String matchingRuleId, boolean dnAttributes )
     {
         super( attributeType, AssertionType.EXTENSIBLE );
 
@@ -93,7 +93,7 @@ public class ExtensibleNode extends LeafNode
      * @param matchingRuleId the OID of the matching rule
      * @param dnAttributes the dn attributes
      */
-    public ExtensibleNode( String attribute, Value<?> value, String matchingRuleId, boolean dnAttributes )
+    public ExtensibleNode( String attribute, Value value, String matchingRuleId, boolean dnAttributes )
     {
         super( attribute, AssertionType.EXTENSIBLE );
 
@@ -172,7 +172,7 @@ public class ExtensibleNode extends LeafNode
      * 
      * @return the value
      */
-    public final Value<?> getValue()
+    public final Value getValue()
     {
         return value;
     }
@@ -181,7 +181,7 @@ public class ExtensibleNode extends LeafNode
     /** 
      * @return representation of value, escaped for use in a filter if required 
      */
-    public Value<?> getEscapedValue()
+    public Value getEscapedValue()
     {
         if ( value.isHumanReadable() )
         {
@@ -197,7 +197,7 @@ public class ExtensibleNode extends LeafNode
      * 
      * @param value the value
      */
-    public final void setValue( Value<?> value )
+    public final void setValue( Value value )
     {
         this.value = value;
     }

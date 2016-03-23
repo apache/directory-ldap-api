@@ -459,7 +459,7 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
 
 
     @Override
-    public Attribute newAttribute( String name, Value<?>... values )
+    public Attribute newAttribute( String name, Value... values )
     {
         return modelFactory.newAttribute( name, values );
     }

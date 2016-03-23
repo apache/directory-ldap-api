@@ -74,7 +74,7 @@ public class AttributeClassLoader extends ClassLoader
     {
         byte[] classBytes = null;
 
-        Value<?> value = attribute.get();
+        Value value = attribute.get();
 
         if ( value.isHumanReadable() )
         {

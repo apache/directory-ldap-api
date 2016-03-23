@@ -336,7 +336,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             return;
         }
 
-        for ( Value<?> value : attributeTypes )
+        for ( Value value : attributeTypes )
         {
             String desc = value.getString();
 
@@ -364,7 +364,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             return;
         }
 
-        for ( Value<?> value : comparators )
+        for ( Value value : comparators )
         {
             String desc = value.getString();
 
@@ -392,7 +392,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             return;
         }
 
-        for ( Value<?> value : ditContentRules )
+        for ( Value value : ditContentRules )
         {
             String desc = value.getString();
 
@@ -420,7 +420,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             return;
         }
 
-        for ( Value<?> value : ditStructureRules )
+        for ( Value value : ditStructureRules )
         {
             String desc = value.getString();
 
@@ -448,7 +448,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             return;
         }
 
-        for ( Value<?> value : ldapSyntaxes )
+        for ( Value value : ldapSyntaxes )
         {
             String desc = value.getString();
 
@@ -476,7 +476,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             return;
         }
 
-        for ( Value<?> value : matchingRules )
+        for ( Value value : matchingRules )
         {
             String desc = value.getString();
 
@@ -504,7 +504,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             return;
         }
 
-        for ( Value<?> value : matchingRuleUses )
+        for ( Value value : matchingRuleUses )
         {
             String desc = value.getString();
 
@@ -532,7 +532,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             return;
         }
 
-        for ( Value<?> value : nameForms )
+        for ( Value value : nameForms )
         {
             String desc = value.getString();
 
@@ -560,7 +560,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             return;
         }
 
-        for ( Value<?> value : normalizers )
+        for ( Value value : normalizers )
         {
             String desc = value.getString();
 
@@ -588,7 +588,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             return;
         }
 
-        for ( Value<?> value : objectClasses )
+        for ( Value value : objectClasses )
         {
             String desc = value.getString();
 
@@ -616,7 +616,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             return;
         }
 
-        for ( Value<?> value : syntaxCheckers )
+        for ( Value value : syntaxCheckers )
         {
             String desc = value.getString();
 

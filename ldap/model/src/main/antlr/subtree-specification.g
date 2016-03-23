@@ -47,7 +47,7 @@ import org.apache.directory.api.ldap.model.schema.normalizers.OidNormalizer;
 import org.apache.directory.api.util.ComponentsMonitor;
 import org.apache.directory.api.util.OptionalComponentsMonitor;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.apache.directory.api.ldap.model.entry.StringValue;
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 
@@ -420,7 +420,7 @@ item returns [ LeafNode node ]
               // TODO : deal with such an exception
         }
         
-        node = new EqualityNode( OBJECT_CLASS_AT, new StringValue( oid ) );
+        node = new EqualityNode( OBJECT_CLASS_AT, new Value( oid ) );
     }
     ;
 

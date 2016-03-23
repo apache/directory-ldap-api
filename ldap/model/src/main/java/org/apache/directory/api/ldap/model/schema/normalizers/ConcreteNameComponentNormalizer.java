@@ -20,7 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.normalizers;
 
 
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
@@ -118,7 +118,7 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
             String unescaped = unescape( value );
             byte[] valBytes = Strings.getBytesUtf8( unescaped );
 
-            return lookup( name ).normalize( new BinaryValue( valBytes ) );
+            return lookup( name ).normalize( new Value( valBytes ) );
         }
 
     }
@@ -133,7 +133,7 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
 
         if ( !attributeType.getSyntax().isHumanReadable() )
         {
-            return lookup( name ).normalize( new BinaryValue( value ) );
+            return lookup( name ).normalize( new Value( value ) );
         }
         else
         {
@@ -157,7 +157,7 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
      */
     public Object normalizeByOid( String oid, byte[] value ) throws LdapException
     {
-        return lookup( oid ).normalize( new BinaryValue( value ) );
+        return lookup( oid ).normalize( new Value( value ) );
     }
 
 

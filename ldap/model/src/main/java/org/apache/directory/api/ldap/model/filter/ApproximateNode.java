@@ -37,7 +37,7 @@ public class ApproximateNode<T> extends SimpleNode<T>
      * @param attributeType the attribute type
      * @param value the value to test for
      */
-    public ApproximateNode( AttributeType attributeType, Value<T> value )
+    public ApproximateNode( AttributeType attributeType, Value value )
     {
         super( attributeType, value, AssertionType.APPROXIMATE );
     }
@@ -49,7 +49,7 @@ public class ApproximateNode<T> extends SimpleNode<T>
      * @param attribute the attribute name
      * @param value the value to test for
      */
-    public ApproximateNode( String attribute, Value<T> value )
+    public ApproximateNode( String attribute, Value value )
     {
         super( attribute, value, AssertionType.APPROXIMATE );
     }
@@ -76,7 +76,7 @@ public class ApproximateNode<T> extends SimpleNode<T>
 
         buf.append( "~=" );
 
-        Value<?> escapedValue = getEscapedValue();
+        Value escapedValue = getEscapedValue();
         if ( !escapedValue.isNull() )
         {
             buf.append( escapedValue );

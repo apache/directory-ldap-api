@@ -2988,7 +2988,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public boolean compare( String dn, String attributeName, Value<?> value ) throws LdapException
+    public boolean compare( String dn, String attributeName, Value value ) throws LdapException
     {
         return compare( new Dn( dn ), attributeName, value );
     }
@@ -3029,7 +3029,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public boolean compare( Dn dn, String attributeName, Value<?> value ) throws LdapException
+    public boolean compare( Dn dn, String attributeName, Value value ) throws LdapException
     {
         CompareRequest compareRequest = new CompareRequestImpl();
         compareRequest.setName( dn );
@@ -3500,7 +3500,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             }
         }
         
-        for ( Value<?> value : attr )
+        for ( Value value : attr )
         {
             supportedControls.add( value.getString() );
         }

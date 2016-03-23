@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.directory.api.ldap.model.entry.Attribute;
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
@@ -71,20 +70,20 @@ public class BinaryAnonymizer extends AbstractAnonymizer<byte[]>
     /**
      * Anonymize an attribute using pure random values (either chars of bytes, depending on the Attribute type)
      */
-    public Attribute anonymize( Map<Value<byte[]>, Value<byte[]>> valueMap, Set<Value<byte[]>> valueSet, Attribute attribute )
+    public Attribute anonymize( Map<Value, Value> valueMap, Set<Value> valueSet, Attribute attribute )
     {
         Attribute result = new DefaultAttribute( attribute.getAttributeType() );
 
-        for ( Value<?> value : attribute )
+        for ( Value value : attribute )
         {
-            byte[] bytesValue = ( byte[] ) value.getNormValue();
+            byte[] bytesValue = value.getBytes();
             byte[] newValue = computeNewValue( bytesValue );
             
             try
             {
                 result.add( newValue );
-                Value<byte[]> anonValue = new BinaryValue( attribute.getAttributeType(), newValue );
-                valueMap.put( ( Value<byte[]> ) value, anonValue );
+                Value anonValue = new Value( attribute.getAttributeType(), newValue );
+                valueMap.put( ( Value ) value, anonValue );
                 valueSet.add( anonValue );
             }
             catch ( LdapInvalidAttributeValueException e )

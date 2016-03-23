@@ -23,7 +23,6 @@ package org.apache.directory.api.ldap.model.schema.normalizers;
 import java.io.IOException;
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
@@ -66,7 +65,7 @@ public class DeepTrimToLowerNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
-    public Value<?> normalize( Value<?> value ) throws LdapException
+    public Value normalize( Value value ) throws LdapException
     {
         if ( value == null )
         {
@@ -78,7 +77,7 @@ public class DeepTrimToLowerNormalizer extends Normalizer
             String normalized = PrepareString.normalize( value.getString(),
                 PrepareString.StringType.CASE_IGNORE );
 
-            return new StringValue( normalized );
+            return new Value( normalized );
         }
         catch ( IOException ioe )
         {

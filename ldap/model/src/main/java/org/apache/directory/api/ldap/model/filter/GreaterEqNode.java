@@ -37,7 +37,7 @@ public class GreaterEqNode<T> extends SimpleNode<T>
      * @param attributeType the attributeType
      * @param value the value to test for
      */
-    public GreaterEqNode( AttributeType attributeType, Value<T> value )
+    public GreaterEqNode( AttributeType attributeType, Value value )
     {
         super( attributeType, value, AssertionType.GREATEREQ );
     }
@@ -49,7 +49,7 @@ public class GreaterEqNode<T> extends SimpleNode<T>
      * @param attribute the attribute name
      * @param value the value to test for
      */
-    public GreaterEqNode( String attribute, Value<T> value )
+    public GreaterEqNode( String attribute, Value value )
     {
         super( attribute, value, AssertionType.GREATEREQ );
     }
@@ -76,7 +76,7 @@ public class GreaterEqNode<T> extends SimpleNode<T>
 
         buf.append( ">=" );
 
-        Value<?> escapedValue = getEscapedValue();
+        Value escapedValue = getEscapedValue();
         if ( !escapedValue.isNull() )
         {
             buf.append( escapedValue );

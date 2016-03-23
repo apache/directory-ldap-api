@@ -90,7 +90,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public Entry add( AttributeType attributeType, Value<?>... values ) throws LdapException
+    public Entry add( AttributeType attributeType, Value... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
@@ -110,7 +110,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public Entry add( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException
+    public Entry add( String upId, AttributeType attributeType, Value... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
@@ -160,7 +160,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public Entry add( String upId, Value<?>... values ) throws LdapException
+    public Entry add( String upId, Value... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
@@ -235,7 +235,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean contains( AttributeType attributeType, Value<?>... values )
+    public boolean contains( AttributeType attributeType, Value... values )
     {
         return entry.contains( attributeType, values );
     }
@@ -262,7 +262,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean contains( String upId, Value<?>... values )
+    public boolean contains( String upId, Value... values )
     {
         return entry.contains( upId, values );
     }
@@ -318,7 +318,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public Attribute put( String upId, Value<?>... values )
+    public Attribute put( String upId, Value... values )
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot put a value : the entry " + entry.getDn() + " is immutable." );
@@ -358,7 +358,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public Attribute put( AttributeType attributeType, Value<?>... values ) throws LdapException
+    public Attribute put( AttributeType attributeType, Value... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot put a value : the entry " + entry.getDn() + " is immutable." );
@@ -388,7 +388,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public Attribute put( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException
+    public Attribute put( String upId, AttributeType attributeType, Value... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot put a value : the entry " + entry.getDn() + " is immutable." );
@@ -428,7 +428,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean remove( AttributeType attributeType, Value<?>... values ) throws LdapException
+    public boolean remove( AttributeType attributeType, Value... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot remove a value : the entry " + entry.getDn() + " is immutable." );
@@ -544,7 +544,7 @@ public class ImmutableEntry implements Entry
      * @return <code>true</code> if at least a value is removed, <code>false</code>
      * if not all the values have been removed or if the attribute does not exist. 
      */
-    public boolean remove( String upId, Value<?>... values ) throws LdapException
+    public boolean remove( String upId, Value... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot remove a value : the entry " + entry.getDn() + " is immutable." );

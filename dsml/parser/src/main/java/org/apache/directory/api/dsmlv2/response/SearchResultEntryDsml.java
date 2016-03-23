@@ -147,7 +147,7 @@ public class SearchResultEntryDsml
             Element attributeElement = element.addElement( "attr" );
             attributeElement.addAttribute( "name", attribute.getUpId() );
 
-            for ( Value<?> value : attribute )
+            for ( Value value : attribute )
             {
                 if ( ParserUtils.needsBase64Encoding( value.getValue() ) )
                 {

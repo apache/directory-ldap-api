@@ -24,8 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
-import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.util.Strings;
 
@@ -146,7 +144,7 @@ public abstract class AbstractExprNode implements ExprNode
      * @param value Right hand side of "attrId=value" assertion occurring in an LDAP search filter.
      * @return Escaped version of <code>value</code>
      */
-    protected static Value<?> escapeFilterValue( Value<?> value )
+    protected static Value escapeFilterValue( Value value )
     {
         if ( value.isNull() )
         {
@@ -158,9 +156,10 @@ public abstract class AbstractExprNode implements ExprNode
 
         if ( !value.isHumanReadable() )
         {
-            sb = new StringBuilder( ( ( BinaryValue ) value ).getReference().length * 3 );
+            byte[] bytes = value.getBytes();
+            sb = new StringBuilder( bytes.length * 3 );
 
-            for ( byte b : ( ( BinaryValue ) value ).getReference() )
+            for ( byte b : bytes )
             {
                 if ( ( b < 0x7F ) && ( b >= 0 ) )
                 {
@@ -204,10 +203,10 @@ public abstract class AbstractExprNode implements ExprNode
                 }
             }
 
-            return new StringValue( sb.toString() );
+            return new Value( sb.toString() );
         }
 
-        val = ( ( StringValue ) value ).getString();
+        val = value.getString();
         String encodedVal = FilterEncoder.encodeFilterValue( val );
         if ( val.equals( encodedVal ) )
         {
@@ -215,7 +214,7 @@ public abstract class AbstractExprNode implements ExprNode
         }
         else
         {
-            return new StringValue( encodedVal );
+            return new Value( encodedVal );
         }
     }
 

@@ -44,8 +44,6 @@ import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
-import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
@@ -2745,12 +2743,12 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 {
                     if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                     {
-                        Value<byte[]> value = new BinaryValue( Base64.decode( nextText.trim().toCharArray() ) );
+                        Value value = new Value( Base64.decode( nextText.trim().toCharArray() ) );
                         assertion.setAssertionValue( value );
                     }
                     else
                     {
-                        Value<String> value = new StringValue( nextText.trim() );
+                        Value value = new Value( nextText.trim() );
                         assertion.setAssertionValue( value );
                     }
                 }
@@ -2917,11 +2915,11 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 {
                     if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                     {
-                        filter.setMatchValue( new BinaryValue( Base64.decode( nextText.trim().toCharArray() ) ) );
+                        filter.setMatchValue( new Value( Base64.decode( nextText.trim().toCharArray() ) ) );
                     }
                     else
                     {
-                        filter.setMatchValue( new StringValue( nextText.trim() ) );
+                        filter.setMatchValue( new Value( nextText.trim() ) );
                     }
                 }
             }

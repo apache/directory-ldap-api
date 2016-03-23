@@ -24,7 +24,6 @@ import java.io.IOException;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
@@ -52,14 +51,14 @@ public class NumericNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
-    public Value<?> normalize( Value<?> value ) throws LdapException
+    public Value normalize( Value value ) throws LdapException
     {
         try
         {
             String normalized = PrepareString.normalize( value.getString(),
                 PrepareString.StringType.NUMERIC_STRING );
 
-            return new StringValue( normalized );
+            return new Value( normalized );
         }
         catch ( IOException ioe )
         {

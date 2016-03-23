@@ -30,7 +30,6 @@ import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.message.CompareRequest;
 import org.apache.directory.api.ldap.model.message.Control;
@@ -97,7 +96,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
-    public Value<?> getAssertionValue()
+    public Value getAssertionValue()
     {
         return getDecorated().getAssertionValue();
     }
@@ -215,9 +214,9 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
         attrIdBytes = Strings.getBytesUtf8( getAttributeId() );
         avaLength = 1 + TLV.getNbBytes( attrIdBytes.length ) + attrIdBytes.length;
 
-        org.apache.directory.api.ldap.model.entry.Value<?> assertionValue = getAssertionValue();
+        org.apache.directory.api.ldap.model.entry.Value assertionValue = getAssertionValue();
 
-        if ( assertionValue instanceof BinaryValue )
+        if ( assertionValue instanceof Value )
         {
             attrValBytes = getAssertionValue().getBytes();
             avaLength += 1 + TLV.getNbBytes( attrValBytes.length ) + attrValBytes.length;

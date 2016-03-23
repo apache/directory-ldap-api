@@ -43,7 +43,6 @@ import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
-import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
@@ -115,10 +114,10 @@ import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 public class LdifAnonymizer
 {
     /** The map that stores the anonymized values associated to the original value */
-    private Map<Value<?>, Value<?>> valueMap = new HashMap<Value<?>, Value<?>>();
+    private Map<Value, Value> valueMap = new HashMap<Value, Value>();
     
     /** The set that contains all the values we already have anonymized */
-    private Set<Value<?>> valueSet = new HashSet<Value<?>>();
+    private Set<Value> valueSet = new HashSet<Value>();
     
     /** The latest anonymized String value Map */
     private Map<Integer, String> latestStringMap;
@@ -404,9 +403,9 @@ public class LdifAnonymizer
      */
     private Ava anonymizeAva( Ava ava ) throws LdapInvalidDnException, LdapInvalidAttributeValueException
     {
-        Value<?> value = ava.getValue();
+        Value value = ava.getValue();
         AttributeType attributeType = ava.getAttributeType();
-        Value<?> anonymizedValue = valueMap.get( value );
+        Value anonymizedValue = valueMap.get( value );
         Ava anonymizedAva = null;
         
         if ( anonymizedValue == null )
@@ -621,7 +620,7 @@ public class LdifAnonymizer
                         
                         if ( attributeType.getSyntax().getSyntaxChecker() instanceof DnSyntaxChecker )
                         {
-                            for ( Value<?> dnValue : attribute )
+                            for ( Value dnValue : attribute )
                             {
                                 String dnStr = dnValue.getString();
                                 Dn dn = new Dn( schemaManager, dnStr );
@@ -736,14 +735,14 @@ public class LdifAnonymizer
             // Deal with the special case of a DN syntax
             if ( attributeType.getSyntax().getSyntaxChecker() instanceof DnSyntaxChecker )
             {
-                Value<?>[] anonymizedValues = new Value<?>[ attribute.size()];
+                Value[] anonymizedValues = new Value[ attribute.size()];
                 int pos = 0;
                 
-                for ( Value<?> dnValue : modification.getAttribute() )
+                for ( Value dnValue : modification.getAttribute() )
                 {
                     Dn dn = new Dn( schemaManager, dnValue.getString() );
                     Dn newdDn = anonymizeDn( dn );
-                    anonymizedValues[pos++] = new StringValue( newdDn.toString() );
+                    anonymizedValues[pos++] = new Value( newdDn.toString() );
                 }
                 
                 Modification anonymizedModification = new DefaultModification( modification.getOperation(), attributeType, anonymizedValues );
@@ -795,7 +794,7 @@ public class LdifAnonymizer
             
             if ( attributeType.getSyntax().getSyntaxChecker() instanceof DnSyntaxChecker )
             {
-                for ( Value<?> dnValue : attribute )
+                for ( Value dnValue : attribute )
                 {
                     Dn dn = new Dn( schemaManager, dnValue.getString() );
                     Dn newdDn = anonymizeDn( dn );
@@ -904,7 +903,7 @@ public class LdifAnonymizer
             // Deal with the special case of DN
             if ( attributeType.getSyntax().getSyntaxChecker() instanceof DnSyntaxChecker )
             {
-                for ( Value<?> dnValue : attribute )
+                for ( Value dnValue : attribute )
                 {
                     Dn dn = new Dn( schemaManager, dnValue.getString() );
                     Dn newdDn = anonymizeDn( dn );
@@ -914,7 +913,7 @@ public class LdifAnonymizer
             // Deal with the special case of a NameAndOptionalUID
             else if ( attributeType.getSyntax().getSyntaxChecker() instanceof NameAndOptionalUIDSyntaxChecker )
             {
-                for ( Value<?> dnValue : attribute )
+                for ( Value dnValue : attribute )
                 {
                     // Get rid of the # part (UID)
                     String valueStr = dnValue.getString();
@@ -1055,7 +1054,7 @@ public class LdifAnonymizer
     /**
      * @return the valueMap
      */
-    public Map<Value<?>, Value<?>> getValueMap()
+    public Map<Value, Value> getValueMap()
     {
         return valueMap;
     }
@@ -1064,7 +1063,7 @@ public class LdifAnonymizer
     /**
      * @param valueMap the valueMap to set
      */
-    public void setValueMap( Map<Value<?>, Value<?>> valueMap )
+    public void setValueMap( Map<Value, Value> valueMap )
     {
         this.valueMap = valueMap;
     }

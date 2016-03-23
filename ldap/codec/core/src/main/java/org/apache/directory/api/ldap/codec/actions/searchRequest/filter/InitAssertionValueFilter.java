@@ -27,8 +27,6 @@ import org.apache.directory.api.ldap.codec.AttributeValueAssertion;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
 import org.apache.directory.api.ldap.codec.search.AttributeValueAssertionFilter;
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
-import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
@@ -69,15 +67,15 @@ public class InitAssertionValueFilter extends GrammarAction<LdapMessageContainer
         TLV tlv = container.getCurrentTLV();
 
         // The value can be null.
-        Value<?> assertionValue = null;
+        Value assertionValue = null;
 
         if ( tlv.getLength() != 0 )
         {
-            assertionValue = new BinaryValue( tlv.getValue().getData() );
+            assertionValue = new Value( tlv.getValue().getData() );
         }
         else
         {
-            assertionValue = new BinaryValue( StringConstants.EMPTY_BYTES );
+            assertionValue = new Value( StringConstants.EMPTY_BYTES );
         }
 
         AttributeValueAssertionFilter terminalFilter = ( AttributeValueAssertionFilter )
@@ -88,11 +86,11 @@ public class InitAssertionValueFilter extends GrammarAction<LdapMessageContainer
         {
             if ( tlv.getLength() != 0 )
             {
-                assertionValue = new BinaryValue( tlv.getValue().getData() );
+                assertionValue = new Value( tlv.getValue().getData() );
             }
             else
             {
-                assertionValue = new BinaryValue( StringConstants.EMPTY_BYTES );
+                assertionValue = new Value( StringConstants.EMPTY_BYTES );
             }
 
             assertion.setAssertionValue( assertionValue );
@@ -101,11 +99,11 @@ public class InitAssertionValueFilter extends GrammarAction<LdapMessageContainer
         {
             if ( tlv.getLength() != 0 )
             {
-                assertionValue = new StringValue( Strings.utf8ToString( tlv.getValue().getData() ) );
+                assertionValue = new Value( Strings.utf8ToString( tlv.getValue().getData() ) );
             }
             else
             {
-                assertionValue = new StringValue( "" );
+                assertionValue = new Value( "" );
             }
 
             assertion.setAssertionValue( assertionValue );

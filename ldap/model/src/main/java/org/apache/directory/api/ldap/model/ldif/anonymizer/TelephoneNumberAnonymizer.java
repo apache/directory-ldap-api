@@ -54,13 +54,13 @@ public class TelephoneNumberAnonymizer extends IntegerAnonymizer
     /**
      * Anonymize an attribute using pure random values (either chars of bytes, depending on the Attribute type)
      *
-    public Attribute anonymize( Map<Value<String>, Value<String>> valueMap, Set<Value<String>> valueSet, Attribute attribute )
+    public Attribute anonymize( Map<Value, Value> valueMap, Set<Value> valueSet, Attribute attribute )
     {
         Attribute result = new DefaultAttribute( attribute.getAttributeType() );
 
-        for ( Value<?> value : attribute )
+        for ( Value value : attribute )
         {
-            Value<String> anonymized =  valueMap.get( value );
+            Value anonymized =  valueMap.get( value );
             
             if ( anonymized != null )
             {
@@ -102,8 +102,8 @@ public class TelephoneNumberAnonymizer extends IntegerAnonymizer
                         String newValueStr = new String( newValue );
                         result.add( newValueStr );
                         
-                        Value<String> anonValue = new StringValue( attribute.getAttributeType(), newValueStr );
-                        valueMap.put( ( Value<String> ) value, anonValue );
+                        Value anonValue = new Value( attribute.getAttributeType(), newValueStr );
+                        valueMap.put( ( Value ) value, anonValue );
                     }
                     catch ( LdapInvalidAttributeValueException e )
                     {

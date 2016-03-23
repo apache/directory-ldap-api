@@ -24,8 +24,6 @@ import java.text.ParseException;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.entry.AttributeUtils;
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
-import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
@@ -232,7 +230,7 @@ public final class FilterParser
      * unicodeSubset     = %x01-27 / %x2B-5B / %x5D-FFFF
      * @throws LdapInvalidAttributeValueException 
      */
-    private static Value<?> parseAssertionValue( SchemaManager schemaManager, String attribute, byte[] filter,
+    private static Value parseAssertionValue( SchemaManager schemaManager, String attribute, byte[] filter,
         Position pos ) throws ParseException
     {
         byte b = Strings.byteAt( filter, pos.start );
@@ -295,21 +293,21 @@ public final class FilterParser
 
                 if ( attributeType == null )
                 {
-                    return new BinaryValue( result );
+                    return new Value( result );
                 }
 
                 if ( attributeType.getSyntax().isHumanReadable() )
                 {
-                    return new StringValue( Strings.utf8ToString( result ) );
+                    return new Value( Strings.utf8ToString( result ) );
                 }
                 else
                 {
-                    return new BinaryValue( result );
+                    return new Value( result );
                 }
             }
             else
             {
-                return new BinaryValue( result );
+                return new Value( result );
             }
         }
         else
@@ -320,16 +318,16 @@ public final class FilterParser
 
                 if ( attributeType.getEquality().getSyntax().isHumanReadable() )
                 {
-                    return new StringValue( ( String ) null );
+                    return new Value( ( String ) null );
                 }
                 else
                 {
-                    return new BinaryValue( null );
+                    return new Value( ( byte[] ) null );
                 }
             }
             else
             {
-                return new BinaryValue( ( byte[] ) null );
+                return new Value( ( byte[] ) null );
             }
         }
     }
@@ -367,7 +365,7 @@ public final class FilterParser
      * HEX            = '0'-'9' / 'A'-'F' / 'a'-'f'
      * unicodeSubset     = %x01-27 / %x2B-5B / %x5D-FFFF
      */
-    private static Value<?> parseAssertionValue( SchemaManager schemaManager, byte[] filter, Position pos )
+    private static Value parseAssertionValue( SchemaManager schemaManager, byte[] filter, Position pos )
         throws ParseException
     {
         byte b = Strings.byteAt( filter, pos.start );
@@ -424,11 +422,11 @@ public final class FilterParser
             byte[] result = new byte[current];
             System.arraycopy( value, 0, result, 0, current );
 
-            return new BinaryValue( result );
+            return new Value( result );
         }
         else
         {
-            return new BinaryValue( null );
+            return new Value( ( byte[] ) null );
         }
     }
 
@@ -436,7 +434,7 @@ public final class FilterParser
     /**
      * Parse a substring
      */
-    private static ExprNode parseSubstring( SchemaManager schemaManager, String attribute, Value<?> initial,
+    private static ExprNode parseSubstring( SchemaManager schemaManager, String attribute, Value initial,
         byte[] filter, Position pos )
         throws ParseException, LdapException
     {
@@ -476,7 +474,7 @@ public final class FilterParser
             //
             while ( true )
             {
-                Value<?> assertionValue = parseAssertionValue( schemaManager, attribute, filter, pos );
+                Value assertionValue = parseAssertionValue( schemaManager, attribute, filter, pos );
 
                 // Is there anything else but a ')' after the value ?
                 if ( Strings.isCharASCII( filter, pos.start, ')' ) )
@@ -592,7 +590,7 @@ public final class FilterParser
 
                 if ( attributeType != null )
                 {
-                    return new EqualityNode( attributeType, new BinaryValue( ( byte[] ) null ) );
+                    return new EqualityNode( attributeType, new Value( ( byte[] ) null ) );
                 }
 
                 else
@@ -602,13 +600,13 @@ public final class FilterParser
             }
             else
             {
-                return new EqualityNode( attribute, new BinaryValue( ( byte[] ) null ) );
+                return new EqualityNode( attribute, new Value( ( byte[] ) null ) );
             }
         }
         else
         {
             // A substring or an equality node
-            Value<?> value = parseAssertionValue( schemaManager, attribute, filter, pos );
+            Value value = parseAssertionValue( schemaManager, attribute, filter, pos );
 
             // Is there anything else but a ')' after the value ?
             if ( Strings.isCharASCII( filter, pos.start, ')' ) )

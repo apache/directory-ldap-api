@@ -54,7 +54,7 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.constants.AuthenticationLevel;
-import org.apache.directory.api.ldap.model.entry.StringValue;
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -1313,7 +1313,7 @@ item returns [ LeafNode node ]
     :
     ID_item ( SP )* COLON ( SP )* oid=oid
     {
-        node = new EqualityNode( SchemaConstants.OBJECT_CLASS_AT , new StringValue( oid ) );
+        node = new EqualityNode( SchemaConstants.OBJECT_CLASS_AT , new Value( oid ) );
     }
     ;
 

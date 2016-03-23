@@ -574,7 +574,7 @@ public final class DefaultEntry implements Entry
      *
      * Updates the AttributeMap.
      */
-    protected void createAttribute( String upId, AttributeType attributeType, Value<?>... values )
+    protected void createAttribute( String upId, AttributeType attributeType, Value... values )
         throws LdapInvalidAttributeValueException
     {
         Attribute attribute = new DefaultAttribute( attributeType, values );
@@ -684,7 +684,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public Entry add( AttributeType attributeType, Value<?>... values ) throws LdapException
+    public Entry add( AttributeType attributeType, Value... values ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -751,7 +751,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public Entry add( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException
+    public Entry add( String upId, AttributeType attributeType, Value... values ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -834,7 +834,7 @@ public final class DefaultEntry implements Entry
                     // Just add the new values into it.
                     Attribute existingAttribute = this.attributes.get( oid );
 
-                    for ( Value<?> value : attribute )
+                    for ( Value value : attribute )
                     {
                         existingAttribute.add( value );
                     }
@@ -856,7 +856,7 @@ public final class DefaultEntry implements Entry
                     Attribute existingAttribute = get( attribute.getId() );
 
                     // Loop on all the values, and add them to the existing attribute
-                    for ( Value<?> value : attribute )
+                    for ( Value value : attribute )
                     {
                         existingAttribute.add( value );
                     }
@@ -964,7 +964,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public Entry add( String upId, Value<?>... values ) throws LdapException
+    public Entry add( String upId, Value... values ) throws LdapException
     {
         if ( Strings.isEmpty( upId ) )
         {
@@ -1215,7 +1215,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean contains( AttributeType attributeType, Value<?>... values )
+    public boolean contains( AttributeType attributeType, Value... values )
     {
         if ( attributeType == null )
         {
@@ -1308,7 +1308,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean contains( String upId, Value<?>... values )
+    public boolean contains( String upId, Value... values )
     {
         if ( Strings.isEmpty( upId ) )
         {
@@ -1483,7 +1483,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public Attribute put( String upId, Value<?>... values )
+    public Attribute put( String upId, Value... values )
     {
         if ( Strings.isEmpty( upId ) )
         {
@@ -1633,7 +1633,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public Attribute put( AttributeType attributeType, Value<?>... values ) throws LdapException
+    public Attribute put( AttributeType attributeType, Value... values ) throws LdapException
     {
         return put( null, attributeType, values );
     }
@@ -1735,7 +1735,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public Attribute put( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException
+    public Attribute put( String upId, AttributeType attributeType, Value... values ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -1907,7 +1907,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean remove( AttributeType attributeType, Value<?>... values ) throws LdapException
+    public boolean remove( AttributeType attributeType, Value... values ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -2212,7 +2212,7 @@ public final class DefaultEntry implements Entry
      * @return <code>true</code> if at least a value is removed, <code>false</code>
      * if not all the values have been removed or if the attribute does not exist.
      */
-    public boolean remove( String upId, Value<?>... values ) throws LdapException
+    public boolean remove( String upId, Value... values ) throws LdapException
     {
         if ( Strings.isEmpty( upId ) )
         {
@@ -2502,7 +2502,7 @@ public final class DefaultEntry implements Entry
                 return false;
             }
 
-            for ( Value<?> value : objectClass )
+            for ( Value value : objectClass )
             {
                 // Loop on all the values, and check if they are present
                 if ( !attribute.contains( value.getString() ) )

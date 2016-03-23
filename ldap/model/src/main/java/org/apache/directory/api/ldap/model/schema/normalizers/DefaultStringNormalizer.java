@@ -21,7 +21,6 @@ package org.apache.directory.api.ldap.model.schema.normalizers;
 
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
@@ -53,16 +52,16 @@ public class DefaultStringNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
-    public Value<?> normalize( Value<?> value ) throws LdapException
+    public Value normalize( Value value ) throws LdapException
     {
         String str = value.getString();
 
         if ( Strings.isEmpty( str ) )
         {
-            return new StringValue( str );
+            return new Value( str );
         }
 
-        return new StringValue( str );
+        return new Value( str );
     }
 
 

@@ -28,7 +28,6 @@ import java.util.Set;
 
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
-import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 
@@ -72,15 +71,15 @@ public class IntegerAnonymizer extends AbstractAnonymizer<String>
     /**
      * Anonymize an attribute using pure random values (either chars of bytes, depending on the Attribute type)
      */
-    public Attribute anonymize( Map<Value<String>, Value<String>> valueMap, Set<Value<String>> valueSet, Attribute attribute )
+    public Attribute anonymize( Map<Value, Value> valueMap, Set<Value> valueSet, Attribute attribute )
     {
         Attribute result = new DefaultAttribute( attribute.getAttributeType() );
 
-        for ( Value<?> value : attribute )
+        for ( Value value : attribute )
         {
-            if ( value instanceof StringValue )
+            if ( value.isHumanReadable() )
             {
-                Value<String> anonymized =  valueMap.get( value );
+                Value anonymized =  valueMap.get( value );
                 
                 if ( anonymized != null )
                 {
@@ -101,8 +100,8 @@ public class IntegerAnonymizer extends AbstractAnonymizer<String>
                     try
                     {
                         result.add( newValue );
-                        Value<String> anonValue = new StringValue( attribute.getAttributeType(), newValue );
-                        valueMap.put( ( Value<String> ) value, anonValue );
+                        Value anonValue = new Value( attribute.getAttributeType(), newValue );
+                        valueMap.put( ( Value ) value, anonValue );
                         valueSet.add( anonValue );
                     }
                     catch ( LdapInvalidAttributeValueException e )

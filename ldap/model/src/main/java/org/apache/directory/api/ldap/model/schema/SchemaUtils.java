@@ -82,13 +82,13 @@ public final class SchemaUtils
 
                     if ( existing != null )
                     {
-                        for ( Value<?> value : existing )
+                        for ( Value value : existing )
                         {
                             combined.add( value );
                         }
                     }
 
-                    for ( Value<?> value : toBeAdded )
+                    for ( Value value : toBeAdded )
                     {
                         combined.add( value );
                     }
@@ -109,7 +109,7 @@ public final class SchemaUtils
 
                         if ( existing != null )
                         {
-                            for ( Value<?> value : toBeRemoved )
+                            for ( Value value : toBeRemoved )
                             {
                                 existing.remove( value );
                             }

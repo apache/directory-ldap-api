@@ -39,9 +39,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.directory.api.ldap.model.entry.Attribute;
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
-import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
@@ -82,8 +80,8 @@ public class SchemaAwareAttributeTest
     // A String attribute which allows null value
     private AttributeType atEMail;
 
-    private final Value<String> nullStringValue = new StringValue( ( String ) null );
-    private final Value<byte[]> nullBinaryValue = new BinaryValue( ( byte[] ) null );
+    private final Value nullStringValue = new Value( ( String ) null );
+    private final Value nullBinaryValue = new Value( ( byte[] ) null );
     private static final byte[] BYTES1 = new byte[]
         { 'a', 'b' };
     private static final byte[] BYTES2 = new byte[]
@@ -93,15 +91,15 @@ public class SchemaAwareAttributeTest
     private static final byte[] BYTES4 = new byte[]
         { 'd' };
 
-    private final StringValue stringValue1 = new StringValue( "a" );
-    private final StringValue stringValue2 = new StringValue( "b" );
-    private final StringValue stringValue3 = new StringValue( "c" );
-    private final StringValue stringValue4 = new StringValue( "d" );
+    private final Value stringValue1 = new Value( "a" );
+    private final Value stringValue2 = new Value( "b" );
+    private final Value stringValue3 = new Value( "c" );
+    private final Value stringValue4 = new Value( "d" );
 
-    private final BinaryValue binaryValue1 = new BinaryValue( BYTES1 );
-    private final BinaryValue binaryValue2 = new BinaryValue( BYTES2 );
-    private final BinaryValue binaryValue3 = new BinaryValue( BYTES3 );
-    private final BinaryValue binaryValue4 = new BinaryValue( BYTES4 );
+    private final Value binaryValue1 = new Value( BYTES1 );
+    private final Value binaryValue2 = new Value( BYTES2 );
+    private final Value binaryValue3 = new Value( BYTES3 );
+    private final Value binaryValue4 = new Value( BYTES4 );
 
     private static SchemaManager schemaManager;
 
@@ -236,17 +234,17 @@ public class SchemaAwareAttributeTest
 
         assertTrue( attr.getAttributeType().getSyntax().isHumanReadable() );
 
-        Value<?> value = attr.get();
+        Value value = attr.get();
 
-        assertTrue( value instanceof StringValue );
-        assertEquals( "test", ( ( StringValue ) value ).getString() );
+        assertTrue( value instanceof Value );
+        assertEquals( "test", ( ( Value ) value ).getString() );
 
         // Add a binary value
         assertEquals( 0, attr.add( new byte[]
             { 0x01 } ) );
 
         // Add a Value
-        Value<?> ssv = new StringValue( at, "test2" );
+        Value ssv = new Value( at, "test2" );
 
         attr.add( ssv );
 
@@ -256,7 +254,7 @@ public class SchemaAwareAttributeTest
         expected.add( "test" );
         expected.add( "test2" );
 
-        for ( Value<?> val : attr )
+        for ( Value val : attr )
         {
             if ( expected.contains( val.getValue() ) )
             {
@@ -291,7 +289,7 @@ public class SchemaAwareAttributeTest
         expected.add( "test" );
         expected.add( "test2" );
 
-        for ( Value<?> val : attr )
+        for ( Value val : attr )
         {
             if ( expected.contains( val.getValue() ) )
             {
@@ -315,16 +313,16 @@ public class SchemaAwareAttributeTest
         DefaultAttribute attr = new DefaultAttribute( at );
 
         // Add a null value
-        attr.add( new StringValue( at, null ) );
+        attr.add( new Value( at, (String)null ) );
 
         assertEquals( 1, attr.size() );
 
         assertTrue( attr.getAttributeType().getSyntax().isHumanReadable() );
 
-        Value<?> value = attr.get();
+        Value value = attr.get();
 
-        assertTrue( value instanceof StringValue );
-        assertNull( ( ( StringValue ) value ).getValue() );
+        assertTrue( value instanceof Value );
+        assertNull( ( ( Value ) value ).getValue() );
     }
 
 
@@ -628,14 +626,14 @@ public class SchemaAwareAttributeTest
 
         Attribute attr2 = new DefaultAttribute( atPwd );
 
-        nbAdded = attr2.add( new BinaryValue( atPwd, null ) );
+        nbAdded = attr2.add( new Value( atPwd, ( byte[] ) null ) );
         assertEquals( 1, nbAdded );
         assertFalse( attr2.isHumanReadable() );
         assertEquals( nullBinaryValue, attr2.get() );
 
         Attribute attr3 = new DefaultAttribute( atCN );
 
-        nbAdded = attr3.add( new StringValue( atCN, "a" ), new StringValue( atCN, "b" ) );
+        nbAdded = attr3.add( new Value( atCN, "a" ), new Value( atCN, "b" ) );
         assertEquals( 2, nbAdded );
         assertTrue( attr3.isHumanReadable() );
         assertTrue( attr3.contains( "a" ) );
@@ -643,7 +641,7 @@ public class SchemaAwareAttributeTest
 
         Attribute attr4 = new DefaultAttribute( atCN );
 
-        nbAdded = attr4.add( new BinaryValue( atPwd, BYTES1 ), new BinaryValue( atPwd, BYTES2 ) );
+        nbAdded = attr4.add( new Value( atPwd, BYTES1 ), new Value( atPwd, BYTES2 ) );
         assertEquals( 0, nbAdded );
         assertTrue( attr4.isHumanReadable() );
         assertFalse( attr4.contains( BYTES1 ) );
@@ -651,7 +649,7 @@ public class SchemaAwareAttributeTest
 
         Attribute attr5 = new DefaultAttribute( atCN );
 
-        nbAdded = attr5.add( new StringValue( atCN, "c" ), new BinaryValue( atPwd, BYTES1 ) );
+        nbAdded = attr5.add( new Value( atCN, "c" ), new Value( atPwd, BYTES1 ) );
         assertEquals( 1, nbAdded );
         assertTrue( attr5.isHumanReadable() );
         assertFalse( attr5.contains( "ab" ) );
@@ -659,7 +657,7 @@ public class SchemaAwareAttributeTest
 
         Attribute attr6 = new DefaultAttribute( atPwd );
 
-        nbAdded = attr6.add( new BinaryValue( atPwd, BYTES1 ), new StringValue( atCN, "c" ) );
+        nbAdded = attr6.add( new Value( atPwd, BYTES1 ), new Value( atCN, "c" ) );
         assertEquals( 1, nbAdded );
         assertFalse( attr6.isHumanReadable() );
         assertTrue( attr6.contains( BYTES1 ) );
@@ -667,7 +665,7 @@ public class SchemaAwareAttributeTest
 
         Attribute attr7 = new DefaultAttribute( atPwd );
 
-        nbAdded = attr7.add( new BinaryValue( atPwd, null ), new StringValue( atCN, "c" ) );
+        nbAdded = attr7.add( new Value( atPwd, ( byte[] ) null ), new Value( atCN, "c" ) );
         assertEquals( 1, nbAdded );
         assertFalse( attr7.isHumanReadable() );
         assertTrue( attr7.contains( nullBinaryValue ) );
@@ -675,7 +673,7 @@ public class SchemaAwareAttributeTest
 
         Attribute attr8 = new DefaultAttribute( atDC );
 
-        nbAdded = attr8.add( new StringValue( atDC, null ), new BinaryValue( atPwd, BYTES1 ) );
+        nbAdded = attr8.add( new Value( atDC, ( String ) null ), new Value( atPwd, BYTES1 ) );
         assertEquals( 1, nbAdded );
         assertTrue( attr8.isHumanReadable() );
         assertTrue( attr8.contains( nullStringValue ) );
@@ -683,7 +681,7 @@ public class SchemaAwareAttributeTest
 
         Attribute attr9 = new DefaultAttribute( atDC );
 
-        nbAdded = attr9.add( new StringValue( ( String ) null ), new StringValue( "ab" ) );
+        nbAdded = attr9.add( new Value( ( String ) null ), new Value( "ab" ) );
         assertEquals( 2, nbAdded );
         assertTrue( attr9.isHumanReadable() );
         assertTrue( attr9.contains( nullStringValue ) );
@@ -691,7 +689,7 @@ public class SchemaAwareAttributeTest
 
         Attribute attr10 = new DefaultAttribute( atPwd );
 
-        nbAdded = attr10.add( new BinaryValue( ( byte[] ) null ), new BinaryValue( BYTES1 ) );
+        nbAdded = attr10.add( new Value( ( byte[] ) null ), new Value( BYTES1 ) );
         assertEquals( 2, nbAdded );
         assertFalse( attr10.isHumanReadable() );
         assertTrue( attr10.contains( nullBinaryValue ) );
@@ -1088,14 +1086,14 @@ public class SchemaAwareAttributeTest
     {
         Attribute attr = new DefaultAttribute( atEMail );
 
-        Iterator<Value<?>> iterator = attr.iterator();
+        Iterator<Value> iterator = attr.iterator();
         assertFalse( iterator.hasNext() );
 
         attr.add( nullStringValue );
         iterator = attr.iterator();
         assertTrue( iterator.hasNext() );
 
-        Value<?> value = iterator.next();
+        Value value = iterator.next();
         assertEquals( nullStringValue, value );
 
         attr.clear();
@@ -1482,7 +1480,7 @@ public class SchemaAwareAttributeTest
         Attribute attr1 = new DefaultAttribute( atCN );
         attr1.add( "a", "b", "c" );
 
-        Iterator<Value<?>> iter = attr1.iterator();
+        Iterator<Value> iter = attr1.iterator();
 
         assertTrue( iter.hasNext() );
 
@@ -1490,9 +1488,9 @@ public class SchemaAwareAttributeTest
             { "a", "b", "c" };
         int pos = 0;
 
-        for ( Value<?> val : attr1 )
+        for ( Value val : attr1 )
         {
-            assertTrue( val instanceof StringValue );
+            assertTrue( val instanceof Value );
             assertEquals( values[pos++], val.getString() );
         }
     }

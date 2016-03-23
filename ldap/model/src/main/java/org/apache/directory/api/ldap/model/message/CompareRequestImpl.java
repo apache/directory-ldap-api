@@ -20,8 +20,6 @@
 package org.apache.directory.api.ldap.model.message;
 
 
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
-import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
@@ -43,7 +41,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
     private String attrId;
 
     /** The value of the attribute used in the comparison */
-    private Value<?> attrVal;
+    private Value attrVal;
 
     /** The associated response */
     private CompareResponse response;
@@ -94,7 +92,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
      * 
      * @return the attribute value to used in comparison.
      */
-    public Value<?> getAssertionValue()
+    public Value getAssertionValue()
     {
         return attrVal;
     }
@@ -105,7 +103,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
      */
     public CompareRequest setAssertionValue( String value )
     {
-        this.attrVal = new StringValue( value );
+        this.attrVal = new Value( value );
 
         return this;
     }
@@ -118,7 +116,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
     {
         if ( value != null )
         {
-            this.attrVal = new BinaryValue( value );
+            this.attrVal = new Value( value );
         }
         else
         {
@@ -240,7 +238,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
         {
             hash = hash * 17 + attrVal.hashCode();
         }
-        Value<?> reqVal = getAssertionValue();
+        Value reqVal = getAssertionValue();
         if ( reqVal != null )
         {
             hash = hash * 17 + reqVal.hashCode();
@@ -304,7 +302,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
             return false;
         }
 
-        Value<?> reqVal = req.getAssertionValue();
+        Value reqVal = req.getAssertionValue();
 
         if ( attrVal != null )
         {

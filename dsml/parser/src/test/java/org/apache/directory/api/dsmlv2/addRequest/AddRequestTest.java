@@ -334,7 +334,7 @@ public class AddRequestTest extends AbstractTest
         assertEquals( "objectclass", attribute.getUpId() );
 
         // Getting the Value
-        Iterator<Value<?>> valueIterator = attribute.iterator();
+        Iterator<Value> valueIterator = attribute.iterator();
         assertFalse( valueIterator.hasNext() );
     }
 
@@ -371,7 +371,7 @@ public class AddRequestTest extends AbstractTest
         assertEquals( "objectclass", attribute.getUpId() );
 
         // Getting the Value
-        Iterator<Value<?>> valueIterator = attribute.iterator();
+        Iterator<Value> valueIterator = attribute.iterator();
         assertFalse( valueIterator.hasNext() );
     }
 
@@ -408,9 +408,9 @@ public class AddRequestTest extends AbstractTest
         assertEquals( "objectclass", attribute.getUpId() );
 
         // Getting the Value
-        Iterator<Value<?>> valueIterator = attribute.iterator();
+        Iterator<Value> valueIterator = attribute.iterator();
         assertTrue( valueIterator.hasNext() );
-        Value<?> value = valueIterator.next();
+        Value value = valueIterator.next();
         assertEquals( "top", value.getString() );
     }
 
@@ -447,9 +447,9 @@ public class AddRequestTest extends AbstractTest
         assertEquals( "objectclass", attribute.getUpId() );
 
         // Getting the Value
-        Iterator<Value<?>> valueIterator = attribute.iterator();
+        Iterator<Value> valueIterator = attribute.iterator();
         assertTrue( valueIterator.hasNext() );
-        Value<?> value = valueIterator.next();
+        Value value = valueIterator.next();
         assertFalse( value.isHumanReadable() );
         assertEquals( "DSMLv2.0 rocks!!", value.getString() );
     }
@@ -487,9 +487,9 @@ public class AddRequestTest extends AbstractTest
         assertEquals( "objectclass", attribute.getUpId() );
 
         // Getting the Value
-        Iterator<Value<?>> valueIterator = attribute.iterator();
+        Iterator<Value> valueIterator = attribute.iterator();
         assertTrue( valueIterator.hasNext() );
-        Value<?> value = valueIterator.next();
+        Value value = valueIterator.next();
         assertEquals( "top", value.getString() );
         assertTrue( valueIterator.hasNext() );
         value = valueIterator.next();
@@ -540,9 +540,9 @@ public class AddRequestTest extends AbstractTest
         assertEquals( "objectclass", attribute.getUpId() );
 
         // Getting the Value
-        Iterator<Value<?>> valueIterator = attribute.iterator();
+        Iterator<Value> valueIterator = attribute.iterator();
         assertTrue( valueIterator.hasNext() );
-        Value<?> value = valueIterator.next();
+        Value value = valueIterator.next();
         assertEquals( "top", value.getString() );
         assertTrue( valueIterator.hasNext() );
         value = valueIterator.next();

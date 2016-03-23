@@ -89,7 +89,7 @@ public interface ModelFactory
      * @param values
      * @return
      */
-    Attribute newAttribute( String name, Value<?>... values );
+    Attribute newAttribute( String name, Value... values );
 
 
     /**

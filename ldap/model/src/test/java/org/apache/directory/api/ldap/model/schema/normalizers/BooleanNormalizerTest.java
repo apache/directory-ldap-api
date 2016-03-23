@@ -23,7 +23,6 @@ package org.apache.directory.api.ldap.model.schema.normalizers;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.schema.normalizers.BooleanNormalizer;
 import org.apache.directory.api.util.Strings;
@@ -50,7 +49,7 @@ public class BooleanNormalizerTest
     @Test
     public void testNormalizeNullValue() throws Exception
     {
-        assertNull( normalizer.normalize( ( Value<?> ) null ) );
+        assertNull( normalizer.normalize( ( Value ) null ) );
     }
 
 
@@ -73,8 +72,8 @@ public class BooleanNormalizerTest
     @Test
     public void testNormalizeByteValue() throws Exception
     {
-        assertEquals( "TRUE", normalizer.normalize( new BinaryValue( Strings.getBytesUtf8( "tRuE" ) ) ).getString() );
-        assertEquals( "TRUE", normalizer.normalize( new BinaryValue( Strings.getBytesUtf8( "true" ) ) ).getString() );
+        assertEquals( "TRUE", normalizer.normalize( new Value( Strings.getBytesUtf8( "tRuE" ) ) ).getString() );
+        assertEquals( "TRUE", normalizer.normalize( new Value( Strings.getBytesUtf8( "true" ) ) ).getString() );
     }
 
 }

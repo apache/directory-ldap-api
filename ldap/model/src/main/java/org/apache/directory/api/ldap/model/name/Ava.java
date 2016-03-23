@@ -27,8 +27,6 @@ import java.io.ObjectOutput;
 import java.util.Arrays;
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
-import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
@@ -78,7 +76,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     private String upType;
 
     /** The value. It can be a String or a byte array */
-    private Value<?> value;
+    private Value value;
 
     /** The user provided Ava */
     private String upName;
@@ -167,7 +165,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 
             try
             {
-                createAva( schemaManager, upType, new BinaryValue( attributeType, upValue ) );
+                createAva( schemaManager, upType, new Value( attributeType, upValue ) );
             }
             catch ( LdapInvalidAttributeValueException liave )
             {
@@ -178,7 +176,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         }
         else
         {
-            createAva( upType, new BinaryValue( upValue ) );
+            createAva( upType, new Value( upValue ) );
         }
     }
 
@@ -231,7 +229,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 
             try
             {
-                createAva( schemaManager, upType, new StringValue( attributeType, upValue ) );
+                createAva( schemaManager, upType, new Value( attributeType, upValue ) );
             }
             catch ( LdapInvalidAttributeValueException liave )
             {
@@ -242,7 +240,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         }
         else
         {
-            createAva( upType, new StringValue( upValue ) );
+            createAva( upType, new Value( upValue ) );
         }
     }
 
@@ -260,7 +258,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      * 
      * @throws LdapInvalidDnException If the given type or value are invalid
      */
-    private void createAva( SchemaManager schemaManager, String upType, Value<?> value )
+    private void createAva( SchemaManager schemaManager, String upType, Value value )
         throws LdapInvalidDnException
     {
         normType = attributeType.getOid();
@@ -284,7 +282,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      * 
      * @throws LdapInvalidDnException If the given type or value are invalid
      */
-    private void createAva( String upType, Value<?> upValue ) throws LdapInvalidDnException
+    private void createAva( String upType, Value upValue ) throws LdapInvalidDnException
     {
         String upTypeTrimmed = Strings.trim( upType );
         String normTypeTrimmed = Strings.trim( normType );
@@ -342,7 +340,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     // WARNING : The protection level is left unspecified intentionally.
     // We need this method to be visible from the DnParser class, but not
     // from outside this package.
-    /* Unspecified protection */Ava( SchemaManager schemaManager, String upType, String normType, Value<?> value )
+    /* Unspecified protection */Ava( SchemaManager schemaManager, String upType, String normType, Value value )
         throws LdapInvalidDnException
     {
         this.upType = upType;
@@ -377,7 +375,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     // WARNING : The protection level is left unspecified intentionally.
     // We need this method to be visible from the DnParser class, but not
     // from outside this package.
-    /* Unspecified protection */Ava( String upType, String normType, Value<?> value, String upName )
+    /* Unspecified protection */Ava( String upType, String normType, Value value, String upName )
         throws LdapInvalidDnException
     {
         this( null, upType, normType, value, upName );
@@ -403,7 +401,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     // WARNING : The protection level is left unspecified intentionally.
     // We need this method to be visible from the DnParser class, but not
     // from outside this package.
-    /* Unspecified protection */Ava( AttributeType attributeType, String upType, String normType, Value<?> value, String upName )
+    /* Unspecified protection */Ava( AttributeType attributeType, String upType, String normType, Value value, String upName )
         throws LdapInvalidDnException
     {
         this.attributeType = attributeType;
@@ -493,7 +491,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 
             try
             {
-                this.value.apply( tmpAttributeType );
+                value = new Value( tmpAttributeType, value );
             }
             catch ( LdapException le )
             {
@@ -534,7 +532,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      *
      * @return The value
      */
-    public Value<?> getValue()
+    public Value getValue()
     {
         return value.clone();
     }
@@ -691,7 +689,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
                 else
                 {
                     // No Equality MR, use a direct comparison
-                    if ( value instanceof BinaryValue )
+                    if ( !value.isHumanReadable() )
                     {
                         return Arrays.equals( value.getBytes(), instance.value.getBytes() );
                     }
@@ -834,7 +832,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         // Write the upValue
         if ( value.isHumanReadable() )
         {
-            pos = ( ( StringValue ) value ).serialize( buffer, pos );
+            pos = value.serialize( buffer, pos );
         }
 
         // Write the hash code
@@ -913,8 +911,8 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         if ( isHR )
         {
             // Read the upValue
-            value = new StringValue( attributeType );
-            pos = ( ( StringValue ) value ).deserialize( buffer, pos );
+            value = Value.createValue( attributeType );
+            pos = value.deserialize( buffer, pos );
         }
 
         // Read the hashCode
@@ -1093,11 +1091,11 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 
         if ( isHR )
         {
-            value = StringValue.deserialize( attributeType, in );
+            value = Value.deserialize( attributeType, in );
         }
         else
         {
-            value = BinaryValue.deserialize( attributeType, in );
+            value = Value.deserialize( attributeType, in );
         }
 
         h = in.readInt();
@@ -1141,8 +1139,8 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         }
         else
         {
-            byte[] bytes1 = ( byte[] ) value.getNormValue();
-            byte[] bytes2 = ( byte[] ) that.value.getNormValue();
+            byte[] bytes1 = ( byte[] ) value.getBytes();
+            byte[] bytes2 = ( byte[] ) that.value.getBytes();
 
             for ( int pos = 0; pos < bytes1.length; pos++ )
             {
@@ -1208,15 +1206,15 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
                 }
                 else
                 {
-                    if ( value instanceof StringValue )
+                    if ( value instanceof Value )
                     {
-                        comp = ( ( StringValue ) value ).compareTo( ( StringValue ) that.value );
+                        comp = ( ( Value ) value ).compareTo( ( Value ) that.value );
 
                         return comp;
                     }
                     else
                     {
-                        comp = ( ( BinaryValue ) value ).compareTo( ( BinaryValue ) that.value );
+                        comp = ( ( Value ) value ).compareTo( ( Value ) that.value );
 
                         return comp;
                     }

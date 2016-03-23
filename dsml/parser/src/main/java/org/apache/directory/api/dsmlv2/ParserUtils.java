@@ -36,8 +36,7 @@ import org.apache.directory.api.dsmlv2.request.BatchRequestDsml.ResponseOrder;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
-import org.apache.directory.api.ldap.model.entry.StringValue;
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.ldif.LdifUtils;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.util.Base64;
@@ -151,11 +150,11 @@ public final class ParserUtils
      */
     public static boolean needsBase64Encoding( Object value )
     {
-        if ( value instanceof StringValue )
+        if ( value instanceof Value )
         {
             return false;
         }
-        else if ( value instanceof BinaryValue )
+        else if ( value instanceof Value )
         {
             return false;
         }

@@ -20,7 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.comparators;
 
 
-import org.apache.directory.api.ldap.model.entry.StringValue;
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,18 +84,18 @@ public class CsnComparator extends LdapComparator<Object>
         String csnStr1 = null;
         String csnStr2 = null;
 
-        if ( csnObj1 instanceof StringValue )
+        if ( csnObj1 instanceof Value )
         {
-            csnStr1 = ( ( StringValue ) csnObj1 ).getValue();
+            csnStr1 = ( ( Value ) csnObj1 ).getValue();
         }
         else
         {
             csnStr1 = csnObj1.toString();
         }
 
-        if ( csnObj2 instanceof StringValue )
+        if ( csnObj2 instanceof Value )
         {
-            csnStr2 = ( ( StringValue ) csnObj2 ).getValue();
+            csnStr2 = ( ( Value ) csnObj2 ).getValue();
         }
         else
         {

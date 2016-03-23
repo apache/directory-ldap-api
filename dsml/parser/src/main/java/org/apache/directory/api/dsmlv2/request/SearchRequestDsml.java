@@ -196,8 +196,7 @@ public class SearchRequestDsml
      * @param filter The filter to be transformed
      * @return An ExprNode
      */
-    @SuppressWarnings(
-        { "unchecked", "rawtypes" })
+    @SuppressWarnings({ "rawtypes" })
     private ExprNode transform( Filter filter )
     {
         if ( filter != null )
@@ -309,7 +308,7 @@ public class SearchRequestDsml
                     ExtensibleMatchFilter extFilter = ( ExtensibleMatchFilter ) filter;
                     String matchingRule = null;
 
-                    Value<?> value = extFilter.getMatchValue();
+                    Value value = extFilter.getMatchValue();
 
                     if ( extFilter.getMatchingRule() != null )
                     {
@@ -538,7 +537,7 @@ public class SearchRequestDsml
             String attributeName = ( ( SimpleNode<?> ) filter ).getAttribute();
             newElement.addAttribute( NAME, attributeName );
 
-            Value<?> value = ( ( SimpleNode<?> ) filter ).getValue();
+            Value value = ( ( SimpleNode<?> ) filter ).getValue();
             if ( value != null )
             {
                 if ( ParserUtils.needsBase64Encoding( value ) )
@@ -573,7 +572,7 @@ public class SearchRequestDsml
         {
             Element newElement = element.addElement( "extensibleMatch" );
 
-            Value<?> value = ( ( ExtensibleNode ) filter ).getValue();
+            Value value = ( ( ExtensibleNode ) filter ).getValue();
             if ( value != null )
             {
                 if ( ParserUtils.needsBase64Encoding( value ) )

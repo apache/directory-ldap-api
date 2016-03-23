@@ -76,7 +76,7 @@ class ModelFactoryImpl implements ModelFactory
     
 
     @Override
-    public Attribute newAttribute( String name, Value<?>... values )
+    public Attribute newAttribute( String name, Value... values )
     {
         return new DefaultAttribute( name, values );
     }

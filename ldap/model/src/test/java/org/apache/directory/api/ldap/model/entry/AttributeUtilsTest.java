@@ -138,7 +138,7 @@ public class AttributeUtilsTest
         expectedValues.add( "apache" );
         expectedValues.add( "test" );
 
-        for ( Value<?> value : attribute )
+        for ( Value value : attribute )
         {
             String valueStr = value.getString();
 
@@ -176,7 +176,7 @@ public class AttributeUtilsTest
         expectedValues.add( "apache" );
         expectedValues.add( "test" );
 
-        for ( Value<?> value : cnAttr )
+        for ( Value value : cnAttr )
         {
             String valueStr = value.getString();
 
@@ -303,7 +303,7 @@ public class AttributeUtilsTest
 
         boolean isFirst = true;
 
-        for ( Value<?> value : modifiedAttr )
+        for ( Value value : modifiedAttr )
         {
             assertTrue( isFirst );
 
@@ -388,7 +388,7 @@ public class AttributeUtilsTest
         expectedValues.add( "Big Company" );
         expectedValues.add( "directory" );
 
-        for ( Value<?> value : modifiedAttr )
+        for ( Value value : modifiedAttr )
         {
             String valueStr = value.getString();
 

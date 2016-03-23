@@ -33,7 +33,7 @@ import java.util.List;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
-import org.apache.directory.api.ldap.model.entry.StringValue;
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.filter.AndNode;
 import org.apache.directory.api.ldap.model.filter.ApproximateNode;
 import org.apache.directory.api.ldap.model.filter.BranchNode;
@@ -620,7 +620,7 @@ public class FilterParserTest
         assertTrue( node instanceof SubstringNode );
 
         assertEquals( 4, node.getAny().size() );
-        assertFalse( node.getAny().contains( new StringValue( "" ) ) );
+        assertFalse( node.getAny().contains( new Value( "" ) ) );
         assertTrue( node.getAny().contains( "e" ) );
         assertTrue( node.getAny().contains( "b" ) );
         assertTrue( node.getAny().contains( "c" ) );
@@ -662,7 +662,7 @@ public class FilterParserTest
         assertTrue( node instanceof SubstringNode );
 
         assertEquals( 4, node.getAny().size() );
-        assertFalse( node.getAny().contains( new StringValue( "" ) ) );
+        assertFalse( node.getAny().contains( new Value( "" ) ) );
         assertTrue( node.getAny().contains( "e" ) );
         assertTrue( node.getAny().contains( "b" ) );
         assertTrue( node.getAny().contains( "c" ) );

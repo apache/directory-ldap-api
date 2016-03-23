@@ -39,7 +39,6 @@ import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
-import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
@@ -465,8 +464,8 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
 
             if ( value == null )
             {
-                value = new StringValue( ( String ) null );
-                attr = new DefaultAttribute( id, ( Value<?> ) value );
+                value = new Value( ( String ) null );
+                attr = new DefaultAttribute( id, ( Value ) value );
             }
             else
             {
@@ -554,7 +553,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
         }
         else
         {
-            entry.add( id, ( Value<?> ) null );
+            entry.add( id, ( Value ) null );
         }
     }
 

@@ -54,7 +54,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     private AttributeType attributeType;
 
     /** The set of contained values */
-    private Set<Value<?>> values = new LinkedHashSet<Value<?>>();
+    private Set<Value> values = new LinkedHashSet<Value>();
 
     /** The User provided ID */
     private String upId;
@@ -73,15 +73,15 @@ public class DefaultAttribute implements Attribute, Cloneable
     //-------------------------------------------------------------------------
     // Helper methods
     //-------------------------------------------------------------------------
-    private Value<String> createStringValue( AttributeType attributeType, String value )
+    private Value createStringValue( AttributeType attributeType, String value )
     {
-        Value<String> stringValue = null;
+        Value newValue = null;
 
         if ( attributeType != null )
         {
             try
             {
-                stringValue = new StringValue( attributeType, value );
+                newValue = new Value( attributeType, value );
             }
             catch ( LdapInvalidAttributeValueException iae )
             {
@@ -90,25 +90,25 @@ public class DefaultAttribute implements Attribute, Cloneable
         }
         else
         {
-            stringValue = new StringValue( value );
+            newValue = new Value( value );
         }
 
-        return stringValue;
+        return newValue;
     }
 
 
-    private Value<byte[]> createBinaryValue( AttributeType attributeType, byte[] value )
+    private Value createBinaryValue( AttributeType attributeType, byte[] value )
         throws LdapInvalidAttributeValueException
     {
-        Value<byte[]> binaryValue = null;
+        Value binaryValue = null;
 
         if ( attributeType != null )
         {
-            binaryValue = new BinaryValue( attributeType, value );
+            binaryValue = new Value( attributeType, value );
         }
         else
         {
-            binaryValue = new BinaryValue( value );
+            binaryValue = new Value( value );
         }
 
         return binaryValue;
@@ -134,7 +134,7 @@ public class DefaultAttribute implements Attribute, Cloneable
      * Used by the serializer
      */
     /* No protection*/DefaultAttribute( AttributeType attributeType, String upId, String normId, boolean isHR,
-        int hashCode, Value<?>... values )
+        int hashCode, Value... values )
     {
         this.attributeType = attributeType;
         this.upId = upId;
@@ -144,7 +144,7 @@ public class DefaultAttribute implements Attribute, Cloneable
 
         if ( values != null )
         {
-            for ( Value<?> value : values )
+            for ( Value value : values )
             {
                 this.values.add( value );
             }
@@ -232,27 +232,18 @@ public class DefaultAttribute implements Attribute, Cloneable
      * @param upId the attributeType ID
      * @param vals an initial set of values for this attribute
      */
-    public DefaultAttribute( String upId, Value<?>... vals )
+    public DefaultAttribute( String upId, Value... vals )
     {
         // The value can be null, this is a valid value.
         if ( vals[0] == null )
         {
-            add( new StringValue( ( String ) null ) );
+            add( new Value( ( String ) null ) );
         }
         else
         {
-            for ( Value<?> val : vals )
+            for ( Value val : vals )
             {
-                if ( ( val instanceof StringValue ) || ( !val.isHumanReadable() ) )
-                {
-                    add( val );
-                }
-                else
-                {
-                    String message = I18n.err( I18n.ERR_04129, val.getClass().getName() );
-                    LOG.error( message );
-                    throw new IllegalStateException( message );
-                }
+                add( val );
             }
         }
 
@@ -318,7 +309,7 @@ public class DefaultAttribute implements Attribute, Cloneable
      * @throws LdapInvalidAttributeValueException If any of the
      * added values is not valid
      */
-    public DefaultAttribute( String upId, AttributeType attributeType, Value<?>... vals )
+    public DefaultAttribute( String upId, AttributeType attributeType, Value... vals )
         throws LdapInvalidAttributeValueException
     {
         if ( attributeType == null )
@@ -344,7 +335,7 @@ public class DefaultAttribute implements Attribute, Cloneable
      * @param attributeType the attribute type according to the schema
      * @param vals an initial set of values for this attribute
      */
-    public DefaultAttribute( AttributeType attributeType, Value<?>... vals ) throws LdapInvalidAttributeValueException
+    public DefaultAttribute( AttributeType attributeType, Value... vals ) throws LdapInvalidAttributeValueException
     {
         this( null, attributeType, vals );
     }
@@ -450,7 +441,7 @@ public class DefaultAttribute implements Attribute, Cloneable
             isHR = attribute.isHumanReadable();
 
             // Copy all the values
-            for ( Value<?> value : attribute )
+            for ( Value value : attribute )
             {
                 add( value.clone() );
             }
@@ -466,36 +457,19 @@ public class DefaultAttribute implements Attribute, Cloneable
             isHR = attributeType.getSyntax().isHumanReadable();
 
             // Copy all the values
-            for ( Value<?> clientValue : attribute )
+            for ( Value clientValue : attribute )
             {
-                Value<?> serverValue = null;
+                Value serverValue = null;
 
-                // We have to convert the value first
-                if ( clientValue instanceof StringValue )
+                if ( isHR )
                 {
-                    if ( isHR )
-                    {
-                        serverValue = new StringValue( attributeType, clientValue.getString() );
-                    }
-                    else
-                    {
-                        // We have to convert the value to a binary value first
-                        serverValue = new BinaryValue( attributeType,
-                            clientValue.getBytes() );
-                    }
+                    serverValue = new Value( attributeType, clientValue.getString() );
                 }
-                else if ( clientValue instanceof BinaryValue )
+                else
                 {
-                    if ( isHR )
-                    {
-                        // We have to convert the value to a String value first
-                        serverValue = new StringValue( attributeType,
-                            clientValue.getString() );
-                    }
-                    else
-                    {
-                        serverValue = new BinaryValue( attributeType, clientValue.getBytes() );
-                    }
+                    // We have to convert the value to a binary value first
+                    serverValue = new Value( attributeType,
+                        clientValue.getBytes() );
                 }
 
                 add( serverValue );
@@ -509,7 +483,7 @@ public class DefaultAttribute implements Attribute, Cloneable
      */
     public byte[] getBytes() throws LdapInvalidAttributeValueException
     {
-        Value<?> value = get();
+        Value value = get();
 
         if ( !isHR && ( value != null ) )
         {
@@ -527,7 +501,7 @@ public class DefaultAttribute implements Attribute, Cloneable
      */
     public String getString() throws LdapInvalidAttributeValueException
     {
-        Value<?> value = get();
+        Value value = get();
 
         if ( isHR && ( value != null ) )
         {
@@ -746,7 +720,7 @@ public class DefaultAttribute implements Attribute, Cloneable
         }
 
         // Now check the values
-        for ( Value<?> value : values )
+        for ( Value value : values )
         {
             try
             {
@@ -768,13 +742,13 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
-    public int add( Value<?>... vals )
+    public int add( Value... vals )
     {
         int nbAdded = 0;
-        BinaryValue nullBinaryValue = null;
-        StringValue nullStringValue = null;
+        Value nullBinaryValue = null;
+        Value nullStringValue = null;
         boolean nullValueAdded = false;
-        Value<?>[] valArray = vals;
+        Value[] valArray = vals;
 
         if ( vals == null )
         {
@@ -783,7 +757,7 @@ public class DefaultAttribute implements Attribute, Cloneable
 
         if ( attributeType != null )
         {
-            for ( Value<?> val : valArray )
+            for ( Value val : valArray )
             {
                 if ( attributeType.getSyntax().isHumanReadable() )
                 {
@@ -791,7 +765,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                     {
                         try
                         {
-                            Value<String> nullSV = new StringValue( attributeType, ( String ) null );
+                            Value nullSV = new Value( attributeType, ( String ) null );
 
                             if ( values.add( nullSV ) )
                             {
@@ -803,15 +777,13 @@ public class DefaultAttribute implements Attribute, Cloneable
                             continue;
                         }
                     }
-                    else if ( val instanceof StringValue )
+                    else if ( val.isHumanReadable() )
                     {
-                        StringValue stringValue = ( StringValue ) val;
-
                         try
                         {
-                            if ( stringValue.getAttributeType() == null )
+                            if ( val.getAttributeType() == null )
                             {
-                                stringValue.apply( attributeType );
+                                val.apply( attributeType );
                             }
 
                             if ( values.contains( val ) )
@@ -844,7 +816,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                         {
                             try
                             {
-                                Value<byte[]> nullSV = new BinaryValue( attributeType, ( byte[] ) null );
+                                Value nullSV = new Value( attributeType, ( byte[] ) null );
 
                                 if ( values.add( nullSV ) )
                                 {
@@ -864,18 +836,16 @@ public class DefaultAttribute implements Attribute, Cloneable
                     }
                     else
                     {
-                        if ( val instanceof BinaryValue )
+                        if ( !val.isHumanReadable() )
                         {
-                            BinaryValue binaryValue = ( BinaryValue ) val;
-
                             try
                             {
-                                if ( binaryValue.getAttributeType() == null )
+                                if ( val.getAttributeType() == null )
                                 {
-                                    binaryValue = new BinaryValue( attributeType, val.getBytes() );
+                                    val = new Value( attributeType, val.getBytes() );
                                 }
 
-                                if ( values.add( binaryValue ) )
+                                if ( values.add( val ) )
                                 {
                                     nbAdded++;
                                 }
@@ -896,7 +866,7 @@ public class DefaultAttribute implements Attribute, Cloneable
         }
         else
         {
-            for ( Value<?> val : valArray )
+            for ( Value val : valArray )
             {
                 if ( val == null )
                 {
@@ -909,8 +879,8 @@ public class DefaultAttribute implements Attribute, Cloneable
                         // know later if we add some new value.
                         // We have to do that because we are using a Set,
                         // and we can't remove the first element of the Set.
-                        nullBinaryValue = new BinaryValue( ( byte[] ) null );
-                        nullStringValue = new StringValue( ( String ) null );
+                        nullBinaryValue = new Value( ( byte[] ) null );
+                        nullStringValue = new Value( ( String ) null );
 
                         values.add( nullBinaryValue );
                         values.add( nullStringValue );
@@ -920,7 +890,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                     else if ( !isHR )
                     {
                         // The attribute type is binary.
-                        nullBinaryValue = new BinaryValue( ( byte[] ) null );
+                        nullBinaryValue = new Value( ( byte[] ) null );
 
                         // Don't add a value if it already exists.
                         if ( !values.contains( nullBinaryValue ) )
@@ -933,7 +903,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                     else
                     {
                         // The attribute is HR
-                        nullStringValue = new StringValue( ( String ) null );
+                        nullStringValue = new Value( ( String ) null );
 
                         // Don't add a value if it already exists.
                         if ( !values.contains( nullStringValue ) )
@@ -945,7 +915,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                 else
                 {
                     // Let's check the value type.
-                    if ( val instanceof StringValue )
+                    if ( val.isHumanReadable() )
                     {
                         // We have a String value
                         if ( isHR == null )
@@ -958,8 +928,8 @@ public class DefaultAttribute implements Attribute, Cloneable
                         else if ( !isHR )
                         {
                             // The attributeType is binary, convert the
-                            // value to a BinaryValue
-                            BinaryValue bv = new BinaryValue( val.getBytes() );
+                            // value to a Value
+                            Value bv = new Value( val.getBytes() );
 
                             if ( !contains( bv ) )
                             {
@@ -999,8 +969,8 @@ public class DefaultAttribute implements Attribute, Cloneable
                         else
                         {
                             // The attribute Type is HR, convert the
-                            // value to a StringValue
-                            StringValue sv = new StringValue( val.getString() );
+                            // value to a Value
+                            Value sv = new Value( val.getString() );
 
                             if ( !contains( sv ) )
                             {
@@ -1061,7 +1031,7 @@ public class DefaultAttribute implements Attribute, Cloneable
             {
                 for ( String val : valArray )
                 {
-                    Value<String> value = createStringValue( attributeType, val );
+                    Value value = createStringValue( attributeType, val );
 
                     if ( value == null )
                     {
@@ -1093,7 +1063,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                         valBytes = Strings.getBytesUtf8( val );
                     }
 
-                    Value<byte[]> value = createBinaryValue( attributeType, valBytes );
+                    Value value = createBinaryValue( attributeType, valBytes );
 
                     // Now call the add(Value) method
                     if ( add( value ) == 1 )
@@ -1115,7 +1085,7 @@ public class DefaultAttribute implements Attribute, Cloneable
             {
                 for ( String val : valArray )
                 {
-                    Value<String> value = createStringValue( attributeType, val );
+                    Value value = createStringValue( attributeType, val );
 
                     if ( value == null )
                     {
@@ -1147,7 +1117,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                         valBytes = Strings.getBytesUtf8( val );
                     }
 
-                    Value<byte[]> value = createBinaryValue( attributeType, valBytes );
+                    Value value = createBinaryValue( attributeType, valBytes );
 
                     // Now call the add(Value) method
                     if ( add( value ) == 1 )
@@ -1186,11 +1156,11 @@ public class DefaultAttribute implements Attribute, Cloneable
         {
             for ( byte[] val : valArray )
             {
-                Value<byte[]> value = null;
+                Value value = null;
 
                 if ( attributeType == null )
                 {
-                    value = new BinaryValue( val );
+                    value = new Value( val );
                 }
                 else
                 {
@@ -1230,7 +1200,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
-    public boolean contains( Value<?>... vals )
+    public boolean contains( Value... vals )
     {
         if ( isHR == null )
         {
@@ -1245,9 +1215,9 @@ public class DefaultAttribute implements Attribute, Cloneable
                 // Iterate through all the values, convert the Binary values
                 // to String values, and quit id any of the values is not
                 // contained in the object
-                for ( Value<?> val : vals )
+                for ( Value val : vals )
                 {
-                    if ( val instanceof StringValue )
+                    if ( val.isHumanReadable() )
                     {
                         if ( !values.contains( val ) )
                         {
@@ -1259,7 +1229,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                         byte[] binaryVal = val.getBytes();
 
                         // We have to convert the binary value to a String
-                        if ( !values.contains( new StringValue( Strings.utf8ToString( binaryVal ) ) ) )
+                        if ( !values.contains( new Value( Strings.utf8ToString( binaryVal ) ) ) )
                         {
                             return false;
                         }
@@ -1271,14 +1241,14 @@ public class DefaultAttribute implements Attribute, Cloneable
                 // Iterate through all the values, convert the String values
                 // to binary values, and quit id any of the values is not
                 // contained in the object
-                for ( Value<?> val : vals )
+                for ( Value val : vals )
                 {
                     if ( val.isHumanReadable() )
                     {
                         String stringVal = val.getString();
 
                         // We have to convert the binary value to a String
-                        if ( !values.contains( new BinaryValue( Strings.getBytesUtf8( stringVal ) ) ) )
+                        if ( !values.contains( new Value( Strings.getBytesUtf8( stringVal ) ) ) )
                         {
                             return false;
                         }
@@ -1300,11 +1270,11 @@ public class DefaultAttribute implements Attribute, Cloneable
             // depending on the isHR flag value.
             if ( isHR )
             {
-                for ( Value<?> val : vals )
+                for ( Value val : vals )
                 {
-                    if ( val instanceof StringValue )
+                    if ( val.isHumanReadable() )
                     {
-                        StringValue stringValue = ( StringValue ) val;
+                        Value stringValue = ( Value ) val;
 
                         try
                         {
@@ -1332,9 +1302,9 @@ public class DefaultAttribute implements Attribute, Cloneable
             }
             else
             {
-                for ( Value<?> val : vals )
+                for ( Value val : vals )
                 {
-                    if ( val instanceof BinaryValue )
+                    if ( !val.isHumanReadable() )
                     {
                         if ( !values.contains( val ) )
                         {
@@ -1373,7 +1343,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                 {
                     try
                     {
-                        if ( !contains( new StringValue( val ) ) )
+                        if ( !contains( new Value( val ) ) )
                         {
                             return false;
                         }
@@ -1394,7 +1364,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                 {
                     byte[] binaryVal = Strings.getBytesUtf8( val );
 
-                    if ( !contains( new BinaryValue( binaryVal ) ) )
+                    if ( !contains( new Value( binaryVal ) ) )
                     {
                         return false;
                     }
@@ -1411,7 +1381,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                 {
                     try
                     {
-                        StringValue value = new StringValue( attributeType, val );
+                        Value value = new Value( attributeType, val );
 
                         if ( !values.contains( value ) )
                         {
@@ -1455,7 +1425,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                 // don't find one in the values
                 for ( byte[] val : vals )
                 {
-                    if ( !contains( new BinaryValue( val ) ) )
+                    if ( !contains( new Value( val ) ) )
                     {
                         return false;
                     }
@@ -1471,7 +1441,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                 {
                     String stringVal = Strings.utf8ToString( val );
 
-                    if ( !contains( new StringValue( stringVal ) ) )
+                    if ( !contains( new Value( stringVal ) ) )
                     {
                         return false;
                     }
@@ -1488,7 +1458,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                 {
                     try
                     {
-                        BinaryValue value = new BinaryValue( attributeType, val );
+                        Value value = new Value( attributeType, val );
 
                         if ( !values.contains( value ) )
                         {
@@ -1516,7 +1486,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
-    public Value<?> get()
+    public Value get()
     {
         if ( values.isEmpty() )
         {
@@ -1539,7 +1509,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
-    public boolean remove( Value<?>... vals )
+    public boolean remove( Value... vals )
     {
         if ( ( isHR == null ) || ( values.size() == 0 ) )
         {
@@ -1553,9 +1523,9 @@ public class DefaultAttribute implements Attribute, Cloneable
         {
             if ( isHR )
             {
-                for ( Value<?> val : vals )
+                for ( Value val : vals )
                 {
-                    if ( val instanceof StringValue )
+                    if ( val.isHumanReadable() )
                     {
                         removed &= values.remove( val );
                     }
@@ -1563,13 +1533,13 @@ public class DefaultAttribute implements Attribute, Cloneable
                     {
                         // Convert the binary value to a string value
                         byte[] binaryVal = val.getBytes();
-                        removed &= values.remove( new StringValue( Strings.utf8ToString( binaryVal ) ) );
+                        removed &= values.remove( new Value( Strings.utf8ToString( binaryVal ) ) );
                     }
                 }
             }
             else
             {
-                for ( Value<?> val : vals )
+                for ( Value val : vals )
                 {
                     removed &= values.remove( val );
                 }
@@ -1582,20 +1552,18 @@ public class DefaultAttribute implements Attribute, Cloneable
             // As the attribute may be HR or not, we have two separated treatments
             if ( isHR )
             {
-                for ( Value<?> val : vals )
+                for ( Value val : vals )
                 {
-                    if ( val instanceof StringValue )
+                    if ( val.isHumanReadable() )
                     {
-                        StringValue stringValue = ( StringValue ) val;
-
                         try
                         {
-                            if ( stringValue.getAttributeType() == null )
+                            if ( val.getAttributeType() == null )
                             {
-                                stringValue.apply( attributeType );
+                                val.apply( attributeType );
                             }
 
-                            removed &= values.remove( stringValue );
+                            removed &= values.remove( val );
                         }
                         catch ( LdapInvalidAttributeValueException liave )
                         {
@@ -1610,20 +1578,18 @@ public class DefaultAttribute implements Attribute, Cloneable
             }
             else
             {
-                for ( Value<?> val : vals )
+                for ( Value val : vals )
                 {
-                    if ( val instanceof BinaryValue )
+                    if ( !val.isHumanReadable() )
                     {
                         try
                         {
-                            BinaryValue binaryValue = ( BinaryValue ) val;
-
-                            if ( binaryValue.getAttributeType() == null )
+                            if ( val.getAttributeType() == null )
                             {
-                                binaryValue.apply( attributeType );
+                                val.apply( attributeType );
                             }
 
-                            removed &= values.remove( binaryValue );
+                            removed &= values.remove( val );
                         }
                         catch ( LdapInvalidAttributeValueException liave )
                         {
@@ -1662,7 +1628,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                 // The attribute type is not HR, we can directly process the values
                 for ( byte[] val : vals )
                 {
-                    BinaryValue value = new BinaryValue( val );
+                    Value value = new Value( val );
                     removed &= values.remove( value );
                 }
             }
@@ -1672,7 +1638,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                 // to String before removing them
                 for ( byte[] val : vals )
                 {
-                    StringValue value = new StringValue( Strings.utf8ToString( val ) );
+                    Value value = new Value( Strings.utf8ToString( val ) );
                     removed &= values.remove( value );
                 }
             }
@@ -1685,7 +1651,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                 {
                     for ( byte[] val : vals )
                     {
-                        BinaryValue value = new BinaryValue( attributeType, val );
+                        Value value = new Value( attributeType, val );
                         removed &= values.remove( value );
                     }
                 }
@@ -1724,7 +1690,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                 // The attribute type is HR, we can directly process the values
                 for ( String val : vals )
                 {
-                    StringValue value = new StringValue( val );
+                    Value value = new Value( val );
                     removed &= values.remove( value );
                 }
             }
@@ -1734,7 +1700,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                 // to byte[] before removing them
                 for ( String val : vals )
                 {
-                    BinaryValue value = new BinaryValue( Strings.getBytesUtf8( val ) );
+                    Value value = new Value( Strings.getBytesUtf8( val ) );
                     removed &= values.remove( value );
                 }
             }
@@ -1747,7 +1713,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                 {
                     try
                     {
-                        StringValue value = new StringValue( attributeType, val );
+                        Value value = new Value( attributeType, val );
                         removed &= values.remove( value );
                     }
                     catch ( LdapInvalidAttributeValueException liave )
@@ -1771,7 +1737,7 @@ public class DefaultAttribute implements Attribute, Cloneable
      * 
      * @return an iterator over the stored values.
      */
-    public Iterator<Value<?>> iterator()
+    public Iterator<Value> iterator()
     {
         return values.iterator();
     }
@@ -1813,17 +1779,17 @@ public class DefaultAttribute implements Attribute, Cloneable
 
         if ( values != null )
         {
-            Set<Value<?>> newValues = new LinkedHashSet<Value<?>>( values.size() );
+            Set<Value> newValues = new LinkedHashSet<Value>( values.size() );
 
-            for ( Value<?> value : values )
+            for ( Value value : values )
             {
-                if ( value instanceof StringValue )
+                if ( value.isHumanReadable() )
                 {
-                    newValues.add( new StringValue( attributeType, value.getString() ) );
+                    newValues.add( new Value( attributeType, value.getString() ) );
                 }
                 else
                 {
-                    newValues.add( new BinaryValue( attributeType, value.getBytes() ) );
+                    newValues.add( new Value( attributeType, value.getBytes() ) );
                 }
             }
 
@@ -1948,7 +1914,7 @@ public class DefaultAttribute implements Attribute, Cloneable
             return false;
         }
 
-        for ( Value<?> val : values )
+        for ( Value val : values )
         {
             if ( !other.contains( val ) )
             {
@@ -1980,9 +1946,9 @@ public class DefaultAttribute implements Attribute, Cloneable
                 attribute.attributeType = attributeType;
             }
 
-            attribute.values = new LinkedHashSet<Value<?>>( values.size() );
+            attribute.values = new LinkedHashSet<Value>( values.size() );
 
-            for ( Value<?> value : values )
+            for ( Value value : values )
             {
                 // No need to clone the value, it will never be changed
                 attribute.values.add( value );
@@ -2025,7 +1991,7 @@ public class DefaultAttribute implements Attribute, Cloneable
         if ( size() > 0 )
         {
             // Write each value
-            for ( Value<?> value : values )
+            for ( Value value : values )
             {
                 // Write the value
                 value.writeExternal( out );
@@ -2060,15 +2026,15 @@ public class DefaultAttribute implements Attribute, Cloneable
         {
             for ( int i = 0; i < nbValues; i++ )
             {
-                Value<?> value = null;
+                Value value = null;
 
                 if ( isHR )
                 {
-                    value = new StringValue( attributeType );
+                    value = new Value( attributeType );
                 }
                 else
                 {
-                    value = new BinaryValue( attributeType );
+                    value = new Value( attributeType );
                 }
 
                 value.readExternal( in );
@@ -2099,7 +2065,7 @@ public class DefaultAttribute implements Attribute, Cloneable
         {
             boolean isFirst = true;
 
-            for ( Value<?> value : values )
+            for ( Value value : values )
             {
                 if ( isFirst )
                 {

@@ -382,7 +382,7 @@ public final class AttributeUtils
                 {
                     // The attribute exists : the values can be different,
                     // so we will just add the new values to the existing ones.
-                    for ( Value<?> value : modAttr )
+                    for ( Value value : modAttr )
                     {
                         // If the value already exist, nothing is done.
                         // Note that the attribute *must* have been
@@ -412,7 +412,7 @@ public final class AttributeUtils
                         break;
                     }
 
-                    for ( Value<?> value : modAttr )
+                    for ( Value value : modAttr )
                     {
                         // If the value does not exist, nothing is done.
                         // Note that the attribute *must* have been
@@ -535,9 +535,9 @@ public final class AttributeUtils
             javax.naming.directory.Attribute jndiAttribute = new BasicAttribute( attribute.getUpId() );
 
             // Looping on values
-            for ( Iterator<Value<?>> valueIterator = attribute.iterator(); valueIterator.hasNext(); )
+            for ( Iterator<Value> valueIterator = attribute.iterator(); valueIterator.hasNext(); )
             {
-                Value<?> value = valueIterator.next();
+                Value value = valueIterator.next();
                 jndiAttribute.add( value.getValue() );
             }
 

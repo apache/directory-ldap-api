@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import org.apache.directory.api.ldap.model.entry.StringValue;
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
@@ -452,7 +452,7 @@ public class SubstringNode extends LeafNode
 
         if ( null != initialPattern )
         {
-            buf.append( escapeFilterValue( new StringValue( initialPattern ) ) ).append( '*' );
+            buf.append( escapeFilterValue( new Value( initialPattern ) ) ).append( '*' );
         }
         else
         {
@@ -463,14 +463,14 @@ public class SubstringNode extends LeafNode
         {
             for ( String any : anyPattern )
             {
-                buf.append( escapeFilterValue( new StringValue( any ) ) );
+                buf.append( escapeFilterValue( new Value( any ) ) );
                 buf.append( '*' );
             }
         }
 
         if ( null != finalPattern )
         {
-            buf.append( escapeFilterValue( new StringValue( finalPattern ) ) );
+            buf.append( escapeFilterValue( new Value( finalPattern ) ) );
         }
 
         buf.append( super.toString() );

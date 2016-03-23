@@ -23,7 +23,7 @@ package org.apache.directory.api.osgi;
 import org.apache.directory.api.ldap.model.entry.AttributeUtils;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
-import org.apache.directory.api.ldap.model.entry.StringValue;
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.filter.EqualityNode;
 import org.apache.directory.api.ldap.model.message.BindRequestImpl;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -49,7 +49,7 @@ public class ApiLdapModelOsgiTest extends ApiOsgiTestBase
     {
         new Dn( "dc=example,dc=com" ); // uses FastDnParser
         new Dn( "cn=a+sn=b,dc=example,dc=com" ); // uses ComplexDnparser (antlr based)
-        new StringValue( "foo" );
+        new Value( "foo" );
         new DefaultAttribute( "cn" );
         new DefaultEntry();
 
@@ -57,7 +57,7 @@ public class ApiLdapModelOsgiTest extends ApiOsgiTestBase
         
         new BindRequestImpl();
 
-        new EqualityNode<String>( "cn", new StringValue( "foo" ) );
+        new EqualityNode<String>( "cn", new Value( "foo" ) );
 
         new LdapUrl( "ldap://ldap.example.com:10389/dc=example,dc=com?objectclass" );
 

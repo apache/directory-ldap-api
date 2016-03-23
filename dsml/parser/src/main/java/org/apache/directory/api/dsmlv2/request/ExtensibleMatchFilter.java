@@ -19,6 +19,7 @@
  */
 package org.apache.directory.api.dsmlv2.request;
 
+import org.apache.directory.api.ldap.model.entry.Value;
 
 /**
  * The search request filter Matching Rule assertion
@@ -34,7 +35,7 @@ public class ExtensibleMatchFilter extends Filter
     private String type;
 
     /** Matching rule value */
-    private org.apache.directory.api.ldap.model.entry.Value<?> matchValue;
+    private org.apache.directory.api.ldap.model.entry.Value matchValue;
 
     /** The dnAttributes flag */
     private boolean dnAttributes = false;
@@ -89,7 +90,7 @@ public class ExtensibleMatchFilter extends Filter
      * 
      * @return Returns the matchValue.
      */
-    public org.apache.directory.api.ldap.model.entry.Value<?> getMatchValue()
+    public Value getMatchValue()
     {
         return matchValue;
     }
@@ -100,7 +101,7 @@ public class ExtensibleMatchFilter extends Filter
      * 
      * @param matchValue The matchValue to set.
      */
-    public void setMatchValue( org.apache.directory.api.ldap.model.entry.Value<?> matchValue )
+    public void setMatchValue( Value matchValue )
     {
         this.matchValue = matchValue;
     }

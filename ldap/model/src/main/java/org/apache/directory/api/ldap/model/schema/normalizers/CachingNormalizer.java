@@ -98,14 +98,14 @@ public class CachingNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
-    public Value<?> normalize( Value<?> value ) throws LdapException
+    public Value normalize( Value value ) throws LdapException
     {
         if ( value == null )
         {
             return null;
         }
 
-        Value<?> normalized = normalizer.normalize( value );
+        Value normalized = normalizer.normalize( value );
 
         return normalized;
     }

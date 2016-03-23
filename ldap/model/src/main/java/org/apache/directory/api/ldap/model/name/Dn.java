@@ -36,8 +36,6 @@ import java.util.TreeSet;
 
 import org.apache.commons.collections.list.UnmodifiableList;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
-import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
@@ -1114,27 +1112,27 @@ public class Dn implements Iterable<Rdn>, Externalizable
                         throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX,
                             I18n.err( I18n.ERR_04460_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED, type ) );
                     }
-                    Value<?> atavValue = null;
-                    Value<?> value = atav.getValue();
+                    Value atavValue = null;
+                    Value value = atav.getValue();
                     
-                    if ( value instanceof StringValue )
+                    if ( value.isHumanReadable() )
                     {
                         // Active Directory specifies syntax OIDs in attributeTypes, but it does not specify
                         // any syntexes. Therefore attributeType.getSyntax() returns null. Assume human readable
                         // attribute in such case.
                         if ( attributeType.getSyntax() == null || attributeType.getSyntax().isHumanReadable() )
                         {
-                            atavValue = new StringValue( attributeType, value.getString() );
+                            atavValue = new Value( attributeType, value.getString() );
                         }
                         else
                         {
-                            // This is a binary variable, transaform the StringValue to a BinaryValye
-                            atavValue = new BinaryValue( attributeType, value.getBytes() );
+                            // This is a binary variable, transaform the Value to a BinaryValye
+                            atavValue = new Value( attributeType, value.getBytes() );
                         }
                     }
                     else
                     {
-                        atavValue = new BinaryValue( attributeType, atav.getValue().getBytes() );
+                        atavValue = new Value( attributeType, atav.getValue().getBytes() );
                     }
                     
                     Ava newAva = new Ava(

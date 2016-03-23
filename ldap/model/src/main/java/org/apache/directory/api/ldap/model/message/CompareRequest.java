@@ -56,7 +56,7 @@ public interface CompareRequest extends SingleReplyRequest, AbandonableRequest
      * 
      * @return the attribute value to used in comparison.
      */
-    Value<?> getAssertionValue();
+    Value getAssertionValue();
 
 
     /**

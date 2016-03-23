@@ -44,7 +44,7 @@ public interface Anonymizer<K>
      * @param attribute The attribute to anonymize
      * @return The anonymized attribute
      */
-    Attribute anonymize( Map<Value<K>, Value<K>> valueMap, Set<Value<K>> valueSet, Attribute attribute );
+    Attribute anonymize( Map<Value, Value> valueMap, Set<Value> valueSet, Attribute attribute );
     
     
     /**

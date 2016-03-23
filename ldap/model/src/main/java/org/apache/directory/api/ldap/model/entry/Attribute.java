@@ -30,7 +30,7 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface Attribute extends Iterable<Value<?>>, Externalizable
+public interface Attribute extends Iterable<Value>, Externalizable
 {
     /**
      * Adds some values to this attribute. If the new values are already present in
@@ -114,12 +114,12 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
      * <p>
      * If the value's type is different from the attribute's type,
      * a conversion is done. For instance, if we try to set some 
-     * StringValue into a Binary attribute, we just store the UTF-8 
-     * byte array encoding for this StringValue.
+     * String Value into a Binary attribute, we just store the UTF-8 
+     * byte array encoding for this Value.
      * </p>
      * <p>
-     * If we try to store some BinaryValue in a HR attribute, we try to 
-     * convert those BinaryValue assuming they represent an UTF-8 encoded
+     * If we try to store some Value in a HR attribute, we try to 
+     * convert those Value assuming they represent an UTF-8 encoded
      * String. Of course, if it's not the case, the stored value will
      * be incorrect.
      * </p>
@@ -141,7 +141,7 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
      * @return the number of added values, or 0 if none has been added
      * @throws LdapInvalidAttributeValueException if some of the added values are not valid
      */
-    int add( Value<?>... val ) throws LdapInvalidAttributeValueException;
+    int add( Value... val ) throws LdapInvalidAttributeValueException;
 
 
     /**
@@ -196,7 +196,7 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
      * @param vals the values
      * @return true if this attribute contains all the given values, otherwise false
      */
-    boolean contains( Value<?>... vals );
+    boolean contains( Value... vals );
 
 
     /**
@@ -247,7 +247,7 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
      * 
      *  @return The first value for this attribute.
      */
-    Value<?> get();
+    Value get();
 
 
     /**
@@ -367,7 +367,7 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
      * @param vals the values to be removed
      * @return true if all the values are removed, otherwise false
      */
-    boolean remove( Value<?>... vals );
+    boolean remove( Value... vals );
 
 
     /**

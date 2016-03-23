@@ -2520,7 +2520,7 @@ public class DnTest
         assertEquals( " cn = #414243 ", dn3.getRdn().getName() );
         Ava atav3 = dn3.getRdn().getAva();
         assertEquals( "cn", atav3.getType() );
-        assertTrue( Arrays.equals( Strings.getBytesUtf8( "ABC" ), (byte[])atav3.getValue().getValue() ) );
+        assertTrue( Arrays.equals( Strings.getBytesUtf8( "ABC" ), atav3.getValue().getBytes() ) );
         assertTrue( Arrays.equals( Strings.getBytesUtf8( "ABC" ), atav3.getValue().getBytes() ) );
 
         // antlr parser:

@@ -211,7 +211,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
      * 
      * @param value The value to add
      */
-    public void addAttributeValue( Value<?> value ) throws LdapException
+    public void addAttributeValue( Value value ) throws LdapException
     {
         currentAttribute.add( value );
     }
@@ -313,7 +313,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
                 {
                     localValuesLength = 0;
 
-                    for ( Value<?> value : attribute )
+                    for ( Value value : attribute )
                     {
                         if ( value.getBytes() == null )
                         {
@@ -414,7 +414,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
 
                     if ( attribute.size() != 0 )
                     {
-                        for ( Value<?> value : attribute )
+                        for ( Value value : attribute )
                         {
                             BerValue.encode( buffer, value.getBytes() );
                         }

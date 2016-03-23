@@ -306,7 +306,7 @@ public class LdifAnonymizerTest
         values.add( "uid=AAAAAAAAAAAAAAAAB,ou=AAAAAB,o=acme,dc=com" );
         values.add( "uid=AAAAAAAAAAAAAAAAAAAAA,ou=AAAAAB,o=acme,dc=com" );
         
-        for ( Value<?> value : attribute )
+        for ( Value value : attribute )
         {
             String str = value.getString();
             
@@ -402,7 +402,7 @@ public class LdifAnonymizerTest
         assertEquals( "certificateRevocationList;binary", attribute.getUpId() );
         assertEquals( 1, attribute.size() );
         
-        for ( Value<?> value : attribute )
+        for ( Value value : attribute )
         {
             String str = value.getString();
             

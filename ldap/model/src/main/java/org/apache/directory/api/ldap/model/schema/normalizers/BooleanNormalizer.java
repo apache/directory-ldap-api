@@ -21,7 +21,6 @@ package org.apache.directory.api.ldap.model.schema.normalizers;
 
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
@@ -49,7 +48,7 @@ public class BooleanNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
-    public Value<?> normalize( Value<?> value ) throws LdapInvalidDnException
+    public Value normalize( Value value ) throws LdapInvalidDnException
     {
         if ( value == null )
         {
@@ -58,7 +57,7 @@ public class BooleanNormalizer extends Normalizer
 
         String strValue = value.getString();
 
-        return new StringValue( Strings.upperCase( strValue.trim() ) );
+        return new Value( Strings.upperCase( strValue.trim() ) );
     }
 
 

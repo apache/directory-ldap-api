@@ -21,8 +21,6 @@ package org.apache.directory.api.dsmlv2.request;
 
 
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
-import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.util.Strings;
 
@@ -50,7 +48,7 @@ public class AttributeValueAssertion
     private String attributeDesc;
 
     /** The assertion value */
-    private Value<?> assertionValue;
+    private Value assertionValue;
 
 
     /**
@@ -71,13 +69,9 @@ public class AttributeValueAssertion
             {
                 return Strings.dumpBytes( ( byte[] ) object );
             }
-            else if ( object instanceof StringValue )
+            else if ( object instanceof Value )
             {
-                return ( ( StringValue ) object ).getValue();
-            }
-            else if ( object instanceof BinaryValue )
-            {
-                return Strings.dumpBytes( ( ( BinaryValue ) object ).getValue() );
+                return ( ( Value ) object ).getValue();
             }
             else
             {
@@ -99,7 +93,7 @@ public class AttributeValueAssertion
      * 
      * @return Returns the assertionValue.
      */
-    public Value<?> getAssertionValue()
+    public Value getAssertionValue()
     {
         return assertionValue;
     }
@@ -110,7 +104,7 @@ public class AttributeValueAssertion
      * 
      * @param assertionValue The assertionValue to set.
      */
-    public void setAssertionValue( Value<?> assertionValue )
+    public void setAssertionValue( Value assertionValue )
     {
         this.assertionValue = assertionValue;
     }

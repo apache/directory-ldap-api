@@ -27,7 +27,6 @@ import java.util.Set;
 
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
-import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
@@ -76,16 +75,16 @@ public class CaseSensitiveStringAnonymizer extends AbstractAnonymizer<String>
     /**
      * Anonymize an attribute using pure random values (either chars of bytes, depending on the Attribute type)
      */
-    public Attribute anonymize( Map<Value<String>, Value<String>> valueMap, Set<Value<String>> valueSet, Attribute attribute )
+    public Attribute anonymize( Map<Value, Value> valueMap, Set<Value> valueSet, Attribute attribute )
     {
         AttributeType attributeType = attribute.getAttributeType();
         Attribute result = new DefaultAttribute( attributeType );
 
-        for ( Value<?> value : attribute )
+        for ( Value value : attribute )
         {
-            if ( value instanceof StringValue )
+            if ( value.isHumanReadable() )
             {
-                Value<String> anonymized =  valueMap.get( value );
+                Value anonymized =  valueMap.get( value );
                 
                 if ( anonymized != null )
                 {
@@ -100,14 +99,14 @@ public class CaseSensitiveStringAnonymizer extends AbstractAnonymizer<String>
                 }
                 else
                 {
-                    String strValue = value.getNormValue().toString();
+                    String strValue = value.getNormValue();
                     String newValue = computeNewValue( strValue );
                     
                     try
                     {
                         result.add( newValue );
-                        Value<String> anonValue = new StringValue( attribute.getAttributeType(), newValue );
-                        valueMap.put( ( Value<String> ) value, anonValue );
+                        Value anonValue = new Value( attribute.getAttributeType(), newValue );
+                        valueMap.put( ( Value ) value, anonValue );
                         valueSet.add( anonValue );
                     }
                     catch ( LdapInvalidAttributeValueException e )

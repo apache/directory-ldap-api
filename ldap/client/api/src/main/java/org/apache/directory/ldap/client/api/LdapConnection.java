@@ -537,11 +537,11 @@ public interface LdapConnection extends Closeable
      *
      * @param dn the target entry's distinguished name, it must be a valid {@link Dn}
      * @param attributeName the attribute's name
-     * @param value a Value<?> value with which the target entry's attribute value to be compared with
+     * @param value a Value value with which the target entry's attribute value to be compared with
      * @return <code>true</code> if the value matches, <code>false</code> otherwise
      * @throws LdapException if some error occurred
      */
-    boolean compare( String dn, String attributeName, Value<?> value ) throws LdapException;
+    boolean compare( String dn, String attributeName, Value value ) throws LdapException;
 
 
     /**
@@ -576,11 +576,11 @@ public interface LdapConnection extends Closeable
      *
      * @param dn the target entry's distinguished name
      * @param attributeName the attribute's name
-     * @param value a Value<?> value with which the target entry's attribute value to be compared with
+     * @param value a Value value with which the target entry's attribute value to be compared with
      * @return <code>true</code> if the value matches, <code>false</code> otherwise
      * @throws LdapException if some error occurred
      */
-    boolean compare( Dn dn, String attributeName, Value<?> value ) throws LdapException;
+    boolean compare( Dn dn, String attributeName, Value value ) throws LdapException;
 
 
     /**

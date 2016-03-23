@@ -106,7 +106,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
      * 
      * @param value The value to add
      */
-    public void addAttributeValue( Value<?> value ) throws LdapException
+    public void addAttributeValue( Value value ) throws LdapException
     {
         currentAttribute.add( value );
     }

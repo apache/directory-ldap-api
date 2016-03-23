@@ -22,7 +22,6 @@ package org.apache.directory.api.ldap.model.schema.normalizers;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -49,7 +48,7 @@ public class UniqueMemberNormalizer extends Normalizer
     }
 
 
-    public Value<?> normalize( Value<?> value ) throws LdapException
+    public Value normalize( Value value ) throws LdapException
     {
         String nameAndUid = value.getString();
 
@@ -80,7 +79,7 @@ public class UniqueMemberNormalizer extends Normalizer
             {
                 Dn dn = new Dn( schemaManager, nameAndUid.substring( 0, sharpPos ) );
 
-                return new StringValue( dn.getNormName() + '#' + uid );
+                return new Value( dn.getNormName() + '#' + uid );
             }
             else
             {
@@ -91,7 +90,7 @@ public class UniqueMemberNormalizer extends Normalizer
         {
             // No UID, the strValue is a Dn
             // Return the normalized Dn
-            return new StringValue( new Dn( nameAndUid ).getNormName() );
+            return new Value( new Dn( nameAndUid ).getNormName() );
         }
     }
 

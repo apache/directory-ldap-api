@@ -366,7 +366,7 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
 
 
     @Override
-    public boolean compare( String dn, String attributeName, Value<?> value ) throws LdapException
+    public boolean compare( String dn, String attributeName, Value value ) throws LdapException
     {
         return connection.compare( dn, attributeName, value );
     }
@@ -387,7 +387,7 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
 
 
     @Override
-    public boolean compare( Dn dn, String attributeName, Value<?> value ) throws LdapException
+    public boolean compare( Dn dn, String attributeName, Value value ) throws LdapException
     {
         return connection.compare( dn, attributeName, value );
     }

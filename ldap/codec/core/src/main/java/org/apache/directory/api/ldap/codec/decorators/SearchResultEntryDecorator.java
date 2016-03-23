@@ -259,7 +259,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
                     {
                         localValuesLength = 0;
 
-                        for ( org.apache.directory.api.ldap.model.entry.Value<?> value : attribute )
+                        for ( org.apache.directory.api.ldap.model.entry.Value value : attribute )
                         {
                             byte[] binaryValue = value.getBytes();
                             localValuesLength += 1 + TLV.getNbBytes( binaryValue.length ) + binaryValue.length;
@@ -365,7 +365,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
 
                     if ( attribute.size() > 0 )
                     {
-                        for ( Value<?> value : attribute )
+                        for ( Value value : attribute )
                         {
                             BerValue.encode( buffer, value.getBytes() );
                         }

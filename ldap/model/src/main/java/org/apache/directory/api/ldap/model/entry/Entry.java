@@ -223,7 +223,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @return the modified entry
      * @throws LdapException If the attribute does not exist
      */
-    Entry add( AttributeType attributeType, Value<?>... values ) throws LdapException;
+    Entry add( AttributeType attributeType, Value... values ) throws LdapException;
 
 
     /**
@@ -292,7 +292,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @return the modified entry
      * @throws LdapException If the attribute does not exist
      */
-    Entry add( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException;
+    Entry add( String upId, AttributeType attributeType, Value... values ) throws LdapException;
 
 
     /**
@@ -328,7 +328,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @return the modified entry
      * @throws LdapException If we can't add any of the values
      */
-    Entry add( String upId, Value<?>... values ) throws LdapException;
+    Entry add( String upId, Value... values ) throws LdapException;
 
 
     /**
@@ -411,7 +411,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * <code>null</code>
      * @throws LdapException if there are failures
      */
-    Attribute put( AttributeType attributeType, Value<?>... values ) throws LdapException;
+    Attribute put( AttributeType attributeType, Value... values ) throws LdapException;
 
 
     /**
@@ -488,7 +488,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * <code>null</code>
      * @throws LdapException if there are failures.
      */
-    Attribute put( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException;
+    Attribute put( String upId, AttributeType attributeType, Value... values ) throws LdapException;
 
 
     /**
@@ -536,7 +536,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @param values The list of values to put. It can be empty.
      * @return The replaced attribute
      */
-    Attribute put( String upId, Value<?>... values );
+    Attribute put( String upId, Value... values );
 
 
     /**
@@ -608,7 +608,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @return <code>true</code> if at least a value is removed, <code>false</code>
      * if not all the values have been removed or if the attribute does not exist. 
      */
-    boolean remove( AttributeType attributeType, Value<?>... values ) throws LdapException;
+    boolean remove( AttributeType attributeType, Value... values ) throws LdapException;
 
 
     /**
@@ -710,7 +710,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * if not all the values have been removed or if the attribute does not exist. 
      * @throws LdapException if the attribute does not exists
      */
-    boolean remove( String upId, Value<?>... values ) throws LdapException;
+    boolean remove( String upId, Value... values ) throws LdapException;
 
 
     /**
@@ -764,7 +764,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @return <code>true</code> if all the values are found within the attribute,
      * <code>false</code> otherwise, or if the attributes does not exist.
      */
-    boolean contains( AttributeType attributeType, Value<?>... values );
+    boolean contains( AttributeType attributeType, Value... values );
 
 
     /**
@@ -822,7 +822,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @return <code>true</code> if all the values are found within the attribute,
      * false if at least one value is not present or if the ID is not valid. 
      */
-    boolean contains( String upId, Value<?>... values );
+    boolean contains( String upId, Value... values );
 
 
     /**

@@ -28,8 +28,7 @@ import java.util.Map;
 
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import javax.naming.NameParser;
-import org.apache.directory.api.ldap.model.entry.StringValue;
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.schema.parsers.ParserMonitor;
 import org.apache.directory.api.util.Strings;
 
@@ -408,7 +407,7 @@ attributeTypeAndValue [Rdn rdn] returns [String upName = ""]
                         ava = new Ava(
                             type,
                             type,
-                            new StringValue( trimmedValue, (String)unescapedValue ),
+                            new Value( trimmedValue, (String)unescapedValue ),
                             upName
                         );
                     }
@@ -417,7 +416,7 @@ attributeTypeAndValue [Rdn rdn] returns [String upName = ""]
                         ava = new Ava(
                             type,
                             type,
-                            new BinaryValue( (byte[])unescapedValue ),
+                            new Value( (byte[])unescapedValue ),
                             upName
                         );
                     }
@@ -427,7 +426,7 @@ attributeTypeAndValue [Rdn rdn] returns [String upName = ""]
                     ava = new Ava(
                         type,
                         type,
-                        new BinaryValue( (byte[])value.value ), 
+                        new Value( (byte[])value.value ), 
                         upName
                     );
                 }

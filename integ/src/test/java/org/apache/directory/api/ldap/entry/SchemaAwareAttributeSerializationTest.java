@@ -71,7 +71,7 @@ public class SchemaAwareAttributeSerializationTest
 
 
     @Test
-    public void testEntryAttributeNoStringValueSerialization() throws IOException, ClassNotFoundException,
+    public void testEntryAttributeNoValueSerialization() throws IOException, ClassNotFoundException,
         LdapInvalidAttributeValueException
     {
         Attribute attribute1 = new DefaultAttribute( cn );
@@ -95,7 +95,7 @@ public class SchemaAwareAttributeSerializationTest
 
 
     @Test
-    public void testEntryAttributeOneStringValueSerialization() throws IOException, ClassNotFoundException,
+    public void testEntryAttributeOneValueSerialization() throws IOException, ClassNotFoundException,
         LdapInvalidAttributeValueException
     {
         Attribute attribute1 = new DefaultAttribute( "CommonName", cn, "test" );
@@ -120,7 +120,7 @@ public class SchemaAwareAttributeSerializationTest
 
 
     @Test
-    public void testEntryAttributeManyStringValuesSerialization() throws IOException, ClassNotFoundException,
+    public void testEntryAttributeManyValuesSerialization() throws IOException, ClassNotFoundException,
         LdapInvalidAttributeValueException
     {
         Attribute attribute1 = new DefaultAttribute( "CN", cn, "test1", "test2", "test3" );

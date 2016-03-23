@@ -129,7 +129,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
         Attribute objectClasses = entry.get( SchemaConstants.OBJECT_CLASS_AT );
         boolean isSchema = false;
 
-        for ( Value<?> value : objectClasses )
+        for ( Value value : objectClasses )
         {
             if ( MetaSchemaConstants.META_SCHEMA_OC.equalsIgnoreCase( value.getString() ) )
             {
@@ -178,7 +178,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
             Set<String> depsSet = new HashSet<String>();
             Attribute depsAttr = entry.get( MetaSchemaConstants.M_DEPENDENCIES_AT );
 
-            for ( Value<?> value : depsAttr )
+            for ( Value value : depsAttr )
             {
                 depsSet.add( value.getString() );
             }

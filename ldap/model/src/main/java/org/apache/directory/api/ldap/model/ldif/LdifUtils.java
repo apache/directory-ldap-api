@@ -581,7 +581,7 @@ public final class LdifUtils
             return "";
         }
 
-        for ( Value<?> value : attr )
+        for ( Value value : attr )
         {
             StringBuilder lineBuffer = new StringBuilder();
 

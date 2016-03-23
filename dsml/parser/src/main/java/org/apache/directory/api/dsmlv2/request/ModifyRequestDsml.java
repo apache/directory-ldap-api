@@ -162,7 +162,7 @@ public class ModifyRequestDsml
             {
                 modElement.addAttribute( "name", modification.getAttribute().getId() );
 
-                for ( Value<?> value : modification.getAttribute() )
+                for ( Value value : modification.getAttribute() )
                 {
                     if ( value.getValue() != null )
                     {

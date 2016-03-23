@@ -118,7 +118,7 @@ public class AddRequestDsml
      * 
      * @param value The value to add
      */
-    public void addAttributeValue( Value<?> value ) throws LdapException
+    public void addAttributeValue( Value value ) throws LdapException
     {
         currentAttribute.add( value );
     }
@@ -166,7 +166,7 @@ public class AddRequestDsml
                 Element attributeElement = element.addElement( "attr" );
                 attributeElement.addAttribute( "name", attribute.getId() );
                 // Looping on Values
-                for ( Value<?> value : attribute )
+                for ( Value value : attribute )
                 {
                     if ( ParserUtils.needsBase64Encoding( value.getValue() ) )
                     {
@@ -218,9 +218,9 @@ public class AddRequestDsml
      */
     public void addAttributeValue( Object value ) throws LdapException
     {
-        if ( value instanceof Value<?> )
+        if ( value instanceof Value )
         {
-            ( ( AddRequestDsml ) getDecorated() ).addAttributeValue( ( Value<?> ) value );
+            ( ( AddRequestDsml ) getDecorated() ).addAttributeValue( ( Value ) value );
         }
         else if ( value instanceof String )
         {

@@ -26,7 +26,7 @@ import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
 import org.apache.directory.api.ldap.codec.search.ExtensibleMatchFilter;
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,7 +76,7 @@ public class StoreMatchValue extends GrammarAction<LdapMessageContainer<SearchRe
         ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter ) decorator.getTerminalFilter();
 
         byte[] value = tlv.getValue().getData();
-        extensibleMatchFilter.setMatchValue( new BinaryValue( value ) );
+        extensibleMatchFilter.setMatchValue( new Value( value ) );
 
         // unstack the filters if needed
         decorator.unstackFilters( container );

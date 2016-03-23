@@ -20,8 +20,6 @@
 package org.apache.directory.api.ldap.entry;
 
 
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
-import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
@@ -159,11 +157,11 @@ public final class TestEntryUtils
             public static final long serialVersionUID = 1L;
 
 
-            public Value<?> normalize( Value<?> value ) throws LdapException
+            public Value normalize( Value value ) throws LdapException
             {
                 if ( value.isHumanReadable() )
                 {
-                    return new StringValue( Strings.toLowerCaseAscii( value.getString() ) );
+                    return new Value( Strings.toLowerCaseAscii( value.getString() ) );
                 }
 
                 throw new IllegalStateException();
@@ -255,7 +253,7 @@ public final class TestEntryUtils
             public static final long serialVersionUID = 1L;
 
 
-            public Value<?> normalize( Value<?> value ) throws LdapException
+            public Value normalize( Value value ) throws LdapException
             {
                 if ( !value.isHumanReadable() )
                 {
@@ -271,7 +269,7 @@ public final class TestEntryUtils
                         newVal[i++] = ( byte ) ( b & 0x007F );
                     }
 
-                    return new BinaryValue( Strings.trim( newVal ) );
+                    return new Value( Strings.trim( newVal ) );
                 }
 
                 throw new IllegalStateException();
