@@ -99,6 +99,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
         }
     }
 
+    
     /**
      * Instantiates a new single LDIF schema loader.
      */
@@ -112,6 +113,33 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
             }
 
             InputStream in = new FileInputStream( schemaFile );
+
+            initializeSchemas( in );
+        }
+        catch ( LdapException e )
+        {
+            throw new RuntimeException( e );
+        }
+        catch ( IOException e )
+        {
+            throw new RuntimeException( e );
+        }
+    }
+
+    
+    /**
+     * Instantiates a new single LDIF schema loader.
+     */
+    public SingleLdifSchemaLoader( URL schemaUrl )
+    {
+        try
+        {
+            for ( String s : schemaObjectTypeRdns )
+            {
+                scObjEntryMap.put( s, new HashMap<String, List<Entry>>() );
+            }
+
+            InputStream in = schemaUrl.openStream();
 
             initializeSchemas( in );
         }
