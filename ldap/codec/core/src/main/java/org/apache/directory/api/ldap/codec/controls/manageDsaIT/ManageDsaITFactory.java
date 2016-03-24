@@ -35,12 +35,12 @@ import org.apache.directory.api.ldap.model.message.controls.ManageDsaITImpl;
  */
 public class ManageDsaITFactory implements ControlFactory<ManageDsaIT>
 {
-    /** The LDAP codec responsible for encoding and decoding Cascade Controls */
+    /** The LDAP codec responsible for encoding and decoding ManageDsaIT Control */
     private LdapApiService codec;
 
 
     /**
-     * Creates a new instance of CascadeFactory.
+     * Creates a new instance of ManageDsaITFactory.
      *
      * @param codec The LDAP codec
      */
