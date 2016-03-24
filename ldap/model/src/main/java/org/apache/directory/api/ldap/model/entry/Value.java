@@ -567,7 +567,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      *
      * @param attributeType The AttributeType to apply
      */
-    /* Package protected */ void apply( AttributeType attributeType ) throws LdapInvalidAttributeValueException
+    private void apply( AttributeType attributeType ) throws LdapInvalidAttributeValueException
     {
         if ( attributeType == null )
         {

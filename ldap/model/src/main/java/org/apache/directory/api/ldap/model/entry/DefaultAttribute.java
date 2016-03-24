@@ -783,7 +783,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                         {
                             if ( val.getAttributeType() == null )
                             {
-                                val.apply( attributeType );
+                                val = new Value( attributeType, val  );
                             }
 
                             if ( values.contains( val ) )
@@ -1274,13 +1274,11 @@ public class DefaultAttribute implements Attribute, Cloneable
                 {
                     if ( val.isHumanReadable() )
                     {
-                        Value stringValue = ( Value ) val;
-
                         try
                         {
-                            if ( stringValue.getAttributeType() == null )
+                            if ( val.getAttributeType() == null )
                             {
-                                stringValue.apply( attributeType );
+                                val = new Value( attributeType, val );
                             }
                         }
                         catch ( LdapInvalidAttributeValueException liave )
@@ -1560,7 +1558,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                         {
                             if ( val.getAttributeType() == null )
                             {
-                                val.apply( attributeType );
+                                val = new Value( attributeType, val );
                             }
 
                             removed &= values.remove( val );
@@ -1586,7 +1584,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                         {
                             if ( val.getAttributeType() == null )
                             {
-                                val.apply( attributeType );
+                                val = new Value( attributeType, val );
                             }
 
                             removed &= values.remove( val );
