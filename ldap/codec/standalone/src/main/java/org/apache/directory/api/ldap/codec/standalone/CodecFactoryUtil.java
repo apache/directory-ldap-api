@@ -40,6 +40,8 @@ import org.apache.directory.api.ldap.extras.controls.ad_impl.AdShowDeletedFactor
 import org.apache.directory.api.ldap.extras.controls.permissiveModify.PermissiveModify;
 import org.apache.directory.api.ldap.extras.controls.permissiveModify_impl.PermissiveModifyFactory;
 import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncFactory;
+import org.apache.directory.api.ldap.extras.controls.changeNotifications.ChangeNotifications;
+import org.apache.directory.api.ldap.extras.controls.changeNotifications_impl.ChangeNotificationsFactory;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
 import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValue;
@@ -172,6 +174,10 @@ public final class CodecFactoryUtil
         ControlFactory<PermissiveModify> permissiveModifyFactory = new PermissiveModifyFactory( apiService );
         controlFactories.put( permissiveModifyFactory.getOid(), permissiveModifyFactory );
         LOG.info( "Registered pre-bundled control factory: {}", permissiveModifyFactory.getOid() );
+
+        ControlFactory<ChangeNotifications> changeNotificationsFactory = new ChangeNotificationsFactory( apiService );
+        controlFactories.put( changeNotificationsFactory.getOid(), changeNotificationsFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", changeNotificationsFactory.getOid() );
     }
 
 

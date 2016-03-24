@@ -24,8 +24,9 @@
     "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
 
 <suppressions>
-    <!-- Contol inferfaces that don't declare any new method -->
+    <!-- Control inferfaces that don't declare any new method -->
     <suppress files="org.apache.directory.api.ldap.extras.extended" checks="InterfaceIsType" />
     <suppress files="org.apache.directory.api.ldap.extras.controls.ad" checks="InterfaceIsType" />
     <suppress files="org.apache.directory.api.ldap.extras.controls.permissiveModify" checks="InterfaceIsType" />
+    <suppress files="org.apache.directory.api.ldap.extras.controls.changeNotifications" checks="InterfaceIsType" />
 </suppressions>

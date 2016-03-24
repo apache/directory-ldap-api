@@ -26,6 +26,10 @@ import org.apache.directory.api.ldap.extras.controls.ad.AdShowDeleted;
 import org.apache.directory.api.ldap.extras.controls.ad.AdDirSync;
 import org.apache.directory.api.ldap.extras.controls.ad_impl.AdShowDeletedFactory;
 import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncFactory;
+import org.apache.directory.api.ldap.extras.controls.changeNotifications.ChangeNotifications;
+import org.apache.directory.api.ldap.extras.controls.changeNotifications_impl.ChangeNotificationsFactory;
+import org.apache.directory.api.ldap.extras.controls.permissiveModify.PermissiveModify;
+import org.apache.directory.api.ldap.extras.controls.permissiveModify_impl.PermissiveModifyFactory;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
 import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValue;
@@ -131,6 +135,21 @@ public class ExtrasBundleActivator implements BundleActivator
      */
     private void registerExtrasControls( LdapApiService codec )
     {
+        ControlFactory<AdDirSync> adDirSyncFactory = new AdDirSyncFactory( codec );
+        codec.registerControl( adDirSyncFactory );
+        
+        ControlFactory<AdShowDeleted> adDeletedFactory = new AdShowDeletedFactory( codec );
+        codec.registerControl( adDeletedFactory );
+        
+        ControlFactory<ChangeNotifications> changeNotificationsFactory = new ChangeNotificationsFactory( codec );
+        codec.registerControl( changeNotificationsFactory );
+
+        ControlFactory<PasswordPolicy> passwordPolicyFactory = new PasswordPolicyFactory( codec );
+        codec.registerControl( passwordPolicyFactory );
+
+        ControlFactory<PermissiveModify> permissiveModifyFactory = new PermissiveModifyFactory( codec );
+        codec.registerControl( permissiveModifyFactory );
+        
         ControlFactory<SyncDoneValue> syncDoneValuefactory = new SyncDoneValueFactory( codec );
         codec.registerControl( syncDoneValuefactory );
 
@@ -143,9 +162,6 @@ public class ExtrasBundleActivator implements BundleActivator
         ControlFactory<SyncStateValue> syncStateValuefactory = new SyncStateValueFactory( codec );
         codec.registerControl( syncStateValuefactory );
 
-        ControlFactory<PasswordPolicy> passwordPolicyFactory = new PasswordPolicyFactory( codec );
-        codec.registerControl( passwordPolicyFactory );
-
         ControlFactory<VirtualListViewRequest> virtualListViewRequestFactory = new VirtualListViewRequestFactory( codec );
         codec.registerControl( virtualListViewRequestFactory );
 
@@ -153,11 +169,7 @@ public class ExtrasBundleActivator implements BundleActivator
             codec );
         codec.registerControl( virtualListViewResponseFactory );
 
-        ControlFactory<AdDirSync> adDirSyncFactory = new AdDirSyncFactory( codec );
-        codec.registerControl( adDirSyncFactory );
         
-        ControlFactory<AdShowDeleted> adDeletedFactory = new AdShowDeletedFactory( codec );
-        codec.registerControl( adDeletedFactory );
     }
 
 
