@@ -158,7 +158,7 @@ public class PasswordPolicyImpl implements PasswordPolicy
         StringBuilder sb = new StringBuilder();
 
         sb.append( "    PasswordPolicy[" );
-        sb.append( "criticality:" ).append( criticality ).append( "] ");
+        sb.append( "criticality:" ).append( criticality ).append( "] " );
 
         if ( response != null )
         {
