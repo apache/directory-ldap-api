@@ -23,7 +23,6 @@ package org.apache.directory.api.ldap.model.filter;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
-import org.apache.directory.api.ldap.model.filter.SubstringNode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

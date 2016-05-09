@@ -463,7 +463,7 @@ public class DefaultAttribute implements Attribute, Cloneable
 
                 if ( isHR )
                 {
-                    serverValue = new Value( attributeType, clientValue.getString() );
+                    serverValue = new Value( attributeType, clientValue.getValue() );
                 }
                 else
                 {
@@ -505,7 +505,7 @@ public class DefaultAttribute implements Attribute, Cloneable
 
         if ( isHR && ( value != null ) )
         {
-            return value.getString();
+            return value.getValue();
         }
 
         String message = I18n.err( I18n.ERR_04131 );
@@ -970,7 +970,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                         {
                             // The attribute Type is HR, convert the
                             // value to a Value
-                            Value sv = new Value( val.getString() );
+                            Value sv = new Value( Strings.utf8ToString( val.getBytes() ) );
 
                             if ( !contains( sv ) )
                             {
@@ -1245,7 +1245,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                 {
                     if ( val.isHumanReadable() )
                     {
-                        String stringVal = val.getString();
+                        String stringVal = val.getValue();
 
                         // We have to convert the binary value to a String
                         if ( !values.contains( new Value( Strings.getBytesUtf8( stringVal ) ) ) )
@@ -1783,7 +1783,7 @@ public class DefaultAttribute implements Attribute, Cloneable
             {
                 if ( value.isHumanReadable() )
                 {
-                    newValues.add( new Value( attributeType, value.getString() ) );
+                    newValues.add( new Value( attributeType, value.getValue() ) );
                 }
                 else
                 {

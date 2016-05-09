@@ -306,7 +306,7 @@ public class ModifyDNRequestTest extends AbstractTest
 
         ModifyDnRequest modifyDNRequest = ( ModifyDnRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        assertEquals( "cn=Bob Rush,ou=Dev,dc=Example,dc=COM", modifyDNRequest.getName().getNormName() );
+        assertTrue( modifyDNRequest.getName().equals( "cn=Bob Rush,ou=Dev,dc=Example,dc=COM" ) );
 
         assertEquals( "CN=Steve Jobs", modifyDNRequest.getNewRdn().getName() );
     }
@@ -453,7 +453,7 @@ public class ModifyDNRequestTest extends AbstractTest
 
         ModifyDnRequest modifyDNRequest = ( ModifyDnRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        assertEquals( "cn=Steve Jobs,ou=Dev,dc=apple,dc=com", modifyDNRequest.getNewSuperior().getNormName() );
+        assertTrue( modifyDNRequest.getNewSuperior().equals( "cn=Steve Jobs,ou=Dev,dc=apple,dc=com" ) );
     }
 
 

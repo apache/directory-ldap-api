@@ -23,10 +23,10 @@ package org.apache.directory.api.ldap.model.name;
 import java.util.List;
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.util.Position;
 
 
@@ -50,7 +50,24 @@ import org.apache.directory.api.util.Position;
     /* No protection*/static Dn parse( String name ) throws LdapException
     {
         Dn dn = new Dn();
-        parseDn( name, dn );
+        parseDn( null, name, dn );
+        
+        return dn;
+    }
+
+
+    /**
+     * Parses a Dn from a String
+     *
+     * @param name The Dn to parse
+     * @return A valid Dn
+     * @throws org.apache.directory.api.ldap.model.exception.LdapException If the Dn was invalid
+     */
+    /* No protection*/static Dn parse( SchemaManager schemaManager, String name ) throws LdapException
+    {
+        Dn dn = new Dn( schemaManager );
+        parseDn( schemaManager, name, dn );
+        
         return dn;
     }
 
@@ -63,15 +80,14 @@ import org.apache.directory.api.util.Position;
      * 
      * @throws LdapInvalidDnException the invalid name exception
      */
-    /* No protection*/static void parseDn( String name, Dn dn ) throws LdapInvalidDnException
+    /* No protection*/static void parseDn( SchemaManager schemaManager, String name, Dn dn ) throws LdapInvalidDnException
     {
-        parseDn( name, dn.rdns );
+        parseDn( schemaManager, name, dn.rdns );
         dn.setUpName( name );
-        dn.apply( null );
     }
 
 
-    /* No protection*/static void parseDn( String name, List<Rdn> rdns ) throws LdapInvalidDnException
+    /* No protection*/static void parseDn( SchemaManager schemaManager, String name, List<Rdn> rdns ) throws LdapInvalidDnException
     {
         if ( ( name == null ) || ( name.trim().length() == 0 ) )
         {
@@ -87,8 +103,8 @@ import org.apache.directory.api.util.Position;
 
         while ( true )
         {
-            Rdn rdn = new Rdn();
-            parseRdnInternal( name, pos, rdn );
+            Rdn rdn = new Rdn( schemaManager );
+            parseRdnInternal( schemaManager, name, pos, rdn );
             rdns.add( rdn );
 
             if ( !hasMoreChars( pos ) )
@@ -122,7 +138,7 @@ import org.apache.directory.api.util.Position;
      * 
      * @throws LdapInvalidDnException the invalid name exception
      */
-    /* No protection*/static void parseRdn( String name, Rdn rdn ) throws LdapInvalidDnException
+    /* No protection*/static void parseRdn( SchemaManager schemaManager, String name, Rdn rdn ) throws LdapInvalidDnException
     {
         if ( name == null || name.length() == 0 )
         {
@@ -138,11 +154,11 @@ import org.apache.directory.api.util.Position;
         pos.start = 0;
         pos.length = name.length();
 
-        parseRdnInternal( name, pos, rdn );
+        parseRdnInternal( schemaManager, name, pos, rdn );
     }
 
 
-    private static void parseRdnInternal( String name, Position pos, Rdn rdn ) throws LdapInvalidDnException
+    private static void parseRdnInternal( SchemaManager schemaManager, String name, Position pos, Rdn rdn ) throws LdapInvalidDnException
     {
         int rdnStart = pos.start;
         char[] chars = name.toCharArray();
@@ -172,11 +188,11 @@ import org.apache.directory.api.util.Position;
 
         String upName = name.substring( rdnStart, pos.start );
 
-        Ava ava = new Ava( type, type, new Value( upValue ), upName );
+        Ava ava = new Ava( schemaManager, type, upValue );
         rdn.addAVA( null, ava );
 
         rdn.setUpName( upName );
-        rdn.normalize();
+        rdn.hashCode();
     }
 
 

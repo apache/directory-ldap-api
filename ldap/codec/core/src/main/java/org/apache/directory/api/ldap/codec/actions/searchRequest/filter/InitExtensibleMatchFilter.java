@@ -26,7 +26,6 @@ import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
 import org.apache.directory.api.ldap.codec.search.ExtensibleMatchFilter;
 import org.apache.directory.api.ldap.codec.search.Filter;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

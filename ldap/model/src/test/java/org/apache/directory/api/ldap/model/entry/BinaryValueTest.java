@@ -113,7 +113,6 @@ public class BinaryValueTest
                 throw new IllegalStateException( "expected byte[] to normalize" );
             }
 
-
             public String normalize( String value ) throws LdapException
             {
                 throw new IllegalStateException( "expected byte[] to normalize" );
@@ -241,11 +240,11 @@ public class BinaryValueTest
     {
         Value cbv = new Value( ( byte[] ) null );
 
-        assertNull( cbv.getValue() );
+        assertEquals( "", cbv.getValue() );
         assertFalse( cbv.isSchemaAware() );
         assertTrue( cbv.isValid( BINARY_CHECKER ) );
         assertTrue( cbv.isNull() );
-        assertNull( cbv.getNormValue() );
+        assertNull( cbv.getBytes() );
     }
 
 
@@ -258,7 +257,7 @@ public class BinaryValueTest
         assertFalse( cbv.isSchemaAware() );
         assertTrue( cbv.isValid( BINARY_CHECKER ) );
         assertFalse( cbv.isNull() );
-        assertNotNull( cbv.getNormValue() );
+        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, cbv.getBytes() ) );
     }
 
 
@@ -397,7 +396,7 @@ public class BinaryValueTest
     {
         Value bv = new Value( ( byte[] ) null );
 
-        assertNull( bv.getValue() );
+        assertEquals( "", bv.getValue() );
 
         bv = new Value( StringConstants.EMPTY_BYTES );
         assertNotNull( bv.getBytes() );
@@ -463,10 +462,10 @@ public class BinaryValueTest
     {
         Value bv = new Value( ( byte[] ) null );
 
-        assertNull( bv.getValue() );
+        assertEquals( "", bv.getValue() );
 
         bv = new Value( StringConstants.EMPTY_BYTES );
-        assertNull( bv.getValue() );
+        assertEquals( "", bv.getValue() );
         assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, bv.getBytes() ) );
 
         bv = new Value( BYTES1 );
@@ -557,7 +556,7 @@ public class BinaryValueTest
 
         bv = new Value( at, bv );
         assertTrue( bv.isSchemaAware() );
-        assertEquals( null, bv.getNormValue() );
+        assertEquals( null, bv.getBytes() );
 
         bv = new Value( StringConstants.EMPTY_BYTES );
         bv = new Value( at, bv );
@@ -576,13 +575,13 @@ public class BinaryValueTest
     {
         Value bv = new Value( ( byte[] ) null );
 
-        assertNull( bv.getValue() );
+        assertEquals( "", bv.getValue() );
         assertFalse( bv.isSchemaAware() );
         assertTrue( bv.isValid( BINARY_CHECKER ) );
         assertTrue( bv.isNull() );
 
         bv = new Value( StringConstants.EMPTY_BYTES );
-        assertNull( bv.getValue() );
+        assertEquals( "", bv.getValue() );
         assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, bv.getBytes() ) );
         assertFalse( bv.isSchemaAware() );
         assertTrue( bv.isValid( BINARY_CHECKER ) );

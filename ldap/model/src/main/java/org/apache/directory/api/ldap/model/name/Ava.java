@@ -43,15 +43,21 @@ import org.slf4j.LoggerFactory;
 
 
 /**
+ * <p>
  * A Attribute Type And Value, which is the basis of all Rdn. It contains a
  * type, and a value. The type must not be case sensitive. Superfluous leading
  * and trailing spaces MUST have been trimmed before. The value MUST be in UTF8
  * format, according to RFC 2253. If the type is in OID form, then the value
  * must be a hexadecimal string prefixed by a '#' character. Otherwise, the
  * string must respect the RC 2253 grammar.
- *
+ * </p>
+ * <p>
  * We will also keep a User Provided form of the AVA (Attribute Type And Value),
  * called upName.
+ * </p>
+ * <p>
+ * This class is immutable
+ * </p>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -113,6 +119,59 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         upName = "";
         this.schemaManager = schemaManager;
         this.attributeType = null;
+    }
+
+
+    /**
+     * Constructs new Ava using the provided SchemaManager and AVA
+     * 
+     * @param schemaManager The SchemaManager instance
+     * @param ava The AVA to copy
+     */
+    public Ava( SchemaManager schemaManager, Ava ava ) throws LdapInvalidDnException
+    {
+        upType = ava.upType;
+        
+        if ( ava.isSchemaAware() )
+        {
+            normType = ava.normType;
+            value = ava.value;
+        }
+        else
+        {
+            if ( schemaManager != null )
+            {
+                AttributeType attributeType = schemaManager.getAttributeType( ava.normType );
+                
+                if ( attributeType != null )
+                {
+                    normType = attributeType.getOid();
+
+                    try
+                    {
+                        value = new Value( attributeType, ava.value );
+                    }
+                    catch ( LdapInvalidAttributeValueException e )
+                    {
+                        throw new LdapInvalidDnException( e.getResultCode() );
+                    }
+                }
+                else
+                {
+                    normType = ava.normType;
+                    value = ava.value;
+                }
+            }
+            else
+            {
+                normType = ava.normType;
+                value = ava.value;
+            }
+        }
+        
+        upName = this.upType + '=' + ( this.value == null ? "" : this.value.getValue() );
+
+        hashCode();
     }
 
 
@@ -182,6 +241,57 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 
 
     /**
+     * Construct a schema aware Ava containing a binary value. The AttributeType
+     * and value will be normalized accordingly to the given SchemaManager.
+     * <p>
+     * Note that the upValue should <b>not</b> be null or empty, or resolve
+     * to an empty string after having trimmed it.
+     *
+     * @param schemaManager The SchemaManager instance
+     * @param upType The User Provided type
+     * @param upName the User Provided AVA
+     * @param upValue The User Provided binary value
+     * 
+     * @throws LdapInvalidDnException If the given type or value are invalid
+     */
+    public Ava( SchemaManager schemaManager, String upType, String upName, byte[] upValue ) throws LdapInvalidDnException
+    {
+        if ( schemaManager != null )
+        {
+            this.schemaManager = schemaManager;
+
+            try
+            {
+                attributeType = schemaManager.lookupAttributeTypeRegistry( upType );
+            }
+            catch ( LdapException le )
+            {
+                String message = I18n.err( I18n.ERR_04188 );
+                LOG.error( message );
+                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
+            }
+
+            try
+            {
+                createAva( schemaManager, upType, new Value( attributeType, upValue ) );
+            }
+            catch ( LdapInvalidAttributeValueException liave )
+            {
+                String message = I18n.err( I18n.ERR_04188 );
+                LOG.error( message );
+                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, liave );
+            }
+        }
+        else
+        {
+            createAva( upType, new Value( upValue ) );
+        }
+        
+        this.upName = upName;
+    }
+
+
+    /**
      * Construct an Ava with a String value.
      * <p>
      * Note that the upValue should <b>not</b> be null or empty, or resolve
@@ -246,6 +356,56 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 
 
     /**
+     * Construct a schema aware Ava with a String value.
+     * <p>
+     * Note that the upValue should <b>not</b> be null or empty, or resolve
+     * to an empty string after having trimmed it.
+     *
+     * @param schemaManager The SchemaManager instance
+     * @param upType The User Provided type
+     * @param upName the User provided AVA
+     * @param upValue The User Provided String value
+     * 
+     * @throws LdapInvalidDnException If the given type or value are invalid
+     */
+    public Ava( SchemaManager schemaManager, String upType, String upName, String upValue ) throws LdapInvalidDnException
+    {
+        if ( schemaManager != null )
+        {
+            this.schemaManager = schemaManager;
+
+            try
+            {
+                attributeType = schemaManager.lookupAttributeTypeRegistry( upType );
+            }
+            catch ( LdapException le )
+            {
+                String message = I18n.err( I18n.ERR_04188 );
+                LOG.error( message );
+                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
+            }
+
+            try
+            {
+                createAva( schemaManager, upType, new Value( attributeType, upValue ) );
+            }
+            catch ( LdapInvalidAttributeValueException liave )
+            {
+                String message = I18n.err( I18n.ERR_04188 );
+                LOG.error( message );
+                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, liave );
+            }
+        }
+        else
+        {
+            createAva( upType, new Value( upValue ) );
+        }
+        
+        this.upName = upName;
+    }
+
+
+    /**
      * Construct a schema aware Ava. The AttributeType and value will be checked accordingly
      * to the SchemaManager.
      * <p>
@@ -264,7 +424,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         normType = attributeType.getOid();
         this.upType = upType;
         this.value = value;
-        upName = this.upType + '=' + ( value == null ? "" : Rdn.escapeValue( value.getString() ) );
+        upName = this.upType + '=' + ( value == null ? "" : Rdn.escapeValue( value.getValue() ) );
         hashCode();
     }
 
@@ -317,7 +477,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 
         value = upValue;
 
-        upName = this.upType + '=' + ( value == null ? "" : Rdn.escapeValue( value.getString() ) );
+        upName = getEscaped();
         hashCode();
     }
 
@@ -346,7 +506,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         this.upType = upType;
         this.normType = normType;
         this.value = value;
-        upName = this.upType + '=' + ( this.value == null ? "" : this.value.getString() );
+        upName = this.upType + '=' + ( this.value == null ? "" : this.value.getValue() );
 
         if ( schemaManager != null )
         {
@@ -450,7 +610,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      * @throws LdapInvalidDnException If the Ava can't be normalized accordingly
      * to the given SchemaManager
      */
-    public void apply( SchemaManager schemaManager ) throws LdapInvalidDnException
+    private void apply( SchemaManager schemaManager ) throws LdapInvalidDnException
     {
         if ( schemaManager != null )
         {
@@ -486,8 +646,6 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             {
                 this.attributeType = tmpAttributeType;
             }
-
-            normType = tmpAttributeType.getOid();
 
             try
             {
@@ -539,17 +697,6 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 
 
     /**
-     * Get the normalized Name of a Ava
-     *
-     * @return The name
-     */
-    public String getNormName()
-    {
-        return normalize();
-    }
-
-
-    /**
      * Get the user provided form of this attribute type and value
      *
      * @return The user provided form of this ava
@@ -557,6 +704,697 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     public String getName()
     {
         return upName;
+    }
+    
+    
+    /**
+     * @return The Ava as an escaped String
+     */
+    public String getEscaped()
+    {
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append( getType() );
+        sb.append( '=' );
+        
+        if ( value == null )
+        {
+            return sb.toString();
+        }
+        
+        byte[] bytes = value.getBytes();
+        
+        if ( Strings.isEmpty( bytes ) )
+        {
+            return sb.toString();
+        }
+        
+        boolean leadChar = true;
+        
+        for ( int pos = 0; pos < bytes.length; pos++  )
+        {
+            boolean trailChar = pos == bytes.length - 1;
+            byte b = bytes[pos];
+
+            switch ( b )
+            {
+                case 0x00 :
+                    sb.append( "\\00" );
+                    break;
+
+                case 0x01 :
+                case 0x02 :
+                case 0x03 :
+                case 0x04 :
+                case 0x05 :
+                case 0x06 :
+                case 0x07 :
+                case 0x08 :
+                case 0x09 :
+                case 0x0A :
+                case 0x0B :
+                case 0x0C :
+                case 0x0D :
+                case 0x0E :
+                case 0x0F :
+                case 0x10 :
+                case 0x11 :
+                case 0x12 :
+                case 0x13 :
+                case 0x14 :
+                case 0x15 :
+                case 0x16 :
+                case 0x17 :
+                case 0x18 :
+                case 0x19 :
+                case 0x1A :
+                case 0x1B :
+                case 0x1C :
+                case 0x1D :
+                case 0x1E :
+                case 0x1F :
+                    sb.append( ( char ) b );
+                    break;
+                    
+                case 0x20 :
+                    if ( leadChar || trailChar )
+                    {
+                        sb.append( "\\ " );
+                    }
+                    else
+                    {
+                        sb.append( ( char ) b );
+                    }
+                    
+                    break;
+                    
+                case 0x21 :
+                    sb.append( ( char ) b );
+                    break;
+                    
+                    
+                case 0x22 :
+                    sb.append( "\\\"" );
+                    break;
+
+                case 0x23 :
+                    if ( leadChar )
+                    {
+                        sb.append( "\\#" );
+                    }
+                    else
+                    {
+                        sb.append( '#' );
+                    }
+                    
+                    break;
+
+                case 0x24 :
+                case 0x25 :
+                case 0x26 :
+                case 0x27 :
+                case 0x28 :
+                case 0x29 :
+                case 0x2A :
+                    sb.append( ( char ) b );
+                    break;
+                    
+                case 0x2B :
+                    sb.append( "\\+" );
+                    break;
+
+                case 0x2C :
+                    sb.append( "\\," );
+                    break;
+
+                case 0x2D :
+                case 0x2E :
+                case 0x2F :
+                case 0x30 :
+                case 0x31 :
+                case 0x32 :
+                case 0x33 :
+                case 0x34 :
+                case 0x35 :
+                case 0x36 :
+                case 0x37 :
+                case 0x38 :
+                case 0x39 :
+                case 0x3A :
+                    sb.append( ( char ) b );
+                    break;
+                    
+                case 0x3B :
+                    sb.append( "\\;" );
+                    break;
+
+                case 0x3C :
+                    sb.append( "\\<" );
+                    break;
+
+                case 0x3D :
+                    sb.append( ( char ) b );
+                    break;
+                    
+                case 0x3E :
+                    sb.append( "\\>" );
+                    break;
+                
+                case 0x3F :
+                case 0x40 :
+                case 0x41 :
+                case 0x42 :
+                case 0x43 :
+                case 0x44 :
+                case 0x45 :
+                case 0x46 :
+                case 0x47 :
+                case 0x48 :
+                case 0x49 :
+                case 0x4A :
+                case 0x4B :
+                case 0x4C :
+                case 0x4D :
+                case 0x4E :
+                case 0x4F :
+                case 0x50 :
+                case 0x51 :
+                case 0x52 :
+                case 0x53 :
+                case 0x54 :
+                case 0x55 :
+                case 0x56 :
+                case 0x57 :
+                case 0x58 :
+                case 0x59 :
+                case 0x5A :
+                case 0x5B :
+                    sb.append( ( char ) b );
+                    break;
+                    
+                case 0x5C :
+                    sb.append( "\\\\" );
+                    break;
+
+                case 0x5D :
+                case 0x5E :
+                case 0x5F :
+                case 0x60 :
+                case 0x61 :
+                case 0x62 :
+                case 0x63 :
+                case 0x64 :
+                case 0x65 :
+                case 0x66 :
+                case 0x67 :
+                case 0x68 :
+                case 0x69 :
+                case 0x6A :
+                case 0x6B :
+                case 0x6C :
+                case 0x6D :
+                case 0x6E :
+                case 0x6F :
+                case 0x70 :
+                case 0x71 :
+                case 0x72 :
+                case 0x73 :
+                case 0x74 :
+                case 0x75 :
+                case 0x76 :
+                case 0x77 :
+                case 0x78 :
+                case 0x79 :
+                case 0x7A :
+                case 0x7B :
+                case 0x7C :
+                case 0x7D :
+                case 0x7E :
+                case 0x7F :
+                    sb.append( ( char ) b );
+                    break;
+
+                // Between 0x80 and 0xC1, this is an octet
+                case ( byte ) 0x80 :
+                case ( byte ) 0x81 :
+                case ( byte ) 0x82 :
+                case ( byte ) 0x83 :
+                case ( byte ) 0x84 :
+                case ( byte ) 0x85 :
+                case ( byte ) 0x86 :
+                case ( byte ) 0x87 :
+                case ( byte ) 0x88 :
+                case ( byte ) 0x89 :
+                case ( byte ) 0x8A :
+                case ( byte ) 0x8B :
+                case ( byte ) 0x8C :
+                case ( byte ) 0x8D :
+                case ( byte ) 0x8E :
+                case ( byte ) 0x8F :
+                case ( byte ) 0x90 :
+                case ( byte ) 0x91 :
+                case ( byte ) 0x92 :
+                case ( byte ) 0x93 :
+                case ( byte ) 0x94 :
+                case ( byte ) 0x95 :
+                case ( byte ) 0x96 :
+                case ( byte ) 0x97 :
+                case ( byte ) 0x98 :
+                case ( byte ) 0x99 :
+                case ( byte ) 0x9A :
+                case ( byte ) 0x9B :
+                case ( byte ) 0x9C :
+                case ( byte ) 0x9D :
+                case ( byte ) 0x9E :
+                case ( byte ) 0x9F :
+                case ( byte ) 0xA0 :
+                case ( byte ) 0xA1 :
+                case ( byte ) 0xA2 :
+                case ( byte ) 0xA3 :
+                case ( byte ) 0xA4 :
+                case ( byte ) 0xA5 :
+                case ( byte ) 0xA6 :
+                case ( byte ) 0xA7 :
+                case ( byte ) 0xA8 :
+                case ( byte ) 0xA9 :
+                case ( byte ) 0xAA :
+                case ( byte ) 0xAB :
+                case ( byte ) 0xAC :
+                case ( byte ) 0xAD :
+                case ( byte ) 0xAE :
+                case ( byte ) 0xAF :
+                case ( byte ) 0xB0 :
+                case ( byte ) 0xB1 :
+                case ( byte ) 0xB2 :
+                case ( byte ) 0xB3 :
+                case ( byte ) 0xB4 :
+                case ( byte ) 0xB5 :
+                case ( byte ) 0xB6 :
+                case ( byte ) 0xB7 :
+                case ( byte ) 0xB8 :
+                case ( byte ) 0xB9 :
+                case ( byte ) 0xBA :
+                case ( byte ) 0xBB :
+                case ( byte ) 0xBC :
+                case ( byte ) 0xBD :
+                case ( byte ) 0xBE :
+                case ( byte ) 0xBF :
+                case ( byte ) 0xC0 :
+                case ( byte ) 0xC1 :
+                    sb.append( '\\' ).append( Strings.byteToString( b ) );
+                    break;
+
+                // Between 0xC2 and 0xDF, we may have a UTF-2 char
+                case ( byte ) 0xC2 :
+                case ( byte ) 0xC3 :
+                case ( byte ) 0xC4 :
+                case ( byte ) 0xC5 :
+                case ( byte ) 0xC6 :
+                case ( byte ) 0xC7 :
+                case ( byte ) 0xC8 :
+                case ( byte ) 0xC9 :
+                case ( byte ) 0xCA :
+                case ( byte ) 0xCB :
+                case ( byte ) 0xCC :
+                case ( byte ) 0xCD :
+                case ( byte ) 0xCE :
+                case ( byte ) 0xCF :
+                case ( byte ) 0xD0 :
+                case ( byte ) 0xD1 :
+                case ( byte ) 0xD2 :
+                case ( byte ) 0xD3 :
+                case ( byte ) 0xD4 :
+                case ( byte ) 0xD5 :
+                case ( byte ) 0xD6 :
+                case ( byte ) 0xD7 :
+                case ( byte ) 0xD8 :
+                case ( byte ) 0xD9 :
+                case ( byte ) 0xDA :
+                case ( byte ) 0xDB :
+                case ( byte ) 0xDC :
+                case ( byte ) 0xDD :
+                case ( byte ) 0xDE :
+                case ( byte ) 0xDF :
+                    // UTF2, if the following byte is in [0x80-0xBF]
+                    if ( trailChar )
+                    {
+                        // No next byte : this is an octet
+                        sb.append( '\\' ).append( Strings.byteToString( b ) );
+                    }
+                    else
+                    {
+                        int b2 = bytes[pos + 1] & 0x00FF;
+                        
+                        if ( ( b2 >= 0x0080 ) && ( b2 <= 0x00BF ) )
+                        {
+                            // This is an UTF-2 char
+                            sb.append( Strings.utf8ToString( bytes, pos, 2 ) );
+                            pos++;
+                        }
+                        else
+                        {
+                            // Not an UTF-2
+                            sb.append( '\\' ).append( Strings.byteToString( b ) );
+                        }
+                    }
+                
+                    break;
+
+                case ( byte ) 0xE0 :
+                    // May be an UTF-3, if the next byte is in [0xA0-0xBF], followed by a byte in [0x80-0xBF]
+                    if ( trailChar )
+                    {
+                        // No next byte : this is an octet
+                        sb.append( '\\' ).append( Strings.byteToString( b ) );
+                        break;
+                    }
+                    
+                    if ( pos == bytes.length - 2 )
+                    {
+                        // We only have 2 bytes : not an UTF-3
+                        sb.append( '\\' ).append( Strings.byteToString( b ) );
+                    }
+                    else
+                    {
+                        int b2 = bytes[pos + 1] & 0x00FF;
+                        
+                        if ( ( b2 >= 0x00A0 ) && ( b2 <= 0x00BF ) )
+                        {
+                            int b3 = bytes[pos + 2] & 0x00FF;
+                            
+                            // Check that the third byte is in between 0x80-0xBF
+                            if ( ( b3 >= 0x0080 ) && ( b3 <= 0x00BF ) )
+                            {
+                                // UTF-3
+                                sb.append( Strings.utf8ToString( bytes, pos, 3 ) );
+                                pos += 2;
+                            }
+                            else
+                            {
+                                // Not an UTF-3, dump one bytes
+                                sb.append( '\\' ).append( Strings.byteToString( b ) );
+                            }
+                        }
+                        else
+                        {
+                            // Not an UTF-3 : dump two byte
+                            sb.append( '\\' ).append( Strings.byteToString( b ) );
+                        }
+                    }
+                    
+                    break;
+                    
+
+                // Between E1 and EC, this may be an UTF-3 if the next two bytes are between 0x80 and 0xBF
+                case ( byte ) 0xE1 :
+                case ( byte ) 0xE2 :
+                case ( byte ) 0xE3 :
+                case ( byte ) 0xE4 :
+                case ( byte ) 0xE5 :
+                case ( byte ) 0xE6 :
+                case ( byte ) 0xE7 :
+                case ( byte ) 0xE8 :
+                case ( byte ) 0xE9 :
+                case ( byte ) 0xEA :
+                case ( byte ) 0xEB :
+                case ( byte ) 0xEC :
+                case ( byte ) 0xEE :
+                case ( byte ) 0xEF :
+                    if ( trailChar )
+                    {
+                        // No next byte : this is an octet
+                        sb.append( '\\' ).append( Strings.byteToString( b ) );
+                        break;
+                    }
+                    
+                    if ( pos == bytes.length - 2 )
+                    {
+                        // We only have 2 bytes : not an UTF-3
+                        sb.append( '\\' ).append( Strings.byteToString( b ) );
+                    }
+                    else
+                    {
+                        int b2 = bytes[pos + 1] & 0x00FF;
+                        
+                        if ( ( b2 >= 0x0080 ) && ( b2 <= 0x00BF ) )
+                        {
+                            int b3 = bytes[pos + 2] & 0x00FF;
+                            
+                            // Check that the third byte is in between 0x80-0xBF
+                            if ( ( b3 >= 0x0080 ) && ( b3 <= 0x00BF ) )
+                            {
+                                // UTF-3
+                                sb.append( Strings.utf8ToString( bytes, pos, 3 ) );
+                                pos += 2;
+                            }
+                            else
+                            {
+                                // Not an UTF-3, dump one byte
+                                sb.append( '\\' ).append( Strings.byteToString( b ) );
+                            }
+                        }
+                        else
+                        {
+                            // Not an UTF-3 : dump one byte
+                            sb.append( '\\' ).append( Strings.byteToString( b ) );
+                            pos++;
+                        }
+                    }
+                    
+                    break;
+
+                case ( byte ) 0xED :
+                    // May be an UTF-3 if the second byte is in [0x80-0x9F] and the third byte in [0x80-0xBF]
+                    if ( trailChar )
+                    {
+                        // No next byte : this is an octet
+                        sb.append( '\\' ).append( Strings.byteToString( b ) );
+                        break;
+                    }
+                    
+                    if ( pos == bytes.length - 2 )
+                    {
+                        // We only have 2 bytes : not an UTF-3
+                        sb.append( '\\' ).append( Strings.byteToString( b ) );
+                    }
+                    else
+                    {
+                        int b2 = bytes[pos + 1] & 0x00FF;
+                        
+                        if ( ( b2 >= 0x0080 ) && ( b2 <= 0x009F ) )
+                        {
+                            int b3 = bytes[pos + 2] & 0x00FF;
+                            
+                            // Check that the third byte is in between 0x80-0xBF
+                            if ( ( b3 >= 0x0080 ) && ( b3 <= 0x00BF ) )
+                            {
+                                // UTF-3
+                                sb.append( Strings.utf8ToString( bytes, pos, 3 ) );
+                                pos += 2;
+                            }
+                            else
+                            {
+                                // Not an UTF-3, dump one byte
+                                sb.append( '\\' ).append( Strings.byteToString( b ) );
+                            }
+                        }
+                        else
+                        {
+                            // Not an UTF-3 : dump one byte
+                            sb.append( '\\' ).append( Strings.byteToString( b ) );
+                            pos++;
+                        }
+                    }
+                    
+                    break;
+
+                case ( byte ) 0xF0 :
+                    // May be an UTF-4 if the second byte is in [0x90-0xBF] followed by two bytes in [0x80-0xBF]
+                    if ( trailChar )
+                    {
+                        // No next byte : this is an octet
+                        sb.append( '\\' ).append( Strings.byteToString( b ) );
+                        break;
+                    }
+                    
+                    if ( pos == bytes.length - 3 )
+                    {
+                        // We only have 2 bytes : not an UTF-4
+                        sb.append( '\\' ).append( Strings.byteToString( b ) );
+                    }
+                    else
+                    {
+                        int b2 = bytes[pos + 1] & 0x00FF;
+                        
+                        if ( ( b2 >= 0x0090 ) && ( b2 <= 0x00BF ) )
+                        {
+                            int b3 = bytes[pos + 2] & 0x00FF;
+                            
+                            // Check that the third byte is in between 0x80-0xBF
+                            if ( ( b3 >= 0x0080 ) && ( b3 <= 0x00BF ) )
+                            {
+                                int b4 = bytes[pos + 3] & 0x00FF;
+                                
+                                // Check that the forth byte is in between 0x80-0xBF
+                                if ( ( b4 >= 0x0080 ) && ( b4 <= 0x00BF ) )
+                                {
+                                    // UTF-4
+                                    sb.append( Strings.utf8ToString( bytes, pos, 4 ) );
+                                    pos += 3;
+                                }
+                                else
+                                {
+                                    // Not an UTF-4, dump one byte
+                                    sb.append( '\\' ).append( Strings.byteToString( b ) );
+                                }
+                            }
+                            else
+                            {
+                                // Not an UTF-4, dump one byte
+                                sb.append( '\\' ).append( Strings.byteToString( b ) );
+                            }
+                        }
+                        else
+                        {
+                            // Not an UTF-4 : dump one byte
+                            sb.append( '\\' ).append( Strings.byteToString( b ) );
+                            pos++;
+                        }
+                    }
+                    
+                    break;
+
+                case ( byte ) 0xF1 :
+                case ( byte ) 0xF2 :
+                case ( byte ) 0xF3 :
+                    // May be an UTF-4
+                    // May be an UTF-4 if it's followed by three bytes in [0x80-0xBF]
+                    if ( trailChar )
+                    {
+                        // No next byte : this is an octet
+                        sb.append( '\\' ).append( Strings.byteToString( b ) );
+                        break;
+                    }
+                    
+                    if ( pos == bytes.length - 3 )
+                    {
+                        // We only have 2 bytes : not an UTF-4
+                        sb.append( '\\' ).append( Strings.byteToString( b ) );
+                    }
+                    else
+                    {
+                        int b2 = bytes[pos + 1] & 0x00FF;
+                        
+                        if ( ( b2 >= 0x0080 ) && ( b2 <= 0x00BF ) )
+                        {
+                            int b3 = bytes[pos + 2] & 0x00FF;
+                            
+                            // Check that the third byte is in between 0x80-0xBF
+                            if ( ( b3 >= 0x0080 ) && ( b3 <= 0x00BF ) )
+                            {
+                                int b4 = bytes[pos + 3] & 0x00FF;
+                                
+                                // Check that the forth byte is in between 0x80-0xBF
+                                if ( ( b4 >= 0x0080 ) && ( b4 <= 0x00BF ) )
+                                {
+                                    // UTF-4
+                                    sb.append( Strings.utf8ToString( bytes, pos, 4 ) );
+                                    pos += 3;
+                                }
+                                else
+                                {
+                                    // Not an UTF-4, dump one byte
+                                    sb.append( '\\' ).append( Strings.byteToString( b ) );
+                                }
+                            }
+                            else
+                            {
+                                // Not an UTF-4, dump one byte
+                                sb.append( '\\' ).append( Strings.byteToString( b ) );
+                            }
+                        }
+                        else
+                        {
+                            // Not an UTF-4 : dump one byte
+                            sb.append( '\\' ).append( Strings.byteToString( b ) );
+                            pos++;
+                        }
+                    }
+                    
+                    break;
+
+                case ( byte ) 0xF4 :
+                    // May be an UTF-4 if the second byte is in [0x80-0x8F] followed by two bytes in [0x80-0xBF]
+                    if ( trailChar )
+                    {
+                        // No next byte : this is an octet
+                        sb.append( '\\' ).append( Strings.byteToString( b ) );
+                        break;
+                    }
+                    
+                    if ( pos == bytes.length - 3 )
+                    {
+                        // We only have 2 bytes : not an UTF-4
+                        sb.append( '\\' ).append( Strings.byteToString( b ) );
+                    }
+                    else
+                    {
+                        int b2 = bytes[pos + 1] & 0x00FF;
+                        
+                        if ( ( b2 >= 0x0080 ) && ( b2 <= 0x008F ) )
+                        {
+                            int b3 = bytes[pos + 2] & 0x00FF;
+                            
+                            // Check that the third byte is in between 0x80-0xBF
+                            if ( ( b3 >= 0x0080 ) && ( b3 <= 0x00BF ) )
+                            {
+                                int b4 = bytes[pos + 3] & 0x00FF;
+                                
+                                // Check that the forth byte is in between 0x80-0xBF
+                                if ( ( b4 >= 0x0080 ) && ( b4 <= 0x00BF ) )
+                                {
+                                    // UTF-4
+                                    sb.append( Strings.utf8ToString( bytes, pos, 4 ) );
+                                    pos += 3;
+                                }
+                                else
+                                {
+                                    // Not an UTF-4, dump one byte
+                                    sb.append( '\\' ).append( Strings.byteToString( b ) );
+                                }
+                            }
+                            else
+                            {
+                                // Not an UTF-4, dump one byte
+                                sb.append( '\\' ).append( Strings.byteToString( b ) );
+                            }
+                        }
+                        else
+                        {
+                            // Not an UTF-4 : dump one byte
+                            sb.append( '\\' ).append( Strings.byteToString( b ) );
+                            pos++;
+                        }
+                    }
+                    
+                    break;
+
+
+                default :
+                    // octet
+                    sb.append( '\\' ).append( Strings.byteToString( b ) );
+
+                    break;
+                    
+            }
+            
+            if ( leadChar )
+            {
+                leadChar = false;
+            }
+        }
+        
+        return sb.toString();
     }
 
 
@@ -577,42 +1415,6 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         catch ( CloneNotSupportedException cnse )
         {
             throw new Error( "Assertion failure", cnse );
-        }
-    }
-
-
-    /**
-     * A Normalized String representation of a Ava :
-     * <ul>
-     * <li>type is trimed and lowercased</li>
-     * <li>value is trimed and lowercased, and special characters are escaped if needed.</li>
-     * </ul>
-     *
-     * @return A normalized string representing an Ava
-     */
-    public String normalize()
-    {
-        if ( value.isHumanReadable() )
-        {
-            // The result will be gathered in a stringBuilder
-            StringBuilder sb = new StringBuilder();
-
-            // First, store the type and the '=' char
-            sb.append( normType ).append( '=' );
-
-            String normalizedValue = ( String ) value.getNormValue();
-
-            if ( ( normalizedValue != null ) && ( normalizedValue.length() > 0 ) )
-            {
-                sb.append( Rdn.escapeValue( normalizedValue ) );
-            }
-
-            return sb.toString();
-        }
-        else
-        {
-            return normType + "=#"
-                + Strings.dumpHexPairs( value.getBytes() );
         }
     }
 
@@ -655,25 +1457,43 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         Ava instance = ( Ava ) obj;
 
         // Compare the type
-        if ( normType == null )
+        if ( attributeType == null )
         {
-            if ( instance.normType != null )
+            if ( normType == null )
             {
-                return false;
+                if ( instance.normType != null )
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if ( !normType.equals( instance.normType ) )
+                {
+                    return false;
+                }
             }
         }
         else
         {
-            if ( !normType.equals( instance.normType ) )
+            if ( instance.getAttributeType() == null )
+            {
+                if ( ( schemaManager != null ) 
+                        && !attributeType.equals( schemaManager.getAttributeType( instance.getType() ) ) )
+                {
+                    return false;
+                }
+            }
+            else if ( !attributeType.equals( instance.getAttributeType() ) )
             {
                 return false;
             }
         }
 
         // Compare the values
-        if ( value.isNull() )
+        if ( ( value == null ) || value.isNull() )
         {
-            return instance.value.isNull();
+            return ( instance.value == null ) || instance.value.isNull();
         }
         else
         {
@@ -695,7 +1515,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
                     }
                     else
                     {
-                        return value.getString().equals( instance.value.getString() );
+                        return value.getValue().equals( instance.value.getValue() );
                     }
                 }
             }
@@ -947,14 +1767,14 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      *     <b>isHR</b> Tells if the value is a String or not
      *   </li>
      * </ul>
-     * <br/>
+     * <br>
      * if the value is a String :
      * <ul>
      *   <li>
      *     <b>value</b> The value
      *   </li>
      * </ul>
-     * <br/>
+     * <br>
      * if the value is binary :
      * <ul>
      *   <li>
@@ -1110,7 +1930,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     /**
      * Tells if the Ava is schema aware or not.
      * 
-     * @return true if the Ava is schema aware
+     * @return <tt>true</tt> if the Ava is schema aware
      */
     public boolean isSchemaAware()
     {
@@ -1131,9 +1951,9 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     {
         int comp = 0;
 
-        if ( value.getNormValue() instanceof String )
+        if ( value.isHumanReadable() )
         {
-            comp = ( ( String ) value.getNormValue() ).compareTo( ( ( String ) that.value.getNormValue() ) );
+            comp = value.compareTo( that.value );
 
             return comp;
         }
@@ -1166,7 +1986,6 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     /**
      * @see Comparable#compareTo(Object)
      */
-    @SuppressWarnings("unchecked")
     public int compareTo( Ava that )
     {
         if ( that == null )
@@ -1253,7 +2072,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 
                 if ( comparator != null )
                 {
-                    comp = comparator.compare( value.getNormValue(), that.value.getNormValue() );
+                    comp = value.compareTo( that.value );
 
                     return comp;
                 }

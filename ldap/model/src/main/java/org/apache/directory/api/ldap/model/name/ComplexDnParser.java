@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.api.ldap.model.schema.SchemaManager;
 
 
 /**
@@ -43,13 +44,13 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
      * 
      * @throws LdapInvalidDnException the invalid name exception
      */
-    /* No protection*/void parseDn( String name, List<Rdn> rdns ) throws LdapInvalidDnException
+    /* No protection*/void parseDn( SchemaManager schemaManager, String name, List<Rdn> rdns ) throws LdapInvalidDnException
     {
         AntlrDnParser dnParser = new AntlrDnParser( new AntlrDnLexer( new StringReader( name ) ) );
 
         try
         {
-            dnParser.relativeDistinguishedNames( rdns );
+            dnParser.relativeDistinguishedNames( schemaManager, rdns );
         }
         catch ( Exception e )
         {
@@ -66,13 +67,13 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
      * 
      * @throws LdapInvalidDnException the invalid name exception
      */
-    /* No protection*/void parseRdn( String name, Rdn rdn ) throws LdapInvalidDnException
+    /* No protection*/void parseRdn( SchemaManager schemaManager, String name, Rdn rdn ) throws LdapInvalidDnException
     {
         AntlrDnParser dnParser = new AntlrDnParser( new AntlrDnLexer( new StringReader( name ) ) );
 
         try
         {
-            dnParser.relativeDistinguishedName( rdn );
+            dnParser.relativeDistinguishedName( schemaManager, rdn );
         }
         catch ( Exception e )
         {

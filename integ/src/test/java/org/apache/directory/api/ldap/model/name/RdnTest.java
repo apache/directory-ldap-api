@@ -64,14 +64,14 @@ public class RdnTest
             errors += "\nRdn.getName fails '" + rdn.getName() + "'";
         }
         
-        if ( !"2.5.4.3=test\\ ".equals( rdn.getNormName() ) )
+        if ( !"cn=TEST\\ ".equals( rdn.getEscaped() ) )
         {
-            errors = "\nRdn.getNormName fails '" + rdn.getNormName() + "'";
+            errors = "\nRdn.getEscaped fails '" + rdn.getEscaped() + "'";
         }
         
-        if ( !"test ".equals( rdn.getNormValue( "cn" ) ) )
+        if ( !"TEST ".equals( rdn.getValue( "cn" ) ) )
         {
-            errors += "\nRdn.getNormValue( 'cn' ) fails '" + ( String ) rdn.getNormValue( "cn" ) + "'";
+            errors += "\nRdn.getEscaped( 'cn' ) fails '" + ( String ) rdn.getValue( "cn" ) + "'";
         }
         
         assertEquals( null, errors );
@@ -90,9 +90,9 @@ public class RdnTest
             errors += "\nRdn.getName fails '" + rdn.getName() + "'";
         }
         
-        if ( !"ou=Exemple \\+ Rdn\u00E4\\ +cn=TEST" .equals( rdn.getNormName() ) )
+        if ( !"OU=Exemple \\+ Rdn\u00E4\\ +cn=TEST" .equals( rdn.getEscaped() ) )
         {
-            errors = "\nRdn.getNormName fails '" + rdn.getNormName() + "'";
+            errors = "\nRdn.getEscaped fails '" + rdn.getEscaped() + "'";
         }
         
         if ( !"ou".equals( rdn.getNormType() ) )
@@ -100,9 +100,9 @@ public class RdnTest
             errors += "\nRdn.getNormType fails '" + rdn.getNormType() + "'";
         }
         
-        if ( !"Exemple + Rdn\u00E4 ".equals( rdn.getNormValue() ) )
+        if ( !"Exemple + Rdn\u00E4 ".equals( rdn.getValue() ) )
         {
-            errors += "\nRdn.getNormValue fails '" + rdn.getNormValue() + "'";
+            errors += "\nRdn.getEscaped fails '" + rdn.getValue() + "'";
         }
         
         if ( !"OU".equals( rdn.getType() ) )
@@ -110,14 +110,9 @@ public class RdnTest
             errors += "\nRdn.getUpType fails '" + rdn.getType() + "'";
         }
         
-        if ( !"Exemple + Rdn\u00E4 ".equals( rdn.getNormValue() ) )
+        if ( !"Exemple + Rdn\u00E4 ".equals( rdn.getValue( "ou" ) ) )
         {
-            errors += "\nRdn.getNormValue fails '" + rdn.getNormValue() + "'";
-        }
-        
-        if ( !"Exemple + Rdn\u00E4 ".equals( rdn.getNormValue( "ou" ) ) )
-        {
-            errors += "\nRdn.getNormValue( 'ou' ) fails '" + rdn.getNormValue( "ou" ) + "'";
+            errors += "\nRdn.getEscaped( 'ou' ) fails '" + rdn.getValue( "ou" ) + "'";
         }
         
         if ( !"TEST".equals( rdn.getValue( "cn" ) ) )
@@ -146,9 +141,9 @@ public class RdnTest
             errors += "\nRdn.getName fails '" + rdn.getName() + "'";
         }
         
-        if ( !"2.5.4.11=exemple \\+ rdn\u00E4\\ +2.5.4.3=test" .equals( rdn.getNormName() ) )
+        if ( !"OU=Exemple \\+ Rdn\u00E4\\ +cn=TEST" .equals( rdn.getEscaped() ) )
         {
-            errors = "\nRdn.getNormName fails '" + rdn.getNormName() + "'";
+            errors = "\nRdn.getEscaped fails '" + rdn.getEscaped() + "'";
         }
         
         if ( !"2.5.4.11".equals( rdn.getNormType() ) )
@@ -156,9 +151,9 @@ public class RdnTest
             errors += "\nRdn.getNormType fails '" + rdn.getNormType() + "'";
         }
         
-        if ( !"exemple + rdn\u00E4 ".equals( rdn.getNormValue() ) )
+        if ( !"OU=Exemple \\+ Rdn\u00E4\\ +cn=TEST".equals( rdn.getEscaped() ) )
         {
-            errors += "\nRdn.getNormValue fails '" + rdn.getNormValue() + "'";
+            errors += "\nRdn.getEscaped fails '" + rdn.getEscaped() + "'";
         }
         
         if ( !"OU".equals( rdn.getType() ) )
@@ -166,19 +161,19 @@ public class RdnTest
             errors += "\nRdn.getUpType fails '" + rdn.getType() + "'";
         }
         
-        if ( !"Exemple \\+ Rdn\\C3\\A4\\ ".equals( rdn.getValue() ) )
+        if ( !"Exemple + Rdn\u00E4 ".equals( rdn.getValue() ) )
         {
             errors += "\nRdn.getUpValue fails '" + rdn.getValue() + "'";
         }
         
-        if ( !"exemple + rdn\u00E4 ".equals( rdn.getNormValue( "ou" ) ) )
+        if ( !"Exemple + Rdn\u00E4 ".equals( rdn.getValue( "ou" ) ) )
         {
-            errors += "\nRdn.getNormValue( 'ou' ) fails '" + ( String ) rdn.getNormValue( "ou" ) + "'";
+            errors += "\nRdn.getValue( 'ou' ) fails '" + ( String ) rdn.getValue( "ou" ) + "'";
         }
         
-        if ( !"test".equals( rdn.getNormValue( "cn" ) ) )
+        if ( !"TEST".equals( rdn.getValue( "cn" ) ) )
         {
-            errors += "\nRdn.getNormValue( 'cn' ) fails '" + ( String ) rdn.getNormValue( "cn" ) + "'";
+            errors += "\nRdn.getEscaped( 'cn' ) fails '" + ( String ) rdn.getValue( "cn" ) + "'";
         }
         
         if ( !"OU = Exemple \\+ Rdn\\C3\\A4\\ +cn= TEST".equals( rdn.toString() ) )
@@ -197,7 +192,6 @@ public class RdnTest
         Rdn rdn2 = new Rdn( schemaManager, "gn=john+cn=doe" );
         
         assertEquals( rdn1, rdn2 );
-        assertEquals( rdn1.getNormName(), rdn2.getNormName() );
     }
     
     
@@ -222,7 +216,7 @@ public class RdnTest
         Rdn rdn1 = new Rdn( schemaManager, " cn = c + cn = b " );
         Rdn rdn2 = new Rdn( schemaManager, " cn = b + cn = c " );
         
-        //assertEquals( rdn1, rdn2 );
+        assertEquals( rdn1, rdn2 );
     }
 
     

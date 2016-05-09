@@ -114,22 +114,22 @@ public class AvaTest
     {
         Ava ava = new Ava( schemaManager, "CN", " " );
         assertEquals( "CN=\\ ", ava.toString() );
-        assertEquals( "2.5.4.3=\\ ", ava.getNormName() );
+        assertEquals( "CN=\\ ", ava.getEscaped() );
         assertEquals( "CN=\\ ", ava.getName() );
 
         ava = new Ava( schemaManager, "  CN  ", " " );
         assertEquals( "  CN  =\\ ", ava.toString() );
-        assertEquals( "2.5.4.3=\\ ", ava.getNormName() );
+        assertEquals( "  CN  =\\ ", ava.getEscaped() );
         assertEquals( "  CN  =\\ ", ava.getName() );
 
         ava = new Ava( schemaManager, "cn", " " );
         assertEquals( "cn=\\ ", ava.toString() );
-        assertEquals( "2.5.4.3=\\ ", ava.getNormName() );
+        assertEquals( "cn=\\ ", ava.getEscaped() );
         assertEquals( "cn=\\ ", ava.getName() );
 
         ava = new Ava( schemaManager, "  cn  ", " " );
         assertEquals( "  cn  =\\ ", ava.toString() );
-        assertEquals( "2.5.4.3=\\ ", ava.getNormName() );
+        assertEquals( "  cn  =\\ ", ava.getEscaped() );
         assertEquals( "  cn  =\\ ", ava.getName() );
     }
 
@@ -160,8 +160,9 @@ public class AvaTest
     {
         Ava atav = new Ava( schemaManager, "cn", "b" );
         assertEquals( "cn=b", atav.toString() );
-        assertEquals( "2.5.4.3=b", atav.getNormName() );
+        assertEquals( "cn=b", atav.getEscaped() );
         assertEquals( "cn=b", atav.getName() );
+        assertEquals( atav, new Ava( schemaManager, "2.5.4.3", "B" ) );
     }
 
 
@@ -173,8 +174,9 @@ public class AvaTest
     {
         Ava atav = new Ava( schemaManager, " CommonName ", " This is    a TEST " );
         assertEquals( " CommonName =\\ This is    a TEST\\ ", atav.toString() );
-        assertEquals( "2.5.4.3=this is a test", atav.getNormName() );
+        assertEquals( " CommonName =\\ This is    a TEST\\ ", atav.getEscaped() );
         assertEquals( " CommonName =\\ This is    a TEST\\ ", atav.getName() );
+        assertEquals( atav, new Ava( schemaManager, "cn", "this is a test" ) );
     }
 
 
@@ -228,9 +230,9 @@ public class AvaTest
         
         Ava ava = new Ava( "OU", "Exemple + Rdn\u00E4 " );
         
-        if ( !"ou=Exemple \\+ Rdn\u00E4\\ ".equals( ava.getNormName() ) )
+        if ( !"OU=Exemple \\+ Rdn\u00E4\\ ".equals( ava.getEscaped() ) )
         {
-            errors = "\nAva.getNormName fails '" + ava.getNormName() + "'";
+            errors = "\nAva.getEscaped fails '" + ava.getEscaped() + "'";
         }
         
         if ( !"ou".equals( ava.getNormType() ) )
@@ -238,9 +240,9 @@ public class AvaTest
             errors += "\nAva.getNormType fails '" + ava.getNormType() + "'";
         }
         
-        if ( !"Exemple + Rdn\u00E4 ".equals( ava.getValue().getNormValue().toString() ) )
+        if ( !"Exemple + Rdn\u00E4 ".equals( ava.getValue().getValue().toString() ) )
         {
-            errors += "\nAva.getNormValue fails '" + ava.getValue().getNormValue().toString() + "'";
+            errors += "\nAva.getValue fails '" + ava.getValue().getValue().toString() + "'";
         }
         
         if ( !"OU=Exemple \\+ Rdn\u00E4\\ ".equals( ava.getName() ) )
@@ -253,14 +255,14 @@ public class AvaTest
             errors += "\nAva.getUpType fails '" + ava.getType() + "'";
         }
         
-        if ( !"Exemple + Rdn\u00E4 ".equals( ava.getValue().getString() ) )
+        if ( !"Exemple + Rdn\u00E4 ".equals( ava.getValue().getValue() ) )
         {
-            errors += "\nAva.getUpValue fails '" + ava.getValue() .getString() + "'";
+            errors += "\nAva.getUpValue fails '" + ava.getValue() .getValue() + "'";
         }
         
-        if ( !"ou=Exemple \\+ Rdn\u00E4\\ ".equals( ava.normalize() ) )
+        if ( !"OU=Exemple \\+ Rdn\u00E4\\ ".equals( ava.getEscaped() ) )
         {
-            errors += "\nAva.normalize fails '" + ava.normalize() + "'";
+            errors += "\nAva.normalize fails '" + ava.getEscaped() + "'";
         }
         
         if ( !"OU=Exemple \\+ Rdn\u00E4\\ ".equals( ava.toString() ) )
@@ -283,9 +285,9 @@ public class AvaTest
         
         Ava ava = new Ava( schemaManager, "OU", "Exemple + Rdn\u002B " );
         
-        if ( !"2.5.4.11=exemple \\+ rdn\\+".equals( ava.getNormName() ) )
+        if ( !"OU=Exemple \\+ Rdn\\+\\ ".equals( ava.getEscaped() ) )
         {
-            errors = "\nAva.getNormName fails '" + ava.getNormName() + "'";
+            errors = "\nAva.getEscaped fails '" + ava.getEscaped() + "'";
         }
         
         if ( !"2.5.4.11".equals( ava.getNormType() ) )
@@ -293,9 +295,9 @@ public class AvaTest
             errors += "\nAva.getNormType fails '" + ava.getNormType() + "'";
         }
         
-        if ( !"exemple + rdn\u002B".equals( ava.getValue().getNormValue().toString() ) )
+        if ( !"Exemple + Rdn+ ".equals( ava.getValue().getValue().toString() ) )
         {
-            errors += "\nAva.getNormValue fails '" + ava.getValue().getNormValue().toString() + "'";
+            errors += "\nAva.getValue fails '" + ava.getValue().getValue().toString() + "'";
         }
         
         if ( !"OU=Exemple \\+ Rdn\\+\\ ".equals( ava.getName() ) )
@@ -308,14 +310,14 @@ public class AvaTest
             errors += "\nAva.getUpType fails '" + ava.getType() + "'";
         }
         
-        if ( !"Exemple + Rdn\u002B ".equals( ava.getValue().getString() ) )
+        if ( !"Exemple + Rdn+ ".equals( ava.getValue().getValue() ) )
         {
-            errors += "\nAva.getUpValue fails '" + ava.getValue().getString() + "'";
+            errors += "\nAva.getUpValue fails '" + ava.getValue().getValue() + "'";
         }
         
-        if ( !"2.5.4.11=exemple \\+ rdn\\+".equals( ava.normalize() ) )
+        if ( !"OU=Exemple \\+ Rdn\\+\\ ".equals( ava.getEscaped() ) )
         {
-            errors += "\nAva.normalize fails '" + ava.normalize() + "'";
+            errors += "\nAva.normalize fails '" + ava.getEscaped() + "'";
         }
         
         if ( !"OU=Exemple \\+ Rdn\\+\\ ".equals( ava.toString() ) )

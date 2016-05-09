@@ -61,14 +61,14 @@ public abstract class Normalizer extends LoadableSchemaObject
      * Gets the normalized value.
      * 
      * @param value the value to normalize. It must *not* be null !
+     * @param assertionType The PrepareString.AssertionType
      * @return the normalized form for a value
      * @throws LdapException if an error results during normalization
      */
     public abstract Value normalize( Value value ) throws LdapException;
 
-
     /**
-     * Gets the normalized value.
+     * Gets the normalized value of AssertionValues.
      * 
      * @param value the value to normalize. It must *not* be null !
      * @return the normalized form for a value

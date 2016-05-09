@@ -28,7 +28,7 @@ import org.apache.directory.api.i18n.I18n;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ByteBuffer
+public class ExpansibleByteBuffer
 {
     /** the default initial buffer size */
     private static final int DEFAULT_INITIAL_SIZE = 10;
@@ -43,13 +43,13 @@ public class ByteBuffer
     private byte[] buf;
 
 
-    public ByteBuffer()
+    public ExpansibleByteBuffer()
     {
         this( DEFAULT_INITIAL_SIZE );
     }
 
 
-    public ByteBuffer( int initialSize )
+    public ExpansibleByteBuffer( int initialSize )
     {
         if ( initialSize <= 0 )
         {
@@ -67,9 +67,23 @@ public class ByteBuffer
     }
 
 
+    /**
+     * @return The position of the last byte in the buffer
+     */
     public final int position()
     {
         return pos;
+    }
+
+
+    /**
+     * Set the position to a specific value
+     * 
+     * @param pos the new position
+     */
+    public final void position( int pos )
+    {
+        this.pos = pos;
     }
 
 

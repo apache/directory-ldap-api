@@ -29,11 +29,11 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A SyntaxChecker which verifies that a value is a Boolean according to RFC 4517.
- * 
+ * <br>
  * From RFC 4517 :
- * 
+ * <pre>
  * Boolean = "TRUE" / "FALSE"
- * 
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

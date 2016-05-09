@@ -48,6 +48,7 @@
     <suppress files="org.apache.directory.api.ldap.model.constants.SchemaConstants" checks="FileLength" />
     <suppress files="org.apache.directory.api.ldap.model.message.ResultCodeEnum" checks="FileLength" />
     <suppress files="org.apache.directory.api.ldap.model.schema.PrepareString" checks="FileLength" />
+    <suppress files="org.apache.directory.api.ldap.model.name.Ava" checks="FileLength" />
     <suppress files="org.apache.directory.api.ldap.model.url.LdapUrl" checks="FileLength" />
     <suppress files="org.apache.directory.api.ldap.model.schema.registries.Registries" checks="FileLength" />
     <suppress files="org.apache.directory.api.ldap.model.entry.DefaultAttribute" checks="FileLength" />

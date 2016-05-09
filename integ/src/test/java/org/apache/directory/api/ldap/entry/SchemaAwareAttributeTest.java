@@ -237,7 +237,7 @@ public class SchemaAwareAttributeTest
         Value value = attr.get();
 
         assertTrue( value instanceof Value );
-        assertEquals( "test", ( ( Value ) value ).getString() );
+        assertEquals( "test", ( ( Value ) value ).getValue() );
 
         // Add a binary value
         assertEquals( 0, attr.add( new byte[]
@@ -1051,13 +1051,13 @@ public class SchemaAwareAttributeTest
         Attribute attr2 = new DefaultAttribute( "email", atEMail );
 
         attr2.add( "a", "b", "c" );
-        assertEquals( "a", attr2.get().getString() );
+        assertEquals( "a", attr2.get().getValue() );
 
         attr2.remove( "a" );
-        assertEquals( "b", attr2.get().getString() );
+        assertEquals( "b", attr2.get().getValue() );
 
         attr2.remove( "b" );
-        assertEquals( "c", attr2.get().getString() );
+        assertEquals( "c", attr2.get().getValue() );
 
         attr2.remove( "c" );
         assertNull( attr2.get() );
@@ -1103,9 +1103,9 @@ public class SchemaAwareAttributeTest
         attr.add( "a", "b", "c" );
         iterator = attr.iterator();
         assertTrue( iterator.hasNext() );
-        assertEquals( "a", iterator.next().getString() );
-        assertEquals( "b", iterator.next().getString() );
-        assertEquals( "c", iterator.next().getString() );
+        assertEquals( "a", iterator.next().getValue() );
+        assertEquals( "b", iterator.next().getValue() );
+        assertEquals( "c", iterator.next().getValue() );
         assertFalse( iterator.hasNext() );
     }
 
@@ -1491,7 +1491,7 @@ public class SchemaAwareAttributeTest
         for ( Value val : attr1 )
         {
             assertTrue( val instanceof Value );
-            assertEquals( values[pos++], val.getString() );
+            assertEquals( values[pos++], val.getValue() );
         }
     }
 
@@ -2104,7 +2104,7 @@ public class SchemaAwareAttributeTest
         assertEquals( dsa.toString(), dsaSer.toString() );
         assertEquals( "0.9.2342.19200300.100.1.25", dsaSer.getId() );
         assertEquals( "DomainComponent", dsaSer.getUpId() );
-        assertEquals( "", dsaSer.getString() );
+        assertNull( dsaSer.getString() );
         assertEquals( 1, dsaSer.size() );
         assertTrue( dsaSer.contains( ( String ) null ) );
         assertTrue( dsaSer.isHumanReadable() );

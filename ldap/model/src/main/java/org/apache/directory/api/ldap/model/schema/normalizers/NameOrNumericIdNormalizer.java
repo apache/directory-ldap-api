@@ -69,7 +69,7 @@ public class NameOrNumericIdNormalizer extends Normalizer
             return null;
         }
 
-        String strValue = value.getString();
+        String strValue = value.getValue();
 
         if ( strValue.length() == 0 )
         {

@@ -21,13 +21,16 @@ package org.apache.directory.api.ldap.model.schema.normalizers;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
-import org.apache.directory.api.ldap.model.schema.normalizers.DeepTrimNormalizer;
+import org.apache.directory.api.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
+import org.apache.directory.api.util.Strings;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -39,44 +42,44 @@ import org.junit.runner.RunWith;
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class DeepTrimNormalizerTest
+public class DeepTrimToLowerNormalizerTest
 {
     @Test
-    public void testDeepTrimNormalizerNull() throws LdapException
+    public void testDeepTrimToLowerNormalizerNull() throws LdapException
     {
-        Normalizer normalizer = new DeepTrimNormalizer( "1.1.1" );
-        assertEquals( null, normalizer.normalize( ( String ) null ) );
+        Normalizer normalizer = new DeepTrimToLowerNormalizer( "1.1.1" );
+        assertNull( normalizer.normalize( ( String ) null ) );
     }
 
 
     @Test
-    public void testDeepTrimNormalizerEmpty() throws LdapException
+    public void testDeepTrimToLowerNormalizerEmpty() throws LdapException
     {
-        Normalizer normalizer = new DeepTrimNormalizer( "1.1.1" );
+        Normalizer normalizer = new DeepTrimToLowerNormalizer( "1.1.1" );
         assertEquals( "  ", normalizer.normalize( "" ) );
     }
 
 
     @Test
-    public void testDeepTrimNormalizerOneSpace() throws LdapException
+    public void testDeepTrimToLowerNormalizerOneSpace() throws LdapException
     {
-        Normalizer normalizer = new DeepTrimNormalizer( "1.1.1" );
+        Normalizer normalizer = new DeepTrimToLowerNormalizer( "1.1.1" );
         assertEquals( "  ", normalizer.normalize( " " ) );
     }
 
 
     @Test
-    public void testDeepTrimNormalizerTwoSpaces() throws LdapException
+    public void testDeepTrimToLowerNormalizerTwoSpaces() throws LdapException
     {
-        Normalizer normalizer = new DeepTrimNormalizer( "1.1.1" );
+        Normalizer normalizer = new DeepTrimToLowerNormalizer( "1.1.1" );
         assertEquals( "  ", normalizer.normalize( "  " ) );
     }
 
 
     @Test
-    public void testDeepTrimNormalizerNSpaces() throws LdapException
+    public void testDeepTrimToLowerNormalizerNSpaces() throws LdapException
     {
-        Normalizer normalizer = new DeepTrimNormalizer( "1.1.1" );
+        Normalizer normalizer = new DeepTrimToLowerNormalizer( "1.1.1" );
         assertEquals( "  ", normalizer.normalize( "      " ) );
     }
 
@@ -84,7 +87,7 @@ public class DeepTrimNormalizerTest
     @Test
     public void testInsignifiantSpacesStringOneChar() throws LdapException
     {
-        Normalizer normalizer = new DeepTrimNormalizer( "1.1.1" );
+        Normalizer normalizer = new DeepTrimToLowerNormalizer( "1.1.1" );
         assertEquals( " a ", normalizer.normalize( "a" ) );
     }
 
@@ -92,7 +95,7 @@ public class DeepTrimNormalizerTest
     @Test
     public void testInsignifiantSpacesStringTwoChars() throws LdapException
     {
-        Normalizer normalizer = new DeepTrimNormalizer( "1.1.1" );
+        Normalizer normalizer = new DeepTrimToLowerNormalizer( "1.1.1" );
         assertEquals( " aa ", normalizer.normalize( "aa" ) );
     }
 
@@ -100,7 +103,7 @@ public class DeepTrimNormalizerTest
     @Test
     public void testInsignifiantSpacesStringNChars() throws LdapException
     {
-        Normalizer normalizer = new DeepTrimNormalizer( "1.1.1" );
+        Normalizer normalizer = new DeepTrimToLowerNormalizer( "1.1.1" );
         assertEquals( " aaaaa ", normalizer.normalize( "aaaaa" ) );
     }
 
@@ -108,12 +111,11 @@ public class DeepTrimNormalizerTest
     @Test
     public void testInsignifiantSpacesStringOneCombining() throws LdapException
     {
-        Normalizer normalizer = new DeepTrimNormalizer( "1.1.1" );
+        Normalizer normalizer = new DeepTrimToLowerNormalizer( "1.1.1" );
         char[] chars = new char[]
-            { ' ', 0x0310 };
+            { 'e', 0x0301 };
         char[] expected = new char[]
-            { ' ', 0x0310, ' ' };
-        //assertEquals( new String( expected ), normalizer.normalize( new String( chars ) ) );
+            { ' ', '\u00E9', ' ' };
         
         String expectedStr = new String( expected );
         String charsStr = new String( chars );
@@ -124,11 +126,11 @@ public class DeepTrimNormalizerTest
     @Test
     public void testInsignifiantSpacesStringNCombining() throws LdapException
     {
-        Normalizer normalizer = new DeepTrimNormalizer( "1.1.1" );
+        Normalizer normalizer = new DeepTrimToLowerNormalizer( "1.1.1" );
         char[] chars = new char[]
-            { ' ', 0x0310, ' ', 0x0311, ' ', 0x0312 };
+            { 'e', 0x0301, ' ', 'a', 0x0300, 'i', 0x0302 };
         char[] expected = new char[]
-            { ' ', 0x0310, ' ', ' ', 0x0311, ' ', ' ', 0x0312, ' ' };
+            { ' ', 'é', ' ', ' ', 'à', 'î', ' ' };
         assertEquals( new String( expected ), normalizer.normalize( new String( chars ) ) );
     }
 
@@ -136,7 +138,7 @@ public class DeepTrimNormalizerTest
     @Test
     public void testInsignifiantSpacesStringCharsSpaces() throws LdapException
     {
-        Normalizer normalizer = new DeepTrimNormalizer( "1.1.1" );
+        Normalizer normalizer = new DeepTrimToLowerNormalizer( "1.1.1" );
         assertEquals( " a ", normalizer.normalize( " a" ) );
         assertEquals( " a ", normalizer.normalize( "a " ) );
         assertEquals( " a ", normalizer.normalize( " a " ) );
@@ -166,7 +168,7 @@ public class DeepTrimNormalizerTest
     @Test
     public void testNormalizeString() throws Exception
     {
-        Normalizer normalizer = new DeepTrimNormalizer( "1.1.1" );
+        Normalizer normalizer = new DeepTrimToLowerNormalizer( "1.1.1" );
         assertEquals( " abcd ", normalizer.normalize( "abcd" ) );
     }
 
@@ -174,7 +176,7 @@ public class DeepTrimNormalizerTest
     @Test
     public void testMapToSpace() throws Exception
     {
-        Normalizer normalizer = new DeepTrimNormalizer( "1.1.1" );
+        Normalizer normalizer = new DeepTrimToLowerNormalizer( "1.1.1" );
         char[] chars = new char[]
             { 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0085, 0x00A0, 0x1680, 0x2000, 0x2001, 0x2002, 0x2003, 0x2004, 0x2005,
                 0x2006, 0x2007, 0x2008, 0x2009, 0x200A, 0x2028, 0x2029, 0x202F, 0x205F };
@@ -185,7 +187,7 @@ public class DeepTrimNormalizerTest
     @Test
     public void testNormalizeIgnore() throws Exception
     {
-        Normalizer normalizer = new DeepTrimNormalizer( "1.1.1" );
+        Normalizer normalizer = new DeepTrimToLowerNormalizer( "1.1.1" );
         char[] chars = new char[58];
 
         int pos = 0;
@@ -215,46 +217,39 @@ public class DeepTrimNormalizerTest
         assertEquals( "  ", normalizer.normalize( new String( chars ) ) );
     }
 
-    /*
-     @Test
-     public void testSpeed() throws Exception
+    
+    @Test
+    @Ignore
+    public void testSpeed() throws Exception
     {
-        Normalizer normalizer = new DeepTrimNormalizer();
-        char[] chars = new char[]{ 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0085, 0x00A0, 0x1680,
-            0x2000, 0x2001, 0x2002, 0x2003, 0x2004, 0x2005, 0x2006, 0x2007, 0x2008, 0x2009, 0x200A,
-            0x2028, 0x2029, 0x202F, 0x205F };
-        String s = new String( chars );
-        assertEquals( "", normalizer.normalize( s ) );
+        Normalizer normalizer = new DeepTrimToLowerNormalizer();
         
-        String t = "xs crvtbynU  Jikl7897790";
-        
-        Normalizer normalizer2 = new DeepTrimToLowerNormalizer();
-        
-        String s1 = (String)normalizer2.normalize( t );
+        String t = "xs crvtbynU  Jikl7897A90";
+                
+        normalizer.normalize( t );
 
         long t0 = System.currentTimeMillis();
 
-        for ( int i = 0; i < 100000; i++ )
+        for ( int i = 0; i < 100000000; i++ )
         {
-            normalizer2.normalize( t );
+            normalizer.normalize( t );
         }
         
         long t1 = System.currentTimeMillis();
         
         System.out.println( t1 - t0 );
 
-        String s2 = StringTools.deepTrimToLower( t );
+        Strings.deepTrimToLower( t );
 
         t0 = System.currentTimeMillis();
 
-        for ( int i = 0; i < 100000; i++ )
+        for ( int i = 0; i < 100000000; i++ )
         {
-            StringTools.deepTrimToLower( t );
+            Strings.deepTrimToLower( t );
         }
         
         t1 = System.currentTimeMillis();
         
         System.out.println( t1 - t0 );
     }
-    */
 }

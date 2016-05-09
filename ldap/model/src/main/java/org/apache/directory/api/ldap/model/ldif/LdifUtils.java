@@ -160,7 +160,7 @@ public final class LdifUtils
         }
 
         // The String cannot end with a space
-        return ( currentChar != ' ' );
+        return currentChar != ' ';
     }
 
 
@@ -276,10 +276,12 @@ public final class LdifUtils
      */
     public static Attributes getJndiAttributesFromLdif( String ldif ) throws LdapLdifException
     {
-        LdifAttributesReader reader = new LdifAttributesReader();
+        LdifAttributesReader reader;
 
         try
         {
+            reader = new LdifAttributesReader();
+            
             Attributes attributes = AttributeUtils.toAttributes( reader.parseEntry( ldif ) );
 
             reader.close();
@@ -288,7 +290,7 @@ public final class LdifUtils
         }
         catch ( IOException ioe )
         {
-            throw new LdapLdifException( ioe.getMessage() );
+            throw new LdapLdifException( ioe.getMessage(), ioe );
         }
     }
 
@@ -595,7 +597,7 @@ public final class LdifUtils
             else if ( value.isHumanReadable() )
             {
                 // It's a String but, we have to check if encoding isn't required
-                String str = value.getString();
+                String str = value.getValue();
 
                 if ( !LdifUtils.isLDIFSafe( str ) )
                 {
@@ -716,7 +718,7 @@ public final class LdifUtils
                 if ( !( ava instanceof String ) )
                 {
                     throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                        I18n.ERR_12085, ( pos + 1 ) ) );
+                        I18n.ERR_12085, pos + 1 ) );
                 }
 
                 String attribute = ( String ) ava;
@@ -746,7 +748,7 @@ public final class LdifUtils
                 else
                 {
                     throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                        I18n.ERR_12086, ( pos + 1 ) ) );
+                        I18n.ERR_12086, pos + 1 ) );
                 }
 
                 valueExpected = false;
@@ -759,18 +761,18 @@ public final class LdifUtils
                 .err( I18n.ERR_12087 ) );
         }
 
-        LdifAttributesReader reader = new LdifAttributesReader();
-        Attributes attributes = AttributeUtils.toAttributes( reader.parseEntry( sb.toString() ) );
-
         try
         {
+            LdifAttributesReader reader = new LdifAttributesReader();
+            Attributes attributes = AttributeUtils.toAttributes( reader.parseEntry( sb.toString() ) );
+    
             reader.close();
-        }
-        catch ( IOException e )
-        {
-            e.printStackTrace();
-        }
 
-        return attributes;
+            return attributes;
+        }
+        catch ( IOException ioe )
+        {
+            throw new LdapLdifException( ioe.getMessage(), ioe );
+        }
     }
 }

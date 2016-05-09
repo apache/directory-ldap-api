@@ -88,7 +88,7 @@ public class AddRequestTest extends AbstractTest
 
         AddRequest addRequest = ( AddRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        assertEquals( "cn=Bob Rush,ou=Dev,dc=Example,dc=COM", addRequest.getEntryDn().getNormName() );
+        assertTrue( addRequest.getEntryDn().equals( "cn=Bob Rush,ou=Dev,dc=Example,dc=COM" ) );
     }
 
 
@@ -411,7 +411,7 @@ public class AddRequestTest extends AbstractTest
         Iterator<Value> valueIterator = attribute.iterator();
         assertTrue( valueIterator.hasNext() );
         Value value = valueIterator.next();
-        assertEquals( "top", value.getString() );
+        assertEquals( "top", value.getValue() );
     }
 
 
@@ -451,7 +451,7 @@ public class AddRequestTest extends AbstractTest
         assertTrue( valueIterator.hasNext() );
         Value value = valueIterator.next();
         assertFalse( value.isHumanReadable() );
-        assertEquals( "DSMLv2.0 rocks!!", value.getString() );
+        assertEquals( "DSMLv2.0 rocks!!", value.getValue() );
     }
 
 
@@ -490,10 +490,10 @@ public class AddRequestTest extends AbstractTest
         Iterator<Value> valueIterator = attribute.iterator();
         assertTrue( valueIterator.hasNext() );
         Value value = valueIterator.next();
-        assertEquals( "top", value.getString() );
+        assertEquals( "top", value.getValue() );
         assertTrue( valueIterator.hasNext() );
         value = valueIterator.next();
-        assertEquals( "person", value.getString() );
+        assertEquals( "person", value.getValue() );
         assertFalse( valueIterator.hasNext() );
     }
 
@@ -543,10 +543,10 @@ public class AddRequestTest extends AbstractTest
         Iterator<Value> valueIterator = attribute.iterator();
         assertTrue( valueIterator.hasNext() );
         Value value = valueIterator.next();
-        assertEquals( "top", value.getString() );
+        assertEquals( "top", value.getValue() );
         assertTrue( valueIterator.hasNext() );
         value = valueIterator.next();
-        assertEquals( "person", value.getString() );
+        assertEquals( "person", value.getValue() );
         assertFalse( valueIterator.hasNext() );
     }
 

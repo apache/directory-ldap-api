@@ -152,11 +152,11 @@ public class AttributeValueAssertionFilter extends Filter
 
         avaLength = 1 + TLV.getNbBytes( attributeDescLength ) + attributeDescLength;
 
-        org.apache.directory.api.ldap.model.entry.Value assertionValue = assertion.getAssertionValue();
+        byte[] assertionBytes = assertion.getAssertion();
 
         int assertionValueLength = 0;
 
-        assertionValueLength = assertionValue.getBytes().length;
+        assertionValueLength = assertionBytes.length;
 
         avaLength += 1 + TLV.getNbBytes( assertionValueLength ) + assertionValueLength;
 
@@ -224,14 +224,7 @@ public class AttributeValueAssertionFilter extends Filter
         BerValue.encode( buffer, assertion.getAttributeDesc() );
 
         // The assertion desc
-        if ( assertion.getAssertionValue().isHumanReadable() )
-        {
-            BerValue.encode( buffer, assertion.getAssertionValue().getString() );
-        }
-        else
-        {
-            BerValue.encode( buffer, assertion.getAssertionValue().getBytes() );
-        }
+        BerValue.encode( buffer, assertion.getAssertion() );
 
         return buffer;
     }

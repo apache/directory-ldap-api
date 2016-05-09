@@ -49,7 +49,19 @@ public class EqualityNode<T> extends SimpleNode<T>
      * @param attribute the attribute name
      * @param value the value to test for
      */
-    public EqualityNode( String attribute, Value value )
+    public EqualityNode( String attribute, byte[] value )
+    {
+        super( attribute, value, AssertionType.EQUALITY );
+    }
+
+
+    /**
+     * Creates a new Equality object.
+     * 
+     * @param attribute the attribute name
+     * @param value the value to test for
+     */
+    public EqualityNode( String attribute, String value )
     {
         super( attribute, value, AssertionType.EQUALITY );
     }
@@ -76,9 +88,9 @@ public class EqualityNode<T> extends SimpleNode<T>
 
         buf.append( "=" );
 
-        Value escapedValue = getEscapedValue();
+        String escapedValue = getEscapedValue();
         
-        if ( !escapedValue.isNull() )
+        if ( escapedValue != null )
         {
             buf.append( escapedValue );
         }

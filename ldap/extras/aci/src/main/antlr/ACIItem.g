@@ -495,16 +495,11 @@ attributeValue
     {
         // A Dn can be considered as a set of attributeTypeAndValues
         // So, parse the set as a Dn and extract each attributeTypeAndValue
-        Dn attributeTypeAndValueSetAsDn = new Dn( token.getText() );
-        
-        if ( schemaManager != null )
-        {        
-          attributeTypeAndValueSetAsDn.apply( schemaManager );
-        }
+        Dn attributeTypeAndValueSetAsDn = new Dn( schemaManager, token.getText() );
         
         for ( Rdn rdn : attributeTypeAndValueSetAsDn )
         {
-            attributeTypeAndValue = rdn.getNormName();
+            attributeTypeAndValue = rdn.getName();
             attributeType = DnUtils.getRdnAttributeType( attributeTypeAndValue );
             attributeValue = DnUtils.getRdnValue( attributeTypeAndValue );
             
@@ -542,7 +537,7 @@ rangeOfValues
     {
         protectedItemsMap.put( "rangeOfValues",
                 new RangeOfValuesItem(
-                        FilterParser.parse( token.getText() ) ) );
+                        FilterParser.parse( schemaManager, token.getText() ) ) );
         log.debug( "filterParser parsed " + token.getText() );
     }
     ;
@@ -1254,11 +1249,8 @@ distinguishedName returns [ Dn name ]
     :
     token:SAFEUTF8STRING
     {
-        name = new Dn( token.getText() );
-        if ( schemaManager != null )
-        {
-            name.apply( schemaManager );
-        }
+        name = new Dn( schemaManager, token.getText() );
+
         log.debug( "recognized a DistinguishedName: " + token.getText() );
     }
     ;
@@ -1313,7 +1305,7 @@ item returns [ LeafNode node ]
     :
     ID_item ( SP )* COLON ( SP )* oid=oid
     {
-        node = new EqualityNode( SchemaConstants.OBJECT_CLASS_AT , new Value( oid ) );
+        node = new EqualityNode( SchemaConstants.OBJECT_CLASS_AT , oid );
     }
     ;
 

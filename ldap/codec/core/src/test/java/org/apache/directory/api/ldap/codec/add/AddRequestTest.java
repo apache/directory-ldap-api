@@ -1069,7 +1069,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         for ( Value value : attribute )
         {
-            assertEquals( "", value.getString() );
+            assertEquals( "", value.getValue() );
         }
 
         // Check the encoding
@@ -1223,7 +1223,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         for ( Value value : attribute )
         {
-            assertEquals( "", value.getString() );
+            assertEquals( "", value.getValue() );
         }
 
         // Check the Control

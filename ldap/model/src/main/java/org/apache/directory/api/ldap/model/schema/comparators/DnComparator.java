@@ -84,7 +84,17 @@ public class DnComparator extends LdapComparator<Object>
             return 1;
         }
 
-        return dn0.getNormName().compareTo( dn1.getNormName() );
+        for ( int i = dn0Size; i >= 0; i-- )
+        {
+            int comp = dn0.getRdn( i ).compareTo( dn1.getRdn( i ) );
+            
+            if ( comp != 0 )
+            {
+                return comp;
+            }
+        }
+        
+        return 0;
     }
 
 
@@ -96,7 +106,7 @@ public class DnComparator extends LdapComparator<Object>
         {
             dn = ( Dn ) obj;
 
-            dn = ( dn.isSchemaAware() ? dn : dn.apply( schemaManager ) );
+            dn = ( dn.isSchemaAware() ? dn : new Dn( schemaManager, dn ) );
         }
         else if ( obj instanceof String )
         {

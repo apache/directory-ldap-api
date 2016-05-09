@@ -56,6 +56,9 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
 
     /** The attribute value assertion length */
     private int avaLength;
+    
+    /** The DN as a byte[] */
+    private byte[] dnBytes;
 
 
     /**
@@ -207,8 +210,8 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     public int computeLength()
     {
         // The entry Dn
-        Dn entry = getName();
-        compareRequestLength = 1 + TLV.getNbBytes( Dn.getNbBytes( entry ) ) + Dn.getNbBytes( entry );
+        dnBytes = Strings.getBytesUtf8( getName().getName() );
+        compareRequestLength = 1 + TLV.getNbBytes( dnBytes.length ) + dnBytes.length;
 
         // The attribute value assertion
         attrIdBytes = Strings.getBytesUtf8( getAttributeId() );
@@ -223,7 +226,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
         }
         else
         {
-            attrValBytes = Strings.getBytesUtf8( getAssertionValue().getString() );
+            attrValBytes = Strings.getBytesUtf8( getAssertionValue().getValue() );
             avaLength += 1 + TLV.getNbBytes( attrValBytes.length ) + attrValBytes.length;
         }
 
@@ -254,7 +257,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
             buffer.put( TLV.getBytes( compareRequestLength ) );
 
             // The entry
-            BerValue.encode( buffer, Dn.getBytes( getName() ) );
+            BerValue.encode( buffer, dnBytes );
 
             // The attributeValueAssertion sequence Tag
             buffer.put( UniversalTag.SEQUENCE.getValue() );

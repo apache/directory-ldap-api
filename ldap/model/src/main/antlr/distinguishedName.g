@@ -30,8 +30,11 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import javax.naming.NameParser;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.schema.parsers.ParserMonitor;
+import org.apache.directory.api.ldap.model.schema.SchemaManager;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.util.ExpansibleByteBuffer;
 import org.apache.directory.api.util.Strings;
-
+import org.apache.directory.api.util.Unicode;
 }
 
 /**
@@ -107,7 +110,7 @@ UTFMB : '\u0080'..'\uFFFE' ;
  *   DIGIT (0x30-0x39)
  *   ALPHA (0x41-0x5A and 0x61-0x7A)
  */
-LUTF1_REST : 
+CHAR_REST : 
     '\u0001'..'\u001F' |
     '\u0021' |
     '\u0024'..'\u002A' |
@@ -135,10 +138,12 @@ options    {
 
 {
     private ParserMonitor monitor = null;
+    
     public void setParserMonitor( ParserMonitor monitor )
     {
         this.monitor = monitor;
     }
+    
     private void matchedProduction( String msg )
     {
         if ( null != monitor )
@@ -146,43 +151,53 @@ options    {
             monitor.matchedProduction( msg );
         }
     }
-    static class UpAndNormValue
+
+    /**
+     * This class is used to store the decoded value
+     */
+    private static class UpAndNormValue
     {
-        Object value = "";
-        String rawValue = "";
-		int lastEscapedSpace = -1;
+        // The value as a byte array
+        ExpansibleByteBuffer bytes = new ExpansibleByteBuffer();
+
+        // The user provided value
+        StringBuilder upValue = new StringBuilder();
+
+        // A flag set to false if we have a binary value
+        boolean isHR = true;
     }
 }
 
-    /**
-     * Parses an Dn string.
-     *
-     * RFC 4514, Section 3
-     * distinguishedName = [ relativeDistinguishedName
-     *     *( COMMA relativeDistinguishedName ) ]
-     *
-     * RFC 2253, Section 3
-     * distinguishedName = [name] 
-     * name       = name-component *("," name-component)
-     *
-     * RFC 1779, Section 2.3
-     * <name> ::= <name-component> ( <spaced-separator> )
-     *        | <name-component> <spaced-separator> <name>
-     * <spaced-separator> ::= <optional-space>
-     *             <separator>
-     *             <optional-space>
-     * <separator> ::=  "," | ";"
-     * <optional-space> ::= ( <CR> ) *( " " )
-     *
-     */
-distinguishedName [Dn dn]
+
+/**
+ * Parses a Dn string.
+ *
+ * RFC 4514, Section 3
+ * distinguishedName = [ relativeDistinguishedName
+ *     *( COMMA relativeDistinguishedName ) ]
+ *
+ * RFC 2253, Section 3
+ * distinguishedName = [name] 
+ * name       = name-component *("," name-component)
+ *
+ * RFC 1779, Section 2.3
+ * <name> ::= <name-component> ( <spaced-separator> )
+ *        | <name-component> <spaced-separator> <name>
+ * <spaced-separator> ::= <optional-space>
+ *             <separator>
+ *             <optional-space>
+ * <separator> ::=  "," | ";"
+ * <optional-space> ::= ( <CR> ) *( " " )
+ *
+ */
+distinguishedName [SchemaManager schemaManager, Dn dn]
     {
         matchedProduction( "distinguishedName()" );
-        Rdn rdn = null;
+        Rdn rdn = new Rdn( schemaManager );
     }
     :
     (
-        rdn = relativeDistinguishedName[new Rdn()] 
+        relativeDistinguishedName[schemaManager, rdn] 
         { 
             try
             { 
@@ -192,12 +207,13 @@ distinguishedName [Dn dn]
             {
                 // Do nothing, can't get an exception here
             } 
-                
-            rdn=null; 
         }
         (
             ( COMMA | SEMI )
-            rdn = relativeDistinguishedName[new Rdn()] 
+            {
+                rdn = new Rdn( schemaManager );
+            }
+            relativeDistinguishedName[schemaManager, rdn] 
             { 
                 try
                 { 
@@ -207,8 +223,6 @@ distinguishedName [Dn dn]
                 {
                     // Do nothing, can't get an exception here
                 } 
-
-                rdn=null;
             }
         )*
         EOF
@@ -216,238 +230,205 @@ distinguishedName [Dn dn]
     ;
 
 
-    /**
-     * Parses an Dn string.
-     *
-     * RFC 4514, Section 3
-     * distinguishedName = [ relativeDistinguishedName
-     *     *( COMMA relativeDistinguishedName ) ]
-     *
-     * RFC 2253, Section 3
-     * distinguishedName = [name] 
-     * name       = name-component *("," name-component)
-     *
-     * RFC 1779, Section 2.3
-     * <name> ::= <name-component> ( <spaced-separator> )
-     *        | <name-component> <spaced-separator> <name>
-     * <spaced-separator> ::= <optional-space>
-     *             <separator>
-     *             <optional-space>
-     * <separator> ::=  "," | ";"
-     * <optional-space> ::= ( <CR> ) *( " " )
-     *
-     */
-relativeDistinguishedNames [List<Rdn> rdns]
+/**
+ * Parses a Dn string.
+ *
+ * RFC 4514, Section 3
+ * distinguishedName = [ relativeDistinguishedName
+ *     *( COMMA relativeDistinguishedName ) ]
+ *
+ * RFC 2253, Section 3
+ * distinguishedName = [name] 
+ * name       = name-component *("," name-component)
+ *
+ * RFC 1779, Section 2.3
+ * <name> ::= <name-component> ( <spaced-separator> )
+ *        | <name-component> <spaced-separator> <name>
+ * <spaced-separator> ::= <optional-space>
+ *             <separator>
+ *             <optional-space>
+ * <separator> ::=  "," | ";"
+ * <optional-space> ::= ( <CR> ) *( " " )
+ *
+ */
+relativeDistinguishedNames [SchemaManager schemaManager, List<Rdn> rdns]
     {
         matchedProduction( "relativeDistinguishedNames()" );
-        Rdn rdn = null;
+        Rdn rdn = new Rdn( schemaManager );
     }
     :
     (
-        rdn = relativeDistinguishedName[new Rdn()] 
+        relativeDistinguishedName[ schemaManager, rdn] 
         { 
             rdns.add( rdn );
+            rdn = new Rdn( schemaManager );
         }
         (
             ( COMMA | SEMI )
-            rdn = relativeDistinguishedName[new Rdn()] 
+            relativeDistinguishedName[schemaManager, rdn] 
             { 
                 rdns.add( rdn ); 
+                rdn = new Rdn( schemaManager );
             }
         )*
         EOF
     )?
     ;
 
-    /**
-     * Parses an Rdn string.
-     *
-     * RFC 4514, Section 3
-     * relativeDistinguishedName = attributeTypeAndValue
-     *     *( PLUS attributeTypeAndValue )
-     *
-     * RFC 2253, Section 3
-     * name-component = attributeTypeAndValue *("+" attributeTypeAndValue)
-     *
-     * RFC 1779, Section 2.3
-     * <name-component> ::= <attribute>
-     *     | <attribute> <optional-space> "+"
-     *       <optional-space> <name-component>
-     *
-     */
-relativeDistinguishedName [Rdn initialRdn] returns [Rdn rdn]
+/**
+ * Parses a Rdn string.
+ *
+ * RFC 4514, Section 3
+ * relativeDistinguishedName = attributeTypeAndValue
+ *     *( PLUS attributeTypeAndValue )
+ *
+ * RFC 2253, Section 3
+ * name-component = attributeTypeAndValue *("+" attributeTypeAndValue)
+ *
+ * RFC 1779, Section 2.3
+ * <name-component> ::= <attribute>
+ *     | <attribute> <optional-space> "+"
+ *       <optional-space> <name-component>
+ *
+ */
+relativeDistinguishedName [SchemaManager schemaManager, Rdn rdn]
     {
         matchedProduction( "relativeDistinguishedName()" );
-        rdn = initialRdn;
         String tmp;
-        String upName = "";
+
+        // The rdnStr variable is used to gather the full RDN string
+        // as provided
+        StringBuilder rdnStr = new StringBuilder();
     }
     :
     (
-        tmp = attributeTypeAndValue[rdn] 
-        { 
-            upName += tmp;
+        tmp = attributeTypeAndValue[schemaManager, rdn] 
+        {
+            rdnStr.append( tmp );
         }
         (
-            PLUS { upName += "+"; }
-            tmp = attributeTypeAndValue[rdn] 
-            { 
-                upName += tmp;
+            PLUS { rdnStr.append( '+' ); }
+
+            tmp = attributeTypeAndValue[schemaManager, rdn] 
+            {
+                rdnStr.append( tmp );
             }
         )*
     )
     {
-        rdn.normalize();
-        rdn.setUpName( upName );
+        rdn.hashCode();
+        rdn.setUpName( rdnStr.toString() );
     }
     ;
     
 
-    /**
-     * RFC 4514, Section 3
-     * attributeTypeAndValue = attributeType EQUALS attributeValue
-     *
-     * RFC 2253, Section 3
-     * attributeTypeAndValue = attributeType "=" attributeValue
-     *
-     */
-attributeTypeAndValue [Rdn rdn] returns [String upName = ""]
+/**
+ * RFC 4514, Section 3
+ * attributeTypeAndValue = attributeType EQUALS attributeValue
+ *
+ * RFC 2253, Section 3
+ * attributeTypeAndValue = attributeType "=" attributeValue
+ *
+ */
+attributeTypeAndValue [SchemaManager schemaManager, Rdn rdn] returns [String upNameStr]
     {
         matchedProduction( "attributeTypeAndValue()" );
         String type = null;
         UpAndNormValue value = new UpAndNormValue();
-        String upValue = null;
+        StringBuilder rdnUpName = new StringBuilder();
     }
     :
     (
-        ( SPACE { upName += " "; } )*
-        type = attributeType { upName += type; }
-        ( SPACE { upName += " "; } )*
-        EQUALS { upName += "="; }
-        ( SPACE 
-        { 
-            upName += " "; 
-            
-            if ( upValue == null )
-            {
-                upValue = " ";
-            }
-            else
-            {
-                upValue += " "; 
-            } 
-        } )*
+        ( SPACE { rdnUpName.append( ' ' ); } )*
+        type = attributeType { rdnUpName.append( type ); }
+        ( SPACE { rdnUpName.append( ' ' ); } )*
+        EQUALS { rdnUpName.append( '=' ); }
+        ( SPACE  { rdnUpName.append( ' ' ); } )*
         attributeValue[value] 
         {
             try
             {
-                upName += value.rawValue;
+                // We have to remove the ending spaces that may have been added, as the tutf1 rule
+                // cannot be processed
+                rdnUpName.append( value.upValue );
+                AttributeType attributeType = null;
                 Ava ava = null;
-            
-                if ( value.value instanceof String )
+
+                if ( schemaManager != null )
                 {
-                    if ( upValue != null )
+                    if ( ( type.startsWith( "oid." ) ) || ( type.startsWith( "OID." ) ) )
                     {
-                        value.rawValue = upValue + value.rawValue;
+                        type = type.substring( 4 );
                     }
+
+                    attributeType = schemaManager.getAttributeType( type );
+                }
+
+                if ( ( ( attributeType != null ) && attributeType.isHR() ) || value.isHR )
+                {
+                    int valueLength = value.upValue.length();
+                    int pos = value.bytes.position();
                     
-					int start = 0;
-		
-					for ( int pos = 0; pos < value.rawValue.length(); pos++ )
-					{
-					    if ( value.rawValue.charAt( pos ) == ' ' )
-					    {
-					        start++;
-					    }
-					    else
-					    {
-					        break;
-					    }
-					}
-		
-					boolean escape = false;
-					int lastEscapedSpace = -1;
-					
-					for ( int pos = start; pos< value.rawValue.length(); pos++ )
-					{
-					    if ( escape )
-					    {
-					        escape = false;
-		        
-					        if ( value.rawValue.charAt( pos ) == ' ' )
-					        {
-					            lastEscapedSpace = pos;
-					        }
-					    }
-					    else if ( value.rawValue.charAt( pos ) == '\\' )
-					    {
-					        escape = true;
-					    }
-					}
-		
-					// Remove spaces from the right if needed
-					int pos = value.rawValue.length() - 1;
-		
-					while ( ( value.rawValue.charAt( pos ) == ' ' ) && ( pos > lastEscapedSpace ) )
-					{
-					    pos--;
-					}
-					
-					String trimmedValue = value.rawValue;
-					
-					if ( ( start > 0 ) || ( pos + 1 < value.rawValue.length() ) )
-					{
-						trimmedValue = value.rawValue.substring( start, pos + 1 );
-					}
-					
-					Object unescapedValue = Rdn.unescapeValue( trimmedValue );
-                    
-                    if ( unescapedValue instanceof String )
+                    for ( int i = valueLength - 1; i >= 0; i-- )
                     {
-                        ava = new Ava(
-                            type,
-                            type,
-                            new Value( trimmedValue, (String)unescapedValue ),
-                            upName
-                        );
+                        if ( value.upValue.charAt( i ) == ' ' ) 
+                        {
+                            if ( i == 0 )
+                            {
+                                // The value is empty
+                                ava = new Ava( schemaManager, type, rdnUpName.toString(), ( String ) null );
+                                break;
+                            }
+                            else if ( value.upValue.charAt( i - 1 ) != '\\' )
+                            {
+                                // This is a trailing space, get rid of it
+                                value.upValue.deleteCharAt( i );
+                                pos--;
+                                value.bytes.position( pos );
+                            }
+                            else
+                            {
+                                // This is an escaped space, get out
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
-                    else
+
+                    if ( ava == null )
                     {
-                        ava = new Ava(
-                            type,
-                            type,
-                            new Value( (byte[])unescapedValue ),
-                            upName
-                        );
+                        ava = new Ava( schemaManager, type, rdnUpName.toString(), Strings.utf8ToString( value.bytes.copyOfUsedBytes() ) );
                     }
                 }
                 else
                 {
-                    ava = new Ava(
-                        type,
-                        type,
-                        new Value( (byte[])value.value ), 
-                        upName
-                    );
+                    ava = new Ava( schemaManager, type, rdnUpName.toString(), value.bytes.copyOfUsedBytes() );
                 }
            
-                rdn.addAVA( null, ava );
+                rdn.addAVA( schemaManager, ava );
             }
             catch ( LdapInvalidDnException e )
             {
                 throw new SemanticException( e.getMessage() );
             } 
         }
+        ( SPACE { rdnUpName.append( ' ' ); } )*
     )
+    {
+        upNameStr = rdnUpName.toString();
+    }
     ;
     
 
-    /**
-     * RFC 4514 Section 3
-     *
-     * attributeType = descr / numericoid
-     *
-     */    
+/**
+ * RFC 4514 Section 3
+ *
+ * attributeType = descr / numericoid
+ *
+ */    
 attributeType returns [String attributeType]
     {
         matchedProduction( "attributeType()" );
@@ -461,117 +442,111 @@ attributeType returns [String attributeType]
     ;
 
 
-    /**
-     * RFC 4512 Section 1.4
-     *
-     * descr = keystring
-     * keystring = leadkeychar *keychar
-     * leadkeychar = ALPHA
-     * keychar = ALPHA / DIGIT / HYPHEN
-     *
-     * We additionally add UNDERSCORE because some servers allow them.
-     *
-     */    
+/**
+ * RFC 4512 Section 1.4
+ *
+ * descr = keystring
+ * keystring = leadkeychar *keychar
+ * leadkeychar = ALPHA
+ * keychar = ALPHA / DIGIT / HYPHEN
+ *
+ * We additionally add UNDERSCORE because some servers allow them.
+ *
+ */    
 descr returns [String descr]
     {
         matchedProduction( "descr()" );
+        StringBuilder descrSb = new StringBuilder();
     }
     :
-    leadkeychar:ALPHA { descr = leadkeychar.getText(); }
+    leadkeychar:ALPHA { descrSb.append( leadkeychar.getText() ); }
     (
-        alpha:ALPHA { descr += alpha.getText(); }
+        alpha:ALPHA { descrSb.append( alpha.getText() ); }
         |
-        digit:DIGIT { descr += digit.getText(); }
+        digit:DIGIT { descrSb.append( digit.getText() ); }
         |
-        hyphen:HYPHEN { descr += hyphen.getText(); }
+        HYPHEN { descrSb.append( '-' ); }
         |
-        underscore:UNDERSCORE { descr += underscore.getText(); }
+        UNDERSCORE { descrSb.append( '_' ); }
     )*
+    {
+        descr = descrSb.toString();
+    }
     ;
 
 
-    /**
-     * RFC 4512 Section 1.4
-     *
-     * numericoid = number 1*( DOT number )
-     * number  = DIGIT / ( LDIGIT 1*DIGIT )
-     * DIGIT   = %x30 / LDIGIT       ; "0"-"9"
-     * LDIGIT  = %x31-39             ; "1"-"9"
-     *
-     */   
+/**
+ * RFC 4512 Section 1.4
+ *
+ * numericoid = number 1*( DOT number )
+ * number  = DIGIT / ( LDIGIT 1*DIGIT )
+ * DIGIT   = %x30 / LDIGIT       ; "0"-"9"
+ * LDIGIT  = %x31-39             ; "1"-"9"
+ *
+ */   
 numericoid returns [String numericoid = ""]
     {
         matchedProduction( "numericoid()" );
     }
     :
-    noid:NUMERICOID { numericoid += noid.getText(); }
+    noid:NUMERICOID { numericoid = noid.getText(); }
     ;
 
 
-    /**
-     * RFC 4514, Section 3
-     * attributeValue = string / hexstring
-     *
-     * RFC 2253, Section 3
-     * attributeValue = string
-     * string     = *( stringchar / pair )
-     *              / "#" hexstring
-     *              / QUOTATION *( quotechar / pair ) QUOTATION ; only from v2
-     * 
-     */    
-attributeValue [UpAndNormValue value]
+/**
+ * RFC 4514, Section 3
+ * attributeValue = string / hexstring
+ *
+ * RFC 2253, Section 3
+ * attributeValue = string
+ * string     = *( stringchar / pair )
+ *              / "#" hexstring
+ *              / QUOTATION *( quotechar / pair ) QUOTATION ; only from v2
+ *
+ * We still accept both forms, which means we can have a value surrounded by '"'
+ */
+attributeValue [UpAndNormValue value] 
     {
         matchedProduction( "attributeValue()" );
     }
     :
     (
-        (
-            quotestring [value]
-            ( SPACE { value.rawValue += " "; } )*
-        )
+        // Special for RFC 2253
+        quotestring [value]
         |
         string [value]
         |
-        (
-            hexstring [value]
-            ( SPACE { value.rawValue += " "; } )*
-        )
+        hexstring [value]
     )?
     ;
 
 
-    /**
-     * RFC 2253, Section 3
-     *              / QUOTATION *( quotechar / pair ) QUOTATION ; only from v2
-     * quotechar     = <any character except "\" or QUOTATION >
-     *
-     */
+/**
+ * RFC 2253, Section 3
+ *              / QUOTATION *( quotechar / pair ) QUOTATION ; only from v2
+ * quotechar     = <any character except "\" or QUOTATION >
+ *
+ */
 quotestring [UpAndNormValue value] 
     {
         matchedProduction( "quotestring()" );
-        org.apache.directory.api.util.ByteBuffer bb = new org.apache.directory.api.util.ByteBuffer();
-        byte[] bytes;
     }
     :
     (
-        dq1:DQUOTE { value.rawValue += dq1.getText(); }
+        DQUOTE { value.upValue.append( '"' ); }
         (
             (
                 s:~(DQUOTE|ESC|ESCESC|ESCSHARP|HEXPAIR) 
                 {
-                    value.rawValue += s.getText();
-                    bb.append( Strings.getBytesUtf8( s.getText() ) );
+                    value.upValue.append( s.getText() );
+                    value.bytes.append( Strings.getBytesUtf8( s.getText() ) );
                 }
             )
             |
-            bytes = pair[value] { bb.append( bytes ); }
+            pair [value] 
         )*
-        dq2:DQUOTE { value.rawValue += dq2.getText(); }
+        DQUOTE { value.upValue.append( '"' ); }
     )
-    {
-        String string = Strings.utf8ToString( bb.copyOfUsedBytes() );
-        value.value = string;
-    }
     ;
 
 
@@ -592,9 +567,10 @@ hexstring [UpAndNormValue value]
     :
     hexValue:HEXVALUE
     {
-        // convert to byte[]
-        value.rawValue = "#" + hexValue.getText();
-        value.value = Strings.toByteArray( hexValue.getText() ); 
+        String hexStr = hexValue.getText();
+        value.upValue.append( '#' ).append( hexStr );
+        value.bytes.append( Strings.toByteArray( hexStr ) );
+        value.isHR = false; 
     }
     ;
 
@@ -605,74 +581,21 @@ hexstring [UpAndNormValue value]
      * ; The following characters are to be escaped when they appear
      * ; in the value to be encoded: ESC, one of <escaped>, leading
      * ; SHARP or SPACE, trailing SPACE, and NULL.
-     * string =   [ ( leadchar / pair ) [ *( stringchar / pair )
-     *    ( trailchar / pair ) ] ]
-     *
+     * string =   [ ( leadchar / pair ) [ *( stringchar / pair ) ( trailchar / pair ) ] ]
+     * leadchar = LUTF1 | UTFMB
+     * stringchar = SUTF1 / UTFMB
+     * trailchar = TUTF1 / UTFMB
      */ 
 string [UpAndNormValue value]
     {
         matchedProduction( "string()" );
-        org.apache.directory.api.util.ByteBuffer bb = new org.apache.directory.api.util.ByteBuffer();
-        String tmp;
-        byte[] bytes;
     }
     :
     (
-        (
-            tmp = lutf1 
-            { 
-                value.rawValue += tmp;
-                bb.append( Strings.getBytesUtf8( tmp ) );
-            }
-            |
-            tmp = utfmb 
-            {
-                value.rawValue += tmp;
-                bb.append( Strings.getBytesUtf8( tmp ) );
-            }
-            |
-            bytes = pair [value] 
-			{ 
-				bb.append( bytes );
-			}
-        )
-        ( 
-            tmp = sutf1
-            {
-                value.rawValue += tmp;
-                bb.append( Strings.getBytesUtf8( tmp ) );
-            }
-            |
-            tmp = utfmb 
-            {
-                value.rawValue += tmp;
-                bb.append( Strings.getBytesUtf8( tmp ) );
-            }
-            |
-            bytes = pair [value] 
-			{ 
-				bb.append( bytes ); 
-			}
-        )*
+        // Note that we don't distinguish between sutf1 and tutf1, as it would be ambiguous.
+        // The final spaces will be handled later.
+        ( lutf1 [value] | utfmb [value] | pair [value] ) ( sutf1 [value] | utfmb [value] | pair [value] )*
     )
-    {
-		/*
-        String string = Strings.utf8ToString( bb.copyOfUsedBytes() );
-        
-        // trim trailing space characters manually
-        // don't know how to tell antlr that the last char mustn't be a space.
-        int rawIndex = value.rawValue.length();
-        while ( string.length() > 0 && rawIndex > 1 
-            && value.rawValue.charAt( rawIndex - 1 ) == ' ' 
-            && value.rawValue.charAt( rawIndex - 2 ) != '\\' )
-        {
-            string = string.substring( 0, string.length() - 1 );
-            rawIndex--;
-        }
-        
-        value.value = string;
-		*/
-    }
     ;
 
 
@@ -681,7 +604,7 @@ string [UpAndNormValue value]
  * LUTF1 = %x01-1F / %x21 / %x24-2A / %x2D-3A /
  *    %x3D / %x3F-5B / %x5D-7F
  *
- * The rule LUTF1_REST doesn't contain the following charcters,
+ * The rule CHAR_REST doesn't contain the following charcters,
  * so we must check them additionally
  *   EQUALS (0x3D)
  *   HYPHEN (0x2D)
@@ -689,175 +612,326 @@ string [UpAndNormValue value]
  *   DIGIT (0x30-0x39)
  *   ALPHA (0x41-0x5A and 0x61-0x7A)
  */
-lutf1 returns [String lutf1=""]
+lutf1 [UpAndNormValue value]
     {
         matchedProduction( "lutf1()" );
     }
     :
-    rest:LUTF1_REST { lutf1 = rest.getText(); }
+    rest:CHAR_REST 
+    { 
+        char c = rest.getText().charAt( 0 );
+        value.upValue.append( c );
+        value.bytes.append( ( byte ) c );
+    }
     |
-    equals:EQUALS { lutf1 = equals.getText(); }
+    EQUALS
+    { 
+        value.upValue.append( '=' );
+        value.bytes.append( '=' );
+    }
     |
-    hyphen:HYPHEN { lutf1 = hyphen.getText(); }
+    HYPHEN
+    { 
+        value.upValue.append( '-' );
+        value.bytes.append( '-' );
+    }
     |
-    underscore:UNDERSCORE { lutf1 = underscore.getText(); }
+    UNDERSCORE
+    { 
+        value.upValue.append( '_' );
+        value.bytes.append( '_' );
+    }
     |
-    digit:DIGIT { lutf1 = digit.getText(); }
+    digit:DIGIT
+    { 
+        char c = digit.getText().charAt( 0 );
+        value.upValue.append( c );
+        value.bytes.append( ( byte ) c );
+    }
     |
-    alpha:ALPHA { lutf1 = alpha.getText(); }
+    alpha:ALPHA
+    { 
+        char c = alpha.getText().charAt( 0 );
+        value.upValue.append( c );
+        value.bytes.append( ( byte ) c  );
+    }
     | 
-    numericoid:NUMERICOID  { lutf1 = numericoid.getText(); }    
+    // Another hack : having a String like 127.0.0.1 in the value
+    // will not match a DIGIT, because it's swallowed by the NUMERICOID
+    // token
+    numericoid:NUMERICOID  
+    {
+        String number = numericoid.getText();
+        value.upValue.append( number );
+        value.bytes.append( Strings.getBytesUtf8( number ) );
+    }
     ;
-    
+
+
 /**
  * RFC 4514, Section 3:
  * SUTF1 = %x01-21 / %x23-2A / %x2D-3A /
  *    %x3D / %x3F-5B / %x5D-7F
  *
- * The rule LUTF1_REST doesn't contain the following charcters,
+ * The rule CHAR_REST doesn't contain the following charcters,
  * so we must check them additionally
  *   EQUALS (0x3D)
  *   HYPHEN (0x2D)
  *   UNDERSCORE (0x5F)
  *   DIGIT (0x30-0x39)
  *   ALPHA (0x41-0x5A and 0x61-0x7A)
- *   SHARP
- *   SPACE
+ *   SHARP (0x23)
+ *   SPACE (0x20)
  */
-sutf1 returns [String sutf1=""]
+sutf1 [UpAndNormValue value]
     {
         matchedProduction( "sutf1()" );
     }
     :
-    rest:LUTF1_REST { sutf1 = rest.getText(); }
+    rest:CHAR_REST
+    { 
+        char c = rest.getText().charAt( 0 );
+        value.upValue.append( c );
+        value.bytes.append( ( byte ) c );
+    }
     |
-    equals:EQUALS { sutf1 = equals.getText(); }
+    EQUALS
+    { 
+        value.upValue.append( '=' );
+        value.bytes.append( '=' );
+    }
     |
-    hyphen:HYPHEN { sutf1 = hyphen.getText(); }
+    HYPHEN
+    { 
+        value.upValue.append( '-' );
+        value.bytes.append( '-' );
+    }
     |
-    underscore:UNDERSCORE { sutf1 = underscore.getText(); }
+    UNDERSCORE
+    { 
+        value.upValue.append( '_' );
+        value.bytes.append( '_' );
+    }
     |
-    digit:DIGIT { sutf1 = digit.getText(); }
+    digit:DIGIT
+    { 
+        char c = digit.getText().charAt( 0 );
+        value.upValue.append( c );
+        value.bytes.append( ( byte ) c );
+    }
     |
-    alpha:ALPHA { sutf1 = alpha.getText(); }
+    alpha:ALPHA
+    { 
+        char c = alpha.getText().charAt( 0 );
+        value.upValue.append( c );
+        value.bytes.append( ( byte ) c );
+    }
     |
-    sharp:SHARP { sutf1 = sharp.getText(); }
+    SHARP
+    { 
+        value.upValue.append( '#' );
+        value.bytes.append( '#' );
+    }
     | 
-    space:SPACE  { sutf1 = space.getText(); }
+    SPACE
+    { 
+        value.upValue.append( ' ' );
+        value.bytes.append( ' ' );
+    }
     | 
     // This is a hack to deal with #NN included into the value, due to 
     // some collision with the HEXVALUE token. In this case, we should
     // consider that a hex value is in fact a String
-    hex:HEXVALUE { sutf1 = "#" + hex.getText(); }
+    hex:HEXVALUE
+    {
+        String hexStr = hex.getText();
+        value.upValue.append( '#' ).append( hexStr );
+        value.bytes.append( '#' );
+        value.bytes.append( Strings.getBytesUtf8( hexStr ) );
+    }
+    | 
+    // Another hack : having a String like 127.0.0.1 in the value
+    // will not match a DIGIT, because it's swallowed by the NUMERICOID
+    // token
+    numericoid:NUMERICOID  
+    {
+        String number = numericoid.getText();
+        value.upValue.append( number );
+        value.bytes.append( Strings.getBytesUtf8( number ) );
+    }
+    ;
+
+
+/**
+ * RFC 4514, Section 3:
+ * TUTF1 = %x01-1F / %x21 / %x23-2A / %x2D-3A /
+ *    %x3D / %x3F-5B / %x5D-7F
+ *
+ * The rule CHAR_REST doesn't contain the following charcters,
+ * so we must check them additionally
+ *   EQUALS (0x3D)
+ *   HYPHEN (0x2D)
+ *   UNDERSCORE (0x5F)
+ *   DIGIT (0x30-0x39)
+ *   ALPHA (0x41-0x5A and 0x61-0x7A)
+ *   SHARP (0x23)
+ *
+tutf1 [UpAndNormValue value]
+    {
+        matchedProduction( "tutf1()" );
+    }
+    :
+    rest:CHAR_REST
+    { 
+        char c = rest.getText().charAt( 0 );
+        value.upValue.append( c );
+        value.bytes.append( ( byte ) c );
+    }
     |
-    numericoid:NUMERICOID  { sutf1 = numericoid.getText(); }    
-    ;    
+    EQUALS
+    { 
+        value.upValue.append( '=' );
+        value.bytes.append( '=' );
+    }
+    |
+    HYPHEN
+    { 
+        value.upValue.append( '-' );
+        value.bytes.append( '-' );
+    }
+    |
+    UNDERSCORE
+    { 
+        value.upValue.append( '_' );
+        value.bytes.append( '_' );
+    }
+    |
+    digit:DIGIT
+    { 
+        char c = digit.getText().charAt( 0 );
+        value.upValue.append( c );
+        value.bytes.append( ( byte ) c );
+    }
+    |
+    alpha:ALPHA
+    { 
+        char c = alpha.getText().charAt( 0 );
+        value.upValue.append( c );
+        value.bytes.append( ( byte ) c );
+    }
+    ;
+*/
 
-
-utfmb returns [String utfmb]
+utfmb [UpAndNormValue value]
     {
         matchedProduction( "utfmb()" );
     }
     :
-    s:UTFMB { utfmb = s.getText(); }
+    s:UTFMB
+    { 
+        char c = s.getText().charAt( 0 );
+        value.upValue.append( c );
+        value.bytes.append( Unicode.charToBytes( c ) );
+    }
     ;
 
 
-    /**
-     * RFC 4514, Section 3
-     * pair = ESC ( ESC / special / hexpair )
-     * special = escaped / SPACE / SHARP / EQUALS
-     * escaped = DQUOTE / PLUS / COMMA / SEMI / LANGLE / RANGLE
-     * hexpair = HEX HEX
-     *
-     * If in <string> form, a LDAP string representation asserted value can
-     * be obtained by replacing (left to right, non-recursively) each <pair>
-     * appearing in the <string> as follows:
-     *   replace <ESC><ESC> with <ESC>;
-     *   replace <ESC><special> with <special>;
-     *   replace <ESC><hexpair> with the octet indicated by the <hexpair>.
-     * 
-     * RFC 2253, Section 3
-     * pair       = "\" ( special / "\" / QUOTATION / hexpair )
-     * special    = "," / "=" / "+" / "<" /  ">" / "#" / ";"
-     * 
-     * RFC 1779, Section 2.3
-     * <pair> ::= "\" ( <special> | "\" | '"')
-     * <special> ::= "," | "=" | <CR> | "+" | "<" |  ">"
-     *           | "#" | ";"
-     * 
-     */ 
-pair [UpAndNormValue value] returns [byte[] pair]
+/**
+ * RFC 4514, Section 3
+ * pair = ESC ( ESC / special / hexpair )
+ * special = escaped / SPACE / SHARP / EQUALS
+ * escaped = DQUOTE / PLUS / COMMA / SEMI / LANGLE / RANGLE
+ * hexpair = HEX HEX
+ *
+ * If in <string> form, a LDAP string representation asserted value can
+ * be obtained by replacing (left to right, non-recursively) each <pair>
+ * appearing in the <string> as follows:
+ *   replace <ESC><ESC> with <ESC>;
+ *   replace <ESC><special> with <special>;
+ *   replace <ESC><hexpair> with the octet indicated by the <hexpair>.
+ * 
+ * RFC 2253, Section 3
+ * pair       = "\" ( special / "\" / QUOTATION / hexpair )
+ * special    = "," / "=" / "+" / "<" /  ">" / "#" / ";"
+ * 
+ * RFC 1779, Section 2.3
+ * <pair> ::= "\" ( <special> | "\" | '"')
+ * <special> ::= "," | "=" | <CR> | "+" | "<" |  ">"
+ *           | "#" | ";"
+ * 
+ */ 
+pair [UpAndNormValue value]
     {
         matchedProduction( "pair()" );
-        String tmp;
+        char specialChar;
     }
     :
     (
         ESCESC 
         { 
-            value.rawValue += "\\\\";
-            pair = Strings.getBytesUtf8( "\\" );
+            value.upValue.append( "\\\\" );
+            value.bytes.append( '\\' );
         } 
     )
     |
     (
         ESCSHARP 
         { 
-            value.rawValue += "\\#";
-            pair = Strings.getBytesUtf8( "#" );
+            value.upValue.append( "\\#" );
+            value.bytes.append( '#' );
         } 
     )
     |
     ( 
         ESC
-        tmp = special 
+        specialChar = special 
         { 
-            value.rawValue += "\\" + tmp;
-            pair = Strings.getBytesUtf8( tmp );
+            value.upValue.append( '\\' ).append( specialChar );
+            value.bytes.append( specialChar );
         }
     )
     |
-    ( 
-        hexpair:HEXPAIR 
-        { 
-            value.rawValue += "\\" + hexpair.getText();
-            pair = Strings.toByteArray( hexpair.getText() ); 
-        } 
+    (
+        // A String like "\C4", corresponding to the hex value 0xC4. 
+        hexpair:HEXPAIR
+        {
+            value.upValue.append( '\\' ).append( hexpair.getText() );
+            value.bytes.append( Strings.toByteArray( hexpair.getText() ) );
+        }
     )
     ;
 
 
-    /**
-     * RFC 4514 Section 3
-     * 
-     * special = escaped / SPACE / SHARP / EQUALS
-     * escaped = DQUOTE / PLUS / COMMA / SEMI / LANGLE / RANGLE
-     *
-     */ 
-special returns [String special]
+/**
+ * RFC 4514 Section 3
+ * 
+ * special = escaped / SPACE / SHARP / EQUALS
+ * escaped = DQUOTE / PLUS / COMMA / SEMI / LANGLE / RANGLE
+ *
+ */
+special returns [char special]
     {
         matchedProduction( "special()" );
     }
     :
     (
-        dquote:DQUOTE { special = dquote.getText(); }
+        DQUOTE { special = '"'; }
         |
-        plus:PLUS { special = plus.getText(); }
+        PLUS { special = '+'; }
         |
-        comma:COMMA { special = comma.getText(); }
+        COMMA { special = ','; }
         |
-        semi:SEMI { special = semi.getText(); }
+        SEMI { special = ';'; }
         |
-        langle:LANGLE { special = langle.getText(); }
+        LANGLE { special = '<'; }
         |
-        rangle:RANGLE { special = rangle.getText(); }
+        RANGLE { special = '>'; }
         |
-        space:SPACE { special = space.getText(); }
+        SPACE { special = ' '; }
         |
-        sharp:SHARP { special = sharp.getText(); }
+        SHARP { special = '#'; }
         |
-        equals:EQUALS { special = equals.getText(); }
+        EQUALS { special = '='; }
     )
     ;
 

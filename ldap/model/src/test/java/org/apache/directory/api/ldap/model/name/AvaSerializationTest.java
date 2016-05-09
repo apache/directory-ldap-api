@@ -34,6 +34,7 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.name.Ava;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.util.Strings;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -62,8 +63,6 @@ public class AvaSerializationTest
     {
         Ava atav = new Ava( schemaManager, "CN", "Test" );
 
-        atav.normalize();
-
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
@@ -87,8 +86,6 @@ public class AvaSerializationTest
         byte[] upValue = Strings.getBytesUtf8( "  Test  " );
 
         Ava atav = new Ava( schemaManager, "CN", upValue );
-
-        atav.normalize();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -224,8 +221,6 @@ public class AvaSerializationTest
     {
         Ava atav = new Ava( schemaManager, "CN", "Test" );
 
-        atav.normalize();
-
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
@@ -249,8 +244,6 @@ public class AvaSerializationTest
         byte[] upValue = Strings.getBytesUtf8( "  Test  " );
 
         Ava atav = new Ava( schemaManager, "CN", upValue );
-
-        atav.normalize();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -354,5 +347,35 @@ public class AvaSerializationTest
         atav2.readExternal( in );
 
         assertEquals( atav, atav2 );
+    }
+
+
+    @Test
+    @Ignore
+    public void testSerializationPerf() throws LdapException, IOException, ClassNotFoundException
+    {
+        Ava atav = new Ava( schemaManager, "cn", "This is a serialization test" );
+
+        long t0 = System.currentTimeMillis();
+        
+        for ( int j = 0; j < 1000; j++ )
+        {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream( baos );
+            
+            for ( int i = 0; i < 100000; i++ )
+            {
+        
+                atav.writeExternal( out );
+                
+                out.flush();
+            }
+        
+            out.close();
+            baos.close();
+        }
+        
+        long t1 = System.currentTimeMillis();
+        System.out.println( "delta AVA new serialization : " + ( t1 - t0 ) );
     }
 }

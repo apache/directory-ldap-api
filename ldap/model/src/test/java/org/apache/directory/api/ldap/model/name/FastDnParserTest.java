@@ -163,19 +163,19 @@ public class FastDnParserTest
         Dn dn = FastDnParser.parse( "a = b" );
 
         assertEquals( "a = b", dn.getName() );
-        assertEquals( "a=b", dn.getNormName() );
+        assertEquals( "a=b", dn.getEscaped() );
         assertEquals( "a = b", dn.toString() );
 
         assertEquals( "a = b", dn.getRdn().getName() );
-        assertEquals( "a=b", dn.getRdn().getNormName() );
+        assertEquals( "a=b", dn.getRdn().getEscaped() );
 
-        assertEquals( "a = b", dn.getRdn().getAva().getName() );
-        assertEquals( "a=b", dn.getRdn().getAva().getNormName() );
+        assertEquals( "a=b", dn.getRdn().getAva().getName() );
+        assertEquals( "a=b", dn.getRdn().getAva().getEscaped() );
 
         assertEquals( "a", dn.getRdn().getAva().getType() );
         assertEquals( "a", dn.getRdn().getAva().getNormType() );
         assertEquals( "b", dn.getRdn().getAva().getValue().getValue() );
-        assertEquals( "b", dn.getRdn().getAva().getValue().getNormValue() );
+        assertEquals( "b", dn.getRdn().getAva().getValue().getValue() );
     }
 
 
@@ -186,7 +186,7 @@ public class FastDnParserTest
     public void testLdapDNComposite() throws LdapException
     {
         Dn dn = FastDnParser.parse( "a = b, c = d" );
-        assertEquals( "a=b,c=d", dn.getNormName() );
+        assertEquals( "a=b,c=d", dn.getEscaped() );
         assertEquals( "a = b, c = d", dn.getName() );
     }
 
@@ -198,7 +198,7 @@ public class FastDnParserTest
     public void testLdapDNCompositeWithSpace() throws LdapException
     {
         Dn dn = FastDnParser.parse( "a=b, a =b, a= b, a = b, a  =  b" );
-        assertEquals( "a=b,a=b,a=b,a=b,a=b", dn.getNormName() );
+        assertEquals( "a=b,a=b,a=b,a=b,a=b", dn.getEscaped() );
         assertEquals( "a=b, a =b, a= b, a = b, a  =  b", dn.getName() );
     }
 
@@ -211,7 +211,7 @@ public class FastDnParserTest
     public void testLdapDNCompositeSepators() throws LdapException
     {
         Dn dn = FastDnParser.parse( "a=b;c=d,e=f" );
-        assertEquals( "a=b,c=d,e=f", dn.getNormName() );
+        assertEquals( "a=b,c=d,e=f", dn.getEscaped() );
         assertEquals( "a=b;c=d,e=f", dn.getName() );
     }
 
@@ -222,7 +222,7 @@ public class FastDnParserTest
     public void testAttributeTypeWithUnderscore() throws LdapException
     {
         Dn dn = FastDnParser.parse( "microsoft_developpers=morons" );
-        assertEquals( "microsoft_developpers=morons", dn.getNormName() );
+        assertEquals( "microsoft_developpers=morons", dn.getEscaped() );
     }
 
     
@@ -279,7 +279,7 @@ public class FastDnParserTest
     public void testLdapDNOidWithoutPrefix() throws LdapException
     {
         Dn dn = FastDnParser.parse( "12.34.56 = azerty" );
-        assertEquals( "12.34.56=azerty", dn.getNormName() );
+        assertEquals( "12.34.56=azerty", dn.getEscaped() );
         assertEquals( "12.34.56 = azerty", dn.getName() );
     }
 
@@ -292,7 +292,7 @@ public class FastDnParserTest
     public void testLdapDNCompositeOidWithoutPrefix() throws LdapException
     {
         Dn dn = FastDnParser.parse( "12.34.56 = azerty; 7.8 = test" );
-        assertEquals( "12.34.56=azerty,7.8=test", dn.getNormName() );
+        assertEquals( "12.34.56=azerty,7.8=test", dn.getEscaped() );
         assertEquals( "12.34.56 = azerty; 7.8 = test", dn.getName() );
     }
 
@@ -341,21 +341,6 @@ public class FastDnParserTest
     }
 
 
-    /**
-     * Test the encoding of a LdanDN
-     */
-    @Test
-    public void testNameToBytes() throws LdapException
-    {
-        Dn dn = FastDnParser.parse( "cn = John, ou = People, OU = Marketing" );
-
-        byte[] bytes = Dn.getBytes( dn );
-
-        assertEquals( 30, bytes.length );
-        assertEquals( "cn=John,ou=People,ou=Marketing", Strings.utf8ToString( bytes ) );
-    }
-
-
     @Test
     public void testStringParser() throws LdapException
     {
@@ -366,7 +351,7 @@ public class FastDnParserTest
         Dn name = FastDnParser.parse( dn );
 
         assertEquals( "CN = Emmanuel  L\u00e9charny", name.getName() );
-        assertEquals( "cn=Emmanuel  L\u00e9charny", name.getNormName() );
+        assertEquals( "CN=Emmanuel  L\u00e9charny", name.getEscaped() );
     }
 
 
@@ -379,7 +364,7 @@ public class FastDnParserTest
         Dn name = FastDnParser.parse( dn );
 
         assertEquals( "C= E\u00e9c", name.getName() );
-        assertEquals( "c=E\u00e9c", name.getNormName() );
+        assertEquals( "C=E\u00e9c", name.getEscaped() );
     }
 
 
@@ -428,8 +413,8 @@ public class FastDnParserTest
         assertEquals( "RFC1779_1 : ",
             "CN=Marshall T. Rose, O=Dover Beach Consulting, L=Santa Clara, ST=California, C=US",
             nameRFC1779_1.getName() );
-        assertEquals( "RFC1779_1 : ", "cn=Marshall T. Rose,o=Dover Beach Consulting,l=Santa Clara,st=California,c=US",
-            nameRFC1779_1.getNormName() );
+        assertEquals( "RFC1779_1 : ", "CN=Marshall T. Rose,O=Dover Beach Consulting,L=Santa Clara,ST=California,C=US",
+            nameRFC1779_1.getEscaped() );
     }
 
 

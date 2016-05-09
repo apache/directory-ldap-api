@@ -30,6 +30,7 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.util.Strings;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -67,7 +68,6 @@ public class DnParserTest
         Dn dn = new Dn( "a = b" );
 
         assertEquals( "a = b", dn.getName() );
-        assertEquals( "a=b", dn.getNormName() );
     }
 
 
@@ -79,7 +79,7 @@ public class DnParserTest
     {
         Dn dn = new Dn( "a = b, c = d" );
 
-        assertEquals( "a=b,c=d", dn.getNormName() );
+        assertEquals( "a=b,c=d", dn.getEscaped() );
         assertEquals( "a = b, c = d", dn.getName() );
     }
 
@@ -91,7 +91,7 @@ public class DnParserTest
     public void testLdapDNCompositeWithSpace() throws LdapException
     {
         Dn dn = new Dn( "a=b, a =b, a= b, a = b, a  =  b" );
-        assertEquals( "a=b,a=b,a=b,a=b,a=b", dn.getNormName() );
+        assertEquals( "a=b,a=b,a=b,a=b,a=b", dn.getEscaped() );
         assertEquals( "a=b, a =b, a= b, a = b, a  =  b", dn.getName() );
     }
 
@@ -104,7 +104,7 @@ public class DnParserTest
     public void testLdapDNCompositeSepators() throws LdapException
     {
         Dn dn = new Dn( "a=b;c=d,e=f" );
-        assertEquals( "a=b,c=d,e=f", dn.getNormName() );
+        assertEquals( "a=b,c=d,e=f", dn.getEscaped() );
         assertEquals( "a=b;c=d,e=f", dn.getName() );
     }
 
@@ -116,7 +116,7 @@ public class DnParserTest
     public void testAttributeTypeWithUnderscore() throws LdapException
     {
         Dn dn = new Dn( "a_a = b + c_c = d" );
-        assertEquals( "a_a=b+c_c=d", dn.getNormName() );
+        assertEquals( "a_a=b+c_c=d", dn.getEscaped() );
         assertEquals( "a_a = b + c_c = d", dn.getName() );
     }
 
@@ -128,7 +128,7 @@ public class DnParserTest
     public void testAttributeValueWithUnderscore() throws LdapException
     {
         Dn dn = new Dn( "cn=\\#ACL_AD-Projects_Author,ou=Notes_Group,o=Contacts,c=DE" );
-        assertEquals( "cn=\\#ACL_AD-Projects_Author,ou=Notes_Group,o=Contacts,c=DE", dn.getNormName() );
+        assertEquals( "cn=\\#ACL_AD-Projects_Author,ou=Notes_Group,o=Contacts,c=DE", dn.getEscaped() );
         assertEquals( "cn=\\#ACL_AD-Projects_Author,ou=Notes_Group,o=Contacts,c=DE", dn.getName() );
     }
 
@@ -140,7 +140,7 @@ public class DnParserTest
     public void testLdapDNSimpleMultivaluedAttribute() throws LdapException
     {
         Dn dn = new Dn( "a = b + c = d" );
-        assertEquals( "a=b+c=d", dn.getNormName() );
+        assertEquals( "a=b+c=d", dn.getEscaped() );
         assertEquals( "a = b + c = d", dn.getName() );
     }
 
@@ -153,7 +153,7 @@ public class DnParserTest
     public void testLdapDNCompositeMultivaluedAttribute() throws LdapException
     {
         Dn dn = new Dn( "a=b+c=d, e=f + g=h + i=j" );
-        assertEquals( "a=b+c=d,e=f+g=h+i=j", dn.getNormName() );
+        assertEquals( "a=b+c=d,e=f+g=h+i=j", dn.getEscaped() );
         assertEquals( "a=b+c=d, e=f + g=h + i=j", dn.getName() );
     }
 
@@ -165,7 +165,7 @@ public class DnParserTest
     public void testLdapDNOidUpper() throws LdapException
     {
         Dn dn = new Dn( "OID.12.34.56 = azerty" );
-        assertEquals( "oid.12.34.56=azerty", dn.getNormName() );
+        assertEquals( "OID.12.34.56=azerty", dn.getEscaped() );
         assertEquals( "OID.12.34.56 = azerty", dn.getName() );
     }
 
@@ -177,7 +177,7 @@ public class DnParserTest
     public void testLdapDNOidLower() throws LdapException
     {
         Dn dn = new Dn( "oid.12.34.56 = azerty" );
-        assertEquals( "oid.12.34.56=azerty", dn.getNormName() );
+        assertEquals( "oid.12.34.56=azerty", dn.getEscaped() );
         assertEquals( "oid.12.34.56 = azerty", dn.getName() );
     }
 
@@ -190,7 +190,7 @@ public class DnParserTest
     public void testLdapDNOidWithoutPrefix() throws LdapException
     {
         Dn dn = new Dn( "12.34.56 = azerty" );
-        assertEquals( "12.34.56=azerty", dn.getNormName() );
+        assertEquals( "12.34.56=azerty", dn.getEscaped() );
         assertEquals( "12.34.56 = azerty", dn.getName() );
     }
 
@@ -203,7 +203,7 @@ public class DnParserTest
     public void testLdapDNCompositeOidWithoutPrefix() throws LdapException
     {
         Dn dn = new Dn( "12.34.56 = azerty; 7.8 = test" );
-        assertEquals( "12.34.56=azerty,7.8=test", dn.getNormName() );
+        assertEquals( "12.34.56=azerty,7.8=test", dn.getEscaped() );
         assertEquals( "12.34.56 = azerty; 7.8 = test", dn.getName() );
     }
 
@@ -215,11 +215,11 @@ public class DnParserTest
     public void testLdapDNPairCharAttributeValue() throws LdapException
     {
         Dn dn = new Dn( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C3\\A9" );
-        assertEquals( "a=\\,\\=\\+\\<\\>#\\;\\\\\\\"\u00e9", dn.getNormName() );
+        assertEquals( "a=\\,=\\+\\<\\>#\\;\\\\\\\"\u00e9", dn.getEscaped() );
         assertEquals( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C3\\A9", dn.getName() );
 
         dn = new Dn( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\u00e9" );
-        assertEquals( "a=\\,\\=\\+\\<\\>#\\;\\\\\\\"\u00e9", dn.getNormName() );
+        assertEquals( "a=\\,=\\+\\<\\>#\\;\\\\\\\"\u00e9", dn.getEscaped() );
         assertEquals( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\u00e9", dn.getName() );
     }
 
@@ -231,7 +231,7 @@ public class DnParserTest
     public void testLdapDNHexStringAttributeValue() throws LdapException
     {
         Dn dn = new Dn( "a = #0010A0AAFF" );
-        assertEquals( "a=#0010A0AAFF", dn.getNormName() );
+        assertEquals( "a=\\00\u0010\\A0\\AA\\FF", dn.getEscaped() );
         assertEquals( "a = #0010A0AAFF", dn.getName() );
     }
 
@@ -261,11 +261,11 @@ public class DnParserTest
     public void testLdapDNQuotedAttributeValue() throws LdapException
     {
         Dn dn = new Dn( "a = quoted \\\"value" );
-        assertEquals( "a=quoted \\\"value", dn.getNormName() );
+        assertEquals( "a=quoted \\\"value", dn.getEscaped() );
         assertEquals( "a = quoted \\\"value", dn.getName() );
 
         dn = new Dn( "cn=Mackie \\\"The Knife\\\" Messer" );
-        assertEquals( "cn=Mackie \\\"The Knife\\\" Messer", dn.getNormName() );
+        assertEquals( "cn=Mackie \\\"The Knife\\\" Messer", dn.getEscaped() );
         assertEquals( "cn=Mackie \\\"The Knife\\\" Messer", dn.getName() );
     }
 
@@ -277,23 +277,8 @@ public class DnParserTest
     public void testLdapDNBackslashInAttributeValue() throws LdapException
     {
         Dn dn = new Dn( "a = AC\\\\DC" );
-        assertEquals( "a=AC\\\\DC", dn.getNormName() );
+        assertEquals( "a=AC\\\\DC", dn.getEscaped() );
         assertEquals( "a = AC\\\\DC", dn.getName() );
-    }
-
-
-    /**
-     * Test the encoding of a LdanDN
-     */
-    @Test
-    public void testNameToBytes() throws LdapException
-    {
-        Dn dn = new Dn( "cn = John, ou = People, OU = Marketing" );
-
-        byte[] bytes = Dn.getBytes( dn );
-
-        assertEquals( 30, bytes.length );
-        assertEquals( "cn=John,ou=People,ou=Marketing", Strings.utf8ToString( bytes ) );
     }
 
 
@@ -307,7 +292,7 @@ public class DnParserTest
         Dn name = new Dn( dn );
 
         assertEquals( "CN = Emmanuel  L\u00e9charny", name.getName() );
-        assertEquals( "cn=Emmanuel  L\u00e9charny", name.getNormName() );
+        assertEquals( "CN=Emmanuel  L\u00e9charny", name.getEscaped() );
     }
 
 
@@ -320,7 +305,7 @@ public class DnParserTest
         Dn name = new Dn( dn );
 
         assertEquals( "C= E\u00e9c", name.getName() );
-        assertEquals( "c=E\u00e9c", name.getNormName() );
+        assertEquals( "C=E\u00e9c", name.getEscaped() );
     }
 
 
@@ -334,8 +319,8 @@ public class DnParserTest
             "cn=Billy Bakers, OID.2.5.4.11=Corporate Tax, ou=Fin-Accounting, ou=Americas, ou=Search, o=IMC, c=US", name
                 .getName() );
         assertEquals(
-            "cn=Billy Bakers,oid.2.5.4.11=Corporate Tax,ou=Fin-Accounting,ou=Americas,ou=Search,o=IMC,c=US", name
-                .getNormName() );
+            "cn=Billy Bakers,OID.2.5.4.11=Corporate Tax,ou=Fin-Accounting,ou=Americas,ou=Search,o=IMC,c=US", name
+                .getEscaped() );
     }
 
 
@@ -384,8 +369,8 @@ public class DnParserTest
         assertEquals( "RFC1779_1 : ",
             "CN=Marshall T. Rose, O=Dover Beach Consulting, L=Santa Clara, ST=California, C=US",
             nameRFC1779_1.getName() );
-        assertEquals( "RFC1779_1 : ", "cn=Marshall T. Rose,o=Dover Beach Consulting,l=Santa Clara,st=California,c=US",
-            nameRFC1779_1.getNormName() );
+        assertEquals( "RFC1779_1 : ", "CN=Marshall T. Rose,O=Dover Beach Consulting,L=Santa Clara,ST=California,C=US",
+            nameRFC1779_1.getEscaped() );
     }
 
 
@@ -417,7 +402,7 @@ public class DnParserTest
 
         assertEquals( "RFC2253_2 : ", "OU = Sales + CN =   J. Smith , O = Widget Inc. , C = US",
             nameRFC2253_2.getName() );
-        assertEquals( "RFC2253_2 : ", "ou=Sales+cn=J. Smith,o=Widget Inc.,c=US", nameRFC2253_2.getNormName() );
+        assertEquals( "RFC2253_2 : ", "OU=Sales+CN=J. Smith,O=Widget Inc.,C=US", nameRFC2253_2.getEscaped() );
     }
 
 
@@ -434,7 +419,7 @@ public class DnParserTest
 
         assertEquals( "RFC2253_3 : ", "CN=L. Eagle,   O=Sue\\, Grabbit and Runn, C=GB", nameRFC2253_3
             .getName() );
-        assertEquals( "RFC2253_3 : ", "cn=L. Eagle,o=Sue\\, Grabbit and Runn,c=GB", nameRFC2253_3.getNormName() );
+        assertEquals( "RFC2253_3 : ", "CN=L. Eagle,O=Sue\\, Grabbit and Runn,C=GB", nameRFC2253_3.getEscaped() );
     }
 
 
@@ -529,7 +514,7 @@ public class DnParserTest
         String path = "windowsFilePath=C:\\\\cygwin";
         Dn result = new Dn( path );
         assertEquals( path, result.getName() );
-        assertEquals( "windowsfilepath=C:\\\\cygwin", result.getNormName() );
+        assertEquals( "windowsFilePath=C:\\\\cygwin", result.getEscaped() );
     }
 
 
@@ -584,7 +569,7 @@ public class DnParserTest
         Dn dn = new Dn( cn );
 
         assertEquals( "cn=\u00c4\\2B", dn.getName() );
-        assertEquals( "cn=\u00c4\\+", dn.getNormName() );
+        assertEquals( "cn=\u00c4\\+", dn.getEscaped() );
     }
 
 
@@ -597,7 +582,7 @@ public class DnParserTest
         Dn dn = new Dn( cn );
 
         assertEquals( "cn=\u00E4\\+", dn.getName() );
-        assertEquals( "cn=\u00E4\\+", dn.getNormName() );
+        assertEquals( "cn=\u00E4\\+", dn.getEscaped() );
     }
 
 
@@ -692,5 +677,125 @@ public class DnParserTest
     public void testSameAttributeInDn() throws LdapInvalidDnException
     {
         //Dn dn = new Dn( "l=eu + l=de + l=Berlin + l=Brandenburger Tor,dc=example,dc=org" );
+    }
+    
+    
+    @Test
+    //@Ignore
+    public void testDnParsing() throws LdapInvalidDnException
+    {
+        long[] deltas = new long[10];
+        
+        for ( int j = 0; j < 10; j++ )
+        {
+            long t0 = System.currentTimeMillis();
+            
+            for ( int i = 0; i < 10000000; i++ )
+            {
+                new Dn( "dc=example" + i );
+            }
+            
+            long t1 = System.currentTimeMillis();
+            
+            deltas[j] = t1 - t0;
+            System.out.println( "Iteration[" + j + "] : " + deltas[j] );
+        }
+        
+        long allDeltas = 0L;
+        
+        for ( int i = 0; i < 10; i++ )
+        {
+            allDeltas += deltas[i];
+        }
+        
+        System.out.println( "delta new 1 RDN : " + ( allDeltas / 10 ) );
+
+        for ( int j = 0; j < 10; j++ )
+        {
+            long t0 = System.currentTimeMillis();
+            
+            for ( int i = 0; i < 10000000; i++ )
+            {
+                new Dn( "dc=example" + i + ",dc=com" );
+            }
+            
+            long t1 = System.currentTimeMillis();
+            
+            deltas[j] = t1 - t0;
+            System.out.println( "Iteration[" + j + "] : " + deltas[j] );
+        }
+        
+        allDeltas = 0L;
+        
+        for ( int i = 0; i < 10; i++ )
+        {
+            allDeltas += deltas[i];
+        }
+        
+        System.out.println( "delta new 2 RDNs : " + ( allDeltas / 10 ) );
+
+        for ( int j = 0; j < 10; j++ )
+        {
+            long t0 = System.currentTimeMillis();
+            
+            for ( int i = 0; i < 10000000; i++ )
+            {
+                new Dn( "uid=" + i + ",dc=example,dc=com" );
+            }
+            
+            long t1 = System.currentTimeMillis();
+            
+            deltas[j] = t1 - t0;
+            System.out.println( "Iteration[" + j + "] : " + deltas[j] );
+        }
+        
+        allDeltas = 0L;
+        
+        for ( int i = 0; i < 10; i++ )
+        {
+            allDeltas += deltas[i];
+        }
+        
+        System.out.println( "delta new 3 RDNs : " + ( allDeltas / 10 ) );
+
+        for ( int j = 0; j < 10; j++ )
+        {
+            long t0 = System.currentTimeMillis();
+            
+            for ( int i = 0; i < 10000000; i++ )
+            {
+                new Dn( "uid=" + i + ",ou=people,dc=example,dc=com" );
+            }
+            
+            long t1 = System.currentTimeMillis();
+            
+            deltas[j] = t1 - t0;
+            System.out.println( "Iteration[" + j + "] : " + deltas[j] );
+        }
+        
+        allDeltas = 0L;
+        
+        for ( int i = 0; i < 10; i++ )
+        {
+            allDeltas += deltas[i];
+        }
+        
+        System.out.println( "delta new 4 RDNs : " + ( allDeltas / 10 ) );
+    }
+    
+    
+    @Test
+    @Ignore
+    public void testDnParsingOneRdn() throws LdapInvalidDnException
+    {
+        long t0 = System.currentTimeMillis();
+        
+        for ( int i = 0; i < 1000000; i++ )
+        {
+            new Dn( "dc=example" + i );
+        }
+        
+        long t1 = System.currentTimeMillis();
+        System.out.println( "delta new 1 RDN : " + ( t1 - t0 ) );
     }
 }

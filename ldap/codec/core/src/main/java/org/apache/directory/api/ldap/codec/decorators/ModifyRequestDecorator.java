@@ -43,6 +43,7 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ModifyRequest;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -73,6 +74,9 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
 
     /** A local storage for the operation */
     private ModificationOperation currentOperation;
+    
+    /** The DN as a byte[] */
+    private byte[] dnBytes;
 
 
     /**
@@ -376,6 +380,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
      * 
      * ModifyRequest :
      * 
+     * <pre>
      * 0x66 L1
      *  |
      *  +--> 0x04 L2 object
@@ -410,12 +415,13 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
      *                          +--> 0x04 L8-2-i attributeValue
      *                          +--> ...
      *                          +--> 0x04 L8-2-n attributeValue
+     * </pre>
      */
     public int computeLength()
     {
         // Initialized with name
-        modifyRequestLength = 1 + TLV.getNbBytes( Dn.getNbBytes( getName() ) )
-            + Dn.getNbBytes( getName() );
+        dnBytes = Strings.getBytesUtf8( getName().getName() );
+        modifyRequestLength = 1 + TLV.getNbBytes( dnBytes.length ) + dnBytes.length;
 
         // All the changes length
         changesLength = 0;
@@ -510,7 +516,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
             buffer.put( TLV.getBytes( modifyRequestLength ) );
 
             // The entry
-            BerValue.encode( buffer, Dn.getBytes( getName() ) );
+            BerValue.encode( buffer, dnBytes );
 
             // The modifications sequence
             buffer.put( UniversalTag.SEQUENCE.getValue() );
@@ -556,7 +562,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
                         {
                             if ( value.isHumanReadable() )
                             {
-                                BerValue.encode( buffer, value.getString() );
+                                BerValue.encode( buffer, value.getValue() );
                             }
                             else
                             {

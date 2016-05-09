@@ -45,7 +45,7 @@ public class NumericNormalizerTest
     public void testNumericNormalizerNull() throws LdapException
     {
         Normalizer normalizer = new NumericNormalizer();
-        assertEquals( "", normalizer.normalize( ( String ) null ) );
+        assertEquals( null, normalizer.normalize( ( String ) null ) );
     }
 
 

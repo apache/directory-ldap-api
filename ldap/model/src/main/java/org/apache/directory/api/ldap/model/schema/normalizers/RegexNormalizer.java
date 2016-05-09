@@ -83,7 +83,7 @@ public class RegexNormalizer extends Normalizer
 
         if ( value.isHumanReadable() )
         {
-            String str = value.getString();
+            String str = value.getValue();
 
             for ( int i = 0; i < matchers.length; i++ )
             {

@@ -256,7 +256,7 @@ public class SchemaEntityFactory implements EntityFactory
 
             for ( Value value : depsAttr )
             {
-                depsSet.add( value.getString() );
+                depsSet.add( value.getValue() );
             }
 
             dependencies = depsSet.toArray( EMPTY_ARRAY );
@@ -908,7 +908,7 @@ public class SchemaEntityFactory implements EntityFactory
 
         for ( Value value : attr )
         {
-            strings.add( value.getString() );
+            strings.add( value.getValue() );
         }
 
         return strings;
@@ -1185,7 +1185,7 @@ public class SchemaEntityFactory implements EntityFactory
     {
         Value value = attribute.get();
 
-        return value.getString();
+        return value.getValue();
     }
 
 
@@ -1230,7 +1230,7 @@ public class SchemaEntityFactory implements EntityFactory
 
             for ( Value name : names )
             {
-                values.add( name.getString() );
+                values.add( name.getValue() );
             }
 
             schemaObject.setNames( values );

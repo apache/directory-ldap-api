@@ -1,7 +1,7 @@
 version: 1
 dn: m-oid=2.5.13.5,ou=normalizers,cn=system,ou=schema
 m-oid: 2.5.13.5
-m-fqcn: org.apache.directory.api.ldap.model.schema.normalizers.CachingDeepTrimNormalizer
+m-fqcn: org.apache.directory.api.ldap.model.schema.normalizers.DeepTrimNormalizer
 objectclass: metaNormalizer
 objectclass: metaTop
 objectclass: top

@@ -118,7 +118,7 @@ public class BranchNormalizedVisitor implements FilterVisitor
         return getNormalizedFilter( originalNode );
     }
 
-
+    
     /**
      * Normalizes a filter expression to a canonical representation while
      * retaining logical meaning of the expression.
@@ -135,6 +135,7 @@ public class BranchNormalizedVisitor implements FilterVisitor
 
         return result.toString().trim();
     }
+    
 
     static class NodeComparator implements Comparator<ExprNode>
     {

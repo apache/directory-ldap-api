@@ -338,7 +338,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
         for ( Value value : attributeTypes )
         {
-            String desc = value.getString();
+            String desc = value.getValue();
 
             try
             {
@@ -366,7 +366,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
         for ( Value value : comparators )
         {
-            String desc = value.getString();
+            String desc = value.getValue();
 
             try
             {
@@ -394,7 +394,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
         for ( Value value : ditContentRules )
         {
-            String desc = value.getString();
+            String desc = value.getValue();
 
             try
             {
@@ -422,7 +422,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
         for ( Value value : ditStructureRules )
         {
-            String desc = value.getString();
+            String desc = value.getValue();
 
             try
             {
@@ -450,7 +450,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
         for ( Value value : ldapSyntaxes )
         {
-            String desc = value.getString();
+            String desc = value.getValue();
 
             try
             {
@@ -478,7 +478,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
         for ( Value value : matchingRules )
         {
-            String desc = value.getString();
+            String desc = value.getValue();
 
             try
             {
@@ -506,7 +506,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
         for ( Value value : matchingRuleUses )
         {
-            String desc = value.getString();
+            String desc = value.getValue();
 
             try
             {
@@ -534,7 +534,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
         for ( Value value : nameForms )
         {
-            String desc = value.getString();
+            String desc = value.getValue();
 
             try
             {
@@ -562,7 +562,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
         for ( Value value : normalizers )
         {
-            String desc = value.getString();
+            String desc = value.getValue();
 
             try
             {
@@ -590,7 +590,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
         for ( Value value : objectClasses )
         {
-            String desc = value.getString();
+            String desc = value.getValue();
 
             try
             {
@@ -618,7 +618,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
         for ( Value value : syntaxCheckers )
         {
-            String desc = value.getString();
+            String desc = value.getValue();
 
             try
             {

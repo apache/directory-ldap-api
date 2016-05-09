@@ -56,11 +56,11 @@ public class DnNormalizer extends Normalizer
     {
         Dn dn = null;
 
-        String dnStr = value.getString();
+        String dnStr = value.getValue();
 
         dn = new Dn( schemaManager, dnStr );
 
-        return new Value( dn.getNormName() );
+        return new Value( dn.getName() );
     }
 
 
@@ -73,7 +73,7 @@ public class DnNormalizer extends Normalizer
 
         dn = new Dn( schemaManager, value );
 
-        return dn.getNormName();
+        return dn.getName();
     }
 
 
@@ -85,11 +85,14 @@ public class DnNormalizer extends Normalizer
      */
     public String normalize( Dn value ) throws LdapException
     {
-        Dn dn = null;
+        Dn dn = value;
 
-        dn = value.apply( schemaManager );
+        if ( !value.isSchemaAware() )
+        {
+            dn = new Dn( schemaManager, value );
+        }
 
-        return dn.getNormName();
+        return dn.getName();
     }
 
 

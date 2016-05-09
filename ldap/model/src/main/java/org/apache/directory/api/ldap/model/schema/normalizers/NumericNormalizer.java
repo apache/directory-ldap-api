@@ -20,15 +20,12 @@
 package org.apache.directory.api.ldap.model.schema.normalizers;
 
 
-import java.io.IOException;
-
-import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.PrepareString;
+import org.apache.directory.api.ldap.model.schema.PreparedNormalizer;
 
 
 /**
@@ -37,7 +34,7 @@ import org.apache.directory.api.ldap.model.schema.PrepareString;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class NumericNormalizer extends Normalizer
+public class NumericNormalizer extends Normalizer implements PreparedNormalizer
 {
     /**
      * Creates a new instance of NumericNormalizer.
@@ -53,17 +50,9 @@ public class NumericNormalizer extends Normalizer
      */
     public Value normalize( Value value ) throws LdapException
     {
-        try
-        {
-            String normalized = PrepareString.normalize( value.getString(),
-                PrepareString.StringType.NUMERIC_STRING );
+        String normalized = normalize( value.getValue() );
 
-            return new Value( normalized );
-        }
-        catch ( IOException ioe )
-        {
-            throw new LdapInvalidDnException( I18n.err( I18n.ERR_04224, value ), ioe );
-        }
+        return new Value( normalized );
     }
 
 
@@ -72,14 +61,25 @@ public class NumericNormalizer extends Normalizer
      */
     public String normalize( String value ) throws LdapException
     {
-        try
+        return normalize( value, PrepareString.AssertionType.ATTRIBUTE_VALUE );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String normalize( String value, PrepareString.AssertionType assertionType ) throws LdapException
+    {
+        if ( value == null )
         {
-            return PrepareString.normalize( value,
-                PrepareString.StringType.NUMERIC_STRING );
+            return null;
         }
-        catch ( IOException ioe )
-        {
-            throw new LdapInvalidDnException( I18n.err( I18n.ERR_04224, value ), ioe );
-        }
+
+        char[] chars = value.toCharArray();
+        
+        // Insignificant Characters Handling
+        String normValue = PrepareString.insignificantNumericStringHandling( chars );
+
+        return normValue;
     }
 }

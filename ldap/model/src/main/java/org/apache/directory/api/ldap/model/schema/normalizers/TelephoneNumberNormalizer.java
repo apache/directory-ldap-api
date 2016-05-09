@@ -20,13 +20,9 @@
 package org.apache.directory.api.ldap.model.schema.normalizers;
 
 
-import java.io.IOException;
-
-import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.PrepareString;
 
@@ -53,17 +49,9 @@ public class TelephoneNumberNormalizer extends Normalizer
      */
     public Value normalize( Value value ) throws LdapException
     {
-        try
-        {
-            String normalized = PrepareString.normalize( value.getString(),
-                PrepareString.StringType.TELEPHONE_NUMBER );
+        String normalized = normalize( value.getValue() );
 
-            return new Value( normalized );
-        }
-        catch ( IOException ioe )
-        {
-            throw new LdapInvalidDnException( I18n.err( I18n.ERR_04224, value ), ioe );
-        }
+        return new Value( normalized );
     }
 
 
@@ -72,14 +60,16 @@ public class TelephoneNumberNormalizer extends Normalizer
      */
     public String normalize( String value ) throws LdapException
     {
-        try
+        if ( value == null )
         {
-            return PrepareString.normalize( value,
-                PrepareString.StringType.TELEPHONE_NUMBER );
+            return null;
         }
-        catch ( IOException ioe )
-        {
-            throw new LdapInvalidDnException( I18n.err( I18n.ERR_04224, value ), ioe );
-        }
+
+        char[] chars = value.toCharArray();
+        
+        // Insignificant Characters Handling
+        String normValue = PrepareString.insignificantTelephoneNumberStringHandling( chars );
+
+        return normValue;
     }
 }

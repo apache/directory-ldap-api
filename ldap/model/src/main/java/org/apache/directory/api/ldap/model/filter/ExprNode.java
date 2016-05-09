@@ -20,7 +20,6 @@
 
 package org.apache.directory.api.ldap.model.filter;
 
-
 /**
  * Root expression node interface which all expression nodes in the filter
  * expression tree implement.

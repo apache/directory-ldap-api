@@ -249,22 +249,29 @@ public class SearchRequestDsml
 
                     // Transform =, >=, <=, ~= filters
                     int filterType = avaFilter.getFilterType();
+                    byte[] value = null;
+                    
+                    if ( ava.getAssertionValue() != null )
+                    {
+                        value = ava.getAssertionValue().getBytes();
+                    }
+                    
                     switch ( filterType )
                     {
                         case LdapCodecConstants.EQUALITY_MATCH_FILTER:
-                            branch = new EqualityNode( ava.getAttributeDesc(), ava.getAssertionValue() );
+                            branch = new EqualityNode( ava.getAttributeDesc(), value );
                             break;
 
                         case LdapCodecConstants.GREATER_OR_EQUAL_FILTER:
-                            branch = new GreaterEqNode( ava.getAttributeDesc(), ava.getAssertionValue() );
+                            branch = new GreaterEqNode( ava.getAttributeDesc(), value );
                             break;
 
                         case LdapCodecConstants.LESS_OR_EQUAL_FILTER:
-                            branch = new LessEqNode( ava.getAttributeDesc(), ava.getAssertionValue() );
+                            branch = new LessEqNode( ava.getAttributeDesc(), value );
                             break;
 
                         case LdapCodecConstants.APPROX_MATCH_FILTER:
-                            branch = new ApproximateNode( ava.getAttributeDesc(), ava.getAssertionValue() );
+                            branch = new ApproximateNode( ava.getAttributeDesc(), value );
                             break;
 
                         default:
@@ -554,7 +561,7 @@ public class SearchRequestDsml
                 }
                 else
                 {
-                    newElement.addElement( VALUE ).setText( value.getString() );
+                    newElement.addElement( VALUE ).setText( value.getValue() );
                 }
             }
         }
@@ -588,7 +595,7 @@ public class SearchRequestDsml
                 }
                 else
                 {
-                    newElement.addElement( VALUE ).setText( value.getString() );
+                    newElement.addElement( VALUE ).setText( value.getValue() );
                 }
             }
 

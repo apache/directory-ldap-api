@@ -370,22 +370,23 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
 
                     // Transform =, >=, <=, ~= filters
                     int filterType = ( ( AttributeValueAssertionFilter ) filter ).getFilterType();
+                    
                     switch ( filterType )
                     {
                         case LdapCodecConstants.EQUALITY_MATCH_FILTER:
-                            branch = new EqualityNode( ava.getAttributeDesc(), ava.getAssertionValue() );
+                            branch = new EqualityNode( ava.getAttributeDesc(), ava.getAssertion() );
                             break;
 
                         case LdapCodecConstants.GREATER_OR_EQUAL_FILTER:
-                            branch = new GreaterEqNode( ava.getAttributeDesc(), ava.getAssertionValue() );
+                            branch = new GreaterEqNode( ava.getAttributeDesc(), ava.getAssertion() );
                             break;
 
                         case LdapCodecConstants.LESS_OR_EQUAL_FILTER:
-                            branch = new LessEqNode( ava.getAttributeDesc(), ava.getAssertionValue() );
+                            branch = new LessEqNode( ava.getAttributeDesc(), ava.getAssertion() );
                             break;
 
                         case LdapCodecConstants.APPROX_MATCH_FILTER:
-                            branch = new ApproximateNode( ava.getAttributeDesc(), ava.getAssertionValue() );
+                            branch = new ApproximateNode( ava.getAttributeDesc(), ava.getAssertion() );
                             break;
 
                         default:
@@ -511,7 +512,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
                         filter = new AttributeValueAssertionFilter( LdapCodecConstants.EQUALITY_MATCH_FILTER );
                         AttributeValueAssertion assertion = new AttributeValueAssertion();
                         assertion.setAttributeDesc( ( ( EqualityNode<?> ) exprNode ).getAttribute() );
-                        assertion.setAssertionValue( ( ( EqualityNode<?> ) exprNode ).getValue() );
+                        assertion.setAssertion( ( ( EqualityNode<?> ) exprNode ).getValue().getBytes() );
                         ( ( AttributeValueAssertionFilter ) filter ).setAssertion( assertion );
                     }
                     else if ( exprNode instanceof GreaterEqNode<?> )
@@ -519,7 +520,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
                         filter = new AttributeValueAssertionFilter( LdapCodecConstants.GREATER_OR_EQUAL_FILTER );
                         AttributeValueAssertion assertion = new AttributeValueAssertion();
                         assertion.setAttributeDesc( ( ( GreaterEqNode<?> ) exprNode ).getAttribute() );
-                        assertion.setAssertionValue( ( ( GreaterEqNode<?> ) exprNode ).getValue() );
+                        assertion.setAssertion( ( ( GreaterEqNode<?> ) exprNode ).getValue().getBytes() );
                         ( ( AttributeValueAssertionFilter ) filter ).setAssertion( assertion );
                     }
                     else if ( exprNode instanceof LessEqNode<?> )
@@ -527,7 +528,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
                         filter = new AttributeValueAssertionFilter( LdapCodecConstants.LESS_OR_EQUAL_FILTER );
                         AttributeValueAssertion assertion = new AttributeValueAssertion();
                         assertion.setAttributeDesc( ( ( LessEqNode<?> ) exprNode ).getAttribute() );
-                        assertion.setAssertionValue( ( ( LessEqNode<?> ) exprNode ).getValue() );
+                        assertion.setAssertion( ( ( LessEqNode<?> ) exprNode ).getValue().getBytes() );
                         ( ( AttributeValueAssertionFilter ) filter ).setAssertion( assertion );
                     }
                     else if ( exprNode instanceof ApproximateNode<?> )
@@ -535,7 +536,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
                         filter = new AttributeValueAssertionFilter( LdapCodecConstants.APPROX_MATCH_FILTER );
                         AttributeValueAssertion assertion = new AttributeValueAssertion();
                         assertion.setAttributeDesc( ( ( ApproximateNode<?> ) exprNode ).getAttribute() );
-                        assertion.setAssertionValue( ( ( ApproximateNode<?> ) exprNode ).getValue() );
+                        assertion.setAssertion( ( ( ApproximateNode<?> ) exprNode ).getValue().getBytes() );
                         ( ( AttributeValueAssertionFilter ) filter ).setAssertion( assertion );
                     }
                 }

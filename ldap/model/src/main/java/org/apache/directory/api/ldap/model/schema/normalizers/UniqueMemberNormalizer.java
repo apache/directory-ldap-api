@@ -50,7 +50,7 @@ public class UniqueMemberNormalizer extends Normalizer
 
     public Value normalize( Value value ) throws LdapException
     {
-        String nameAndUid = value.getString();
+        String nameAndUid = value.getValue();
 
         if ( nameAndUid.length() == 0 )
         {
@@ -79,7 +79,7 @@ public class UniqueMemberNormalizer extends Normalizer
             {
                 Dn dn = new Dn( schemaManager, nameAndUid.substring( 0, sharpPos ) );
 
-                return new Value( dn.getNormName() + '#' + uid );
+                return new Value( dn.getName() + '#' + uid );
             }
             else
             {
@@ -90,7 +90,7 @@ public class UniqueMemberNormalizer extends Normalizer
         {
             // No UID, the strValue is a Dn
             // Return the normalized Dn
-            return new Value( new Dn( nameAndUid ).getNormName() );
+            return new Value( new Dn( nameAndUid ).getName() );
         }
     }
 
@@ -124,7 +124,7 @@ public class UniqueMemberNormalizer extends Normalizer
             {
                 Dn dn = new Dn( schemaManager, value.substring( 0, sharpPos ) );
 
-                return dn.getNormName() + '#' + uid;
+                return dn.getName() + '#' + uid;
             }
             else
             {
@@ -135,7 +135,7 @@ public class UniqueMemberNormalizer extends Normalizer
         {
             // No UID, the strValue is a Dn
             // Return the normalized Dn
-            return new Dn( schemaManager, value ).getNormName();
+            return new Dn( schemaManager, value ).getName();
         }
     }
 

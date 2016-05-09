@@ -33,6 +33,9 @@ public class ExtensibleNode extends LeafNode
 {
     /** The value of the attribute to match for */
     private Value value;
+    
+    /** The value as a byte[] */
+    protected byte[] bytes;
 
     /** The matching rules id */
     private String matchingRuleId;
@@ -181,14 +184,16 @@ public class ExtensibleNode extends LeafNode
     /** 
      * @return representation of value, escaped for use in a filter if required 
      */
-    public Value getEscapedValue()
+    public String getEscapedValue()
     {
         if ( value.isHumanReadable() )
         {
-            return escapeFilterValue( value );
+            return escapeFilterValue( value.getValue() );
         }
-
-        return value;
+        else
+        {
+            return escapeFilterValue( value.getAttributeType(), value.getBytes() );
+        }
     }
 
 

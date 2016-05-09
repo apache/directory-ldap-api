@@ -121,8 +121,6 @@ public class RdnSerializationTest
     {
         Rdn rdn = new Rdn( "" );
 
-        rdn.normalize();
-
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
@@ -144,8 +142,6 @@ public class RdnSerializationTest
     public void testNullRdnStaticSerialization() throws IOException, ClassNotFoundException, LdapInvalidDnException
     {
         Rdn rdn = new Rdn();
-
-        rdn.normalize();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -171,7 +167,6 @@ public class RdnSerializationTest
     public void testSimpleRdnStaticSerialization() throws LdapException, IOException, ClassNotFoundException
     {
         Rdn rdn = new Rdn( "a=b" );
-        rdn.normalize();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -197,7 +192,6 @@ public class RdnSerializationTest
     public void testSimpleRdn2StaticSerialization() throws LdapException, IOException, ClassNotFoundException
     {
         Rdn rdn = new Rdn( " ABC  = DEF " );
-        rdn.normalize();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -223,7 +217,6 @@ public class RdnSerializationTest
     public void testSimpleRdnNoValueStaticSerialization() throws LdapException, IOException, ClassNotFoundException
     {
         Rdn rdn = new Rdn( " ABC  =" );
-        rdn.normalize();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -249,7 +242,6 @@ public class RdnSerializationTest
     public void testSimpleRdnOneValueStaticSerialization() throws LdapException, IOException, ClassNotFoundException
     {
         Rdn rdn = new Rdn( " ABC  = def " );
-        rdn.normalize();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -276,7 +268,6 @@ public class RdnSerializationTest
         ClassNotFoundException
     {
         Rdn rdn = new Rdn( " A = a + B = b + C = c " );
-        rdn.normalize();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -303,7 +294,6 @@ public class RdnSerializationTest
         ClassNotFoundException
     {
         Rdn rdn = new Rdn( " B = b + A = a + C = c " );
-        rdn.normalize();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );

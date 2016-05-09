@@ -32,7 +32,7 @@ import org.apache.commons.collections.CollectionUtils;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class BranchNode extends AbstractExprNode
+public abstract class BranchNode extends AbstractExprNode
 {
     /** child node list for this branch node */
     protected List<ExprNode> children = null;
@@ -55,8 +55,6 @@ public class BranchNode extends AbstractExprNode
         {
             this.children = childList;
         }
-
-        isSchemaAware = true;
     }
 
 
@@ -89,7 +87,6 @@ public class BranchNode extends AbstractExprNode
         super( assertionType );
 
         this.children = new ArrayList<ExprNode>( 2 );
-        isSchemaAware = true;
     }
 
 
@@ -228,6 +225,32 @@ public class BranchNode extends AbstractExprNode
             {
                 return null;
             }
+        }
+    }
+
+
+    /**
+     * Tells if this Node is Schema aware.
+     * 
+     * @return true if the Node is SchemaAware
+     */
+    public boolean isSchemaAware()
+    {
+        if ( children == null )
+        {
+            return false;
+        }
+        else
+        {
+            for ( ExprNode node : children )
+            {
+                if ( !node.isSchemaAware() )
+                {
+                    return false;
+                }
+            }
+            
+            return true;
         }
     }
 

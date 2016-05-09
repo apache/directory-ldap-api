@@ -338,14 +338,14 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "objectclass", equalityNode.getAttribute() );
-        assertEquals( "top", equalityNode.getValue().getString() );
+        assertEquals( "top", equalityNode.getValue().getValue() );
 
         // (& (| (objectclass=top) (ou=contacts) ) (...
         equalityNode = ( EqualityNode<?> ) orNodes.get( 1 );
         assertNotNull( equalityNode );
 
         assertEquals( "ou", equalityNode.getAttribute() );
-        assertEquals( "contacts", equalityNode.getValue().getString() );
+        assertEquals( "contacts", equalityNode.getValue().getValue() );
 
         // (& (| (objectclass=top) (ou=contacts) ) (! ...
         NotNode notNode = ( NotNode ) andNodes.get( 1 );
@@ -356,7 +356,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "objectclass", equalityNode.getAttribute() );
-        assertEquals( "ttt", equalityNode.getValue().getString() );
+        assertEquals( "ttt", equalityNode.getValue().getValue() );
 
         List<String> attributes = searchRequest.getAttributes();
 
@@ -609,14 +609,14 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( approxNode );
 
         assertEquals( "objectclass", approxNode.getAttribute() );
-        assertEquals( "top", approxNode.getValue().getString() );
+        assertEquals( "top", approxNode.getValue().getValue() );
 
         // (& (| (objectclass~=top) (ou<=contacts) ) (...
         LessEqNode<?> lessOrEqualNode = ( LessEqNode<?> ) orNodes.get( 1 );
         assertNotNull( lessOrEqualNode );
 
         assertEquals( "ou", lessOrEqualNode.getAttribute() );
-        assertEquals( "contacts", lessOrEqualNode.getValue().getString() );
+        assertEquals( "contacts", lessOrEqualNode.getValue().getValue() );
 
         // (& (| (objectclass~=top) (ou<=contacts) ) (! ...
         NotNode notNode = ( NotNode ) andNodes.get( 1 );
@@ -627,7 +627,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( greaterOrEqual );
 
         assertEquals( "objectclass", greaterOrEqual.getAttribute() );
-        assertEquals( "ttt", greaterOrEqual.getValue().getString() );
+        assertEquals( "ttt", greaterOrEqual.getValue().getValue() );
 
         // The attributes
         List<String> attributes = searchRequest.getAttributes();
@@ -891,7 +891,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( greaterOrEqual );
 
         assertEquals( "objectclass", greaterOrEqual.getAttribute() );
-        assertEquals( "ttt", greaterOrEqual.getValue().getString() );
+        assertEquals( "ttt", greaterOrEqual.getValue().getValue() );
 
         // The attributes
         List<String> attributes = searchRequest.getAttributes();
@@ -1549,31 +1549,31 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         EqualityNode<?> equalityNode = ( EqualityNode<?> ) orNode.getChildren().get( 0 );
 
         assertEquals( "uid", equalityNode.getAttribute() );
-        assertEquals( "akarasulu", equalityNode.getValue().getString() );
+        assertEquals( "akarasulu", equalityNode.getValue().getValue() );
 
         // cn=aok
         equalityNode = ( EqualityNode<?> ) orNode.getChildren().get( 1 );
 
         assertEquals( "cn", equalityNode.getAttribute() );
-        assertEquals( "aok", equalityNode.getValue().getString() );
+        assertEquals( "aok", equalityNode.getValue().getValue() );
 
         // ou = Human Resources
         equalityNode = ( EqualityNode<?> ) orNode.getChildren().get( 2 );
 
         assertEquals( "ou", equalityNode.getAttribute() );
-        assertEquals( "Human Resources", equalityNode.getValue().getString() );
+        assertEquals( "Human Resources", equalityNode.getValue().getValue() );
 
         // l=Santa Clara
         equalityNode = ( EqualityNode<?> ) orNode.getChildren().get( 3 );
 
         assertEquals( "l", equalityNode.getAttribute() );
-        assertEquals( "Santa Clara", equalityNode.getValue().getString() );
+        assertEquals( "Santa Clara", equalityNode.getValue().getValue() );
 
         // cn=abok
         equalityNode = ( EqualityNode<?> ) orNode.getChildren().get( 4 );
 
         assertEquals( "cn", equalityNode.getAttribute() );
-        assertEquals( "abok", equalityNode.getValue().getString() );
+        assertEquals( "abok", equalityNode.getValue().getValue() );
 
         // The attributes
         List<String> attributes = searchRequest.getAttributes();
@@ -2209,14 +2209,14 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "objectclass", equalityNode.getAttribute() );
-        assertEquals( "top", equalityNode.getValue().getString() );
+        assertEquals( "top", equalityNode.getValue().getValue() );
 
         // (& (| (objectclass=top) (ou=contacts) ) (...
         equalityNode = ( EqualityNode<?> ) orNodes.get( 1 );
         assertNotNull( equalityNode );
 
         assertEquals( "2.5.4.11", equalityNode.getAttribute() );
-        assertEquals( "contacts", equalityNode.getValue().getString() );
+        assertEquals( "contacts", equalityNode.getValue().getValue() );
 
         // (& (| (objectclass=top) (ou=contacts) ) (! ...
         NotNode notNode = ( NotNode ) andNodes.get( 1 );
@@ -2227,7 +2227,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "organizationalUnitName", equalityNode.getAttribute() );
-        assertEquals( "ttt", equalityNode.getValue().getString() );
+        assertEquals( "ttt", equalityNode.getValue().getValue() );
 
         List<String> attributes = searchRequest.getAttributes();
 
@@ -2679,14 +2679,14 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "objectclass", equalityNode.getAttribute() );
-        assertEquals( "top", equalityNode.getValue().getString() );
+        assertEquals( "top", equalityNode.getValue().getValue() );
 
         // (& (| (objectclass=top) (ou=contacts) ) (...
         equalityNode = ( EqualityNode<?> ) orNodes.get( 1 );
         assertNotNull( equalityNode );
 
         assertEquals( "ou", equalityNode.getAttribute() );
-        assertEquals( "contacts", equalityNode.getValue().getString() );
+        assertEquals( "contacts", equalityNode.getValue().getValue() );
 
         // (& (| (objectclass=top) (ou=contacts) ) (! ...
         NotNode notNode = ( NotNode ) andNodes.get( 1 );
@@ -2697,7 +2697,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "objectclass", equalityNode.getAttribute() );
-        assertEquals( "ttt", equalityNode.getValue().getString() );
+        assertEquals( "ttt", equalityNode.getValue().getValue() );
 
         List<String> attributes = searchRequest.getAttributes();
 
@@ -4843,7 +4843,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( greaterOrEqual );
 
         assertEquals( "test", greaterOrEqual.getAttribute() );
-        assertEquals( "", greaterOrEqual.getValue().getString() );
+        assertEquals( "", greaterOrEqual.getValue().getValue() );
 
         List<String> attributes = searchRequest.getAttributes();
 
@@ -4879,76 +4879,28 @@ public class SearchRequestTest extends AbstractCodecServiceTest
     public void testDecodeSearchRequestEmptyGreaterOrEqualEmptyAttrValueStar()
     {
         byte[] asn1BER = new byte[]
-            { 0x30, 0x44,
-                0x02,
-                0x01,
-                0x04, // messageID
-                0x63,
-                0x3F,
-                0x04,
-                0x1F, // baseObject LDAPDN,
-                'u',
-                'i',
-                'd',
-                '=',
-                'a',
-                'k',
-                'a',
-                'r',
-                'a',
-                's',
-                'u',
-                'l',
-                'u',
-                ',',
-                'd',
-                'c',
-                '=',
-                'e',
-                'x',
-                'a',
-                'm',
-                'p',
-                'l',
-                'e',
-                ',',
-                'd',
-                'c',
-                '=',
-                'c',
-                'o',
-                'm',
-                0x0A,
-                0x01,
-                0x01,
-                0x0A,
-                0x01,
-                0x03,
-                0x02,
-                0x01,
-                0x00,
-                0x02,
-                0x01,
-                0x00,
-                0x01,
-                0x01,
-                ( byte ) 0xFF,
-                ( byte ) 0xA5,
-                0x08,
-                0x04,
-                0x04,
-                't',
-                'e',
-                's',
-                't',
-                0x04,
-                0x00,
-                0x30,
-                0x03, // AttributeDescriptionList ::= SEQUENCE
-                // OF AttributeDescription
-                0x04,
-                0x01,
-                '*' };
+            { 
+              0x30, 0x44,
+                0x02, 0x01, 0x04, // messageID
+                0x63, 0x3F,
+                  0x04, 0x1F, // baseObject LDAPDN,
+                    'u', 'i', 'd', '=', 'a', 'k', 'a', 'r',
+                    'a', 's', 'u', 'l', 'u', ',', 'd', 'c',
+                    '=', 'e', 'x', 'a', 'm', 'p', 'l', 'e',
+                    ',', 'd', 'c', '=', 'c', 'o', 'm',
+                  0x0A, 0x01, 0x01,
+                  0x0A, 0x01, 0x03,
+                  0x02, 0x01, 0x00,
+                  0x02, 0x01, 0x00,
+                  0x01, 0x01, ( byte ) 0xFF,
+                  ( byte ) 0xA5, 0x08,
+                    0x04, 0x04,
+                      't', 'e', 's', 't',
+                    0x04, 0x00,
+                  0x30, 0x03,             // AttributeDescriptionList ::= SEQUENCE
+                                          // OF AttributeDescription
+                    0x04, 0x01, '*' 
+            };
 
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -4990,7 +4942,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( greaterOrEqual );
 
         assertEquals( "test", greaterOrEqual.getAttribute() );
-        assertEquals( "", greaterOrEqual.getValue().getString() );
+        assertEquals( "", greaterOrEqual.getValue().getValue() );
 
         List<String> attributes = searchRequest.getAttributes();
 
@@ -5136,7 +5088,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( greaterOrEqual );
 
         assertEquals( "test", greaterOrEqual.getAttribute() );
-        assertEquals( "", greaterOrEqual.getValue().getString() );
+        assertEquals( "", greaterOrEqual.getValue().getValue() );
 
         List<String> attributes = searchRequest.getAttributes();
 
@@ -5599,7 +5551,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "pgpdisabled", equalityNode.getAttribute() );
-        assertEquals( "0", equalityNode.getValue().getString() );
+        assertEquals( "0", equalityNode.getValue().getValue() );
 
         // Check the encoding
         // We won't check the whole PDU, as it may differs because
@@ -5720,7 +5672,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "a", equalityNode.getAttribute() );
-        assertEquals( "b", equalityNode.getValue().getString() );
+        assertEquals( "b", equalityNode.getValue().getValue() );
 
         List<String> attributes = searchRequest.getAttributes();
         assertEquals( 0, attributes.size() );
@@ -5854,7 +5806,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "a", equalityNode.getAttribute() );
-        assertEquals( "b", equalityNode.getValue().getString() );
+        assertEquals( "b", equalityNode.getValue().getValue() );
 
         List<String> attributes = searchRequest.getAttributes();
         assertEquals( 0, attributes.size() );
@@ -5998,14 +5950,14 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "a", equalityNode.getAttribute() );
-        assertEquals( "b", equalityNode.getValue().getString() );
+        assertEquals( "b", equalityNode.getValue().getValue() );
 
         // (&(a=b)(c=d))
         equalityNode = ( EqualityNode<?> ) andNodes.get( 1 );
         assertNotNull( equalityNode );
 
         assertEquals( "c", equalityNode.getAttribute() );
-        assertEquals( "d", equalityNode.getValue().getString() );
+        assertEquals( "d", equalityNode.getValue().getValue() );
 
         List<String> attributes = searchRequest.getAttributes();
         assertEquals( 0, attributes.size() );
@@ -6146,7 +6098,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "a", equalityNode.getAttribute() );
-        assertEquals( "b", equalityNode.getValue().getString() );
+        assertEquals( "b", equalityNode.getValue().getValue() );
 
         List<String> attributes = searchRequest.getAttributes();
         assertEquals( 0, attributes.size() );
@@ -6298,14 +6250,14 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "a", equalityNode.getAttribute() );
-        assertEquals( "b", equalityNode.getValue().getString() );
+        assertEquals( "b", equalityNode.getValue().getValue() );
 
         // (&(&(a=b)(c=d)
         equalityNode = ( EqualityNode<?> ) andNodes2.get( 1 );
         assertNotNull( equalityNode );
 
         assertEquals( "c", equalityNode.getAttribute() );
-        assertEquals( "d", equalityNode.getValue().getString() );
+        assertEquals( "d", equalityNode.getValue().getValue() );
 
         List<String> attributes = searchRequest.getAttributes();
         assertEquals( 0, attributes.size() );
@@ -6456,14 +6408,14 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "a", equalityNode.getAttribute() );
-        assertEquals( "b", equalityNode.getValue().getString() );
+        assertEquals( "b", equalityNode.getValue().getValue() );
 
         // (&(&(a=b))(c=d))
         equalityNode = ( EqualityNode<?> ) andNodes.get( 1 );
         assertNotNull( equalityNode );
 
         assertEquals( "c", equalityNode.getAttribute() );
-        assertEquals( "d", equalityNode.getValue().getString() );
+        assertEquals( "d", equalityNode.getValue().getValue() );
 
         List<String> attributes = searchRequest.getAttributes();
         assertEquals( 0, attributes.size() );
@@ -6623,21 +6575,21 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "a", equalityNode.getAttribute() );
-        assertEquals( "b", equalityNode.getValue().getString() );
+        assertEquals( "b", equalityNode.getValue().getValue() );
 
         // (&(&(a=b)(c=d)...
         equalityNode = ( EqualityNode<?> ) andNodes2.get( 1 );
         assertNotNull( equalityNode );
 
         assertEquals( "c", equalityNode.getAttribute() );
-        assertEquals( "d", equalityNode.getValue().getString() );
+        assertEquals( "d", equalityNode.getValue().getValue() );
 
         // (&(&(a=b)(c=d))(e=f))
         equalityNode = ( EqualityNode<?> ) andNodes.get( 1 );
         assertNotNull( equalityNode );
 
         assertEquals( "e", equalityNode.getAttribute() );
-        assertEquals( "f", equalityNode.getValue().getString() );
+        assertEquals( "f", equalityNode.getValue().getValue() );
 
         List<String> attributes = searchRequest.getAttributes();
         assertEquals( 0, attributes.size() );
@@ -6790,7 +6742,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "a", equalityNode.getAttribute() );
-        assertEquals( "b", equalityNode.getValue().getString() );
+        assertEquals( "b", equalityNode.getValue().getValue() );
 
         // (&(a=b)(|(...
         OrNode orNode = ( OrNode ) andNodes.get( 1 );
@@ -6804,14 +6756,14 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "c", equalityNode.getAttribute() );
-        assertEquals( "d", equalityNode.getValue().getString() );
+        assertEquals( "d", equalityNode.getValue().getValue() );
 
         // (&(a=b)(|(c=d)(e=f)))
         equalityNode = ( EqualityNode<?> ) orNodes.get( 1 );
         assertNotNull( equalityNode );
 
         assertEquals( "e", equalityNode.getAttribute() );
-        assertEquals( "f", equalityNode.getValue().getString() );
+        assertEquals( "f", equalityNode.getValue().getValue() );
 
         List<String> attributes = searchRequest.getAttributes();
         assertEquals( 0, attributes.size() );
@@ -6964,7 +6916,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "a", equalityNode.getAttribute() );
-        assertEquals( "b", equalityNode.getValue().getString() );
+        assertEquals( "b", equalityNode.getValue().getValue() );
 
         // (&(&(a=b))(&...
         andNode2 = ( AndNode ) andNodes.get( 1 );
@@ -6978,7 +6930,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "c", equalityNode.getAttribute() );
-        assertEquals( "d", equalityNode.getValue().getString() );
+        assertEquals( "d", equalityNode.getValue().getValue() );
 
         List<String> attributes = searchRequest.getAttributes();
         assertEquals( 0, attributes.size() );
@@ -7140,14 +7092,14 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "a", equalityNode.getAttribute() );
-        assertEquals( "b", equalityNode.getValue().getString() );
+        assertEquals( "b", equalityNode.getValue().getValue() );
 
         // (&(&(a=b)(c=d))...
         equalityNode = ( EqualityNode<?> ) andNodes2.get( 1 );
         assertNotNull( equalityNode );
 
         assertEquals( "c", equalityNode.getAttribute() );
-        assertEquals( "d", equalityNode.getValue().getString() );
+        assertEquals( "d", equalityNode.getValue().getValue() );
 
         // (&(&(a=b)(c=d))(&...
         andNode2 = ( AndNode ) andNodes.get( 1 );
@@ -7161,7 +7113,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "e", equalityNode.getAttribute() );
-        assertEquals( "f", equalityNode.getValue().getString() );
+        assertEquals( "f", equalityNode.getValue().getValue() );
 
         List<String> attributes = searchRequest.getAttributes();
         assertEquals( 0, attributes.size() );
@@ -7336,7 +7288,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( greaterEqNode );
 
         assertEquals( "e", greaterEqNode.getAttribute() );
-        assertEquals( "f", greaterEqNode.getValue().getString() );
+        assertEquals( "f", greaterEqNode.getValue().getValue() );
 
         List<String> attributes = searchRequest.getAttributes();
         assertEquals( 0, attributes.size() );
@@ -7549,14 +7501,14 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "uid", equalityNode.getAttribute() );
-        assertEquals( "buster ", equalityNode.getValue().getString() );
+        assertEquals( "buster ", equalityNode.getValue().getValue() );
 
         // (&(uid=buster)(sbAttribute=Buy))
         equalityNode = ( EqualityNode<?> ) andNodes.get( 1 );
         assertNotNull( equalityNode );
 
         assertEquals( "sbAttribute", equalityNode.getAttribute() );
-        assertEquals( "Buy ", equalityNode.getValue().getString() );
+        assertEquals( "Buy ", equalityNode.getValue().getValue() );
 
         List<String> attributes = searchRequest.getAttributes();
         assertEquals( 0, attributes.size() );
@@ -7736,7 +7688,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "objectClass", equalityNode.getAttribute() );
-        assertEquals( "person", equalityNode.getValue().getString() );
+        assertEquals( "person", equalityNode.getValue().getValue() );
 
         // (&(a=b)(|
         OrNode orNode = ( OrNode ) andNodes.get( 1 );
@@ -7759,7 +7711,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "sn", equalityNode.getAttribute() );
-        assertEquals( "Jagger", equalityNode.getValue().getString() );
+        assertEquals( "Jagger", equalityNode.getValue().getValue() );
     }
 
 
@@ -7852,7 +7804,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         assertNotNull( equalityNode );
 
         assertEquals( "objectclass", equalityNode.getAttribute() );
-        assertEquals( "groupofnames", equalityNode.getValue().getString() );
+        assertEquals( "groupofnames", equalityNode.getValue().getValue() );
 
         // (&(|(&(objectClass=groupOfNames)))(owner=*))
         PresenceNode presenceNode = ( PresenceNode ) andNodes.get( 1 );

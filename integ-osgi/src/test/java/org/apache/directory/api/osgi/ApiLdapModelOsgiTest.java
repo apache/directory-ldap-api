@@ -57,7 +57,7 @@ public class ApiLdapModelOsgiTest extends ApiOsgiTestBase
         
         new BindRequestImpl();
 
-        new EqualityNode<String>( "cn", new Value( "foo" ) );
+        new EqualityNode<String>( "cn", "foo" );
 
         new LdapUrl( "ldap://ldap.example.com:10389/dc=example,dc=com?objectclass" );
 

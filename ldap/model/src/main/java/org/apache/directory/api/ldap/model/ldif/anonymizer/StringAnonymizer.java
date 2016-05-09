@@ -99,7 +99,7 @@ public class StringAnonymizer extends AbstractAnonymizer<String>
                 }
                 else
                 {
-                    String strValue = value.getNormValue().toString();
+                    String strValue = value.getValue().toString();
                     String newValue = computeNewValue( strValue );
                     
                     try

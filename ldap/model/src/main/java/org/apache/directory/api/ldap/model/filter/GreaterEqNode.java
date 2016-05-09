@@ -49,7 +49,19 @@ public class GreaterEqNode<T> extends SimpleNode<T>
      * @param attribute the attribute name
      * @param value the value to test for
      */
-    public GreaterEqNode( String attribute, Value value )
+    public GreaterEqNode( String attribute, String value )
+    {
+        super( attribute, value, AssertionType.GREATEREQ );
+    }
+
+
+    /**
+     * Creates a new GreaterOrEqual object.
+     * 
+     * @param attribute the attribute name
+     * @param value the value to test for
+     */
+    public GreaterEqNode( String attribute, byte[] value )
     {
         super( attribute, value, AssertionType.GREATEREQ );
     }
@@ -76,8 +88,9 @@ public class GreaterEqNode<T> extends SimpleNode<T>
 
         buf.append( ">=" );
 
-        Value escapedValue = getEscapedValue();
-        if ( !escapedValue.isNull() )
+        String escapedValue = getEscapedValue();
+        
+        if ( escapedValue != null )
         {
             buf.append( escapedValue );
         }

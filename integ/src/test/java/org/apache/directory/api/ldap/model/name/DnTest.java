@@ -40,6 +40,7 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.apache.directory.api.util.Strings;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -80,7 +81,7 @@ public class DnTest
     {
         Dn dn = new Dn();
         assertEquals( "", dn.getName() );
-        assertEquals( "", dn.getNormName() );
+        assertEquals( "", dn.getEscaped() );
         assertTrue( dn.isEmpty() );
     }
 
@@ -107,7 +108,7 @@ public class DnTest
 
         assertTrue( Dn.isValid( "a = b" ) );
         assertEquals( "a = b", dn.getName() );
-        assertEquals( "a=b", dn.getNormName() );
+        assertEquals( "a=b", dn.getEscaped() );
     }
 
 
@@ -121,7 +122,7 @@ public class DnTest
 
         assertTrue( Dn.isValid( "a = b  " ) );
         assertEquals( "a = b  ", dn.getName() );
-        assertEquals( "a=b", dn.getNormName() );
+        assertEquals( "a=b", dn.getEscaped() );
     }
 
 
@@ -134,7 +135,7 @@ public class DnTest
         Dn dn = new Dn( "a = b, c = d" );
 
         assertTrue( Dn.isValid( "a = b, c = d" ) );
-        assertEquals( "a=b,c=d", dn.getNormName() );
+        assertEquals( "a=b,c=d", dn.getEscaped() );
         assertEquals( "a = b, c = d", dn.getName() );
     }
 
@@ -148,7 +149,7 @@ public class DnTest
         Dn dn = new Dn( "a = b  , c = d" );
 
         assertTrue( Dn.isValid( "a = b  , c = d" ) );
-        assertEquals( "a=b,c=d", dn.getNormName() );
+        assertEquals( "a=b,c=d", dn.getEscaped() );
         assertEquals( "a = b  , c = d", dn.getName() );
     }
 
@@ -162,7 +163,7 @@ public class DnTest
         Dn dn = new Dn( "a=b, a =b, a= b, a = b, a  =  b" );
 
         assertTrue( Dn.isValid( "a=b, a =b, a= b, a = b, a  =  b" ) );
-        assertEquals( "a=b,a=b,a=b,a=b,a=b", dn.getNormName() );
+        assertEquals( "a=b,a=b,a=b,a=b,a=b", dn.getEscaped() );
         assertEquals( "a=b, a =b, a= b, a = b, a  =  b", dn.getName() );
     }
 
@@ -177,7 +178,7 @@ public class DnTest
         Dn dn = new Dn( "a=b;c=d,e=f" );
 
         assertTrue( Dn.isValid( "a=b;c=d,e=f" ) );
-        assertEquals( "a=b,c=d,e=f", dn.getNormName() );
+        assertEquals( "a=b,c=d,e=f", dn.getEscaped() );
         assertEquals( "a=b;c=d,e=f", dn.getName() );
     }
 
@@ -191,7 +192,7 @@ public class DnTest
         Dn dn = new Dn( "a = b + c = d" );
 
         assertTrue( Dn.isValid( "a = b + c = d" ) );
-        assertEquals( "a=b+c=d", dn.getNormName() );
+        assertEquals( "a=b+c=d", dn.getEscaped() );
         assertEquals( "a = b + c = d", dn.getName() );
     }
 
@@ -206,7 +207,7 @@ public class DnTest
         Dn dn = new Dn( "a=b+c=d, e=f + g=h + i=j" );
 
         assertTrue( Dn.isValid( "a=b+c=d, e=f + g=h + i=j" ) );
-        assertEquals( "a=b+c=d,e=f+g=h+i=j", dn.getNormName() );
+        assertEquals( "a=b+c=d,e=f+g=h+i=j", dn.getEscaped() );
         assertEquals( "a=b+c=d, e=f + g=h + i=j", dn.getName() );
     }
 
@@ -236,7 +237,7 @@ public class DnTest
         Dn dn = new Dn( "OID.12.34.56 = azerty" );
 
         assertTrue( Dn.isValid( "OID.12.34.56 = azerty" ) );
-        assertEquals( "oid.12.34.56=azerty", dn.getNormName() );
+        assertEquals( "OID.12.34.56=azerty", dn.getEscaped() );
         assertEquals( "OID.12.34.56 = azerty", dn.getName() );
     }
 
@@ -250,7 +251,7 @@ public class DnTest
         Dn dn = new Dn( "oid.12.34.56 = azerty" );
 
         assertTrue( Dn.isValid( "oid.12.34.56 = azerty" ) );
-        assertEquals( "oid.12.34.56=azerty", dn.getNormName() );
+        assertEquals( "oid.12.34.56=azerty", dn.getEscaped() );
         assertEquals( "oid.12.34.56 = azerty", dn.getName() );
     }
 
@@ -265,7 +266,7 @@ public class DnTest
         Dn dn = new Dn( "12.34.56 = azerty" );
 
         assertTrue( Dn.isValid( "12.34.56 = azerty" ) );
-        assertEquals( "12.34.56=azerty", dn.getNormName() );
+        assertEquals( "12.34.56=azerty", dn.getEscaped() );
         assertEquals( "12.34.56 = azerty", dn.getName() );
     }
 
@@ -280,7 +281,7 @@ public class DnTest
         Dn dn = new Dn( "12.34.56 = azerty; 7.8 = test" );
 
         assertTrue( Dn.isValid( "12.34.56 = azerty; 7.8 = test" ) );
-        assertEquals( "12.34.56=azerty,7.8=test", dn.getNormName() );
+        assertEquals( "12.34.56=azerty,7.8=test", dn.getEscaped() );
         assertEquals( "12.34.56 = azerty; 7.8 = test", dn.getName() );
     }
 
@@ -294,7 +295,7 @@ public class DnTest
         Dn dn = new Dn( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C4\\8D" );
 
         assertTrue( Dn.isValid( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C4\\8D" ) );
-        assertEquals( "a=\\,\\=\\+\\<\\>#\\;\\\\\\\"\u010d", dn.getNormName() );
+        assertEquals( "a=\\,=\\+\\<\\>#\\;\\\\\\\"\u010d", dn.getEscaped() );
         assertEquals( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C4\\8D", dn.getName() );
     }
 
@@ -308,7 +309,7 @@ public class DnTest
         Dn dn = new Dn( "SN=Lu\\C4\\8Di\\C4\\87" );
 
         assertTrue( Dn.isValid( "SN=Lu\\C4\\8Di\\C4\\87" ) );
-        assertEquals( "sn=Lu\u010di\u0107", dn.getNormName() );
+        assertEquals( "SN=Lu\u010di\u0107", dn.getEscaped() );
         assertEquals( "SN=Lu\\C4\\8Di\\C4\\87", dn.getName() );
     }
 
@@ -322,7 +323,7 @@ public class DnTest
         Dn dn = new Dn( "a = #0010A0AAFF" );
 
         assertTrue( Dn.isValid( "a = #0010A0AAFF" ) );
-        assertEquals( "a=#0010A0AAFF", dn.getNormName() );
+        assertEquals( "a=\\00\u0010\\A0\\AA\\FF", dn.getEscaped() );
         assertEquals( "a = #0010A0AAFF", dn.getName() );
     }
 
@@ -339,7 +340,7 @@ public class DnTest
         Dn dn = new Dn( "a = \\#123456" );
 
         assertTrue( Dn.isValid( "a = \\#123456" ) );
-        assertEquals( "a=\\#123456", dn.getNormName() );
+        assertEquals( "a=\\#123456", dn.getEscaped() );
         assertEquals( "a = \\#123456", dn.getName() );
 
         Rdn rdn = dn.getRdn();
@@ -369,12 +370,12 @@ public class DnTest
         Dn dn = new Dn( "cn = Exa\\+mple  one " );
 
         assertTrue( Dn.isValid( "cn = Exa\\+mple  one " ) );
-        assertEquals( "cn=Exa\\+mple  one", dn.getNormName() );
+        assertEquals( "cn=Exa\\+mple  one", dn.getEscaped() );
         assertEquals( "cn = Exa\\+mple  one ", dn.getName() );
 
         Dn dn2 = new Dn( schemaManager, "cn = Exa\\+mple  one " );
 
-        assertEquals( "2.5.4.3=exa\\+mple one", dn2.getNormName() );
+        assertEquals( "cn=Exa\\+mple  one", dn2.getEscaped() );
         assertEquals( "cn = Exa\\+mple  one ", dn2.getName() );
     }
 
@@ -388,7 +389,7 @@ public class DnTest
         Dn dn = new Dn( "a = \\#this is a sharp" );
 
         assertTrue( Dn.isValid( "a = \\#this is a sharp" ) );
-        assertEquals( "a=\\#this is a sharp", dn.getNormName() );
+        assertEquals( "a=\\#this is a sharp", dn.getEscaped() );
         assertEquals( "a = \\#this is a sharp", dn.getName() );
 
         Rdn rdn = dn.getRdn();
@@ -405,14 +406,14 @@ public class DnTest
         Dn dn = new Dn( "ou = \\#this is a sharp" );
 
         assertTrue( Dn.isValid( "ou = \\#this is a sharp" ) );
-        assertEquals( "ou=\\#this is a sharp", dn.getNormName() );
+        assertEquals( "ou=\\#this is a sharp", dn.getEscaped() );
         assertEquals( "ou = \\#this is a sharp", dn.getName() );
 
         // Check the normalization now
-        Dn ndn = dn.apply( schemaManager );
+        Dn ndn = new Dn( schemaManager, dn );
 
         assertEquals( "ou = \\#this is a sharp", ndn.getName() );
-        assertEquals( "2.5.4.11=\\#this is a sharp", ndn.getNormName() );
+        assertEquals( "ou=\\#this is a sharp", ndn.getEscaped() );
     }
 
 
@@ -425,13 +426,13 @@ public class DnTest
     {
         Dn dn = new Dn( "ou = AC\\\\C3\\2B" );
         assertTrue( Dn.isValid( "ou = AC\\\\C3\\2B" ) );
-        assertEquals( "ou=AC\\\\C3\\+", dn.getNormName() );
+        assertEquals( "ou=AC\\\\C3\\+", dn.getEscaped() );
         assertEquals( "ou = AC\\\\C3\\2B", dn.getName() );
 
         // Check the normalization now
-        Dn ndn = dn.apply( schemaManager );
+        Dn ndn = new Dn( schemaManager, dn );
         assertEquals( "ou = AC\\\\C3\\2B", ndn.getName() );
-        assertEquals( "2.5.4.11=ac\\\\c3\\+", ndn.getNormName() );
+        assertEquals( "ou=AC\\\\C3\\+", ndn.getEscaped() );
     }
 
     /**
@@ -443,13 +444,13 @@ public class DnTest
     {
         Dn dn = new Dn( "ou = AC\\\\DC" );
         assertTrue( Dn.isValid( "ou = AC\\\\DC" ) );
-        assertEquals( "ou=AC\\\\DC", dn.getNormName() );
+        assertEquals( "ou=AC\\\\DC", dn.getEscaped() );
         assertEquals( "ou = AC\\\\DC", dn.getName() );
 
         // Check the normalization now
-        Dn ndn = dn.apply( schemaManager );
+        Dn ndn = new Dn( schemaManager, dn );
         assertEquals( "ou = AC\\\\DC", ndn.getName() );
-        assertEquals( "2.5.4.11=ac\\\\dc", ndn.getNormName() );
+        assertEquals( "ou=AC\\\\DC", ndn.getEscaped() );
     }
 
 
@@ -501,7 +502,7 @@ public class DnTest
         Dn dn = new Dn( "a = quoted \\\"value\\\"" );
 
         assertTrue( Dn.isValid( "a = quoted \\\"value\\\"" ) );
-        assertEquals( "a=quoted \\\"value\\\"", dn.getNormName() );
+        assertEquals( "a=quoted \\\"value\\\"", dn.getEscaped() );
         assertEquals( "a = quoted \\\"value\\\"", dn.getName() );
     }
 
@@ -515,7 +516,7 @@ public class DnTest
         Dn dn = new Dn( "a = \\\" quoted value \\\"" );
 
         assertTrue( Dn.isValid( "a = \\\" quoted value \\\"" ) );
-        assertEquals( "a=\\\" quoted value \\\"", dn.getNormName() );
+        assertEquals( "a=\\\" quoted value \\\"", dn.getEscaped() );
         assertEquals( "a = \\\" quoted value \\\"", dn.getName() );
     }
 
@@ -554,7 +555,7 @@ public class DnTest
         assertTrue( Dn.isValid("a=b, c=d, e=f") );
         // now remove method returns a modified cloned Dn
         dn = dn.remove( 0 );
-        assertEquals( "a=b,c=d", dn.getNormName() );
+        assertEquals( "a=b,c=d", dn.getEscaped() );
         assertEquals( "a=b, c=d", dn.getName() );
     }
 
@@ -709,7 +710,7 @@ public class DnTest
         Dn dn = new Dn();
 
         dn = dn.add( "e = f" );
-        assertEquals( "e=f", dn.getNormName() );
+        assertEquals( "e=f", dn.getEscaped() );
         assertEquals( "e = f", dn.getName() );
         assertEquals( 1, dn.size() );
     }
@@ -724,7 +725,7 @@ public class DnTest
         Dn dn = new Dn( "a=b, c=d" );
 
         dn = dn.add( "e = f" );
-        assertEquals( "e=f,a=b,c=d", dn.getNormName() );
+        assertEquals( "e=f,a=b,c=d", dn.getEscaped() );
         assertEquals( "e = f,a=b, c=d", dn.getName() );
         assertEquals( 3, dn.size() );
     }
@@ -743,7 +744,7 @@ public class DnTest
         // Warning ! The order of AVAs has changed during the parsing
         // This has no impact on the correctness of the Dn, but the
         // String used to do the comparizon should be inverted.
-        assertEquals( "e=f+g=h,a=b,c=d", dn.getNormName() );
+        assertEquals( "e=f+g=h,a=b,c=d", dn.getEscaped() );
         assertEquals( 3, dn.size() );
     }
 
@@ -789,7 +790,7 @@ public class DnTest
         Dn dn = new Dn( "a = b" );
         Dn dn2 = new Dn();
         dn = dn.add( dn2 );
-        assertEquals( "a=b", dn.getNormName() );
+        assertEquals( "a=b", dn.getEscaped() );
         assertEquals( "a = b", dn.getName() );
     }
 
@@ -850,7 +851,7 @@ public class DnTest
         Dn dn = new Dn( "a = b" );
         Dn dn2 = new Dn();
         dn = dn.add( dn2 );
-        assertEquals( "a=b", dn.getNormName() );
+        assertEquals( "a=b", dn.getEscaped() );
         assertEquals( "a = b", dn.getName() );
     }
 
@@ -1228,21 +1229,6 @@ public class DnTest
     }
 
 
-    /**
-     * Test the encoding of a LdanDN
-     */
-    @Test
-    public void testNameToBytes() throws Exception
-    {
-        Dn dn = new Dn( "cn = John, ou = People, OU = Marketing" );
-
-        byte[] bytes = Dn.getBytes( dn );
-
-        assertEquals( 30, Dn.getNbBytes( dn ) );
-        assertEquals( "cn=John,ou=People,ou=Marketing", new String( bytes, "UTF-8" ) );
-    }
-
-
     @Test
     public void testStringParser() throws Exception
     {
@@ -1253,7 +1239,7 @@ public class DnTest
         Dn name = new Dn( dn );
 
         assertEquals( dn, ( name ).getName() );
-        assertEquals( "cn=Emmanuel  L\u00e9charny", ( name ).getNormName() );
+        assertEquals( "CN=Emmanuel  L\u00e9charny", ( name ).getEscaped() );
     }
 
 
@@ -1883,8 +1869,7 @@ public class DnTest
         assertFalse( two.getParent().isEmpty() );
         assertEquals( "o=acme", two.getParent().getName() );
 
-        Dn three = new Dn( "cn=test,dc=example,dc=com" );
-        three.apply( schemaManager );
+        Dn three = new Dn( schemaManager, "cn=test,dc=example,dc=com" );
         Dn threeParent = three.getParent();
         assertNotNull( threeParent );
         assertTrue( threeParent.isSchemaAware() );
@@ -1971,10 +1956,10 @@ public class DnTest
 
         assertTrue( name.getName().equals( "ou= Some   People   ,dc = eXample,dc= cOm" ) );
 
-        Dn result = name.apply( schemaManager );
+        Dn result = new Dn( schemaManager, name );
 
-        assertEquals( "2.5.4.11=some people,0.9.2342.19200300.100.1.25=example,0.9.2342.19200300.100.1.25=com",
-            result.getNormName() );
+        assertEquals( "ou=Some   People,dc=eXample,dc=cOm",
+            result.getEscaped() );
     }
 
 
@@ -1991,10 +1976,10 @@ public class DnTest
         assertEquals( "ou", rdn.getNormType() );
         assertEquals( "ou", rdn.getType() );
 
-        Dn result = name.apply( schemaManager );
+        Dn result = new Dn( schemaManager, name );
 
-        assertTrue( result.getNormName().equals(
-            "2.5.4.11=some people,0.9.2342.19200300.100.1.25=example,0.9.2342.19200300.100.1.25=com" ) );
+        assertTrue( result.equals(
+            "ou=some people,dc=example,dc=com" ) );
         assertTrue( name.getName().equals( "ou= Some   People   ,dc = eXample,dc= cOm" ) );
 
         Rdn rdn2 = result.getRdn();
@@ -2013,7 +1998,7 @@ public class DnTest
     {
         Dn name = new Dn();
 
-        Dn result = name.apply( schemaManager );
+        Dn result = new Dn( schemaManager, name );
         assertTrue( result.toString().equals( "" ) );
     }
 
@@ -2025,17 +2010,17 @@ public class DnTest
     public void testLdapNameToNameMultiNC() throws Exception
     {
         Dn name = new Dn(
-            "2.5.4.11= Some   People   + 0.9.2342.19200300.100.1.25=  And   Some anImAls,0.9.2342.19200300.100.1.25 = eXample,dc= cOm" );
+            "ou= Some   People   + 0.9.2342.19200300.100.1.25=  And   Some anImAls,0.9.2342.19200300.100.1.25 = eXample,dc= cOm" );
 
-        Dn result = name.apply( schemaManager );
+        Dn result = new Dn( schemaManager, name );
 
-        assertEquals(
-            ( result ).getNormName(),
-            "0.9.2342.19200300.100.1.25=and some animals+2.5.4.11=some people,0.9.2342.19200300.100.1.25=example,0.9.2342.19200300.100.1.25=com" );
+        assertTrue( 
+            result.equals( 
+                "0.9.2342.19200300.100.1.25=and some animals+ou=some people,0.9.2342.19200300.100.1.25=eXample,dc=cOm" ) );
         assertTrue( ( result )
             .getName()
             .equals(
-                "2.5.4.11= Some   People   + 0.9.2342.19200300.100.1.25=  And   Some anImAls,0.9.2342.19200300.100.1.25 = eXample,dc= cOm" ) );
+                "ou= Some   People   + 0.9.2342.19200300.100.1.25=  And   Some anImAls,0.9.2342.19200300.100.1.25 = eXample,dc= cOm" ) );
     }
 
 
@@ -2046,18 +2031,14 @@ public class DnTest
     public void testLdapNameToNameAliasMultiNC() throws Exception
     {
         Dn name = new Dn(
-            "2.5.4.11= Some   People   + domainComponent=  And   Some anImAls,DomainComponent = eXample,0.9.2342.19200300.100.1.25= cOm" );
+            "ou= Some   People   + domainComponent=  And   Some anImAls,DomainComponent = eXample,0.9.2342.19200300.100.1.25= cOm" );
 
-        Dn result = name.apply( schemaManager );
+        Dn result = new Dn( schemaManager, name );
 
-        assertTrue( result
-            .getNormName()
-            .equals(
-                "0.9.2342.19200300.100.1.25=and some animals+2.5.4.11=some people,0.9.2342.19200300.100.1.25=example,0.9.2342.19200300.100.1.25=com" ) );
-        assertTrue( result
-            .getName()
-            .equals(
-                "2.5.4.11= Some   People   + domainComponent=  And   Some anImAls,DomainComponent = eXample,0.9.2342.19200300.100.1.25= cOm" ) );
+        assertEquals( "ou=Some   People+domainComponent=And   Some anImAls,DomainComponent=eXample,0.9.2342.19200300.100.1.25=cOm",
+            result.getEscaped() );
+        assertEquals( "ou= Some   People   + domainComponent=  And   Some anImAls,DomainComponent = eXample,0.9.2342.19200300.100.1.25= cOm",
+            result.getName() );
     }
 
 
@@ -2069,10 +2050,10 @@ public class DnTest
     {
         Dn name1 = new Dn(
             schemaManager,
-            "2.5.4.11= Some   People   + domainComponent=  And   Some anImAls,DomainComponent = eXample,0.9.2342.19200300.100.1.25= cOm" );
+            "ou= Some   People   + domainComponent=  And   Some anImAls,DomainComponent = eXample,0.9.2342.19200300.100.1.25= cOm" );
 
         Dn name2 = new Dn( schemaManager,
-            "2.5.4.11=some people+domainComponent=and some animals,DomainComponent=example,0.9.2342.19200300.100.1.25=com" );
+            "ou=some people+domainComponent=and some animals,DomainComponent=example,0.9.2342.19200300.100.1.25=com" );
 
         assertEquals( name1.hashCode(), name2.hashCode() );
     }
@@ -2250,7 +2231,7 @@ public class DnTest
         Dn dn = new Dn( "cn=\" Kylie Minogue \",dc=example,dc=com" );
 
         assertEquals( "cn=\" Kylie Minogue \",dc=example,dc=com", dn.getName() );
-        assertEquals( "cn=\\ Kylie Minogue\\ ,dc=example,dc=com", dn.getNormName() );
+        assertEquals( "cn=\\ Kylie Minogue\\ ,dc=example,dc=com", dn.getEscaped() );
     }
 
 
@@ -2264,7 +2245,7 @@ public class DnTest
         Dn dn = new Dn( "a=\"b,c\"" );
 
         assertEquals( "a=\"b,c\"", dn.getName() );
-        assertEquals( "a=b\\,c", dn.getNormName() );
+        assertEquals( "a=b\\,c", dn.getEscaped() );
     }
 
 
@@ -2277,7 +2258,7 @@ public class DnTest
     {
         Dn name = new Dn( "dn= \\ four spaces leading and 3 trailing \\  " );
 
-        assertEquals( "dn=\\ four spaces leading and 3 trailing \\ ", name.getNormName() );
+        assertEquals( "dn=\\ four spaces leading and 3 trailing \\ ", name.getEscaped() );
         assertEquals( "dn= \\ four spaces leading and 3 trailing \\  ", name.getName() );
     }
 
@@ -2341,7 +2322,7 @@ public class DnTest
     {
         Dn name = new Dn( "dn=a middle \\# pound" );
 
-        assertEquals( "dn=a middle # pound", name.getNormName() );
+        assertEquals( "dn=a middle # pound", name.getEscaped() );
         assertEquals( "dn=a middle \\# pound", name.getName() );
     }
 
@@ -2355,7 +2336,7 @@ public class DnTest
     {
         Dn name = new Dn( "dn=a trailing pound \\#" );
 
-        assertEquals( "dn=a trailing pound #", name.getNormName() );
+        assertEquals( "dn=a trailing pound #", name.getEscaped() );
         assertEquals( "dn=a trailing pound \\#", name.getName() );
     }
 
@@ -2416,12 +2397,12 @@ public class DnTest
     public void testDNWithMultiOidsRDN() throws LdapException
     {
         Dn name = new Dn(
-            "0.9.2342.19200300.100.1.1=00123456789+2.5.4.3=pablo picasso,2.5.4.11=search,2.5.4.10=imc,2.5.4.6=us" );
+            "0.9.2342.19200300.100.1.1=00123456789+2.5.4.3=pablo picasso,ou=search,2.5.4.10=imc,2.5.4.6=us" );
         assertEquals(
-            "0.9.2342.19200300.100.1.1=00123456789+2.5.4.3=pablo picasso,2.5.4.11=search,2.5.4.10=imc,2.5.4.6=us",
+            "0.9.2342.19200300.100.1.1=00123456789+2.5.4.3=pablo picasso,ou=search,2.5.4.10=imc,2.5.4.6=us",
             name.toString() );
         assertEquals(
-            "0.9.2342.19200300.100.1.1=00123456789+2.5.4.3=pablo picasso,2.5.4.11=search,2.5.4.10=imc,2.5.4.6=us",
+            "0.9.2342.19200300.100.1.1=00123456789+2.5.4.3=pablo picasso,ou=search,2.5.4.10=imc,2.5.4.6=us",
             name.getName() );
     }
 
@@ -2432,7 +2413,7 @@ public class DnTest
         Dn dn1 = new Dn( "a=b,c=d,e=f" );
         Dn dn2 = new Dn( "a=b\\,c\\=d,e=f" );
 
-        assertFalse( dn1.getNormName().equals( dn2.getNormName() ) );
+        assertFalse( dn1.getEscaped().equals( dn2.getEscaped() ) );
     }
 
 
@@ -2513,7 +2494,7 @@ public class DnTest
         assertEquals( " cn = Amos\\,Tori ", dn1.getRdn().getName() );
         Ava atav1 = dn1.getRdn().getAva();
         assertEquals( "cn", atav1.getType() );
-        assertEquals( "Amos\\,Tori", atav1.getValue().getValue() );
+        assertEquals( "Amos,Tori", atav1.getValue().getValue() );
 
         // antlr parser: hexstring with trailing spaces
         Dn dn3 = new Dn( " cn = #414243 , ou=system " );
@@ -2528,16 +2509,14 @@ public class DnTest
         assertEquals( " cn = \\41\\42\\43 ", dn4.getRdn().getName() );
         Ava atav4 = dn4.getRdn().getAva();
         assertEquals( "cn", atav4.getType() );
-        assertEquals( "\\41\\42\\43", atav4.getValue().getValue() );
-        assertEquals( "ABC", atav4.getValue().getNormValue() );
+        assertEquals( "ABC", atav4.getValue().getValue() );
 
         // antlr parser: quotestring with trailing spaces
         Dn dn5 = new Dn( " cn = \"ABC\" , ou=system " );
         assertEquals( " cn = \"ABC\" ", dn5.getRdn().getName() );
         Ava atav5 = dn5.getRdn().getAva();
         assertEquals( "cn", atav5.getType() );
-        assertEquals( "\"ABC\"", atav5.getValue() .getValue());
-        assertEquals( "ABC", atav5.getValue().getNormValue() );
+        assertEquals( "ABC", atav5.getValue() .getValue());
 
         // fast parser: string value with trailing spaces
         Dn dn2 = new Dn( " cn = Amos Tori , ou=system " );
@@ -2555,33 +2534,29 @@ public class DnTest
     @Test
     public void testTrailingEscapedSpace() throws Exception
     {
-        Dn dn1 = new Dn( "ou=A\\ ,ou=system" );
-        dn1.apply( schemaManager );
+        Dn dn1 = new Dn( schemaManager, "ou=A\\ ,ou=system" );
         assertEquals( "ou=A\\ ,ou=system", dn1.getName() );
-        assertEquals( "2.5.4.11=a\\ ,2.5.4.11=system", dn1.getNormName() );
+        assertEquals( "ou=A\\ ,ou=system", dn1.getEscaped() );
         assertEquals( "ou=A\\ ", dn1.getRdn().getName() );
-        assertEquals( "2.5.4.11=a\\ ", dn1.getRdn().getNormName() );
+        assertEquals( "ou=A\\ ", dn1.getRdn().getEscaped() );
 
-        Dn dn2 = new Dn( "ou=A\\20,ou=system" );
-        dn2.apply( schemaManager );
+        Dn dn2 = new Dn( schemaManager, "ou=A\\20,ou=system" );
         assertEquals( "ou=A\\20,ou=system", dn2.getName() );
-        assertEquals( "2.5.4.11=a\\ ,2.5.4.11=system", dn2.getNormName() );
+        assertEquals( "ou=A\\ ,ou=system", dn2.getEscaped() );
         assertEquals( "ou=A\\20", dn2.getRdn().getName() );
-        assertEquals( "2.5.4.11=a\\ ", dn2.getRdn().getNormName() );
+        assertEquals( "ou=A\\ ", dn2.getRdn().getEscaped() );
 
-        Dn dn3 = new Dn( "ou=\\ ,ou=system" );
-        dn3.apply( schemaManager );
+        Dn dn3 = new Dn( schemaManager, "ou=\\ ,ou=system" );
         assertEquals( "ou=\\ ,ou=system", dn3.getName() );
-        assertEquals( "2.5.4.11=\\ ,2.5.4.11=system", dn3.getNormName() );
+        assertEquals( "ou=\\ ,ou=system", dn3.getEscaped() );
         assertEquals( "ou=\\ ", dn3.getRdn().getName() );
-        assertEquals( "2.5.4.11=\\ ", dn3.getRdn().getNormName() );
+        assertEquals( "ou=\\ ", dn3.getRdn().getEscaped() );
 
-        Dn dn4 = new Dn( "ou=\\20,ou=system" );
-        dn4.apply( schemaManager );
+        Dn dn4 = new Dn( schemaManager, "ou=\\20,ou=system" );
         assertEquals( "ou=\\20,ou=system", dn4.getName() );
-        assertEquals( "2.5.4.11=\\ ,2.5.4.11=system", dn4.getNormName() );
+        assertEquals( "ou=\\ ,ou=system", dn4.getEscaped() );
         assertEquals( "ou=\\20", dn4.getRdn().getName() );
-        assertEquals( "2.5.4.11=\\ ", dn4.getRdn().getNormName() );
+        assertEquals( "ou=\\ ", dn4.getRdn().getEscaped() );
     }
 
 
@@ -2592,34 +2567,36 @@ public class DnTest
     @Test
     public void testNumericOid() throws Exception
     {
+        Dn dn = new Dn( "ipHostNumber=X127.0.0.1+cn=loopback,ou=Hosts,dc=mygfs,dc=com" );
+
         // numeric OID only
         Dn dn1 = new Dn( "cn=loopback+ipHostNumber=127.0.0.1,ou=Hosts,dc=mygfs,dc=com" );
         assertEquals( "cn=loopback+ipHostNumber=127.0.0.1,ou=Hosts,dc=mygfs,dc=com", dn1.getName() );
-        assertEquals( "cn=loopback+iphostnumber=127.0.0.1,ou=Hosts,dc=mygfs,dc=com", dn1.getNormName() );
+        assertEquals( "cn=loopback+ipHostNumber=127.0.0.1,ou=Hosts,dc=mygfs,dc=com", dn1.getEscaped() );
         assertEquals( "cn=loopback+ipHostNumber=127.0.0.1", dn1.getRdn().getName() );
-        assertEquals( "cn=loopback+iphostnumber=127.0.0.1", dn1.getRdn().getNormName() );
+        assertEquals( "cn=loopback+ipHostNumber=127.0.0.1", dn1.getRdn().getEscaped() );
         assertEquals( "127.0.0.1", dn1.getRdn().getAva( "ipHostNumber" ).getValue().getValue() );
 
         // numeric OID with suffix
         Dn dn2 = new Dn( "cn=loopback+ipHostNumber=X127.0.0.1,ou=Hosts,dc=mygfs,dc=com" );
         assertEquals( "cn=loopback+ipHostNumber=X127.0.0.1,ou=Hosts,dc=mygfs,dc=com", dn2.getName() );
-        assertEquals( "cn=loopback+iphostnumber=X127.0.0.1,ou=Hosts,dc=mygfs,dc=com", dn2.getNormName() );
+        assertEquals( "cn=loopback+ipHostNumber=X127.0.0.1,ou=Hosts,dc=mygfs,dc=com", dn2.getEscaped() );
         assertEquals( "cn=loopback+ipHostNumber=X127.0.0.1", dn2.getRdn().getName() );
-        assertEquals( "cn=loopback+iphostnumber=X127.0.0.1", dn2.getRdn().getNormName() );
+        assertEquals( "cn=loopback+ipHostNumber=X127.0.0.1", dn2.getRdn().getEscaped() );
 
         // numeric OID with prefix
         Dn dn3 = new Dn( "cn=loopback+ipHostNumber=127.0.0.1Y,ou=Hosts,dc=mygfs,dc=com" );
         assertEquals( "cn=loopback+ipHostNumber=127.0.0.1Y,ou=Hosts,dc=mygfs,dc=com", dn3.getName() );
-        assertEquals( "cn=loopback+iphostnumber=127.0.0.1Y,ou=Hosts,dc=mygfs,dc=com", dn3.getNormName() );
+        assertEquals( "cn=loopback+ipHostNumber=127.0.0.1Y,ou=Hosts,dc=mygfs,dc=com", dn3.getEscaped() );
         assertEquals( "cn=loopback+ipHostNumber=127.0.0.1Y", dn3.getRdn().getName() );
-        assertEquals( "cn=loopback+iphostnumber=127.0.0.1Y", dn3.getRdn().getNormName() );
+        assertEquals( "cn=loopback+ipHostNumber=127.0.0.1Y", dn3.getRdn().getEscaped() );
 
         // numeric OID with special characters
         Dn dn4 = new Dn( "cn=loopback+ipHostNumber=\\#127.0.0.1 Z,ou=Hosts,dc=mygfs,dc=com" );
         assertEquals( "cn=loopback+ipHostNumber=\\#127.0.0.1 Z,ou=Hosts,dc=mygfs,dc=com", dn4.getName() );
-        assertEquals( "cn=loopback+iphostnumber=\\#127.0.0.1 Z,ou=Hosts,dc=mygfs,dc=com", dn4.getNormName() );
+        assertEquals( "cn=loopback+ipHostNumber=\\#127.0.0.1 Z,ou=Hosts,dc=mygfs,dc=com", dn4.getEscaped() );
         assertEquals( "cn=loopback+ipHostNumber=\\#127.0.0.1 Z", dn4.getRdn().getName() );
-        assertEquals( "cn=loopback+iphostnumber=\\#127.0.0.1 Z", dn4.getRdn().getNormName() );
+        assertEquals( "cn=loopback+ipHostNumber=\\#127.0.0.1 Z", dn4.getRdn().getEscaped() );
     }
 
 
@@ -2628,28 +2605,27 @@ public class DnTest
     {
         Dn dn = new Dn( "  ou  =  Example ,  ou  =  COM " );
 
-        dn.apply( schemaManager );
-        assertEquals( "2.5.4.11=example,2.5.4.11=com", dn.getNormName() );
+        new Dn( schemaManager, dn );
+        assertEquals( "ou=Example,ou=COM", dn.getEscaped() );
         assertEquals( "  ou  =  Example ,  ou  =  COM ", dn.getName() );
 
         Rdn rdn = dn.getRdn();
-        assertEquals( "2.5.4.11", rdn.getNormType() );
-        assertEquals( "example", rdn.getNormValue() );
-        assertEquals( "2.5.4.11=example", rdn.getNormName() );
+        assertEquals( "ou", rdn.getNormType() );
+        assertEquals( "  ou  =  Example ", rdn.getName() );
+        assertEquals( "ou=Example", rdn.getEscaped() );
         assertEquals( "ou", rdn.getType() );
         assertEquals( "Example", rdn.getValue() );
-        assertEquals( "  ou  =  Example ", rdn.getName() );
 
         Ava atav = rdn.getAva();
 
-        assertEquals( "2.5.4.11=example", atav.getNormName() );
-        assertEquals( "2.5.4.11", atav.getNormType() );
-        assertEquals( "example", atav.getValue().getNormValue().toString() );
+        assertEquals( "ou=Example", atav.getEscaped() );
+        assertEquals( "ou", atav.getNormType() );
+        assertEquals( "Example", atav.getValue().getValue() );
 
         assertEquals( "ou", atav.getType() );
         assertEquals( "Example", atav.getValue().getValue() );
 
-        assertEquals( "  ou  =  Example ", atav.getName() );
+        assertEquals( "ou=Example", atav.getName() );
     }
 
 
@@ -2658,14 +2634,13 @@ public class DnTest
     {
         Dn dn = new Dn( "  ou  =  Example + cn = TEST ,  ou  =  COM " );
 
-        dn.apply( schemaManager );
-        assertEquals( "2.5.4.11=example+2.5.4.3=test,2.5.4.11=com", dn.getNormName() );
+        new Dn( schemaManager, dn );
+        assertEquals( "ou=Example+cn=TEST,ou=COM", dn.getEscaped() );
         assertEquals( "  ou  =  Example + cn = TEST ,  ou  =  COM ", dn.getName() );
 
         Rdn rdn = dn.getRdn();
-        assertEquals( "2.5.4.11", rdn.getNormType() );
-        assertEquals( "example", rdn.getNormValue() );
-        assertEquals( "2.5.4.11=example+2.5.4.3=test", rdn.getNormName() );
+        assertEquals( "ou", rdn.getNormType() );
+        assertEquals( "ou=Example+cn=TEST", rdn.getEscaped() );
         assertEquals( "ou", rdn.getType() );
         assertEquals( "Example", rdn.getValue() );
         assertEquals( "  ou  =  Example + cn = TEST ", rdn.getName() );
@@ -2673,9 +2648,9 @@ public class DnTest
         // The first ATAV
         Ava atav = rdn.getAva();
 
-        assertEquals( "2.5.4.11=example", atav.getNormName() );
-        assertEquals( "2.5.4.11", atav.getNormType() );
-        assertEquals( "example", atav.getValue().getNormValue().toString() );
+        assertEquals( "ou=Example", atav.getEscaped() );
+        assertEquals( "ou", atav.getNormType() );
+        assertEquals( "Example", atav.getValue().getValue() );
 
         assertEquals( "ou", atav.getType() );
         assertEquals( "Example", atav.getValue().getValue() );
@@ -2687,15 +2662,15 @@ public class DnTest
         // The second ATAV
         for ( Ava ava : rdn )
         {
-            if ( "example".equals( ava.getValue().getNormValue().toString() ) )
+            if ( "Example".equals( ava.getValue().getValue() ) )
             {
                 // Skip the first one
                 continue;
             }
 
-            assertEquals( "2.5.4.3=test", ava.getNormName() );
-            assertEquals( "2.5.4.3", ava.getNormType() );
-            assertEquals( "test", ava.getValue().getNormValue().toString() );
+            assertEquals( "cn=TEST", ava.getEscaped() );
+            assertEquals( "cn", ava.getNormType() );
+            assertEquals( "TEST", ava.getValue().getValue() );
 
             assertEquals( "cn", ava.getType() );
             assertEquals( "TEST", ava.getValue().getValue() );
@@ -2709,26 +2684,25 @@ public class DnTest
     {
         Dn dn = new Dn( "  ou  =  Ex\\+mple " );
 
-        dn.apply( schemaManager );
-        assertEquals( "2.5.4.11=ex\\+mple", dn.getNormName() );
+        new Dn( schemaManager, dn );
+        assertEquals( "ou=Ex\\+mple", dn.getEscaped() );
         assertEquals( "  ou  =  Ex\\+mple ", dn.getName() );
 
         Rdn rdn = dn.getRdn();
-        assertEquals( "2.5.4.11", rdn.getNormType() );
-        assertEquals( "ex+mple", rdn.getNormValue() );
-        assertEquals( "2.5.4.11=ex\\+mple", rdn.getNormName() );
+        assertEquals( "ou", rdn.getNormType() );
+        assertEquals( "ou=Ex\\+mple", rdn.getEscaped() );
         assertEquals( "ou", rdn.getType() );
-        assertEquals( "Ex\\+mple", rdn.getValue() );
+        assertEquals( "Ex+mple", rdn.getValue() );
         assertEquals( "  ou  =  Ex\\+mple ", rdn.getName() );
 
         Ava atav = rdn.getAva();
 
-        assertEquals( "2.5.4.11=ex\\+mple", atav.getNormName() );
-        assertEquals( "2.5.4.11", atav.getNormType() );
-        assertEquals( "ex+mple", atav.getValue().getNormValue().toString() );
+        assertEquals( "ou=Ex\\+mple", atav.getEscaped() );
+        assertEquals( "ou", atav.getNormType() );
+        assertEquals( "Ex+mple", atav.getValue().getValue() );
 
         assertEquals( "ou", atav.getType() );
-        assertEquals( "Ex\\+mple", atav.getValue().getValue() );
+        assertEquals( "Ex+mple", atav.getValue().getValue() );
 
         assertEquals( "  ou  =  Ex\\+mple ", atav.getName() );
     }
@@ -2738,14 +2712,14 @@ public class DnTest
     public void testNormalizeBackSlash() throws Exception
     {
         Dn dn = new Dn( "cn=A\\,b,dc=com" );
-        dn.apply( schemaManager );
+        new Dn( schemaManager, dn );
         
         System.out.println( dn.toString() );
         System.out.println( dn );
         System.out.println( dn.getName() );
-        System.out.println( dn.getNormName() );
+        System.out.println( dn.getEscaped() );
         
-        System.out.println( dn.getRdn().getAva().getValue().getString() );
+        System.out.println( dn.getRdn().getAva().getValue().getValue() );
     }
 
 
@@ -2757,101 +2731,96 @@ public class DnTest
         // ------------------------------------------------------------------
         // Before normalization
         assertEquals( "  OU  =  Ex\\+mple + cn = T\\+ST\\  ,  ou  =  COM ", dn.getName() );
-        assertEquals( "ou=Ex\\+mple+cn=T\\+ST\\ ,ou=COM", dn.getNormName() );
+        assertEquals( "OU=Ex\\+mple+cn=T\\+ST\\ ,ou=COM", dn.getEscaped() );
 
         // Check the first Rdn
         Rdn rdn = dn.getRdn();
         assertEquals( "  OU  =  Ex\\+mple + cn = T\\+ST\\  ", rdn.getName() );
-        assertEquals( "ou=Ex\\+mple+cn=T\\+ST\\ ", rdn.getNormName() );
+        assertEquals( "OU=Ex\\+mple+cn=T\\+ST\\ ", rdn.getEscaped() );
 
         assertEquals( "OU", rdn.getType() );
         assertEquals( "ou", rdn.getNormType() );
 
-        assertEquals( "Ex\\+mple", rdn.getValue() );
-        assertEquals( "Ex+mple", rdn.getNormValue() );
+        assertEquals( "Ex+mple", rdn.getValue() );
+        assertEquals( "Ex+mple", rdn.getAva().getValue().getValue() );
 
         // The first ATAV
         Ava atav = rdn.getAva();
 
         assertEquals( "  OU  =  Ex\\+mple ", atav.getName() );
-        assertEquals( "ou=Ex\\+mple", atav.getNormName() );
+        assertEquals( "OU=Ex\\+mple", atav.getEscaped() );
 
         assertEquals( "ou", atav.getNormType() );
         assertEquals( "OU", atav.getType() );
 
-        assertEquals( "Ex\\+mple", atav.getValue().getValue() );
-        assertEquals( "Ex+mple", atav.getValue().getNormValue().toString() );
+        assertEquals( "Ex+mple", atav.getValue().getValue() );
 
         assertEquals( 2, rdn.size() );
 
         // The second ATAV
         for ( Ava ava : rdn )
         {
-            if ( "Ex+mple".equals( ava.getValue().getNormValue().toString() ) )
+            if ( "Ex+mple".equals( ava.getValue().getValue() ) )
             {
                 // Skip the first one
                 continue;
             }
 
             assertEquals( " cn = T\\+ST\\  ", ava.getName() );
-            assertEquals( "cn=T\\+ST\\ ", ava.getNormName() );
+            assertEquals( "cn=T\\+ST\\ ", ava.getEscaped() );
 
             assertEquals( "cn", ava.getType() );
             assertEquals( "cn", ava.getNormType() );
 
-            assertEquals( "T\\+ST\\ ", ava.getValue().getValue() );
-            assertEquals( "T+ST ", ava.getValue().getNormValue().toString() );
+            assertEquals( "T+ST ", ava.getValue().getValue() );
         }
 
         // ------------------------------------------------------------------
         // Now normalize the Dn
-        dn.apply( schemaManager );
+        new Dn( schemaManager, dn );
 
         assertEquals( "  OU  =  Ex\\+mple + cn = T\\+ST\\  ,  ou  =  COM ", dn.getName() );
-        assertEquals( "2.5.4.11=ex\\+mple+2.5.4.3=t\\+st\\ ,2.5.4.11=com", dn.getNormName() );
+        assertEquals( "OU=Ex\\+mple+cn=T\\+ST\\ ,ou=COM", dn.getEscaped() );
 
         // Check the first Rdn
         rdn = dn.getRdn();
         assertEquals( "  OU  =  Ex\\+mple + cn = T\\+ST\\  ", rdn.getName() );
-        assertEquals( "2.5.4.11=ex\\+mple+2.5.4.3=t\\+st\\ ", rdn.getNormName() );
+        assertEquals( "OU=Ex\\+mple+cn=T\\+ST\\ ", rdn.getEscaped() );
 
         assertEquals( "OU", rdn.getType() );
-        assertEquals( "2.5.4.11", rdn.getNormType() );
+        assertEquals( "ou", rdn.getNormType() );
 
-        assertEquals( "Ex\\+mple", rdn.getValue() );
-        assertEquals( "ex+mple", rdn.getNormValue() );
+        assertEquals( "Ex+mple", rdn.getValue() );
 
         // The first ATAV
         atav = rdn.getAva();
 
         assertEquals( "  OU  =  Ex\\+mple ", atav.getName() );
-        assertEquals( "2.5.4.11=ex\\+mple", atav.getNormName() );
+        assertEquals( "OU=Ex\\+mple", atav.getEscaped() );
 
-        assertEquals( "2.5.4.11", atav.getNormType() );
+        assertEquals( "ou", atav.getNormType() );
         assertEquals( "OU", atav.getType() );
 
-        assertEquals( "Ex\\+mple", atav.getValue().getValue() );
-        assertEquals( "ex+mple", atav.getValue().getNormValue().toString() );
+        assertEquals( "Ex+mple", atav.getValue().getValue() );
 
         assertEquals( 2, rdn.size() );
 
         // The second ATAV
         for ( Ava ava : rdn )
         {
-            if ( "ex+mple".equals( ava.getValue().getNormValue().toString() ) )
+            if ( "Ex+mple".equals( ava.getValue().getValue() ) )
             {
                 // Skip the first one
                 continue;
             }
 
             assertEquals( " cn = T\\+ST\\  ", ava.getName() );
-            assertEquals( "2.5.4.3=t\\+st\\ ", ava.getNormName() );
+            assertEquals( "cn=T\\+ST\\ ", ava.getEscaped() );
 
             assertEquals( "cn", ava.getType() );
-            assertEquals( "2.5.4.3", ava.getNormType() );
+            assertEquals( "cn", ava.getNormType() );
 
-            assertEquals( "T\\+ST\\ ", ava.getValue().getValue() );
-            assertEquals( "t+st ", ava.getValue().getNormValue().toString() );
+            assertEquals( "T+ST ", ava.getValue().getValue() );
         }
     }
 
@@ -2949,17 +2918,17 @@ public class DnTest
         dn = dn.add( "ou=users" );
         assertFalse( dn.isSchemaAware() );
 
-        dn.apply( schemaManager );
+        dn = new Dn( schemaManager, dn );
         assertTrue( dn.isSchemaAware() );
 
         dn = dn.add( "ou=x" );
         assertTrue( dn.isSchemaAware() );
 
-        assertEquals( "2.5.4.11=x,2.5.4.11=users,2.5.4.11=system", dn.getNormName() );
+        assertEquals( "ou=x,ou=users,ou=system", dn.getEscaped() );
         assertEquals( "ou=x,ou=users,ou=system", dn.getName() );
 
-        dn.apply( schemaManager );
-        assertEquals( "2.5.4.11=x,2.5.4.11=users,2.5.4.11=system", dn.getNormName() );
+        new Dn( schemaManager, dn );
+        assertEquals( "ou=x,ou=users,ou=system", dn.getEscaped() );
         assertEquals( "ou=x,ou=users,ou=system", dn.getName() );
 
         Rdn rdn = new Rdn( "ou=system" );
@@ -2969,7 +2938,7 @@ public class DnTest
         dn = dn.add( rdn );
         assertFalse( dn.isSchemaAware() );
 
-        dn.apply( schemaManager );
+        dn = new Dn( schemaManager, dn );
         assertTrue( dn.isSchemaAware() );
 
         Dn anotherDn = new Dn( "ou=x,ou=users" );
@@ -2977,7 +2946,7 @@ public class DnTest
         dn = dn.add( anotherDn );
         assertTrue( dn.isSchemaAware() );
 
-        dn.apply( schemaManager );
+        new Dn( schemaManager, dn );
         assertTrue( dn.isSchemaAware() );
     }
 
@@ -2988,7 +2957,7 @@ public class DnTest
         String dnStr = "dc=/vehicles/v1/";
 
         Dn dn = new Dn( dnStr );
-        dn.apply( schemaManager );
+        new Dn( schemaManager, dn );
 
         assertEquals( dnStr, dn.toString() );
     }
@@ -3010,5 +2979,125 @@ public class DnTest
     public void testRdnStudio() throws LdapInvalidDnException
     {
         new Dn( schemaManager, "cn=\\#\\\\\\+\\, \\\"φι\\\",ou=users,ou=system" );
+    }
+    
+    
+    @Test
+    //@Ignore
+    public void testDnParsing() throws LdapInvalidDnException
+    {
+        long[] deltas = new long[10];
+        
+        for ( int j = 0; j < 10; j++ )
+        {
+            long t0 = System.currentTimeMillis();
+            
+            for ( int i = 0; i < 10000000; i++ )
+            {
+                new Dn( schemaManager, "dc=example" + i );
+            }
+            
+            long t1 = System.currentTimeMillis();
+            
+            deltas[j] = t1 - t0;
+            System.out.println( "Iteration[" + j + "] : " + deltas[j] );
+        }
+        
+        long allDeltas = 0L;
+        
+        for ( int i = 0; i < 10; i++ )
+        {
+            allDeltas += deltas[i];
+        }
+        
+        System.out.println( "delta new 1 RDN : " + ( allDeltas / 10 ) );
+
+        for ( int j = 0; j < 10; j++ )
+        {
+            long t0 = System.currentTimeMillis();
+            
+            for ( int i = 0; i < 10000000; i++ )
+            {
+                new Dn( schemaManager, "dc=example" + i + ",dc=com" );
+            }
+            
+            long t1 = System.currentTimeMillis();
+            
+            deltas[j] = t1 - t0;
+            System.out.println( "Iteration[" + j + "] : " + deltas[j] );
+        }
+        
+        allDeltas = 0L;
+        
+        for ( int i = 0; i < 10; i++ )
+        {
+            allDeltas += deltas[i];
+        }
+        
+        System.out.println( "delta new 2 RDNs : " + ( allDeltas / 10 ) );
+
+        for ( int j = 0; j < 10; j++ )
+        {
+            long t0 = System.currentTimeMillis();
+            
+            for ( int i = 0; i < 10000000; i++ )
+            {
+                new Dn( schemaManager, "uid=" + i + ",dc=example,dc=com" );
+            }
+            
+            long t1 = System.currentTimeMillis();
+            
+            deltas[j] = t1 - t0;
+            System.out.println( "Iteration[" + j + "] : " + deltas[j] );
+        }
+        
+        allDeltas = 0L;
+        
+        for ( int i = 0; i < 10; i++ )
+        {
+            allDeltas += deltas[i];
+        }
+        
+        System.out.println( "delta new 3 RDNs : " + ( allDeltas / 10 ) );
+
+        for ( int j = 0; j < 10; j++ )
+        {
+            long t0 = System.currentTimeMillis();
+            
+            for ( int i = 0; i < 10000000; i++ )
+            {
+                new Dn( schemaManager, "uid=" + i + ",ou=people,dc=example,dc=com" );
+            }
+            
+            long t1 = System.currentTimeMillis();
+            
+            deltas[j] = t1 - t0;
+            System.out.println( "Iteration[" + j + "] : " + deltas[j] );
+        }
+        
+        allDeltas = 0L;
+        
+        for ( int i = 0; i < 10; i++ )
+        {
+            allDeltas += deltas[i];
+        }
+        
+        System.out.println( "delta new 4 RDNs : " + ( allDeltas / 10 ) );
+    }
+    
+    
+    @Test
+    @Ignore
+    public void testDnParsingOneRdn() throws LdapInvalidDnException
+    {
+        long t0 = System.currentTimeMillis();
+        
+        for ( int i = 0; i < 1000000; i++ )
+        {
+            new Dn( "dc=example" + i );
+        }
+        
+        long t1 = System.currentTimeMillis();
+        System.out.println( "delta new 1 RDN : " + ( t1 - t0 ) );
     }
 }

@@ -285,10 +285,10 @@ public class SubtreeSpecificationParserTest
         assertNotNull( ss );
 
         assertEquals( "ou=people", ss.getBase().toString() );
-        assertTrue( ss.getChopBeforeExclusions().contains( new Dn( "cn=y" ).apply( schemaManager ) ) );
-        assertTrue( ss.getChopBeforeExclusions().contains( new Dn( "c=z" ).apply( schemaManager ) ) );
-        assertTrue( ss.getChopAfterExclusions().contains( new Dn( "sn=l" ).apply( schemaManager ) ) );
-        assertTrue( ss.getChopAfterExclusions().contains( new Dn( "l=m" ).apply( schemaManager ) ) );
+        assertTrue( ss.getChopBeforeExclusions().contains( new Dn( schemaManager, "cn=y" ) ) );
+        assertTrue( ss.getChopBeforeExclusions().contains( new Dn( schemaManager, "c=z" ) ) );
+        assertTrue( ss.getChopAfterExclusions().contains( new Dn( schemaManager, "sn=l" ) ) );
+        assertTrue( ss.getChopAfterExclusions().contains( new Dn( schemaManager, "l=m" ) ) );
         assertEquals( 7, ss.getMinBaseDistance() );
         assertEquals( 77, ss.getMaxBaseDistance() );
     }

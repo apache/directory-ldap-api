@@ -393,7 +393,7 @@ public class SearchResultEntryTest extends AbstractResponseTest
         Iterator<Value> valueIterator = attribute.iterator();
         assertTrue( valueIterator.hasNext() );
         Value value = valueIterator.next();
-        assertEquals( "example", value.getString() );
+        assertEquals( "example", value.getValue() );
     }
 
 
@@ -437,7 +437,7 @@ public class SearchResultEntryTest extends AbstractResponseTest
         String expected = new String( new byte[]
             { 'E', 'm', 'm', 'a', 'n', 'u', 'e', 'l', ' ', 'L', ( byte ) 0xc3, ( byte ) 0xa9, 'c', 'h', 'a', 'r', 'n',
                 'y' }, StandardCharsets.UTF_8 );
-        assertEquals( expected, value.getString() );
+        assertEquals( expected, value.getValue() );
     }
 
 
@@ -477,7 +477,7 @@ public class SearchResultEntryTest extends AbstractResponseTest
         Iterator<Value> valueIterator = attribute.iterator();
         assertTrue( valueIterator.hasNext() );
         Value value = valueIterator.next();
-        assertEquals( "", value.getString() );
+        assertEquals( "", value.getValue() );
     }
 
 
@@ -517,10 +517,10 @@ public class SearchResultEntryTest extends AbstractResponseTest
         Iterator<Value> valueIterator = attribute.iterator();
         assertTrue( valueIterator.hasNext() );
         Value value = valueIterator.next();
-        assertEquals( "top", value.getString() );
+        assertEquals( "top", value.getValue() );
         assertTrue( valueIterator.hasNext() );
         value = valueIterator.next();
-        assertEquals( "domain", value.getString() );
+        assertEquals( "domain", value.getValue() );
         assertFalse( valueIterator.hasNext() );
     }
 
@@ -559,7 +559,7 @@ public class SearchResultEntryTest extends AbstractResponseTest
         Iterator<Value> valueIterator = objectClassAttribute.iterator();
         assertTrue( valueIterator.hasNext() );
         Value value = valueIterator.next();
-        assertEquals( "top", value.getString() );
+        assertEquals( "top", value.getValue() );
         assertFalse( valueIterator.hasNext() );
 
         Attribute dcAttribute = entry.get( "dc" );
@@ -568,7 +568,7 @@ public class SearchResultEntryTest extends AbstractResponseTest
         valueIterator = dcAttribute.iterator();
         assertTrue( valueIterator.hasNext() );
         value = valueIterator.next();
-        assertEquals( "example", value.getString() );
+        assertEquals( "example", value.getValue() );
         assertFalse( valueIterator.hasNext() );
     }
 

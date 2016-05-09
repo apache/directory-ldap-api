@@ -50,7 +50,7 @@ public class DummyNormalizer extends Normalizer
      */
     public Value normalize( Value value ) throws LdapException
     {
-        String str = value.getString();
+        String str = value.getValue();
 
         if ( Strings.isEmpty( str ) )
         {

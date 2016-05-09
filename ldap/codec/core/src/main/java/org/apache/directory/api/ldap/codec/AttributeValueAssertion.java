@@ -47,8 +47,8 @@ public class AttributeValueAssertion
     /** The attribute description */
     private String attributeDesc;
 
-    /** The assertion value */
-    private Value assertionValue;
+    /** The assertion as we received it */
+    private byte[] assertion;
 
 
     /**
@@ -89,31 +89,6 @@ public class AttributeValueAssertion
     }
 
 
-    // ~ Methods
-    // ------------------------------------------------------------------------------------
-
-    /**
-     * Get the assertion value
-     * 
-     * @return Returns the assertionValue.
-     */
-    public Value getAssertionValue()
-    {
-        return assertionValue;
-    }
-
-
-    /**
-     * Set the assertion value
-     * 
-     * @param assertionValue The assertionValue to set.
-     */
-    public void setAssertionValue( Value assertionValue )
-    {
-        this.assertionValue = assertionValue;
-    }
-
-
     /**
      * Get the attribute description
      * 
@@ -150,7 +125,7 @@ public class AttributeValueAssertion
         sb.append( tabs ).append( "    Assertion description : '" );
         sb.append( attributeDesc != null ? attributeDesc : "null" );
         sb.append( "'\n" );
-        sb.append( tabs ).append( "    Assertion value : '" ).append( dumpObject( assertionValue ) ).append( "'\n" );
+        sb.append( tabs ).append( "    Assertion value : '" ).append( dumpObject( assertion ) ).append( "'\n" );
 
         return sb.toString();
     }
@@ -191,9 +166,31 @@ public class AttributeValueAssertion
                 throw new IllegalArgumentException( "Unexpected filter type: " + filterType );
         }
 
-        sb.append( dumpObject( assertionValue ) );
+        sb.append( dumpObject( assertion ) );
 
         return sb.toString();
+    }
+
+
+    /**
+     * @return the assertion
+     */
+    public byte[] getAssertion()
+    {
+        return assertion;
+    }
+
+
+    /**
+     * @param assertion the assertion to set
+     */
+    public void setAssertion( byte[] assertion )
+    {
+        if ( assertion != null )
+        {
+            this.assertion = new byte[assertion.length];
+            System.arraycopy( assertion, 0, this.assertion, 0, assertion.length );
+        }
     }
 
 

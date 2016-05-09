@@ -163,7 +163,7 @@ public class EntryUtils
             {
                 if ( value.isHumanReadable() )
                 {
-                    return new Value( Strings.toLowerCaseAscii( value.getString() ) );
+                    return new Value( Strings.toLowerCaseAscii( value.getValue() ) );
                 }
 
                 throw new IllegalStateException( I18n.err( I18n.ERR_04474 ) );
@@ -198,7 +198,8 @@ public class EntryUtils
 
             public boolean isValidSyntax( Object value )
             {
-                return ( ( String ) value == null ) || ( ( ( String ) value ).length() < 7 );
+                String strValue = Strings.deepTrim( ( String ) value );
+                return ( strValue == null ) || ( strValue.length() < 7 );
             }
         } );
 

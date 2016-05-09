@@ -28,6 +28,7 @@ import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.util.Strings;
 
 
@@ -56,7 +57,7 @@ public class ExtensibleMatchFilter extends Filter
     private byte[] typeBytes;
 
     /** Matching rule value */
-    private org.apache.directory.api.ldap.model.entry.Value matchValue;
+    private Value matchValue;
 
     /** The dnAttributes flag */
     private boolean dnAttributes = false;
@@ -139,7 +140,7 @@ public class ExtensibleMatchFilter extends Filter
      * 
      * @return Returns the matchValue.
      */
-    public org.apache.directory.api.ldap.model.entry.Value getMatchValue()
+    public Value getMatchValue()
     {
         return matchValue;
     }
@@ -150,7 +151,7 @@ public class ExtensibleMatchFilter extends Filter
      * 
      * @param matchValue The matchValue to set.
      */
-    public void setMatchValue( org.apache.directory.api.ldap.model.entry.Value matchValue )
+    public void setMatchValue( Value matchValue )
     {
         this.matchValue = matchValue;
     }

@@ -29,6 +29,7 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueEx
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.PrepareString;
+import org.apache.directory.api.ldap.model.schema.PreparedNormalizer;
 
 
 /**
@@ -39,7 +40,7 @@ import org.apache.directory.api.ldap.model.schema.PrepareString;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class DeepTrimNormalizer extends Normalizer
+public class DeepTrimNormalizer extends Normalizer implements PreparedNormalizer
 {
     /**
      * Creates a new instance of DeepTrimNormalizer with OID known.
@@ -64,34 +65,84 @@ public class DeepTrimNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
-    public Value normalize( Value value ) throws LdapException
+    public String normalize( String value ) throws LdapException
     {
-        try
-        {
-            String normalized = PrepareString.normalize( value.getString(),
-                PrepareString.StringType.DIRECTORY_STRING );
-
-            return new Value( normalized );
-        }
-        catch ( IOException ioe )
-        {
-            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                I18n.ERR_04224, value ), ioe );
-        }
+        return normalize( value, PrepareString.AssertionType.ATTRIBUTE_VALUE );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public String normalize( String value ) throws LdapException
+    public Value normalize( Value value ) throws LdapException
     {
+        if ( value == null )
+        {
+            return null;
+        }
+
+        // Transcoding
+        String transcoded = PrepareString.transcode( value.getBytes() );
+
+        String normValue = normalize( transcoded, PrepareString.AssertionType.ATTRIBUTE_VALUE );
+
+        return new Value( value.getAttributeType(), value.getValue() );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String normalize( String value, PrepareString.AssertionType assertionType ) throws LdapException
+    {
+        if ( value == null )
+        {
+            return null;
+        }
+
+        String normValue = null;
+
         try
         {
-            String normalized = PrepareString.normalize( value,
-                PrepareString.StringType.DIRECTORY_STRING );
+            // Transcoding is useless
+            // Map
+            String mapped = PrepareString.mapCaseSensitive( value );
 
-            return normalized;
+            // Normalize
+            String normalized = PrepareString.normalize( mapped );
+            
+            char[] chars = normalized.toCharArray();
+            
+            // Prohibit
+            PrepareString.checkProhibited( chars );
+            
+            // Bidi is ignored
+            
+            // Insignificant Characters Handling
+            switch ( assertionType )
+            {
+                case ATTRIBUTE_VALUE :
+                    normValue = PrepareString.insignificantSpacesStringValue( chars );
+                    break;
+                    
+                case SUBSTRING_INITIAL :
+                    normValue = PrepareString.insignificantSpacesStringInitial( chars );
+                    break;
+                    
+                case SUBSTRING_ANY :
+                    normValue = PrepareString.insignificantSpacesStringAny( chars );
+                    break;
+                    
+                case SUBSTRING_FINAL :
+                    normValue = PrepareString.insignificantSpacesStringFinal( chars );
+                    break;
+                    
+                default :
+                    // Do nothing
+                    break;
+            }
+
+            return normValue;
         }
         catch ( IOException ioe )
         {

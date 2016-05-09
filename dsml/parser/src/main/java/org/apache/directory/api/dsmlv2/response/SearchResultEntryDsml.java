@@ -169,7 +169,7 @@ public class SearchResultEntryDsml
                 }
                 else
                 {
-                    attributeElement.addElement( "value" ).addText( value.getString() );
+                    attributeElement.addElement( "value" ).addText( value.getValue() );
                 }
             }
         }

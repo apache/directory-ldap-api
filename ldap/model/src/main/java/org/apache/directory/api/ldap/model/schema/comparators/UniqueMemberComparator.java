@@ -173,7 +173,7 @@ public class UniqueMemberComparator extends LdapComparator<String>
         {
             dn = ( Dn ) obj;
 
-            dn = ( dn.isSchemaAware() ? dn : dn.apply( schemaManager ) );
+            dn = ( dn.isSchemaAware() ? dn : new Dn( schemaManager, dn ) );
         }
         else if ( obj instanceof String )
         {

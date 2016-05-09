@@ -53,8 +53,6 @@ public abstract class AssertionNode extends AbstractExprNode
     public AssertionNode( Assertion assertion )
     {
         this( assertion, "ASSERTION" );
-
-        isSchemaAware = true;
     }
 
 
@@ -125,6 +123,17 @@ public abstract class AssertionNode extends AbstractExprNode
     public StringBuilder printRefinementToBuffer( StringBuilder buf ) throws UnsupportedOperationException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_04145 ) );
+    }
+
+
+    /**
+     * Tells if this Node is Schema aware.
+     * 
+     * @return true if the Node is SchemaAware
+     */
+    public boolean isSchemaAware()
+    {
+        return true;
     }
 
 

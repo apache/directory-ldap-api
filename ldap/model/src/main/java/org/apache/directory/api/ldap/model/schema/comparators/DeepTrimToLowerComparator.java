@@ -23,53 +23,34 @@ package org.apache.directory.api.ldap.model.schema.comparators;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
+import org.apache.directory.api.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 /**
- * A comparator which normalizes a value first before using a subordinate
- * comparator to compare them.
+ * A comparator that uses the DeepTrimToLowerNormalizer before comparing two values
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class NormalizingComparator extends LdapComparator<String>
+public class DeepTrimToLowerComparator extends LdapComparator<String>
 {
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
 
     /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( NormalizingComparator.class );
-
-    /** the Normalizer to normalize values with before comparing */
-    private Normalizer normalizer;
-
-    /** the underlying comparator to use for comparisons */
-    private LdapComparator<String> comparator;
-
-    private boolean onServer = false;
+    private static final Logger LOG = LoggerFactory.getLogger( DeepTrimToLowerComparator.class );
+    
+    /** The associated normalizer */
+    private Normalizer normalizer = new DeepTrimToLowerNormalizer();
 
 
     /**
      * The NormalizingComparator constructor. Its OID is the  matching rule OID.
      */
-    public NormalizingComparator( String oid )
+    public DeepTrimToLowerComparator( String oid )
     {
         super( oid );
-    }
-
-
-    /**
-     * A comparator which normalizes a value first before comparing them.
-     * 
-     * @param normalizer the Normalizer to normalize values with before comparing
-     * @param comparator the underlying comparator to use for comparisons
-     */
-    public NormalizingComparator( String oid, Normalizer normalizer, LdapComparator<String> comparator )
-    {
-        super( oid );
-        this.normalizer = normalizer;
-        this.comparator = comparator;
     }
 
 
@@ -79,13 +60,8 @@ public class NormalizingComparator extends LdapComparator<String>
      */
     public int compare( String o1, String o2 )
     {
-        if ( onServer )
-        {
-            return comparator.compare( o1, o2 );
-        }
-
-        String n1;
-        String n2;
+        String n1 = o1;
+        String n2 = o2;
 
         try
         {
@@ -107,7 +83,7 @@ public class NormalizingComparator extends LdapComparator<String>
             n2 = o2;
         }
 
-        return comparator.compare( n1, n2 );
+        return n1.compareTo( n2 );
     }
 
 
@@ -121,17 +97,5 @@ public class NormalizingComparator extends LdapComparator<String>
     public void setOid( String oid )
     {
         super.setOid( oid );
-        normalizer.setOid( oid );
-        comparator.setOid( oid );
-    }
-
-
-    /**
-     * tells that the normalizingComparator should not normalize values which are
-     * already normalized on the server 
-     */
-    public void setOnServer()
-    {
-        this.onServer = true;
     }
 }

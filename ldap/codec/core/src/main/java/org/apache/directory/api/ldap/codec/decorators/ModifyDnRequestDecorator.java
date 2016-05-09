@@ -46,6 +46,12 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
 {
     /** The modify Dn request length */
     private int modifyDnRequestLength;
+    
+    /** The DN as a byte[] */
+    private byte[] dnBytes;
+    
+    /** The new superior as a byte[] */
+    private byte[] newSuperiorBytes;
 
 
     /**
@@ -221,14 +227,14 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
         int newRdnlength = Strings.getBytesUtf8( getNewRdn().getName() ).length;
 
         // deleteOldRDN
-        modifyDnRequestLength = 1 + TLV.getNbBytes( Dn.getNbBytes( getName() ) )
-            + Dn.getNbBytes( getName() ) + 1 + TLV.getNbBytes( newRdnlength ) + newRdnlength + 1 + 1
-            + 1;
+        dnBytes = Strings.getBytesUtf8( getName().getName() );
+        modifyDnRequestLength = 1 + TLV.getNbBytes( dnBytes.length ) + dnBytes.length + 1 + TLV.getNbBytes( newRdnlength ) 
+            + newRdnlength + 1 + 1 + 1;
 
         if ( getNewSuperior() != null )
         {
-            modifyDnRequestLength += 1 + TLV.getNbBytes( Dn.getNbBytes( getNewSuperior() ) )
-                + Dn.getNbBytes( getNewSuperior() );
+            newSuperiorBytes = Strings.getBytesUtf8( getNewSuperior().getName() );
+            modifyDnRequestLength += 1 + TLV.getNbBytes( newSuperiorBytes.length ) + newSuperiorBytes.length;
         }
 
         return 1 + TLV.getNbBytes( modifyDnRequestLength ) + modifyDnRequestLength;
@@ -259,7 +265,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
 
             // The entry
 
-            BerValue.encode( buffer, Dn.getBytes( getName() ) );
+            BerValue.encode( buffer, dnBytes );
 
             // The newRDN
             BerValue.encode( buffer, getNewRdn().getName() );
@@ -273,13 +279,13 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
                 // Encode the reference
                 buffer.put( ( byte ) LdapCodecConstants.MODIFY_DN_REQUEST_NEW_SUPERIOR_TAG );
 
-                int newSuperiorLength = Dn.getNbBytes( getNewSuperior() );
+                int newSuperiorLength = newSuperiorBytes.length;
 
                 buffer.put( TLV.getBytes( newSuperiorLength ) );
 
                 if ( newSuperiorLength != 0 )
                 {
-                    buffer.put( Dn.getBytes( getNewSuperior() ) );
+                    buffer.put( newSuperiorBytes );
                 }
             }
         }

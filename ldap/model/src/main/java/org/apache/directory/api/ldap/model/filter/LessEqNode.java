@@ -49,7 +49,19 @@ public class LessEqNode<T> extends SimpleNode<T>
      * @param attribute the attribute name
      * @param value the value to test for
      */
-    public LessEqNode( String attribute, Value value )
+    public LessEqNode( String attribute, byte[] value )
+    {
+        super( attribute, value, AssertionType.LESSEQ );
+    }
+
+
+    /**
+     * Creates a new LessEqNode object.
+     * 
+     * @param attribute the attribute name
+     * @param value the value to test for
+     */
+    public LessEqNode( String attribute, String value )
     {
         super( attribute, value, AssertionType.LESSEQ );
     }
@@ -76,8 +88,9 @@ public class LessEqNode<T> extends SimpleNode<T>
 
         buf.append( "<=" );
 
-        Value escapedValue = getEscapedValue();
-        if ( !escapedValue.isNull() )
+        String escapedValue = getEscapedValue();
+        
+        if ( escapedValue != null )
         {
             buf.append( escapedValue );
         }

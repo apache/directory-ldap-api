@@ -51,7 +51,7 @@ public final class Strings
     private static final Logger LOG = LoggerFactory.getLogger( Strings.class );
 
     /** Hex chars */
-    private static final byte[] HEX_CHAR = new byte[]
+    public static final byte[] HEX_CHAR = new byte[]
         { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
     /** A table containing booleans when the corresponding char is printable */
@@ -245,6 +245,19 @@ public final class Strings
         }
 
         return sb.toString();
+    }
+
+
+    /**
+     * Helper function that dump a byte as a double digit value
+     *
+     * @param b The byte to dump
+     * @return A string representation of byte as a string
+     */
+    public static String byteToString( byte b )
+    {
+        return Strings.utf8ToString( new byte[]
+            { HEX_CHAR[( b & 0x00F0 ) >> 4], HEX_CHAR[b & 0x000F] } );
     }
 
 
@@ -665,7 +678,30 @@ public final class Strings
         }
         else
         {
-            return ( ( byteArray[index] == car ) ? true : false );
+            return ( byteArray[index] == car );
+        }
+    }
+
+
+    /**
+     * Test if the current character is equal to a specific character. This
+     * function works only for character between 0 and 127, as it does compare a
+     * byte and a char (which is 16 bits wide)
+     *
+     * @param byteArray The buffer which contains the data
+     * @param index Current position in the buffer
+     * @param car The character we want to compare with the current buffer position
+     * @return <code>true</code> if the current character equals the given character.
+     */
+    public static boolean isCharASCII( char[] charArray, int index, char car )
+    {
+        if ( ( charArray == null ) || ( charArray.length == 0 ) || ( index < 0 ) || ( index >= charArray.length ) )
+        {
+            return false;
+        }
+        else
+        {
+            return ( charArray[index] == car );
         }
     }
 

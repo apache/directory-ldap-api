@@ -20,10 +20,14 @@
 package org.apache.directory.api.ldap.model.filter;
 
 
+import java.util.Arrays;
+
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Value;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -35,6 +39,9 @@ public abstract class SimpleNode<T> extends LeafNode
 {
     /** the value */
     protected Value value;
+    
+    /** The value as a byte[] */
+    protected byte[] bytes;
 
     /** Constants for comparisons : > */
     public static final boolean EVAL_GREATER = true;
@@ -50,10 +57,73 @@ public abstract class SimpleNode<T> extends LeafNode
      * @param value the value to test for
      * @param assertionType the type of assertion represented by this ExprNode
      */
-    protected SimpleNode( String attribute, Value value, AssertionType assertionType )
+    protected SimpleNode( String attribute, byte[] bytes, AssertionType assertionType )
     {
         super( attribute, assertionType );
-        this.value = value;
+        this.bytes = bytes;
+    }
+
+
+    /**
+     * Creates a new SimpleNode object.
+     * 
+     * @param attribute the attribute name
+     * @param value the value to test for
+     * @param assertionType the type of assertion represented by this ExprNode
+     */
+    protected SimpleNode( AttributeType attributeType, byte[] bytes, AssertionType assertionType )
+    {
+        super( attributeType, assertionType );
+        this.bytes = bytes;
+        
+        try
+        {
+            if ( attributeType.isHR() )
+            {
+                value = new Value( attributeType, Strings.utf8ToString( bytes ) );
+            }
+            else
+            {
+                    value = new Value( attributeType, bytes );
+            }
+        }
+        catch ( LdapInvalidAttributeValueException e )
+        {
+            throw new RuntimeException( e.getMessage() );
+        }
+    }
+
+
+    /**
+     * Creates a new SimpleNode object.
+     * 
+     * @param attribute the attribute name
+     * @param value the value to test for
+     * @param assertionType the type of assertion represented by this ExprNode
+     */
+    protected SimpleNode( String attribute, String string, AssertionType assertionType )
+    {
+        super( attribute, assertionType );
+        bytes = Strings.getBytesUtf8( string );
+        
+        if ( attributeType != null )
+        {
+            try
+            {
+                if ( attributeType.isHR() )
+                {
+                    value = new Value( attributeType, string );
+                }
+                else
+                {
+                    value = new Value( attributeType, bytes );
+                }
+            }
+            catch ( LdapInvalidAttributeValueException e )
+            {
+                throw new RuntimeException( e.getMessage() );
+            }
+        }
     }
 
 
@@ -80,8 +150,20 @@ public abstract class SimpleNode<T> extends LeafNode
     {
         ExprNode clone = super.clone();
 
-        // Clone the value
-        ( ( SimpleNode<T> ) clone ).value = value.clone();
+        // Clone the value, if we have one
+        if ( value != null )
+        {
+            ( ( SimpleNode<T> ) clone ).value = value.clone();
+        }
+        else
+        {
+            // clone the bytes if any
+            if ( bytes != null )
+            {
+                ( ( SimpleNode<T> ) clone ).bytes = new byte[bytes.length];
+                System.arraycopy( bytes, 0, ( ( SimpleNode<T> ) clone ).bytes, 0, bytes.length );
+            }
+        }
 
         return clone;
     }
@@ -94,16 +176,30 @@ public abstract class SimpleNode<T> extends LeafNode
      */
     public final Value getValue()
     {
-        return value;
+        if ( value == null )
+        {
+            return new Value( bytes );
+        }
+        else
+        {
+            return value;
+        }
     }
 
 
     /** 
      * @return representation of value, escaped for use in a filter if required 
      */
-    public Value getEscapedValue()
+    public String getEscapedValue()
     {
-        return escapeFilterValue( value );
+        if ( value != null )
+        {
+            return escapeFilterValue( value.getAttributeType(), bytes );
+        }
+        else
+        {
+            return escapeFilterValue( null, bytes );
+        }
     }
 
 
@@ -115,6 +211,7 @@ public abstract class SimpleNode<T> extends LeafNode
     public void setValue( Value value )
     {
         this.value = value;
+        this.bytes = value.getBytes();
     }
 
 
@@ -148,7 +245,7 @@ public abstract class SimpleNode<T> extends LeafNode
      */
     public StringBuilder printRefinementToBuffer( StringBuilder buf )
     {
-        if ( isSchemaAware )
+        if ( isSchemaAware() )
         {
             if ( !attributeType.getOid().equals( SchemaConstants.OBJECT_CLASS_AT_OID ) )
             {
@@ -215,7 +312,14 @@ public abstract class SimpleNode<T> extends LeafNode
 
         if ( value == null )
         {
-            return otherNode.value == null;
+            if ( bytes == null )
+            {
+                return otherNode.bytes == null;
+            }
+            else
+            {
+                return Arrays.equals( bytes,  otherNode.bytes );
+            }
         }
         else
         {

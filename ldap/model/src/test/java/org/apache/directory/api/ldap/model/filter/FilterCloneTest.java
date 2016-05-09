@@ -30,18 +30,7 @@ import java.text.ParseException;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
-import org.apache.directory.api.ldap.model.filter.AndNode;
-import org.apache.directory.api.ldap.model.filter.ApproximateNode;
-import org.apache.directory.api.ldap.model.filter.BranchNode;
-import org.apache.directory.api.ldap.model.filter.EqualityNode;
-import org.apache.directory.api.ldap.model.filter.ExprNode;
-import org.apache.directory.api.ldap.model.filter.ExtensibleNode;
 import org.apache.directory.api.ldap.model.filter.FilterParser;
-import org.apache.directory.api.ldap.model.filter.NotNode;
-import org.apache.directory.api.ldap.model.filter.OrNode;
-import org.apache.directory.api.ldap.model.filter.PresenceNode;
-import org.apache.directory.api.ldap.model.filter.SimpleNode;
-import org.apache.directory.api.ldap.model.filter.SubstringNode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -62,7 +51,7 @@ public class FilterCloneTest
         // just check that it doesn't throw for now
         node = ( SimpleNode<?> ) node.clone();
         assertEquals( "ou", node.getAttribute() );
-        assertEquals( "people", node.getValue().getString() );
+        assertEquals( "people", node.getValue().getValue() );
         assertTrue( node instanceof ApproximateNode );
     }
 
@@ -129,7 +118,7 @@ public class FilterCloneTest
         // just check that it doesn't throw for now
         node = ( SimpleNode<?> ) node.clone();
         assertEquals( "ou;lang-de", node.getAttribute() );
-        assertEquals( "#Basdl fkajsd", node.getValue().getString() );
+        assertEquals( "#Basdl fkajsd", node.getValue().getValue() );
     }
 
 
@@ -141,7 +130,7 @@ public class FilterCloneTest
         // just check that it doesn't throw for now
         node = ( SimpleNode<?> ) node.clone();
         assertEquals( "ou;lang-de;version-124", node.getAttribute() );
-        assertEquals( "#Basdl fkajsd", node.getValue().getString() );
+        assertEquals( "#Basdl fkajsd", node.getValue().getValue() );
     }
 
 
@@ -153,7 +142,7 @@ public class FilterCloneTest
         // just check that it doesn't throw for now
         node = ( SimpleNode<?> ) node.clone();
         assertEquals( "1.3.4.2;lang-de;version-124", node.getAttribute() );
-        assertEquals( "#Basdl fkajsd", node.getValue().getString() );
+        assertEquals( "#Basdl fkajsd", node.getValue().getValue() );
     }
 
 
@@ -186,7 +175,7 @@ public class FilterCloneTest
         // just check that it doesn't throw for now
         node = ( SimpleNode<?> ) node.clone();
         assertEquals( "ou", node.getAttribute() );
-        assertEquals( "people", node.getValue().getString() );
+        assertEquals( "people", node.getValue().getValue() );
         assertTrue( node instanceof EqualityNode );
     }
 
@@ -198,7 +187,7 @@ public class FilterCloneTest
         // just check that it doesn't throw for now
         node = ( SimpleNode<?> ) node.clone();
         assertEquals( "ou", node.getAttribute() );
-        assertEquals( "people/in/my/company", node.getValue().getString() );
+        assertEquals( "people/in/my/company", node.getValue().getValue() );
         assertTrue( node instanceof EqualityNode );
     }
 
@@ -211,7 +200,7 @@ public class FilterCloneTest
         // just check that it doesn't throw for now
         node = ( ExtensibleNode ) node.clone();
         assertEquals( "ou", node.getAttribute() );
-        assertEquals( "dummyAssertion#*", node.getValue().getString() );
+        assertEquals( "dummyAssertion#*", node.getValue().getValue() );
         assertEquals( "stupidMatch", node.getMatchingRuleId() );
         assertTrue( node.hasDnAttributes() );
         assertTrue( node instanceof ExtensibleNode );
@@ -226,7 +215,7 @@ public class FilterCloneTest
         // just check that it doesn't throw for now
         node = ( ExtensibleNode ) node.clone();
         assertEquals( "1.2.3.4", node.getAttribute() );
-        assertEquals( "dummyAssertion#*", node.getValue().getString() );
+        assertEquals( "dummyAssertion#*", node.getValue().getValue() );
         assertEquals( "1.3434.23.2", node.getMatchingRuleId() );
         assertTrue( node.hasDnAttributes() );
         assertTrue( node instanceof ExtensibleNode );
@@ -240,7 +229,7 @@ public class FilterCloneTest
         // just check that it doesn't throw for now
         node = ( ExtensibleNode ) node.clone();
         assertEquals( "ou", node.getAttribute() );
-        assertEquals( "dummyAssertion#*", node.getValue().getString() );
+        assertEquals( "dummyAssertion#*", node.getValue().getValue() );
         assertEquals( "stupidMatch", node.getMatchingRuleId() );
         assertFalse( node.hasDnAttributes() );
         assertTrue( node instanceof ExtensibleNode );
@@ -254,7 +243,7 @@ public class FilterCloneTest
         // just check that it doesn't throw for now
         node = ( ExtensibleNode ) node.clone();
         assertEquals( "ou", node.getAttribute() );
-        assertEquals( "dummyAssertion#*", node.getValue().getString() );
+        assertEquals( "dummyAssertion#*", node.getValue().getValue() );
         assertEquals( null, node.getMatchingRuleId() );
         assertFalse( node.hasDnAttributes() );
         assertTrue( node instanceof ExtensibleNode );
@@ -268,7 +257,7 @@ public class FilterCloneTest
         // just check that it doesn't throw for now
         node = ( ExtensibleNode ) node.clone();
         assertEquals( null, node.getAttribute() );
-        assertEquals( "dummyAssertion#*", node.getValue().getString() );
+        assertEquals( "dummyAssertion#*", node.getValue().getValue() );
         assertEquals( "stupidMatch", node.getMatchingRuleId() );
         assertTrue( node.hasDnAttributes() );
         assertTrue( node instanceof ExtensibleNode );
@@ -280,7 +269,7 @@ public class FilterCloneTest
     {
         ExtensibleNode node = ( ExtensibleNode ) FilterParser.parse( null, "(:dn:1.3434.23.2:=dummyAssertion\\23\\2A)" );
         assertEquals( null, node.getAttribute() );
-        assertEquals( "dummyAssertion#*", node.getValue().getString() );
+        assertEquals( "dummyAssertion#*", node.getValue().getValue() );
         assertEquals( "1.3434.23.2", node.getMatchingRuleId() );
         assertTrue( node.hasDnAttributes() );
         assertTrue( node instanceof ExtensibleNode );
@@ -294,7 +283,7 @@ public class FilterCloneTest
         // just check that it doesn't throw for now
         ExtensibleNode node = ( ExtensibleNode ) node1.clone();
         assertEquals( null, node.getAttribute() );
-        assertEquals( "dummyAssertion#*", node.getValue().getString() );
+        assertEquals( "dummyAssertion#*", node.getValue().getValue() );
         assertEquals( "stupidMatch", node.getMatchingRuleId() );
         assertFalse( node.hasDnAttributes() );
         assertTrue( node instanceof ExtensibleNode );
@@ -308,7 +297,7 @@ public class FilterCloneTest
         // just check that it doesn't throw for now
         node = ( ExtensibleNode ) node.clone();
         assertEquals( null, node.getAttribute() );
-        assertEquals( "dummyAssertion#*", node.getValue().getString() );
+        assertEquals( "dummyAssertion#*", node.getValue().getValue() );
         assertEquals( "1.3434.23.2", node.getMatchingRuleId() );
         assertFalse( node.hasDnAttributes() );
         assertTrue( node instanceof ExtensibleNode );
@@ -516,7 +505,7 @@ public class FilterCloneTest
         node = ( SimpleNode<?> ) node.clone();
 
         assertEquals( "ou", node.getAttribute() );
-        assertEquals( "", node.getValue().getString() );
+        assertEquals( "", node.getValue().getValue() );
         assertTrue( node instanceof EqualityNode );
     }
 
@@ -531,7 +520,7 @@ public class FilterCloneTest
         // just check that it doesn't throw for now
         node = ( SimpleNode<?> ) node.clone();
         assertEquals( "uid", node.getAttribute() );
-        assertEquals( "#f1", node.getValue().getString() );
+        assertEquals( "#f1", node.getValue().getValue() );
         assertTrue( node instanceof EqualityNode );
     }
 

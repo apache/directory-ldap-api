@@ -232,10 +232,10 @@ public class LdifAttributesReaderTest
         assertTrue( attr.contains( "app1" ) );
 
         attr = entry.get( "dependencies" );
-        assertNull( attr.get().getValue() );
+        assertEquals( "", attr.get().getValue() );
 
         attr = entry.get( "envvars" );
-        assertNull( attr.get().getValue() );
+        assertEquals( "", attr.get().getValue() );
         reader.close();
     }
 
@@ -272,10 +272,10 @@ public class LdifAttributesReaderTest
         assertTrue( attr.contains( "app1" ) );
 
         attr = entry.get( "dependencies" );
-        assertNull( attr.get().getValue() );
+        assertEquals( "", attr.get().getValue() );
 
         attr = entry.get( "envvars" );
-        assertNull( attr.get().getValue() );
+        assertEquals( "", attr.get().getValue() );
         reader.close();
     }
 
@@ -312,10 +312,10 @@ public class LdifAttributesReaderTest
         assertTrue( attr.contains( "app1" ) );
 
         attr = entry.get( "dependencies" );
-        assertNull( attr.get().getValue() );
+        assertEquals( "", attr.get().getValue() );
 
         attr = entry.get( "envvars" );
-        assertNull( attr.get().getValue() );
+        assertEquals( "", attr.get().getValue() );
         reader.close();
     }
 
@@ -351,10 +351,10 @@ public class LdifAttributesReaderTest
         assertTrue( attr.contains( "app1" ) );
 
         attr = entry.get( "dependencies" );
-        assertNull( attr.get().getValue() );
+        assertEquals( "", attr.get().getValue() );
 
         attr = entry.get( "envvars" );
-        assertNull( attr.get().getValue() );
+        assertEquals( "", attr.get().getValue() );
         reader.close();
     }
 
@@ -391,10 +391,10 @@ public class LdifAttributesReaderTest
         assertTrue( attr.contains( "app1" ) );
 
         attr = entry.get( "dependencies" );
-        assertNull( attr.get().getValue() );
+        assertEquals( "", attr.get().getValue() );
 
         attr = entry.get( "envvars" );
-        assertNull( attr.get().getValue() );
+        assertEquals( "", attr.get().getValue() );
         reader.close();
     }
 

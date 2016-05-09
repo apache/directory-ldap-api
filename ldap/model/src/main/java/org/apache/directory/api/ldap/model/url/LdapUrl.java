@@ -1298,7 +1298,7 @@ public class LdapUrl
         try
         {
             filter = decode( new String( chars, pos, end - pos ) );
-            FilterParser.parse( null, filter );
+            FilterParser.parse( filter );
         }
         catch ( LdapUriException ue )
         {

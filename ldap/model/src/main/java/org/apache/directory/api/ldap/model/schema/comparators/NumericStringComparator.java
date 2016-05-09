@@ -20,11 +20,11 @@
 package org.apache.directory.api.ldap.model.schema.comparators;
 
 
-import java.io.IOException;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
-import org.apache.directory.api.ldap.model.schema.PrepareString;
+import org.apache.directory.api.ldap.model.schema.normalizers.NumericNormalizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,21 +78,23 @@ public class NumericStringComparator extends LdapComparator<String>
 
         // Both objects must be stored as String for numeric.
         // But we need to normalize the values first.
+        NumericNormalizer normalizer = new NumericNormalizer();
+
         try
         {
-            backendValue = PrepareString.normalize( backendValue, PrepareString.StringType.NUMERIC_STRING );
+            backendValue = normalizer.normalize( backendValue );
         }
-        catch ( IOException ioe )
+        catch ( LdapException le )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, backendValue ), ioe );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, backendValue ), le );
         }
         try
         {
-            assertValue = PrepareString.normalize( assertValue, PrepareString.StringType.NUMERIC_STRING );
+            assertValue = normalizer.normalize( assertValue );
         }
-        catch ( IOException ioe )
+        catch ( LdapException le )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, assertValue ), ioe );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, assertValue ), le );
         }
 
         return backendValue.compareTo( assertValue );

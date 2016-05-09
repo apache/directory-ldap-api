@@ -282,7 +282,7 @@ public class SchemaAwareValueSerializationTest
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        Value value = new Value( cn, sv1n.getString() );
+        Value value = new Value( cn, sv1n.getValue() );
 
         value.writeExternal( out );
 
@@ -303,7 +303,7 @@ public class SchemaAwareValueSerializationTest
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        Value value = new Value( dc, sv2n.getString() );
+        Value value = new Value( dc, sv2n.getValue() );
 
         value.writeExternal( out );
 
@@ -324,7 +324,7 @@ public class SchemaAwareValueSerializationTest
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        Value value = new Value( dc, sv3n.getString() );
+        Value value = new Value( dc, sv3n.getValue() );
 
         value.writeExternal( out );
 

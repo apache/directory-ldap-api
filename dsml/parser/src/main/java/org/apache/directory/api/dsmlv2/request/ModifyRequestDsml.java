@@ -180,7 +180,7 @@ public class ModifyRequestDsml
                         }
                         else
                         {
-                            modElement.addElement( "value" ).setText( value.getString() );
+                            modElement.addElement( "value" ).setText( value.getValue() );
                         }
                     }
                 }

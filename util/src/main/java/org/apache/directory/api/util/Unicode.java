@@ -73,8 +73,6 @@ public final class Unicode
     private static final int CHAR_TWO_BYTES_MASK = 0xFFFFF800;
     private static final int CHAR_THREE_BYTES_MASK = 0xFFFF0000;
     private static final int CHAR_FOUR_BYTES_MASK = 0xFFE00000;
-    private static final int CHAR_FIVE_BYTES_MASK = 0xFC000000;
-    private static final int CHAR_SIX_BYTES_MASK = 0x80000000;
 
     /**
      * Count the number of bytes needed to return an Unicode char. This can be
@@ -252,14 +250,6 @@ public final class Unicode
         {
             return 4;
         }
-        else if ( ( car & CHAR_FIVE_BYTES_MASK ) == 0 )
-        {
-            return 5;
-        }
-        else if ( ( car & CHAR_SIX_BYTES_MASK ) == 0 )
-        {
-            return 6;
-        }
         else
         {
             return -1;
@@ -335,29 +325,36 @@ public final class Unicode
      */
     public static byte[] charToBytes( char car )
     {
-        byte[] bytes = new byte[countNbBytesPerChar( car )];
-
-        if ( car <= 0x7F )
+        if ( car <= 0x007F )
         {
+            byte[] bytes = new byte[1];
+
             // Single byte char
             bytes[0] = ( byte ) car;
+            
             return bytes;
         }
-        else if ( car <= 0x7FF )
+        else if ( car <= 0x07FF )
         {
+            byte[] bytes = new byte[2];
+
             // two bytes char
             bytes[0] = ( byte ) ( 0x00C0 + ( ( car & 0x07C0 ) >> 6 ) );
             bytes[1] = ( byte ) ( 0x0080 + ( car & 0x3F ) );
+            
+            return bytes;
         }
         else
         {
+            byte[] bytes = new byte[3];
+
             // Three bytes char
             bytes[0] = ( byte ) ( 0x00E0 + ( ( car & 0xF000 ) >> 12 ) );
             bytes[1] = ( byte ) ( 0x0080 + ( ( car & 0x0FC0 ) >> 6 ) );
             bytes[2] = ( byte ) ( 0x0080 + ( car & 0x3F ) );
+            
+            return bytes;
         }
-
-        return bytes;
     }
 
 

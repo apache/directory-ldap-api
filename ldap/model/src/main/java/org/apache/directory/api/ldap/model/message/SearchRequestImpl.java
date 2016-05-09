@@ -32,7 +32,6 @@ import org.apache.directory.api.ldap.model.filter.BranchNormalizedVisitor;
 import org.apache.directory.api.ldap.model.filter.ExprNode;
 import org.apache.directory.api.ldap.model.filter.FilterParser;
 import org.apache.directory.api.ldap.model.name.Dn;
-import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -169,7 +168,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     {
         try
         {
-            filterNode = FilterParser.parse( Strings.getBytesUtf8( filter ) );
+            filterNode = FilterParser.parse( filter );
         }
         catch ( ParseException pe )
         {

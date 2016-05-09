@@ -30,11 +30,7 @@ import java.util.List;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
-import org.apache.directory.api.ldap.model.filter.AssertionType;
-import org.apache.directory.api.ldap.model.filter.BranchNode;
-import org.apache.directory.api.ldap.model.filter.ExprNode;
 import org.apache.directory.api.ldap.model.filter.FilterVisitor;
-import org.apache.directory.api.ldap.model.filter.UndefinedNode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -48,7 +44,6 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class UndefinedNodeTest
 {
-
     ExprNode undefinedNode = UndefinedNode.UNDEFINED_NODE;
 
 

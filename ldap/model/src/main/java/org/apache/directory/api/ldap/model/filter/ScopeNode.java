@@ -60,7 +60,6 @@ public class ScopeNode extends AbstractExprNode
         this.baseDn = baseDn;
         this.aliasDerefAliases = aliasDerefAliases;
         this.baseId = baseId;
-        isSchemaAware = true;
     }
 
 
@@ -137,6 +136,17 @@ public class ScopeNode extends AbstractExprNode
         {
             return null;
         }
+    }
+
+
+    /**
+     * Tells if this Node is Schema aware.
+     * 
+     * @return true if the Node is SchemaAware
+     */
+    public boolean isSchemaAware()
+    {
+        return true;
     }
 
 

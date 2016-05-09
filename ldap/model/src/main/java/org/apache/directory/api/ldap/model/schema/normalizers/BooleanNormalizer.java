@@ -55,7 +55,7 @@ public class BooleanNormalizer extends Normalizer
             return null;
         }
 
-        String strValue = value.getString();
+        String strValue = value.getValue();
 
         return new Value( Strings.upperCase( strValue.trim() ) );
     }

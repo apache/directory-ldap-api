@@ -41,7 +41,7 @@ public class ByteBufferTest
     @Test
     public void testByteBufferGrowth()
     {
-        ByteBuffer buf = new ByteBuffer();
+        ExpansibleByteBuffer buf = new ExpansibleByteBuffer();
         assertEquals( 10, buf.capacity() );
 
         for ( int ii = 0; ii < 20; ii++ )
@@ -57,7 +57,7 @@ public class ByteBufferTest
 
         // -------------------------------------------------------------------
 
-        buf = new ByteBuffer( 5 );
+        buf = new ExpansibleByteBuffer( 5 );
         assertEquals( 5, buf.capacity() );
 
         for ( int ii = 0; ii < 5; ii++ )
@@ -76,7 +76,7 @@ public class ByteBufferTest
     @Test
     public void testCopyOfUsedBytes()
     {
-        ByteBuffer buf = new ByteBuffer();
+        ExpansibleByteBuffer buf = new ExpansibleByteBuffer();
         byte[] bytes = buf.copyOfUsedBytes();
         assertEquals( 0, bytes.length );
 
@@ -93,7 +93,7 @@ public class ByteBufferTest
     @Test
     public void testAppendByteArray()
     {
-        ByteBuffer buf = new ByteBuffer();
+        ExpansibleByteBuffer buf = new ExpansibleByteBuffer();
         buf.append( new byte[]
             { 0, 1, 2, 3, 4 } );
         for ( int ii = 0; ii < 5; ii++ )

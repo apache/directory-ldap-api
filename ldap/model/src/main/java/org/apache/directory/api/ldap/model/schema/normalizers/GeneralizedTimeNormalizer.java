@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.model.schema.normalizers;
 
 
-import java.io.IOException;
 import java.text.ParseException;
 
 import org.apache.directory.api.i18n.I18n;
@@ -66,17 +65,9 @@ public class GeneralizedTimeNormalizer extends Normalizer
      */
     public Value normalize( Value value ) throws LdapException
     {
-        try
-        {
-            String normalized = PrepareString.normalize( value.getString(), PrepareString.StringType.DIRECTORY_STRING );
+        String normalized = PrepareString.normalize( value.getValue() );
 
-            return new Value( normalized );
-        }
-        catch ( IOException ioe )
-        {
-            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                I18n.ERR_04224, value ), ioe );
-        }
+        return new Value( normalized );
     }
 
 
@@ -85,20 +76,20 @@ public class GeneralizedTimeNormalizer extends Normalizer
      */
     public String normalize( String value ) throws LdapException
     {
+        if ( value == null )
+        {
+            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
+                I18n.ERR_04224, value ) );
+        }
+        
+        
         try
         {
-            String prepared = PrepareString.normalize( value, PrepareString.StringType.DIRECTORY_STRING );
-
-            GeneralizedTime time = new GeneralizedTime( prepared );
+            GeneralizedTime time = new GeneralizedTime( value );
             String normalized = time.toGeneralizedTime( Format.YEAR_MONTH_DAY_HOUR_MIN_SEC_FRACTION,
                 FractionDelimiter.DOT, 3, TimeZoneFormat.Z );
 
             return normalized;
-        }
-        catch ( IOException ioe )
-        {
-            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                I18n.ERR_04224, value ), ioe );
         }
         catch ( ParseException pe )
         {

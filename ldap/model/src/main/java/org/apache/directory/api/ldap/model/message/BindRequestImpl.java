@@ -464,7 +464,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
         sb.append( "    BindRequest\n" );
         sb.append( "        Version : '" ).append( isVersion3 ? "3" : "2" ).append( "'\n" );
 
-        if ( ( ( Strings.isEmpty( name ) ) || ( dn == null ) || Strings.isEmpty( dn.getNormName() ) )
+        if ( ( ( Strings.isEmpty( name ) ) || ( dn == null ) || dn.equals( Dn.EMPTY_DN ) )
             && isSimple )
         {
             sb.append( "        Name : anonymous\n" );

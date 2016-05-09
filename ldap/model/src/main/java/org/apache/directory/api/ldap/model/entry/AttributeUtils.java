@@ -169,7 +169,7 @@ public final class AttributeUtils
      * option = 1*keychar
      * keychar = 'a'-z' | 'A'-'Z' / '0'-'9' / '-'
      */
-    private static void parseOptions( byte[] str, Position pos ) throws ParseException
+    private static void parseOptions( char[] str, Position pos ) throws ParseException
     {
         while ( Strings.isCharASCII( str, pos.start, ';' ) )
         {
@@ -192,6 +192,38 @@ public final class AttributeUtils
     }
 
 
+
+
+    /**
+     * Parse attribute's options :
+     * 
+     * options = *( ';' option )
+     * option = 1*keychar
+     * keychar = 'a'-z' | 'A'-'Z' / '0'-'9' / '-'
+     */
+    private static void parseOptions( byte[] bytes, Position pos ) throws ParseException
+    {
+        while ( Strings.isCharASCII( bytes, pos.start, ';' ) )
+        {
+            pos.start++;
+
+            // We have an option
+            if ( !Chars.isAlphaDigitMinus( bytes, pos.start ) )
+            {
+                // We must have at least one keychar
+                throw new ParseException( I18n.err( I18n.ERR_04343 ), pos.start );
+            }
+
+            pos.start++;
+
+            while ( Chars.isAlphaDigitMinus( bytes, pos.start ) )
+            {
+                pos.start++;
+            }
+        }
+    }
+
+
     /**
      * Parse a number :
      * 
@@ -200,11 +232,11 @@ public final class AttributeUtils
      * 
      * @return true if a number has been found
      */
-    private static boolean parseNumber( byte[] filter, Position pos )
+    private static boolean parseNumber( char[] filter, Position pos )
     {
-        byte b = Strings.byteAt( filter, pos.start );
+        char c = Strings.charAt( filter, pos.start );
 
-        switch ( b )
+        switch ( c )
         {
             case '0':
                 // If we get a starting '0', we should get out
@@ -237,8 +269,54 @@ public final class AttributeUtils
     }
 
 
+
+
     /**
+     * Parse a number :
      * 
+     * number = '0' | '1'..'9' digits
+     * digits = '0'..'9'*
+     * 
+     * @return true if a number has been found
+     */
+    private static boolean parseNumber( byte[] bytes, Position pos )
+    {
+        byte b = Strings.byteAt( bytes, pos.start );
+
+        switch ( b )
+        {
+            case '0':
+                // If we get a starting '0', we should get out
+                pos.start++;
+                return true;
+
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                pos.start++;
+                break;
+
+            default:
+                // Not a number.
+                return false;
+        }
+
+        while ( Chars.isDigit( bytes, pos.start ) )
+        {
+            pos.start++;
+        }
+
+        return true;
+    }
+
+
+    /**
      * Parse an OID.
      *
      * numericoid = number 1*( '.' number )
@@ -248,7 +326,7 @@ public final class AttributeUtils
      * @param pos The current position in the string
      * @throws ParseException If we don't have a valid OID
      */
-    private static void parseOID( byte[] str, Position pos ) throws ParseException
+    private static void parseOID( char[] str, Position pos ) throws ParseException
     {
         // We have an OID
         parseNumber( str, pos );
@@ -284,6 +362,54 @@ public final class AttributeUtils
     }
 
 
+
+
+    /**
+     * Parse an OID.
+     *
+     * numericoid = number 1*( '.' number )
+     * number = '0'-'9' / ( '1'-'9' 1*'0'-'9' )
+     *
+     * @param bytes The OID to parse
+     * @param pos The current position in the string
+     * @throws ParseException If we don't have a valid OID
+     */
+    private static void parseOID( byte[] bytes, Position pos ) throws ParseException
+    {
+        // We have an OID
+        parseNumber( bytes, pos );
+
+        // We must have at least one '.' number
+        if ( !Strings.isCharASCII( bytes, pos.start, '.' ) )
+        {
+            throw new ParseException( I18n.err( I18n.ERR_04344 ), pos.start );
+        }
+
+        pos.start++;
+
+        if ( !parseNumber( bytes, pos ) )
+        {
+            throw new ParseException( I18n.err( I18n.ERR_04345 ), pos.start );
+        }
+
+        while ( true )
+        {
+            // Break if we get something which is not a '.'
+            if ( !Strings.isCharASCII( bytes, pos.start, '.' ) )
+            {
+                break;
+            }
+
+            pos.start++;
+
+            if ( !parseNumber( bytes, pos ) )
+            {
+                throw new ParseException( I18n.err( I18n.ERR_04345 ), pos.start );
+            }
+        }
+    }
+
+
     /**
      * Parse an attribute. The grammar is :
      * attributedescription = attributetype options
@@ -302,25 +428,25 @@ public final class AttributeUtils
      * @param pos The position of the attribute in the current string
      * @return The parsed attribute if valid
      */
-    public static String parseAttribute( byte[] str, Position pos, boolean withOption, boolean relaxed )
+    public static String parseAttribute( char[] str, Position pos, boolean withOption, boolean relaxed )
         throws ParseException
     {
         // We must have an OID or an DESCR first
-        byte b = Strings.byteAt( str, pos.start );
+        char c = Strings.charAt( str, pos.start );
 
-        if ( b == '\0' )
+        if ( c == '\0' )
         {
             throw new ParseException( I18n.err( I18n.ERR_04346 ), pos.start );
         }
 
         int start = pos.start;
 
-        if ( Chars.isAlpha( b ) )
+        if ( Chars.isAlpha( c ) )
         {
             // A DESCR
             pos.start++;
 
-            while ( Chars.isAlphaDigitMinus( str, pos.start ) || ( relaxed && Chars.isUnderscore( str, pos.start ) ) )
+            while ( Chars.isAlphaDigitMinus( str, pos.start ) || ( relaxed && Chars.isCharASCII( str, pos.start, '_' ) ) )
             {
                 pos.start++;
             }
@@ -331,9 +457,9 @@ public final class AttributeUtils
                 parseOptions( str, pos );
             }
 
-            return Strings.getString( str, start, pos.start - start, "UTF-8" );
+            return new String( str, start, pos.start - start );
         }
-        else if ( Chars.isDigit( b ) )
+        else if ( Chars.isDigit( c ) )
         {
             // An OID
             pos.start++;
@@ -347,7 +473,81 @@ public final class AttributeUtils
                 parseOptions( str, pos );
             }
 
-            return Strings.getString( str,  start, pos.start - start, "UTF-8" );
+            return new String( str,  start, pos.start - start );
+        }
+        else
+        {
+            throw new ParseException( I18n.err( I18n.ERR_04347 ), pos.start );
+        }
+    }
+
+
+
+
+    /**
+     * Parse an attribute. The grammar is :
+     * attributedescription = attributetype options
+     * attributetype = oid
+     * oid = descr / numericoid
+     * descr = keystring
+     * numericoid = number 1*( '.' number )
+     * options = *( ';' option )
+     * option = 1*keychar
+     * keystring = leadkeychar *keychar
+     * leadkeychar = 'a'-z' | 'A'-'Z'
+     * keychar = 'a'-z' | 'A'-'Z' / '0'-'9' / '-'
+     * number = '0'-'9' / ( '1'-'9' 1*'0'-'9' )
+     *
+     * @param bytes The parsed attribute,
+     * @param pos The position of the attribute in the current string
+     * @return The parsed attribute if valid
+     */
+    public static String parseAttribute( byte[] bytes, Position pos, boolean withOption, boolean relaxed )
+        throws ParseException
+    {
+        // We must have an OID or an DESCR first
+        byte b = Strings.byteAt( bytes, pos.start );
+
+        if ( b == '\0' )
+        {
+            throw new ParseException( I18n.err( I18n.ERR_04346 ), pos.start );
+        }
+
+        int start = pos.start;
+
+        if ( Chars.isAlpha( b ) )
+        {
+            // A DESCR
+            //pos.start++;
+
+            while ( Chars.isAlphaDigitMinus( bytes, pos.start ) || ( relaxed && Strings.isCharASCII( bytes, pos.start, '_' ) ) )
+            {
+                pos.start++;
+            }
+
+            // Parse the options if needed
+            if ( withOption )
+            {
+                parseOptions( bytes, pos );
+            }
+
+            return Strings.utf8ToString( bytes, start, pos.start - start );
+        }
+        else if ( Chars.isDigit( b ) )
+        {
+            // An OID
+            //pos.start++;
+
+            // Parse the OID
+            parseOID( bytes, pos );
+
+            // Parse the options
+            if ( withOption )
+            {
+                parseOptions( bytes, pos );
+            }
+
+            return Strings.utf8ToString( bytes, start, pos.start - start );
         }
         else
         {

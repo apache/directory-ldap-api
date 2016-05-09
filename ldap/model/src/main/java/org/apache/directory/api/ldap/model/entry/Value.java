@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.Arrays;
-import java.util.Comparator;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -33,20 +32,38 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueEx
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
-import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Serialize;
 import org.apache.directory.api.util.Strings;
-import org.apache.directory.api.util.exception.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 /**
- * A interface for wrapping attribute values stored into an EntryAttribute. These
- * values can be a String or a byte[].
+ * A Class for wrapping attribute values stored into an Entry Attribute, or a AVA.
+ * 
+ * We keep the value as byte[] unless we need to convert them to a String (if we have
+ * a HR Value).
+ * 
+ * The serialized Value will be stored as :
+ * 
+ * <pre>
+ *  +---------+
+ *  | boolean | isHR flag
+ *  +---------+
+ *  | boolean | TRUE if the value is not null, FALSE otherwise
+ *  +---------+
+ * [|   int   |]  If the previous flag is TRUE, the length of the value
+ * [+---------+]
+ * [| byte[]  |] The value itself
+ * [+---------+]
+ *  | boolean | TRUE if we have a prepared String
+ *  +---------+
+ * [| String  |] The prepared String if we have it
+ * [+---------+]
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -58,23 +75,20 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
     /** logger for reporting errors that might not be handled properly upstream */
     private static final Logger LOG = LoggerFactory.getLogger( Value.class );
 
-    /** reference to the attributeType zssociated with the value */
+    /** reference to the attributeType associated with the value */
     private transient AttributeType attributeType;
 
     /** the User Provided value if it's a String */
     private String upValue;
 
-    /** the canonical representation of the user provided value if it's a String */
+    /** the prepared representation of the user provided value if it's a String */
     private String normValue;
 
     /** The computed hashcode. We don't want to compute it each time the hashcode() method is called */
     private volatile int h;
 
     /** The UTF-8 bytes for this value (we use the UP value) */
-    private byte[] upBytes;
-
-    /** The UTF-8 bytes for this value (we use the NORM value) */
-    private byte[] normBytes;
+    private byte[] bytes;
 
     /** Two flags used to tell if the value is HR or not in serialization */
     private boolean isHR = true;
@@ -85,21 +99,23 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
     /**
      * Creates a Value with an initial user provided String value.
      *
-     * @param value the value to wrap which can be null
+     * @param upValue the value to wrap. It can be null
      */
-    public Value( String value )
+    public Value( String upValue )
     {
-        upValue = value;
-        normValue = value;
+        isHR = true;
         
-        if ( value != null )
+        this.upValue = upValue;
+        
+        // We can't normalize the value, we store it as is
+        normValue = upValue;
+        
+        if ( upValue != null )
         {
-            upBytes = Strings.getBytesUtf8( value );
+            bytes = Strings.getBytesUtf8( upValue );
         }
         
-        normBytes = upBytes;
-        isHR = true;
-        h = hashCode();
+        hashCode();
     }
     
     
@@ -114,52 +130,15 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         
         if ( value != null )
         {
-            upBytes = new byte[value.length];
-            System.arraycopy( value, 0, upBytes, 0, value.length );
-            
-            normBytes = upBytes;
-            h = hashCode();
+            bytes = new byte[value.length];
+            System.arraycopy( value, 0, bytes, 0, value.length );
         }
         else
         {
-            upBytes = null;
-            normBytes = null;
-        }
-    }
-
-
-    
-    /**
-     * Creates a Value with an initial user provided String value and a normalized value.
-     *
-     * @param upValue the user provided value to wrap which can be null
-     * @param normValue the normalized value to wrap which can be null
-     */
-    public Value( String upValue, String normalizedValue )
-    {
-        this.upValue = upValue;
-        this.normValue = normalizedValue;
-        
-        if ( upValue != null )
-        {
-            upBytes = Strings.getBytesUtf8( upValue );
-        }
-        else
-        {
-            upBytes = null;
+            bytes = null;
         }
 
-        if ( normalizedValue != null )
-        {
-            normBytes = Strings.getBytesUtf8( normalizedValue );
-        }
-        else
-        {
-            normBytes = null;
-        }
-
-        isHR = true;
-        h = hashCode();
+        hashCode();
     }
 
 
@@ -167,30 +146,52 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      * Creates a schema aware binary Value with an initial value.
      *
      * @param attributeType the schema type associated with this Value
-     * @param value the value to wrap
+     * @param upValue the value to wrap
      * @throws LdapInvalidAttributeValueException If the added value is invalid accordingly
      * to the schema
      */
-    public Value( AttributeType attributeType, byte[] value ) throws LdapInvalidAttributeValueException
+    public Value( AttributeType attributeType, byte[] upValue ) throws LdapInvalidAttributeValueException
     {
         isHR = false;
         
-        if ( value != null )
+        if ( upValue != null )
         {
-            upBytes = new byte[value.length];
-            System.arraycopy( value, 0, upBytes, 0, value.length );
+            bytes = new byte[upValue.length];
+            System.arraycopy( upValue, 0, bytes, 0, upValue.length );
         }
         else
         {
-            upBytes = null;
+            bytes = null;
         }
 
-        apply( attributeType );
+        this.attributeType = attributeType;
+        
+        if ( !attributeType.isRelaxed() )
+        {
+            // Check the value
+            SyntaxChecker syntaxChecker = attributeType.getSyntax().getSyntaxChecker();
+
+            if ( syntaxChecker != null )
+            {
+                if ( !syntaxChecker.isValidSyntax( bytes ) )
+                {
+                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, "Invalid upValue per syntax" );
+                }
+            }
+            else
+            {
+                // We should always have a SyntaxChecker
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_04139_NULL_SYNTAX_CHECKER, normValue ) );
+            }
+        }
+
+        hashCode();
     }
 
 
     /**
-     * Creates a schema aware binary Value with an initial value.
+     * Creates a schema aware binary Value with an initial value. This method is
+     * only to be used by deserializers.
      *
      * @param attributeType the schema type associated with this Value
      * @param value the value to wrap
@@ -198,17 +199,21 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
     /* Package protected*/ Value( AttributeType attributeType )
     {
         // The AttributeType must have a Syntax
-        // We must have a Syntax
         if ( attributeType != null )
         {
             if ( attributeType.getSyntax() == null )
             {
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_04445 ) );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
             }
             else
             {
                 isHR = attributeType.getSyntax().isHumanReadable();
             }
+        }
+        else
+        {
+            // throw new IllegalArgumentException( I18n.err( I18n.ERR_04488_NULL_ATTRIBUTE_TYPE ) );
+            LOG.warn( "The attributeType is null" );
         }
 
         this.attributeType = attributeType;
@@ -219,87 +224,136 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      * Creates a schema aware StringValue with an initial user provided String value.
      *
      * @param attributeType the schema type associated with this StringValue
-     * @param value the value to wrap
-     * @throws LdapInvalidAttributeValueException If the added value is invalid accordingly
-     * to the schema
-     */
-    public Value( AttributeType attributeType, String value ) throws LdapInvalidAttributeValueException
-    {
-        upValue = value;
-        normValue = value;
-        
-        if ( value != null )
-        {
-            upBytes = Strings.getBytesUtf8( value );
-        }
-        else
-        {
-            upBytes = null;
-        }
-        
-        apply( attributeType );
-    }
-
-
-    /**
-     * Creates a schema aware Value with an initial user provided String value.
-     *
-     * @param attributeType the schema type associated with this StringValue
      * @param upValue the value to wrap
      * @throws LdapInvalidAttributeValueException If the added value is invalid accordingly
      * to the schema
      */
-    public Value( AttributeType attributeType, String upValue, String normValue ) throws LdapInvalidAttributeValueException
+    public Value( AttributeType attributeType, String upValue ) throws LdapInvalidAttributeValueException
     {
-        this.upValue = upValue;
-        this.normValue = normValue;
-
-        if ( upValue != null )
+        // The AttributeType must have a Syntax
+        if ( attributeType != null )
         {
-            upBytes = Strings.getBytesUtf8( upValue );
+            if ( attributeType.getSyntax() == null )
+            {
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
+            }
+            else
+            {
+                isHR = attributeType.getSyntax().isHumanReadable();
+            }
         }
         else
         {
-            upBytes = null;
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04488_NULL_ATTRIBUTE_TYPE ) );
+        }
+
+        this.attributeType = attributeType;
+        this.upValue = upValue;
+        
+        if ( upValue != null )
+        {
+            bytes = Strings.getBytesUtf8( upValue );
+        }
+        else
+        {
+            bytes = null;
+        }
+        try
+        {
+            computeNormValue();
+        }
+        catch ( LdapException le )
+        {
+            LOG.error( le.getMessage() );
+            throw new IllegalArgumentException( "Invalid upValue, it can't be normalized" );
         }
         
-        apply( attributeType );
+        if ( !attributeType.isRelaxed() )
+        {
+            // Check the value
+            if ( attributeType.getSyntax().getSyntaxChecker() != null )
+            {
+                if ( !attributeType.getSyntax().getSyntaxChecker().isValidSyntax( normValue ) )
+                {
+                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, "Invalid upValue per syntax" );
+                }
+            }
+            else
+            {
+                // We should always have a SyntaxChecker
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_04139_NULL_SYNTAX_CHECKER, normValue ) );
+            }
+        }
+        
+        hashCode();
     }
 
 
-    
     /**
-     * Creates a StringValue without an initial user provided value.
+     * Creates a Value from an existing Value with an AttributeType
      *
      * @param attributeType the schema attribute type associated with this StringValue
      * @param value the original Value
      */
     public Value( AttributeType attributeType, Value value ) throws LdapInvalidAttributeValueException
     {
+        // The AttributeType must have a Syntax
         if ( attributeType != null )
         {
-            // We must have a Syntax
             if ( attributeType.getSyntax() == null )
             {
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_04445 ) );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
             }
-
-            isHR = attributeType.getSyntax().isHumanReadable();
-            
-            if ( isHR )
+            else
             {
-                upValue = value.upValue;
+                isHR = attributeType.getSyntax().isHumanReadable();
             }
-            
-            // We have to copy the byte[], they are just referenced by suoer.clone()
-            if ( value.upBytes != null )
-            {
-                upBytes = new byte[value.upBytes.length];
-                System.arraycopy( value.upBytes, 0, upBytes, 0, value.upBytes.length );
-            }
-
-            apply( attributeType );
         }
+        else
+        {
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04488_NULL_ATTRIBUTE_TYPE ) );
+        }
+        
+        this.attributeType = attributeType;
+        
+        if ( isHR )
+        {
+            this.upValue = value.upValue;
+        }
+
+        try
+        {
+            computeNormValue();
+        }
+        catch ( LdapException le )
+        {
+            LOG.error( le.getMessage() );
+            throw new IllegalArgumentException( "Invalid upValue, it can't be normalized" );
+        }
+        
+        // Check the normValue
+        if ( !attributeType.isRelaxed() )
+        {
+            // Check the value
+            if ( attributeType.getSyntax().getSyntaxChecker() != null )
+            {
+                attributeType.getSyntax().getSyntaxChecker().isValidSyntax( value.normValue );
+            }
+            else
+            {
+                // We should always have a SyntaxChecker
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_04139_NULL_SYNTAX_CHECKER, normValue ) );
+            }
+        }
+            
+        // We have to copy the byte[], they are just referenced by suoer.clone()
+        if ( value.bytes != null )
+        {
+            bytes = new byte[value.bytes.length];
+            System.arraycopy( value.bytes, 0, bytes, 0, value.bytes.length );
+        }
+
+        hashCode();
     }
 
     
@@ -316,6 +370,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         
         return value;
     }
+    
 
     /**
      * Clone a Value
@@ -335,13 +390,10 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
             else
             {
                 // We have to copy the byte[], they are just referenced by suoer.clone()
-                if ( upBytes != null )
+                if ( bytes != null )
                 {
-                    clone.upBytes = new byte[upBytes.length];
-                    System.arraycopy( upBytes, 0, clone.upBytes, 0, upBytes.length );
-    
-                    clone.normBytes = new byte[normBytes.length];
-                    System.arraycopy( normBytes, 0, clone.normBytes, 0, normBytes.length );
+                    clone.bytes = new byte[bytes.length];
+                    System.arraycopy( bytes, 0, clone.bytes, 0, bytes.length );
                 }
             }
             
@@ -364,11 +416,11 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
     {
         if ( isHR )
         {
-            return normValue == null;
+            return upValue == null;
         }
         else
         {
-            return normBytes == null;
+            return bytes == null;
         }
     }
 
@@ -403,9 +455,10 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
 
 
     /**
-     * Get the User Provided value. It will return a copy, not a reference.
+     * Get the User Provided value. If the value is Human Readable, it will return
+     * a String, otherwise it returns null.
      *
-     * @return a copy of the wrapped value
+     * @return The user provided value
      */
     public String getValue()
     {
@@ -415,8 +468,63 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         }
         else
         {
-            return null;
+            return Strings.utf8ToString( bytes );
         }
+    }
+
+
+    /**
+     * @return The normalized String
+     * @throws LdapException If we were'nt able to normalize the value
+     */
+    private void computeNormValue() throws LdapException
+    {
+        if ( upValue == null )
+        {
+            return;
+        }
+        
+        Normalizer normalizer = null;
+        
+        // We should have a Equality MatchingRule
+        MatchingRule equality = attributeType.getEquality();
+        
+        if ( equality == null )
+        {
+            // Let's try with the Substring MatchingRule
+            MatchingRule subString = attributeType.getSubstring();
+            
+            if ( subString == null )
+            {
+                // last chance : ordering matching rule
+                MatchingRule ordering = attributeType.getOrdering();
+                
+                if ( ordering == null )
+                {
+                    throw new IllegalArgumentException( I18n.err( I18n.ERR_04148_MATCHING_RULE_EXPECTED ) );
+                }
+                else
+                {
+                    normalizer = ordering.getNormalizer();
+                }
+            }
+            else
+            {
+                normalizer = subString.getNormalizer();
+            }
+        }
+        else
+        {
+            normalizer = equality.getNormalizer();
+        }
+        
+        if ( normalizer == null )
+        {
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04295_NO_NORMALIZER ) );
+        }
+
+        // Now, normalize the upValue
+        normValue = normalizer.normalize( upValue );
     }
 
 
@@ -428,35 +536,20 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      */
     public byte[] getBytes()
     {
-        if ( Strings.isEmpty( upBytes ) )
+        if ( bytes == null )
         {
-            return upBytes;
+            return null;
         }
         
-        byte[] copy = new byte[upBytes.length];
-        System.arraycopy( upBytes, 0, copy, 0, upBytes.length );
+        if ( bytes.length == 0 )
+        {
+            return Strings.EMPTY_BYTES;
+        }
+        
+        byte[] copy = new byte[bytes.length];
+        System.arraycopy( bytes, 0, copy, 0, bytes.length );
         
         return copy;
-    }
-
-
-    /**
-     * Get the user provided value as a String. If the original value
-     * is binary, this method will return the value as if it was
-     * an UTF-8 encoded String.
-     *
-     * @return the wrapped value as a String
-     */
-    public String getString()
-    {
-        if ( isHR )
-        {
-            return upValue != null ? upValue : "";
-        }
-        else
-        {
-            return Strings.utf8ToString( upBytes );
-        }
     }
 
 
@@ -475,7 +568,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      * Uses the syntaxChecker associated with the attributeType to check if the
      * value is valid.
      * 
-     * @param checker the SyntaxChecker to use to validate the value
+     * @param syntaxChecker the SyntaxChecker to use to validate the value
      * @return <code>true</code> if the value is valid
      * @exception LdapInvalidAttributeValueException if the value cannot be validated
      */
@@ -483,53 +576,20 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
     {
         if ( syntaxChecker == null )
         {
-            String message = I18n.err( I18n.ERR_04139, toString() );
+            String message = I18n.err( I18n.ERR_04139_NULL_SYNTAX_CHECKER, toString() );
             LOG.error( message );
             throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
         }
 
-        if ( ( attributeType != null ) && attributeType.isRelaxed() ) 
-        {
-            return true;
-        }
-        else
-        { 
-            if ( isHR )
-            {
-                return syntaxChecker.isValidSyntax( normValue );
-            }
-            else
-            {
-                return syntaxChecker.isValidSyntax( normBytes );
-            }
-        }
-    }
-
-
-    /**
-     * Gets the normalized (canonical) representation for the wrapped string.
-     * If the wrapped String is null, null is returned, otherwise the normalized
-     * form is returned.  If the normalizedValue is null, then this method
-     * will attempt to generate it from the wrapped value.
-     *
-     * @return gets the normalized value
-     */
-    public String getNormValue()
-    {
+        // No attributeType, or it's in relaxed mode
         if ( isHR )
         {
-            return normValue;
+            // We need to prepare the String in this case
+            return syntaxChecker.isValidSyntax( getValue() );
         }
         else
         {
-            if ( normBytes != null )
-            {
-                return Strings.utf8ToString( normBytes );
-            }
-            else
-            {
-                return null;
-            }
+            return syntaxChecker.isValidSyntax( bytes );
         }
     }
 
@@ -556,113 +616,8 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         }
         else
         {
-            return upBytes != null ? upBytes.length : 0;
-
+            return bytes != null ? bytes.length : 0;
         }
-    }
-    
-    
-    /**
-     * Apply the AttributeType to this value. Note that this can't be done twice.
-     *
-     * @param attributeType The AttributeType to apply
-     */
-    private void apply( AttributeType attributeType ) throws LdapInvalidAttributeValueException
-    {
-        if ( attributeType == null )
-        {
-            // No attributeType : the normalized value and the user provided value are the same
-            normValue = upValue;
-            normBytes = upBytes;
-            
-            return;
-        }
-
-        this.attributeType = attributeType;
-
-        // We first have to normalize the value before we can check its syntax
-        // Get the equality matchingRule, if we have one
-        MatchingRule equality = attributeType.getEquality();
-
-        if ( equality != null )
-        {
-            // If we have an Equality MR, we *must* have a normalizer
-            Normalizer normalizer = equality.getNormalizer();
-            isHR = attributeType.getSyntax().isHumanReadable();
-            
-            if ( !isHR )
-            {
-                // No normalization for binary values
-                normValue = upValue;
-                normBytes = upBytes;
-            }
-            else
-            {
-                if ( normalizer != null )
-                {
-                    if ( upValue != null )
-                    {
-                        try
-                        {
-                            normValue = normalizer.normalize( upValue );
-                            normBytes = Strings.getBytesUtf8( normValue );
-                        }
-                        catch ( LdapException ne )
-                        {
-                            String message = I18n.err( I18n.ERR_04447_CANNOT_NORMALIZE_VALUE, ne.getLocalizedMessage() );
-                            LOG.info( message );
-                        }
-                    }
-                    else
-                    {
-                        normBytes = upBytes;
-                    }
-                }
-                else
-                {
-                    normValue = upValue;
-                    normBytes = upBytes;
-        
-                    String message = "The '" + attributeType.getName() + "' AttributeType does not have" + " a normalizer";
-                    LOG.error( message );
-                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
-                }
-            }
-        }
-        else
-        {
-            // No MatchingRule, there is nothing we can do but make the normalized value
-            // to be a reference on the user provided value
-            normValue = upValue;
-            normBytes = upBytes;
-        }
-
-        // and checks that the value syntax is valid
-        if ( !attributeType.isRelaxed() )
-        {
-            try
-            {
-                LdapSyntax syntax = attributeType.getSyntax();
-    
-                // Check the syntax if not in relaxed mode
-                if ( ( syntax != null ) && ( !isValid( syntax.getSyntaxChecker() ) ) )
-                {
-                    String message = I18n.err( I18n.ERR_04473_NOT_VALID_VALUE, upValue, attributeType );
-                    LOG.info( message );
-                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
-                }
-            }
-            catch ( LdapException le )
-            {
-                String message = I18n.err( I18n.ERR_04447_CANNOT_NORMALIZE_VALUE, le.getLocalizedMessage() );
-                LOG.info( message );
-                throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message, le );
-            }
-        }
-
-        // Rehash the Value now
-        h = 0;
-        hashCode();
     }
     
     
@@ -698,19 +653,35 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      */
     public int serialize( byte[] buffer, int pos )
     {
-        // Compute the length : the isHR flag first, the up and norm value presence flags
-        int length = 1 + 1 + 1;
+        // Compute the length : the isHR flag first, the value and prepared value presence flags
+        int length = 1;
+        byte[] preparedBytes = null;
 
-        if ( upValue != null )
-        {
-            // The presence flag, the length and the value
-            length += 4 + upBytes.length;
+        if ( isHR )
+        { 
+            if ( upValue != null )
+            {
+                // The presence flag, the length and the value
+                length += 1 + 4 + bytes.length;
+            }
+
+            if ( normValue != null )
+            {
+                // The presence flag, the length and the value
+                preparedBytes = Strings.getBytesUtf8( normValue );
+                length += 1 + 4 + preparedBytes.length;
+            }
         }
-
-        if ( normValue != null )
+        else
         {
-            // The presence flag, the length and the value
-            length += 4 + normBytes.length;
+            if ( bytes != null )
+            {
+                length = 1 + 1 + 4 + bytes.length;
+            }
+            else
+            {
+                length = 1 + 1;
+            }
         }
 
         // Check that we will be able to store the data in the buffer
@@ -719,38 +690,45 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
             throw new ArrayIndexOutOfBoundsException();
         }
 
-        // The STRING flag
         if ( isHR )
         {
-            buffer[pos] = Serialize.TRUE;
-        }
-        else
-        {
-            buffer[pos] = Serialize.FALSE;
-        }
-        
-        pos++;
-
-        // Write the user provided value, if not null
-        if ( upBytes != null )
-        {
             buffer[pos++] = Serialize.TRUE;
-            pos = Serialize.serialize( upBytes, buffer, pos );
+
+            // Write the user provided value, if not null
+            if ( bytes != null )
+            {
+                buffer[pos++] = Serialize.TRUE;
+                pos = Serialize.serialize( bytes, buffer, pos );
+            }
+            else
+            {
+                buffer[pos++] = Serialize.FALSE;
+            }
+    
+            // Write the prepared value, if not null
+            if ( normValue != null )
+            {
+                buffer[pos++] = Serialize.TRUE;
+                pos = Serialize.serialize( preparedBytes, buffer, pos );
+            }
+            else
+            {
+                buffer[pos++] = Serialize.FALSE;
+            }
         }
         else
         {
             buffer[pos++] = Serialize.FALSE;
-        }
 
-        // Write the normalized value, if not null
-        if ( normValue != null )
-        {
-            buffer[pos++] = Serialize.TRUE;
-            pos = Serialize.serialize( normBytes, buffer, pos );
-        }
-        else
-        {
-            buffer[pos++] = Serialize.FALSE;
+            if ( bytes != null )
+            {
+                buffer[pos++] = Serialize.TRUE;
+                pos = Serialize.serialize( bytes, buffer, pos );
+            }
+            else
+            {
+                buffer[pos++] = Serialize.FALSE;
+            }
         }
 
         return pos;
@@ -814,29 +792,58 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         isHR = Serialize.deserializeBoolean( buffer, pos );
         pos++;
 
-        // Read the user provided value, if it's not null
-        boolean hasUpValue = Serialize.deserializeBoolean( buffer, pos );
-        pos++;
-
-        if ( hasUpValue )
+        if ( isHR )
         {
-            upBytes = Serialize.deserializeBytes( buffer, pos );
-            pos += 4 + upBytes.length;
-            upValue = Strings.utf8ToString( upBytes );
+            // Read the user provided value, if it's not null
+            boolean hasValue = Serialize.deserializeBoolean( buffer, pos );
+            pos++;
+    
+            if ( hasValue )
+            {
+                bytes = Serialize.deserializeBytes( buffer, pos );
+                pos += 4 + bytes.length;
+
+                upValue = Strings.utf8ToString( bytes );
+            }
+
+            // Read the prepared value, if not null
+            boolean hasPreparedValue = Serialize.deserializeBoolean( buffer, pos );
+            pos++;
+    
+            if ( hasPreparedValue )
+            {
+                byte[] preparedBytes = Serialize.deserializeBytes( buffer, pos );
+                pos += 4 + preparedBytes.length;
+                normValue = Strings.utf8ToString( preparedBytes );
+            }
         }
-
-        // Read the normalized value, if not null
-        boolean hasNormalizedValue = Serialize.deserializeBoolean( buffer, pos );
-        pos++;
-
-        if ( hasNormalizedValue )
+        else
         {
-            normBytes = Serialize.deserializeBytes( buffer, pos );
-            pos += 4 + normBytes.length;
-            normValue = Strings.utf8ToString( normBytes );
-        }
+            // Read the user provided value, if it's not null
+            boolean hasBytes = Serialize.deserializeBoolean( buffer, pos );
+            pos++;
+    
+            if ( hasBytes )
+            {
+                bytes = Serialize.deserializeBytes( buffer, pos );
+                pos += 4 + bytes.length;
+            }
 
-        apply( attributeType );
+        }
+        
+        if ( attributeType != null )
+        {
+            try
+            {
+                computeNormValue();
+            }
+            catch ( LdapException le )
+            {
+                throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, le.getMessage() );
+            }
+        }
+        
+        hashCode();
 
         return pos;
     }
@@ -852,56 +859,41 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
 
         if ( isHR )
         {
-            // This is a String value 
-            // Read the upValue if any
+            // Read the value if any
             if ( in.readBoolean() )
             {
-                upValue = in.readUTF();
-                upBytes = Strings.getBytesUtf8( upValue );
-            }
-
-            // Check if we have a normalized value
-            if ( in.readBoolean() )
-            {
-                // Read it if not null
-                if ( in.readBoolean() )
+                int length = in.readInt();
+                bytes = new byte[length];
+                
+                if ( length != 0 )
                 {
-                    normValue = in.readUTF();
-                    normBytes = Strings.getBytesUtf8( normValue );
+                    in.readFully( bytes );
                 }
+    
+                upValue = Strings.utf8ToString( bytes );
+            }
+    
+            // Read the prepared String if any
+            if ( in.readBoolean() )
+            {
+                normValue = in.readUTF();
             }
         }
         else
         {
-            // This is a binary value
-            // Read the upvalue length
-            int upLength = in.readInt();
-
-            if ( upLength >= 0 )
+            if ( in.readBoolean() )
             {
-                upBytes = new byte[upLength];
-
-                in.readFully( upBytes );
+                int length = in.readInt();
+                bytes = new byte[length];
+                
+                if ( length != 0 )
+                {
+                    in.readFully( bytes );
+                }
             }
         }
         
-        // Apply the AttributeType now
-        try
-        {
-            apply( attributeType );
-        }
-        catch ( LdapInvalidAttributeValueException e )
-        {
-            // Make the nomValue equals to the upValue
-            normValue = upValue;
-            normBytes = upBytes;
-        }
-        
-        // And rehash if needed
-        if ( h == 0 )
-        {
-            h = hashCode();
-        }
+        hashCode();
     }
 
 
@@ -914,60 +906,44 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         out.writeBoolean( isHR );
 
         if ( isHR )
-        {
-            // We first write the upValue, if we have one
+        { 
+            // Write the value if any
+            out.writeBoolean( upValue != null );
+    
             if ( upValue != null )
             {
-                out.writeBoolean( true );
-                out.writeUTF( upValue );
+                // Write the value
+                out.writeInt( bytes.length );
+    
+                if ( bytes.length > 0 )
+                {
+                    out.write( bytes );
+                }
             }
-            else
-            {
-                out.writeBoolean( false );
-            }
-            
-            // Write the isNormalized flag
-            if ( attributeType != null )
-            {
-                // This flag is present to tell that we have a normalized value different
-                // from the upValue
-                out.writeBoolean( true );
 
-                // Write the normalized value, if not null
-                if ( normValue != null )
-                {
-                    out.writeBoolean( true );
-                    out.writeUTF( normValue );
-                }
-                else
-                {
-                    out.writeBoolean( false );
-                }
-            }
-            else
+            // Write the prepared value if any
+            out.writeBoolean( normValue != null );
+    
+            if ( normValue != null )
             {
-                // No normalized value
-                out.writeBoolean( false );
+                // Write the value
+                out.writeUTF( normValue );
             }
         }
         else
         {
-            // This is a binary value, we just have to write the upBytes
-            if ( upBytes != null )
-            {
-                out.writeInt( upBytes.length );
+            // Just write the bytes if not null
+            out.writeBoolean( bytes != null );
 
-                if ( upBytes.length > 0 )
+            if ( bytes != null )
+            {
+                out.writeInt( bytes.length );
+                
+                if ( bytes.length > 0 )
                 {
-                    out.write( upBytes, 0, upBytes.length );
+                    out.write( bytes );
                 }
             }
-            else
-            {
-                // Null value will be marked with a negative value
-                out.writeInt( -1 );
-            }
-            
         }
 
         // and flush the data
@@ -976,24 +952,27 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
 
     
     /**
-     * Compare two values.
+     * Compare the current value with a String.
      * 
+     * @param other the String we want to compare the current value with
+     * @return a positive value if the current value is above the provided String, a negative value
+     * if it's below, 0 if they are equal.
      * @throws IllegalStateException on failures to extract the comparator, or the
      * normalizers needed to perform the required comparisons based on the schema
      */
-    public int compareTo( Value value )
+    public int compareTo( String other )
     {
-        // The two values must have the same type
-        if ( isHR != value.isHR )
+        if ( !isHR )
         {
-            String msg = I18n.err( I18n.ERR_04443, this, value );
+            String msg = I18n.err( I18n.ERR_04443, this, other );
             LOG.error( msg );
             throw new IllegalStateException( msg );
         }
         
-        if ( isNull() )
+        // Check if both value are null
+        if ( bytes == null )
         {
-            if ( ( value == null ) || value.isNull() )
+            if ( other == null )
             {
                 return 0;
             }
@@ -1002,69 +981,168 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
                 return -1;
             }
         }
-        else if ( ( value == null ) || value.isNull() )
+        else if ( other == null )
         {
             return 1;
         }
         
-        if ( !isHR )
+        // We have HR values. We may have an attributeType for the base Value
+        // It actually does not matter if the second value has an attributeType
+        // which is different
+        try
         {
-            return Strings.compare( normBytes, value.normBytes );
-        }
-
-        if ( attributeType != null )
-        {
-            if ( value.getAttributeType() == null )
+            if ( attributeType != null )
             {
-                return normValue.compareTo( value.normValue );
+                // No normalization. Use the base AttributeType to normalize
+                // the other value
+                String normalizedOther = attributeType.getEquality().getNormalizer().normalize( other );
+                
+                return normValue.compareTo( normalizedOther );
             }
             else
             {
-                if ( !attributeType.equals( value.attributeType ) )
+                // No AtributeType... Compare the normValue
+                return normValue.compareTo( other );
+            }
+        }
+        catch ( LdapException le )
+        {
+            return -1;
+        }
+    }
+
+    
+    /**
+     * Compare two values. We compare the stored bytes
+     * 
+     * @param other the byte[] we want to compare the current value with
+     * @return a positive value if the current value is above the provided byte[], a negative value
+     * if it's below, 0 if they are equal.
+     * @throws IllegalStateException on failures to extract the comparator, or the
+     * normalizers needed to perform the required comparisons based on the schema
+     */
+    public int compareTo( byte[] other )
+    {
+        if ( isHR )
+        {
+            String msg = I18n.err( I18n.ERR_04443, this, other );
+            LOG.error( msg );
+            throw new IllegalStateException( msg );
+        }
+        
+        // Check if both value are null
+        if ( bytes == null )
+        {
+            if ( other == null )
+            {
+                return 0;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+        else if ( other == null )
+        {
+            return 1;
+        }
+
+        // Default : compare the bytes
+        return Strings.compare( bytes, other );
+    }
+
+    
+    /**
+     * Compare two values. We either compare the stored bytes, or we use the 
+     * AttributeType Comparator, if we have an Ordered MatchingRule. 
+     * 
+     * @param other The other Value we want to compare the current value with
+     * @return a positive value if the current value is above the provided value, a negative value
+     * if it's below, 0 if they are equal.
+     * @throws IllegalStateException on failures to extract the comparator, or the
+     * normalizers needed to perform the required comparisons based on the schema
+     */
+    public int compareTo( Value other )
+    {
+        // The two values must have the same type
+        if ( isHR != other.isHR )
+        {
+            String msg = I18n.err( I18n.ERR_04443, this, other );
+            LOG.error( msg );
+            throw new IllegalStateException( msg );
+        }
+        
+        // Check if both value are null
+        if ( bytes == null )
+        {
+            if ( other.bytes == null )
+            {
+                return 0;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+        else if ( other.bytes == null )
+        {
+            return 1;
+        }
+        
+        // Ok, neither this nor the other have null values.
+        
+        // Shortcut when the value are not HR
+        if ( !isHR )
+        {
+            return Strings.compare( bytes, other.bytes );
+        }
+
+        // We have HR values. We may have an attributeType for the base Value
+        // It actually does not matter if the second value has an attributeType
+        // which is different
+        try
+        {
+            if ( attributeType != null )
+            {
+                // Check if the other value has been normalized or not
+                if ( other.attributeType == null )
                 {
-                    String message = I18n.err( I18n.ERR_04128, toString(), value.getClass() );
-                    LOG.error( message );
-                    throw new NotImplementedException( message );
+                    // No normalization. Use the base AttributeType to normalize
+                    // the other value
+                    String normalizedOther = attributeType.getEquality().getNormalizer().normalize( other.upValue );
+                    
+                    return normValue.compareTo( normalizedOther );
+                }
+                else
+                {
+                    return normValue.compareTo( other.normValue );
+                }
+            }
+            else
+            {
+                if ( other.attributeType != null )
+                {
+                    // Normalize the current value with the other value normalizer
+                    String normalizedThis = other.attributeType.getEquality().getNormalizer().normalize( upValue );
+                    
+                    return normalizedThis.compareTo( other.normValue );
+                }
+                else
+                {
+                    // No AtributeType... Compare the normValue
+                    return normValue.compareTo( other.normValue );
                 }
             }
         }
-        else
+        catch ( LdapException le )
         {
-            return normValue.compareTo( value.normValue );
-        }
-
-        try
-        {
-            return ( ( LdapComparator<String> ) getLdapComparator() ).compare( normValue, value.getNormValue() );
-        }
-        catch ( LdapException e )
-        {
-            String msg = I18n.err( I18n.ERR_04443, this, value );
-            LOG.error( msg, e );
-            throw new IllegalStateException( msg, e );
+            return -1;
         }
     }
     
     
     /**
-     * @see Object#hashCode()
-     * @return the instance's hashcode
-     */
-    public int hashCode()
-    {
-        if ( h == 0 )
-        {
-            // return zero if the value is null so only one null value can be
-            // stored in an attribute - the binary version does the same
-            h = Arrays.hashCode( normBytes );
-        }
-
-        return h;
-    }
-    
-    
-    /**
-     * Two StringValue are equals if their normalized values are equal
+     * We compare two values using their Comparator, if any. 
      * 
      * @see Object#equals(Object)
      */
@@ -1088,17 +1166,94 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
             // Both values must be HR or not HR
             return false;
         }
+        
+        if ( !isHR )
+        {
+            // Shortcut for binary values
+            return Arrays.equals( bytes, other.bytes );
+        }
+        
+        // HR values
+        if ( bytes == null )
+        {
+            return other.bytes == null;
+        }
+        
+        // Special case
+        if ( other.bytes == null )
+        {
+            return false;
+        }
+        
+        // Not null, but empty. We try to avoid a spurious String Preparation
+        if ( bytes.length == 0 )
+        {
+            return other.bytes.length == 0;
+        }
+        else if ( other.bytes.length == 0 )
+        {
+            return false;
+        }
 
-        // Ok, now, let's see if we have an AttributeType at all
+        // Ok, now, let's see if we have an AttributeType at all. If both have one,
+        // and if they aren't equal, then we get out. If one of them has an AttributeType and
+        // not the other, we will assume that this is the AttributeType to use.
+        MatchingRule equalityMR = null;
+        
         if ( attributeType == null )
         {
             if ( other.attributeType != null )
             {
+                // Use the Other value AT
+                equalityMR = other.attributeType.getEquality();
+ 
+                // We may not have an Equality MR, and in tjis case, we compare the bytes
+                if ( equalityMR == null )
+                {
+                    return Arrays.equals( bytes, other.bytes );
+                }
+                
+                LdapComparator<Object> ldapComparator = equalityMR.getLdapComparator();
+                
+                if ( ldapComparator == null )
+                {
+                    // This is an error !
+                    LOG.error( "No comparator for the {} attributeType", other.attributeType );
+                    
+                    return false;
+                }
+                
+                return ldapComparator.compare( normValue, other.normValue ) == 0;
+            }
+            else
+            {
+                // Both are null. We will compare the prepared String if we have one, 
+                // or the bytes otherwise.
+                if ( upValue != null )
+                {
+                    return upValue.equals( other.upValue );
+                }
+                else
+                {
+                    return Arrays.equals( bytes, other.bytes );
+                } 
+            }
+        }
+        else 
+        {
+            if ( other.attributeType != null )
+            {
+                // Both attributeType must be equal
+                if ( !attributeType.equals( other.attributeType ) )
+                {
+                    return false;
+                }
+                
                 // Use the comparator
                 // We have an AttributeType, we use the associated comparator
                 try
                 {
-                    Comparator comparator = other.getLdapComparator();
+                    LdapComparator<String> comparator = ( LdapComparator<String> ) getLdapComparator();
                     
                     if ( other.attributeType.getEquality() == null )
                     {
@@ -1151,96 +1306,40 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
             }
             else
             {
-                return Arrays.equals( normBytes, other.normBytes );
+                return Arrays.equals( bytes, other.bytes );
             }
         }
-        else
-        {
-            if ( other.attributeType == null )
-            {
-                if ( isHR )
-                {
-                    // Use the comparator
-                    // We have an AttributeType, we use the associated comparator
-                    try
-                    {
-                        Comparator comparator = getLdapComparator();
-                        
-                        if ( attributeType.getEquality() == null )
-                        {
-                            return false;
-                        }
-                        
-                        Normalizer normalizer = attributeType.getEquality().getNormalizer();
+    }
 
-                        if ( normalizer == null )
-                        {
-                            if ( comparator == null )
-                            {
-                                return normValue.equals( other.normValue );
-                            }
-                            else
-                            {
-                                return comparator.compare( normValue, other.normValue ) == 0;
-                            }
-                        }
-                        
-                        String otherNormValue = normalizer.normalize( other.normValue );
-                            
-                        // Compare normalized values
-                        if ( comparator == null )
-                        {
-                            return normValue.equals( otherNormValue );
-                        }
-                        else
-                        {
-                            return comparator.compare( normValue, otherNormValue ) == 0;
-                        }
-                    }
-                    catch ( LdapException ne )
-                    {
-                        return false;
-                    }
+    
+    /**
+     * @see Object#hashCode()
+     * @return the instance's hashcode
+     */
+    public int hashCode()
+    {
+        if ( h == 0 )
+        {
+            // return zero if the value is null so only one null value can be
+            // stored in an attribute - the binary version does the same
+            if ( isHR )
+            {
+                if ( normValue != null )
+                {
+                    h = normValue.hashCode();
                 }
                 else
                 {
-                    return Arrays.equals( normBytes, other.normBytes );
-                }
-            }
-
-            if ( !attributeType.equals( other.attributeType ) )
-            {
-                return false;
-            }
-            
-            if ( isHR )
-            {
-                // Use the comparator
-                // We have an AttributeType, we use the associated comparator
-                try
-                {
-                    Comparator comparator = getLdapComparator();
-
-                    // Compare normalized values
-                    if ( comparator == null )
-                    {
-                        return normValue.equals( other.normValue );
-                    }
-                    else
-                    {
-                        return comparator.compare( normValue, other.normValue ) == 0;
-                    }
-                }
-                catch ( LdapException ne )
-                {
-                    return false;
+                    h = 0;
                 }
             }
             else
             {
-                return Arrays.equals( normBytes, other.normBytes );
+                h = Arrays.hashCode( bytes );
             }
         }
+
+        return h;
     }
 
 
@@ -1256,22 +1355,22 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         else
         {
              // Dumps binary in hex with label.
-            if ( normBytes == null )
+            if ( bytes == null )
             {
                 return "null";
             }
-            else if ( normBytes.length > 16 )
+            else if ( bytes.length > 16 )
             {
                 // Just dump the first 16 bytes...
                 byte[] copy = new byte[16];
 
-                System.arraycopy( normBytes, 0, copy, 0, 16 );
+                System.arraycopy( bytes, 0, copy, 0, 16 );
 
                 return Strings.dumpBytes( copy ) + "...";
             }
             else
             {
-                return Strings.dumpBytes( normBytes );
+                return Strings.dumpBytes( bytes );
             }
         }
     }

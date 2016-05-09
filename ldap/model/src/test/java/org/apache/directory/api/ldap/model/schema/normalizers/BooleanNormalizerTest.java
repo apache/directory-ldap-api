@@ -25,7 +25,6 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.schema.normalizers.BooleanNormalizer;
-import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -67,13 +66,4 @@ public class BooleanNormalizerTest
     {
         assertEquals( "TRUE", normalizer.normalize( " tRuE " ) );
     }
-
-
-    @Test
-    public void testNormalizeByteValue() throws Exception
-    {
-        assertEquals( "TRUE", normalizer.normalize( new Value( Strings.getBytesUtf8( "tRuE" ) ) ).getString() );
-        assertEquals( "TRUE", normalizer.normalize( new Value( Strings.getBytesUtf8( "true" ) ) ).getString() );
-    }
-
 }

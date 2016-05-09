@@ -20,12 +20,10 @@
 package org.apache.directory.api.ldap.model.schema.comparators;
 
 
-import java.io.IOException;
 import java.text.ParseException;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
-import org.apache.directory.api.ldap.model.schema.PrepareString;
 import org.apache.directory.api.util.GeneralizedTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,12 +81,7 @@ public class GeneralizedTimeComparator extends LdapComparator<String>
         GeneralizedTime backendTime;
         try
         {
-            String prepared = PrepareString.normalize( backendValue, PrepareString.StringType.DIRECTORY_STRING );
-            backendTime = new GeneralizedTime( prepared );
-        }
-        catch ( IOException ioe )
-        {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, backendValue ), ioe );
+            backendTime = new GeneralizedTime( backendValue );
         }
         catch ( ParseException pe )
         {
@@ -99,12 +92,7 @@ public class GeneralizedTimeComparator extends LdapComparator<String>
         
         try
         {
-            String prepared = PrepareString.normalize( assertValue, PrepareString.StringType.DIRECTORY_STRING );
-            assertTime = new GeneralizedTime( prepared );
-        }
-        catch ( IOException ioe )
-        {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, assertValue ), ioe );
+            assertTime = new GeneralizedTime( assertValue );
         }
         catch ( ParseException pe )
         {

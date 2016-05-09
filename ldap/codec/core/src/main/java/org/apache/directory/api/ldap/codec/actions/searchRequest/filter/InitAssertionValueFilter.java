@@ -27,8 +27,6 @@ import org.apache.directory.api.ldap.codec.AttributeValueAssertion;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
 import org.apache.directory.api.ldap.codec.search.AttributeValueAssertionFilter;
-import org.apache.directory.api.ldap.model.entry.Value;
-import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,46 +65,19 @@ public class InitAssertionValueFilter extends GrammarAction<LdapMessageContainer
         TLV tlv = container.getCurrentTLV();
 
         // The value can be null.
-        Value assertionValue = null;
-
-        if ( tlv.getLength() != 0 )
-        {
-            assertionValue = new Value( tlv.getValue().getData() );
-        }
-        else
-        {
-            assertionValue = new Value( StringConstants.EMPTY_BYTES );
-        }
-
+        byte[] assertion = tlv.getValue().getData();
+        
         AttributeValueAssertionFilter terminalFilter = ( AttributeValueAssertionFilter )
             searchRequestDecorator.getTerminalFilter();
-        AttributeValueAssertion assertion = terminalFilter.getAssertion();
+        AttributeValueAssertion attributeValueAssertion = terminalFilter.getAssertion();
 
-        if ( container.isBinary( assertion.getAttributeDesc() ) )
+        if ( assertion == null )
         {
-            if ( tlv.getLength() != 0 )
-            {
-                assertionValue = new Value( tlv.getValue().getData() );
-            }
-            else
-            {
-                assertionValue = new Value( StringConstants.EMPTY_BYTES );
-            }
-
-            assertion.setAssertionValue( assertionValue );
+            attributeValueAssertion.setAssertion( Strings.EMPTY_BYTES );
         }
         else
         {
-            if ( tlv.getLength() != 0 )
-            {
-                assertionValue = new Value( Strings.utf8ToString( tlv.getValue().getData() ) );
-            }
-            else
-            {
-                assertionValue = new Value( "" );
-            }
-
-            assertion.setAssertionValue( assertionValue );
+            attributeValueAssertion.setAssertion( assertion );
         }
 
         // We now have to get back to the nearest filter which is

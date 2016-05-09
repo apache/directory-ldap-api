@@ -41,9 +41,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 
 
@@ -308,7 +306,7 @@ public class LdifAnonymizerTest
         
         for ( Value value : attribute )
         {
-            String str = value.getString();
+            String str = value.getValue();
             
             // We can only test the length and teh fact teh values are not equal (as the vale has been anonymized)
             assertTrue( values.contains( str ) );
@@ -347,7 +345,7 @@ public class LdifAnonymizerTest
         
         String value = attribute.getString();
         
-        // We can only test the length and the fact the values are not equal (as the vale has been anonymized)
+        // We can only test the length and the fact the values are not equal (as the value has been anonymized)
         assertEquals( "AAAAAAAAAAAAAAAAAAAA".length(), value.length() );
         assertEquals( "AAAAAAAAAAAAAAAAAAAA", value );
     }
@@ -404,7 +402,7 @@ public class LdifAnonymizerTest
         
         for ( Value value : attribute )
         {
-            String str = value.getString();
+            String str = value.getValue();
             
             // We can only test the length and the fact the values are not equal (as the vale has been anonymized)
             assertNotSame( 0, value.length() );

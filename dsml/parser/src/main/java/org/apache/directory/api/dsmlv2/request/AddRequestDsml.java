@@ -182,7 +182,7 @@ public class AddRequestDsml
                     }
                     else
                     {
-                        attributeElement.addElement( "value" ).addText( value.getString() );
+                        attributeElement.addElement( "value" ).addText( value.getValue() );
                     }
                 }
             }

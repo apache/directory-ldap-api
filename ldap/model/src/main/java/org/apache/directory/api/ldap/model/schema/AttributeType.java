@@ -502,6 +502,17 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
         return isAncestorOrEqual( this, descendant );
     }
+    
+    
+    /**
+     * Tells if an AttributeType is HumanReadable or not, depending on its Syntax.
+     * 
+     * @return <tt>true</tt> if the AttributeType is Human Readable.
+     */
+    public boolean isHR()
+    {
+        return ( syntax != null ) && ( syntax.isHumanReadable );
+    }
 
 
     /**

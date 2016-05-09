@@ -45,7 +45,7 @@ public class TelephoneNumberNormalizerTest
     public void testTelephoneNumberNormalizerNull() throws LdapException
     {
         Normalizer normalizer = new TelephoneNumberNormalizer();
-        assertEquals( "", normalizer.normalize( ( String ) null ) );
+        assertEquals( null, normalizer.normalize( ( String ) null ) );
     }
 
 

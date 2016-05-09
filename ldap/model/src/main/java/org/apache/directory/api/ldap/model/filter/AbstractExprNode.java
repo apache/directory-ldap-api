@@ -24,8 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.model.entry.Value;
-import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -40,9 +38,6 @@ public abstract class AbstractExprNode implements ExprNode
 
     /** The node type */
     protected final AssertionType assertionType;
-
-    /** A flag set to true if the Node is Schema aware */
-    protected boolean isSchemaAware;
 
 
     /**
@@ -135,91 +130,6 @@ public abstract class AbstractExprNode implements ExprNode
 
 
     /**
-     * Handles the escaping of special characters in LDAP search filter assertion values using the
-     * &lt;valueencoding&gt; rule as described in
-     * <a href="http://www.ietf.org/rfc/rfc4515.txt">RFC 4515</a>. Needed so that
-     * {@link ExprNode#printToBuffer(StringBuffer)} results in a valid filter string that can be parsed
-     * again (as a way of cloning filters).
-     *
-     * @param value Right hand side of "attrId=value" assertion occurring in an LDAP search filter.
-     * @return Escaped version of <code>value</code>
-     */
-    protected static Value escapeFilterValue( Value value )
-    {
-        if ( value.isNull() )
-        {
-            return value;
-        }
-
-        StringBuilder sb = null;
-        String val;
-
-        if ( !value.isHumanReadable() )
-        {
-            byte[] bytes = value.getBytes();
-            sb = new StringBuilder( bytes.length * 3 );
-
-            for ( byte b : bytes )
-            {
-                if ( ( b < 0x7F ) && ( b >= 0 ) )
-                {
-                    switch ( b )
-                    {
-                        case '*':
-                            sb.append( "\\2A" );
-                            break;
-
-                        case '(':
-                            sb.append( "\\28" );
-                            break;
-
-                        case ')':
-                            sb.append( "\\29" );
-                            break;
-
-                        case '\\':
-                            sb.append( "\\5C" );
-                            break;
-
-                        case '\0':
-                            sb.append( "\\00" );
-                            break;
-
-                        default:
-                            sb.append( ( char ) b );
-                    }
-                }
-                else
-                {
-                    sb.append( '\\' );
-                    String digit = Integer.toHexString( b & 0x00FF );
-
-                    if ( digit.length() == 1 )
-                    {
-                        sb.append( '0' );
-                    }
-
-                    sb.append( Strings.upperCase( digit ) );
-                }
-            }
-
-            return new Value( sb.toString() );
-        }
-
-        val = value.getString();
-        String encodedVal = FilterEncoder.encodeFilterValue( val );
-        if ( val.equals( encodedVal ) )
-        {
-            return value;
-        }
-        else
-        {
-            return new Value( encodedVal );
-        }
-    }
-
-
-    /**
      * @see Object#hashCode()
      * @return the instance's hash code 
      */
@@ -290,10 +200,7 @@ public abstract class AbstractExprNode implements ExprNode
      * 
      * @return true if the Node is SchemaAware
      */
-    public boolean isSchemaAware()
-    {
-        return isSchemaAware;
-    }
+    public abstract boolean isSchemaAware();
 
 
     /**

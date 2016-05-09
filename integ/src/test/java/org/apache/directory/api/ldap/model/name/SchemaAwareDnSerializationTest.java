@@ -126,7 +126,7 @@ public class SchemaAwareDnSerializationTest
 
         assertEquals( dn1, dn2 );
         assertEquals( "Cn = Doe", dn2.getName() );
-        assertEquals( "2.5.4.3=doe", dn2.getNormName() );
+        assertEquals( "Cn=Doe", dn2.getEscaped() );
     }
 
 
@@ -138,8 +138,7 @@ public class SchemaAwareDnSerializationTest
     @Test
     public void testNameSerialization() throws Exception
     {
-        Dn dn = new Dn( "ou= Some   People   + dc=  And   Some anImAls,dc = eXample,dc= cOm" );
-        dn.apply( schemaManager );
+        Dn dn = new Dn( schemaManager, "ou= Some   People   + dc=  And   Some anImAls,dc = eXample,dc= cOm" );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -184,8 +183,7 @@ public class SchemaAwareDnSerializationTest
     @Test
     public void testNameStaticSerialization() throws Exception
     {
-        Dn dn = new Dn( "ou= Some   People   + dc=  And   Some anImAls,dc = eXample,dc= cOm" );
-        dn.apply( schemaManager );
+        Dn dn = new Dn( schemaManager, "ou= Some   People   + dc=  And   Some anImAls,dc = eXample,dc= cOm" );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -206,8 +204,7 @@ public class SchemaAwareDnSerializationTest
     @Test
     public void testSerializationPerfs() throws Exception
     {
-        Dn dn = new Dn( "ou= Some   People   + dc=  And   Some anImAls,dc = eXample,dc= cOm" );
-        dn.apply( schemaManager );
+        Dn dn = new Dn( schemaManager, "ou= Some   People   + dc=  And   Some anImAls,dc = eXample,dc= cOm" );
 
         long t0 = System.currentTimeMillis();
 
@@ -243,8 +240,6 @@ public class SchemaAwareDnSerializationTest
 
             Dn dn1 = new Dn( schemaManager );
             dn1.readExternal( in );
-
-            dn.apply( schemaManager );
         }
 
         long t3 = System.currentTimeMillis();

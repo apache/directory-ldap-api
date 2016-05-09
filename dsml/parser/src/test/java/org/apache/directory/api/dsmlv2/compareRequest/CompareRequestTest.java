@@ -85,7 +85,7 @@ public class CompareRequestTest extends AbstractTest
 
         CompareRequest compareRequest = ( CompareRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        assertEquals( "cn=Bob Rush,ou=Dev,dc=Example,dc=COM", compareRequest.getName().getNormName() );
+        assertTrue( compareRequest.getName().equals( "cn=Bob Rush,ou=Dev,dc=Example,dc=COM" ) );
     }
 
 
@@ -324,7 +324,7 @@ public class CompareRequestTest extends AbstractTest
 
         CompareRequest compareRequest = ( CompareRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        assertEquals( "cn=Bob Rush,ou=Dev,dc=Example,dc=COM", compareRequest.getName().getNormName() );
+        assertTrue( compareRequest.getName().equals( "cn=Bob Rush,ou=Dev,dc=Example,dc=COM" ) );
 
         assertEquals( "sn", compareRequest.getAttributeId() );
 
@@ -355,11 +355,11 @@ public class CompareRequestTest extends AbstractTest
 
         CompareRequest compareRequest = ( CompareRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        assertEquals( "cn=Bob Rush,ou=Dev,dc=Example,dc=COM", compareRequest.getName().getNormName() );
+        assertTrue( compareRequest.getName().equals( "cn=Bob Rush,ou=Dev,dc=Example,dc=COM" ) );
 
         assertEquals( "sn", compareRequest.getAttributeId() );
 
-        assertEquals( "DSMLv2.0 rocks!!", compareRequest.getAssertionValue().getString() );
+        assertEquals( "DSMLv2.0 rocks!!", compareRequest.getAssertionValue().getValue() );
     }
 
 
@@ -386,7 +386,7 @@ public class CompareRequestTest extends AbstractTest
 
         CompareRequest compareRequest = ( CompareRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        assertEquals( "cn=Bob Rush,ou=Dev,dc=Example,dc=COM", compareRequest.getName().getNormName() );
+        assertTrue( compareRequest.getName().equals( "cn=Bob Rush,ou=Dev,dc=Example,dc=COM" ) );
 
         assertEquals( "sn", compareRequest.getAttributeId() );
 

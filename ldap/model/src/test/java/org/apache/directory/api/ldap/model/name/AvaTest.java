@@ -104,15 +104,13 @@ public class AvaTest
     @Test
     public void testAttributeTypeAndValueValidType() throws LdapException
     {
-        Ava atav = new Ava( schemaManager, "A", ( String ) null );
-        assertEquals( "A=", atav.toString() );
-        assertEquals( "a=", atav.getNormName() );
-        assertEquals( "A=", atav.getName() );
+        Ava atav = new Ava( schemaManager, "DC", ( String ) null );
+        assertEquals( "DC=", atav.toString() );
+        assertEquals( "DC=", atav.getName() );
 
-        atav = new Ava( schemaManager, "  A  ", ( String ) null );
-        assertEquals( "a=", atav.getNormName() );
-        assertEquals( "  A  =", atav.toString() );
-        assertEquals( "  A  =", atav.getName() );
+        atav = new Ava( schemaManager, "  DC  ", ( String ) null );
+        assertEquals( "  DC  =", atav.toString() );
+        assertEquals( "  DC  =", atav.getName() );
 
         try
         {
@@ -244,7 +242,7 @@ public class AvaTest
     {
         Ava atav = new Ava( schemaManager, " A ", "a" );
 
-        assertEquals( "a=a", atav.normalize() );
+        assertEquals( " A =a", atav.getName() );
 
     }
 
@@ -254,7 +252,230 @@ public class AvaTest
     {
         Ava atav = new Ava( schemaManager, " CommonName ", " This is    a TEST " );
         assertEquals( " CommonName =\\ This is    a TEST\\ ", atav.toString() );
-        assertEquals( "commonname=\\ This is    a TEST\\ ", atav.getNormName() );
         assertEquals( " CommonName =\\ This is    a TEST\\ ", atav.getName() );
+    }
+
+
+    @Test
+    public void testAvaEscapedLeadChar() throws LdapException
+    {
+        // Lead char : 0x00
+        Ava atav = new Ava( schemaManager, "cn", new byte[] { 0x00 } );
+        assertEquals( "cn=\\00", atav.getName() );
+        assertEquals( "cn=\\00", atav.getEscaped() );
+
+        // Lead char : 0x20
+        atav = new Ava( schemaManager, "cn", new byte[] { 0x20 } );
+        assertEquals( "cn=\\ ", atav.getName() );
+        assertEquals( "cn=\\ ", atav.getEscaped() );
+
+        // Lead char : '#'
+        atav = new Ava( schemaManager, "cn", new byte[] { '#' } );
+        assertEquals( "cn=\\#", atav.getName() );
+        assertEquals( "cn=\\#", atav.getEscaped() );
+
+        // Lead char : ','
+        atav = new Ava( schemaManager, "cn", new byte[] { ',' } );
+        assertEquals( "cn=\\,", atav.getName() );
+        assertEquals( "cn=\\,", atav.getEscaped() );
+
+        // Lead char : ';'
+        atav = new Ava( schemaManager, "cn", new byte[] { ';' } );
+        assertEquals( "cn=\\;", atav.getName() );
+        assertEquals( "cn=\\;", atav.getEscaped() );
+
+        // Lead char : '+'
+        atav = new Ava( schemaManager, "cn", new byte[] { '+' } );
+        assertEquals( "cn=\\+", atav.getName() );
+        assertEquals( "cn=\\+", atav.getEscaped() );
+
+        // Lead char : '"'
+        atav = new Ava( schemaManager, "cn", new byte[] { '"' } );
+        assertEquals( "cn=\\\"", atav.getName() );
+        assertEquals( "cn=\\\"", atav.getEscaped() );
+
+        // Lead char : '<'
+        atav = new Ava( schemaManager, "cn", new byte[] { '<' } );
+        assertEquals( "cn=\\<", atav.getName() );
+        assertEquals( "cn=\\<", atav.getEscaped() );
+
+        // Lead char : '>'
+        atav = new Ava( schemaManager, "cn", new byte[] { '>' } );
+        assertEquals( "cn=\\>", atav.getName() );
+        assertEquals( "cn=\\>", atav.getEscaped() );
+
+        // Lead char : '\'
+        atav = new Ava( schemaManager, "cn", new byte[] { '\\' } );
+        assertEquals( "cn=\\\\", atav.getName() );
+        assertEquals( "cn=\\\\", atav.getEscaped() );
+    }
+
+
+    @Test
+    public void testAvaEscapedTrailChar() throws LdapException
+    {
+        // Trail char : 0x00
+        Ava atav = new Ava( schemaManager, "cn", new byte[] { 'a', 0x00 } );
+        assertEquals( "cn=a\\00", atav.getName() );
+        assertEquals( "cn=a\\00", atav.getEscaped() );
+
+        // Trail char : 0x20
+        atav = new Ava( schemaManager, "cn", new byte[] { 'a', 0x20 } );
+        assertEquals( "cn=a\\ ", atav.getName() );
+        assertEquals( "cn=a\\ ", atav.getEscaped() );
+
+        // Trail char : '#' (it should not be escaped)
+        atav = new Ava( schemaManager, "cn", new byte[] { 'a', '#' } );
+        assertEquals( "cn=a#", atav.getName() );
+        assertEquals( "cn=a#", atav.getEscaped() );
+
+        // Trail char : ','
+        atav = new Ava( schemaManager, "cn", new byte[] { 'a', ',' } );
+        assertEquals( "cn=a\\,", atav.getName() );
+        assertEquals( "cn=a\\,", atav.getEscaped() );
+
+        // Trail char : ';'
+        atav = new Ava( schemaManager, "cn", new byte[] { 'a', ';' } );
+        assertEquals( "cn=a\\;", atav.getName() );
+        assertEquals( "cn=a\\;", atav.getEscaped() );
+
+        // Trail char : '+'
+        atav = new Ava( schemaManager, "cn", new byte[] { 'a', '+' } );
+        assertEquals( "cn=a\\+", atav.getName() );
+        assertEquals( "cn=a\\+", atav.getEscaped() );
+
+        // Trail char : '"'
+        atav = new Ava( schemaManager, "cn", new byte[] { 'a', '"' } );
+        assertEquals( "cn=a\\\"", atav.getName() );
+        assertEquals( "cn=a\\\"", atav.getEscaped() );
+
+        // Trail char : '<'
+        atav = new Ava( schemaManager, "cn", new byte[] { 'a', '<' } );
+        assertEquals( "cn=a\\<", atav.getName() );
+        assertEquals( "cn=a\\<", atav.getEscaped() );
+
+        // Trail char : '>'
+        atav = new Ava( schemaManager, "cn", new byte[] { 'a', '>' } );
+        assertEquals( "cn=a\\>", atav.getName() );
+        assertEquals( "cn=a\\>", atav.getEscaped() );
+
+        // Trail char : '\'
+        atav = new Ava( schemaManager, "cn", new byte[] { 'a', '\\' } );
+        assertEquals( "cn=a\\\\", atav.getName() );
+        assertEquals( "cn=a\\\\", atav.getEscaped() );
+    }
+
+
+    @Test
+    public void testAvaEscapedMiddleChar() throws LdapException
+    {
+        // Trail char : 0x00
+        Ava atav = new Ava( schemaManager, "cn", new byte[] { 'a', 0x00, 'b' } );
+        assertEquals( "cn=a\\00b", atav.getName() );
+        assertEquals( "cn=a\\00b", atav.getEscaped() );
+
+        // Trail char : 0x20 (it should not be escaped)
+        atav = new Ava( schemaManager, "cn", new byte[] { 'a', 0x20, 'b' } );
+        assertEquals( "cn=a b", atav.getName() );
+        assertEquals( "cn=a b", atav.getEscaped() );
+
+        // Trail char : '#' (it should not be escaped)
+        atav = new Ava( schemaManager, "cn", new byte[] { 'a', '#', 'b' } );
+        assertEquals( "cn=a#b", atav.getName() );
+        assertEquals( "cn=a#b", atav.getEscaped() );
+
+        // Trail char : ','
+        atav = new Ava( schemaManager, "cn", new byte[] { 'a', ',', 'b' } );
+        assertEquals( "cn=a\\,b", atav.getName() );
+        assertEquals( "cn=a\\,b", atav.getEscaped() );
+
+        // Trail char : ';'
+        atav = new Ava( schemaManager, "cn", new byte[] { 'a', ';', 'b' } );
+        assertEquals( "cn=a\\;b", atav.getName() );
+        assertEquals( "cn=a\\;b", atav.getEscaped() );
+
+        // Trail char : '+'
+        atav = new Ava( schemaManager, "cn", new byte[] { 'a', '+', 'b' } );
+        assertEquals( "cn=a\\+b", atav.getName() );
+        assertEquals( "cn=a\\+b", atav.getEscaped() );
+
+        // Trail char : '"'
+        atav = new Ava( schemaManager, "cn", new byte[] { 'a', '"', 'b' } );
+        assertEquals( "cn=a\\\"b", atav.getName() );
+        assertEquals( "cn=a\\\"b", atav.getEscaped() );
+
+        // Trail char : '<'
+        atav = new Ava( schemaManager, "cn", new byte[] { 'a', '<', 'b' } );
+        assertEquals( "cn=a\\<b", atav.getName() );
+        assertEquals( "cn=a\\<b", atav.getEscaped() );
+
+        // Trail char : '>'
+        atav = new Ava( schemaManager, "cn", new byte[] { 'a', '>', 'b' } );
+        assertEquals( "cn=a\\>b", atav.getName() );
+        assertEquals( "cn=a\\>b", atav.getEscaped() );
+
+        // Trail char : '\'
+        atav = new Ava( schemaManager, "cn", new byte[] { 'a', '\\', 'b' } );
+        assertEquals( "cn=a\\\\b", atav.getName() );
+        assertEquals( "cn=a\\\\b", atav.getEscaped() );
+    }
+
+
+    @Test
+    public void testAvaUTF2() throws LdapException
+    {
+        // The '¡' char (U+00A1)
+        Ava atav = new Ava( schemaManager, "cn", new byte[] { ( byte ) 0xC2, ( byte ) 0xA1 } );
+        assertEquals( "cn=\u00A1", atav.toString() );
+        assertEquals( "cn=\u00A1", atav.getName() );
+
+        // Some octets, which are not UTF-2
+        atav = new Ava( schemaManager, "cn", new byte[] { ( byte ) 0xFE, ( byte ) 0xC2, ( byte ) 0xC0, ( byte ) 0xC2 } );
+        assertEquals( "cn=\\FE\\C2\\C0\\C2", atav.getName() );
+        assertEquals( "cn=\\FE\\C2\\C0\\C2", atav.getEscaped() );
+    }
+
+
+    @Test
+    public void testAvaUTF3() throws LdapException
+    {
+        // UTF-3 starting with 0xE0
+        // 0x090E unicode is 0xE0 0xA4 0x8E UTF-8, ie DEVANAGARI LETTER SHORT E ('ऎ')
+        Ava atav = new Ava( schemaManager, "cn", new byte[]{ ( byte ) 0xE0, ( byte ) 0xA4, ( byte ) 0x8E } );
+        assertEquals( "cn=\u090E", atav.getName() );
+        assertEquals("cn=\u090E", atav.getEscaped() );
+
+        // UTF-3 between 0xE1 and 0xEC
+        // 0x1000 unicode is 0xE1 0x80 0x80 UTF-8, ie MYANMAR LETTER KA ('က')
+        atav = new Ava( schemaManager, "cn", new byte[]{ ( byte ) 0xE1, ( byte ) 0x80, ( byte ) 0x80 } );
+        assertEquals( "cn=\u1000", atav.getName() );
+        assertEquals("cn=\u1000", atav.getEscaped() );
+
+        // 0xCFFF unicode is 0xEC 0xBF 0xBF UTF-8 ('쿿')
+        atav = new Ava( schemaManager, "cn", new byte[]{ ( byte ) 0xEC, ( byte ) 0xBF, ( byte ) 0xBF } );
+        assertEquals( "cn=\uCFFF", atav.getName() );
+        assertEquals("cn=\uCFFF", atav.getEscaped() );
+
+        // UTF-3 starting with 0xED
+        // 0xD000 unicode is 0xED 0x80 0x80 UTF-8 ('퀀')
+        atav = new Ava( schemaManager, "cn", new byte[]{ ( byte ) 0xED, ( byte ) 0x80, ( byte ) 0x80 } );
+        assertEquals( "cn=\uD000", atav.getName() );
+        assertEquals("cn=\uD000", atav.getEscaped() );
+
+        // UTF-3 starting with 0xEE or 0xEF
+        // 0xFC00 unicode is 0xEF 0xB0 0x80 UTF-8, ie ARABIC LIGATURE YEH WITH HAMZA ABOVE WITH JEEM ISOLATED FORM ('ﰀ')
+        atav = new Ava( schemaManager, "cn", new byte[]{ ( byte ) 0xEF, ( byte ) 0xB0, ( byte ) 0x80 } );
+        assertEquals( "cn=\uFC00", atav.getName() );
+        assertEquals("cn=\uFC00", atav.getEscaped() );
+
+        // Some octets, which are not UTF-3
+        atav = new Ava( schemaManager, "cn", new byte[] { ( byte ) 0xE0, 0x61, ( byte ) 0xE0, ( byte ) 0xA0, 0x61 } );
+        assertEquals( "cn=\\E0a\\E0\\A0a", atav.getName() );
+        assertEquals( "cn=\\E0a\\E0\\A0a", atav.getEscaped() );
+
+        // Some octets, which are not UTF-3
+        atav = new Ava( schemaManager, "cn", new byte[] { ( byte ) 0xE0, ( byte ) 0xA0 } );
+        assertEquals( "cn=\\E0\\A0", atav.getName() );
+        assertEquals( "cn=\\E0\\A0", atav.getEscaped() );
     }
 }

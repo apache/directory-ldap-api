@@ -287,7 +287,7 @@ public class SchemaAwareEntryTest
         Attribute attributePWD = entry.get( "userPassword" );
         assertEquals( 1, attributePWD.size() );
         assertNotNull( attributePWD.get() );
-        assertNull( attributePWD.get().getValue() );
+        assertNull( attributePWD.get().getBytes() );
 
         entry.add( "jpegPhoto", BYTES1, BYTES1, BYTES2 );
         assertEquals( 2, entry.size() );
@@ -809,7 +809,7 @@ public class SchemaAwareEntryTest
         assertEquals( 1, entry.size() );
         assertNotNull( entry.get( "userPassword" ) );
         assertEquals( 1, entry.get( "userPassword" ).size() );
-        assertNull( entry.get( "userPassword" ).get().getValue() );
+        assertNull( entry.get( "userPassword" ).get().getBytes() );
 
         entry.put( "jpegPhoto", BYTES1, BYTES2, BYTES1 );
         assertEquals( 2, entry.size() );
@@ -1051,7 +1051,7 @@ public class SchemaAwareEntryTest
         assertEquals( 2, entry.get( "cn" ).size() );
         assertTrue( entry.remove( "cn", "test1", "test3" ) );
         assertEquals( 1, entry.get( "cn" ).size() );
-        assertEquals( "test2", entry.get( "cn" ).get().getString() );
+        assertEquals( "test2", entry.get( "cn" ).get().getValue() );
 
         assertFalse( entry.remove( "cn", "test3" ) );
         assertFalse( entry.remove( "void", "whatever" ) );
@@ -1173,9 +1173,7 @@ public class SchemaAwareEntryTest
     @Test
     public void testSerializeCompleteEntry() throws LdapException, IOException, ClassNotFoundException
     {
-        Dn dn = new Dn( "ou=system" );
-
-        dn.apply( schemaManager );
+        Dn dn = new Dn( schemaManager,  "ou=system" );
 
         byte[] password = Strings.getBytesUtf8( "secret" );
         Entry entry = new DefaultEntry( dn );
@@ -1227,9 +1225,7 @@ public class SchemaAwareEntryTest
     @Test
     public void testSerializeEntryWithNoAttribute() throws LdapException, IOException, ClassNotFoundException
     {
-        Dn dn = new Dn( "ou=system" );
-
-        dn.apply( schemaManager );
+        Dn dn = new Dn( schemaManager, "ou=system" );
 
         Entry entry = new DefaultEntry( dn );
 

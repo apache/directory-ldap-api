@@ -161,7 +161,7 @@ public final class TestEntryUtils
             {
                 if ( value.isHumanReadable() )
                 {
-                    return new Value( Strings.toLowerCaseAscii( value.getString() ) );
+                    return new Value( Strings.toLowerCaseAscii( value.getValue() ) );
                 }
 
                 throw new IllegalStateException();
@@ -197,7 +197,9 @@ public final class TestEntryUtils
 
             public boolean isValidSyntax( Object value )
             {
-                return ( ( String ) value == null ) || ( ( ( String ) value ).length() < 7 );
+                String trimmedValue = Strings.deepTrim( ( String )value );
+
+                return ( trimmedValue == null ) || ( trimmedValue.length() < 7 );
             }
         } );
 

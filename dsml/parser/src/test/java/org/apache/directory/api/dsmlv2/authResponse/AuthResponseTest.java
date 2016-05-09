@@ -527,7 +527,7 @@ public class AuthResponseTest extends AbstractResponseTest
 
         LdapResult ldapResult = bindResponse.getLdapResult();
 
-        assertEquals( "cn=Bob Rush,ou=Dev,dc=Example,dc=COM", ldapResult.getMatchedDn().getNormName() );
+        assertTrue( ldapResult.getMatchedDn().equals( "cn=Bob Rush,ou=Dev,dc=Example,dc=COM" ) );
     }
 
 

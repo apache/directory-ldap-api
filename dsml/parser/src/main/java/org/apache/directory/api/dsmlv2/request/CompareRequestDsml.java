@@ -93,7 +93,7 @@ public class CompareRequestDsml
         }
         if ( request.getAssertionValue() != null )
         {
-            assertionElement.addElement( "value" ).setText( request.getAssertionValue().getString() );
+            assertionElement.addElement( "value" ).setText( request.getAssertionValue().getValue() );
         }
 
         return element;

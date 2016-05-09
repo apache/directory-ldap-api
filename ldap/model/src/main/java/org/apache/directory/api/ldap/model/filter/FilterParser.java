@@ -26,6 +26,7 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.entry.AttributeUtils;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.util.Chars;
@@ -46,6 +47,82 @@ public final class FilterParser
     {
     }
 
+    
+    /**
+     * Parses a search filter from it's string representation to an expression node object.
+     * 
+     * @param filter the search filter in it's string representation
+     * @return the expression node object
+     */
+    public static ExprNode parse( String filter ) throws ParseException
+    {
+        return parse( null, filter, false );
+    }
+
+
+    /**
+     * Parses a search filter from it's string representation to an expression node object.
+     * 
+     * In <code>relaxed</code> mode the filter may violate RFC 4515, e.g. the underscore in attribute names is allowed.
+     * 
+     * @param filter the search filter in it's string representation
+     * @param relaxed <code>true</code> to parse the filter in relaxed mode
+     * @return the expression node object
+     */
+    public static ExprNode parse( String filter, boolean relaxed ) throws ParseException
+    {
+        return parse( null, filter, relaxed );
+    }
+
+    
+    /**
+     * Parses a search filter from it's string representation to an expression node object,
+     * using the provided SchemaManager 
+     * 
+     * @param schemaManager The SchemaManager to use
+     * @param filter the search filter in it's string representation
+     * @return the expression node object
+     */
+    public static ExprNode parse( SchemaManager schemaManager, String filter ) throws ParseException
+    {
+        return parse( schemaManager, filter, false );
+    }
+
+
+    /**
+     * Parses a search filter from it's string representation to an expression node object,
+     * using the provided SchemaManager 
+     * 
+     * @param schemaManager The SchemaManager to use
+     * @param filter the search filter in it's string representation
+     * @param relaxed <code>true</code> to parse the filter in relaxed mode
+     * @return the expression node object
+     */
+    public static ExprNode parse( SchemaManager schemaManager, String filter, boolean relaxed ) throws ParseException
+    {
+        if ( Strings.isEmpty( filter ) )
+        {
+            throw new ParseException( I18n.err( I18n.ERR_04158 ), 0 );
+        }
+
+        /** Convert the filter to an array of bytes, as this is what we expect */
+        byte[] filterBytes = Strings.getBytesUtf8( filter );
+        
+        Position pos = new Position();
+        pos.start = 0;
+        pos.end = 0;
+        pos.length = filterBytes.length;
+
+        try
+        {
+            return parseFilterInternal( schemaManager, filterBytes, pos, relaxed );
+        }
+        catch ( LdapException le )
+        {
+            throw new ParseException( le.getMessage(), pos.start );
+        }
+    }
+
 
     /**
      * Parse an extensible
@@ -54,7 +131,7 @@ public final class FilterParser
      *                  / ( [":dn"] ':' oid ":=" assertionvalue )
      * matchingrule   = ":" oid
      */
-    private static ExprNode parseExtensible( SchemaManager schemaManager, String attribute, byte[] filter,
+    private static ExprNode parseExtensible( SchemaManager schemaManager, String attribute, byte[] filterBytes,
         Position pos, boolean relaxed ) throws LdapException, ParseException
     {
         ExtensibleNode node = null;
@@ -80,7 +157,7 @@ public final class FilterParser
         if ( attribute != null )
         {
             // First check if we have a ":dn"
-            if ( Strings.areEquals( filter, pos.start, "dn" ) >= 0 )
+            if ( Strings.isCharASCII( filterBytes, pos.start, 'd' ) && Strings.isCharASCII( filterBytes, pos.start + 1, 'n' ) )
             {
                 // Set the dnAttributes flag and move forward in the string
                 node.setDnAttributes( true );
@@ -93,31 +170,31 @@ public final class FilterParser
             }
 
             // Do we have a MatchingRule ?
-            if ( Strings.byteAt( filter, pos.start ) == ':' )
+            if ( Strings.byteAt( filterBytes, pos.start ) == ':' )
             {
                 pos.start++;
 
-                if ( Strings.byteAt( filter, pos.start ) == '=' )
+                if ( Strings.byteAt( filterBytes, pos.start ) == '=' )
                 {
                     pos.start++;
 
                     // Get the assertionValue
-                    node.setValue( parseAssertionValue( schemaManager, filter, pos ) );
+                    node.setValue( parseAssertionValue( schemaManager, filterBytes, pos ) );
 
                     return node;
                 }
                 else
                 {
-                    String matchingRuleId = AttributeUtils.parseAttribute( filter, pos, false, relaxed );
+                    String matchingRuleId = AttributeUtils.parseAttribute( filterBytes, pos, false, relaxed );
 
                     node.setMatchingRuleId( matchingRuleId );
 
-                    if ( Strings.areEquals( filter, pos.start, ":=" ) >= 0 )
+                    if ( Strings.isCharASCII( filterBytes, pos.start, ':' ) && Strings.isCharASCII( filterBytes, pos.start + 1, '=' ) )
                     {
                         pos.start += 2;
 
                         // Get the assertionValue
-                        node.setValue( parseAssertionValue( schemaManager, filter, pos ) );
+                        node.setValue( parseAssertionValue( schemaManager, filterBytes, pos ) );
 
                         return node;
                     }
@@ -138,7 +215,9 @@ public final class FilterParser
             boolean oidRequested = false;
 
             // First check if we have a ":dn"
-            if ( Strings.areEquals( filter, pos.start, ":dn" ) >= 0 )
+            if ( Strings.isCharASCII( filterBytes, pos.start, ':' )
+                 && Strings.isCharASCII( filterBytes, pos.start + 1, 'd' )
+                 && Strings.isCharASCII( filterBytes, pos.start + 2, 'n' ) )
             {
                 // Set the dnAttributes flag and move forward in the string
                 node.setDnAttributes( true );
@@ -150,36 +229,36 @@ public final class FilterParser
             }
 
             // Do we have a MatchingRule ?
-            if ( Strings.byteAt( filter, pos.start ) == ':' )
+            if ( Strings.byteAt( filterBytes, pos.start ) == ':' )
             {
                 pos.start++;
 
-                if ( Strings.byteAt( filter, pos.start ) == '=' )
+                if ( Strings.byteAt( filterBytes, pos.start ) == '=' )
                 {
                     if ( oidRequested )
                     {
-                        throw new ParseException( I18n.err( I18n.ERR_04148 ), pos.start );
+                        throw new ParseException( I18n.err( I18n.ERR_04148_MATCHING_RULE_EXPECTED ), pos.start );
                     }
 
                     pos.start++;
 
                     // Get the assertionValue
-                    node.setValue( parseAssertionValue( schemaManager, null, filter, pos ) );
+                    node.setValue( parseAssertionValue( schemaManager, null, filterBytes, pos ) );
 
                     return node;
                 }
                 else
                 {
-                    String matchingRuleId = AttributeUtils.parseAttribute( filter, pos, false, relaxed );
+                    String matchingRuleId = AttributeUtils.parseAttribute( filterBytes, pos, false, relaxed );
 
                     node.setMatchingRuleId( matchingRuleId );
 
-                    if ( Strings.areEquals( filter, pos.start, ":=" ) >= 0 )
+                    if ( Strings.isCharASCII( filterBytes, pos.start, ':' ) && Strings.isCharASCII( filterBytes, pos.start + 1, '=' ) )
                     {
                         pos.start += 2;
 
                         // Get the assertionValue
-                        node.setValue( parseAssertionValue( schemaManager, null, filter, pos ) );
+                        node.setValue( parseAssertionValue( schemaManager, null, filterBytes, pos ) );
 
                         return node;
                     }
@@ -230,13 +309,13 @@ public final class FilterParser
      * unicodeSubset     = %x01-27 / %x2B-5B / %x5D-FFFF
      * @throws LdapInvalidAttributeValueException 
      */
-    private static Value parseAssertionValue( SchemaManager schemaManager, String attribute, byte[] filter,
-        Position pos ) throws ParseException
+    private static Value parseAssertionValue( SchemaManager schemaManager, String attribute, byte[] filterBytes,
+        Position pos ) throws ParseException, LdapInvalidAttributeValueException
     {
-        byte b = Strings.byteAt( filter, pos.start );
+        byte b = Strings.byteAt( filterBytes, pos.start );
 
         // Create a buffer big enough to contain the value once converted
-        byte[] value = new byte[filter.length - pos.start];
+        byte[] value = new byte[filterBytes.length - pos.start];
         int current = 0;
 
         do
@@ -246,13 +325,13 @@ public final class FilterParser
                 value[current++] = b;
                 pos.start++;
             }
-            else if ( Strings.isCharASCII( filter, pos.start, '\\' ) )
+            else if ( Strings.isCharASCII( filterBytes, pos.start, '\\' ) )
             {
                 // Maybe an escaped
                 pos.start++;
 
                 // First hex
-                if ( Chars.isHex( filter, pos.start ) )
+                if ( Chars.isHex( filterBytes, pos.start ) )
                 {
                     pos.start++;
                 }
@@ -262,9 +341,9 @@ public final class FilterParser
                 }
 
                 // second hex
-                if ( Chars.isHex( filter, pos.start ) )
+                if ( Chars.isHex( filterBytes, pos.start ) )
                 {
-                    value[current++] = Hex.getHexValue( filter[pos.start - 1], filter[pos.start] );
+                    value[current++] = Hex.getHexValue( filterBytes[pos.start - 1], filterBytes[pos.start] );
                     pos.start++;
                 }
                 else
@@ -278,36 +357,36 @@ public final class FilterParser
                 break;
             }
 
-            b = Strings.byteAt( filter, pos.start );
+            b = Strings.byteAt( filterBytes, pos.start );
         }
         while ( b != '\0' );
 
         if ( current != 0 )
         {
-            byte[] result = new byte[current];
-            System.arraycopy( value, 0, result, 0, current );
-
             if ( schemaManager != null )
             {
                 AttributeType attributeType = schemaManager.getAttributeType( attribute );
 
                 if ( attributeType == null )
                 {
-                    return new Value( result );
+                    return new Value( Strings.utf8ToString( value, current ) );
                 }
 
                 if ( attributeType.getSyntax().isHumanReadable() )
                 {
-                    return new Value( Strings.utf8ToString( result ) );
+                    return new Value( attributeType, Strings.utf8ToString( value, current ) );
                 }
                 else
                 {
-                    return new Value( result );
+                    byte[] bytes = new byte[value.length];
+                    System.arraycopy( value, 0, bytes, 0, current );
+                    
+                    return new Value( attributeType, Strings.utf8ToString( bytes ) );
                 }
             }
             else
             {
-                return new Value( result );
+                return new Value( Strings.utf8ToString( value, current ) );
             }
         }
         else
@@ -318,11 +397,11 @@ public final class FilterParser
 
                 if ( attributeType.getEquality().getSyntax().isHumanReadable() )
                 {
-                    return new Value( ( String ) null );
+                    return new Value( attributeType, ( String ) null );
                 }
                 else
                 {
-                    return new Value( ( byte[] ) null );
+                    return new Value( attributeType, ( byte[] ) null );
                 }
             }
             else
@@ -365,13 +444,13 @@ public final class FilterParser
      * HEX            = '0'-'9' / 'A'-'F' / 'a'-'f'
      * unicodeSubset     = %x01-27 / %x2B-5B / %x5D-FFFF
      */
-    private static Value parseAssertionValue( SchemaManager schemaManager, byte[] filter, Position pos )
+    private static Value parseAssertionValue( SchemaManager schemaManager, byte[] filterBytes, Position pos )
         throws ParseException
     {
-        byte b = Strings.byteAt( filter, pos.start );
+        byte b = Strings.byteAt( filterBytes, pos.start );
 
         // Create a buffer big enough to contain the value once converted
-        byte[] value = new byte[filter.length - pos.start];
+        byte[] value = new byte[filterBytes.length - pos.start];
         int current = 0;
 
         do
@@ -381,13 +460,13 @@ public final class FilterParser
                 value[current++] = b;
                 pos.start++;
             }
-            else if ( Strings.isCharASCII( filter, pos.start, '\\' ) )
+            else if ( Strings.isCharASCII( filterBytes, pos.start, '\\' ) )
             {
                 // Maybe an escaped
                 pos.start++;
 
                 // First hex
-                if ( Chars.isHex( filter, pos.start ) )
+                if ( Chars.isHex( filterBytes, pos.start ) )
                 {
                     pos.start++;
                 }
@@ -397,9 +476,9 @@ public final class FilterParser
                 }
 
                 // second hex
-                if ( Chars.isHex( filter, pos.start ) )
+                if ( Chars.isHex( filterBytes, pos.start ) )
                 {
-                    value[current++] = Hex.getHexValue( filter[pos.start - 1], filter[pos.start] );
+                    value[current++] = Hex.getHexValue( filterBytes[pos.start - 1], filterBytes[pos.start] );
                     pos.start++;
                 }
                 else
@@ -413,7 +492,7 @@ public final class FilterParser
                 break;
             }
 
-            b = Strings.byteAt( filter, pos.start );
+            b = Strings.byteAt( filterBytes, pos.start );
         }
         while ( b != '\0' );
 
@@ -435,10 +514,9 @@ public final class FilterParser
      * Parse a substring
      */
     private static ExprNode parseSubstring( SchemaManager schemaManager, String attribute, Value initial,
-        byte[] filter, Position pos )
-        throws ParseException, LdapException
+        byte[] filterBytes, Position pos ) throws ParseException, LdapException
     {
-        if ( Strings.isCharASCII( filter, pos.start, '*' ) )
+        if ( Strings.isCharASCII( filterBytes, pos.start, '*' ) )
         {
             // We have found a '*' : this is a substring
             SubstringNode node = null;
@@ -465,7 +543,7 @@ public final class FilterParser
             {
                 // We have a substring starting with a value : val*...
                 // Set the initial value. It must be a String
-                String initialStr = initial.getString();
+                String initialStr = initial.getValue();
                 node.setInitial( initialStr );
             }
 
@@ -474,29 +552,29 @@ public final class FilterParser
             //
             while ( true )
             {
-                Value assertionValue = parseAssertionValue( schemaManager, attribute, filter, pos );
+                Value assertionValue = parseAssertionValue( schemaManager, attribute, filterBytes, pos );
 
                 // Is there anything else but a ')' after the value ?
-                if ( Strings.isCharASCII( filter, pos.start, ')' ) )
+                if ( Strings.isCharASCII( filterBytes, pos.start, ')' ) )
                 {
                     // Nope : as we have had [initial] '*' (any '*' ) *,
                     // this is the final
                     if ( !assertionValue.isNull() )
                     {
-                        String finalStr = assertionValue.getString();
+                        String finalStr = assertionValue.getValue();
                         node.setFinal( finalStr );
                     }
 
                     return node;
                 }
-                else if ( Strings.isCharASCII( filter, pos.start, '*' ) )
+                else if ( Strings.isCharASCII( filterBytes, pos.start, '*' ) )
                 {
                     // We have a '*' : it's an any
                     // If the value is empty, that means we have more than
                     // one consecutive '*' : do nothing in this case.
                     if ( !assertionValue.isNull() )
                     {
-                        String anyStr = assertionValue.getString();
+                        String anyStr = assertionValue.getValue();
                         node.addAny( anyStr );
                     }
 
@@ -541,18 +619,15 @@ public final class FilterParser
      * @param pos
      * @return
      */
-    @SuppressWarnings(
-        { "rawtypes", "unchecked" })
-    private static ExprNode parsePresenceEqOrSubstring( SchemaManager schemaManager, String attribute, byte[] filter,
-        Position pos )
-        throws ParseException, LdapException
+    private static ExprNode parsePresenceEqOrSubstring( SchemaManager schemaManager, String attribute, byte[] filterBytes,
+        Position pos ) throws ParseException, LdapException
     {
-        if ( Strings.isCharASCII( filter, pos.start, '*' ) )
+        if ( Strings.isCharASCII( filterBytes, pos.start, '*' ) )
         {
             // To be a present node, the next char should be a ')'
             pos.start++;
 
-            if ( Strings.isCharASCII( filter, pos.start, ')' ) )
+            if ( Strings.isCharASCII( filterBytes, pos.start, ')' ) )
             {
                 // This is a present node
                 if ( schemaManager != null )
@@ -578,10 +653,10 @@ public final class FilterParser
                 // Definitively a substring with no initial or an error
                 // Push back the '*' on the string
                 pos.start--;
-                return parseSubstring( schemaManager, attribute, null, filter, pos );
+                return parseSubstring( schemaManager, attribute, null, filterBytes, pos );
             }
         }
-        else if ( Strings.isCharASCII( filter, pos.start, ')' ) )
+        else if ( Strings.isCharASCII( filterBytes, pos.start, ')' ) )
         {
             // An empty equality Node
             if ( schemaManager != null )
@@ -600,16 +675,16 @@ public final class FilterParser
             }
             else
             {
-                return new EqualityNode( attribute, new Value( ( byte[] ) null ) );
+                return new EqualityNode( attribute, ( byte[] ) null );
             }
         }
         else
         {
             // A substring or an equality node
-            Value value = parseAssertionValue( schemaManager, attribute, filter, pos );
+            Value value = parseAssertionValue( schemaManager, attribute, filterBytes, pos );
 
             // Is there anything else but a ')' after the value ?
-            if ( Strings.isCharASCII( filter, pos.start, ')' ) )
+            if ( Strings.isCharASCII( filterBytes, pos.start, ')' ) )
             {
                 // This is an equality node
                 if ( schemaManager != null )
@@ -627,11 +702,11 @@ public final class FilterParser
                 }
                 else
                 {
-                    return new EqualityNode( attribute, value );
+                    return new EqualityNode( attribute, value.getValue() );
                 }
             }
 
-            return parseSubstring( schemaManager, attribute, value, filter, pos );
+            return parseSubstring( schemaManager, attribute, value, filterBytes, pos );
         }
     }
 
@@ -651,7 +726,7 @@ public final class FilterParser
      */
     @SuppressWarnings(
         { "rawtypes", "unchecked" })
-    private static ExprNode parseItem( SchemaManager schemaManager, byte[] filter, Position pos, byte b,
+    private static ExprNode parseItem( SchemaManager schemaManager, byte[] filterBytes, Position pos, byte b,
         boolean relaxed ) throws ParseException, LdapException
     {
         String attribute = null;
@@ -664,29 +739,29 @@ public final class FilterParser
         if ( b == ':' )
         {
             // If we have a colon, then the item is an extensible one
-            return parseExtensible( schemaManager, null, filter, pos, relaxed );
+            return parseExtensible( schemaManager, null, filterBytes, pos, relaxed );
         }
         else
         {
             // We must have an attribute
-            attribute = AttributeUtils.parseAttribute( filter, pos, true, relaxed );
+            attribute = AttributeUtils.parseAttribute( filterBytes, pos, true, relaxed );
 
             // Now, we may have a present, substring, simple or an extensible
-            b = Strings.byteAt( filter, pos.start );
+            b = Strings.byteAt( filterBytes, pos.start );
 
             switch ( b )
             {
                 case '=':
                     // It can be a presence, an equal or a substring
                     pos.start++;
-                    return parsePresenceEqOrSubstring( schemaManager, attribute, filter, pos );
+                    return parsePresenceEqOrSubstring( schemaManager, attribute, filterBytes, pos );
 
                 case '~':
                     // Approximate node
                     pos.start++;
 
                     // Check that we have a '='
-                    if ( !Strings.isCharASCII( filter, pos.start, '=' ) )
+                    if ( !Strings.isCharASCII( filterBytes, pos.start, '=' ) )
                     {
                         throw new ParseException( I18n.err( I18n.ERR_04152 ), pos.start );
                     }
@@ -696,8 +771,8 @@ public final class FilterParser
                     // Parse the value and create the node
                     if ( schemaManager == null )
                     {
-                        return new ApproximateNode( attribute, parseAssertionValue( schemaManager, attribute, filter,
-                            pos ) );
+                        return new ApproximateNode( attribute, parseAssertionValue( schemaManager, attribute, filterBytes,
+                            pos ).getBytes() );
                     }
                     else
                     {
@@ -706,7 +781,7 @@ public final class FilterParser
                         if ( attributeType != null )
                         {
                             return new ApproximateNode( attributeType, parseAssertionValue( schemaManager, attribute,
-                                filter, pos ) );
+                                filterBytes, pos ) );
                         }
                         else
                         {
@@ -719,7 +794,7 @@ public final class FilterParser
                     pos.start++;
 
                     // Check that we have a '='
-                    if ( !Strings.isCharASCII( filter, pos.start, '=' ) )
+                    if ( !Strings.isCharASCII( filterBytes, pos.start, '=' ) )
                     {
                         throw new ParseException( I18n.err( I18n.ERR_04152 ), pos.start );
                     }
@@ -730,7 +805,7 @@ public final class FilterParser
                     if ( schemaManager == null )
                     {
                         return new GreaterEqNode( attribute,
-                            parseAssertionValue( schemaManager, attribute, filter, pos ) );
+                            parseAssertionValue( schemaManager, attribute, filterBytes, pos ).getBytes() );
                     }
                     else
                     {
@@ -739,7 +814,7 @@ public final class FilterParser
                         if ( attributeType != null )
                         {
                             return new GreaterEqNode( attributeType, parseAssertionValue( schemaManager, attribute,
-                                filter, pos ) );
+                                filterBytes, pos ) );
                         }
                         else
                         {
@@ -752,7 +827,7 @@ public final class FilterParser
                     pos.start++;
 
                     // Check that we have a '='
-                    if ( !Strings.isCharASCII( filter, pos.start, '=' ) )
+                    if ( !Strings.isCharASCII( filterBytes, pos.start, '=' ) )
                     {
                         throw new ParseException( I18n.err( I18n.ERR_04152 ), pos.start );
                     }
@@ -762,7 +837,8 @@ public final class FilterParser
                     // Parse the value and create the node
                     if ( schemaManager == null )
                     {
-                        return new LessEqNode( attribute, parseAssertionValue( schemaManager, attribute, filter, pos ) );
+                        return new LessEqNode( attribute, 
+                            parseAssertionValue( schemaManager, attribute, filterBytes, pos ).getBytes() );
                     }
                     else
                     {
@@ -771,7 +847,7 @@ public final class FilterParser
                         if ( attributeType != null )
                         {
                             return new LessEqNode( attributeType, parseAssertionValue( schemaManager, attribute,
-                                filter, pos ) );
+                                filterBytes, pos ) );
                         }
                         else
                         {
@@ -782,7 +858,7 @@ public final class FilterParser
                 case ':':
                     // An extensible node
                     pos.start++;
-                    return parseExtensible( schemaManager, attribute, filter, pos, relaxed );
+                    return parseExtensible( schemaManager, attribute, filterBytes, pos, relaxed );
 
                 default:
                     // This is an error
@@ -802,14 +878,14 @@ public final class FilterParser
      *
      * @return
      */
-    private static ExprNode parseBranchNode( SchemaManager schemaManager, ExprNode node, byte[] filter, Position pos,
+    private static ExprNode parseBranchNode( SchemaManager schemaManager, ExprNode node, byte[] filterBytes, Position pos,
         boolean relaxed ) throws ParseException, LdapException
     {
         BranchNode branchNode = ( BranchNode ) node;
         int nbChildren = 0;
 
         // We must have at least one filter
-        ExprNode child = parseFilterInternal( schemaManager, filter, pos, relaxed );
+        ExprNode child = parseFilterInternal( schemaManager, filterBytes, pos, relaxed );
 
         if ( child != UndefinedNode.UNDEFINED_NODE )
         {
@@ -829,7 +905,7 @@ public final class FilterParser
         }
 
         // Now, iterate recusively though all the remaining filters, if any
-        while ( ( child = parseFilterInternal( schemaManager, filter, pos, relaxed ) ) != UndefinedNode.UNDEFINED_NODE )
+        while ( ( child = parseFilterInternal( schemaManager, filterBytes, pos, relaxed ) ) != UndefinedNode.UNDEFINED_NODE )
         {
             // Add the child to the node children if not null
             if ( child != null )
@@ -868,7 +944,7 @@ public final class FilterParser
      *                    / ( [dnattrs]
      *                         matchingrule COLON EQUALS assertionvalue )
      */
-    private static ExprNode parseFilterComp( SchemaManager schemaManager, byte[] filter, Position pos,
+    private static ExprNode parseFilterComp( SchemaManager schemaManager, byte[] filterBytes, Position pos,
         boolean relaxed ) throws ParseException, LdapException
     {
         ExprNode node = null;
@@ -878,34 +954,34 @@ public final class FilterParser
             throw new ParseException( I18n.err( I18n.ERR_04154 ), pos.start );
         }
 
-        byte c = Strings.byteAt( filter, pos.start );
+        byte b = Strings.byteAt( filterBytes, pos.start );
 
-        switch ( c )
+        switch ( b )
         {
             case '&':
                 // This is a AND node
                 pos.start++;
                 node = new AndNode();
-                node = parseBranchNode( schemaManager, node, filter, pos, relaxed );
+                node = parseBranchNode( schemaManager, node, filterBytes, pos, relaxed );
                 break;
 
             case '|':
                 // This is an OR node
                 pos.start++;
                 node = new OrNode();
-                node = parseBranchNode( schemaManager, node, filter, pos, relaxed );
+                node = parseBranchNode( schemaManager, node, filterBytes, pos, relaxed );
                 break;
 
             case '!':
                 // This is a NOT node
                 pos.start++;
                 node = new NotNode();
-                node = parseBranchNode( schemaManager, node, filter, pos, relaxed );
+                node = parseBranchNode( schemaManager, node, filterBytes, pos, relaxed );
                 break;
 
             default:
                 // This is an item
-                node = parseItem( schemaManager, filter, pos, c, relaxed );
+                node = parseItem( schemaManager, filterBytes, pos, b, relaxed );
                 break;
 
         }
@@ -915,14 +991,14 @@ public final class FilterParser
 
 
     /**
-     * Pasre the grammar rule :
+     * Parse the grammar rule :
      * filter ::= '(' filterComp ')'
      */
-    private static ExprNode parseFilterInternal( SchemaManager schemaManager, byte[] filter, Position pos,
+    private static ExprNode parseFilterInternal( SchemaManager schemaManager, byte[] filterBytes, Position pos,
         boolean relaxed ) throws ParseException, LdapException
     {
         // Check for the left '('
-        if ( !Strings.isCharASCII( filter, pos.start, '(' ) )
+        if ( !Strings.isCharASCII( filterBytes, pos.start, '(' ) )
         {
             // No more node, get out
             if ( ( pos.start == 0 ) && ( pos.length != 0 ) )
@@ -938,7 +1014,7 @@ public final class FilterParser
         pos.start++;
 
         // parse the filter component
-        ExprNode node = parseFilterComp( schemaManager, filter, pos, relaxed );
+        ExprNode node = parseFilterComp( schemaManager, filterBytes, pos, relaxed );
 
         if ( node == UndefinedNode.UNDEFINED_NODE )
         {
@@ -946,7 +1022,7 @@ public final class FilterParser
         }
 
         // Check that we have a right ')'
-        if ( !Strings.isCharASCII( filter, pos.start, ')' ) )
+        if ( !Strings.isCharASCII( filterBytes, pos.start, ')' ) )
         {
             throw new ParseException( I18n.err( I18n.ERR_04157 ), pos.start );
         }
@@ -954,110 +1030,5 @@ public final class FilterParser
         pos.start++;
 
         return node;
-    }
-
-
-    /**
-     * Parses a search filter from it's string representation to an expression node object.
-     * 
-     * @param filter the search filter in it's string representation
-     * @return the expression node object
-     */
-    public static ExprNode parse( String filter ) throws ParseException
-    {
-        return parse( null, Strings.getBytesUtf8( filter ), false );
-    }
-
-
-    /**
-     * @see FilterParser#parse(String)
-     */
-    public static ExprNode parse( byte[] filter ) throws ParseException
-    {
-        return parse( null, filter, false );
-    }
-
-
-    /**
-     * @see FilterParser#parse(String)
-     */
-    public static ExprNode parse( SchemaManager schemaManager, String filter ) throws ParseException
-    {
-        return parse( schemaManager, Strings.getBytesUtf8( filter ), false );
-    }
-
-
-    /**
-     * @see FilterParser#parse(String)
-     */
-    public static ExprNode parse( SchemaManager schemaManager, byte[] filter ) throws ParseException
-    {
-        return parse( schemaManager, filter, false );
-    }
-
-
-    private static ExprNode parse( SchemaManager schemaManager, byte[] filter, boolean relaxed )
-        throws ParseException
-    {
-        // The filter must not be null. This is a defensive test
-        if ( Strings.isEmpty( filter ) )
-        {
-            throw new ParseException( I18n.err( I18n.ERR_04158 ), 0 );
-        }
-
-        Position pos = new Position();
-        pos.start = 0;
-        pos.end = 0;
-        pos.length = filter.length;
-
-        try
-        {
-            return parseFilterInternal( schemaManager, filter, pos, relaxed );
-        }
-        catch ( LdapException le )
-        {
-            throw new ParseException( le.getMessage(), pos.start );
-        }
-    }
-
-
-    /**
-     * @see FilterParser#parse(String)
-     */
-    public static ExprNode parse( SchemaManager schemaManager, String filter, Position pos ) throws ParseException
-    {
-        // The filter must not be null. This is a defensive test
-        if ( Strings.isEmpty( filter ) )
-        {
-            throw new ParseException( I18n.err( I18n.ERR_04158 ), 0 );
-        }
-
-        pos.start = 0;
-        pos.end = 0;
-        pos.length = filter.length();
-
-        try
-        {
-            return parseFilterInternal( schemaManager, Strings.getBytesUtf8( filter ), pos, false );
-        }
-        catch ( LdapException le )
-        {
-            throw new ParseException( le.getMessage(), pos.start );
-        }
-    }
-
-
-    /**
-     * Parses a search filter from it's string representation to an expression node object.
-     * 
-     * In <code>relaxed</code> mode the filter may violate RFC 4515, e.g. the underscore in attribute names is allowed.
-     * 
-     * @param filter the search filter in it's string representation
-     * @param relaxed <code>true</code> to parse the filter in relaxed mode
-     * @return the expression node object
-     */
-    public static ExprNode parse( String filter, boolean relaxed ) throws ParseException
-    {
-        return parse( null, Strings.getBytesUtf8( filter ), relaxed );
     }
 }

@@ -37,7 +37,7 @@ public class PrepareStringTest
     @Test
     public void testEscapeBackSlash() throws IOException
     {
-        String result = PrepareString.normalize( "C:\\a\\b\\c", PrepareString.StringType.DIRECTORY_STRING );
+        String result = PrepareString.normalize( "C:\\a\\b\\c" );
         System.out.println( result );
     }
 }

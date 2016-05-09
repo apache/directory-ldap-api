@@ -1019,7 +1019,7 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "sn", approxMatchFilter.getAttribute() );
 
-        assertEquals( "foobar", approxMatchFilter.getValue().getString() );
+        assertEquals( "foobar", approxMatchFilter.getValue().getValue() );
     }
 
 
@@ -1054,7 +1054,7 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "sn", approxMatchFilter.getAttribute() );
 
-        assertEquals( "DSMLv2.0 rocks!!", approxMatchFilter.getValue().getString() );
+        assertEquals( "DSMLv2.0 rocks!!", approxMatchFilter.getValue().getValue() );
     }
 
 
@@ -1089,7 +1089,7 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "sn", approxMatchFilter.getAttribute() );
 
-        assertNull( approxMatchFilter.getValue() );
+        assertEquals( "", approxMatchFilter.getValue().getValue() );
     }
 
 
@@ -1154,7 +1154,7 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "sn", greaterEqFilter.getAttribute() );
 
-        assertEquals( "foobar", greaterEqFilter.getValue().getString() );
+        assertEquals( "foobar", greaterEqFilter.getValue().getValue() );
     }
 
 
@@ -1189,7 +1189,7 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "sn", greaterEqFilter.getAttribute() );
 
-        assertEquals( "DSMLv2.0 rocks!!", greaterEqFilter.getValue().getString() );
+        assertEquals( "DSMLv2.0 rocks!!", greaterEqFilter.getValue().getValue() );
     }
 
 
@@ -1224,7 +1224,7 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "sn", greaterEqFilter.getAttribute() );
 
-        assertNull( greaterEqFilter.getValue() );
+        assertEquals( "", greaterEqFilter.getValue().getValue() );
     }
 
 
@@ -1289,7 +1289,7 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "sn", lessOrEqFilter.getAttribute() );
 
-        assertEquals( "foobar", lessOrEqFilter.getValue().getString() );
+        assertEquals( "foobar", lessOrEqFilter.getValue().getValue() );
     }
 
 
@@ -1324,7 +1324,7 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "sn", lessOrEqFilter.getAttribute() );
 
-        assertEquals( "DSMLv2.0 rocks!!", lessOrEqFilter.getValue().getString() );
+        assertEquals( "DSMLv2.0 rocks!!", lessOrEqFilter.getValue().getValue() );
     }
 
 
@@ -1359,7 +1359,7 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "sn", lessOrEqFilter.getAttribute() );
 
-        assertNull( lessOrEqFilter.getValue() );
+        assertEquals( "", lessOrEqFilter.getValue().getValue() );
     }
 
 
@@ -1423,7 +1423,7 @@ public class SearchRequestTest extends AbstractTest
         EqualityNode<?> equalityFilter = ( EqualityNode<?> ) filter;
 
         assertEquals( "sn", equalityFilter.getAttribute() );
-        assertEquals( "foobar", equalityFilter.getValue().getString() );
+        assertEquals( "foobar", equalityFilter.getValue().getValue() );
     }
 
 
@@ -1458,7 +1458,7 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "sn", equalityFilter.getAttribute() );
 
-        assertEquals( "DSMLv2.0 rocks!!", equalityFilter.getValue().getString() );
+        assertEquals( "DSMLv2.0 rocks!!", equalityFilter.getValue().getValue() );
     }
 
 
@@ -1493,7 +1493,7 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "sn", equalityFilter.getAttribute() );
 
-        assertNull( equalityFilter.getValue() );
+        assertEquals( "", equalityFilter.getValue().getValue() );
     }
 
 
@@ -1599,7 +1599,7 @@ public class SearchRequestTest extends AbstractTest
 
         ExtensibleNode extensibleMatchFilter = ( ExtensibleNode ) filter;
 
-        assertEquals( "A Value", extensibleMatchFilter.getValue().getString() );
+        assertEquals( "A Value", extensibleMatchFilter.getValue().getValue() );
 
         assertEquals( false, extensibleMatchFilter.hasDnAttributes() );
     }
@@ -1634,7 +1634,7 @@ public class SearchRequestTest extends AbstractTest
 
         ExtensibleNode extensibleMatchFilter = ( ExtensibleNode ) filter;
 
-        assertEquals( "DSMLv2.0 rocks!!", extensibleMatchFilter.getValue().getString() );
+        assertEquals( "DSMLv2.0 rocks!!", extensibleMatchFilter.getValue().getValue() );
 
         assertEquals( false, extensibleMatchFilter.hasDnAttributes() );
     }

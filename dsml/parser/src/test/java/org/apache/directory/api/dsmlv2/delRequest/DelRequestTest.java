@@ -83,7 +83,7 @@ public class DelRequestTest extends AbstractTest
 
         DeleteRequest delRequest = ( DeleteRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        assertEquals( "cn=Bob Rush,ou=Dev,dc=Example,dc=COM", delRequest.getName().getNormName() );
+        assertTrue( delRequest.getName().equals( "cn=Bob Rush,ou=Dev,dc=Example,dc=COM" ) );
     }
 
 

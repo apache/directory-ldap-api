@@ -259,7 +259,11 @@ public final class DefaultEntry implements Entry
 
         if ( schemaManager != null )
         {
-            this.dn.apply( schemaManager );
+            if ( !dn.isSchemaAware() )
+            {
+                this.dn = new Dn( schemaManager, dn );
+            }
+            
             initObjectClassAT();
         }
     }
@@ -518,7 +522,7 @@ public final class DefaultEntry implements Entry
             try
             {
                 // The dn must be normalized
-                dn.apply( schemaManager );
+                dn = new Dn( schemaManager, dn );
             }
             catch ( LdapException ne )
             {
@@ -2505,7 +2509,7 @@ public final class DefaultEntry implements Entry
             for ( Value value : objectClass )
             {
                 // Loop on all the values, and check if they are present
-                if ( !attribute.contains( value.getString() ) )
+                if ( !attribute.contains( value.getValue() ) )
                 {
                     return false;
                 }

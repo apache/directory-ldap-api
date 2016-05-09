@@ -54,7 +54,7 @@ public class ObjectIdentifierNormalizer extends Normalizer
             return null;
         }
 
-        String str = value.getString().trim();
+        String str = value.getValue().trim();
 
         if ( str.length() == 0 )
         {

@@ -26,23 +26,14 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.apache.commons.collections.list.UnmodifiableList;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.model.entry.Value;
-import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
-import org.apache.directory.api.ldap.model.schema.normalizers.OidNormalizer;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,12 +95,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /** The user provided name */
     private String upName;
-
-    /** The normalized name */
-    private String normName;
-
-    /** The bytes representation of the normName */
-    private byte[] bytes;
 
     /** A null Dn */
     public static final Dn EMPTY_DN = new Dn();
@@ -181,7 +166,29 @@ public class Dn implements Iterable<Rdn>, Externalizable
     {
         this.schemaManager = schemaManager;
         upName = "";
-        normName = "";
+    }
+
+
+    /**
+     * Construct an empty Schema aware Dn object
+     * 
+     *  @param schemaManager The SchemaManager to use
+     */
+    public Dn( SchemaManager schemaManager, Dn dn ) throws LdapInvalidDnException
+    {
+        this.schemaManager = schemaManager;
+
+        if ( dn == null )
+        {
+            return;
+        }
+
+        for ( Rdn rdn : dn.rdns )
+        {
+            this.rdns.add( new Rdn( schemaManager, rdn ) );
+        }
+
+        toUpName();
     }
 
 
@@ -242,6 +249,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         StringBuilder sb = new StringBuilder();
         boolean valueExpected = false;
         boolean isFirst = true;
+        this.schemaManager = schemaManager;
 
         for ( String upRdn : upRdns )
         {
@@ -287,8 +295,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         
         try
         {
-            parseInternal( upName, rdns );
-            apply( schemaManager );
+            parseInternal( schemaManager, upName, rdns );
         }
         catch ( LdapInvalidDnException e )
         {
@@ -301,26 +308,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
             // DN formats such as <GUI=abcd...> format used by
             // Active Directory
         }
-    }
-
-
-    /**
-     * Create a schema aware Dn while deserializing it.
-     * <br/>
-     * Note : this constructor is used only by the deserialization method.
-     * 
-     * @param schemaManager the schema manager
-     * @param upName The user provided name
-     * @param normName the normalized name
-     * @param rdns the list of RDNs for this Dn
-     */
-    /* No protection */Dn( SchemaManager schemaManager, String upName, String normName, Rdn... rdns )
-    {
-        this.schemaManager = schemaManager;
-        this.upName = upName;
-        this.normName = normName;
-        bytes = Strings.getBytesUtf8Ascii( upName );
-        this.rdns = Arrays.asList( rdns );
     }
 
 
@@ -342,7 +329,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
             this.rdns.add( rdn );
         }
 
-        apply( null );
         toUpName();
     }
 
@@ -368,7 +354,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         rdns.add( 0, rdn );
 
-        apply( dn.schemaManager );
         toUpName();
     }
 
@@ -389,10 +374,16 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         for ( Rdn rdn : rdns )
         {
-            this.rdns.add( rdn );
+            if ( rdn.isSchemaAware() )
+            {
+                this.rdns.add( rdn );
+            }
+            else
+            {
+                this.rdns.add( new Rdn( schemaManager, rdn ) );
+            }
         }
 
-        apply( schemaManager );
         toUpName();
     }
 
@@ -474,6 +465,33 @@ public class Dn implements Iterable<Rdn>, Externalizable
     {
         return ( upName == null ? "" : upName );
     }
+    
+    
+    /**
+     * @return The RDN as an escaped String
+     */
+    public String getEscaped()
+    {
+        StringBuilder sb = new StringBuilder();
+        
+        boolean isFirst = true;
+        
+        for ( Rdn rdn : rdns )
+        {
+            if ( isFirst )
+            {
+                isFirst = false;
+            }
+            else
+            {
+                sb.append( ',' );
+            }
+            
+            sb.append( rdn.getEscaped() );
+        }
+        
+        return sb.toString();
+    }
 
 
     /**
@@ -490,58 +508,12 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
 
     /**
-     * Get the normalized Dn. If the Dn is schema aware, the AttributeType
-     * will be represented using its OID :<br/>
-     * <pre>
-     * Dn dn = new Dn( schemaManager, "ou = Example , ou = com" );
-     * assert( "2.5.4.11=example,2.5.4.11=com".equals( dn.getNormName ) );
-     * </pre>
-     * Otherwise, it will return a Dn with the AttributeType in lower case
-     * and the value trimmed : <br/>
-     * <pre>
-     * Dn dn = new Dn( " CN = A   Test " );
-     * assertEquals( "cn=A   Test", dn.getNormName() );
-     * </pre>
-     *
-     * @return The normalized Dn as a String
-     */
-    public String getNormName()
-    {
-        return normName;
-    }
-
-
-    /**
      * Get the number of RDNs present in the DN
      * @return The umber of RDNs in the DN
      */
     public int size()
     {
         return rdns.size();
-    }
-
-
-    /**
-     * Get the number of bytes necessary to store this Dn
-
-     * @param dn The Dn.
-     * @return A integer, which is the size of the UTF-8 byte array
-     */
-    public static int getNbBytes( Dn dn )
-    {
-        return dn.bytes == null ? 0 : dn.bytes.length;
-    }
-
-
-    /**
-     * Get an UTF-8 representation of the normalized form of the Dn
-     *
-     * @param dn The Dn.
-     * @return A byte[] representation of the Dn
-     */
-    public static byte[] getBytes( Dn dn )
-    {
-        return dn == null ? null : dn.bytes;
     }
 
 
@@ -797,7 +769,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
         }
 
         newDn.toUpName();
-        newDn.apply( schemaManager, true );
 
         return newDn;
     }
@@ -878,7 +849,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
         }
 
         newDn.toUpName();
-        newDn.apply( schemaManager, true );
 
         return newDn;
     }
@@ -904,14 +874,11 @@ public class Dn implements Iterable<Rdn>, Externalizable
         {
             if ( clonedDn.size() != 0 )
             {
-                clonedDn.normName = suffix.getNormName() + "," + normName;
-                clonedDn.bytes = Strings.getBytesUtf8Ascii( normName );
                 clonedDn.upName = suffix.getName() + "," + upName;
             }
         }
         else
         {
-            clonedDn.apply( schemaManager, true );
             clonedDn.toUpName();
         }
 
@@ -936,7 +903,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         clonedDn.rdns.add( 0, newRdn );
 
-        clonedDn.apply( schemaManager, true );
         clonedDn.toUpName();
 
         return clonedDn;
@@ -958,8 +924,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         Dn clonedDn = copy();
 
-        clonedDn.rdns.add( 0, newRdn );
-        clonedDn.apply( schemaManager, true );
+        clonedDn.rdns.add( 0, new Rdn( schemaManager, newRdn ) );
         clonedDn.toUpName();
 
         return clonedDn;
@@ -987,15 +952,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
         for ( int i = rdns.size() - posn; i < rdns.size(); i++ )
         {
             newDn.rdns.add( rdns.get( i ) );
-        }
-
-        try
-        {
-            newDn.apply( schemaManager, true );
-        }
-        catch ( LdapInvalidDnException e )
-        {
-            LOG.error( e.getMessage(), e );
         }
 
         newDn.toUpName();
@@ -1028,305 +984,46 @@ public class Dn implements Iterable<Rdn>, Externalizable
     @Override
     public boolean equals( Object obj )
     {
+        Dn other = null;
+        
         if ( obj instanceof String )
         {
-            return normName.equals( obj );
-        }
-        else if ( obj instanceof Dn )
-        {
-            Dn name = ( Dn ) obj;
-
-            if ( name.getNormName().equals( normName ) )
+            try
             {
-                return true;
+                other = new Dn( schemaManager, ( String ) obj );
             }
-
-            if ( name.size() != this.size() )
+            catch ( LdapInvalidDnException e )
             {
                 return false;
             }
-
-            for ( int i = 0; i < this.size(); i++ )
-            {
-                if ( !name.rdns.get( i ).equals( rdns.get( i ) ) )
-                {
-                    return false;
-                }
-            }
-
-            // All components matched so we return true
-            return true;
+        }
+        else if ( obj instanceof Dn )
+        {
+            other = ( Dn ) obj;
         }
         else
         {
             return false;
         }
+        
+        if ( other.size() != this.size() )
+        {
+            return false;
+        }
+
+        for ( int i = 0; i < this.size(); i++ )
+        {
+            if ( !other.rdns.get( i ).equals( rdns.get( i ) ) )
+            {
+                return false;
+            }
+        }
+
+        // All components matched so we return true
+        return true;
     }
 
-
-    /**
-     * Normalize the Ava
-     */
-    private static Ava atavOidToName( Ava atav, SchemaManager schemaManager )
-        throws LdapInvalidDnException
-    {
-        Map<String, OidNormalizer> oidsMap = schemaManager.getNormalizerMapping();
-        String type = Strings.trim( atav.getNormType() );
-
-        if ( ( type.startsWith( "oid." ) ) || ( type.startsWith( "OID." ) ) )
-        {
-            type = type.substring( 4 );
-        }
-
-        if ( Strings.isNotEmpty( type ) )
-        {
-            if ( oidsMap == null )
-            {
-                return atav;
-            }
-
-            type = Strings.toLowerCaseAscii( type );
-
-            // Check that we have an existing AttributeType for this type
-            if ( !oidsMap.containsKey( type ) )
-            {
-                // No AttributeType : this is an error
-                String msg = I18n.err( I18n.ERR_04268_OID_NOT_FOUND, atav.getType() );
-                LOG.error( msg );
-                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, msg );
-            }
-
-            OidNormalizer oidNormalizer = oidsMap.get( type );
-
-            if ( oidNormalizer != null )
-            {
-                try
-                {
-                    AttributeType attributeType = schemaManager.getAttributeType( type );
-                    if ( attributeType == null )
-                    {
-                        // Error should NOT be logged here as exception is thrown. Whoever catches
-                        // the exception should log the error. This exception is caught and ignored
-                        // in the relaxed mode, and it is in fact quite expected to happed for some
-                        // insane DN formats. Logging the error here will only polute the logfiles
-                        throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX,
-                            I18n.err( I18n.ERR_04460_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED, type ) );
-                    }
-                    Value atavValue = null;
-                    Value value = atav.getValue();
-                    
-                    if ( value.isHumanReadable() )
-                    {
-                        // Active Directory specifies syntax OIDs in attributeTypes, but it does not specify
-                        // any syntexes. Therefore attributeType.getSyntax() returns null. Assume human readable
-                        // attribute in such case.
-                        if ( attributeType.getSyntax() == null || attributeType.getSyntax().isHumanReadable() )
-                        {
-                            atavValue = new Value( attributeType, value.getString() );
-                        }
-                        else
-                        {
-                            // This is a binary variable, transaform the Value to a BinaryValye
-                            atavValue = new Value( attributeType, value.getBytes() );
-                        }
-                    }
-                    else
-                    {
-                        atavValue = new Value( attributeType, atav.getValue().getBytes() );
-                    }
-                    
-                    Ava newAva = new Ava(
-                        attributeType,
-                        atav.getType(),
-                        oidNormalizer.getAttributeTypeOid(),
-                        atavValue,
-                        atav.getName() );
-
-                    return newAva;
-                }
-                catch ( LdapException le )
-                {
-                    throw new LdapInvalidDnException( le.getMessage(), le );
-                }
-            }
-            else
-            {
-                // We don't have a normalizer for this OID : just do nothing.
-                return atav;
-            }
-        }
-        else
-        {
-            // The type is empty : this is not possible...
-            String msg = I18n.err( I18n.ERR_04209_EMPTY_TYPE_NOT_ALLOWED );
-            LOG.error( msg );
-            throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, msg );
-        }
-    }
-
-
-    /**
-     * Transform a Rdn by changing the value to its OID counterpart and
-     * normalizing the value accordingly to its type. We also sort the AVAs
-     *
-     * @param rdn The Rdn to modify.
-     * @param SchemaManager The schema manager
-     * @throws LdapInvalidDnException If the Rdn is invalid.
-     */
-    /** No qualifier */
-    static void rdnOidToName( Rdn rdn, SchemaManager schemaManager ) throws LdapInvalidDnException
-    {
-        // We have more than one ATAV for this Rdn. We will loop on all
-        // ATAVs
-        //Rdn rdnCopy = rdn.clone();
-        //rdn.clear();
-
-        if ( rdn.size() < 2 )
-        {
-            Ava newAtav = atavOidToName( rdn.getAva(), schemaManager );
-            rdn.replaceAva( newAtav, 0 );
-        }
-        else
-        {
-            Set<String> sortedOids = new TreeSet<String>();
-            Map<String, Ava> avas = new HashMap<String, Ava>();
-
-            // Sort the OIDs
-            for ( Ava val : rdn )
-            {
-                Ava newAtav = atavOidToName( val, schemaManager );
-                String oid = newAtav.getAttributeType().getOid();
-                sortedOids.add( oid );
-                avas.put( oid, newAtav );
-            }
-
-            // And create the Rdn
-            int pos = 0;
-
-            for ( String oid : sortedOids )
-            {
-                rdn.replaceAva( avas.get( oid ), pos++ );
-            }
-        }
-    }
-
-
-    /**
-     * Normalizes the Dn using the given the schema manager. If the flag is set to true,
-     * we will replace the inner SchemaManager by the provided one.
-     *
-     * @param schemaManager The schemaManagerto use to normalize the Dn
-     * @param force Tells if we should replace an existing SchemaManager by a new one
-     * @return The normalized Dn
-     * @throws LdapInvalidDnException If the Dn is invalid.
-     */
-    public Dn apply( SchemaManager schemaManager, boolean force ) throws LdapInvalidDnException
-    {
-        if ( ( this.schemaManager == null ) || force )
-        {
-            this.schemaManager = schemaManager;
-
-            if ( this.schemaManager != null )
-            {
-                synchronized ( this )
-                {
-                    if ( size() == 0 )
-                    {
-                        bytes = null;
-                        normName = "";
-
-                        return this;
-                    }
-
-                    StringBuilder sb = new StringBuilder();
-                    boolean isFirst = true;
-
-                    for ( Rdn rdn : rdns )
-                    {
-                        rdn.apply( schemaManager );
-
-                        if ( isFirst )
-                        {
-                            isFirst = false;
-                        }
-                        else
-                        {
-                            sb.append( ',' );
-                        }
-
-                        sb.append( rdn.getNormName() );
-                    }
-
-                    String newNormName = sb.toString();
-
-                    if ( ( normName == null ) || !normName.equals( newNormName ) )
-                    {
-                        bytes = Strings.getBytesUtf8Ascii( newNormName );
-                        normName = newNormName;
-                    }
-                }
-            }
-            else
-            {
-                if ( rdns.size() == 0 )
-                {
-                    bytes = null;
-                    normName = "";
-                }
-                else
-                {
-                    StringBuffer sb = new StringBuffer();
-                    boolean isFirst = true;
-
-                    for ( Rdn rdn : rdns )
-                    {
-                        if ( isFirst )
-                        {
-                            isFirst = false;
-                        }
-                        else
-                        {
-                            sb.append( ',' );
-                        }
-
-                        sb.append( rdn.getNormName() );
-                    }
-
-                    String newNormName = sb.toString();
-
-                    if ( ( normName == null ) || !normName.equals( newNormName ) )
-                    {
-                        bytes = Strings.getBytesUtf8Ascii( newNormName );
-                        normName = newNormName;
-                    }
-                }
-            }
-        }
-
-        return this;
-    }
-
-
-    /**
-     * Normalizes the Dn using the given the schema manager, unless the Dn is already normalized
-     *
-     * @param schemaManager The schemaManagerto use to normalize the Dn
-     * @return The normalized Dn
-     * @throws LdapInvalidDnException If the Dn is invalid.
-     */
-    public Dn apply( SchemaManager schemaManager ) throws LdapInvalidDnException
-    {
-        if ( this.schemaManager != null )
-        {
-            return this;
-        }
-        else
-        {
-            return apply( schemaManager, true );
-        }
-    }
-
-
+    
     /**
      * Tells if the Dn is schema aware
      *
@@ -1389,7 +1086,31 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         try
         {
-            parseInternal( name, dn.rdns );
+            parseInternal( null, name, dn.rdns );
+            return true;
+        }
+        catch ( LdapInvalidDnException e )
+        {
+            return false;
+        }
+    }
+
+
+    /**
+     * Check if a DistinguishedName is syntactically valid.
+     *
+     * @param schemaManager The SchemaManager to use
+     * @param dn The Dn to validate
+     * @return <code>true></code> if the Dn is valid, <code>false</code>
+     * otherwise
+     */
+    public static boolean isValid( SchemaManager schemaManager, String name )
+    {
+        Dn dn = new Dn();
+
+        try
+        {
+            parseInternal( schemaManager, name, dn.rdns );
             return true;
         }
         catch ( LdapInvalidDnException e )
@@ -1406,16 +1127,16 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * @param rdns The list that will contain the RDNs
      * @throws LdapInvalidDnException If the Dn is invalid
      */
-    private static void parseInternal( String name, List<Rdn> rdns ) throws LdapInvalidDnException
+    private static void parseInternal( SchemaManager schemaManager, String name, List<Rdn> rdns ) throws LdapInvalidDnException
     {
         try
         {
-            FastDnParser.parseDn( name, rdns );
+            FastDnParser.parseDn( schemaManager, name, rdns );
         }
         catch ( TooComplexDnException e )
         {
             rdns.clear();
-            new ComplexDnParser().parseDn( name, rdns );
+            new ComplexDnParser().parseDn( schemaManager, name, rdns );
         }
     }
 
@@ -1428,19 +1149,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
         // Read the UPName
         upName = in.readUTF();
 
-        // Read the NormName
-        normName = in.readUTF();
-
-        if ( normName.length() == 0 )
-        {
-            // As the normName is equal to the upName,
-            // we didn't saved the nbnormName on disk.
-            // restore it by copying the upName.
-            normName = upName;
-        }
-
-        bytes = Strings.getBytesUtf8Ascii( normName );
-        
         // Read the RDNs. Is it's null, the number will be -1.
         int nbRdns = in.readInt();
 
@@ -1469,16 +1177,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         // Write the UPName
         out.writeUTF( upName );
-
-        // Write the NormName if different
-        if ( upName.equals( normName ) )
-        {
-            out.writeUTF( "" );
-        }
-        else
-        {
-            out.writeUTF( normName );
-        }
 
         // Write the RDNs.
         // First the number of RDNs

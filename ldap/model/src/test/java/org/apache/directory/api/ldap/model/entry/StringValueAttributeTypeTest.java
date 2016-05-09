@@ -41,7 +41,6 @@ import java.util.List;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.comparators.StringComparator;
 import org.apache.directory.api.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
@@ -199,17 +198,17 @@ public class StringValueAttributeTypeTest
         Value sv = new Value( attribute, (String)null );
 
         assertTrue( sv.isSchemaAware() );
-        assertNull( sv.getNormValue() );
+        assertNull( sv.getValue() );
         assertTrue( sv.isSchemaAware() );
 
         sv = new Value( attribute, "" );
         assertTrue( sv.isSchemaAware() );
-        assertEquals( "", sv.getNormValue() );
+        assertEquals( 0, sv.compareTo( "  " ) );
         assertTrue( sv.isSchemaAware() );
 
         sv = new Value( attribute, "TEST" );
         assertTrue( sv.isSchemaAware() );
-        assertEquals( "test", sv.getNormValue() );
+        assertEquals( 0, sv.compareTo( " test " ) );
     }
 
 
@@ -249,14 +248,14 @@ public class StringValueAttributeTypeTest
         Value sv = Value.createValue( attribute );
 
         sv = new Value( at, sv );
-        assertEquals( null, sv.getNormValue() );
+        assertEquals( 0, sv.compareTo( ( String ) null ) );
 
         sv = new Value( attribute, "" );
         sv = new Value( at, sv );
-        assertEquals( "", sv.getNormValue() );
+        assertEquals( 0, sv.compareTo( "  " ) );
 
         sv = new Value( attribute, "  A   TEST  " );
-        assertEquals( "a test", sv.getNormValue() );
+        assertEquals( 0, sv.compareTo( " a  test " ) );
     }
 
 
@@ -408,7 +407,7 @@ public class StringValueAttributeTypeTest
         sv = new Value( "" );
 
         assertNotSame( sv, sv1 );
-        assertEquals( "", sv.getString() );
+        assertEquals( "", sv.getValue() );
 
         sv = new Value( "  This is    a   TEST  " );
         sv1 = sv.clone();
@@ -445,66 +444,6 @@ public class StringValueAttributeTypeTest
         } );
 
         mr.setSyntax( s );
-        mr.setLdapComparator( new LdapComparator<String>( mr.getOid() )
-        {
-            public static final long serialVersionUID = 1L;
-
-
-            public int compare( String o1, String o2 )
-            {
-                if ( o1 == null )
-                {
-                    if ( o2 == null )
-                    {
-                        return 0;
-                    }
-                    else
-                    {
-                        return -1;
-                    }
-                }
-                else if ( o2 == null )
-                {
-                    return 1;
-                }
-
-                int i1 = getValue( o1 );
-                int i2 = getValue( o2 );
-
-                if ( i1 == i2 )
-                {
-                    return 0;
-                }
-                if ( i1 > i2 )
-                {
-                    return 1;
-                }
-                if ( i1 < i2 )
-                {
-                    return -1;
-                }
-
-                throw new IllegalStateException( "should not get here at all" );
-            }
-
-
-            public int getValue( String val )
-            {
-                if ( val.equals( "LOW" ) )
-                {
-                    return 0;
-                }
-                if ( val.equals( "MEDIUM" ) )
-                {
-                    return 1;
-                }
-                if ( val.equals( "HIGH" ) )
-                {
-                    return 2;
-                }
-                throw new IllegalArgumentException( "Not a valid value" );
-            }
-        } );
 
         mr.setNormalizer( new NoOpNormalizer( mr.getOid() ) );
         at.setEquality( mr );
@@ -537,8 +476,8 @@ public class StringValueAttributeTypeTest
 
         assertFalse( v2.equals( v3 ) );
         assertFalse( v3.equals( v2 ) );
-        assertTrue( v2.compareTo( v3 ) < 0 );
-        assertTrue( v3.compareTo( v2 ) > 0 );
+        assertTrue( v2.compareTo( v3 ) > 0 );
+        assertTrue( v3.compareTo( v2 ) < 0 );
 
         // add all except v1 and v5 to a set
         HashSet<Value> set = new HashSet<Value>();
@@ -558,13 +497,11 @@ public class StringValueAttributeTypeTest
 
         Collections.sort( list );
 
-        // low ones are at the 3rd and 4th indices
-        assertTrue( "since v0 equals v1 either could be at index 0 & 1", list.get( 0 ).equals( v0 ) );
-        assertTrue( "since v0 equals v1 either could be at index 0 & 1", list.get( 1 ).equals( v1 ) );
-
-        // medium then high next
-        assertTrue( "since v2 \"MEDIUM\" should be at index 2", list.get( 2 ).equals( v2 ) );
-        assertTrue( "since v3 \"HIGH\" should be at index 3", list.get( 3 ).equals( v3 ) );
+        // High, low, low, medium
+        assertTrue( "since v0 equals v1 either could be at index 0 & 1", list.get( 0 ).equals( v3 ) );
+        assertTrue( "since v0 equals v1 either could be at index 0 & 1", list.get( 1 ).equals( v0 ) );
+        assertTrue( "since v2 \"MEDIUM\" should be at index 2", list.get( 2 ).equals( v1 ) );
+        assertTrue( "since v3 \"HIGH\" should be at index 3", list.get( 3 ).equals( v2 ) );
 
         assertEquals( 4, list.size() );
     }
@@ -630,12 +567,12 @@ public class StringValueAttributeTypeTest
 
                 if ( o1 != null )
                 {
-                    n1 = o1.getString();
+                    n1 = o1.getValue();
                 }
 
                 if ( o2 != null )
                 {
-                    n2 = o2.getString();
+                    n2 = o2.getValue();
                 }
 
                 if ( n1 == null )
@@ -679,10 +616,8 @@ public class StringValueAttributeTypeTest
         // First check with a value which will be normalized
         Value ssv = new Value( at, "  Test   Test  " );
 
-        String normalized = ssv.getNormValue();
-
-        assertEquals( "test test", normalized );
-        assertEquals( "  Test   Test  ", ssv.getString() );
+        assertEquals( 0, ssv.compareTo( " test  test " ) );
+        assertEquals( "  Test   Test  ", ssv.getValue() );
 
         Value ssvSer = deserializeValue( serializeValue( ssv ) );
 
@@ -699,10 +634,8 @@ public class StringValueAttributeTypeTest
         // First check with a value which will be normalized
         Value ssv = new Value( at, "test" );
 
-        String normalized = ssv.getNormValue();
-
-        assertEquals( "test", normalized );
-        assertEquals( "test", ssv.getString() );
+        assertEquals( 0, ssv.compareTo( " test " ) );
+        assertEquals( "test", ssv.getValue() );
 
         Value ssvSer = deserializeValue( serializeValue( ssv ) );
 
@@ -719,9 +652,7 @@ public class StringValueAttributeTypeTest
         // First check with a value which will be normalized
         Value ssv = Value.createValue( at );
 
-        String normalized = ssv.getNormValue();
-
-        assertNull( normalized );
+        assertEquals( 0, ssv.compareTo( ( String ) null ) );
         assertNull( ssv.getValue() );
 
         Value ssvSer = deserializeValue( serializeValue( ssv ) );
@@ -739,10 +670,8 @@ public class StringValueAttributeTypeTest
         // First check with a value which will be normalized
         Value ssv = new Value( at, "" );
 
-        String normalized = ssv.getNormValue();
-
-        assertEquals( "", normalized );
-        assertEquals( "", ssv.getString() );
+        assertEquals( 0, ssv.compareTo( "  " ) );
+        assertEquals( "", ssv.getValue() );
 
         Value ssvSer = deserializeValue( serializeValue( ssv ) );
 
@@ -759,7 +688,7 @@ public class StringValueAttributeTypeTest
         // First check with a value which will be normalized
         Value ssv = new Value( "  " );
 
-        assertEquals( "  ", ssv.getString() );
+        assertEquals( "  ", ssv.getValue() );
 
         Value ssvSer = deserializeValue( serializeValue( ssv ) );
 

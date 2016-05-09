@@ -19,7 +19,6 @@
  */
 package org.apache.directory.api.ldap.model.filter;
 
-
 /**
  * An empty class used for Undefined Nodes.
  *
@@ -60,6 +59,17 @@ public final class UndefinedNode extends AbstractExprNode
     public Object accept( FilterVisitor visitor )
     {
         return null;
+    }
+
+
+    /**
+     * Tells if this Node is Schema aware.
+     * 
+     * @return true if the Node is SchemaAware
+     */
+    public boolean isSchemaAware()
+    {
+        return false;
     }
 
 

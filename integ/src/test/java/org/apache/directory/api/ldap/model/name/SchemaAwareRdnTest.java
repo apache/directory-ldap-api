@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.model.name;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -95,7 +96,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testRdnSimple() throws LdapException
     {
-        assertEquals( "2.5.4.3=b", new Rdn( schemaManager, "cn = b" ).getNormName() );
+        assertEquals( "cn=b", new Rdn( schemaManager, "cn = b" ).getEscaped() );
     }
 
 
@@ -107,7 +108,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testRdnComposite() throws LdapException
     {
-        assertEquals( "2.5.4.3=b+2.5.4.4=d", new Rdn( schemaManager, "cn = b + sn = d" ).getNormName() );
+        assertEquals( "cn=b+sn=d", new Rdn( schemaManager, "cn = b + sn = d" ).getEscaped() );
     }
 
 
@@ -120,22 +121,22 @@ public class SchemaAwareRdnTest
     @Test
     public void testRdnCompositeWithSpace() throws LdapException
     {
-        assertEquals( "2.5.4.3=b", new Rdn( schemaManager, "cn=b" ).getNormName() );
-        assertEquals( "2.5.4.3=b", new Rdn( schemaManager, " cn=b" ).getNormName() );
-        assertEquals( "2.5.4.3=b", new Rdn( schemaManager, "cn =b" ).getNormName() );
-        assertEquals( "2.5.4.3=b", new Rdn( schemaManager, "cn= b" ).getNormName() );
-        assertEquals( "2.5.4.3=b", new Rdn( schemaManager, "cn=b " ).getNormName() );
-        assertEquals( "2.5.4.3=b", new Rdn( schemaManager, " cn =b" ).getNormName() );
-        assertEquals( "2.5.4.3=b", new Rdn( schemaManager, " cn= b" ).getNormName() );
-        assertEquals( "2.5.4.3=b", new Rdn( schemaManager, " cn=b " ).getNormName() );
-        assertEquals( "2.5.4.3=b", new Rdn( schemaManager, "cn = b" ).getNormName() );
-        assertEquals( "2.5.4.3=b", new Rdn( schemaManager, "cn =b " ).getNormName() );
-        assertEquals( "2.5.4.3=b", new Rdn( schemaManager, "cn= b " ).getNormName() );
-        assertEquals( "2.5.4.3=b", new Rdn( schemaManager, " cn = b" ).getNormName() );
-        assertEquals( "2.5.4.3=b", new Rdn( schemaManager, " cn =b " ).getNormName() );
-        assertEquals( "2.5.4.3=b", new Rdn( schemaManager, " cn= b " ).getNormName() );
-        assertEquals( "2.5.4.3=b", new Rdn( schemaManager, "cn = b " ).getNormName() );
-        assertEquals( "2.5.4.3=b", new Rdn( schemaManager, " cn = b " ).getNormName() );
+        assertEquals( "cn=b", new Rdn( schemaManager, "cn=b" ).getEscaped() );
+        assertEquals( "cn=b", new Rdn( schemaManager, " cn=b" ).getEscaped() );
+        assertEquals( "cn=b", new Rdn( schemaManager, "cn =b" ).getEscaped() );
+        assertEquals( "cn=b", new Rdn( schemaManager, "cn= b" ).getEscaped() );
+        assertEquals( "cn=b", new Rdn( schemaManager, "cn=b " ).getEscaped() );
+        assertEquals( "cn=b", new Rdn( schemaManager, " cn =b" ).getEscaped() );
+        assertEquals( "cn=b", new Rdn( schemaManager, " cn= b" ).getEscaped() );
+        assertEquals( "cn=b", new Rdn( schemaManager, " cn=b " ).getEscaped() );
+        assertEquals( "cn=b", new Rdn( schemaManager, "cn = b" ).getEscaped() );
+        assertEquals( "cn=b", new Rdn( schemaManager, "cn =b " ).getEscaped() );
+        assertEquals( "cn=b", new Rdn( schemaManager, "cn= b " ).getEscaped() );
+        assertEquals( "cn=b", new Rdn( schemaManager, " cn = b" ).getEscaped() );
+        assertEquals( "cn=b", new Rdn( schemaManager, " cn =b " ).getEscaped() );
+        assertEquals( "cn=b", new Rdn( schemaManager, " cn= b " ).getEscaped() );
+        assertEquals( "cn=b", new Rdn( schemaManager, "cn = b " ).getEscaped() );
+        assertEquals( "cn=b", new Rdn( schemaManager, " cn = b " ).getEscaped() );
     }
 
 
@@ -147,8 +148,8 @@ public class SchemaAwareRdnTest
     @Test
     public void testRdnSimpleMultivaluedAttribute() throws LdapException
     {
-        String result = new Rdn( schemaManager, "cn = b + sn = d" ).getNormName();
-        assertEquals( "2.5.4.3=b+2.5.4.4=d", result );
+        String result = new Rdn( schemaManager, "cn = b + sn = d" ).getEscaped();
+        assertEquals( "cn=b+sn=d", result );
     }
 
 
@@ -180,7 +181,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testRdnOidUpper() throws LdapException
     {
-        assertEquals( "2.5.4.3=azerty", new Rdn( schemaManager, "OID.2.5.4.3 =  azerty" ).getNormName() );
+        assertEquals( "2.5.4.3=azerty", new Rdn( schemaManager, "OID.2.5.4.3 =  azerty" ).getEscaped() );
     }
 
 
@@ -192,7 +193,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testRdnOidLower() throws LdapException
     {
-        assertEquals( "2.5.4.3=azerty", new Rdn( schemaManager, "oid.2.5.4.3 = azerty" ).getNormName() );
+        assertTrue( new Rdn( schemaManager, "oid.2.5.4.3 = azerty" ).equals( "2.5.4.3=azerty" ) );
     }
 
 
@@ -205,7 +206,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testRdnOidWithoutPrefix() throws LdapException
     {
-        assertEquals( "2.5.4.3=azerty", new Rdn( schemaManager, "2.5.4.3 = azerty" ).getNormName() );
+        assertEquals( "2.5.4.3=azerty", new Rdn( schemaManager, "2.5.4.3 = azerty" ).getEscaped() );
     }
 
 
@@ -218,7 +219,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testRdnCompositeOidWithoutPrefix() throws LdapException
     {
-        String result = new Rdn( schemaManager, "2.5.4.3 = azerty + 2.5.4.4 = test" ).getNormName();
+        String result = new Rdn( schemaManager, "2.5.4.3 = azerty + 2.5.4.4 = test" ).getEscaped();
         assertEquals( "2.5.4.3=azerty+2.5.4.4=test", result );
     }
 
@@ -258,7 +259,7 @@ public class SchemaAwareRdnTest
                 '\\',
                 'A',
                 '9' } );
-        assertEquals( "2.5.4.7=\\,\\=\\+\\<\\>#\\;\\\\\\\"\u00e9", new Rdn( schemaManager, rdn ).getNormName() );
+        assertEquals( "l=\\,=\\+\\<\\>#\\;\\\\\\\"\u00e9", new Rdn( schemaManager, rdn ).getEscaped() );
     }
 
 
@@ -268,7 +269,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testRdnHexStringAttributeValue() throws LdapException
     {
-        assertEquals( "2.5.4.36=#0010A0AAFF", new Rdn( schemaManager, "userCertificate = #0010A0AAFF" ).getNormName() );
+        assertEquals( "userCertificate=\\00\u0010\\A0\\AA\\FF", new Rdn( schemaManager, "userCertificate = #0010A0AAFF" ).getEscaped() );
     }
 
 
@@ -298,7 +299,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testRdnQuotedAttributeValue() throws LdapException
     {
-        assertEquals( "2.5.4.3=quoted \\\"value", new Rdn( schemaManager, "cn = quoted \\\"value" ).getNormName() );
+        assertEquals( "cn=quoted \\\"value", new Rdn( schemaManager, "cn = quoted \\\"value" ).getEscaped() );
     }
 
 
@@ -316,7 +317,7 @@ public class SchemaAwareRdnTest
 
         rdn = new Rdn( schemaManager, "cn=d" );
 
-        assertEquals( "b", rdnClone.getNormValue( "Cn" ) );
+        assertEquals( "B", rdnClone.getValue( "Cn" ) );
     }
 
 
@@ -329,7 +330,7 @@ public class SchemaAwareRdnTest
     public void testRDNCreation() throws LdapException
     {
         Rdn rdn = new Rdn( schemaManager, "CN", "  b  " );
-        assertEquals( "2.5.4.3=b", rdn.getNormName() );
+        assertEquals( "CN=\\  b \\ ", rdn.getEscaped() );
         assertEquals( "CN=  b  ", rdn.getName() );
     }
 
@@ -351,7 +352,7 @@ public class SchemaAwareRdnTest
 
         assertEquals( "b", rdnClone.getValue( "2.5.4.3" ) );
         assertEquals( "bb", rdnClone.getValue( "SN" ) );
-        assertEquals( "", rdnClone.getValue( "l" ) );
+        assertNull( rdnClone.getValue( "l" ) );
     }
 
 
@@ -634,7 +635,7 @@ public class SchemaAwareRdnTest
     {
         Rdn rdn = new Rdn( schemaManager, " cn = b + sn = f + gn = h + l = d " );
 
-        assertEquals( "b", rdn.getNormValue() );
+        assertEquals( "b", rdn.getValue() );
     }
 
 
@@ -876,7 +877,7 @@ public class SchemaAwareRdnTest
     public void testRdnWithSpaces() throws LdapException
     {
         Rdn rdn = new Rdn( schemaManager, "cn=a\\ b\\ c" );
-        assertEquals( "2.5.4.3=a b c", rdn.getNormName() );
+        assertEquals( "cn=a b c", rdn.getEscaped() );
     }
     
     /*
@@ -885,15 +886,15 @@ public class SchemaAwareRdnTest
     {
         Rdn rdn1 = new Rdn( schemaManager, "cn=a b c" );
         Rdn rdn2 = new Rdn( schemaManager, "cn=a\\ b\\ c" );
-        assertEquals( "2.5.4.3=a b c", rdn1.getNormName() );
-        assertEquals( "2.5.4.3=a b c", rdn2.getNormName() );
+        assertEquals( "2.5.4.3=a b c", rdn1.getEscaped() );
+        assertEquals( "2.5.4.3=a b c", rdn2.getEscaped() );
         assertTrue( rdn1.equals( rdn2 ) );
 
         Rdn rdn3 = new Rdn( schemaManager, "cn=\\ a b c\\ " );
         Rdn rdn4 = new Rdn( schemaManager, "cn=\\ a\\ b\\ c\\ " );
-        assertEquals( "2.5.4.3= a b c ", rdn3.getNormName() );
+        assertEquals( "2.5.4.3= a b c ", rdn3.getEscaped() );
         assertEquals( "cn=\\ a b c\\ ", rdn3.getName() );
-        assertEquals( "2.5.4.3=\\ a b c\\ ", rdn4.getNormName() );
+        assertEquals( "2.5.4.3=\\ a b c\\ ", rdn4.getEscaped() );
         assertEquals( "cn=\\ a\\ b\\ c\\ ", rdn4.getName() );
         assertTrue( rdn3.equals( rdn4 ) );
     }
@@ -905,7 +906,7 @@ public class SchemaAwareRdnTest
         Rdn rdn = new Rdn( schemaManager, "cn=\\ a\\ " );
 
         assertEquals( "cn=\\ a\\ ", rdn.getName() );
-        assertEquals( "2.5.4.3=\\ a\\ ", rdn.getNormName() );
+        assertEquals( "2.5.4.3=\\ a\\ ", rdn.getEscaped() );
     }
     */
 
@@ -914,19 +915,19 @@ public class SchemaAwareRdnTest
     public void testEscapedSpaceInValue() throws LdapException
     {
         Rdn rdn1 = new Rdn( schemaManager, "cn=a b c" );
-        assertEquals( "2.5.4.3=a b c", rdn1.getNormName() );
+        assertEquals( "cn=a b c", rdn1.getEscaped() );
 
         Rdn rdn2 = new Rdn( schemaManager, "cn=a\\ b\\ c" );
-        assertEquals( "2.5.4.3=a b c", rdn2.getNormName() );
+        assertEquals( "cn=a b c", rdn2.getEscaped() );
         
         assertTrue( rdn1.equals( rdn2 ) );
 
         Rdn rdn3 = new Rdn( schemaManager, "cn=\\ a b c\\ " );
-        assertEquals( "2.5.4.3=\\ a b c\\ ", rdn3.getNormName() );
+        assertEquals( "cn=\\ a b c\\ ", rdn3.getEscaped() );
         assertEquals( "cn=\\ a b c\\ ", rdn3.getName() );
 
         Rdn rdn4 = new Rdn( schemaManager, "cn=\\ a\\ b\\ c\\ " );
-        assertEquals( "2.5.4.3=\\ a b c\\ ", rdn4.getNormName() );
+        assertEquals( "cn=\\ a b c\\ ", rdn4.getEscaped() );
         assertEquals( "cn=\\ a\\ b\\ c\\ ", rdn4.getName() );
         assertTrue( rdn3.equals( rdn4 ) );
     }
@@ -948,16 +949,15 @@ public class SchemaAwareRdnTest
     public void testEscapedHashInValue2() throws LdapException
     {
         Rdn rdn = new Rdn( schemaManager, "cn=a\\#b" );
-        assertEquals( "2.5.4.3=a#b", rdn.getNormName() );
+        assertEquals( "cn=a#b", rdn.getEscaped() );
         assertEquals( "cn=a\\#b", rdn.getName() );
         
         // Check the AVA
-        assertEquals( "2.5.4.3=a#b", rdn.getAva().getNormName() );
+        assertEquals( "cn=a#b", rdn.getAva().getEscaped() );
         assertEquals( "cn=a\\#b", rdn.getAva().getName() );
         
         // Check the value
-        assertEquals( "a#b", rdn.getAva().getValue().getNormValue() );
-        assertEquals( "a\\#b", rdn.getAva().getValue().getString() );
+        assertEquals( "a#b", rdn.getAva().getValue().getValue() );
     }
 
 
@@ -966,14 +966,14 @@ public class SchemaAwareRdnTest
     {
         Rdn rdn1 = new Rdn( schemaManager, "cn=a#b#c" );
         Rdn rdn2 = new Rdn( schemaManager, "cn=a\\#b\\#c" );
-        assertEquals( "2.5.4.3=a#b#c", rdn1.getNormName() );
-        assertEquals( "2.5.4.3=a#b#c", rdn2.getNormName() );
+        assertEquals( "cn=a#b#c", rdn1.getEscaped() );
+        assertEquals( "cn=a#b#c", rdn2.getEscaped() );
         assertTrue( rdn1.equals( rdn2 ) );
 
         Rdn rdn3 = new Rdn( schemaManager, "cn=\\#a#b#c\\#" );
         Rdn rdn4 = new Rdn( schemaManager, "cn=\\#a\\#b\\#c\\#" );
-        assertEquals( "2.5.4.3=\\#a#b#c#", rdn3.getNormName() );
-        assertEquals( "2.5.4.3=\\#a#b#c#", rdn4.getNormName() );
+        assertEquals( "cn=\\#a#b#c#", rdn3.getEscaped() );
+        assertEquals( "cn=\\#a#b#c#", rdn4.getEscaped() );
         assertTrue( rdn3.equals( rdn4 ) );
     }
 
@@ -1026,8 +1026,6 @@ public class SchemaAwareRdnTest
     {
         Rdn rdn = new Rdn( schemaManager, "" );
 
-        rdn.normalize();
-
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
@@ -1048,8 +1046,6 @@ public class SchemaAwareRdnTest
     public void testNullRdnSerialization() throws IOException, ClassNotFoundException
     {
         Rdn rdn = new Rdn( schemaManager );
-
-        rdn.normalize();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -1074,7 +1070,6 @@ public class SchemaAwareRdnTest
     public void testSimpleRdnSerialization() throws LdapException, IOException, ClassNotFoundException
     {
         Rdn rdn = new Rdn( schemaManager, "cn=b" );
-        rdn.normalize();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -1100,7 +1095,6 @@ public class SchemaAwareRdnTest
     public void testSimpleRdn2Serialization() throws LdapException, IOException, ClassNotFoundException
     {
         Rdn rdn = new Rdn( schemaManager, " CN  = DEF " );
-        rdn.normalize();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -1126,7 +1120,6 @@ public class SchemaAwareRdnTest
     public void testSimpleRdnNoValueSerialization() throws LdapException, IOException, ClassNotFoundException
     {
         Rdn rdn = new Rdn( schemaManager, " DC  =" );
-        rdn.normalize();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -1152,7 +1145,6 @@ public class SchemaAwareRdnTest
     public void testSimpleRdnOneValueSerialization() throws LdapException, IOException, ClassNotFoundException
     {
         Rdn rdn = new Rdn( schemaManager, " CN  = def " );
-        rdn.normalize();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -1178,7 +1170,6 @@ public class SchemaAwareRdnTest
     public void testSimpleRdnThreeValuesSerialization() throws LdapException, IOException, ClassNotFoundException
     {
         Rdn rdn = new Rdn( schemaManager, " CN = a + SN = b + GN = c " );
-        rdn.normalize();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -1205,7 +1196,6 @@ public class SchemaAwareRdnTest
         ClassNotFoundException
     {
         Rdn rdn = new Rdn( schemaManager, " CN = b + SN = a + GN = c " );
-        rdn.normalize();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -1232,8 +1222,8 @@ public class SchemaAwareRdnTest
     {
         assertTrue( Rdn.isValid( "dc=" ) );
         assertTrue( Rdn.isValid( "dc=\"\"" ) );
-        assertEquals( "0.9.2342.19200300.100.1.25=", new Rdn( schemaManager, "dc=" ).getNormName() );
-        assertEquals( "0.9.2342.19200300.100.1.25=", new Rdn( schemaManager, "dc=\"\"" ).getNormName() );
+        assertEquals( "dc=", new Rdn( schemaManager, "dc=" ).getEscaped() );
+        assertEquals( "dc=", new Rdn( schemaManager, "dc=\"\"" ).getEscaped() );
     }
 
 
@@ -1244,16 +1234,16 @@ public class SchemaAwareRdnTest
     public void testRdnWithEscapedComa() throws LdapException
     {
         assertTrue( Rdn.isValid( "cn=b\\,c" ) );
-        assertEquals( "2.5.4.3=b\\,c", new Rdn( schemaManager, "cn=b\\,c" ).getNormName() );
+        assertEquals( "cn=b\\,c", new Rdn( schemaManager, "cn=b\\,c" ).getEscaped() );
 
         assertTrue( Rdn.isValid( "cn=\"b,c\"" ) );
-        assertEquals( "2.5.4.3=b\\,c", new Rdn( schemaManager, "cn=\"b,c\"" ).getNormName() );
+        assertEquals( "cn=b\\,c", new Rdn( schemaManager, "cn=\"b,c\"" ).getEscaped() );
         assertEquals( "cn=\"b,c\"", new Rdn( schemaManager, "cn=\"b,c\"" ).getName() );
 
         assertTrue( Rdn.isValid( "cn=\"b\\,c\"" ) );
         Rdn rdn = new Rdn( schemaManager, "cn=\"b\\,c\"" );
         assertEquals( "cn=\"b\\,c\"", rdn.getName() );
-        assertEquals( "2.5.4.3=b\\,c", rdn.getNormName() );
+        assertEquals( "cn=b\\,c", rdn.getEscaped() );
     }
 
 
@@ -1312,7 +1302,7 @@ public class SchemaAwareRdnTest
 
         assertFalse( rdn.isSchemaAware() );
 
-        rdn.apply( schemaManager );
+        rdn = new Rdn( schemaManager, rdn );
 
         assertTrue( rdn.isSchemaAware() );
     }

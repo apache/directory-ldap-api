@@ -32,6 +32,7 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
+import org.apache.directory.api.ldap.model.schema.PrepareString;
 import org.apache.directory.api.ldap.model.schema.comparators.ByteArrayComparator;
 import org.apache.directory.api.ldap.model.schema.comparators.StringComparator;
 import org.apache.directory.api.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
@@ -118,7 +119,7 @@ public class ValueSerializationTest
                 throw new IllegalStateException( "expected byte[] to normalize" );
             }
 
-
+            
             public String normalize( String value ) throws LdapException
             {
                 throw new IllegalStateException( "expected byte[] to normalize" );
