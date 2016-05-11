@@ -35,6 +35,7 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
+import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.util.Serialize;
 import org.apache.directory.api.util.Strings;
@@ -1503,8 +1504,18 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 
                 if ( equalityMatchingRule != null )
                 {
-                    return equalityMatchingRule.getLdapComparator().compare( value.getValue(),
-                        instance.value.getValue() ) == 0;
+                    Normalizer normalizer = equalityMatchingRule.getNormalizer();
+                    
+                    try
+                    {
+                        return equalityMatchingRule.getLdapComparator().compare( normalizer.normalize( value.getValue() ),
+                            instance.value.getValue() ) == 0;
+                    }
+                    catch ( LdapException le )
+                    {
+                        LOG.error( "Cannot normalize the value", le.getMessage() );
+                        return false;
+                    }
                 }
                 else
                 {

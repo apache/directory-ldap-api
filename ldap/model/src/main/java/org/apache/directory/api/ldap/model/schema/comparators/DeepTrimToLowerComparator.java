@@ -58,44 +58,30 @@ public class DeepTrimToLowerComparator extends LdapComparator<String>
      * If any normalization attempt fails we compare using the unnormalized
      * object.
      */
-    public int compare( String o1, String o2 )
+    public int compare( String key, String value )
     {
-        String n1 = o1;
-        String n2 = o2;
+        String normalizedValue;
 
         try
         {
-            n1 = normalizer.normalize( o1 );
+            normalizedValue = normalizer.normalize( value );
         }
         catch ( LdapException e )
         {
-            LOG.warn( "Failed to normalize: " + o1, e );
-            n1 = o1;
+            LOG.warn( "Failed to normalize: " + value, e );
+            normalizedValue = value;
         }
 
-        try
-        {
-            n2 = normalizer.normalize( o2 );
-        }
-        catch ( LdapException e )
-        {
-            LOG.warn( "Failed to normalize: " + o2, e );
-            n2 = o2;
-        }
-
-        return n1.compareTo( n2 );
+        return key.compareTo( normalizedValue );
     }
-
-
+    
+    
     /**
      * {@inheritDoc}
-     * 
-     * This implementation makes sure we update the oid property of the contained normalizer and 
-     * comparator.
      */
     @Override
-    public void setOid( String oid )
+    public Normalizer getNormalizer()
     {
-        super.setOid( oid );
+        return normalizer;
     }
 }

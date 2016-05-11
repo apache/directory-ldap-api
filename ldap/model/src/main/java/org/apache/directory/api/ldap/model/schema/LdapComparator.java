@@ -23,6 +23,8 @@ package org.apache.directory.api.ldap.model.schema;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import org.apache.directory.api.ldap.model.schema.normalizers.NoOpNormalizer;
+
 
 /**
  * An class used for Comparator. It inherits from the general AbstractAdsSchemaObject class. It
@@ -34,6 +36,9 @@ public abstract class LdapComparator<T> extends LoadableSchemaObject implements 
 {
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
+
+    /** A default normalizer*/
+    protected Normalizer normalizer = new NoOpNormalizer();
 
 
     /**
@@ -70,6 +75,15 @@ public abstract class LdapComparator<T> extends LoadableSchemaObject implements 
         }
 
         return o instanceof LdapComparator<?>;
+    }
+    
+    
+    /**
+     * @return The associated normalizer
+     */
+    public Normalizer getNormalizer()
+    {
+        return normalizer;
     }
 
 
