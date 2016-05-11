@@ -20,8 +20,8 @@
 package org.apache.directory.api.ldap.model.schema.normalizers;
 
 
-import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
+import org.apache.directory.api.ldap.model.schema.PrepareString;
 
 
 /**
@@ -49,19 +49,7 @@ public class NoOpNormalizer extends Normalizer
      */
     public NoOpNormalizer()
     {
-    }
-
-
-    /**
-     * Returns the value argument as-is without alterations all the time.
-     * 
-     * @param value any value
-     * @return the value argument returned as-is
-     * @see org.apache.directory.api.ldap.model.schema.Normalizer#normalize(Value)
-     */
-    public Value normalize( Value value )
-    {
-        return value;
+        super();
     }
 
 
@@ -72,7 +60,18 @@ public class NoOpNormalizer extends Normalizer
      * @return the value argument returned as-is
      * @see org.apache.directory.api.ldap.model.schema.Normalizer#normalize(String)
      */
+    @Override
     public String normalize( String value )
+    {
+        return value;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String normalize( String value, PrepareString.AssertionType assertionType )
     {
         return value;
     }

@@ -28,6 +28,7 @@ import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.api.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
+import org.apache.directory.api.ldap.model.schema.PrepareString;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.comparators.ByteArrayComparator;
 import org.apache.directory.api.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
@@ -159,18 +160,13 @@ public class EntryUtils
             public static final long serialVersionUID = 1L;
 
 
-            public Value normalize( Value value ) throws LdapException
+            public String normalize( String value ) throws LdapException
             {
-                if ( value.isHumanReadable() )
-                {
-                    return new Value( Strings.toLowerCaseAscii( value.getValue() ) );
-                }
-
-                throw new IllegalStateException( I18n.err( I18n.ERR_04474 ) );
+                return normalize( value, PrepareString.AssertionType.ATTRIBUTE_VALUE );
             }
 
 
-            public String normalize( String value ) throws LdapException
+            public String normalize( String value, PrepareString.AssertionType assertionType ) throws LdapException
             {
                 return Strings.toLowerCaseAscii( value );
             }

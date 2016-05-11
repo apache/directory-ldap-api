@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.model.schema;
 
 
-import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 
 
@@ -58,16 +57,6 @@ public abstract class Normalizer extends LoadableSchemaObject
 
 
     /**
-     * Gets the normalized value.
-     * 
-     * @param value the value to normalize. It must *not* be null !
-     * @param assertionType The PrepareString.AssertionType
-     * @return the normalized form for a value
-     * @throws LdapException if an error results during normalization
-     */
-    public abstract Value normalize( Value value ) throws LdapException;
-
-    /**
      * Gets the normalized value of AssertionValues.
      * 
      * @param value the value to normalize. It must *not* be null !
@@ -75,6 +64,17 @@ public abstract class Normalizer extends LoadableSchemaObject
      * @throws LdapException if an error results during normalization
      */
     public abstract String normalize( String value ) throws LdapException;
+
+
+    /**
+     * Gets the normalized value of a substring assertion.
+     * 
+     * @param value the substring value to normalize. It must *not* be null !
+     * @param assertionType The type of assertion
+     * @return the normalized form for a value
+     * @throws LdapException if an error results during normalization
+     */
+    public abstract String normalize( String value, PrepareString.AssertionType assertionType ) throws LdapException;
 
 
     /**

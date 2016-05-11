@@ -35,6 +35,7 @@ import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
+import org.apache.directory.api.ldap.model.schema.normalizers.NoOpNormalizer;
 import org.apache.directory.api.util.Serialize;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -484,7 +485,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
             return;
         }
         
-        Normalizer normalizer = null;
+        Normalizer normalizer;
         
         // We should have a Equality MatchingRule
         MatchingRule equality = attributeType.getEquality();
@@ -501,7 +502,8 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
                 
                 if ( ordering == null )
                 {
-                    throw new IllegalArgumentException( I18n.err( I18n.ERR_04148_MATCHING_RULE_EXPECTED ) );
+                    // Ok, no luck. Use a NoOp normalizer
+                    normalizer = new NoOpNormalizer();
                 }
                 else
                 {
@@ -525,6 +527,15 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
 
         // Now, normalize the upValue
         normValue = normalizer.normalize( upValue );
+    }
+    
+    
+    /**
+     * @return The normalized value
+     */
+    public String getNormalized()
+    {
+        return normValue;
     }
 
 

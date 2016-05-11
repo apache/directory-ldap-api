@@ -549,6 +549,12 @@ public final class FilterParser
 
             pos.start++;
 
+            if ( Strings.isCharASCII( filterBytes, pos.start, ')' ) )
+            {
+                // No any or final, we are done
+                return node;
+            }
+
             //
             while ( true )
             {

@@ -84,7 +84,7 @@ public class ObjectIdentifierComparator extends LdapComparator<Object>
             return -1;
         }
 
-        // Here, we should leverage the SchemaManager to compare the String and teh OID
+        // Here, we should leverage the SchemaManager to compare the String and the OID
         return ( ( String ) o1 ).compareToIgnoreCase( ( String ) o2 );
     }
 }

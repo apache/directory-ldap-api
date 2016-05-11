@@ -681,7 +681,7 @@ public class DnParserTest
     
     
     @Test
-    //@Ignore
+    @Ignore
     public void testDnParsing() throws LdapInvalidDnException
     {
         long[] deltas = new long[10];

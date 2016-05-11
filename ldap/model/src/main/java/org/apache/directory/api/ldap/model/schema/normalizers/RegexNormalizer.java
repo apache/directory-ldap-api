@@ -23,8 +23,8 @@ package org.apache.directory.api.ldap.model.schema.normalizers;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
+import org.apache.directory.api.ldap.model.schema.PrepareString;
 
 
 /**
@@ -39,7 +39,7 @@ public class RegexNormalizer extends Normalizer
     private final Pattern[] regexes;
 
     /** the set of regular expressions used to transform values */
-    private final Matcher[] matchers;
+    private final transient Matcher[] matchers;
 
 
     /**
@@ -74,34 +74,18 @@ public class RegexNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
-    public Value normalize( final Value value )
+    @Override
+    public String normalize( String value )
     {
-        if ( value == null )
-        {
-            return null;
-        }
-
-        if ( value.isHumanReadable() )
-        {
-            String str = value.getValue();
-
-            for ( int i = 0; i < matchers.length; i++ )
-            {
-
-                str = matchers[i].replaceAll( str );
-            }
-
-            return new Value( str );
-        }
-
-        return value;
+        return normalize( value, PrepareString.AssertionType.ATTRIBUTE_VALUE );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public String normalize( String value )
+    @Override
+    public String normalize( String value, PrepareString.AssertionType assertionType )
     {
         if ( value == null )
         {
@@ -112,7 +96,6 @@ public class RegexNormalizer extends Normalizer
 
         for ( int i = 0; i < matchers.length; i++ )
         {
-
             str = matchers[i].replaceAll( str );
         }
 

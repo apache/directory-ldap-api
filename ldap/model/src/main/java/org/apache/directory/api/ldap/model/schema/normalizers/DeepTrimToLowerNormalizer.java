@@ -23,7 +23,6 @@ package org.apache.directory.api.ldap.model.schema.normalizers;
 import java.io.IOException;
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
@@ -60,31 +59,14 @@ public class DeepTrimToLowerNormalizer extends Normalizer implements PreparedNor
      */
     public DeepTrimToLowerNormalizer()
     {
-    }
-    
-    
-    /**
-     * {@inheritDoc}
-     */
-    public Value normalize( Value value ) throws LdapException
-    {
-        if ( value == null )
-        {
-            return null;
-        }
-
-        // Transcoding
-        String transcoded = PrepareString.transcode( value.getBytes() );
-
-        String normValue = normalize( transcoded, PrepareString.AssertionType.ATTRIBUTE_VALUE );
-
-        return new Value( value.getAttributeType(), normValue );
+        super();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public String normalize( String value ) throws LdapException
     {
         return normalize( value, PrepareString.AssertionType.ATTRIBUTE_VALUE );
@@ -94,6 +76,7 @@ public class DeepTrimToLowerNormalizer extends Normalizer implements PreparedNor
     /**
      * {@inheritDoc}
      */
+    @Override
     public String normalize( String value, PrepareString.AssertionType assertionType ) throws LdapException
     {
         if ( value == null )

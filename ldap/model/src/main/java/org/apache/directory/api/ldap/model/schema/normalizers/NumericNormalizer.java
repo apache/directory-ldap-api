@@ -59,6 +59,7 @@ public class NumericNormalizer extends Normalizer implements PreparedNormalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public String normalize( String value ) throws LdapException
     {
         return normalize( value, PrepareString.AssertionType.ATTRIBUTE_VALUE );
@@ -68,6 +69,7 @@ public class NumericNormalizer extends Normalizer implements PreparedNormalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public String normalize( String value, PrepareString.AssertionType assertionType ) throws LdapException
     {
         if ( value == null )
@@ -78,8 +80,6 @@ public class NumericNormalizer extends Normalizer implements PreparedNormalizer
         char[] chars = value.toCharArray();
         
         // Insignificant Characters Handling
-        String normValue = PrepareString.insignificantNumericStringHandling( chars );
-
-        return normValue;
+        return PrepareString.insignificantNumericStringHandling( chars );
     }
 }

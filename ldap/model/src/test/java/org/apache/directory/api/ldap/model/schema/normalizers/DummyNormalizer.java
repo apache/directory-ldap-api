@@ -21,9 +21,10 @@ package org.apache.directory.api.ldap.model.schema.normalizers;
 
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
+import org.apache.directory.api.ldap.model.schema.PrepareString;
+import org.apache.directory.api.ldap.model.schema.PrepareString.AssertionType;
 import org.apache.directory.api.util.Strings;
 
 
@@ -48,23 +49,16 @@ public class DummyNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
-    public Value normalize( Value value ) throws LdapException
+    public String normalize( String value ) throws LdapException
     {
-        String str = value.getValue();
-
-        if ( Strings.isEmpty( str ) )
-        {
-            return new Value( str );
-        }
-
-        return new Value( str );
+        return normalize( value, AssertionType.ATTRIBUTE_VALUE );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public String normalize( String value ) throws LdapException
+    public String normalize( String value, PrepareString.AssertionType assertionType ) throws LdapException
     {
         if ( Strings.isEmpty( value ) )
         {

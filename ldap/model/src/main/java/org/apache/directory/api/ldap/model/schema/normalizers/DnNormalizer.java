@@ -21,10 +21,10 @@ package org.apache.directory.api.ldap.model.schema.normalizers;
 
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
+import org.apache.directory.api.ldap.model.schema.PrepareString;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 
 
@@ -37,7 +37,7 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
 public class DnNormalizer extends Normalizer
 {
     /** A reference to the schema manager used to normalize the Dn */
-    private SchemaManager schemaManager;
+    private transient SchemaManager schemaManager;
 
 
     /**
@@ -52,26 +52,22 @@ public class DnNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
-    public Value normalize( Value value ) throws LdapException
+    @Override
+    public String normalize( String value ) throws LdapException
     {
-        Dn dn = null;
+        Dn dn = new Dn( schemaManager, value );
 
-        String dnStr = value.getValue();
-
-        dn = new Dn( schemaManager, dnStr );
-
-        return new Value( dn.getName() );
+        return dn.getName();
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public String normalize( String value ) throws LdapException
+    @Override
+    public String normalize( String value, PrepareString.AssertionType assertionType ) throws LdapException
     {
-        Dn dn = null;
-
-        dn = new Dn( schemaManager, value );
+        Dn dn = new Dn( schemaManager, value );
 
         return dn.getName();
     }

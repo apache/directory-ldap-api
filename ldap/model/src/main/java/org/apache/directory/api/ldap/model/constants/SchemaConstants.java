@@ -50,6 +50,7 @@ public final class SchemaConstants
     public static final String OBJECT_CLASS = "ObjectCLass";
     public static final String SYNTAX = "Syntax";
     public static final String SYNTAX_CHECKER = "SyntaxChecker";
+    public static final String SYNTAXES = "Syntaxes";
 
     // SchemaEntity paths
     public static final String ATTRIBUTE_TYPES_PATH = "ou=attributetypes";

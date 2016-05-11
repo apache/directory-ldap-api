@@ -84,7 +84,7 @@ public class DnComparator extends LdapComparator<Object>
             return 1;
         }
 
-        for ( int i = dn0Size; i >= 0; i-- )
+        for ( int i = dn0Size - 1; i >= 0; i-- )
         {
             int comp = dn0.getRdn( i ).compareTo( dn1.getRdn( i ) );
             

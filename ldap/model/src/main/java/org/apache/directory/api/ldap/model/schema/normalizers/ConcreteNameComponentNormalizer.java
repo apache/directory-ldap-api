@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.model.schema.normalizers;
 
 
-import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
@@ -61,7 +60,7 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
         char[] newVal = new char[value.length()];
         int escaped = 0;
         char high = 0;
-        char low = 0;
+        char low;
         int pos = 0;
 
         for ( int index = 0; index < value.length(); index++  )
@@ -105,20 +104,21 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object normalizeByName( String name, String value ) throws LdapException
     {
         AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( name );
+        Normalizer normalizer = lookup( name );
 
         if ( attributeType.getSyntax().isHumanReadable() )
         {
-            return lookup( name ).normalize( value );
+            return normalizer.normalize( value );
         }
         else
         {
             String unescaped = unescape( value );
-            byte[] valBytes = Strings.getBytesUtf8( unescaped );
 
-            return lookup( name ).normalize( new Value( valBytes ) );
+            return normalizer.normalize( unescaped );
         }
 
     }
@@ -127,25 +127,19 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object normalizeByName( String name, byte[] value ) throws LdapException
     {
-        AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( name );
+        String valStr = Strings.utf8ToString( value );
 
-        if ( !attributeType.getSyntax().isHumanReadable() )
-        {
-            return lookup( name ).normalize( new Value( value ) );
-        }
-        else
-        {
-            String valStr = Strings.utf8ToString( value );
-            return lookup( name ).normalize( valStr );
-        }
+        return lookup( name ).normalize( valStr );
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object normalizeByOid( String oid, String value ) throws LdapException
     {
         return lookup( oid ).normalize( value );
@@ -155,9 +149,10 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object normalizeByOid( String oid, byte[] value ) throws LdapException
     {
-        return lookup( oid ).normalize( new Value( value ) );
+        return lookup( oid ).normalize( Strings.utf8ToString( value ) );
     }
 
 
@@ -189,12 +184,17 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
     /**
      * @see NameComponentNormalizer#isDefined(String)
      */
+    @Override
     public boolean isDefined( String id )
     {
         return schemaManager.getAttributeTypeRegistry().contains( id );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String normalizeName( String attributeName ) throws LdapException
     {
         return schemaManager.getAttributeTypeRegistry().getOidByName( attributeName );

@@ -24,7 +24,6 @@ import java.text.ParseException;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
@@ -45,6 +44,8 @@ import org.apache.directory.api.util.GeneralizedTime.TimeZoneFormat;
  * <li>the time is supposed to be expressed in Zulu (GMT), so 
  * increment is applied to hours/days/yeah, and a Z is added at the end</li>
  * </ul>
+ * 
+ * Note : there is no Substring for this type of values.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -63,18 +64,18 @@ public class GeneralizedTimeNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
-    public Value normalize( Value value ) throws LdapException
+    @Override
+    public String normalize( String value ) throws LdapException
     {
-        String normalized = PrepareString.normalize( value.getValue() );
-
-        return new Value( normalized );
+        return normalize( value, PrepareString.AssertionType.ATTRIBUTE_VALUE );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public String normalize( String value ) throws LdapException
+    @Override
+    public String normalize( String value, PrepareString.AssertionType assertionType ) throws LdapException
     {
         if ( value == null )
         {
@@ -86,10 +87,8 @@ public class GeneralizedTimeNormalizer extends Normalizer
         try
         {
             GeneralizedTime time = new GeneralizedTime( value );
-            String normalized = time.toGeneralizedTime( Format.YEAR_MONTH_DAY_HOUR_MIN_SEC_FRACTION,
+            return time.toGeneralizedTime( Format.YEAR_MONTH_DAY_HOUR_MIN_SEC_FRACTION,
                 FractionDelimiter.DOT, 3, TimeZoneFormat.Z );
-
-            return normalized;
         }
         catch ( ParseException pe )
         {

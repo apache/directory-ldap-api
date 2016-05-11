@@ -23,7 +23,6 @@ package org.apache.directory.api.ldap.model.schema.normalizers;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
-import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.schema.normalizers.BooleanNormalizer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,7 +47,7 @@ public class BooleanNormalizerTest
     @Test
     public void testNormalizeNullValue() throws Exception
     {
-        assertNull( normalizer.normalize( ( Value ) null ) );
+        assertNull( normalizer.normalize( null ) );
     }
 
 

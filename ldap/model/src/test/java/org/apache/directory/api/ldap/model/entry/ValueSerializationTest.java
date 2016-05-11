@@ -99,30 +99,25 @@ public class ValueSerializationTest
             public static final long serialVersionUID = 1L;
 
 
-            public Value normalize( Value value ) throws LdapException
-            {
-                if ( !value.isHumanReadable() )
-                {
-                    byte[] val = value.getBytes();
-                    // each byte will be changed to be > 0, and spaces will be trimmed
-                    byte[] newVal = new byte[val.length];
-                    int i = 0;
-
-                    for ( byte b : val )
-                    {
-                        newVal[i++] = ( byte ) ( b & 0x007F );
-                    }
-
-                    return new Value( Strings.trim( newVal ) );
-                }
-
-                throw new IllegalStateException( "expected byte[] to normalize" );
-            }
-
-            
             public String normalize( String value ) throws LdapException
             {
-                throw new IllegalStateException( "expected byte[] to normalize" );
+                return normalize( value, PrepareString.AssertionType.ATTRIBUTE_VALUE );
+            }
+
+
+            public String normalize( String value, PrepareString.AssertionType assertionType ) throws LdapException
+            {
+                byte[] val = Strings.getBytesUtf8( value );
+                // each byte will be changed to be > 0, and spaces will be trimmed
+                byte[] newVal = new byte[val.length];
+                int i = 0;
+
+                for ( byte b : val )
+                {
+                    newVal[i++] = ( byte ) ( b & 0x007F );
+                }
+
+                return Strings.utf8ToString( Strings.trim( newVal ) );
             }
         } );
 

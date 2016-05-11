@@ -1004,6 +1004,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      * @param rdn Rdn to be compared for equality with this Rdn
      * @return true if the specified object is equal to this Rdn
      */
+    @Override
     public boolean equals( Object that )
     {
         if ( this == that )
@@ -1011,7 +1012,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
             return true;
         }
         
-        Rdn rdn = null;
+        Rdn rdn;
 
         if ( that instanceof String )
         {
@@ -1830,7 +1831,74 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      */
     public int compareTo( Rdn otherRdn )
     {
-        return 0;
+        if ( otherRdn == null )
+        {
+            return 1;
+        }
+        
+        if ( nbAvas < otherRdn.nbAvas )
+        {
+            return -1;
+        }
+        else if ( nbAvas > otherRdn.nbAvas )
+        {
+            return 1;
+        }
+        
+        switch ( nbAvas )
+        {
+            case 0 :
+                return 0;
+                
+            case 1 :
+                int comp = ava.compareTo( otherRdn.ava );
+                
+                if ( comp < 0 )
+                {
+                    return -1;
+                }
+                else if ( comp > 0 )
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+                
+            default :
+                // Loop on all the Avas. As we have more than one,
+                // we have to order them by their AttributeType.
+                /*if ( isSchemaAware() )
+                {
+                    
+                }*/
+                
+                int pos = 0;
+                
+                for ( Ava ava : avas )
+                {
+                    Ava otherAva = otherRdn.avas.get( pos );
+                    
+                    comp = ava.compareTo( otherAva );
+                    
+                    if ( comp != 0 )
+                    {
+                        if ( comp < 0 )
+                        {
+                            return -1;
+                        }
+                        else
+                        {
+                            return 1;
+                        }
+                    }
+                    
+                    pos++;
+                }
+                
+                return 0;
+        }
     }
 
 

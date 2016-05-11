@@ -22,12 +22,13 @@ package org.apache.directory.api.ldap.model.schema.normalizers;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapOtherException;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
+import org.apache.directory.api.ldap.model.schema.PrepareString;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.NumericOidSyntaxChecker;
+import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -62,50 +63,20 @@ public class NameOrNumericIdNormalizer extends Normalizer
     /**
      * {@inheritDoc} 
      */
-    public Value normalize( Value value ) throws LdapException
+    @Override
+    public String normalize( String value ) throws LdapException
     {
-        if ( value == null )
-        {
-            return null;
-        }
-
-        String strValue = value.getValue();
-
-        if ( strValue.length() == 0 )
-        {
-            return new Value( "" );
-        }
-
-        // if value is a numeric id then return it as is
-        if ( checker.isValidSyntax( strValue ) )
-        {
-            return value;
-        }
-
-        // if it is a name we need to do a lookup
-        String oid = schemaManager.getRegistries().getOid( strValue );
-
-        if ( oid != null )
-        {
-            return new Value( oid );
-        }
-
-        // if all else fails
-        throw new LdapOtherException( I18n.err( I18n.ERR_04225, value ) );
+        return normalize( value, PrepareString.AssertionType.ATTRIBUTE_VALUE );
     }
 
 
     /**
      * {@inheritDoc} 
      */
-    public String normalize( String value ) throws LdapException
+    @Override
+    public String normalize( String value, PrepareString.AssertionType assertionType ) throws LdapException
     {
-        if ( value == null )
-        {
-            return null;
-        }
-
-        if ( value.length() == 0 )
+        if ( Strings.isEmpty( value ) )
         {
             return value;
         }
@@ -132,6 +103,7 @@ public class NameOrNumericIdNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setSchemaManager( SchemaManager schemaManager )
     {
         this.schemaManager = schemaManager;

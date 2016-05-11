@@ -3285,7 +3285,7 @@ public final class PrepareString
      * 
      * For instance, the following telephone number :
      * "+ (33) 1-123--456  789"
-     * will be trasnformed to :
+     * will be transformed to :
      * "+(33)1123456789"
      *
      * @param str The telephoneNumber String

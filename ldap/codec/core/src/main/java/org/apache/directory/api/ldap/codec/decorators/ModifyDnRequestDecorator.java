@@ -222,6 +222,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
      * 
      * @return The PDU's length of a ModifyDN Request
      */
+    @Override
     public int computeLength()
     {
         int newRdnlength = Strings.getBytesUtf8( getNewRdn().getName() ).length;
@@ -264,7 +265,6 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
             buffer.put( TLV.getBytes( modifyDnRequestLength ) );
 
             // The entry
-
             BerValue.encode( buffer, dnBytes );
 
             // The newRDN

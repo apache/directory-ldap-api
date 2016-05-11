@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.entry;
 
 
-import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
@@ -29,6 +28,8 @@ import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.api.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
+import org.apache.directory.api.ldap.model.schema.PrepareString;
+import org.apache.directory.api.ldap.model.schema.PrepareString.AssertionType;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.comparators.ByteArrayComparator;
 import org.apache.directory.api.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
@@ -157,18 +158,13 @@ public final class TestEntryUtils
             public static final long serialVersionUID = 1L;
 
 
-            public Value normalize( Value value ) throws LdapException
+            public String normalize( String value ) throws LdapException
             {
-                if ( value.isHumanReadable() )
-                {
-                    return new Value( Strings.toLowerCaseAscii( value.getValue() ) );
-                }
-
-                throw new IllegalStateException();
+                return normalize( value, AssertionType.ATTRIBUTE_VALUE );
             }
 
 
-            public String normalize( String value ) throws LdapException
+            public String normalize( String value, PrepareString.AssertionType assertionType ) throws LdapException
             {
                 return Strings.toLowerCaseAscii( value );
             }
@@ -255,32 +251,27 @@ public final class TestEntryUtils
             public static final long serialVersionUID = 1L;
 
 
-            public Value normalize( Value value ) throws LdapException
+            public String normalize( String value ) throws LdapException
             {
-                if ( !value.isHumanReadable() )
-                {
-                    byte[] val = value.getBytes();
-
-                    // each byte will be changed to be > 0, and spaces will be trimmed
-                    byte[] newVal = new byte[val.length];
-
-                    int i = 0;
-
-                    for ( byte b : val )
-                    {
-                        newVal[i++] = ( byte ) ( b & 0x007F );
-                    }
-
-                    return new Value( Strings.trim( newVal ) );
-                }
-
-                throw new IllegalStateException();
+                return normalize( value, AssertionType.ATTRIBUTE_VALUE );
             }
 
 
-            public String normalize( String value ) throws LdapException
+            public String normalize( String value, PrepareString.AssertionType assertionType ) throws LdapException
             {
-                throw new IllegalStateException();
+                byte[] val = Strings.getBytesUtf8( value );
+
+                // each byte will be changed to be > 0, and spaces will be trimmed
+                byte[] newVal = new byte[val.length];
+
+                int i = 0;
+
+                for ( byte b : val )
+                {
+                    newVal[i++] = ( byte ) ( b & 0x007F );
+                }
+                
+                return Strings.utf8ToString( Strings.trim( newVal ) );
             }
         } );
 

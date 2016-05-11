@@ -80,7 +80,7 @@ public class StoreModifyDnRequestNewRdn extends GrammarAction<LdapMessageContain
 
         // We have to handle the special case of a 0 length matched
         // newDN
-        Rdn newRdn = null;
+        Rdn newRdn;
 
         if ( tlv.getLength() == 0 )
         {

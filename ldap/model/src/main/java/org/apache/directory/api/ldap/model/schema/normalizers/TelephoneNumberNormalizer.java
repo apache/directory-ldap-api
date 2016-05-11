@@ -21,14 +21,14 @@ package org.apache.directory.api.ldap.model.schema.normalizers;
 
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.PrepareString;
 
 
 /**
- * Normalize Telephone Number Strings
+ * Normalize Telephone Number Strings. We don't process substring differently, as we don't
+ * have any significant space in a Telephone Number.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -47,18 +47,18 @@ public class TelephoneNumberNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
-    public Value normalize( Value value ) throws LdapException
+    @Override
+    public String normalize( String value ) throws LdapException
     {
-        String normalized = normalize( value.getValue() );
-
-        return new Value( normalized );
+        return normalize( value, PrepareString.AssertionType.ATTRIBUTE_VALUE );
     }
-
+    
 
     /**
      * {@inheritDoc}
      */
-    public String normalize( String value ) throws LdapException
+    @Override
+    public String normalize( String value, PrepareString.AssertionType assertiontype ) throws LdapException
     {
         if ( value == null )
         {
@@ -68,8 +68,6 @@ public class TelephoneNumberNormalizer extends Normalizer
         char[] chars = value.toCharArray();
         
         // Insignificant Characters Handling
-        String normValue = PrepareString.insignificantTelephoneNumberStringHandling( chars );
-
-        return normValue;
+        return PrepareString.insignificantTelephoneNumberStringHandling( chars );
     }
 }
