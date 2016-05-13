@@ -1550,7 +1550,6 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         if ( Strings.isEmpty( upName )
             || Strings.isEmpty( upType )
             || Strings.isEmpty( normType )
-            || ( value.isNull() )
             || ( value.isNull() ) )
         {
             String message = "Cannot serialize an wrong ATAV, ";
