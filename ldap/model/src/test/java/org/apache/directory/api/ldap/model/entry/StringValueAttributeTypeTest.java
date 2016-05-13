@@ -312,7 +312,7 @@ public class StringValueAttributeTypeTest
         assertTrue( value1.equals( value3 ) );
         assertFalse( value1.equals( value4 ) );
         assertFalse( value1.equals( value5 ) );
-        assertFalse( value1.equals( "test" ) );
+        assertTrue( value1.equals( "test" ) );
         assertFalse( value1.equals( null ) );
 
         assertFalse( value1.equals( valueString ) );
