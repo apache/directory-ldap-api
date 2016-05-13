@@ -1164,6 +1164,73 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
             return true;
         }
 
+        if ( obj instanceof String )
+        {
+            String other = ( String ) obj;
+            
+            if ( !isHR )
+            {
+                return false;
+            }
+            
+            if ( attributeType == null )
+            {
+                if ( upValue != null )
+                {
+                    return upValue.equals( other );
+                }
+                else
+                {
+                    return obj == null;
+                }
+            }
+            else
+            {
+                // Use the comparator
+                // We have an AttributeType, we use the associated comparator
+                try
+                {
+                    LdapComparator<String> comparator = ( LdapComparator<String> ) getLdapComparator();
+                    
+                    Normalizer normalizer = null;
+                    
+                    if ( attributeType.getEquality() != null )
+                    {
+                        normalizer = attributeType.getEquality().getNormalizer();
+                    }
+
+                    if ( normalizer == null )
+                    {
+                        if ( comparator == null )
+                        {
+                            return normValue.equals( other );
+                        }
+                        else
+                        {
+                            return comparator.compare( normValue, other ) == 0;
+                        }
+                    }
+                    
+                    String thisNormValue = normalizer.normalize( normValue );
+                    String otherNormValue = normalizer.normalize( other );
+                        
+                    // Compare normalized values
+                    if ( comparator == null )
+                    {
+                        return thisNormValue.equals( otherNormValue );
+                    }
+                    else
+                    {
+                        return comparator.compare( thisNormValue, otherNormValue ) == 0;
+                    }
+                }
+                catch ( LdapException ne )
+                {
+                    return false;
+                }
+            }
+        }
+        
         if ( !( obj instanceof Value ) )
         {
             return false;
@@ -1209,7 +1276,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         // Ok, now, let's see if we have an AttributeType at all. If both have one,
         // and if they aren't equal, then we get out. If one of them has an AttributeType and
         // not the other, we will assume that this is the AttributeType to use.
-        MatchingRule equalityMR = null;
+        MatchingRule equalityMR;
         
         if ( attributeType == null )
         {
@@ -1304,20 +1371,13 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
             }
             
             // No attributeType
-            if ( isHR )
+            if ( normValue == null )
             {
-                if ( normValue == null )
-                {
-                    return other.normValue == null;
-                }
-                else
-                {
-                    return normValue.equals( other.normValue );
-                }
+                return other.normValue == null;
             }
             else
             {
-                return Arrays.equals( bytes, other.bytes );
+                return normValue.equals( other.normValue );
             }
         }
     }
