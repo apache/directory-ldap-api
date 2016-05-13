@@ -104,7 +104,7 @@ public class LdapResultImpl implements LdapResult
     {
         this.resultCode = resultCode;
 
-        isDefaultSuccess = isDefaultSuccess & ( resultCode == ResultCodeEnum.SUCCESS );
+        isDefaultSuccess = isDefaultSuccess && ( resultCode == ResultCodeEnum.SUCCESS );
     }
 
 
