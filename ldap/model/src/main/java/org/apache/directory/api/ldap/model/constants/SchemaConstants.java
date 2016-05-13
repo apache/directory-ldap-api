@@ -29,15 +29,6 @@ package org.apache.directory.api.ldap.model.constants;
  */
 public final class SchemaConstants
 {
-    /**
-     *  Ensures no construction of this class, also ensures there is no need for final keyword above
-     *  (Implicit super constructor is not visible for default constructor),
-     *  but is still self documenting.
-     */
-    private SchemaConstants()
-    {
-    }
-
     // SchemaEntity names
     public static final String ATTRIBUTE_TYPE = "AttributeType";
     public static final String COMPARATOR = "Comparator";
@@ -2218,4 +2209,13 @@ public final class SchemaConstants
     // TriggerExecutionInnerArea
     public static final String TRIGGER_EXECUTION_INNER_AREA = "triggerExecutionInnerArea";
     public static final String TRIGGER_EXECUTION_INNER_AREA_OID = "1.3.6.1.4.1.18060.0.4.1.6.2";
+
+    /**
+     *  Ensures no construction of this class, also ensures there is no need for final keyword above
+     *  (Implicit super constructor is not visible for default constructor),
+     *  but is still self documenting.
+     */
+    private SchemaConstants()
+    {
+    }
 }

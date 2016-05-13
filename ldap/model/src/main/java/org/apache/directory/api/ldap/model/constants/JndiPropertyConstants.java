@@ -30,15 +30,6 @@ package org.apache.directory.api.ldap.model.constants;
  */
 public final class JndiPropertyConstants
 {
-    /**
-     *  Ensures no construction of this class, also ensures there is no need for final keyword above
-     *  (Implicit super constructor is not visible for default constructor),
-     *  but is still self documenting.
-     */
-    private JndiPropertyConstants()
-    {
-    }
-
     // Pure JNDI properties
     /** Batch size of search results returned */
     public static final String JNDI_BATCHSIZE = "java.naming.batchsize";
@@ -143,4 +134,13 @@ public final class JndiPropertyConstants
 
     /** Tells if the SASL mechanism accept or not anonymous connections */
     public static final String JNDI_SASL_POLICY_NO_ANONYMOUS = "javax.security.sasl.policy.noanonymous";
+    
+    /**
+     *  Ensures no construction of this class, also ensures there is no need for final keyword above
+     *  (Implicit super constructor is not visible for default constructor),
+     *  but is still self documenting.
+     */
+    private JndiPropertyConstants()
+    {
+    }
 }

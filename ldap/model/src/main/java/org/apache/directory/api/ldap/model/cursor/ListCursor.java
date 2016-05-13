@@ -94,7 +94,7 @@ public class ListCursor<E> extends AbstractCursor<E>
 
         // check list is not empty list since the empty list is the only situation
         // where we allow for start to equal the end: in other cases it makes no sense
-        if ( ( list.size() > 0 ) && ( start >= end ) )
+        if ( !list.isEmpty() && ( start >= end ) )
         {
             throw new IllegalArgumentException( I18n.err( I18n.ERR_02007_START_INDEX_ABOVE_END_INDEX, start, end ) );
         }
@@ -238,6 +238,7 @@ public class ListCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean available()
     {
         return index >= 0 && index < end;
@@ -247,6 +248,7 @@ public class ListCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void before( E element ) throws LdapException, CursorException
     {
         checkNotClosed( "before()" );
@@ -257,7 +259,7 @@ public class ListCursor<E> extends AbstractCursor<E>
         }
 
         // handle some special cases
-        if ( list.size() == 0 )
+        if ( list.isEmpty() )
         {
             return;
         }
@@ -280,6 +282,7 @@ public class ListCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void after( E element ) throws LdapException, CursorException
     {
         checkNotClosed( "after()" );
@@ -290,7 +293,7 @@ public class ListCursor<E> extends AbstractCursor<E>
         }
 
         // handle some special cases
-        if ( list.size() == 0 )
+        if ( list.isEmpty() )
         {
             return;
         }
@@ -313,6 +316,7 @@ public class ListCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void beforeFirst() throws LdapException, CursorException
     {
         checkNotClosed( "beforeFirst()" );
@@ -323,6 +327,7 @@ public class ListCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void afterLast() throws LdapException, CursorException
     {
         checkNotClosed( "afterLast()" );
@@ -333,11 +338,12 @@ public class ListCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean first() throws LdapException, CursorException
     {
         checkNotClosed( "first()" );
 
-        if ( list.size() > 0 )
+        if ( !list.isEmpty() )
         {
             index = start;
 
@@ -351,11 +357,12 @@ public class ListCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean last() throws LdapException, CursorException
     {
         checkNotClosed( "last()" );
 
-        if ( list.size() > 0 )
+        if ( !list.isEmpty() )
         {
             index = end - 1;
 
@@ -372,7 +379,7 @@ public class ListCursor<E> extends AbstractCursor<E>
     @Override
     public boolean isFirst()
     {
-        return list.size() > 0 && index == start;
+        return !list.isEmpty() && index == start;
     }
 
 
@@ -382,7 +389,7 @@ public class ListCursor<E> extends AbstractCursor<E>
     @Override
     public boolean isLast()
     {
-        return list.size() > 0 && index == end - 1;
+        return !list.isEmpty() && index == end - 1;
     }
 
 
@@ -409,6 +416,7 @@ public class ListCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean previous() throws LdapException, CursorException
     {
         checkNotClosed( "previous()" );
@@ -435,7 +443,7 @@ public class ListCursor<E> extends AbstractCursor<E>
             return false;
         }
 
-        if ( list.size() <= 0 )
+        if ( list.isEmpty() )
         {
             index = -1;
         }
@@ -447,12 +455,13 @@ public class ListCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean next() throws LdapException, CursorException
     {
         checkNotClosed( "next()" );
 
         // if parked at -1 we advance to the start index and return true
-        if ( ( list.size() > 0 ) && ( index == -1 ) )
+        if ( !list.isEmpty() && ( index == -1 ) )
         {
             index = start;
 
@@ -460,7 +469,7 @@ public class ListCursor<E> extends AbstractCursor<E>
         }
 
         // if the index plus one is less than the end then increment and return true
-        if ( ( list.size() > 0 ) && ( index + 1 < end ) )
+        if ( !list.isEmpty() && ( index + 1 < end ) )
         {
             index++;
 
@@ -468,14 +477,14 @@ public class ListCursor<E> extends AbstractCursor<E>
         }
 
         // if the index plus one is equal to the end then increment and return false
-        if ( ( list.size() > 0 ) && ( index + 1 == end ) )
+        if ( !list.isEmpty() && ( index + 1 == end ) )
         {
             index++;
 
             return false;
         }
 
-        if ( list.size() <= 0 )
+        if ( list.isEmpty() )
         {
             index = end;
         }
@@ -487,6 +496,7 @@ public class ListCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public E get() throws CursorException
     {
         checkNotClosed( "get()" );

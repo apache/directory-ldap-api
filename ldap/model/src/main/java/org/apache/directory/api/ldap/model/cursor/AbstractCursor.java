@@ -40,6 +40,7 @@ public abstract class AbstractCursor<E> implements Cursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setClosureMonitor( ClosureMonitor monitor )
     {
         if ( monitor == null )
@@ -66,6 +67,7 @@ public abstract class AbstractCursor<E> implements Cursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isClosed()
     {
         return monitor.isClosed();
@@ -75,6 +77,7 @@ public abstract class AbstractCursor<E> implements Cursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void close( Exception cause ) throws IOException
     {
         monitor.close( cause );
@@ -84,6 +87,7 @@ public abstract class AbstractCursor<E> implements Cursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void close() throws IOException
     {
         monitor.close();
@@ -93,15 +97,17 @@ public abstract class AbstractCursor<E> implements Cursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<E> iterator()
     {
-        return new CursorIterator<E>( this );
+        return new CursorIterator<>( this );
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isAfterLast()
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
@@ -112,6 +118,7 @@ public abstract class AbstractCursor<E> implements Cursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isBeforeFirst()
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
@@ -122,6 +129,7 @@ public abstract class AbstractCursor<E> implements Cursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isFirst()
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
@@ -132,6 +140,7 @@ public abstract class AbstractCursor<E> implements Cursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isLast()
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
@@ -142,6 +151,7 @@ public abstract class AbstractCursor<E> implements Cursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString( String tabs )
     {
         return tabs;

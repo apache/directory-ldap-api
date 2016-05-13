@@ -29,15 +29,6 @@ package org.apache.directory.api.ldap.model.constants;
  */
 public final class SupportedSaslMechanisms
 {
-    /**
-     *  Ensures no construction of this class, also ensures there is no need for final keyword above
-     *  (Implicit super constructor is not visible for default constructor),
-     *  but is still self documenting.
-     */
-    private SupportedSaslMechanisms()
-    {
-    }
-
     /** CRAM-MD5 mechanism */
     public static final String CRAM_MD5 = "CRAM-MD5";
 
@@ -55,4 +46,13 @@ public final class SupportedSaslMechanisms
 
     /** Not a SASL JDK supported mechanism */
     public static final String GSS_SPNEGO = "GSS-SPNEGO";
+
+    /**
+     *  Ensures no construction of this class, also ensures there is no need for final keyword above
+     *  (Implicit super constructor is not visible for default constructor),
+     *  but is still self documenting.
+     */
+    private SupportedSaslMechanisms()
+    {
+    }
 }

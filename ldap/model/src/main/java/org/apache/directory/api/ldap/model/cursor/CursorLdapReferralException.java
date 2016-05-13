@@ -38,7 +38,7 @@ public class CursorLdapReferralException extends CursorException
     public static final CursorLdapReferralException INSTANCE = new CursorLdapReferralException( null );
 
     /** The contained referralException */
-    private LdapReferralException ldapReferralException;
+    private final LdapReferralException ldapReferralException;
 
 
     /**

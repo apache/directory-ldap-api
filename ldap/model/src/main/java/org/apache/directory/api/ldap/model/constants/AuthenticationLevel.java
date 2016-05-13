@@ -98,6 +98,7 @@ public enum AuthenticationLevel
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         return name;

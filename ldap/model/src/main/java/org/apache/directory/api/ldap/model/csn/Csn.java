@@ -589,6 +589,7 @@ public class Csn implements Comparable<Csn>
     /**
      * @return The CSN as a String
      */
+    @Override
     public String toString()
     {
         if ( csnStr == null )
@@ -632,6 +633,7 @@ public class Csn implements Comparable<Csn>
      * 
      * @return a hash code value for this object.
      */
+    @Override
     public int hashCode()
     {
         int h = 37;
@@ -652,6 +654,7 @@ public class Csn implements Comparable<Csn>
      * @return <code>true</code> if this object is the same as the obj argument; 
      * <code>false</code> otherwise.
      */
+    @Override
     public boolean equals( Object o )
     {
         if ( this == o )
@@ -680,6 +683,7 @@ public class Csn implements Comparable<Csn>
      * @return  a negative integer, zero, or a positive integer as this object
      *      is less than, equal to, or greater than the specified object.
      */
+    @Override
     public int compareTo( Csn csn )
     {
         if ( csn == null )

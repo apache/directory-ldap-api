@@ -29,15 +29,6 @@ package org.apache.directory.api.ldap.model.constants;
 //This will suppress PMD.AvoidUsingHardCodedIP warnings in this class
 public final class MetaSchemaConstants
 {
-    /**
-     *  Ensures no construction of this class, also ensures there is no need for final keyword above
-     *  (Implicit super constructor is not visible for default constructor),
-     *  but is still self documenting.
-     */
-    private MetaSchemaConstants()
-    {
-    }
-
     public static final String SCHEMA_NAME = "apachemeta";
     public static final String SCHEMA_OTHER = "other";
 
@@ -182,4 +173,13 @@ public final class MetaSchemaConstants
     // The x-read-only extension
     public static final String X_READ_ONLY_AT = "X-READ-ONLY";
     public static final String X_READ_ONLY_AT_OID = "1.3.6.1.4.1.18060.0.4.0.2.36";
+
+    /**
+     *  Ensures no construction of this class, also ensures there is no need for final keyword above
+     *  (Implicit super constructor is not visible for default constructor),
+     *  but is still self documenting.
+     */
+    private MetaSchemaConstants()
+    {
+    }
 }

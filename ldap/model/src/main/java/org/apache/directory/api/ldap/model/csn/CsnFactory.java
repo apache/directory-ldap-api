@@ -57,7 +57,7 @@ public class CsnFactory
      */
     public Csn newInstance()
     {
-        int tmpChangeCount = 0;
+        int tmpChangeCount;
 
         synchronized ( lock )
         {
