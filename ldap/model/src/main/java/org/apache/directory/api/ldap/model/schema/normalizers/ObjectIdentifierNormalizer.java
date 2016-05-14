@@ -24,6 +24,7 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.PrepareString;
+import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.util.Strings;
 
 
@@ -35,6 +36,9 @@ import org.apache.directory.api.util.Strings;
 @SuppressWarnings("serial")
 public class ObjectIdentifierNormalizer extends Normalizer
 {
+    /** A reference to the schema manager used to normalize the Name */
+    private SchemaManager schemaManager;
+
     /**
      * Creates a new instance of ObjectIdentifierNormalizer.
      */
@@ -48,9 +52,24 @@ public class ObjectIdentifierNormalizer extends Normalizer
      * {@inheritDoc}
      */
     @Override
+    public void setSchemaManager( SchemaManager schemaManager )
+    {
+        this.schemaManager = schemaManager;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String normalize( String value ) throws LdapException
     {
-        return normalize( value, PrepareString.AssertionType.ATTRIBUTE_VALUE );
+        if ( Strings.isEmpty( value ) )
+        {
+            return "";
+        }
+        
+        return schemaManager.getRegistries().getOid( value.trim() );
     }
 
 
@@ -67,18 +86,6 @@ public class ObjectIdentifierNormalizer extends Normalizer
 
         String str = value.trim();
 
-        if ( str.length() == 0 )
-        {
-            return "";
-        }
-        else if ( Character.isDigit( str.charAt( 0 ) ) )
-        {
-            // We do this test to avoid a lowerCasing which cost time
-            return str;
-        }
-        else
-        {
-            return Strings.toLowerCaseAscii( str );
-        }
+        return schemaManager.getRegistries().getOid( str );
     }
 }

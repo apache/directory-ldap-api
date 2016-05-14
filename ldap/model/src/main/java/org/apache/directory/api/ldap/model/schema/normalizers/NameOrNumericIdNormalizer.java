@@ -34,7 +34,7 @@ import org.apache.directory.api.util.Strings;
 /**
  * A name or numeric id normalizer.  Needs an OID registry to operate properly.
  * The OID registry is injected into this class after instantiation if a 
- * setRegistries(Registries) method is exposed.
+ * setSchemaManager(SchemaManager) method is exposed.
  * 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
