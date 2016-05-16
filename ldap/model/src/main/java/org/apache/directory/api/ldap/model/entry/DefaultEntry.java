@@ -67,13 +67,13 @@ public final class DefaultEntry implements Entry
     private Dn dn;
 
     /** A map containing all the attributes for this entry */
-    private Map<String, Attribute> attributes = new HashMap<String, Attribute>();
+    private Map<String, Attribute> attributes = new HashMap<>();
 
     /** A speedup to get the ObjectClass attribute */
     private static AttributeType objectClassAttributeType;
 
     /** The SchemaManager */
-    private SchemaManager schemaManager;
+    private transient SchemaManager schemaManager;
 
     /** The computed hashcode. We don't want to compute it each time the hashcode() method is called */
     private volatile int h;
@@ -300,7 +300,7 @@ public final class DefaultEntry implements Entry
         }
 
         // Init the attributes map
-        attributes = new HashMap<String, Attribute>( entry.size() );
+        attributes = new HashMap<>( entry.size() );
 
         // and copy all the attributes
         for ( Attribute attribute : entry )
@@ -348,7 +348,7 @@ public final class DefaultEntry implements Entry
                 if ( !( element instanceof String ) )
                 {
                     throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                        I18n.ERR_12085, ( pos + 1 ) ) );
+                        I18n.ERR_12085, pos + 1 ) );
                 }
 
                 String attribute = ( String ) element;
@@ -378,7 +378,7 @@ public final class DefaultEntry implements Entry
                 else
                 {
                     throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                        I18n.ERR_12086, ( pos + 1 ) ) );
+                        I18n.ERR_12086, pos + 1 ) );
                 }
 
                 valueExpected = false;
@@ -396,9 +396,8 @@ public final class DefaultEntry implements Entry
         try
         {
             reader = new LdifAttributesReader();
-            Entry entry = reader.parseEntry( schemaManager, sb.toString() );
 
-            return entry;
+            return reader.parseEntry( schemaManager, sb.toString() );
         }
         finally
         {
@@ -411,7 +410,6 @@ public final class DefaultEntry implements Entry
             }
             catch ( IOException e )
             {
-                e.printStackTrace();
             }
         }
     }
@@ -445,7 +443,7 @@ public final class DefaultEntry implements Entry
     {
         String normUpId = Strings.trim( upId );
 
-        if ( ( attributeType == null ) )
+        if ( attributeType == null )
         {
             if ( Strings.isEmpty( normUpId ) )
             {
@@ -656,6 +654,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry add( AttributeType attributeType, String... values ) throws LdapException
     {
         if ( attributeType == null )
@@ -688,6 +687,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry add( AttributeType attributeType, Value... values ) throws LdapException
     {
         if ( attributeType == null )
@@ -755,6 +755,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry add( String upId, AttributeType attributeType, Value... values ) throws LdapException
     {
         if ( attributeType == null )
@@ -787,6 +788,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry add( String upId, AttributeType attributeType, String... values ) throws LdapException
     {
         if ( attributeType == null )
@@ -821,6 +823,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry add( Attribute... attributes ) throws LdapException
     {
         // Loop on all the added attributes
@@ -924,6 +927,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry add( String upId, String... values ) throws LdapException
     {
         if ( Strings.isEmpty( upId ) )
@@ -968,6 +972,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry add( String upId, Value... values ) throws LdapException
     {
         if ( Strings.isEmpty( upId ) )
@@ -1014,6 +1019,7 @@ public final class DefaultEntry implements Entry
      * the original object won't affect the cloned object, as a modification
      * on the cloned object has no impact on the original object
      */
+    @Override
     public Entry clone()
     {
         // First, clone the structure
@@ -1048,6 +1054,7 @@ public final class DefaultEntry implements Entry
      * Shallow clone an entry. We don't clone the Attributes
      */
     @SuppressWarnings("unchecked")
+    @Override
     public Entry shallowClone()
     {
         try
@@ -1076,6 +1083,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( Attribute... attributes )
     {
         if ( schemaManager == null )
@@ -1118,6 +1126,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean containsAttribute( String... attributes )
     {
         if ( schemaManager == null )
@@ -1159,6 +1168,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean containsAttribute( AttributeType attributeType )
     {
         if ( attributeType == null )
@@ -1196,6 +1206,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( AttributeType attributeType, String... values )
     {
         if ( attributeType == null )
@@ -1219,6 +1230,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( AttributeType attributeType, Value... values )
     {
         if ( attributeType == null )
@@ -1277,6 +1289,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( String upId, String... values )
     {
         if ( Strings.isEmpty( upId ) )
@@ -1312,6 +1325,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( String upId, Value... values )
     {
         if ( Strings.isEmpty( upId ) )
@@ -1347,6 +1361,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute get( String alias )
     {
         try
@@ -1384,6 +1399,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute get( AttributeType attributeType )
     {
         if ( attributeType != null )
@@ -1400,6 +1416,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Collection<Attribute> getAttributes()
     {
         return Collections.unmodifiableMap( attributes ).values();
@@ -1448,6 +1465,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute put( String upId, String... values )
     {
         if ( Strings.isEmpty( upId ) )
@@ -1487,6 +1505,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute put( String upId, Value... values )
     {
         if ( Strings.isEmpty( upId ) )
@@ -1563,10 +1582,11 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Attribute> put( Attribute... attributes ) throws LdapException
     {
         // First, get the existing attributes
-        List<Attribute> previous = new ArrayList<Attribute>();
+        List<Attribute> previous = new ArrayList<>();
 
         if ( schemaManager == null )
         {
@@ -1628,6 +1648,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute put( AttributeType attributeType, String... values ) throws LdapException
     {
         return put( null, attributeType, values );
@@ -1637,6 +1658,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute put( AttributeType attributeType, Value... values ) throws LdapException
     {
         return put( null, attributeType, values );
@@ -1696,6 +1718,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute put( String upId, AttributeType attributeType, String... values ) throws LdapException
     {
         if ( attributeType == null )
@@ -1739,6 +1762,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute put( String upId, AttributeType attributeType, Value... values ) throws LdapException
     {
         if ( attributeType == null )
@@ -1782,9 +1806,10 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Attribute> remove( Attribute... attributes ) throws LdapException
     {
-        List<Attribute> removedAttributes = new ArrayList<Attribute>();
+        List<Attribute> removedAttributes = new ArrayList<>();
 
         if ( schemaManager == null )
         {
@@ -1868,6 +1893,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean remove( AttributeType attributeType, String... values ) throws LdapException
     {
         if ( attributeType == null )
@@ -1911,6 +1937,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean remove( AttributeType attributeType, Value... values ) throws LdapException
     {
         if ( attributeType == null )
@@ -1966,6 +1993,7 @@ public final class DefaultEntry implements Entry
      * @param attributes the AttributeTypes to be removed
      * @return the removed attributes, if any, as a list; otherwise <code>null</code>
      */
+    @Override
     public void removeAttributes( AttributeType... attributes )
     {
         if ( ( attributes == null ) || ( attributes.length == 0 ) || ( schemaManager == null ) )
@@ -1988,6 +2016,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeAttributes( String... attributes )
     {
         if ( attributes.length == 0 )
@@ -2137,6 +2166,7 @@ public final class DefaultEntry implements Entry
      * @return <code>true</code> if at least a value is removed, <code>false</code>
      * if not all the values have been removed or if the attribute does not exist.
      */
+    @Override
     public boolean remove( String upId, String... values ) throws LdapException
     {
         if ( Strings.isEmpty( upId ) )
@@ -2216,6 +2246,7 @@ public final class DefaultEntry implements Entry
      * @return <code>true</code> if at least a value is removed, <code>false</code>
      * if not all the values have been removed or if the attribute does not exist.
      */
+    @Override
     public boolean remove( String upId, Value... values ) throws LdapException
     {
         if ( Strings.isEmpty( upId ) )
@@ -2279,6 +2310,7 @@ public final class DefaultEntry implements Entry
      *
      * @return The entry's Dn
      */
+    @Override
     public Dn getDn()
     {
         return dn;
@@ -2288,6 +2320,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setDn( Dn dn )
     {
         this.dn = dn;
@@ -2300,6 +2333,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setDn( String dn ) throws LdapInvalidDnException
     {
         setDn( new Dn( dn ) );
@@ -2309,6 +2343,7 @@ public final class DefaultEntry implements Entry
     /**
      * Remove all the attributes for this entry. The Dn is not reset
      */
+    @Override
     public void clear()
     {
         attributes.clear();
@@ -2322,6 +2357,7 @@ public final class DefaultEntry implements Entry
      *
      * @return an enumeration of all contained attributes
      */
+    @Override
     public Iterator<Attribute> iterator()
     {
         return Collections.unmodifiableMap( attributes ).values().iterator();
@@ -2333,6 +2369,7 @@ public final class DefaultEntry implements Entry
      *
      * @return the number of attributes
      */
+    @Override
     public int size()
     {
         return attributes.size();
@@ -2358,6 +2395,7 @@ public final class DefaultEntry implements Entry
      * 
      * {@inheritDoc}
      */
+    @Override
     public void writeExternal( ObjectOutput out ) throws IOException
     {
         // First, the Dn
@@ -2390,6 +2428,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void readExternal( ObjectInput in ) throws IOException, ClassNotFoundException
     {
         // Read the Dn
@@ -2437,6 +2476,7 @@ public final class DefaultEntry implements Entry
      * @see java.lang.Object#hashCode()
      * @return the instance's hash code
      */
+    @Override
     public int hashCode()
     {
         if ( h == 0 )
@@ -2451,6 +2491,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasObjectClass( String... objectClasses )
     {
         if ( ( objectClasses == null ) || ( objectClasses.length == 0 ) || ( objectClasses[0] == null ) )
@@ -2483,6 +2524,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasObjectClass( Attribute... objectClasses )
     {
         if ( ( objectClasses == null ) || ( objectClasses.length == 0 ) || ( objectClasses[0] == null ) )
@@ -2523,6 +2565,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isSchemaAware()
     {
         return schemaManager != null;
@@ -2532,6 +2575,7 @@ public final class DefaultEntry implements Entry
     /**
      * @see Object#equals(Object)
      */
+    @Override
     public boolean equals( Object o )
     {
         // Short circuit
@@ -2585,6 +2629,7 @@ public final class DefaultEntry implements Entry
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         return toString( "" );
@@ -2594,6 +2639,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString( String tabs )
     {
         StringBuilder sb = new StringBuilder();

@@ -518,8 +518,6 @@ public final class AttributeUtils
         if ( Chars.isAlpha( b ) )
         {
             // A DESCR
-            //pos.start++;
-
             while ( Chars.isAlphaDigitMinus( bytes, pos.start ) || ( relaxed && Strings.isCharASCII( bytes, pos.start, '_' ) ) )
             {
                 pos.start++;
@@ -535,9 +533,6 @@ public final class AttributeUtils
         }
         else if ( Chars.isDigit( b ) )
         {
-            // An OID
-            //pos.start++;
-
             // Parse the OID
             parseOID( bytes, pos );
 

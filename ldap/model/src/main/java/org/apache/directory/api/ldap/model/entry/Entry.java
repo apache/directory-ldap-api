@@ -147,6 +147,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      *
      * @return an iterator on top of all contained attributes
      */
+    @Override
     Iterator<Attribute> iterator();
 
 
