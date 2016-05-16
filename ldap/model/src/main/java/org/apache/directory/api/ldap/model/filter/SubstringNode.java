@@ -28,6 +28,7 @@ import java.util.regex.PatternSyntaxException;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
+import org.apache.directory.api.ldap.model.schema.PrepareString;
 
 
 /**
@@ -59,7 +60,7 @@ public class SubstringNode extends LeafNode
     {
         super( attributeType, AssertionType.SUBSTRING );
 
-        anyPattern = new ArrayList<String>( 2 );
+        anyPattern = new ArrayList<>( 2 );
         this.finalPattern = finalPattern;
         this.initialPattern = initialPattern;
     }
@@ -308,7 +309,7 @@ public class SubstringNode extends LeafNode
 
             for ( int i = 0; i < any.length; i++ )
             {
-                any[i] = ( String ) normalizer.normalize( anyPattern.get( i ) );
+                any[i] = ( String ) normalizer.normalize( anyPattern.get( i ), PrepareString.AssertionType.SUBSTRING_ANY );
 
                 if ( any[i].length() == 0 )
                 {
@@ -320,14 +321,14 @@ public class SubstringNode extends LeafNode
 
             if ( initialPattern != null )
             {
-                initialStr = ( String ) normalizer.normalize( initialPattern );
+                initialStr = ( String ) normalizer.normalize( initialPattern, PrepareString.AssertionType.SUBSTRING_INITIAL );
             }
 
             String finalStr = null;
 
             if ( finalPattern != null )
             {
-                finalStr = ( String ) normalizer.normalize( finalPattern );
+                finalStr = normalizer.normalize( finalPattern, PrepareString.AssertionType.SUBSTRING_FINAL );
             }
 
             return getRegex( initialStr, any, finalStr );
@@ -337,14 +338,14 @@ public class SubstringNode extends LeafNode
 
         if ( initialPattern != null )
         {
-            initialStr = ( String ) normalizer.normalize( initialPattern );
+            initialStr = normalizer.normalize( initialPattern, PrepareString.AssertionType.SUBSTRING_INITIAL );
         }
 
         String finalStr = null;
 
         if ( finalPattern != null )
         {
-            finalStr = ( String ) normalizer.normalize( finalPattern );
+            finalStr = normalizer.normalize( finalPattern, PrepareString.AssertionType.SUBSTRING_FINAL );
         }
 
         return getRegex( initialStr, null, finalStr );
