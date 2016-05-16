@@ -1869,10 +1869,25 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
             default :
                 // Loop on all the Avas. As we have more than one,
                 // we have to order them by their AttributeType.
-                /*if ( isSchemaAware() )
+                /*
+                if ( isSchemaAware() )
                 {
-                    
-                }*/
+                    for ( Ava otherAva : otherRdn )
+                    {
+                        List<Ava> attributeAvas = avaTypes.get( otherAva.getAttributeType().getOid() );
+                        boolean found = false;
+                        
+                        for ( Ava thisAva : attributeAvas )
+                        {
+                            if ( thisAva.compareTo( otherAva ) == 0 )
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                */
                 
                 int pos = 0;
                 

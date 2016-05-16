@@ -4059,8 +4059,8 @@ public final class PrepareString
     {
         if ( origin == null )
         {
-            // Special case : a null strings is replaced by 2 spaces
-            return "  ";
+            // Special case : a null strings is replaced by 1 spaces
+            return " ";
         }
 
         int pos = 0;
@@ -4081,7 +4081,7 @@ public final class PrepareString
                     if ( pos == origin.length )
                     {
                         // We are done, it's an empty string
-                        return "  ";
+                        return " ";
                     }
                     
                     char c = origin[pos];
@@ -4093,10 +4093,7 @@ public final class PrepareString
                     }
                     else
                     {
-                        // First add a space
-                        target[newPos++] = ' ';
-                        
-                        // Then the char
+                        // Add the char
                         target[newPos++] = c;
                         
                         pos++;
@@ -4137,7 +4134,7 @@ public final class PrepareString
                     if ( pos == origin.length )
                     {
                         // We are done, this is an empty String
-                        return "  ";
+                        return " ";
                     }
                     
                     c = origin[pos];
