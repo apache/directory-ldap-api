@@ -65,7 +65,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     private AliasDerefMode aliasDerefMode = AliasDerefMode.DEREF_ALWAYS;
 
     /** Attributes to return */
-    private List<String> attributes = new ArrayList<String>();
+    private List<String> attributes = new ArrayList<>();
 
     /** The final result containing SearchResponseDone response */
     private SearchResultDone response;

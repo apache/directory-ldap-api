@@ -331,7 +331,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
     public String toString()
     {
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( "    ModifyDN Response\n" );
         sb.append( "        Entry : '" ).append( name ).append( "'\n" );
