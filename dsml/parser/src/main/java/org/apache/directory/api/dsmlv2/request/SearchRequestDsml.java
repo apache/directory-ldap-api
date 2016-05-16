@@ -214,7 +214,7 @@ public class SearchRequestDsml
                 {
                     branch = new OrNode();
                 }
-                else if ( filter instanceof NotFilter )
+                else
                 {
                     branch = new NotNode();
                 }

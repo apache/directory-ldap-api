@@ -154,10 +154,6 @@ public final class ParserUtils
         {
             return false;
         }
-        else if ( value instanceof Value )
-        {
-            return false;
-        }
         else if ( value instanceof byte[] )
         {
             return true;
