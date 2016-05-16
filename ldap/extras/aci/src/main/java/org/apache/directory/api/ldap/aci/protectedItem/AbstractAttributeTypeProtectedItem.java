@@ -82,18 +82,14 @@ public abstract class AbstractAttributeTypeProtectedItem extends ProtectedItem
             return true;
         }
 
-        if ( o == null )
+        if ( !( o instanceof AbstractAttributeTypeProtectedItem ) )
         {
             return false;
         }
 
-        if ( getClass().isAssignableFrom( o.getClass() ) )
-        {
-            AbstractAttributeTypeProtectedItem that = ( AbstractAttributeTypeProtectedItem ) o;
-            return this.attributeTypes.equals( that.attributeTypes );
-        }
+        AbstractAttributeTypeProtectedItem that = ( AbstractAttributeTypeProtectedItem ) o;
 
-        return false;
+        return this.attributeTypes.equals( that.attributeTypes );
     }
 
 

@@ -185,8 +185,8 @@ public abstract class UserClass
             {
                 return true;
             }
-
-            if ( o == null )
+            
+            if ( !( o instanceof NamedUserClass ) )
             {
                 return false;
             }
