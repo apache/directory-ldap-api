@@ -789,8 +789,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( ( ldapSession != null ) && connected.get() )
         {
             ldapSession.close( true );
-            connected.set( false );
         }
+
+        connected.set( false );
 
         // And close the connector if it has been created locally
         // Release the connector
