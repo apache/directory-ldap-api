@@ -256,7 +256,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      */
     public LdifReader()
     {
-        lines = new ArrayList<String>();
+        lines = new ArrayList<>();
         position = 0;
         version = DEFAULT_VERSION;
     }
@@ -267,39 +267,10 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      */
     public LdifReader( SchemaManager schemaManager )
     {
-        lines = new ArrayList<String>();
-        position = 0;
-        version = DEFAULT_VERSION;
-        this.schemaManager = schemaManager;
-    }
-
-
-    /**
-     * Store the reader and intialize the LdifReader
-     */
-    private void initReader( BufferedReader reader ) throws LdapException
-    {
-        this.reader = reader;
-        init();
-    }
-
-
-    /**
-     * Initialize the LdifReader
-     * 
-     * @throws LdapException If the initialization failed
-     */
-    public void init() throws LdapException
-    {
         lines = new ArrayList<>();
         position = 0;
         version = DEFAULT_VERSION;
-        containsChanges = false;
-        containsEntries = false;
-
-        // First get the version - if any -
-        version = parseVersion();
-        prefetched = parseEntry();
+        this.schemaManager = schemaManager;
     }
 
 
@@ -395,6 +366,35 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         {
             throw new LdapLdifException( le.getMessage(), le );
         }
+    }
+
+
+    /**
+     * Store the reader and intialize the LdifReader
+     */
+    private void initReader( BufferedReader reader ) throws LdapException
+    {
+        this.reader = reader;
+        init();
+    }
+
+
+    /**
+     * Initialize the LdifReader
+     * 
+     * @throws LdapException If the initialization failed
+     */
+    public void init() throws LdapException
+    {
+        lines = new ArrayList<>();
+        position = 0;
+        version = DEFAULT_VERSION;
+        containsChanges = false;
+        containsEntries = false;
+
+        // First get the version - if any -
+        version = parseVersion();
+        prefetched = parseEntry();
     }
 
 
@@ -1108,8 +1108,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      * <pre>
      * &lt;changerecord&gt; ::= "changetype:" FILL "modify" SEP &lt;mod-spec&gt; &lt;mod-specs-e&gt;
      * &lt;mod-spec&gt; ::= "add:" &lt;mod-val&gt; | "delete:" &lt;mod-val-del&gt; | "replace:" &lt;mod-val&gt;
-     * &lt;mod-specs-e&gt; ::= &lt;mod-spec&gt;
-     * &lt;mod-specs-e&gt; | e
+     * &lt;mod-specs-e&gt; ::= &lt;mod-spec&gt; | e
      * &lt;mod-val&gt; ::= FILL ATTRIBUTE-DESCRIPTION SEP ATTRVAL-SPEC &lt;attrval-specs-e&gt; "-" SEP
      * &lt;mod-val-del&gt; ::= FILL ATTRIBUTE-DESCRIPTION SEP &lt;attrval-specs-e&gt; "-" SEP
      * &lt;attrval-specs-e&gt; ::= ATTRVAL-SPEC &lt;attrval-specs&gt; | e
@@ -1398,7 +1397,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      */
     protected LdifEntry parseEntry() throws LdapException
     {
-        if ( ( lines == null ) || ( lines.size() == 0 ) )
+        if ( ( lines == null ) || lines.isEmpty() )
         {
             LOG.debug( "The entry is empty : end of ldif file" );
             return null;
@@ -1588,7 +1587,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         // First, read a list of lines
         readLines();
 
-        if ( lines.size() == 0 )
+        if ( lines.isEmpty() )
         {
             LOG.warn( "The ldif file is empty" );
             return ver;
@@ -1632,7 +1631,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             lines.remove( 0 );
 
             // and read the next lines if the current buffer is empty
-            if ( lines.size() == 0 )
+            if ( lines.isEmpty() )
             {
                 // include the version line as part of the first entry
                 int tmpEntryLen = entryLen;
@@ -1681,7 +1680,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         entryLen = 0;
         entryOffset = offset;
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         try
         {
@@ -1741,7 +1740,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                             lines.add( sb.toString() );
                         }
 
-                        sb = new StringBuffer( line );
+                        sb = new StringBuilder( line );
                         insideComment = false;
                         break;
                 }
@@ -1852,7 +1851,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
         if ( Strings.isEmpty( ldif ) )
         {
-            return new ArrayList<LdifEntry>();
+            return new ArrayList<>();
         }
 
         BufferedReader bufferReader = new BufferedReader( new StringReader( ldif ) );
@@ -2015,16 +2014,19 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     /**
      * @return An iterator on the file
      */
+    @Override
     public Iterator<LdifEntry> iterator()
     {
         return new Iterator<LdifEntry>()
         {
+            @Override
             public boolean hasNext()
             {
                 return hasNextInternal();
             }
 
 
+            @Override
             public LdifEntry next()
             {
                 try
@@ -2039,6 +2041,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             }
 
 
+            @Override
             public void remove()
             {
                 throw new UnsupportedOperationException();
@@ -2076,7 +2079,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     public List<LdifEntry> parseLdif( BufferedReader reader ) throws LdapException
     {
         // Create a list that will contain the read entries
-        List<LdifEntry> entries = new ArrayList<LdifEntry>();
+        List<LdifEntry> entries = new ArrayList<>();
 
         this.reader = reader;
 
@@ -2168,6 +2171,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     /**
      * {@inheritDoc}
      */
+    @Override
     public void close() throws IOException
     {
         if ( reader != null )
