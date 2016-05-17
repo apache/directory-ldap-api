@@ -30,6 +30,7 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.util.Strings;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -692,5 +693,109 @@ public class DnParserTest
     public void testSameAttributeInDn() throws LdapInvalidDnException
     {
         //Dn dn = new Dn( "l=eu + l=de + l=Berlin + l=Brandenburger Tor,dc=example,dc=org" );
+    }
+    
+    
+    @Test
+    @Ignore
+    public void testDnParsing() throws LdapInvalidDnException
+    {
+        long[] deltas = new long[10];
+        
+        for ( int j = 0; j < 10; j++ )
+        {
+            long t0 = System.currentTimeMillis();
+            
+            for ( int i = 0; i < 10000000; i++ )
+            {
+                new Dn( "dc=example" + i );
+            }
+            
+            long t1 = System.currentTimeMillis();
+            
+            deltas[j] = t1 - t0;
+            System.out.println( "Iteration[" + j + "] : " + deltas[j] );
+        }
+        
+        long allDeltas = 0L;
+        
+        for ( int i = 0; i < 10; i++ )
+        {
+            allDeltas += deltas[i];
+        }
+        
+        System.out.println( "delta new 1 RDN : " + ( allDeltas / 10 ) );
+
+        for ( int j = 0; j < 10; j++ )
+        {
+            long t0 = System.currentTimeMillis();
+            
+            for ( int i = 0; i < 10000000; i++ )
+            {
+                new Dn( "dc=example" + i + ",dc=com" );
+            }
+            
+            long t1 = System.currentTimeMillis();
+            
+            deltas[j] = t1 - t0;
+            System.out.println( "Iteration[" + j + "] : " + deltas[j] );
+        }
+        
+        allDeltas = 0L;
+        
+        for ( int i = 0; i < 10; i++ )
+        {
+            allDeltas += deltas[i];
+        }
+        
+        System.out.println( "delta new 2 RDNs : " + ( allDeltas / 10 ) );
+
+        for ( int j = 0; j < 10; j++ )
+        {
+            long t0 = System.currentTimeMillis();
+            
+            for ( int i = 0; i < 10000000; i++ )
+            {
+                new Dn( "uid=" + i + ",dc=example,dc=com" );
+            }
+            
+            long t1 = System.currentTimeMillis();
+            
+            deltas[j] = t1 - t0;
+            System.out.println( "Iteration[" + j + "] : " + deltas[j] );
+        }
+        
+        allDeltas = 0L;
+        
+        for ( int i = 0; i < 10; i++ )
+        {
+            allDeltas += deltas[i];
+        }
+        
+        System.out.println( "delta new 3 RDNs : " + ( allDeltas / 10 ) );
+
+        for ( int j = 0; j < 10; j++ )
+        {
+            long t0 = System.currentTimeMillis();
+            
+            for ( int i = 0; i < 10000000; i++ )
+            {
+                new Dn( "uid=" + i + ",ou=people,dc=example,dc=com" );
+            }
+            
+            long t1 = System.currentTimeMillis();
+            
+            deltas[j] = t1 - t0;
+            System.out.println( "Iteration[" + j + "] : " + deltas[j] );
+        }
+        
+        allDeltas = 0L;
+        
+        for ( int i = 0; i < 10; i++ )
+        {
+            allDeltas += deltas[i];
+        }
+        
+        System.out.println( "delta new 4 RDNs : " + ( allDeltas / 10 ) );
     }
 }
