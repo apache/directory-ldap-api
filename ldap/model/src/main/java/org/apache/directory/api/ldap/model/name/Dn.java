@@ -370,6 +370,8 @@ public class Dn implements Iterable<Rdn>, Externalizable
      */
     public Dn( SchemaManager schemaManager, Rdn... rdns ) throws LdapInvalidDnException
     {
+        this.schemaManager = schemaManager;
+        
         if ( rdns == null )
         {
             return;

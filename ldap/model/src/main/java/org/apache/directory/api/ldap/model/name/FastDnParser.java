@@ -189,7 +189,7 @@ import org.apache.directory.api.util.Position;
         String upName = name.substring( rdnStart, pos.start );
 
         Ava ava = new Ava( schemaManager, type, upValue );
-        rdn.addAVA( null, ava );
+        rdn.addAVA( schemaManager, ava );
 
         rdn.setUpName( upName );
         rdn.hashCode();

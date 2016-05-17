@@ -291,7 +291,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      */
     public void init() throws LdapException
     {
-        lines = new ArrayList<String>();
+        lines = new ArrayList<>();
         position = 0;
         version = DEFAULT_VERSION;
         containsChanges = false;
