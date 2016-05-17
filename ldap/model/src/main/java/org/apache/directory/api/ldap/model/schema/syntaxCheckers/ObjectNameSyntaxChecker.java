@@ -71,7 +71,7 @@ public class ObjectNameSyntaxChecker extends SyntaxChecker
      */
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {

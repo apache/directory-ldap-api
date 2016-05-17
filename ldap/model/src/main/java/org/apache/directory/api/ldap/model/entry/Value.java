@@ -274,7 +274,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
             // Check the value
             if ( attributeType.getSyntax().getSyntaxChecker() != null )
             {
-                if ( !attributeType.getSyntax().getSyntaxChecker().isValidSyntax( normValue ) )
+                if ( !attributeType.getSyntax().getSyntaxChecker().isValidSyntax( upValue ) )
                 {
                     throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, "Invalid upValue per syntax" );
                 }

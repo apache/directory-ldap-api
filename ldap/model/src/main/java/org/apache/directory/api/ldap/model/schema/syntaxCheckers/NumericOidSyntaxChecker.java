@@ -92,7 +92,7 @@ public class NumericOidSyntaxChecker extends SyntaxChecker
         }
 
         // Just check that the value is a valid OID
-        boolean result = ( Oid.isOid( strValue ) );
+        boolean result = Oid.isOid( strValue );
 
         if ( result )
         {

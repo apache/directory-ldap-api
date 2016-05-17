@@ -20,8 +20,12 @@
 package org.apache.directory.api.ldap.model.schema.normalizers;
 
 
+import org.apache.directory.api.asn1.util.Oid;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
+import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.PrepareString;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
@@ -69,7 +73,53 @@ public class ObjectIdentifierNormalizer extends Normalizer
             return "";
         }
         
-        return schemaManager.getRegistries().getOid( value.trim() );
+        String trimmedValue = value.trim();
+        
+        if ( Strings.isEmpty( trimmedValue ) )
+        {
+            return "";
+        }
+
+        String oid = schemaManager.getRegistries().getOid( trimmedValue );
+        
+        if ( oid == null )
+        {
+            // Not found in the schemaManager : keep it as is
+            if ( Oid.isOid( trimmedValue ) )
+            {
+                // It's an numericOid
+                oid = trimmedValue;
+            }
+            else
+            {
+                // It's a descr : ALPHA ( ALPHA | DIGIT | '-' )*
+                for ( int i = 0; i < trimmedValue.length(); i++ )
+                {
+                    char c = trimmedValue.charAt( i );
+                    
+                    if ( i == 0 )
+                    {
+                        if ( !Character.isLetter( c ) )
+                        {
+                            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
+                                I18n.ERR_04224, value ) );
+                        }
+                    }
+                    else
+                    {
+                        if ( !( Character.isDigit( c ) || Character.isLetter( c ) || ( c == '-'  ) || ( c == '_' ) ) )
+                            {
+                            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
+                                I18n.ERR_04224, value ) );
+                            }
+                    }
+                }
+                
+                oid = trimmedValue;
+            }
+        }
+        
+        return oid;
     }
 
 
@@ -79,13 +129,6 @@ public class ObjectIdentifierNormalizer extends Normalizer
     @Override
     public String normalize( String value, PrepareString.AssertionType assertionType ) throws LdapException
     {
-        if ( value == null )
-        {
-            return null;
-        }
-
-        String str = value.trim();
-
-        return schemaManager.getRegistries().getOid( str );
+        return normalize( value );
     }
 }

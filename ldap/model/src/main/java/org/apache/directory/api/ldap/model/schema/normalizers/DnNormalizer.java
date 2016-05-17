@@ -95,6 +95,7 @@ public class DnNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setSchemaManager( SchemaManager schemaManager )
     {
         this.schemaManager = schemaManager;
