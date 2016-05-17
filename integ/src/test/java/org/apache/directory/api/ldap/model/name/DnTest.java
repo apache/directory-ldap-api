@@ -40,6 +40,7 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.apache.directory.api.util.Strings;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -3010,5 +3011,125 @@ public class DnTest
     public void testRdnStudio() throws LdapInvalidDnException
     {
         new Dn( schemaManager, "cn=\\#\\\\\\+\\, \\\"φι\\\",ou=users,ou=system" );
+    }
+    
+    
+    @Test
+    @Ignore
+    public void testDnParsing() throws LdapInvalidDnException
+    {
+        long[] deltas = new long[10];
+        
+        for ( int j = 0; j < 10; j++ )
+        {
+            long t0 = System.currentTimeMillis();
+            
+            for ( int i = 0; i < 10000000; i++ )
+            {
+                new Dn( schemaManager, "dc=example" + i );
+            }
+            
+            long t1 = System.currentTimeMillis();
+            
+            deltas[j] = t1 - t0;
+            System.out.println( "Iteration[" + j + "] : " + deltas[j] );
+        }
+        
+        long allDeltas = 0L;
+        
+        for ( int i = 0; i < 10; i++ )
+        {
+            allDeltas += deltas[i];
+        }
+        
+        System.out.println( "delta new 1 RDN : " + ( allDeltas / 10 ) );
+
+        for ( int j = 0; j < 10; j++ )
+        {
+            long t0 = System.currentTimeMillis();
+            
+            for ( int i = 0; i < 10000000; i++ )
+            {
+                new Dn( schemaManager, "dc=example" + i + ",dc=com" );
+            }
+            
+            long t1 = System.currentTimeMillis();
+            
+            deltas[j] = t1 - t0;
+            System.out.println( "Iteration[" + j + "] : " + deltas[j] );
+        }
+        
+        allDeltas = 0L;
+        
+        for ( int i = 0; i < 10; i++ )
+        {
+            allDeltas += deltas[i];
+        }
+        
+        System.out.println( "delta new 2 RDNs : " + ( allDeltas / 10 ) );
+
+        for ( int j = 0; j < 10; j++ )
+        {
+            long t0 = System.currentTimeMillis();
+            
+            for ( int i = 0; i < 10000000; i++ )
+            {
+                new Dn( schemaManager, "uid=" + i + ",dc=example,dc=com" );
+            }
+            
+            long t1 = System.currentTimeMillis();
+            
+            deltas[j] = t1 - t0;
+            System.out.println( "Iteration[" + j + "] : " + deltas[j] );
+        }
+        
+        allDeltas = 0L;
+        
+        for ( int i = 0; i < 10; i++ )
+        {
+            allDeltas += deltas[i];
+        }
+        
+        System.out.println( "delta new 3 RDNs : " + ( allDeltas / 10 ) );
+
+        for ( int j = 0; j < 10; j++ )
+        {
+            long t0 = System.currentTimeMillis();
+            
+            for ( int i = 0; i < 10000000; i++ )
+            {
+                new Dn( schemaManager, "uid=" + i + ",ou=people,dc=example,dc=com" );
+            }
+            
+            long t1 = System.currentTimeMillis();
+            
+            deltas[j] = t1 - t0;
+            System.out.println( "Iteration[" + j + "] : " + deltas[j] );
+        }
+        
+        allDeltas = 0L;
+        
+        for ( int i = 0; i < 10; i++ )
+        {
+            allDeltas += deltas[i];
+        }
+        
+        System.out.println( "delta new 4 RDNs : " + ( allDeltas / 10 ) );
+    }
+    
+    
+    @Test
+    @Ignore
+    public void testDnParsingOneRdn() throws LdapInvalidDnException
+    {
+        long t0 = System.currentTimeMillis();
+        
+        for ( int i = 0; i < 1000000; i++ )
+        {
+            new Dn( "dc=example" + i );
+        }
+        
+        long t1 = System.currentTimeMillis();
+        System.out.println( "delta new 1 RDN : " + ( t1 - t0 ) );
     }
 }
