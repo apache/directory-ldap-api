@@ -138,13 +138,13 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      * because we want the Avas to be sorted. An Ava may contain more than one
      * value. In this case, the values are String stored in a List.
      */
-    private List<Ava> avas = null;
+    private transient List<Ava> avas = null;
 
     /**
      * We also keep a set of types, in order to use manipulations. A type is
      * connected with the Ava it represents.
      */
-    private Map<String, List<Ava>> avaTypes;
+    private transient Map<String, List<Ava>> avaTypes;
 
     /**
      * We keep the type for a single valued Rdn, to avoid the creation of an HashMap
@@ -180,7 +180,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
     private boolean normalized = false;
 
     /** the schema manager */
-    private SchemaManager schemaManager;
+    private transient SchemaManager schemaManager;
 
     /** The computed hashcode */
     private volatile int h;
@@ -369,8 +369,8 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
             default:
                 // We must duplicate the treeSet and the hashMap
-                avas = new ArrayList<Ava>();
-                avaTypes = new HashMap<String, List<Ava>>();
+                avas = new ArrayList<>();
+                avaTypes = new HashMap<>();
 
                 for ( Ava currentAva : rdn.avas )
                 {
@@ -380,7 +380,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                     
                     if ( avaList == null )
                     {
-                        avaList = new ArrayList<Ava>();
+                        avaList = new ArrayList<>();
                         avaList.add( currentAva );
                         avaTypes.put( currentAva.getNormType(), avaList );
                         avas.add( currentAva );
@@ -430,8 +430,8 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
             default:
                 // We must duplicate the treeSet and the hashMap
-                avas = new ArrayList<Ava>();
-                avaTypes = new HashMap<String, List<Ava>>();
+                avas = new ArrayList<>();
+                avaTypes = new HashMap<>();
 
                 for ( Ava currentAva : rdn.avas )
                 {
@@ -446,7 +446,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                     
                     if ( avaList == null )
                     {
-                        avaList = new ArrayList<Ava>();
+                        avaList = new ArrayList<>();
                         avaList.add( tmpAva );
                         avaTypes.put( tmpAva.getNormType(), avaList );
                         avas.add( tmpAva );
@@ -481,7 +481,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
     private void addAVA( SchemaManager schemaManager, String type, Value value ) throws LdapInvalidDnException
     {
         // First, let's normalize the type
-        AttributeType attributeType = null;
+        AttributeType attributeType;
         String normalizedType = Strings.lowerCaseAscii( type );
         this.schemaManager = schemaManager;
 
@@ -534,9 +534,9 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 }
 
                 // First, create the List and the HashMap
-                avas = new ArrayList<Ava>();
-                avaTypes = new HashMap<String, List<Ava>>();
-                List<Ava> avaList = new ArrayList<Ava>();
+                avas = new ArrayList<>();
+                avaTypes = new HashMap<>();
+                List<Ava> avaList = new ArrayList<>();
 
                 // and store the existing Ava into it.
                 avas.add( ava );
@@ -556,7 +556,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 if ( avaList == null )
                 {
                     // Not present, we can add it
-                    avaList = new ArrayList<Ava>();
+                    avaList = new ArrayList<>();
                     avaList.add( newAva );
                     avaTypes.put( newAva.getNormType(), avaList );
                     avas.add( newAva );
@@ -618,9 +618,9 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 }
 
                 // First, create the List and the hashMap
-                avas = new ArrayList<Ava>();
-                avaTypes = new HashMap<String, List<Ava>>();
-                List<Ava> avaList = new ArrayList<Ava>();
+                avas = new ArrayList<>();
+                avaTypes = new HashMap<>();
+                List<Ava> avaList = new ArrayList<>();
 
                 // and store the existing Ava into it.
                 avas.add( ava );
@@ -639,7 +639,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 if ( avaList == null )
                 {
                     // Not present, we can add it
-                    avaList = new ArrayList<Ava>();
+                    avaList = new ArrayList<>();
                     avaList.add( addedAva );
                     avaTypes.put( addedAva.getNormType(), avaList );
                     avas.add( addedAva );
@@ -798,6 +798,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      *
      * @return an iterator of the components of this Rdn, each an Ava
      */
+    @Override
     public Iterator<Ava> iterator()
     {
         if ( nbAvas < 2 )
@@ -807,12 +808,14 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 private boolean hasMoreElement = nbAvas == 1;
 
 
+                @Override
                 public boolean hasNext()
                 {
                     return hasMoreElement;
                 }
 
 
+                @Override
                 public Ava next()
                 {
                     Ava obj = ava;
@@ -821,6 +824,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 }
 
 
+                @Override
                 public void remove()
                 {
                     // nothing to do
@@ -839,6 +843,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      *
      * @return A clone of the current Rdn
      */
+    @Override
     public Rdn clone()
     {
         try
@@ -860,13 +865,13 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
                 default:
                     // We must duplicate the treeSet and the hashMap
-                    rdn.avaTypes = new HashMap<String, List<Ava>>();
-                    rdn.avas = new ArrayList<Ava>();
+                    rdn.avaTypes = new HashMap<>();
+                    rdn.avas = new ArrayList<>();
 
                     for ( Ava currentAva : this.avas )
                     {
                         rdn.avas.add( currentAva.clone() );
-                        List<Ava> avaList = new ArrayList<Ava>();
+                        List<Ava> avaList = new ArrayList<>();
                         
                         for ( Ava elem : avaTypes.get( currentAva.getNormType() ) )
                         {
@@ -1182,7 +1187,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                             if ( Chars.isHex( chars, i ) )
                             {
                                 isHex = true;
-                                pair = ( ( byte ) ( Hex.getHexValue( chars[i] ) << 4 ) );
+                                pair = ( byte ) ( Hex.getHexValue( chars[i] ) << 4 );
                             }
 
                             break;
@@ -1398,7 +1403,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
             default:
                 boolean isFirst = true;
                 
-                for ( Ava ava : avas )
+                for ( Ava atav : avas )
                 {
                     if ( isFirst )
                     {
@@ -1409,7 +1414,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                         sb.append( '+' );
                     }
                     
-                    sb.append( ava.getEscaped() );
+                    sb.append( atav.getEscaped() );
                 }
 
                 break;
@@ -1536,6 +1541,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
       * @see java.lang.Object#hashCode()
       * @return the instance's hash code
       */
+    @Override
     public int hashCode()
     {
         if ( h == 0 )
@@ -1661,8 +1667,8 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 break;
 
             default:
-                avas = new ArrayList<Ava>();
-                avaTypes = new HashMap<String, List<Ava>>();
+                avas = new ArrayList<>();
+                avaTypes = new HashMap<>();
 
                 for ( int i = 0; i < nbAvas; i++ )
                 {
@@ -1674,7 +1680,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                     
                     if ( avaList == null )
                     {
-                        avaList = new ArrayList<Ava>();
+                        avaList = new ArrayList<>();
                         avaTypes.put( newAva.getNormType(), avaList );
                     }
                     
@@ -1731,6 +1737,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      * @param out The stream into which the serialized Rdn will be put
      * @throws IOException If the stream can't be written
      */
+    @Override
     public void writeExternal( ObjectOutput out ) throws IOException
     {
         out.writeInt( nbAvas );
@@ -1770,6 +1777,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      * @throws IOException If we can't read from the input stream
      * @throws ClassNotFoundException If we can't create a new Rdn
      */
+    @Override
     public void readExternal( ObjectInput in ) throws IOException, ClassNotFoundException
     {
         // Read the Ava number
@@ -1792,8 +1800,8 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 break;
 
             default:
-                avas = new ArrayList<Ava>();
-                avaTypes = new HashMap<String, List<Ava>>();
+                avas = new ArrayList<>();
+                avaTypes = new HashMap<>();
 
                 for ( int i = 0; i < nbAvas; i++ )
                 {
@@ -1805,7 +1813,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                     
                     if ( avaList == null )
                     {
-                        avaList = new ArrayList<Ava>();
+                        avaList = new ArrayList<>();
                         avaTypes.put( newAva.getNormType(), avaList );
                     }
                     
@@ -1829,6 +1837,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      * @return a negative value if the current RDN is below the provided one, a positive value
      * if it's above and 0 if they are equal. 
      */
+    @Override
     public int compareTo( Rdn otherRdn )
     {
         if ( otherRdn == null )
@@ -1891,11 +1900,11 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 
                 int pos = 0;
                 
-                for ( Ava ava : avas )
+                for ( Ava atav : avas )
                 {
                     Ava otherAva = otherRdn.avas.get( pos );
                     
-                    comp = ava.compareTo( otherAva );
+                    comp = atav.compareTo( otherAva );
                     
                     if ( comp != 0 )
                     {
@@ -1921,6 +1930,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      * @return a String representation of the Rdn. The caller will get back the user
      * provided Rdn
      */
+    @Override
     public String toString()
     {
         return upName == null ? "" : upName;

@@ -486,7 +486,8 @@ import org.apache.directory.api.util.Position;
                             case '.':
                                 inInnerLoop = false;
                                 dotCount++;
-                                // no break!
+                                break;
+                                
                             case '0':
                             case '1':
                             case '2':
@@ -561,7 +562,6 @@ import org.apache.directory.api.util.Position;
      */
     private static String matchValue( char[] name, Position pos ) throws LdapInvalidDnException
     {
-        //StringBuilder value = new StringBuilder();
         int start = pos.start;
         int numTrailingSpaces = 0;
 

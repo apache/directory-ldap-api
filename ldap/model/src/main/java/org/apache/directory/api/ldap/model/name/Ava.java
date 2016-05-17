@@ -92,7 +92,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     private AttributeType attributeType;
 
     /** the schema manager */
-    private SchemaManager schemaManager;
+    private transient SchemaManager schemaManager;
 
     /** The computed hashcode */
     private volatile int h;
@@ -142,15 +142,15 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         {
             if ( schemaManager != null )
             {
-                AttributeType attributeType = schemaManager.getAttributeType( ava.normType );
+                AttributeType attrType = schemaManager.getAttributeType( ava.normType );
                 
-                if ( attributeType != null )
+                if ( attrType != null )
                 {
-                    normType = attributeType.getOid();
+                    normType = attrType.getOid();
 
                     try
                     {
-                        value = new Value( attributeType, ava.value );
+                        value = new Value( attrType, ava.value );
                     }
                     catch ( LdapInvalidAttributeValueException e )
                     {
@@ -404,120 +404,6 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         
         this.upName = upName;
     }
-
-
-    /**
-     * Construct a schema aware Ava. The AttributeType and value will be checked accordingly
-     * to the SchemaManager.
-     * <p>
-     * Note that the upValue should <b>not</b> be null or empty, or resolve
-     * to an empty string after having trimmed it.
-     *
-     * @param schemaManager The SchemaManager instance
-     * @param upType The User Provided type
-     * @param value The value
-     * 
-     * @throws LdapInvalidDnException If the given type or value are invalid
-     */
-    private void createAva( SchemaManager schemaManager, String upType, Value value )
-        throws LdapInvalidDnException
-    {
-        normType = attributeType.getOid();
-        this.upType = upType;
-        this.value = value;
-        upName = this.upType + '=' + ( value == null ? "" : Rdn.escapeValue( value.getValue() ) );
-        hashCode();
-    }
-
-
-    /**
-     * Construct an Ava. The type and value are normalized :
-     * <li> the type is trimmed and lowercased </li>
-     * <li> the value is trimmed </li>
-     * <p>
-     * Note that the upValue should <b>not</b> be null or empty, or resolved
-     * to an empty string after having trimmed it.
-     *
-     * @param upType The User Provided type
-     * @param upValue The User Provided value
-     * 
-     * @throws LdapInvalidDnException If the given type or value are invalid
-     */
-    private void createAva( String upType, Value upValue ) throws LdapInvalidDnException
-    {
-        String upTypeTrimmed = Strings.trim( upType );
-        String normTypeTrimmed = Strings.trim( normType );
-
-        if ( Strings.isEmpty( upTypeTrimmed ) )
-        {
-            if ( Strings.isEmpty( normTypeTrimmed ) )
-            {
-                String message = I18n.err( I18n.ERR_04188 );
-                LOG.error( message );
-                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message );
-            }
-            else
-            {
-                // In this case, we will use the normType instead
-                this.normType = Strings.lowerCaseAscii( normTypeTrimmed );
-                this.upType = normType;
-            }
-        }
-        else if ( Strings.isEmpty( normTypeTrimmed ) )
-        {
-            // In this case, we will use the upType instead
-            this.normType = Strings.lowerCaseAscii( upTypeTrimmed );
-            this.upType = upType;
-        }
-        else
-        {
-            this.normType = Strings.lowerCaseAscii( normTypeTrimmed );
-            this.upType = upType;
-
-        }
-
-        value = upValue;
-
-        upName = getEscaped();
-        hashCode();
-    }
-
-
-    /**
-     * Construct an Ava. The type and value are normalized :
-     * <li> the type is trimmed and lowercased </li>
-     * <li> the value is trimmed </li>
-     * <p>
-     * Note that the upValue should <b>not</b> be null or empty, or resolved
-     * to an empty string after having trimmed it.
-     *
-     * @param schemaManager The SchemaManager
-     * @param upType The User Provided type
-     * @param normType The normalized type
-     * @param value The value
-     * 
-     * @throws LdapInvalidDnException If the given type or value are invalid
-     */
-    // WARNING : The protection level is left unspecified intentionally.
-    // We need this method to be visible from the DnParser class, but not
-    // from outside this package.
-    /* Unspecified protection */Ava( SchemaManager schemaManager, String upType, String normType, Value value )
-        throws LdapInvalidDnException
-    {
-        this.upType = upType;
-        this.normType = normType;
-        this.value = value;
-        upName = this.upType + '=' + ( this.value == null ? "" : this.value.getValue() );
-
-        if ( schemaManager != null )
-        {
-            apply( schemaManager );
-        }
-
-        hashCode();
-    }
-
-
     /**
      * Construct an Ava. The type and value are normalized :
      * <li> the type is trimmed and lowercased </li>
@@ -598,6 +484,118 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 
         this.value = value;
         this.upName = upName;
+        hashCode();
+    }
+
+
+    /**
+     * Construct an Ava. The type and value are normalized :
+     * <li> the type is trimmed and lowercased </li>
+     * <li> the value is trimmed </li>
+     * <p>
+     * Note that the upValue should <b>not</b> be null or empty, or resolved
+     * to an empty string after having trimmed it.
+     *
+     * @param schemaManager The SchemaManager
+     * @param upType The User Provided type
+     * @param normType The normalized type
+     * @param value The value
+     * 
+     * @throws LdapInvalidDnException If the given type or value are invalid
+     */
+    // WARNING : The protection level is left unspecified intentionally.
+    // We need this method to be visible from the DnParser class, but not
+    // from outside this package.
+    /* Unspecified protection */Ava( SchemaManager schemaManager, String upType, String normType, Value value )
+        throws LdapInvalidDnException
+    {
+        this.upType = upType;
+        this.normType = normType;
+        this.value = value;
+        upName = this.upType + '=' + ( this.value == null ? "" : this.value.getValue() );
+
+        if ( schemaManager != null )
+        {
+            apply( schemaManager );
+        }
+
+        hashCode();
+    }
+
+
+    /**
+     * Construct a schema aware Ava. The AttributeType and value will be checked accordingly
+     * to the SchemaManager.
+     * <p>
+     * Note that the upValue should <b>not</b> be null or empty, or resolve
+     * to an empty string after having trimmed it.
+     *
+     * @param schemaManager The SchemaManager instance
+     * @param upType The User Provided type
+     * @param value The value
+     * 
+     * @throws LdapInvalidDnException If the given type or value are invalid
+     */
+    private void createAva( SchemaManager schemaManager, String upType, Value value )
+        throws LdapInvalidDnException
+    {
+        normType = attributeType.getOid();
+        this.upType = upType;
+        this.value = value;
+        upName = this.upType + '=' + ( value == null ? "" : Rdn.escapeValue( value.getValue() ) );
+        hashCode();
+    }
+
+
+    /**
+     * Construct an Ava. The type and value are normalized :
+     * <li> the type is trimmed and lowercased </li>
+     * <li> the value is trimmed </li>
+     * <p>
+     * Note that the upValue should <b>not</b> be null or empty, or resolved
+     * to an empty string after having trimmed it.
+     *
+     * @param upType The User Provided type
+     * @param upValue The User Provided value
+     * 
+     * @throws LdapInvalidDnException If the given type or value are invalid
+     */
+    private void createAva( String upType, Value upValue ) throws LdapInvalidDnException
+    {
+        String upTypeTrimmed = Strings.trim( upType );
+        String normTypeTrimmed = Strings.trim( normType );
+
+        if ( Strings.isEmpty( upTypeTrimmed ) )
+        {
+            if ( Strings.isEmpty( normTypeTrimmed ) )
+            {
+                String message = I18n.err( I18n.ERR_04188 );
+                LOG.error( message );
+                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message );
+            }
+            else
+            {
+                // In this case, we will use the normType instead
+                this.normType = Strings.lowerCaseAscii( normTypeTrimmed );
+                this.upType = normType;
+            }
+        }
+        else if ( Strings.isEmpty( normTypeTrimmed ) )
+        {
+            // In this case, we will use the upType instead
+            this.normType = Strings.lowerCaseAscii( upTypeTrimmed );
+            this.upType = upType;
+        }
+        else
+        {
+            this.normType = Strings.lowerCaseAscii( normTypeTrimmed );
+            this.upType = upType;
+
+        }
+
+        value = upValue;
+
+        upName = getEscaped();
         hashCode();
     }
 
@@ -1404,6 +1402,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      *
      * @return a clone of this object
      */
+    @Override
     public Ava clone()
     {
         try
@@ -1426,6 +1425,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      * @see java.lang.Object#hashCode()
      * @return The instance hash code
      */
+    @Override
     public int hashCode()
     {
         if ( h == 0 )
@@ -1443,6 +1443,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     /**
      * @see Object#equals(Object)
      */
+    @Override
     public boolean equals( Object obj )
     {
         if ( this == obj )
@@ -1799,6 +1800,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      * 
      * @throws IoException If the Ava can't be written in the stream
      */
+    @Override
     public void writeExternal( ObjectOutput out ) throws IOException
     {
         if ( Strings.isEmpty( upName )
@@ -1882,6 +1884,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      * @throws IOException If the Ava can't b written to the stream
      * @throws ClassNotFoundException If we can't deserialize an Ava from the stream
      */
+    @Override
     public void readExternal( ObjectInput in ) throws IOException, ClassNotFoundException
     {
         boolean hasUpName = in.readBoolean();
@@ -1959,7 +1962,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 
     private int compareValues( Ava that )
     {
-        int comp = 0;
+        int comp;
 
         if ( value.isHumanReadable() )
         {
@@ -1969,13 +1972,13 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         }
         else
         {
-            byte[] bytes1 = ( byte[] ) value.getBytes();
-            byte[] bytes2 = ( byte[] ) that.value.getBytes();
+            byte[] bytes1 = value.getBytes();
+            byte[] bytes2 = that.value.getBytes();
 
             for ( int pos = 0; pos < bytes1.length; pos++ )
             {
-                int v1 = ( bytes1[pos] & 0x00FF );
-                int v2 = ( bytes2[pos] & 0x00FF );
+                int v1 = bytes1[pos] & 0x00FF;
+                int v2 = bytes2[pos] & 0x00FF;
 
                 if ( v1 > v2 )
                 {
@@ -1996,6 +1999,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     /**
      * @see Comparable#compareTo(Object)
      */
+    @Override
     public int compareTo( Ava that )
     {
         if ( that == null )
@@ -2003,7 +2007,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             return 1;
         }
 
-        int comp = 0;
+        int comp;
 
         if ( schemaManager == null )
         {
@@ -2035,18 +2039,9 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
                 }
                 else
                 {
-                    if ( value instanceof Value )
-                    {
-                        comp = ( ( Value ) value ).compareTo( ( Value ) that.value );
+                    comp = value.compareTo( ( Value ) that.value );
 
-                        return comp;
-                    }
-                    else
-                    {
-                        comp = ( ( Value ) value ).compareTo( ( Value ) that.value );
-
-                        return comp;
-                    }
+                    return comp;
                 }
             }
         }
@@ -2108,6 +2103,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      *
      * @return A string representing an Ava
      */
+    @Override
     public String toString()
     {
         return upName;
