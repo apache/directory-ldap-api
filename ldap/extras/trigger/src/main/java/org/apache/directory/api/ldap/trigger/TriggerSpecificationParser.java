@@ -27,6 +27,7 @@ import java.text.ParseException;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.NormalizerMappingResolver;
+import org.apache.directory.api.util.Strings;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
@@ -109,9 +110,9 @@ public class TriggerSpecificationParser
      */
     public synchronized TriggerSpecification parse( String spec ) throws ParseException
     {
-        TriggerSpecification triggerSpecification = null;
+        TriggerSpecification triggerSpecification;
 
-        if ( spec == null || spec.trim().equals( "" ) )
+        if ( Strings.isEmpty( spec ) )
         {
             return null;
         }
