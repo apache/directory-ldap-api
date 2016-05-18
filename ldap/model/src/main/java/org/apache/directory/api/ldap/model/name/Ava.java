@@ -1501,6 +1501,11 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         {
             if ( schemaManager != null )
             {
+                if ( ( value.getValue() != null ) && value.getValue().equals( instance.value.getValue() ) )
+                {
+                    return true;
+                }
+
                 MatchingRule equalityMatchingRule = attributeType.getEquality();
 
                 if ( equalityMatchingRule != null )

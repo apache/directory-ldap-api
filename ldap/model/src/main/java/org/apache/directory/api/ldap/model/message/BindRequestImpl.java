@@ -23,7 +23,6 @@ package org.apache.directory.api.ldap.model.message;
 import java.util.Arrays;
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -207,17 +206,6 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     public BindRequest setName( String name )
     {
         this.name = name;
-
-        try
-        {
-            this.dn = new Dn( name );
-        }
-        catch ( LdapInvalidDnException e )
-        {
-            // This might still be a valid DN (Windows AD binding for instance)
-            LOG.debug( "Unable to convert the name to a DN." );
-            this.dn = null;
-        }
 
         return this;
     }

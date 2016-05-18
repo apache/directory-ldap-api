@@ -76,22 +76,22 @@ public class ObjectClass extends AbstractSchemaObject
     protected ObjectClassTypeEnum objectClassType = ObjectClassTypeEnum.STRUCTURAL;
 
     /** The ObjectClass superior OIDs */
-    protected List<String> superiorOids;
+    protected transient List<String> superiorOids;
 
     /** The ObjectClass superiors */
-    protected List<ObjectClass> superiors;
+    protected transient List<ObjectClass> superiors;
 
     /** The list of allowed AttributeType OIDs */
-    protected List<String> mayAttributeTypeOids;
+    protected transient List<String> mayAttributeTypeOids;
 
     /** The list of allowed AttributeTypes */
-    protected List<AttributeType> mayAttributeTypes;
+    protected transient List<AttributeType> mayAttributeTypes;
 
     /** The list of required AttributeType OIDs */
-    protected List<String> mustAttributeTypeOids;
+    protected transient List<String> mustAttributeTypeOids;
 
     /** The list of required AttributeTypes */
-    protected List<AttributeType> mustAttributeTypes;
+    protected transient List<AttributeType> mustAttributeTypes;
 
 
     /**
@@ -102,13 +102,13 @@ public class ObjectClass extends AbstractSchemaObject
     {
         super( SchemaObjectType.OBJECT_CLASS, oid );
 
-        mayAttributeTypeOids = new ArrayList<String>();
-        mustAttributeTypeOids = new ArrayList<String>();
-        superiorOids = new ArrayList<String>();
+        mayAttributeTypeOids = new ArrayList<>();
+        mustAttributeTypeOids = new ArrayList<>();
+        superiorOids = new ArrayList<>();
 
-        mayAttributeTypes = new ArrayList<AttributeType>();
-        mustAttributeTypes = new ArrayList<AttributeType>();
-        superiors = new ArrayList<ObjectClass>();
+        mayAttributeTypes = new ArrayList<>();
+        mustAttributeTypes = new ArrayList<>();
+        superiors = new ArrayList<>();
         objectClassType = ObjectClassTypeEnum.STRUCTURAL;
     }
 
@@ -218,6 +218,7 @@ public class ObjectClass extends AbstractSchemaObject
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         return SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( this );
@@ -227,6 +228,7 @@ public class ObjectClass extends AbstractSchemaObject
     /**
      * Copy an ObjectClass
      */
+    @Override
     public ObjectClass copy()
     {
         ObjectClass copy = new ObjectClass( oid );
@@ -238,7 +240,7 @@ public class ObjectClass extends AbstractSchemaObject
         copy.objectClassType = objectClassType;
 
         // Copy the Superiors ObjectClasses OIDs
-        copy.superiorOids = new ArrayList<String>();
+        copy.superiorOids = new ArrayList<>();
 
         for ( String oid : superiorOids )
         {
@@ -246,10 +248,10 @@ public class ObjectClass extends AbstractSchemaObject
         }
 
         // Copy the Superiors ObjectClasses ( will be empty )
-        copy.superiors = new ArrayList<ObjectClass>();
+        copy.superiors = new ArrayList<>();
 
         // Copy the MAY AttributeTypes OIDs
-        copy.mayAttributeTypeOids = new ArrayList<String>();
+        copy.mayAttributeTypeOids = new ArrayList<>();
 
         for ( String oid : mayAttributeTypeOids )
         {
@@ -257,10 +259,10 @@ public class ObjectClass extends AbstractSchemaObject
         }
 
         // Copy the MAY AttributeTypes ( will be empty )
-        copy.mayAttributeTypes = new ArrayList<AttributeType>();
+        copy.mayAttributeTypes = new ArrayList<>();
 
         // Copy the MUST AttributeTypes OIDs
-        copy.mustAttributeTypeOids = new ArrayList<String>();
+        copy.mustAttributeTypeOids = new ArrayList<>();
 
         for ( String oid : mustAttributeTypeOids )
         {
@@ -268,7 +270,7 @@ public class ObjectClass extends AbstractSchemaObject
         }
 
         // Copy the MUST AttributeTypes ( will be empty )
-        copy.mustAttributeTypes = new ArrayList<AttributeType>();
+        copy.mustAttributeTypes = new ArrayList<>();
 
         return copy;
     }
