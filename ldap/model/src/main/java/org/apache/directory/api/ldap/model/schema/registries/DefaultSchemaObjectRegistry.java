@@ -215,13 +215,13 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
         {
             // let's try with trimming and lowercasing now
             schemaObject = byName.get( Strings.trim( Strings.toLowerCaseAscii( oid ) ) );
-        }
 
-        if ( schemaObject == null )
-        {
-            String msg = I18n.err( I18n.ERR_04269, schemaObjectType.name(), oid );
-            LOG.debug( msg );
-            throw new LdapException( msg );
+            if ( schemaObject == null )
+            {
+                String msg = I18n.err( I18n.ERR_04269, schemaObjectType.name(), oid );
+                LOG.debug( msg );
+                throw new LdapException( msg );
+            }
         }
 
         if ( DEBUG )
