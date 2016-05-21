@@ -639,7 +639,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
         String schemaName = schemaObject.getSchemaName();
         Schema schema = null;
 
-        if ( Strings.isEmpty( schemaName ) || Strings.equals( "null", schemaName ) )
+        if ( Strings.isEmpty( schemaName ) || "null".equals( schemaName ) )
         {
             schemaName = "default";
             schema = schemaMap.get( schemaName );
