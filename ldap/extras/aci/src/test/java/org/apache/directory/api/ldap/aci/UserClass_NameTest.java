@@ -59,21 +59,21 @@ public class UserClass_NameTest
     @Before
     public void initNames() throws LdapInvalidDnException
     {
-        Set<Dn> dnSetA = new HashSet<Dn>();
-        dnSetA.add( new Dn( "a=aa" ) );
-        dnSetA.add( new Dn( "b=bb" ) );
+        Set<String> dnSetA = new HashSet<>();
+        dnSetA.add( new Dn( "a=aa" ).getNormName() );
+        dnSetA.add( new Dn( "b=bb" ).getNormName() );
 
-        Set<Dn> dnSetB = new HashSet<Dn>();
-        dnSetB.add( new Dn( "b=bb" ) );
-        dnSetB.add( new Dn( "a=aa" ) );
+        Set<String> dnSetB = new HashSet<>();
+        dnSetB.add( new Dn( "b=bb" ).getNormName() );
+        dnSetB.add( new Dn( "a=aa" ).getNormName() );
 
-        Set<Dn> dnSetC = new HashSet<Dn>();
-        dnSetC.add( new Dn( "a=aa" ) );
-        dnSetC.add( new Dn( "b=bb" ) );
+        Set<String> dnSetC = new HashSet<>();
+        dnSetC.add( new Dn( "a=aa" ).getNormName() );
+        dnSetC.add( new Dn( "b=bb" ).getNormName() );
 
-        Set<Dn> dnSetD = new HashSet<Dn>();
-        dnSetD.add( new Dn( "b=bb" ) );
-        dnSetD.add( new Dn( "c=cc" ) );
+        Set<String> dnSetD = new HashSet<>();
+        dnSetD.add( new Dn( "b=bb" ).getNormName() );
+        dnSetD.add( new Dn( "c=cc" ).getNormName() );
 
         nameA = new Name( dnSetA );
         nameACopy = new Name( dnSetB );

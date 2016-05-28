@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.subtree.SubtreeSpecification;
 
 
@@ -143,7 +142,7 @@ public abstract class UserClass
     private abstract static class NamedUserClass extends UserClass
     {
         /** The names. */
-        protected final Set<Dn> names;
+        protected final Set<String> names;
 
 
         /**
@@ -151,15 +150,15 @@ public abstract class UserClass
          * 
          * @param names a set of names
          */
-        protected NamedUserClass( Set<Dn> names )
+        protected NamedUserClass( Set<String> names )
         {
             if ( names == null )
             {
-                this.names = Collections.unmodifiableSet( new HashSet<Dn>() );
+                this.names = Collections.unmodifiableSet( new HashSet<String>() );
             }
             else
             {
-                this.names = Collections.unmodifiableSet( new HashSet<Dn>( names ) );
+                this.names = Collections.unmodifiableSet( new HashSet<String>( names ) );
             }
         }
 
@@ -169,7 +168,7 @@ public abstract class UserClass
          * 
          * @return The set of all names
          */
-        public Set<Dn> getNames()
+        public Set<String> getNames()
         {
             return names;
         }
@@ -210,7 +209,7 @@ public abstract class UserClass
         {
             int result = 37;
 
-            for ( Dn dn : this.names )
+            for ( String dn : this.names )
             {
                 result = result * 17 + dn.hashCode();
             }
@@ -229,7 +228,7 @@ public abstract class UserClass
             boolean isFirst = true;
             buffer.append( "{ " );
 
-            for ( Dn name : names )
+            for ( String name : names )
             {
                 if ( isFirst )
                 {
@@ -262,7 +261,7 @@ public abstract class UserClass
          * 
          * @param usernames the set of user DNs.
          */
-        public Name( Set<Dn> usernames )
+        public Name( Set<String> usernames )
         {
             super( usernames );
         }
@@ -292,7 +291,7 @@ public abstract class UserClass
          * 
          * @param groupNames the set of group DNs.
          */
-        public UserGroup( Set<Dn> groupNames )
+        public UserGroup( Set<String> groupNames )
         {
             super( groupNames );
         }
