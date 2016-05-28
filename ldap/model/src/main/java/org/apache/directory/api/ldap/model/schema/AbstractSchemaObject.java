@@ -519,13 +519,15 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     @Override
     public List<String> getExtension( String extension )
     {
-        if ( hasExtension( extension ) )
+        String name = Strings.toUpperCaseAscii( extension );
+        
+        if ( hasExtension( name ) )
         {
             for ( Map.Entry<String, List<String>> entry : extensions.entrySet() )
             {
                 String key = entry.getKey();
                 
-                if ( extension.equalsIgnoreCase( key ) )
+                if ( name.equalsIgnoreCase( key ) )
                 {
                     return entry.getValue();
                 }
