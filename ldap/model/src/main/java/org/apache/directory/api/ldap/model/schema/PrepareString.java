@@ -3842,15 +3842,13 @@ public final class PrepareString
     {
         if ( origin == null )
         {
-            // Special case : a null strings is replaced by 2 spaces
-            return "  ";
+            // Special case : a null strings is replaced by 1 space
+            return " ";
         }
 
         int pos = 0;
 
-        // Create a target char array which is longer than the original String, as we will
-        // have 2 more spaces (one at the beginning, one at the end, and each space in the 
-        // middle will be doubled).
+        // Create a target char array which is longer than the original String, as we may have to add a space.
         char[] target = new char[origin.length * 2 + 1];
         int newPos = 0;
         
@@ -3863,7 +3861,7 @@ public final class PrepareString
                 case START :
                     if ( pos == origin.length )
                     {
-                        // We are done, it's an empty string
+                        // We are done, it's an empty string -> one space
                         return " ";
                     }
                     
@@ -3898,7 +3896,8 @@ public final class PrepareString
                     
                     if ( c == ' ' )
                     {
-                        // Switch to the SPACES state
+                        // Switch to the SPACES state, add a space in the target
+                        target[newPos++] = ' ';
                         pos++;
                         normState = NormStateEnum.SPACES;
                     }
@@ -3915,7 +3914,7 @@ public final class PrepareString
                 case INITIAL_SPACES :
                     if ( pos == origin.length )
                     {
-                        // We are done, this is an empty String
+                        // We are done, this is an empty String -> one space
                         return " ";
                     }
                     
@@ -3942,8 +3941,7 @@ public final class PrepareString
                 case CHARS :
                     if ( pos == origin.length )
                     {
-                        // We are done, add a Space
-                        target[newPos++] = ' ';
+                        // We are done
                         normState = NormStateEnum.END;
                         
                         break;
@@ -3953,6 +3951,9 @@ public final class PrepareString
                     
                     if ( c == ' ' )
                     {
+                        // Add the space
+                        target[newPos++] = ' ';
+                        
                         pos++;
                         normState = NormStateEnum.SPACES;
                     }
@@ -3969,8 +3970,7 @@ public final class PrepareString
                 case SPACES :
                     if ( pos == origin.length )
                     {
-                        // We are done, add a Space
-                        target[newPos++] = ' ';
+                        // We are done
                         normState = NormStateEnum.END;
 
                         break;
@@ -3985,8 +3985,7 @@ public final class PrepareString
                     }
                     else
                     {
-                        // Add the two spaces
-                        target[newPos++] = ' ';
+                        // Add the second space
                         target[newPos++] = ' ';
                         
                         // Add the char
@@ -4002,8 +4001,7 @@ public final class PrepareString
                 case SPACE_CHAR :
                     if ( pos == origin.length )
                     {
-                        // We are done, add a Space
-                        target[newPos++] = ' ';
+                        // We are done
                         normState = NormStateEnum.END;
 
                         break;
@@ -4014,6 +4012,9 @@ public final class PrepareString
                     if ( c == ' ' )
                     {
                         pos++;
+
+                        // Add the space
+                        target[newPos++] = ' ';
                         
                         // Switch to Spaces state
                         normState = NormStateEnum.SPACES;
