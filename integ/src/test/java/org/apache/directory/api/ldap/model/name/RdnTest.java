@@ -50,6 +50,69 @@ public class RdnTest
         schemaManager = new DefaultSchemaManager();
     }
 
+
+
+    /**
+     * Test a null Rdn
+     */
+    @Test
+    public void testRdnNull()
+    {
+        Rdn rdn = new Rdn( schemaManager );
+        assertEquals( "", rdn.toString() );
+        assertEquals( "", rdn.getName() );
+        assertEquals( "", rdn.getNormName() );
+    }
+
+
+    /**
+     * test an empty Rdn
+     * 
+     * @throws LdapException
+     */
+    @Test
+    public void testRdnEmpty() throws LdapException
+    {
+        Rdn rdn = new Rdn( schemaManager, "" );
+        assertEquals( "", rdn.toString() );
+        assertEquals( "", rdn.getName() );
+        assertEquals( "", rdn.getNormName() );
+    }
+
+
+    /**
+     * test a simple Rdn : ' cn = b    C d'
+     * 
+     * @throws LdapException
+     */
+    @Test
+    public void testRdnSimple() throws LdapException
+    {
+        Rdn rdn = new Rdn( schemaManager, " cn = b    C d" );
+        assertEquals( " cn = b    C d", rdn.toString() );
+        assertEquals( " cn = b    C d", rdn.getName() );
+        assertEquals( "2.5.4.3= b  c  d ", rdn.getNormName() );
+
+        Rdn rdn2 = new Rdn( " cn = b    C d" );
+        assertEquals( " cn = b    C d", rdn2.toString() );
+        assertEquals( " cn = b    C d", rdn2.getName() );
+        assertEquals( "cn=b    C d", rdn2.getNormName() );
+    }
+
+
+    /**
+     * test a simple Rdn with no value : ' dc = '
+     * 
+     * @throws LdapException
+     */
+    @Test
+    public void testRdnSimpleEmptyValue() throws LdapException
+    {
+        Rdn rdn = new Rdn( schemaManager, " dc = " );
+        assertEquals( " dc = ", rdn.toString() );
+        assertEquals( " dc = ", rdn.getName() );
+        assertEquals( "0.9.2342.19200300.100.1.25=  ", rdn.getNormName() );
+    }
     
     
     @Test

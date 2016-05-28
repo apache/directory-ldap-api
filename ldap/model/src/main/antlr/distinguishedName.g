@@ -331,7 +331,7 @@ relativeDistinguishedName [SchemaManager schemaManager, Rdn rdn]
             }
             else
             {
-                rdnNormStr.append( tmp );
+                rdnNormStr.append( currentAva.getNormType() );
             }
             
             rdnNormStr.append( '=' );

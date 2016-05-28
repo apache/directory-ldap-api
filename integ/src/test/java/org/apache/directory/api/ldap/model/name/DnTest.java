@@ -377,6 +377,7 @@ public class DnTest
 
         assertEquals( "cn=Exa\\+mple  one", dn2.getEscaped() );
         assertEquals( "cn = Exa\\+mple  one ", dn2.getName() );
+        assertEquals( "2.5.4.3= exa+mple  one ", dn2.getNormName() );
     }
 
 
@@ -1954,12 +1955,14 @@ public class DnTest
     {
         Dn name = new Dn( "ou= Some   People   ", "dc = eXample", "dc= cOm" );
 
-        assertTrue( name.getName().equals( "ou= Some   People   ,dc = eXample,dc= cOm" ) );
+        assertEquals( "ou= Some   People   ,dc = eXample,dc= cOm", name.getName() );
 
         Dn result = new Dn( schemaManager, name );
 
         assertEquals( "ou=Some   People,dc=eXample,dc=cOm",
             result.getEscaped() );
+        assertEquals( "2.5.4.11= some  people ,0.9.2342.19200300.100.1.25= example ,0.9.2342.19200300.100.1.25= com ", 
+            result.getNormName() );
     }
 
 
@@ -2712,14 +2715,19 @@ public class DnTest
     public void testNormalizeBackSlash() throws Exception
     {
         Dn dn = new Dn( "cn=A\\,b,dc=com" );
-        new Dn( schemaManager, dn );
+        Dn newDn = new Dn( schemaManager, dn );
         
-        System.out.println( dn.toString() );
-        System.out.println( dn );
-        System.out.println( dn.getName() );
-        System.out.println( dn.getEscaped() );
-        
-        System.out.println( dn.getRdn().getAva().getValue().getValue() );
+        // The original DN
+        assertEquals( "cn=A\\,b,dc=com", dn.toString() );
+        assertEquals( "cn=A\\,b,dc=com", dn.getName() );
+        assertEquals( "cn=A,b,dc=com", dn.getNormName() );
+        assertEquals( "cn=A\\,b,dc=com", dn.getEscaped() );
+
+        // The new DN
+        assertEquals( "cn=A\\,b,dc=com", newDn.toString() );
+        assertEquals( "cn=A\\,b,dc=com", newDn.getName() );
+        assertEquals( "2.5.4.3= a,b ,0.9.2342.19200300.100.1.25= com ", newDn.getNormName() );
+        assertEquals( "cn=A\\,b,dc=com", newDn.getEscaped() );
     }
 
 
@@ -2987,6 +2995,7 @@ public class DnTest
     public void testDnParsing() throws LdapInvalidDnException
     {
         long[] deltas = new long[10];
+        long allDeltas = 0L;
         
         for ( int j = 0; j < 10; j++ )
         {
@@ -3003,7 +3012,6 @@ public class DnTest
             System.out.println( "Iteration[" + j + "] : " + deltas[j] );
         }
         
-        long allDeltas = 0L;
         
         for ( int i = 0; i < 10; i++ )
         {
