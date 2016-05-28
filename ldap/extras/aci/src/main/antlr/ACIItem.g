@@ -966,7 +966,7 @@ parentOfEntry
 name
 {
     log.debug( "entered name()" );
-    Set<Dn> names = new HashSet<Dn>();
+    Set<String> names = new HashSet<>();
     Dn distinguishedName = null;
 }
     :
@@ -974,11 +974,11 @@ name
         OPEN_CURLY ( SP )*
             distinguishedName=distinguishedName ( SP )*
             {
-                names.add( distinguishedName );
+                names.add( distinguishedName.getNormName() );
             }
                 ( SEP ( SP )* distinguishedName=distinguishedName ( SP )*
                 {
-                    names.add( distinguishedName );
+                    names.add( distinguishedName.getNormName() );
                 } )*
         CLOSE_CURLY
     {
@@ -989,7 +989,7 @@ name
 userGroup
 {
     log.debug( "entered userGroup()" );
-    Set<Dn> userGroup = new HashSet<Dn>();
+    Set<String> userGroup = new HashSet<>();
     Dn distinguishedName = null;
 }
     :
@@ -997,11 +997,11 @@ userGroup
         OPEN_CURLY ( SP )*
             distinguishedName=distinguishedName ( SP )*
             {
-                userGroup.add( distinguishedName );
+                userGroup.add( distinguishedName.getNormName() );
             }
                 ( SEP ( SP )* distinguishedName=distinguishedName ( SP )*
                 {
-                    userGroup.add( distinguishedName );
+                    userGroup.add( distinguishedName.getNormName() );
                 } )*
         CLOSE_CURLY
     {
