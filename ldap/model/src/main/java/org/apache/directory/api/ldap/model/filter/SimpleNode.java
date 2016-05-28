@@ -194,7 +194,7 @@ public abstract class SimpleNode<T> extends LeafNode
     {
         if ( value != null )
         {
-            return escapeFilterValue( value.getAttributeType(), bytes );
+            return escapeFilterValue( value.getAttributeType(), value.getBytes() );
         }
         else
         {

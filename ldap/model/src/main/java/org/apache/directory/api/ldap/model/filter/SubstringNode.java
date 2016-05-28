@@ -303,13 +303,13 @@ public class SubstringNode extends LeafNode
      */
     public final Pattern getRegex( Normalizer normalizer ) throws LdapException
     {
-        if ( ( anyPattern != null ) && ( anyPattern.size() > 0 ) )
+        if ( ( anyPattern != null ) && ( !anyPattern.isEmpty() ) )
         {
             String[] any = new String[anyPattern.size()];
 
             for ( int i = 0; i < any.length; i++ )
             {
-                any[i] = ( String ) normalizer.normalize( anyPattern.get( i ), PrepareString.AssertionType.SUBSTRING_ANY );
+                any[i] = normalizer.normalize( anyPattern.get( i ), PrepareString.AssertionType.SUBSTRING_ANY );
 
                 if ( any[i].length() == 0 )
                 {
@@ -321,7 +321,7 @@ public class SubstringNode extends LeafNode
 
             if ( initialPattern != null )
             {
-                initialStr = ( String ) normalizer.normalize( initialPattern, PrepareString.AssertionType.SUBSTRING_INITIAL );
+                initialStr = normalizer.normalize( initialPattern, PrepareString.AssertionType.SUBSTRING_INITIAL );
             }
 
             String finalStr = null;

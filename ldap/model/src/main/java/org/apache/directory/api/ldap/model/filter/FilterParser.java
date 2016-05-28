@@ -360,7 +360,7 @@ public final class FilterParser
             b = Strings.byteAt( filterBytes, pos.start );
         }
         while ( b != '\0' );
-
+        
         if ( current != 0 )
         {
             if ( schemaManager != null )
@@ -378,10 +378,10 @@ public final class FilterParser
                 }
                 else
                 {
-                    byte[] bytes = new byte[value.length];
+                    byte[] bytes = new byte[current];
                     System.arraycopy( value, 0, bytes, 0, current );
                     
-                    return new Value( attributeType, Strings.utf8ToString( bytes ) );
+                    return new Value( attributeType, bytes );
                 }
             }
             else
@@ -516,87 +516,89 @@ public final class FilterParser
     private static ExprNode parseSubstring( SchemaManager schemaManager, String attribute, Value initial,
         byte[] filterBytes, Position pos ) throws ParseException, LdapException
     {
-        if ( Strings.isCharASCII( filterBytes, pos.start, '*' ) )
+        SubstringNode node;
+
+        if ( schemaManager != null )
         {
-            // We have found a '*' : this is a substring
-            SubstringNode node = null;
+            AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( attribute );
 
-            if ( schemaManager != null )
+            if ( attributeType != null )
             {
-                AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( attribute );
-
-                if ( attributeType != null )
-                {
-                    node = new SubstringNode( schemaManager.lookupAttributeTypeRegistry( attribute ) );
-                }
-                else
-                {
-                    return null;
-                }
+                node = new SubstringNode( schemaManager.lookupAttributeTypeRegistry( attribute ) );
             }
             else
             {
-                node = new SubstringNode( attribute );
-            }
-
-            if ( ( initial != null ) && !initial.isNull() )
-            {
-                // We have a substring starting with a value : val*...
-                // Set the initial value. It must be a String
-                String initialStr = initial.getValue();
-                node.setInitial( initialStr );
-            }
-
-            pos.start++;
-
-            if ( Strings.isCharASCII( filterBytes, pos.start, ')' ) )
-            {
-                // No any or final, we are done
-                return node;
-            }
-
-            //
-            while ( true )
-            {
-                Value assertionValue = parseAssertionValue( schemaManager, attribute, filterBytes, pos );
-
-                // Is there anything else but a ')' after the value ?
-                if ( Strings.isCharASCII( filterBytes, pos.start, ')' ) )
-                {
-                    // Nope : as we have had [initial] '*' (any '*' ) *,
-                    // this is the final
-                    if ( !assertionValue.isNull() )
-                    {
-                        String finalStr = assertionValue.getValue();
-                        node.setFinal( finalStr );
-                    }
-
-                    return node;
-                }
-                else if ( Strings.isCharASCII( filterBytes, pos.start, '*' ) )
-                {
-                    // We have a '*' : it's an any
-                    // If the value is empty, that means we have more than
-                    // one consecutive '*' : do nothing in this case.
-                    if ( !assertionValue.isNull() )
-                    {
-                        String anyStr = assertionValue.getValue();
-                        node.addAny( anyStr );
-                    }
-
-                    pos.start++;
-                }
-                else
-                {
-                    // This is an error
-                    throw new ParseException( I18n.err( I18n.ERR_04150 ), pos.start );
-                }
+                return null;
             }
         }
         else
         {
-            // This is an error
-            throw new ParseException( I18n.err( I18n.ERR_04150 ), pos.start );
+            node = new SubstringNode( attribute );
+        }
+
+        if ( ( initial != null ) && !initial.isNull() )
+        {
+            // We have a substring starting with a value : val*...
+            // Set the initial value. It must be a String
+            String initialStr = initial.getValue();
+            node.setInitial( initialStr );
+        }
+
+        if ( Strings.isCharASCII( filterBytes, pos.start, ')' ) )
+        {
+            // No any or final, we are done
+            return node;
+        }
+
+        //
+        while ( true )
+        {
+            Value assertionValue = parseAssertionValue( schemaManager, attribute, filterBytes, pos );
+
+            // Is there anything else but a ')' after the value ?
+            if ( Strings.isCharASCII( filterBytes, pos.start, ')' ) )
+            {
+                // Nope : as we have had [initial] '*' (any '*' ) *,
+                // this is the final
+                if ( !assertionValue.isNull() )
+                {
+                    String finalStr = assertionValue.getValue();
+                    node.setFinal( finalStr );
+                }
+
+                return node;
+            }
+            else if ( Strings.isCharASCII( filterBytes, pos.start, '*' ) )
+            {
+                // We have a '*' : it's an any
+                // If the value is empty, that means we have more than
+                // one consecutive '*' : do nothing in this case.
+                if ( !assertionValue.isNull() )
+                {
+                    String anyStr = assertionValue.getValue();
+                    node.addAny( anyStr );
+                }
+
+                pos.start++;
+
+                // Skip any following '*'
+                while ( Strings.isCharASCII( filterBytes, pos.start, '*' ) )
+                {
+                    pos.start++;
+                }
+
+                // that may have been the closing '*'
+                if ( Strings.isCharASCII( filterBytes, pos.start, ')' ) )
+                {
+                    return node;
+                }
+
+            }
+            else
+            {
+                // This is an error
+                throw new ParseException( I18n.err( I18n.ERR_04150 ), pos.start );
+            }
         }
     }
 
@@ -628,22 +630,52 @@ public final class FilterParser
     private static ExprNode parsePresenceEqOrSubstring( SchemaManager schemaManager, String attribute, byte[] filterBytes,
         Position pos ) throws ParseException, LdapException
     {
-        if ( Strings.isCharASCII( filterBytes, pos.start, '*' ) )
-        {
-            // To be a present node, the next char should be a ')'
-            pos.start++;
+        byte b = Strings.byteAt( filterBytes, pos.start );
 
-            if ( Strings.isCharASCII( filterBytes, pos.start, ')' ) )
-            {
-                // This is a present node
+        switch ( b )
+        {
+            case '*' :
+                // To be a present node, the next char should be a ')'
+                pos.start++;
+    
+                if ( Strings.isCharASCII( filterBytes, pos.start, ')' ) )
+                {
+                    // This is a present node
+                    if ( schemaManager != null )
+                    {
+                        AttributeType attributeType = schemaManager.getAttributeType( attribute );
+    
+                        if ( attributeType != null )
+                        {
+                            return new PresenceNode( attributeType );
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
+                    else
+                    {
+                        return new PresenceNode( attribute );
+                    }
+                }
+                else
+                {
+                    // Definitively a substring with no initial or an error
+                    return parseSubstring( schemaManager, attribute, null, filterBytes, pos );
+                }
+                
+            case ')' :
+                // An empty equality Node
                 if ( schemaManager != null )
                 {
                     AttributeType attributeType = schemaManager.getAttributeType( attribute );
-
+    
                     if ( attributeType != null )
                     {
-                        return new PresenceNode( attributeType );
+                        return new EqualityNode( attributeType, new Value( ( byte[] ) null ) );
                     }
+    
                     else
                     {
                         return null;
@@ -651,68 +683,48 @@ public final class FilterParser
                 }
                 else
                 {
-                    return new PresenceNode( attribute );
+                    return new EqualityNode( attribute, ( byte[] ) null );
                 }
-            }
-            else
-            {
-                // Definitively a substring with no initial or an error
-                // Push back the '*' on the string
-                pos.start--;
-                return parseSubstring( schemaManager, attribute, null, filterBytes, pos );
-            }
-        }
-        else if ( Strings.isCharASCII( filterBytes, pos.start, ')' ) )
-        {
-            // An empty equality Node
-            if ( schemaManager != null )
-            {
-                AttributeType attributeType = schemaManager.getAttributeType( attribute );
+                
+            default :
+                // A substring or an equality node
+                Value value = parseAssertionValue( schemaManager, attribute, filterBytes, pos );
+    
+                // Is there anything else but a ')' after the value ?
+                b = Strings.byteAt( filterBytes, pos.start );
 
-                if ( attributeType != null )
+                switch ( b )
                 {
-                    return new EqualityNode( attributeType, new Value( ( byte[] ) null ) );
+                    case ')' :
+                        // This is an equality node
+                        if ( schemaManager != null )
+                        {
+                            AttributeType attributeType = schemaManager.getAttributeType( attribute );
+        
+                            if ( attributeType != null )
+                            {
+                                return new EqualityNode( attributeType, value );
+                            }
+                            else
+                            {
+                                return null;
+                            }
+                        }
+                        else
+                        {
+                            return new EqualityNode( attribute, value.getValue() );
+                        }
+                        
+                    case '*' :
+                        pos.start++;
+                        
+                        return parseSubstring( schemaManager, attribute, value, filterBytes, pos );
+                        
+                        
+                    default :
+                        // This is an error
+                        throw new ParseException( I18n.err( I18n.ERR_04150 ), pos.start );
                 }
-
-                else
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                return new EqualityNode( attribute, ( byte[] ) null );
-            }
-        }
-        else
-        {
-            // A substring or an equality node
-            Value value = parseAssertionValue( schemaManager, attribute, filterBytes, pos );
-
-            // Is there anything else but a ')' after the value ?
-            if ( Strings.isCharASCII( filterBytes, pos.start, ')' ) )
-            {
-                // This is an equality node
-                if ( schemaManager != null )
-                {
-                    AttributeType attributeType = schemaManager.getAttributeType( attribute );
-
-                    if ( attributeType != null )
-                    {
-                        return new EqualityNode( attributeType, value );
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-                else
-                {
-                    return new EqualityNode( attribute, value.getValue() );
-                }
-            }
-
-            return parseSubstring( schemaManager, attribute, value, filterBytes, pos );
         }
     }
 
@@ -735,7 +747,7 @@ public final class FilterParser
     private static ExprNode parseItem( SchemaManager schemaManager, byte[] filterBytes, Position pos, byte b,
         boolean relaxed ) throws ParseException, LdapException
     {
-        String attribute = null;
+        String attribute;
 
         if ( b == '\0' )
         {
