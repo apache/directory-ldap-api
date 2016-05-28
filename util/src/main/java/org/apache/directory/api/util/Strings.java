@@ -226,8 +226,8 @@ public final class Strings
             0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 
             0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F, 
             0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77, 
-            0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7D, 0x7E, 0x7F }
-    ;
+            0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7D, 0x7E, 0x7F 
+        };
 
     /** An empty byte array */
     public static final byte[] EMPTY_BYTES = new byte[0];
@@ -1939,9 +1939,9 @@ public final class Strings
 
 
     /**
-     * Rewrote the toLowercase method to improve performances.
+     * Rewrote the toUppercase method to improve performances.
      * In Ldap, attributesType are supposed to use ASCII chars :
-     * 'a'-'z', 'A'-'Z', '0'-'9', '.' and '-' only.
+     * 'a'-'z', 'A'-'Z', '0'-'9', '.' and '-' only. We also add the '_' char
      *
      * @param value The String to uppercase
      * @return The uppercase string
