@@ -35,6 +35,7 @@ import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
+import org.apache.directory.api.ldap.model.schema.comparators.StringComparator;
 import org.apache.directory.api.ldap.model.schema.normalizers.NoOpNormalizer;
 import org.apache.directory.api.util.Serialize;
 import org.apache.directory.api.util.Strings;
@@ -93,6 +94,9 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
 
     /** Two flags used to tell if the value is HR or not in serialization */
     private boolean isHR = true;
+    
+    /** A default comparator if we don't have an EQUALITY MR */
+    private static StringComparator stringComparator = new StringComparator( null );
     
     // -----------------------------------------------------------------------
     // Constructors
@@ -167,7 +171,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
 
         this.attributeType = attributeType;
         
-        if ( !attributeType.isRelaxed() )
+        if ( ( attributeType != null ) && !attributeType.isRelaxed() )
         {
             // Check the value
             SyntaxChecker syntaxChecker = attributeType.getSyntax().getSyntaxChecker();
@@ -1335,7 +1339,8 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
                     
                     if ( other.attributeType.getEquality() == null )
                     {
-                        return false;
+                        // No equality ? Default to comparing using a String comparator
+                        return stringComparator.compare( normValue, other.normValue ) == 0;
                     }
                     
                     Normalizer normalizer = other.attributeType.getEquality().getNormalizer();
