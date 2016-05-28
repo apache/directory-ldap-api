@@ -44,13 +44,13 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
      * 
      * @throws LdapInvalidDnException the invalid name exception
      */
-    /* No protection*/void parseDn( SchemaManager schemaManager, String name, List<Rdn> rdns ) throws LdapInvalidDnException
+    /* No protection*/String parseDn( SchemaManager schemaManager, String name, List<Rdn> rdns ) throws LdapInvalidDnException
     {
         AntlrDnParser dnParser = new AntlrDnParser( new AntlrDnLexer( new StringReader( name ) ) );
 
         try
         {
-            dnParser.relativeDistinguishedNames( schemaManager, rdns );
+            return dnParser.relativeDistinguishedNames( schemaManager, rdns );
         }
         catch ( Exception e )
         {
@@ -62,8 +62,8 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
     /**
      * Parses an Rdn.
      * 
-     * @param name the string representationof the relative distinguished name
-     * @param rdn the (empty) Rdn where parsed ATAVs are put to
+     * @param name the string representation of the relative distinguished name
+     * @param rdn the (empty) Rdn where parsed ATAVs are put into
      * 
      * @throws LdapInvalidDnException the invalid name exception
      */

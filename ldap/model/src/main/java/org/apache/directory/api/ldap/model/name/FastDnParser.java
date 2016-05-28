@@ -26,8 +26,10 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.util.Position;
+import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -82,17 +84,18 @@ import org.apache.directory.api.util.Position;
      */
     /* No protection*/static void parseDn( SchemaManager schemaManager, String name, Dn dn ) throws LdapInvalidDnException
     {
-        parseDn( schemaManager, name, dn.rdns );
+        String normName = parseDn( schemaManager, name, dn.rdns );
         dn.setUpName( name );
+        dn.setNormName( normName );
     }
 
 
-    /* No protection*/static void parseDn( SchemaManager schemaManager, String name, List<Rdn> rdns ) throws LdapInvalidDnException
+    /* No protection*/static String parseDn( SchemaManager schemaManager, String name, List<Rdn> rdns ) throws LdapInvalidDnException
     {
         if ( ( name == null ) || ( name.trim().length() == 0 ) )
         {
             // We have an empty Dn, just get out of the function.
-            return;
+            return "";
         }
 
         Position pos = new Position();
@@ -100,11 +103,13 @@ import org.apache.directory.api.util.Position;
 
         pos.start = 0;
         pos.length = chars.length;
+        StringBuilder sb = new StringBuilder();
 
         while ( true )
         {
             Rdn rdn = new Rdn( schemaManager );
             parseRdnInternal( schemaManager, name, pos, rdn );
+            sb.append( rdn.getNormName() );
             rdns.add( rdn );
 
             if ( !hasMoreChars( pos ) )
@@ -120,6 +125,7 @@ import org.apache.directory.api.util.Position;
                 case ',':
                 case ';':
                     // another Rdn to parse
+                    sb.append( ',' );
                     break;
 
                 default:
@@ -127,6 +133,8 @@ import org.apache.directory.api.util.Position;
                         pos.start ) );
             }
         }
+        
+        return sb.toString();
     }
 
 
@@ -140,7 +148,7 @@ import org.apache.directory.api.util.Position;
      */
     /* No protection*/static void parseRdn( SchemaManager schemaManager, String name, Rdn rdn ) throws LdapInvalidDnException
     {
-        if ( name == null || name.length() == 0 )
+        if ( Strings.isEmpty( name ) )
         {
             throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04193 ) );
         }
@@ -153,13 +161,17 @@ import org.apache.directory.api.util.Position;
         Position pos = new Position();
         pos.start = 0;
         pos.length = name.length();
+        StringBuilder sb = new StringBuilder();
 
         parseRdnInternal( schemaManager, name, pos, rdn );
+        
+        sb.append( rdn.getNormName() );
     }
 
 
     private static void parseRdnInternal( SchemaManager schemaManager, String name, Position pos, Rdn rdn ) throws LdapInvalidDnException
     {
+        StringBuilder sbNormName = new StringBuilder();
         int rdnStart = pos.start;
         char[] chars = name.toCharArray();
 
@@ -181,17 +193,41 @@ import org.apache.directory.api.util.Position;
         // here we only match "simple" values
         // stops at \ + # " -> Too Complex Exception
         String upValue = matchValue( chars, pos );
-        // TODO: trim, normalize, etc
 
         // SPACE*
         matchSpaces( chars, pos );
 
         String upName = name.substring( rdnStart, pos.start );
-
+        
         Ava ava = new Ava( schemaManager, type, upValue );
         rdn.addAVA( schemaManager, ava );
 
+        if ( schemaManager != null )
+        {
+            AttributeType attributeType = ava.getAttributeType();
+            
+            if ( attributeType != null )
+            {
+                sbNormName.append( ava.getNormType() );
+                sbNormName.append( '=' );
+                sbNormName.append( ava.getValue().getNormalized() );
+            }
+            else
+            {
+                sbNormName.append( type );
+                sbNormName.append( '=' );
+                sbNormName.append( upValue );
+            }
+        }
+        else
+        {
+            sbNormName.append( type );
+            sbNormName.append( '=' );
+            sbNormName.append( upValue );
+        }
+
         rdn.setUpName( upName );
+        rdn.setNormName( sbNormName.toString() );
         rdn.hashCode();
     }
 

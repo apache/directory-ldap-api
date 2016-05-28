@@ -163,6 +163,9 @@ options    {
         // The user provided value
         StringBuilder upValue = new StringBuilder();
 
+        // The normalized value
+        StringBuilder normValue = new StringBuilder();
+
         // A flag set to false if we have a binary value
         boolean isHR = true;
     }
@@ -201,7 +204,8 @@ distinguishedName [SchemaManager schemaManager, Dn dn]
         { 
             try
             { 
-                dn.add( rdn ); 
+                dn.add( rdn );
+                
             }
             catch ( LdapInvalidDnException lide )
             {
@@ -251,16 +255,18 @@ distinguishedName [SchemaManager schemaManager, Dn dn]
  * <optional-space> ::= ( <CR> ) *( " " )
  *
  */
-relativeDistinguishedNames [SchemaManager schemaManager, List<Rdn> rdns]
+relativeDistinguishedNames [SchemaManager schemaManager, List<Rdn> rdns] returns [String normNameStr]
     {
         matchedProduction( "relativeDistinguishedNames()" );
         Rdn rdn = new Rdn( schemaManager );
+        StringBuilder dnNormSb = new StringBuilder();
     }
     :
     (
         relativeDistinguishedName[ schemaManager, rdn] 
         { 
             rdns.add( rdn );
+            dnNormSb.append( rdn.getNormName() );
             rdn = new Rdn( schemaManager );
         }
         (
@@ -268,11 +274,16 @@ relativeDistinguishedNames [SchemaManager schemaManager, List<Rdn> rdns]
             relativeDistinguishedName[schemaManager, rdn] 
             { 
                 rdns.add( rdn ); 
+	            dnNormSb.append( ',' );
+	            dnNormSb.append( rdn.getNormName() );
                 rdn = new Rdn( schemaManager );
-            }
+				}
         )*
         EOF
     )?
+    {
+        normNameStr = dnNormSb.toString();
+    }
     ;
 
 /**
@@ -299,25 +310,77 @@ relativeDistinguishedName [SchemaManager schemaManager, Rdn rdn]
         // The rdnStr variable is used to gather the full RDN string
         // as provided
         StringBuilder rdnStr = new StringBuilder();
+        StringBuilder rdnNormStr = new StringBuilder();
+        int avaPos = 0;
+        Ava currentAva;
+        AttributeType attributeType;
+        Value val;
     }
     :
     (
         tmp = attributeTypeAndValue[schemaManager, rdn] 
         {
             rdnStr.append( tmp );
+            currentAva = rdn.getAva( avaPos );
+            
+            attributeType = currentAva.getAttributeType();
+            
+            if ( attributeType != null )
+            {
+                rdnNormStr.append( attributeType.getOid() );
+            }
+            else
+            {
+                rdnNormStr.append( tmp );
+            }
+            
+            rdnNormStr.append( '=' );
+            
+            val = currentAva.getValue();
+            
+            if ( ( val != null ) && ( val.getNormalized() != null ) )
+            {
+                rdnNormStr.append( val.getNormalized() );
+            }
         }
         (
-            PLUS { rdnStr.append( '+' ); }
+            PLUS 
+            { 
+                rdnStr.append( '+' ); 
+                rdnNormStr.append( '+' );
+                avaPos++;
+            }
 
             tmp = attributeTypeAndValue[schemaManager, rdn] 
             {
                 rdnStr.append( tmp );
+                currentAva = rdn.getAva( avaPos );
+                attributeType = currentAva.getAttributeType();
+            
+                if ( attributeType != null )
+                {
+                    rdnNormStr.append( attributeType.getOid() );
+                }
+                else
+                {
+                    rdnNormStr.append( tmp );
+                }
+            
+                rdnNormStr.append( '=' );
+            
+                val = currentAva.getValue();
+            
+                if ( ( val != null ) && ( val.getNormalized() != null ) )
+                {
+                    rdnNormStr.append( val.getNormalized() );
+                }
             }
         )*
     )
     {
         rdn.hashCode();
         rdn.setUpName( rdnStr.toString() );
+        rdn.setNormName( rdnNormStr.toString() );
     }
     ;
     

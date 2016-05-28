@@ -96,6 +96,9 @@ public class Dn implements Iterable<Rdn>, Externalizable
     /** The user provided name */
     private String upName;
 
+    /** The normalized name */
+    private String normName;
+
     /** A null Dn */
     public static final Dn EMPTY_DN = new Dn();
 
@@ -169,6 +172,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
     {
         this.schemaManager = schemaManager;
         upName = "";
+        normName = "";
     }
 
 
@@ -249,7 +253,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      */
     public Dn( SchemaManager schemaManager, String... upRdns ) throws LdapInvalidDnException
     {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sbUpName = new StringBuilder();
         boolean valueExpected = false;
         boolean isFirst = true;
         this.schemaManager = schemaManager;
@@ -267,12 +271,12 @@ public class Dn implements Iterable<Rdn>, Externalizable
             }
             else if ( !valueExpected )
             {
-                sb.append( ',' );
+                sbUpName.append( ',' );
             }
 
             if ( !valueExpected )
             {
-                sb.append( upRdn );
+                sbUpName.append( upRdn );
 
                 if ( upRdn.indexOf( '=' ) == -1 )
                 {
@@ -281,7 +285,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             }
             else
             {
-                sb.append( "=" ).append( upRdn );
+                sbUpName.append( "=" ).append( upRdn );
 
                 valueExpected = false;
             }
@@ -294,11 +298,11 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         // Stores the representations of a Dn : internal (as a string and as a
         // byte[]) and external.
-        upName = sb.toString();
+        upName = sbUpName.toString();
         
         try
         {
-            parseInternal( schemaManager, upName, rdns );
+            normName = parseInternal( schemaManager, upName, rdns );
         }
         catch ( LdapInvalidDnException e )
         {
@@ -414,10 +418,12 @@ public class Dn implements Iterable<Rdn>, Externalizable
         if ( rdns.isEmpty() )
         {
             upName = "";
+            normName = "";
         }
         else
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sbUpName = new StringBuilder();
+            StringBuilder sbNormName = new StringBuilder();
             boolean isFirst = true;
 
             for ( Rdn rdn : rdns )
@@ -428,13 +434,16 @@ public class Dn implements Iterable<Rdn>, Externalizable
                 }
                 else
                 {
-                    sb.append( ',' );
+                    sbUpName.append( ',' );
+                    sbNormName.append( ',' );
                 }
 
-                sb.append( rdn.getName() );
+                sbUpName.append( rdn.getName() );
+                sbNormName.append( rdn.getNormName() );
             }
 
-            upName = sb.toString();
+            upName = sbUpName.toString();
+            normName = sbNormName.toString();
         }
 
         return upName;
@@ -469,6 +478,17 @@ public class Dn implements Iterable<Rdn>, Externalizable
     public String getName()
     {
         return upName == null ? "" : upName;
+    }
+
+
+    /**
+     * Get the normalized Dn
+     *
+     * @return The normalized Dn as a String
+     */
+    public String getNormName()
+    {
+        return normName == null ? "" : normName;
     }
     
     
@@ -509,6 +529,19 @@ public class Dn implements Iterable<Rdn>, Externalizable
     /* No qualifier */void setUpName( String upName )
     {
         this.upName = upName;
+    }
+
+
+    /**
+     * Sets the normalized name.
+     *
+     * Package private because Dn is immutable, only used by the Dn parser.
+     *
+     * @param normName the new normalized name
+     */
+    /* No qualifier */void setNormName( String normName )
+    {
+        this.normName = normName;
     }
 
 
@@ -1131,16 +1164,16 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * @param rdns The list that will contain the RDNs
      * @throws LdapInvalidDnException If the Dn is invalid
      */
-    private static void parseInternal( SchemaManager schemaManager, String name, List<Rdn> rdns ) throws LdapInvalidDnException
+    private static String parseInternal( SchemaManager schemaManager, String name, List<Rdn> rdns ) throws LdapInvalidDnException
     {
         try
         {
-            FastDnParser.parseDn( schemaManager, name, rdns );
+            return FastDnParser.parseDn( schemaManager, name, rdns );
         }
         catch ( TooComplexDnException e )
         {
             rdns.clear();
-            new ComplexDnParser().parseDn( schemaManager, name, rdns );
+            return new ComplexDnParser().parseDn( schemaManager, name, rdns );
         }
     }
 
@@ -1165,6 +1198,8 @@ public class Dn implements Iterable<Rdn>, Externalizable
             rdn.readExternal( in );
             rdns.add( rdn );
         }
+        
+        toUpName();
     }
 
 

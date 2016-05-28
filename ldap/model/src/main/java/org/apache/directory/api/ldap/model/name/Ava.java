@@ -119,7 +119,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         value = null;
         upName = "";
         this.schemaManager = schemaManager;
-        this.attributeType = null;
+        attributeType = null;
     }
 
 
@@ -170,7 +170,15 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             }
         }
         
-        upName = this.upType + '=' + ( this.value == null ? "" : this.value.getValue() );
+        StringBuilder sb = new StringBuilder( upType );
+        sb.append( '=' );
+        
+        if ( ( value != null ) && ( value.getValue() != null ) )
+        {
+            sb.append( value.getValue() );
+        }
+        
+        upName = sb.toString();
 
         hashCode();
     }
@@ -509,10 +517,21 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     /* Unspecified protection */Ava( SchemaManager schemaManager, String upType, String normType, Value value )
         throws LdapInvalidDnException
     {
+        StringBuilder sb = new StringBuilder();
+
         this.upType = upType;
         this.normType = normType;
         this.value = value;
-        upName = this.upType + '=' + ( this.value == null ? "" : this.value.getValue() );
+        
+        sb.append( upType );
+        sb.append( '=' );
+        
+        if ( ( value != null ) && ( value.getValue() != null ) )
+        {
+            sb.append( value.getValue() );
+        }
+        
+        upName = sb.toString();
 
         if ( schemaManager != null )
         {
@@ -539,10 +558,22 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     private void createAva( SchemaManager schemaManager, String upType, Value value )
         throws LdapInvalidDnException
     {
+        StringBuilder sb = new StringBuilder();
+
         normType = attributeType.getOid();
         this.upType = upType;
         this.value = value;
-        upName = this.upType + '=' + ( value == null ? "" : Rdn.escapeValue( value.getValue() ) );
+        
+        sb.append( upType );
+        sb.append( '=' );
+        
+        if ( value != null )
+        {
+            sb.append( Rdn.escapeValue( value.getValue() ) );
+        }
+        
+        upName = sb.toString();
+
         hashCode();
     }
 
@@ -596,6 +627,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         value = upValue;
 
         upName = getEscaped();
+        
         hashCode();
     }
 
@@ -1602,13 +1634,14 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         }
 
         // The normType
-        byte[] normTypeBytes = null;
+        /*byte[] normTypeBytes = null;
 
         if ( normType != null )
         {
             normTypeBytes = Strings.getBytesUtf8( normType );
             length += 1 + 4 + normTypeBytes.length;
         }
+        */
 
         // Is HR
         length++;
@@ -1645,6 +1678,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         }
 
         // Write the normType
+        /*
         if ( normType != null )
         {
             buffer[pos++] = Serialize.TRUE;
@@ -1654,6 +1688,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         {
             buffer[pos++] = Serialize.FALSE;
         }
+        */
 
         // Write the isHR flag
         if ( value.isHumanReadable() )
@@ -1717,6 +1752,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         }
 
         // Read the normType value, if it's not null
+        /*
         boolean hasNormType = Serialize.deserializeBoolean( buffer, pos );
         pos++;
 
@@ -1726,6 +1762,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             pos += 4 + normTypeBytes.length;
             normType = Strings.utf8ToString( normTypeBytes );
         }
+        */
 
         // Update the AtributeType
         if ( schemaManager != null )
@@ -1738,6 +1775,15 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             {
                 attributeType = schemaManager.getAttributeType( normType );
             }
+        }
+
+        if ( attributeType != null )
+        {
+            normType = attributeType.getOid();
+        }
+        else
+        {
+            normType = upType;
         }
 
         // Read the isHR flag
@@ -1937,11 +1983,6 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         }
 
         h = in.readInt();
-
-        if ( schemaManager != null )
-        {
-            attributeType = schemaManager.getAttributeType( upType );
-        }
     }
 
 

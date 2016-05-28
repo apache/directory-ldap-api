@@ -131,6 +131,9 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
     /** The User Provided Rdn */
     private String upName = null;
+    
+    /** The normalized Rdn */
+    private String normName;
 
     /**
      * Stores all couple type = value. We may have more than one type, if the
@@ -208,7 +211,8 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
         // treeSet.
         this.schemaManager = schemaManager;
         upName = "";
-        normalized = false;
+        normName = "";
+        normalized = true;
         h = 0;
     }
 
@@ -237,7 +241,8 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
         else
         {
             upName = "";
-            normalized = false;
+            normName = "";
+            normalized = true;
         }
 
         hashCode();
@@ -350,7 +355,8 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
     public Rdn( Rdn rdn )
     {
         nbAvas = rdn.size();
-        this.upName = rdn.getName();
+        upName = rdn.getName();
+        normName = rdn.getName();
         normalized = rdn.normalized;
         schemaManager = rdn.schemaManager;
 
@@ -423,7 +429,21 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 return;
 
             case 1:
-                this.ava = new Ava( schemaManager, rdn.ava );
+                ava = new Ava( schemaManager, rdn.ava );
+                
+                StringBuilder sb = new StringBuilder();
+                
+                sb.append( ava.getNormType() );
+                sb.append( '=' );
+                
+                if ( ( ava.getValue() != null ) && ( ava.getValue().getNormalized() != null ) )
+                {
+                    sb.append( ava.getValue().getNormalized() );
+                }
+                
+                normName = sb.toString();
+                normalized = true;
+                
                 hashCode();
 
                 return;
@@ -432,7 +452,9 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 // We must duplicate the treeSet and the hashMap
                 avas = new ArrayList<>();
                 avaTypes = new HashMap<>();
-
+                sb = new StringBuilder();
+                boolean isFirst = true;
+                
                 for ( Ava currentAva : rdn.avas )
                 {
                     Ava tmpAva = currentAva;
@@ -451,15 +473,32 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                         avaTypes.put( tmpAva.getNormType(), avaList );
                         avas.add( tmpAva );
                     }
+                    else if ( !avaList.contains( tmpAva ) )
+                    {
+                        avaList.add( tmpAva );
+                        avas.add( tmpAva );
+                    }
+                    
+                    if ( isFirst )
+                    {
+                        isFirst = false;
+                    }
                     else
                     {
-                        if ( !avaList.contains( tmpAva ) )
-                        {
-                            avaList.add( tmpAva );
-                            avas.add( tmpAva );
-                        }
+                        sb.append( ',' );
+                    }
+                    
+                    sb.append( currentAva.getNormType() );
+                    sb.append( '=' );
+                    
+                    if ( ( currentAva.getValue() != null ) && ( currentAva.getValue().getNormalized() != null ) )
+                    {
+                        sb.append( currentAva.getValue().getNormalized() );
                     }
                 }
+
+                normName = sb.toString();
+                normalized = true;
 
                 hashCode();
 
@@ -916,6 +955,29 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
 
     /**
+     * @return the normalized name
+     */
+    public String getNormName()
+    {
+        return normName;
+    }
+
+
+    /**
+     * Set the normalized Name.
+     *
+     * Package private because Rdn is immutable, only used by the Dn parser.
+     *
+     * @param normName the Normalized dame
+     */
+    void setNormName( String normName )
+    {
+        this.normName = normName;
+        normalized = true;
+    }
+
+
+    /**
      * Return the unique Ava, or the first one of we have more
      * than one
      *
@@ -933,6 +995,38 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
             default:
                 return avas.get( 0 );
+        }
+    }
+
+
+    /**
+     * Return the Nth Ava
+     * 
+     * @param pos The Ava we are looking for
+     *
+     * @return The Ava at the given position in this Rdn
+     */
+    public Ava getAva( int pos )
+    {
+        if ( pos > nbAvas )
+        {
+            return null;
+        }
+        
+        if ( pos == 0 )
+        {
+            if ( nbAvas == 1 )
+            {
+                return ava;
+            }
+            else
+            {
+                    return avas.get( 0 );
+            }
+        }
+        else
+        {
+            return avas.get( pos );
         }
     }
 
@@ -1780,6 +1874,8 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
     @Override
     public void readExternal( ObjectInput in ) throws IOException, ClassNotFoundException
     {
+        StringBuilder sb = new StringBuilder();
+        
         // Read the Ava number
         nbAvas = in.readInt();
 
@@ -1790,18 +1886,23 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
         {
             case 0:
                 ava = null;
+                normName = "";
                 break;
 
             case 1:
                 ava = new Ava( schemaManager );
                 ava.readExternal( in );
                 avaType = ava.getNormType();
+                
+                buildNormRdn( sb, ava );
+                normName = sb.toString();
 
                 break;
 
             default:
                 avas = new ArrayList<>();
                 avaTypes = new HashMap<>();
+                boolean isFirst = true;
 
                 for ( int i = 0; i < nbAvas; i++ )
                 {
@@ -1816,12 +1917,24 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                         avaList = new ArrayList<>();
                         avaTypes.put( newAva.getNormType(), avaList );
                     }
+
+                    if ( isFirst )
+                    {
+                        isFirst = false;
+                    }
+                    else
+                    {
+                        sb.append( '+' );
+                    }
                     
+                    buildNormRdn( sb, newAva );
+
                     avaList.add( newAva );
                 }
 
                 ava = null;
                 avaType = null;
+                normName = sb.toString();
 
                 break;
         }
@@ -1829,6 +1942,21 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
         h = in.readInt();
     }
 
+
+    private void buildNormRdn( StringBuilder sb, Ava ava )
+    {
+        sb.append( ava.getNormType() );
+        
+        sb.append( '=' );
+        
+        Value val = ava.getValue();
+        
+        if ( ( val != null ) && ( val.getNormalized() != null ) ) 
+        {
+            sb.append( ava.getValue().getNormalized() );
+        }
+    }
+    
 
     /**
      * Compare the current RDN with the provided one. 
