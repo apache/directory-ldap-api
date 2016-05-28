@@ -659,7 +659,6 @@ public class LdifAnonymizer
                 }
                 catch ( Exception e )
                 {
-                    e.printStackTrace();
                     System.out.print( '*' );
 
                     if ( count % 100  == 0 )
