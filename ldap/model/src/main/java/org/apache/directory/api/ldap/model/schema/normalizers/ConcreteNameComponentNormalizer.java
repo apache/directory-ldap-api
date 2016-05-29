@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.normalizers;
 
 
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
@@ -130,9 +131,9 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
     @Override
     public Object normalizeByName( String name, byte[] value ) throws LdapException
     {
-        String valStr = Strings.utf8ToString( value );
-
-        return lookup( name ).normalize( valStr );
+        AttributeType attributeType = schemaManager.getAttributeType( name );
+        
+        return new Value( attributeType, value );
     }
 
 

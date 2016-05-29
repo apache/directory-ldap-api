@@ -75,4 +75,17 @@ public class NoOpNormalizer extends Normalizer
     {
         return value;
     }
+
+
+    /**
+     * Returns the value argument as-is without alterations all the time.
+     * 
+     * @param value any value
+     * @return the value argument returned as-is
+     * @see org.apache.directory.api.ldap.model.schema.Normalizer#normalize(String)
+     */
+    public byte[] normalize( byte[] value )
+    {
+        return value;
+    }
 }
