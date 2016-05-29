@@ -31,7 +31,7 @@ import org.apache.directory.api.util.Strings;
 
 
 /**
- * A noirmalizer for UniqueMember
+ * A normalizer for UniqueMember. We will get the Normilzed name of the DN
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -82,7 +82,7 @@ public class UniqueMemberNormalizer extends Normalizer
                 return null;
             }
 
-            // This is an UID if the '#' is immediatly
+            // This is an UID if the '#' is immediately
             // followed by a BitString, except if the '#' is
             // on the last position
             String uid = value.substring( sharpPos + 1 );
@@ -91,7 +91,7 @@ public class UniqueMemberNormalizer extends Normalizer
             {
                 Dn dn = new Dn( schemaManager, value.substring( 0, sharpPos ) );
 
-                return dn.getName() + '#' + uid;
+                return dn.getNormName() + '#' + uid;
             }
             else
             {
@@ -102,7 +102,7 @@ public class UniqueMemberNormalizer extends Normalizer
         {
             // No UID, the strValue is a Dn
             // Return the normalized Dn
-            return new Dn( schemaManager, value ).getName();
+            return new Dn( schemaManager, value ).getNormName();
         }
     }
 

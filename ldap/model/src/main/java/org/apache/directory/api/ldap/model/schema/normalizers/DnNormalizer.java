@@ -57,7 +57,7 @@ public class DnNormalizer extends Normalizer
     {
         Dn dn = new Dn( schemaManager, value );
 
-        return dn.getName();
+        return dn.getNormName();
     }
 
 
@@ -69,7 +69,7 @@ public class DnNormalizer extends Normalizer
     {
         Dn dn = new Dn( schemaManager, value );
 
-        return dn.getName();
+        return dn.getNormName();
     }
 
 
@@ -88,7 +88,7 @@ public class DnNormalizer extends Normalizer
             dn = new Dn( schemaManager, value );
         }
 
-        return dn.getName();
+        return dn.getNormName();
     }
 
 
