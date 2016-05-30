@@ -71,7 +71,7 @@ public final class Asn1StringUtils
             return "";
         }
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         for ( byte b : buffer )
         {

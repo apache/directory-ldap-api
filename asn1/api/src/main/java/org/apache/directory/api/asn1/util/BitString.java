@@ -64,7 +64,7 @@ public class BitString
         nbBits = length;
 
         // As we store values in bytes, we must divide the length by 8
-        nbBytes = ( length / 8 );
+        nbBytes = length / 8;
 
         if ( ( length % 8 ) != 0 )
         {
