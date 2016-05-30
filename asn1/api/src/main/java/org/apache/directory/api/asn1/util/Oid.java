@@ -756,7 +756,7 @@ public final class Oid
     {
         char c = oid.charAt( pos );
         
-        if ( c == '.')
+        if ( c == '.' )
         {
             return OidFSAState.STATE_K;
         }
