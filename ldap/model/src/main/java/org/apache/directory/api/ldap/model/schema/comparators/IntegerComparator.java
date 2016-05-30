@@ -24,6 +24,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.apache.directory.api.ldap.model.schema.normalizers.NumericNormalizer;
@@ -63,6 +64,10 @@ public class IntegerComparator extends LdapComparator<Object> implements Seriali
         if ( v1 instanceof String )
         {
             return compare( ( String ) v1, ( String ) v2 );
+        }
+        else if ( v1 instanceof Value )
+        {
+            return compare( ( ( Value ) v1 ).getValue(), ( ( Value ) v2 ).getValue() ); 
         }
         else
         {

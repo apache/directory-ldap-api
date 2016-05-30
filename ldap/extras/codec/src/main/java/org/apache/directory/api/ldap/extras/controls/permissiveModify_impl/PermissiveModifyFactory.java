@@ -53,6 +53,7 @@ public class PermissiveModifyFactory implements ControlFactory<PermissiveModify>
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return PermissiveModify.OID;
@@ -62,6 +63,7 @@ public class PermissiveModifyFactory implements ControlFactory<PermissiveModify>
     /**
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<PermissiveModify> newCodecControl()
     {
         return new PermissiveModifyDecorator( codec, new PermissiveModifyImpl() );
@@ -71,6 +73,7 @@ public class PermissiveModifyFactory implements ControlFactory<PermissiveModify>
     /**
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<PermissiveModify> newCodecControl( PermissiveModify control )
     {
         return new PermissiveModifyDecorator( codec, control );

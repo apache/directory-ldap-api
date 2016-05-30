@@ -286,7 +286,22 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
             addAVA( schemaManager, upType, new Value( upValue ) );
         }
 
-        upName = upType + '=' + upValue;
+        StringBuilder sb = new StringBuilder();
+        sb.append( upType ).append( '=' ).append( upValue );
+        upName = sb.toString();
+        
+        sb.setLength( 0 );
+        sb.append( ava.getNormType() ).append( '=' );
+        
+        Value value = ava.getValue();
+        
+        if ( value != null )
+        {
+            sb.append( value.getNormalized() );
+        }
+        
+        normName = sb.toString();
+        normalized = true;
 
         hashCode();
     }

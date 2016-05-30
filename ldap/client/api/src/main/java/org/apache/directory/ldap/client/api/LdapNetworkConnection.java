@@ -319,7 +319,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * Get the largest timeout from the search time limit and the connection
      * timeout.
      */
-    static long getTimeout( long connectionTimoutInMS, int searchTimeLimitInSeconds )
+    public long getTimeout( long connectionTimoutInMS, int searchTimeLimitInSeconds )
     {
         if ( searchTimeLimitInSeconds < 0 )
         {
@@ -327,7 +327,14 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         }
         else if ( searchTimeLimitInSeconds == 0 )
         {
-            return Long.MAX_VALUE;
+            if ( config.getTimeout() == 0 )
+            {
+                return Long.MAX_VALUE;
+            }
+            else
+            {
+                return config.getTimeout();
+            }
         }
         else
         {

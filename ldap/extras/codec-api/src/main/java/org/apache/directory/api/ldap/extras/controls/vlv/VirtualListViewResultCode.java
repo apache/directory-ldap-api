@@ -45,6 +45,10 @@ public enum VirtualListViewResultCode
     SORTCONTROLMISSING(60, "Sort control missing"),
 
     OFFSETRANGEERROR(61, "Offset range error"),
+    
+    OPENLDAP_SSSMISSING(76, "SSS missing"), // OpenLDAP-specific error code
+    
+    OPENLDAP_RANGEERRROR(77, "Range error"), // OpenLDAP-specific error code
 
     OTHER(80, "Other");
 
@@ -118,6 +122,12 @@ public enum VirtualListViewResultCode
             case 61:
                 return OFFSETRANGEERROR;
 
+            case 76:
+                return OPENLDAP_SSSMISSING;
+
+            case 77:
+                return OPENLDAP_RANGEERRROR;
+                
             case 80:
                 return OTHER;
 

@@ -66,7 +66,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
             "nameForms", "normalizers", "objectClasses", "syntaxes", "syntaxCheckers" };
 
     /** The map containing ... */
-    private Map<String, Map<String, List<Entry>>> scObjEntryMap = new HashMap<String, Map<String, List<Entry>>>();
+    private Map<String, Map<String, List<Entry>>> scObjEntryMap = new HashMap<>();
 
 
     /**
@@ -125,6 +125,33 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
         }
     }
 
+    
+    /**
+     * Instantiates a new single LDIF schema loader.
+     */
+    public SingleLdifSchemaLoader( URL schemaUrl )
+    {
+        try
+        {
+            for ( String s : schemaObjectTypeRdns )
+            {
+                scObjEntryMap.put( s, new HashMap<String, List<Entry>>() );
+            }
+
+            InputStream in = schemaUrl.openStream();
+
+            initializeSchemas( in );
+        }
+        catch ( LdapException e )
+        {
+            throw new RuntimeException( e );
+        }
+        catch ( IOException e )
+        {
+            throw new RuntimeException( e );
+        }
+    }
+
 
     /**
      * Initialize the Schema object from a Single LDIF file
@@ -148,6 +175,11 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
             }
             else
             {
+                if ( currentSchema == null )
+                {
+                    throw new LdapException( "the first entry in the LDIF file is not a schema definition" );
+                }
+                
                 loadSchemaObject( currentSchema.getSchemaName(), ldifEntry );
             }
         }
@@ -176,7 +208,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
                 
                 if ( entryList == null )
                 {
-                    entryList = new ArrayList<Entry>();
+                    entryList = new ArrayList<>();
                     entryList.add( ldifEntry.getEntry() );
                     m.put( schemaName, entryList );
                 }
@@ -195,7 +227,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
         IOException
     {
         Map<String, List<Entry>> m = scObjEntryMap.get( schemaObjectType );
-        List<Entry> atList = new ArrayList<Entry>();
+        List<Entry> atList = new ArrayList<>();
 
         for ( Schema s : schemas )
         {
@@ -214,6 +246,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadAttributeTypes( Schema... schemas ) throws LdapException, IOException
     {
         return loadSchemaObjects( "attributetypes", schemas );
@@ -223,6 +256,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadComparators( Schema... schemas ) throws LdapException, IOException
     {
         return loadSchemaObjects( "comparators", schemas );
@@ -232,6 +266,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadDitContentRules( Schema... schemas ) throws LdapException, IOException
     {
         return loadSchemaObjects( "ditContentRules", schemas );
@@ -241,6 +276,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadDitStructureRules( Schema... schemas ) throws LdapException, IOException
     {
         return loadSchemaObjects( "ditStructureRules", schemas );
@@ -250,6 +286,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadMatchingRules( Schema... schemas ) throws LdapException, IOException
     {
         return loadSchemaObjects( "matchingRules", schemas );
@@ -259,6 +296,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadMatchingRuleUses( Schema... schemas ) throws LdapException, IOException
     {
         return loadSchemaObjects( "matchingRuleUse", schemas );
@@ -268,6 +306,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadNameForms( Schema... schemas ) throws LdapException, IOException
     {
         return loadSchemaObjects( "nameForms", schemas );
@@ -277,6 +316,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadNormalizers( Schema... schemas ) throws LdapException, IOException
     {
         return loadSchemaObjects( "normalizers", schemas );
@@ -286,6 +326,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadObjectClasses( Schema... schemas ) throws LdapException, IOException
     {
         return loadSchemaObjects( "objectClasses", schemas );
@@ -295,6 +336,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadSyntaxes( Schema... schemas ) throws LdapException, IOException
     {
         return loadSchemaObjects( "syntaxes", schemas );
@@ -304,6 +346,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadSyntaxCheckers( Schema... schemas ) throws LdapException, IOException
     {
         return loadSchemaObjects( "syntaxCheckers", schemas );

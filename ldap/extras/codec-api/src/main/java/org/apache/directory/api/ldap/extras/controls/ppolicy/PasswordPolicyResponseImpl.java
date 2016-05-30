@@ -95,7 +95,7 @@ public class PasswordPolicyResponseImpl implements PasswordPolicyResponse
     @Override
     public String toString()
     {
-        return "PasswordPolicyResponseImpl [timeBeforeExpiration=" + timeBeforeExpiration + ", graceAuthNRemaining="
+        return "PasswordPolicyResponse [timeBeforeExpiration=" + timeBeforeExpiration + ", graceAuthNRemaining="
             + graceAuthNRemaining + ", ppolicyError=" + ppolicyError + "]";
     }
 }
