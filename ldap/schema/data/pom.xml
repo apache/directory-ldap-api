@@ -99,6 +99,8 @@
                   <!-- Replace the file separator ('/' on Unix, '\' on Windows) by a '/' - Useful on Windows -->
                   <replacefilter token="${file.separator}" value="/" />
                 </replace>
+
+                <attachartifact file="${schema.index}" classifier="schema" type="index"/>
               </target>
             </configuration>
             <goals>
