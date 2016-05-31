@@ -44,6 +44,7 @@ public class DefaultLdapSyntaxRegistry extends DefaultSchemaObjectRegistry<LdapS
     /**
      * {@inheritDoc}
      */
+    @Override
     public DefaultLdapSyntaxRegistry copy()
     {
         DefaultLdapSyntaxRegistry copy = new DefaultLdapSyntaxRegistry();

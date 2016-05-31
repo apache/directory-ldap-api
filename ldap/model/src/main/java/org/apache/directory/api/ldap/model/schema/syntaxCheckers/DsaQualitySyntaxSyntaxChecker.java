@@ -60,9 +60,10 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -85,18 +86,18 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() < 7 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
-        String remaining = null;
+        String remaining;
 
         switch ( strValue.charAt( 0 ) )
         {
             case 'B':
                 if ( !strValue.startsWith( "BEST-EFFORT" ) )
                 {
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( INVALID_SYNTAX_FOR, value );
                     return false;
                 }
 
@@ -106,7 +107,7 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
             case 'D':
                 if ( !strValue.startsWith( "DEFUNCT" ) )
                 {
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( INVALID_SYNTAX_FOR, value );
                     return false;
                 }
 
@@ -116,7 +117,7 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
             case 'E':
                 if ( !strValue.startsWith( "EXPERIMENTAL" ) )
                 {
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( INVALID_SYNTAX_FOR, value );
                     return false;
                 }
 
@@ -126,7 +127,7 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
             case 'F':
                 if ( !strValue.startsWith( "FULL-SERVICE" ) )
                 {
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( INVALID_SYNTAX_FOR, value );
                     return false;
                 }
 
@@ -136,7 +137,7 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
             case 'P':
                 if ( !strValue.startsWith( "PILOT-SERVICE" ) )
                 {
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( INVALID_SYNTAX_FOR, value );
                     return false;
                 }
 
@@ -144,7 +145,7 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
                 break;
 
             default:
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
                 return false;
         }
 
@@ -159,7 +160,7 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
         if ( remaining.charAt( 0 ) != '#' )
         {
             // We were expecting a '#'
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -172,7 +173,7 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
         }
         else
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
         }
 
         return result;

@@ -68,6 +68,7 @@ public abstract class AbstractExtendedRequest extends AbstractRequest implements
      * 
      * @return the dotted-decimal representation as a String of the OID
      */
+    @Override
     public String getRequestName()
     {
         return oid;
@@ -79,6 +80,7 @@ public abstract class AbstractExtendedRequest extends AbstractRequest implements
      * 
      * @param newOid the dotted-decimal representation as a String of the OID
      */
+    @Override
     public ExtendedRequest setRequestName( String newOid )
     {
         this.oid = newOid;
@@ -90,6 +92,7 @@ public abstract class AbstractExtendedRequest extends AbstractRequest implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -101,6 +104,7 @@ public abstract class AbstractExtendedRequest extends AbstractRequest implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedRequest addControl( Control control )
     {
         return ( ExtendedRequest ) super.addControl( control );
@@ -110,6 +114,7 @@ public abstract class AbstractExtendedRequest extends AbstractRequest implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedRequest addAllControls( Control[] controls )
     {
         return ( ExtendedRequest ) super.addAllControls( controls );
@@ -119,6 +124,7 @@ public abstract class AbstractExtendedRequest extends AbstractRequest implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedRequest removeControl( Control control )
     {
         return ( ExtendedRequest ) super.removeControl( control );
@@ -135,6 +141,7 @@ public abstract class AbstractExtendedRequest extends AbstractRequest implements
      * 
      * @return the message type of the response.
      */
+    @Override
     public MessageTypeEnum getResponseType()
     {
         return MessageTypeEnum.EXTENDED_RESPONSE;
@@ -146,6 +153,7 @@ public abstract class AbstractExtendedRequest extends AbstractRequest implements
      * 
      * @return the result containing response for this request
      */
+    @Override
     public abstract ExtendedResponse getResultResponse();
 
 
@@ -190,6 +198,7 @@ public abstract class AbstractExtendedRequest extends AbstractRequest implements
      * @param obj the object to be checked for equality
      * @return true if the obj equals this ExtendedRequest, false otherwise
      */
+    @Override
     public boolean equals( Object obj )
     {
         if ( obj == this )
@@ -233,9 +242,10 @@ public abstract class AbstractExtendedRequest extends AbstractRequest implements
      * 
      * @return an Extended Request String
      */
+    @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( "    Extended request\n" );
         sb.append( "        Request name : '" ).append( oid ).append( "'\n" );

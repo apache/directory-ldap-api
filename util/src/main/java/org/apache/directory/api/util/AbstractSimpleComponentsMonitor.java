@@ -49,13 +49,14 @@ public abstract class AbstractSimpleComponentsMonitor implements ComponentsMonit
     public AbstractSimpleComponentsMonitor( String[] components )
     {
         // register components
-        this.components = new LinkedList<String>( Arrays.asList( components ) );
+        this.components = new LinkedList<>( Arrays.asList( components ) );
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public ComponentsMonitor useComponent( String component ) throws IllegalArgumentException
     {
         if ( !components.remove( component ) )
@@ -70,6 +71,7 @@ public abstract class AbstractSimpleComponentsMonitor implements ComponentsMonit
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean allComponentsUsed()
     {
         return components.isEmpty();
@@ -79,6 +81,7 @@ public abstract class AbstractSimpleComponentsMonitor implements ComponentsMonit
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<String> getRemainingComponents()
     {
         return Collections.unmodifiableList( components );

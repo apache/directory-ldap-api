@@ -227,7 +227,9 @@ public final class Hex
         char[] out = new char[l << 1];
 
         // two characters form the hex value.
-        for ( int i = 0, j = 0; i < l; i++ )
+        int j = 0;
+        
+        for ( int i = 0; i < l; i++ )
         {
             out[j++] = HEX_CHAR[( 0xF0 & data[i] ) >>> 4];
             out[j++] = HEX_CHAR[0x0F & data[i]];

@@ -69,6 +69,7 @@ public class ObjectNameSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
         String strValue;
@@ -94,7 +95,7 @@ public class ObjectNameSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -109,7 +110,7 @@ public class ObjectNameSyntaxChecker extends SyntaxChecker
         }
         else
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
         }
 
         return result;

@@ -56,6 +56,7 @@ public class IntermediateResponseImpl extends AbstractResultResponse implements 
      * 
      * @return the response value
      */
+    @Override
     public byte[] getResponseValue()
     {
         if ( responseValue == null )
@@ -74,6 +75,7 @@ public class IntermediateResponseImpl extends AbstractResultResponse implements 
      * 
      * @param value the response value.
      */
+    @Override
     public void setResponseValue( byte[] value )
     {
         if ( value != null )
@@ -94,9 +96,10 @@ public class IntermediateResponseImpl extends AbstractResultResponse implements 
      * 
      * @return the OID of the Intermediate response type.
      */
+    @Override
     public String getResponseName()
     {
-        return ( ( responseName == null ) ? "" : responseName );
+        return ( responseName == null ) ? "" : responseName;
     }
 
 
@@ -106,6 +109,7 @@ public class IntermediateResponseImpl extends AbstractResultResponse implements 
      * 
      * @param oid the OID of the Intermediate response type.
      */
+    @Override
     public void setResponseName( String oid )
     {
         this.responseName = oid;
@@ -139,6 +143,7 @@ public class IntermediateResponseImpl extends AbstractResultResponse implements 
      * @param obj the object to be checked for equality
      * @return true if the obj equals this IntemediateResponse, false otherwise
      */
+    @Override
     public boolean equals( Object obj )
     {
         if ( obj == this )
@@ -184,8 +189,8 @@ public class IntermediateResponseImpl extends AbstractResultResponse implements 
             return false;
         }
 
-        return ( ( responseValue == null ) || ( resp.getResponseValue() == null )
-        || Arrays.equals( responseValue, resp.getResponseValue() ) );
+        return ( responseValue == null ) || ( resp.getResponseValue() == null )
+        || Arrays.equals( responseValue, resp.getResponseValue() );
     }
 
 
@@ -194,6 +199,7 @@ public class IntermediateResponseImpl extends AbstractResultResponse implements 
      * 
      * @return An IntermediateResponse String
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

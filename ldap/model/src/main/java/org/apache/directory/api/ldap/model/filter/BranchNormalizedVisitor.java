@@ -44,6 +44,7 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
  */
 public class BranchNormalizedVisitor implements FilterVisitor
 {
+    @Override
     public Object visit( ExprNode node )
     {
         if ( !( node instanceof BranchNode ) )
@@ -55,7 +56,7 @@ public class BranchNormalizedVisitor implements FilterVisitor
 
         Comparator<ExprNode> nodeComparator = new NodeComparator();
 
-        Set<ExprNode> set = new TreeSet<ExprNode>( nodeComparator );
+        Set<ExprNode> set = new TreeSet<>( nodeComparator );
 
         List<ExprNode> children = branch.getChildren();
 
@@ -84,18 +85,21 @@ public class BranchNormalizedVisitor implements FilterVisitor
     }
 
 
+    @Override
     public boolean canVisit( ExprNode node )
     {
         return node instanceof BranchNode;
     }
 
 
+    @Override
     public boolean isPrefix()
     {
         return false;
     }
 
 
+    @Override
     public List<ExprNode> getOrder( BranchNode node, List<ExprNode> children )
     {
         return children;
@@ -139,25 +143,11 @@ public class BranchNormalizedVisitor implements FilterVisitor
 
     static class NodeComparator implements Comparator<ExprNode>
     {
+        @Override
         public int compare( ExprNode o1, ExprNode o2 )
         {
-            StringBuilder buf = new StringBuilder();
-
-            buf.setLength( 0 );
-
-            String s1 = null;
-
-            buf.append( o1.toString() );
-
-            s1 = buf.toString();
-
-            buf.setLength( 0 );
-
-            String s2 = null;
-
-            buf.append( o2.toString() );
-
-            s2 = buf.toString();
+            String s1 = o1.toString();
+            String s2 = o2.toString();
 
             return s1.compareTo( s2 );
         }

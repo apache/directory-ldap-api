@@ -22,7 +22,6 @@ package org.apache.directory.api.ldap.model.schema.comparators;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
-import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,9 +39,6 @@ public class DeepTrimToLowerComparator extends LdapComparator<String>
 
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( DeepTrimToLowerComparator.class );
-    
-    /** The associated normalizer */
-    private Normalizer normalizer = new DeepTrimToLowerNormalizer();
 
 
     /**
@@ -51,6 +47,7 @@ public class DeepTrimToLowerComparator extends LdapComparator<String>
     public DeepTrimToLowerComparator( String oid )
     {
         super( oid );
+        normalizer = new DeepTrimToLowerNormalizer();
     }
 
 
@@ -73,15 +70,5 @@ public class DeepTrimToLowerComparator extends LdapComparator<String>
         }
 
         return key.compareTo( normalizedValue );
-    }
-    
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Normalizer getNormalizer()
-    {
-        return normalizer;
     }
 }

@@ -60,6 +60,7 @@ public class JpegSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
         if ( value == null )
@@ -71,7 +72,7 @@ public class JpegSyntaxChecker extends SyntaxChecker
         // The value must be a byte array
         if ( !( value instanceof byte[] ) )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -80,7 +81,7 @@ public class JpegSyntaxChecker extends SyntaxChecker
         // The header must be at least 11 bytes long
         if ( bytes.length < 11 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -113,7 +114,7 @@ public class JpegSyntaxChecker extends SyntaxChecker
             }
         }
 
-        LOG.debug( "Syntax invalid for '{}'", value );
+        LOG.debug( INVALID_SYNTAX_FOR, value );
         return false;
     }
 }

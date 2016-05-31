@@ -112,6 +112,7 @@ public class OrNode extends BranchNode
      * @return The buffer in which the refinement has been appended
      * @throws UnsupportedOperationException if this node isn't a part of a refinement.
      */
+    @Override
     public StringBuilder printRefinementToBuffer( StringBuilder buf )
     {
         buf.append( "or: {" );
@@ -145,6 +146,7 @@ public class OrNode extends BranchNode
      * @see java.lang.Object#toString()
      * @return A string representing the AndNode
      */
+    @Override
     public String toString()
     {
         StringBuilder buf = new StringBuilder();
@@ -167,6 +169,7 @@ public class OrNode extends BranchNode
      * @see Object#hashCode()
      * @return the instance's hash code 
      */
+    @Override
     public int hashCode()
     {
         int hash = 37;
@@ -179,6 +182,7 @@ public class OrNode extends BranchNode
     /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals( Object other )
     {
         if ( this == other )

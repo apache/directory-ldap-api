@@ -983,7 +983,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         String attributeType = lowerLine.substring( 0, colonIndex );
 
         // We should *not* have a Dn twice
-        if ( attributeType.equals( "dn" ) )
+        if ( "dn".equals( attributeType ) )
         {
             LOG.error( I18n.err( I18n.ERR_12002_ENTRY_WITH_TWO_DNS, lineNumber ) );
             throw new LdapLdifException( I18n.err( I18n.ERR_12003_LDIF_ENTRY_WITH_TWO_DNS ) );
@@ -1236,7 +1236,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                 }
 
                 // We should *not* have a Dn twice
-                if ( attributeType.equalsIgnoreCase( "dn" ) )
+                if ( "dn".equalsIgnoreCase( attributeType ) )
                 {
                     LOG.error( I18n.err( I18n.ERR_12002_ENTRY_WITH_TWO_DNS, lineNumber ) );
                     throw new LdapLdifException( I18n.err( I18n.ERR_12003_LDIF_ENTRY_WITH_TWO_DNS ) );

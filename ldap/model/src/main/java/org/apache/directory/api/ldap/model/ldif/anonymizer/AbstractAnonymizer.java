@@ -37,7 +37,7 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
     protected SchemaManager schemaManager;
     
     /** The map of AttributeType'sOID we want to anonymize. They are all associated with anonymizers */
-    protected Map<String, Anonymizer> attributeAnonymizers = new HashMap<String, Anonymizer>();
+    protected Map<String, Anonymizer<K>> attributeAnonymizers = new HashMap<>();
     
     /** A flag set to <tt>true</tt> if the AttributeType is case sensitive */
     protected boolean caseSensitive = false;
@@ -86,6 +86,7 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setSchemaManager( SchemaManager schemaManager )
     {
         this.schemaManager = schemaManager;
@@ -97,7 +98,8 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
      *
      * @param attributeAnonymizers The list of existing anonymizers
      */
-    public void setAnonymizers( Map<String, Anonymizer> attributeAnonymizers )
+    @Override
+    public void setAnonymizers( Map<String, Anonymizer<K>> attributeAnonymizers )
     {
         this.attributeAnonymizers = attributeAnonymizers;
     }
@@ -106,6 +108,7 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<Integer, String> getLatestStringMap()
     {
         return null;
@@ -115,6 +118,7 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
     /**
      * @param latestValueMap The latest String anonymized value map
      */
+    @Override
     public void setLatestStringMap( Map<Integer, String> latestStringMap )
     {
         // Do nothing
@@ -124,6 +128,7 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<Integer, byte[]> getLatestBytesMap()
     {
         return null;
@@ -133,6 +138,7 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
     /**
      * @param latestBytesMap The latest byte[] anonymized value map
      */
+    @Override
     public void setLatestBytesMap( Map<Integer, byte[]> latestBytesMap )
     {
         // Do nothing

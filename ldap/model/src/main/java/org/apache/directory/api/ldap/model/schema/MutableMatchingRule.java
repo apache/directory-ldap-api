@@ -221,6 +221,7 @@ public class MutableMatchingRule extends MatchingRule
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear()
     {
         // Clear the common elements

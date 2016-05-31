@@ -29,21 +29,6 @@ public class LdapUriException extends LdapException
 {
     private static final long serialVersionUID = 1L;
 
-
-    /**
-     * The constructor with a reason string argument.
-     * 
-     * @param reason the reason
-     * @param cause the root cause
-     */
-    public LdapUriException( String reason, Throwable cause )
-    {
-        // for backward compatibility of Throwable
-        super( reason, cause );
-        this.reason = reason;
-        this.reasonCode = UNKNOWN;
-    }
-
     /**
      * No specified reason code.
      */
@@ -59,7 +44,21 @@ public class LdapUriException extends LdapException
      */
     protected String reason;
 
+    /**
+     * The constructor with a reason string argument.
+     * 
+     * @param reason the reason
+     * @param cause the root cause
+     */
+    public LdapUriException( String reason, Throwable cause )
+    {
+        // for backward compatibility of Throwable
+        super( reason, cause );
+        this.reason = reason;
+        this.reasonCode = UNKNOWN;
+    }
 
+    
     /**
      * Get the reason code.
      * 

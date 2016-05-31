@@ -54,9 +54,10 @@ public class DirectoryStringSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -82,7 +83,7 @@ public class DirectoryStringSyntaxChecker extends SyntaxChecker
         // return an empty string
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -92,7 +93,7 @@ public class DirectoryStringSyntaxChecker extends SyntaxChecker
         {
             if ( c == 0xFFFD )
             {
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
                 return false;
             }
         }

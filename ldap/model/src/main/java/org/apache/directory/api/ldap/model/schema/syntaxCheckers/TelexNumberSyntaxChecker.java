@@ -57,9 +57,10 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -82,7 +83,7 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -93,7 +94,7 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
         if ( dollar <= 0 )
         {
             // No '$' => error
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -102,14 +103,14 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
         // The actualNumber must not be empty
         if ( actualNumber.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
         // The actual number should be a PrintableString 
         if ( !Strings.isPrintableString( actualNumber ) )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -120,7 +121,7 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
         if ( dollar2 == -1 )
         {
             // No '$' => error
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -129,14 +130,14 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
         // The countryCode must not be empty
         if ( countryCode.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
         // The country Code should be a PrintableString 
         if ( !Strings.isPrintableString( countryCode ) )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -144,7 +145,7 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
         if ( dollar2 + 1 == strValue.length() )
         {
             // The last string should not be null
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -153,7 +154,7 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
         // The answerBack should be a PrintableString 
         if ( !Strings.isPrintableString( answerBack ) )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -166,7 +167,7 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
         }
         else
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
         }
 
         return result;

@@ -31,6 +31,8 @@ import java.net.InetAddress;
  */
 public final class Network
 {
+    public static final InetAddress LOOPBACK = getLoopbackAddress();
+    public static final String LOOPBACK_HOSTNAME = getLoopbackHostName();
 
     /**
      * Private constructor.
@@ -39,10 +41,7 @@ public final class Network
     {
     }
 
-    public static final InetAddress LOOPBACK = getLoopbackAddress();
-    public static final String LOOPBACK_HOSTNAME = getLoopbackHostName();
-
-
+    
     private static String getLoopbackHostName()
     {
         InetAddress loopbackAddress = InetAddress.getLoopbackAddress();
@@ -52,8 +51,7 @@ public final class Network
 
     private static InetAddress getLoopbackAddress()
     {
-        InetAddress loopbackAddress = InetAddress.getLoopbackAddress();
-        return loopbackAddress;
+        return InetAddress.getLoopbackAddress();
     }
 
 

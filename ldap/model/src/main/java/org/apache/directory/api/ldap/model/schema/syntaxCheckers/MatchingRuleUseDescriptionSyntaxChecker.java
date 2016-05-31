@@ -54,7 +54,7 @@ public class MatchingRuleUseDescriptionSyntaxChecker extends SyntaxChecker
     private static final Logger LOG = LoggerFactory.getLogger( MatchingRuleUseDescriptionSyntaxChecker.class );
 
     /** The schema parser used to parse the MatchingRuleUseDescription Syntax */
-    private MatchingRuleUseDescriptionSchemaParser schemaParser = new MatchingRuleUseDescriptionSchemaParser();
+    private transient MatchingRuleUseDescriptionSchemaParser schemaParser = new MatchingRuleUseDescriptionSchemaParser();
 
 
     /**
@@ -71,9 +71,10 @@ public class MatchingRuleUseDescriptionSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -103,7 +104,7 @@ public class MatchingRuleUseDescriptionSyntaxChecker extends SyntaxChecker
         }
         catch ( ParseException pe )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
     }

@@ -93,8 +93,8 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
 
             if ( regexps == null )
             {
-                regexps = new ArrayList<String>();
-                compiledREs = new ArrayList<Pattern>();
+                regexps = new ArrayList<>();
+                compiledREs = new ArrayList<>();
             }
 
             regexps.add( regexp );
@@ -132,9 +132,10 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -157,7 +158,7 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -173,7 +174,7 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
             }
             else
             {
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
             }
 
             return result;
@@ -189,7 +190,7 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
             {
                 if ( compiledREs == null )
                 {
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( INVALID_SYNTAX_FOR, value );
                     return false;
                 }
 
@@ -204,7 +205,7 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
                     }
                 }
 
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
                 return false;
             }
         }

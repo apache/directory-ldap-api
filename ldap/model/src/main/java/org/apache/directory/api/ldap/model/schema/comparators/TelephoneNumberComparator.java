@@ -100,6 +100,6 @@ public class TelephoneNumberComparator extends LdapComparator<String>
         String strippedTelephoneNumber1 = strip( telephoneNumber1 );
         String strippedTelephoneNumber2 = strip( telephoneNumber2 );
 
-        return ( strippedTelephoneNumber1.compareToIgnoreCase( strippedTelephoneNumber2 ) );
+        return strippedTelephoneNumber1.compareToIgnoreCase( strippedTelephoneNumber2 );
     }
 }

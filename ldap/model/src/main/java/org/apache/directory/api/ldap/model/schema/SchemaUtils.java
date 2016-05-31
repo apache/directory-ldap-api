@@ -140,9 +140,9 @@ public final class SchemaUtils
      *            the quoted description strings to render
      * @return the same string buffer that was given for call chaining
      */
-    public static StringBuffer render( StringBuffer buf, List<String> qdescrs )
+    public static StringBuilder render( StringBuilder buf, List<String> qdescrs )
     {
-        if ( ( qdescrs == null ) || ( qdescrs.size() == 0 ) )
+        if ( ( qdescrs == null ) || qdescrs.isEmpty() )
         {
             return buf;
         }
@@ -176,9 +176,9 @@ public final class SchemaUtils
      * @param qdescrs the quoted description strings to render
      * @return the string buffer the qdescrs are rendered into
      */
-    /* No qualifier */static StringBuffer renderQDescrs( StringBuffer buf, List<String> qdescrs )
+    /* No qualifier */static StringBuilder renderQDescrs( StringBuilder buf, List<String> qdescrs )
     {
-        if ( ( qdescrs == null ) || ( qdescrs.size() == 0 ) )
+        if ( ( qdescrs == null ) || qdescrs.isEmpty() )
         {
             return buf;
         }
@@ -209,7 +209,7 @@ public final class SchemaUtils
      * @param qdescrs the quoted description strings to render
      * @return the string buffer the qdescrs are rendered into
      */
-    private static StringBuffer renderQDString( StringBuffer buf, String qdString )
+    private static StringBuilder renderQDString( StringBuilder buf, String qdString )
     {
         buf.append( '\'' );
 
@@ -249,9 +249,9 @@ public final class SchemaUtils
      *            the objectClasses to list
      * @return a buffer which contains the rendered list
      */
-    public static StringBuffer render( ObjectClass[] ocs )
+    public static StringBuilder render( ObjectClass[] ocs )
     {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 
         return render( buf, ocs );
     }
@@ -267,7 +267,7 @@ public final class SchemaUtils
      *            the objectClasses to list
      * @return a buffer which contains the rendered list
      */
-    public static StringBuffer render( StringBuffer buf, ObjectClass[] ocs )
+    public static StringBuilder render( StringBuilder buf, ObjectClass[] ocs )
     {
         if ( ocs == null || ocs.length == 0 )
         {
@@ -312,9 +312,9 @@ public final class SchemaUtils
      *            the attributeTypes to list
      * @return a buffer which contains the rendered list
      */
-    public static StringBuffer render( AttributeType[] ats )
+    public static StringBuilder render( AttributeType[] ats )
     {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         return render( buf, ats );
     }
 
@@ -329,7 +329,7 @@ public final class SchemaUtils
      *            the attributeTypes to list
      * @return a buffer which contains the rendered list
      */
-    public static StringBuffer render( StringBuffer buf, AttributeType[] ats )
+    public static StringBuilder render( StringBuilder buf, AttributeType[] ats )
     {
         if ( ats == null || ats.length == 0 )
         {
@@ -365,14 +365,14 @@ public final class SchemaUtils
     // ------------------------------------------------------------------------
 
     /**
-     * Renders the schema extensions into a new StringBuffer.
+     * Renders the schema extensions into a new StringBuilder.
      *
      * @param extensions the schema extensions map with key and values
-     * @return a StringBuffer with the extensions component of a syntax description
+     * @return a StringBuilder with the extensions component of a syntax description
      */
-    public static StringBuffer render( Map<String, List<String>> extensions )
+    public static StringBuilder render( Map<String, List<String>> extensions )
     {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 
         if ( extensions.isEmpty() )
         {
@@ -427,7 +427,7 @@ public final class SchemaUtils
      */
     public static String render( LoadableSchemaObject description )
     {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         buf.append( "( " ).append( description.getOid() );
 
         if ( description.getDescription() != null )
@@ -455,7 +455,7 @@ public final class SchemaUtils
     {
         List<String> values = desc.getExtension( MetaSchemaConstants.X_SCHEMA_AT );
 
-        if ( values == null || values.size() == 0 )
+        if ( values == null || values.isEmpty() )
         {
             return MetaSchemaConstants.SCHEMA_OTHER;
         }
@@ -502,7 +502,7 @@ public final class SchemaUtils
 
         if ( optionsPos != -1 )
         {
-            Set<String> options = new HashSet<String>();
+            Set<String> options = new HashSet<>();
 
             String[] res = attributeId.substring( optionsPos + 1 ).split( ";" );
 
@@ -587,7 +587,7 @@ public final class SchemaUtils
         }
         
         // Check the first char which must be ALPHA or DIGIT
-        boolean descr = false;
+        boolean descr;
         boolean zero = false;
         boolean dot = false;
         

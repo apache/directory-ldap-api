@@ -61,9 +61,10 @@ public class NumericStringSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -87,7 +88,7 @@ public class NumericStringSyntaxChecker extends SyntaxChecker
         // We should have at least one char
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -110,7 +111,7 @@ public class NumericStringSyntaxChecker extends SyntaxChecker
                     continue;
 
                 default:
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( INVALID_SYNTAX_FOR, value );
                     return false;
             }
         }

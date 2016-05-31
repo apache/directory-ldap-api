@@ -57,9 +57,10 @@ public class NumberSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -83,7 +84,7 @@ public class NumberSyntaxChecker extends SyntaxChecker
         // We should have at least one char
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -105,7 +106,7 @@ public class NumberSyntaxChecker extends SyntaxChecker
                     continue;
 
                 default:
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( INVALID_SYNTAX_FOR, value );
                     return false;
             }
         }
@@ -114,7 +115,7 @@ public class NumberSyntaxChecker extends SyntaxChecker
         {
             // A number can't start with a '0' unless it's the only
             // number
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 

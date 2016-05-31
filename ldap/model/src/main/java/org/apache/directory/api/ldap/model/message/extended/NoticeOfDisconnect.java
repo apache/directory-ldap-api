@@ -179,6 +179,7 @@ public final class NoticeOfDisconnect extends ExtendedResponseImpl
      * 
      * @return the OID of the extended response type.
      */
+    @Override
     public String getResponseName()
     {
         return EXTENSION_OID;
@@ -192,6 +193,7 @@ public final class NoticeOfDisconnect extends ExtendedResponseImpl
      * @param oid
      *            the OID of the extended response type.
      */
+    @Override
     public void setResponseName( String oid )
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_04168, EXTENSION_OID ) );
@@ -223,6 +225,6 @@ public final class NoticeOfDisconnect extends ExtendedResponseImpl
             return true;
         }
 
-        return ( obj instanceof NoticeOfDisconnect );
+        return obj instanceof NoticeOfDisconnect;
     }
 }

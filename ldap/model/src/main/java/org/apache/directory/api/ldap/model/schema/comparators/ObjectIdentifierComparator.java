@@ -52,6 +52,7 @@ public class ObjectIdentifierComparator extends LdapComparator<Object>
     /**
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
+    @Override
     public int compare( Object o1, Object o2 )
     {
         LOG.debug( "comparing ObjectIdentifier objects '{}' with '{}'", o1, o2 );
@@ -75,12 +76,6 @@ public class ObjectIdentifierComparator extends LdapComparator<Object>
 
         if ( !( o1 instanceof String && o2 instanceof String ) )
         {
-            // Both objects must be strings...
-            if ( o1.equals( o2 ) )
-            {
-                return 0;
-            }
-
             return -1;
         }
 

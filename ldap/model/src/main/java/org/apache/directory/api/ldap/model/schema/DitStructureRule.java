@@ -102,7 +102,7 @@ public class DitStructureRule extends AbstractSchemaObject
         super( SchemaObjectType.DIT_STRUCTURE_RULE, null );
         this.ruleId = ruleId;
         form = null;
-        superRules = new ArrayList<Integer>();
+        superRules = new ArrayList<>();
     }
 
 
@@ -232,6 +232,7 @@ public class DitStructureRule extends AbstractSchemaObject
     /**
      * {@inheritDoc}
      */
+    @Override
     public DitStructureRule copy()
     {
         DitStructureRule copy = new DitStructureRule( ruleId );
@@ -240,7 +241,7 @@ public class DitStructureRule extends AbstractSchemaObject
         copy.copy( this );
 
         // Copy the Superiors rules
-        copy.superRules = new ArrayList<Integer>();
+        copy.superRules = new ArrayList<>();
 
         // Copy the form
         copy.form = form;
@@ -281,6 +282,7 @@ public class DitStructureRule extends AbstractSchemaObject
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear()
     {
         // Clear the common elements

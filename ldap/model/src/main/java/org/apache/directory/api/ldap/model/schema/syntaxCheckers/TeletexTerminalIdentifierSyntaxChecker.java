@@ -60,9 +60,10 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -85,26 +86,26 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
         // Search for the first '$' separator
         int dollar = strValue.indexOf( '$' );
 
-        String terminalIdentifier = ( ( dollar == -1 ) ? strValue : strValue.substring( 0, dollar ) );
+        String terminalIdentifier = dollar == -1 ? strValue : strValue.substring( 0, dollar );
 
         if ( terminalIdentifier.length() == 0 )
         {
             // It should not be null
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
         if ( !Strings.isPrintableString( terminalIdentifier ) )
         {
             // It's not a valid PrintableString 
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -120,7 +121,7 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
 
         if ( ttxParams.length == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -131,7 +132,7 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
             if ( colon == -1 )
             {
                 // we must have a ':' separator
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
                 return false;
             }
 
@@ -145,7 +146,7 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
             {
                 if ( colon + 1 == ttxParam.length() )
                 {
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( INVALID_SYNTAX_FOR, value );
                     return false;
                 }
 
@@ -157,14 +158,14 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
                     {
                         case 0x24:
                             // '$' is not accepted
-                            LOG.debug( "Syntax invalid for '{}'", value );
+                            LOG.debug( INVALID_SYNTAX_FOR, value );
                             return false;
 
                         case 0x5c:
                             if ( hasEsc )
                             {
                                 // two following \ are not accepted
-                                LOG.debug( "Syntax invalid for '{}'", value );
+                                LOG.debug( INVALID_SYNTAX_FOR, value );
                                 return false;
                             }
                             else
@@ -204,7 +205,7 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
             }
             else
             {
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
                 return false;
             }
         }

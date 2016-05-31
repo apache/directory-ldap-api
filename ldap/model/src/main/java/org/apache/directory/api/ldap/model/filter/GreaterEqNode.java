@@ -71,6 +71,7 @@ public class GreaterEqNode<T> extends SimpleNode<T>
      * @see Object#toString()
      * @return A string representing the AndNode
      */
+    @Override
     public String toString()
     {
         StringBuilder buf = new StringBuilder();

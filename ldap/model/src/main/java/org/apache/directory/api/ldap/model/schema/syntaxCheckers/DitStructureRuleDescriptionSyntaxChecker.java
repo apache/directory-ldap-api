@@ -58,7 +58,7 @@ public class DitStructureRuleDescriptionSyntaxChecker extends SyntaxChecker
     private static final Logger LOG = LoggerFactory.getLogger( DitStructureRuleDescriptionSyntaxChecker.class );
 
     /** The schema parser used to parse the DITContentRuleDescription Syntax */
-    private DitStructureRuleDescriptionSchemaParser schemaParser = new DitStructureRuleDescriptionSchemaParser();
+    private transient DitStructureRuleDescriptionSchemaParser schemaParser = new DitStructureRuleDescriptionSchemaParser();
 
 
     /**
@@ -73,9 +73,10 @@ public class DitStructureRuleDescriptionSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -104,7 +105,7 @@ public class DitStructureRuleDescriptionSyntaxChecker extends SyntaxChecker
         }
         catch ( ParseException pe )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
     }

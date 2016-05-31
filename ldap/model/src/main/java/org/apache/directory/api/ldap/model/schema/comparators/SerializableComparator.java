@@ -71,6 +71,7 @@ public class SerializableComparator<E> extends LdapComparator<E> implements Seri
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
     @SuppressWarnings("unchecked")
+    @Override
     public int compare( E o1, E o2 )
     {
         if ( wrapped == null )
@@ -93,6 +94,7 @@ public class SerializableComparator<E> extends LdapComparator<E> implements Seri
      * @param schemaManager the schemaManager to set
      */
     @SuppressWarnings("unchecked")
+    @Override
     public void setSchemaManager( SchemaManager schemaManager )
     {
         if ( wrapped == null )
@@ -106,7 +108,7 @@ public class SerializableComparator<E> extends LdapComparator<E> implements Seri
             {
                 // Not found : get the default comparator
                 wrapped = ( Comparator<E> )
-                    new ComparableComparator<Comparable<E>>( matchingRuleOid );
+                    new ComparableComparator<>( matchingRuleOid );
             }
         }
 

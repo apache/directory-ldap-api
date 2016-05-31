@@ -49,7 +49,7 @@ public abstract class BranchNode extends AbstractExprNode
 
         if ( null == childList )
         {
-            this.children = new ArrayList<ExprNode>( 2 );
+            this.children = new ArrayList<>( 2 );
         }
         else
         {
@@ -70,7 +70,7 @@ public abstract class BranchNode extends AbstractExprNode
 
         if ( null == children )
         {
-            this.children = new ArrayList<ExprNode>( childList.length );
+            this.children = new ArrayList<>( childList.length );
         }
 
         CollectionUtils.addAll( children, childList );
@@ -86,7 +86,7 @@ public abstract class BranchNode extends AbstractExprNode
     {
         super( assertionType );
 
-        this.children = new ArrayList<ExprNode>( 2 );
+        this.children = new ArrayList<>( 2 );
     }
 
 
@@ -94,6 +94,7 @@ public abstract class BranchNode extends AbstractExprNode
      * @see ExprNode#isLeaf()
      * @return false all the time.
      */
+    @Override
     public final boolean isLeaf()
     {
         return false;
@@ -108,12 +109,12 @@ public abstract class BranchNode extends AbstractExprNode
     @Override
     public ExprNode clone()
     {
-        ExprNode clone = ( ExprNode ) super.clone();
+        ExprNode clone = super.clone();
 
         // Clone the children
         if ( children != null )
         {
-            ( ( BranchNode ) clone ).children = new ArrayList<ExprNode>();
+            ( ( BranchNode ) clone ).children = new ArrayList<>();
 
             for ( ExprNode child : children )
             {
@@ -181,12 +182,12 @@ public abstract class BranchNode extends AbstractExprNode
      */
     public ExprNode getFirstChild()
     {
-        if ( children.size() > 0 )
+        if ( children.isEmpty() )
         {
-            return children.get( 0 );
+            return null;
         }
 
-        return null;
+        return children.get( 0 );
     }
 
 
@@ -196,6 +197,7 @@ public abstract class BranchNode extends AbstractExprNode
      *      
      * @return The modified element
      */
+    @Override
     public final Object accept( FilterVisitor visitor )
     {
         if ( visitor.isPrefix() )
@@ -234,6 +236,7 @@ public abstract class BranchNode extends AbstractExprNode
      * 
      * @return true if the Node is SchemaAware
      */
+    @Override
     public boolean isSchemaAware()
     {
         if ( children == null )
@@ -259,6 +262,7 @@ public abstract class BranchNode extends AbstractExprNode
      * @see Object#hashCode()
      * @return the instance's hash code 
      */
+    @Override
     public int hashCode()
     {
         int h = 37;
@@ -280,6 +284,7 @@ public abstract class BranchNode extends AbstractExprNode
     /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals( Object other )
     {
         if ( this == other )

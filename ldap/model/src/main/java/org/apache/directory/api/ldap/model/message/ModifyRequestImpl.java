@@ -48,7 +48,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     private Dn name;
 
     /** Sequence of modifications or PDU's <b>modification</b> sequence field */
-    private List<Modification> mods = new ArrayList<Modification>();
+    private List<Modification> mods = new ArrayList<>();
 
     /** The associated response */
     private ModifyResponse response;
@@ -73,6 +73,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /**
      * {@inheritDoc}
      */
+    @Override
     public Collection<Modification> getModifications()
     {
         return Collections.unmodifiableCollection( mods );
@@ -82,6 +83,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dn getName()
     {
         return name;
@@ -91,6 +93,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest setName( Dn name )
     {
         this.name = name;
@@ -102,6 +105,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest addModification( Modification mod )
     {
         mods.add( mod );
@@ -127,6 +131,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest addModification( Attribute attr, ModificationOperation modOp )
     {
         mods.add( new DefaultModification( modOp, attr ) );
@@ -138,6 +143,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /**
      *{@inheritDoc}
      */
+    @Override
     public ModifyRequest add( String attributeName, String... attributeValue )
     {
         addModification( ModificationOperation.ADD_ATTRIBUTE, attributeName, attributeValue );
@@ -160,6 +166,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /**
      *{@inheritDoc}
      */
+    @Override
     public ModifyRequest add( Attribute attr )
     {
         addModification( attr, ModificationOperation.ADD_ATTRIBUTE );
@@ -171,6 +178,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /**
      * @see #replace(String, String...)
      */
+    @Override
     public ModifyRequest replace( String attributeName )
     {
         addModification( ModificationOperation.REPLACE_ATTRIBUTE, attributeName, StringConstants.EMPTY_STRINGS );
@@ -182,6 +190,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /**
      *{@inheritDoc}
      */
+    @Override
     public ModifyRequest replace( String attributeName, String... attributeValue )
     {
         addModification( ModificationOperation.REPLACE_ATTRIBUTE, attributeName, attributeValue );
@@ -204,6 +213,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /**
      *{@inheritDoc}
      */
+    @Override
     public ModifyRequest replace( Attribute attr )
     {
         addModification( attr, ModificationOperation.REPLACE_ATTRIBUTE );
@@ -215,6 +225,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest removeModification( Modification mod )
     {
         mods.remove( mod );
@@ -226,6 +237,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest remove( String attributeName, String... attributeValue )
     {
         addModification( ModificationOperation.REMOVE_ATTRIBUTE, attributeName, attributeValue );
@@ -248,6 +260,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest remove( Attribute attr )
     {
         addModification( attr, ModificationOperation.REMOVE_ATTRIBUTE );
@@ -259,6 +272,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest remove( String attributerName )
     {
         addModification( new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attributerName ) );
@@ -270,6 +284,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -281,6 +296,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest addControl( Control control )
     {
         return ( ModifyRequest ) super.addControl( control );
@@ -290,6 +306,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest addAllControls( Control[] controls )
     {
         return ( ModifyRequest ) super.addAllControls( controls );
@@ -299,6 +316,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest removeControl( Control control )
     {
         return ( ModifyRequest ) super.removeControl( control );
@@ -315,6 +333,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
      * 
      * @return the message type of the response.
      */
+    @Override
     public MessageTypeEnum getResponseType()
     {
         return MessageTypeEnum.MODIFY_RESPONSE;
@@ -326,6 +345,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
      * 
      * @return the result containing response for this request
      */
+    @Override
     public ModifyResponse getResultResponse()
     {
         if ( response == null )
@@ -367,6 +387,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
      *            the object to compare this ModifyRequest to
      * @return true if obj equals this ModifyRequest, false otherwise
      */
+    @Override
     public boolean equals( Object obj )
     {
         if ( obj == this )
@@ -431,10 +452,11 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
      * 
      * @return A ModifyRequest String
      */
+    @Override
     public String toString()
     {
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( "    Modify Request\n" );
         sb.append( "        Object : '" ).append( name ).append( "'\n" );

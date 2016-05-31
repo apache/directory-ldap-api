@@ -74,6 +74,7 @@ public class MandatoryAndOptionalComponentsMonitor implements ComponentsMonitor
     /**
      * {@inheritDoc}
      */
+    @Override
     public ComponentsMonitor useComponent( String component )
     {
         try
@@ -99,27 +100,30 @@ public class MandatoryAndOptionalComponentsMonitor implements ComponentsMonitor
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean allComponentsUsed()
     {
-        return ( mandatoryComponentsMonitor.allComponentsUsed() && optionalComponentsMonitor.allComponentsUsed() );
+        return mandatoryComponentsMonitor.allComponentsUsed() && optionalComponentsMonitor.allComponentsUsed();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean finalStateValid()
     {
-        return ( mandatoryComponentsMonitor.finalStateValid() && optionalComponentsMonitor.finalStateValid() );
+        return mandatoryComponentsMonitor.finalStateValid() && optionalComponentsMonitor.finalStateValid();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<String> getRemainingComponents()
     {
-        List<String> remainingComponents = new LinkedList<String>();
+        List<String> remainingComponents = new LinkedList<>();
 
         remainingComponents.addAll( mandatoryComponentsMonitor.getRemainingComponents() );
         remainingComponents.addAll( optionalComponentsMonitor.getRemainingComponents() );

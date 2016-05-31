@@ -190,7 +190,7 @@ public final class Chars
         }
         else
         {
-            return ( ( chars[index] == car ) ? true : false );
+            return ( chars[index] == car ) ? true : false;
         }
     }
 
@@ -296,7 +296,7 @@ public final class Chars
      */
     public static boolean isAlpha( byte c )
     {
-        return ( ( c > 0 ) && ( c <= 127 ) && ALPHA[c] );
+        return ( c > 0 ) && ( c <= 127 ) && ALPHA[c];
     }
 
 
@@ -311,7 +311,7 @@ public final class Chars
      */
     public static boolean isAlpha( char c )
     {
-        return ( ( c > 0 ) && ( c <= 127 ) && ALPHA[c] );
+        return ( c > 0 ) && ( c <= 127 ) && ALPHA[c];
     }
 
 
@@ -664,7 +664,7 @@ public final class Chars
         else
         {
             char c = string.charAt( index );
-            return ( ( c == '0' ) || ( c == '1' ) );
+            return ( c == '0' ) || ( c == '1' );
         }
     }
 
@@ -684,7 +684,7 @@ public final class Chars
         }
         else
         {
-            return ( ( ( ( bytes[0] | 0x7F ) != 0x7F ) || !DIGIT[bytes[0]] ) ? false : true );
+            return ( ( ( bytes[0] | 0x7F ) != 0x7F ) || !DIGIT[bytes[0]] ) ? false : true;
         }
     }
 
@@ -733,7 +733,7 @@ public final class Chars
         }
         else
         {
-            return ( ( ( ( bytes[index] | 0x7F ) != 0x7F ) || !DIGIT[bytes[index]] ) ? false : true );
+            return ( ( ( bytes[index] | 0x7F ) != 0x7F ) || !DIGIT[bytes[index]] ) ? false : true;
         }
     }
 
@@ -754,7 +754,7 @@ public final class Chars
         }
         else
         {
-            return ( ( ( chars[index] > 127 ) || !DIGIT[chars[index]] ) ? false : true );
+            return ( ( chars[index] > 127 ) || !DIGIT[chars[index]] ) ? false : true;
         }
     }
 
@@ -783,7 +783,7 @@ public final class Chars
         else
         {
             char c = string.charAt( index );
-            return ( ( ( c > 127 ) || !DIGIT[c] ) ? false : true );
+            return ( ( c > 127 ) || !DIGIT[c] ) ? false : true;
         }
     }
 
@@ -803,7 +803,7 @@ public final class Chars
         }
         else
         {
-            return ( ( ( chars[0] > 127 ) || !DIGIT[chars[0]] ) ? false : true );
+            return ( ( chars[0] > 127 ) || !DIGIT[chars[0]] ) ? false : true;
         }
     }
 
@@ -852,7 +852,7 @@ public final class Chars
         {
             byte c = bytes[index];
 
-            return ( ( ( c | 0x7F ) == 0x7F ) && HEX[c] );
+            return ( ( c | 0x7F ) == 0x7F ) && HEX[c];
         }
     }
 
@@ -875,7 +875,7 @@ public final class Chars
         {
             char c = chars[index];
 
-            return ( ( ( c | 0x007F ) == 0x007F ) && HEX[c] );
+            return ( ( c | 0x007F ) == 0x007F ) && HEX[c];
         }
     }
 
@@ -905,7 +905,7 @@ public final class Chars
         {
             char c = string.charAt( index );
 
-            return ( ( ( c | 0x007F ) == 0x007F ) && HEX[c] );
+            return ( ( c | 0x007F ) == 0x007F ) && HEX[c];
         }
     }
     

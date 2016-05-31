@@ -53,6 +53,7 @@ public class CompareResponseImpl extends AbstractResultResponse implements Compa
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isTrue()
     {
         return ldapResult.getResultCode() == ResultCodeEnum.COMPARE_TRUE;
@@ -64,6 +65,7 @@ public class CompareResponseImpl extends AbstractResultResponse implements Compa
      * 
      * @return An CompareResponse String
      */
+    @Override
     public String toString()
     {
 

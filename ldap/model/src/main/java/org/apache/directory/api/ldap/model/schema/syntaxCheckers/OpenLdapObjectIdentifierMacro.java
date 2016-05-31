@@ -126,6 +126,7 @@ public class OpenLdapObjectIdentifierMacro
     }
 
 
+    @Override
     public String toString()
     {
         if ( isResolved() )

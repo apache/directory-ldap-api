@@ -53,7 +53,7 @@ public final class FilterEncoder
      * @return the formatted filter with escaped values
      * @throws IllegalArgumentException if the number of values does not match the number of placeholders in the template
      */
-    public static String format( String filterTemplate, String... values ) throws IllegalArgumentException
+    public static String format( String filterTemplate, String... values )
     {
         if ( values == null )
         {
@@ -78,8 +78,7 @@ public final class FilterEncoder
         }
 
         // format the filter
-        String format = mf.format( values );
-        return format;
+        return mf.format( values );
     }
 
 

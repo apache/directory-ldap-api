@@ -59,7 +59,7 @@ public class DseTypeSyntaxChecker extends SyntaxChecker
     };
 
     /** The Set which contains the DESBits */
-    private static final Set<String> DSE_BITS = new HashSet<String>();
+    private static final Set<String> DSE_BITS = new HashSet<>();
 
     /** Initialization of the country set */
     static
@@ -85,9 +85,10 @@ public class DseTypeSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -111,7 +112,7 @@ public class DseTypeSyntaxChecker extends SyntaxChecker
         // We must have at least '(cp)', '(xr)' or '(ca)'
         if ( strValue.length() < 4 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -119,11 +120,11 @@ public class DseTypeSyntaxChecker extends SyntaxChecker
         if ( ( strValue.charAt( 0 ) != '(' )
             || ( strValue.charAt( strValue.length() - 1 ) != ')' ) )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
-        Set<String> keywords = new HashSet<String>();
+        Set<String> keywords = new HashSet<>();
         int len = strValue.length() - 1;
         boolean needKeyword = true;
 
@@ -147,7 +148,7 @@ public class DseTypeSyntaxChecker extends SyntaxChecker
             if ( pos == i )
             {
                 // No keyword : error
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
                 return false;
             }
 
@@ -157,14 +158,14 @@ public class DseTypeSyntaxChecker extends SyntaxChecker
             if ( !DSE_BITS.contains( keyword ) )
             {
                 // Unknown keyword
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
                 return false;
             }
 
             // Check that the keyword has not been met
             if ( keywords.contains( keyword ) )
             {
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
                 return false;
             }
 
@@ -190,7 +191,7 @@ public class DseTypeSyntaxChecker extends SyntaxChecker
         // We are done
         if ( needKeyword )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
         }
         else
         {

@@ -56,6 +56,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasDescendants( String ancestorId ) throws LdapException
     {
         return immutableObjectClassRegistry.hasDescendants( ancestorId );
@@ -65,6 +66,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<ObjectClass> descendants( String ancestorId ) throws LdapException
     {
         return immutableObjectClassRegistry.descendants( ancestorId );
@@ -74,6 +76,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerDescendants( ObjectClass objectClass, List<ObjectClass> ancestors ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04284 ) );
@@ -83,6 +86,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterDescendants( ObjectClass attributeType, List<ObjectClass> ancestors ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04284 ) );
@@ -92,6 +96,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     /**
      * {@inheritDoc}
      */
+    @Override
     public void register( ObjectClass objectClass ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04284 ) );
@@ -101,6 +106,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     /**
      * {@inheritDoc}
      */
+    @Override
     public ObjectClass unregister( String numericOid ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04284 ) );
@@ -110,6 +116,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     /**
      * Clone the ObjectClassRegistry
      */
+    @Override
     public ImmutableObjectClassRegistry copy()
     {
         return ( ImmutableObjectClassRegistry ) immutableObjectClassRegistry.copy();
@@ -119,6 +126,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     /**
      * {@inheritDoc}
      */
+    @Override
     public int size()
     {
         return immutableObjectClassRegistry.size();
@@ -128,6 +136,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( String oid )
     {
         return immutableObjectClassRegistry.contains( oid );
@@ -137,6 +146,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOidByName( String name ) throws LdapException
     {
         return immutableObjectClassRegistry.getOidByName( name );
@@ -146,6 +156,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSchemaName( String oid ) throws LdapException
     {
         return immutableObjectClassRegistry.getSchemaName( oid );
@@ -155,6 +166,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaObjectType getType()
     {
         return immutableObjectClassRegistry.getType();
@@ -164,6 +176,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<ObjectClass> iterator()
     {
         return immutableObjectClassRegistry.iterator();
@@ -173,6 +186,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     /**
      * {@inheritDoc}
      */
+    @Override
     public ObjectClass lookup( String oid ) throws LdapException
     {
         return immutableObjectClassRegistry.lookup( oid );
@@ -182,6 +196,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<String> oidsIterator()
     {
         return immutableObjectClassRegistry.oidsIterator();
@@ -191,6 +206,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     /**
      * {@inheritDoc}
      */
+    @Override
     public void renameSchema( String originalSchemaName, String newSchemaName ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04284 ) );
@@ -200,6 +216,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterSchemaElements( String schemaName ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04284 ) );
@@ -209,6 +226,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     /**
      * {@inheritDoc}
      */
+    @Override
     public ObjectClass get( String oid )
     {
         return immutableObjectClassRegistry.get( oid );
@@ -218,6 +236,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear() throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04284 ) );
@@ -227,6 +246,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     /**
      * {@inheritDoc}
      */
+    @Override
     public ObjectClass unregister( ObjectClass schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04284 ) );

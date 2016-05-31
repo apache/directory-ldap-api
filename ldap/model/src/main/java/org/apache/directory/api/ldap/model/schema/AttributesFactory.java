@@ -334,10 +334,10 @@ public class AttributesFactory
         entry.put( SchemaConstants.CREATE_TIMESTAMP_AT, DateUtils.getGeneralizedTime() );
 
         injectCommon( objectClass, entry, schemaManager );
-        Attribute attr = null;
+        Attribute attr;
 
         // handle the superior objectClasses
-        if ( objectClass.getSuperiorOids() != null && objectClass.getSuperiorOids().size() != 0 )
+        if ( ( objectClass.getSuperiorOids() != null ) && !objectClass.getSuperiorOids().isEmpty() )
         {
             if ( schemaManager != null )
             {
@@ -358,7 +358,7 @@ public class AttributesFactory
         }
 
         // add the must list
-        if ( objectClass.getMustAttributeTypeOids() != null && objectClass.getMustAttributeTypeOids().size() != 0 )
+        if ( ( objectClass.getMustAttributeTypeOids() != null ) && !objectClass.getMustAttributeTypeOids().isEmpty() )
         {
             if ( schemaManager != null )
             {
@@ -378,7 +378,7 @@ public class AttributesFactory
         }
 
         // add the may list
-        if ( objectClass.getMayAttributeTypeOids() != null && objectClass.getMayAttributeTypeOids().size() != 0 )
+        if ( ( objectClass.getMayAttributeTypeOids() != null ) && !objectClass.getMayAttributeTypeOids().isEmpty() )
         {
             if ( schemaManager != null )
             {
@@ -434,12 +434,12 @@ public class AttributesFactory
 
     private void injectNames( List<String> names, Entry entry, SchemaManager schemaManager ) throws LdapException
     {
-        if ( ( names == null ) || ( names.size() == 0 ) )
+        if ( ( names == null ) || names.isEmpty() )
         {
             return;
         }
 
-        Attribute attr = null;
+        Attribute attr;
 
         if ( schemaManager != null )
         {

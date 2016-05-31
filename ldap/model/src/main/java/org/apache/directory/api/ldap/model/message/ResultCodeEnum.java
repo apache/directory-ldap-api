@@ -751,7 +751,7 @@ public enum ResultCodeEnum
         return message;
     }
 
-    private static final Set<ResultCodeEnum> EMPTY_RESULT_CODE_SET = new HashSet<ResultCodeEnum>();
+    private static final Set<ResultCodeEnum> EMPTY_RESULT_CODE_SET = new HashSet<>();
 
     // ------------------------------------------------------------------------
     // Error Codes Grouped Into Categories & Static Accessors
@@ -775,7 +775,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.SUCCESS );
         set.add( ResultCodeEnum.COMPARE_TRUE );
         set.add( ResultCodeEnum.COMPARE_FALSE );
@@ -813,7 +813,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.BUSY );
         set.add( ResultCodeEnum.OTHER );
         set.add( ResultCodeEnum.SUCCESS );
@@ -866,7 +866,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.BUSY );
         set.add( ResultCodeEnum.OTHER );
         set.add( ResultCodeEnum.SUCCESS );
@@ -926,7 +926,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.BUSY );
         set.add( ResultCodeEnum.OTHER );
         set.add( ResultCodeEnum.SUCCESS );
@@ -988,7 +988,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.BUSY );
         set.add( ResultCodeEnum.OTHER );
         set.add( ResultCodeEnum.SUCCESS );
@@ -1043,7 +1043,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.BUSY );
         set.add( ResultCodeEnum.OTHER );
         set.add( ResultCodeEnum.SUCCESS );
@@ -1097,7 +1097,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.BUSY );
         set.add( ResultCodeEnum.OTHER );
         set.add( ResultCodeEnum.SUCCESS );
@@ -1154,7 +1154,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.OPERATIONS_ERROR );
         set.add( ResultCodeEnum.PROTOCOL_ERROR );
         set.add( ResultCodeEnum.TIME_LIMIT_EXCEEDED );
@@ -1229,7 +1229,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.SUCCESS );
         set.add( ResultCodeEnum.OPERATIONS_ERROR );
         set.add( ResultCodeEnum.PROTOCOL_ERROR );
@@ -1409,7 +1409,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.OPERATIONS_ERROR );
         set.add( ResultCodeEnum.ALIAS_PROBLEM );
         set.add( ResultCodeEnum.ALIAS_DEREFERENCING_PROBLEM );
@@ -1434,7 +1434,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.AUTH_METHOD_NOT_SUPPORTED );
         set.add( ResultCodeEnum.STRONG_AUTH_REQUIRED );
         set.add( ResultCodeEnum.CONFIDENTIALITY_REQUIRED );
@@ -1454,7 +1454,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.BUSY );
         set.add( ResultCodeEnum.UNAVAILABLE );
         SERVICE_UNAVAILABLE_CODES = Collections.unmodifiableSet( set );
@@ -1472,7 +1472,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.CONSTRAINT_VIOLATION );
         set.add( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX );
         INVALID_ATTRIBUTE_VALUE_EXCEPTION_CODES = Collections.unmodifiableSet( set );
@@ -1490,7 +1490,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.PARTIAL_RESULTS );
         set.add( ResultCodeEnum.REFERRAL );
         PARTIAL_RESULTS_EXCEPTION_CODES = Collections.unmodifiableSet( set );
@@ -1508,7 +1508,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.REFERRAL );
         set.add( ResultCodeEnum.ADMIN_LIMIT_EXCEEDED );
         LIMIT_EXCEEDED_EXCEPTION_CODES = Collections.unmodifiableSet( set );
@@ -1527,7 +1527,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.UNAVAILABLE_CRITICAL_EXTENSION );
         set.add( ResultCodeEnum.UNWILLING_TO_PERFORM );
         OPERATION_NOT_SUPPORTED_EXCEPTION_CODES = Collections.unmodifiableSet( set );
@@ -1545,7 +1545,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.INVALID_DN_SYNTAX );
         set.add( ResultCodeEnum.NAMING_VIOLATION );
         INVALID_NAME_EXCEPTION_CODES = Collections.unmodifiableSet( set );
@@ -1564,7 +1564,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.OBJECT_CLASS_VIOLATION );
         set.add( ResultCodeEnum.NOT_ALLOWED_ON_RDN );
         set.add( ResultCodeEnum.OBJECT_CLASS_MODS_PROHIBITED );
@@ -1600,7 +1600,7 @@ public enum ResultCodeEnum
 
         if ( type == null )
         {
-            Set<ResultCodeEnum> tmp = new HashSet<ResultCodeEnum>();
+            Set<ResultCodeEnum> tmp = new HashSet<>();
             tmp.addAll( set );
             tmp.removeAll( NON_ERRONEOUS_CODES );
 
@@ -1612,7 +1612,7 @@ public enum ResultCodeEnum
             return tmp.iterator().next();
         }
 
-        Set<ResultCodeEnum> candidates = EMPTY_RESULT_CODE_SET;
+        Set<ResultCodeEnum> candidates;
 
         switch ( type )
         {
@@ -1718,10 +1718,10 @@ public enum ResultCodeEnum
     {
         if ( s1.isEmpty() || s2.isEmpty() )
         {
-            return new HashSet<ResultCodeEnum>();
+            return new HashSet<>();
         }
 
-        Set<ResultCodeEnum> intersection = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> intersection = new HashSet<>();
 
         if ( s1.size() <= s2.size() )
         {

@@ -53,13 +53,14 @@ public class DefaultObjectClassRegistry extends DefaultSchemaObjectRegistry<Obje
     public DefaultObjectClassRegistry()
     {
         super( SchemaObjectType.OBJECT_CLASS, new OidRegistry<ObjectClass>() );
-        oidToDescendants = new HashMap<String, Set<ObjectClass>>();
+        oidToDescendants = new HashMap<>();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasDescendants( String ancestorId ) throws LdapException
     {
         try
@@ -79,6 +80,7 @@ public class DefaultObjectClassRegistry extends DefaultSchemaObjectRegistry<Obje
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
+    @Override
     public Iterator<ObjectClass> descendants( String ancestorId ) throws LdapException
     {
         try
@@ -103,11 +105,12 @@ public class DefaultObjectClassRegistry extends DefaultSchemaObjectRegistry<Obje
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerDescendants( ObjectClass objectClass, List<ObjectClass> ancestors )
         throws LdapException
     {
         // add this attribute to descendant list of other attributes in superior chain
-        if ( ( ancestors == null ) || ( ancestors.size() == 0 ) )
+        if ( ( ancestors == null ) || ancestors.isEmpty() )
         {
             return;
         }
@@ -120,7 +123,7 @@ public class DefaultObjectClassRegistry extends DefaultSchemaObjectRegistry<Obje
             // Initialize the descendant Set to store the descendants for the attributeType
             if ( descendants == null )
             {
-                descendants = new HashSet<ObjectClass>( 1 );
+                descendants = new HashSet<>( 1 );
                 oidToDescendants.put( ancestor.getOid(), descendants );
             }
 
@@ -143,11 +146,12 @@ public class DefaultObjectClassRegistry extends DefaultSchemaObjectRegistry<Obje
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterDescendants( ObjectClass attributeType, List<ObjectClass> ancestors )
         throws LdapException
     {
         // add this attribute to descendant list of other attributes in superior chain
-        if ( ( ancestors == null ) || ( ancestors.size() == 0 ) )
+        if ( ( ancestors == null ) || ancestors.isEmpty() )
         {
             return;
         }
@@ -161,7 +165,7 @@ public class DefaultObjectClassRegistry extends DefaultSchemaObjectRegistry<Obje
             {
                 descendants.remove( attributeType );
 
-                if ( descendants.size() == 0 )
+                if ( descendants.isEmpty() )
                 {
                     oidToDescendants.remove( ancestor.getOid() );
                 }
@@ -183,6 +187,7 @@ public class DefaultObjectClassRegistry extends DefaultSchemaObjectRegistry<Obje
     /**
      * {@inheritDoc}
      */
+    @Override
     public ObjectClass unregister( String numericOid ) throws LdapException
     {
         try
@@ -209,6 +214,7 @@ public class DefaultObjectClassRegistry extends DefaultSchemaObjectRegistry<Obje
     /**
      * {@inheritDoc}
      */
+    @Override
     public DefaultObjectClassRegistry copy()
     {
         DefaultObjectClassRegistry copy = new DefaultObjectClassRegistry();
@@ -223,6 +229,7 @@ public class DefaultObjectClassRegistry extends DefaultSchemaObjectRegistry<Obje
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear()
     {
         // Clear the contained SchemaObjects

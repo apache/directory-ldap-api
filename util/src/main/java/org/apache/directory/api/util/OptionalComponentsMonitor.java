@@ -46,6 +46,7 @@ public class OptionalComponentsMonitor extends AbstractSimpleComponentsMonitor
      * 
      * @return always true
      */
+    @Override
     public boolean finalStateValid()
     {
         return true;

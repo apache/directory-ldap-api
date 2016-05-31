@@ -56,6 +56,7 @@ public abstract class AbstractResultResponse extends AbstractResponse implements
      * 
      * @return the LdapResult for this Response.
      */
+    @Override
     public LdapResult getLdapResult()
     {
         return ldapResult;
@@ -121,7 +122,7 @@ public abstract class AbstractResultResponse extends AbstractResponse implements
             return false;
         }
 
-        return ( ( ldapResult == null ) || ( resp.getLdapResult() == null ) || ldapResult.equals( resp.getLdapResult() ) );
+        return ( ldapResult == null ) || ( resp.getLdapResult() == null ) || ldapResult.equals( resp.getLdapResult() );
     }
 
 
@@ -130,6 +131,7 @@ public abstract class AbstractResultResponse extends AbstractResponse implements
      * 
      * @return An Response String
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

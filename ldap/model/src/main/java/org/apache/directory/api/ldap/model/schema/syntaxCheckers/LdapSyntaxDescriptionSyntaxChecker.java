@@ -50,7 +50,7 @@ public class LdapSyntaxDescriptionSyntaxChecker extends SyntaxChecker
     private static final Logger LOG = LoggerFactory.getLogger( LdapSyntaxDescriptionSyntaxChecker.class );
 
     /** The schema parser used to parse the LdapSyntax description Syntax */
-    private LdapSyntaxDescriptionSchemaParser schemaParser = new LdapSyntaxDescriptionSchemaParser();
+    private transient LdapSyntaxDescriptionSchemaParser schemaParser = new LdapSyntaxDescriptionSchemaParser();
 
 
     /**
@@ -67,9 +67,10 @@ public class LdapSyntaxDescriptionSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -99,7 +100,7 @@ public class LdapSyntaxDescriptionSyntaxChecker extends SyntaxChecker
         }
         catch ( ParseException pe )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
     }

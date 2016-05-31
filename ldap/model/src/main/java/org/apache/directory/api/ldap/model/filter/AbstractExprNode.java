@@ -56,6 +56,7 @@ public abstract class AbstractExprNode implements ExprNode
      * 
      * @return the node's type
      */
+    @Override
     public AssertionType getAssertionType()
     {
         return assertionType;
@@ -66,6 +67,7 @@ public abstract class AbstractExprNode implements ExprNode
      * @see Object#equals(Object)
      *@return <code>true</code> if both objects are equal 
      */
+    @Override
     public boolean equals( Object o )
     {
         // Shortcut for equals object
@@ -133,6 +135,7 @@ public abstract class AbstractExprNode implements ExprNode
      * @see Object#hashCode()
      * @return the instance's hash code 
      */
+    @Override
     public int hashCode()
     {
         int h = 37;
@@ -158,6 +161,7 @@ public abstract class AbstractExprNode implements ExprNode
      * 
      * @return the annotation value.
      */
+    @Override
     public Object get( Object key )
     {
         if ( null == annotations )
@@ -173,11 +177,12 @@ public abstract class AbstractExprNode implements ExprNode
      * @see ExprNode#set(java.lang.Object,
      *      java.lang.Object)
      */
+    @Override
     public void set( String key, Object value )
     {
         if ( null == annotations )
         {
-            annotations = new HashMap<String, Object>( 2 );
+            annotations = new HashMap<>( 2 );
         }
 
         annotations.put( key, value );
@@ -200,6 +205,7 @@ public abstract class AbstractExprNode implements ExprNode
      * 
      * @return true if the Node is SchemaAware
      */
+    @Override
     public abstract boolean isSchemaAware();
 
 
@@ -210,6 +216,7 @@ public abstract class AbstractExprNode implements ExprNode
      * @return The buffer in which the refinement has been appended
      * @throws UnsupportedOperationException if this node isn't a part of a refinement.
      */
+    @Override
     public StringBuilder printRefinementToBuffer( StringBuilder buf )
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_04144 ) );
@@ -247,6 +254,7 @@ public abstract class AbstractExprNode implements ExprNode
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         if ( ( null != annotations ) && annotations.containsKey( "count" ) )

@@ -170,6 +170,7 @@ public enum SearchScope
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         return ldapUrlValue;

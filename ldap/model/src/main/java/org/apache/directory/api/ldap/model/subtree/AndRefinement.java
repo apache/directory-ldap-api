@@ -33,7 +33,7 @@ import java.util.List;
 public class AndRefinement implements Refinement
 {
     /** The set of refinements */
-    private List<Refinement> refinements = new ArrayList<Refinement>();
+    private List<Refinement> refinements = new ArrayList<>();
 
 
     /**
@@ -59,6 +59,7 @@ public class AndRefinement implements Refinement
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

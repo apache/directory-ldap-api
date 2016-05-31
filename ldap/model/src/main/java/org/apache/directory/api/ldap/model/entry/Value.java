@@ -217,7 +217,6 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         }
         else
         {
-            // throw new IllegalArgumentException( I18n.err( I18n.ERR_04488_NULL_ATTRIBUTE_TYPE ) );
             LOG.warn( "The attributeType is null" );
         }
 
@@ -371,9 +370,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      */
     public static Value createValue( AttributeType attributeType )
     {
-        Value value = new Value( attributeType );
-        
-        return value;
+        return new Value( attributeType );
     }
     
 
@@ -382,6 +379,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      * 
      * @return A cloned value
      */
+    @Override
     public Value clone()
     {
         try
@@ -651,7 +649,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
 
             if ( mr != null )
             {
-                return ( LdapComparator<?> ) mr.getLdapComparator();
+                return mr.getLdapComparator();
             }
         }
 
@@ -867,6 +865,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void readExternal( ObjectInput in ) throws IOException, ClassNotFoundException
     {
         // Read the isHR flag
@@ -915,6 +914,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void writeExternal( ObjectOutput out ) throws IOException
     {
         // Write a boolean for the HR flag
@@ -1077,6 +1077,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      * @throws IllegalStateException on failures to extract the comparator, or the
      * normalizers needed to perform the required comparisons based on the schema
      */
+    @Override
     public int compareTo( Value other )
     {
         // The two values must have the same type
@@ -1161,6 +1162,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      * 
      * @see Object#equals(Object)
      */
+    @Override
     public boolean equals( Object obj )
     {
         if ( this == obj )
@@ -1392,6 +1394,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      * @see Object#hashCode()
      * @return the instance's hashcode
      */
+    @Override
     public int hashCode()
     {
         if ( h == 0 )
@@ -1422,6 +1425,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         if ( isHR )

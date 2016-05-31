@@ -177,6 +177,7 @@ public class BaseSubtreeSpecification implements SubtreeSpecification
     /**
      * @return The base
      */
+    @Override
     public Dn getBase()
     {
         return this.base;
@@ -186,6 +187,7 @@ public class BaseSubtreeSpecification implements SubtreeSpecification
     /**
      * @return The set of ChopBefore exclusions
      */
+    @Override
     public Set<Dn> getChopBeforeExclusions()
     {
         return this.chopBefore;
@@ -195,6 +197,7 @@ public class BaseSubtreeSpecification implements SubtreeSpecification
     /**
      * @return The set of ChopAfter exclusions
      */
+    @Override
     public Set<Dn> getChopAfterExclusions()
     {
         return this.chopAfter;
@@ -204,6 +207,7 @@ public class BaseSubtreeSpecification implements SubtreeSpecification
     /**
      * @return The mimimum distance from the base
      */
+    @Override
     public int getMinBaseDistance()
     {
         return this.minBaseDistance;
@@ -213,6 +217,7 @@ public class BaseSubtreeSpecification implements SubtreeSpecification
     /**
      * @return The maximum distance from the base
      */
+    @Override
     public int getMaxBaseDistance()
     {
         return this.maxBaseDistance;
@@ -222,6 +227,7 @@ public class BaseSubtreeSpecification implements SubtreeSpecification
     /**
      * @return The refinement
      */
+    @Override
     public ExprNode getRefinement()
     {
         return this.refinement;
@@ -234,6 +240,7 @@ public class BaseSubtreeSpecification implements SubtreeSpecification
      *
      * @param buffer the string buffer
      */
+    @Override
     public void toString( StringBuilder buffer )
     {
         buffer.append( toString() );
@@ -243,6 +250,7 @@ public class BaseSubtreeSpecification implements SubtreeSpecification
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         StringBuilder buffer = new StringBuilder();

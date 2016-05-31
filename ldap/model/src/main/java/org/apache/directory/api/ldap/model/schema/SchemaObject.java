@@ -298,12 +298,14 @@ public interface SchemaObject
     /**
      * {@inheritDoc}
      */
+    @Override
     int hashCode();
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     boolean equals( Object o1 );
 
 
@@ -333,8 +335,6 @@ public interface SchemaObject
 
     /**
      * Transform the SchemaObject to an immutable object
-     * TODO locked.
-     *
      */
     void lock();
 }

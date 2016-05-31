@@ -55,9 +55,10 @@ public class PostalAddressSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -80,7 +81,7 @@ public class PostalAddressSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -102,7 +103,7 @@ public class PostalAddressSyntaxChecker extends SyntaxChecker
 
             if ( Strings.isEmpty( address ) )
             {
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
                 return false;
             }
 
@@ -111,7 +112,7 @@ public class PostalAddressSyntaxChecker extends SyntaxChecker
             if ( pos == strValue.length() )
             {
                 // we should not have a '$' at the end
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
                 return false;
             }
 

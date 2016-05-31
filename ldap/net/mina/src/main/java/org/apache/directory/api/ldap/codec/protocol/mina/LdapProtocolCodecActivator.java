@@ -65,6 +65,7 @@ public class LdapProtocolCodecActivator implements BundleActivator
         @Override
         public void modifiedService( ServiceReference<LdapApiService> reference, LdapApiService service )
         {
+            // Do nothing ATM
         }
 
 
@@ -83,16 +84,18 @@ public class LdapProtocolCodecActivator implements BundleActivator
      */
     public LdapProtocolCodecActivator()
     {
+        // Default constructor
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void start( BundleContext bundleContext ) throws Exception
     {
         LdapApiServiceTracker ldapApiServiceTracker = new LdapApiServiceTracker( bundleContext );
-        serviceTracker = new ServiceTracker<LdapApiService, LdapApiService>( bundleContext, LdapApiService.class,
+        serviceTracker = new ServiceTracker<>( bundleContext, LdapApiService.class,
             ldapApiServiceTracker );
         serviceTracker.open();
     }
@@ -101,6 +104,7 @@ public class LdapProtocolCodecActivator implements BundleActivator
     /**
      * {@inheritDoc}
      */
+    @Override
     public void stop( BundleContext bundleContext ) throws Exception
     {
         serviceTracker.close();

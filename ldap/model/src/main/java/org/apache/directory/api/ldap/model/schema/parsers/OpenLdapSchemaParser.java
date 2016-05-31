@@ -39,6 +39,7 @@ import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.OpenLdapObjectIdentifierMacro;
+import org.apache.directory.api.util.Strings;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
@@ -137,9 +138,9 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser<SchemaObject>
      */
     private void afterParse() throws ParseException
     {
-        objectClasses = new ArrayList<ObjectClass>();
-        attributeTypes = new ArrayList<MutableAttributeType>();
-        objectIdentifierMacros = new HashMap<String, OpenLdapObjectIdentifierMacro>();
+        objectClasses = new ArrayList<>();
+        attributeTypes = new ArrayList<>();
+        objectIdentifierMacros = new HashMap<>();
 
         // split parsed schema descriptions
         for ( Object obj : schemaDescriptions )
@@ -253,9 +254,10 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser<SchemaObject>
      * @return the schema object
      * @throws ParseException If the schemaObject can't be parsed
      */
+    @Override
     public SchemaObject parse( String schemaObject ) throws ParseException
     {
-        if ( schemaObject == null || schemaObject.trim().equals( "" ) )
+        if ( ( schemaObject == null ) || Strings.isEmpty( schemaObject.trim() ) )
         {
             throw new ParseException( I18n.err( I18n.ERR_04258 ), 0 );
         }

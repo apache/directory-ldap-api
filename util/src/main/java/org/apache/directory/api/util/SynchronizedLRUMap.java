@@ -93,6 +93,7 @@ public final class SynchronizedLRUMap extends SequencedHashMap implements Extern
      * @return Returns the value. Returns null if the key has a null value <i>or</i>
      *         if the key has no value.
      */
+    @Override
     public synchronized Object get( Object key )
     {
         if ( !containsKey( key ) )
@@ -122,11 +123,12 @@ public final class SynchronizedLRUMap extends SequencedHashMap implements Extern
      *            Object to add
      * @return Former value of the key
      */
+    @Override
     public Object put( Object key, Object value )
     {
 
         int mapSize = size();
-        Object retval = null;
+        Object retval;
 
         if ( mapSize >= maximumSize )
         {

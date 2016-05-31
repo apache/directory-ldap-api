@@ -59,6 +59,7 @@ public abstract class GrammarAction<C extends Asn1Container> implements Action<C
      * 
      * @return The action's name
      */
+    @Override
     public String toString()
     {
         return name;

@@ -58,9 +58,10 @@ public class SearchScopeSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -83,6 +84,6 @@ public class SearchScopeSyntaxChecker extends SyntaxChecker
 
         strValue = Strings.trim( Strings.toLowerCaseAscii( strValue ) );
 
-        return ( "base".equals( strValue ) || "one".equals( strValue ) || "sub".equals( strValue ) );
+        return "base".equals( strValue ) || "one".equals( strValue ) || "sub".equals( strValue );
     }
 }

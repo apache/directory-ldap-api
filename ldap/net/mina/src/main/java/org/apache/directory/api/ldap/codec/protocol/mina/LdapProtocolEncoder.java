@@ -73,6 +73,7 @@ public class LdapProtocolEncoder implements ProtocolEncoder
     /**
      * {@inheritDoc}
      */
+    @Override
     public void encode( IoSession session, Object message, ProtocolEncoderOutput out ) throws Exception
     {
         ByteBuffer buffer = encoder.encodeMessage( ( Message ) message );
@@ -94,6 +95,7 @@ public class LdapProtocolEncoder implements ProtocolEncoder
     /**
      * {@inheritDoc}
      */
+    @Override
     public void dispose( IoSession session ) throws Exception
     {
         // Nothing to do

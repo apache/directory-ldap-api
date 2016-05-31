@@ -53,6 +53,7 @@ public class DnSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
         String strValue;
@@ -94,7 +95,7 @@ public class DnSyntaxChecker extends SyntaxChecker
         }
         else
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
         }
 
         return result;

@@ -69,6 +69,7 @@ public class SearchResultEntryImpl extends AbstractResponse implements SearchRes
      * 
      * @return the entry
      */
+    @Override
     public Entry getEntry()
     {
         return entry;
@@ -80,6 +81,7 @@ public class SearchResultEntryImpl extends AbstractResponse implements SearchRes
      * 
      * @param entry the entry
      */
+    @Override
     public void setEntry( Entry entry )
     {
         this.entry = entry;
@@ -91,9 +93,10 @@ public class SearchResultEntryImpl extends AbstractResponse implements SearchRes
      * 
      * @return the Dn of the entry returned.
      */
+    @Override
     public Dn getObjectName()
     {
-        return ( entry == null ? null : entry.getDn() );
+        return entry == null ? null : entry.getDn();
     }
 
 
@@ -102,6 +105,7 @@ public class SearchResultEntryImpl extends AbstractResponse implements SearchRes
      * 
      * @param objectName the Dn of the entry returned.
      */
+    @Override
     public void setObjectName( Dn objectName )
     {
         if ( entry != null )
@@ -136,6 +140,7 @@ public class SearchResultEntryImpl extends AbstractResponse implements SearchRes
      *            the object to test for equality with this message
      * @return true if the obj is equal false otherwise
      */
+    @Override
     public boolean equals( Object obj )
     {
         if ( this == obj )
@@ -162,6 +167,7 @@ public class SearchResultEntryImpl extends AbstractResponse implements SearchRes
     /**
      * Return a string representation of a SearchResultEntry request
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

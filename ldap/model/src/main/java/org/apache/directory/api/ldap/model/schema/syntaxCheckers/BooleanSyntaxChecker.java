@@ -56,9 +56,10 @@ public class BooleanSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -81,11 +82,11 @@ public class BooleanSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", strValue );
+            LOG.debug( INVALID_SYNTAX_FOR, strValue );
             return false;
         }
 
-        boolean valid = ( ( "TRUE".equalsIgnoreCase( strValue ) ) || ( "FALSE".equalsIgnoreCase( strValue ) ) );
+        boolean valid = "TRUE".equalsIgnoreCase( strValue ) || "FALSE".equalsIgnoreCase( strValue );
 
         if ( valid )
         {
@@ -93,7 +94,7 @@ public class BooleanSyntaxChecker extends SyntaxChecker
         }
         else
         {
-            LOG.debug( "Syntax invalid for '{}'", strValue );
+            LOG.debug( INVALID_SYNTAX_FOR, strValue );
         }
 
         return valid;

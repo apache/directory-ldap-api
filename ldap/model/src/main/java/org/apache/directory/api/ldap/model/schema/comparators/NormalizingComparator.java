@@ -41,9 +41,6 @@ public class NormalizingComparator extends LdapComparator<String>
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( NormalizingComparator.class );
 
-    /** the Normalizer to normalize values with before comparing */
-    private Normalizer normalizer;
-
     /** the underlying comparator to use for comparisons */
     private LdapComparator<String> comparator;
 

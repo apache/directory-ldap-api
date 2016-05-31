@@ -47,7 +47,7 @@ public class CaseSensitiveStringAnonymizer extends AbstractAnonymizer<String>
      */
     public CaseSensitiveStringAnonymizer()
     {
-        latestStringMap = new HashMap<Integer, String>();
+        latestStringMap = new HashMap<>();
         caseSensitive = true;
     }
 
@@ -61,7 +61,7 @@ public class CaseSensitiveStringAnonymizer extends AbstractAnonymizer<String>
     {
         if ( latestStringMap == null ) 
         {
-            this.latestStringMap = new HashMap<Integer, String>();
+            this.latestStringMap = new HashMap<>();
         }
         else
         {
@@ -75,6 +75,7 @@ public class CaseSensitiveStringAnonymizer extends AbstractAnonymizer<String>
     /**
      * Anonymize an attribute using pure random values (either chars of bytes, depending on the Attribute type)
      */
+    @Override
     public Attribute anonymize( Map<Value, Value> valueMap, Set<Value> valueSet, Attribute attribute )
     {
         AttributeType attributeType = attribute.getAttributeType();
@@ -94,7 +95,6 @@ public class CaseSensitiveStringAnonymizer extends AbstractAnonymizer<String>
                     }
                     catch ( LdapInvalidAttributeValueException e )
                     {
-                        // TODO : handle that
                     }
                 }
                 else
@@ -111,7 +111,6 @@ public class CaseSensitiveStringAnonymizer extends AbstractAnonymizer<String>
                     }
                     catch ( LdapInvalidAttributeValueException e )
                     {
-                        // TODO Auto-generated catch block
                         throw new RuntimeException( "Error while anonymizing the value" + strValue );
                     }
                 }
@@ -125,6 +124,7 @@ public class CaseSensitiveStringAnonymizer extends AbstractAnonymizer<String>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<Integer, String> getLatestStringMap()
     {
         return latestStringMap;
@@ -134,6 +134,7 @@ public class CaseSensitiveStringAnonymizer extends AbstractAnonymizer<String>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLatestStringMap( Map<Integer, String> latestStringMap )
     {
         this.latestStringMap = latestStringMap;

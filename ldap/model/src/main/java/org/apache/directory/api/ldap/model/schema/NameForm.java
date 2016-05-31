@@ -124,11 +124,11 @@ public class NameForm extends AbstractSchemaObject
     {
         super( SchemaObjectType.NAME_FORM, oid );
 
-        mustAttributeTypeOids = new ArrayList<String>();
-        mayAttributeTypeOids = new ArrayList<String>();
+        mustAttributeTypeOids = new ArrayList<>();
+        mayAttributeTypeOids = new ArrayList<>();
 
-        mustAttributeTypes = new ArrayList<AttributeType>();
-        mayAttributeTypes = new ArrayList<AttributeType>();
+        mustAttributeTypes = new ArrayList<>();
+        mayAttributeTypes = new ArrayList<>();
     }
 
 
@@ -420,6 +420,7 @@ public class NameForm extends AbstractSchemaObject
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         return SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( this );
@@ -429,6 +430,7 @@ public class NameForm extends AbstractSchemaObject
     /**
      * Copy a NameForm
      */
+    @Override
     public NameForm copy()
     {
         NameForm copy = new NameForm( oid );
@@ -437,7 +439,7 @@ public class NameForm extends AbstractSchemaObject
         copy.copy( this );
 
         // Copy the MAY AttributeTypes OIDs
-        copy.mayAttributeTypeOids = new ArrayList<String>();
+        copy.mayAttributeTypeOids = new ArrayList<>();
 
         for ( String oid : mayAttributeTypeOids )
         {
@@ -445,10 +447,10 @@ public class NameForm extends AbstractSchemaObject
         }
 
         // Copy the MAY AttributeTypes (will be empty)
-        copy.mayAttributeTypes = new ArrayList<AttributeType>();
+        copy.mayAttributeTypes = new ArrayList<>();
 
         // Copy the MUST AttributeTypes OIDs
-        copy.mustAttributeTypeOids = new ArrayList<String>();
+        copy.mustAttributeTypeOids = new ArrayList<>();
 
         for ( String oid : mustAttributeTypeOids )
         {
@@ -456,7 +458,7 @@ public class NameForm extends AbstractSchemaObject
         }
 
         // Copy the MUST AttributeTypes ( will be empty )
-        copy.mustAttributeTypes = new ArrayList<AttributeType>();
+        copy.mustAttributeTypes = new ArrayList<>();
 
         // Copy the Structural ObjectClass OID
         copy.structuralObjectClassOid = structuralObjectClassOid;
@@ -495,6 +497,7 @@ public class NameForm extends AbstractSchemaObject
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear()
     {
         // Clear the common elements

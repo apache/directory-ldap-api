@@ -22,7 +22,6 @@ package org.apache.directory.api.ldap.model.schema.comparators;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
-import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.normalizers.DeepTrimNormalizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,16 +40,13 @@ public class DeepTrimComparator extends LdapComparator<String>
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( DeepTrimComparator.class );
     
-    /** The associated normalizer */
-    private Normalizer normalizer = new DeepTrimNormalizer();
-
-
     /**
      * The NormalizingComparator constructor. Its OID is the  matching rule OID.
      */
     public DeepTrimComparator( String oid )
     {
         super( oid );
+        normalizer = new DeepTrimNormalizer();
     }
 
 
@@ -61,7 +57,7 @@ public class DeepTrimComparator extends LdapComparator<String>
     public int compare( String o1, String o2 )
     {
         String n1 = o1;
-        String n2 = o2;
+        String n2;
 
         try
         {
@@ -84,18 +80,5 @@ public class DeepTrimComparator extends LdapComparator<String>
         }
 
         return n1.compareTo( n2 );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * This implementation makes sure we update the oid property of the contained normalizer and 
-     * comparator.
-     */
-    @Override
-    public void setOid( String oid )
-    {
-        super.setOid( oid );
     }
 }

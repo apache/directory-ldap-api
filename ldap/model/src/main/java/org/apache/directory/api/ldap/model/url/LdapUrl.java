@@ -156,10 +156,29 @@ public class LdapUrl
         host = null;
         port = -1;
         dn = null;
-        attributes = new ArrayList<String>();
+        attributes = new ArrayList<>();
         scope = SearchScope.OBJECT;
         filter = null;
-        extensionList = new ArrayList<Extension>( 2 );
+        extensionList = new ArrayList<>( 2 );
+    }
+
+
+    /**
+     * Create a new LdapUrl from a String after having parsed it.
+     *
+     * @param string TheString that contains the LdapUrl
+     * @throws LdapURLEncodingException If the String does not comply with RFC 2255
+     */
+    public LdapUrl( String string ) throws LdapURLEncodingException
+    {
+        if ( string == null )
+        {
+            throw new LdapURLEncodingException( I18n.err( I18n.ERR_04408 ) );
+        }
+
+        bytes = Strings.getBytesUtf8( string );
+        this.string = string;
+        parse( string.toCharArray() );
     }
 
 
@@ -175,10 +194,10 @@ public class LdapUrl
         host = null;
         port = -1;
         dn = null;
-        attributes = new ArrayList<String>();
+        attributes = new ArrayList<>();
         scope = SearchScope.OBJECT;
         filter = null;
-        extensionList = new ArrayList<Extension>( 2 );
+        extensionList = new ArrayList<>( 2 );
 
         if ( ( chars == null ) || ( chars.length == 0 ) )
         {
@@ -190,10 +209,9 @@ public class LdapUrl
         // [dn ["?" [attributes] ["?" [scope]
         // ["?" [filter] ["?" extensions]]]]]]
         // scheme = "ldap"
-        int pos = 0;
-
         // The scheme
-        pos = Strings.areEquals( chars, 0, LDAP_SCHEME );
+        int pos = Strings.areEquals( chars, 0, LDAP_SCHEME );
+        
         if ( pos == StringConstants.NOT_EQUAL )
         {
             pos = Strings.areEquals( chars, 0, LDAPS_SCHEME );
@@ -325,25 +343,6 @@ public class LdapUrl
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_04407 ) );
         }
-    }
-
-
-    /**
-     * Create a new LdapUrl from a String after having parsed it.
-     *
-     * @param string TheString that contains the LdapUrl
-     * @throws LdapURLEncodingException If the String does not comply with RFC 2255
-     */
-    public LdapUrl( String string ) throws LdapURLEncodingException
-    {
-        if ( string == null )
-        {
-            throw new LdapURLEncodingException( I18n.err( I18n.ERR_04408 ) );
-        }
-
-        bytes = Strings.getBytesUtf8( string );
-        this.string = string;
-        parse( string.toCharArray() );
     }
 
 
@@ -517,7 +516,7 @@ public class LdapUrl
 
         if ( containsCompressedZeroes )
         {
-            List<String> octetList = new ArrayList<String>( Arrays.asList( octets ) );
+            List<String> octetList = new ArrayList<>( Arrays.asList( octets ) );
 
             if ( inet6Address.endsWith( "::" ) )
             {
@@ -542,7 +541,7 @@ public class LdapUrl
 
         for ( int index = 0; index < octets.length; index++ )
         {
-            String octet = ( String ) octets[index];
+            String octet = octets[index];
 
             if ( octet.length() == 0 )
             {
@@ -879,17 +878,25 @@ public class LdapUrl
     {
         int ipElemValue = 0;
         boolean ipElemSeen = false;
-        boolean hasTailingZeroes = false;
+        boolean hasHeadingZero = false;
 
         while ( Chars.isDigit( chars, pos ) )
         {
             ipElemSeen = true;
             ipElemValue = ( ipElemValue * 10 ) + ( chars[pos] - '0' );
 
-            if ( ( chars[pos] == '0' ) && hasTailingZeroes && ( ipElemValue > 0 ) )
+            if ( chars[pos] == '0' )
             {
-                // Two 0 at the beginning : not allowed
-                return -1;
+                if ( hasHeadingZero )
+                {
+                    // Two 0 at the beginning : not allowed
+                    return -1;
+                }
+                
+                if ( ipElemValue == 0 )
+                {
+                    hasHeadingZero = true;
+                }
             }
 
             if ( ipElemValue > 255 )
@@ -1166,7 +1173,7 @@ public class LdapUrl
     {
         int start = pos;
         int end = pos;
-        Set<String> hAttributes = new HashSet<String>();
+        Set<String> hAttributes = new HashSet<>();
         boolean hadComma = false;
 
         try
@@ -1187,10 +1194,8 @@ public class LdapUrl
                     }
                     else
                     {
-                        String attribute = null;
-
                         // get the attribute. It must not be blank
-                        attribute = new String( chars, start, end - start ).trim();
+                        String attribute = new String( chars, start, end - start ).trim();
 
                         if ( attribute.length() == 0 )
                         {
@@ -1245,9 +1250,7 @@ public class LdapUrl
 
                 // Store the last attribute
                 // get the attribute. It must not be blank
-                String attribute = null;
-
-                attribute = new String( chars, start, end - start ).trim();
+                String attribute = new String( chars, start, end - start ).trim();
 
                 if ( attribute.length() == 0 )
                 {
@@ -1422,7 +1425,7 @@ public class LdapUrl
 
         try
         {
-            for ( int i = pos; ( i < chars.length ); i++ )
+            for ( int i = pos; i < chars.length; i++ )
             {
                 if ( Chars.isCharASCII( chars, i, ',' ) )
                 {
@@ -1565,7 +1568,7 @@ public class LdapUrl
      */
     public static String urlEncode( String url, boolean doubleEncode )
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         for ( int i = 0; i < url.length(); i++ )
         {
@@ -1720,7 +1723,7 @@ public class LdapUrl
     @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( scheme );
 
@@ -1752,8 +1755,8 @@ public class LdapUrl
         {
             sb.append( '/' ).append( urlEncode( dn.getName(), false ) );
 
-            if ( ( attributes.size() != 0 ) || forceScopeRendering
-                || ( ( scope != SearchScope.OBJECT ) || ( filter != null ) || ( extensionList.size() != 0 ) ) )
+            if ( !attributes.isEmpty() || forceScopeRendering
+                || ( ( scope != SearchScope.OBJECT ) || ( filter != null ) || !extensionList.isEmpty() ) )
             {
                 sb.append( '?' );
 
@@ -1782,7 +1785,7 @@ public class LdapUrl
             }
             else
             {
-                if ( ( scope != SearchScope.OBJECT ) || ( filter != null ) || ( extensionList.size() != 0 ) )
+                if ( ( scope != SearchScope.OBJECT ) || ( filter != null ) || !extensionList.isEmpty() )
                 {
                     sb.append( '?' );
 
@@ -1797,7 +1800,7 @@ public class LdapUrl
                             break;
                     }
 
-                    if ( ( filter != null ) || ( ( extensionList.size() != 0 ) ) )
+                    if ( ( filter != null ) || ( !extensionList.isEmpty() ) )
                     {
                         sb.append( "?" );
 
@@ -1806,13 +1809,13 @@ public class LdapUrl
                             sb.append( urlEncode( filter, false ) );
                         }
 
-                        if ( ( extensionList.size() != 0 ) )
+                        if ( !extensionList.isEmpty() )
                         {
                             sb.append( '?' );
 
                             boolean isFirst = true;
 
-                            if ( extensionList.size() != 0 )
+                            if ( !extensionList.isEmpty() )
                             {
                                 for ( Extension extension : extensionList )
                                 {
@@ -1974,7 +1977,7 @@ public class LdapUrl
      */
     public int getNbBytes()
     {
-        return ( bytes != null ? bytes.length : 0 );
+        return bytes != null ? bytes.length : 0;
     }
 
 

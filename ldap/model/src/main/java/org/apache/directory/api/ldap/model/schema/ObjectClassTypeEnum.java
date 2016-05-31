@@ -95,15 +95,15 @@ public enum ObjectClassTypeEnum
     {
         String upperCase = Strings.upperCase( name.trim() );
 
-        if ( upperCase.equals( "STRUCTURAL" ) )
+        if ( "STRUCTURAL".equals( upperCase ) )
         {
             return STRUCTURAL;
         }
-        else if ( upperCase.equals( "AUXILIARY" ) )
+        else if ( "AUXILIARY".equals( upperCase ) )
         {
             return AUXILIARY;
         }
-        else if ( upperCase.equals( "ABSTRACT" ) )
+        else if ( "ABSTRACT".equals( upperCase ) )
         {
             return ABSTRACT;
         }

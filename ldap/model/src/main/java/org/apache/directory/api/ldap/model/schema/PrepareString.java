@@ -3588,9 +3588,7 @@ public final class PrepareString
         }
 
         // create the resulting String
-        String result = new String( target, 0, newPos );
-
-        return result;
+        return new String( target, 0, newPos );
     }
     
     
@@ -3812,9 +3810,7 @@ public final class PrepareString
         }
 
         // create the resulting String
-        String result = new String( target, 0, newPos );
-
-        return result;
+        return new String( target, 0, newPos );
     }
 
     
@@ -4038,9 +4034,7 @@ public final class PrepareString
         }
 
         // create the resulting String
-        String result = new String( target, 0, newPos );
-
-        return result;
+        return new String( target, 0, newPos );
     }
     
     
@@ -4256,9 +4250,7 @@ public final class PrepareString
         }
 
         // create the resulting String
-        String result = new String( target, 0, newPos );
-
-        return result;
+        return new String( target, 0, newPos );
     }
 
     

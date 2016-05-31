@@ -59,7 +59,7 @@ public class RegexSyntaxChecker extends SyntaxChecker
 
         if ( ( matchExprArray != null ) && ( matchExprArray.length != 0 ) )
         {
-            expressions = new ArrayList<String>( matchExprArray.length );
+            expressions = new ArrayList<>( matchExprArray.length );
 
             for ( String regexp : matchExprArray )
             {
@@ -68,7 +68,7 @@ public class RegexSyntaxChecker extends SyntaxChecker
         }
         else
         {
-            expressions = new ArrayList<String>();
+            expressions = new ArrayList<>();
         }
     }
 
@@ -83,16 +83,17 @@ public class RegexSyntaxChecker extends SyntaxChecker
     public RegexSyntaxChecker( String oid )
     {
         super( oid );
-        expressions = new ArrayList<String>();
+        expressions = new ArrayList<>();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String str = null;
+        String str;
         boolean match = true;
 
         if ( value instanceof String )
@@ -101,7 +102,7 @@ public class RegexSyntaxChecker extends SyntaxChecker
 
             for ( String regexp : expressions )
             {
-                match = match && str.matches( regexp );
+                match = str.matches( regexp );
 
                 if ( !match )
                 {
@@ -116,7 +117,7 @@ public class RegexSyntaxChecker extends SyntaxChecker
         }
         else
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
         }
 
         return match;

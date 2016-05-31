@@ -55,8 +55,8 @@ public abstract class AbstractMessage implements Message
     {
         this.id = id;
         this.type = type;
-        controls = new HashMap<String, Control>();
-        parameters = new HashMap<Object, Object>();
+        controls = new HashMap<>();
+        parameters = new HashMap<>();
     }
 
 
@@ -68,6 +68,7 @@ public abstract class AbstractMessage implements Message
      * 
      * @return the session unique message id.
      */
+    @Override
     public int getMessageId()
     {
         return id;
@@ -77,6 +78,7 @@ public abstract class AbstractMessage implements Message
     /**
      * {@inheritDoc}
      */
+    @Override
     public Message setMessageId( int id )
     {
         this.id = id;
@@ -88,6 +90,7 @@ public abstract class AbstractMessage implements Message
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<String, Control> getControls()
     {
         return Collections.unmodifiableMap( controls );
@@ -97,6 +100,7 @@ public abstract class AbstractMessage implements Message
     /**
      * {@inheritDoc}
      */
+    @Override
     public Control getControl( String oid )
     {
         return controls.get( oid );
@@ -106,6 +110,7 @@ public abstract class AbstractMessage implements Message
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasControl( String oid )
     {
         return controls.containsKey( oid );
@@ -115,6 +120,7 @@ public abstract class AbstractMessage implements Message
     /**
      * {@inheritDoc}
      */
+    @Override
     public Message addControl( Control control )
     {
         controls.put( control.getOid(), control );
@@ -128,6 +134,7 @@ public abstract class AbstractMessage implements Message
      * 
      * @param control the control to remove.
      */
+    @Override
     public Message removeControl( Control control )
     {
         controls.remove( control.getOid() );
@@ -143,6 +150,7 @@ public abstract class AbstractMessage implements Message
      * 
      * @return the message type code.
      */
+    @Override
     public MessageTypeEnum getType()
     {
         return type;
@@ -162,6 +170,7 @@ public abstract class AbstractMessage implements Message
      * @param key the key used to access a message parameter.
      * @return the transient message parameter value.
      */
+    @Override
     public Object get( Object key )
     {
         return parameters.get( key );
@@ -177,6 +186,7 @@ public abstract class AbstractMessage implements Message
      * @param value the parameter value
      * @return the old value or null
      */
+    @Override
     public Object put( Object key, Object value )
     {
         return parameters.put( key, value );
@@ -191,6 +201,7 @@ public abstract class AbstractMessage implements Message
      * 
      * @param obj the object to compare this Message to for equality
      */
+    @Override
     public boolean equals( Object obj )
     {
         if ( obj == this )
@@ -198,7 +209,7 @@ public abstract class AbstractMessage implements Message
             return true;
         }
 
-        if ( ( obj == null ) || !( obj instanceof Message ) )
+        if ( !( obj instanceof Message ) )
         {
             return false;
         }
@@ -238,6 +249,7 @@ public abstract class AbstractMessage implements Message
      * @see Object#hashCode()
      * @return the instance's hash code 
      */
+    @Override
     public int hashCode()
     {
         int hash = 37;
@@ -253,6 +265,7 @@ public abstract class AbstractMessage implements Message
     /**
      * {@inheritDoc}
      */
+    @Override
     public Message addAllControls( Control[] controls )
     {
         for ( Control c : controls )

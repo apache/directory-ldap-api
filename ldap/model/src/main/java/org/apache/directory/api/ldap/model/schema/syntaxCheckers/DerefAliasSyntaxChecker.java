@@ -59,9 +59,10 @@ public class DerefAliasSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -84,7 +85,7 @@ public class DerefAliasSyntaxChecker extends SyntaxChecker
 
         strValue = Strings.trim( Strings.toLowerCaseAscii( strValue ) );
 
-        return ( "never".equals( strValue ) || "finding".equals( strValue ) || "searching".equals( strValue ) || "always"
-            .equals( strValue ) );
+        return "never".equals( strValue ) || "finding".equals( strValue ) || "searching".equals( strValue ) || "always"
+            .equals( strValue );
     }
 }

@@ -39,6 +39,10 @@ public class Position
     public int end = 0;
 
 
+    /**
+     * @see Object#toString()
+     */
+    @Override
     public String toString()
     {
         return "[" + start + ", " + end + ", " + length + "]";

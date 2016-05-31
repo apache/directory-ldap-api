@@ -54,6 +54,7 @@ public class AbstractAbandonableRequest extends AbstractRequest implements Aband
     }
 
 
+    @Override
     public void abandon()
     {
         if ( abandoned )
@@ -72,6 +73,7 @@ public class AbstractAbandonableRequest extends AbstractRequest implements Aband
     }
 
 
+    @Override
     public boolean isAbandoned()
     {
         return abandoned;
@@ -81,6 +83,7 @@ public class AbstractAbandonableRequest extends AbstractRequest implements Aband
     /**
      * {@inheritDoc}
      */
+    @Override
     public AbandonableRequest addAbandonListener( final AbandonListener listener )
     {
         if ( o == null )
@@ -90,6 +93,7 @@ public class AbstractAbandonableRequest extends AbstractRequest implements Aband
 
         o.addObserver( new Observer()
         {
+            @Override
             public void update( Observable o, Object arg )
             {
                 listener.requestAbandoned( AbstractAbandonableRequest.this );

@@ -22,8 +22,8 @@ package org.apache.directory.api.ldap.model.exception;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
@@ -53,7 +53,7 @@ public class LdapReferralException extends AbstractLdapReferralException
     /** The remaining Dn */
     private Dn remainingDn;
 
-    /** TODO */
+    /** The resolved Object */
     private Object resolvedObject;
 
 
@@ -66,7 +66,7 @@ public class LdapReferralException extends AbstractLdapReferralException
     public LdapReferralException( Collection<String> refs )
     {
         super( null );
-        this.refs = new ArrayList<String>( refs );
+        this.refs = new ArrayList<>( refs );
     }
 
 
@@ -80,7 +80,7 @@ public class LdapReferralException extends AbstractLdapReferralException
     public LdapReferralException( Collection<String> refs, String explanation )
     {
         super( explanation );
-        this.refs = new ArrayList<String>( refs );
+        this.refs = new ArrayList<>( refs );
     }
 
 
@@ -89,6 +89,7 @@ public class LdapReferralException extends AbstractLdapReferralException
      * 
      * @see LdapException#getResultCode()
      */
+    @Override
     public ResultCodeEnum getResultCode()
     {
         return ResultCodeEnum.REFERRAL;
@@ -104,13 +105,15 @@ public class LdapReferralException extends AbstractLdapReferralException
     }
 
 
+    @Override
     public Context getReferralContext() throws NamingException
     {
         throw new NotImplementedException();
     }
 
 
-    public Context getReferralContext( Hashtable<?, ?> arg ) throws NamingException
+    @Override
+    public Context getReferralContext( Map<?, ?> arg ) throws NamingException
     {
         throw new NotImplementedException();
     }
@@ -127,6 +130,7 @@ public class LdapReferralException extends AbstractLdapReferralException
     }
 
 
+    @Override
     public void retryReferral()
     {
         throw new NotImplementedException();
@@ -136,6 +140,7 @@ public class LdapReferralException extends AbstractLdapReferralException
     /**
      * @return the remainingDn
      */
+    @Override
     public Dn getRemainingDn()
     {
         return remainingDn;
@@ -145,6 +150,7 @@ public class LdapReferralException extends AbstractLdapReferralException
     /**
      * @param remainingDn the remainingName to set
      */
+    @Override
     public void setRemainingDn( Dn remainingDn )
     {
         this.remainingDn = remainingDn;
@@ -154,6 +160,7 @@ public class LdapReferralException extends AbstractLdapReferralException
     /**
      * @return the resolvedObject
      */
+    @Override
     public Object getResolvedObject()
     {
         return resolvedObject;
@@ -163,6 +170,7 @@ public class LdapReferralException extends AbstractLdapReferralException
     /**
      * @param resolvedObject the resolvedObject to set
      */
+    @Override
     public void setResolvedObject( Object resolvedObject )
     {
         this.resolvedObject = resolvedObject;

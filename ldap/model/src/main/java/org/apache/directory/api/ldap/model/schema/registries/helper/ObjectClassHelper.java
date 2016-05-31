@@ -42,12 +42,13 @@ import org.slf4j.LoggerFactory;
  */
 public final class ObjectClassHelper
 {
+    /** A logger for this class */
+    private static final Logger LOG = LoggerFactory.getLogger( ObjectClassHelper.class );
+
     private ObjectClassHelper()
     {
     }
 
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( ObjectClassHelper.class );
 
     /**
      * Inject the ObjectClass into the registries, updating the references to

@@ -275,6 +275,23 @@ public class Csn implements Comparable<Csn>
         bytes = Strings.getBytesUtf8( csnStr );
     }
 
+
+    /**
+     * Creates a new instance of SimpleCSN from the serialized data
+     *
+     * @param value The byte array which contains the serialized CSN
+     */
+    Csn( byte[] value )
+    {
+        csnStr = Strings.utf8ToString( value );
+        Csn csn = new Csn( csnStr );
+        timestamp = csn.timestamp;
+        changeCount = csn.changeCount;
+        replicaId = csn.replicaId;
+        operationNumber = csn.operationNumber;
+        bytes = Strings.getBytesUtf8( csnStr );
+    }
+
     
     /**
      * Check if the given String is a valid CSN.
@@ -509,23 +526,6 @@ public class Csn implements Comparable<Csn>
         }
 
         return true;
-    }
-
-
-    /**
-     * Creates a new instance of SimpleCSN from the serialized data
-     *
-     * @param value The byte array which contains the serialized CSN
-     */
-    Csn( byte[] value )
-    {
-        csnStr = Strings.utf8ToString( value );
-        Csn csn = new Csn( csnStr );
-        timestamp = csn.timestamp;
-        changeCount = csn.changeCount;
-        replicaId = csn.replicaId;
-        operationNumber = csn.operationNumber;
-        bytes = Strings.getBytesUtf8( csnStr );
     }
 
 

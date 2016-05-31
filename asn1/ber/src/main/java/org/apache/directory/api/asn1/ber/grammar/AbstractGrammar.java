@@ -64,6 +64,7 @@ public abstract class AbstractGrammar<C extends Asn1Container> implements Gramma
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getName()
     {
         return name;
@@ -73,6 +74,7 @@ public abstract class AbstractGrammar<C extends Asn1Container> implements Gramma
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setName( String name )
     {
         this.name = name;
@@ -95,6 +97,7 @@ public abstract class AbstractGrammar<C extends Asn1Container> implements Gramma
     /**
      * {@inheritDoc}
      */
+    @Override
     public void executeAction( C container ) throws DecoderException
     {
 

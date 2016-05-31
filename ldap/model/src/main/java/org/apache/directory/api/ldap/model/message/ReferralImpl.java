@@ -39,10 +39,10 @@ public class ReferralImpl implements Referral
     static final long serialVersionUID = 2638820668325359096L;
 
     /** Sequence of LDAPUrls composing this Referral */
-    private final List<String> urls = new ArrayList<String>();
+    private final List<String> urls = new ArrayList<>();
 
     /** The encoded LdapURL */
-    private final List<byte[]> urlsBytes = new ArrayList<byte[]>();
+    private final List<byte[]> urlsBytes = new ArrayList<>();
 
     /** The length of the referral */
     private int referralLength;
@@ -54,6 +54,7 @@ public class ReferralImpl implements Referral
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getReferralLength()
     {
         return referralLength;
@@ -63,6 +64,7 @@ public class ReferralImpl implements Referral
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setReferralLength( int referralLength )
     {
         this.referralLength = referralLength;
@@ -74,6 +76,7 @@ public class ReferralImpl implements Referral
      * 
      * @return the alternative url objects.
      */
+    @Override
     public Collection<String> getLdapUrls()
     {
         return Collections.unmodifiableCollection( urls );
@@ -83,6 +86,7 @@ public class ReferralImpl implements Referral
     /**
      * {@inheritDoc}
      */
+    @Override
     public Collection<byte[]> getLdapUrlsBytes()
     {
         return urlsBytes;
@@ -94,6 +98,7 @@ public class ReferralImpl implements Referral
      * 
      * @param url the LDAPv3 URL to add
      */
+    @Override
     public void addLdapUrl( String url )
     {
         urls.add( url );
@@ -103,6 +108,7 @@ public class ReferralImpl implements Referral
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addLdapUrlBytes( byte[] urlBytes )
     {
         urlsBytes.add( urlBytes );
@@ -115,6 +121,7 @@ public class ReferralImpl implements Referral
      * @param url
      *            the LDAPv3 URL to remove
      */
+    @Override
     public void removeLdapUrl( String url )
     {
         urls.remove( url );
@@ -125,6 +132,7 @@ public class ReferralImpl implements Referral
      * @see Object#hashCode()
      * @return the instance's hash code 
      */
+    @Override
     public int hashCode()
     {
         int hash = 37;
@@ -150,6 +158,7 @@ public class ReferralImpl implements Referral
      *            the object to compare this ReferralImpl to
      * @return true if both implementations contain exactly the same URLs
      */
+    @Override
     public boolean equals( Object obj )
     {
         // just in case for speed return true if obj is this object
@@ -192,11 +201,12 @@ public class ReferralImpl implements Referral
      * 
      * @return A Referral String
      */
+    @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
-        if ( ( urls != null ) && ( urls.size() != 0 ) )
+        if ( ( urls != null ) && !urls.isEmpty() )
         {
             sb.append( "            Referrals :\n" );
 

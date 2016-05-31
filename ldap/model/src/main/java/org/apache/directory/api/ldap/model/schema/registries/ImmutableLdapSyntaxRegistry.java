@@ -55,6 +55,7 @@ public class ImmutableLdapSyntaxRegistry implements LdapSyntaxRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public ImmutableLdapSyntaxRegistry copy()
     {
         return ( ImmutableLdapSyntaxRegistry ) immutableLdapSyntaxRegistry.copy();
@@ -64,6 +65,7 @@ public class ImmutableLdapSyntaxRegistry implements LdapSyntaxRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public int size()
     {
         return immutableLdapSyntaxRegistry.size();
@@ -73,6 +75,7 @@ public class ImmutableLdapSyntaxRegistry implements LdapSyntaxRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( String oid )
     {
         return immutableLdapSyntaxRegistry.contains( oid );
@@ -82,6 +85,7 @@ public class ImmutableLdapSyntaxRegistry implements LdapSyntaxRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOidByName( String name ) throws LdapException
     {
         return immutableLdapSyntaxRegistry.getOidByName( name );
@@ -91,6 +95,7 @@ public class ImmutableLdapSyntaxRegistry implements LdapSyntaxRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSchemaName( String oid ) throws LdapException
     {
         return immutableLdapSyntaxRegistry.getSchemaName( oid );
@@ -100,6 +105,7 @@ public class ImmutableLdapSyntaxRegistry implements LdapSyntaxRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaObjectType getType()
     {
         return immutableLdapSyntaxRegistry.getType();
@@ -109,6 +115,7 @@ public class ImmutableLdapSyntaxRegistry implements LdapSyntaxRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<LdapSyntax> iterator()
     {
         return immutableLdapSyntaxRegistry.iterator();
@@ -118,6 +125,7 @@ public class ImmutableLdapSyntaxRegistry implements LdapSyntaxRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public LdapSyntax lookup( String oid ) throws LdapException
     {
         return immutableLdapSyntaxRegistry.lookup( oid );
@@ -127,6 +135,7 @@ public class ImmutableLdapSyntaxRegistry implements LdapSyntaxRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<String> oidsIterator()
     {
         return immutableLdapSyntaxRegistry.oidsIterator();
@@ -136,6 +145,7 @@ public class ImmutableLdapSyntaxRegistry implements LdapSyntaxRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void register( LdapSyntax schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04279 ) );
@@ -145,6 +155,7 @@ public class ImmutableLdapSyntaxRegistry implements LdapSyntaxRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void renameSchema( String originalSchemaName, String newSchemaName ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04279 ) );
@@ -154,6 +165,7 @@ public class ImmutableLdapSyntaxRegistry implements LdapSyntaxRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public LdapSyntax unregister( String numericOid ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04279 ) );
@@ -163,6 +175,7 @@ public class ImmutableLdapSyntaxRegistry implements LdapSyntaxRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterSchemaElements( String schemaName ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04279 ) );
@@ -172,6 +185,7 @@ public class ImmutableLdapSyntaxRegistry implements LdapSyntaxRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public LdapSyntax get( String oid )
     {
         return immutableLdapSyntaxRegistry.get( oid );
@@ -181,6 +195,7 @@ public class ImmutableLdapSyntaxRegistry implements LdapSyntaxRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear() throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04279 ) );
@@ -190,6 +205,7 @@ public class ImmutableLdapSyntaxRegistry implements LdapSyntaxRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public LdapSyntax unregister( LdapSyntax schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04279 ) );

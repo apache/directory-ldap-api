@@ -266,14 +266,12 @@ public interface SchemaLoader
 
     /**
      * @return the list of enabled schemas
-     * @throws LdapException TODO
      */
     Collection<Schema> getAllEnabled();
 
 
     /**
      * @return the list of all schemas
-     * @throws LdapException TODO
      */
     Collection<Schema> getAllSchemas();
 

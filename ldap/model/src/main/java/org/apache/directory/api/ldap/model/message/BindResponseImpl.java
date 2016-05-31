@@ -72,6 +72,7 @@ public class BindResponseImpl extends AbstractResultResponse implements BindResp
      * 
      * @return the sasl mech. specific credentials or null of auth. is simple
      */
+    @Override
     public byte[] getServerSaslCreds()
     {
         if ( serverSaslCreds == null )
@@ -93,6 +94,7 @@ public class BindResponseImpl extends AbstractResultResponse implements BindResp
      * @param serverSaslCreds
      *            the sasl auth. mech. specific credentials
      */
+    @Override
     public void setServerSaslCreds( byte[] serverSaslCreds )
     {
         if ( serverSaslCreds != null )
@@ -132,6 +134,7 @@ public class BindResponseImpl extends AbstractResultResponse implements BindResp
      *            the object to test for equality with this BindResponse
      * @return true if obj equals this BindResponse false otherwise
      */
+    @Override
     public boolean equals( Object obj )
     {
         // quickly return true if obj is this one
@@ -174,6 +177,7 @@ public class BindResponseImpl extends AbstractResultResponse implements BindResp
      * 
      * @return A BindResponse String
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

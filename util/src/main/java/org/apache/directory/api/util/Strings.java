@@ -341,8 +341,6 @@ public final class Strings
      * @param toLowerCase how to normalize for case: upper or lower
      * @return the deep trimmed string
      * @see Strings#deepTrim( String )
-     *
-     * TODO Replace the toCharArray() by substring manipulations
      */
     public static String deepTrim( String str, boolean toLowerCase )
     {

@@ -110,9 +110,10 @@ public class GeneralizedTimeSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -136,7 +137,7 @@ public class GeneralizedTimeSyntaxChecker extends SyntaxChecker
         // A generalized time must have a minimal length of 11 
         if ( strValue.length() < 11 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -149,7 +150,7 @@ public class GeneralizedTimeSyntaxChecker extends SyntaxChecker
         }
         else
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
         }
 
         return result;

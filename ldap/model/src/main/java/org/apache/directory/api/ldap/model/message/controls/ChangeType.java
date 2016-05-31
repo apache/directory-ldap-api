@@ -98,14 +98,18 @@ public enum ChangeType
     {
         switch ( value )
         {
-            case ( 1 ):
+            case 1 :
                 return ADD;
-            case ( 2 ):
+            
+            case 2 :
                 return DELETE;
-            case ( 4 ):
+            
+            case 4 :
                 return MODIFY;
-            case ( 8 ):
+            
+            case 8 :
                 return MODDN;
+                
             default:
                 throw new IllegalArgumentException( I18n.err( I18n.ERR_04055, value ) );
         }

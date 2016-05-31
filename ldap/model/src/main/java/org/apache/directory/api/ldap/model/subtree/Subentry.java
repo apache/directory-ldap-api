@@ -61,10 +61,9 @@ public class Subentry
 
 
     /**
+     * Set teh set of AdministrativeRoles for this Subentry
      *
-     * TODO setAdministrativeRoles.
-     *
-     * @param administrativeRoles
+     * @param administrativeRoles The administrativeRoles to store
      */
     public final void setAdministrativeRoles( Set<AdministrativeRole> administrativeRoles )
     {
@@ -120,6 +119,7 @@ public class Subentry
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         return "Subentry[" + administrativeRoles + ", " + ss + "]";

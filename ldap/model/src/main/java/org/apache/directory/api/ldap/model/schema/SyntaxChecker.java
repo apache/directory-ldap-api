@@ -32,6 +32,8 @@ public abstract class SyntaxChecker extends LoadableSchemaObject
     /** The mandatory serialVersionUID */
     public static final long serialVersionUID = 1L;
 
+    /** A constant used for the loggers */
+    public static final String INVALID_SYNTAX_FOR = "Syntax invalid for '{}'";
 
     /**
      * The SyntaxChecker base constructor

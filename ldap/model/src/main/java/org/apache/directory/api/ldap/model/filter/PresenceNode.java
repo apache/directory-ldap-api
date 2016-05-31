@@ -57,6 +57,7 @@ public final class PresenceNode extends LeafNode
      * @see java.lang.Object#toString()
      * @return A string representing the AndNode
      */
+    @Override
     public String toString()
     {
         StringBuilder buf = new StringBuilder();

@@ -74,6 +74,7 @@ public class LdapConfigurationException extends LdapOperationException
     /**
      * @return the exception's cause
      */
+    @Override
     public Throwable getCause()
     {
         return cause;

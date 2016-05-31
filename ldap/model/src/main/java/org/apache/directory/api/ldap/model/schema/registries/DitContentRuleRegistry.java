@@ -34,5 +34,6 @@ public interface DitContentRuleRegistry extends SchemaObjectRegistry<DitContentR
     /**
      * Copy the DitContentRuleRegistry
      */
+    @Override
     DitContentRuleRegistry copy();
 }

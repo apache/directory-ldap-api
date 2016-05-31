@@ -61,9 +61,10 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -86,7 +87,7 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -100,7 +101,7 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
             {
                 // Yes, we have one : this is not allowed, it should have been
                 // escaped.
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
                 return false;
             }
 
@@ -122,7 +123,7 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
                     }
                     else
                     {
-                        LOG.debug( "Syntax invalid for '{}'", value );
+                        LOG.debug( INVALID_SYNTAX_FOR, value );
                     }
 
                     return result;
@@ -131,14 +132,14 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
                 else
                 {
                     // The Dn must not be null ?
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( INVALID_SYNTAX_FOR, value );
                     return false;
                 }
             }
             else
             {
                 // We have found a '#' but no UID part.
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
                 return false;
             }
         }
@@ -154,7 +155,7 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
             }
             else
             {
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
             }
 
             return result;

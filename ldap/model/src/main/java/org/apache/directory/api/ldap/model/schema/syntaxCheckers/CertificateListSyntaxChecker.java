@@ -58,6 +58,7 @@ public class CertificateListSyntaxChecker extends BinarySyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
         LOG.debug( "Syntax valid for '{}'", value );

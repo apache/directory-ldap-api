@@ -416,7 +416,7 @@ public final class IOUtils
     public static long copyLarge( InputStream input, OutputStream output, byte[] buffer ) throws IOException 
     {
         long count = 0;
-        int n = 0;
+        int n;
         
         while ( EOF != ( n = input.read( buffer ) ) ) 
         {
@@ -446,7 +446,7 @@ public final class IOUtils
     public static long copyLarge( Reader input, Writer output, char[] buffer ) throws IOException
     {
         long count = 0;
-        int n = 0;
+        int n;
 
         while ( EOF != ( n = input.read( buffer ) ) )
         {
@@ -588,7 +588,7 @@ public final class IOUtils
     public static List<String> readLines( Reader input ) throws IOException 
     {
         BufferedReader reader = toBufferedReader( input );
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         String line = reader.readLine();
         
         while ( line != null ) 

@@ -431,7 +431,7 @@ public final class LdifUtils
                 // Fallthrough
 
             case Add:
-                if ( ( entry.getEntry() == null ) )
+                if ( entry.getEntry() == null )
                 {
                     throw new LdapException( I18n.err( I18n.ERR_12082 ) );
                 }

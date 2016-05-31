@@ -46,7 +46,6 @@ import org.apache.directory.api.util.Strings;
  */
 public final class PasswordUtil
 {
-
     /** The SHA1 hash length */
     public static final int SHA1_LENGTH = 20;
 
@@ -77,6 +76,8 @@ public final class PasswordUtil
     /** The CRYPT (SHA-512) hash length */
     public static final int CRYPT_SHA512_LENGTH = 86;
 
+    private static final byte[] CRYPT_SALT_CHARS = Strings
+        .getBytesUtf8( "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" );
 
     private PasswordUtil()
     {
@@ -206,7 +207,7 @@ public final class PasswordUtil
         }
 
         byte[] hashedPassword = encryptPassword( credentials, algorithm, salt );
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( '{' ).append( Strings.upperCase( algorithm.getPrefix() ) ).append( '}' );
 
@@ -471,7 +472,7 @@ public final class PasswordUtil
         }
 
         int algoLength = algorithm.getPrefix().length() + 2;
-        byte[] password = null;
+        byte[] password;
 
         switch ( algorithm )
         {
@@ -638,10 +639,6 @@ public final class PasswordUtil
 
         return new PasswordDetails( algorithm, salt, password );
     }
-
-
-    private static final byte[] CRYPT_SALT_CHARS = Strings
-        .getBytesUtf8( "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" );
 
 
     private static byte[] generateCryptSalt( int length )

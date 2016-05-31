@@ -52,7 +52,8 @@ public class ProxiedAuthzImpl extends AbstractControl implements ProxiedAuthz
     /**
      * @return the authzId
      */
-    public String getAuthzId()
+    @Override
+public String getAuthzId()
     {
         return authzId;
     }
@@ -70,6 +71,7 @@ public class ProxiedAuthzImpl extends AbstractControl implements ProxiedAuthz
      * </pre>
      * @param authzId the authzId to set
      */
+    @Override
     public void setAuthzId( String authzId )
     {
         // We should have a valid authzId
@@ -139,9 +141,10 @@ public class ProxiedAuthzImpl extends AbstractControl implements ProxiedAuthz
     /**
      * Return a String representing this PagedSearchControl.
      */
+    @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( "    Proxied Authz Control\n" );
         sb.append( "        oid : " ).append( getOid() ).append( '\n' );

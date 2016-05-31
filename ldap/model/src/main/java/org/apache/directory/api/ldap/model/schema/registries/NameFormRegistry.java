@@ -34,5 +34,6 @@ public interface NameFormRegistry extends SchemaObjectRegistry<NameForm>,
     /**
      * Copy the NameFormRegistry
      */
+    @Override
     NameFormRegistry copy();
 }

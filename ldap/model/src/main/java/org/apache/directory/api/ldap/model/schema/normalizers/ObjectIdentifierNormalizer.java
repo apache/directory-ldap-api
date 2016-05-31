@@ -41,7 +41,7 @@ import org.apache.directory.api.util.Strings;
 public class ObjectIdentifierNormalizer extends Normalizer
 {
     /** A reference to the schema manager used to normalize the Name */
-    private SchemaManager schemaManager;
+    private transient SchemaManager schemaManager;
 
     /**
      * Creates a new instance of ObjectIdentifierNormalizer.

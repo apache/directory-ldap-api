@@ -43,6 +43,10 @@ public final class OsgiUtils
     /** A logger */
     private static final Logger LOG = LoggerFactory.getLogger( OsgiUtils.class );
 
+    private OsgiUtils()
+    {
+    }
+
 
     /**
      * All the packages that are exported from all bundles found on the system
@@ -55,7 +59,7 @@ public final class OsgiUtils
     {
         if ( pkgs == null )
         {
-            pkgs = new HashSet<String>();
+            pkgs = new HashSet<>();
         }
 
         Set<File> candidates = getClasspathCandidates( filter );
@@ -89,7 +93,7 @@ public final class OsgiUtils
     {
         if ( pkgs == null )
         {
-            pkgs = new HashSet<String>();
+            pkgs = new HashSet<>();
         }
 
         int index = 0;
@@ -140,7 +144,7 @@ public final class OsgiUtils
 
     public static Set<File> getClasspathCandidates( FileFilter filter )
     {
-        Set<File> candidates = new HashSet<File>();
+        Set<File> candidates = new HashSet<>();
         String separator = System.getProperty( "path.separator" );
         String[] cpElements = System.getProperty( "java.class.path" ).split( separator );
 
@@ -221,10 +225,5 @@ public final class OsgiUtils
                 }
             }
         }
-    }
-
-
-    private OsgiUtils()
-    {
     }
 }

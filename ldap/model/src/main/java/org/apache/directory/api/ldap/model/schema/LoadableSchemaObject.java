@@ -131,6 +131,7 @@ public abstract class LoadableSchemaObject extends AbstractSchemaObject
     /**
      * {@inheritDoc}
      */
+    @Override
     public LoadableSchemaObject copy()
     {
         return null;

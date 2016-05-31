@@ -39,6 +39,7 @@ public class EmptyEnumeration<T> implements NamingEnumeration<T>
     /**
      * @see javax.naming.NamingEnumeration#close()
      */
+    @Override
     public void close()
     {
     }
@@ -49,6 +50,7 @@ public class EmptyEnumeration<T> implements NamingEnumeration<T>
      * 
      * @see javax.naming.NamingEnumeration#hasMore()
      */
+    @Override
     public boolean hasMore() throws NamingException
     {
         return false;
@@ -60,6 +62,7 @@ public class EmptyEnumeration<T> implements NamingEnumeration<T>
      * 
      * @see javax.naming.NamingEnumeration#next()
      */
+    @Override
     public T next() throws NamingException
     {
         throw new NoSuchElementException();
@@ -71,6 +74,7 @@ public class EmptyEnumeration<T> implements NamingEnumeration<T>
      * 
      * @see java.util.Enumeration#hasMoreElements()
      */
+    @Override
     public boolean hasMoreElements()
     {
         return false;
@@ -82,6 +86,7 @@ public class EmptyEnumeration<T> implements NamingEnumeration<T>
      * 
      * @see java.util.Enumeration#nextElement()
      */
+    @Override
     public T nextElement()
     {
         throw new NoSuchElementException();

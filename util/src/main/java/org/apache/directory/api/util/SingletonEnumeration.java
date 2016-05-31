@@ -42,8 +42,7 @@ public class SingletonEnumeration<T> implements NamingEnumeration<T>
     /**
      * Creates a NamingEnumeration over a single element.
      * 
-     * @param element
-     *            TODO
+     * @param element The element to store in this enumeration
      */
     public SingletonEnumeration( final T element )
     {
@@ -56,6 +55,7 @@ public class SingletonEnumeration<T> implements NamingEnumeration<T>
      * 
      * @see javax.naming.NamingEnumeration#close()
      */
+    @Override
     public void close()
     {
         hasMore = false;
@@ -65,6 +65,7 @@ public class SingletonEnumeration<T> implements NamingEnumeration<T>
     /**
      * @see javax.naming.NamingEnumeration#hasMore()
      */
+    @Override
     public boolean hasMore()
     {
         return hasMore;
@@ -74,6 +75,7 @@ public class SingletonEnumeration<T> implements NamingEnumeration<T>
     /**
      * @see javax.naming.NamingEnumeration#next()
      */
+    @Override
     public T next()
     {
         if ( hasMore )
@@ -89,6 +91,7 @@ public class SingletonEnumeration<T> implements NamingEnumeration<T>
     /**
      * @see java.util.Enumeration#hasMoreElements()
      */
+    @Override
     public boolean hasMoreElements()
     {
         return hasMore;
@@ -98,6 +101,7 @@ public class SingletonEnumeration<T> implements NamingEnumeration<T>
     /**
      * @see java.util.Enumeration#nextElement()
      */
+    @Override
     public T nextElement()
     {
         return next();

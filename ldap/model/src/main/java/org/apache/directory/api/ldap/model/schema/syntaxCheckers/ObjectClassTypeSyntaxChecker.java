@@ -52,9 +52,10 @@ public class ObjectClassTypeSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -77,7 +78,7 @@ public class ObjectClassTypeSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() < 8 || strValue.length() > 10 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -85,17 +86,17 @@ public class ObjectClassTypeSyntaxChecker extends SyntaxChecker
 
         switch ( ch )
         {
-            case ( 'A' ):
+            case 'A':
                 if ( "AUXILIARY".equals( strValue ) || "ABSTRACT".equals( strValue ) )
                 {
                     LOG.debug( "Syntax valid for '{}'", value );
                     return true;
                 }
 
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
                 return false;
 
-            case ( 'S' ):
+            case 'S':
                 boolean result = "STRUCTURAL".equals( strValue );
 
                 if ( result )
@@ -104,13 +105,13 @@ public class ObjectClassTypeSyntaxChecker extends SyntaxChecker
                 }
                 else
                 {
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( INVALID_SYNTAX_FOR, value );
                 }
 
                 return result;
 
             default:
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
                 return false;
         }
     }

@@ -58,6 +58,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<String, OidNormalizer> getNormalizerMapping()
     {
         return immutableAttributeTypeRegistry.getNormalizerMapping();
@@ -67,7 +68,8 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
-    public boolean hasDescendants( String ancestorId ) throws LdapException
+    @Override
+public boolean hasDescendants( String ancestorId ) throws LdapException
     {
         return immutableAttributeTypeRegistry.hasDescendants( ancestorId );
     }
@@ -76,6 +78,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasDescendants( AttributeType ancestor ) throws LdapException
     {
         return immutableAttributeTypeRegistry.hasDescendants( ancestor );
@@ -85,6 +88,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<AttributeType> descendants( String ancestorId ) throws LdapException
     {
         return immutableAttributeTypeRegistry.descendants( ancestorId );
@@ -94,6 +98,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<AttributeType> descendants( AttributeType ancestor ) throws LdapException
     {
         return immutableAttributeTypeRegistry.descendants( ancestor );
@@ -103,6 +108,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void register( AttributeType attributeType ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04275 ) );
@@ -112,6 +118,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerDescendants( AttributeType attributeType, AttributeType ancestor ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04275 ) );
@@ -121,6 +128,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterDescendants( AttributeType attributeType, AttributeType ancestor ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04275 ) );
@@ -130,6 +138,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public AttributeType unregister( String numericOid ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION,
@@ -140,6 +149,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addMappingFor( AttributeType attributeType ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04275 ) );
@@ -149,6 +159,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeMappingFor( AttributeType attributeType ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04275 ) );
@@ -158,6 +169,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public AttributeType lookup( String oid ) throws LdapException
     {
         return immutableAttributeTypeRegistry.lookup( oid );
@@ -167,6 +179,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         return immutableAttributeTypeRegistry.toString();
@@ -176,15 +189,17 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public AttributeTypeRegistry copy()
     {
-        return ( AttributeTypeRegistry ) immutableAttributeTypeRegistry.copy();
+        return immutableAttributeTypeRegistry.copy();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public int size()
     {
         return immutableAttributeTypeRegistry.size();
@@ -194,6 +209,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<AttributeType> iterator()
     {
         return immutableAttributeTypeRegistry.iterator();
@@ -203,6 +219,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<String> oidsIterator()
     {
         return immutableAttributeTypeRegistry.oidsIterator();
@@ -212,6 +229,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( String oid )
     {
         return immutableAttributeTypeRegistry.contains( oid );
@@ -221,6 +239,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOidByName( String name ) throws LdapException
     {
         try
@@ -237,6 +256,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSchemaName( String oid ) throws LdapException
     {
         return immutableAttributeTypeRegistry.getSchemaName( oid );
@@ -246,6 +266,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaObjectType getType()
     {
         return immutableAttributeTypeRegistry.getType();
@@ -255,6 +276,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void renameSchema( String originalSchemaName, String newSchemaName )
     {
         // Do nothing
@@ -264,6 +286,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterSchemaElements( String schemaName ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04275 ) );
@@ -273,6 +296,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public AttributeType get( String oid )
     {
         return immutableAttributeTypeRegistry.get( oid );
@@ -282,6 +306,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear() throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04275 ) );
@@ -291,6 +316,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public AttributeType unregister( AttributeType schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04275 ) );

@@ -47,7 +47,7 @@ public class IntegerAnonymizer extends AbstractAnonymizer<String>
      */
     public IntegerAnonymizer()
     {
-        latestIntegerMap = new HashMap<Integer, String>();
+        latestIntegerMap = new HashMap<>();
     }
 
     
@@ -60,7 +60,7 @@ public class IntegerAnonymizer extends AbstractAnonymizer<String>
     {
         if ( latestIntegerMap == null ) 
         {
-            this.latestIntegerMap = new HashMap<Integer, String>();
+            this.latestIntegerMap = new HashMap<>();
         }
         else
         {
@@ -71,6 +71,7 @@ public class IntegerAnonymizer extends AbstractAnonymizer<String>
     /**
      * Anonymize an attribute using pure random values (either chars of bytes, depending on the Attribute type)
      */
+    @Override
     public Attribute anonymize( Map<Value, Value> valueMap, Set<Value> valueSet, Attribute attribute )
     {
         Attribute result = new DefaultAttribute( attribute.getAttributeType() );
@@ -94,7 +95,7 @@ public class IntegerAnonymizer extends AbstractAnonymizer<String>
                 }
                 else
                 {
-                    String strValue = value.getValue().toString();
+                    String strValue = value.getValue();
                     String newValue = computeNewIntegerValue( strValue );
     
                     try

@@ -45,7 +45,7 @@ public class NameOrNumericIdNormalizer extends Normalizer
     private NumericOidSyntaxChecker checker = new NumericOidSyntaxChecker();
 
     /** A reference to the schema manager used to normalize the Name */
-    private SchemaManager schemaManager;
+    private transient SchemaManager schemaManager;
 
     /** A static instance of this normalizer */
     public static final NameOrNumericIdNormalizer INSTANCE = new NameOrNumericIdNormalizer();

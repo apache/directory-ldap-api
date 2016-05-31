@@ -45,6 +45,7 @@ public final class UndefinedNode extends AbstractExprNode
      * 
      * This implementation always returns false.
      */
+    @Override
     public boolean isLeaf()
     {
         return false;
@@ -56,6 +57,7 @@ public final class UndefinedNode extends AbstractExprNode
      * 
      * This implementation always returns null.
      */
+    @Override
     public Object accept( FilterVisitor visitor )
     {
         return null;
@@ -67,6 +69,7 @@ public final class UndefinedNode extends AbstractExprNode
      * 
      * @return true if the Node is SchemaAware
      */
+    @Override
     public boolean isSchemaAware()
     {
         return false;

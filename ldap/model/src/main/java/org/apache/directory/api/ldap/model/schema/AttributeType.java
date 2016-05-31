@@ -561,6 +561,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         return SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( this );
@@ -570,6 +571,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public AttributeType copy()
     {
         MutableAttributeType copy = new MutableAttributeType( oid );
@@ -622,6 +624,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals( Object o )
     {
         if ( this == o )

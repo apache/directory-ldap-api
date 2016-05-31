@@ -45,24 +45,6 @@ public class DummySSLSocketFactory extends SSLSocketFactory
     /** The default instance. */
     private static SocketFactory instance;
 
-
-    /**
-     * Gets the default instance.
-     * 
-     * Note: This method is invoked from the JNDI framework when 
-     * creating a ldaps:// connection.
-     * 
-     * @return the default instance
-     */
-    public static SocketFactory getDefault()
-    {
-        if ( instance == null )
-        {
-            instance = new DummySSLSocketFactory();
-        }
-        return instance;
-    }
-
     /** The delegate. */
     private SSLSocketFactory delegate;
 
@@ -76,17 +58,20 @@ public class DummySSLSocketFactory extends SSLSocketFactory
         {
             TrustManager tm = new X509TrustManager()
             {
+                @Override
                 public X509Certificate[] getAcceptedIssuers()
                 {
                     return new X509Certificate[0];
                 }
 
 
+                @Override
                 public void checkClientTrusted( X509Certificate[] arg0, String arg1 ) throws CertificateException
                 {
                 }
 
 
+                @Override
                 public void checkServerTrusted( X509Certificate[] arg0, String arg1 ) throws CertificateException
                 {
                 }
@@ -105,8 +90,27 @@ public class DummySSLSocketFactory extends SSLSocketFactory
 
 
     /**
+     * Gets the default instance.
+     * 
+     * Note: This method is invoked from the JNDI framework when 
+     * creating a ldaps:// connection.
+     * 
+     * @return the default instance
+     */
+    public static SocketFactory getDefault()
+    {
+        if ( instance == null )
+        {
+            instance = new DummySSLSocketFactory();
+        }
+        return instance;
+    }
+
+
+    /**
      * @see javax.net.ssl.SSLSocketFactory#getDefaultCipherSuites()
      */
+    @Override
     public String[] getDefaultCipherSuites()
     {
         return delegate.getDefaultCipherSuites();
@@ -116,6 +120,7 @@ public class DummySSLSocketFactory extends SSLSocketFactory
     /**
      * @see javax.net.ssl.SSLSocketFactory#getSupportedCipherSuites()
      */
+    @Override
     public String[] getSupportedCipherSuites()
     {
         return delegate.getSupportedCipherSuites();
@@ -125,6 +130,7 @@ public class DummySSLSocketFactory extends SSLSocketFactory
     /**
      * @see javax.net.ssl.SSLSocketFactory#createSocket(java.net.Socket, java.lang.String, int, boolean)
      */
+    @Override
     public Socket createSocket( Socket arg0, String arg1, int arg2, boolean arg3 ) throws IOException
     {
         try
@@ -142,6 +148,7 @@ public class DummySSLSocketFactory extends SSLSocketFactory
     /**
      * @see javax.net.SocketFactory#createSocket(java.lang.String, int)
      */
+    @Override
     public Socket createSocket( String arg0, int arg1 ) throws IOException
     {
         try
@@ -159,6 +166,7 @@ public class DummySSLSocketFactory extends SSLSocketFactory
     /**
      * @see javax.net.SocketFactory#createSocket(java.net.InetAddress, int)
      */
+    @Override
     public Socket createSocket( InetAddress arg0, int arg1 ) throws IOException
     {
         try
@@ -176,6 +184,7 @@ public class DummySSLSocketFactory extends SSLSocketFactory
     /**
      * @see javax.net.SocketFactory#createSocket(java.lang.String, int, java.net.InetAddress, int)
      */
+    @Override
     public Socket createSocket( String arg0, int arg1, InetAddress arg2, int arg3 ) throws IOException
     {
         try
@@ -193,6 +202,7 @@ public class DummySSLSocketFactory extends SSLSocketFactory
     /**
      * @see javax.net.SocketFactory#createSocket(java.net.InetAddress, int, java.net.InetAddress, int)
      */
+    @Override
     public Socket createSocket( InetAddress arg0, int arg1, InetAddress arg2, int arg3 ) throws IOException
     {
         try

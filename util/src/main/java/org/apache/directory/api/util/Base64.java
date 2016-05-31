@@ -32,6 +32,39 @@ import org.apache.directory.api.i18n.I18n;
 public final class Base64
 {
 
+    /** code characters for values 0..63 */
+    private static final char[] ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
+        .toCharArray();
+
+    /** lookup table for converting base64 characters to value in range 0..63 */
+    private static final byte[] CODES = new byte[256];
+
+    static
+    {
+        for ( int ii = 0; ii < 256; ii++ )
+        {
+            CODES[ii] = -1;
+        }
+
+        for ( int ii = 'A'; ii <= 'Z'; ii++ )
+        {
+            CODES[ii] = ( byte ) ( ii - 'A' );
+        }
+
+        for ( int ii = 'a'; ii <= 'z'; ii++ )
+        {
+            CODES[ii] = ( byte ) ( 26 + ii - 'a' );
+        }
+
+        for ( int ii = '0'; ii <= '9'; ii++ )
+        {
+            CODES[ii] = ( byte ) ( 52 + ii - '0' );
+        }
+
+        CODES['+'] = 62;
+        CODES['/'] = 63;
+    }
+
     /**
      * Private constructor.
      */
@@ -55,29 +88,29 @@ public final class Base64
         // 3 bytes encode to 4 chars. Output is always an even
         // multiple of 4 characters.
         //
-        for ( int ii = 0, index = 0; ii < data.length; ii += 3, index += 4 )
+        for ( int i = 0, index = 0; i < data.length; i += 3, index += 4 )
         {
             boolean isQuadrupel = false;
             boolean isTripel = false;
 
-            int val = ( 0xFF & data[ii] );
+            int val = 0xFF & data[i];
             val <<= 8;
-            if ( ( ii + 1 ) < data.length )
+            if ( ( i + 1 ) < data.length )
             {
-                val |= ( 0xFF & data[ii + 1] );
+                val |= ( 0xFF & data[i + 1] );
                 isTripel = true;
             }
 
             val <<= 8;
-            if ( ( ii + 2 ) < data.length )
+            if ( ( i + 2 ) < data.length )
             {
-                val |= ( 0xFF & data[ii + 2] );
+                val |= ( 0xFF & data[i + 2] );
                 isQuadrupel = true;
             }
 
-            out[index + 3] = ALPHABET[( isQuadrupel ? ( val & 0x3F ) : 64 )];
+            out[index + 3] = ALPHABET[ isQuadrupel ? ( val & 0x3F ) : 64 ];
             val >>= 6;
-            out[index + 2] = ALPHABET[( isTripel ? ( val & 0x3F ) : 64 )];
+            out[index + 2] = ALPHABET[ isTripel ? ( val & 0x3F ) : 64 ];
             val >>= 6;
             out[index + 1] = ALPHABET[val & 0x3F];
             val >>= 6;
@@ -181,38 +214,5 @@ public final class Base64
         }
 
         return out;
-    }
-
-    /** code characters for values 0..63 */
-    private static final char[] ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
-        .toCharArray();
-
-    /** lookup table for converting base64 characters to value in range 0..63 */
-    private static final byte[] CODES = new byte[256];
-
-    static
-    {
-        for ( int ii = 0; ii < 256; ii++ )
-        {
-            CODES[ii] = -1;
-        }
-
-        for ( int ii = 'A'; ii <= 'Z'; ii++ )
-        {
-            CODES[ii] = ( byte ) ( ii - 'A' );
-        }
-
-        for ( int ii = 'a'; ii <= 'z'; ii++ )
-        {
-            CODES[ii] = ( byte ) ( 26 + ii - 'a' );
-        }
-
-        for ( int ii = '0'; ii <= '9'; ii++ )
-        {
-            CODES[ii] = ( byte ) ( 52 + ii - '0' );
-        }
-
-        CODES['+'] = 62;
-        CODES['/'] = 63;
     }
 }

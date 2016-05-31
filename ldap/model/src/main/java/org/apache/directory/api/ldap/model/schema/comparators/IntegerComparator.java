@@ -59,6 +59,7 @@ public class IntegerComparator extends LdapComparator<Object> implements Seriali
     /**
      * Implementation of the Compare method
      */
+    @Override
     public int compare( Object v1, Object v2 )
     {
         if ( v1 instanceof String )
@@ -96,7 +97,7 @@ public class IntegerComparator extends LdapComparator<Object> implements Seriali
         // have been caught by the previous test
         if ( ( backendValue == null ) || ( assertValue == null ) )
         {
-            return ( backendValue == null ? -1 : 1 );
+            return backendValue == null ? -1 : 1;
         }
 
         return backendValue.compareTo( assertValue );
@@ -123,7 +124,7 @@ public class IntegerComparator extends LdapComparator<Object> implements Seriali
         // have been caught by the previous test
         if ( ( backendValue == null ) || ( assertValue == null ) )
         {
-            return ( backendValue == null ? -1 : 1 );
+            return backendValue == null ? -1 : 1;
         }
 
         // Both objects must be stored as String for numeric.

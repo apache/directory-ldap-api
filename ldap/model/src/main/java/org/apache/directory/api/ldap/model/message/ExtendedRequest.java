@@ -75,23 +75,27 @@ public interface ExtendedRequest extends SingleReplyRequest
     /**
      * {@inheritDoc}
      */
+    @Override
     ExtendedRequest setMessageId( int messageId );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     ExtendedRequest addControl( Control control );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     ExtendedRequest addAllControls( Control[] controls );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     ExtendedRequest removeControl( Control control );
 }

@@ -94,6 +94,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<String> getAttributes()
     {
         return Collections.unmodifiableList( attributes );
@@ -105,6 +106,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
      * 
      * @return the search base
      */
+    @Override
     public Dn getBase()
     {
         return baseDn;
@@ -114,6 +116,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setBase( Dn base )
     {
         baseDn = base;
@@ -125,6 +128,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public AliasDerefMode getDerefAliases()
     {
         return aliasDerefMode;
@@ -134,6 +138,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setDerefAliases( AliasDerefMode aliasDerefAliases )
     {
         this.aliasDerefMode = aliasDerefAliases;
@@ -145,6 +150,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExprNode getFilter()
     {
         return filterNode;
@@ -154,6 +160,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setFilter( ExprNode filter )
     {
         this.filterNode = filter;
@@ -164,6 +171,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setFilter( String filter ) throws LdapException
     {
         try
@@ -183,15 +191,17 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum[] getResponseTypes()
     {
-        return RESPONSE_TYPES.clone();
+        return RESPONSE_TYPES;
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchScope getScope()
     {
         return scope;
@@ -201,6 +211,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setScope( SearchScope scope )
     {
         this.scope = scope;
@@ -212,6 +223,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public long getSizeLimit()
     {
         return sizeLimit;
@@ -221,6 +233,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setSizeLimit( long entriesMax )
     {
         sizeLimit = entriesMax;
@@ -232,6 +245,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getTimeLimit()
     {
         return timeLimit;
@@ -241,6 +255,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setTimeLimit( int secondsMax )
     {
         timeLimit = secondsMax;
@@ -252,6 +267,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean getTypesOnly()
     {
         return typesOnly;
@@ -261,6 +277,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setTypesOnly( boolean typesOnly )
     {
         this.typesOnly = typesOnly;
@@ -272,6 +289,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest addAttributes( String... attributesToAdd )
     {
         this.attributes.addAll( Arrays.asList( attributesToAdd ) );
@@ -283,6 +301,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest removeAttribute( String attribute )
     {
         attributes.remove( attribute );
@@ -294,6 +313,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchResultDone getResultResponse()
     {
         if ( response == null )
@@ -308,6 +328,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -319,6 +340,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest addControl( Control control )
     {
         return ( SearchRequest ) super.addControl( control );
@@ -328,6 +350,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest addAllControls( Control[] controls )
     {
         return ( SearchRequest ) super.addAllControls( controls );
@@ -337,6 +360,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest removeControl( Control control )
     {
         return ( SearchRequest ) super.removeControl( control );
@@ -397,6 +421,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
      * @return true if the obj is a SearchRequest and equals this SearchRequest,
      *         false otherwise
      */
+    @Override
     public boolean equals( Object obj )
     {
         if ( obj == this )
@@ -441,12 +466,12 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
             return false;
         }
 
-        if ( req.getAttributes() == null && attributes != null && attributes.size() > 0 )
+        if ( req.getAttributes() == null && attributes != null && !attributes.isEmpty() )
         {
             return false;
         }
 
-        if ( req.getAttributes() != null && attributes == null && req.getAttributes().size() > 0 )
+        if ( req.getAttributes() != null && attributes == null && !req.getAttributes().isEmpty() )
         {
             return false;
         }
@@ -482,6 +507,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
      * Return a string the represent a SearchRequest
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
@@ -604,6 +630,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isFollowReferrals()
     {
         return referralHandling == ReferralsPolicyEnum.FOLLOW;
@@ -613,6 +640,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest followReferrals()
     {
         referralHandling = ReferralsPolicyEnum.FOLLOW;
@@ -624,6 +652,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isIgnoreReferrals()
     {
         return referralHandling == ReferralsPolicyEnum.IGNORE;
@@ -633,6 +662,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest ignoreReferrals()
     {
         referralHandling = ReferralsPolicyEnum.IGNORE;

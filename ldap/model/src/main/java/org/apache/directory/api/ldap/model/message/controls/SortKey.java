@@ -139,6 +139,7 @@ public class SortKey
     /**
      * @see String#toString()
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

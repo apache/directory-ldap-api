@@ -74,6 +74,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
     /**
      * {@inheritDoc}
      */
+    @Override
     public void decode( IoSession session, IoBuffer in, ProtocolDecoderOutput out ) throws Exception
     {
         @SuppressWarnings("unchecked")
@@ -88,7 +89,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
             messageContainer.setMaxPDUSize( maxPDUSize );
         }
 
-        List<Message> decodedMessages = new ArrayList<Message>();
+        List<Message> decodedMessages = new ArrayList<>();
         ByteBuffer buf = in.buf();
 
         decode( buf, messageContainer, decodedMessages );
@@ -165,7 +166,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
                 
                 // Transform the DecoderException message to a MessageException
                 ResponseCarryingMessageException rcme = new ResponseCarryingMessageException( rce.getMessage(), rce );
-                rcme.setResponse( ( ( ResponseCarryingException ) rce ).getResponse() );
+                rcme.setResponse( rce.getResponse() );
 
                 throw rcme;
             }
@@ -184,6 +185,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
     /**
      * {@inheritDoc}
      */
+    @Override
     public void finishDecode( IoSession session, ProtocolDecoderOutput out ) throws Exception
     {
         // Nothing to do
@@ -193,6 +195,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
     /**
      * {@inheritDoc}
      */
+    @Override
     public void dispose( IoSession session ) throws Exception
     {
         // Nothing to do

@@ -74,6 +74,10 @@ public final class Unicode
     private static final int CHAR_THREE_BYTES_MASK = 0xFFFF0000;
     private static final int CHAR_FOUR_BYTES_MASK = 0xFFE00000;
 
+    private Unicode()
+    {
+    }
+
     /**
      * Count the number of bytes needed to return an Unicode char. This can be
      * from 1 to 6.
@@ -375,7 +379,7 @@ public final class Unicode
 
         char c = str.charAt( pos );
 
-        return ( ( c > 127 ) || UNICODE_SUBSET[c] );
+        return ( c > 127 ) || UNICODE_SUBSET[c];
     }
 
 
@@ -388,7 +392,7 @@ public final class Unicode
      */
     public static boolean isUnicodeSubset( char c )
     {
-        return ( ( c > 127 ) || UNICODE_SUBSET[c] );
+        return ( c > 127 ) || UNICODE_SUBSET[c];
     }
 
 
@@ -401,7 +405,7 @@ public final class Unicode
      */
     public static boolean isUnicodeSubset( byte b )
     {
-        return ( ( b < 0 ) || ( b > 127 ) || UNICODE_SUBSET[b] );
+        return ( b < 0 ) || ( b > 127 ) || UNICODE_SUBSET[b];
     }
 
 
@@ -437,7 +441,7 @@ public final class Unicode
             // Write length of string
             objectOutput.writeInt( str.length() );
 
-            StringBuffer strBuf = new StringBuffer( str );
+            StringBuilder strBuf = new StringBuilder( str );
 
             // Write the string in portions not larger than 21845 characters
             while ( strBuf != null )
@@ -477,13 +481,11 @@ public final class Unicode
      */
     public static String readUTF( ObjectInput objectInput ) throws IOException
     {
-        StringBuffer strBuf = null;
-
         // Read length of the string
         int strLength = objectInput.readInt();
 
         // Start reading the string
-        strBuf = new StringBuffer( objectInput.readUTF() );
+        StringBuilder strBuf = new StringBuilder( objectInput.readUTF() );
 
         if ( strLength == 0 && strBuf.toString().equals( "null" ) )
         {
@@ -498,10 +500,5 @@ public final class Unicode
             }
             return strBuf.toString();
         }
-    }
-
-
-    private Unicode()
-    {
     }
 }

@@ -81,7 +81,7 @@ public interface ExprNode extends Cloneable
      * @return The buffer in which the refinement has been appended
      * @throws UnsupportedOperationException if this node isn't a part of a refinement.
      */
-    StringBuilder printRefinementToBuffer( StringBuilder buf ) throws UnsupportedOperationException;
+    StringBuilder printRefinementToBuffer( StringBuilder buf );
 
 
     /**

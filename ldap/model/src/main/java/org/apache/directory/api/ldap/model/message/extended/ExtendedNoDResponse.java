@@ -99,6 +99,7 @@ public final class ExtendedNoDResponse extends ExtendedResponseImpl
      * 
      * @return the OID of the extended response type.
      */
+    @Override
     public String getResponseName()
     {
         return EXTENSION_OID;

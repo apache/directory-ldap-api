@@ -70,6 +70,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
      * 
      * @return the Dn of the compared entry.
      */
+    @Override
     public Dn getName()
     {
         return name;
@@ -79,6 +80,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareRequest setName( Dn name )
     {
         this.name = name;
@@ -92,7 +94,8 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
      * 
      * @return the attribute value to used in comparison.
      */
-    public Value getAssertionValue()
+    @Override
+public Value getAssertionValue()
     {
         return attrVal;
     }
@@ -101,6 +104,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareRequest setAssertionValue( String value )
     {
         this.attrVal = new Value( value );
@@ -112,6 +116,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareRequest setAssertionValue( byte[] value )
     {
         if ( value != null )
@@ -132,6 +137,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
      * 
      * @return the attribute id used in comparison.
      */
+    @Override
     public String getAttributeId()
     {
         return attrId;
@@ -141,6 +147,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareRequest setAttributeId( String attributeId )
     {
         this.attrId = attributeId;
@@ -152,6 +159,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -163,6 +171,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareRequest addControl( Control control )
     {
         return ( CompareRequest ) super.addControl( control );
@@ -172,6 +181,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareRequest addAllControls( Control[] controls )
     {
         return ( CompareRequest ) super.addAllControls( controls );
@@ -181,6 +191,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareRequest removeControl( Control control )
     {
         return ( CompareRequest ) super.removeControl( control );
@@ -197,6 +208,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
      * 
      * @return the message type of the response.
      */
+    @Override
     public MessageTypeEnum getResponseType()
     {
         return MessageTypeEnum.COMPARE_RESPONSE;
@@ -208,6 +220,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
      * 
      * @return the result containing response for this request
      */
+    @Override
     public CompareResponse getResultResponse()
     {
         if ( response == null )
@@ -255,6 +268,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
      * @param obj the obj to compare with this CompareRequest
      * @return true if the obj is equal to this request, false otherwise
      */
+    @Override
     public boolean equals( Object obj )
     {
         if ( obj == this )
@@ -270,36 +284,51 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
         CompareRequest req = ( CompareRequest ) obj;
         Dn reqName = req.getName();
 
-        if ( ( name != null ) && ( reqName == null ) )
+        if ( name == null )
         {
-            return false;
+            if ( reqName != null )
+            {
+                return false;
+            }
         }
-
-        if ( ( name == null ) && ( reqName != null ) )
+        else
         {
-            return false;
-        }
-
-        if ( ( name != null ) && ( reqName != null ) && !name.equals( req.getName() ) )
-        {
-            return false;
+            if ( reqName == null )
+            {
+                return false;
+            }
+            else
+            {
+                if ( !name.equals( reqName ) )
+                {
+                    return false;
+                }
+            }
         }
 
         String reqId = req.getAttributeId();
 
-        if ( ( attrId != null ) && ( reqId == null ) )
+        if ( attrId == null )
         {
-            return false;
+            if ( reqId != null )
+            {
+                return false;
+            }
         }
-
-        if ( ( attrId == null ) && ( reqId != null ) )
+        else
         {
-            return false;
-        }
-
-        if ( ( attrId != null ) && ( reqId != null ) && !attrId.equals( reqId ) )
-        {
-            return false;
+            if ( reqId == null )
+            {
+                return false;
+            }
+            else
+            {
+                if ( !attrId.equals( reqId ) )
+                {
+                    return false;
+                }
+            }
+                
         }
 
         Value reqVal = req.getAssertionValue();
@@ -327,6 +356,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
      * 
      * @return A Compare Request String
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

@@ -134,7 +134,7 @@ public final class FilterParser
     private static ExprNode parseExtensible( SchemaManager schemaManager, String attribute, byte[] filterBytes,
         Position pos, boolean relaxed ) throws LdapException, ParseException
     {
-        ExtensibleNode node = null;
+        ExtensibleNode node;
 
         if ( schemaManager != null )
         {
@@ -965,7 +965,7 @@ public final class FilterParser
     private static ExprNode parseFilterComp( SchemaManager schemaManager, byte[] filterBytes, Position pos,
         boolean relaxed ) throws ParseException, LdapException
     {
-        ExprNode node = null;
+        ExprNode node;
 
         if ( pos.start == pos.length )
         {

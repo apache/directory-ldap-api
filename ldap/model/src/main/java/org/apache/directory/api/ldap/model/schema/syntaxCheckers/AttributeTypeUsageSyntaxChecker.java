@@ -58,9 +58,10 @@ public class AttributeTypeUsageSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -84,7 +85,7 @@ public class AttributeTypeUsageSyntaxChecker extends SyntaxChecker
         if ( ( strValue.length() < "userApplications".length() )
             || ( strValue.length() > "userApplications".length() ) )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -92,7 +93,7 @@ public class AttributeTypeUsageSyntaxChecker extends SyntaxChecker
 
         switch ( ch )
         {
-            case ( 'd' ):
+            case 'd':
                 if ( "dSAOperation".equals( strValue )
                     || "directoryOperation".equals( strValue )
                     || "distributedOperation".equals( strValue ) )
@@ -101,10 +102,10 @@ public class AttributeTypeUsageSyntaxChecker extends SyntaxChecker
                     return true;
                 }
 
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
                 return false;
 
-            case ( 'u' ):
+            case 'u':
                 boolean comp = "userApplications".equals( strValue );
 
                 if ( comp )
@@ -113,14 +114,14 @@ public class AttributeTypeUsageSyntaxChecker extends SyntaxChecker
                 }
                 else
                 {
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( INVALID_SYNTAX_FOR, value );
 
                 }
 
                 return comp;
 
             default:
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
                 return false;
         }
     }

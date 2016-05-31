@@ -66,7 +66,7 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
     private static final String UNCOMPRESSED = "uncompressed";
 
     /** A set which contaons all the possible fax parameters values */
-    private static Set<String> faxParameters = new HashSet<String>();
+    private static Set<String> faxParameters = new HashSet<>();
 
     /** Initialization of the fax parameters set of values */
     static
@@ -94,9 +94,10 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -119,7 +120,7 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -138,7 +139,7 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
             }
             else
             {
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
             }
 
             return result;
@@ -149,18 +150,18 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
         {
             if ( !super.isValidSyntax( strValue.substring( 0, dollarPos - 1 ) ) )
             {
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
                 return false;
             }
 
             // Now, try to validate the fax-parameters : we may
             // have more than one, so we will store the seen params
             // in a set to check that we don't have the same param twice
-            Set<String> paramsSeen = new HashSet<String>();
+            Set<String> paramsSeen = new HashSet<>();
 
             while ( dollarPos > 0 )
             {
-                String faxParam = null;
+                String faxParam;
                 int newDollar = strValue.indexOf( '$', dollarPos + 1 );
 
                 if ( newDollar == -1 )
@@ -175,7 +176,7 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
                 if ( faxParam.length() == 0 )
                 {
                     // Not allowed
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( INVALID_SYNTAX_FOR, value );
                     return false;
                 }
 
@@ -185,13 +186,13 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
                 if ( !faxParameters.contains( faxParam ) )
                 {
                     // This parameter is not in the possible set
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( INVALID_SYNTAX_FOR, value );
                     return false;
                 }
                 else if ( paramsSeen.contains( faxParam ) )
                 {
                     // We have the same parameters twice...
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( INVALID_SYNTAX_FOR, value );
                     return false;
                 }
                 else
@@ -209,7 +210,7 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
         }
 
         // We must have a valid telephone number !
-        LOG.debug( "Syntax invalid for '{}'", value );
+        LOG.debug( INVALID_SYNTAX_FOR, value );
         return false;
     }
 }

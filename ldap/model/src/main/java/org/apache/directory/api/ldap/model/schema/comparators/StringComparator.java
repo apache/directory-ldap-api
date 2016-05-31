@@ -68,12 +68,7 @@ public class StringComparator extends LdapComparator<String> implements Serializ
         // -------------------------------------------------------------------
         if ( s1 == null )
         {
-            return ( s2 == null ) ? 0 : -1;
-        }
-
-        if ( s2 == null )
-        {
-            return 1;
+            return -1;
         }
 
         return s1.compareTo( s2 );

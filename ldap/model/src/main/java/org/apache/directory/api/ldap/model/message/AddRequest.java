@@ -69,23 +69,27 @@ public interface AddRequest extends SingleReplyRequest, AbandonableRequest
     /**
      * {@inheritDoc}
      */
+    @Override
     AddRequest setMessageId( int messageId );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     AddRequest addControl( Control control );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     AddRequest addAllControls( Control[] controls );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     AddRequest removeControl( Control control );
 }

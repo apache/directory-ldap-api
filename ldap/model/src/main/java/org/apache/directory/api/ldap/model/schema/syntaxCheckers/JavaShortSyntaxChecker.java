@@ -65,9 +65,10 @@ public class JavaShortSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -90,7 +91,7 @@ public class JavaShortSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -105,14 +106,14 @@ public class JavaShortSyntaxChecker extends SyntaxChecker
         }
         else if ( !Chars.isDigit( c ) )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
         else if ( c == '0' )
         {
             if ( strValue.length() > 1 )
             {
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
                 return false;
             }
             else
@@ -125,12 +126,12 @@ public class JavaShortSyntaxChecker extends SyntaxChecker
         // We must have at least a digit which is not '0'
         if ( !Chars.isDigit( strValue, pos ) )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
         else if ( Strings.isCharASCII( strValue, pos, '0' ) )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
         else
@@ -145,7 +146,7 @@ public class JavaShortSyntaxChecker extends SyntaxChecker
 
         if ( pos != strValue.length() )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -158,7 +159,7 @@ public class JavaShortSyntaxChecker extends SyntaxChecker
         }
         catch ( NumberFormatException e )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
     }

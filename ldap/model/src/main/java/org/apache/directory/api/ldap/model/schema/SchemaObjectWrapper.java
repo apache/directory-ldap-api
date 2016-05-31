@@ -49,6 +49,7 @@ public class SchemaObjectWrapper
      * Compute the hash code for this wrapper. We only use the object type
      * and its oid.
      */
+    @Override
     public int hashCode()
     {
         int h = 37;
@@ -66,6 +67,7 @@ public class SchemaObjectWrapper
     /**
      * @see Object#equals(Object)
      */
+    @Override
     public boolean equals( Object o )
     {
         if ( o == this )
@@ -90,7 +92,7 @@ public class SchemaObjectWrapper
         // If both OID are null, instances are equals
         if ( that.getOid() == null )
         {
-            return ( current.getOid() == null );
+            return current.getOid() == null;
         }
 
         // The that'oid will never be null, we don't really care if current.oid is null here.
@@ -110,6 +112,7 @@ public class SchemaObjectWrapper
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         return "<" + schemaObject.getObjectType() + "," + schemaObject.getOid() + ">";

@@ -132,6 +132,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
      * 
      * @return the Dn of the added entry.
      */
+    @Override
     public Dn getEntryDn()
     {
         return entry.getDn();
@@ -141,6 +142,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
     /**
      * {@inheritDoc}
      */
+    @Override
     public AddRequest setEntryDn( Dn dn )
     {
         entry.setDn( dn );
@@ -152,6 +154,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry getEntry()
     {
         return entry;
@@ -161,6 +164,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
     /**
      * {@inheritDoc}
      */
+    @Override
     public AddRequest setEntry( Entry entry )
     {
         this.entry = entry;
@@ -172,6 +176,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
     /**
      * {@inheritDoc}
      */
+    @Override
     public AddRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -183,6 +188,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
     /**
      * {@inheritDoc}
      */
+    @Override
     public AddRequest addControl( Control control )
     {
         return ( AddRequest ) super.addControl( control );
@@ -192,6 +198,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
     /**
      * {@inheritDoc}
      */
+    @Override
     public AddRequest addAllControls( Control[] controls )
     {
         return ( AddRequest ) super.addAllControls( controls );
@@ -201,6 +208,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
     /**
      * {@inheritDoc}
      */
+    @Override
     public AddRequest removeControl( Control control )
     {
         return ( AddRequest ) super.removeControl( control );
@@ -217,6 +225,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
      * 
      * @return the message type of the response.
      */
+    @Override
     public MessageTypeEnum getResponseType()
     {
         return MessageTypeEnum.ADD_RESPONSE;
@@ -228,6 +237,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
      * 
      * @return the result containing response for this request
      */
+    @Override
     public AddResponse getResultResponse()
     {
         if ( response == null )
@@ -251,6 +261,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
      * @param obj the object to test for equality to this
      * @return true if the obj is equal to this AddRequest, false otherwise
      */
+    @Override
     public boolean equals( Object obj )
     {
         // Short circuit
@@ -275,11 +286,11 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
         // Check the entry
         if ( entry == null )
         {
-            return ( req.getEntry() == null );
+            return req.getEntry() == null;
         }
         else
         {
-            return ( entry.equals( req.getEntry() ) );
+            return entry.equals( req.getEntry() );
         }
     }
 
@@ -288,6 +299,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
      * @see Object#hashCode()
      * @return the instance's hash code 
      */
+    @Override
     public int hashCode()
     {
         int hash = 37;
@@ -302,6 +314,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

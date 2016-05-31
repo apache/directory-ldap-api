@@ -106,9 +106,10 @@ public class RegexNormalizer extends Normalizer
     /**
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString()
     {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         buf.append( "RegexNormalizer( " );
 
         for ( int i = 0; i < regexes.length; i++ )

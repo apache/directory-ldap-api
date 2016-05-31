@@ -150,6 +150,7 @@ public class MatchingRule extends AbstractSchemaObject
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         return SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( this );
@@ -159,6 +160,7 @@ public class MatchingRule extends AbstractSchemaObject
     /**
      * Copy an MatchingRule
      */
+    @Override
     public MatchingRule copy()
     {
         MatchingRule copy = new MutableMatchingRule( oid );

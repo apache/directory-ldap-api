@@ -52,6 +52,7 @@ public class CsnSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
         if ( value == null )
@@ -62,7 +63,7 @@ public class CsnSyntaxChecker extends SyntaxChecker
 
         if ( !( value instanceof String ) )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -79,14 +80,14 @@ public class CsnSyntaxChecker extends SyntaxChecker
             }
             else
             {
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
             }
 
             return result;
         }
         catch ( InvalidCSNException icsne )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
     }

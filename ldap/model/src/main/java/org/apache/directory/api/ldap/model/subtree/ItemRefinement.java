@@ -67,6 +67,7 @@ public class ItemRefinement implements Refinement
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

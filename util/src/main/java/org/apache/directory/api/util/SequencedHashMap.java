@@ -60,12 +60,42 @@ import org.apache.directory.api.i18n.I18n;
 @SuppressWarnings("rawtypes")
 public class SequencedHashMap implements Map, Cloneable, Externalizable
 {
+    // add a serial version uid, so that if we change things in the future
+    // without changing the format, we can still deserialize properly.
+    private static final long serialVersionUID = 3380552487888102930L;
+    
+    // constants to define what the iterator should return on "next"
+    private static final int KEY = 0;
+
+    private static final int VALUE = 1;
+
+    private static final int ENTRY = 2;
+
+    private static final int REMOVED_MASK = 0x80000000;
+
+    /**
+     * Sentinel used to hold the head and tail of the list of entries.
+     */
+    private transient MapEntry sentinel;
+
+    /**
+     * Map of keys to entries
+     */
+    private HashMap entries;
+
+    /**
+     * Holds the number of modifications that have occurred to the map,
+     * excluding modifications made through a collection view's iterator (e.g.
+     * entrySet().iterator().remove()). This is used to create a fail-fast
+     * behavior with the iterators.
+     */
+    private transient long modCount = 0;
 
     /**
      * {@link java.util.Map.Entry} that doubles as a node in the linked list of
      * sequenced mappings.
      */
-    private static class Entry implements Map.Entry, KeyValue
+    private static class MapEntry implements Map.Entry, KeyValue
     {
         // Note: This class cannot easily be made clonable. While the actual
         // implementation of a clone would be simple, defining the semantics is
@@ -86,12 +116,12 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
         // package private to allow the SequencedHashMap to access and
         // manipulate
         // them.
-        Entry next = null;
+        MapEntry next = null;
 
-        Entry prev = null;
+        MapEntry prev = null;
 
 
-        public Entry( Object key, Object value )
+        public MapEntry( Object key, Object value )
         {
             this.key = key;
             this.value = value;
@@ -99,6 +129,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
 
 
         // per Map.Entry.getKey()
+        @Override
         public Object getKey()
         {
             return this.key;
@@ -106,6 +137,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
 
 
         // per Map.Entry.getValue()
+        @Override
         public Object getValue()
         {
             return this.value;
@@ -113,6 +145,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
 
 
         // per Map.Entry.setValue()
+        @Override
         public Object setValue( Object newValue )
         {
             Object oldValue = this.value;
@@ -125,13 +158,15 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
          * Compute the instance's hash code
          * @return the instance's hash code 
          */
+        @Override
         public int hashCode()
         {
             // implemented per api docs for Map.Entry.hashCode()
-            return ( ( getKey() == null ? 0 : getKey().hashCode() ) ^ ( getValue() == null ? 0 : getValue().hashCode() ) );
+            return ( getKey() == null ? 0 : getKey().hashCode() ) ^ ( getValue() == null ? 0 : getValue().hashCode() );
         }
 
 
+        @Override
         public boolean equals( Object obj )
         {
             if ( obj == null )
@@ -152,49 +187,18 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
             Map.Entry other = ( Map.Entry ) obj;
 
             // implemented per api docs for Map.Entry.equals(Object)
-            return ( ( getKey() == null ? other.getKey() == null : getKey().equals( other.getKey() ) ) && ( getValue() == null ? other
+            return ( getKey() == null ? other.getKey() == null : getKey().equals( other.getKey() ) ) && ( getValue() == null ? other
                 .getValue() == null
-                : getValue().equals( other.getValue() ) ) );
+                : getValue().equals( other.getValue() ) );
         }
 
 
+        @Override
         public String toString()
         {
             return "[" + getKey() + "=" + getValue() + "]";
         }
     }
-
-
-    /**
-     * Construct an empty sentinel used to hold the head (sentinel.next) and the
-     * tail (sentinel.prev) of the list. The sentinel has a <code>null</code>
-     * key and value.
-     */
-    private static Entry createSentinel()
-    {
-        Entry s = new Entry( null, null );
-        s.prev = s;
-        s.next = s;
-        return s;
-    }
-
-    /**
-     * Sentinel used to hold the head and tail of the list of entries.
-     */
-    private Entry sentinel;
-
-    /**
-     * Map of keys to entries
-     */
-    private HashMap entries;
-
-    /**
-     * Holds the number of modifications that have occurred to the map,
-     * excluding modifications made through a collection view's iterator (e.g.
-     * entrySet().iterator().remove()). This is used to create a fail-fast
-     * behavior with the iterators.
-     */
-    private transient long modCount = 0;
 
 
     /**
@@ -253,10 +257,24 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
 
 
     /**
+     * Construct an empty sentinel used to hold the head (sentinel.next) and the
+     * tail (sentinel.prev) of the list. The sentinel has a <code>null</code>
+     * key and value.
+     */
+    private static MapEntry createSentinel()
+    {
+        MapEntry s = new MapEntry( null, null );
+        s.prev = s;
+        s.next = s;
+        return s;
+    }
+
+
+    /**
      * Removes an internal entry from the linked list. This does not remove it
      * from the underlying map.
      */
-    private void removeEntry( Entry entry )
+    private void removeEntry( MapEntry entry )
     {
         entry.next.prev = entry.prev;
         entry.prev.next = entry.next;
@@ -267,7 +285,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
      * Inserts a new internal entry to the tail of the linked list. This does
      * not add the entry to the underlying map.
      */
-    private void insertEntry( Entry entry )
+    private void insertEntry( MapEntry entry )
     {
         entry.next = sentinel;
         entry.prev = sentinel.prev;
@@ -281,6 +299,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
     /**
      * Implements {@link Map#size()}.
      */
+    @Override
     public int size()
     {
         // use the underlying Map's size since size is not maintained here.
@@ -291,6 +310,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
     /**
      * Implements {@link Map#isEmpty()}.
      */
+    @Override
     public boolean isEmpty()
     {
         // for quick check whether the map is entry, we can check the linked
@@ -303,6 +323,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
     /**
      * Implements {@link Map#containsKey(Object)}.
      */
+    @Override
     public boolean containsKey( Object key )
     {
         // pass on to underlying map implementation
@@ -313,6 +334,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
     /**
      * Implements {@link Map#containsValue(Object)}.
      */
+    @Override
     public boolean containsValue( Object value )
     {
         // unfortunately, we cannot just pass this call to the underlying map
@@ -326,7 +348,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
         // code duplication.
         if ( value == null )
         {
-            for ( Entry pos = sentinel.next; pos != sentinel; pos = pos.next )
+            for ( MapEntry pos = sentinel.next; pos != sentinel; pos = pos.next )
             {
                 if ( pos.getValue() == null )
                 {
@@ -336,7 +358,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
         }
         else
         {
-            for ( Entry pos = sentinel.next; pos != sentinel; pos = pos.next )
+            for ( MapEntry pos = sentinel.next; pos != sentinel; pos = pos.next )
             {
                 if ( value.equals( pos.getValue() ) )
                 {
@@ -351,10 +373,11 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
     /**
      * Implements {@link Map#get(Object)}.
      */
+    @Override
     public Object get( Object o )
     {
         // find entry for the specified key object
-        Entry entry = ( Entry ) entries.get( o );
+        MapEntry entry = ( MapEntry ) entries.get( o );
 
         if ( entry == null )
         {
@@ -383,7 +406,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
         // test
         // for an empty list though because we don't want to return the
         // sentinel!
-        return ( isEmpty() ) ? null : sentinel.next;
+        return isEmpty() ? null : sentinel.next;
     }
 
 
@@ -464,7 +487,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
         // test
         // for an empty list though because we don't want to return the
         // sentinel!
-        return ( isEmpty() ) ? null : sentinel.prev;
+        return isEmpty() ? null : sentinel.prev;
     }
 
 
@@ -520,6 +543,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
      * Implements {@link Map#put(Object, Object)}.
      */
     @SuppressWarnings("unchecked")
+    @Override
     public Object put( Object key, Object value )
     {
         modCount++;
@@ -527,7 +551,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
         Object oldValue = null;
 
         // lookup the entry for the specified key
-        Entry e = ( Entry ) entries.get( key );
+        MapEntry e = ( MapEntry ) entries.get( key );
 
         // check to see if it already exists
         if ( e != null )
@@ -550,7 +574,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
         else
         {
             // add new entry
-            e = new Entry( key, value );
+            e = new MapEntry( key, value );
             entries.put( key, e );
         }
         // assert(entry in map, but not list)
@@ -565,9 +589,10 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
     /**
      * Implements {@link Map#remove(Object)}.
      */
+    @Override
     public Object remove( Object key )
     {
-        Entry e = removeImpl( key );
+        MapEntry e = removeImpl( key );
         return ( e == null ) ? null : e.getValue();
     }
 
@@ -576,9 +601,9 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
      * Fully remove an entry from the map, returning the old entry or null if
      * there was no such entry with the specified key.
      */
-    private Entry removeImpl( Object key )
+    private MapEntry removeImpl( Object key )
     {
-        Entry e = ( Entry ) entries.remove( key );
+        MapEntry e = ( MapEntry ) entries.remove( key );
 
         if ( e == null )
         {
@@ -603,6 +628,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
      * @throws NullPointerException
      *             if <code>t</code> is <code>null</code>
      */
+    @Override
     public void putAll( Map t )
     {
         Iterator iter = t.entrySet().iterator();
@@ -617,6 +643,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
     /**
      * Implements {@link Map#clear()}.
      */
+    @Override
     public void clear()
     {
         modCount++;
@@ -633,6 +660,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
     /**
      * Implements {@link Map#equals(Object)}.
      */
+    @Override
     public boolean equals( Object obj )
     {
         if ( obj == null )
@@ -658,6 +686,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
      * Implements {@link Map#hashCode()}.
      * @return the instance's hash code 
      */
+    @Override
     public int hashCode()
     {
         return entrySet().hashCode();
@@ -671,12 +700,13 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
      * required, use {@link #entrySet()}.{@link Set#iterator() iterator()} and
      * iterate over the entries in the map formatting them as appropriate.
      */
+    @Override
     public String toString()
     {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         buf.append( '[' );
 
-        for ( Entry pos = sentinel.next; pos != sentinel; pos = pos.next )
+        for ( MapEntry pos = sentinel.next; pos != sentinel; pos = pos.next )
         {
             buf.append( pos.getKey() );
             buf.append( '=' );
@@ -697,44 +727,52 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
     /**
      * Implements {@link Map#keySet()}.
      */
+    @Override
     public Set keySet()
     {
         return new AbstractSet()
         {
 
             // required impls
+            @Override
             public Iterator iterator()
             {
                 return new OrderedIterator( KEY );
             }
 
 
+            @Override
             public boolean remove( Object o )
             {
-                Entry e = SequencedHashMap.this.removeImpl( o );
-                return ( e != null );
+                MapEntry e = SequencedHashMap.this.removeImpl( o );
+                
+                return e != null;
             }
 
 
             // more efficient impls than abstract set
+            @Override
             public void clear()
             {
                 SequencedHashMap.this.clear();
             }
 
 
+            @Override
             public int size()
             {
                 return SequencedHashMap.this.size();
             }
 
 
+            @Override
             public boolean isEmpty()
             {
                 return SequencedHashMap.this.isEmpty();
             }
 
 
+            @Override
             public boolean contains( Object o )
             {
                 return SequencedHashMap.this.containsKey( o );
@@ -747,17 +785,20 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
     /**
      * Implements {@link Map#values()}.
      */
+    @Override
     public Collection values()
     {
         return new AbstractCollection()
         {
             // required impl
+            @Override
             public Iterator iterator()
             {
                 return new OrderedIterator( VALUE );
             }
 
 
+            @Override
             public boolean remove( Object value )
             {
                 // do null comparison outside loop so we only need to do it
@@ -767,7 +808,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
                 // code duplication.
                 if ( value == null )
                 {
-                    for ( Entry pos = sentinel.next; pos != sentinel; pos = pos.next )
+                    for ( MapEntry pos = sentinel.next; pos != sentinel; pos = pos.next )
                     {
                         if ( pos.getValue() == null )
                         {
@@ -778,7 +819,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
                 }
                 else
                 {
-                    for ( Entry pos = sentinel.next; pos != sentinel; pos = pos.next )
+                    for ( MapEntry pos = sentinel.next; pos != sentinel; pos = pos.next )
                     {
                         if ( value.equals( pos.getValue() ) )
                         {
@@ -793,24 +834,28 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
 
 
             // more efficient impls than abstract collection
+            @Override
             public void clear()
             {
                 SequencedHashMap.this.clear();
             }
 
 
+            @Override
             public int size()
             {
                 return SequencedHashMap.this.size();
             }
 
 
+            @Override
             public boolean isEmpty()
             {
                 return SequencedHashMap.this.isEmpty();
             }
 
 
+            @Override
             public boolean contains( Object o )
             {
                 return SequencedHashMap.this.containsValue( o );
@@ -822,12 +867,13 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
     /**
      * Implements {@link Map#entrySet()}.
      */
+    @Override
     public Set entrySet()
     {
         return new AbstractSet()
         {
             // helper
-            private Entry findEntry( Object o )
+            private MapEntry findEntry( Object o )
             {
                 if ( o == null )
                 {
@@ -840,7 +886,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
                 }
 
                 Map.Entry e = ( Map.Entry ) o;
-                Entry entry = ( Entry ) entries.get( e.getKey() );
+                MapEntry entry = ( MapEntry ) entries.get( e.getKey() );
 
                 if ( entry != null && entry.equals( e ) )
                 {
@@ -854,15 +900,17 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
 
 
             // required impl
+            @Override
             public Iterator iterator()
             {
                 return new OrderedIterator( ENTRY );
             }
 
 
+            @Override
             public boolean remove( Object o )
             {
-                Entry e = findEntry( o );
+                MapEntry e = findEntry( o );
 
                 if ( e == null )
                 {
@@ -874,39 +922,34 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
 
 
             // more efficient impls than abstract collection
+            @Override
             public void clear()
             {
                 SequencedHashMap.this.clear();
             }
 
 
+            @Override
             public int size()
             {
                 return SequencedHashMap.this.size();
             }
 
 
+            @Override
             public boolean isEmpty()
             {
                 return SequencedHashMap.this.isEmpty();
             }
 
 
+            @Override
             public boolean contains( Object o )
             {
                 return findEntry( o ) != null;
             }
         };
     }
-
-    // constants to define what the iterator should return on "next"
-    private static final int KEY = 0;
-
-    private static final int VALUE = 1;
-
-    private static final int ENTRY = 2;
-
-    private static final int REMOVED_MASK = 0x80000000;
 
     private class OrderedIterator implements Iterator
     {
@@ -925,14 +968,14 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
          * Holds the "current" position in the iterator. When pos.next is the
          * sentinel, we've reached the end of the list.
          */
-        private Entry pos = sentinel;
+        private MapEntry pos = sentinel;
 
         /**
          * Holds the expected modification count. If the actual modification
          * count of the map differs from this value, then a concurrent
          * modification has occurred.
          */
-        private transient long expectedModCount = modCount;
+        private long expectedModCount = modCount;
 
 
         /**
@@ -956,6 +999,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
          * @return <code>true</code> if there are more elements left to be
          *         returned from the iterator; <code>false</code> otherwise.
          */
+        @Override
         public boolean hasNext()
         {
             return pos.next != sentinel;
@@ -971,6 +1015,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
          * @throws ConcurrentModificationException
          *             if a modification occurs in the underlying map.
          */
+        @Override
         public Object next()
         {
             if ( modCount != expectedModCount )
@@ -1013,6 +1058,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
          * @throws ConcurrentModificationException
          *             if a modification occurs in the underlying map.
          */
+        @Override
         public void remove()
         {
             if ( ( returnType & REMOVED_MASK ) != 0 )
@@ -1047,6 +1093,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
      * @throws CloneNotSupportedException
      *             if clone is not supported by a subclass.
      */
+    @Override
     public Object clone() throws CloneNotSupportedException
     {
         // yes, calling super.clone() silly since we're just blowing away all
@@ -1091,7 +1138,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
      */
     private Map.Entry getEntry( int index )
     {
-        Entry pos = sentinel;
+        MapEntry pos = sentinel;
 
         if ( index < 0 )
         {
@@ -1110,7 +1157,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
         // if sentinel is next, past end of list
         if ( pos.next == sentinel )
         {
-            throw new ArrayIndexOutOfBoundsException( I18n.err( I18n.ERR_04428, index, ( i + 1 ) ) );
+            throw new ArrayIndexOutOfBoundsException( I18n.err( I18n.ERR_04428, index, i + 1 ) );
         }
 
         return pos.next;
@@ -1158,7 +1205,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
      */
     public int indexOf( Object key )
     {
-        Entry e = ( Entry ) entries.get( key );
+        MapEntry e = ( MapEntry ) entries.get( key );
         if ( e == null )
         {
             return -1;
@@ -1255,6 +1302,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
      * @throws ClassNotFoundException
      *             if the stream raises it
      */
+    @Override
     public void readExternal( ObjectInput in ) throws IOException, ClassNotFoundException
     {
         int size = in.readInt();
@@ -1275,18 +1323,14 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
      * @throws IOException
      *             if the stream raises it
      */
+    @Override
     public void writeExternal( ObjectOutput out ) throws IOException
     {
         out.writeInt( size() );
-        for ( Entry pos = sentinel.next; pos != sentinel; pos = pos.next )
+        for ( MapEntry pos = sentinel.next; pos != sentinel; pos = pos.next )
         {
             out.writeObject( pos.getKey() );
             out.writeObject( pos.getValue() );
         }
     }
-
-    // add a serial version uid, so that if we change things in the future
-    // without changing the format, we can still deserialize properly.
-    private static final long serialVersionUID = 3380552487888102930L;
-
 }

@@ -53,6 +53,7 @@ public class LdapResultImpl implements LdapResult
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getDiagnosticMessage()
     {
         return diagnosticMessage;
@@ -62,6 +63,7 @@ public class LdapResultImpl implements LdapResult
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setDiagnosticMessage( String diagnosticMessage )
     {
         this.diagnosticMessage = diagnosticMessage;
@@ -72,6 +74,7 @@ public class LdapResultImpl implements LdapResult
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dn getMatchedDn()
     {
         return matchedDn;
@@ -81,6 +84,7 @@ public class LdapResultImpl implements LdapResult
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setMatchedDn( Dn matchedDn )
     {
         this.matchedDn = matchedDn;
@@ -91,6 +95,7 @@ public class LdapResultImpl implements LdapResult
     /**
      * {@inheritDoc}
      */
+    @Override
     public ResultCodeEnum getResultCode()
     {
         return resultCode;
@@ -100,6 +105,7 @@ public class LdapResultImpl implements LdapResult
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setResultCode( ResultCodeEnum resultCode )
     {
         this.resultCode = resultCode;
@@ -111,6 +117,7 @@ public class LdapResultImpl implements LdapResult
     /**
      * {@inheritDoc}
      */
+    @Override
     public Referral getReferral()
     {
         return referral;
@@ -120,6 +127,7 @@ public class LdapResultImpl implements LdapResult
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isReferral()
     {
         return referral != null;
@@ -129,6 +137,7 @@ public class LdapResultImpl implements LdapResult
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setReferral( Referral referral )
     {
         this.referral = referral;
@@ -139,6 +148,7 @@ public class LdapResultImpl implements LdapResult
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isDefaultSuccess()
     {
         return isDefaultSuccess;
@@ -149,6 +159,7 @@ public class LdapResultImpl implements LdapResult
      * @see Object#hashCode()
      * @return the instance's hash code 
      */
+    @Override
     public int hashCode()
     {
         int hash = 37;
@@ -178,6 +189,7 @@ public class LdapResultImpl implements LdapResult
      * @param obj The object to compare with
      * @return <code>true</code> if both objects are equals
      */
+    @Override
     public boolean equals( Object obj )
     {
         // quickly return true if this is the obj
@@ -256,6 +268,7 @@ public class LdapResultImpl implements LdapResult
      * 
      * @return A LdapResult String
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

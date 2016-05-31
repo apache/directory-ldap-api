@@ -46,6 +46,7 @@ public class MandatoryComponentsMonitor extends AbstractSimpleComponentsMonitor
      * 
      * @return true if all components are used
      */
+    @Override
     public boolean finalStateValid()
     {
         return allComponentsUsed();

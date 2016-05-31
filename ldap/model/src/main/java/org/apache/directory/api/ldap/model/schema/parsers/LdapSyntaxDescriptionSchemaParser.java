@@ -74,5 +74,4 @@ public class LdapSyntaxDescriptionSchemaParser extends AbstractSchemaParser<Ldap
     {
         return parser.ldapSyntaxDescription();
     }
-
 }

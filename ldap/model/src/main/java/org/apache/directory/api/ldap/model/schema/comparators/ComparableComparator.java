@@ -76,7 +76,7 @@ public class ComparableComparator<T> extends LdapComparator<Comparable<T>>
             }
             else
             {
-                return -11;
+                return -1;
             }
         }
 

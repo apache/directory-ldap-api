@@ -86,6 +86,7 @@ public enum ModificationOperation
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         switch ( this )

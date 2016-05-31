@@ -68,9 +68,10 @@ public class OidLenSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -93,7 +94,7 @@ public class OidLenSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -111,7 +112,7 @@ public class OidLenSyntaxChecker extends SyntaxChecker
             }
             else
             {
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
             }
 
             return result;
@@ -123,7 +124,7 @@ public class OidLenSyntaxChecker extends SyntaxChecker
 
             if ( !Oid.isOid( oid ) )
             {
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
                 return false;
             }
 
@@ -133,7 +134,7 @@ public class OidLenSyntaxChecker extends SyntaxChecker
             if ( len.charAt( len.length() - 1 ) != '}' )
             {
                 // No final '}'
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
                 return false;
             }
 
@@ -154,7 +155,7 @@ public class OidLenSyntaxChecker extends SyntaxChecker
                         break;
 
                     default:
-                        LOG.debug( "Syntax invalid for '{}'", value );
+                        LOG.debug( INVALID_SYNTAX_FOR, value );
                         return false;
                 }
             }
@@ -163,7 +164,7 @@ public class OidLenSyntaxChecker extends SyntaxChecker
             {
                 // A number can't start with a '0' unless it's the only
                 // number
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
                 return false;
             }
 

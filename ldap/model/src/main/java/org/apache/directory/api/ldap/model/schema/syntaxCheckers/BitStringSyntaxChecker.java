@@ -71,7 +71,7 @@ public class BitStringSyntaxChecker extends SyntaxChecker
     {
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", strValue );
+            LOG.debug( INVALID_SYNTAX_FOR, strValue );
             return false;
         }
 
@@ -80,14 +80,14 @@ public class BitStringSyntaxChecker extends SyntaxChecker
         // Check that the String respect the syntax : ' ([01]+) ' B
         if ( !Strings.isCharASCII( strValue, pos++, '\'' ) )
         {
-            LOG.debug( "Syntax invalid for '{}'", strValue );
+            LOG.debug( INVALID_SYNTAX_FOR, strValue );
             return false;
         }
 
         // We must have at least one bit
         if ( !Chars.isBit( strValue, pos++ ) )
         {
-            LOG.debug( "Syntax invalid for '{}'", strValue );
+            LOG.debug( INVALID_SYNTAX_FOR, strValue );
             return false;
         }
 
@@ -100,14 +100,14 @@ public class BitStringSyntaxChecker extends SyntaxChecker
         // Now, we must have a simple quote 
         if ( !Strings.isCharASCII( strValue, pos++, '\'' ) )
         {
-            LOG.debug( "Syntax invalid for '{}'", strValue );
+            LOG.debug( INVALID_SYNTAX_FOR, strValue );
             return false;
         }
 
         // followed by a 'B'
         if ( !Strings.isCharASCII( strValue, pos, 'B' ) )
         {
-            LOG.debug( "Syntax invalid for '{}'", strValue );
+            LOG.debug( INVALID_SYNTAX_FOR, strValue );
             return false;
         }
 
@@ -119,9 +119,10 @@ public class BitStringSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {

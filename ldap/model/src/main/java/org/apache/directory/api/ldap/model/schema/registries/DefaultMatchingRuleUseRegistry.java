@@ -47,6 +47,7 @@ public class DefaultMatchingRuleUseRegistry extends DefaultSchemaObjectRegistry<
     /**
      * {@inheritDoc}
      */
+    @Override
     public DefaultMatchingRuleUseRegistry copy()
     {
         DefaultMatchingRuleUseRegistry copy = new DefaultMatchingRuleUseRegistry();

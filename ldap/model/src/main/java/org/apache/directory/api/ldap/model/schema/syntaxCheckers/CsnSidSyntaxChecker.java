@@ -50,6 +50,7 @@ public class CsnSidSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
         if ( value == null )
@@ -60,7 +61,7 @@ public class CsnSidSyntaxChecker extends SyntaxChecker
 
         if ( !( value instanceof String ) )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -68,7 +69,7 @@ public class CsnSidSyntaxChecker extends SyntaxChecker
 
         if ( sidStr.length() > 3 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -80,13 +81,13 @@ public class CsnSidSyntaxChecker extends SyntaxChecker
 
             if ( ( sid < 0 ) || ( sid > 0x0fff ) )
             {
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( INVALID_SYNTAX_FOR, value );
                 return false;
             }
         }
         catch ( NumberFormatException nfe )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 

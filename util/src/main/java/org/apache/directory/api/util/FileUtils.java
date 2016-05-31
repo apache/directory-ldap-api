@@ -132,7 +132,7 @@ public final class FileUtils
             return false;
         }
 
-        File fileInCanonicalDir = null;
+        File fileInCanonicalDir;
 
         if ( file.getParent() == null )
         {
@@ -464,12 +464,9 @@ public final class FileUtils
         {
             File parent = file.getParentFile();
 
-            if ( parent != null )
+            if ( ( parent != null ) && ( !parent.mkdirs() && !parent.isDirectory() ) )
             {
-                if ( !parent.mkdirs() && !parent.isDirectory() )
-                {
-                    throw new IOException( "Directory '" + parent + "' could not be created" );
-                }
+                throw new IOException( "Directory '" + parent + "' could not be created" );
             }
         }
 
@@ -618,12 +615,9 @@ public final class FileUtils
 
         File parentFile = destFile.getParentFile();
 
-        if ( parentFile != null )
+        if ( ( parentFile != null ) && ( !parentFile.mkdirs() && !parentFile.isDirectory() ) )
         {
-            if ( !parentFile.mkdirs() && !parentFile.isDirectory() )
-            {
-                throw new IOException( "Destination '" + parentFile + "' directory cannot be created" );
-            }
+            throw new IOException( "Destination '" + parentFile + "' directory cannot be created" );
         }
 
         if ( destFile.exists() && !destFile.canWrite() )

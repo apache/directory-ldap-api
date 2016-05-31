@@ -27,6 +27,7 @@ import java.text.ParseException;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.NormalizerMappingResolver;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
+import org.apache.directory.api.util.Strings;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
@@ -110,9 +111,9 @@ public class SubtreeSpecificationParser
      */
     public synchronized SubtreeSpecification parse( String spec ) throws ParseException
     {
-        SubtreeSpecification ss = null;
+        SubtreeSpecification ss;
 
-        if ( spec == null || spec.trim().equals( "" ) )
+        if ( ( spec == null ) || Strings.isEmpty( spec.trim() ) )
         {
             return null;
         }

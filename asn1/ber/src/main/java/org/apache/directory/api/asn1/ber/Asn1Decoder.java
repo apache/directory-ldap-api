@@ -125,7 +125,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
      */
     private void dumpTLVTree( Asn1Container container )
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         TLV current = container.getCurrentTLV();
 
         sb.append( "TLV" ).append( Asn1StringUtils.dumpByte( current.getTag() ) ).append( "(" ).append(
@@ -172,7 +172,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
 
         if ( ( value != null ) && ( value.getData() != null ) )
         {
-            return ( current.getExpectedLength() == value.getData().length );
+            return current.getExpectedLength() == value.getData().length;
         }
         else
         {
@@ -307,7 +307,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
      */
     private String getParentLength( TLV tlv )
     {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
 
         buffer.append( "TLV expected length stack : " );
 
@@ -789,6 +789,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMaxLengthLength()
     {
         return maxLengthLength;
@@ -798,6 +799,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMaxTagLength()
     {
         return maxTagLength;
@@ -807,6 +809,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
     /**
      * {@inheritDoc}
      */
+    @Override
     public void disallowIndefiniteLength()
     {
         this.indefiniteLengthAllowed = false;
@@ -816,6 +819,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
     /**
      * {@inheritDoc}
      */
+    @Override
     public void allowIndefiniteLength()
     {
         this.indefiniteLengthAllowed = true;
@@ -825,6 +829,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isIndefiniteLengthAllowed()
     {
 
@@ -835,6 +840,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setMaxLengthLength( int maxLengthLength ) throws DecoderException
     {
         if ( ( this.indefiniteLengthAllowed ) && ( maxLengthLength > 126 ) )
@@ -849,6 +855,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setMaxTagLength( int maxTagLength )
     {
         this.maxTagLength = maxTagLength;

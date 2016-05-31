@@ -75,30 +75,35 @@ public class PagedResultsImpl extends AbstractControl implements PagedResults
     }
 
 
+    @Override
     public int getSize()
     {
         return size;
     }
 
 
+    @Override
     public void setSize( int size )
     {
         this.size = size;
     }
 
 
+    @Override
     public byte[] getCookie()
     {
         return cookie;
     }
 
 
+    @Override
     public void setCookie( byte[] cookie )
     {
         this.cookie = cookie;
     }
 
 
+    @Override
     public int getCookieValue()
     {
         int value = 0;
@@ -172,9 +177,10 @@ public class PagedResultsImpl extends AbstractControl implements PagedResults
     /**
      * Return a String representing this PagedSearchControl.
      */
+    @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( "    Paged Search Control\n" );
         sb.append( "        oid : " ).append( getOid() ).append( '\n' );

@@ -56,9 +56,10 @@ public class OtherMailboxSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -81,7 +82,7 @@ public class OtherMailboxSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
@@ -91,31 +92,30 @@ public class OtherMailboxSyntaxChecker extends SyntaxChecker
         if ( dollar == -1 )
         {
             // No '$' => error
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
         String mailboxType = strValue.substring( 0, dollar );
 
-        String mailbox = ( ( dollar < strValue.length() - 1 )
-            ? strValue.substring( dollar + 1 ) : "" );
+        String mailbox = dollar < strValue.length() - 1 ? strValue.substring( dollar + 1 ) : "";
 
         // The mailbox should not contains a '$'
         if ( mailbox.indexOf( '$' ) != -1 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
         // Check that the mailboxType is a PrintableString
         if ( !Strings.isPrintableString( mailboxType ) )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
             return false;
         }
 
         // Check that the mailbox is an IA5String
-        boolean result = ( Strings.isIA5String( mailbox ) );
+        boolean result = Strings.isIA5String( mailbox );
 
         if ( result )
         {
@@ -123,7 +123,7 @@ public class OtherMailboxSyntaxChecker extends SyntaxChecker
         }
         else
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( INVALID_SYNTAX_FOR, value );
         }
 
         return result;

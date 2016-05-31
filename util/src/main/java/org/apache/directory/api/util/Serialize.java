@@ -97,7 +97,7 @@ public final class Serialize
             throw new ArrayIndexOutOfBoundsException();
         }
 
-        return ( buffer[pos] << 24 ) + ( buffer[pos + 1] << 16 ) + ( buffer[pos + 2] << 8 ) + ( buffer[pos + 3] << 0 );
+        return ( buffer[pos] << 24 ) + ( buffer[pos + 1] << 16 ) + ( buffer[pos + 2] << 8 ) + buffer[pos + 3];
     }
 
 
@@ -154,6 +154,6 @@ public final class Serialize
 
         byte value = buffer[pos];
 
-        return ( value != 0x00 );
+        return value != 0x00;
     }
 }

@@ -76,9 +76,9 @@ public class SearchParams
      */
     public SearchParams()
     {
-        returningAttributes = new HashSet<AttributeTypeOptions>();
-        returningAttributesStr = new HashSet<String>();
-        controls = new HashSet<Control>();
+        returningAttributes = new HashSet<>();
+        returningAttributesStr = new HashSet<>();
+        controls = new HashSet<>();
     }
 
 
@@ -303,6 +303,7 @@ public class SearchParams
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
@@ -312,7 +313,7 @@ public class SearchParams
         sb.append( "    Alias dereferencing : " ).append( aliasDerefMode ).append( "\n" );
         sb.append( "    types only : " ).append( typesOnly ).append( "\n" );
 
-        if ( returningAttributesStr.size() != 0 )
+        if ( !returningAttributesStr.isEmpty() )
         {
             sb.append( "    returning attributes : " ).append( Strings.setToString( returningAttributesStr ) )
                 .append( "\n" );
@@ -336,7 +337,7 @@ public class SearchParams
             sb.append( "    no sizeLimit\n" );
         }
 
-        if ( controls.size() != 0 )
+        if ( !controls.isEmpty() )
         {
             for ( Control control : controls )
             {

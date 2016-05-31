@@ -56,6 +56,7 @@ public class UuidComparator extends SerializableComparator<String>
     /**
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
+    @Override
     public int compare( String uuid1, String uuid2 )
     {
         if ( IS_DEBUG )
@@ -68,12 +69,7 @@ public class UuidComparator extends SerializableComparator<String>
         // -------------------------------------------------------------------
         if ( uuid1 == null )
         {
-            return ( uuid2 == null ) ? 0 : -1;
-        }
-
-        if ( uuid2 == null )
-        {
-            return 1;
+            return -1;
         }
 
         return uuid1.compareTo( uuid2 );

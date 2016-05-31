@@ -41,25 +41,6 @@ public class LdapOperationException extends LdapException
     /** The resolved Dn */
     protected Dn resolvedDn;
 
-
-    /**
-     * @return the resolvedDn
-     */
-    public Dn getResolvedDn()
-    {
-        return resolvedDn;
-    }
-
-
-    /**
-     * @param resolvedDn the resolvedDn to set
-     */
-    public void setResolvedDn( Dn resolvedDn )
-    {
-        this.resolvedDn = resolvedDn;
-    }
-
-
     /**
      * Creates a new instance of LdapOperationException.
      *
@@ -118,5 +99,23 @@ public class LdapOperationException extends LdapException
     public ResultCodeEnum getResultCode()
     {
         return resultCode;
+    }
+
+
+    /**
+     * @return the resolvedDn
+     */
+    public Dn getResolvedDn()
+    {
+        return resolvedDn;
+    }
+
+
+    /**
+     * @param resolvedDn the resolvedDn to set
+     */
+    public void setResolvedDn( Dn resolvedDn )
+    {
+        this.resolvedDn = resolvedDn;
     }
 }

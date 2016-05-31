@@ -70,6 +70,7 @@ public abstract class AbstractReadBitString<C extends Asn1Container> extends Gra
     /**
      * {@inheritDoc}
      */
+    @Override
     public final void action( C container ) throws DecoderException
     {
         TLV tlv = container.getCurrentTLV();
