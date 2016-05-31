@@ -24,6 +24,7 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
+import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +70,14 @@ public class InitSearchRequestAttributeDescList extends GrammarAction<LdapMessag
         SearchRequestDecorator searchRequestDecorator = container.getMessage();
         SearchRequest searchRequest = searchRequestDecorator.getDecorated();
 
-        searchRequest.setFilter( searchRequestDecorator.getFilterNode() );
+        try
+        {
+            searchRequest.setFilter( searchRequestDecorator.getFilterNode() );
+        }
+        catch ( LdapSchemaException lse )
+        {
+            throw new DecoderException( lse.getMessage(), lse ); 
+        }
 
         // We can have an END transition
         container.setGrammarEndAllowed( true );

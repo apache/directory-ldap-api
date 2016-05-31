@@ -47,6 +47,8 @@ import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
+import org.apache.directory.api.ldap.model.filter.ExprNode;
 import org.apache.directory.api.ldap.model.message.AbandonRequestImpl;
 import org.apache.directory.api.ldap.model.message.AddRequestImpl;
 import org.apache.directory.api.ldap.model.message.AliasDerefMode;
@@ -2812,12 +2814,21 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 container.getBatchRequest().getCurrentRequest();
             SearchRequest searchRequest = searchRequestDecorator.getDecorated();
 
-            if ( searchRequestDecorator.getFilterNode() == null )
+            try
             {
-                throw new IllegalStateException( "No filter element present in the DSML search request" );
+                ExprNode exprNode = searchRequestDecorator.getFilterNode();
+                
+                if ( exprNode == null )
+                {
+                    throw new IllegalStateException( "No filter element present in the DSML search request" );
+                }
+                
+                searchRequest.setFilter( exprNode );
             }
-
-            searchRequest.setFilter( searchRequestDecorator.getFilterNode() );
+            catch ( LdapSchemaException lse )
+            {
+                
+            }
         }
     };
 

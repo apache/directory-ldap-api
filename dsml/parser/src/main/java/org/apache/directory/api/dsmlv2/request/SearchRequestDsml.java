@@ -29,6 +29,7 @@ import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.api.ldap.model.filter.AndNode;
 import org.apache.directory.api.ldap.model.filter.ApproximateNode;
 import org.apache.directory.api.ldap.model.filter.BranchNode;
@@ -117,7 +118,7 @@ public class SearchRequestDsml
      *
      * @return the expression node for the root of the filter expression tree.
      */
-    public ExprNode getFilterNode()
+    public ExprNode getFilterNode() throws LdapSchemaException
     {
         return transform( topFilter );
     }
@@ -197,7 +198,7 @@ public class SearchRequestDsml
      * @return An ExprNode
      */
     @SuppressWarnings({ "rawtypes" })
-    private ExprNode transform( Filter filter )
+    private ExprNode transform( Filter filter ) throws LdapSchemaException
     {
         if ( filter != null )
         {

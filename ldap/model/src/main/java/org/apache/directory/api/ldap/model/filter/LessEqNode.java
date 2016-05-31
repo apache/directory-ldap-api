@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.model.filter;
 
 
 import org.apache.directory.api.ldap.model.entry.Value;
+import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 
 
@@ -36,10 +37,17 @@ public class LessEqNode<T> extends SimpleNode<T>
      * 
      * @param attributeType the attributeType
      * @param value the value to test for
+     * @throws LdapSchemaException If the AttributeType does not have an ORDERING MatchingRule
      */
-    public LessEqNode( AttributeType attributeType, Value value )
+    public LessEqNode( AttributeType attributeType, Value value ) throws LdapSchemaException
     {
         super( attributeType, value, AssertionType.LESSEQ );
+        
+        // Check if the AttributeType has an Ordering MR
+        if ( ( attributeType != null ) && ( attributeType.getOrdering() == null ) )
+        {
+            throw new LdapSchemaException( "There is no ORDERING matchingRule for AttributeType " + attributeType.getName() );
+        }
     }
 
 
@@ -48,10 +56,17 @@ public class LessEqNode<T> extends SimpleNode<T>
      * 
      * @param attribute the attribute name
      * @param value the value to test for
+     * @throws LdapSchemaException If the AttributeType does not have an ORDERING MatchingRule
      */
-    public LessEqNode( String attribute, byte[] value )
+    public LessEqNode( String attribute, byte[] value ) throws LdapSchemaException
     {
         super( attribute, value, AssertionType.LESSEQ );
+
+        // Check if the AttributeType has an Ordering MR
+        if ( ( attributeType != null ) && ( attributeType.getOrdering() == null ) )
+        {
+            throw new LdapSchemaException( "There is no ORDERING matchingRule for AttributeType " + attributeType.getName() );
+        }
     }
 
 
@@ -60,10 +75,17 @@ public class LessEqNode<T> extends SimpleNode<T>
      * 
      * @param attribute the attribute name
      * @param value the value to test for
+     * @throws LdapSchemaException If the AttributeType does not have an ORDERING MatchingRule
      */
-    public LessEqNode( String attribute, String value )
+    public LessEqNode( String attribute, String value ) throws LdapSchemaException
     {
         super( attribute, value, AssertionType.LESSEQ );
+
+        // Check if the AttributeType has an Ordering MR
+        if ( ( attributeType != null ) && ( attributeType.getOrdering() == null ) )
+        {
+            throw new LdapSchemaException( "There is no ORDERING matchingRule for AttributeType " + attributeType.getName() );
+        }
     }
 
 

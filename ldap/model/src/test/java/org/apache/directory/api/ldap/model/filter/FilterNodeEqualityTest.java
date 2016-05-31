@@ -23,7 +23,7 @@ package org.apache.directory.api.ldap.model.filter;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
-import org.apache.directory.api.ldap.model.entry.Value;
+import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -41,7 +41,7 @@ import static org.junit.Assert.assertFalse;
 public class FilterNodeEqualityTest
 {
     @Test
-    public void testEqualityEquals()
+    public void testEqualityEquals() throws LdapSchemaException
     {
         EqualityNode<String> eqNode1 = new EqualityNode<String>( "attr1", "test" );
         EqualityNode<String> eqNode2 = new EqualityNode<String>( "attr1", "test" );
@@ -65,7 +65,7 @@ public class FilterNodeEqualityTest
 
 
     @Test
-    public void testGreaterEqEquals()
+    public void testGreaterEqEquals() throws LdapSchemaException
     {
         GreaterEqNode<String> greaterEqNode1 = new GreaterEqNode<String>( "attr1", "test" );
         GreaterEqNode<String> greaterEqNode2 = new GreaterEqNode<String>( "attr1", "test" );
@@ -82,7 +82,7 @@ public class FilterNodeEqualityTest
 
 
     @Test
-    public void testLessEqEquals()
+    public void testLessEqEquals() throws LdapSchemaException
     {
         LessEqNode<String> lessEqNode1 = new LessEqNode<String>( "attr1", "test" );
         LessEqNode<String> lessEqNode2 = new LessEqNode<String>( "attr1", "test" );
