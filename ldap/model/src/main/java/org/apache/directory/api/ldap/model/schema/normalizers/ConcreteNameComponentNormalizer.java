@@ -121,7 +121,37 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
 
             return normalizer.normalize( unescaped );
         }
+    }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Object normalizeByName( AttributeType attributeType, String value ) throws LdapException
+    {
+        MatchingRule mrule = attributeType.getEquality();
+        Normalizer normalizer;
+            
+        if ( mrule == null )
+        {
+            return new NoOpNormalizer( attributeType.getOid() );
+        }
+        else
+        {
+            normalizer = attributeType.getEquality().getNormalizer();
+        }
+
+        if ( attributeType.getSyntax().isHumanReadable() )
+        {
+            return normalizer.normalize( value );
+        }
+        else
+        {
+            String unescaped = unescape( value );
+
+            return normalizer.normalize( unescaped );
+        }
     }
 
 

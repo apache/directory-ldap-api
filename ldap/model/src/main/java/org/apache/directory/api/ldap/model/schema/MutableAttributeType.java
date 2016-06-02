@@ -311,7 +311,7 @@ public class MutableAttributeType extends AttributeType
      *
      * @param superior The superior for this AttributeType
      */
-    public void setSuperior( MutableAttributeType superior )
+    public void setSuperior( AttributeType superior )
     {
         if ( locked )
         {

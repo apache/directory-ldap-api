@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.model.schema.normalizers;
 
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
 
 
 /**
@@ -64,6 +65,18 @@ public interface NameComponentNormalizer
      *             if there is a recognition problem or a syntax issue
      */
     Object normalizeByName( String attributeName, String value ) throws LdapException;
+
+
+    /**
+     * Normalizes an attribute's value given the name of the attribute - short
+     * names like 'cn' as well as 'commonName' should work here.
+     * 
+     * @param attributeType the attributeType
+     * @param value the value of the attribute to normalize
+     * @return the normalized value
+     * @throws LdapException if there is a recognition problem or a syntax issue
+     */
+    Object normalizeByName( AttributeType attributeType, String value ) throws LdapException;
 
 
     /**
