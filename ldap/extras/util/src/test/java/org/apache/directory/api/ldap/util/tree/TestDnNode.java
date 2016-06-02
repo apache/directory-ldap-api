@@ -78,15 +78,15 @@ public class TestDnNode
 
         assertNotNull( tree );
 
-        Map<Rdn, DnNode<Dn>> children = tree.getChildren();
+        Map<String, DnNode<Dn>> children = tree.getChildren();
         assertNotNull( children );
 
         assertEquals( 1, children.size() );
         assertNull( tree.getElement() );
 
-        DnNode<Dn> level1 = children.get( new Rdn( "dc=a" ) );
-        DnNode<Dn> level2 = level1.getChildren().get( new Rdn( "dc=b" ) );
-        DnNode<Dn> level3 = level2.getChildren().get( new Rdn( "dc=c" ) );
+        DnNode<Dn> level1 = children.get( new Rdn( "dc=a" ).getNormName() );
+        DnNode<Dn> level2 = level1.getChildren().get( new Rdn( "dc=b" ).getNormName() );
+        DnNode<Dn> level3 = level2.getChildren().get( new Rdn( "dc=c" ).getNormName() );
 
         assertNotNull( level3 );
         assertFalse( level3.hasElement() );
@@ -108,20 +108,20 @@ public class TestDnNode
 
         assertNotNull( tree );
 
-        Map<Rdn, DnNode<Dn>> children = tree.getChildren();
+        Map<String, DnNode<Dn>> children = tree.getChildren();
         assertNotNull( children );
 
         assertEquals( 2, children.size() );
         assertNull( tree.getElement() );
 
-        DnNode<Dn> level1 = children.get( new Rdn( "dc=a" ) );
-        DnNode<Dn> level2 = level1.getChildren().get( new Rdn( "dc=b" ) );
+        DnNode<Dn> level1 = children.get( new Rdn( "dc=a" ).getNormName() );
+        DnNode<Dn> level2 = level1.getChildren().get( new Rdn( "dc=b" ).getNormName() );
 
         assertNotNull( level2 );
         assertFalse( level2.hasElement() );
 
-        level1 = children.get( new Rdn( "dc=e" ) );
-        level2 = level1.getChildren().get( new Rdn( "dc=f" ) );
+        level1 = children.get( new Rdn( "dc=e" ).getNormName() );
+        level2 = level1.getChildren().get( new Rdn( "dc=f" ).getNormName() );
 
         assertNotNull( level2 );
         assertFalse( level2.hasElement() );
@@ -143,16 +143,16 @@ public class TestDnNode
 
         assertNotNull( tree );
 
-        Map<Rdn, DnNode<Dn>> children = tree.getChildren();
+        Map<String, DnNode<Dn>> children = tree.getChildren();
         assertNotNull( children );
 
         assertEquals( 1, children.size() );
         assertNull( tree.getElement() );
 
-        DnNode<Dn> level1 = children.get( new Rdn( "dc=a" ) );
-        DnNode<Dn> level2 = level1.getChildren().get( new Rdn( "dc=b" ) );
+        DnNode<Dn> level1 = children.get( new Rdn( "dc=a" ).getNormName() );
+        DnNode<Dn> level2 = level1.getChildren().get( new Rdn( "dc=b" ).getNormName() );
 
-        Map<Rdn, DnNode<Dn>> childrenDn1 = level1.getChildren();
+        Map<String, DnNode<Dn>> childrenDn1 = level1.getChildren();
         assertNotNull( childrenDn1 );
 
         assertEquals( 2, childrenDn1.size() );
@@ -161,8 +161,8 @@ public class TestDnNode
         assertNotNull( level2 );
         assertFalse( level2.hasElement() );
 
-        level1 = children.get( new Rdn( "dc=a" ) );
-        level2 = level1.getChildren().get( new Rdn( "dc=f" ) );
+        level1 = children.get( new Rdn( "dc=a" ).getNormName() );
+        level2 = level1.getChildren().get( new Rdn( "dc=f" ).getNormName() );
 
         assertNotNull( level2 );
         assertFalse( level2.hasElement() );
@@ -212,15 +212,15 @@ public class TestDnNode
 
         assertNotNull( tree );
 
-        Map<Rdn, DnNode<Dn>> children = tree.getChildren();
+        Map<String, DnNode<Dn>> children = tree.getChildren();
         assertNotNull( children );
 
         assertEquals( 1, children.size() );
         assertNull( tree.getElement() );
 
-        DnNode<Dn> level1 = children.get( new Rdn( "dc=a" ) );
-        DnNode<Dn> level2 = level1.getChildren().get( new Rdn( "dc=b" ) );
-        DnNode<Dn> level3 = level2.getChildren().get( new Rdn( "dc=c" ) );
+        DnNode<Dn> level1 = children.get( new Rdn( "dc=a" ).getNormName() );
+        DnNode<Dn> level2 = level1.getChildren().get( new Rdn( "dc=b" ).getNormName() );
+        DnNode<Dn> level3 = level2.getChildren().get( new Rdn( "dc=c" ).getNormName() );
 
         assertNotNull( level3 );
         assertEquals( dn, level3.getElement() );
@@ -242,20 +242,20 @@ public class TestDnNode
 
         assertNotNull( tree );
 
-        Map<Rdn, DnNode<Dn>> children = tree.getChildren();
+        Map<String, DnNode<Dn>> children = tree.getChildren();
         assertNotNull( children );
 
         assertEquals( 2, children.size() );
         assertNull( tree.getElement() );
 
-        DnNode<Dn> level1 = children.get( new Rdn( "dc=a" ) );
-        DnNode<Dn> level2 = level1.getChildren().get( new Rdn( "dc=b" ) );
+        DnNode<Dn> level1 = children.get( new Rdn( "dc=a" ).getNormName() );
+        DnNode<Dn> level2 = level1.getChildren().get( new Rdn( "dc=b" ).getNormName() );
 
         assertNotNull( level2 );
         assertEquals( dn1, level2.getElement() );
 
-        level1 = children.get( new Rdn( "dc=e" ) );
-        level2 = level1.getChildren().get( new Rdn( "dc=f" ) );
+        level1 = children.get( new Rdn( "dc=e" ).getNormName() );
+        level2 = level1.getChildren().get( new Rdn( "dc=f" ).getNormName() );
 
         assertNotNull( level2 );
         assertEquals( dn2, level2.getElement() );
@@ -277,16 +277,16 @@ public class TestDnNode
 
         assertNotNull( tree );
 
-        Map<Rdn, DnNode<Dn>> children = tree.getChildren();
+        Map<String, DnNode<Dn>> children = tree.getChildren();
         assertNotNull( children );
 
         assertEquals( 1, children.size() );
         assertNull( tree.getElement() );
 
-        DnNode<Dn> level1 = children.get( new Rdn( "dc=a" ) );
-        DnNode<Dn> level2 = level1.getChildren().get( new Rdn( "dc=b" ) );
+        DnNode<Dn> level1 = children.get( new Rdn( "dc=a" ).getNormName() );
+        DnNode<Dn> level2 = level1.getChildren().get( new Rdn( "dc=b" ).getNormName() );
 
-        Map<Rdn, DnNode<Dn>> childrenDn1 = level1.getChildren();
+        Map<String, DnNode<Dn>> childrenDn1 = level1.getChildren();
         assertNotNull( childrenDn1 );
 
         assertEquals( 2, childrenDn1.size() );
@@ -295,8 +295,8 @@ public class TestDnNode
         assertNotNull( level2 );
         assertEquals( dn1, level2.getElement() );
 
-        level1 = children.get( new Rdn( "dc=a" ) );
-        level2 = level1.getChildren().get( new Rdn( "dc=f" ) );
+        level1 = children.get( new Rdn( "dc=a" ).getNormName() );
+        level2 = level1.getChildren().get( new Rdn( "dc=f" ).getNormName() );
 
         assertNotNull( level2 );
         assertEquals( dn2, level2.getElement() );
@@ -329,14 +329,14 @@ public class TestDnNode
         tree.add( dn1 );
 
         assertTrue( tree.hasChildren() );
-        Map<Rdn, DnNode<Dn>> children = tree.getChildren();
+        Map<String, DnNode<Dn>> children = tree.getChildren();
         assertNotNull( children );
 
-        DnNode<Dn> child = children.get( new Rdn( "dc=a" ) );
+        DnNode<Dn> child = children.get( new Rdn( "dc=a" ).getNormName() );
         assertTrue( child.hasChildren() );
 
         children = child.getChildren();
-        child = children.get( new Rdn( "dc=b" ) );
+        child = children.get( new Rdn( "dc=b" ).getNormName() );
         assertFalse( child.hasChildren() );
     }
 
