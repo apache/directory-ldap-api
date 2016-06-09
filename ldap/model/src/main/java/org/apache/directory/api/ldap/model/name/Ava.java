@@ -137,6 +137,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         {
             normType = ava.normType;
             value = ava.value;
+            attributeType = ava.getAttributeType();
         }
         else
         {
