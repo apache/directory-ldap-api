@@ -143,15 +143,15 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         {
             if ( schemaManager != null )
             {
-                AttributeType attrType = schemaManager.getAttributeType( ava.normType );
+                attributeType = schemaManager.getAttributeType( ava.normType );
                 
-                if ( attrType != null )
+                if ( attributeType != null )
                 {
-                    normType = attrType.getOid();
+                    normType = attributeType.getOid();
 
                     try
                     {
-                        value = new Value( attrType, ava.value );
+                        value = new Value( attributeType, ava.value );
                     }
                     catch ( LdapInvalidAttributeValueException e )
                     {
