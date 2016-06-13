@@ -1801,13 +1801,20 @@ public class DefaultAttribute implements Attribute, Cloneable
 
             for ( Value value : values )
             {
-                if ( value.isHumanReadable() )
+                if ( value.isSchemaAware() )
                 {
-                    newValues.add( new Value( attributeType, value.getValue() ) );
+                    newValues.add( value );
                 }
                 else
                 {
-                    newValues.add( new Value( attributeType, value.getBytes() ) );
+                    if ( value.isHumanReadable() )
+                    {
+                        newValues.add( new Value( attributeType, value.getValue() ) );
+                    }
+                    else
+                    {
+                        newValues.add( new Value( attributeType, value.getBytes() ) );
+                    }
                 }
             }
 
