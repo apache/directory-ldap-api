@@ -20,9 +20,6 @@
 package org.apache.directory.api.ldap.extras.controls.ppolicy;
 
 
-import org.apache.directory.api.ldap.model.message.Control;
-
-
 /**
  * A simple {@link PasswordPolicy} {@link Control} implementation.
  *
@@ -148,5 +145,30 @@ public class PasswordPolicyImpl implements PasswordPolicy
     public PasswordPolicyResponse getResponse()
     {
         return response;
+    }
+
+    
+    /**
+     * Get a String representation of a PasswordPolicyImpl
+     * 
+     * @return A BindResponse String
+     */
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append( "    PasswordPolicy[" );
+        sb.append( "criticality:" ).append( criticality ).append( "] " );
+
+        if ( response != null )
+        {
+            sb.append( response );
+        }
+        else
+        {
+            sb.append( '\n' );
+        }
+
+        return sb.toString();
     }
 }

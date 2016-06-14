@@ -31,7 +31,7 @@ import org.apache.directory.api.asn1.ber.AbstractContainer;
 public class GracefulDisconnectContainer extends AbstractContainer
 {
     /** GracefulShutdown */
-    private GracefulDisconnect gracefulDisconnect;
+    private GracefulDisconnectResponseDecorator gracefulDisconnectResponse;
 
 
     /**
@@ -41,30 +41,29 @@ public class GracefulDisconnectContainer extends AbstractContainer
     public GracefulDisconnectContainer()
     {
         super();
-        stateStack = new int[1];
-        grammar = GracefulDisconnectGrammar.getInstance();
+        setGrammar( GracefulDisconnectGrammar.getInstance() );
         setTransition( GracefulDisconnectStatesEnum.START_STATE );
     }
 
 
     /**
-     * @return Returns the Graceful Shutdown object.
+     * @return Returns the GracefulDisconnectResponse object.
      */
-    public GracefulDisconnect getGracefulDisconnect()
+    public GracefulDisconnectResponseDecorator getGracefulDisconnectResponse()
     {
-        return gracefulDisconnect;
+        return gracefulDisconnectResponse;
     }
 
 
     /**
-     * Set a GracefulDisconnect Object into the container. It will be completed
+     * Set a GracefulDisconnectResponse Object into the container. It will be completed
      * by the ldapDecoder.
      * 
-     * @param gracefulDisconnect the GracefulShutdown to set.
+     * @param gracefulDisconnectResponse the GracefulShutdown to set.
      */
-    public void setGracefulDisconnect( GracefulDisconnect gracefulDisconnect )
+    public void setGracefulDisconnectResponse( GracefulDisconnectResponseDecorator gracefulDisconnectResponse )
     {
-        this.gracefulDisconnect = gracefulDisconnect;
+        this.gracefulDisconnectResponse = gracefulDisconnectResponse;
     }
 
 
@@ -74,6 +73,6 @@ public class GracefulDisconnectContainer extends AbstractContainer
     public void clean()
     {
         super.clean();
-        gracefulDisconnect = null;
+        gracefulDisconnectResponse = null;
     }
 }

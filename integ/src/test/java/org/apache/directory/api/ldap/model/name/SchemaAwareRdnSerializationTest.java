@@ -29,10 +29,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
-import org.apache.directory.api.ldap.schemamanager.impl.DefaultSchemaManager;
+import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -85,6 +85,22 @@ public class SchemaAwareRdnSerializationTest
 
 
     @Test
+    public void testRdnFullSerializationBytes() throws IOException, LdapException, ClassNotFoundException
+    {
+        byte[] buffer = new byte[256];
+        Rdn rdn1 = new Rdn( schemaManager, "gn=john + cn=doe" );
+
+        int pos1 = rdn1.serialize( buffer, 0 );
+
+        Rdn rdn2 = new Rdn( schemaManager );
+        int pos2 = rdn2.deserialize( buffer, 0 );
+
+        assertEquals( pos1, pos2 );
+        assertEquals( rdn1, rdn2 );
+    }
+
+
+    @Test
     public void testRdnEmptySerialization() throws IOException, LdapException, ClassNotFoundException
     {
         Rdn rdn1 = new Rdn( schemaManager );
@@ -102,6 +118,22 @@ public class SchemaAwareRdnSerializationTest
         Rdn rdn2 = new Rdn( schemaManager );
         rdn2.readExternal( in );
 
+        assertEquals( rdn1, rdn2 );
+    }
+
+
+    @Test
+    public void testRdnEmptySerializationBytes() throws IOException, LdapException, ClassNotFoundException
+    {
+        byte[] buffer = new byte[256];
+        Rdn rdn1 = new Rdn( schemaManager );
+
+        int pos1 = rdn1.serialize( buffer, 0 );
+
+        Rdn rdn2 = new Rdn( schemaManager );
+        int pos2 = rdn2.deserialize( buffer, 0 );
+
+        assertEquals( pos1, pos2 );
         assertEquals( rdn1, rdn2 );
     }
 
@@ -125,7 +157,79 @@ public class SchemaAwareRdnSerializationTest
         rdn2.readExternal( in );
 
         assertEquals( rdn1, rdn2 );
-        assertEquals( "doe", rdn2.getValue( "cn" ) );
-        assertEquals( "Doe", rdn2.getValue().getString() );
+        assertEquals( "Doe", rdn2.getValue( "cn" ) );
+        assertEquals( "doe", rdn2.getNormValue( "cn" ) );
+        assertEquals( "Doe", rdn2.getValue() );
+    }
+
+
+    @Test
+    public void testRdnSimpleSerializationBytes() throws IOException, LdapException, ClassNotFoundException
+    {
+        byte[] buffer = new byte[256];
+        Rdn rdn1 = new Rdn( schemaManager, "cn=Doe" );
+
+        int pos1 = rdn1.serialize( buffer, 0 );
+
+        Rdn rdn2 = new Rdn( schemaManager );
+        int pos2 = rdn2.deserialize( buffer, 0 );
+
+        assertEquals( pos1, pos2 );
+        assertEquals( rdn1, rdn2 );
+        assertEquals( "Doe", rdn2.getValue( "cn" ) );
+        assertEquals( "doe", rdn2.getNormValue( "cn" ) );
+        assertEquals( "Doe", rdn2.getValue() );
+    }
+
+
+    @Ignore
+    @Test
+    public void testRdnFullSerializationPerf() throws IOException, LdapException, ClassNotFoundException
+    {
+        Rdn rdn1 = new Rdn( schemaManager, "gn=john + cn=doe" );
+        Rdn rdn2 = new Rdn( schemaManager );
+
+        long t0 = System.currentTimeMillis();
+
+        for ( int i = 0; i < 5000000; i++ )
+        {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream( baos );
+
+            rdn1.writeExternal( out );
+
+            ObjectInputStream in = null;
+
+            byte[] data = baos.toByteArray();
+            in = new ObjectInputStream( new ByteArrayInputStream( data ) );
+
+            rdn2.readExternal( in );
+        }
+
+        long t1 = System.currentTimeMillis();
+
+        System.out.println( "Delta ser slow = " + ( t1 - t0 ) );
+    }
+
+
+    @Ignore
+    @Test
+    public void testRdnFullSerializationBytesPerf() throws IOException, LdapException, ClassNotFoundException
+    {
+        Rdn rdn1 = new Rdn( schemaManager, "gn=john + cn=doe" );
+        Rdn rdn2 = new Rdn( schemaManager );
+
+        long t0 = System.currentTimeMillis();
+
+        for ( int i = 0; i < 5000000; i++ )
+        {
+            byte[] buffer = new byte[256];
+            rdn1.serialize( buffer, 0 );
+            rdn2.deserialize( buffer, 0 );
+        }
+
+        long t1 = System.currentTimeMillis();
+
+        System.out.println( "Delta ser fast = " + ( t1 - t0 ) );
     }
 }

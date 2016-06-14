@@ -27,7 +27,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -319,10 +319,9 @@ public class ModifyRequestTest extends AbstractTest
     /**
      * Test parsing of a request with a Modification element with Base64 Value
      * @throws NamingException
-     * @throws UnsupportedEncodingException
      */
     @Test
-    public void testRequestWith1ModificationBase64Value() throws LdapException, UnsupportedEncodingException
+    public void testRequestWith1ModificationBase64Value() throws LdapException
     {
         Dsmlv2Parser parser = null;
         try
@@ -354,7 +353,7 @@ public class ModifyRequestTest extends AbstractTest
         String expected = new String( new byte[]
             { 'c', 'n', '=', 'E', 'm', 'm', 'a', 'n', 'u', 'e', 'l', ' ', 'L', ( byte ) 0xc3, ( byte ) 0xa9, 'c', 'h',
                 'a', 'r', 'n', 'y', ',', ' ', 'o', 'u', '=', 'p', 'e', 'o', 'p', 'l', 'e', ',', ' ', 'd', 'c', '=',
-                'e', 'x', 'a', 'm', 'p', 'l', 'e', ',', ' ', 'd', 'c', '=', 'c', 'o', 'm' }, "UTF-8" );
+                'e', 'x', 'a', 'm', 'p', 'l', 'e', ',', ' ', 'd', 'c', '=', 'c', 'o', 'm' }, StandardCharsets.UTF_8 );
 
         assertEquals( expected, attribute.get().getString() );
     }

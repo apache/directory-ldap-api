@@ -29,12 +29,8 @@ package org.apache.directory.api.ldap.trigger;
  */
 public final class ActionTime
 {
-    //public static final ActionTime BEFORE = new ActionTime( "BEFORE" );
-
     /** The AFTER instance. */
     public static final ActionTime AFTER = new ActionTime( "AFTER" );
-
-    //public static final ActionTime INSTEADOF = new ActionTime( "INSTEADOF" );
 
     /** The name. */
     private final String name;

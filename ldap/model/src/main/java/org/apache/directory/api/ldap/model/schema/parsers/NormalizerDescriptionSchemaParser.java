@@ -23,8 +23,6 @@ package org.apache.directory.api.ldap.model.schema.parsers;
 import java.text.ParseException;
 
 import org.apache.directory.api.i18n.I18n;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
@@ -35,18 +33,15 @@ import antlr.TokenStreamException;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class NormalizerDescriptionSchemaParser extends AbstractSchemaParser
+public class NormalizerDescriptionSchemaParser extends AbstractSchemaParser<NormalizerDescription>
 {
-    /** The LoggerFactory used by this class */
-    protected static final Logger LOG = LoggerFactory.getLogger( NormalizerDescriptionSchemaParser.class );
-
 
     /**
      * Creates a schema parser instance.
      */
     public NormalizerDescriptionSchemaParser()
     {
-        super();
+        super( NormalizerDescription.class, I18n.ERR_04251, I18n.ERR_04252, I18n.ERR_04253 );
     }
 
 
@@ -74,53 +69,16 @@ public class NormalizerDescriptionSchemaParser extends AbstractSchemaParser
      * @return the parsed NormalizerDescription bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public synchronized NormalizerDescription parseNormalizerDescription( String normalizerDescription )
-        throws ParseException
+    public NormalizerDescription parseNormalizerDescription( String normalizerDescription ) throws ParseException
     {
-        LOG.debug( "Parsing a Normalizer : {}", normalizerDescription );
-
-        if ( normalizerDescription == null )
-        {
-            LOG.error( I18n.err( I18n.ERR_04251 ) );
-            throw new ParseException( "Null", 0 );
-        }
-
-        reset( normalizerDescription ); // reset and initialize the parser / lexer pair
-
-        try
-        {
-            NormalizerDescription normalizer = parser.normalizerDescription();
-
-            // Update the schemaName
-            updateSchemaName( normalizer );
-
-            return normalizer;
-        }
-        catch ( RecognitionException re )
-        {
-            String msg = I18n.err( I18n.ERR_04252, normalizerDescription, re.getMessage(), re.getColumn() );
-            LOG.error( msg );
-            throw new ParseException( msg, re.getColumn() );
-        }
-        catch ( TokenStreamException tse )
-        {
-            String msg = I18n.err( I18n.ERR_04253, normalizerDescription, tse.getMessage() );
-            LOG.error( msg );
-            throw new ParseException( msg, 0 );
-        }
-
+        return super.parse( normalizerDescription );
     }
 
 
-    /**
-     * Parses a Normalizer description.
-     * 
-     * @param schemaDescription The Normalizer description to parse
-     * @return An instance of NormalizerDescription
-     * @throws ParseException {@inheritDoc}
-     */
-    public NormalizerDescription parse( String schemaDescription ) throws ParseException
+    @Override
+    protected NormalizerDescription doParse() throws RecognitionException, TokenStreamException
     {
-        return parseNormalizerDescription( schemaDescription );
+        return parser.normalizerDescription();
     }
+
 }

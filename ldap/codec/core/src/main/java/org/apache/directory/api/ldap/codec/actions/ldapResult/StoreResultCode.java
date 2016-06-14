@@ -87,7 +87,7 @@ public class StoreResultCode extends GrammarAction<LdapMessageContainer<MessageD
         {
             LOG.error( I18n.err( I18n.ERR_04018, Strings.dumpBytes( value.getData() ), ide.getMessage() ) );
 
-            throw new DecoderException( ide.getMessage() );
+            throw new DecoderException( ide.getMessage(), ide );
         }
 
         if ( IS_DEBUG )

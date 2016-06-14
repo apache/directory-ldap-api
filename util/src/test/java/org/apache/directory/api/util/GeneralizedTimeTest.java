@@ -19,21 +19,27 @@
  */
 package org.apache.directory.api.util;
 
-
+import static org.apache.directory.api.util.TimeZones.GMT;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
-import org.apache.directory.api.util.GeneralizedTime;
 import org.apache.directory.api.util.GeneralizedTime.Format;
 import org.apache.directory.api.util.GeneralizedTime.TimeZoneFormat;
 import org.junit.Test;
@@ -1050,7 +1056,7 @@ public class GeneralizedTimeTest
     @Test
     public void testCalendar() throws ParseException
     {
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = new GregorianCalendar( GMT, Locale.ROOT );
         calendar.set( Calendar.YEAR, 2008 );
         calendar.set( Calendar.MONTH, 0 );
         calendar.set( Calendar.DAY_OF_MONTH, 2 );
@@ -1072,7 +1078,7 @@ public class GeneralizedTimeTest
     @Test
     public void testRoundTrip() throws ParseException
     {
-        Calendar calendar = Calendar.getInstance( TimeZone.getTimeZone( "GMT" ) );
+        Calendar calendar = new GregorianCalendar( GMT, Locale.ROOT );
         calendar.setTimeInMillis( 123456789000L ); // default format is without millis
 
         // create form calendar
@@ -1193,7 +1199,7 @@ public class GeneralizedTimeTest
         LOG.info( "milliseconds lost = {}", millisLost );
 
         // Set time on new Calendar instance, and generate the GT string
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = new GregorianCalendar( GMT, Locale.ROOT );
         calendar.setTime( date );
         GeneralizedTime gt = new GeneralizedTime( calendar );
         assertEquals( "calendar time must equal the date time", date.getTime(), calendar.getTime().getTime() );
@@ -1208,5 +1214,24 @@ public class GeneralizedTimeTest
 
         assertEquals( "The time after round trip GeneralizedTime generation should stay the same",
             originalTime, recalculatedTime );
+    }
+
+    static DateFormat format = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss.SSSS z", Locale.ROOT );
+
+    @Test
+    public void fractionCloseToOne() throws ParseException
+    {
+        GeneralizedTime close = new GeneralizedTime( "20000101000000.9994Z" );
+        
+        assertThat( close.getDate(), is( equalTo( format.parse( "01/01/2000 00:00:00.999 GMT" ) ) ) );
+        
+        GeneralizedTime closer = new GeneralizedTime( "20000101000000.9995Z" );
+        
+        assertThat( closer.getDate(), is( equalTo( format.parse( "01/01/2000 00:00:00.999 GMT" ) ) ) );
+
+        GeneralizedTime larger = new GeneralizedTime( "20000101000000.9Z" );
+        
+        assertThat( larger.getDate(), is( equalTo( format.parse( "01/01/2000 00:00:00.900 GMT" ) ) ) );
+        
     }
 }

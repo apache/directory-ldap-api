@@ -22,13 +22,12 @@ package org.apache.directory.api.ldap.model.name;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.FastDnParser;
-import org.apache.directory.api.ldap.model.name.TooComplexException;
+import org.apache.directory.api.ldap.model.name.TooComplexDnException;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,7 +40,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  * Tests the fast Dn parser.
  * 
  * The test cases are copied from DnParserTest and adjusted when an
- * TooComplexException is expected.
+ * TooComplexDnException is expected.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -176,7 +175,7 @@ public class FastDnParserTest
         assertEquals( "a", dn.getRdn().getAva().getType() );
         assertEquals( "a", dn.getRdn().getAva().getNormType() );
         assertEquals( "b", dn.getRdn().getAva().getValue().getValue() );
-        assertEquals( "b", dn.getRdn().getAva().getNormValue().getValue() );
+        assertEquals( "b", dn.getRdn().getAva().getValue().getNormValue() );
     }
 
 
@@ -216,22 +215,25 @@ public class FastDnParserTest
         assertEquals( "a=b;c=d,e=f", dn.getName() );
     }
 
+    /**
+     * Test an attributeType with '_' (Microsoft morons support...)
+     */
+    @Test
+    public void testAttributeTypeWithUnderscore() throws LdapException
+    {
+        Dn dn = FastDnParser.parse( "microsoft_developpers=morons" );
+        assertEquals( "microsoft_developpers=morons", dn.getNormName() );
+    }
 
+    
     /**
      * test a simple Dn with multiple NameComponents : a = b + c = d
      */
-    @Test
+    @Test(expected=TooComplexDnException.class)
     public void testLdapDNSimpleMultivaluedAttribute() throws LdapException
     {
-        try
-        {
-            FastDnParser.parse( "a = b + c = d" );
-            fail( "Multivalued Rdn not supported by fast parser" );
-        }
-        catch ( TooComplexException tce )
-        {
-            // expected
-        }
+        FastDnParser.parse( "a = b + c = d" );
+        fail( "Multivalued Rdn not supported by fast parser" );
     }
 
 
@@ -239,54 +241,33 @@ public class FastDnParserTest
      * test a composite Dn with multiple NC and separators : a=b+c=d, e=f + g=h +
      * i=j
      */
-    @Test
+    @Test(expected=TooComplexDnException.class)
     public void testLdapDNCompositeMultivaluedAttribute() throws LdapException
     {
-        try
-        {
-            FastDnParser.parse( "a=b+c=d, e=f + g=h + i=j" );
-            fail( "Multivalued Rdn not supported by fast parser" );
-        }
-        catch ( TooComplexException tce )
-        {
-            // expected
-        }
+        FastDnParser.parse( "a=b+c=d, e=f + g=h + i=j" );
+        fail( "Multivalued Rdn not supported by fast parser" );
     }
 
 
     /**
      * test a simple Dn with an oid prefix (uppercase) : OID.12.34.56 = azerty
      */
-    @Test
+    @Test(expected=TooComplexDnException.class)
     public void testLdapDNOidUpper() throws LdapException
     {
-        try
-        {
-            FastDnParser.parse( "OID.12.34.56 = azerty" );
-            fail( "OID prefix not supported by fast parser" );
-        }
-        catch ( Exception e )
-        {
-            // expected
-        }
+        FastDnParser.parse( "OID.12.34.56 = azerty" );
+        fail( "OID prefix not supported by fast parser" );
     }
 
 
     /**
      * test a simple Dn with an oid prefix (lowercase) : oid.12.34.56 = azerty
      */
-    @Test
+    @Test(expected=TooComplexDnException.class)
     public void testLdapDNOidLower() throws LdapException
     {
-        try
-        {
-            FastDnParser.parse( "oid.12.34.56 = azerty" );
-            fail( "OID prefix not supported by fast parser" );
-        }
-        catch ( Exception e )
-        {
-            // expected
-        }
+        FastDnParser.parse( "oid.12.34.56 = azerty" );
+        fail( "OID prefix not supported by fast parser" );
     }
 
 
@@ -319,72 +300,44 @@ public class FastDnParserTest
     /**
      * test a simple Dn with pair char attribute value : a = \,\=\+\<\>\#\;\\\"\C3\A9"
      */
-    @Test
+    @Test(expected=TooComplexDnException.class)
     public void testLdapDNPairCharAttributeValue() throws LdapException
     {
-        try
-        {
-            FastDnParser.parse( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C3\\A9" );
-            fail( "Complex DNs not supported by fast parser" );
-        }
-        catch ( TooComplexException tce )
-        {
-            // expected
-        }
+        FastDnParser.parse( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C3\\A9" );
+        fail( "Complex DNs not supported by fast parser" );
     }
 
 
     /**
      * test a simple Dn with hexString attribute value : a = #0010A0AAFF
      */
-    @Test
+    @Test(expected=TooComplexDnException.class)
     public void testLdapDNHexStringAttributeValue() throws LdapException
     {
-        try
-        {
-            FastDnParser.parse( "a = #0010A0AAFF" );
-            fail( "Hex DNs not supported by fast parser" );
-        }
-        catch ( TooComplexException tce )
-        {
-            // expected
-        }
+        FastDnParser.parse( "a = #0010A0AAFF" );
+        fail( "Hex DNs not supported by fast parser" );
     }
 
 
     /**
      * test exception from illegal hexString attribute value : a=#zz.
      */
-    @Test
+    @Test(expected=TooComplexDnException.class)
     public void testBadLdapDNHexStringAttributeValue() throws LdapException
     {
-        try
-        {
-            FastDnParser.parse( "a=#zz" );
-            fail( "Hex DNs not supported by fast parser" );
-        }
-        catch ( TooComplexException tce )
-        {
-            // expected
-        }
+        FastDnParser.parse( "a=#zz" );
+        fail( "Hex DNs not supported by fast parser" );
     }
 
 
     /**
      * test a simple Dn with quoted attribute value : a = "quoted \"value"
      */
-    @Test
+    @Test(expected=TooComplexDnException.class)
     public void testLdapDNQuotedAttributeValue() throws LdapException
     {
-        try
-        {
-            FastDnParser.parse( "a = quoted \\\"value" );
-            fail( "Quotes not supported by fast parser" );
-        }
-        catch ( TooComplexException tce )
-        {
-            // expected
-        }
+        FastDnParser.parse( "a = quoted \\\"value" );
+        fail( "Quotes not supported by fast parser" );
     }
 
 
@@ -412,8 +365,8 @@ public class FastDnParserTest
 
         Dn name = FastDnParser.parse( dn );
 
-        assertEquals( dn, name.getName() );
-        assertEquals( "cn=Emmanuel  L\\C3\\A9charny", name.getNormName() );
+        assertEquals( "CN = Emmanuel  L\u00e9charny", name.getName() );
+        assertEquals( "cn=Emmanuel  L\u00e9charny", name.getNormName() );
     }
 
 
@@ -425,32 +378,22 @@ public class FastDnParserTest
 
         Dn name = FastDnParser.parse( dn );
 
-        assertEquals( dn, name.getName() );
-        assertEquals( "c=E\\C3\\A9c", name.getNormName() );
+        assertEquals( "C= E\u00e9c", name.getName() );
+        assertEquals( "c=E\u00e9c", name.getNormName() );
     }
 
 
-    @Test
+    @Test(expected=TooComplexDnException.class)
     public void testVsldapExtras() throws LdapException
     {
-        try
-        {
-            FastDnParser
-                .parse( "cn=Billy Bakers, OID.2.5.4.11=Corporate Tax, ou=Fin-Accounting, ou=Americas, ou=Search, o=IMC, c=US" );
-            fail( "OID prefix not supported by fast parser" );
-        }
-        catch ( TooComplexException tce )
-        {
-            // expected
-        }
+        FastDnParser
+            .parse( "cn=Billy Bakers, OID.2.5.4.11=Corporate Tax, ou=Fin-Accounting, ou=Americas, ou=Search, o=IMC, c=US" );
+        fail( "OID prefix not supported by fast parser" );
     }
 
 
     /**
      * Class under test for Name parse(String)
-     *
-     * @throws LdapException
-     *             if anything goes wrong
      */
     @Test
     public final void testParseStringEmpty() throws LdapException
@@ -463,9 +406,6 @@ public class FastDnParserTest
 
     /**
      * Class under test for Name parse(String)
-     *
-     * @throws LdapException
-     *             if anything goes wrong
      */
     @Test
     public final void testParseStringNull() throws LdapException
@@ -478,9 +418,6 @@ public class FastDnParserTest
 
     /**
      * Class under test for Name parse(String)
-     *
-     * @throws LdapException
-     *             if anything goes wrong
      */
     @Test
     public final void testParseStringRFC1779_1() throws LdapException
@@ -498,9 +435,6 @@ public class FastDnParserTest
 
     /**
      * Class under test for Name parse(String)
-     *
-     * @throws LdapException
-     *             if anything goes wrong
      */
     @Test
     public final void testParseStringRFC2253_1() throws LdapException
@@ -513,114 +447,61 @@ public class FastDnParserTest
 
     /**
      * Class under test for Name parse(String)
-     *
-     * @throws LdapException
-     *             if anything goes wrong
      */
-    @Test
+    @Test(expected=TooComplexDnException.class)
     public final void testParseStringRFC2253_2() throws LdapException
     {
-        try
-        {
-            FastDnParser.parse( "CN = Sales + CN =   J. Smith , O = Widget Inc. , C = US" );
-            fail( "Multivalued Rdn not supported by fast parser" );
-        }
-        catch ( TooComplexException tce )
-        {
-            // expected
-        }
+        FastDnParser.parse( "CN = Sales + CN =   J. Smith , O = Widget Inc. , C = US" );
+        fail( "Multivalued Rdn not supported by fast parser" );
     }
 
 
     /**
      * Class under test for Name parse(String)
-     *
-     * @throws LdapException
-     *             if anything goes wrong
      */
-    @Test
+    @Test(expected=TooComplexDnException.class)
     public final void testParseStringRFC2253_3() throws LdapException
     {
-        try
-        {
-            FastDnParser.parse( "CN=L. Eagle,   O=Sue\\, Grabbit and Runn, C=GB" );
-            fail( "Complex DNs not supported by fast parser" );
-        }
-        catch ( TooComplexException tce )
-        {
-            // expected
-        }
+        FastDnParser.parse( "CN=L. Eagle,   O=Sue\\, Grabbit and Runn, C=GB" );
+        fail( "Complex DNs not supported by fast parser" );
     }
 
 
     /**
      * Class under test for Name parse(String)
-     *
-     * @throws LdapException
-     *             if anything goes wrong
      */
-    @Test
+    @Test(expected=TooComplexDnException.class)
     public final void testParseStringRFC2253_4() throws LdapException
     {
-        try
-        {
-            FastDnParser.parse( "CN=Before\\0DAfter,O=Test,C=GB" );
-            fail( "Complex DNs not supported by fast parser" );
-        }
-        catch ( TooComplexException tce )
-        {
-            // expected
-        }
+        FastDnParser.parse( "CN=Before\\0DAfter,O=Test,C=GB" );
+        fail( "Complex DNs not supported by fast parser" );
     }
 
 
     /**
      * Class under test for Name parse(String)
-     *
-     * @throws LdapException
-     *             if anything goes wrong
      */
-    @Test
+    @Test(expected=TooComplexDnException.class)
     public final void testParseStringRFC2253_5() throws LdapException
     {
-        try
-        {
-            FastDnParser.parse( "1.3.6.1.4.1.1466.0=#04024869,O=Test,C=GB" );
-            fail( "Hex DNs not supported by fast parser" );
-        }
-        catch ( TooComplexException tce )
-        {
-            // expected
-        }
+        FastDnParser.parse( "1.3.6.1.4.1.1466.0=#04024869,O=Test,C=GB" );
+        fail( "Hex DNs not supported by fast parser" );
     }
 
 
     /**
      * Class under test for Name parse(String)
-     *
-     * @throws LdapException
-     *             if anything goes wrong
      */
-    @Test
+    @Test(expected=TooComplexDnException.class)
     public final void testParseStringRFC2253_6() throws LdapException
     {
-        try
-        {
-            FastDnParser.parse( "SN=Lu\\C4\\8Di\\C4\\87" );
-            fail( "Complex DNs not supported by fast parser" );
-        }
-        catch ( TooComplexException tce )
-        {
-            // expected
-        }
+        FastDnParser.parse( "SN=Lu\\C4\\8Di\\C4\\87" );
+        fail( "Complex DNs not supported by fast parser" );
     }
 
 
     /**
      * Class under test for Name parse(String)
-     *
-     * @throws LdapException
-     *             if anything goes wrong
      */
     @Test
     public final void testParseInvalidString()
@@ -642,41 +523,25 @@ public class FastDnParserTest
      * value of a name component. This test was added to try to reproduce the
      * bug encountered in DIREVE-179 <a
      * href="http://issues.apache.org/jira/browse/DIREVE-179"> here</a>.
-     *
-     * @throws LdapException
-     *             if anything goes wrong on parse()
      */
-    @Test
+    @Test(expected=TooComplexDnException.class)
     public final void testPreserveSpaceAfterEscape() throws LdapException
     {
         String input = "ou=some test\\,  something else";
 
-        try
-        {
-            FastDnParser.parse( input ).toString();
-            fail( "Complex DNs not supported by fast parser" );
-        }
-        catch ( TooComplexException tce )
-        {
-            // expected
-        }
+        FastDnParser.parse( input ).toString();
+        fail( "Complex DNs not supported by fast parser" );
     }
 
 
-    @Test
+    @Test(expected=TooComplexDnException.class)
     public void testWindowsFilePath() throws Exception
     {
         // '\' should be escaped as stated in RFC 2253
         String path = "windowsFilePath=C:\\\\cygwin";
-        try
-        {
-            FastDnParser.parse( path );
-            fail( "Complex DNs not supported by fast parser" );
-        }
-        catch ( TooComplexException tce )
-        {
-            // expected
-        }
+
+        FastDnParser.parse( path );
+        fail( "Complex DNs not supported by fast parser" );
     }
 
 
@@ -690,7 +555,6 @@ public class FastDnParserTest
         String result = FastDnParser.parse( cn ).toString();
 
         assertEquals( "cn=J\u00e9r\u00f4me", result );
-
     }
 
 
@@ -708,6 +572,10 @@ public class FastDnParserTest
     }
 
 
+    /**
+     * Test that we can have non-ascii characters in a DN when we use the 
+     * fast DN parser
+     */
     @Test
     public void testNameTurkishChars() throws Exception
     {
@@ -724,62 +592,46 @@ public class FastDnParserTest
     }
 
 
-    @Test
+    /**
+     * Test that we can have non-ascii characters in a DN when we use the 
+     * fast DN parser, but not followded by bytes
+     */
+    @Test(expected=TooComplexDnException.class)
     public void testAUmlautPlusBytes() throws Exception
     {
         String cn = new String( new byte[]
             { 'c', 'n', '=', ( byte ) 0xC3, ( byte ) 0x84, 0x5C, 0x32, 0x42 }, "UTF-8" );
-        try
-        {
-            FastDnParser.parse( cn ).toString();
-            fail( "DNs with special characters not supported by fast parser" );
-        }
-        catch ( TooComplexException tce )
-        {
-            // expected
-        }
+
+        FastDnParser.parse( cn ).toString();
+        fail( "DNs with special characters not supported by fast parser" );
     }
 
 
-    @Test
+    /**
+     * Test that we can't have escaped characters in a DN when we use the 
+     * fast DN parser
+     */
+    @Test(expected=TooComplexDnException.class)
     public void testAUmlautPlusChar() throws Exception
     {
         String cn = new String( new byte[]
             { 'c', 'n', '=', ( byte ) 0xC3, ( byte ) 0x84, '\\', '+' }, "UTF-8" );
 
-        try
-        {
-            FastDnParser.parse( cn ).toString();
-            fail( "DNs with special characters not supported by fast parser" );
-        }
-        catch ( TooComplexException tce )
-        {
-            // expected
-        }
+        FastDnParser.parse( cn ).toString();
+        fail( "DNs with special characters not supported by fast parser" );
     }
 
 
     /**
      * Test to check that even with a non escaped char, the Dn is parsed ok
      * or at least an error is generated.
-     *
-     * @throws LdapException
-     *             if anything goes wrong on parse()
      */
-    @Test
+    @Test(expected=TooComplexDnException.class)
     public final void testNonEscapedChars() throws LdapException
     {
         String input = "ou=ou+test";
 
-        try
-        {
-            FastDnParser.parse( input ).toString();
-            fail( "Should never reach this point" );
-        }
-        catch ( TooComplexException tce )
-        {
-            assertTrue( true );
-            return;
-        }
+        FastDnParser.parse( input ).toString();
+        fail( "Should never reach this point" );
     }
 }

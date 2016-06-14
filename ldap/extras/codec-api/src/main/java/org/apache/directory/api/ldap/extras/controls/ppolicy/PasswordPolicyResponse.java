@@ -21,8 +21,8 @@ package org.apache.directory.api.ldap.extras.controls.ppolicy;
 
 
 /**
- * The PasswordPolciy reponse. It contains information about the error if we
- * had one when injecting a bad passsword into the server.
+ * The PasswordPolicy response. It contains information about the error if we
+ * had one when injecting a bad password into the server.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -30,40 +30,52 @@ package org.apache.directory.api.ldap.extras.controls.ppolicy;
 public interface PasswordPolicyResponse
 {
     /**
-     * @return The  time before expiration of the password
+     * Returns the time before expiration.  Will return -1 if this warning 
+     * was not present in the response.
+     * 
+     * @return The time before expiration of the password, or -1 if not set
      */
     int getTimeBeforeExpiration();
 
 
     /**
-     * Set a date of expiration for the password
+     * Set a date of expiration for the password.
+     * 
      * @param timeBeforeExpiration The time before the password will expire
      */
     void setTimeBeforeExpiration( int timeBeforeExpiration );
 
 
     /**
+     * Returns the number of possible attempts on the password before it's 
+     * locked.  Will return -1 if this warning was not present in the 
+     * response.
+     * 
      * @return The number of possible attempts on the password before it's locked
      */
-    int getGraceAuthNsRemaining();
+    int getGraceAuthNRemaining();
 
 
     /**
-     * Sets the number of remaining wrong authentication for this password
-     * @param graceAuthNsRemaining The number of remaining attempts
+     * Sets the number of remaining wrong authentication for this password.
+     * 
+     * @param graceAuthNRemaining The number of remaining attempts
      */
-    void setGraceAuthNsRemaining( int graceAuthNsRemaining );
+    void setGraceAuthNRemaining( int graceAuthNRemaining );
 
 
     /**
-     * @return The PasswordPolicy error number
+     * Returns the password policy error.
+     * 
+     * @return The PasswordPolicyErrorEnum representing the error
      */
     PasswordPolicyErrorEnum getPasswordPolicyError();
 
 
     /**
-     * Sets the PasswordPolicy error number
-     * @param ppolicyError The error number
+     * Sets the PasswordPolicy error.
+     * 
+     * @param ppolicyError The PasswordPolicyErrorEnum representing the error
      */
     void setPasswordPolicyError( PasswordPolicyErrorEnum ppolicyError );
 }

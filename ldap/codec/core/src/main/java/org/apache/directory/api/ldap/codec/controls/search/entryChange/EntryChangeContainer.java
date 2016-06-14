@@ -45,8 +45,7 @@ public class EntryChangeContainer extends AbstractContainer
     {
         super();
         this.codec = codec;
-        stateStack = new int[1];
-        grammar = EntryChangeGrammar.getInstance();
+        setGrammar( EntryChangeGrammar.getInstance() );
         setTransition( EntryChangeStates.START_STATE );
     }
 

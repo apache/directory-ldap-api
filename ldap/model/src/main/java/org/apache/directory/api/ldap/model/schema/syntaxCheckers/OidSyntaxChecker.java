@@ -120,7 +120,9 @@ public class OidSyntaxChecker extends SyntaxChecker
         {
             for ( int index = 0; index < strValue.length(); index++ )
             {
-                if ( !Chars.isAlphaDigitMinus( strValue, index ) )
+                char c = strValue.charAt( index );
+                
+                if ( !Chars.isAlphaDigitMinus( c ) )
                 {
                     LOG.debug( "Syntax invalid for '{}'", value );
                     return false;

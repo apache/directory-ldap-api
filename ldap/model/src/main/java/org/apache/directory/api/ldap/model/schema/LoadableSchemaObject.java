@@ -30,8 +30,6 @@ import org.apache.directory.api.util.Strings;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-// super.hashCode is final
-@SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public abstract class LoadableSchemaObject extends AbstractSchemaObject
 {
     /** The serial version UID */

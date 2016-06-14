@@ -114,29 +114,55 @@ public enum SearchScope
 
 
     /**
+     * Gets the SeacrhScope associated with a scope String
+     * 
+     * @return the scope
+     */
+    public SearchScope getScope( String scope )
+    {
+        if ( "base".equalsIgnoreCase( scope ) )
+        {
+            return OBJECT;
+        }
+        else if ( "one".equalsIgnoreCase( scope ) )
+        {
+            return ONELEVEL;
+        }
+        else if ( "sub".equalsIgnoreCase( scope ) )
+        {
+            return SUBTREE;
+        }
+        else
+        {
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04161, scope ) );
+        }
+    }
+
+
+    /**
      * Gets the SearchScope enumerated type for the corresponding 
-     * LDAP URL scope value of either base, one or sub.
+     * scope value of either base, one or sub.
      *
-     * @param ldapUrlValue the LDAP URL scope value to get SearchScope for
+     * @param scope the scope value to get SearchScope for
      * @return the SearchScope enumerated type for the LDAP URL scope value
      */
-    public static int getSearchScope( String ldapUrlValue )
+    public static int getSearchScope( String scope )
     {
-        if ( "base".equalsIgnoreCase( ldapUrlValue ) )
+        if ( "base".equalsIgnoreCase( scope ) )
         {
             return OBJECT.getScope();
         }
-        else if ( "one".equalsIgnoreCase( ldapUrlValue ) )
+        else if ( "one".equalsIgnoreCase( scope ) )
         {
             return ONELEVEL.getScope();
         }
-        else if ( "sub".equalsIgnoreCase( ldapUrlValue ) )
+        else if ( "sub".equalsIgnoreCase( scope ) )
         {
             return SUBTREE.getScope();
         }
         else
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04161, ldapUrlValue ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04161, scope ) );
         }
     }
 

@@ -20,15 +20,12 @@
 package org.apache.directory.api.ldap.model.message;
 
 
-import org.apache.directory.api.ldap.model.exception.MessageException;
-
-
 /**
  * ExtendedRequest implementation.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ExtendedRequestImpl extends AbstractRequest implements ExtendedRequest<ExtendedResponse>
+public class ExtendedRequestImpl extends AbstractRequest implements ExtendedRequest
 {
     static final long serialVersionUID = 7916990159044177480L;
 
@@ -45,7 +42,7 @@ public class ExtendedRequestImpl extends AbstractRequest implements ExtendedRequ
      */
     public ExtendedRequestImpl()
     {
-        super( -1, TYPE, true );
+        super( -1, MessageTypeEnum.EXTENDED_REQUEST, true );
     }
 
 
@@ -70,7 +67,7 @@ public class ExtendedRequestImpl extends AbstractRequest implements ExtendedRequ
      * 
      * @param newOid the dotted-decimal representation as a String of the OID
      */
-    public ExtendedRequest<ExtendedResponse> setRequestName( String newOid )
+    public ExtendedRequest setRequestName( String newOid )
     {
         this.oid = newOid;
 
@@ -81,7 +78,7 @@ public class ExtendedRequestImpl extends AbstractRequest implements ExtendedRequ
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequest<ExtendedResponse> setMessageId( int messageId )
+    public ExtendedRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
 
@@ -92,27 +89,27 @@ public class ExtendedRequestImpl extends AbstractRequest implements ExtendedRequ
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequest<ExtendedResponse> addControl( Control control ) throws MessageException
+    public ExtendedRequest addControl( Control control )
     {
-        return ( ExtendedRequest<ExtendedResponse> ) super.addControl( control );
+        return ( ExtendedRequest ) super.addControl( control );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequest<ExtendedResponse> addAllControls( Control[] controls ) throws MessageException
+    public ExtendedRequest addAllControls( Control[] controls )
     {
-        return ( ExtendedRequest<ExtendedResponse> ) super.addAllControls( controls );
+        return ( ExtendedRequest ) super.addAllControls( controls );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequest<ExtendedResponse> removeControl( Control control ) throws MessageException
+    public ExtendedRequest removeControl( Control control )
     {
-        return ( ExtendedRequest<ExtendedResponse> ) super.removeControl( control );
+        return ( ExtendedRequest ) super.removeControl( control );
     }
 
 
@@ -128,7 +125,7 @@ public class ExtendedRequestImpl extends AbstractRequest implements ExtendedRequ
      */
     public MessageTypeEnum getResponseType()
     {
-        return RESP_TYPE;
+        return MessageTypeEnum.EXTENDED_RESPONSE;
     }
 
 
@@ -137,7 +134,7 @@ public class ExtendedRequestImpl extends AbstractRequest implements ExtendedRequ
      * 
      * @return the result containing response for this request
      */
-    public ExtendedResponseImpl getResultResponse()
+    public ExtendedResponse getExtendedResponse()
     {
         if ( response == null )
         {
@@ -145,6 +142,15 @@ public class ExtendedRequestImpl extends AbstractRequest implements ExtendedRequ
         }
 
         return response;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public ExtendedResponse getResultResponse()
+    {
+        return getExtendedResponse();
     }
 
 
@@ -188,7 +194,7 @@ public class ExtendedRequestImpl extends AbstractRequest implements ExtendedRequ
             return false;
         }
 
-        ExtendedRequest<?> req = ( ExtendedRequest<?> ) obj;
+        ExtendedRequest req = ( ExtendedRequest ) obj;
 
         if ( ( oid != null ) && ( req.getRequestName() == null ) )
         {

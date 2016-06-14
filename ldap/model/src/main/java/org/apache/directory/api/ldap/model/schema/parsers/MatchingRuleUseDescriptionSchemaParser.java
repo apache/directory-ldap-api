@@ -24,8 +24,6 @@ import java.text.ParseException;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.MatchingRuleUse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
@@ -36,17 +34,15 @@ import antlr.TokenStreamException;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class MatchingRuleUseDescriptionSchemaParser extends AbstractSchemaParser
+public class MatchingRuleUseDescriptionSchemaParser extends AbstractSchemaParser<MatchingRuleUse>
 {
-    /** The LoggerFactory used by this class */
-    protected static final Logger LOG = LoggerFactory.getLogger( MatchingRuleUseDescriptionSchemaParser.class );
-
 
     /**
      * Creates a schema parser instance.
      */
     public MatchingRuleUseDescriptionSchemaParser()
     {
+        super( MatchingRuleUse.class, I18n.ERR_04245, I18n.ERR_04246, I18n.ERR_04247 );
     }
 
 
@@ -70,53 +66,19 @@ public class MatchingRuleUseDescriptionSchemaParser extends AbstractSchemaParser
      * @return the parsed MatchingRuleUseDescription bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public synchronized MatchingRuleUse parseMatchingRuleUseDescription( String matchingRuleUseDescription )
-        throws ParseException
+    public MatchingRuleUse parseMatchingRuleUseDescription( String matchingRuleUseDescription ) throws ParseException
     {
-        LOG.debug( "Parsing a MatchingRuleUse : {}", matchingRuleUseDescription );
-
-        if ( matchingRuleUseDescription == null )
-        {
-            LOG.error( I18n.err( I18n.ERR_04245 ) );
-            throw new ParseException( "Null", 0 );
-        }
-
-        reset( matchingRuleUseDescription ); // reset and initialize the parser / lexer pair
-
-        try
-        {
-            MatchingRuleUse matchingRuleUse = parser.matchingRuleUseDescription();
-
-            // Update the schemaName
-            updateSchemaName( matchingRuleUse );
-
-            return matchingRuleUse;
-        }
-        catch ( RecognitionException re )
-        {
-            String msg = I18n.err( I18n.ERR_04246, matchingRuleUseDescription, re.getMessage(), re.getColumn() );
-            LOG.error( msg );
-            throw new ParseException( msg, re.getColumn() );
-        }
-        catch ( TokenStreamException tse )
-        {
-            String msg = I18n.err( I18n.ERR_04247, matchingRuleUseDescription, tse.getMessage() );
-            LOG.error( msg );
-            throw new ParseException( msg, 0 );
-        }
-
+        return super.parse( matchingRuleUseDescription );
     }
 
 
     /**
-     * Parses a MatchingRuleUse description.
-     * 
-     * @param schemaDescription The MatchingRuleUse description to parse
-     * @return An instance of MatchingRuleUse
-     * @throws ParseException {@inheritDoc}
+     * {@inheritDoc}
      */
-    public MatchingRuleUse parse( String schemaDescription ) throws ParseException
+    @Override
+    protected MatchingRuleUse doParse() throws RecognitionException, TokenStreamException
     {
-        return parseMatchingRuleUseDescription( schemaDescription );
+        return parser.matchingRuleUseDescription();
     }
+
 }

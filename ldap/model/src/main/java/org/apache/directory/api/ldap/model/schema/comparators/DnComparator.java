@@ -41,7 +41,6 @@ public class DnComparator extends LdapComparator<Object>
     /** A reference to the schema manager */
     private SchemaManager schemaManager;
 
-
     public DnComparator( String oid )
     {
         super( oid );
@@ -67,14 +66,25 @@ public class DnComparator extends LdapComparator<Object>
             return -1;
         }
 
+        int dn0Size = dn0.getRdns().size();
+        int dn1Size = dn1.getRdns().size();
+        
+        // check the equality first, cause
+        // when both DNs are equal checking isAncestorOf() returns true
         if ( dn0.equals( dn1 ) )
         {
             return 0;
         }
-        else
+        else if ( dn0Size > dn1Size )
         {
             return -1;
         }
+        else if ( dn1Size > dn0Size )
+        {
+            return 1;
+        }
+
+        return dn0.getNormName().compareTo( dn1.getNormName() );
     }
 
 

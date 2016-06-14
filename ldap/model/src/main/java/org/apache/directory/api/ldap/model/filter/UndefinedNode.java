@@ -29,7 +29,7 @@ package org.apache.directory.api.ldap.model.filter;
 public final class UndefinedNode extends AbstractExprNode
 {
     /** A static instance of this node */
-    public static final ExprNode UNDEFINED_NODE = new UndefinedNode();
+    public static final UndefinedNode UNDEFINED_NODE = new UndefinedNode();
 
 
     /**

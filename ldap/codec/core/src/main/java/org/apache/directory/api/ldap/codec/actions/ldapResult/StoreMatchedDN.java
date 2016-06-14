@@ -112,13 +112,13 @@ public class StoreMatchedDN extends GrammarAction<LdapMessageContainer<MessageDe
                             .getLocalizedMessage() );
                         LOG.error( msg );
 
-                        throw new DecoderException( I18n.err( I18n.ERR_04014, ine.getLocalizedMessage() ) );
+                        throw new DecoderException( I18n.err( I18n.ERR_04014, ine.getLocalizedMessage() ), ine );
                     }
 
                     break;
 
                 default:
-                    LOG.warn( "The matched Dn should not be set when the result code is one of NoSuchObject,"
+                    LOG.warn( "The matched Dn should not be set when the result code is not one of NoSuchObject,"
                         + " AliasProblem, InvalidDNSyntax or AliasDreferencingProblem" );
 
                     matchedDn = Dn.EMPTY_DN;

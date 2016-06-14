@@ -29,10 +29,6 @@ package org.apache.directory.api.ldap.model.message;
  */
 public interface SearchResultReference extends Response
 {
-    /** Search reference response message type enumeration value */
-    MessageTypeEnum TYPE = MessageTypeEnum.SEARCH_RESULT_REFERENCE;
-
-
     /**
      * Gets the sequence of LdapUrls as a Referral instance.
      * 

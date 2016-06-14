@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-/* no qualifier*/class NormalizingComparator extends LdapComparator<String>
+public class NormalizingComparator extends LdapComparator<String>
 {
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
@@ -46,6 +46,8 @@ import org.slf4j.LoggerFactory;
 
     /** the underlying comparator to use for comparisons */
     private LdapComparator<String> comparator;
+
+    private boolean onServer = false;
 
 
     /**
@@ -68,6 +70,11 @@ import org.slf4j.LoggerFactory;
      */
     public int compare( String o1, String o2 )
     {
+        if ( onServer )
+        {
+            return comparator.compare( o1, o2 );
+        }
+
         String n1;
         String n2;
 
@@ -107,5 +114,15 @@ import org.slf4j.LoggerFactory;
         super.setOid( oid );
         normalizer.setOid( oid );
         comparator.setOid( oid );
+    }
+
+
+    /**
+     * tells that the normalizingComparator should not normalize values which are
+     * already normalized on the server 
+     */
+    public void setOnServer()
+    {
+        this.onServer = true;
     }
 }

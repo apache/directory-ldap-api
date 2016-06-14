@@ -93,7 +93,7 @@ public class DummySSLSocketFactory extends SSLSocketFactory
             };
             TrustManager[] tma =
                 { tm };
-            SSLContext sc = SSLContext.getInstance( "TLS" ); //$NON-NLS-1$
+            SSLContext sc = SSLContext.getInstance( "TLS" );
             sc.init( null, tma, new SecureRandom() );
             delegate = sc.getSocketFactory();
         }

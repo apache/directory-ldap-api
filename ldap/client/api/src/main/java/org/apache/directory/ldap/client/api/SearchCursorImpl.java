@@ -32,12 +32,14 @@ import org.apache.directory.api.ldap.model.cursor.InvalidCursorPositionException
 import org.apache.directory.api.ldap.model.cursor.SearchCursor;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapReferralException;
 import org.apache.directory.api.ldap.model.message.IntermediateResponse;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.message.Response;
 import org.apache.directory.api.ldap.model.message.SearchResultDone;
 import org.apache.directory.api.ldap.model.message.SearchResultEntry;
 import org.apache.directory.api.ldap.model.message.SearchResultReference;
+import org.apache.directory.ldap.client.api.exception.LdapConnectionTimeOutException;
 import org.apache.directory.ldap.client.api.future.SearchFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,7 +102,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     /**
      * {@inheritDoc}
      */
-    public boolean next() throws LdapException, CursorException, IOException
+    public boolean next() throws LdapException, CursorException
     {
         if ( done )
         {
@@ -129,7 +131,14 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
             }
 
             // close the cursor
-            close( ldapException );
+            try 
+            {
+                close( ldapException );
+            }
+            catch ( IOException ioe )
+            {
+                throw new LdapException( ioe.getMessage(), ioe );
+            }
 
             throw ldapException;
         }
@@ -138,7 +147,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
         {
             future.cancel( true );
 
-            throw new LdapException( LdapNetworkConnection.TIME_OUT_ERROR );
+            throw new LdapConnectionTimeOutException( LdapNetworkConnection.TIME_OUT_ERROR );
         }
 
         done = ( response instanceof SearchResultDone );
@@ -146,6 +155,10 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
         if ( done )
         {
             searchDoneResp = ( SearchResultDone ) response;
+
+            // Process the response and throw an exception if needed
+            //ResultCodeEnum.processResponse( searchDoneResp );
+
             response = null;
         }
 
@@ -156,7 +169,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     /**
      * {@inheritDoc}
      */
-    public Response get() throws InvalidCursorPositionException, IOException
+    public Response get() throws InvalidCursorPositionException
     {
         if ( !available() )
         {
@@ -189,7 +202,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
      * {@inheritDoc}
      */
     @Override
-    public void close()
+    public void close() throws IOException
     {
         if ( IS_DEBUG )
         {
@@ -204,7 +217,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
      * {@inheritDoc}
      */
     @Override
-    public void close( Exception cause )
+    public void close( Exception cause ) throws IOException
     {
         if ( IS_DEBUG )
         {
@@ -239,7 +252,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public void after( Response element ) throws LdapException, CursorException, IOException
+    public void after( Response element ) throws LdapException, CursorException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "after( Response element )" ) ) );
@@ -250,7 +263,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public void afterLast() throws LdapException, CursorException, IOException
+    public void afterLast() throws LdapException, CursorException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "afterLast()" ) ) );
@@ -261,7 +274,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public void before( Response element ) throws LdapException, CursorException, IOException
+    public void before( Response element ) throws LdapException, CursorException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "before( Response element )" ) ) );
@@ -272,7 +285,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public void beforeFirst() throws LdapException, CursorException, IOException
+    public void beforeFirst() throws LdapException, CursorException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "beforeFirst()" ) ) );
@@ -283,7 +296,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public boolean first() throws LdapException, CursorException, IOException
+    public boolean first() throws LdapException, CursorException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "first()" ) ) );
@@ -294,7 +307,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public boolean last() throws LdapException, CursorException, IOException
+    public boolean last() throws LdapException, CursorException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "last()" ) ) );
@@ -305,7 +318,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public boolean previous() throws LdapException, CursorException, IOException
+    public boolean previous() throws LdapException, CursorException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "previous()" ) ) );
@@ -361,6 +374,12 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
         if ( isEntry() )
         {
             return ( ( SearchResultEntry ) response ).getEntry();
+        }
+        
+        if ( isReferral() )
+        {
+            Referral referral = ( ( SearchResultReference ) response ).getReferral();
+            throw new LdapReferralException( referral.getLdapUrls() );
         }
 
         throw new LdapException();

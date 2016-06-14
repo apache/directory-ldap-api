@@ -90,28 +90,42 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     private Dn subschemaSubentryDn;
 
     /** The SubschemaSubentry descriptions parsers */
-    private static AttributeTypeDescriptionSchemaParser AT_DESCR_SCHEMA_PARSER = new AttributeTypeDescriptionSchemaParser();
-    private static DitStructureRuleDescriptionSchemaParser DSR_DESCR_SCHEMA_PARSER = new DitStructureRuleDescriptionSchemaParser();
-    private static DitContentRuleDescriptionSchemaParser DCR_DESCR_SCHEMA_PARSER = new DitContentRuleDescriptionSchemaParser();
-    private static MatchingRuleDescriptionSchemaParser MR_DESCR_SCHEMA_PARSER = new MatchingRuleDescriptionSchemaParser();
-    private static MatchingRuleUseDescriptionSchemaParser MRU_DESCR_SCHEMA_PARSER = new MatchingRuleUseDescriptionSchemaParser();
-    private static NameFormDescriptionSchemaParser NF_DESCR_SCHEMA_PARSER = new NameFormDescriptionSchemaParser();
-    private static ObjectClassDescriptionSchemaParser OC_DESCR_SCHEMA_PARSER = new ObjectClassDescriptionSchemaParser();
-    private static LdapSyntaxDescriptionSchemaParser LS_DESCR_SCHEMA_PARSER = new LdapSyntaxDescriptionSchemaParser();
+    private static final AttributeTypeDescriptionSchemaParser AT_DESCR_SCHEMA_PARSER = new AttributeTypeDescriptionSchemaParser();
+    private static final DitStructureRuleDescriptionSchemaParser DSR_DESCR_SCHEMA_PARSER = new DitStructureRuleDescriptionSchemaParser();
+    private static final DitContentRuleDescriptionSchemaParser DCR_DESCR_SCHEMA_PARSER = new DitContentRuleDescriptionSchemaParser();
+    private static final MatchingRuleDescriptionSchemaParser MR_DESCR_SCHEMA_PARSER = new MatchingRuleDescriptionSchemaParser();
+    private static final MatchingRuleUseDescriptionSchemaParser MRU_DESCR_SCHEMA_PARSER = new MatchingRuleUseDescriptionSchemaParser();
+    private static final NameFormDescriptionSchemaParser NF_DESCR_SCHEMA_PARSER = new NameFormDescriptionSchemaParser();
+    private static final ObjectClassDescriptionSchemaParser OC_DESCR_SCHEMA_PARSER = new ObjectClassDescriptionSchemaParser();
+    private static final LdapSyntaxDescriptionSchemaParser LS_DESCR_SCHEMA_PARSER = new LdapSyntaxDescriptionSchemaParser();
 
-    private static LdapComparatorDescriptionSchemaParser C_DESCR_SCHEMA_PARSER = new LdapComparatorDescriptionSchemaParser();
-    private static NormalizerDescriptionSchemaParser N_DESCR_SCHEMA_PARSER = new NormalizerDescriptionSchemaParser();
-    private static SyntaxCheckerDescriptionSchemaParser SC_DESCR_SCHEMA_PARSER = new SyntaxCheckerDescriptionSchemaParser();
+    private static final LdapComparatorDescriptionSchemaParser C_DESCR_SCHEMA_PARSER = new LdapComparatorDescriptionSchemaParser();
+    private static final NormalizerDescriptionSchemaParser N_DESCR_SCHEMA_PARSER = new NormalizerDescriptionSchemaParser();
+    private static final SyntaxCheckerDescriptionSchemaParser SC_DESCR_SCHEMA_PARSER = new SyntaxCheckerDescriptionSchemaParser();
 
 
     /**
      * Creates a new instance of DefaultSchemaLoader.
      *
      * @param connection the LDAP connection
-     * @throws Exception if the connection is not authenticated or if there are any problems
+     * @throws LdapException if the connection is not authenticated or if there are any problems
      *                   while loading the schema entries
      */
     public DefaultSchemaLoader( LdapConnection connection ) throws LdapException
+    {
+        this( connection, false );
+    }
+
+
+    /**
+     * Creates a new instance of DefaultSchemaLoader.
+     *
+     * @param connection the LDAP connection
+     * @param initial setting for the relaxed mode
+     * @throws LdapException if the connection is not authenticated or if there are any problems
+     *                   while loading the schema entries
+     */
+    public DefaultSchemaLoader( LdapConnection connection, boolean relaxed ) throws LdapException
     {
         if ( connection == null )
         {
@@ -119,6 +133,8 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
         }
 
         this.connection = connection;
+        setRelaxed( relaxed );
+        setQuirksMode( relaxed );
 
         // Flagging if the connection was already connected
         boolean wasConnected = connection.isConnected();
@@ -132,7 +148,8 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             }
 
             // Getting the subschemaSubentry DN from the rootDSE
-            Entry rootDse = connection.lookup( Dn.ROOT_DSE, SchemaConstants.SUBSCHEMA_SUBENTRY_AT, SchemaConstants.VENDOR_NAME_AT );
+            Entry rootDse = connection.lookup( Dn.ROOT_DSE, SchemaConstants.SUBSCHEMA_SUBENTRY_AT,
+                SchemaConstants.VENDOR_NAME_AT );
 
             if ( rootDse != null )
             {
@@ -146,19 +163,34 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
                     {
                         subschemaSubentryDn = new Dn( connection.getSchemaManager(),
                             subschemaSubentryAttribute.getString() );
-                        
+
                         loadSchemas();
                     }
                 }
                 else
                 {
-                    // TODO Handle schema loading on other LDAP servers
+                    try
+                    {
+                        // No matter what, first try to search the schema from the rootDSE
+                        // Getting the subSchemaSubEntry attribute
+                        Attribute subschemaSubentryAttribute = rootDse.get( SchemaConstants.SUBSCHEMA_SUBENTRY_AT );
+
+                        if ( ( subschemaSubentryAttribute != null ) && ( subschemaSubentryAttribute.size() > 0 ) )
+                        {
+                            subschemaSubentryDn = new Dn( connection.getSchemaManager(),
+                                subschemaSubentryAttribute.getString() );
+
+                            loadSchemas();
+                        }
+                    }
+                    catch ( LdapException le )
+                    {
+                        // TODO : if we can't read the schema from the rootDSE, just try to read the 
+                        // schema from cn=schema
+                        throw le;
+                    }
                 }
             }
-        }
-        catch ( IOException e )
-        {
-            throw new LdapException( e );
         }
         finally
         {
@@ -227,7 +259,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
      * Load all the schemas.
      * 
      * @param subschemaSubentryDn
-     * @throws Exception
+     * @throws LdapException
      */
     private void loadSchemas() throws LdapException
     {
@@ -619,7 +651,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
         if ( schema == null )
         {
-            schema = new DefaultSchema( schemaName );
+            schema = new DefaultSchema( this, schemaName );
 
             schemaMap.put( schemaName, schema );
         }
@@ -1105,5 +1137,29 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
         }
 
         return entry;
+    }
+
+
+    /**
+     * Sets the quirks mode for all the internal parsers.
+     *
+     * If enabled the parser accepts non-numeric OIDs and some
+     * special characters in descriptions.
+     *
+     * @param enabled the new quirks mode
+     */
+    public void setQuirksMode( boolean enabled )
+    {
+        AT_DESCR_SCHEMA_PARSER.setQuirksMode( enabled );
+        C_DESCR_SCHEMA_PARSER.setQuirksMode( enabled );
+        DCR_DESCR_SCHEMA_PARSER.setQuirksMode( enabled );
+        DSR_DESCR_SCHEMA_PARSER.setQuirksMode( enabled );
+        LS_DESCR_SCHEMA_PARSER.setQuirksMode( enabled );
+        MR_DESCR_SCHEMA_PARSER.setQuirksMode( enabled );
+        MRU_DESCR_SCHEMA_PARSER.setQuirksMode( enabled );
+        N_DESCR_SCHEMA_PARSER.setQuirksMode( enabled );
+        NF_DESCR_SCHEMA_PARSER.setQuirksMode( enabled );
+        OC_DESCR_SCHEMA_PARSER.setQuirksMode( enabled );
+        SC_DESCR_SCHEMA_PARSER.setQuirksMode( enabled );
     }
 }

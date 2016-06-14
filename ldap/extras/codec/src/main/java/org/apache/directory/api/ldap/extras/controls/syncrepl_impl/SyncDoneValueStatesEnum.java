@@ -68,7 +68,7 @@ public enum SyncDoneValueStatesEnum implements States
      * @param grammar The grammar class
      * @return The grammar name
      */
-    public String getGrammarName( Grammar grammar )
+    public String getGrammarName( Grammar<SyncDoneValueContainer> grammar )
     {
         if ( grammar instanceof SyncDoneValueGrammar )
         {

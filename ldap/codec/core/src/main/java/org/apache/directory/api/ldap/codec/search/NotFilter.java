@@ -27,7 +27,7 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 
 
 /**
@@ -136,12 +136,12 @@ public class NotFilter extends ConnectorFilter
         try
         {
             // The NotFilter Tag
-            buffer.put( ( byte ) LdapConstants.NOT_FILTER_TAG );
+            buffer.put( ( byte ) LdapCodecConstants.NOT_FILTER_TAG );
             buffer.put( TLV.getBytes( filtersLength ) );
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
 
         super.encode( buffer );

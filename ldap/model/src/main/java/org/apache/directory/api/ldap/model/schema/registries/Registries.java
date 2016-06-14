@@ -55,6 +55,7 @@ import org.apache.directory.api.ldap.model.schema.SchemaObjectWrapper;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.registries.helper.AttributeTypeHelper;
 import org.apache.directory.api.ldap.model.schema.registries.helper.DitContentRuleHelper;
+import org.apache.directory.api.ldap.model.schema.registries.helper.DitStructureRuleHelper;
 import org.apache.directory.api.ldap.model.schema.registries.helper.LdapSyntaxHelper;
 import org.apache.directory.api.ldap.model.schema.registries.helper.MatchingRuleHelper;
 import org.apache.directory.api.ldap.model.schema.registries.helper.MatchingRuleUseHelper;
@@ -82,40 +83,40 @@ public class Registries implements SchemaLoaderListener, Cloneable
     protected Map<String, Schema> loadedSchemas = new HashMap<String, Schema>();
 
     /** The AttributeType registry */
-    protected AttributeTypeRegistry attributeTypeRegistry;
+    protected DefaultAttributeTypeRegistry attributeTypeRegistry;
 
     /** The ObjectClass registry */
-    protected ObjectClassRegistry objectClassRegistry;
+    protected DefaultObjectClassRegistry objectClassRegistry;
 
     /** The LdapSyntax registry */
-    protected ComparatorRegistry comparatorRegistry;
+    protected DefaultComparatorRegistry comparatorRegistry;
 
     /** The DitContentRule registry */
-    protected DitContentRuleRegistry ditContentRuleRegistry;
+    protected DefaultDitContentRuleRegistry ditContentRuleRegistry;
 
     /** The DitStructureRule registry */
-    protected DitStructureRuleRegistry ditStructureRuleRegistry;
+    protected DefaultDitStructureRuleRegistry ditStructureRuleRegistry;
 
     /** The MatchingRule registry */
-    protected MatchingRuleRegistry matchingRuleRegistry;
+    protected DefaultMatchingRuleRegistry matchingRuleRegistry;
 
     /** The MatchingRuleUse registry */
-    protected MatchingRuleUseRegistry matchingRuleUseRegistry;
+    protected DefaultMatchingRuleUseRegistry matchingRuleUseRegistry;
 
     /** The NameForm registry */
-    protected NameFormRegistry nameFormRegistry;
+    protected DefaultNameFormRegistry nameFormRegistry;
 
     /** The Normalizer registry */
-    protected NormalizerRegistry normalizerRegistry;
+    protected DefaultNormalizerRegistry normalizerRegistry;
 
     /** The global OID registry */
     protected OidRegistry<SchemaObject> globalOidRegistry;
 
     /** The SyntaxChecker registry */
-    protected SyntaxCheckerRegistry syntaxCheckerRegistry;
+    protected DefaultSyntaxCheckerRegistry syntaxCheckerRegistry;
 
     /** The LdapSyntax registry */
-    protected LdapSyntaxRegistry ldapSyntaxRegistry;
+    protected DefaultLdapSyntaxRegistry ldapSyntaxRegistry;
 
     /** A map storing all the schema objects associated with a schema */
     private Map<String, Set<SchemaObjectWrapper>> schemaObjects;
@@ -284,8 +285,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param name The name we are looking at
      * @return The associated OID
      */
-    // This will suppress PMD.EmptyCatchBlock warnings in this method
-    @SuppressWarnings("PMD.EmptyCatchBlock")
     public String getOid( String name )
     {
         // we have many possible Registries to look at.
@@ -421,7 +420,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     public Schema getLoadedSchema( String schemaName )
     {
-        return loadedSchemas.get( Strings.toLowerCase( schemaName ) );
+        return loadedSchemas.get( Strings.toLowerCaseAscii( schemaName ) );
     }
 
 
@@ -433,7 +432,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     public boolean isSchemaLoaded( String schemaName )
     {
-        return loadedSchemas.containsKey( Strings.toLowerCase( schemaName ) );
+        return loadedSchemas.containsKey( Strings.toLowerCaseAscii( schemaName ) );
     }
 
 
@@ -600,30 +599,18 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Build the DitContentRule references
      */
-    // Remove me when TODO is implemented
-    @SuppressWarnings("PMD.UnusedFormalParameter")
     private void buildDitContentRuleReferences( List<Throwable> errors )
     {
-        for ( @SuppressWarnings("unused")
-        DitContentRule ditContentRule : ditContentRuleRegistry )
-        {
-            // TODO
-        }
+        // TODO: implement
     }
 
 
     /**
      * Build the DitStructureRule references
      */
-    // Remove me when TODO is implemented
-    @SuppressWarnings("PMD.UnusedFormalParameter")
     private void buildDitStructureRuleReferences( List<Throwable> errors )
     {
-        for ( @SuppressWarnings("unused")
-        DitStructureRule ditStructureRule : ditStructureRuleRegistry )
-        {
-            // TODO
-        }
+        // TODO: implement
     }
 
 
@@ -669,6 +656,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     DitContentRuleHelper.addToRegistries( ( DitContentRule ) schemaObject, errors, this );
                     break;
 
+                case DIT_STRUCTURE_RULE:
+                    DitStructureRuleHelper.addToRegistries( ( DitStructureRule ) schemaObject, errors, this );
+                    break;
+
                 case LDAP_SYNTAX:
                     LdapSyntaxHelper.addToRegistries( ( LdapSyntax ) schemaObject, errors, this );
                     break;
@@ -688,6 +679,15 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 case OBJECT_CLASS:
                     ObjectClassHelper.addToRegistries( ( ObjectClass ) schemaObject, errors, this );
                     break;
+
+                case SYNTAX_CHECKER:
+                case NORMALIZER:
+                case COMPARATOR:
+                    // Those are not registered
+                    break;
+
+                default:
+                    throw new IllegalArgumentException( "Unexpected SchemaObjectType: " + schemaObject.getObjectType() );
             }
         }
         catch ( LdapException ne )
@@ -726,6 +726,31 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 case OBJECT_CLASS:
                     ObjectClassHelper.removeFromRegistries( ( ObjectClass ) schemaObject, errors, this );
                     break;
+                    
+                case DIT_CONTENT_RULE :
+                    // TODO
+                    break;
+                    
+                case DIT_STRUCTURE_RULE :
+                    // TODO
+                    break;
+                    
+                case NAME_FORM :
+                    // TODO
+                    break;
+                    
+                case MATCHING_RULE_USE :
+                    // TODO
+                    break;
+
+                case SYNTAX_CHECKER:
+                case NORMALIZER:
+                case COMPARATOR:
+                    // Those were not registered
+                    break;
+
+                default:
+                    throw new IllegalArgumentException( "Unexpected SchemaObjectType: " + schemaObject.getObjectType() );
             }
         }
         catch ( LdapException ne )
@@ -767,15 +792,9 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Build the NameForm references
      */
-    // Remove me when TODO is implemented
-    @SuppressWarnings("PMD.UnusedFormalParameter")
     private void buildNameFormReferences( List<Throwable> errors )
     {
-        for ( @SuppressWarnings("unused")
-        NameForm nameFormRule : nameFormRegistry )
-        {
-            // TODO
-        }
+        // TODO: implement
     }
 
 
@@ -1218,8 +1237,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
     }
 
 
-    // This will suppress PMD.EmptyCatchBlock warnings in this method
-    @SuppressWarnings("PMD.EmptyCatchBlock")
     private void resolveRecursive( ObjectClass objectClass, Set<String> processed, List<Throwable> errors )
     {
         // Process the Superiors, if any
@@ -1335,15 +1352,12 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // Lock the SchemaObject
         schemaObject.lock();
 
-        if ( check )
+        if ( check && ( errors.isEmpty() ) )
         {
-            if ( errors.isEmpty() )
-            {
-                // Check the registries now
-                List<Throwable> checkErrors = checkRefInteg();
+            // Check the registries now
+            List<Throwable> checkErrors = checkRefInteg();
 
-                errors.addAll( checkErrors );
-            }
+            errors.addAll( checkErrors );
         }
 
         // Get back to Strict mode
@@ -1402,7 +1416,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     public void schemaLoaded( Schema schema )
     {
-        this.loadedSchemas.put( Strings.toLowerCase( schema.getSchemaName() ), schema );
+        this.loadedSchemas.put( Strings.toLowerCaseAscii( schema.getSchemaName() ), schema );
     }
 
 
@@ -1414,7 +1428,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     public void schemaUnloaded( Schema schema )
     {
-        this.loadedSchemas.remove( Strings.toLowerCase( schema.getSchemaName() ) );
+        this.loadedSchemas.remove( Strings.toLowerCaseAscii( schema.getSchemaName() ) );
     }
 
 
@@ -1444,7 +1458,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     private String getSchemaName( SchemaObject schemaObject )
     {
-        String schemaName = Strings.toLowerCase( schemaObject.getSchemaName() );
+        String schemaName = Strings.toLowerCaseAscii( schemaObject.getSchemaName() );
 
         if ( loadedSchemas.containsKey( schemaName ) )
         {
@@ -1498,18 +1512,13 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Register the given SchemaObject into the associated Registry
      */
-    // Remove SuppressWarnings when TODO is fixed
-    @SuppressWarnings("PMD.EmptyIfStmt")
     private void register( List<Throwable> errors, SchemaObject schemaObject ) throws LdapException
     {
         LOG.debug( "Registering {}:{}", schemaObject.getObjectType(), schemaObject.getOid() );
 
         // Check that the SchemaObject is not already registered
-        if ( schemaObject instanceof LoadableSchemaObject )
-        {
-            // TODO : Check for existing Loadable SchemaObject
-        }
-        else
+        // TODO : Check for existing Loadable SchemaObject
+        if ( !( schemaObject instanceof LoadableSchemaObject ) )
         {
             if ( globalOidRegistry.contains( schemaObject.getOid() ) )
             {
@@ -1570,6 +1579,9 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 case SYNTAX_CHECKER:
                     syntaxCheckerRegistry.register( ( SyntaxChecker ) schemaObject );
                     break;
+
+                default:
+                    throw new IllegalArgumentException( "Unexpected SchemaObjectType: " + schemaObject.getObjectType() );
             }
         }
         catch ( Exception e )
@@ -1610,7 +1622,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         if ( content == null )
         {
             content = new HashSet<SchemaObjectWrapper>();
-            schemaObjects.put( Strings.toLowerCase( schemaName ), content );
+            schemaObjects.put( Strings.toLowerCaseAscii( schemaName ), content );
         }
 
         SchemaObjectWrapper schemaObjectWrapper = new SchemaObjectWrapper( schemaObject );
@@ -1717,19 +1729,13 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param schemaObject The SchemaObject we want to deregister
      * @throws LdapException If the removal failed
      */
-    // Remove me when TODO is implemented
-    @SuppressWarnings(
-        { "PMD.UnusedFormalParameter", "PMD.EmptyIfStmt" })
     private SchemaObject unregister( List<Throwable> errors, SchemaObject schemaObject ) throws LdapException
     {
         LOG.debug( "Unregistering {}:{}", schemaObject.getObjectType(), schemaObject.getOid() );
 
         // Check that the SchemaObject is present in the registries
-        if ( schemaObject instanceof LoadableSchemaObject )
-        {
-            // TODO : check for an existing Loadable SchemaObject
-        }
-        else
+        // TODO : check for an existing Loadable SchemaObject
+        if ( !( schemaObject instanceof LoadableSchemaObject ) )
         {
             if ( !globalOidRegistry.contains( schemaObject.getOid() ) )
             {
@@ -1788,6 +1794,9 @@ public class Registries implements SchemaLoaderListener, Cloneable
             case SYNTAX_CHECKER:
                 unregistered = syntaxCheckerRegistry.unregister( ( SyntaxChecker ) schemaObject );
                 break;
+
+            default:
+                throw new IllegalArgumentException( "Unexpected SchemaObjectType: " + schemaObject.getObjectType() );
         }
 
         return unregistered;
@@ -1804,7 +1813,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     public void dissociateFromSchema( SchemaObject schemaObject ) throws LdapException
     {
         // And unregister the schemaObject within its schema
-        Set<SchemaObjectWrapper> content = schemaObjects.get( Strings.toLowerCase( schemaObject.getSchemaName() ) );
+        Set<SchemaObjectWrapper> content = schemaObjects.get( Strings.toLowerCaseAscii( schemaObject.getSchemaName() ) );
 
         if ( content != null )
         {
@@ -1890,14 +1899,16 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         try
         {
-            for ( SchemaObjectWrapper wrapper : usedBy.keySet() )
+            for ( Map.Entry<SchemaObjectWrapper, Set<SchemaObjectWrapper>> entry : usedBy.entrySet() )
             {
+                SchemaObjectWrapper wrapper = entry.getKey();
+
                 sb.append( wrapper.get().getObjectType() ).append( '[' ).append( wrapper.get().getOid() )
                     .append( "] : {" );
 
                 boolean isFirst = true;
 
-                for ( SchemaObjectWrapper uses : usedBy.get( wrapper ) )
+                for ( SchemaObjectWrapper uses : entry.getValue() )
                 {
                     if ( isFirst )
                     {
@@ -1934,14 +1945,16 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         try
         {
-            for ( SchemaObjectWrapper wrapper : using.keySet() )
+            for ( Map.Entry<SchemaObjectWrapper, Set<SchemaObjectWrapper>> entry : using.entrySet() )
             {
+                SchemaObjectWrapper wrapper = entry.getKey();
+
                 sb.append( wrapper.get().getObjectType() ).append( '[' ).append( wrapper.get().getOid() )
                     .append( "] : {" );
 
                 boolean isFirst = true;
 
-                for ( SchemaObjectWrapper uses : using.get( wrapper ) )
+                for ( SchemaObjectWrapper uses : entry.getValue() )
                 {
                     if ( isFirst )
                     {
@@ -2026,10 +2039,12 @@ public class Registries implements SchemaLoaderListener, Cloneable
         addUsing( base, referenced );
         addUsedBy( referenced, base );
 
-        if ( LOG.isDebugEnabled() )
+        // do not change to debug mode, this makes the server logs hard to read and useless
+        // and even prevents the server from starting up
+        if ( LOG.isTraceEnabled() )
         {
-            LOG.debug( dumpUsedBy() );
-            LOG.debug( dumpUsing() );
+            LOG.trace( dumpUsedBy() );
+            LOG.trace( dumpUsing() );
         }
     }
 
@@ -2498,7 +2513,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * - second restore the relation between them
      */
     // False positive
-    @SuppressWarnings("PMD.EmptyCatchBlock")
     public Registries clone() throws CloneNotSupportedException
     {
         // First clone the structure
@@ -2564,10 +2578,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // Clone the schema list
         clone.loadedSchemas = new HashMap<String, Schema>();
 
-        for ( String schemaName : loadedSchemas.keySet() )
+        for ( Map.Entry<String, Set<SchemaObjectWrapper>> entry : schemaObjects.entrySet() )
         {
             // We don't clone the schemas
-            clone.loadedSchemas.put( schemaName, loadedSchemas.get( schemaName ) );
+            clone.loadedSchemas.put( entry.getKey(), loadedSchemas.get( entry.getKey() ) );
         }
 
         // Clone the Using and usedBy structures
@@ -2585,11 +2599,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         // Last, not least, clone the SchemaObjects Map, and reference all the copied
         // SchemaObjects
-        for ( String schemaName : schemaObjects.keySet() )
+        for ( Map.Entry<String, Set<SchemaObjectWrapper>> entry : schemaObjects.entrySet() )
         {
             Set<SchemaObjectWrapper> objects = new HashSet<SchemaObjectWrapper>();
 
-            for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjects.get( schemaName ) )
+            for ( SchemaObjectWrapper schemaObjectWrapper : entry.getValue() )
             {
                 SchemaObject original = schemaObjectWrapper.get();
 
@@ -2613,7 +2627,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 }
             }
 
-            clone.schemaObjects.put( schemaName, objects );
+            clone.schemaObjects.put( entry.getKey(), objects );
         }
 
         return clone;
@@ -2650,6 +2664,18 @@ public class Registries implements SchemaLoaderListener, Cloneable
     public void setRelaxed()
     {
         isRelaxed = RELAXED;
+        globalOidRegistry.setRelaxed();
+        attributeTypeRegistry.setRelaxed();
+        comparatorRegistry.setRelaxed();
+        ditContentRuleRegistry.setRelaxed();
+        ditStructureRuleRegistry.setRelaxed();
+        ldapSyntaxRegistry.setRelaxed();
+        matchingRuleRegistry.setRelaxed();
+        matchingRuleUseRegistry.setRelaxed();
+        nameFormRegistry.setRelaxed();
+        normalizerRegistry.setRelaxed();
+        objectClassRegistry.setRelaxed();
+        syntaxCheckerRegistry.setRelaxed();
     }
 
 
@@ -2660,6 +2686,18 @@ public class Registries implements SchemaLoaderListener, Cloneable
     public void setStrict()
     {
         isRelaxed = STRICT;
+        globalOidRegistry.setStrict();
+        attributeTypeRegistry.setStrict();
+        comparatorRegistry.setStrict();
+        ditContentRuleRegistry.setStrict();
+        ditStructureRuleRegistry.setStrict();
+        ldapSyntaxRegistry.setStrict();
+        matchingRuleRegistry.setStrict();
+        matchingRuleUseRegistry.setStrict();
+        nameFormRegistry.setStrict();
+        normalizerRegistry.setStrict();
+        objectClassRegistry.setStrict();
+        syntaxCheckerRegistry.setStrict();
     }
 
 
@@ -2775,31 +2813,25 @@ public class Registries implements SchemaLoaderListener, Cloneable
         }
 
         // Clear the schemaObjects map
-        for ( String schemaName : schemaObjects.keySet() )
+        for ( Map.Entry<String, Set<SchemaObjectWrapper>> entry : schemaObjects.entrySet() )
         {
-            Set<SchemaObjectWrapper> wrapperSet = schemaObjects.get( schemaName );
-
-            wrapperSet.clear();
+            entry.getValue().clear();
         }
 
         schemaObjects.clear();
 
         // Clear the usedBy map
-        for ( SchemaObjectWrapper wrapper : usedBy.keySet() )
+        for ( Map.Entry<SchemaObjectWrapper, Set<SchemaObjectWrapper>> entry : usedBy.entrySet() )
         {
-            Set<SchemaObjectWrapper> wrapperSet = usedBy.get( wrapper );
-
-            wrapperSet.clear();
+            entry.getValue().clear();
         }
 
         usedBy.clear();
 
         // Clear the using map
-        for ( SchemaObjectWrapper wrapper : using.keySet() )
+        for ( Map.Entry<SchemaObjectWrapper, Set<SchemaObjectWrapper>> entry : using.entrySet() )
         {
-            Set<SchemaObjectWrapper> wrapperSet = using.get( wrapper );
-
-            wrapperSet.clear();
+            entry.getValue().clear();
         }
 
         using.clear();

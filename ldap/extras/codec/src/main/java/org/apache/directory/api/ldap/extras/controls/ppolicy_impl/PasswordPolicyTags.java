@@ -28,10 +28,14 @@ package org.apache.directory.api.ldap.extras.controls.ppolicy_impl;
  */
 public enum PasswordPolicyTags
 {
-    PPOLICY_WARNING_TAG(0xA0), // warning [0]
-    PPOLICY_ERROR_TAG(0x81), // error [1]
-    TIME_BEFORE_EXPIRATION_TAG(0x80), // timeBeforeExpiration [0]
-    GRACE_AUTHNS_REMAINING_TAG(0x81); // graceAuthNsRemaining [1]
+    // warning [0]
+    PPOLICY_WARNING_TAG(0xA0),
+    // error [1]
+    PPOLICY_ERROR_TAG(0x81),
+    // timeBeforeExpiration [0]
+    TIME_BEFORE_EXPIRATION_TAG(0x80),
+    // graceAuthNsRemaining [1]
+    GRACE_AUTHNS_REMAINING_TAG(0x81);
 
     /** Internal value for each tag */
     private int value;

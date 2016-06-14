@@ -30,7 +30,7 @@ import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.util.Strings;
 
 
@@ -52,14 +52,8 @@ import org.apache.directory.api.util.Strings;
  */
 public class SubstringFilter extends Filter
 {
-    // ~ Instance fields
-    // ----------------------------------------------------------------------------
-
     /** The substring filter type (an attributeDescription) */
     private String type;
-
-    /** The type length */
-    private int typeLength;
 
     /**
      * This member is used to control the length of the three parts of the
@@ -233,7 +227,7 @@ public class SubstringFilter extends Filter
     public int computeLength()
     {
         // The type
-        typeLength = Strings.getBytesUtf8( type ).length;
+        int typeLength = Strings.getBytesUtf8( type ).length;
 
         substringsFilterLength = 1 + TLV.getNbBytes( typeLength ) + typeLength;
         substringsFilterSequenceLength = 0;
@@ -298,11 +292,11 @@ public class SubstringFilter extends Filter
         try
         {
             // The SubstringFilter Tag
-            buffer.put( ( byte ) LdapConstants.SUBSTRINGS_FILTER_TAG );
+            buffer.put( ( byte ) LdapCodecConstants.SUBSTRINGS_FILTER_TAG );
             buffer.put( TLV.getBytes( substringsFilterLength ) );
 
             // The type
-            BerValue.encode( buffer, type.getBytes() );
+            BerValue.encode( buffer, Strings.getBytesUtf8( type ) );
 
             // The SubstringSequenceFilter Tag
             buffer.put( UniversalTag.SEQUENCE.getValue() );
@@ -318,7 +312,7 @@ public class SubstringFilter extends Filter
             if ( initialSubstrings != null )
             {
                 byte[] initialBytes = Strings.getBytesUtf8( initialSubstrings );
-                buffer.put( ( byte ) LdapConstants.SUBSTRINGS_FILTER_INITIAL_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.SUBSTRINGS_FILTER_INITIAL_TAG );
                 buffer.put( TLV.getBytes( initialBytes.length ) );
                 buffer.put( initialBytes );
             }
@@ -329,7 +323,7 @@ public class SubstringFilter extends Filter
                 for ( String any : anySubstrings )
                 {
                     byte[] anyBytes = Strings.getBytesUtf8( any );
-                    buffer.put( ( byte ) LdapConstants.SUBSTRINGS_FILTER_ANY_TAG );
+                    buffer.put( ( byte ) LdapCodecConstants.SUBSTRINGS_FILTER_ANY_TAG );
                     buffer.put( TLV.getBytes( anyBytes.length ) );
                     buffer.put( anyBytes );
                 }
@@ -339,14 +333,14 @@ public class SubstringFilter extends Filter
             if ( finalSubstrings != null )
             {
                 byte[] finalBytes = Strings.getBytesUtf8( finalSubstrings );
-                buffer.put( ( byte ) LdapConstants.SUBSTRINGS_FILTER_FINAL_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.SUBSTRINGS_FILTER_FINAL_TAG );
                 buffer.put( TLV.getBytes( finalBytes.length ) );
                 buffer.put( finalBytes );
             }
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
 
         return buffer;

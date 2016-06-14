@@ -19,12 +19,13 @@
  */
 package org.apache.directory.api.util;
 
+import static org.apache.directory.api.util.TimeZones.GMT;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import org.apache.directory.api.i18n.I18n;
@@ -111,7 +112,6 @@ import org.apache.directory.api.i18n.I18n;
  */
 public class GeneralizedTime implements Comparable<GeneralizedTime>
 {
-
     /**
      * The format of the generalized time.
      */
@@ -157,8 +157,6 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         DIFF_HOUR_MINUTE
     }
 
-    private static final TimeZone GMT = TimeZone.getTimeZone( "GMT" );
-
     /** The user provided value */
     private String upGeneralizedTime;
 
@@ -187,12 +185,12 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
      */
     public GeneralizedTime( Date date )
     {
-        calendar = Calendar.getInstance();
+        calendar = new GregorianCalendar( GMT, Locale.ROOT );
         calendar.setTime( date );
         setUp( calendar );
     }
-    
-    
+
+
     /**
      * Creates a new instance of GeneralizedTime, based on the given Calendar object.
      * Uses <pre>Format.YEAR_MONTH_DAY_HOUR_MIN_SEC</pre> as default format and
@@ -205,15 +203,15 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         setUp( calendar );
     }
 
-    
-    private void setUp( Calendar calendar )
+
+    private void setUp( Calendar newCalendar )
     {
-        if ( calendar == null )
+        if ( newCalendar == null )
         {
             throw new IllegalArgumentException( I18n.err( I18n.ERR_04358 ) );
         }
 
-        this.calendar = calendar;
+        this.calendar = newCalendar;
         upGeneralizedTime = null;
         upFormat = Format.YEAR_MONTH_DAY_HOUR_MIN_SEC_FRACTION;
         upTimeZoneFormat = TimeZoneFormat.Z;
@@ -239,7 +237,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
         this.upGeneralizedTime = generalizedTime;
 
-        calendar = Calendar.getInstance();
+        calendar = new GregorianCalendar( GMT, Locale.ROOT );
         calendar.setTimeInMillis( 0 );
         calendar.setLenient( false );
 
@@ -260,7 +258,8 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         // else error
         int pos = 10;
         char c = upGeneralizedTime.charAt( pos );
-        if ( '0' <= c && c <= '9' )
+        
+        if ( ( '0' <= c ) && ( c <= '9' ) )
         {
             parseMinute();
 
@@ -276,7 +275,8 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
             // else error
             pos = 12;
             c = upGeneralizedTime.charAt( pos );
-            if ( '0' <= c && c <= '9' )
+            
+            if ( ( '0' <= c ) && ( c <= '9' ) )
             {
                 parseSecond();
 
@@ -291,7 +291,8 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
                 // else error
                 pos = 14;
                 c = upGeneralizedTime.charAt( pos );
-                if ( c == '.' || c == ',' )
+                
+                if ( ( c == '.' ) || ( c == ',' ) )
                 {
                     // read fraction of second
                     parseFractionOfSecond();
@@ -300,7 +301,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
                     parseTimezone( pos );
                     upFormat = Format.YEAR_MONTH_DAY_HOUR_MIN_SEC_FRACTION;
                 }
-                else if ( c == 'Z' || c == '+' || c == '-' )
+                else if ( ( c == 'Z' ) || ( c == '+' ) || ( c == '-' ) )
                 {
                     // read timezone
                     parseTimezone( pos );
@@ -311,7 +312,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
                     throw new ParseException( I18n.err( I18n.ERR_04363 ), 14 );
                 }
             }
-            else if ( c == '.' || c == ',' )
+            else if ( ( c == '.' ) || ( c == ',' ) )
             {
                 // read fraction of minute
                 parseFractionOfMinute();
@@ -320,7 +321,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
                 parseTimezone( pos );
                 upFormat = Format.YEAR_MONTH_DAY_HOUR_MIN_FRACTION;
             }
-            else if ( c == 'Z' || c == '+' || c == '-' )
+            else if ( ( c == 'Z' ) || ( c == '+' ) || ( c == '-' ) )
             {
                 // read timezone
                 parseTimezone( pos );
@@ -331,7 +332,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
                 throw new ParseException( I18n.err( I18n.ERR_04364 ), 12 );
             }
         }
-        else if ( c == '.' || c == ',' )
+        else if ( ( c == '.' ) || ( c == ',' ) )
         {
             // read fraction of hour
             parseFractionOfHour();
@@ -340,7 +341,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
             parseTimezone( pos );
             upFormat = Format.YEAR_MONTH_DAY_HOUR_FRACTION;
         }
-        else if ( c == 'Z' || c == '+' || c == '-' )
+        else if ( ( c == 'Z' ) || ( c == '+' ) || ( c == '-' ) )
         {
             // read timezone
             parseTimezone( pos );
@@ -352,6 +353,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
 
         // this calculates and verifies the calendar
+        /* Not sure we should do that... */
         try
         {
             calendar.getTimeInMillis();
@@ -373,6 +375,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
 
         char c = upGeneralizedTime.charAt( pos );
+        
         if ( c == 'Z' )
         {
             calendar.setTimeZone( GMT );
@@ -383,7 +386,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
                 throw new ParseException( I18n.err( I18n.ERR_04368 ), pos + 1 );
             }
         }
-        else if ( c == '+' || c == '-' )
+        else if ( ( c == '+' ) || ( c == '-' ) )
         {
             StringBuilder sb = new StringBuilder( "GMT" );
             sb.append( c );
@@ -423,9 +426,9 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         upFractionLength = fraction.length();
 
         double fract = Double.parseDouble( "0." + fraction );
-        int millisecond = ( int ) Math.round( fract * 1000 );
+        int millisecond = ( int ) Math.floor( fract * 1000 );
 
-        calendar.set( Calendar.MILLISECOND, millisecond );
+        calendar.set( GregorianCalendar.MILLISECOND, millisecond );
     }
 
 
@@ -513,7 +516,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
         try
         {
-            int second = Integer.parseInt( upGeneralizedTime.substring( 12, 14 ) );
+            int second = Strings.parseInt( upGeneralizedTime.substring( 12, 14 ) );
             calendar.set( Calendar.SECOND, second );
         }
         catch ( NumberFormatException e )
@@ -532,7 +535,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
         try
         {
-            int minute = Integer.parseInt( upGeneralizedTime.substring( 10, 12 ) );
+            int minute = Strings.parseInt( upGeneralizedTime.substring( 10, 12 ) );
             calendar.set( Calendar.MINUTE, minute );
         }
         catch ( NumberFormatException e )
@@ -550,7 +553,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
         try
         {
-            int hour = Integer.parseInt( upGeneralizedTime.substring( 8, 10 ) );
+            int hour = Strings.parseInt( upGeneralizedTime.substring( 8, 10 ) );
             calendar.set( Calendar.HOUR_OF_DAY, hour );
         }
         catch ( NumberFormatException e )
@@ -568,7 +571,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
         try
         {
-            int day = Integer.parseInt( upGeneralizedTime.substring( 6, 8 ) );
+            int day = Strings.parseInt( upGeneralizedTime.substring( 6, 8 ) );
             calendar.set( Calendar.DAY_OF_MONTH, day );
         }
         catch ( NumberFormatException e )
@@ -586,7 +589,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
         try
         {
-            int month = Integer.parseInt( upGeneralizedTime.substring( 4, 6 ) );
+            int month = Strings.parseInt( upGeneralizedTime.substring( 4, 6 ) );
             calendar.set( Calendar.MONTH, month - 1 );
         }
         catch ( NumberFormatException e )
@@ -604,7 +607,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
         try
         {
-            int year = Integer.parseInt( upGeneralizedTime.substring( 0, 4 ) );
+            int year = Strings.parseInt( upGeneralizedTime.substring( 0, 4 ) );
             calendar.set( Calendar.YEAR, year );
         }
         catch ( NumberFormatException e )
@@ -627,6 +630,43 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
 
     /**
+     * Returns the string representation of this generalized time. 
+     * This method uses the same format as the user provided format.
+     *
+     * @return the string representation of this generalized time
+     */
+    public String toGeneralizedTimeWithoutFraction()
+    {
+        return toGeneralizedTime( getFormatWithoutFraction( upFormat ), upFractionDelimiter, upFractionLength,
+            upTimeZoneFormat );
+    }
+
+
+    /**
+     * Gets the corresponding format with fraction.
+     *
+     * @param f the format
+     * @return the corresponding format without fraction
+     */
+    private Format getFormatWithoutFraction( Format f )
+    {
+        switch ( f )
+        {
+            case YEAR_MONTH_DAY_HOUR_FRACTION:
+                return Format.YEAR_MONTH_DAY_HOUR;
+            case YEAR_MONTH_DAY_HOUR_MIN_FRACTION:
+                return Format.YEAR_MONTH_DAY_HOUR_MIN;
+            case YEAR_MONTH_DAY_HOUR_MIN_SEC_FRACTION:
+                return Format.YEAR_MONTH_DAY_HOUR_MIN_SEC;
+            default:
+                break;
+        }
+
+        return f;
+    }
+
+
+    /**
      * Returns the string representation of this generalized time.
      * 
      * @param format the target format
@@ -639,102 +679,241 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     public String toGeneralizedTime( Format format, FractionDelimiter fractionDelimiter, int fractionLength,
         TimeZoneFormat timeZoneFormat )
     {
-        Calendar clonedCalendar = ( Calendar ) this.calendar.clone();
+        Calendar clonedCalendar = ( Calendar ) calendar.clone();
+
         if ( timeZoneFormat == TimeZoneFormat.Z )
         {
             clonedCalendar.setTimeZone( GMT );
         }
 
-        NumberFormat twoDigits = new DecimalFormat( "00" );
-        NumberFormat fourDigits = new DecimalFormat( "00" );
-        StringBuffer fractionFormat = new StringBuffer( "" );
-        for ( int i = 0; i < fractionLength && i < 3; i++ )
-        {
-            fractionFormat.append( "0" );
-        }
+        // Create the result. It can contain a maximum of 23 chars
+        byte[] result = new byte[23];
 
-        StringBuilder sb = new StringBuilder();
-        sb.append( fourDigits.format( clonedCalendar.get( Calendar.YEAR ) ) );
-        sb.append( twoDigits.format( clonedCalendar.get( Calendar.MONTH ) + 1 ) );
-        sb.append( twoDigits.format( clonedCalendar.get( Calendar.DAY_OF_MONTH ) ) );
-        sb.append( twoDigits.format( clonedCalendar.get( Calendar.HOUR_OF_DAY ) ) );
+        // The starting point
+        int pos = 0;
+
+        // Inject the year
+        int year = clonedCalendar.get( Calendar.YEAR );
+
+        result[pos++] = ( byte ) ( ( year / 1000 ) + '0' );
+        year %= 1000;
+
+        result[pos++] = ( byte ) ( ( year / 100 ) + '0' );
+        year %= 100;
+
+        result[pos++] = ( byte ) ( ( year / 10 ) + '0' );
+
+        result[pos++] = ( byte ) ( ( year % 10 ) + '0' );
+
+        // Inject the month
+        int month = clonedCalendar.get( Calendar.MONTH ) + 1;
+
+        result[pos++] = ( byte ) ( ( month / 10 ) + '0' );
+
+        result[pos++] = ( byte ) ( ( month % 10 ) + '0' );
+
+        // Inject the day
+        int day = clonedCalendar.get( Calendar.DAY_OF_MONTH );
+
+        result[pos++] = ( byte ) ( ( day / 10 ) + '0' );
+
+        result[pos++] = ( byte ) ( ( day % 10 ) + '0' );
+
+        // Inject the hour
+        int hour = clonedCalendar.get( Calendar.HOUR_OF_DAY );
+
+        result[pos++] = ( byte ) ( ( hour / 10 ) + '0' );
+
+        result[pos++] = ( byte ) ( ( hour % 10 ) + '0' );
 
         switch ( format )
         {
             case YEAR_MONTH_DAY_HOUR_MIN_SEC:
-                sb.append( twoDigits.format( clonedCalendar.get( Calendar.MINUTE ) ) );
-                sb.append( twoDigits.format( clonedCalendar.get( Calendar.SECOND ) ) );
+                // Inject the minutes
+                int minute = clonedCalendar.get( Calendar.MINUTE );
+
+                result[pos++] = ( byte ) ( ( minute / 10 ) + '0' );
+
+                result[pos++] = ( byte ) ( ( minute % 10 ) + '0' );
+
+                // Inject the seconds
+                int second = clonedCalendar.get( Calendar.SECOND );
+
+                result[pos++] = ( byte ) ( ( second / 10 ) + '0' );
+
+                result[pos++] = ( byte ) ( ( second % 10 ) + '0' );
+
                 break;
 
             case YEAR_MONTH_DAY_HOUR_MIN_SEC_FRACTION:
-                sb.append( twoDigits.format( clonedCalendar.get( Calendar.MINUTE ) ) );
-                sb.append( twoDigits.format( clonedCalendar.get( Calendar.SECOND ) ) );
+                // Inject the minutes
+                minute = clonedCalendar.get( Calendar.MINUTE );
 
-                NumberFormat fractionDigits = new DecimalFormat( fractionFormat.toString() );
-                sb.append( fractionDelimiter == FractionDelimiter.COMMA ? ',' : '.' );
-                sb.append( fractionDigits.format( clonedCalendar.get( Calendar.MILLISECOND ) ) );
+                result[pos++] = ( byte ) ( ( minute / 10 ) + '0' );
+
+                result[pos++] = ( byte ) ( ( minute % 10 ) + '0' );
+
+                // Inject the seconds
+                second = clonedCalendar.get( Calendar.SECOND );
+
+                result[pos++] = ( byte ) ( ( second / 10 ) + '0' );
+
+                result[pos++] = ( byte ) ( ( second % 10 ) + '0' );
+
+                // Inject the fraction
+                if ( fractionDelimiter == FractionDelimiter.COMMA )
+                {
+                    result[pos++] = ',';
+                }
+                else
+                {
+                    result[pos++] = '.';
+                }
+
+                // Inject the fraction
+                int millisecond = clonedCalendar.get( Calendar.MILLISECOND );
+
+                result[pos++] = ( byte ) ( ( millisecond / 100 ) + '0' );
+                millisecond %= 100;
+
+                result[pos++] = ( byte ) ( ( millisecond / 10 ) + '0' );
+
+                //if ( millisecond > 0 )
+                result[pos++] = ( byte ) ( ( millisecond % 10 ) + '0' );
+
                 break;
 
             case YEAR_MONTH_DAY_HOUR_MIN:
-                sb.append( twoDigits.format( clonedCalendar.get( Calendar.MINUTE ) ) );
+                // Inject the minutes
+                minute = clonedCalendar.get( Calendar.MINUTE );
+
+                result[pos++] = ( byte ) ( ( minute / 10 ) + '0' );
+
+                result[pos++] = ( byte ) ( ( minute % 10 ) + '0' );
                 break;
 
             case YEAR_MONTH_DAY_HOUR_MIN_FRACTION:
-                sb.append( twoDigits.format( clonedCalendar.get( Calendar.MINUTE ) ) );
+                // Inject the minutes
+                minute = clonedCalendar.get( Calendar.MINUTE );
 
-                // sec + millis => fraction of minute
-                double millisec = 1000 * clonedCalendar.get( Calendar.SECOND )
+                result[pos++] = ( byte ) ( ( minute / 10 ) + '0' );
+
+                result[pos++] = ( byte ) ( ( minute % 10 ) + '0' );
+
+                // sec + millis => fraction of a minute
+                int fraction = 1000 * clonedCalendar.get( Calendar.SECOND )
                     + clonedCalendar.get( Calendar.MILLISECOND );
-                double fraction = millisec / ( 1000 * 60 );
-                fractionDigits = new DecimalFormat( "0." + fractionFormat );
-                sb.append( fractionDelimiter == FractionDelimiter.COMMA ? ',' : '.' );
-                sb.append( fractionDigits.format( fraction ).substring( 2 ) );
+                fraction /= 60;
+
+                if ( fraction > 0 )
+                {
+                    if ( fractionDelimiter == FractionDelimiter.COMMA )
+                    {
+                        result[pos++] = ',';
+                    }
+                    else
+                    {
+                        result[pos++] = '.';
+                    }
+
+                    // At this point, the fraction should be in [999, 1]
+                    result[pos++] = ( byte ) ( ( fraction / 100 ) + '0' );
+                    fraction %= 100;
+
+                    if ( fraction > 0 )
+                    {
+                        result[pos++] = ( byte ) ( ( fraction / 10 ) + '0' );
+
+                        if ( fraction > 0 )
+                        {
+                            result[pos++] = ( byte ) ( ( fraction % 10 ) + '0' );
+                        }
+                    }
+                }
+
+                break;
+
+            case YEAR_MONTH_DAY_HOUR:
+                // nothing to add
                 break;
 
             case YEAR_MONTH_DAY_HOUR_FRACTION:
-                // min + sec + millis => fraction of minute
-                millisec = 1000 * 60 * clonedCalendar.get( Calendar.MINUTE ) + 1000
+                // min + sec + millis => fraction of an hour
+                fraction = 1000 * 60 * clonedCalendar.get( Calendar.MINUTE ) + 1000
                     * clonedCalendar.get( Calendar.SECOND )
                     + clonedCalendar.get( Calendar.MILLISECOND );
-                fraction = millisec / ( 1000 * 60 * 60 );
-                fractionDigits = new DecimalFormat( "0." + fractionFormat );
-                sb.append( fractionDelimiter == FractionDelimiter.COMMA ? ',' : '.' );
-                sb.append( fractionDigits.format( fraction ).substring( 2 ) );
+                fraction /= 60 * 60;
+
+                // At this point, the fraction should be in [999, 1]
+                if ( fraction > 0 )
+                {
+                    if ( fractionDelimiter == FractionDelimiter.COMMA )
+                    {
+                        result[pos++] = ',';
+                    }
+                    else
+                    {
+                        result[pos++] = '.';
+                    }
+
+                    result[pos++] = ( byte ) ( ( fraction / 100 ) + '0' );
+                    fraction %= 100;
+
+                    if ( fraction > 0 )
+                    {
+                        result[pos++] = ( byte ) ( ( fraction / 10 ) + '0' );
+
+                        if ( fraction > 0 )
+                        {
+                            result[pos++] = ( byte ) ( ( fraction % 10 ) + '0' );
+                        }
+                    }
+                }
 
                 break;
+
+            default:
+                throw new IllegalArgumentException( "Unexpected format " + format );
         }
 
-        if ( timeZoneFormat == TimeZoneFormat.Z && clonedCalendar.getTimeZone().hasSameRules( GMT ) )
+        if ( ( timeZoneFormat == TimeZoneFormat.Z ) && clonedCalendar.getTimeZone().hasSameRules( GMT ) )
         {
-            sb.append( 'Z' );
+            result[pos++] = 'Z';
         }
         else
         {
+            // g-differential
             TimeZone timeZone = clonedCalendar.getTimeZone();
             int rawOffset = timeZone.getRawOffset();
-            sb.append( rawOffset < 0 ? '-' : '+' );
+
+            if ( rawOffset < 0 )
+            {
+                result[pos++] = '-';
+            }
+            else
+            {
+                result[pos++] = '+';
+            }
 
             rawOffset = Math.abs( rawOffset );
-            int hour = rawOffset / ( 60 * 60 * 1000 );
+            hour = rawOffset / ( 60 * 60 * 1000 );
             int minute = ( rawOffset - ( hour * 60 * 60 * 1000 ) ) / ( 1000 * 60 );
 
-            if ( hour < 10 )
-            {
-                sb.append( '0' );
-            }
-            sb.append( hour );
+            // The offset hour
+            result[pos++] = ( byte ) ( ( hour / 10 ) + '0' );
 
-            if ( timeZoneFormat == TimeZoneFormat.DIFF_HOUR_MINUTE || timeZoneFormat == TimeZoneFormat.Z )
+            result[pos++] = ( byte ) ( ( hour % 10 ) + '0' );
+
+            if ( ( timeZoneFormat == TimeZoneFormat.DIFF_HOUR_MINUTE ) || ( timeZoneFormat == TimeZoneFormat.Z ) )
             {
-                if ( minute < 10 )
-                {
-                    sb.append( '0' );
-                }
-                sb.append( minute );
+                // The offset minute
+                result[pos++] = ( byte ) ( ( minute / 10 ) + '0' );
+
+                result[pos++] = ( byte ) ( ( minute % 10 ) + '0' );
             }
         }
 
-        return sb.toString();
+        return Strings.utf8ToString( result, 0, pos );
     }
 
 
@@ -802,13 +981,14 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     {
         return calendar.getTimeInMillis();
     }
-    
+
+
     public Date getDate()
     {
         return calendar.getTime();
     }
 
-    
+
     public int getYear()
     {
         return calendar.get( Calendar.YEAR );
@@ -820,13 +1000,13 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         return calendar.get( Calendar.MONTH );
     }
 
-    
+
     public int getDay()
     {
         return calendar.get( Calendar.DATE );
     }
 
-    
+
     public int getHour()
     {
         return calendar.get( Calendar.HOUR_OF_DAY );
@@ -838,11 +1018,18 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         return calendar.get( Calendar.MINUTE );
     }
 
-    
+
     public int getSeconds()
     {
         return calendar.get( Calendar.SECOND );
     }
+
+
+    public int getFraction()
+    {
+        return calendar.get( Calendar.MILLISECOND );
+    }
+
 
     /**
      * 

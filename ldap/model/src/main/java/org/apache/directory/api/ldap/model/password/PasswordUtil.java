@@ -1,6 +1,6 @@
 /*
- *   Licensed to the Apache Software Foundation (ASF) under one
  *   or more contributor license agreements.  See the NOTICE file
+ *   Licensed to the Apache Software Foundation (ASF) under one
  *   distributed with this work for additional information
  *   regarding copyright ownership.  The ASF licenses this file
  *   to you under the Apache License, Version 2.0 (the
@@ -21,18 +21,22 @@
 package org.apache.directory.api.ldap.model.password;
 
 
-import java.io.UnsupportedEncodingException;
+import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.KeySpec;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+
+import org.apache.commons.codec.digest.Crypt;
 import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
 import org.apache.directory.api.util.Base64;
 import org.apache.directory.api.util.DateUtils;
 import org.apache.directory.api.util.Strings;
-import org.apache.directory.api.util.UnixCrypt;
 
 
 /**
@@ -40,7 +44,7 @@ import org.apache.directory.api.util.UnixCrypt;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PasswordUtil
+public final class PasswordUtil
 {
 
     /** The SHA1 hash length */
@@ -57,6 +61,26 @@ public class PasswordUtil
 
     /** The MD5 hash length */
     public static final int MD5_LENGTH = 16;
+
+    /** The PKCS5S2 hash length */
+    public static final int PKCS5S2_LENGTH = 32;
+
+    /** The CRYPT (DES) hash length */
+    public static final int CRYPT_LENGTH = 11;
+
+    /** The CRYPT (MD5) hash length */
+    public static final int CRYPT_MD5_LENGTH = 22;
+
+    /** The CRYPT (SHA-256) hash length */
+    public static final int CRYPT_SHA256_LENGTH = 43;
+
+    /** The CRYPT (SHA-512) hash length */
+    public static final int CRYPT_SHA512_LENGTH = 86;
+
+
+    private PasswordUtil()
+    {
+    }
 
 
     /**
@@ -96,7 +120,15 @@ public class PasswordUtil
                     return null;
                 }
 
-                String algorithm = Strings.toLowerCase( new String( credentials, 1, pos - 1 ) );
+                String algorithm = Strings.toLowerCaseAscii( Strings.utf8ToString( credentials, 1, pos - 1 ) );
+
+                // support for crypt additional encryption algorithms (e.g. {crypt}$1$salt$ez2vlPGdaLYkJam5pWs/Y1)
+                // currently only one-digit IDs are defined thus this quick check
+                if ( credentials.length > pos + 3 && credentials[pos + 1] == '$'
+                    && Character.isDigit( credentials[pos + 2] ) && credentials[pos + 3] == '$' )
+                {
+                    algorithm += Strings.utf8ToString( credentials, pos + 1, 3 );
+                }
 
                 return LdapSecurityConstants.getAlgorithm( algorithm );
             }
@@ -133,6 +165,12 @@ public class PasswordUtil
      */
     public static byte[] createStoragePassword( byte[] credentials, LdapSecurityConstants algorithm )
     {
+        // check plain text password
+        if ( algorithm == null )
+        {
+            return credentials;
+        }
+
         byte[] salt;
 
         switch ( algorithm )
@@ -142,18 +180,25 @@ public class PasswordUtil
             case HASH_METHOD_SSHA384:
             case HASH_METHOD_SSHA512:
             case HASH_METHOD_SMD5:
-                salt = new byte[8]; // we use 8 byte salt always except for "crypt" which needs 2 byte salt
+                // we use 8 byte salt always except for "crypt" which needs 2 byte salt
+                salt = new byte[8];
+                new SecureRandom().nextBytes( salt );
+                break;
+
+            case HASH_METHOD_PKCS5S2:
+                // we use 16 byte salt for PKCS5S2
+                salt = new byte[16];
                 new SecureRandom().nextBytes( salt );
                 break;
 
             case HASH_METHOD_CRYPT:
-                salt = new byte[2];
-                SecureRandom sr = new SecureRandom();
-                int i1 = sr.nextInt( 64 );
-                int i2 = sr.nextInt( 64 );
+                salt = generateCryptSalt( 2 );
+                break;
 
-                salt[0] = ( byte ) ( i1 < 12 ? ( i1 + '.' ) : i1 < 38 ? ( i1 + 'A' - 12 ) : ( i1 + 'a' - 38 ) );
-                salt[1] = ( byte ) ( i2 < 12 ? ( i2 + '.' ) : i2 < 38 ? ( i2 + 'A' - 12 ) : ( i2 + 'a' - 38 ) );
+            case HASH_METHOD_CRYPT_MD5:
+            case HASH_METHOD_CRYPT_SHA256:
+            case HASH_METHOD_CRYPT_SHA512:
+                salt = generateCryptSalt( 8 );
                 break;
 
             default:
@@ -163,29 +208,40 @@ public class PasswordUtil
         byte[] hashedPassword = encryptPassword( credentials, algorithm, salt );
         StringBuffer sb = new StringBuffer();
 
-        if ( algorithm != null )
-        {
-            sb.append( '{' ).append( algorithm.getName().toUpperCase() ).append( '}' );
+        sb.append( '{' ).append( Strings.upperCase( algorithm.getPrefix() ) ).append( '}' );
 
-            if ( algorithm == LdapSecurityConstants.HASH_METHOD_CRYPT )
+        if ( algorithm == LdapSecurityConstants.HASH_METHOD_CRYPT )
+        {
+            sb.append( Strings.utf8ToString( salt ) );
+            sb.append( Strings.utf8ToString( hashedPassword ) );
+        }
+        else if ( algorithm == LdapSecurityConstants.HASH_METHOD_CRYPT_MD5
+            || algorithm == LdapSecurityConstants.HASH_METHOD_CRYPT_SHA256
+            || algorithm == LdapSecurityConstants.HASH_METHOD_CRYPT_SHA512 )
+        {
+            sb.append( algorithm.getSubPrefix() );
+            sb.append( Strings.utf8ToString( salt ) );
+            sb.append( '$' );
+            sb.append( Strings.utf8ToString( hashedPassword ) );
+        }
+        else if ( salt != null )
+        {
+            byte[] hashedPasswordWithSaltBytes = new byte[hashedPassword.length + salt.length];
+
+            if ( algorithm == LdapSecurityConstants.HASH_METHOD_PKCS5S2 )
             {
-                sb.append( Strings.utf8ToString( salt ) );
-                sb.append( Strings.utf8ToString( hashedPassword ) );
-            }
-            else if ( salt != null )
-            {
-                byte[] hashedPasswordWithSaltBytes = new byte[hashedPassword.length + salt.length];
-                merge( hashedPasswordWithSaltBytes, hashedPassword, salt );
-                sb.append( String.valueOf( Base64.encode( hashedPasswordWithSaltBytes ) ) );
+                merge( hashedPasswordWithSaltBytes, salt, hashedPassword );
             }
             else
             {
-                sb.append( String.valueOf( Base64.encode( hashedPassword ) ) );
+                merge( hashedPasswordWithSaltBytes, hashedPassword, salt );
             }
+
+            sb.append( String.valueOf( Base64.encode( hashedPasswordWithSaltBytes ) ) );
         }
         else
         {
-            sb.append( Strings.utf8ToString( hashedPassword ) );
+            sb.append( String.valueOf( Base64.encode( hashedPassword ) ) );
         }
 
         return Strings.getBytesUtf8( sb.toString() );
@@ -202,6 +258,7 @@ public class PasswordUtil
      * <li>- SHA-2(256, 384 and 512 and their salted versions)</li>
      * <li>- MD5</li>
      * <li>- SMD5 (slated MD5)</li>
+     * <li>- PKCS5S2 (PBKDF2)</li>
      * <li>- crypt (unix crypt)</li>
      * <li>- plain text, ie no encryption.</li>
      * </ul>
@@ -211,13 +268,16 @@ public class PasswordUtil
      *  </p>
      *  If the password is using SSHA, SMD5 or crypt, some 'salt' is added to the password :
      *  <ul>
-     *  <li>- length(password) - 20, starting at 21th position for SSHA</li>
+     *  <li>- length(password) - 20, starting at 21st position for SSHA</li>
      *  <li>- length(password) - 16, starting at 16th position for SMD5</li>
      *  <li>- length(password) - 2, starting at 3rd position for crypt</li>
      *  </ul>
      *  <p>
      *  For (S)SHA, SHA-256 and (S)MD5, we have to transform the password from Base64 encoded text
      *  to a byte[] before comparing the password with the stored one.
+     *  </p>
+     *  <p>
+     *  For PKCS5S2 the salt is stored in the beginning of the password
      *  </p>
      *  <p>
      *  For crypt, we only have to remove the salt.
@@ -240,27 +300,62 @@ public class PasswordUtil
 
         if ( algorithm != null )
         {
-            EncryptionMethod encryptionMethod = new EncryptionMethod( algorithm, null );
-
             // Let's get the encrypted part of the stored password
             // We should just keep the password, excluding the algorithm
             // and the salt, if any.
             // But we should also get the algorithm and salt to
             // be able to encrypt the submitted user password in the next step
-            byte[] encryptedStored = PasswordUtil.splitCredentials( storedCredentials, encryptionMethod );
+            PasswordDetails passwordDetails = PasswordUtil.splitCredentials( storedCredentials );
 
             // Reuse the saltedPassword informations to construct the encrypted
             // password given by the user.
-            byte[] userPassword = PasswordUtil.encryptPassword( receivedCredentials, encryptionMethod.getAlgorithm(),
-                encryptionMethod.getSalt() );
+            byte[] userPassword = PasswordUtil.encryptPassword( receivedCredentials, passwordDetails.getAlgorithm(),
+                passwordDetails.getSalt() );
 
-            // Now, compare the two passwords.
-            return Arrays.equals( userPassword, encryptedStored );
+            return compareBytes( userPassword, passwordDetails.getPassword() );
         }
         else
         {
-            return Arrays.equals( storedCredentials, receivedCredentials );
+            return compareBytes( receivedCredentials, storedCredentials );
         }
+    }
+    
+    
+    /**
+     * Compare two byte[] in a constant time. This is necessary because using an Array.equals() is
+     * not Timing attack safe ([1], [2] and [3]), a breach that can be exploited to break some hashes.
+     * 
+     *  [1] https://en.wikipedia.org/wiki/Timing_attack
+     *  [2] http://rdist.root.org/2009/05/28/timing-attack-in-google-keyczar-library/
+     *  [3] https://cryptocoding.net/index.php/Coding_rules
+     */
+    private static boolean compareBytes( byte[] provided, byte[] stored )
+    {
+        if ( stored == null )
+        {
+            return provided == null;
+        }
+        else if ( provided == null )
+        {
+            return false;
+        }
+        
+        // Now, compare the two passwords, using a constant time method
+        if ( stored.length != provided.length )
+        {
+            return false;
+        }
+        
+        // loop on *every* byte in both passwords, and at the end, if one char at least is different, return false.
+        int result = 0;
+        
+        for ( int i = 0; i < stored.length; i++ )
+        {
+            // If both bytes are equal, xor will be == 0, otherwise it will be != 0 and so will result.
+            result |= ( stored[i] ^ provided[i] );
+        }
+        
+        return result == 0;
     }
 
 
@@ -272,7 +367,7 @@ public class PasswordUtil
      * @param salt value to be used as salt (optional)
      * @return the encrypted credentials
      */
-    public static byte[] encryptPassword( byte[] credentials, LdapSecurityConstants algorithm, byte[] salt )
+    private static byte[] encryptPassword( byte[] credentials, LdapSecurityConstants algorithm, byte[] salt )
     {
         switch ( algorithm )
         {
@@ -297,11 +392,21 @@ public class PasswordUtil
                 return digest( LdapSecurityConstants.HASH_METHOD_MD5, credentials, salt );
 
             case HASH_METHOD_CRYPT:
-                String saltWithCrypted = UnixCrypt.crypt( Strings.utf8ToString( credentials ), Strings
+                String saltWithCrypted = Crypt.crypt( Strings.utf8ToString( credentials ), Strings
                     .utf8ToString( salt ) );
                 String crypted = saltWithCrypted.substring( 2 );
-
                 return Strings.getBytesUtf8( crypted );
+
+            case HASH_METHOD_CRYPT_MD5:
+            case HASH_METHOD_CRYPT_SHA256:
+            case HASH_METHOD_CRYPT_SHA512:
+                String saltWithCrypted2 = Crypt.crypt( Strings.utf8ToString( credentials ),
+                    algorithm.getSubPrefix() + Strings.utf8ToString( salt ) );
+                String crypted2 = saltWithCrypted2.substring( saltWithCrypted2.lastIndexOf( '$' ) + 1 );
+                return Strings.getBytesUtf8( crypted2 );
+                
+            case HASH_METHOD_PKCS5S2:
+                return generatePbkdf2Hash( credentials, algorithm, salt );
 
             default:
                 return credentials;
@@ -324,7 +429,7 @@ public class PasswordUtil
 
         try
         {
-            digest = MessageDigest.getInstance( algorithm.getName() );
+            digest = MessageDigest.getInstance( algorithm.getAlgorithm() );
         }
         catch ( NoSuchAlgorithmException e1 )
         {
@@ -355,121 +460,97 @@ public class PasswordUtil
      * @return The password
      * @param credentials the credentials to split
      */
-    public static byte[] splitCredentials( byte[] credentials, EncryptionMethod encryptionMethod )
+    public static PasswordDetails splitCredentials( byte[] credentials )
     {
-        int algoLength = encryptionMethod.getAlgorithm().getName().length() + 2;
+        LdapSecurityConstants algorithm = findAlgorithm( credentials );
 
-        int hashLen = 0;
+        // check plain text password
+        if ( algorithm == null )
+        {
+            return new PasswordDetails( null, null, credentials );
+        }
 
-        switch ( encryptionMethod.getAlgorithm() )
+        int algoLength = algorithm.getPrefix().length() + 2;
+        byte[] password = null;
+
+        switch ( algorithm )
         {
             case HASH_METHOD_MD5:
-            case HASH_METHOD_SHA:
-                try
-                {
-                    // We just have the password just after the algorithm, base64 encoded.
-                    // Just decode the password and return it.
-                    return Base64
-                        .decode( new String( credentials, algoLength, credentials.length - algoLength, "UTF-8" )
-                            .toCharArray() );
-                }
-                catch ( UnsupportedEncodingException uee )
-                {
-                    // do nothing
-                    return credentials;
-                }
-
             case HASH_METHOD_SMD5:
-                try
-                {
-                    // The password is associated with a salt. Decompose it
-                    // in two parts, after having decoded the password.
-                    // The salt will be stored into the EncryptionMethod structure
-                    // The salt is at the end of the credentials, and is 8 bytes long
-                    byte[] passwordAndSalt = Base64.decode( new String( credentials, algoLength, credentials.length
-                        - algoLength, "UTF-8" ).toCharArray() );
+                return getCredentials( credentials, algoLength, MD5_LENGTH, algorithm );
 
-                    int saltLength = passwordAndSalt.length - MD5_LENGTH;
-                    encryptionMethod.setSalt( new byte[saltLength] );
-                    byte[] password = new byte[MD5_LENGTH];
-                    split( passwordAndSalt, 0, password, encryptionMethod.getSalt() );
-
-                    return password;
-                }
-                catch ( UnsupportedEncodingException uee )
-                {
-                    // do nothing
-                    return credentials;
-                }
-
+            case HASH_METHOD_SHA:
             case HASH_METHOD_SSHA:
-                hashLen = SHA1_LENGTH;
+                return getCredentials( credentials, algoLength, SHA1_LENGTH, algorithm );
 
             case HASH_METHOD_SHA256:
             case HASH_METHOD_SSHA256:
-                if ( hashLen == 0 )
-                {
-                    hashLen = SHA256_LENGTH;
-                }
+                return getCredentials( credentials, algoLength, SHA256_LENGTH, algorithm );
 
             case HASH_METHOD_SHA384:
             case HASH_METHOD_SSHA384:
-                if ( hashLen == 0 )
-                {
-                    hashLen = SHA384_LENGTH;
-                }
+                return getCredentials( credentials, algoLength, SHA384_LENGTH, algorithm );
 
             case HASH_METHOD_SHA512:
             case HASH_METHOD_SSHA512:
-                if ( hashLen == 0 )
-                {
-                    hashLen = SHA512_LENGTH;
-                }
+                return getCredentials( credentials, algoLength, SHA512_LENGTH, algorithm );
 
-                try
-                {
-                    // The password is associated with a salt. Decompose it
-                    // in two parts, after having decoded the password.
-                    // The salt will be stored into the EncryptionMethod structure
-                    // The salt is at the end of the credentials, and is 8 bytes long
-                    byte[] passwordAndSalt = Base64.decode( new String( credentials, algoLength, credentials.length
-                        - algoLength, "UTF-8" ).toCharArray() );
-
-                    int saltLength = passwordAndSalt.length - hashLen;
-                    encryptionMethod.setSalt( new byte[saltLength] );
-                    byte[] password = new byte[hashLen];
-                    split( passwordAndSalt, 0, password, encryptionMethod.getSalt() );
-
-                    return password;
-                }
-                catch ( UnsupportedEncodingException uee )
-                {
-                    // do nothing
-                    return credentials;
-                }
+            case HASH_METHOD_PKCS5S2:
+                return getPbkdf2Credentials( credentials, algoLength, algorithm );
 
             case HASH_METHOD_CRYPT:
                 // The password is associated with a salt. Decompose it
-                // in two parts, storing the salt into the EncryptionMethod structure.
+                // in two parts, no decoding required.
                 // The salt comes first, not like for SSHA and SMD5, and is 2 bytes long
-                encryptionMethod.setSalt( new byte[2] );
-                byte[] password = new byte[credentials.length - encryptionMethod.getSalt().length - algoLength];
-                split( credentials, algoLength, encryptionMethod.getSalt(), password );
+                // The algorithm, salt, and password will be stored into the PasswordDetails structure.
+                byte[] salt = new byte[2];
+                password = new byte[credentials.length - salt.length - algoLength];
+                split( credentials, algoLength, salt, password );
+                return new PasswordDetails( algorithm, salt, password );
 
-                return password;
+            case HASH_METHOD_CRYPT_MD5:
+            case HASH_METHOD_CRYPT_SHA256:
+            case HASH_METHOD_CRYPT_SHA512:
+                // skip $x$
+                algoLength = algoLength + 3;
+                return getCryptCredentials( credentials, algoLength, algorithm );
 
             default:
                 // unknown method
-                return credentials;
-
+                throw new IllegalArgumentException( "Unknown hash algorithm " + algorithm );
         }
+    }
+
+
+    /**
+     * Compute the credentials
+     */
+    private static PasswordDetails getCredentials( byte[] credentials, int algoLength, int hashLen,
+        LdapSecurityConstants algorithm )
+    {
+        // The password is associated with a salt. Decompose it
+        // in two parts, after having decoded the password.
+        // The salt is at the end of the credentials.
+        // The algorithm, salt, and password will be stored into the PasswordDetails structure.
+        byte[] passwordAndSalt = Base64
+            .decode( Strings.utf8ToString( credentials, algoLength, credentials.length - algoLength ).toCharArray() );
+
+        int saltLength = passwordAndSalt.length - hashLen;
+        byte[] salt = saltLength == 0 ? null : new byte[saltLength];
+        byte[] password = new byte[hashLen];
+        split( passwordAndSalt, 0, password, salt );
+
+        return new PasswordDetails( algorithm, salt, password );
     }
 
 
     private static void split( byte[] all, int offset, byte[] left, byte[] right )
     {
         System.arraycopy( all, offset, left, 0, left.length );
-        System.arraycopy( all, offset + left.length, right, 0, right.length );
+        if ( right != null )
+        {
+            System.arraycopy( all, offset + left.length, right, 0, right.length );
+        }
     }
 
 
@@ -491,7 +572,8 @@ public class PasswordUtil
     {
         Date pwdChangeDate = DateUtils.getDate( pwdChangedZtime );
 
-        long time = pwdMaxAgeSec * 1000L;//DIRSERVER-1735
+        //DIRSERVER-1735
+        long time = pwdMaxAgeSec * 1000L;
         time += pwdChangeDate.getTime();
 
         Date expiryDate = DateUtils.getDate( DateUtils.getGeneralizedTime( time ) );
@@ -506,4 +588,99 @@ public class PasswordUtil
 
         return expired;
     }
+
+
+    /**
+     * generates a hash based on the <a href="http://en.wikipedia.org/wiki/PBKDF2">PKCS5S2 spec</a>
+     * 
+     * Note: this has been implemented to generate hashes compatible with what JIRA generates.
+     *       See the <a href="http://pythonhosted.org/passlib/lib/passlib.hash.atlassian_pbkdf2_sha1.html">JIRA's passlib</a>
+     * @param algorithm the algorithm to use
+     * @param password the credentials
+     * @param salt the optional salt
+     * @return the digested credentials
+     */
+    private static byte[] generatePbkdf2Hash( byte[] credentials, LdapSecurityConstants algorithm, byte[] salt )
+    {
+        try
+        {
+            SecretKeyFactory sk = SecretKeyFactory.getInstance( algorithm.getAlgorithm() );
+            char[] password = Strings.utf8ToString( credentials ).toCharArray();
+            KeySpec keySpec = new PBEKeySpec( password, salt, 10000, PKCS5S2_LENGTH * 8 );
+            Key key = sk.generateSecret( keySpec );
+            return key.getEncoded();
+        }
+        catch ( Exception e )
+        {
+            throw new RuntimeException( e );
+        }
+    }
+
+
+    /**
+     * Gets the credentials from a PKCS5S2 hash.
+     * The salt for PKCS5S2 hash is prepended to the password
+     */
+    private static PasswordDetails getPbkdf2Credentials( byte[] credentials, int algoLength, LdapSecurityConstants algorithm )
+    {
+        // The password is associated with a salt. Decompose it
+        // in two parts, after having decoded the password.
+        // The salt is at the *beginning* of the credentials, and is 16 bytes long
+        // The algorithm, salt, and password will be stored into the PasswordDetails structure.
+        byte[] passwordAndSalt = Base64
+            .decode( Strings.utf8ToString( credentials, algoLength, credentials.length - algoLength ).toCharArray() );
+
+        int saltLength = passwordAndSalt.length - PKCS5S2_LENGTH;
+        byte[] salt = new byte[saltLength];
+        byte[] password = new byte[PKCS5S2_LENGTH];
+
+        split( passwordAndSalt, 0, salt, password );
+
+        return new PasswordDetails( algorithm, salt, password );
+    }
+
+
+    private static final byte[] CRYPT_SALT_CHARS = Strings
+        .getBytesUtf8( "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" );
+
+
+    private static byte[] generateCryptSalt( int length )
+    {
+        byte[] salt = new byte[length];
+        SecureRandom sr = new SecureRandom();
+        for ( int i = 0; i < salt.length; i++ )
+        {
+            salt[i] = CRYPT_SALT_CHARS[sr.nextInt( CRYPT_SALT_CHARS.length )];
+        }
+        
+        return salt;
+    }
+
+
+    private static PasswordDetails getCryptCredentials( byte[] credentials, int algoLength,
+        LdapSecurityConstants algorithm )
+    {
+        // The password is associated with a salt. Decompose it
+        // in two parts, no decoding required.
+        // The salt length is dynamic, between the 2nd and 3rd '$'.
+        // The algorithm, salt, and password will be stored into the PasswordDetails structure.
+
+        // skip {crypt}$x$
+        int pos = algoLength;
+        while ( pos < credentials.length )
+        {
+            if ( credentials[pos] == '$' )
+            {
+                break;
+            }
+
+            pos++;
+        }
+
+        byte[] salt = Arrays.copyOfRange( credentials, algoLength, pos );
+        byte[] password = Arrays.copyOfRange( credentials, pos + 1, credentials.length );
+
+        return new PasswordDetails( algorithm, salt, password );
+    }
+
 }

@@ -101,7 +101,7 @@ public enum SyncInfoValueStatesEnum implements States
      * @param grammar The grammar class
      * @return The grammar name
      */
-    public String getGrammarName( Grammar grammar )
+    public String getGrammarName( Grammar<SyncInfoValueContainer> grammar )
     {
         if ( grammar instanceof SyncInfoValueGrammar )
         {

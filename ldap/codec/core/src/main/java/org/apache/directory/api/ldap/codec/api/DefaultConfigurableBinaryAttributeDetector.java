@@ -69,33 +69,59 @@ public class DefaultConfigurableBinaryAttributeDetector extends SchemaBinaryAttr
     private Set<String> binaryAttributes = new ConcurrentHashSet<String>();
 
     /** A list of all the known binary attributes */
-    public final static String[] DEFAULT_BINARY_ATTRIBUTES = new String[]
+    public static final String[] DEFAULT_BINARY_ATTRIBUTES = new String[]
         {
-            "entryACI", // Syntax : ACI Item
-            "prescriptiveACI", // Syntax : ACI Item
-            "subentryACI", // Syntax : ACI Item
-            "audio", // Syntax : Audio
-            "javaByteCode", // Syntax : Binary
-            "javaClassByteCode", // Syntax : Binary
-            "krb5key", // Syntax : Binary
-            "m-byteCode", // Syntax : Binary
-            "privateKey", // Syntax : Binary
-            "publicKey", // Syntax : Binary
-            "userPKCS12", // Syntax : Binary
-            "userSMIMECertificate", // Syntax : Binary
-            "cACertificate", // Syntax : Certificate
-            "userCertificate", // Syntax : Certificate
-            "authorityRevocationList", // Syntax : Certificate List
-            "certificateRevocationList",// Syntax : Certificate List
-            "deltaRevocationList", // Syntax : Certificate List
-            "crossCertificatePair", // Syntax : Certificate Pair
-            "personalSignature", // Syntax : Fax
-            "photo", // Syntax : Fax
-            "jpegPhoto", // Syntax : JPEG
-            "supportedAlgorithms", // Syntax : Supported Algorithm
-            "javaSerializedData", // Syntax : Octet String
-            "userPassword" // Syntax : Octet String
-        };
+            // Syntax : ACI Item
+            "entryACI",
+            "prescriptiveACI",
+            "subentryACI",
+
+            // Syntax : AUDIO
+            "audio",
+
+            // Syntax : Binary
+            "javaByteCode",
+            "javaClassByteCode",
+            "krb5key",
+            "m-byteCode",
+            "privateKey",
+            "publicKey",
+            "userPKCS12",
+            "userSMIMECertificate",
+
+            // Syntax : Certificate
+            "cACertificate",
+            "userCertificate",
+
+            // Syntax : Certificate List
+            "authorityRevocationList",
+            "certificateRevocationList",
+            "deltaRevocationList",
+
+            // Syntax : Certificate Pair
+            "crossCertificatePair",
+
+            // Syntax : Fax
+            "personalSignature",
+            "photo",
+
+            // Syntax : JPEG
+            "jpegPhoto",
+
+            // Syntax : Supported Algorithm
+            "supportedAlgorithms",
+
+            // Syntax : Octet String
+            "javaSerializedData",
+            "userPassword",
+
+            // Active Directory specific attributes see DIRAPI-177
+            "objectSid",
+            "objectGUID",
+            "thumbnailLogo",
+            "thumbnailPhoto",
+            "x500uniqueIdentifier"
+    };
 
 
     /**
@@ -120,7 +146,7 @@ public class DefaultConfigurableBinaryAttributeDetector extends SchemaBinaryAttr
             return true;
         }
 
-        String attrId = Strings.toLowerCase( attributeId );
+        String attrId = Strings.toLowerCaseAscii( attributeId );
 
         return binaryAttributes.contains( attrId );
     }
@@ -135,7 +161,7 @@ public class DefaultConfigurableBinaryAttributeDetector extends SchemaBinaryAttr
         {
             for ( String binaryAttribute : binaryAttributes )
             {
-                String attrId = Strings.toLowerCase( binaryAttribute );
+                String attrId = Strings.toLowerCaseAscii( binaryAttribute );
                 this.binaryAttributes.add( attrId );
             }
         }
@@ -151,7 +177,7 @@ public class DefaultConfigurableBinaryAttributeDetector extends SchemaBinaryAttr
         {
             for ( String binaryAttribute : binaryAttributes )
             {
-                String attrId = Strings.toLowerCase( binaryAttribute );
+                String attrId = Strings.toLowerCaseAscii( binaryAttribute );
                 this.binaryAttributes.remove( attrId );
             }
         }

@@ -185,7 +185,7 @@ public class LdifAttributesReader extends LdifReader
             throw new LdapLdifException( I18n.err( I18n.ERR_12003_LDIF_ENTRY_WITH_TWO_DNS ) );
         }
 
-        Object attributeValue = parseValue( line, colonIndex );
+        Object attributeValue = parseValue( attributeType, line, colonIndex );
 
         // Update the entry
         javax.naming.directory.Attribute attribute = attributes.get( attributeType );
@@ -236,7 +236,7 @@ public class LdifAttributesReader extends LdifReader
             }
         }
 
-        Object attributeValue = parseValue( line, colonIndex );
+        Object attributeValue = parseValue( attributeName, line, colonIndex );
 
         // Update the entry
         Attribute attribute = null;
@@ -332,7 +332,7 @@ public class LdifAttributesReader extends LdifReader
         {
             // Each line could start either with an OID, an attribute type, with
             // "control:" or with "changetype:"
-            String lowerLine = Strings.toLowerCase( line );
+            String lowerLine = Strings.toLowerCaseAscii( line );
 
             // We have three cases :
             // 1) The first line after the Dn is a "control:" -> this is an error
@@ -394,7 +394,7 @@ public class LdifAttributesReader extends LdifReader
         {
             // Each line could start either with an OID, an attribute type, with
             // "control:" or with "changetype:"
-            String lowerLine = Strings.toLowerCase( line );
+            String lowerLine = Strings.toLowerCaseAscii( line );
 
             // We have three cases :
             // 1) The first line after the Dn is a "control:" -> this is an error
@@ -435,8 +435,6 @@ public class LdifAttributesReader extends LdifReader
      * @return A list of Attributes, or an empty List
      * @throws LdapLdifException If something went wrong
      */
-    // This will suppress PMD.EmptyCatchBlock warnings in this method
-    @SuppressWarnings("PMD.EmptyCatchBlock")
     public Attributes parseAttributes( String ldif ) throws LdapLdifException
     {
         lines = new ArrayList<String>();
@@ -498,8 +496,6 @@ public class LdifAttributesReader extends LdifReader
      * @return An entry
      * @throws LdapLdifException If something went wrong
      */
-    // This will suppress PMD.EmptyCatchBlock warnings in this method
-    @SuppressWarnings("PMD.EmptyCatchBlock")
     public Entry parseEntry( String ldif ) throws LdapLdifException
     {
         lines = new ArrayList<String>();
@@ -563,8 +559,6 @@ public class LdifAttributesReader extends LdifReader
      * @return An entry
      * @throws LdapLdifException If something went wrong
      */
-    // This will suppress PMD.EmptyCatchBlock warnings in this method
-    @SuppressWarnings("PMD.EmptyCatchBlock")
     public Entry parseEntry( SchemaManager schemaManager, String ldif ) throws LdapLdifException
     {
         lines = new ArrayList<String>();

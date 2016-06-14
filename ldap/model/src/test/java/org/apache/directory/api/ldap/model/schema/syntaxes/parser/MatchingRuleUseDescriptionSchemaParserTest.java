@@ -29,15 +29,15 @@ import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
 import org.apache.directory.api.ldap.model.schema.MatchingRuleUse;
 import org.apache.directory.api.ldap.model.schema.parsers.MatchingRuleUseDescriptionSchemaParser;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -278,14 +278,14 @@ public class MatchingRuleUseDescriptionSchemaParserTest
         assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", matchingRuleUse
             .getApplicableAttributeOids().get( 1 ) );
         assertEquals( 2, matchingRuleUse.getExtensions().size() );
-        assertNotNull( matchingRuleUse.getExtensions().get( "X-TEST-a" ) );
-        assertEquals( 2, matchingRuleUse.getExtensions().get( "X-TEST-a" ).size() );
-        assertEquals( "test1-1", matchingRuleUse.getExtensions().get( "X-TEST-a" ).get( 0 ) );
-        assertEquals( "test1-2", matchingRuleUse.getExtensions().get( "X-TEST-a" ).get( 1 ) );
-        assertNotNull( matchingRuleUse.getExtensions().get( "X-TEST-b" ) );
-        assertEquals( 2, matchingRuleUse.getExtensions().get( "X-TEST-b" ).size() );
-        assertEquals( "test2-1", matchingRuleUse.getExtensions().get( "X-TEST-b" ).get( 0 ) );
-        assertEquals( "test2-2", matchingRuleUse.getExtensions().get( "X-TEST-b" ).get( 1 ) );
+        assertNotNull( matchingRuleUse.getExtension( "X-TEST-a" ) );
+        assertEquals( 2, matchingRuleUse.getExtension( "X-TEST-a" ).size() );
+        assertEquals( "test1-1", matchingRuleUse.getExtension( "X-TEST-a" ).get( 0 ) );
+        assertEquals( "test1-2", matchingRuleUse.getExtension( "X-TEST-a" ).get( 1 ) );
+        assertNotNull( matchingRuleUse.getExtension( "X-TEST-b" ) );
+        assertEquals( 2, matchingRuleUse.getExtension( "X-TEST-b" ).size() );
+        assertEquals( "test2-1", matchingRuleUse.getExtension( "X-TEST-b" ).get( 0 ) );
+        assertEquals( "test2-2", matchingRuleUse.getExtension( "X-TEST-b" ).get( 1 ) );
     }
 
 

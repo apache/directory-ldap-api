@@ -34,9 +34,9 @@ import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ControlDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.controls.SyncInfoValue;
-import org.apache.directory.api.ldap.extras.controls.SyncInfoValueImpl;
-import org.apache.directory.api.ldap.extras.controls.SynchronizationInfoEnum;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncInfoValue;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncInfoValueImpl;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SynchronizationInfoEnum;
 import org.apache.directory.api.util.Strings;
 
 
@@ -51,7 +51,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     private int syncUUIDsLength;
 
     /** An instance of this decoder */
-    private static final Asn1Decoder decoder = new Asn1Decoder();
+    private static final Asn1Decoder DECODER = new Asn1Decoder();
 
 
     /**
@@ -414,6 +414,11 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
                         BerValue.encode( buffer, syncUUID );
                     }
                 }
+
+                break;
+
+            default:
+                throw new IllegalArgumentException( "Unexpected SynchronizationInfo: " + getType() );
         }
 
         return buffer;
@@ -520,11 +525,16 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
                                 BerValue.encode( buffer, syncUUID );
                             }
                         }
+
+                        break;
+
+                    default:
+                        throw new IllegalArgumentException( "Unexpected SynchronizationInfo: " + getType() );
                 }
 
                 value = buffer.array();
             }
-            catch ( Exception e )
+            catch ( EncoderException e )
             {
                 return null;
             }
@@ -541,11 +551,11 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );
         SyncInfoValueContainer container = new SyncInfoValueContainer( getCodecService(), this );
-        decoder.decode( bb, container );
+        DECODER.decode( bb, container );
         return this;
     }
-    
-    
+
+
     /**
      * @see Object#toString()
      */

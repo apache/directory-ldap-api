@@ -27,13 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.MessageException;
-import org.apache.directory.api.ldap.model.message.AbandonListener;
-import org.apache.directory.api.ldap.model.message.Control;
-import org.apache.directory.api.ldap.model.message.DeleteRequest;
-import org.apache.directory.api.ldap.model.message.DeleteRequestImpl;
-import org.apache.directory.api.ldap.model.message.DeleteResponse;
-import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -195,13 +188,13 @@ public class DeleteRequestImplTest
             }
 
 
-            public DeleteRequest addControl( Control control ) throws MessageException
+            public DeleteRequest addControl( Control control )
             {
                 return this;
             }
 
 
-            public DeleteRequest removeControl( Control control ) throws MessageException
+            public DeleteRequest removeControl( Control control )
             {
                 return this;
             }
@@ -248,7 +241,7 @@ public class DeleteRequestImplTest
             }
 
 
-            public DeleteRequest addAllControls( Control[] controls ) throws MessageException
+            public DeleteRequest addAllControls( Control[] controls )
             {
                 return this;
             }

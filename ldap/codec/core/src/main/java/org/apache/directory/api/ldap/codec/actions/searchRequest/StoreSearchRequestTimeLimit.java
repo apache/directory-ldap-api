@@ -85,7 +85,7 @@ public class StoreSearchRequestTimeLimit extends GrammarAction<LdapMessageContai
         {
             String msg = I18n.err( I18n.ERR_04104, value.toString() );
             LOG.error( msg );
-            throw new DecoderException( msg );
+            throw new DecoderException( msg, ide );
         }
 
         searchRequest.setTimeLimit( timeLimit );

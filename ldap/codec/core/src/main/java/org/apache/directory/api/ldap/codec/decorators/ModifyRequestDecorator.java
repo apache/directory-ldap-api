@@ -32,17 +32,16 @@ import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ModifyRequest;
-import org.apache.directory.api.ldap.model.message.ModifyResponse;
 import org.apache.directory.api.ldap.model.name.Dn;
 
 
@@ -51,7 +50,7 @@ import org.apache.directory.api.ldap.model.name.Dn;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRequest, ModifyResponse>
+public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRequest>
     implements ModifyRequest
 {
     /** The modify request length */
@@ -61,13 +60,13 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     private int changesLength;
 
     /** The list of all change lengths */
-    private List<Integer> changeLength = new LinkedList<Integer>();
+    private List<Integer> changeLength;
 
     /** The list of all the modification lengths */
-    private List<Integer> modificationLength = new LinkedList<Integer>();
+    private List<Integer> modificationLength;
 
     /** The list of all the value lengths */
-    private List<Integer> valuesLength = new LinkedList<Integer>();
+    private List<Integer> valuesLength;
 
     /** The current attribute being decoded */
     private Attribute currentAttribute;
@@ -84,96 +83,6 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     public ModifyRequestDecorator( LdapApiService codec, ModifyRequest decoratedMessage )
     {
         super( codec, decoratedMessage );
-    }
-
-
-    /**
-     * @param modifyRequestLength The encoded ModifyRequest's length
-     */
-    public void setModifyRequestLength( int modifyRequestLength )
-    {
-        this.modifyRequestLength = modifyRequestLength;
-    }
-
-
-    /**
-     * @return The encoded length
-     */
-    public int getModifyRequestLength()
-    {
-        return modifyRequestLength;
-    }
-
-
-    /**
-     * @param changesLength The encoded Changes length
-     */
-    public void setChangesLength( int changesLength )
-    {
-        this.changesLength = changesLength;
-    }
-
-
-    /**
-     * @return The encoded length
-     */
-    public int getChangesLength()
-    {
-        return changesLength;
-    }
-
-
-    /**
-     * @return The list of encoded Change length
-     */
-    public void setChangeLength( List<Integer> changeLength )
-    {
-        this.changeLength = changeLength;
-    }
-
-
-    /**
-     * @return The list of encoded Change length
-     */
-    public List<Integer> getChangeLength()
-    {
-        return changeLength;
-    }
-
-
-    /**
-     * @param modificationLength The list of encoded Modification length
-     */
-    public void setModificationLength( List<Integer> modificationLength )
-    {
-        this.modificationLength = modificationLength;
-    }
-
-
-    /**
-     * @return The list of encoded Modification length
-     */
-    public List<Integer> getModificationLength()
-    {
-        return modificationLength;
-    }
-
-
-    /**
-     * @param valuesLength The list of encoded Values length
-     */
-    public void setValuesLength( List<Integer> valuesLength )
-    {
-        this.valuesLength = valuesLength;
-    }
-
-
-    /**
-     * @return The list of encoded Values length
-     */
-    public List<Integer> getValuesLength()
-    {
-        return valuesLength;
     }
 
 
@@ -324,6 +233,17 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
+    public ModifyRequest remove( String attributeName )
+    {
+        getDecorated().remove( attributeName );
+
+        return this;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public ModifyRequest addModification( Attribute attr, ModificationOperation modOp )
     {
         getDecorated().addModification( attr, modOp );
@@ -423,7 +343,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
-    public ModifyRequest addControl( Control control ) throws MessageException
+    public ModifyRequest addControl( Control control )
     {
         return ( ModifyRequest ) super.addControl( control );
     }
@@ -432,7 +352,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
-    public ModifyRequest addAllControls( Control[] controls ) throws MessageException
+    public ModifyRequest addAllControls( Control[] controls )
     {
         return ( ModifyRequest ) super.addAllControls( controls );
     }
@@ -441,7 +361,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
-    public ModifyRequest removeControl( Control control ) throws MessageException
+    public ModifyRequest removeControl( Control control )
     {
         return ( ModifyRequest ) super.removeControl( control );
     }
@@ -494,19 +414,19 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     public int computeLength()
     {
         // Initialized with name
-        int modifyRequestLength = 1 + TLV.getNbBytes( Dn.getNbBytes( getName() ) )
+        modifyRequestLength = 1 + TLV.getNbBytes( Dn.getNbBytes( getName() ) )
             + Dn.getNbBytes( getName() );
 
         // All the changes length
-        int changesLength = 0;
+        changesLength = 0;
 
         Collection<Modification> modifications = getModifications();
 
         if ( ( modifications != null ) && ( modifications.size() != 0 ) )
         {
-            List<Integer> changeLength = new LinkedList<Integer>();
-            List<Integer> modificationLength = new LinkedList<Integer>();
-            List<Integer> valuesLength = new LinkedList<Integer>();
+            changeLength = new LinkedList<Integer>();
+            modificationLength = new LinkedList<Integer>();
+            valuesLength = new LinkedList<Integer>();
 
             for ( Modification modification : modifications )
             {
@@ -521,7 +441,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
                 // Get all the values
                 if ( modification.getAttribute().size() != 0 )
                 {
-                    for ( org.apache.directory.api.ldap.model.entry.Value<?> value : modification.getAttribute() )
+                    for ( Value<?> value : modification.getAttribute() )
                     {
                         localValuesLength += 1 + TLV.getNbBytes( value.getBytes().length ) + value.getBytes().length;
                     }
@@ -545,13 +465,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
 
             // Add the modifications length to the modificationRequestLength
             modifyRequestLength += 1 + TLV.getNbBytes( changesLength ) + changesLength;
-            setChangeLength( changeLength );
-            setModificationLength( modificationLength );
-            setValuesLength( valuesLength );
         }
-
-        setChangesLength( changesLength );
-        setModifyRequestLength( modifyRequestLength );
 
         return 1 + TLV.getNbBytes( modifyRequestLength ) + modifyRequestLength;
     }
@@ -592,15 +506,15 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
         try
         {
             // The AddRequest Tag
-            buffer.put( LdapConstants.MODIFY_REQUEST_TAG );
-            buffer.put( TLV.getBytes( getModifyRequestLength() ) );
+            buffer.put( LdapCodecConstants.MODIFY_REQUEST_TAG );
+            buffer.put( TLV.getBytes( modifyRequestLength ) );
 
             // The entry
             BerValue.encode( buffer, Dn.getBytes( getName() ) );
 
             // The modifications sequence
             buffer.put( UniversalTag.SEQUENCE.getValue() );
-            buffer.put( TLV.getBytes( getChangesLength() ) );
+            buffer.put( TLV.getBytes( changesLength ) );
 
             // The modifications list
             Collection<Modification> modifications = getModifications();
@@ -614,7 +528,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
                 {
                     // The modification sequence
                     buffer.put( UniversalTag.SEQUENCE.getValue() );
-                    int localModificationSequenceLength = getChangeLength().get( modificationNumber );
+                    int localModificationSequenceLength = changeLength.get( modificationNumber );
                     buffer.put( TLV.getBytes( localModificationSequenceLength ) );
 
                     // The operation. The value has to be changed, it's not
@@ -625,7 +539,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
 
                     // The modification
                     buffer.put( UniversalTag.SEQUENCE.getValue() );
-                    int localModificationLength = getModificationLength().get( modificationNumber );
+                    int localModificationLength = modificationLength.get( modificationNumber );
                     buffer.put( TLV.getBytes( localModificationLength ) );
 
                     // The modification type
@@ -633,7 +547,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
 
                     // The values
                     buffer.put( UniversalTag.SET.getValue() );
-                    int localValuesLength = getValuesLength().get( modificationNumber );
+                    int localValuesLength = valuesLength.get( modificationNumber );
                     buffer.put( TLV.getBytes( localValuesLength ) );
 
                     if ( modification.getAttribute().size() != 0 )
@@ -658,7 +572,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
 
         return buffer;

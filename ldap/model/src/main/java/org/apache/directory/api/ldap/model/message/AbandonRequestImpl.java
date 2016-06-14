@@ -21,7 +21,6 @@ package org.apache.directory.api.ldap.model.message;
 
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 
 
 /**
@@ -102,7 +101,7 @@ public class AbandonRequestImpl extends AbstractRequest implements AbandonReques
     /**
      * {@inheritDoc}
      */
-    public AbandonRequest addControl( Control control ) throws MessageException
+    public AbandonRequest addControl( Control control )
     {
         return ( AbandonRequest ) super.addControl( control );
     }
@@ -111,7 +110,7 @@ public class AbandonRequestImpl extends AbstractRequest implements AbandonReques
     /**
      * {@inheritDoc}
      */
-    public AbandonRequest addAllControls( Control[] controls ) throws MessageException
+    public AbandonRequest addAllControls( Control[] controls )
     {
         return ( AbandonRequest ) super.addAllControls( controls );
     }
@@ -120,7 +119,7 @@ public class AbandonRequestImpl extends AbstractRequest implements AbandonReques
     /**
      * {@inheritDoc}
      */
-    public AbandonRequest removeControl( Control control ) throws MessageException
+    public AbandonRequest removeControl( Control control )
     {
         return ( AbandonRequest ) super.removeControl( control );
     }

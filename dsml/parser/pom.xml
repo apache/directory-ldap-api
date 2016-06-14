@@ -53,18 +53,19 @@
     </dependency>
     
     <dependency>
-      <groupId>dom4j</groupId>
-      <artifactId>dom4j</artifactId>
+      <groupId>org.apache.servicemix.bundles</groupId>
+      <artifactId>org.apache.servicemix.bundles.dom4j</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>xml-apis</groupId>
-      <artifactId>xml-apis</artifactId>
+      <groupId>org.apache.servicemix.bundles</groupId>
+      <artifactId>org.apache.servicemix.bundles.xpp3</artifactId>
     </dependency>
-    
+
     <dependency>
-      <groupId>xpp3</groupId>
-      <artifactId>xpp3</artifactId>
+      <groupId>findbugs</groupId>
+      <artifactId>annotations</artifactId>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
@@ -109,8 +110,32 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.dsmlv2.parser</Bundle-SymbolicName>
             <Export-Package>
-                {local-packages};version=${project.version};-noimport:=true
+              org.apache.directory.api.dsmlv2;version=${project.version};-noimport:=true,
+              org.apache.directory.api.dsmlv2.response;version=${project.version};-noimport:=true,
+              org.apache.directory.api.dsmlv2.request;version=${project.version};-noimport:=true
             </Export-Package>
+            <Import-Package>
+              org.apache.directory.api.asn1;version=${project.version},
+              org.apache.directory.api.asn1.util;version=${project.version},
+              org.apache.directory.api.i18n;version=${project.version},
+              org.apache.directory.api.ldap.codec.api;version=${project.version},
+              org.apache.directory.api.ldap.model.entry;version=${project.version},
+              org.apache.directory.api.ldap.model.exception;version=${project.version},
+              org.apache.directory.api.ldap.model.filter;version=${project.version},
+              org.apache.directory.api.ldap.model.ldif;version=${project.version},
+              org.apache.directory.api.ldap.model.message;version=${project.version},
+              org.apache.directory.api.ldap.model.message.controls;version=${project.version},
+              org.apache.directory.api.ldap.model.name;version=${project.version},
+              org.apache.directory.api.ldap.model.url;version=${project.version},
+              org.apache.directory.api.util;version=${project.version},
+              org.dom4j;version=${dom4j.version},
+              org.dom4j.io;version=${dom4j.version},
+              org.dom4j.tree;version=${dom4j.version},
+              org.slf4j;version=${slf4j.api.bundleversion},
+              org.xmlpull.v1;version=${xpp3.version},
+              javax.xml.transform,
+              javax.xml.transform.stream
+            </Import-Package>
           </instructions>
         </configuration>
       </plugin>

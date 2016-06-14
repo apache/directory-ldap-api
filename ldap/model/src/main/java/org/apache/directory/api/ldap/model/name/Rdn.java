@@ -34,13 +34,13 @@ import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
-import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
-import org.apache.directory.api.ldap.model.schema.normalizers.OidNormalizer;
 import org.apache.directory.api.util.Chars;
 import org.apache.directory.api.util.Hex;
+import org.apache.directory.api.util.Serialize;
 import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.api.util.Unicode;
@@ -253,7 +253,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
             {
                 throw new LdapInvalidDnException( "Invalid RDN" );
             }
-            
+
             upName = rdn;
         }
         else
@@ -293,7 +293,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      */
     public Rdn( SchemaManager schemaManager, String upType, String upValue ) throws LdapInvalidDnException
     {
-        addAVA( schemaManager, upType, upType, new StringValue( upValue ), new StringValue( upValue ) );
+        addAVA( schemaManager, upType, upType, new StringValue( upValue ) );
 
         upName = upType + '=' + upValue;
 
@@ -327,6 +327,32 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
     public Rdn( String upType, String upValue ) throws LdapInvalidDnException
     {
         this( null, upType, upValue );
+    }
+
+
+    public Rdn( SchemaManager schemaManager, Ava... avas ) throws LdapInvalidDnException
+    {
+        StringBuilder buffer = new StringBuilder();
+        
+        for ( int i = 0; i < avas.length; i++ )
+        {
+            if ( i > 0 )
+            {
+                buffer.append( '+' );
+            }
+            
+            addAVA( schemaManager, avas[i] );
+            buffer.append( avas[i].getName() );
+        }
+        
+        setUpName( buffer.toString() );
+        normalize();
+    }
+
+
+    public Rdn( Ava... avas ) throws LdapInvalidDnException
+    {
+        this( null, avas );
     }
 
 
@@ -396,13 +422,13 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
             case 1:
                 // We have a single Ava
                 // We will trim and lowercase type and value.
-                if ( ava.getNormValue().isHumanReadable() )
+                if ( ava.getValue().isHumanReadable() )
                 {
                     normName = ava.getNormName();
                 }
                 else
                 {
-                    normName = ava.getNormType() + "=#" + Strings.dumpHexPairs( ava.getNormValue().getBytes() );
+                    normName = ava.getNormType() + "=#" + Strings.dumpHexPairs( ava.getValue().getBytes() );
                 }
 
                 break;
@@ -437,7 +463,8 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
     /**
      * Transform a Rdn by changing the value to its OID counterpart and
-     * normalizing the value accordingly to its type.
+     * normalizing the value accordingly to its type. The modified Rdn is
+     * a new instance, as the Rdn class is immutable.
      *
      * @param schemaManager the SchemaManager
      * @return this Rdn, normalized
@@ -472,26 +499,24 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      * @throws LdapInvalidDnException
      *             If the Rdn is invalid
      */
-    private void addAVA( SchemaManager schemaManager, String upType, String type, Value<?> upValue,
-        Value<?> value ) throws LdapInvalidDnException
+    private void addAVA( SchemaManager schemaManager, String upType, String type, Value<?> value ) throws LdapInvalidDnException
     {
         // First, let's normalize the type
-        Value<?> normalizedValue = value;
+        AttributeType attributeType = null;
         String normalizedType = Strings.lowerCaseAscii( type );
         this.schemaManager = schemaManager;
 
         if ( schemaManager != null )
         {
-            OidNormalizer oidNormalizer = schemaManager.getNormalizerMapping().get( normalizedType );
-            normalizedType = oidNormalizer.getAttributeTypeOid();
-
+            attributeType = schemaManager.getAttributeType( normalizedType );
+            
             try
             {
-                normalizedValue = oidNormalizer.getNormalizer().normalize( value );
+                value.apply( attributeType );
             }
-            catch ( LdapException e )
+            catch ( LdapInvalidAttributeValueException liave )
             {
-                throw new LdapInvalidDnException( e.getMessage(), e );
+                throw new LdapInvalidDnException( liave.getMessage(), liave );
             }
         }
 
@@ -499,7 +524,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
         {
             case 0:
                 // This is the first Ava. Just stores it.
-                ava = new Ava( schemaManager, upType, normalizedType, upValue, normalizedValue );
+                ava = new Ava( schemaManager, upType, normalizedType, value );
                 nbAvas = 1;
                 avaType = normalizedType;
                 hashCode();
@@ -524,7 +549,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
             default:
                 // add a new Ava
-                Ava newAva = new Ava( schemaManager, upType, normalizedType, upValue, normalizedValue );
+                Ava newAva = new Ava( schemaManager, upType, normalizedType, value );
                 avas.add( newAva );
                 avaTypes.put( normalizedType, newAva );
                 nbAvas++;
@@ -533,6 +558,48 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 return;
 
         }
+    }
+
+
+    /**
+     * Replace an Ava into a Rdn at a given position
+     *
+     * @param value The modified Ava
+     * @param pos The position of the Ava in the Rdn
+     * @exception LdapInvalidDnException If the position is not valid
+     */
+    // WARNING : The protection level is left unspecified intentionally.
+    // We need this method to be visible from the DnParser class, but not
+    // from outside this package.
+    /* Unspecified protection */void replaceAva( Ava value, int pos ) throws LdapInvalidDnException
+    {
+        if ( ( pos < 0 ) || ( pos > nbAvas ) )
+        {
+            throw new LdapInvalidDnException( "Cannot set the AVA at position " + pos );
+        }
+
+        String normalizedType = value.getNormType();
+
+        switch ( nbAvas )
+        {
+            case 1:
+                // This is the first Ava. Just stores it.
+                ava = value;
+                avaType = normalizedType;
+
+                break;
+
+            default:
+                Ava oldAva = avas.get( pos );
+                avas.set( pos, value );
+                avaTypes.remove( oldAva.getType() );
+                avaTypes.put( normalizedType, value );
+
+                break;
+        }
+
+        h = 0;
+        hashCode();
     }
 
 
@@ -566,9 +633,13 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 // Check that the first AVA is not for the same attribute
                 if ( avaType.equals( normalizedType ) )
                 {
-                    throw new LdapInvalidDnException( "Invalid RDN: the " + normalizedType + " is already present in the RDN" );
+                    if ( ava.getValue().equals( value.getValue() ) )
+                    {
+                        throw new LdapInvalidDnException( "Invalid RDN: the " + normalizedType
+                            + " is already present in the RDN" );
+                    }
                 }
-                
+
                 // First, create the HashMap,
                 avas = new ArrayList<Ava>();
 
@@ -586,14 +657,28 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 // Check that the AT is not already present
                 if ( avaTypes.containsKey( normalizedType ) )
                 {
-                    throw new LdapInvalidDnException( "Invalid RDN: the " + normalizedType + " is already present in the RDN" );
+                    Collection<Ava> atavList = ( Collection<Ava> ) avaTypes.get( normalizedType );
+                    
+                    if ( atavList.contains( value ) )
+                    {
+                        throw new LdapInvalidDnException( "Invalid RDN: the " + normalizedType
+                            + " is already present in the RDN" );
+                    }
+                    else
+                    {
+                        // Add the value to the list
+                        atavList.add( value );
+                        nbAvas++;
+                    }
                 }
-                
-                // add a new Ava
-                avas.add( value );
-                avaTypes.put( normalizedType, value );
-                nbAvas++;
-                hashCode();
+                else
+                {
+                    // add a new Ava
+                    avas.add( value );
+                    avaTypes.put( normalizedType, value );
+                    nbAvas++;
+                    hashCode();
+                }
 
                 break;
         }
@@ -621,11 +706,11 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
 
     /**
-     * Get the Value of the Ava which type is given as an
+     * Get the value of the Ava which type is given as an
      * argument.
      *
      * @param type the type of the NameArgument
-     * @return the Value to be returned, or null if none found.
+     * @return the value to be returned, or null if none found.
      * @throws LdapInvalidDnException if the Rdn is invalid
      */
     public Object getValue( String type ) throws LdapInvalidDnException
@@ -651,7 +736,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
             case 1:
                 if ( Strings.equals( ava.getNormType(), normalizedType ) )
                 {
-                    return ava.getNormValue().getValue();
+                    return ava.getValue().getValue();
                 }
 
                 return "";
@@ -675,7 +760,73 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                             sb.append( ',' );
                         }
 
-                        sb.append( elem.getNormValue() );
+                        sb.append( elem.getValue() );
+                    }
+
+                    return sb.toString();
+                }
+
+                return "";
+        }
+    }
+
+
+    /**
+     * Get the normalized value of the Ava which type is given as an
+     * argument.
+     *
+     * @param type the type of the NameArgument
+     * @return the normalized value to be returned, or null if none found.
+     * @throws LdapInvalidDnException if the Rdn is invalid
+     */
+    public Object getNormValue( String type ) throws LdapInvalidDnException
+    {
+        // First, let's normalize the type
+        String normalizedType = Strings.lowerCaseAscii( Strings.trim( type ) );
+
+        if ( schemaManager != null )
+        {
+            AttributeType attributeType = schemaManager.getAttributeType( normalizedType );
+
+            if ( attributeType != null )
+            {
+                normalizedType = attributeType.getOid();
+            }
+        }
+
+        switch ( nbAvas )
+        {
+            case 0:
+                return "";
+
+            case 1:
+                if ( Strings.equals( ava.getNormType(), normalizedType ) )
+                {
+                    return ava.getValue().getNormValue();
+                }
+
+                return "";
+
+            default:
+                if ( avaTypes.containsKey( normalizedType ) )
+                {
+                    @SuppressWarnings("unchecked")
+                    Collection<Ava> atavList = ( Collection<Ava> ) avaTypes.get( normalizedType );
+                    StringBuffer sb = new StringBuffer();
+                    boolean isFirst = true;
+
+                    for ( Ava elem : atavList )
+                    {
+                        if ( isFirst )
+                        {
+                            isFirst = false;
+                        }
+                        else
+                        {
+                            sb.append( ',' );
+                        }
+
+                        sb.append( elem.getValue().getNormValue() );
                     }
 
                     return sb.toString();
@@ -735,7 +886,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      */
     public Iterator<Ava> iterator()
     {
-        if ( nbAvas == 1 || nbAvas == 0 )
+        if ( ( nbAvas == 1 ) || ( nbAvas == 0 ) )
         {
             return new Iterator<Ava>()
             {
@@ -811,7 +962,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
         }
         catch ( CloneNotSupportedException cnse )
         {
-            throw new Error( "Assertion failure" );
+            throw new Error( "Assertion failure", cnse );
         }
     }
 
@@ -864,7 +1015,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 return ava;
 
             default:
-                return avas.get( 0 ).clone();
+                return avas.get( 0 );
         }
     }
 
@@ -912,11 +1063,11 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
 
     /**
-     * Return the User Provided value
+     * Return the User Provided value, as a String
      *
      * @return The first User provided value of this Rdn
      */
-    public Value<?> getValue()
+    public String getValue()
     {
         switch ( nbAvas )
         {
@@ -924,20 +1075,20 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 return null;
 
             case 1:
-                return ava.getValue();
+                return ava.getValue().getString();
 
             default:
-                return avas.get( 0 ).getValue();
+                return avas.get( 0 ).getValue().getString();
         }
     }
 
 
     /**
-     * Return the normalized value, or the first one of we have more than one (the lowest)
+     * Return the Normalized value, as a String
      *
-     * @return The first normalized value of this Rdn
+     * @return The first Normalized value of this Rdn
      */
-    public Value<?> getNormValue()
+    public String getNormValue()
     {
         switch ( nbAvas )
         {
@@ -945,10 +1096,10 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 return null;
 
             case 1:
-                return ava.getNormValue();
+                return ava.getValue().getNormValue().toString();
 
             default:
-                return avas.get( 0 ).getNormValue();
+                return avas.get( 0 ).getValue().getNormValue().toString();
         }
     }
 
@@ -976,7 +1127,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
         }
 
         Rdn rdn = ( Rdn ) that;
-        
+
         // Short cut : compare the normalized Rdn
         if ( normName.equals( rdn.normName ) )
         {
@@ -1058,11 +1209,15 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      * Unescape the given string according to RFC 2253 If in <string> form, a
      * LDAP string representation asserted value can be obtained by replacing
      * (left-to-right, non-recursively) each <pair> appearing in the <string> as
-     * follows: replace <ESC><ESC> with <ESC>; replace <ESC><special> with
-     * <special>; replace <ESC><hexpair> with the octet indicated by the
-     * <hexpair> If in <hexstring> form, a BER representation can be obtained
-     * from converting each <hexpair> of the <hexstring> to the octet indicated
-     * by the <hexpair>
+     * follows: 
+     * <ul>
+     * <li>replace &lt;ESC&gt;&lt;ESC&gt; with &lt;ESC&gt;</li>
+     * <li>replace &lt;ESC&gt;&lt;special&gt; with &lt;special&gt;</li>
+     * <li>replace &lt;ESC&gt;&lt;hexpair&gt; with the octet indicated by the &lt;hexpair&gt;</li>
+     * </ul>
+     * If in &lt;hexstring&gt; form, a BER representation can be obtained
+     * from converting each &lt;hexpair&gt; of the &lt;hexstring&gt; to the octet indicated
+     * by the &lt;hexpair&gt;
      *
      * @param value The value to be unescaped
      * @return Returns a string value as a String, and a binary value as a byte
@@ -1077,11 +1232,11 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
         }
 
         char[] chars = value.toCharArray();
-        
+
         // If the value is contained into double quotes, return it as is.
         if ( ( chars[0] == '\"' ) && ( chars[chars.length - 1] == '\"' ) )
         {
-            return value;
+            return new String( chars, 1, chars.length - 2 );
         }
 
         if ( chars[0] == '#' )
@@ -1164,6 +1319,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                             pair += Hex.getHexValue( chars[i] );
                             bytes[pos++] = pair;
                             isHex = false;
+                            pair = 0;
                         }
                     }
                     else
@@ -1205,7 +1361,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                                 }
 
                             default:
-                                if ( ( chars[i] >= 0 ) && ( chars[i] < 128 ) )
+                                if ( chars[i] < 128 )
                                 {
                                     bytes[pos++] = ( byte ) chars[i];
                                 }
@@ -1240,116 +1396,107 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
             return "";
         }
 
-        byte[] bytes = Strings.getBytesUtf8( value );
-        byte[] newBytes = new byte[bytes.length * 3];
+        char[] chars = value.toCharArray();
+        char[] newChars = new char[chars.length * 3];
         int pos = 0;
 
-        for ( int i = 0; i < bytes.length; i++ )
+        for ( int i = 0; i < chars.length; i++ )
         {
-            if ( ( bytes[i] & 0x0080 ) != 0 )
+            switch ( chars[i] )
             {
-                newBytes[pos++] = '\\';
-                newBytes[pos++] = (byte)Strings.dumpHex( (byte)( (bytes[i] & 0x00F0 )  >> 4 ) );
-                newBytes[pos++] = (byte)Strings.dumpHex( (byte)(bytes[i] & 0x000F) );
-            }
-            else
-            {
-                switch ( bytes[i] )
-                {
-                    case ' ':
-                        if ( ( i > 0 ) && ( i < bytes.length - 1 ) )
-                        {
-                            newBytes[pos++] = bytes[i];
-                        }
-                        else
-                        {
-                            newBytes[pos++] = '\\';
-                            newBytes[pos++] = bytes[i];
-                        }
-    
-                        break;
-    
-                    case '#':
-                        if ( i != 0 )
-                        {
-                            newBytes[pos++] = bytes[i];
-                        }
-                        else
-                        {
-                            newBytes[pos++] = '\\';
-                            newBytes[pos++] = bytes[i];
-                        }
-    
-                        break;
-    
-                    case '"':
-                    case '+':
-                    case ',':
-                    case ';':
-                    case '=':
-                    case '<':
-                    case '>':
-                    case '\\':
-                        newBytes[pos++] = '\\';
-                        newBytes[pos++] = bytes[i];
-                        break;
-    
-                    case 0x7F:
-                        newBytes[pos++] = '\\';
-                        newBytes[pos++] = '7';
-                        newBytes[pos++] = 'F';
-                        break;
-    
-                    case 0x00:
-                    case 0x01:
-                    case 0x02:
-                    case 0x03:
-                    case 0x04:
-                    case 0x05:
-                    case 0x06:
-                    case 0x07:
-                    case 0x08:
-                    case 0x09:
-                    case 0x0A:
-                    case 0x0B:
-                    case 0x0C:
-                    case 0x0D:
-                    case 0x0E:
-                    case 0x0F:
-                        newBytes[pos++] = '\\';
-                        newBytes[pos++] = '0';
-                        newBytes[pos++] = (byte)Strings.dumpHex( ( byte ) ( bytes[i] & 0x0F ) );
-                        break;
-    
-                    case 0x10:
-                    case 0x11:
-                    case 0x12:
-                    case 0x13:
-                    case 0x14:
-                    case 0x15:
-                    case 0x16:
-                    case 0x17:
-                    case 0x18:
-                    case 0x19:
-                    case 0x1A:
-                    case 0x1B:
-                    case 0x1C:
-                    case 0x1D:
-                    case 0x1E:
-                    case 0x1F:
-                        newBytes[pos++] = '\\';
-                        newBytes[pos++] = '1';
-                        newBytes[pos++] = (byte)Strings.dumpHex( ( byte ) ( bytes[i] & 0x0F ) );
-                        break;
-    
-                    default:
-                        newBytes[pos++] = bytes[i];
-                        break;
-                }
+                case ' ':
+                    if ( ( i > 0 ) && ( i < chars.length - 1 ) )
+                    {
+                        newChars[pos++] = chars[i];
+                    }
+                    else
+                    {
+                        newChars[pos++] = '\\';
+                        newChars[pos++] = chars[i];
+                    }
+
+                    break;
+
+                case '#':
+                    if ( i != 0 )
+                    {
+                        newChars[pos++] = chars[i];
+                    }
+                    else
+                    {
+                        newChars[pos++] = '\\';
+                        newChars[pos++] = chars[i];
+                    }
+
+                    break;
+
+                case '"':
+                case '+':
+                case ',':
+                case ';':
+                case '=':
+                case '<':
+                case '>':
+                case '\\':
+                    newChars[pos++] = '\\';
+                    newChars[pos++] = chars[i];
+                    break;
+
+                case 0x7F:
+                    newChars[pos++] = '\\';
+                    newChars[pos++] = '7';
+                    newChars[pos++] = 'F';
+                    break;
+
+                case 0x00:
+                case 0x01:
+                case 0x02:
+                case 0x03:
+                case 0x04:
+                case 0x05:
+                case 0x06:
+                case 0x07:
+                case 0x08:
+                case 0x09:
+                case 0x0A:
+                case 0x0B:
+                case 0x0C:
+                case 0x0D:
+                case 0x0E:
+                case 0x0F:
+                    newChars[pos++] = '\\';
+                    newChars[pos++] = '0';
+                    newChars[pos++] = Strings.dumpHex( ( byte ) ( chars[i] & 0x0F ) );
+                    break;
+
+                case 0x10:
+                case 0x11:
+                case 0x12:
+                case 0x13:
+                case 0x14:
+                case 0x15:
+                case 0x16:
+                case 0x17:
+                case 0x18:
+                case 0x19:
+                case 0x1A:
+                case 0x1B:
+                case 0x1C:
+                case 0x1D:
+                case 0x1E:
+                case 0x1F:
+                    newChars[pos++] = '\\';
+                    newChars[pos++] = '1';
+                    newChars[pos++] = Strings.dumpHex( ( byte ) ( chars[i] & 0x0F ) );
+                    break;
+
+                default:
+                    newChars[pos++] = chars[i];
+                    break;
             }
         }
 
-        return new String( newBytes, 0, pos );
+        return new String( newChars, 0, pos );
     }
 
 
@@ -1397,9 +1544,11 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
     public static boolean isValid( String dn )
     {
         Rdn rdn = new Rdn();
+
         try
         {
             parse( dn, rdn );
+
             return true;
         }
         catch ( LdapInvalidDnException e )
@@ -1427,7 +1576,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
         {
             FastDnParser.parseRdn( dn, rdn );
         }
-        catch ( TooComplexException e )
+        catch ( TooComplexDnException e )
         {
             rdn.clear();
             new ComplexDnParser().parseRdn( dn, rdn );
@@ -1471,6 +1620,149 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
         }
 
         return h;
+    }
+
+
+    /**
+     * Serialize a RDN into a byte[]
+     * 
+     * @return a byte[] containing a RDN
+     */
+    public int serialize( byte[] buffer, int pos ) throws IOException
+    {
+        // The nbAvas and the HashCode length
+        int length = 4 + 4;
+
+        // The NnbAvas
+        pos = Serialize.serialize( nbAvas, buffer, pos );
+
+        // The upName
+        byte[] upNameBytes = Strings.getBytesUtf8( upName );
+        length += 4 + upNameBytes.length;
+
+        byte[] normNameBytes = Strings.EMPTY_BYTES;
+        length += 4;
+
+        if ( !upName.equals( normName ) )
+        {
+            normNameBytes = Strings.getBytesUtf8( normName );
+            length += 4 + normNameBytes.length;
+        }
+
+        // Check that we will be able to store the data in the buffer
+        if ( buffer.length - pos < length )
+        {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+
+        // Write the upName
+        pos = Serialize.serialize( upNameBytes, buffer, pos );
+
+        // Write the normName
+        pos = Serialize.serialize( normNameBytes, buffer, pos );
+
+        // Write the AVAs
+        switch ( nbAvas )
+        {
+            case 0:
+                break;
+
+            case 1:
+                pos = ava.serialize( buffer, pos );
+
+                break;
+
+            default:
+                for ( Ava localAva : avas )
+                {
+                    pos = localAva.serialize( buffer, pos );
+                }
+
+                break;
+        }
+
+        // The hash code
+        pos = Serialize.serialize( h, buffer, pos );
+
+        return pos;
+    }
+
+
+    /**
+     * Deserialize a RDN from a byte[], starting at a given position
+     * 
+     * @param buffer The buffer containing the RDN
+     * @param pos The position in the buffer
+     * @return The new position
+     * @throws IOException If the serialized value is not a RDN
+     * @throws LdapInvalidAttributeValueException If the serialized RDN is invalid
+     */
+    public int deserialize( byte[] buffer, int pos ) throws IOException, LdapInvalidAttributeValueException
+    {
+        if ( ( pos < 0 ) || ( pos >= buffer.length ) )
+        {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+
+        // Read the nbAvas
+        nbAvas = Serialize.deserializeInt( buffer, pos );
+        pos += 4;
+
+        // Read the upName
+        byte[] upNameBytes = Serialize.deserializeBytes( buffer, pos );
+        pos += 4 + upNameBytes.length;
+        upName = Strings.utf8ToString( upNameBytes );
+
+        // Read the normName
+        byte[] normNameBytes = Serialize.deserializeBytes( buffer, pos );
+        pos += 4 + normNameBytes.length;
+
+        if ( normNameBytes.length == 0 )
+        {
+            normName = upName;
+        }
+        else
+        {
+            normName = Strings.utf8ToString( normNameBytes );
+        }
+
+        // Read the AVAs
+        switch ( nbAvas )
+        {
+            case 0:
+                break;
+
+            case 1:
+                ava = new Ava( schemaManager );
+                pos = ava.deserialize( buffer, pos );
+                avaType = ava.getNormType();
+
+                break;
+
+            default:
+                avas = new ArrayList<Ava>();
+
+                avaTypes = new MultiValueMap();
+
+                for ( int i = 0; i < nbAvas; i++ )
+                {
+                    Ava newAva = new Ava( schemaManager );
+                    pos = newAva.deserialize( buffer, pos );
+                    avas.add( newAva );
+                    avaTypes.put( newAva.getNormType(), newAva );
+                }
+
+                ava = null;
+                avaType = null;
+
+                break;
+        }
+
+        // Read the hashCode
+        h = Serialize.deserializeInt( buffer, pos );
+        pos += 4;
+
+        return pos;
     }
 
 
@@ -1598,10 +1890,10 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
                 for ( int i = 0; i < nbAvas; i++ )
                 {
-                    Ava ava = new Ava( schemaManager );
-                    ava.readExternal( in );
-                    avas.add( ava );
-                    avaTypes.put( ava.getNormType(), ava );
+                    Ava newAva = new Ava( schemaManager );
+                    newAva.readExternal( in );
+                    avas.add( newAva );
+                    avaTypes.put( newAva.getNormType(), newAva );
                 }
 
                 ava = null;

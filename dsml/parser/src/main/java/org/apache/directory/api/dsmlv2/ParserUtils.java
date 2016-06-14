@@ -20,7 +20,6 @@
 package org.apache.directory.api.dsmlv2;
 
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -30,6 +29,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.directory.api.dsmlv2.actions.ReadSoapHeader;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml.Processing;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml.ResponseOrder;
@@ -48,6 +48,8 @@ import org.dom4j.Namespace;
 import org.dom4j.QName;
 import org.dom4j.io.DocumentResult;
 import org.dom4j.io.DocumentSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -60,10 +62,10 @@ import org.xmlpull.v1.XmlPullParserException;
 public final class ParserUtils
 {
     /** W3C XML Schema URI. */
-    public static final String XML_SCHEMA_URI = "http://www.w3c.org/2001/XMLSchema";
+    public static final String XML_SCHEMA_URI = "http://www.w3.org/2001/XMLSchema";
 
     /** W3C XML Schema Instance URI. */
-    public static final String XML_SCHEMA_INSTANCE_URI = "http://www.w3c.org/2001/XMLSchema-instance";
+    public static final String XML_SCHEMA_INSTANCE_URI = "http://www.w3.org/2001/XMLSchema-instance";
 
     /** Base-64 identifier. */
     public static final String BASE64BINARY = "base64Binary";
@@ -83,6 +85,14 @@ public final class ParserUtils
     /** The XSI namespace */
     public static final Namespace XSI_NAMESPACE = new Namespace( XSI, XML_SCHEMA_INSTANCE_URI );
 
+    /** A logger for this class */
+    private static final Logger LOG = LoggerFactory.getLogger( ParserUtils.class );
+
+
+    private ParserUtils()
+    {
+    }
+
 
     /**
      * Returns the value of the attribute 'type' of the "XMLSchema-instance' namespace if it exists
@@ -94,7 +104,7 @@ public final class ParserUtils
     {
         String type = null;
         int nbAttributes = xpp.getAttributeCount();
-        
+
         for ( int i = 0; i < nbAttributes; i++ )
         {
             // Checking if the attribute 'type' from XML Schema Instance namespace is used.
@@ -105,7 +115,7 @@ public final class ParserUtils
                 break;
             }
         }
-        
+
         return type;
     }
 
@@ -123,11 +133,11 @@ public final class ParserUtils
         {
             return false;
         }
-        
+
         // We are looking for something that should look like that: "aNameSpace:base64Binary"
         // We split the String. The first element should be the namespace prefix and the second "base64Binary"
         String[] splitedString = attrValue.split( ":" );
-        
+
         return ( splitedString.length == 2 ) && ( XML_SCHEMA_URI.equals( parser.getNamespace( splitedString[0] ) ) )
             && ( BASE64BINARY.equals( splitedString[1] ) );
     }
@@ -141,14 +151,14 @@ public final class ParserUtils
      */
     public static boolean needsBase64Encoding( Object value )
     {
-        if( value instanceof StringValue )
+        if ( value instanceof StringValue )
         {
             return false;
         }
-        else if( value instanceof BinaryValue )
+        else if ( value instanceof BinaryValue )
         {
             return false;
-        } 
+        }
         else if ( value instanceof byte[] )
         {
             return true;
@@ -157,7 +167,7 @@ public final class ParserUtils
         {
             return !LdifUtils.isLDIFSafe( ( String ) value );
         }
-        
+
         return true;
     }
 
@@ -204,9 +214,9 @@ public final class ParserUtils
 
             return requestID;
         }
-        catch ( NumberFormatException e )
+        catch ( NumberFormatException nfe )
         {
-            throw new XmlPullParserException( I18n.err( I18n.ERR_03039 ), xpp, null );
+            throw new XmlPullParserException( I18n.err( I18n.ERR_03039 ), xpp, nfe );
         }
     }
 
@@ -236,7 +246,7 @@ public final class ParserUtils
                 }
 
                 byte[] value;
-                
+
                 if ( control instanceof CodecControl<?> )
                 {
                     value = ( ( org.apache.directory.api.ldap.codec.api.CodecControl<?> ) control ).getValue();
@@ -299,15 +309,15 @@ public final class ParserUtils
         // load the transformer using JAXP
         TransformerFactory factory = TransformerFactory.newInstance();
         Transformer transformer = null;
-        
+
         try
         {
             transformer = factory.newTransformer( new StreamSource( ParserUtils.class
-                .getResourceAsStream( "DSMLv2.xslt" ) ) );
+                .getResourceAsStream( "/org/apache/directory/shared/dsmlv2/DSMLv2.xslt" ) ) );
         }
         catch ( TransformerConfigurationException e1 )
         {
-            e1.printStackTrace();
+            LOG.warn( "Failed to create the XSLT transformer", e1 );
             // return original document
             return document;
         }
@@ -315,7 +325,7 @@ public final class ParserUtils
         // now lets style the given document
         DocumentSource source = new DocumentSource( document );
         DocumentResult result = new DocumentResult();
-        
+
         try
         {
             transformer.transform( source, result );
@@ -330,55 +340,9 @@ public final class ParserUtils
         Document transformedDoc = result.getDocument();
         return transformedDoc;
     }
-    
-    
+
     /**
      * GrammarAction that reads the SOAP header data
      */
-    public static final GrammarAction readSoapHeader = new GrammarAction( "Reads SOAP header" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            try
-            {
-                XmlPullParser xpp = container.getParser();
-                StringBuilder sb = new StringBuilder();
-
-                String startTag = xpp.getText();
-                sb.append( startTag );
-
-                // string '<' and '>'
-                startTag = startTag.substring( 1, startTag.length() - 1 );
-
-                int tagType = -1;
-                String endTag = "";
-
-                // continue parsing till we get to the end tag of SOAP header
-                // and match the tag values including the namespace
-                while ( !startTag.equals( endTag ) )
-                {
-                    tagType = xpp.next();
-                    endTag = xpp.getText();
-                    sb.append( endTag );
-
-                    if ( tagType == XmlPullParser.END_TAG )
-                    {
-                        // strip '<', '/' and '>'
-                        endTag = endTag.substring( 2, endTag.length() - 1 );
-                    }
-                }
-
-                // change the state to header end
-                container.setState( Dsmlv2StatesEnum.SOAP_HEADER_END_TAG );
-
-                //System.out.println( sb );
-            }
-            catch ( IOException e )
-            {
-                e.printStackTrace();
-            }
-
-        }
-    };
-    
+    public static final GrammarAction READ_SOAP_HEADER = new ReadSoapHeader();
 }

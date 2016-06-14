@@ -27,15 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.MessageException;
-import org.apache.directory.api.ldap.model.message.Control;
-import org.apache.directory.api.ldap.model.message.ExtendedResponse;
-import org.apache.directory.api.ldap.model.message.ExtendedResponseImpl;
-import org.apache.directory.api.ldap.model.message.LdapResult;
-import org.apache.directory.api.ldap.model.message.LdapResultImpl;
-import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
-import org.apache.directory.api.ldap.model.message.ReferralImpl;
-import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -120,9 +111,6 @@ public class ExtendedResponseImplTest
         ExtendedResponseImpl resp0 = createStub();
         ExtendedResponse resp1 = new ExtendedResponse()
         {
-            private static final long serialVersionUID = 5297000474419901408L;
-
-
             public String getResponseName()
             {
                 return "1.1.1.1";
@@ -170,13 +158,13 @@ public class ExtendedResponseImplTest
             }
 
 
-            public ExtendedResponse addControl( Control control ) throws MessageException
+            public ExtendedResponse addControl( Control control )
             {
                 return this;
             }
 
 
-            public ExtendedResponse removeControl( Control control ) throws MessageException
+            public ExtendedResponse removeControl( Control control )
             {
                 return this;
             }
@@ -200,7 +188,7 @@ public class ExtendedResponseImplTest
             }
 
 
-            public ExtendedResponse addAllControls( Control[] controls ) throws MessageException
+            public ExtendedResponse addAllControls( Control[] controls )
             {
                 return this;
             }

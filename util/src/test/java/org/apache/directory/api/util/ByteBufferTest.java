@@ -22,12 +22,11 @@ package org.apache.directory.api.util;
 
 import static org.junit.Assert.assertEquals;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
-import org.apache.directory.api.util.ByteBuffer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -74,6 +73,7 @@ public class ByteBufferTest
     }
 
 
+    @Test
     public void testCopyOfUsedBytes()
     {
         ByteBuffer buf = new ByteBuffer();
@@ -90,6 +90,7 @@ public class ByteBufferTest
     }
 
 
+    @Test
     public void testAppendByteArray()
     {
         ByteBuffer buf = new ByteBuffer();

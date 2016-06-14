@@ -27,7 +27,7 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.ModifyResponse;
 
 
@@ -54,25 +54,6 @@ public class ModifyResponseDecorator extends ResponseDecorator<ModifyResponse>
     }
 
 
-    /**
-     * Stores the encoded length for the ModifyResponse
-     * @param modifyResponseLength The encoded length
-     */
-    public void setModifyResponseLength( int modifyResponseLength )
-    {
-        this.modifyResponseLength = modifyResponseLength;
-    }
-
-
-    /**
-     * @return The encoded ModifyResponse's length
-     */
-    public int getModifyResponseLength()
-    {
-        return modifyResponseLength;
-    }
-
-
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
@@ -92,9 +73,7 @@ public class ModifyResponseDecorator extends ResponseDecorator<ModifyResponse>
      */
     public int computeLength()
     {
-        int modifyResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
-
-        setModifyResponseLength( modifyResponseLength );
+        modifyResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
 
         return 1 + TLV.getNbBytes( modifyResponseLength ) + modifyResponseLength;
     }
@@ -110,15 +89,15 @@ public class ModifyResponseDecorator extends ResponseDecorator<ModifyResponse>
         try
         {
             // The ModifyResponse Tag
-            buffer.put( LdapConstants.MODIFY_RESPONSE_TAG );
-            buffer.put( TLV.getBytes( getModifyResponseLength() ) );
+            buffer.put( LdapCodecConstants.MODIFY_RESPONSE_TAG );
+            buffer.put( TLV.getBytes( modifyResponseLength ) );
 
             // The LdapResult
             ( ( LdapResultDecorator ) getLdapResult() ).encode( buffer );
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
 
         return buffer;

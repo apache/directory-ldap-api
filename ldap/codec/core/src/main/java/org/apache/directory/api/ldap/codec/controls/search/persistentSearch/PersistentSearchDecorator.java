@@ -48,7 +48,7 @@ public class PersistentSearchDecorator extends ControlDecorator<PersistentSearch
     private int psearchSeqLength;
 
     /** An instance of this decoder */
-    private static final Asn1Decoder decoder = new Asn1Decoder();
+    private static final Asn1Decoder DECODER = new Asn1Decoder();
 
 
     /**
@@ -219,7 +219,7 @@ public class PersistentSearchDecorator extends ControlDecorator<PersistentSearch
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );
         PersistentSearchContainer container = new PersistentSearchContainer( getCodecService(), this );
-        decoder.decode( bb, container );
+        DECODER.decode( bb, container );
         return this;
     }
 }

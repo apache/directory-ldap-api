@@ -36,7 +36,7 @@ public class SearchResultDoneImpl extends AbstractResultResponse implements Sear
      */
     public SearchResultDoneImpl()
     {
-        super( -1, TYPE );
+        super( -1, MessageTypeEnum.SEARCH_RESULT_DONE );
     }
 
 
@@ -48,7 +48,7 @@ public class SearchResultDoneImpl extends AbstractResultResponse implements Sear
      */
     public SearchResultDoneImpl( final int id )
     {
-        super( id, TYPE );
+        super( id, MessageTypeEnum.SEARCH_RESULT_DONE );
     }
 
 

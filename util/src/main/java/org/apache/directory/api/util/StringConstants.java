@@ -25,23 +25,28 @@ package org.apache.directory.api.util;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface StringConstants
+public final class StringConstants
 {
     /**
      * The empty String <code>""</code>.
      *
      * @since 2.0
      */
-    String EMPTY = "";
+    public static final String EMPTY = "";
     /**
      * The empty byte[]
      */
-    byte[] EMPTY_BYTES = new byte[]
+    public static final byte[] EMPTY_BYTES = new byte[]
         {};
     /**
      * The empty String[]
      */
-    String[] EMPTY_STRINGS = new String[]
+    public static final String[] EMPTY_STRINGS = new String[]
         {};
-    int NOT_EQUAL = -1;
+    public static final int NOT_EQUAL = -1;
+
+
+    private StringConstants()
+    {
+    }
 }

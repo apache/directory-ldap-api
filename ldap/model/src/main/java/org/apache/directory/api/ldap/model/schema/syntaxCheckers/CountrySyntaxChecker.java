@@ -352,7 +352,7 @@ public class CountrySyntaxChecker extends SyntaxChecker
             return false;
         }
 
-        boolean result = COUNTRIES.contains( Strings.toUpperCase( strValue ) );
+        boolean result = COUNTRIES.contains( Strings.toUpperCaseAscii( strValue ) );
 
         if ( result )
         {

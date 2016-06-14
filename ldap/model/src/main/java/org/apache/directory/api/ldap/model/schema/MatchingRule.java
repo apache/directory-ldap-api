@@ -20,8 +20,6 @@
 package org.apache.directory.api.ldap.model.schema;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -74,12 +72,10 @@ import org.slf4j.LoggerFactory;
  * @see DescriptionUtils#getDescription(MatchingRule)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-// super.hashCode is final
-@SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class MatchingRule extends AbstractSchemaObject
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( MatchingRule.class );
+    /** The mandatory serialVersionUID */
+    public static final long serialVersionUID = 1L;
 
     /** The associated Comparator */
     protected LdapComparator<? super Object> ldapComparator;
@@ -156,7 +152,7 @@ public class MatchingRule extends AbstractSchemaObject
      */
     public String toString()
     {
-        return objectType + " " + DescriptionUtils.getDescription( this );
+        return SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( this );
     }
 
 

@@ -31,7 +31,7 @@ import org.apache.directory.api.asn1.ber.AbstractContainer;
 public class CancelContainer extends AbstractContainer
 {
     /** Cancel */
-    private Cancel cancel;
+    private CancelRequestDecorator cancel;
 
 
     /**
@@ -41,8 +41,7 @@ public class CancelContainer extends AbstractContainer
     public CancelContainer()
     {
         super();
-        stateStack = new int[1];
-        grammar = CancelGrammar.getInstance();
+        setGrammar( CancelGrammar.getInstance() );
         setTransition( CancelStatesEnum.START_STATE );
     }
 
@@ -50,7 +49,7 @@ public class CancelContainer extends AbstractContainer
     /**
      * @return Returns the Cancel object.
      */
-    public Cancel getCancel()
+    public CancelRequestDecorator getCancel()
     {
         return cancel;
     }
@@ -62,7 +61,7 @@ public class CancelContainer extends AbstractContainer
      * 
      * @param cancel the Cancel to set.
      */
-    public void setCancel( Cancel cancel )
+    public void setCancel( CancelRequestDecorator cancel )
     {
         this.cancel = cancel;
     }

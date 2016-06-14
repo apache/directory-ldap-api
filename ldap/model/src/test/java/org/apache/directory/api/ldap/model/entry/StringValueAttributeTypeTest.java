@@ -38,9 +38,6 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
-import org.apache.directory.api.ldap.model.entry.StringValue;
-import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
@@ -433,6 +430,9 @@ public class StringValueAttributeTypeTest
     {
         s.setSyntaxChecker( new SyntaxChecker( "1.1.1.1" )
         {
+            public static final long serialVersionUID = 1L;
+
+
             public boolean isValidSyntax( Object value )
             {
                 if ( value instanceof String )
@@ -447,6 +447,9 @@ public class StringValueAttributeTypeTest
         mr.setSyntax( s );
         mr.setLdapComparator( new LdapComparator<String>( mr.getOid() )
         {
+            public static final long serialVersionUID = 1L;
+
+
             public int compare( String o1, String o2 )
             {
                 if ( o1 == null )

@@ -87,7 +87,8 @@ public class ACIItemChecker
             return;
         }
 
-        reset( spec ); // reset and initialize the parser / lexer pair
+        // reset and initialize the parser / lexer pair
+        reset( spec );
 
         try
         {

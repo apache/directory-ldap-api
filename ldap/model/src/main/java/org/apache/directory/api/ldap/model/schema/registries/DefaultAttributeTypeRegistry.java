@@ -172,18 +172,6 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
 
         // Add the current type as a descendant
         descendants.add( attributeType );
-
-        /*
-        try
-        {
-            // And recurse until we reach the top of the hierarchy
-            registerDescendants( attributeType, ancestor.getSuperior() );
-        }
-        catch ( LdapException ne )
-        {
-            throw new NoSuchAttributeException( ne.getMessage() );
-        }
-        */
     }
 
 
@@ -210,18 +198,6 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
                 oidToDescendantSet.remove( ancestor.getOid() );
             }
         }
-
-        /*
-        try
-        {
-            // And recurse until we reach the top of the hierarchy
-            unregisterDescendants( attributeType, ancestor.getSuperior() );
-        }
-        catch ( LdapException ne )
-        {
-            throw new NoSuchAttributeException( ne.getMessage() );
-        }
-        */
     }
 
 
@@ -278,7 +254,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
         // Also inject the attributeType's short names in the map
         for ( String name : attributeType.getNames() )
         {
-            oidNormalizerMap.put( Strings.toLowerCase( name ), oidNormalizer );
+            oidNormalizerMap.put( Strings.toLowerCaseAscii( name ), oidNormalizer );
         }
     }
 
@@ -298,7 +274,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
         // We also have to remove all the short names for this attribute
         for ( String name : attributeType.getNames() )
         {
-            oidNormalizerMap.remove( Strings.toLowerCase( name ) );
+            oidNormalizerMap.remove( Strings.toLowerCaseAscii( name ) );
         }
     }
 
@@ -322,7 +298,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
     /**
      * {@inheritDoc}
      */
-    public AttributeTypeRegistry copy()
+    public DefaultAttributeTypeRegistry copy()
     {
         DefaultAttributeTypeRegistry copy = new DefaultAttributeTypeRegistry();
 
@@ -345,9 +321,9 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
         oidNormalizerMap.clear();
 
         // and clear the descendant
-        for ( String oid : oidToDescendantSet.keySet() )
+        for ( Map.Entry<String, Set<AttributeType>> entry : oidToDescendantSet.entrySet() )
         {
-            Set<AttributeType> descendants = oidToDescendantSet.get( oid );
+            Set<AttributeType> descendants = entry.getValue();
 
             if ( descendants != null )
             {

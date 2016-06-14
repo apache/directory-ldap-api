@@ -20,12 +20,14 @@
 package org.apache.directory.api.dsmlv2;
 
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.nio.charset.Charset;
 
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.api.dsmlv2.request.Dsmlv2Grammar;
@@ -112,7 +114,7 @@ public class Dsmlv2Parser
 
 
     /**
-     * Sets the input file the parser is going to parse
+     * Sets the input file the parser is going to parse. Default charset is used.
      *
      * @param fileName the name of the file
      * @throws FileNotFoundException if the file does not exist
@@ -120,7 +122,7 @@ public class Dsmlv2Parser
      */
     public void setInputFile( String fileName ) throws FileNotFoundException, XmlPullParserException
     {
-        Reader reader = new FileReader( fileName );
+        Reader reader = new InputStreamReader( new FileInputStream( fileName ), Charset.defaultCharset() );
         container.getParser().setInput( reader );
     }
 
@@ -172,35 +174,38 @@ public class Dsmlv2Parser
         XmlPullParser xpp = container.getParser();
 
         int eventType = xpp.getEventType();
-        
+
         do
         {
             switch ( eventType )
             {
-                case XmlPullParser.START_DOCUMENT :
+                case XmlPullParser.START_DOCUMENT:
                     container.setState( Dsmlv2StatesEnum.INIT_GRAMMAR_STATE );
                     break;
 
-                case XmlPullParser.END_DOCUMENT :
+                case XmlPullParser.END_DOCUMENT:
                     container.setState( Dsmlv2StatesEnum.GRAMMAR_END );
                     break;
 
-                case XmlPullParser.START_TAG :
+                case XmlPullParser.START_TAG:
                     processTag( container, Tag.START );
                     break;
 
-                case XmlPullParser.END_TAG :
+                case XmlPullParser.END_TAG:
                     processTag( container, Tag.END );
                     break;
+
+                default:
+                    break;
             }
-            
+
             try
             {
                 eventType = xpp.next();
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03037, e.getLocalizedMessage() ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03037, ioe.getLocalizedMessage() ), xpp, ioe );
             }
         }
         while ( container.getState() != Dsmlv2StatesEnum.BATCHREQUEST_START_TAG );
@@ -225,7 +230,7 @@ public class Dsmlv2Parser
     {
         XmlPullParser xpp = container.getParser();
 
-        String tagName = Strings.toLowerCase( xpp.getName() );
+        String tagName = Strings.lowerCase( xpp.getName() );
 
         GrammarTransition transition = container.getTransition( container.getState(), new Tag( tagName, tagType ) );
 
@@ -279,39 +284,42 @@ public class Dsmlv2Parser
                 {
                     xpp.next();
                 }
-                catch ( IOException e )
+                catch ( IOException ioe )
                 {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03037, e.getLocalizedMessage() ), xpp, null );
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03037, ioe.getLocalizedMessage() ), xpp, ioe );
                 }
                 eventType = xpp.getEventType();
             }
 
             switch ( eventType )
             {
-                case XmlPullParser.START_DOCUMENT :
+                case XmlPullParser.START_DOCUMENT:
                     container.setState( Dsmlv2StatesEnum.INIT_GRAMMAR_STATE );
                     break;
 
-                case XmlPullParser.END_DOCUMENT :
+                case XmlPullParser.END_DOCUMENT:
                     container.setState( Dsmlv2StatesEnum.GRAMMAR_END );
                     return null;
 
-                case XmlPullParser.START_TAG :
+                case XmlPullParser.START_TAG:
                     processTag( container, Tag.START );
                     break;
 
-                case XmlPullParser.END_TAG :
+                case XmlPullParser.END_TAG:
                     processTag( container, Tag.END );
                     break;
+
+                default:
+                    break;
             }
-            
+
             try
             {
                 eventType = xpp.next();
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03037, e.getLocalizedMessage() ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03037, ioe.getLocalizedMessage() ), xpp, ioe );
             }
         }
         while ( container.getState() != Dsmlv2StatesEnum.BATCHREQUEST_LOOP );

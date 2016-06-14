@@ -67,10 +67,11 @@ import java.util.List;
  * @see DescriptionUtils#getDescription(ObjectClass)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-// super.hashCode is final
-@SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class ObjectClass extends AbstractSchemaObject
 {
+    /** The mandatory serialVersionUID */
+    public static final long serialVersionUID = 1L;
+
     /** The ObjectClass type : ABSTRACT, AUXILIARY or STRUCTURAL */
     protected ObjectClassTypeEnum objectClassType = ObjectClassTypeEnum.STRUCTURAL;
 
@@ -215,11 +216,11 @@ public class ObjectClass extends AbstractSchemaObject
 
 
     /**
-     * @see Object#toString()
+     * {@inheritDoc}
      */
     public String toString()
     {
-        return objectType + " " + DescriptionUtils.getDescription( this );
+        return SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( this );
     }
 
 

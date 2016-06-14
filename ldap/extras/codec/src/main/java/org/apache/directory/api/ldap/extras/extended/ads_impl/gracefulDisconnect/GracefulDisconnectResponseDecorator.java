@@ -21,21 +21,20 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnec
 
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
-import org.apache.directory.api.asn1.ber.Asn1Decoder;
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.extended.GracefulDisconnectResponse;
-import org.apache.directory.api.ldap.extras.extended.GracefulDisconnectResponseImpl;
-import org.apache.directory.api.ldap.model.exception.LdapURLEncodingException;
+import org.apache.directory.api.ldap.extras.extended.gracefulDisconnect.GracefulDisconnectResponse;
 import org.apache.directory.api.ldap.model.message.Referral;
-import org.apache.directory.api.ldap.model.message.ReferralImpl;
-import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.api.ldap.model.url.LdapUrl;
+import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,6 +50,16 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
     /** The logger. */
     private static final Logger LOG = LoggerFactory.getLogger( GracefulDisconnectResponseDecorator.class );
 
+    /** Length of the sequence */
+    private int gracefulDisconnectSequenceLength;
+
+    /** Length of the replicated contexts */
+    private int replicatedContextsLength;
+    
+    /** The encoded LDAP URL list */
+    private List<byte[]> ldapUrlBytes;
+
+    private GracefulDisconnectResponse gracefulDisconnectResponse;
 
     /**
      * Creates a new instance of CancelResponseDecorator.
@@ -61,92 +70,13 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
     public GracefulDisconnectResponseDecorator( LdapApiService codec, GracefulDisconnectResponse decoratedMessage )
     {
         super( codec, decoratedMessage );
-        responseValue = null;
-        encodeResponse();
+        gracefulDisconnectResponse = decoratedMessage;
     }
 
-
-    /**
-     * Creates a new instance of CancelResponseDecorator.
-     *
-     * @param codec
-     * @param responseValue
-     */
-    public GracefulDisconnectResponseDecorator( LdapApiService codec, byte[] responseValue ) throws DecoderException
-    {
-        super( codec, new GracefulDisconnectResponseImpl() );
-        this.responseValue = responseValue;
-        decodeValue();
-    }
-
-
-    private void decodeValue() throws DecoderException
-    {
-        GracefulDisconnectDecoder decoder = new GracefulDisconnectDecoder();
-        org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnect codec = null;
-
-        try
-        {
-            codec = ( org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnect ) decoder
-                .decode( responseValue );
-            getDecorated().setTimeOffline( codec.getTimeOffline() );
-            getDecorated().setDelay( codec.getDelay() );
-            getDecorated().getLdapResult().setResultCode( ResultCodeEnum.SUCCESS );
-            List<LdapUrl> contexts = codec.getReplicatedContexts();
-
-            for ( LdapUrl ldapUrl : contexts )
-            {
-                getDecorated().getLdapResult().getReferral().addLdapUrl( ldapUrl.toString() );
-            }
-        }
-        catch ( DecoderException e )
-        {
-            LOG.error( I18n.err( I18n.ERR_04169 ), e );
-            throw e;
-        }
-    }
-
-
-    private void encodeResponse()
-    {
-        org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnect codec =
-            new org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnect();
-        codec.setTimeOffline( getDecorated().getTimeOffline() );
-        codec.setDelay( getDecorated().getDelay() );
-
-        for ( String ldapUrlStr : getDecorated().getLdapResult().getReferral().getLdapUrls() )
-        {
-            LdapUrl ldapUrl = null;
-
-            try
-            {
-                ldapUrl = new LdapUrl( ldapUrlStr );
-            }
-            catch ( LdapURLEncodingException e )
-            {
-                LOG.error( I18n.err( I18n.ERR_04170, ldapUrlStr ), e );
-                continue;
-            }
-
-            codec.addReplicatedContexts( ldapUrl );
-        }
-
-        try
-        {
-            super.responseValue = codec.encode().array();
-        }
-        catch ( EncoderException e )
-        {
-            LOG.error( I18n.err( I18n.ERR_04171 ), e );
-            throw new RuntimeException( e );
-        }
-    }
-
-
+    
     // ------------------------------------------------------------------------
     // ExtendedResponse Interface Method Implementations
     // ------------------------------------------------------------------------
-
     /**
      * Gets the response OID specific encoded response values.
      * 
@@ -156,12 +86,18 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
     {
         if ( responseValue == null )
         {
-            encodeResponse();
+            try
+            {
+                responseValue = encodeInternal().array();
+            }
+            catch ( EncoderException e )
+            {
+                LOG.error( I18n.err( I18n.ERR_04164 ), e );
+                throw new RuntimeException( e );
+            }
         }
 
-        final byte[] copy = new byte[responseValue.length];
-        System.arraycopy( responseValue, 0, copy, 0, responseValue.length );
-        return copy;
+        return responseValue;
     }
 
 
@@ -172,41 +108,25 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
      */
     public void setResponseValue( byte[] responseValue )
     {
-        if ( responseValue == null )
-        {
-            this.responseValue = null;
-            getDecorated().setDelay( 0 );
-            getDecorated().setTimeOffline( 0 );
-            getDecorated().getLdapResult().setReferral( new ReferralImpl() );
-            return;
-        }
-
-        ByteBuffer bb = ByteBuffer.wrap( responseValue );
-        GracefulDisconnectContainer container = new GracefulDisconnectContainer();
-        Asn1Decoder decoder = new Asn1Decoder();
+        GracefulDisconnectDecoder decoder = new GracefulDisconnectDecoder();
 
         try
         {
-            decoder.decode( bb, container );
+            if ( responseValue != null )
+            {
+                decoder.decode( responseValue );
+                this.responseValue = new byte[responseValue.length];
+                System.arraycopy( responseValue, 0, this.responseValue, 0, responseValue.length );
+            }
+            else
+            {
+                this.responseValue = null;
+            }
         }
         catch ( DecoderException e )
         {
             LOG.error( I18n.err( I18n.ERR_04172 ), e );
         }
-
-        org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnect codec = container
-            .getGracefulDisconnect();
-
-        getDecorated().setDelay( codec.getDelay() );
-        getDecorated().setTimeOffline( codec.getTimeOffline() );
-
-        for ( LdapUrl ldapUrl : codec.getReplicatedContexts() )
-        {
-            getDecorated().getLdapResult().getReferral().addLdapUrl( ldapUrl.toString() );
-        }
-
-        this.responseValue = new byte[responseValue.length];
-        System.arraycopy( responseValue, 0, this.responseValue, 0, responseValue.length );
     }
 
 
@@ -215,7 +135,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
      */
     public int getDelay()
     {
-        return getDecorated().getDelay();
+        return gracefulDisconnectResponse.getDelay();
     }
 
 
@@ -224,7 +144,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
      */
     public void setDelay( int delay )
     {
-        getDecorated().setDelay( delay );
+        gracefulDisconnectResponse.setDelay( delay );
     }
 
 
@@ -233,7 +153,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
      */
     public int getTimeOffline()
     {
-        return getDecorated().getTimeOffline();
+        return gracefulDisconnectResponse.getTimeOffline();
     }
 
 
@@ -242,7 +162,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
      */
     public void setTimeOffline( int timeOffline )
     {
-        getDecorated().setTimeOffline( timeOffline );
+        gracefulDisconnectResponse.setTimeOffline( timeOffline );
     }
 
 
@@ -251,6 +171,135 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
      */
     public Referral getReplicatedContexts()
     {
-        return getDecorated().getReplicatedContexts();
+        return gracefulDisconnectResponse.getReplicatedContexts();
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void addReplicatedContexts( String replicatedContext )
+    {
+        gracefulDisconnectResponse.getReplicatedContexts().addLdapUrl( replicatedContext );
+    }
+
+
+    /**
+     * Compute the GracefulDisconnect length 
+     * <pre>
+     * 0x30 L1 
+     *   | 
+     *   +--> [ 0x02 0x0(1-4) [0..720] ] 
+     *   +--> [ 0x80 0x0(1-3) [0..86400] ] 
+     *   +--> [ 0x30 L2 
+     *           | 
+     *           +--> (0x04 L3 value) + ]
+     * </pre>
+     */
+    /* no qualifier */ int computeLengthInternal()
+    {
+        gracefulDisconnectSequenceLength = 0;
+
+        if ( gracefulDisconnectResponse.getTimeOffline() != 0 )
+        {
+            gracefulDisconnectSequenceLength += 1 + 1 + BerValue.getNbBytes( gracefulDisconnectResponse.getTimeOffline() );
+        }
+
+        if ( gracefulDisconnectResponse.getDelay() != 0 )
+        {
+            gracefulDisconnectSequenceLength += 1 + 1 + BerValue.getNbBytes( gracefulDisconnectResponse.getDelay() );
+        }
+
+        if ( ( gracefulDisconnectResponse.getReplicatedContexts() != null )
+            && ( gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().size() != 0 ) )
+        {
+            replicatedContextsLength = 0;
+            
+            ldapUrlBytes = new ArrayList<byte[]>( gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().size() );
+
+            // We may have more than one reference.
+            for ( String replicatedContext : gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls() )
+            {
+                byte[] bytes = Strings.getBytesUtf8( replicatedContext );
+                ldapUrlBytes.add( bytes );
+                int ldapUrlLength = bytes.length;
+                replicatedContextsLength += 1 + TLV.getNbBytes( ldapUrlLength ) + ldapUrlLength;
+            }
+
+            gracefulDisconnectSequenceLength += 1 + TLV.getNbBytes( replicatedContextsLength )
+                + replicatedContextsLength;
+        }
+
+        return 1 + TLV.getNbBytes( gracefulDisconnectSequenceLength ) + gracefulDisconnectSequenceLength;
+    }
+
+
+    /**
+     * Encodes the gracefulDisconnect extended operation.
+     * 
+     * @return A ByteBuffer that contains the encoded PDU
+     * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
+     */
+    /* no qualifier */ ByteBuffer encodeInternal() throws EncoderException
+    {
+        // Allocate the bytes buffer.
+        ByteBuffer bb = ByteBuffer.allocate( computeLengthInternal() );
+
+
+        bb.put( UniversalTag.SEQUENCE.getValue() );
+        bb.put( TLV.getBytes( gracefulDisconnectSequenceLength ) );
+
+        if ( gracefulDisconnectResponse.getTimeOffline() != 0 )
+        {
+            BerValue.encode( bb, gracefulDisconnectResponse.getTimeOffline() );
+        }
+
+        if ( gracefulDisconnectResponse.getDelay() != 0 )
+        {
+            bb.put( ( byte ) GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG );
+            bb.put( ( byte ) TLV.getNbBytes( gracefulDisconnectResponse.getDelay() ) );
+            bb.put( BerValue.getBytes( gracefulDisconnectResponse.getDelay() ) );
+        }
+
+        if ( ( gracefulDisconnectResponse.getReplicatedContexts() != null )
+            && ( gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().size() != 0 ) )
+        {
+            bb.put( UniversalTag.SEQUENCE.getValue() );
+            bb.put( TLV.getBytes( replicatedContextsLength ) );
+
+            // We may have more than one reference.
+            for ( byte[] replicatedContext : ldapUrlBytes )
+            {
+                BerValue.encode( bb, replicatedContext );
+            }
+        }
+
+        return bb;
+    }
+
+
+    /**
+     * Return a string representation of the graceful disconnect
+     */
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer();
+
+        sb.append( "Graceful Disconnect extended operation" );
+        sb.append( "    TimeOffline : " ).append( gracefulDisconnectResponse.getTimeOffline() ).append( '\n' );
+        sb.append( "    Delay : " ).append( gracefulDisconnectResponse.getDelay() ).append( '\n' );
+
+        if ( ( gracefulDisconnectResponse.getReplicatedContexts() != null ) && ( gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().size() != 0 ) )
+        {
+            sb.append( "    Replicated contexts :" );
+
+            // We may have more than one reference.
+            for ( String url : gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls() )
+            {
+                sb.append( "\n        " ).append( url );
+            }
+        }
+
+        return sb.toString();
     }
 }

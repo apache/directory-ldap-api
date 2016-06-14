@@ -82,10 +82,9 @@ public class DerefAliasSyntaxChecker extends SyntaxChecker
             strValue = value.toString();
         }
 
-        strValue = Strings.trim( Strings.toLowerCase( strValue ) );
+        strValue = Strings.trim( Strings.toLowerCaseAscii( strValue ) );
 
-        return ( "never".equals( strValue ) ||
-            "finding".equals( strValue ) ||
-            "searching".equals( strValue ) || "always".equals( strValue ) );
+        return ( "never".equals( strValue ) || "finding".equals( strValue ) || "searching".equals( strValue ) || "always"
+            .equals( strValue ) );
     }
 }

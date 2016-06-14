@@ -36,14 +36,6 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 public interface SchemaLoader
 {
     /**
-     * Sets listener used to notify of newly loaded schemas.
-     * 
-     * @param listener the listener to notify (only one is enough for us)
-     */
-    void setListener( SchemaLoaderListener listener );
-
-
-    /**
      * Gets a schema object based on it's name.
      * 
      * @param schemaName the name of the schema to load
@@ -57,7 +49,7 @@ public interface SchemaLoader
      * a list of specified schema
      *
      * @param schemas the schemas from which AttributeTypes are loaded
-     * @throws Exception if there are failures accessing AttributeType information
+     * @throws LdapException if there are failures accessing AttributeType information
      */
     List<Entry> loadAttributeTypes( Schema... schemas ) throws LdapException, IOException;
 
@@ -67,9 +59,9 @@ public interface SchemaLoader
      * a list of specific schema, using their name
      *
      * @param schemaNames the schema names from which AttributeTypes are loaded
-     * @throws Exception if there are failures accessing AttributeType information
+     * @throws LdapException if there are failures accessing AttributeType information
      */
-    List<Entry> loadAttributeTypes( String... schemaNames ) throws Exception;
+    List<Entry> loadAttributeTypes( String... schemaNames ) throws LdapException, IOException;
 
 
     /**
@@ -77,7 +69,7 @@ public interface SchemaLoader
      * a list of specific schema.
      *
      * @param schemas the schemas from which Comparators are loaded
-     * @throws Exception if there are failures accessing Comparator information
+     * @throws LdapException if there are failures accessing Comparator information
      */
     List<Entry> loadComparators( Schema... schemas ) throws LdapException, IOException;
 
@@ -87,9 +79,9 @@ public interface SchemaLoader
      * a list of specific schema, using their name
      *
      * @param schemaNames the schema names from which Comparators are loaded
-     * @throws Exception if there are failures accessing Comparator information
+     * @throws LdapException if there are failures accessing Comparator information
      */
-    List<Entry> loadComparators( String... schemaNames ) throws Exception;
+    List<Entry> loadComparators( String... schemaNames ) throws LdapException, IOException;
 
 
     /**
@@ -97,7 +89,7 @@ public interface SchemaLoader
      * a list of specific schema.
      *
      * @param schemas the schemas from which DitContentRules are loaded
-     * @throws Exception if there are failures accessing DitContentRule information
+     * @throws LdapException if there are failures accessing DitContentRule information
      */
     List<Entry> loadDitContentRules( Schema... schemas ) throws LdapException, IOException;
 
@@ -107,9 +99,9 @@ public interface SchemaLoader
      * a list of specified schema names
      *
      * @param schemaNames the schema names from which DitContentRules are loaded
-     * @throws Exception if there are failures accessing DitContentRule information
+     * @throws LdapException if there are failures accessing DitContentRule information
      */
-    List<Entry> loadDitContentRules( String... schemaNames ) throws Exception;
+    List<Entry> loadDitContentRules( String... schemaNames ) throws LdapException, IOException;
 
 
     /**
@@ -117,7 +109,7 @@ public interface SchemaLoader
      * a list of specific schema.
      *
      * @param schemas the schemas from which DitStructureRules are loaded
-     * @throws Exception if there are failures accessing DitStructureRule information
+     * @throws LdapException if there are failures accessing DitStructureRule information
      */
     List<Entry> loadDitStructureRules( Schema... schemas ) throws LdapException, IOException;
 
@@ -127,9 +119,9 @@ public interface SchemaLoader
      * a list of specified schema names
      *
      * @param schemaNames the schema names from which DitStructureRules are loaded
-     * @throws Exception if there are failures accessing DitStructureRule information
+     * @throws LdapException if there are failures accessing DitStructureRule information
      */
-    List<Entry> loadDitStructureRules( String... schemaNames ) throws Exception;
+    List<Entry> loadDitStructureRules( String... schemaNames ) throws LdapException, IOException;
 
 
     /**
@@ -137,7 +129,7 @@ public interface SchemaLoader
      * a list of specific schema
      *
      * @param schemas the schemas from which MatchingRules are loaded
-     * @throws Exception if there are failures accessing MatchingRule information
+     * @throws LdapException if there are failures accessing MatchingRule information
      */
     List<Entry> loadMatchingRules( Schema... schemas ) throws LdapException, IOException;
 
@@ -147,9 +139,9 @@ public interface SchemaLoader
      * a list of specific schema, using their name
      *
      * @param schemaNames the schema names from which MatchingRules are loaded
-     * @throws Exception if there are failures accessing MatchingRule information
+     * @throws LdapException if there are failures accessing MatchingRule information
      */
-    List<Entry> loadMatchingRules( String... schemaNames ) throws Exception;
+    List<Entry> loadMatchingRules( String... schemaNames ) throws LdapException, IOException;
 
 
     /**
@@ -157,7 +149,7 @@ public interface SchemaLoader
      * a list of specific schema.
      *
      * @param schemas the schemas from which MatchingRuleUses are loaded
-     * @throws Exception if there are failures accessing MatchingRuleUse information
+     * @throws LdapException if there are failures accessing MatchingRuleUse information
      */
     List<Entry> loadMatchingRuleUses( Schema... schemas ) throws LdapException, IOException;
 
@@ -167,9 +159,9 @@ public interface SchemaLoader
      * a list of specified schema names
      *
      * @param schemaNames the schema names from which MatchingRuleUses are loaded
-     * @throws Exception if there are failures accessing MatchingRuleUses information
+     * @throws LdapException if there are failures accessing MatchingRuleUses information
      */
-    List<Entry> loadMatchingRuleUses( String... schemaNames ) throws Exception;
+    List<Entry> loadMatchingRuleUses( String... schemaNames ) throws LdapException, IOException;
 
 
     /**
@@ -177,7 +169,7 @@ public interface SchemaLoader
      * a list of specific schema.
      *
      * @param schemas the schemas from which NameForms are loaded
-     * @throws Exception if there are failures accessing NameForm information
+     * @throws LdapException if there are failures accessing NameForm information
      */
     List<Entry> loadNameForms( Schema... schemas ) throws LdapException, IOException;
 
@@ -187,9 +179,9 @@ public interface SchemaLoader
      * a list of specified schema names
      *
      * @param schemaNames the schema names from which NameForms are loaded
-     * @throws Exception if there are failures accessing NameForms information
+     * @throws LdapException if there are failures accessing NameForms information
      */
-    List<Entry> loadNameForms( String... schemaNames ) throws Exception;
+    List<Entry> loadNameForms( String... schemaNames ) throws LdapException, IOException;
 
 
     /**
@@ -197,7 +189,7 @@ public interface SchemaLoader
      * a list of specified schema
      *
      * @param schemas the schemas from which Normalizers are loaded
-     * @throws Exception if there are failures accessing Normalizer information
+     * @throws LdapException if there are failures accessing Normalizer information
      */
     List<Entry> loadNormalizers( Schema... schemas ) throws LdapException, IOException;
 
@@ -207,9 +199,9 @@ public interface SchemaLoader
      * a list of specified schema names
      *
      * @param schemaNames the schema names from which Normalizers are loaded
-     * @throws Exception if there are failures accessing Normalizer information
+     * @throws LdapException if there are failures accessing Normalizer information
      */
-    List<Entry> loadNormalizers( String... schemaNames ) throws Exception;
+    List<Entry> loadNormalizers( String... schemaNames ) throws LdapException, IOException;
 
 
     /**
@@ -217,7 +209,7 @@ public interface SchemaLoader
      * a list of specific schema.
      *
      * @param schemas the schemas from which ObjectClasses are loaded
-     * @throws Exception if there are failures accessing ObjectClass information
+     * @throws LdapException if there are failures accessing ObjectClass information
      */
     List<Entry> loadObjectClasses( Schema... schemas ) throws LdapException, IOException;
 
@@ -227,9 +219,9 @@ public interface SchemaLoader
      * a list of specified schema names
      *
      * @param schemaNames the schema names from which ObjectClasses are loaded
-     * @throws Exception if there are failures accessing ObjectClasses information
+     * @throws LdapException if there are failures accessing ObjectClasses information
      */
-    List<Entry> loadObjectClasses( String... schemaNames ) throws Exception;
+    List<Entry> loadObjectClasses( String... schemaNames ) throws LdapException, IOException;
 
 
     /**
@@ -237,7 +229,7 @@ public interface SchemaLoader
      * a list of specified schema
      *
      * @param schemas the schemas from which Syntaxes are loaded
-     * @throws Exception if there are failures accessing Syntax information
+     * @throws LdapException if there are failures accessing Syntax information
      */
     List<Entry> loadSyntaxes( Schema... schemas ) throws LdapException, IOException;
 
@@ -247,9 +239,9 @@ public interface SchemaLoader
      * a list of specified schema names
      *
      * @param schemaNames the schema names from which Syntaxes are loaded
-     * @throws Exception if there are failures accessing Syntax information
+     * @throws LdapException if there are failures accessing Syntax information
      */
-    List<Entry> loadSyntaxes( String... schemaNames ) throws Exception;
+    List<Entry> loadSyntaxes( String... schemaNames ) throws LdapException, IOException;
 
 
     /**
@@ -257,7 +249,7 @@ public interface SchemaLoader
      * a list of specified schema
      *
      * @param schemas the schemas from which SyntaxCheckers are loaded
-     * @throws Exception if there are failures accessing SyntaxChecker information
+     * @throws LdapException if there are failures accessing SyntaxChecker information
      */
     List<Entry> loadSyntaxCheckers( Schema... schemas ) throws LdapException, IOException;
 
@@ -267,23 +259,23 @@ public interface SchemaLoader
      * a list of specified schema names
      *
      * @param schemaNames the schema names from which SyntaxCheckers are loaded
-     * @throws Exception if there are failures accessing SyntaxChecker information
+     * @throws LdapException if there are failures accessing SyntaxChecker information
      */
-    List<Entry> loadSyntaxCheckers( String... schemaNames ) throws Exception;
+    List<Entry> loadSyntaxCheckers( String... schemaNames ) throws LdapException, IOException;
 
 
     /**
      * @return the list of enabled schemas
-     * @throws Exception TODO
+     * @throws LdapException TODO
      */
-    Collection<Schema> getAllEnabled() throws Exception;
+    Collection<Schema> getAllEnabled();
 
 
     /**
      * @return the list of all schemas
-     * @throws Exception TODO
+     * @throws LdapException TODO
      */
-    Collection<Schema> getAllSchemas() throws Exception;
+    Collection<Schema> getAllSchemas();
 
 
     /**
@@ -294,6 +286,29 @@ public interface SchemaLoader
 
     /**
      * Remove a schema from the schema's list
+     * 
+     * @param schema The schema to remove
      */
     void removeSchema( Schema schema );
+    
+    
+    /**
+     * @return Tells if the SchemaLoader is in RELAXED mode
+     */
+    boolean isRelaxed();
+    
+    
+    /**
+     * @return Tells if the SchemaLoader is in STRICT mode
+     */
+    boolean isStrict();
+    
+    
+    /**
+     * Set the SchemzLoader in STRICT or RELAXED mode.
+     * 
+     * @param relaxed if <code>true</code>, the SchemaLoader will be in relaxed mode, otherwise
+     * it will be in strict mode (the default)
+     */
+    void setRelaxed( boolean relaxed );
 }

@@ -41,25 +41,9 @@ public class CompareFuture extends ResponseFuture<CompareResponse>
      * @param connection the LDAP connection
      * @param messageId the associated messageId
      */
-    // Implicit super constructor ResponseFuture<BindResponse>() is undefined for default constructor. 
-    @SuppressWarnings("PMD.UselessOverridingMethod")
     public CompareFuture( LdapConnection connection, int messageId )
     {
         super( connection, messageId );
-    }
-
-
-    /**
-     * Get the CompareResponse, blocking until one is received.
-     * 
-     * @return the compare response
-     * @throws InterruptedException {@inheritDoc}
-     * @throws ExecutionException {@inheritDoc}
-     */
-    @SuppressWarnings("PMD.UselessOverridingMethod")
-    public CompareResponse get() throws InterruptedException, ExecutionException
-    {
-        return super.get();
     }
 
 

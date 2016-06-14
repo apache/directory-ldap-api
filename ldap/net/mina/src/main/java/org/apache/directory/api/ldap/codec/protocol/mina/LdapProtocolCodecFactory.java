@@ -20,6 +20,8 @@
 package org.apache.directory.api.ldap.codec.protocol.mina;
 
 
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
 import org.apache.mina.filter.codec.ProtocolDecoder;
@@ -34,7 +36,7 @@ import org.apache.mina.filter.codec.ProtocolEncoder;
 public class LdapProtocolCodecFactory implements ProtocolCodecFactory
 {
     /** The tag stored into the session if we want to set a max PDU size */
-    public final static String MAX_PDU_SIZE = "MAX_PDU_SIZE";
+    public static final String MAX_PDU_SIZE = "MAX_PDU_SIZE";
 
     /** The LdapDecoder key */
     public static final String LDAP_DECODER = "LDAP_DECODER";
@@ -42,6 +44,34 @@ public class LdapProtocolCodecFactory implements ProtocolCodecFactory
     /** The LdapEncoder key */
     public static final String LDAP_ENCODER = "LDAP_ENCODER";
 
+    /** The statefull LDAP decoder */
+    private LdapProtocolDecoder ldapDecoder;
+
+    /** The statefull LDAP edcoder */
+    private LdapProtocolEncoder ldapEncoder;
+    
+    
+    /**
+     * Creates a new instance of LdapProtocolCodecFactory.
+     */
+    public LdapProtocolCodecFactory() 
+    {
+        this( LdapApiServiceFactory.getSingleton() );
+    }
+
+    
+    /**
+     * 
+     * Creates a new instance of LdapProtocolCodecFactory.
+     *
+     * @param ldapApiService The associated LdapApiService instance
+     */
+    public LdapProtocolCodecFactory( LdapApiService ldapApiService ) 
+    {
+        ldapDecoder = new LdapProtocolDecoder();
+        ldapEncoder = new LdapProtocolEncoder( ldapApiService );
+    }
+    
 
     /**
      * Get the LDAP decoder.
@@ -51,7 +81,7 @@ public class LdapProtocolCodecFactory implements ProtocolCodecFactory
      */
     public ProtocolDecoder getDecoder( IoSession session )
     {
-        return new LdapProtocolDecoder();
+        return ldapDecoder;
     }
 
 
@@ -63,6 +93,6 @@ public class LdapProtocolCodecFactory implements ProtocolCodecFactory
      */
     public ProtocolEncoder getEncoder( IoSession session )
     {
-        return new LdapProtocolEncoder();
+        return ldapEncoder;
     }
 }

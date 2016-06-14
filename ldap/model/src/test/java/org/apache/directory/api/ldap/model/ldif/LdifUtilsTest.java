@@ -534,6 +534,8 @@ public class LdifUtilsTest
         LdifEntry convertedEntry = entries.get( 0 );
 
         assertEquals( expectedEntry, convertedEntry );
+        
+        reader.close();
     }
 
 
@@ -574,5 +576,6 @@ public class LdifUtilsTest
         LdifEntry convertedEntry = entries.get( 0 );
 
         assertEquals( expectedEntry, convertedEntry );
+        reader.close();
     }
 }

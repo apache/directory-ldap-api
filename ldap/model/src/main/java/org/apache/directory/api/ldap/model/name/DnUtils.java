@@ -53,4 +53,9 @@ public final class DnUtils
         int index = rdn.indexOf( '=' );
         return rdn.substring( index + 1, rdn.length() );
     }
+
+
+    private DnUtils()
+    {
+    }
 }

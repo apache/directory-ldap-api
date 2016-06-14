@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.codec.api;
 
 
-import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +34,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdapApiServiceFactory
+public final class LdapApiServiceFactory
 {
     /** Logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( LdapApiServiceFactory.class );
@@ -45,6 +44,12 @@ public class LdapApiServiceFactory
 
     /** Whether or not the standalone implementation is being used */
     private static boolean usingStandaloneImplementation;
+
+
+    private LdapApiServiceFactory()
+    {
+        // TODO Auto-generated constructor stub
+    }
 
 
     /**

@@ -20,6 +20,8 @@
 package org.apache.directory.api.ldap.model.schema.registries;
 
 
+import java.util.Map;
+
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
@@ -104,7 +106,7 @@ public class DefaultNormalizerRegistry extends DefaultSchemaObjectRegistry<Norma
         sb.append( schemaObjectType ).append( ": " );
         boolean isFirst = true;
 
-        for ( String name : byName.keySet() )
+        for ( Map.Entry<String, Normalizer> entry : byName.entrySet() )
         {
             if ( isFirst )
             {
@@ -115,7 +117,7 @@ public class DefaultNormalizerRegistry extends DefaultSchemaObjectRegistry<Norma
                 sb.append( ", " );
             }
 
-            Normalizer normalizer = byName.get( name );
+            Normalizer normalizer = entry.getValue();
 
             String fqcn = normalizer.getFqcn();
             int lastDotPos = fqcn.lastIndexOf( '.' );

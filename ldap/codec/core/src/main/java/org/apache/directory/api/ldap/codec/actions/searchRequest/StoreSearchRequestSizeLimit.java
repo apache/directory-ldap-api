@@ -84,7 +84,7 @@ public class StoreSearchRequestSizeLimit extends GrammarAction<LdapMessageContai
         {
             String msg = I18n.err( I18n.ERR_04103, value.toString() );
             LOG.error( msg );
-            throw new DecoderException( msg );
+            throw new DecoderException( msg, lde );
         }
 
         searchRequest.setSizeLimit( sizeLimit );

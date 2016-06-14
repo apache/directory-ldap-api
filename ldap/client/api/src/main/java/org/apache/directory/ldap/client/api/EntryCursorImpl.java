@@ -87,7 +87,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     /**
      * {@inheritDoc}
      */
-    public boolean next() throws LdapException, CursorException, IOException
+    public boolean next() throws LdapException, CursorException
     {
         if ( !searchCursor.next() )
         {
@@ -96,7 +96,6 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
 
         try
         {
-
             do
             {
                 response = searchCursor.get();
@@ -128,7 +127,14 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
             ldapException.initCause( e );
 
             // close the cursor
-            close( ldapException );
+            try
+            {
+                close( ldapException );
+            }
+            catch ( IOException ioe )
+            {
+                throw new LdapException( ioe.getMessage(), ioe );
+            }
 
             throw ldapException;
         }
@@ -138,7 +144,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     /**
      * {@inheritDoc}
      */
-    public Entry get() throws CursorException, IOException
+    public Entry get() throws CursorException
     {
         if ( !searchCursor.available() )
         {
@@ -196,7 +202,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      * {@inheritDoc}
      */
     @Override
-    public void close()
+    public void close() throws IOException
     {
         if ( IS_DEBUG )
         {
@@ -211,7 +217,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      * {@inheritDoc}
      */
     @Override
-    public void close( Exception cause )
+    public void close( Exception cause ) throws IOException
     {
         if ( IS_DEBUG )
         {
@@ -228,7 +234,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public void after( Entry element ) throws LdapException, CursorException, IOException
+    public void after( Entry element ) throws LdapException, CursorException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "after( Response element )" ) ) );
@@ -239,7 +245,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public void afterLast() throws LdapException, CursorException, IOException
+    public void afterLast() throws LdapException, CursorException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "afterLast()" ) ) );
@@ -250,7 +256,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public void before( Entry element ) throws LdapException, CursorException, IOException
+    public void before( Entry element ) throws LdapException, CursorException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "before( Response element )" ) ) );
@@ -261,7 +267,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public void beforeFirst() throws LdapException, CursorException, IOException
+    public void beforeFirst() throws LdapException, CursorException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "beforeFirst()" ) ) );
@@ -272,7 +278,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public boolean first() throws LdapException, CursorException, IOException
+    public boolean first() throws LdapException, CursorException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "first()" ) ) );
@@ -283,7 +289,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public boolean last() throws LdapException, CursorException, IOException
+    public boolean last() throws LdapException, CursorException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "last()" ) ) );
@@ -294,7 +300,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public boolean previous() throws LdapException, CursorException, IOException
+    public boolean previous() throws LdapException, CursorException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "previous()" ) ) );

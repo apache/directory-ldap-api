@@ -27,7 +27,7 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.ModifyDnResponse;
 
 
@@ -54,25 +54,6 @@ public class ModifyDnResponseDecorator extends ResponseDecorator<ModifyDnRespons
     }
 
 
-    /**
-     * @param modifyDnResponseLength The encoded ModifyDnResponse's length
-     */
-    public void setModifyDnResponseLength( int modifyDnResponseLength )
-    {
-        this.modifyDnResponseLength = modifyDnResponseLength;
-    }
-
-
-    /**
-     * Stores the encoded length for the ModifyDnResponse
-     * @return The encoded length
-     */
-    public int getModifyDnResponseLength()
-    {
-        return modifyDnResponseLength;
-    }
-
-
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
@@ -91,9 +72,7 @@ public class ModifyDnResponseDecorator extends ResponseDecorator<ModifyDnRespons
      */
     public int computeLength()
     {
-        int modifyDnResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
-
-        setModifyDnResponseLength( modifyDnResponseLength );
+        modifyDnResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
 
         return 1 + TLV.getNbBytes( modifyDnResponseLength ) + modifyDnResponseLength;
     }
@@ -109,15 +88,15 @@ public class ModifyDnResponseDecorator extends ResponseDecorator<ModifyDnRespons
         try
         {
             // The ModifyResponse Tag
-            buffer.put( LdapConstants.MODIFY_DN_RESPONSE_TAG );
-            buffer.put( TLV.getBytes( getModifyDnResponseLength() ) );
+            buffer.put( LdapCodecConstants.MODIFY_DN_RESPONSE_TAG );
+            buffer.put( TLV.getBytes( modifyDnResponseLength ) );
 
             // The LdapResult
             ( ( LdapResultDecorator ) getLdapResult() ).encode( buffer );
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
 
         return buffer;

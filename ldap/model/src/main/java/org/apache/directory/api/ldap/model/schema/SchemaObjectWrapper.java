@@ -53,7 +53,11 @@ public class SchemaObjectWrapper
     {
         int h = 37;
         h += h * 17 + schemaObject.getObjectType().getValue();
-        h += h * 17 + schemaObject.getOid().hashCode();
+
+        if ( schemaObject.getOid() != null )
+        {
+            h += h * 17 + schemaObject.getOid().hashCode();
+        }
 
         return h;
     }
@@ -77,7 +81,20 @@ public class SchemaObjectWrapper
         SchemaObject that = ( ( SchemaObjectWrapper ) o ).get();
         SchemaObject current = get();
 
-        return ( that.getOid().equals( current.getOid() ) && ( that.getObjectType() == current.getObjectType() ) );
+        // Ultimately, that has to be true, regardless of the OID value
+        if ( that.getObjectType() != current.getObjectType() )
+        {
+            return false;
+        }
+
+        // If both OID are null, instances are equals
+        if ( that.getOid() == null )
+        {
+            return ( current.getOid() == null );
+        }
+
+        // The that'oid will never be null, we don't really care if current.oid is null here.
+        return that.getOid().equals( current.getOid() );
     }
 
 

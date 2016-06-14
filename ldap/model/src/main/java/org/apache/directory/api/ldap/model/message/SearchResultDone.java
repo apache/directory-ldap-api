@@ -29,6 +29,4 @@ package org.apache.directory.api.ldap.model.message;
  */
 public interface SearchResultDone extends ResultResponse
 {
-    /** Search done response message type enumeration value */
-    MessageTypeEnum TYPE = MessageTypeEnum.SEARCH_RESULT_DONE;
 }

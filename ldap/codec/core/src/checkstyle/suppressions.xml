@@ -24,4 +24,7 @@
     "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
 
 <suppressions>
+
+  <suppress files="org.apache.directory.api.ldap.codec.LdapMessageGrammar" checks="FileLength"/>
+
 </suppressions>

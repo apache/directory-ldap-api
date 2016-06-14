@@ -54,8 +54,6 @@ public class LongComparator extends LdapComparator<Long> implements Serializable
      * @param obj2 Second object
      * @return 1 if obj1 > obj2, 0 if obj1 == obj2, -1 if obj1 < obj2
      */
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "RC_REF_COMPARISON",
-        justification = "false positive")
     public int compare( Long obj1, Long obj2 )
     {
         if ( obj1 == obj2 )

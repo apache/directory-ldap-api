@@ -29,7 +29,7 @@ import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
-import org.apache.directory.api.ldap.extras.extended.CertGenerationRequestImpl;
+import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationRequestImpl;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -91,9 +91,9 @@ public class CertGenerationGrammar extends AbstractGrammar<CertGenerationContain
                 {
                     public void action( CertGenerationContainer container )
                     {
-                        CertGenerationRequestDecorator certGenerationObject = new CertGenerationRequestDecorator(
+                        CertGenerationRequestDecorator certGenerationRequest = new CertGenerationRequestDecorator(
                             LdapApiServiceFactory.getSingleton(), new CertGenerationRequestImpl() );
-                        container.setCertGenerationObject( certGenerationObject );
+                        container.setCertGenerationRequest( certGenerationRequest );
                     }
                 } );
 
@@ -133,7 +133,7 @@ public class CertGenerationGrammar extends AbstractGrammar<CertGenerationContain
                                 throw new DecoderException( msg );
                             }
 
-                            container.getCertGenerationObject().setTargetDN( targetDN );
+                            container.getCertGenerationRequest().setTargetDN( targetDN );
                         }
                         else
                         {
@@ -179,7 +179,7 @@ public class CertGenerationGrammar extends AbstractGrammar<CertGenerationContain
                                 throw new DecoderException( msg );
                             }
 
-                            container.getCertGenerationObject().setIssuerDN( issuerDN );
+                            container.getCertGenerationRequest().setIssuerDN( issuerDN );
                         }
                     }
                 } );
@@ -219,7 +219,7 @@ public class CertGenerationGrammar extends AbstractGrammar<CertGenerationContain
                                 throw new DecoderException( msg );
                             }
 
-                            container.getCertGenerationObject().setSubjectDN( subjectDN );
+                            container.getCertGenerationRequest().setSubjectDN( subjectDN );
                         }
                         else
                         {
@@ -258,7 +258,7 @@ public class CertGenerationGrammar extends AbstractGrammar<CertGenerationContain
 
                         if ( keyAlgorithm != null && ( keyAlgorithm.trim().length() > 0 ) )
                         {
-                            container.getCertGenerationObject().setKeyAlgorithm( keyAlgorithm );
+                            container.getCertGenerationRequest().setKeyAlgorithm( keyAlgorithm );
                         }
 
                         container.setGrammarEndAllowed( true );

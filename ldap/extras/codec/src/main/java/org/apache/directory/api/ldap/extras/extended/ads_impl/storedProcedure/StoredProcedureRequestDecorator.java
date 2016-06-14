@@ -32,10 +32,9 @@ import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.extended.StoredProcedureParameter;
-import org.apache.directory.api.ldap.extras.extended.StoredProcedureRequest;
-import org.apache.directory.api.ldap.extras.extended.StoredProcedureRequestImpl;
-import org.apache.directory.api.ldap.extras.extended.StoredProcedureResponse;
+import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureParameter;
+import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequest;
+import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequestImpl;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,8 +45,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoredProcedureRequestDecorator
-    extends ExtendedRequestDecorator<StoredProcedureRequest, StoredProcedureResponse>
+public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<StoredProcedureRequest>
     implements StoredProcedureRequest
 {
     private static final Logger LOG = LoggerFactory.getLogger( StoredProcedureRequestDecorator.class );
@@ -100,7 +98,7 @@ public class StoredProcedureRequestDecorator
 
     /**
      * Compute the StoredProcedure length 
-     * 
+     * <pre>
      * 0x30 L1 
      *   | 
      *   +--> 0x04 L2 language
@@ -123,8 +121,9 @@ public class StoredProcedureRequestDecorator
      *                 |
      *                 +--> 0x04 L6-m type
      *                 +--> 0x04 L7-m value
+     * </pre>
      */
-    public int computeLength()
+    /* no qualifier */ int computeLengthInternal()
     {
         // The language
         byte[] languageBytes = Strings.getBytesUtf8( getDecorated().getLanguage() );
@@ -172,14 +171,15 @@ public class StoredProcedureRequestDecorator
 
 
     /**
-     * Encode the StoredProcedure message to a PDU. 
+     * Encodes the StoredProcedure extended operation.
      * 
-     * @return The PDU.
+     * @return A ByteBuffer that contains the encoded PDU
+     * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
      */
-    public ByteBuffer encode() throws EncoderException
+    /* no qualifier */ ByteBuffer encodeInternal() throws EncoderException
     {
         // Allocate the bytes buffer.
-        ByteBuffer bb = ByteBuffer.allocate( computeLength() );
+        ByteBuffer bb = ByteBuffer.allocate( computeLengthInternal() );
 
         try
         {
@@ -222,7 +222,7 @@ public class StoredProcedureRequestDecorator
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
 
         return bb;
@@ -303,7 +303,7 @@ public class StoredProcedureRequestDecorator
         {
             try
             {
-                requestValue = encode().array();
+                requestValue = encodeInternal().array();
             }
             catch ( EncoderException e )
             {

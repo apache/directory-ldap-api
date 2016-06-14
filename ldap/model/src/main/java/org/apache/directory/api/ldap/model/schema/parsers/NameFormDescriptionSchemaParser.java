@@ -24,8 +24,6 @@ import java.text.ParseException;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.NameForm;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
@@ -36,17 +34,15 @@ import antlr.TokenStreamException;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class NameFormDescriptionSchemaParser extends AbstractSchemaParser
+public class NameFormDescriptionSchemaParser extends AbstractSchemaParser<NameForm>
 {
-    /** The LoggerFactory used by this class */
-    protected static final Logger LOG = LoggerFactory.getLogger( NameFormDescriptionSchemaParser.class );
-
 
     /**
      * Creates a schema parser instance.
      */
     public NameFormDescriptionSchemaParser()
     {
+        super( NameForm.class, I18n.ERR_04248, I18n.ERR_04249, I18n.ERR_04250 );
     }
 
 
@@ -69,52 +65,19 @@ public class NameFormDescriptionSchemaParser extends AbstractSchemaParser
      * @return the parsed NameForm bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public synchronized NameForm parseNameFormDescription( String nameFormDescription )
-        throws ParseException
+    public NameForm parseNameFormDescription( String nameFormDescription ) throws ParseException
     {
-        LOG.debug( "Parsing a NameForm : {}", nameFormDescription );
-
-        if ( nameFormDescription == null )
-        {
-            LOG.error( I18n.err( I18n.ERR_04248 ) );
-            throw new ParseException( "Null", 0 );
-        }
-
-        reset( nameFormDescription ); // reset and initialize the parser / lexer pair
-
-        try
-        {
-            NameForm nameForm = parser.nameFormDescription();
-
-            // Update the schemaName
-            updateSchemaName( nameForm );
-
-            return nameForm;
-        }
-        catch ( RecognitionException re )
-        {
-            String msg = I18n.err( I18n.ERR_04249, nameFormDescription, re.getMessage(), re.getColumn() );
-            LOG.error( msg );
-            throw new ParseException( msg, re.getColumn() );
-        }
-        catch ( TokenStreamException tse )
-        {
-            String msg = I18n.err( I18n.ERR_04250, nameFormDescription, tse.getMessage() );
-            LOG.error( msg );
-            throw new ParseException( msg, 0 );
-        }
+        return super.parse( nameFormDescription );
     }
 
 
     /**
-     * Parses a NameForm description.
-     * 
-     * @param schemaDescription The NameForm description to parse
-     * @return An instance of NameForm
-     * @throws ParseException {@inheritDoc}
+     * {@inheritDoc}
      */
-    public NameForm parse( String schemaDescription ) throws ParseException
+    @Override
+    protected NameForm doParse() throws RecognitionException, TokenStreamException
     {
-        return parseNameFormDescription( schemaDescription );
+        return parser.nameFormDescription();
     }
+
 }

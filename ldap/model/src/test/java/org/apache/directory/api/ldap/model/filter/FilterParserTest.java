@@ -26,7 +26,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.List;
 
@@ -46,6 +46,7 @@ import org.apache.directory.api.ldap.model.filter.OrNode;
 import org.apache.directory.api.ldap.model.filter.PresenceNode;
 import org.apache.directory.api.ldap.model.filter.SimpleNode;
 import org.apache.directory.api.ldap.model.filter.SubstringNode;
+import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -737,22 +738,15 @@ public class FilterParserTest
         byte[] bytes =
             { ( byte ) 0xC2, ( byte ) 0xA2 }; // unicode U+00A2: cents sign
 
-        try
-        {
-            new String( bytes, "UTF-8" );
-            String str = "(cn=\\C2\\A2)";
-            SimpleNode<?> node = ( SimpleNode<?> ) FilterParser.parse( str );
+        new String( bytes, StandardCharsets.UTF_8 );
+        String str = "(cn=\\C2\\A2)";
+        SimpleNode<?> node = ( SimpleNode<?> ) FilterParser.parse( str );
 
-            assertEquals( "cn", node.getAttribute() );
-            String val = node.getValue().getString();
-            assertEquals( "a2", Integer.toHexString( val.charAt( 0 ) ) ); // char is U+00A2
-            String str2 = node.toString();
-            assertEquals( str, str2 );
-        }
-        catch ( UnsupportedEncodingException e )
-        {
-            fail();
-        }
+        assertEquals( "cn", node.getAttribute() );
+        String val = node.getValue().getString();
+        assertEquals( "a2", Integer.toHexString( val.charAt( 0 ) ) ); // char is U+00A2
+        String str2 = node.toString();
+        assertEquals( str, str2 );
     }
 
 
@@ -762,23 +756,16 @@ public class FilterParserTest
         byte[] bytes =
             { ( byte ) 0xC2, ( byte ) 0xA2 }; // unicode U+00A2: cents sign
 
-        try
-        {
-            String str = "(cn=\\C2\\A2)";
-            new String( bytes, "UTF-8" );
+        String str = "(cn=\\C2\\A2)";
+        new String( bytes, StandardCharsets.UTF_8 );
 
-            SimpleNode<?> node = ( SimpleNode<?> ) FilterParser.parse( str );
+        SimpleNode<?> node = ( SimpleNode<?> ) FilterParser.parse( str );
 
-            assertEquals( "cn", node.getAttribute() );
-            String val = node.getValue().getString();
-            assertEquals( "a2", Integer.toHexString( val.charAt( 0 ) ) ); // char is U+00A2
-            String str2 = node.toString();
-            assertEquals( str, str2 );
-        }
-        catch ( UnsupportedEncodingException e )
-        {
-            fail();
-        }
+        assertEquals( "cn", node.getAttribute() );
+        String val = node.getValue().getString();
+        assertEquals( "a2", Integer.toHexString( val.charAt( 0 ) ) ); // char is U+00A2
+        String str2 = node.toString();
+        assertEquals( str, str2 );
     }
 
 
@@ -788,22 +775,15 @@ public class FilterParserTest
         byte[] bytes =
             { ( byte ) 0xE2, ( byte ) 0x89, ( byte ) 0xA0 }; // unicode U+2260: "not equal to" sign in decimal signed bytes is -30, -119, -96
 
-        try
-        {
-            new String( bytes, "UTF-8" );
-            String str = "(cn=\\E2\\89\\A0)";
-            SimpleNode<?> node = ( SimpleNode<?> ) FilterParser.parse( str );
+        new String( bytes, StandardCharsets.UTF_8 );
+        String str = "(cn=\\E2\\89\\A0)";
+        SimpleNode<?> node = ( SimpleNode<?> ) FilterParser.parse( str );
 
-            assertEquals( "cn", node.getAttribute() );
-            String val = node.getValue().getString();
-            assertEquals( "2260", Integer.toHexString( val.charAt( 0 ) ) );
-            String str2 = node.toString();
-            assertEquals( str, str2 );
-        }
-        catch ( UnsupportedEncodingException e )
-        {
-            fail();
-        }
+        assertEquals( "cn", node.getAttribute() );
+        String val = node.getValue().getString();
+        assertEquals( "2260", Integer.toHexString( val.charAt( 0 ) ) );
+        String str2 = node.toString();
+        assertEquals( str, str2 );
     }
 
 
@@ -813,23 +793,16 @@ public class FilterParserTest
         byte[] bytes =
             { ( byte ) 0xE2, ( byte ) 0x89, ( byte ) 0xA0 }; // unicode U+2260: "not equal to" sign in decimal signed bytes is -30, -119, -96
 
-        try
-        {
-            String str = "(cn=\\E2\\89\\A0aa)";
-            new String( bytes, "UTF-8" );
+        String str = "(cn=\\E2\\89\\A0aa)";
+        new String( bytes, StandardCharsets.UTF_8 );
 
-            SimpleNode<?> node = ( SimpleNode<?> ) FilterParser.parse( str );
+        SimpleNode<?> node = ( SimpleNode<?> ) FilterParser.parse( str );
 
-            assertEquals( "cn", node.getAttribute() );
-            String val = node.getValue().getString();
-            assertEquals( "2260", Integer.toHexString( val.charAt( 0 ) ) );
-            String str2 = node.toString();
-            assertEquals( str, str2 );
-        }
-        catch ( UnsupportedEncodingException e )
-        {
-            fail();
-        }
+        assertEquals( "cn", node.getAttribute() );
+        String val = node.getValue().getString();
+        assertEquals( "2260", Integer.toHexString( val.charAt( 0 ) ) );
+        String str2 = node.toString();
+        assertEquals( str, str2 );
     }
 
 
@@ -839,22 +812,15 @@ public class FilterParserTest
         byte[] bytes =
             { ( byte ) 0xE3, ( byte ) 0x81, ( byte ) 0x99 }; // unicode U+3059: Japanese 'T' with squiggle on down-stroke.
 
-        try
-        {
-            new String( bytes, "UTF-8" );
-            String str = "(cn=\\E3\\81\\99)";
-            SimpleNode<?> node = ( SimpleNode<?> ) FilterParser.parse( str );
+        new String( bytes, StandardCharsets.UTF_8 );
+        String str = "(cn=\\E3\\81\\99)";
+        SimpleNode<?> node = ( SimpleNode<?> ) FilterParser.parse( str );
 
-            assertEquals( "cn", node.getAttribute() );
-            String val = node.getValue().getString();
-            assertEquals( "3059", Integer.toHexString( val.charAt( 0 ) ) );
-            String str2 = node.toString();
-            assertEquals( str, str2 );
-        }
-        catch ( UnsupportedEncodingException e )
-        {
-            fail();
-        }
+        assertEquals( "cn", node.getAttribute() );
+        String val = node.getValue().getString();
+        assertEquals( "3059", Integer.toHexString( val.charAt( 0 ) ) );
+        String str2 = node.toString();
+        assertEquals( str, str2 );
     }
 
 
@@ -864,22 +830,15 @@ public class FilterParserTest
         byte[] bytes =
             { ( byte ) 0xE3, ( byte ) 0x81, ( byte ) 0x99 }; // unicode U+3059: Japanese 'T' with squiggle on down-stroke.
 
-        try
-        {
-            String str = "(cn=\\E3\\81\\99)";
-            new String( bytes, "UTF-8" );
+        String str = "(cn=\\E3\\81\\99)";
+        new String( bytes, StandardCharsets.UTF_8 );
 
-            SimpleNode<?> node = ( SimpleNode<?> ) FilterParser.parse( str );
-            assertEquals( "cn", node.getAttribute() );
-            String val = node.getValue().getString();
-            assertEquals( "3059", Integer.toHexString( val.charAt( 0 ) ) );
-            String str2 = node.toString();
-            assertEquals( str, str2 );
-        }
-        catch ( UnsupportedEncodingException e )
-        {
-            fail();
-        }
+        SimpleNode<?> node = ( SimpleNode<?> ) FilterParser.parse( str );
+        assertEquals( "cn", node.getAttribute() );
+        String val = node.getValue().getString();
+        assertEquals( "3059", Integer.toHexString( val.charAt( 0 ) ) );
+        String str2 = node.toString();
+        assertEquals( str, str2 );
     }
 
 
@@ -1001,7 +960,7 @@ public class FilterParserTest
         assertTrue( node instanceof EqualityNode );
         assertEquals( "'~%('$'\\ac", ( ( EqualityNode<?> ) node ).getValue().getString() );
         String str2 = node.toString();
-        assertEquals( str.toUpperCase(), str2.toUpperCase() );
+        assertEquals( Strings.upperCase( str ), Strings.upperCase( str2 ) );
     }
 
 
@@ -1145,5 +1104,46 @@ public class FilterParserTest
         assertTrue( notNodeChild1 instanceof EqualityNode );
         assertEquals( "jagplayUserGroup", ( ( EqualityNode<?> ) notNodeChild1 ).getAttribute() );
         assertEquals( "Banned", ( ( EqualityNode<?> ) notNodeChild1 ).getValue().getString() );
+    }
+
+
+    @Test
+    public void testEqualsFilterWithUnderscoreRelaxed() throws ParseException
+    {
+        String str = "(a_b_=people)";
+        SimpleNode<?> node = ( SimpleNode<?> ) FilterParser.parse( str, true );
+        assertEquals( "a_b_", node.getAttribute() );
+        assertEquals( "people", node.getValue().getString() );
+        assertTrue( node instanceof EqualityNode );
+        String str2 = node.toString();
+        assertEquals( str, str2 );
+    }
+
+
+    @Test(expected = ParseException.class)
+    public void testEqualsFilterWithUnderscoreNotRelaxed() throws ParseException
+    {
+        String str = "(a_b_=people)";
+        FilterParser.parse( str, false );
+    }
+
+
+    @Test
+    public void testAndFilterWithUnderscoreRelaxed() throws ParseException
+    {
+        String str = "(&(o_u~=people)(a_g_e>=30))";
+        BranchNode node = ( BranchNode ) FilterParser.parse( str, true );
+        assertEquals( 2, node.getChildren().size() );
+        assertTrue( node instanceof AndNode );
+        String str2 = node.toString();
+        assertEquals( str, str2 );
+    }
+
+
+    @Test(expected = ParseException.class)
+    public void testAndFilterWithUnderscoreNotRelaxed() throws ParseException
+    {
+        String str = "(&(o_u~=people)(a_g_e>=30))";
+        FilterParser.parse( str, false );
     }
 }

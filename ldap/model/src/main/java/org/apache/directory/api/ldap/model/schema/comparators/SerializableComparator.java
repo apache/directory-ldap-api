@@ -51,9 +51,11 @@ public class SerializableComparator<E> extends LdapComparator<E> implements Seri
     private transient SchemaManager schemaManager;
 
 
-    // ------------------------------------------------------------------------
-    // C O N T R U C T O R S
-    // ------------------------------------------------------------------------
+    /**
+     * Creates a new instance of SerializableComparator.
+     *
+     * @param matchingRuleOid The MatchingRule OID
+     */
     public SerializableComparator( String matchingRuleOid )
     {
         super( matchingRuleOid );
@@ -77,9 +79,9 @@ public class SerializableComparator<E> extends LdapComparator<E> implements Seri
             {
                 wrapped = ( Comparator<E> ) schemaManager.lookupComparatorRegistry( matchingRuleOid );
             }
-            catch ( LdapException e )
+            catch ( LdapException le )
             {
-                throw new RuntimeException( I18n.err( I18n.ERR_04221, matchingRuleOid ) );
+                throw new RuntimeException( I18n.err( I18n.ERR_04221, matchingRuleOid ), le );
             }
         }
 
@@ -109,7 +111,6 @@ public class SerializableComparator<E> extends LdapComparator<E> implements Seri
         }
 
         ( ( LdapComparator<E> ) wrapped ).setSchemaManager( schemaManager );
-        super.setSchemaManager( schemaManager );
         this.schemaManager = schemaManager;
     }
 }

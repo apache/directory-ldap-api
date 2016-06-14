@@ -36,9 +36,13 @@ import java.util.TreeSet;
 
 import org.apache.commons.collections.list.UnmodifiableList;
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.model.entry.BinaryValue;
+import org.apache.directory.api.ldap.model.entry.StringValue;
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.normalizers.OidNormalizer;
 import org.apache.directory.api.util.Strings;
@@ -282,9 +286,23 @@ public class Dn implements Iterable<Rdn>, Externalizable
         // Stores the representations of a Dn : internal (as a string and as a
         // byte[]) and external.
         upName = sb.toString();
-        parseInternal( upName, rdns );
-
-        apply( schemaManager );
+        
+        try
+        {
+            parseInternal( upName, rdns );
+            apply( schemaManager );
+        }
+        catch ( LdapInvalidDnException e )
+        {
+            if ( schemaManager == null || !schemaManager.isRelaxed() )
+            {
+                throw e;
+            }
+            // Ignore invalid DN formats in relaxed mode.
+            // This is needed to support unbelievably insane
+            // DN formats such as <GUI=abcd...> format used by
+            // Active Directory
+        }
     }
 
 
@@ -323,7 +341,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         for ( Rdn rdn : rdns )
         {
-            this.rdns.add( rdn.clone() );
+            this.rdns.add( rdn );
         }
 
         apply( null );
@@ -373,7 +391,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         for ( Rdn rdn : rdns )
         {
-            this.rdns.add( rdn.clone() );
+            this.rdns.add( rdn );
         }
 
         apply( schemaManager );
@@ -674,7 +692,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         Rdn rdn = rdns.get( posn );
 
-        return rdn.clone();
+        return rdn;
     }
 
 
@@ -690,7 +708,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             return Rdn.EMPTY_RDN;
         }
 
-        return rdns.get( 0 ).clone();
+        return rdns.get( 0 );
     }
 
 
@@ -777,8 +795,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         for ( int i = 0; i < rdns.size() - length; i++ )
         {
-            // Don't forget to clone the rdns !
-            newDn.rdns.add( rdns.get( i ).clone() );
+            newDn.rdns.add( rdns.get( i ) );
         }
 
         newDn.toUpName();
@@ -859,8 +876,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         for ( int i = length; i < rdns.size(); i++ )
         {
-            // Don't forget to clone the rdns !
-            newDn.rdns.add( rdns.get( i ).clone() );
+            newDn.rdns.add( rdns.get( i ) );
         }
 
         newDn.toUpName();
@@ -944,7 +960,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         Dn clonedDn = copy();
 
-        clonedDn.rdns.add( 0, newRdn.clone() );
+        clonedDn.rdns.add( 0, newRdn );
         clonedDn.apply( schemaManager, true );
         clonedDn.toUpName();
 
@@ -972,8 +988,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         for ( int i = rdns.size() - posn; i < rdns.size(); i++ )
         {
-            // Don't forget to clone the rdns !
-            newDn.rdns.add( rdns.get( i ).clone() );
+            newDn.rdns.add( rdns.get( i ) );
         }
 
         try
@@ -1001,7 +1016,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         for ( Rdn rdn : rdns )
         {
-            dn.rdns.add( rdn.clone() );
+            dn.rdns.add( rdn );
         }
 
         return dn;
@@ -1012,8 +1027,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * @see java.lang.Object#equals(java.lang.Object)
      * @return <code>true</code> if the two instances are equals
      */
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS",
-        justification = "String is a special case")
     @Override
     public boolean equals( Object obj )
     {
@@ -1074,7 +1087,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
                 return atav;
             }
 
-            type = Strings.toLowerCase( type );
+            type = Strings.toLowerCaseAscii( type );
 
             // Check that we have an existing AttributeType for this type
             if ( !oidsMap.containsKey( type ) )
@@ -1091,13 +1104,45 @@ public class Dn implements Iterable<Rdn>, Externalizable
             {
                 try
                 {
+                    AttributeType attributeType = schemaManager.getAttributeType( type );
+                    if ( attributeType == null )
+                    {
+                        // Error should NOT be logged here as exception is thrown. Whoever catches
+                        // the exception should log the error. This exception is caught and ignored
+                        // in the relaxed mode, and it is in fact quite expected to happed for some
+                        // insane DN formats. Logging the error here will only polute the logfiles
+                        throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX,
+                            I18n.err( I18n.ERR_04460_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED, type ) );
+                    }
+                    Value<?> atavValue = null;
+                    Value<?> value = atav.getValue();
+                    
+                    if ( value instanceof StringValue )
+                    {
+                        // Active Directory specifies syntax OIDs in attributeTypes, but it does not specify
+                        // any syntexes. Therefore attributeType.getSyntax() returns null. Assume human readable
+                        // attribute in such case.
+                        if ( attributeType.getSyntax() == null || attributeType.getSyntax().isHumanReadable() )
+                        {
+                            atavValue = new StringValue( attributeType, value.getString() );
+                        }
+                        else
+                        {
+                            // This is a binary variable, transaform the StringValue to a BinaryValye
+                            atavValue = new BinaryValue( attributeType, value.getBytes() );
+                        }
+                    }
+                    else
+                    {
+                        atavValue = new BinaryValue( attributeType, atav.getValue().getBytes() );
+                    }
+                    
                     Ava newAva = new Ava(
+                        attributeType,
                         atav.getType(),
                         oidNormalizer.getAttributeTypeOid(),
-                        atav.getValue(),
-                        oidNormalizer.getNormalizer().normalize( atav.getNormValue() ),
+                        atavValue,
                         atav.getName() );
-                    newAva.apply( schemaManager );
 
                     return newAva;
                 }
@@ -1135,13 +1180,13 @@ public class Dn implements Iterable<Rdn>, Externalizable
     {
         // We have more than one ATAV for this Rdn. We will loop on all
         // ATAVs
-        Rdn rdnCopy = rdn.clone();
-        rdn.clear();
+        //Rdn rdnCopy = rdn.clone();
+        //rdn.clear();
 
-        if ( rdnCopy.size() < 2 )
+        if ( rdn.size() < 2 )
         {
-            Ava newAtav = atavOidToName( rdnCopy.getAva(), schemaManager );
-            rdn.addAVA( schemaManager, newAtav );
+            Ava newAtav = atavOidToName( rdn.getAva(), schemaManager );
+            rdn.replaceAva( newAtav, 0 );
         }
         else
         {
@@ -1149,7 +1194,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             Map<String, Ava> avas = new HashMap<String, Ava>();
 
             // Sort the OIDs
-            for ( Ava val : rdnCopy )
+            for ( Ava val : rdn )
             {
                 Ava newAtav = atavOidToName( val, schemaManager );
                 String oid = newAtav.getAttributeType().getOid();
@@ -1158,9 +1203,11 @@ public class Dn implements Iterable<Rdn>, Externalizable
             }
 
             // And create the Rdn
+            int pos = 0;
+
             for ( String oid : sortedOids )
             {
-                rdn.addAVA( schemaManager, avas.get( oid ) );
+                rdn.replaceAva( avas.get( oid ), pos++ );
             }
         }
     }
@@ -1179,7 +1226,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
     {
         if ( ( this.schemaManager == null ) || force )
         {
-
             this.schemaManager = schemaManager;
 
             if ( this.schemaManager != null )
@@ -1368,7 +1414,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         {
             FastDnParser.parseDn( name, rdns );
         }
-        catch ( TooComplexException e )
+        catch ( TooComplexDnException e )
         {
             rdns.clear();
             new ComplexDnParser().parseDn( name, rdns );
@@ -1395,6 +1441,8 @@ public class Dn implements Iterable<Rdn>, Externalizable
             normName = upName;
         }
 
+        bytes = Strings.getBytesUtf8Ascii( normName );
+        
         // Read the RDNs. Is it's null, the number will be -1.
         int nbRdns = in.readInt();
 

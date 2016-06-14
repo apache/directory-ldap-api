@@ -20,9 +20,8 @@
 package org.apache.directory.api.dsmlv2;
 
 
-import org.apache.directory.api.asn1.ber.Asn1Container;
-import org.apache.directory.api.dsmlv2.reponse.BatchResponseDsml;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml;
+import org.apache.directory.api.dsmlv2.response.BatchResponseDsml;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.xmlpull.v1.XmlPullParser;
 
@@ -72,7 +71,7 @@ public class Dsmlv2Container implements Container
 
 
     /**
-     * Gets the {@link LdapApiService} associated with this {@link Asn1Container}.
+     * Gets the {@link LdapApiService} associated with this Container.
      *
      * @return The codec used to encode/decode the messages
      */
@@ -197,8 +196,6 @@ public class Dsmlv2Container implements Container
      * 
      * @return the states.
      */
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "UWF_UNWRITTEN_FIELD",
-        justification = "it exists a setter for 'states'")
     public Enum<Dsmlv2StatesEnum>[] getStates()
     {
         return states;

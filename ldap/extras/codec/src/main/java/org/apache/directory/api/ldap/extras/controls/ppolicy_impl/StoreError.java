@@ -30,8 +30,7 @@ import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyError
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@SuppressWarnings("rawtypes")
-public class StoreError extends AbstractReadInteger
+public class StoreError<C extends Asn1Container> extends AbstractReadInteger<C>
 {
 
     /**

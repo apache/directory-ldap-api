@@ -285,8 +285,8 @@ public final class ParserDescriptionUtils
         // check contents and order of extension values must match
         for ( String key : lsd0.getExtensions().keySet() )
         {
-            List<String> values0 = lsd0.getExtensions().get( key );
-            List<String> values1 = lsd1.getExtensions().get( key );
+            List<String> values0 = lsd0.getExtension( key );
+            List<String> values1 = lsd1.getExtension( key );
 
             // if the key is not present in asd1
             if ( values1 == null )

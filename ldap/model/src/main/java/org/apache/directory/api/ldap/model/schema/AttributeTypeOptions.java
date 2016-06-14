@@ -105,7 +105,7 @@ public class AttributeTypeOptions
     {
         if ( hasOption() )
         {
-            return options.contains( Strings.toLowerCase( Strings.trim( option ) ) );
+            return options.contains( Strings.toLowerCaseAscii( Strings.trim( option ) ) );
         }
         else
         {
@@ -126,7 +126,7 @@ public class AttributeTypeOptions
             options = new HashSet<String>();
         }
 
-        options.add( Strings.toLowerCase( Strings.trim( option ) ) );
+        options.add( Strings.toLowerCaseAscii( Strings.trim( option ) ) );
     }
 
 

@@ -20,7 +20,7 @@
 package org.apache.directory.api.asn1.util;
 
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 
 /**
@@ -41,6 +41,10 @@ public final class Asn1StringUtils
         {};
 
 
+    private Asn1StringUtils()
+    {
+    }
+
     /**
      * Helper function that dump a byte in hex form
      *
@@ -50,7 +54,7 @@ public final class Asn1StringUtils
     public static String dumpByte( byte octet )
     {
         return new String( new byte[]
-            { '0', 'x', HEX_CHAR[( octet & 0x00F0 ) >> 4], HEX_CHAR[octet & 0x000F] } );
+            { '0', 'x', HEX_CHAR[( octet & 0x00F0 ) >> 4], HEX_CHAR[octet & 0x000F] }, StandardCharsets.UTF_8 );
     }
 
 
@@ -89,17 +93,10 @@ public final class Asn1StringUtils
     {
         if ( string == null )
         {
-            return new byte[0];
-        }
-
-        try
-        {
-            return string.getBytes( "UTF-8" );
-        }
-        catch ( UnsupportedEncodingException uee )
-        {
             return EMPTY_BYTES;
         }
+
+        return string.getBytes( StandardCharsets.UTF_8 );
     }
 
 

@@ -37,6 +37,10 @@ public final class BooleanDecoder
     private static final Logger LOG = LoggerFactory.getLogger( BooleanDecoder.class );
 
 
+    private BooleanDecoder()
+    {
+    }
+
     /**
      * Parse a Value containing a byte[] and send back a boolean.
      *

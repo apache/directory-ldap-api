@@ -28,6 +28,4 @@ package org.apache.directory.api.ldap.model.message;
  */
 public interface DeleteResponse extends ResultResponse
 {
-    /** Delete response message type enumeration value */
-    MessageTypeEnum TYPE = MessageTypeEnum.DEL_RESPONSE;
 }

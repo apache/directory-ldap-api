@@ -101,7 +101,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public void before( E element ) throws LdapException, CursorException, IOException
+    public void before( E element ) throws LdapException, CursorException
     {
         checkNotClosed( "before()" );
 
@@ -126,7 +126,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public void after( E element ) throws LdapException, CursorException, IOException
+    public void after( E element ) throws LdapException, CursorException
     {
         checkNotClosed( "after()" );
 
@@ -151,7 +151,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public void beforeFirst() throws LdapException, CursorException, IOException
+    public void beforeFirst() throws LdapException, CursorException
     {
         checkNotClosed( "beforeFirst" );
         beforeFirst = true;
@@ -163,7 +163,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public void afterLast() throws LdapException, CursorException, IOException
+    public void afterLast() throws LdapException, CursorException
     {
         checkNotClosed( "afterLast" );
         beforeFirst = false;
@@ -175,7 +175,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public boolean first() throws LdapException, CursorException, IOException
+    public boolean first() throws LdapException, CursorException
     {
         checkNotClosed( "first" );
         beforeFirst = false;
@@ -189,7 +189,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public boolean last() throws LdapException, CursorException, IOException
+    public boolean last() throws LdapException, CursorException
     {
         checkNotClosed( "last" );
         beforeFirst = false;
@@ -243,7 +243,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public boolean previous() throws LdapException, CursorException, IOException
+    public boolean previous() throws LdapException, CursorException
     {
         checkNotClosed( "previous" );
 
@@ -273,7 +273,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public boolean next() throws LdapException, CursorException, IOException
+    public boolean next() throws LdapException, CursorException
     {
         checkNotClosed( "next" );
 
@@ -303,7 +303,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public E get() throws CursorException, IOException
+    public E get() throws CursorException
     {
         checkNotClosed( "get" );
 
@@ -327,7 +327,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
      * {@inheritDoc}
      */
     @Override
-    public void close()
+    public void close() throws IOException
     {
         if ( IS_DEBUG )
         {
@@ -342,7 +342,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
      * {@inheritDoc}
      */
     @Override
-    public void close( Exception cause )
+    public void close( Exception cause ) throws IOException
     {
         if ( IS_DEBUG )
         {

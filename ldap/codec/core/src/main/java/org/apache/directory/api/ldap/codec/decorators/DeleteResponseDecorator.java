@@ -27,7 +27,7 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.DeleteResponse;
 
 
@@ -54,25 +54,6 @@ public class DeleteResponseDecorator extends ResponseDecorator<DeleteResponse>
     }
 
 
-    /**
-     * Stores the encoded length for the DeleteResponse
-     * @param deleteResponseLength The encoded length
-     */
-    public void setDeleteResponseLength( int deleteResponseLength )
-    {
-        this.deleteResponseLength = deleteResponseLength;
-    }
-
-
-    /**
-     * @return The encoded DeleteResponse's length
-     */
-    public int getDeleteResponseLength()
-    {
-        return deleteResponseLength;
-    }
-
-
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
@@ -92,9 +73,7 @@ public class DeleteResponseDecorator extends ResponseDecorator<DeleteResponse>
      */
     public int computeLength()
     {
-        int deleteResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
-
-        setDeleteResponseLength( deleteResponseLength );
+        deleteResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
 
         return 1 + TLV.getNbBytes( deleteResponseLength ) + deleteResponseLength;
     }
@@ -110,15 +89,15 @@ public class DeleteResponseDecorator extends ResponseDecorator<DeleteResponse>
         try
         {
             // The DelResponse Tag
-            buffer.put( LdapConstants.DEL_RESPONSE_TAG );
-            buffer.put( TLV.getBytes( getDeleteResponseLength() ) );
+            buffer.put( LdapCodecConstants.DEL_RESPONSE_TAG );
+            buffer.put( TLV.getBytes( deleteResponseLength ) );
 
             // The LdapResult
             ( ( LdapResultDecorator ) getLdapResult() ).encode( buffer );
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
 
         return buffer;

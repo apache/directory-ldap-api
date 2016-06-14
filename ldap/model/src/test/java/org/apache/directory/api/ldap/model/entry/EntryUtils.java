@@ -21,9 +21,6 @@ package org.apache.directory.api.ldap.model.entry;
 
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
-import org.apache.directory.api.ldap.model.entry.StringValue;
-import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
@@ -71,6 +68,9 @@ public class EntryUtils
      */
     static class MR extends MutableMatchingRule
     {
+        public static final long serialVersionUID = 1L;
+
+
         protected MR( String oid )
         {
             super( oid );
@@ -81,7 +81,6 @@ public class EntryUtils
     /**
      * A local Syntax class used for the tests
      */
-    @SuppressWarnings("PMD.AvoidUsingHardCodedIP")
     public static LdapSyntax syntaxFactory( String oid, boolean humanReadable )
     {
         LdapSyntax ldapSyntax = new LdapSyntax( oid );
@@ -93,6 +92,9 @@ public class EntryUtils
 
     static class S extends LdapSyntax
     {
+        public static final long serialVersionUID = 1L;
+
+
         public S( String oid, boolean humanReadable )
         {
             super( oid, "", humanReadable );
@@ -107,6 +109,9 @@ public class EntryUtils
 
         syntax.setSyntaxChecker( new SyntaxChecker( "1.1.2.1" )
         {
+            public static final long serialVersionUID = 1L;
+
+
             public boolean isValidSyntax( Object value )
             {
                 if ( value == null )
@@ -137,6 +142,9 @@ public class EntryUtils
 
         matchingRule.setLdapComparator( new LdapComparator<String>( matchingRule.getOid() )
         {
+            public static final long serialVersionUID = 1L;
+
+
             public int compare( String o1, String o2 )
             {
                 return ( o1 == null ?
@@ -147,11 +155,14 @@ public class EntryUtils
 
         Normalizer normalizer = new Normalizer( "1.1.1" )
         {
+            public static final long serialVersionUID = 1L;
+
+
             public Value<?> normalize( Value<?> value ) throws LdapException
             {
                 if ( value.isHumanReadable() )
                 {
-                    return new StringValue( Strings.toLowerCase( value.getString() ) );
+                    return new StringValue( Strings.toLowerCaseAscii( value.getString() ) );
                 }
 
                 throw new IllegalStateException( I18n.err( I18n.ERR_04474 ) );
@@ -160,7 +171,7 @@ public class EntryUtils
 
             public String normalize( String value ) throws LdapException
             {
-                return Strings.toLowerCase( value );
+                return Strings.toLowerCaseAscii( value );
             }
         };
 
@@ -181,6 +192,9 @@ public class EntryUtils
 
         syntax.setSyntaxChecker( new SyntaxChecker( "1.1.2" )
         {
+            public static final long serialVersionUID = 1L;
+
+
             public boolean isValidSyntax( Object value )
             {
                 return ( ( String ) value == null ) || ( ( ( String ) value ).length() < 7 );
@@ -192,6 +206,9 @@ public class EntryUtils
 
         matchingRule.setLdapComparator( new LdapComparator<String>( matchingRule.getOid() )
         {
+            public static final long serialVersionUID = 1L;
+
+
             public int compare( String o1, String o2 )
             {
                 return ( ( o1 == null ) ?
@@ -216,6 +233,9 @@ public class EntryUtils
 
         syntax.setSyntaxChecker( new SyntaxChecker( "1.2.1" )
         {
+            public static final long serialVersionUID = 1L;
+
+
             public boolean isValidSyntax( Object value )
             {
                 return ( value == null ) || ( ( ( byte[] ) value ).length < 5 );
@@ -229,6 +249,9 @@ public class EntryUtils
 
         matchingRule.setNormalizer( new Normalizer( "1.1.1" )
         {
+            public static final long serialVersionUID = 1L;
+
+
             public Value<?> normalize( Value<?> value ) throws LdapException
             {
                 if ( !value.isHumanReadable() )

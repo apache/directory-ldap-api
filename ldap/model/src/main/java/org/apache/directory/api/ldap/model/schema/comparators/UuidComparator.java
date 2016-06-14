@@ -40,7 +40,7 @@ public class UuidComparator extends SerializableComparator<String>
     private static final Logger LOG = LoggerFactory.getLogger( UuidComparator.class );
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
-    public static UuidComparator INSTANCE = new UuidComparator( "1.3.6.1.1.16.4" );
+    public static final UuidComparator INSTANCE = new UuidComparator( "1.3.6.1.1.16.4" );
 
 
     /**

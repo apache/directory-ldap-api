@@ -68,7 +68,7 @@ public interface LdapApiService
      * 
      * @param factory The control factory
      */
-    ControlFactory<?, ?> registerControl( ControlFactory<?, ?> factory );
+    ControlFactory<?> registerControl( ControlFactory<?> factory );
 
 
     /**
@@ -76,7 +76,7 @@ public interface LdapApiService
      * 
      * @param oid The oid of the control the factory is associated with.
      */
-    ControlFactory<?, ?> unregisterControl( String oid );
+    ControlFactory<?> unregisterControl( String oid );
 
 
     /**
@@ -131,23 +131,23 @@ public interface LdapApiService
 
 
     /**
-     * Registers an {@link ExtendedRequestFactory} for generating extended request 
+     * Registers an {@link ExtendedOperationFactory} for generating extended request 
      * response pairs.
      * 
      * @param factory The extended request factory
      * @return The displaced factory if one existed for the oid
      */
-    ExtendedRequestFactory<?, ?> registerExtendedRequest( ExtendedRequestFactory<?, ?> factory );
+    ExtendedOperationFactory registerExtendedRequest( ExtendedOperationFactory factory );
 
 
     /**
-     * Unregisters an {@link ExtendedRequestFactory} for generating extended 
+     * Unregisters an {@link ExtendedOperationFactory} for generating extended 
      * request response pairs.
      * 
      * @param oid The extended request oid
      * @return The displaced factory if one existed for the oid
      */
-    ExtendedRequestFactory<?, ?> unregisterExtendedRequest( String oid );
+    ExtendedOperationFactory unregisterExtendedRequest( String oid );
 
 
     /**
@@ -163,34 +163,6 @@ public interface LdapApiService
     // ------------------------------------------------------------------------
     // Extended Response Methods
     // ------------------------------------------------------------------------
-
-    /**
-     * Returns an Iterator over the OID Strings of registered unsolicited 
-     * extended responses.
-     *
-     * @return The registered unsolicited extended response OID Strings
-     */
-    Iterator<String> registeredUnsolicitedResponses();
-
-
-    /**
-     * Registers an {@link UnsolicitedResponseFactory} for generating extended
-     * responses sent by servers without an extended request.
-     * 
-     * @param factory The unsolicited response creating factory
-     * @return The displaced factory if one existed for the oid
-     */
-    UnsolicitedResponseFactory<?> registerUnsolicitedResponse( UnsolicitedResponseFactory<?> factory );
-
-
-    /**
-     * Unregisters an {@link UnsolicitedResponseFactory} for generating 
-     * extended responses sent by servers without an extended request.
-     * 
-     * @param oid The unsolicited response oid
-     */
-    UnsolicitedResponseFactory<?> unregisterUnsolicitedResponse( String oid );
-
 
     /**
      * Creates a model ExtendedResponse from the JNDI ExtendedResponse.
@@ -220,7 +192,7 @@ public interface LdapApiService
      * @return The model ExtendedResponse
      * @throws DecoderException if the response value cannot be decoded.
      */
-    ExtendedRequest<?> fromJndi( javax.naming.ldap.ExtendedRequest jndiRequest ) throws DecoderException;
+    ExtendedRequest fromJndi( javax.naming.ldap.ExtendedRequest jndiRequest ) throws DecoderException;
 
 
     /**
@@ -231,7 +203,7 @@ public interface LdapApiService
      * @return
      * @throws EncoderException
      */
-    javax.naming.ldap.ExtendedRequest toJndi( ExtendedRequest<?> modelRequest ) throws EncoderException;
+    javax.naming.ldap.ExtendedRequest toJndi( ExtendedRequest modelRequest ) throws EncoderException;
 
 
     // ------------------------------------------------------------------------
@@ -265,7 +237,18 @@ public interface LdapApiService
     Asn1Container newMessageContainer();
 
 
-    <E extends ExtendedResponse> E newExtendedResponse( ExtendedRequest<E> req, byte[] serializedResponse )
+    /**
+     * Create an instance of a ExtendedResponse, knowing its OID. Inject the payload
+     * into it.
+     * 
+     * @param responseName The extendedRespose OID
+     * @param messageId The original message ID
+     * @param serializedResponse The serialized response payload
+     * @return The extendedResponse instance
+     * 
+     * @throws DecoderException If the payload is incorrect
+     */
+    <E extends ExtendedResponse> E newExtendedResponse( String responseName, int messageId, byte[] serializedResponse )
         throws DecoderException;
 
 
@@ -276,10 +259,10 @@ public interface LdapApiService
      * @param value the encoded value of the extended request
      * @return The new extended request
      */
-    ExtendedRequest<?> newExtendedRequest( String oid, byte[] value );
+    ExtendedRequest newExtendedRequest( String oid, byte[] value );
 
 
-    ExtendedRequestDecorator<?, ?> decorate( ExtendedRequest<?> decoratedMessage );
+    ExtendedRequestDecorator<?> decorate( ExtendedRequest decoratedMessage );
 
 
     ExtendedResponseDecorator<?> decorate( ExtendedResponse decoratedMessage );

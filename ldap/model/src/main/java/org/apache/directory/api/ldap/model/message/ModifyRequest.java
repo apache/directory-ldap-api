@@ -25,7 +25,6 @@ import java.util.Collection;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.name.Dn;
 
 
@@ -97,15 +96,8 @@ import org.apache.directory.api.ldap.model.name.Dn;
  *  @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * 
  */
-public interface ModifyRequest extends SingleReplyRequest<ModifyResponse>, AbandonableRequest
+public interface ModifyRequest extends SingleReplyRequest, AbandonableRequest
 {
-    /** Modify request message type enumeration value */
-    MessageTypeEnum TYPE = MessageTypeEnum.MODIFY_REQUEST;
-
-    /** Modify response message type enumeration value */
-    MessageTypeEnum RESP_TYPE = ModifyResponse.TYPE;
-
-
     /**
      * Gets the distinguished name of the entry to be modified by this request.
      * This property represents the PDU's <b>object</b> field.
@@ -159,7 +151,7 @@ public interface ModifyRequest extends SingleReplyRequest<ModifyResponse>, Aband
      * marks a given attribute for removal with the given
      * values from the target entry.
      *
-     * @param attributeName name of the attribute to be added
+     * @param attributeName name of the attribute to be removed
      * @param attributeValue values of the attribute
      * @return The ModifyRequest instance
      */
@@ -176,10 +168,20 @@ public interface ModifyRequest extends SingleReplyRequest<ModifyResponse>, Aband
      *
      * marks a given attribute for removal from the target entry.
      *
-     * @param attr the attribute to be added
+     * @param attr the attribute to be removed
      * @return The ModifyRequest instance
      */
     ModifyRequest remove( Attribute attr );
+
+
+    /**
+     *
+     * marks a given attribute name for removal from the target entry.
+     *
+     * @param attributeName the attribute to be removed
+     * @return The ModifyRequest instance
+     */
+    ModifyRequest remove( String attributeName );
 
 
     /**
@@ -258,17 +260,17 @@ public interface ModifyRequest extends SingleReplyRequest<ModifyResponse>, Aband
     /**
      * {@inheritDoc}
      */
-    ModifyRequest addControl( Control control ) throws MessageException;
+    ModifyRequest addControl( Control control );
 
 
     /**
      * {@inheritDoc}
      */
-    ModifyRequest addAllControls( Control[] controls ) throws MessageException;
+    ModifyRequest addAllControls( Control[] controls );
 
 
     /**
      * {@inheritDoc}
      */
-    ModifyRequest removeControl( Control control ) throws MessageException;
+    ModifyRequest removeControl( Control control );
 }

@@ -27,13 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.MessageException;
-import org.apache.directory.api.ldap.model.message.AbandonListener;
-import org.apache.directory.api.ldap.model.message.Control;
-import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
-import org.apache.directory.api.ldap.model.message.ModifyDnRequest;
-import org.apache.directory.api.ldap.model.message.ModifyDnRequestImpl;
-import org.apache.directory.api.ldap.model.message.ModifyDnResponse;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.junit.Test;
@@ -352,13 +345,13 @@ public class ModifyDnRequestImplTest
             }
 
 
-            public ModifyDnRequest addControl( Control a_control ) throws MessageException
+            public ModifyDnRequest addControl( Control a_control )
             {
                 return this;
             }
 
 
-            public ModifyDnRequest removeControl( Control a_control ) throws MessageException
+            public ModifyDnRequest removeControl( Control a_control )
             {
                 return this;
             }
@@ -405,7 +398,7 @@ public class ModifyDnRequestImplTest
             }
 
 
-            public ModifyDnRequest addAllControls( Control[] controls ) throws MessageException
+            public ModifyDnRequest addAllControls( Control[] controls )
             {
                 return this;
             }

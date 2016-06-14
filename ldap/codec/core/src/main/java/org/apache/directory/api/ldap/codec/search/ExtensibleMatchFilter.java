@@ -27,7 +27,7 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.util.Strings;
 
 
@@ -268,7 +268,7 @@ public class ExtensibleMatchFilter extends Filter
         try
         {
             // The ExtensibleMatch Tag
-            buffer.put( ( byte ) LdapConstants.EXTENSIBLE_MATCH_FILTER_TAG );
+            buffer.put( ( byte ) LdapCodecConstants.EXTENSIBLE_MATCH_FILTER_TAG );
             buffer.put( TLV.getBytes( extensibleMatchLength ) );
 
             if ( ( matchingRule == null ) && ( type == null ) )
@@ -279,7 +279,7 @@ public class ExtensibleMatchFilter extends Filter
             // The matching rule
             if ( matchingRule != null )
             {
-                buffer.put( ( byte ) LdapConstants.MATCHING_RULE_ID_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.MATCHING_RULE_ID_TAG );
                 buffer.put( TLV.getBytes( matchingRuleBytes.length ) );
                 buffer.put( matchingRuleBytes );
             }
@@ -287,7 +287,7 @@ public class ExtensibleMatchFilter extends Filter
             // The type
             if ( type != null )
             {
-                buffer.put( ( byte ) LdapConstants.MATCHING_RULE_TYPE_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.MATCHING_RULE_TYPE_TAG );
                 buffer.put( TLV.getBytes( typeBytes.length ) );
                 buffer.put( typeBytes );
             }
@@ -295,7 +295,7 @@ public class ExtensibleMatchFilter extends Filter
             // The match value
             if ( matchValue != null )
             {
-                buffer.put( ( byte ) LdapConstants.MATCH_VALUE_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.MATCH_VALUE_TAG );
 
                 byte[] bytes = matchValue.getBytes();
                 int bytesLength = bytes.length;
@@ -311,14 +311,14 @@ public class ExtensibleMatchFilter extends Filter
             // The dnAttributes flag, if true only
             if ( dnAttributes )
             {
-                buffer.put( ( byte ) LdapConstants.DN_ATTRIBUTES_FILTER_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.DN_ATTRIBUTES_FILTER_TAG );
                 buffer.put( ( byte ) 1 );
                 buffer.put( BerValue.TRUE_VALUE );
             }
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
 
         return buffer;

@@ -68,7 +68,7 @@ public class ObjectIdentifierNormalizer extends Normalizer
         }
         else
         {
-            return new StringValue( Strings.toLowerCase( str ) );
+            return new StringValue( Strings.toLowerCaseAscii( str ) );
         }
     }
 
@@ -96,7 +96,7 @@ public class ObjectIdentifierNormalizer extends Normalizer
         }
         else
         {
-            return Strings.toLowerCase( str );
+            return Strings.toLowerCaseAscii( str );
         }
     }
 }

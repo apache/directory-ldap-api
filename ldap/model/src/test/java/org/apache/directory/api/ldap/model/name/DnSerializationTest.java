@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.model.name;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -111,5 +112,6 @@ public class DnSerializationTest
         assertEquals( dn1, dn2 );
         assertEquals( "Cn = Doe", dn2.getName() );
         assertEquals( "cn=Doe", dn2.getNormName() );
+        assertNotNull( Dn.getBytes( dn2 ) );
     }
 }

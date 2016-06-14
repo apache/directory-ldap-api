@@ -22,6 +22,9 @@ package org.apache.directory.api.ldap.model.filter;
 
 import java.text.Format;
 import java.text.MessageFormat;
+import java.util.Locale;
+
+import org.apache.directory.api.i18n.I18n;
 
 
 /**
@@ -29,9 +32,14 @@ import java.text.MessageFormat;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class FilterEncoder
+public final class FilterEncoder
 {
     private static final String[] EMPTY = new String[0];
+
+
+    private FilterEncoder()
+    {
+    }
 
 
     /**
@@ -45,14 +53,14 @@ public class FilterEncoder
      * @return the formatted filter with escaped values
      * @throws IllegalArgumentException if the number of values does not match the number of placeholders in the template
      */
-    public static String format( String filterTemplate, String[] values ) throws IllegalArgumentException
+    public static String format( String filterTemplate, String... values ) throws IllegalArgumentException
     {
         if ( values == null )
         {
             values = EMPTY;
         }
 
-        MessageFormat mf = new MessageFormat( filterTemplate );
+        MessageFormat mf = new MessageFormat( filterTemplate, Locale.ROOT );
 
         // check element count and argument count
         Format[] formats = mf.getFormatsByArgumentIndex();
@@ -60,8 +68,7 @@ public class FilterEncoder
         {
             // TODO: I18n
             String msg = "Filter template {0} has {1} placeholders but {2} arguments provided.";
-            throw new IllegalArgumentException( MessageFormat.format( msg, filterTemplate, formats.length,
-                values.length ) );
+            throw new IllegalArgumentException( I18n.format( msg, filterTemplate, formats.length, values.length ) );
         }
 
         // encode arguments
@@ -85,51 +92,165 @@ public class FilterEncoder
      */
     public static String encodeFilterValue( String value )
     {
-        StringBuilder sb = null;
+        StringBuilder sb = new StringBuilder( value.length() );
+        boolean escaped = false;
+        boolean hexPair = false;
+        char hex = '\0';
 
         for ( int i = 0; i < value.length(); i++ )
         {
             char ch = value.charAt( i );
-            String replace = null;
 
             switch ( ch )
             {
                 case '*':
-                    replace = "\\2A";
+                    if ( escaped )
+                    {
+                        sb.append( "\\5C" );
+
+                        if ( hexPair )
+                        {
+                            sb.append( hex );
+                            hexPair = false;
+                        }
+
+                        escaped = false;
+                    }
+
+                    sb.append( "\\2A" );
                     break;
 
                 case '(':
-                    replace = "\\28";
+                    if ( escaped )
+                    {
+                        sb.append( "\\5C" );
+
+                        if ( hexPair )
+                        {
+                            sb.append( hex );
+                            hexPair = false;
+                        }
+
+                        escaped = false;
+                    }
+
+                    sb.append( "\\28" );
                     break;
 
                 case ')':
-                    replace = "\\29";
-                    break;
+                    if ( escaped )
+                    {
+                        sb.append( "\\5C" );
 
-                case '\\':
-                    replace = "\\5C";
+                        if ( hexPair )
+                        {
+                            sb.append( hex );
+                            hexPair = false;
+                        }
+
+                        escaped = false;
+                    }
+
+                    sb.append( "\\29" );
                     break;
 
                 case '\0':
-                    replace = "\\00";
-                    break;
-            }
+                    if ( escaped )
+                    {
+                        sb.append( "\\5C" );
 
-            if ( replace != null )
-            {
-                if ( sb == null )
-                {
-                    sb = new StringBuilder( value.length() * 2 );
-                    sb.append( value.substring( 0, i ) );
-                }
-                sb.append( replace );
-            }
-            else if ( sb != null )
-            {
-                sb.append( ch );
+                        if ( hexPair )
+                        {
+                            sb.append( hex );
+                            hexPair = false;
+                        }
+
+                        escaped = false;
+                    }
+
+                    sb.append( "\\00" );
+                    break;
+
+                case '\\':
+                    if ( escaped )
+                    {
+                        sb.append( "\\5C" );
+                        escaped = false;
+                    }
+                    else
+                    {
+                        escaped = true;
+                        hexPair = false;
+                    }
+
+                    break;
+
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                case 'a':
+                case 'b':
+                case 'c':
+                case 'd':
+                case 'e':
+                case 'f':
+                case 'A':
+                case 'B':
+                case 'C':
+                case 'D':
+                case 'E':
+                case 'F':
+                    if ( escaped )
+                    {
+                        if ( hexPair )
+                        {
+                            sb.append( '\\' ).append( hex ).append( ch );
+                            escaped = false;
+                            hexPair = false;
+                        }
+                        else
+                        {
+                            hexPair = true;
+                            hex = ch;
+                        }
+                    }
+                    else
+                    {
+                        sb.append( ch );
+                    }
+
+                    break;
+
+                default:
+                    if ( escaped )
+                    {
+                        sb.append( "\\5C" );
+
+                        if ( hexPair )
+                        {
+                            sb.append( hex );
+                            hexPair = false;
+                        }
+
+                        escaped = false;
+                    }
+
+                    sb.append( ch );
             }
         }
 
-        return ( sb == null ? value : sb.toString() );
+        if ( escaped )
+        {
+            sb.append( "\\5C" );
+        }
+
+        return sb.toString();
     }
 }

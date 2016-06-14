@@ -28,6 +28,4 @@ package org.apache.directory.api.ldap.model.message;
  */
 public interface ModifyDnResponse extends ResultResponse
 {
-    /** Modify Dn response message type enumeration value */
-    MessageTypeEnum TYPE = MessageTypeEnum.MODIFYDN_RESPONSE;
 }

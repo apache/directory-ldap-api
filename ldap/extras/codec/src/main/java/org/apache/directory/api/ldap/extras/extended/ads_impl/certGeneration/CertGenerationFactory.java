@@ -21,26 +21,23 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration;
 
 
 import org.apache.directory.api.asn1.DecoderException;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestFactory;
-import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
+import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.extended.CertGenerationRequest;
-import org.apache.directory.api.ldap.extras.extended.CertGenerationRequestImpl;
-import org.apache.directory.api.ldap.extras.extended.CertGenerationResponse;
-import org.apache.directory.api.ldap.extras.extended.CertGenerationResponseImpl;
+import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationRequest;
+import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationRequestImpl;
+import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationResponse;
+import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationResponseImpl;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 
 
 /**
- * An {@link ExtendedRequestFactory} for creating cancel extended request response 
+ * An {@link ExtendedOperationFactory} for creating certificate generation extended request response 
  * pairs.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CertGenerationFactory
-    implements ExtendedRequestFactory<CertGenerationRequest, CertGenerationResponse>
+public class CertGenerationFactory implements ExtendedOperationFactory
 {
     private LdapApiService codec;
 
@@ -63,20 +60,12 @@ public class CertGenerationFactory
     /**
      * {@inheritDoc}
      */
-    public CertGenerationRequest newRequest()
-    {
-        return new CertGenerationRequestDecorator( codec, new CertGenerationRequestImpl() );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     public CertGenerationResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
         CertGenerationResponseDecorator response = new CertGenerationResponseDecorator( codec,
             new CertGenerationResponseImpl() );
         response.setResponseValue( encodedValue );
+
         return response;
     }
 
@@ -95,8 +84,7 @@ public class CertGenerationFactory
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequestDecorator<CertGenerationRequest, CertGenerationResponse> decorate(
-        ExtendedRequest<?> modelRequest )
+    public CertGenerationRequestDecorator decorate( ExtendedRequest modelRequest )
     {
         if ( modelRequest instanceof CertGenerationRequestDecorator )
         {
@@ -110,7 +98,7 @@ public class CertGenerationFactory
     /**
      * {@inheritDoc}
      */
-    public ExtendedResponseDecorator<CertGenerationResponse> decorate( ExtendedResponse decoratedMessage )
+    public CertGenerationResponseDecorator decorate( ExtendedResponse decoratedMessage )
     {
         if ( decoratedMessage instanceof CertGenerationResponseDecorator )
         {

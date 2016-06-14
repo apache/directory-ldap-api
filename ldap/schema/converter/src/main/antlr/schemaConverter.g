@@ -33,13 +33,13 @@ header {
  * Keep the semicolon right next to the package name or else there will be a
  * bug that comes into the foreground in the new antlr release.
  */
-package org.apache.directory.api.converter.schema;
+package org.apache.directory.api.ldap.schema.converter;
 import java.util.List ;
 import java.util.ArrayList ;
 import java.util.Collections;
 import java.io.IOException;
 
-import org.apache.directory.api.converter.schema.SchemaElement;
+import org.apache.directory.api.ldap.schema.converter.SchemaElement;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
 import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 }
@@ -101,7 +101,7 @@ IDENTIFIER options { testLiterals=true; }
 
 DESC
     :
-        "desc" WS QUOTE ( ~'\'' )+ QUOTE
+        "desc" WS QUOTE ( ~'\'' | '\\' '\'' )+ QUOTE
     ;
 
 SYNTAX
@@ -252,30 +252,14 @@ woidlist returns [List<String> list]
 objectClassDesc [ObjectClassHolder objectClass]
     : d:DESC
     {
-        String desc = d.getText().split( "'" )[1];
-        String[] quoted = desc.split( "\"" );
-
-        if ( quoted.length == 1 )
-        {
-            objectClass.setDescription( desc );
-        }
-        else
-        {
-            StringBuffer buf = new StringBuffer();
-            for ( int ii = 0; ii < quoted.length; ii++ )
-            {
-                if ( ii < quoted.length - 1 )
-                {
-                    buf.append( quoted[ii] ).append( "\\" ).append( "\"" );
-                }
-                else
-                {
-                    buf.append( quoted[ii] );
-                }
-            }
-
-            objectClass.setDescription( buf.toString() );
-        }
+		String text = d.getText();
+		int start = text.indexOf( '\'' );
+        String desc = text.substring( start + 1, text.length() - 1 );
+		desc = desc.replace( "\\\"", "\"" );
+		desc = desc.replace( "\\'", "'" );
+		desc = desc.replace( "\\27", "'" );
+		desc = desc.replace( "\\5C", "\"" );
+        objectClass.setDescription( desc );
     }
     ;
 
@@ -324,7 +308,7 @@ attributeType
         type = new AttributeTypeHolder( oid.getText() );
     }
         ( names[type] )?
-        ( desc[type] )?
+        ( attributeTypeDesc[type] )?
         ( "OBSOLETE" { type.setObsolete( true ); } )?
         ( superior[type] )?
         ( equality[type] )?
@@ -344,33 +328,17 @@ attributeType
     ;
 
 
-desc [AttributeTypeHolder type]
+attributeTypeDesc [AttributeTypeHolder type]
     : d:DESC
     {
-        String desc = d.getText().split( "'" )[1];
-        String[] quoted = desc.split( "\"" );
-
-        if ( quoted.length == 1 )
-        {
-            type.setDescription( desc );
-        }
-        else
-        {
-            StringBuffer buf = new StringBuffer();
-            for ( int ii = 0; ii < quoted.length; ii++ )
-            {
-                if ( ii < quoted.length - 1 )
-                {
-                    buf.append( quoted[ii] ).append( "\\" ).append( "\"" );
-                }
-                else
-                {
-                    buf.append( quoted[ii] );
-                }
-            }
-
-            type.setDescription( buf.toString() );
-        }
+		String text = d.getText();
+		int start = text.indexOf( '\'' );
+        String desc = text.substring( start +1, text.length() - 1 );
+		desc = desc.replace( "\\\"", "\"" );
+		desc = desc.replace( "\\'", "'" );
+		desc = desc.replace( "\\27", "'" );
+		desc = desc.replace( "\\5C", "\"" );
+        type.setDescription( desc );
     }
     ;
 
@@ -478,7 +446,7 @@ syntax [AttributeTypeHolder type]
         String length = comps[1].substring( index + 1, comps[1].length() - 1 );
 
         type.setSyntax( oid );
-        type.setOidLen( Integer.parseInt( length ) );
+        type.setOidLen( Long.parseLong( length ) );
     }
     ;
 

@@ -21,8 +21,6 @@
 package org.apache.directory.api.ldap.model.subtree;
 
 
-import org.apache.directory.api.ldap.model.subtree.AntlrSubtreeSpecificationParser;
-
 import antlr.TokenStream;
 
 

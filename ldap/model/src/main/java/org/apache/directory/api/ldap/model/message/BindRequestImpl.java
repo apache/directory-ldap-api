@@ -24,7 +24,6 @@ import java.util.Arrays;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -71,7 +70,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     private boolean isVersion3 = true;
 
     /** The associated response */
-    public BindResponse response;
+    private BindResponse response;
 
 
     // ------------------------------------------------------------------------
@@ -82,7 +81,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
      */
     public BindRequestImpl()
     {
-        super( -1, TYPE );
+        super( -1, MessageTypeEnum.BIND_REQUEST );
         hCredentials = 0;
     }
 
@@ -215,7 +214,8 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
         }
         catch ( LdapInvalidDnException e )
         {
-            LOG.warn( "Enable to convert the name to a DN.", e );
+            // This might still be a valid DN (Windows AD binding for instance)
+            LOG.debug( "Unable to convert the name to a DN." );
             this.dn = null;
         }
 
@@ -287,7 +287,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
-    public BindRequest addControl( Control control ) throws MessageException
+    public BindRequest addControl( Control control )
     {
         return ( BindRequest ) super.addControl( control );
     }
@@ -296,7 +296,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
-    public BindRequest addAllControls( Control[] controls ) throws MessageException
+    public BindRequest addAllControls( Control[] controls )
     {
         return ( BindRequest ) super.addAllControls( controls );
     }
@@ -305,7 +305,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
-    public BindRequest removeControl( Control control ) throws MessageException
+    public BindRequest removeControl( Control control )
     {
         return ( BindRequest ) super.removeControl( control );
     }
@@ -322,7 +322,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
      */
     public MessageTypeEnum getResponseType()
     {
-        return RESP_TYPE;
+        return MessageTypeEnum.BIND_RESPONSE;
     }
 
 
@@ -475,8 +475,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
 
             if ( isSimple )
             {
-                sb.append( "        Simple authentication : '" ).append( Strings.utf8ToString( credentials ) )
-                    .append( '/' ).append( Strings.dumpBytes( credentials ) ).append( "'\n" );
+                sb.append( "        Simple authentication : '" ).append( "(omitted-for-safety)" ).append( "'\n" );
             }
             else
             {

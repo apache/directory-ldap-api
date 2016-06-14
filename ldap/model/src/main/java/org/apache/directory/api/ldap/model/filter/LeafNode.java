@@ -28,7 +28,7 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LeafNode extends AbstractExprNode
+public abstract class LeafNode extends AbstractExprNode
 {
     /** attributeType on which this leaf is based */
     protected AttributeType attributeType;
@@ -52,6 +52,10 @@ public class LeafNode extends AbstractExprNode
         {
             this.attribute = attributeType.getName();
             isSchemaAware = true;
+        }
+        else
+        {
+            throw new NullPointerException( "Cannot create a Node with a null Attribute" );
         }
     }
 

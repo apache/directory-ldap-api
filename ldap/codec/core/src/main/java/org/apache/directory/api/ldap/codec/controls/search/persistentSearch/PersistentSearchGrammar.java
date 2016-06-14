@@ -124,11 +124,11 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
 
                             container.getPersistentSearchDecorator().setChangeTypes( changeTypes );
                         }
-                        catch ( IntegerDecoderException e )
+                        catch ( IntegerDecoderException ide )
                         {
                             String msg = I18n.err( I18n.ERR_04051 );
-                            LOG.error( msg, e );
-                            throw new DecoderException( msg );
+                            LOG.error( msg, ide );
+                            throw new DecoderException( msg, ide );
                         }
                     }
                 } );
@@ -162,11 +162,11 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
 
                             container.getPersistentSearchDecorator().setChangesOnly( changesOnly );
                         }
-                        catch ( BooleanDecoderException e )
+                        catch ( BooleanDecoderException bde )
                         {
                             String msg = I18n.err( I18n.ERR_04052 );
-                            LOG.error( msg, e );
-                            throw new DecoderException( msg );
+                            LOG.error( msg, bde );
+                            throw new DecoderException( msg, bde );
                         }
                     }
                 } );
@@ -203,11 +203,11 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
                             // We can have an END transition
                             container.setGrammarEndAllowed( true );
                         }
-                        catch ( BooleanDecoderException e )
+                        catch ( BooleanDecoderException bde )
                         {
                             String msg = I18n.err( I18n.ERR_04053 );
-                            LOG.error( msg, e );
-                            throw new DecoderException( msg );
+                            LOG.error( msg, bde );
+                            throw new DecoderException( msg, bde );
                         }
                     }
                 } );

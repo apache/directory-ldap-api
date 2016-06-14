@@ -20,9 +20,9 @@
 package org.apache.directory.api.util;
 
 
-import org.apache.directory.api.i18n.I18n;
-
 import javax.naming.InvalidNameException;
+
+import org.apache.directory.api.i18n.I18n;
 
 
 /**
@@ -32,112 +32,37 @@ import javax.naming.InvalidNameException;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class Hex
+public final class Hex
 {
     /** &lt;hex> ::= [0x30-0x39] | [0x41-0x46] | [0x61-0x66] */
-    public static final byte[] HEX_VALUE =
+    private static final byte[] HEX_VALUE =
         {
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 00 -> 0F
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1, // 10 -> 1F
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1, // 20 -> 2F
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1, // 30 -> 3F ( 0, 1,2, 3, 4,5, 6, 7, 8, 9 )
-            -1,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1, // 40 -> 4F ( A, B, C, D, E, F )
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1, // 50 -> 5F
-            -1,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1 // 60 -> 6F ( a, b, c, d, e, f )
+            // 00 -> 0F
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            // 10 -> 1F
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            // 20 -> 2F
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            // 30 -> 3F ( 0, 1,2, 3, 4,5, 6, 7, 8, 9 )
+             0,  1,  2,  3,  4,  5,  6,  7,  8,  9, -1, -1, -1, -1, -1, -1, 
+             // 40 -> 4F ( A, B, C, D, E, F )
+            -1, 10, 11, 12, 13, 14, 15, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
+            // 50 -> 5F
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            // 60 -> 6F ( a, b, c, d, e, f )
+            -1, 10, 11, 12, 13, 14, 15, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
+            // 70 -> 7F
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
     };
+
     /** Used to build output as Hex */
-    public static final char[] HEX_CHAR =
+    private static final char[] HEX_CHAR =
         { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+
+
+    private Hex()
+    {
+    }
 
 
     /**
@@ -150,7 +75,7 @@ public class Hex
      */
     public static byte getHexValue( char high, char low )
     {
-        if ( ( high > 127 ) || ( low > 127 ) || ( high < 0 ) | ( low < 0 ) )
+        if ( ( high > 127 ) || ( low > 127 ) )
         {
             return -1;
         }
@@ -169,7 +94,7 @@ public class Hex
      */
     public static byte getHexValue( byte high, byte low )
     {
-        if ( ( high > 127 ) || ( low > 127 ) || ( high < 0 ) | ( low < 0 ) )
+        if ( ( ( high & 0x7F ) != high ) || ( ( low & 0x7F ) != low ) )
         {
             return -1;
         }
@@ -179,7 +104,7 @@ public class Hex
 
 
     /**
-     * Return an hex value from a sinle char
+     * Return an hex value from a single char
      * The char must be in [0-9a-fA-F]
      *
      * @param c The char we want to convert
@@ -187,7 +112,7 @@ public class Hex
      */
     public static byte getHexValue( char c )
     {
-        if ( ( c > 127 ) || ( c < 0 ) )
+        if ( c > 127 )
         {
             return -1;
         }
@@ -288,12 +213,12 @@ public class Hex
 
     /**
      * Converts an array of bytes into an array of characters representing the
-     * hexidecimal values of each byte in order. The returned array will be
+     * hexadecimal values of each byte in order. The returned array will be
      * double the length of the passed array, as it takes two characters to
      * represent any given byte.
      *
      * @param data a byte[] to convert to Hex characters
-     * @return A char[] containing hexidecimal characters
+     * @return A char[] containing hexadecimal characters
      */
     public static char[] encodeHex( byte[] data )
     {

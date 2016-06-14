@@ -34,7 +34,7 @@ import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.AttributeValueAssertion;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.MessageDecorator;
 import org.apache.directory.api.ldap.codec.search.AndFilter;
@@ -48,7 +48,6 @@ import org.apache.directory.api.ldap.codec.search.PresentFilter;
 import org.apache.directory.api.ldap.codec.search.SubstringFilter;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.filter.AndNode;
 import org.apache.directory.api.ldap.model.filter.ApproximateNode;
 import org.apache.directory.api.ldap.model.filter.BranchNode;
@@ -113,44 +112,6 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     public SearchRequestDecorator( LdapApiService codec, SearchRequest decoratedMessage )
     {
         super( codec, decoratedMessage );
-    }
-
-
-    /**
-     * Stores the encoded length for the SearchRequest
-     * @param searchRequestLength The encoded length
-     */
-    public void setSearchRequestLength( int searchRequestLength )
-    {
-        this.searchRequestLength = searchRequestLength;
-    }
-
-
-    /**
-     * @return The encoded SearchRequest's length
-     */
-    public int getSearchRequestLength()
-    {
-        return searchRequestLength;
-    }
-
-
-    /**
-     * Stores the encoded length for the list of attributes
-     * @param attributeDescriptionListLength The encoded length of the attributes
-     */
-    public void setAttributeDescriptionListLength( int attributeDescriptionListLength )
-    {
-        this.attributeDescriptionListLength = attributeDescriptionListLength;
-    }
-
-
-    /**
-     * @return The encoded SearchRequest's attributes length
-     */
-    public int getAttributeDescriptionListLength()
-    {
-        return attributeDescriptionListLength;
     }
 
 
@@ -328,12 +289,12 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
 
                     filterParent = filterParent.getParent();
                 }
-                else if ( filterParent instanceof Filter )
+                else
                 {
                     filterParent = filterParent.getParent();
                 }
 
-                if ( filterParent instanceof Filter )
+                if ( filterParent != null )
                 {
                     // The parent is a filter ; it will become the new currentFilter
                     // and we will loop again.
@@ -408,27 +369,27 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
                     AttributeValueAssertion ava = ( ( AttributeValueAssertionFilter ) filter ).getAssertion();
 
                     // Transform =, >=, <=, ~= filters
-                    switch ( ( ( AttributeValueAssertionFilter ) filter ).getFilterType() )
+                    int filterType = ( ( AttributeValueAssertionFilter ) filter ).getFilterType();
+                    switch ( filterType )
                     {
-                        case LdapConstants.EQUALITY_MATCH_FILTER:
+                        case LdapCodecConstants.EQUALITY_MATCH_FILTER:
                             branch = new EqualityNode( ava.getAttributeDesc(), ava.getAssertionValue() );
-
                             break;
 
-                        case LdapConstants.GREATER_OR_EQUAL_FILTER:
+                        case LdapCodecConstants.GREATER_OR_EQUAL_FILTER:
                             branch = new GreaterEqNode( ava.getAttributeDesc(), ava.getAssertionValue() );
-
                             break;
 
-                        case LdapConstants.LESS_OR_EQUAL_FILTER:
+                        case LdapCodecConstants.LESS_OR_EQUAL_FILTER:
                             branch = new LessEqNode( ava.getAttributeDesc(), ava.getAssertionValue() );
-
                             break;
 
-                        case LdapConstants.APPROX_MATCH_FILTER:
+                        case LdapCodecConstants.APPROX_MATCH_FILTER:
                             branch = new ApproximateNode( ava.getAttributeDesc(), ava.getAssertionValue() );
-
                             break;
+
+                        default:
+                            throw new IllegalArgumentException( "Unexpected filter type: " + filterType );
                     }
 
                 }
@@ -547,7 +508,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
                 {
                     if ( exprNode instanceof EqualityNode<?> )
                     {
-                        filter = new AttributeValueAssertionFilter( LdapConstants.EQUALITY_MATCH_FILTER );
+                        filter = new AttributeValueAssertionFilter( LdapCodecConstants.EQUALITY_MATCH_FILTER );
                         AttributeValueAssertion assertion = new AttributeValueAssertion();
                         assertion.setAttributeDesc( ( ( EqualityNode<?> ) exprNode ).getAttribute() );
                         assertion.setAssertionValue( ( ( EqualityNode<?> ) exprNode ).getValue() );
@@ -555,7 +516,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
                     }
                     else if ( exprNode instanceof GreaterEqNode<?> )
                     {
-                        filter = new AttributeValueAssertionFilter( LdapConstants.GREATER_OR_EQUAL_FILTER );
+                        filter = new AttributeValueAssertionFilter( LdapCodecConstants.GREATER_OR_EQUAL_FILTER );
                         AttributeValueAssertion assertion = new AttributeValueAssertion();
                         assertion.setAttributeDesc( ( ( GreaterEqNode<?> ) exprNode ).getAttribute() );
                         assertion.setAssertionValue( ( ( GreaterEqNode<?> ) exprNode ).getValue() );
@@ -563,7 +524,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
                     }
                     else if ( exprNode instanceof LessEqNode<?> )
                     {
-                        filter = new AttributeValueAssertionFilter( LdapConstants.LESS_OR_EQUAL_FILTER );
+                        filter = new AttributeValueAssertionFilter( LdapCodecConstants.LESS_OR_EQUAL_FILTER );
                         AttributeValueAssertion assertion = new AttributeValueAssertion();
                         assertion.setAttributeDesc( ( ( LessEqNode<?> ) exprNode ).getAttribute() );
                         assertion.setAssertionValue( ( ( LessEqNode<?> ) exprNode ).getValue() );
@@ -571,7 +532,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
                     }
                     else if ( exprNode instanceof ApproximateNode<?> )
                     {
-                        filter = new AttributeValueAssertionFilter( LdapConstants.APPROX_MATCH_FILTER );
+                        filter = new AttributeValueAssertionFilter( LdapCodecConstants.APPROX_MATCH_FILTER );
                         AttributeValueAssertion assertion = new AttributeValueAssertion();
                         assertion.setAttributeDesc( ( ( ApproximateNode<?> ) exprNode ).getAttribute() );
                         assertion.setAssertionValue( ( ( ApproximateNode<?> ) exprNode ).getValue() );
@@ -940,7 +901,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
      */
     public int computeLength()
     {
-        int searchRequestLength = 0;
+        searchRequestLength = 0;
 
         // The baseObject
         dnBytes = Strings.getBytesUtf8( getBase().getName() );
@@ -967,7 +928,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
             getCodecFilter().computeLength();
 
         // The attributes description list
-        int attributeDescriptionListLength = 0;
+        attributeDescriptionListLength = 0;
 
         if ( ( getAttributes() != null ) && ( getAttributes().size() != 0 ) )
         {
@@ -980,11 +941,8 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
             }
         }
 
-        setAttributeDescriptionListLength( attributeDescriptionListLength );
-
         searchRequestLength += 1 + TLV.getNbBytes( attributeDescriptionListLength ) + attributeDescriptionListLength;
 
-        setSearchRequestLength( searchRequestLength );
         // Return the result.
         return 1 + TLV.getNbBytes( searchRequestLength ) + searchRequestLength;
     }
@@ -1016,8 +974,8 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
         try
         {
             // The SearchRequest Tag
-            buffer.put( LdapConstants.SEARCH_REQUEST_TAG );
-            buffer.put( TLV.getBytes( getSearchRequestLength() ) );
+            buffer.put( LdapCodecConstants.SEARCH_REQUEST_TAG );
+            buffer.put( TLV.getBytes( searchRequestLength ) );
 
             // The baseObject
             BerValue.encode( buffer, dnBytes );
@@ -1042,7 +1000,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
 
             // The attributeDescriptionList
             buffer.put( UniversalTag.SEQUENCE.getValue() );
-            buffer.put( TLV.getBytes( getAttributeDescriptionListLength() ) );
+            buffer.put( TLV.getBytes( attributeDescriptionListLength ) );
 
             if ( ( getAttributes() != null ) && ( getAttributes().size() != 0 ) )
             {
@@ -1055,7 +1013,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
 
         return buffer;
@@ -1064,7 +1022,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
 
     public SearchResultDone getResultResponse()
     {
-        return getDecorated().getResultResponse();
+        return ( SearchResultDone ) getDecorated().getResultResponse();
     }
 
 
@@ -1106,7 +1064,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
-    public SearchRequest addControl( Control control ) throws MessageException
+    public SearchRequest addControl( Control control )
     {
         return ( SearchRequest ) super.addControl( control );
     }
@@ -1115,7 +1073,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
-    public SearchRequest addAllControls( Control[] controls ) throws MessageException
+    public SearchRequest addAllControls( Control[] controls )
     {
         return ( SearchRequest ) super.addAllControls( controls );
     }
@@ -1124,8 +1082,44 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
-    public SearchRequest removeControl( Control control ) throws MessageException
+    public SearchRequest removeControl( Control control )
     {
         return ( SearchRequest ) super.removeControl( control );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isFollowReferrals()
+    {
+        return getDecorated().isFollowReferrals();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest followReferrals()
+    {
+        return getDecorated().followReferrals();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isIgnoreReferrals()
+    {
+        return getDecorated().isIgnoreReferrals();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest ignoreReferrals()
+    {
+        return getDecorated().ignoreReferrals();
     }
 }

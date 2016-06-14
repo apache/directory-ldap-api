@@ -55,6 +55,9 @@ public class SetCursor<E> extends AbstractCursor<E>
     /** The current position in the list */
     private int index = -1;
 
+    /** A limit to what we can print */
+    private static final int MAX_PRINTED_ELEMENT = 100;
+
 
     /**
      * Creates a new SetCursor.
@@ -66,6 +69,7 @@ public class SetCursor<E> extends AbstractCursor<E>
      * @param comparator an optional comparator to use for ordering
      * @param set the Set this StCursor operates on
      */
+    @SuppressWarnings("unchecked")
     public SetCursor( Comparator<E> comparator, Set<E> set )
     {
         if ( set == null )
@@ -101,6 +105,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     /**
      * Creates a new SetCursor without any elements.
      */
+    @SuppressWarnings("unchecked")
     public SetCursor()
     {
         this( null, Collections.EMPTY_SET );
@@ -132,7 +137,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public void before( E element ) throws LdapException, CursorException, IOException
+    public void before( E element ) throws LdapException, CursorException
     {
         checkNotClosed( "before()" );
 
@@ -165,7 +170,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public void after( E element ) throws LdapException, CursorException, IOException
+    public void after( E element ) throws LdapException, CursorException
     {
         checkNotClosed( "after()" );
 
@@ -198,7 +203,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public void beforeFirst() throws LdapException, CursorException, IOException
+    public void beforeFirst() throws LdapException, CursorException
     {
         checkNotClosed( "beforeFirst()" );
         this.index = -1;
@@ -208,7 +213,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public void afterLast() throws LdapException, CursorException, IOException
+    public void afterLast() throws LdapException, CursorException
     {
         checkNotClosed( "afterLast()" );
         this.index = set.length;
@@ -218,7 +223,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public boolean first() throws LdapException, CursorException, IOException
+    public boolean first() throws LdapException, CursorException
     {
         checkNotClosed( "first()" );
 
@@ -236,7 +241,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public boolean last() throws LdapException, CursorException, IOException
+    public boolean last() throws LdapException, CursorException
     {
         checkNotClosed( "last()" );
 
@@ -294,7 +299,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public boolean previous() throws LdapException, CursorException, IOException
+    public boolean previous() throws LdapException, CursorException
     {
         checkNotClosed( "previous()" );
 
@@ -332,7 +337,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public boolean next() throws LdapException, CursorException, IOException
+    public boolean next() throws LdapException, CursorException
     {
         checkNotClosed( "next()" );
 
@@ -372,13 +377,13 @@ public class SetCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public E get() throws CursorException, IOException
+    public E get() throws CursorException
     {
         checkNotClosed( "get()" );
 
         if ( ( index < 0 ) || ( index >= set.length ) )
         {
-            throw new IOException( I18n.err( I18n.ERR_02009_CURSOR_NOT_POSITIONED ) );
+            throw new CursorException( I18n.err( I18n.ERR_02009_CURSOR_NOT_POSITIONED ) );
         }
 
         return set[index];
@@ -389,7 +394,7 @@ public class SetCursor<E> extends AbstractCursor<E>
      * {@inheritDoc}
      */
     @Override
-    public void close()
+    public void close() throws IOException
     {
         if ( IS_DEBUG )
         {
@@ -404,7 +409,7 @@ public class SetCursor<E> extends AbstractCursor<E>
      * {@inheritDoc}
      */
     @Override
-    public void close( Exception cause )
+    public void close( Exception cause ) throws IOException
     {
         if ( IS_DEBUG )
         {
@@ -429,14 +434,15 @@ public class SetCursor<E> extends AbstractCursor<E>
         {
             sb.append( tabs ).append( "    Size : " ).append( set.length ).append( "\n" );
 
-            int counter = 0; // Don't print more than 100 elements...
+            // Don't print more than 100 elements...
+            int counter = 0;
 
             for ( E e : set )
             {
                 sb.append( tabs ).append( "    " ).append( e ).append( "\n" );
                 counter++;
 
-                if ( counter == 100 )
+                if ( counter == MAX_PRINTED_ELEMENT )
                 {
                     break;
                 }

@@ -33,10 +33,6 @@ import org.apache.directory.api.ldap.model.name.Dn;
  */
 public interface SearchResultEntry extends Response
 {
-    /** Search entry response message type enumeration value */
-    MessageTypeEnum TYPE = MessageTypeEnum.SEARCH_RESULT_ENTRY;
-
-
     /**
      * Gets the distinguished name of the entry object returned.
      * 

@@ -40,8 +40,12 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ObjectClassHelper
+public final class ObjectClassHelper
 {
+    private ObjectClassHelper()
+    {
+    }
+
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( ObjectClassHelper.class );
 
@@ -171,6 +175,10 @@ public class ObjectClassHelper
                             }
 
                             break;
+
+                        default:
+                            throw new IllegalArgumentException( "Unexpected ObjectClassTypeEnum: "
+                                + objectClass.getType() );
                     }
 
                     objectClass.getSuperiors().add( superior );
@@ -225,7 +233,7 @@ public class ObjectClassHelper
                         errors.add( ldapSchemaException );
                         LOG.info( msg );
 
-                        break;
+                        continue;
                     }
 
                     if ( objectClass.getMustAttributeTypes().contains( attributeType ) )
@@ -240,7 +248,7 @@ public class ObjectClassHelper
                         errors.add( ldapSchemaException );
                         LOG.info( msg );
 
-                        break;
+                        continue;
                     }
 
                     // Check that the MUST AT is not also present in the MAY AT
@@ -257,7 +265,7 @@ public class ObjectClassHelper
                         errors.add( ldapSchemaException );
                         LOG.info( msg );
 
-                        break;
+                        continue;
                     }
 
                     objectClass.getMustAttributeTypes().add( attributeType );
@@ -274,7 +282,7 @@ public class ObjectClassHelper
                     errors.add( ldapSchemaException );
                     LOG.info( msg );
 
-                    break;
+                    continue;
                 }
             }
         }
@@ -311,7 +319,7 @@ public class ObjectClassHelper
                         errors.add( ldapSchemaException );
                         LOG.info( msg );
 
-                        break;
+                        continue;
                     }
 
                     if ( objectClass.getMayAttributeTypes().contains( attributeType ) )
@@ -326,7 +334,7 @@ public class ObjectClassHelper
                         errors.add( ldapSchemaException );
                         LOG.info( msg );
 
-                        break;
+                        continue;
                     }
 
                     objectClass.getMayAttributeTypes().add( attributeType );
@@ -343,7 +351,7 @@ public class ObjectClassHelper
                     errors.add( ldapSchemaException );
                     LOG.info( msg );
 
-                    break;
+                    continue;
                 }
             }
         }

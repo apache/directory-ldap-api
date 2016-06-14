@@ -59,6 +59,9 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
 
     /** the global OID Registry */
     protected OidRegistry<T> oidRegistry;
+    
+    /** A flag indicating that the Registry is relaxed or not */
+    private boolean isRelaxed;
 
 
     /**
@@ -69,6 +72,51 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
         byName = new HashMap<String, T>();
         this.schemaObjectType = schemaObjectType;
         this.oidRegistry = oidRegistry;
+        this.isRelaxed = Registries.STRICT;
+    }
+    
+    /**
+     * Tells if the Registry is permissive or if it must be checked
+     * against inconsistencies.
+     *
+     * @return True if SchemaObjects can be added even if they break the consistency
+     */
+    public boolean isRelaxed()
+    {
+        return isRelaxed;
+    }
+
+
+    /**
+     * Tells if the Registry is strict.
+     *
+     * @return True if SchemaObjects cannot be added if they break the consistency
+     */
+    public boolean isStrict()
+    {
+        return !isRelaxed;
+    }
+
+
+    /**
+     * Change the Registry to a relaxed mode, where invalid SchemaObjects
+     * can be registered.
+     */
+    public void setRelaxed()
+    {
+        isRelaxed = Registries.RELAXED;
+        oidRegistry.setRelaxed();
+    }
+
+
+    /**
+     * Change the Registry to a strict mode, where invalid SchemaObjects
+     * cannot be registered.
+     */
+    public void setStrict()
+    {
+        isRelaxed = Registries.STRICT;
+        oidRegistry.setStrict();
     }
 
 
@@ -79,7 +127,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     {
         if ( !byName.containsKey( oid ) )
         {
-            return byName.containsKey( Strings.toLowerCase( oid ) );
+            return byName.containsKey( Strings.toLowerCaseAscii( oid ) );
         }
 
         return true;
@@ -138,7 +186,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
      */
     public Iterator<T> iterator()
     {
-        return ( Iterator<T> ) oidRegistry.iterator();
+        return oidRegistry.iterator();
     }
 
 
@@ -166,7 +214,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
         if ( schemaObject == null )
         {
             // let's try with trimming and lowercasing now
-            schemaObject = byName.get( Strings.trim( Strings.toLowerCase( oid ) ) );
+            schemaObject = byName.get( Strings.trim( Strings.toLowerCaseAscii( oid ) ) );
         }
 
         if ( schemaObject == null )
@@ -210,7 +258,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
          */
         for ( String name : schemaObject.getNames() )
         {
-            String lowerName = Strings.trim( Strings.toLowerCase( name ) );
+            String lowerName = Strings.trim( Strings.toLowerCaseAscii( name ) );
 
             if ( byName.containsKey( lowerName ) )
             {
@@ -291,7 +339,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
          */
         for ( String name : schemaObject.getNames() )
         {
-            byName.remove( Strings.trim( Strings.toLowerCase( name ) ) );
+            byName.remove( Strings.trim( Strings.toLowerCaseAscii( name ) ) );
         }
 
         // And unregister the oid -> schemaObject relation
@@ -339,7 +387,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
         if ( schemaObject == null )
         {
             // last resort before giving up check with lower cased version
-            String lowerCased = Strings.toLowerCase( name );
+            String lowerCased = Strings.toLowerCaseAscii( name );
 
             schemaObject = byName.get( lowerCased );
 
@@ -359,15 +407,15 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
      * {@inheritDoc}
      */
     // This will suppress PMD.EmptyCatchBlock warnings in this method
-    @SuppressWarnings(
-        { "PMD.EmptyCatchBlock", "unchecked" })
+    @SuppressWarnings("unchecked")
     public SchemaObjectRegistry<T> copy( SchemaObjectRegistry<T> original )
     {
         // Fill the byName and OidRegistry maps, the type has already be copied
-        for ( String key : ( ( DefaultSchemaObjectRegistry<T> ) original ).byName.keySet() )
+        for ( Map.Entry<String, T> entry : ( ( DefaultSchemaObjectRegistry<T> ) original ).byName.entrySet() )
         {
+            String key = entry.getKey();
             // Clone each SchemaObject
-            T value = ( ( DefaultSchemaObjectRegistry<T> ) original ).byName.get( key );
+            T value = entry.getValue();
 
             if ( value instanceof LoadableSchemaObject )
             {
@@ -456,7 +504,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
         sb.append( schemaObjectType ).append( ": " );
         boolean isFirst = true;
 
-        for ( String name : byName.keySet() )
+        for ( Map.Entry<String, T> entry : byName.entrySet() )
         {
             if ( isFirst )
             {
@@ -467,7 +515,8 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
                 sb.append( ", " );
             }
 
-            T schemaObject = byName.get( name );
+            String name = entry.getKey();
+            T schemaObject = entry.getValue();
 
             sb.append( '<' ).append( name ).append( ", " ).append( schemaObject.getOid() ).append( '>' );
         }

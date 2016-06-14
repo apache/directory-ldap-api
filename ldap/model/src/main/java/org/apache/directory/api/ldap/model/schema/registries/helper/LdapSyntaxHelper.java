@@ -19,6 +19,7 @@
  */
 package org.apache.directory.api.ldap.model.schema.registries.helper;
 
+
 import java.util.List;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -26,8 +27,7 @@ import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.registries.Registries;
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.OctetStringSyntaxChecker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 /**
  * An helper class used to store all the methods associated with an LdapSyntax
@@ -35,10 +35,12 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdapSyntaxHelper
+public final class LdapSyntaxHelper
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( LdapSyntaxHelper.class );
+    private LdapSyntaxHelper()
+    {
+    }
+
 
     /**
      * Inject the LdapSyntax into the registries, updating the references to
@@ -49,36 +51,34 @@ public class LdapSyntaxHelper
      * @param registries The Registries
      * @exception If the addition failed
      */
-    public static void addToRegistries( LdapSyntax ldapSyntax, List<Throwable> errors,  Registries registries ) throws LdapException
+    public static void addToRegistries( LdapSyntax ldapSyntax, List<Throwable> errors, Registries registries )
+        throws LdapException
     {
         if ( registries != null )
         {
             try
             {
                 ldapSyntax.unlock();
-    
-                if ( registries != null )
-                {
-                    SyntaxChecker syntaxChecker = null;
-                    
-                    try
-                    {
-                        // Gets the associated SyntaxChecker
-                        syntaxChecker = registries.getSyntaxCheckerRegistry().lookup( ldapSyntax.getOid() );
-                    }
-                    catch ( LdapException ne )
-                    {
-                        // No SyntaxChecker ? Associate the Syntax to a catch all SyntaxChecker
-                        syntaxChecker = new OctetStringSyntaxChecker( ldapSyntax.getOid() );
-                    }
 
-                    // Add the references for S :
-                    // S -> SC
-                    if ( syntaxChecker != null )
-                    {
-                        registries.addReference( ldapSyntax, syntaxChecker );
-                        ldapSyntax.setSyntaxChecker( syntaxChecker );
-                    }
+                SyntaxChecker syntaxChecker = null;
+
+                try
+                {
+                    // Gets the associated SyntaxChecker
+                    syntaxChecker = registries.getSyntaxCheckerRegistry().lookup( ldapSyntax.getOid() );
+                }
+                catch ( LdapException ne )
+                {
+                    // No SyntaxChecker ? Associate the Syntax to a catch all SyntaxChecker
+                    syntaxChecker = new OctetStringSyntaxChecker( ldapSyntax.getOid() );
+                }
+
+                // Add the references for S :
+                // S -> SC
+                if ( syntaxChecker != null )
+                {
+                    registries.addReference( ldapSyntax, syntaxChecker );
+                    ldapSyntax.setSyntaxChecker( syntaxChecker );
                 }
             }
             finally
@@ -101,18 +101,16 @@ public class LdapSyntaxHelper
      * @param registries The Registries
      * @exception If the LdapSyntax is not valid
      */
-    public static void removeFromRegistries( LdapSyntax ldapSyntax, List<Throwable> errors, Registries registries ) throws LdapException
+    public static void removeFromRegistries( LdapSyntax ldapSyntax, List<Throwable> errors, Registries registries )
+        throws LdapException
     {
-        if ( registries != null )
+        if ( ( registries != null ) && ( ldapSyntax.getSyntaxChecker() != null ) )
         {
             /**
              * Remove the Syntax references (using and usedBy) :
              * S -> SC
              */
-            if ( ldapSyntax.getSyntaxChecker() != null )
-            {
-                registries.delReference( ldapSyntax, ldapSyntax.getSyntaxChecker() );
-            }
+            registries.delReference( ldapSyntax, ldapSyntax.getSyntaxChecker() );
         }
     }
 }

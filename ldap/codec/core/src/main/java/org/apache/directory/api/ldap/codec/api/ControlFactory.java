@@ -35,7 +35,7 @@ import org.apache.directory.api.ldap.model.message.Control;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface ControlFactory<C extends Control, D extends CodecControl<C>>
+public interface ControlFactory<C extends Control>
 {
     /**
      * @return The OID of the Control this factory creates.
@@ -48,7 +48,7 @@ public interface ControlFactory<C extends Control, D extends CodecControl<C>>
      *
      * @return The {@link CodecControl} decorated version of the Control.
      */
-    D newCodecControl();
+    CodecControl<C> newCodecControl();
 
 
     /**
@@ -59,5 +59,5 @@ public interface ControlFactory<C extends Control, D extends CodecControl<C>>
      * @param control The {@link Control} to be decorated.
      * @return The decorator wrapping the Control.
      */
-    D newCodecControl( C control );
+    CodecControl<C> newCodecControl( C control );
 }

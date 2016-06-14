@@ -69,14 +69,21 @@ public class UtcTimeSyntaxChecker extends SyntaxChecker
 
     /** The GeneralizedDate pattern matching */
     private static final String UTC_TIME_PATTERN =
-        "^\\d{2}" // year : 00 to 99
-            + "(0[1-9]|1[0-2])" // month : 01 to 12
-            + "(0[1-9]|[12]\\d|3[01])" // day : 01 to 31
-            + "([01]\\d|2[0-3])" // hour: 00 to 23
-            + "([0-5]\\d)" // minute : 00 to 59
+        // year : 00 to 99
+        "^\\d{2}"
+            // month : 01 to 12
+            + "(0[1-9]|1[0-2])"
+            // day : 01 to 31
+            + "(0[1-9]|[12]\\d|3[01])"
+            // hour: 00 to 23
+            + "([01]\\d|2[0-3])"
+            // minute : 00 to 59
+            + "([0-5]\\d)"
             + "("
-            + "([0-5]\\d)?" // optional second : 00 to 59
-            + "(Z|([+-]([01]\\d|2[0-3])[0-5]\\d))?" // optionnal time-zone
+            // optional second : 00 to 59
+            + "([0-5]\\d)?"
+            // optional time-zone
+            + "(Z|([+-]([01]\\d|2[0-3])[0-5]\\d))?"
             + ")$";
 
     // The regexp pattern, java.util.regex.Pattern is immutable so only one instance is needed.

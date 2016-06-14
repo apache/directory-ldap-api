@@ -171,7 +171,8 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
         int pos = 0;
         Set<String> pmds = new HashSet<String>();
 
-        if ( ( pos = isPdm( strValue, pos, pmds ) ) == -1 )
+        pos = isPdm( strValue, pos, pmds );
+        if ( pos == -1 )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
@@ -205,7 +206,8 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
                 pos++;
             }
 
-            if ( ( pos = isPdm( strValue, pos, pmds ) ) == -1 )
+            pos = isPdm( strValue, pos, pmds );
+            if ( pos == -1 )
             {
                 LOG.debug( "Syntax invalid for '{}'", value );
                 return false;

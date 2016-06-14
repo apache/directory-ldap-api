@@ -32,6 +32,8 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import org.apache.directory.api.ldap.codec.api.BinaryAttributeDetector;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.util.Network;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +55,7 @@ public class LdapConnectionConfig
     public static final int DEFAULT_LDAPS_PORT = 636;
 
     /** The default host : localhost */
-    public static final String DEFAULT_LDAP_HOST = "127.0.0.1";
+    public static final String DEFAULT_LDAP_HOST = "localhost";
 
     /** The LDAP version */
     public static final int LDAP_V3 = 3;
@@ -67,6 +69,12 @@ public class LdapConnectionConfig
     // --- private members ----
     /** A flag indicating if we are using SSL or not, default value is false */
     private boolean useSsl = false;
+
+    /** The session timeout */
+    private long timeout = DEFAULT_TIMEOUT;
+
+    /** A flag indicating if we are using TLS or not, default value is false */
+    private boolean useTls = false;
 
     /** The selected LDAP port */
     private int ldapPort;
@@ -92,11 +100,18 @@ public class LdapConnectionConfig
     /** an array of cipher suites which are enabled, if set, will be used while initializing the SSL context */
     private String[] enabledCipherSuites;
 
+    /** an array of protocols which are enabled, if set, will be used while initializing the SSL context */
+    private String[] enabledProtocols;
+
     /** name of the protocol used for creating SSL context, default value is "TLS" */
     private String sslProtocol = DEFAULT_SSL_PROTOCOL;
 
     /** The class used to detect if an attribute is HR or not */
     private BinaryAttributeDetector binaryAttributeDetector;
+
+    /** The Service to use internally when creating connections */
+    private LdapApiService ldapApiService;
+
 
     /**
      * Creates a default LdapConnectionConfig instance
@@ -118,8 +133,8 @@ public class LdapConnectionConfig
         {
             TrustManagerFactory tmFactory = TrustManagerFactory.getInstance( trustMgmtAlgo );
             tmFactory.init( ( KeyStore ) null );
-            
-            TrustManager factoryTrustManagers[] = tmFactory.getTrustManagers();
+
+            TrustManager[] factoryTrustManagers = tmFactory.getTrustManagers();
 
             for ( int i = 0; i < factoryTrustManagers.length; i++ )
             {
@@ -282,7 +297,7 @@ public class LdapConnectionConfig
      */
     public String getDefaultLdapHost()
     {
-        return DEFAULT_LDAP_HOST;
+        return Network.LOOPBACK_HOSTNAME;
     }
 
 
@@ -294,6 +309,28 @@ public class LdapConnectionConfig
     public long getDefaultTimeout()
     {
         return DEFAULT_TIMEOUT;
+    }
+
+
+    /**
+     * Gets the timeout.
+     *
+     * @return the timeout
+     */
+    public long getTimeout()
+    {
+        return timeout;
+    }
+
+
+    /**
+     * Sets the timeout.
+     *
+     * @return the timeout
+     */
+    public void setTimeout( long timeout )
+    {
+        this.timeout = timeout;
     }
 
 
@@ -416,8 +453,30 @@ public class LdapConnectionConfig
     {
         this.enabledCipherSuites = enabledCipherSuites;
     }
-    
-    
+
+
+    /**
+     * Gets the protocols which are enabled.
+     * 
+     * @return the protocol which are enabled
+     */
+    public String[] getEnabledProtocols()
+    {
+        return enabledProtocols;
+    }
+
+
+    /**
+     * Sets the protocols which are enabled
+     * 
+     * @param enabledProtocols the protocols which are enabled
+     */
+    public void setEnabledProtocols( String... enabledProtocols )
+    {
+        this.enabledProtocols = enabledProtocols;
+    }
+
+
     /**
      * @return the binaryAttributeDetector
      */
@@ -433,5 +492,45 @@ public class LdapConnectionConfig
     public void setBinaryAttributeDetector( BinaryAttributeDetector binaryAttributeDetector )
     {
         this.binaryAttributeDetector = binaryAttributeDetector;
+    }
+
+
+    /**
+     * Checks if TLS is used.
+     *
+     * @return true, if TLS is used
+     */
+    public boolean isUseTls()
+    {
+        return useTls;
+    }
+
+
+    /**
+     * Sets whether TLS should be used.
+     *
+     * @param useTls true to use TLS
+     */
+    public void setUseTls( boolean useTls )
+    {
+        this.useTls = useTls;
+    }
+
+
+    /**
+     * @return the ldapApiService
+     */
+    public LdapApiService getLdapApiService()
+    {
+        return ldapApiService;
+    }
+
+
+    /**
+     * @param ldapApiService the ldapApiService to set
+     */
+    public void setLdapApiService( LdapApiService ldapApiService )
+    {
+        this.ldapApiService = ldapApiService;
     }
 }

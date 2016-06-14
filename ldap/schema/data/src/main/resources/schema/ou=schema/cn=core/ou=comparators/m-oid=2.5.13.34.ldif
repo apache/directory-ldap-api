@@ -1,0 +1,9 @@
+version: 1
+dn: m-oid=2.5.13.34,ou=comparators,cn=core,ou=schema
+m-oid: 2.5.13.34
+m-name: certificateEqualityMatch
+m-fqcn: org.apache.directory.api.ldap.model.schema.comparators.CertificateComparator
+objectclass: metaComparator
+objectclass: metaTop
+objectclass: top
+creatorsname: uid=admin,ou=system

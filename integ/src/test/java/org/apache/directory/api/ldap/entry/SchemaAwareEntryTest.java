@@ -48,7 +48,7 @@ import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
-import org.apache.directory.api.ldap.schemamanager.impl.DefaultSchemaManager;
+import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.apache.directory.api.util.Strings;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -67,7 +67,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class SchemaAwareEntryTest
 {
-    private static Dn EXAMPLE_DN;
+    private static Dn exampleDn;
     private static final byte[] BYTES1 = new byte[]
         { 'a', 'b' };
     private static final byte[] BYTES2 = new byte[]
@@ -85,7 +85,7 @@ public class SchemaAwareEntryTest
     {
         try
         {
-            Entry entry = new DefaultEntry( EXAMPLE_DN );
+            Entry entry = new DefaultEntry( exampleDn );
 
             Attribute attrOC = new DefaultAttribute( "objectClass", "top", "person" );
             Attribute attrCN = new DefaultAttribute( "cn", "test1", "test2" );
@@ -184,7 +184,7 @@ public class SchemaAwareEntryTest
     @BeforeClass
     public static void setUpBeforeClass() throws Exception
     {
-        EXAMPLE_DN = new Dn( "dc=example,dc=com" );
+        exampleDn = new Dn( "dc=example,dc=com" );
         schemaManager = new DefaultSchemaManager();
     }
 
@@ -231,11 +231,11 @@ public class SchemaAwareEntryTest
     @Test
     public void testDefaultClientEntryLdapDN()
     {
-        Entry entry = new DefaultEntry( EXAMPLE_DN );
+        Entry entry = new DefaultEntry( exampleDn );
 
         assertNotNull( entry );
         assertNotNull( entry.getDn() );
-        assertEquals( EXAMPLE_DN, entry.getDn() );
+        assertEquals( exampleDn, entry.getDn() );
         assertEquals( 0, entry.size() );
     }
 
@@ -374,7 +374,7 @@ public class SchemaAwareEntryTest
     @Test
     public void testClear() throws LdapException
     {
-        Entry entry = new DefaultEntry( EXAMPLE_DN );
+        Entry entry = new DefaultEntry( exampleDn );
 
         assertEquals( 0, entry.size() );
         assertNull( entry.get( "ObjectClass" ) );
@@ -403,11 +403,11 @@ public class SchemaAwareEntryTest
         Entry entry2 = entry1.clone();
 
         assertEquals( entry1, entry2 );
-        entry2.setDn( EXAMPLE_DN );
+        entry2.setDn( exampleDn );
 
         assertEquals( Dn.EMPTY_DN, entry1.getDn() );
 
-        entry1.setDn( EXAMPLE_DN );
+        entry1.setDn( exampleDn );
         entry2 = entry1.clone();
         assertEquals( entry1, entry2 );
 
@@ -432,7 +432,7 @@ public class SchemaAwareEntryTest
     @Test
     public void testContainsEntryAttributeArray() throws LdapException
     {
-        Entry entry = new DefaultEntry( EXAMPLE_DN );
+        Entry entry = new DefaultEntry( exampleDn );
 
         Attribute attrOC = new DefaultAttribute( "objectClass", "top", "person" );
         Attribute attrCN = new DefaultAttribute( "cn", "test1", "test2" );
@@ -458,7 +458,7 @@ public class SchemaAwareEntryTest
     @Test
     public void testContainsStringByteArray() throws LdapException
     {
-        Entry entry = new DefaultEntry( EXAMPLE_DN );
+        Entry entry = new DefaultEntry( exampleDn );
 
         assertFalse( entry.containsAttribute( "objectClass" ) );
 
@@ -482,7 +482,7 @@ public class SchemaAwareEntryTest
     @Test
     public void testContainsStringStringArray() throws LdapException
     {
-        Entry entry = new DefaultEntry( EXAMPLE_DN );
+        Entry entry = new DefaultEntry( exampleDn );
 
         assertFalse( entry.containsAttribute( "objectClass" ) );
 
@@ -511,7 +511,7 @@ public class SchemaAwareEntryTest
     @Test
     public void testContainsStringValueArray() throws LdapException
     {
-        Entry entry = new DefaultEntry( EXAMPLE_DN );
+        Entry entry = new DefaultEntry( exampleDn );
 
         assertFalse( entry.containsAttribute( "objectClass" ) );
 
@@ -544,7 +544,7 @@ public class SchemaAwareEntryTest
     @Test
     public void testContainsAttribute() throws LdapException
     {
-        Entry entry = new DefaultEntry( EXAMPLE_DN );
+        Entry entry = new DefaultEntry( exampleDn );
 
         assertFalse( entry.containsAttribute( "objectClass" ) );
 
@@ -580,10 +580,10 @@ public class SchemaAwareEntryTest
 
         assertEquals( entry1, entry2 );
 
-        entry1.setDn( EXAMPLE_DN );
+        entry1.setDn( exampleDn );
         assertNotSame( entry1, entry2 );
 
-        entry2.setDn( EXAMPLE_DN );
+        entry2.setDn( exampleDn );
         assertEquals( entry1, entry2 );
 
         Attribute attrOC = new DefaultAttribute( "objectClass", "top", "person" );
@@ -623,7 +623,7 @@ public class SchemaAwareEntryTest
     @Test
     public void testGet() throws LdapException
     {
-        Entry entry = new DefaultEntry( EXAMPLE_DN );
+        Entry entry = new DefaultEntry( exampleDn );
 
         assertNull( entry.get( "objectClass" ) );
 
@@ -651,9 +651,9 @@ public class SchemaAwareEntryTest
     @Test
     public void testGetDn() throws LdapException
     {
-        Entry entry = new DefaultEntry( EXAMPLE_DN );
+        Entry entry = new DefaultEntry( exampleDn );
 
-        assertEquals( EXAMPLE_DN, entry.getDn() );
+        assertEquals( exampleDn, entry.getDn() );
 
         Dn testDn = new Dn( "cn=test" );
         entry.setDn( testDn );
@@ -668,15 +668,15 @@ public class SchemaAwareEntryTest
     @Test
     public void testHashCode() throws LdapException, LdapException
     {
-        Entry entry1 = new DefaultEntry( EXAMPLE_DN );
-        Entry entry2 = new DefaultEntry( EXAMPLE_DN );
+        Entry entry1 = new DefaultEntry( exampleDn );
+        Entry entry2 = new DefaultEntry( exampleDn );
 
         assertEquals( entry1.hashCode(), entry2.hashCode() );
 
         entry2.setDn( new Dn( "ou=system,dc=com" ) );
         assertNotSame( entry1.hashCode(), entry2.hashCode() );
 
-        entry2.setDn( EXAMPLE_DN );
+        entry2.setDn( exampleDn );
         assertEquals( entry1.hashCode(), entry2.hashCode() );
 
         Attribute attrOC = new DefaultAttribute( "objectClass", "top", "person" );
@@ -689,7 +689,7 @@ public class SchemaAwareEntryTest
 
         assertEquals( entry1.hashCode(), entry2.hashCode() );
 
-        Entry entry3 = new DefaultEntry( EXAMPLE_DN );
+        Entry entry3 = new DefaultEntry( exampleDn );
         entry3.add( attrOC, attrSN, attrCN, attrPWD );
 
         assertEquals( entry1.hashCode(), entry3.hashCode() );
@@ -702,7 +702,7 @@ public class SchemaAwareEntryTest
     @Test
     public void testHasObjectClass() throws LdapException
     {
-        Entry entry = new DefaultEntry( EXAMPLE_DN );
+        Entry entry = new DefaultEntry( exampleDn );
 
         assertFalse( entry.containsAttribute( "objectClass" ) );
         assertFalse( entry.hasObjectClass( "top" ) );
@@ -754,7 +754,7 @@ public class SchemaAwareEntryTest
     @Test
     public void testPutEntryAttributeArray() throws LdapException
     {
-        Entry entry = new DefaultEntry( EXAMPLE_DN );
+        Entry entry = new DefaultEntry( exampleDn );
 
         Attribute attrOC = new DefaultAttribute( "objectClass", "top", "person" );
         Attribute attrCN = new DefaultAttribute( "cn", "test1", "test2" );
@@ -785,7 +785,7 @@ public class SchemaAwareEntryTest
     @Test
     public void testPutStringByteArrayArray()
     {
-        Entry entry = new DefaultEntry( EXAMPLE_DN );
+        Entry entry = new DefaultEntry( exampleDn );
 
         try
         {
@@ -831,7 +831,7 @@ public class SchemaAwareEntryTest
     @Test
     public void testPutStringStringArray()
     {
-        Entry entry = new DefaultEntry( EXAMPLE_DN );
+        Entry entry = new DefaultEntry( exampleDn );
 
         try
         {
@@ -877,7 +877,7 @@ public class SchemaAwareEntryTest
     @Test
     public void testPutStringValueArray()
     {
-        Entry entry = new DefaultEntry( EXAMPLE_DN );
+        Entry entry = new DefaultEntry( exampleDn );
 
         Value<String> strValueTop = new StringValue( "top" );
         Value<String> strValuePerson = new StringValue( "person" );
@@ -957,7 +957,7 @@ public class SchemaAwareEntryTest
     @Test
     public void testRemoveAttributesStringArray() throws LdapException
     {
-        Entry entry = new DefaultEntry( EXAMPLE_DN );
+        Entry entry = new DefaultEntry( exampleDn );
 
         Attribute attrOC = new DefaultAttribute( "objectClass", "top", "person" );
         Attribute attrCN = new DefaultAttribute( "cn", "test1", "test2" );
@@ -983,7 +983,7 @@ public class SchemaAwareEntryTest
     @Test
     public void testRemoveEntryAttributeArray() throws LdapException
     {
-        Entry entry = new DefaultEntry( EXAMPLE_DN );
+        Entry entry = new DefaultEntry( exampleDn );
 
         Attribute attrOC = new DefaultAttribute( "objectClass", "top", "person" );
         Attribute attrCN = new DefaultAttribute( "cn", "test1", "test2" );
@@ -1015,7 +1015,7 @@ public class SchemaAwareEntryTest
     @Test
     public void testRemoveStringByteArrayArray() throws LdapException
     {
-        Entry entry = new DefaultEntry( EXAMPLE_DN );
+        Entry entry = new DefaultEntry( exampleDn );
 
         Attribute attrPWD = new DefaultAttribute( "userPassword", BYTES1, ( byte[] ) null, BYTES2 );
 
@@ -1066,7 +1066,7 @@ public class SchemaAwareEntryTest
     @Test
     public void testRemoveStringValueArray() throws LdapException
     {
-        Entry entry = new DefaultEntry( EXAMPLE_DN );
+        Entry entry = new DefaultEntry( exampleDn );
 
         Attribute attrCN = new DefaultAttribute( "cn", "test1", "test2", ( String ) null );
         Attribute attrPWD = new DefaultAttribute( "userPassword", BYTES1, BYTES2, ( byte[] ) null );
@@ -1109,8 +1109,8 @@ public class SchemaAwareEntryTest
 
         assertEquals( Dn.EMPTY_DN, entry.getDn() );
 
-        entry.setDn( EXAMPLE_DN );
-        assertEquals( EXAMPLE_DN, entry.getDn() );
+        entry.setDn( exampleDn );
+        assertEquals( exampleDn, entry.getDn() );
     }
 
 
@@ -1120,7 +1120,7 @@ public class SchemaAwareEntryTest
     @Test
     public void testSize() throws LdapException
     {
-        Entry entry = new DefaultEntry( EXAMPLE_DN );
+        Entry entry = new DefaultEntry( exampleDn );
 
         assertEquals( 0, entry.size() );
         entry.add( "ObjectClass", "top", "person" );
@@ -1140,9 +1140,9 @@ public class SchemaAwareEntryTest
     @Test
     public void testToString()
     {
-        Entry entry = new DefaultEntry( EXAMPLE_DN );
+        Entry entry = new DefaultEntry( exampleDn );
 
-        assertEquals( "Entry\n    dn: dc=example,dc=com\n", entry.toString() );
+        assertEquals( "Entry\n    dn: dc=example,dc=com\n\n", entry.toString() );
 
         Value<String> strValueTop = new StringValue( "top" );
         Value<String> strValuePerson = new StringValue( "person" );
@@ -1156,14 +1156,14 @@ public class SchemaAwareEntryTest
         entry.put( "UserPassword", binValue1, binValue2, binNullValue );
 
         String expected =
-            "Entry\n" +
-                "    dn: dc=example,dc=com\n" +
-                "    ObjectClass: top\n" +
-                "    ObjectClass: person\n" +
-                "    ObjectClass: ''\n" +
-                "    UserPassword: '0x61 0x62 '\n" +
-                "    UserPassword: '0x62 '\n" +
-                "    UserPassword: ''\n";
+            "Entry\n"
+                + "    dn: dc=example,dc=com\n"
+                + "    ObjectClass: top\n"
+                + "    ObjectClass: person\n"
+                + "    ObjectClass: ''\n"
+                + "    UserPassword: 0x61 0x62 \n"
+                + "    UserPassword: 0x62 \n"
+                + "    UserPassword: ''\n";
 
         assertEquals( expected, entry.toString() );
     }

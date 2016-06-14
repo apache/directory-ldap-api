@@ -23,7 +23,6 @@ package org.apache.directory.api.util;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
-import org.apache.directory.api.util.Hex;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

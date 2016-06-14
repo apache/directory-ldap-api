@@ -21,6 +21,8 @@ package org.apache.directory.api.ldap.model.schema;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import java.util.Arrays;
 import java.util.List;
@@ -154,5 +156,31 @@ public class SchemaUtilsTest
         assertEquals( "( 'name1' 'name2' 'name3' )",
             SchemaUtils.renderQDescrs( new StringBuffer(), Arrays.asList( new String[]
                 { "name1", "name2", "name3" } ) ).toString() );
+    }
+    
+    
+    /**
+     * Test the isAttributeNameValid method
+     */
+    @Test
+    public void testIsAttributeNameValid()
+    {
+        assertFalse( SchemaUtils.isAttributeNameValid( null ) );
+        assertFalse( SchemaUtils.isAttributeNameValid( "" ) );
+        assertFalse( SchemaUtils.isAttributeNameValid( "    " ) );
+        
+        // Descr
+        assertTrue( SchemaUtils.isAttributeNameValid( "a" ) );
+        assertTrue( SchemaUtils.isAttributeNameValid( "ObjectClass-text_test123" ) );
+        assertFalse( SchemaUtils.isAttributeNameValid( "-text_test123" ) );
+        assertFalse( SchemaUtils.isAttributeNameValid( "text_te&st123" ) );
+        assertFalse( SchemaUtils.isAttributeNameValid( "text_te st123" ) );
+        
+        // Numericoid
+        assertTrue( SchemaUtils.isAttributeNameValid( "0" ) );
+        assertTrue( SchemaUtils.isAttributeNameValid( "0" ) );
+        assertFalse( SchemaUtils.isAttributeNameValid( "00.1.2.3" ) );
+        assertFalse( SchemaUtils.isAttributeNameValid( "0.1.2..3" ) );
+        assertFalse( SchemaUtils.isAttributeNameValid( "0.01.2.3" ) );
     }
 }

@@ -18,4 +18,5 @@ m-may: ads-keystoreFile
 m-may: ads-certificatePassword
 m-may: ads-replReqHandler
 m-must: ads-replEnabled
+m-must: ads-replPingerSleep
 creatorsname: uid=admin,ou=system

@@ -86,11 +86,7 @@ public class StoreControlValue extends GrammarAction<LdapMessageContainer<Messag
         else
         {
             control.setValue( value.getData() );
-
-            if ( control != null )
-            {
-                control.decode( value.getData() );
-            }
+            control.decode( value.getData() );
         }
 
         // We can have an END transition

@@ -21,7 +21,6 @@ package org.apache.directory.api.ldap.extras.controls.ppolicy_impl;
 
 
 import org.apache.directory.api.asn1.DecoderException;
-import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +31,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PPolicyInit extends GrammarAction<Asn1Container>
+public class PPolicyInit extends GrammarAction<PasswordPolicyContainer>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( PPolicyInit.class );
@@ -53,7 +52,7 @@ public class PPolicyInit extends GrammarAction<Asn1Container>
     /**
      * {@inheritDoc}
      */
-    public void action( Asn1Container container ) throws DecoderException
+    public void action( PasswordPolicyContainer container ) throws DecoderException
     {
         // As all the values are optional or defaulted, we can end here
         container.setGrammarEndAllowed( true );

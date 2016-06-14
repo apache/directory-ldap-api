@@ -22,7 +22,7 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.cancel;
 
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.extended.CancelResponse;
+import org.apache.directory.api.ldap.extras.extended.cancel.CancelResponse;
 
 
 /**

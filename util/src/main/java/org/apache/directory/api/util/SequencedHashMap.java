@@ -91,7 +91,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
         Entry prev = null;
 
 
-        public Entry(Object key, Object value)
+        public Entry( Object key, Object value )
         {
             this.key = key;
             this.value = value;
@@ -113,10 +113,10 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
 
 
         // per Map.Entry.setValue()
-        public Object setValue( Object value )
+        public Object setValue( Object newValue )
         {
             Object oldValue = this.value;
-            this.value = value;
+            this.value = newValue;
             return oldValue;
         }
 
@@ -138,12 +138,12 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
             {
                 return false;
             }
-            
+
             if ( obj == this )
             {
                 return true;
             }
-            
+
             if ( !( obj instanceof Map.Entry ) )
             {
                 return false;
@@ -216,7 +216,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
      *            the initial size for the hash table
      * @see HashMap#HashMap(int)
      */
-    public SequencedHashMap(int initialSize)
+    public SequencedHashMap( int initialSize )
     {
         sentinel = createSentinel();
         entries = new HashMap( initialSize );
@@ -233,7 +233,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
      *            the load factor for the hash table.
      * @see HashMap#HashMap(int,float)
      */
-    public SequencedHashMap(int initialSize, float loadFactor)
+    public SequencedHashMap( int initialSize, float loadFactor )
     {
         sentinel = createSentinel();
         entries = new HashMap( initialSize, loadFactor );
@@ -245,7 +245,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
      * specified map. The order in which the mappings in the specified map are
      * added is defined by {@link #putAll(Map)}.
      */
-    public SequencedHashMap(Map m)
+    public SequencedHashMap( Map m )
     {
         this();
         putAll( m );
@@ -355,7 +355,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
     {
         // find entry for the specified key object
         Entry entry = ( Entry ) entries.get( o );
-        
+
         if ( entry == null )
         {
             return null;
@@ -579,15 +579,15 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
     private Entry removeImpl( Object key )
     {
         Entry e = ( Entry ) entries.remove( key );
-        
+
         if ( e == null )
         {
             return null;
         }
-        
+
         modCount++;
         removeEntry( e );
-        
+
         return e;
     }
 
@@ -639,7 +639,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
         {
             return false;
         }
-        
+
         if ( obj == this )
         {
             return true;
@@ -675,19 +675,19 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
     {
         StringBuffer buf = new StringBuffer();
         buf.append( '[' );
-        
+
         for ( Entry pos = sentinel.next; pos != sentinel; pos = pos.next )
         {
             buf.append( pos.getKey() );
             buf.append( '=' );
             buf.append( pos.getValue() );
-            
+
             if ( pos.next != sentinel )
             {
                 buf.append( ',' );
             }
         }
-        
+
         buf.append( ']' );
 
         return buf.toString();
@@ -833,7 +833,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
                 {
                     return null;
                 }
-                
+
                 if ( !( o instanceof Map.Entry ) )
                 {
                     return null;
@@ -841,7 +841,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
 
                 Map.Entry e = ( Map.Entry ) o;
                 Entry entry = ( Entry ) entries.get( e.getKey() );
-                
+
                 if ( entry != null && entry.equals( e ) )
                 {
                     return entry;
@@ -863,7 +863,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
             public boolean remove( Object o )
             {
                 Entry e = findEntry( o );
-                
+
                 if ( e == null )
                 {
                     return false;
@@ -941,20 +941,10 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
          * specified by <code>returnType</code> which must be either KEY,
          * VALUE, or ENTRY.
          */
-        public OrderedIterator(int returnType)
+        public OrderedIterator( int returnType )
         {
-            // // Since this is a private inner class, nothing else should have
-            // // access to the constructor. Since we know the rest of the outer
-            // // class uses the iterator correctly, we can leave of the
-            // following
-            // // check:
-            // if(returnType >= 0 && returnType <= 2) {
-            // throw new IllegalArgumentException("Invalid iterator type");
-            // }
-
             // Set the "removed" bit so that the iterator starts in a state
-            // where
-            // "next" must be called before "remove" will succeed.
+            // where "next" must be called before "remove" will succeed.
             this.returnType = returnType | REMOVED_MASK;
         }
 

@@ -21,7 +21,6 @@ package org.apache.directory.api.dsmlv2.request;
 
 
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.message.BindRequest;
 import org.apache.directory.api.ldap.model.message.BindRequestImpl;
 import org.apache.directory.api.ldap.model.message.BindResponse;
@@ -76,7 +75,7 @@ public class BindRequestDsml
     {
         Element element = super.toDsml( root );
 
-        BindRequest request = ( BindRequest ) getDecorated();
+        BindRequest request = getDecorated();
 
         // Principal
         Dn dn = request.getDn();
@@ -272,7 +271,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
-    public BindRequest addControl( Control control ) throws MessageException
+    public BindRequest addControl( Control control )
     {
         return ( BindRequest ) super.addControl( control );
     }
@@ -281,7 +280,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
-    public BindRequest addAllControls( Control[] controls ) throws MessageException
+    public BindRequest addAllControls( Control[] controls )
     {
         return ( BindRequest ) super.addAllControls( controls );
     }
@@ -290,7 +289,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
-    public BindRequest removeControl( Control control ) throws MessageException
+    public BindRequest removeControl( Control control )
     {
         return ( BindRequest ) super.removeControl( control );
     }

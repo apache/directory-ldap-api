@@ -27,9 +27,6 @@ import static org.junit.Assert.fail;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
@@ -41,6 +38,9 @@ import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -99,8 +99,8 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ExtendedRequestDecorator<?, ?>> container =
-            new LdapMessageContainer<ExtendedRequestDecorator<?, ?>>( codec );
+        LdapMessageContainer<ExtendedRequestDecorator<?>> container =
+            new LdapMessageContainer<ExtendedRequestDecorator<?>>( codec );
 
         // Decode the ExtendedRequest PDU
         try
@@ -114,7 +114,7 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         }
 
         // Check the decoded ExtendedRequest PDU
-        ExtendedRequestDecorator<?, ?> extendedRequest = container.getMessage();
+        ExtendedRequestDecorator<?> extendedRequest = container.getMessage();
 
         assertEquals( 1, extendedRequest.getMessageId() );
         assertEquals( "1.3.6.1.5.5.2", extendedRequest.getRequestName() );
@@ -217,8 +217,8 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ExtendedRequestDecorator<?, ?>> container =
-            new LdapMessageContainer<ExtendedRequestDecorator<?, ?>>( codec );
+        LdapMessageContainer<ExtendedRequestDecorator<?>> container =
+            new LdapMessageContainer<ExtendedRequestDecorator<?>>( codec );
 
         // Decode the ExtendedRequest PDU
         try
@@ -232,7 +232,7 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         }
 
         // Check the decoded ExtendedRequest PDU
-        ExtendedRequestDecorator<?, ?> extendedRequest = container.getMessage();
+        ExtendedRequestDecorator<?> extendedRequest = container.getMessage();
 
         assertEquals( 1, extendedRequest.getMessageId() );
         assertEquals( "1.3.6.1.5.5.2", extendedRequest.getRequestName() );
@@ -247,7 +247,7 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         @SuppressWarnings("unchecked")
         CodecControl<Control> control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) extendedRequest
             .getControl( "2.16.840.1.113730.3.4.2" );
-        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
+        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
         // Check the encoding
         try
@@ -340,8 +340,8 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ExtendedRequestDecorator<?, ?>> container =
-            new LdapMessageContainer<ExtendedRequestDecorator<?, ?>>( codec );
+        LdapMessageContainer<ExtendedRequestDecorator<?>> container =
+            new LdapMessageContainer<ExtendedRequestDecorator<?>>( codec );
 
         // Decode the ExtendedRequest PDU
         try
@@ -355,7 +355,7 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         }
 
         // Check the decoded ExtendedRequest PDU
-        ExtendedRequestDecorator<?, ?> extendedRequest = container.getMessage();
+        ExtendedRequestDecorator<?> extendedRequest = container.getMessage();
 
         assertEquals( 1, extendedRequest.getMessageId() );
         assertEquals( "1.3.6.1.5.5.2", extendedRequest.getRequestName() );
@@ -371,7 +371,7 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         @SuppressWarnings("unchecked")
         CodecControl<Control> control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) extendedRequest
             .getControl( "2.16.840.1.113730.3.4.2" );
-        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
+        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
         // Check the encoding
         try
@@ -416,8 +416,8 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ExtendedRequestDecorator<?, ?>> container =
-            new LdapMessageContainer<ExtendedRequestDecorator<?, ?>>( codec );
+        LdapMessageContainer<ExtendedRequestDecorator<?>> container =
+            new LdapMessageContainer<ExtendedRequestDecorator<?>>( codec );
 
         // Decode a ExtendedRequest PDU
         try
@@ -456,8 +456,8 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ExtendedRequestDecorator<?, ?>> container =
-            new LdapMessageContainer<ExtendedRequestDecorator<?, ?>>( codec );
+        LdapMessageContainer<ExtendedRequestDecorator<?>> container =
+            new LdapMessageContainer<ExtendedRequestDecorator<?>>( codec );
 
         // Decode a ExtendedRequest PDU
         try
@@ -510,8 +510,8 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ExtendedRequestDecorator<?, ?>> container =
-            new LdapMessageContainer<ExtendedRequestDecorator<?, ?>>( codec );
+        LdapMessageContainer<ExtendedRequestDecorator<?>> container =
+            new LdapMessageContainer<ExtendedRequestDecorator<?>>( codec );
 
         // Decode a ExtendedRequest PDU
         try
@@ -565,8 +565,8 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ExtendedRequestDecorator<?, ?>> container =
-            new LdapMessageContainer<ExtendedRequestDecorator<?, ?>>( codec );
+        LdapMessageContainer<ExtendedRequestDecorator<?>> container =
+            new LdapMessageContainer<ExtendedRequestDecorator<?>>( codec );
 
         // Decode the ExtendedRequest PDU
         try
@@ -580,7 +580,7 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         }
 
         // Check the decoded ExtendedRequest PDU
-        ExtendedRequestDecorator<?, ?> extendedRequest = container.getMessage();
+        ExtendedRequestDecorator<?> extendedRequest = container.getMessage();
 
         assertEquals( 1, extendedRequest.getMessageId() );
         assertEquals( "1.3.6.1.5.5.2", extendedRequest.getRequestName() );
@@ -647,8 +647,8 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ExtendedRequestDecorator<?, ?>> container =
-            new LdapMessageContainer<ExtendedRequestDecorator<?, ?>>( codec );
+        LdapMessageContainer<ExtendedRequestDecorator<?>> container =
+            new LdapMessageContainer<ExtendedRequestDecorator<?>>( codec );
 
         // Decode the ExtendedRequest PDU
         try
@@ -662,7 +662,7 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         }
 
         // Check the decoded ExtendedRequest PDU
-        ExtendedRequestDecorator<?, ?> extendedRequest = container.getMessage();
+        ExtendedRequestDecorator<?> extendedRequest = container.getMessage();
 
         assertEquals( 1, extendedRequest.getMessageId() );
         assertEquals( "1.3.6.1.5.5.2", extendedRequest.getRequestName() );

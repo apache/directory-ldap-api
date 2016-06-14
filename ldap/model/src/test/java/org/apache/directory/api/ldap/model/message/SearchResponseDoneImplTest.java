@@ -27,15 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.MessageException;
-import org.apache.directory.api.ldap.model.message.Control;
-import org.apache.directory.api.ldap.model.message.LdapResult;
-import org.apache.directory.api.ldap.model.message.LdapResultImpl;
-import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
-import org.apache.directory.api.ldap.model.message.ReferralImpl;
-import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.api.ldap.model.message.SearchResultDone;
-import org.apache.directory.api.ldap.model.message.SearchResultDoneImpl;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -155,13 +146,13 @@ public class SearchResponseDoneImplTest
             }
 
 
-            public SearchResultDone addControl( Control a_control ) throws MessageException
+            public SearchResultDone addControl( Control a_control )
             {
                 return this;
             }
 
 
-            public SearchResultDone removeControl( Control a_control ) throws MessageException
+            public SearchResultDone removeControl( Control a_control )
             {
                 return this;
             }
@@ -185,7 +176,7 @@ public class SearchResponseDoneImplTest
             }
 
 
-            public SearchResultDone addAllControls( Control[] controls ) throws MessageException
+            public SearchResultDone addAllControls( Control[] controls )
             {
                 return this;
             }

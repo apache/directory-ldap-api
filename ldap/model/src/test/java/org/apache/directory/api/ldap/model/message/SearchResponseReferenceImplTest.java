@@ -26,13 +26,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.directory.api.ldap.model.exception.MessageException;
-import org.apache.directory.api.ldap.model.message.Control;
-import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
-import org.apache.directory.api.ldap.model.message.Referral;
-import org.apache.directory.api.ldap.model.message.ReferralImpl;
-import org.apache.directory.api.ldap.model.message.SearchResultReference;
-import org.apache.directory.api.ldap.model.message.SearchResultReferenceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -130,13 +123,13 @@ public class SearchResponseReferenceImplTest
             }
 
 
-            public SearchResultReference addControl( Control control ) throws MessageException
+            public SearchResultReference addControl( Control control )
             {
                 return this;
             }
 
 
-            public SearchResultReference removeControl( Control control ) throws MessageException
+            public SearchResultReference removeControl( Control control )
             {
                 return this;
             }
@@ -160,7 +153,7 @@ public class SearchResponseReferenceImplTest
             }
 
 
-            public SearchResultReference addAllControls( Control[] controls ) throws MessageException
+            public SearchResultReference addAllControls( Control[] controls )
             {
                 return this;
             }

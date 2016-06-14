@@ -23,11 +23,15 @@ package org.apache.directory.ldap.client.api;
 import static org.apache.directory.api.ldap.model.message.ResultCodeEnum.processResponse;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.channels.UnresolvedAddressException;
+import java.nio.charset.Charset;
 import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,6 +56,7 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.ldap.codec.api.BinaryAttributeDetector;
 import org.apache.directory.api.ldap.codec.api.DefaultConfigurableBinaryAttributeDetector;
+import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.codec.api.LdapDecoder;
@@ -59,8 +64,11 @@ import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.MessageDecorator;
 import org.apache.directory.api.ldap.codec.api.MessageEncoderException;
 import org.apache.directory.api.ldap.codec.api.SchemaBinaryAttributeDetector;
+import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequestImpl;
+import org.apache.directory.api.ldap.model.constants.LdapConstants;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.cursor.Cursor;
+import org.apache.directory.api.ldap.model.cursor.CursorException;
 import org.apache.directory.api.ldap.model.cursor.EntryCursor;
 import org.apache.directory.api.ldap.model.cursor.SearchCursor;
 import org.apache.directory.api.ldap.model.entry.Attribute;
@@ -74,6 +82,7 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.exception.LdapNoPermissionException;
 import org.apache.directory.api.ldap.model.exception.LdapOperationException;
+import org.apache.directory.api.ldap.model.exception.LdapOtherException;
 import org.apache.directory.api.ldap.model.message.AbandonRequest;
 import org.apache.directory.api.ldap.model.message.AbandonRequestImpl;
 import org.apache.directory.api.ldap.model.message.AddRequest;
@@ -113,6 +122,7 @@ import org.apache.directory.api.ldap.model.message.SearchResultReference;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.message.UnbindRequest;
 import org.apache.directory.api.ldap.model.message.UnbindRequestImpl;
+import org.apache.directory.api.ldap.model.message.controls.ManageDsaITImpl;
 import org.apache.directory.api.ldap.model.message.controls.OpaqueControl;
 import org.apache.directory.api.ldap.model.message.extended.AddNoDResponse;
 import org.apache.directory.api.ldap.model.message.extended.BindNoDResponse;
@@ -126,14 +136,13 @@ import org.apache.directory.api.ldap.model.message.extended.SearchNoDResponse;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.parsers.OpenLdapSchemaParser;
-import org.apache.directory.api.ldap.model.schema.registries.AttributeTypeRegistry;
-import org.apache.directory.api.ldap.model.schema.registries.ObjectClassRegistry;
+import org.apache.directory.api.ldap.model.schema.registries.Registries;
 import org.apache.directory.api.ldap.model.schema.registries.SchemaLoader;
-import org.apache.directory.api.ldap.schemamanager.impl.DefaultSchemaManager;
+import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
+import org.apache.directory.api.util.Network;
 import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.ldap.client.api.callback.SaslCallbackHandler;
@@ -158,6 +167,7 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.codec.ProtocolEncoderException;
 import org.apache.mina.filter.ssl.SslFilter;
+import org.apache.mina.transport.socket.SocketSessionConfig;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -225,9 +235,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /** The exception stored in the session if we've got one */
     private static final String EXCEPTION_KEY = "sessionException";
 
-    /** the StartTLS extended operation's OID */
-    private static final String START_TLS_REQ_OID = "1.3.6.1.4.1.1466.20037";
-
     // ~~~~~~~~~~~~~~~~~ common error messages ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     static final String TIME_OUT_ERROR = "TimeOut occurred";
@@ -241,7 +248,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     public boolean isConnected()
     {
-        return ( ldapSession != null ) && connected.get();
+        return ( ldapSession != null ) && connected.get() && !ldapSession.isClosing();
     }
 
 
@@ -309,22 +316,30 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
 
     /**
-     * Get the smallest timeout from the client timeout and the connection
+     * Get the largest timeout from the search time limit and the connection
      * timeout.
      */
-    private long getTimeout( long clientTimeout )
+    public long getTimeout( long connectionTimoutInMS, int searchTimeLimitInSeconds )
     {
-        if ( clientTimeout <= 0 )
+        if ( searchTimeLimitInSeconds < 0 )
         {
-            return ( timeout <= 0 ) ? Long.MAX_VALUE : timeout;
+            return connectionTimoutInMS;
         }
-        else if ( timeout <= 0 )
+        else if ( searchTimeLimitInSeconds == 0 )
         {
-            return clientTimeout;
+            if ( config.getTimeout() == 0 )
+            {
+                return Long.MAX_VALUE;
+            }
+            else
+            {
+                return config.getTimeout();
+            }
         }
         else
         {
-            return timeout < clientTimeout ? timeout : clientTimeout;
+            long searchTimeLimitInMS = searchTimeLimitInSeconds * 1000L;
+            return Math.max( searchTimeLimitInMS, connectionTimoutInMS );
         }
     }
 
@@ -336,12 +351,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     public LdapNetworkConnection()
     {
-        super();
-        config = new LdapConnectionConfig();
-        config.setUseSsl( false );
-        config.setLdapPort( config.getDefaultLdapPort() );
-        config.setLdapHost( config.getDefaultLdapHost() );
-        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
+        this( null, -1, false );
     }
 
 
@@ -353,7 +363,13 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     public LdapNetworkConnection( LdapConnectionConfig config )
     {
-        super();
+        this( config, LdapApiServiceFactory.getSingleton() );
+    }
+
+
+    public LdapNetworkConnection( LdapConnectionConfig config, LdapApiService ldapApiService )
+    {
+        super( ldapApiService );
         this.config = config;
 
         if ( config.getBinaryAttributeDetector() == null )
@@ -371,12 +387,13 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     public LdapNetworkConnection( boolean useSsl )
     {
-        super();
-        config = new LdapConnectionConfig();
-        config.setUseSsl( useSsl );
-        config.setLdapPort( useSsl ? config.getDefaultLdapsPort() : config.getDefaultLdapPort() );
-        config.setLdapHost( config.getDefaultLdapHost() );
-        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
+        this( null, -1, useSsl );
+    }
+
+
+    public LdapNetworkConnection( boolean useSsl, LdapApiService ldapApiService )
+    {
+        this( null, -1, useSsl, ldapApiService );
     }
 
 
@@ -389,22 +406,13 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     public LdapNetworkConnection( String server )
     {
-        super();
-        config = new LdapConnectionConfig();
-        config.setUseSsl( false );
-        config.setLdapPort( config.getDefaultLdapPort() );
+        this( server, -1, false );
+    }
 
-        // Default to localhost if null
-        if ( Strings.isEmpty( server ) )
-        {
-            config.setLdapHost( "localhost" );
-        }
-        else
-        {
-            config.setLdapHost( server );
-        }
 
-        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
+    public LdapNetworkConnection( String server, LdapApiService ldapApiService )
+    {
+        this( server, -1, false, ldapApiService );
     }
 
 
@@ -419,22 +427,13 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     public LdapNetworkConnection( String server, boolean useSsl )
     {
-        super();
-        config = new LdapConnectionConfig();
-        config.setUseSsl( useSsl );
-        config.setLdapPort( useSsl ? config.getDefaultLdapsPort() : config.getDefaultLdapPort() );
+        this( server, -1, useSsl );
+    }
 
-        // Default to localhost if null
-        if ( Strings.isEmpty( server ) )
-        {
-            config.setLdapHost( "localhost" );
-        }
-        else
-        {
-            config.setLdapHost( server );
-        }
 
-        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
+    public LdapNetworkConnection( String server, boolean useSsl, LdapApiService ldapApiService )
+    {
+        this( server, -1, useSsl, ldapApiService );
     }
 
 
@@ -451,6 +450,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     }
 
 
+    public LdapNetworkConnection( String server, int port, LdapApiService ldapApiService )
+    {
+        this( server, port, false, ldapApiService );
+    }
+
+
     /**
      * Create a new instance of a LdapConnection on a given
      * server, and a give port. We set the SSL flag accordingly
@@ -463,22 +468,75 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     public LdapNetworkConnection( String server, int port, boolean useSsl )
     {
-        super();
-        config = new LdapConnectionConfig();
+        this( buildConfig( server, port, useSsl ) );
+    }
+
+
+    public LdapNetworkConnection( String server, int port, boolean useSsl, LdapApiService ldapApiService )
+    {
+        this( buildConfig( server, port, useSsl ), ldapApiService );
+    }
+
+
+    private static LdapConnectionConfig buildConfig( String server, int port, boolean useSsl )
+    {
+        LdapConnectionConfig config = new LdapConnectionConfig();
         config.setUseSsl( useSsl );
-        config.setLdapPort( port );
+
+        if ( port != -1 )
+        {
+            config.setLdapPort( port );
+        }
+        else
+        {
+            if ( useSsl )
+            {
+                config.setLdapPort( config.getDefaultLdapsPort() );
+            }
+            else
+            {
+                config.setLdapPort( config.getDefaultLdapPort() );
+            }
+        }
 
         // Default to localhost if null
         if ( Strings.isEmpty( server ) )
         {
-            config.setLdapHost( "localhost" );
+            config.setLdapHost( Network.LOOPBACK_HOSTNAME );
+            
         }
         else
         {
             config.setLdapHost( server );
         }
 
-        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
+        config.setBinaryAttributeDetector( new DefaultConfigurableBinaryAttributeDetector() );
+
+        return config;
+    }
+
+
+    /**
+     * Create the connector
+     */
+    private void createConnector() throws LdapException
+    {
+        // Use only one thread inside the connector
+        connector = new NioSocketConnector( 1 );
+
+        ( ( SocketSessionConfig ) connector.getSessionConfig() ).setReuseAddress( true );
+
+        // Add the codec to the chain
+        connector.getFilterChain().addLast( "ldapCodec", ldapProtocolFilter );
+
+        // If we use SSL, we have to add the SslFilter to the chain
+        if ( config.isUseSsl() )
+        {
+            addSslFilter();
+        }
+
+        // Inject the protocolHandler
+        connector.setHandler( this );
     }
 
 
@@ -486,8 +544,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("PMD.EmptyCatchBlock")
-    public boolean connect() throws LdapException, IOException
+    public boolean connect() throws LdapException
     {
         if ( ( ldapSession != null ) && connected.get() )
         {
@@ -498,36 +555,85 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         // Create the connector if needed
         if ( connector == null )
         {
-            // Use only one thead inside the connector
-            connector = new NioSocketConnector( 1 );
-
-            // Add the codec to the chain
-            connector.getFilterChain().addLast( "ldapCodec", ldapProtocolFilter );
-
-            // If we use SSL, we have to add the SslFilter to the chain
-            if ( config.isUseSsl() )
-            {
-                addSslFilter();
-            }
-
-            // Add an executor so that this connection can be used
-            // for handling more than one request (mainly because
-            // we may have to handle some abandon request)
-            /*connector.getFilterChain().addLast( "executor",
-                new ExecutorFilter( new OrderedThreadPoolExecutor( 10 ), IoEventType.MESSAGE_RECEIVED ) );*/
-
-            // Inject the protocolHandler
-            connector.setHandler( this );
+            createConnector();
         }
 
         // Build the connection address
         SocketAddress address = new InetSocketAddress( config.getLdapHost(), config.getLdapPort() );
 
         // And create the connection future
-        ConnectFuture connectionFuture = connector.connect( address );
+        timeout = config.getTimeout();
+        long maxRetry = System.currentTimeMillis() + timeout;
+        ConnectFuture connectionFuture = null;
 
-        // Wait until it's established
-        connectionFuture.awaitUninterruptibly();
+        while ( maxRetry > System.currentTimeMillis() )
+        {
+            connectionFuture = connector.connect( address );
+
+            boolean result = false;
+
+            // Wait until it's established
+            try
+            {
+                result = connectionFuture.await( timeout );
+            }
+            catch ( InterruptedException e )
+            {
+                connector.dispose();
+                connector = null;
+                LOG.debug( "Interrupted while waiting for connection to establish with server {}:{}",
+                    config.getLdapHost(),
+                    config.getLdapPort(), e );
+                throw new LdapOtherException( e.getMessage(), e );
+            }
+            finally
+            {
+                if ( result )
+                {
+                    boolean isConnected = connectionFuture.isConnected();
+
+                    if ( !isConnected )
+                    {
+                        Throwable connectionException = connectionFuture.getException();
+
+                        if ( ( connectionException instanceof ConnectException )
+                            || ( connectionException instanceof UnresolvedAddressException ) )
+                        {
+                            // No need to wait
+                            // We know that there was a permanent error such as "connection refused".
+                            LOG.debug( "------>> Connection error: {}", connectionFuture.getException().getMessage() );
+                            break;
+                        }
+
+                        LOG.debug( "------>>   Cannot get the connection... Retrying" );
+
+                        // Wait 500 ms and retry
+                        try
+                        {
+                            Thread.sleep( 500 );
+                        }
+                        catch ( InterruptedException e )
+                        {
+                            connector = null;
+                            LOG.debug( "Interrupted while waiting for connection to establish with server {}:{}",
+                                config.getLdapHost(),
+                                config.getLdapPort(), e );
+                            throw new LdapOtherException( e.getMessage(), e );
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        if ( connectionFuture == null )
+        {
+            connector.dispose();
+            throw new InvalidConnectionException( "Cannot connect" );
+        }
 
         boolean isConnected = connectionFuture.isConnected();
 
@@ -547,7 +653,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             if ( e != null )
             {
-                StringBuilder message = new StringBuilder( "Cannot connect on the server: " );
+                StringBuilder message = new StringBuilder( "Cannot connect to the server: " );
 
                 // Special case for UnresolvedAddressException
                 // (most of the time no message is associated with this exception)
@@ -641,15 +747,29 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         connected.set( true );
 
         // Store the container into the session if we don't have one
+        @SuppressWarnings("unchecked")
         LdapMessageContainer<MessageDecorator<? extends Message>> container =
             ( LdapMessageContainer<MessageDecorator<? extends Message>> ) ldapSession
                 .getAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR );
 
-        if ( container == null )
+        if ( container != null )
         {
+            if ( ( schemaManager != null ) && !( container.getBinaryAttributeDetector() instanceof SchemaBinaryAttributeDetector ) )
+            {
+                container.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( schemaManager ) );
+            }
+        }
+        else
+        {
+            BinaryAttributeDetector atDetector = new DefaultConfigurableBinaryAttributeDetector();
+
+            if ( schemaManager != null )
+            {
+                atDetector = new SchemaBinaryAttributeDetector( schemaManager );
+            }
+
             ldapSession.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR,
-                new LdapMessageContainer<MessageDecorator<? extends Message>>( codec,
-                    new DefaultConfigurableBinaryAttributeDetector() ) );
+                new LdapMessageContainer<MessageDecorator<? extends Message>>( codec, atDetector ) );
         }
 
         // Initialize the MessageId
@@ -663,14 +783,15 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public boolean close() throws IOException
+    public void close() throws IOException
     {
         // Close the session
         if ( ( ldapSession != null ) && connected.get() )
         {
             ldapSession.close( true );
-            connected.set( false );
         }
+
+        connected.set( false );
 
         // And close the connector if it has been created locally
         // Release the connector
@@ -691,8 +812,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         // Reset the messageId
         messageId.set( 0 );
-
-        return true;
     }
 
 
@@ -892,7 +1011,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     private void abandonInternal( AbandonRequest abandonRequest )
     {
-        LOG.debug( "-----------------------------------------------------------------" );
         LOG.debug( "Sending request \n{}", abandonRequest );
 
         int newId = messageId.incrementAndGet();
@@ -918,8 +1036,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             // this shouldn't happen
             LOG
-                .error(
-                    "There is no future associated with operation message ID {}, perhaps the operation would have been completed",
+                .warn(
+                    "There is no future associated with operation message ID {}, the operation has been completed.",
                     abandonId );
         }
     }
@@ -928,7 +1046,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public void bind() throws LdapException, IOException
+    public void bind() throws LdapException
     {
         LOG.debug( "Bind request" );
 
@@ -944,7 +1062,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public void anonymousBind() throws LdapException, IOException
+    public void anonymousBind() throws LdapException
     {
         LOG.debug( "Anonymous Bind request" );
 
@@ -960,7 +1078,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public BindFuture bindAsync() throws LdapException, IOException
+    public BindFuture bindAsync() throws LdapException
     {
         LOG.debug( "Asynchronous Bind request" );
 
@@ -974,7 +1092,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public BindFuture anonymousBindAsync() throws LdapException, IOException
+    public BindFuture anonymousBindAsync() throws LdapException
     {
         LOG.debug( "Anonymous asynchronous Bind request" );
 
@@ -992,9 +1110,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * valid Dn
      * @return The BindResponse LdapResponse
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
-    public BindFuture bindAsync( String name ) throws LdapException, IOException
+    public BindFuture bindAsync( String name ) throws LdapException
     {
         LOG.debug( "Bind request : {}", name );
 
@@ -1008,7 +1125,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public BindFuture bindAsync( String name, String credentials ) throws LdapException, IOException
+    public BindFuture bindAsync( String name, String credentials ) throws LdapException
     {
         LOG.debug( "Bind request : {}", name );
 
@@ -1033,9 +1150,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * valid Dn
      * @return The BindResponse LdapResponse
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
-    public BindFuture bindAsync( Dn name ) throws LdapException, IOException
+    public BindFuture bindAsync( Dn name ) throws LdapException
     {
         LOG.debug( "Bind request : {}", name );
 
@@ -1049,7 +1165,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public BindFuture bindAsync( Dn name, String credentials ) throws LdapException, IOException
+    public BindFuture bindAsync( Dn name, String credentials ) throws LdapException
     {
         LOG.debug( "Bind request : {}", name );
 
@@ -1070,7 +1186,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public BindResponse bind( BindRequest bindRequest ) throws LdapException, IOException
+    public BindResponse bind( BindRequest bindRequest ) throws LdapException
     {
         if ( bindRequest == null )
         {
@@ -1146,7 +1262,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public BindFuture bindAsync( BindRequest bindRequest ) throws LdapException, IOException
+    public BindFuture bindAsync( BindRequest bindRequest ) throws LdapException
     {
         if ( bindRequest == null )
         {
@@ -1161,6 +1277,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         // try to connect, if we aren't already connected.
         connect();
 
+        // establish TLS layer if TLS is enabled and SSL is NOT
+        if ( config.isUseTls() && !config.isUseSsl() )
+        {
+            startTls();
+        }
+
         // If the session has not been establish, or is closed, we get out immediately
         checkSession();
 
@@ -1168,7 +1290,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         int newId = messageId.incrementAndGet();
         bindRequest.setMessageId( newId );
 
-        LOG.debug( "-----------------------------------------------------------------" );
         LOG.debug( "Sending request \n{}", bindRequest );
 
         // Create a future for this Bind operation
@@ -1190,9 +1311,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * @param credentials The password. It can't be null
      * @return The BindResponse LdapResponse
      * @throws {@link LdapException} if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
-    public BindResponse bindSaslPlain( String authcid, String credentials ) throws LdapException, IOException
+    public BindResponse bindSaslPlain( String authcid, String credentials ) throws LdapException
     {
         return bindSaslPlain( null, authcid, credentials );
     }
@@ -1206,10 +1326,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * @param credentials The password. It can't be null
      * @return The BindResponse LdapResponse
      * @throws {@link LdapException} if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
-    public BindResponse bindSaslPlain( String authzid, String authcid, String credentials ) throws LdapException,
-        IOException
+    public BindResponse bindSaslPlain( String authzid, String authcid, String credentials ) throws LdapException
     {
         LOG.debug( "SASL PLAIN Bind request" );
 
@@ -1272,9 +1390,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * @param request The CramMd5Request POJO containing all the needed parameters
      * @return A LdapResponse containing the result
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
-    public BindResponse bind( SaslCramMd5Request request ) throws LdapException, IOException
+    public BindResponse bind( SaslCramMd5Request request ) throws LdapException
     {
         if ( request == null )
         {
@@ -1336,10 +1453,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * @param request The SaslPlainRequest POJO containing all the needed parameters
      * @return The bind operation's future
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
     public BindFuture bindAsync( SaslRequest request )
-        throws LdapException, IOException
+        throws LdapException
     {
         return bindSasl( request );
     }
@@ -1351,9 +1467,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * @param request The DigestMd5Request POJO containing all the needed parameters
      * @return A LdapResponse containing the result
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
-    public BindResponse bind( SaslDigestMd5Request request ) throws LdapException, IOException
+    public BindResponse bind( SaslDigestMd5Request request ) throws LdapException
     {
         if ( request == null )
         {
@@ -1415,9 +1530,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * @param request The GssApiRequest POJO containing all the needed parameters
      * @return A LdapResponse containing the result
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
-    public BindResponse bind( SaslGssApiRequest request ) throws LdapException, IOException
+    public BindResponse bind( SaslGssApiRequest request ) throws LdapException
     {
         if ( request == null )
         {
@@ -1479,10 +1593,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * @param request The GssApiRequest POJO containing all the needed parameters
      * @return The bind operation's future
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
     public BindFuture bindAsync( SaslGssApiRequest request )
-        throws LdapException, IOException
+        throws LdapException
     {
         // Krb5.conf file
         if ( request.getKrb5ConfFilePath() != null )
@@ -1493,10 +1606,17 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         else if ( ( request.getRealmName() != null ) && ( request.getKdcHost() != null )
             && ( request.getKdcPort() != 0 ) )
         {
-            // Using a custom krb5.conf we create from the settings provided by the user
-            String krb5ConfPath = createKrb5ConfFile( request.getRealmName(), request.getKdcHost(),
-                request.getKdcPort() );
-            System.setProperty( "java.security.krb5.conf", krb5ConfPath );
+            try
+            {
+                // Using a custom krb5.conf we create from the settings provided by the user
+                String krb5ConfPath = createKrb5ConfFile( request.getRealmName(), request.getKdcHost(),
+                    request.getKdcPort() );
+                System.setProperty( "java.security.krb5.conf", krb5ConfPath );
+            }
+            catch ( IOException ioe )
+            {
+                throw new LdapException( ioe );
+            }
         }
         else
         {
@@ -1630,7 +1750,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         int newId = messageId.incrementAndGet();
         searchRequest.setMessageId( newId );
 
-        LOG.debug( "-----------------------------------------------------------------" );
+        if ( searchRequest.isIgnoreReferrals() )
+        {
+            // We want to ignore the referral, inject the ManageDSAIT control in the request
+            searchRequest.addControl( new ManageDsaITImpl() );
+        }
+
         LOG.debug( "Sending request \n{}", searchRequest );
 
         SearchFuture searchFuture = new SearchFuture( this, searchRequest.getMessageId() );
@@ -1665,9 +1790,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         SearchFuture searchFuture = searchAsync( searchRequest );
 
-        long timeout = getTimeout( searchRequest.getTimeLimit() );
+        long searchTimeout = getTimeout( timeout, searchRequest.getTimeLimit() );
 
-        return new SearchCursorImpl( searchFuture, timeout, TimeUnit.MILLISECONDS );
+        return new SearchCursorImpl( searchFuture, searchTimeout, TimeUnit.MILLISECONDS );
     }
 
 
@@ -1690,32 +1815,39 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         UnbindRequest unbindRequest = new UnbindRequestImpl();
         unbindRequest.setMessageId( newId );
 
-        LOG.debug( "-----------------------------------------------------------------" );
         LOG.debug( "Sending Unbind request \n{}", unbindRequest );
 
         // Send the request to the server
         // Use this for logging instead: WriteFuture unbindFuture = ldapSession.write( unbindRequest );
-        ldapSession.write( unbindRequest );
+        WriteFuture unbindFuture = ldapSession.write( unbindRequest );
 
         //LOG.debug( "waiting for unbindFuture" );
-        //unbindFuture.awaitUninterruptibly();
+        unbindFuture.awaitUninterruptibly( timeout );
         //LOG.debug( "unbindFuture done" );
 
         authenticated.set( false );
+
+        // Close all the Future for this session
+        for ( ResponseFuture<? extends Response> responseFuture : futureMap.values() )
+        {
+            responseFuture.cancel();
+        }
 
         // clear the mappings
         clearMaps();
 
         //  We now have to close the session
-        if ( ldapSession != null )
+        try
         {
-            CloseFuture closeFuture = ldapSession.close( true );
-
-            LOG.debug( "waiting for closeFuture" );
-            closeFuture.awaitUninterruptibly();
-            LOG.debug( "closeFuture done" );
-            connected.set( false );
+            close();
         }
+        catch ( IOException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        connected.set( false );
 
         // Last, not least, reset the MessageId value
         messageId.set( 0 );
@@ -1743,7 +1875,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( timeout <= 0 )
         {
-            this.timeout = Long.MAX_VALUE;
+            // Set a date in the far future : 100 years
+            this.timeout = 1000L * 60L * 60L * 24L * 365L * 100L;
         }
         else
         {
@@ -2505,7 +2638,18 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         ModifyDnRequest modDnRequest = new ModifyDnRequestImpl();
         modDnRequest.setName( entryDn );
         modDnRequest.setNewRdn( newDn.getRdn() );
-        modDnRequest.setNewSuperior( newDn.getParent() );
+        
+        // Check if we really need to specify newSuperior.
+        // newSuperior is optional [RFC4511, section 4.9]
+        // Some servers (e.g. OpenDJ 2.6) require a special privilege if
+        // newSuperior is specified even if it is the same as the old one. Therefore let's not
+        // specify it if we do not need it. This is better interoperability. 
+        Dn newDnParent = newDn.getParent();
+        if ( newDnParent != null && !newDnParent.equals( entryDn.getParent() ) )
+        {
+            modDnRequest.setNewSuperior( newDnParent );
+        }
+        
         modDnRequest.setDeleteOldRdn( deleteOldRdn );
 
         ModifyDnResponse modifyDnResponse = modifyDn( modDnRequest );
@@ -3035,7 +3179,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         try
         {
-            return extended( new Oid( oid ), value );
+            return extended( Oid.fromString( oid ), value );
         }
         catch ( DecoderException e )
         {
@@ -3060,7 +3204,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     public ExtendedResponse extended( Oid oid, byte[] value ) throws LdapException
     {
-        ExtendedRequest<?> extendedRequest =
+        ExtendedRequest extendedRequest =
             LdapApiServiceFactory.getSingleton().newExtendedRequest( oid.toString(), value );
         return extended( extendedRequest );
     }
@@ -3085,28 +3229,37 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             // Read the response, waiting for it if not available immediately
             // Get the response, blocking
-            ExtendedResponse extendedResponse = ( ExtendedResponse ) extendedFuture
+            ExtendedResponse response = ( ExtendedResponse ) extendedFuture
                 .get( timeout, TimeUnit.MILLISECONDS );
 
-            if ( extendedResponse == null )
+            if ( response == null )
             {
                 // We didn't received anything : this is an error
                 LOG.error( "Extended failed : timeout occurred" );
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
-            if ( extendedResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
+            if ( response.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
             {
                 // Everything is fine, return the response
-                LOG.debug( "Extended successful : {}", extendedResponse );
+                LOG.debug( "Extended successful : {}", response );
             }
             else
             {
                 // We have had an error
-                LOG.debug( "Extended failed : {}", extendedResponse );
+                LOG.debug( "Extended failed : {}", response );
             }
 
-            return extendedResponse;
+            // Get back the response. It's still an opaque response
+            if ( Strings.isEmpty( response.getResponseName() ) )
+            {
+                response.setResponseName( extendedRequest.getRequestName() );
+            }
+
+            // Decode the payload now
+            ExtendedResponseDecorator<?> decoratedResponse = codec.decorate( response );
+
+            return decoratedResponse;
         }
         catch ( TimeoutException te )
         {
@@ -3251,9 +3404,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         try
         {
             SearchRequest searchRequest = new SearchRequestImpl();
-
             searchRequest.setBase( dn );
-            searchRequest.setFilter( "(objectClass=*)" );
+            searchRequest.setFilter( LdapConstants.OBJECT_CLASS_STAR );
             searchRequest.setScope( SearchScope.OBJECT );
             searchRequest.addAttributes( attributes );
             searchRequest.setDerefAliases( AliasDerefMode.DEREF_ALWAYS );
@@ -3277,9 +3429,17 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             cursor.next();
 
             // And close the cursor
-            cursor.close();
+            try
+            { 
+                cursor.close();
+            }
+            catch ( IOException ioe )
+            {
+                throw new LdapException( ioe.getMessage(), ioe );
+            }
+
         }
-        catch ( Exception e )
+        catch ( CursorException e )
         {
             throw new LdapException( e );
         }
@@ -3334,6 +3494,19 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         Attribute attr = rootDse.get( SchemaConstants.SUPPORTED_CONTROL_AT );
 
+        if ( attr == null )
+        {
+            // Unlikely. Perhaps the server does not respond properly to "+" attribute query
+            // (such as 389ds server). So let's try again and let's be more explicit.
+            fetchRootDSE( SchemaConstants.ALL_USER_ATTRIBUTES, 
+                SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES, SchemaConstants.SUPPORTED_CONTROL_AT );
+            attr = rootDse.get( SchemaConstants.SUPPORTED_CONTROL_AT );
+            if ( attr == null )
+            {
+                return supportedControls;
+            }
+        }
+        
         for ( Value<?> value : attr )
         {
             supportedControls.add( value.getString() );
@@ -3353,6 +3526,15 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
 
     /**
+     * {@inheritDoc}
+     */
+    public void loadSchemaRelaxed() throws LdapException
+    {
+        loadSchema( new DefaultSchemaLoader( this, true ) );
+    }
+
+
+    /**
      * loads schema using the specified schema loader
      *
      * @param loader the {@link SchemaLoader} to be used to load schema
@@ -3366,7 +3548,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             tmp.loadAllEnabled();
 
-            if ( !tmp.getErrors().isEmpty() )
+            if ( !tmp.getErrors().isEmpty() && loader.isStrict() )
             {
                 String msg = "there are errors while loading the schema";
                 LOG.error( msg + " {}", tmp.getErrors() );
@@ -3413,20 +3595,19 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             olsp.setQuirksMode( true );
             olsp.parse( schemaFile );
 
-            List<MutableAttributeType> atList = olsp.getAttributeTypes();
-            AttributeTypeRegistry atRegistry = schemaManager.getRegistries().getAttributeTypeRegistry();
+            Registries registries = schemaManager.getRegistries();
+            List<Throwable> errors = new ArrayList<Throwable>();
 
-            for ( AttributeType atType : atList )
+            for ( AttributeType atType : olsp.getAttributeTypes() )
             {
-                atRegistry.addMappingFor( atType );
+                registries.buildReference( errors, atType );
+                registries.getAttributeTypeRegistry().register( atType );
             }
 
-            List<ObjectClass> ocList = olsp.getObjectClassTypes();
-            ObjectClassRegistry ocRegistry = schemaManager.getRegistries().getObjectClassRegistry();
-
-            for ( ObjectClass oc : ocList )
+            for ( ObjectClass oc : olsp.getObjectClassTypes() )
             {
-                ocRegistry.register( oc );
+                registries.buildReference( errors, oc );
+                registries.getObjectClassRegistry().register( oc );
             }
 
             LOG.info( "successfully loaded the schema from file {}", schemaFile.getAbsolutePath() );
@@ -3470,15 +3651,28 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * fetches the rootDSE from the server
      * @throws LdapException
      */
-    private void fetchRootDSE() throws LdapException
+    private void fetchRootDSE( String... explicitAttributes ) throws LdapException
     {
         EntryCursor cursor = null;
 
+        String[] attributes = explicitAttributes;
+        if ( attributes.length == 0 )
+        {
+            attributes = new String[]
+                { SchemaConstants.ALL_USER_ATTRIBUTES, SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES };
+        }
+        
         try
         {
-            cursor = search( "", "(objectClass=*)", SearchScope.OBJECT, "*", "+" );
-            cursor.next();
-            rootDse = cursor.get();
+            cursor = search( "", LdapConstants.OBJECT_CLASS_STAR, SearchScope.OBJECT, attributes );
+            if ( cursor.next() )
+            {
+                rootDse = cursor.get();
+            }
+            else
+            {
+                throw new LdapException( "Search for root DSE returned no entry" );
+            }
         }
         catch ( Exception e )
         {
@@ -3578,6 +3772,15 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         conCloseListeners.add( ccListener );
     }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void inputClosed( IoSession session ) throws Exception 
+    {
+        session.close( true );
+    }
 
 
     /**
@@ -3661,7 +3864,14 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             checkSession();
 
-            ExtendedResponse resp = extended( START_TLS_REQ_OID );
+            IoFilter sslFilter = ldapSession.getFilterChain().get( SSL_FILTER_KEY );
+            if ( sslFilter != null )
+            {
+                LOG.debug( "LDAP session already using startTLS" );
+                return;
+            }
+
+            ExtendedResponse resp = extended( new StartTlsRequestImpl() );
             LdapResult result = resp.getLdapResult();
 
             if ( result.getResultCode() == ResultCodeEnum.SUCCESS )
@@ -3696,7 +3906,28 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             SslFilter sslFilter = new SslFilter( sslContext, true );
             sslFilter.setUseClientMode( true );
-            sslFilter.setEnabledCipherSuites( config.getEnabledCipherSuites() );
+
+            // Configure the enabled cipher lists
+            String[] enabledCipherSuite = config.getEnabledCipherSuites();
+
+            if ( ( enabledCipherSuite != null ) && ( enabledCipherSuite.length != 0 ) )
+            {
+                sslFilter.setEnabledCipherSuites( enabledCipherSuite );
+            }
+
+            // Be sure we disable SSLV3
+            String[] enabledProtocols = config.getEnabledProtocols();
+
+            if ( ( enabledProtocols != null ) && ( enabledProtocols.length != 0 ) )
+            {
+                sslFilter.setEnabledProtocols( enabledProtocols );
+            }
+            else
+            {
+                // Default to TLS
+                sslFilter.setEnabledProtocols( new String[]
+                    { "TLSv1", "TLSv1.1", "TLSv1.2" } );
+            }
 
             // for LDAPS
             if ( ldapSession == null )
@@ -3723,7 +3954,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * a response and the, if this response is a challenge, continue by sending a new BindRequest with
      * the requested informations.
      */
-    private BindFuture bindSasl( SaslRequest saslRequest ) throws LdapException, IOException
+    private BindFuture bindSasl( SaslRequest saslRequest ) throws LdapException
     {
         // First switch to anonymous state
         authenticated.set( false );
@@ -3742,7 +3973,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         int newId = messageId.incrementAndGet();
         bindRequest.setMessageId( newId );
 
-        LOG.debug( "-----------------------------------------------------------------" );
         LOG.debug( "Sending request \n{}", bindRequest );
 
         // Create a future for this Bind operation
@@ -3801,7 +4031,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             // deal with it immediately.
             if ( sc.hasInitialResponse() )
             {
-                byte[] challengeResponse = sc.evaluateChallenge( new byte[0] );
+                byte[] challengeResponse = sc.evaluateChallenge( Strings.EMPTY_BYTES );
 
                 // Stores the challenge's response, and send it to the server
                 bindRequest.setCredentials( challengeResponse );
@@ -3992,9 +4222,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         File krb5Conf = File.createTempFile( "client-api-krb5", ".conf" );
         krb5Conf.deleteOnExit();
-        FileWriter fw = new FileWriter( krb5Conf );
-        fw.write( sb.toString() );
-        fw.close();
+
+        try ( Writer writer = new OutputStreamWriter( new FileOutputStream( krb5Conf ), Charset.defaultCharset() ) )
+        {
+            writer.write( sb.toString() );
+        }
 
         String krb5ConfPath = krb5Conf.getAbsolutePath();
 
@@ -4029,5 +4261,15 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             config.setBinaryAttributeDetector( binaryAttributeDetector );
         }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSchemaManager( SchemaManager schemaManager )
+    {
+        this.schemaManager = schemaManager;
     }
 }

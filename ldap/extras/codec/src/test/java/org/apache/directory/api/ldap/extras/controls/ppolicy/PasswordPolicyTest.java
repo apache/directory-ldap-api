@@ -28,7 +28,6 @@ import static org.junit.Assert.assertTrue;
 import java.nio.ByteBuffer;
 
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
-import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
 import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyDecorator;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
@@ -49,9 +48,13 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
         bb.put( new byte[]
             {
                 0x30, 0x08,
-                  ( byte ) 0xA0, 0x03, // timeBeforeExpiration
-                    ( byte ) 0x80, 0x01, 0x01,
-                  ( byte ) 0x81, 0x01, 0x01 // ppolicyError
+                ( byte ) 0xA0, 0x03, // timeBeforeExpiration
+                ( byte ) 0x80,
+                0x01,
+                0x01,
+                ( byte ) 0x81,
+                0x01,
+                0x01 // ppolicyError
         } );
 
         bb.flip();
@@ -77,9 +80,13 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
         bb.put( new byte[]
             {
                 0x30, 0x08,
-                  ( byte ) 0xA0, 0x03, // warning
-                    ( byte ) 0x81, 0x01, 0x01, // graceAuthNsRemaining
-                  ( byte ) 0x81, 0x01, 0x01 // error
+                ( byte ) 0xA0, 0x03, // warning
+                ( byte ) 0x81,
+                0x01,
+                0x01, // graceAuthNsRemaining
+                ( byte ) 0x81,
+                0x01,
+                0x01 // error
         } );
 
         bb.flip();
@@ -88,7 +95,7 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
         PasswordPolicy passwordPolicy = ( PasswordPolicy ) control.decode( bb.array() );
 
         assertTrue( passwordPolicy.hasResponse() );
-        assertEquals( 1, passwordPolicy.getResponse().getGraceAuthNsRemaining() );
+        assertEquals( 1, passwordPolicy.getResponse().getGraceAuthNRemaining() );
         assertEquals( 1, passwordPolicy.getResponse().getPasswordPolicyError().getValue() );
 
         ByteBuffer encoded = ( ( PasswordPolicyDecorator ) passwordPolicy ).encode(
@@ -105,8 +112,8 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
         bb.put( new byte[]
             {
                 0x30, 0x05,
-                  ( byte ) 0xA0, 0x03,
-                    ( byte ) 0x80, 0x01, 0x01 //  timeBeforeExpiration
+                ( byte ) 0xA0, 0x03,
+                ( byte ) 0x80, 0x01, 0x01 //  timeBeforeExpiration
         } );
 
         bb.flip();
@@ -131,8 +138,8 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
         bb.put( new byte[]
             {
                 0x30, 0x05,
-                  ( byte ) 0xA0, 0x03,
-                    ( byte ) 0x81, 0x01, 0x01 //  graceAuthNsRemaining
+                ( byte ) 0xA0, 0x03,
+                ( byte ) 0x81, 0x01, 0x01 //  graceAuthNsRemaining
         } );
 
         bb.flip();
@@ -141,7 +148,7 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
         PasswordPolicy passwordPolicy = ( PasswordPolicy ) control.decode( bb.array() );
 
         assertTrue( passwordPolicy.hasResponse() );
-        assertEquals( 1, passwordPolicy.getResponse().getGraceAuthNsRemaining() );
+        assertEquals( 1, passwordPolicy.getResponse().getGraceAuthNRemaining() );
 
         ByteBuffer encoded = ( ( PasswordPolicyDecorator ) passwordPolicy ).encode(
             ByteBuffer.allocate( ( ( PasswordPolicyDecorator ) passwordPolicy ).computeLength() ) );
@@ -157,7 +164,7 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
         bb.put( new byte[]
             {
                 0x30, 0x03,
-                  ( byte ) 0x81, 0x01, 0x01 //  error
+                ( byte ) 0x81, 0x01, 0x01 //  error
         } );
 
         bb.flip();
@@ -182,7 +189,7 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
         bb.put( new byte[]
             {
                 0x30, 0x00
-            } );
+        } );
 
         bb.flip();
 
@@ -194,6 +201,6 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
 
         ByteBuffer encoded = ( ( PasswordPolicyDecorator ) passwordPolicy ).encode(
             ByteBuffer.allocate( ( ( PasswordPolicyDecorator ) passwordPolicy ).computeLength() ) );
-        assertEquals( "", Strings.dumpBytes( encoded.array() ) );
+        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
     }
 }

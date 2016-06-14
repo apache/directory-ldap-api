@@ -77,7 +77,7 @@ public enum SyncRequestValueStatesEnum implements States
      * @param grammar The grammar class
      * @return The grammar name
      */
-    public String getGrammarName( Grammar grammar )
+    public String getGrammarName( Grammar<SyncRequestValueContainer> grammar )
     {
         if ( grammar instanceof SyncRequestValueGrammar )
         {

@@ -199,7 +199,7 @@ public class DnNode<N> implements Cloneable
         catch ( LdapException le )
         {
             // Special cas e: the Dn is empty, this is not allowed
-            throw new IllegalArgumentException( le.getMessage() );
+            throw new IllegalArgumentException( le.getMessage(), le );
         }
     }
 
@@ -542,11 +542,12 @@ public class DnNode<N> implements Cloneable
      * Add a new node in the tree. The added node won't have any element.
      *
      * @param dn The node's Dn
+     * @return the corresponding node
      * @throws LdapException if the Dn is null or empty
      */
-    public synchronized void add( Dn dn ) throws LdapException
+    public synchronized DnNode<N> add( Dn dn ) throws LdapException
     {
-        add( dn, null );
+        return add( dn, null );
     }
 
 
@@ -556,9 +557,10 @@ public class DnNode<N> implements Cloneable
      *
      * @param dn The node's Dn
      * @param element The element to associate with this Node. Can be null.
+     * @return the corresponding node
      * @throws LdapException if the Dn is null or empty
      */
-    public synchronized void add( Dn dn, N element ) throws LdapException
+    public synchronized DnNode<N> add( Dn dn, N element ) throws LdapException
     {
         checkDn( dn );
 
@@ -571,6 +573,8 @@ public class DnNode<N> implements Cloneable
             DnNode<N> childNode = createNode( dn, element, dn.size() );
             childNode.parent = this;
             children.put( childNode.nodeRdn, childNode );
+            
+            return childNode;
         }
         else
         {
@@ -597,15 +601,19 @@ public class DnNode<N> implements Cloneable
                 else
                 {
                     parentNode.setElement( element );
+                    
+                    return parentNode;
                 }
             }
             else
             {
-                DnNode<N> rootNode = createNode( dn, element, nbRdns );
+                DnNode<N> childNode = createNode( dn, element, nbRdns );
 
                 // done. now, add the newly created tree to the parent node
-                rootNode.parent = parentNode;
-                parentNode.children.put( rootNode.nodeRdn, rootNode );
+                childNode.parent = parentNode;
+                parentNode.children.put( childNode.nodeRdn, childNode );
+
+                return childNode;
             }
         }
     }
@@ -1018,7 +1026,7 @@ public class DnNode<N> implements Cloneable
 
         if ( hasChildren )
         {
-            for ( Rdn rdn : children.keySet() )
+            for ( Map.Entry<Rdn, DnNode<N>> entry : children.entrySet() )
             {
                 if ( isFirst )
                 {
@@ -1029,7 +1037,7 @@ public class DnNode<N> implements Cloneable
                     sb.append( "\n" );
                 }
 
-                DnNode<N> child = children.get( rdn );
+                DnNode<N> child = entry.getValue();
 
                 sb.append( child.toString( tabs ) );
             }

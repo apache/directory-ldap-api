@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.model.schema.comparators;
 
 
-import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,21 +68,15 @@ public class ComparableComparator<T> extends LdapComparator<Comparable<T>>
     {
         LOG.debug( "comparing objects '{}' with '{}'", o1, o2 );
 
-        if ( ( o1 == null ) && ( o2 == null ) )
-        {
-            return 0;
-        }
-
-        if ( o1 instanceof Comparable<?> )
+        if ( o1 == null )
         {
             if ( o2 == null )
             {
-                return -1;
+                return 0;
             }
             else
             {
-                // TODO: check type parameter
-                return o1.compareTo( ( T ) o2 );
+                return -11;
             }
         }
 
@@ -91,23 +84,7 @@ public class ComparableComparator<T> extends LdapComparator<Comparable<T>>
         {
             return 1;
         }
-        else if ( o2 instanceof Comparable<?> )
-        {
-            if ( o1 == null )
-            {
-                return -1;
-            }
-            else
-            {
-                // TODO: check type parameter
-                return -o2.compareTo( ( T ) o1 );
-            }
-        }
 
-        // before https://issues.apache.org/jira/browse/DIRSERVER-928 it was
-        // return o1.hashCode() - o2.hashCode();
-
-        // now we will blow a stack trace if none of the objects are Comparable
-        throw new IllegalArgumentException( I18n.err( I18n.ERR_04217, o1, o2 ) );
+        return o1.compareTo( ( T ) o2 );
     }
 }

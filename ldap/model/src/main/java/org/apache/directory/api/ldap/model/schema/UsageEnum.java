@@ -88,19 +88,19 @@ public enum UsageEnum
         }
         catch ( IllegalArgumentException iae )
         {
-            if ( "directoryOperation".equals( usage ) )
+            if ( "directoryOperation".equalsIgnoreCase( usage ) )
             {
                 return DIRECTORY_OPERATION;
             }
-            else if ( "distributedOperation".equals( usage ) )
+            else if ( "distributedOperation".equalsIgnoreCase( usage ) )
             {
                 return DISTRIBUTED_OPERATION;
             }
-            else if ( "dSAOperation".equals( usage ) )
+            else if ( "dSAOperation".equalsIgnoreCase( usage ) )
             {
                 return DSA_OPERATION;
             }
-            else if ( "userApplications".equals( usage ) )
+            else if ( "userApplications".equalsIgnoreCase( usage ) )
             {
                 return USER_APPLICATIONS;
             }

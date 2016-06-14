@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.codec.controls.search.pagedSearch;
 
 
+import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.controls.PagedResults;
@@ -31,7 +32,7 @@ import org.apache.directory.api.ldap.model.message.controls.PagedResults;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class PagedResultsFactory implements ControlFactory<PagedResults, PagedResultsDecorator>
+public class PagedResultsFactory implements ControlFactory<PagedResults>
 {
     /** The LDAP codec service */
     private LdapApiService codec;
@@ -60,7 +61,7 @@ public class PagedResultsFactory implements ControlFactory<PagedResults, PagedRe
     /**
      * {@inheritDoc}
      */
-    public PagedResultsDecorator newCodecControl()
+    public CodecControl<PagedResults> newCodecControl()
     {
         return new PagedResultsDecorator( codec );
     }
@@ -69,7 +70,7 @@ public class PagedResultsFactory implements ControlFactory<PagedResults, PagedRe
     /**
      * {@inheritDoc}
      */
-    public PagedResultsDecorator newCodecControl( PagedResults control )
+    public CodecControl<PagedResults> newCodecControl( PagedResults control )
     {
         return new PagedResultsDecorator( codec, control );
     }

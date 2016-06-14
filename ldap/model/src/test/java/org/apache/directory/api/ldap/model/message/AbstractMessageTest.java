@@ -23,14 +23,11 @@ package org.apache.directory.api.ldap.model.message;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
-import org.apache.directory.api.ldap.model.message.AbstractMessage;
-import org.apache.directory.api.ldap.model.message.Control;
-import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -52,7 +49,6 @@ public class AbstractMessageTest
         AbstractMessage msg;
         msg = new AbstractMessage( 5, MessageTypeEnum.BIND_REQUEST )
         {
-            private static final long serialVersionUID = 1L;
         };
         assertTrue( msg.equals( msg ) );
     }
@@ -68,11 +64,9 @@ public class AbstractMessageTest
         AbstractMessage msg1;
         msg0 = new AbstractMessage( 5, MessageTypeEnum.BIND_REQUEST )
         {
-            private static final long serialVersionUID = 1L;
         };
         msg1 = new AbstractMessage( 5, MessageTypeEnum.BIND_REQUEST )
         {
-            private static final long serialVersionUID = 1L;
         };
         assertTrue( msg0.equals( msg1 ) );
         assertTrue( msg1.equals( msg0 ) );
@@ -89,11 +83,9 @@ public class AbstractMessageTest
         AbstractMessage msg1;
         msg0 = new AbstractMessage( 5, MessageTypeEnum.BIND_REQUEST )
         {
-            private static final long serialVersionUID = 1L;
         };
         msg1 = new AbstractMessage( 6, MessageTypeEnum.BIND_REQUEST )
         {
-            private static final long serialVersionUID = 1L;
         };
         assertFalse( msg0.equals( msg1 ) );
         assertFalse( msg1.equals( msg0 ) );
@@ -110,11 +102,9 @@ public class AbstractMessageTest
         AbstractMessage msg1;
         msg0 = new AbstractMessage( 5, MessageTypeEnum.BIND_REQUEST )
         {
-            private static final long serialVersionUID = 1L;
         };
         msg1 = new AbstractMessage( 5, MessageTypeEnum.UNBIND_REQUEST )
         {
-            private static final long serialVersionUID = 1L;
         };
         assertFalse( msg0.equals( msg1 ) );
         assertFalse( msg1.equals( msg0 ) );
@@ -132,14 +122,10 @@ public class AbstractMessageTest
 
         msg0 = new AbstractMessage( 5, MessageTypeEnum.BIND_REQUEST )
         {
-            private static final long serialVersionUID = 1L;
         };
 
         msg0.addControl( new Control()
         {
-            private static final long serialVersionUID = 1L;
-
-
             public boolean isCritical()
             {
                 return false;
@@ -159,10 +145,9 @@ public class AbstractMessageTest
 
         msg1 = new AbstractMessage( 5, MessageTypeEnum.BIND_REQUEST )
         {
-            private static final long serialVersionUID = 1L;
         };
+
         assertFalse( msg0.equals( msg1 ) );
         assertFalse( msg1.equals( msg0 ) );
     }
-
 }

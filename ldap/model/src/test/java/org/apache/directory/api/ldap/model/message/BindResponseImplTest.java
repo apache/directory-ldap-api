@@ -30,6 +30,7 @@ import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.message.ReferralImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -46,8 +47,10 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
 public class BindResponseImplTest
-
 {
+    private static final byte[] PASSWORD = Strings.getBytesUtf8( "password" );
+
+
     /**
      * Tests to make sure the same object returns true with equals().
      */
@@ -154,8 +157,8 @@ public class BindResponseImplTest
         BindResponseImpl resp0 = new BindResponseImpl( 1 );
         BindResponseImpl resp1 = new BindResponseImpl( 1 );
 
-        resp0.setServerSaslCreds( "password".getBytes() );
-        resp1.setServerSaslCreds( "password".getBytes() );
+        resp0.setServerSaslCreds( PASSWORD );
+        resp1.setServerSaslCreds( PASSWORD );
 
         assertTrue( "loaded carbon copies should be equal", resp0.equals( resp1 ) );
         assertTrue( "loaded carbon copies should be equal", resp1.equals( resp0 ) );
@@ -191,8 +194,8 @@ public class BindResponseImplTest
         BindResponseImpl resp0 = new BindResponseImpl( 1 );
         BindResponseImpl resp1 = new BindResponseImpl( 1 );
 
-        resp0.setServerSaslCreds( "password".getBytes() );
-        resp1.setServerSaslCreds( "password".getBytes() );
+        resp0.setServerSaslCreds( PASSWORD );
+        resp1.setServerSaslCreds( PASSWORD );
 
         assertTrue( resp0.hashCode() == resp1.hashCode() );
     }

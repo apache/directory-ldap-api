@@ -38,6 +38,7 @@ import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.util.Strings;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -68,11 +69,11 @@ public class AttributeUtilsTest
     @Before
     public void initNames() throws Exception
     {
-        byte[] b = "aa".getBytes();
+        byte[] b = Strings.getBytesUtf8( "aa" );
         byteArrayA = b;
         byteArrayACopy = b;
-        byteArrayB = "aa".getBytes();
-        byteArrayC = "cc".getBytes();
+        byteArrayB = Strings.getBytesUtf8( "aa" );
+        byteArrayC = Strings.getBytesUtf8( "cc" );
     }
 
 

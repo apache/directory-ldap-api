@@ -1,0 +1,11 @@
+version: 1
+dn: m-oid=2.5.13.37,ou=matchingRules,cn=core,ou=schema
+objectclass: top
+objectclass: metaTop
+objectclass: metaMatchingRule
+m-oid: 2.5.13.37
+m-name: certificatePairMatch
+m-description: X.509 Certificate Pair Match
+m-syntax: 1.3.6.1.1.15.4
+m-obsolete: FALSE
+creatorsname: uid=admin,ou=system

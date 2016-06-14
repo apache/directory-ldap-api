@@ -24,30 +24,25 @@ import java.text.ParseException;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.DitStructureRule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 
 
 /**
- * A parser for RFC 4512 DIT structure rule descriptons
+ * A parser for RFC 4512 DIT structure rule descriptions.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DitStructureRuleDescriptionSchemaParser extends AbstractSchemaParser
+public class DitStructureRuleDescriptionSchemaParser extends AbstractSchemaParser<DitStructureRule>
 {
-    /** The LoggerFactory used by this class */
-    protected static final Logger LOG = LoggerFactory.getLogger( DitStructureRuleDescriptionSchemaParser.class );
-
 
     /**
      * Creates a schema parser instance.
      */
     public DitStructureRuleDescriptionSchemaParser()
     {
-        super();
+        super( DitStructureRule.class, I18n.ERR_04233, I18n.ERR_04234, I18n.ERR_04235 );
     }
 
 
@@ -73,53 +68,20 @@ public class DitStructureRuleDescriptionSchemaParser extends AbstractSchemaParse
      * @return the parsed DITStructureRuleDescription bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public synchronized DitStructureRule parseDITStructureRuleDescription( String ditStructureRuleDescription )
+    public DitStructureRule parseDITStructureRuleDescription( String ditStructureRuleDescription )
         throws ParseException
     {
-        LOG.debug( "Parsing a DitStructureRule : {}", ditStructureRuleDescription );
-
-        if ( ditStructureRuleDescription == null )
-        {
-            LOG.error( I18n.err( I18n.ERR_04233 ) );
-            throw new ParseException( "Null", 0 );
-        }
-
-        reset( ditStructureRuleDescription ); // reset and initialize the parser / lexer pair
-
-        try
-        {
-            DitStructureRule ditStructureRule = parser.ditStructureRuleDescription();
-
-            // Update the schemaName
-            updateSchemaName( ditStructureRule );
-
-            return ditStructureRule;
-        }
-        catch ( RecognitionException re )
-        {
-            String msg = I18n.err( I18n.ERR_04234, ditStructureRuleDescription, re.getMessage(), re.getColumn() );
-            LOG.error( msg );
-            throw new ParseException( msg, re.getColumn() );
-        }
-        catch ( TokenStreamException tse )
-        {
-            String msg = I18n.err( I18n.ERR_04235, ditStructureRuleDescription, tse.getMessage() );
-            LOG.error( msg );
-            throw new ParseException( msg, 0 );
-        }
+        return super.parse( ditStructureRuleDescription );
 
     }
 
 
     /**
-     * Parses a DitStructureRule description.
-     * 
-     * @param schemaDescription The DitStructureRule description to parse
-     * @return An instance of DitStructureRule
-     * @throws ParseException {@inheritDoc}
+     * {@inheritDoc}
      */
-    public DitStructureRule parse( String schemaDescription ) throws ParseException
+    @Override
+    protected DitStructureRule doParse() throws RecognitionException, TokenStreamException
     {
-        return parseDITStructureRuleDescription( schemaDescription );
+        return parser.ditStructureRuleDescription();
     }
 }

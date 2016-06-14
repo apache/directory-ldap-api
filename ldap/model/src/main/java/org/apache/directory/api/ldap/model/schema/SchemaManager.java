@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema;
 
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,7 +41,6 @@ import org.apache.directory.api.ldap.model.schema.registries.ObjectClassRegistry
 import org.apache.directory.api.ldap.model.schema.registries.OidRegistry;
 import org.apache.directory.api.ldap.model.schema.registries.Registries;
 import org.apache.directory.api.ldap.model.schema.registries.Schema;
-import org.apache.directory.api.ldap.model.schema.registries.SchemaLoader;
 import org.apache.directory.api.ldap.model.schema.registries.SyntaxCheckerRegistry;
 
 
@@ -52,6 +52,12 @@ import org.apache.directory.api.ldap.model.schema.registries.SyntaxCheckerRegist
  */
 public interface SchemaManager
 {
+    /** Two flags for RELAXED and STRICT, this is STRICT */
+    boolean STRICT = false;
+
+    /** Two flags for RELAXED and STRICT, this is RELAXED */
+    boolean RELAXED = true;
+
     //---------------------------------------------------------------------------------
     // Schema loading methods
     //---------------------------------------------------------------------------------
@@ -66,7 +72,7 @@ public interface SchemaManager
      * 
      * @param schemas the Schemas to load
      * @return true if the schemas have been loaded and the registries is consistent
-     * @throws Exception @TODO 
+     * @throws LdapException @TODO 
      */
     boolean load( Schema... schemas ) throws LdapException;
 
@@ -82,9 +88,9 @@ public interface SchemaManager
      * 
      * @param schemas the Schemas' name to load
      * @return true if the schemas have been loaded and the registries is consistent
-     * @throws Exception @TODO 
+     * @throws LdapException @TODO 
      */
-    boolean load( String... schemas ) throws Exception;
+    boolean load( String... schemas ) throws LdapException;
 
 
     /**
@@ -98,9 +104,9 @@ public interface SchemaManager
      * 
      * @param schemas the Schemas to load
      * @return true if the schemas have been loaded and the registries is consistent
-     * @throws Exception @TODO 
+     * @throws LdapException @TODO 
      */
-    boolean loadWithDeps( Schema... schemas ) throws Exception;
+    boolean loadWithDeps( Schema... schemas ) throws LdapException;
 
 
     /**
@@ -114,9 +120,9 @@ public interface SchemaManager
      * 
      * @param schemas the Schemas' name to load
      * @return true if the schemas have been loaded and the registries is consistent
-     * @throws Exception @TODO 
+     * @throws LdapException @TODO 
      */
-    boolean loadWithDeps( String... schemas ) throws Exception;
+    boolean loadWithDeps( String... schemas ) throws LdapException;
 
 
     /**
@@ -130,9 +136,9 @@ public interface SchemaManager
      * 
      * @param schemas the Schemas to load, if enabled
      * @return true if the schemas have been loaded
-     * @throws Exception @TODO 
+     * @throws LdapException @TODO 
      */
-    boolean loadRelaxed( Schema... schemas ) throws Exception;
+    boolean loadRelaxed( Schema... schemas ) throws LdapException;
 
 
     /**
@@ -146,9 +152,9 @@ public interface SchemaManager
      * 
      * @param schemas the Schemas' name to load, if enabled
      * @return true if the schemas have been loaded and the registries is consistent
-     * @throws Exception @TODO 
+     * @throws LdapException @TODO 
      */
-    boolean loadRelaxed( String... schemas ) throws Exception;
+    boolean loadRelaxed( String... schemas ) throws LdapException;
 
 
     /**
@@ -162,9 +168,9 @@ public interface SchemaManager
      * 
      * @param schemas the Schemas to load
      * @return true if the schemas have been loaded
-     * @throws Exception @TODO 
+     * @throws LdapException @TODO 
      */
-    boolean loadWithDepsRelaxed( Schema... schemas ) throws Exception;
+    boolean loadWithDepsRelaxed( Schema... schemas ) throws LdapException;
 
 
     /**
@@ -178,9 +184,9 @@ public interface SchemaManager
      * 
      * @param schemas the Schemas' name to load
      * @return true if the schemas have been loaded
-     * @throws Exception @TODO 
+     * @throws LdapException @TODO 
      */
-    boolean loadWithDepsRelaxed( String... schemas ) throws Exception;
+    boolean loadWithDepsRelaxed( String... schemas ) throws LdapException;
 
 
     /**
@@ -193,9 +199,9 @@ public interface SchemaManager
      *
      * @param schemas The Schemas to load
      * @return true if the schemas have been loaded
-     * @throws Exception @TODO 
+     * @throws LdapException @TODO 
      */
-    boolean loadDisabled( Schema... schemas ) throws Exception;
+    boolean loadDisabled( Schema... schemas ) throws LdapException;
 
 
     /**
@@ -208,7 +214,7 @@ public interface SchemaManager
      *
      * @param schemas The Schemas' name to load
      * @return true if the schemas have been loaded
-     * @throws Exception @TODO 
+     * @throws LdapException @TODO 
      */
     boolean loadDisabled( String... schemas ) throws LdapException;
 
@@ -218,9 +224,9 @@ public interface SchemaManager
      * any inconsistent schema will be rejected. 
      *
      * @return true if the schemas have been loaded
-     * @throws Exception @TODO
+     * @throws LdapException @TODO
      */
-    boolean loadAllEnabled() throws Exception;
+    boolean loadAllEnabled() throws LdapException;
 
 
     /**
@@ -228,9 +234,9 @@ public interface SchemaManager
      * even inconsistent schema will be loaded. 
      *
      * @return true if the schemas have been loaded
-     * @throws Exception @TODO
+     * @throws LdapException @TODO
      */
-    boolean loadAllEnabledRelaxed() throws Exception;
+    boolean loadAllEnabledRelaxed() throws LdapException;
 
 
     /**
@@ -239,7 +245,7 @@ public interface SchemaManager
      * @param schemas The list of Schema to unload
      * @return True if all the schemas have been unloaded
      */
-    boolean unload( Schema... schemas ) throws Exception;
+    boolean unload( Schema... schemas ) throws LdapException;
 
 
     /**
@@ -265,7 +271,7 @@ public interface SchemaManager
      *  @return true if the Registries is still consistent, false otherwise.
      *  @throws If something went wrong
      */
-    boolean enable( Schema... schemas ) throws Exception;
+    boolean enable( Schema... schemas ) throws LdapException;
 
 
     /**
@@ -307,7 +313,13 @@ public interface SchemaManager
     /**
      * @return the list of all the enabled schema
      */
-    List<Schema> getEnabled();
+    Collection<Schema> getEnabled();
+
+
+    /**
+     * @return the list of all schemas
+     */
+    Collection<Schema> getAllSchemas();
 
 
     /**
@@ -339,7 +351,7 @@ public interface SchemaManager
      *  @return true if the Registries is still consistent, false otherwise.
      *  @throws If something went wrong
      */
-    boolean disable( Schema... schemas ) throws Exception;
+    boolean disable( Schema... schemas ) throws LdapException;
 
 
     /**
@@ -405,15 +417,40 @@ public interface SchemaManager
      */
     boolean isDisabled( Schema schema );
 
+    /**
+     * Tells if the SchemaManager is permissive or if it must be checked
+     * against inconsistencies.
+     *
+     * @return True if SchemaObjects can be added even if they break the consistency
+     */
+    boolean isRelaxed();
 
+
+    /**
+     * Set the SchemaManager to a RELAXED mode
+     */
+    void setRelaxed();
+
+    /**
+     * Tells if the SchemaManager is strict.
+     *
+     * @return True if SchemaObjects cannot be added if they break the consistency
+     */
+    boolean isStrict();
+
+    /**
+     * Set the SchemaManager to a STRICT mode
+     */
+    void setStrict();
+    
     /**
      * Check that the Schemas are consistent regarding the current Registries.
      * 
      * @param schemas The schemas to check
      * @return true if the schemas can be loaded in the registries
-     * @throws Exception if something went wrong
+     * @throws LdapException if something went wrong
      */
-    boolean verify( Schema... schemas ) throws Exception;
+    boolean verify( Schema... schemas ) throws LdapException;
 
 
     /**
@@ -421,9 +458,9 @@ public interface SchemaManager
      * 
      * @param schemas The schema names to check
      * @return true if the schemas can be loaded in the registries
-     * @throws Exception if something went wrong
+     * @throws LdapException if something went wrong
      */
-    boolean verify( String... schemas ) throws Exception;
+    boolean verify( String... schemas ) throws LdapException;
 
 
     /**
@@ -624,14 +661,6 @@ public interface SchemaManager
 
 
     /**
-     * Associate a Schema loader to this SchemaManager
-     *
-     * @param schemaLoader The schema loader to use
-     */
-    void setSchemaLoader( SchemaLoader schemaLoader );
-
-
-    /**
      * @return the namingContext
      */
     Dn getNamingContext();
@@ -640,15 +669,9 @@ public interface SchemaManager
     /**
      * Initializes the SchemaService
      *
-     * @throws Exception If the initialization fails
+     * @throws LdapException If the initialization fails
      */
-    void initialize() throws Exception;
-
-
-    /**
-     * @return The used loader
-     */
-    SchemaLoader getLoader();
+    void initialize() throws LdapException;
 
 
     /**
@@ -663,6 +686,34 @@ public interface SchemaManager
      * the registration operation is not supported
      */
     boolean add( SchemaObject schemaObject ) throws LdapException;
+    
+    
+    /**
+     * Add a new Schema into the SchemaManager.
+     *
+     * @param schema The schema to add
+     * @return <tt>true</tt> if the Shcema has been correctly loaded, <tt>false</tt> if we had some errors 
+     */
+    //boolean add( Schema schema ) throws LdapException;
+    
+    
+    /**
+     * Add a new Schema from a file into the SchemaManager. We will use the default schemaLoader.
+     *
+     * @param schemaFile The file containing the schema to add
+     * @return <tt>true</tt> if the Shcema has been correctly loaded, <tt>false</tt> if we had some errors 
+     */
+    //boolean add( String schemaFile ) throws LdapException;
+
+    
+    /**
+     * Add a new Schema into the SchemaManager, using a new SchemaLoader.
+     *
+     * @param schemaFile The file containing the schema to add
+     * @param schemaLoader The SchemaLoader to use to load this new schema
+     * @return <tt>true</tt> if the Shcema has been correctly loaded, <tt>false</tt> if we had some errors 
+     */
+    //boolean add( String schemaFile, SchemaLoader schemaLoader ) throws LdapException;
 
 
     /**
@@ -673,7 +724,7 @@ public interface SchemaManager
      *
      * @param schemaObject the SchemaObject to unregister
      * @return true if the deletion has been made, false if there were some errors
-     * @throws Exception if the SchemaObject is not registered or
+     * @throws LdapException if the SchemaObject is not registered or
      * the deletion operation is not supported
      */
     boolean delete( SchemaObject schemaObject ) throws LdapException;

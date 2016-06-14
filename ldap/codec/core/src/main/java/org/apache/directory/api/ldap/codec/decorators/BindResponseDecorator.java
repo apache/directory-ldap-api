@@ -27,7 +27,7 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.BindResponse;
 
 
@@ -50,25 +50,6 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
     public BindResponseDecorator( LdapApiService codec, BindResponse decoratedMessage )
     {
         super( codec, decoratedMessage );
-    }
-
-
-    /**
-     * Stores the encoded length for the BindResponse
-     * @param bindResponseLength The encoded length
-     */
-    public void setBindResponseLength( int bindResponseLength )
-    {
-        this.bindResponseLength = bindResponseLength;
-    }
-
-
-    /**
-     * @return The encoded BindResponse's length
-     */
-    public int getBindResponseLength()
-    {
-        return bindResponseLength;
     }
 
 
@@ -116,7 +97,7 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
         BindResponse bindResponse = getDecorated();
         int ldapResultLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
 
-        int bindResponseLength = ldapResultLength;
+        bindResponseLength = ldapResultLength;
 
         byte[] serverSaslCreds = bindResponse.getServerSaslCreds();
 
@@ -124,8 +105,6 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
         {
             bindResponseLength += 1 + TLV.getNbBytes( serverSaslCreds.length ) + serverSaslCreds.length;
         }
-
-        setBindResponseLength( bindResponseLength );
 
         return 1 + TLV.getNbBytes( bindResponseLength ) + bindResponseLength;
     }
@@ -151,8 +130,8 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
         try
         {
             // The BindResponse Tag
-            buffer.put( LdapConstants.BIND_RESPONSE_TAG );
-            buffer.put( TLV.getBytes( getBindResponseLength() ) );
+            buffer.put( LdapCodecConstants.BIND_RESPONSE_TAG );
+            buffer.put( TLV.getBytes( bindResponseLength ) );
 
             // The LdapResult
             ( ( LdapResultDecorator ) getLdapResult() ).encode( buffer );
@@ -162,7 +141,7 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
 
             if ( serverSaslCreds != null )
             {
-                buffer.put( ( byte ) LdapConstants.SERVER_SASL_CREDENTIAL_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.SERVER_SASL_CREDENTIAL_TAG );
 
                 buffer.put( TLV.getBytes( serverSaslCreds.length ) );
 
@@ -174,7 +153,7 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
 
         return buffer;

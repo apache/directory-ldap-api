@@ -21,7 +21,12 @@
 package org.apache.directory.ldap.client.api;
 
 
+import org.apache.commons.pool.PoolableObjectFactory;
 import org.apache.commons.pool.impl.GenericObjectPool;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -34,14 +39,72 @@ import org.apache.commons.pool.impl.GenericObjectPool;
  */
 public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
 {
+    private static final Logger LOG = LoggerFactory.getLogger( LdapConnectionPool.class );
+
+    private PoolableObjectFactory<LdapConnection> factory;
+
+
     /**
      * Instantiates a new LDAP connection pool.
      *
-     * @param factory the LDAP connection factory
+     * @param connectionConfig The connection configuration
+     * @param apiService The api service (codec)
+     * @param timeout The connection timeout in millis
      */
-    public LdapConnectionPool( PoolableLdapConnectionFactory factory )
+    public LdapConnectionPool( LdapConnectionConfig connectionConfig,
+        LdapApiService apiService, long timeout )
     {
-        super( factory );
+        this( connectionConfig, apiService, timeout, null );
+    }
+
+
+    /**
+     * Instantiates a new LDAP connection pool.
+     *
+     * @param connectionConfig The connection configuration
+     * @param apiService The api service (codec)
+     * @param timeout The connection timeout in millis
+     * @param poolConfig The pool configuration
+     */
+    public LdapConnectionPool( LdapConnectionConfig connectionConfig,
+        LdapApiService apiService, long timeout, Config poolConfig )
+    {
+        this( newPoolableConnectionFactory( connectionConfig, apiService, timeout ), poolConfig );
+    }
+
+
+    /**
+     * Instantiates a new LDAP connection pool.
+     *
+     * @param factory The LDAP connection factory
+     */
+    public LdapConnectionPool( PoolableObjectFactory<LdapConnection> factory )
+    {
+        this( factory, null );
+    }
+
+
+    /**
+     * Instantiates a new LDAP connection pool.
+     *
+     * @param factory The LDAP connection factory
+     * @param poolConfig The pool configuration
+     */
+    public LdapConnectionPool( PoolableObjectFactory<LdapConnection> factory, Config poolConfig )
+    {
+        super( factory, poolConfig == null ? new Config() : poolConfig );
+        this.factory = factory;
+    }
+
+
+    /**
+     * Returns the LdapApiService instance used by this connection pool.
+     *
+     * @return The LdapApiService instance used by this connection pool.
+     */
+    public LdapApiService getLdapApiService()
+    {
+        return ( ( AbstractPoolableLdapConnectionFactory ) factory ).getLdapApiService();
     }
 
 
@@ -51,9 +114,45 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
      * @return an LdapConnection object from pool
      * @throws Exception if an error occurs while obtaining a connection from the factory
      */
-    public LdapConnection getConnection() throws Exception
+    public LdapConnection getConnection() throws LdapException
     {
-        return ( LdapConnection ) super.borrowObject();
+        LdapConnection connection;
+
+        try
+        {
+            connection = super.borrowObject();
+            LOG.trace( "borrowed connection {}", connection );
+        }
+        catch ( LdapException e )
+        {
+            throw ( e );
+        }
+        catch ( RuntimeException e )
+        {
+            throw ( e );
+        }
+        catch ( Exception e )
+        {
+            // wrap in runtime, but this should NEVER happen per published 
+            // contract as it only throws what the makeObject throws and our 
+            // PoolableLdapConnectionFactory only throws LdapException
+            LOG.error( "An unexpected exception was thrown: ", e );
+            throw new RuntimeException( e );
+        }
+
+        return connection;
+    }
+
+
+    private static ValidatingPoolableLdapConnectionFactory newPoolableConnectionFactory(
+        LdapConnectionConfig connectionConfig, LdapApiService apiService,
+        long timeout )
+    {
+        DefaultLdapConnectionFactory connectionFactory =
+            new DefaultLdapConnectionFactory( connectionConfig );
+        connectionFactory.setLdapApiService( apiService );
+        connectionFactory.setTimeOut( timeout );
+        return new ValidatingPoolableLdapConnectionFactory( connectionFactory );
     }
 
 
@@ -63,8 +162,28 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
      * @param connection the LdapConnection to be released
      * @throws Exception if an error occurs while releasing the connection
      */
-    public void releaseConnection( LdapConnection connection ) throws Exception
+    public void releaseConnection( LdapConnection connection ) throws LdapException
     {
-        super.returnObject( connection );
+        try
+        {
+            super.returnObject( connection );
+            LOG.trace( "returned connection {}", connection );
+        }
+        catch ( LdapException e )
+        {
+            throw ( e );
+        }
+        catch ( RuntimeException e )
+        {
+            throw ( e );
+        }
+        catch ( Exception e )
+        {
+            // wrap in runtime, but this should NEVER happen as it only throws 
+            // what the passivateObject throws and our 
+            // PoolableLdapConnectionFactory only throws LdapException
+            LOG.error( "An unexpected exception was thrown: ", e );
+            throw new RuntimeException( e );
+        }
     }
 }

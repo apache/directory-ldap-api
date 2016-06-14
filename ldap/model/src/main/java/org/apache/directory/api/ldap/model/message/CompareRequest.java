@@ -21,7 +21,6 @@ package org.apache.directory.api.ldap.model.message;
 
 
 import org.apache.directory.api.ldap.model.entry.Value;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.name.Dn;
 
 
@@ -31,15 +30,8 @@ import org.apache.directory.api.ldap.model.name.Dn;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface CompareRequest extends SingleReplyRequest<CompareResponse>, AbandonableRequest
+public interface CompareRequest extends SingleReplyRequest, AbandonableRequest
 {
-    /** Compare request message type enum code */
-    MessageTypeEnum TYPE = MessageTypeEnum.COMPARE_REQUEST;
-
-    /** Compare response message type enum code */
-    MessageTypeEnum RESP_TYPE = CompareResponse.TYPE;
-
-
     /**
      * Gets the distinguished name of the entry to be compared using the
      * attribute value assertion.
@@ -111,17 +103,17 @@ public interface CompareRequest extends SingleReplyRequest<CompareResponse>, Aba
     /**
      * {@inheritDoc}
      */
-    CompareRequest addControl( Control control ) throws MessageException;
+    CompareRequest addControl( Control control );
 
 
     /**
      * {@inheritDoc}
      */
-    CompareRequest addAllControls( Control[] controls ) throws MessageException;
+    CompareRequest addAllControls( Control[] controls );
 
 
     /**
      * {@inheritDoc}
      */
-    CompareRequest removeControl( Control control ) throws MessageException;
+    CompareRequest removeControl( Control control );
 }

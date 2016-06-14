@@ -90,7 +90,7 @@ public class StoreModifyDnRequestDeleteOldRdn extends GrammarAction<LdapMessageC
                 .err( I18n.ERR_04091, Strings.dumpBytes( value.getData() ), bde.getMessage() ) );
 
             // This will generate a PROTOCOL_ERROR
-            throw new DecoderException( bde.getMessage() );
+            throw new DecoderException( bde.getMessage(), bde );
         }
 
         // We can have an END transition

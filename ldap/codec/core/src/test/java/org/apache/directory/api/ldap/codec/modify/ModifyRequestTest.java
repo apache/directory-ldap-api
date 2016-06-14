@@ -544,7 +544,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         Modification modification = ( Modification ) modifications[0];
         Attribute attributeValue = modification.getAttribute();
 
-        assertEquals( "telephonenumber", Strings.toLowerCase( attributeValue.getId() ) );
+        assertEquals( "telephonenumber", Strings.toLowerCaseAscii( attributeValue.getId() ) );
 
         String attrValue = attributeValue.getString();
         assertEquals( "1234567890", attrValue );
@@ -552,7 +552,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         modification = ( Modification ) modifications[1];
         attributeValue = modification.getAttribute();
 
-        assertEquals( "cn", Strings.toLowerCase( attributeValue.getUpId() ) );
+        assertEquals( "cn", Strings.toLowerCaseAscii( attributeValue.getUpId() ) );
 
         attrValue = attributeValue.getString();
         assertEquals( "XXX", attrValue );
@@ -820,7 +820,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         Modification modification = ( Modification ) modifications[0];
         Attribute attributeValue = modification.getAttribute();
 
-        assertEquals( "description", Strings.toLowerCase( attributeValue.getUpId() ) );
+        assertEquals( "description", Strings.toLowerCaseAscii( attributeValue.getUpId() ) );
         assertEquals( 0, attributeValue.size() );
 
         modification = ( Modification ) modifications[1];
@@ -828,7 +828,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
 
         String attrValue = attributeValue.getString();
 
-        assertEquals( "telephonenumber", Strings.toLowerCase( attributeValue.getUpId() ) );
+        assertEquals( "telephonenumber", Strings.toLowerCaseAscii( attributeValue.getUpId() ) );
 
         assertEquals( "01234567890", attrValue );
 
@@ -837,7 +837,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
 
         attrValue = attributeValue.getString();
 
-        assertEquals( "telephonenumber", Strings.toLowerCase( attributeValue.getUpId() ) );
+        assertEquals( "telephonenumber", Strings.toLowerCaseAscii( attributeValue.getUpId() ) );
 
         attrValue = attributeValue.getString();
         assertEquals( "01234567890", attrValue );
@@ -1023,7 +1023,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         Modification modification = ( Modification ) modifications[0];
         Attribute attributeValue = modification.getAttribute();
 
-        assertEquals( "l", Strings.toLowerCase( attributeValue.getUpId() ) );
+        assertEquals( "l", Strings.toLowerCaseAscii( attributeValue.getUpId() ) );
 
         assertTrue( attributeValue.contains( "Paris" ) );
         assertTrue( attributeValue.contains( "London" ) );
@@ -1031,7 +1031,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         modification = ( Modification ) modifications[1];
         attributeValue = modification.getAttribute();
 
-        assertEquals( "attrs", Strings.toLowerCase( attributeValue.getUpId() ) );
+        assertEquals( "attrs", Strings.toLowerCaseAscii( attributeValue.getUpId() ) );
 
         String attrValue = attributeValue.getString();
         assertEquals( "test", attrValue );
@@ -1956,7 +1956,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         Modification modification = ( Modification ) modifications[0];
         Attribute attributeValue = modification.getAttribute();
 
-        assertEquals( "l", Strings.toLowerCase( attributeValue.getUpId() ) );
+        assertEquals( "l", Strings.toLowerCaseAscii( attributeValue.getUpId() ) );
         assertEquals( 0, attributeValue.size() );
 
         // Check the encoding
@@ -2108,7 +2108,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         Modification modification = ( Modification ) modifications[0];
         Attribute attributeValue = modification.getAttribute();
 
-        assertEquals( "l", Strings.toLowerCase( attributeValue.getUpId() ) );
+        assertEquals( "l", Strings.toLowerCaseAscii( attributeValue.getUpId() ) );
         assertEquals( 0, attributeValue.size() );
 
         // Check the Control
@@ -2248,7 +2248,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         Modification modification = ( Modification ) modifications[0];
         Attribute attributeValue = modification.getAttribute();
 
-        assertEquals( "l", Strings.toLowerCase( attributeValue.getUpId() ) );
+        assertEquals( "l", Strings.toLowerCaseAscii( attributeValue.getUpId() ) );
         assertEquals( 2, attributeValue.size() );
 
         assertTrue( attributeValue.contains( "a" ) );

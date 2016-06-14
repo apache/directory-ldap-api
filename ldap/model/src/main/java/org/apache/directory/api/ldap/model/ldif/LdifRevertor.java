@@ -226,7 +226,8 @@ public final class LdifRevertor
                     break;
 
                 default:
-                    break; // Do nothing
+                    // Do nothing
+                    break;
 
             }
 
@@ -358,9 +359,9 @@ public final class LdifRevertor
         {
             // No need to add something which has already been added
             // in the previous modification
-            if ( !entry.contains( ava.getNormType(), ava.getNormValue().getString() )
-                && !( ava.getNormType().equals( oldRdn.getNormType() ) && ava.getNormValue().getString().equals(
-                    oldRdn.getNormValue().getString() ) ) )
+            if ( !entry.contains( ava.getNormType(), ava.getValue().getString() )
+                && !( ava.getNormType().equals( oldRdn.getNormType() ) && ava.getValue().getString().equals(
+                    oldRdn.getNormValue() ) ) )
             {
                 // Create the modification, which is an Remove
                 Modification modification = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE,
@@ -485,75 +486,41 @@ public final class LdifRevertor
             if ( oldRdn.size() == 1 )
             {
                 // The old Rdn is simple
-                boolean overlapping = false;
                 boolean existInEntry = false;
 
                 // Does it overlap ?
                 // Is the new Rdn AVAs contained into the entry?
                 for ( Ava atav : newRdn )
                 {
-                    if ( atav.equals( oldRdn.getAva() ) )
+                    if ( !atav.equals( oldRdn.getAva() )
+                        && ( entry.contains( atav.getNormType(), atav.getValue().getString() ) ) )
                     {
-                        // They overlap
-                        overlapping = true;
-                    }
-                    else
-                    {
-                        if ( entry.contains( atav.getNormType(), atav.getNormValue().getString() ) )
-                        {
-                            existInEntry = true;
-                        }
+                        existInEntry = true;
                     }
                 }
 
-                if ( overlapping )
+                // The new Rdn includes the old one
+                if ( existInEntry )
                 {
-                    // The new Rdn includes the old one
-                    if ( existInEntry )
-                    {
-                        // Some of the new Rdn AVAs existed in the entry
-                        // We have to restore them, but we also have to remove
-                        // the new values
-                        reverted = generateReverted( newSuperior, newRdn, newDn, oldRdn, KEEP_OLD_RDN );
+                    // Some of the new Rdn AVAs existed in the entry
+                    // We have to restore them, but we also have to remove
+                    // the new values
+                    reverted = generateReverted( newSuperior, newRdn, newDn, oldRdn, KEEP_OLD_RDN );
 
-                        entries.add( reverted );
+                    entries.add( reverted );
 
-                        // Now, restore the initial values
-                        LdifEntry restored = generateModify( parentDn, entry, oldRdn, newRdn );
+                    // Now, restore the initial values
+                    LdifEntry restored = generateModify( parentDn, entry, oldRdn, newRdn );
 
-                        entries.add( restored );
-                    }
-                    else
-                    {
-                        // This is the simplest case, we don't have to restore
-                        // some existing values (case 8.1 and 9.1)
-                        reverted = generateReverted( newSuperior, newRdn, newDn, oldRdn, DELETE_OLD_RDN );
-
-                        entries.add( reverted );
-                    }
+                    entries.add( restored );
                 }
                 else
                 {
-                    if ( existInEntry )
-                    {
-                        // Some of the new Rdn AVAs existed in the entry
-                        // We have to restore them, but we also have to remove
-                        // the new values
-                        reverted = generateReverted( newSuperior, newRdn, newDn, oldRdn, KEEP_OLD_RDN );
+                    // This is the simplest case, we don't have to restore
+                    // some existing values (case 8.1 and 9.1)
+                    reverted = generateReverted( newSuperior, newRdn, newDn, oldRdn, DELETE_OLD_RDN );
 
-                        entries.add( reverted );
-
-                        LdifEntry restored = generateModify( parentDn, entry, oldRdn, newRdn );
-
-                        entries.add( restored );
-                    }
-                    else
-                    {
-                        // A much simpler case, as we just have to remove the newRDN
-                        reverted = generateReverted( newSuperior, newRdn, newDn, oldRdn, DELETE_OLD_RDN );
-
-                        entries.add( reverted );
-                    }
+                    entries.add( reverted );
                 }
             }
             else
@@ -579,7 +546,7 @@ public final class LdifRevertor
                     {
                         overlapping = true;
                     }
-                    else if ( entry.contains( atav.getNormType(), atav.getNormValue().getString() ) )
+                    else if ( entry.contains( atav.getNormType(), atav.getValue().getString() ) )
                     {
                         existInEntry = true;
                     }

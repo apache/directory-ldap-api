@@ -20,7 +20,7 @@
 package org.apache.directory.api.ldap.model.ldif;
 
 
-import java.io.UnsupportedEncodingException;
+import java.io.IOException;
 
 import javax.naming.directory.Attributes;
 
@@ -66,12 +66,18 @@ public final class LdifUtils
             LDIF_SAFE_STARTING_CHAR_ALPHABET[i] = true;
         }
 
-        LDIF_SAFE_STARTING_CHAR_ALPHABET[0] = false; // 0 (NUL)
-        LDIF_SAFE_STARTING_CHAR_ALPHABET[10] = false; // 10 (LF)
-        LDIF_SAFE_STARTING_CHAR_ALPHABET[13] = false; // 13 (CR)
-        LDIF_SAFE_STARTING_CHAR_ALPHABET[32] = false; // 32 (SPACE)
-        LDIF_SAFE_STARTING_CHAR_ALPHABET[58] = false; // 58 (:)
-        LDIF_SAFE_STARTING_CHAR_ALPHABET[60] = false; // 60 (>)
+        // 0 (NUL)
+        LDIF_SAFE_STARTING_CHAR_ALPHABET[0] = false;
+        // 10 (LF)
+        LDIF_SAFE_STARTING_CHAR_ALPHABET[10] = false;
+        // 13 (CR)
+        LDIF_SAFE_STARTING_CHAR_ALPHABET[13] = false;
+        // 32 (SPACE)
+        LDIF_SAFE_STARTING_CHAR_ALPHABET[32] = false;
+        // 58 (:)
+        LDIF_SAFE_STARTING_CHAR_ALPHABET[58] = false;
+        // 60 (>)
+        LDIF_SAFE_STARTING_CHAR_ALPHABET[60] = false;
 
         // Initialization of the array that will be used to match the other chars.
         for ( int i = 0; i < 128; i++ )
@@ -79,9 +85,12 @@ public final class LdifUtils
             LDIF_SAFE_OTHER_CHARS_ALPHABET[i] = true;
         }
 
-        LDIF_SAFE_OTHER_CHARS_ALPHABET[0] = false; // 0 (NUL)
-        LDIF_SAFE_OTHER_CHARS_ALPHABET[10] = false; // 10 (LF)
-        LDIF_SAFE_OTHER_CHARS_ALPHABET[13] = false; // 13 (CR)
+        // 0 (NUL)
+        LDIF_SAFE_OTHER_CHARS_ALPHABET[0] = false;
+        // 10 (LF)
+        LDIF_SAFE_OTHER_CHARS_ALPHABET[10] = false;
+        // 13 (CR)
+        LDIF_SAFE_OTHER_CHARS_ALPHABET[13] = false;
     }
 
 
@@ -269,7 +278,18 @@ public final class LdifUtils
     {
         LdifAttributesReader reader = new LdifAttributesReader();
 
-        return AttributeUtils.toAttributes( reader.parseEntry( ldif ) );
+        try
+        {
+            Attributes attributes = AttributeUtils.toAttributes( reader.parseEntry( ldif ) );
+
+            reader.close();
+
+            return attributes;
+        }
+        catch ( IOException ioe )
+        {
+            throw new LdapLdifException( ioe.getMessage() );
+        }
     }
 
 
@@ -370,7 +390,7 @@ public final class LdifUtils
         sb.append( '\n' );
 
         // Dump the ChangeType
-        String changeType = Strings.toLowerCase( entry.getChangeType().toString() );
+        String changeType = Strings.toLowerCaseAscii( entry.getChangeType().toString() );
 
         if ( entry.getChangeType() != ChangeType.None )
         {
@@ -465,8 +485,20 @@ public final class LdifUtils
                 break;
 
             case Modify:
+                boolean isFirst = true;
+                
                 for ( Modification modification : entry.getModifications() )
                 {
+                    
+                    if ( isFirst )
+                    {
+                        isFirst = false;
+                    }
+                    else
+                    {
+                        sb.append( "-\n" );
+                    }
+
                     switch ( modification.getOperation() )
                     {
                         case ADD_ATTRIBUTE:
@@ -480,16 +512,23 @@ public final class LdifUtils
                         case REPLACE_ATTRIBUTE:
                             sb.append( "replace: " );
                             break;
+
+                        default:
+                            throw new IllegalArgumentException( "Unexpected ModificationOperation: "
+                                + modification.getOperation() );
                     }
 
                     sb.append( modification.getAttribute().getUpId() );
                     sb.append( '\n' );
 
-                    sb.append( convertToLdif( modification.getAttribute() ) );
-                    sb.append( "-\n" );
+                    sb.append( convertToLdif( modification.getAttribute(), length ) );
                 }
 
+                sb.append( '-' );
                 break;
+
+            default:
+                throw new IllegalArgumentException( "Unexpected ChangeType: " + entry.getChangeType() );
         }
 
         sb.append( '\n' );
@@ -506,19 +545,8 @@ public final class LdifUtils
      */
     private static String encodeBase64( String str )
     {
-        char[] encoded = null;
-
-        try
-        {
-            // force encoding using UTF-8 charset, as required in RFC2849 note 7
-            encoded = Base64.encode( str.getBytes( "UTF-8" ) );
-        }
-        catch ( UnsupportedEncodingException e )
-        {
-            encoded = Base64.encode( str.getBytes() );
-        }
-
-        return new String( encoded );
+        // force encoding using UTF-8 charset, as required in RFC2849 note 7
+        return new String( Base64.encode( Strings.getBytesUtf8( str ) ) );
     }
 
 
@@ -546,6 +574,12 @@ public final class LdifUtils
     public static String convertToLdif( Attribute attr, int length ) throws LdapException
     {
         StringBuilder sb = new StringBuilder();
+        
+        if ( attr.size() == 0 )
+        {
+            // Special case : we don't have any value
+            return "";
+        }
 
         for ( Value<?> value : attr )
         {
@@ -565,15 +599,15 @@ public final class LdifUtils
 
                 if ( !LdifUtils.isLDIFSafe( str ) )
                 {
-                    lineBuffer.append( ":: " + encodeBase64( str ) );
+                    lineBuffer.append( ":: " ).append( encodeBase64( str ) );
                 }
                 else
                 {
-                    lineBuffer.append( ":" );
+                    lineBuffer.append( ':' );
 
                     if ( str != null )
                     {
-                        lineBuffer.append( " " ).append( str );
+                        lineBuffer.append( ' ' ).append( str );
                     }
                 }
             }
@@ -585,7 +619,7 @@ public final class LdifUtils
                 lineBuffer.append( ":: " + new String( encoded ) );
             }
 
-            lineBuffer.append( "\n" );
+            lineBuffer.append( '\n' );
             sb.append( stripLineToNChars( lineBuffer.toString(), length ) );
         }
 
@@ -727,6 +761,15 @@ public final class LdifUtils
 
         LdifAttributesReader reader = new LdifAttributesReader();
         Attributes attributes = AttributeUtils.toAttributes( reader.parseEntry( sb.toString() ) );
+
+        try
+        {
+            reader.close();
+        }
+        catch ( IOException e )
+        {
+            e.printStackTrace();
+        }
 
         return attributes;
     }
