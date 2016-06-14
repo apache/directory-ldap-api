@@ -66,7 +66,14 @@ public abstract class AbstractAttributeTypeProtectedItem extends ProtectedItem
     public int hashCode()
     {
         int hash = 37;
-        hash = hash * 17 + attributeTypes.hashCode();
+        
+        for ( AttributeType attributeType : attributeTypes )
+        {
+            hash = hash * 17 + attributeType.hashCode();
+        }
+        
+        hash = hash * 17 + this.getClass().getName().hashCode();
+
         return hash;
     }
 
