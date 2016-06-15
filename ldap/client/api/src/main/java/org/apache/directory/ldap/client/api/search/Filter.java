@@ -21,8 +21,7 @@ package org.apache.directory.ldap.client.api.search;
 
 
 /**
- * 
- * TODO Filter.
+ * The base interface for the Search Filters
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

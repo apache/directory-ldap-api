@@ -77,6 +77,7 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     /**
      * {@inheritDoc}
      */
+    @Override
     public LdapConnection wrapped()
     {
         return connection;

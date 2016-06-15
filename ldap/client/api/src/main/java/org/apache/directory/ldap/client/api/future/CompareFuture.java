@@ -20,10 +20,6 @@
 package org.apache.directory.ldap.client.api.future;
 
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
 import org.apache.directory.api.ldap.model.message.CompareResponse;
 import org.apache.directory.ldap.client.api.LdapConnection;
 
@@ -48,26 +44,9 @@ public class CompareFuture extends ResponseFuture<CompareResponse>
 
 
     /**
-     * Get the CompareResponse, blocking until one is received, or until the
-     * given timeout is reached.
-     * 
-     * @param timeout {@inheritDoc}
-     * @param unit {@inheritDoc}
-     * @return the compare response
-     * @throws InterruptedException {@inheritDoc}
-     * @throws ExecutionException {@inheritDoc}
-     * @throws TimeoutException {@inheritDoc}
-     */
-    public CompareResponse get( long timeout, TimeUnit unit ) throws InterruptedException, ExecutionException,
-        TimeoutException
-    {
-        return super.get( timeout, unit );
-    }
-
-
-    /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

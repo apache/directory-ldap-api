@@ -79,6 +79,7 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public void bind( Dn name ) throws LdapException
     {
         byte[] credBytes = StringConstants.EMPTY_BYTES;
@@ -96,6 +97,7 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public void bind( String name ) throws LdapException
     {
         LOG.debug( "Bind request : {}", name );
@@ -107,6 +109,7 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public void bind( String name, String credentials ) throws LdapException
     {
         bind( new Dn( schemaManager, name ), credentials );
@@ -116,9 +119,10 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public void bind( Dn name, String credentials ) throws LdapException
     {
-        byte[] credBytes = ( credentials == null ? StringConstants.EMPTY_BYTES : Strings.getBytesUtf8( credentials ) );
+        byte[] credBytes = credentials == null ? StringConstants.EMPTY_BYTES : Strings.getBytesUtf8( credentials );
 
         BindRequest bindRequest = new BindRequestImpl();
         bindRequest.setDn( name );

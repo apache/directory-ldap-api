@@ -58,7 +58,7 @@ final class SubstringFilter extends AbstractFilter
         // We have to filter the 'any' and remove every empty strings
         if ( ( any != null ) && ( any.length != 0 ) )
         {
-            List<String> anyList = new ArrayList<String>();
+            List<String> anyList = new ArrayList<>();
 
             for ( String string : any )
             {
@@ -68,7 +68,7 @@ final class SubstringFilter extends AbstractFilter
                 }
             }
 
-            if ( anyList.size() > 0 )
+            if ( !anyList.isEmpty() )
             {
                 this.any = anyList.toArray( new String[]
                     {} );

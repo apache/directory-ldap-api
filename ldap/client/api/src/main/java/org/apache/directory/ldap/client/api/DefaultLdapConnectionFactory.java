@@ -74,7 +74,7 @@ public class DefaultLdapConnectionFactory implements LdapConnectionFactory
             }
             catch ( IOException ioe )
             {
-                LOG.error( "unable to close failed bind connection: {}", e.getMessage() );
+                LOG.error( "unable to close failed bind connection: {}", e.getMessage(), ioe );
                 LOG.debug( "unable to close failed bind connection:", e );
             }
 

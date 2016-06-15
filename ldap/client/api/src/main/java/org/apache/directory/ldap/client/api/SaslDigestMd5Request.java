@@ -44,6 +44,7 @@ public class SaslDigestMd5Request extends SaslRequest
      * {@inheritDoc}
      */
     // Overriding the visibility of the method to public
+    @Override
     public void setRealmName( String realmName )
     {
         super.setRealmName( realmName );

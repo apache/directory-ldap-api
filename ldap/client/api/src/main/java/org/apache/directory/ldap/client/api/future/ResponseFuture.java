@@ -64,7 +64,7 @@ public class ResponseFuture<R extends Response> implements Future<Response>
      */
     public ResponseFuture( LdapConnection connection, int messageId )
     {
-        queue = new LinkedBlockingQueue<R>();
+        queue = new LinkedBlockingQueue<>();
         this.messageId = messageId;
         this.connection = connection;
     }
@@ -73,6 +73,7 @@ public class ResponseFuture<R extends Response> implements Future<Response>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean cancel( boolean mayInterruptIfRunning )
     {
         if ( cancelled )
@@ -101,13 +102,10 @@ public class ResponseFuture<R extends Response> implements Future<Response>
      * {@inheritDoc}
      * @throws InterruptedException if the operation has been cancelled by client
      */
+    @Override
     public R get() throws InterruptedException, ExecutionException
     {
-        R response = null;
-
-        response = queue.take();
-
-        return response;
+        return queue.take();
     }
 
 
@@ -125,17 +123,17 @@ public class ResponseFuture<R extends Response> implements Future<Response>
      * {@inheritDoc}
      * @throws InterruptedException if the operation has been cancelled by client
      */
+    @Override
     public R get( long timeout, TimeUnit unit ) throws InterruptedException, ExecutionException, TimeoutException
     {
-        R response = queue.poll( timeout, unit );
-
-        return response;
+        return queue.poll( timeout, unit );
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isCancelled()
     {
         return cancelled;
@@ -147,6 +145,7 @@ public class ResponseFuture<R extends Response> implements Future<Response>
      * 
      * {@inheritDoc}
      */
+    @Override
     public boolean isDone()
     {
         throw new UnsupportedOperationException( "Operation not supported" );
@@ -186,6 +185,7 @@ public class ResponseFuture<R extends Response> implements Future<Response>
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

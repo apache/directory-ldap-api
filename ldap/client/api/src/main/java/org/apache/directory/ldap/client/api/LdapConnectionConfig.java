@@ -149,11 +149,11 @@ public class LdapConnectionConfig
         }
         catch ( NoSuchAlgorithmException e )
         {
-            LOG.warn( "couldn't find any default X509 TrustManager with algorithm {}", trustMgmtAlgo );
+            LOG.warn( "couldn't find any default X509 TrustManager with algorithm {}", trustMgmtAlgo, e );
         }
         catch ( KeyStoreException e )
         {
-            LOG.warn( "couldn't initialize TrustManagerFactory with keystore {}", KeyStore.getDefaultType() );
+            LOG.warn( "couldn't initialize TrustManagerFactory with keystore {}", KeyStore.getDefaultType(), e );
         }
     }
 

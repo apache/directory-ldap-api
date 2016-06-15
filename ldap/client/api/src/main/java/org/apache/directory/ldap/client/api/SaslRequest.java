@@ -43,7 +43,7 @@ public abstract class SaslRequest
     protected String saslMechanism;
 
     /** The list of controls */
-    protected List<Control> controls = new ArrayList<Control>();
+    protected List<Control> controls = new ArrayList<>();
 
     /** The username */
     protected String username;

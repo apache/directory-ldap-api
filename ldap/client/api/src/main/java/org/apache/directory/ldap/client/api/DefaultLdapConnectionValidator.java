@@ -34,6 +34,7 @@ public final class DefaultLdapConnectionValidator implements LdapConnectionValid
      * @param connection The connection to validate
      * @return True, if the connection is still valid
      */
+    @Override
     public boolean validate( LdapConnection connection )
     {
         return connection.isConnected() && connection.isAuthenticated();

@@ -125,11 +125,7 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
         }
         catch ( LdapException e )
         {
-            throw ( e );
-        }
-        catch ( RuntimeException e )
-        {
-            throw ( e );
+            throw e;
         }
         catch ( Exception e )
         {
@@ -171,11 +167,7 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
         }
         catch ( LdapException e )
         {
-            throw ( e );
-        }
-        catch ( RuntimeException e )
-        {
-            throw ( e );
+            throw e;
         }
         catch ( Exception e )
         {

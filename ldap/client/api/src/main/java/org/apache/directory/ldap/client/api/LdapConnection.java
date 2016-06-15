@@ -102,6 +102,7 @@ public interface LdapConnection extends Closeable
      *
      * @throws IOException if some I/O error occurs
      */
+    @Override
     void close() throws IOException;
 
 
