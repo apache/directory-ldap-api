@@ -567,7 +567,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         timeout = config.getTimeout();
         long maxRetry = System.currentTimeMillis() + timeout;
         ConnectFuture connectionFuture = null;
-
+        
         while ( maxRetry > System.currentTimeMillis() )
         {
             connectionFuture = connector.connect( address );
@@ -604,6 +604,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                             // No need to wait
                             // We know that there was a permanent error such as "connection refused".
                             LOG.debug( "------>> Connection error: {}", connectionFuture.getException().getMessage() );
+                            
+                            // We can quit the loop
+                            break;
                         }
 
                         LOG.debug( "------>>   Cannot get the connection... Retrying" );
@@ -621,6 +624,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                                 config.getLdapPort(), e );
                             throw new LdapOtherException( e.getMessage(), e );
                         }
+                    }
+                    else
+                    {
+                        // We can quit the loop
+                        break;
                     }
                 }
             }
@@ -1080,7 +1088,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * {@inheritDoc}
      */
     @Override
-public BindFuture bindAsync() throws LdapException
+    public BindFuture bindAsync() throws LdapException
     {
         LOG.debug( "Asynchronous Bind request" );
 
