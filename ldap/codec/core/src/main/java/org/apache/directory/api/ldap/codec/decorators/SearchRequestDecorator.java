@@ -103,6 +103,9 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
 
     /** The bytes containing the Dn */
     private byte[] dnBytes;
+    
+    /** The Attribute Name's bytes */
+    private byte[][] attributeNameBytes;
 
 
     /**
@@ -934,12 +937,17 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
 
         if ( ( getAttributes() != null ) && ( getAttributes().size() != 0 ) )
         {
+            attributeNameBytes = new byte[getAttributes().size()][];
+            int attributeNb = 0;
+            
             // Compute the attributes length
             for ( String attribute : getAttributes() )
             {
                 // add the attribute length to the attributes length
-                int idLength = Strings.getBytesUtf8( attribute ).length;
+                attributeNameBytes[attributeNb] = Strings.getBytesUtf8( attribute );
+                int idLength = attributeNameBytes[attributeNb].length;
                 attributeDescriptionListLength += 1 + TLV.getNbBytes( idLength ) + idLength;
+                attributeNb++;
             }
         }
 
@@ -1007,9 +1015,9 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
             if ( ( getAttributes() != null ) && ( getAttributes().size() != 0 ) )
             {
                 // encode each attribute
-                for ( String attribute : getAttributes() )
+                for ( byte[] attributeBytes : attributeNameBytes )
                 {
-                    BerValue.encode( buffer, attribute );
+                    BerValue.encode( buffer, attributeBytes );
                 }
             }
         }
