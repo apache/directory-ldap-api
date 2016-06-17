@@ -83,6 +83,11 @@ public class GeneralizedTimeNormalizer extends Normalizer
                 I18n.ERR_04224, value ) );
         }
         
+        // Special case : the PPolicy "0000010000Z", for permanently locked accounts
+        if ( "000001010000Z".equals( value ) )
+        {
+            return value;
+        }
         
         try
         {
