@@ -449,7 +449,16 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
                 {
                     for ( Value value : modification.getAttribute() )
                     {
-                        localValuesLength += 1 + TLV.getNbBytes( value.getBytes().length ) + value.getBytes().length;
+                        byte[] valueBytes = value.getBytes();
+                        
+                        if ( valueBytes != null )
+                        {
+                            localValuesLength += 1 + TLV.getNbBytes( valueBytes.length ) + valueBytes.length;
+                        }
+                        else
+                        {
+                            localValuesLength += 1 + 1;
+                        }
                     }
                 }
 
