@@ -33,7 +33,7 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DnComparator extends LdapComparator<Object>
+public class ParsedDnComparator extends LdapComparator<Object>
 {
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
@@ -41,30 +41,9 @@ public class DnComparator extends LdapComparator<Object>
     /** A reference to the schema manager */
     private transient SchemaManager schemaManager;
 
-    public DnComparator( String oid )
+    public ParsedDnComparator( String oid )
     {
         super( oid );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public int compare( String dn1, String dn2 )
-    {
-        if ( dn1 == null )
-        {
-            if ( dn2 == null )
-            {
-                return 0;
-            }
-            else
-            {
-                return -1;
-            }
-        }
-        
-        return dn1.compareTo( dn2 );
     }
 
 
@@ -74,11 +53,6 @@ public class DnComparator extends LdapComparator<Object>
     @Override
     public int compare( Object obj0, Object obj1 )
     {
-        if ( ( obj0 instanceof String ) && ( obj1 instanceof String ) )
-        {
-            return compare( ( String ) obj0, ( String ) obj1 );
-        }
-        
         Dn dn0 = null;
         Dn dn1 = null;
 
