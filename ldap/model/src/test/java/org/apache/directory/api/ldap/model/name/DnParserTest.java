@@ -682,7 +682,7 @@ public class DnParserTest
     
     @Test
     @Ignore
-    public void testDnParsing() throws LdapInvalidDnException
+    public void testDnParsingPerf() throws LdapInvalidDnException
     {
         long[] deltas = new long[10];
         
@@ -786,7 +786,7 @@ public class DnParserTest
     
     @Test
     @Ignore
-    public void testDnParsingOneRdn() throws LdapInvalidDnException
+    public void testDnParsingOneRdnPerf() throws LdapInvalidDnException
     {
         long t0 = System.currentTimeMillis();
         

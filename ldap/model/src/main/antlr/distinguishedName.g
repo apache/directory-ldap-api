@@ -325,20 +325,15 @@ relativeDistinguishedName [SchemaManager schemaManager, Rdn rdn]
             
             attributeType = currentAva.getAttributeType();
             
-            if ( attributeType != null )
-            {
-                rdnNormStr.append( attributeType.getOid() );
-            }
-            else
+            if ( schemaManager == null )
             {
                 rdnNormStr.append( currentAva.getNormType() );
+                rdnNormStr.append( '=' );
             }
-            
-            rdnNormStr.append( '=' );
             
             val = currentAva.getValue();
             
-            if ( ( val != null ) && ( val.getNormalized() != null ) )
+            if ( ( schemaManager == null ) && ( val != null ) && ( val.getNormalized() != null ) )
             {
                 rdnNormStr.append( val.getNormalized() );
             }
@@ -347,7 +342,12 @@ relativeDistinguishedName [SchemaManager schemaManager, Rdn rdn]
             PLUS 
             { 
                 rdnStr.append( '+' ); 
-                rdnNormStr.append( '+' );
+                
+                if ( schemaManager == null )
+                {
+                    rdnNormStr.append( '+' );
+                }
+                
                 avaPos++;
             }
 
@@ -357,20 +357,15 @@ relativeDistinguishedName [SchemaManager schemaManager, Rdn rdn]
                 currentAva = rdn.getAva( avaPos );
                 attributeType = currentAva.getAttributeType();
             
-                if ( attributeType != null )
-                {
-                    rdnNormStr.append( attributeType.getOid() );
-                }
-                else
+                if ( schemaManager == null )
                 {
                     rdnNormStr.append( tmp );
+                    rdnNormStr.append( '=' );
                 }
-            
-                rdnNormStr.append( '=' );
             
                 val = currentAva.getValue();
             
-                if ( ( val != null ) && ( val.getNormalized() != null ) )
+                if ( ( schemaManager == null ) &&( val != null ) && ( val.getNormalized() != null ) )
                 {
                     rdnNormStr.append( val.getNormalized() );
                 }
@@ -380,6 +375,35 @@ relativeDistinguishedName [SchemaManager schemaManager, Rdn rdn]
     {
         rdn.hashCode();
         rdn.setUpName( rdnStr.toString() );
+        
+        if ( schemaManager != null )
+        {
+            // process the multi-value RDN, ordering them by attributes
+            boolean isFirst = true;
+            
+            for ( Ava ava : rdn )
+            {
+                if ( isFirst )
+                {
+                    isFirst = false;
+                }
+                else
+                {
+                    rdnNormStr.append( '+' );
+                }
+                
+                rdnNormStr.append( ava.getAttributeType().getOid() );
+                rdnNormStr.append( '=' );
+                
+                val = ava.getValue();
+
+                if ( ( val != null ) && ( val.getNormalized() != null ) )
+                {
+                    rdnNormStr.append( val.getNormalized() );
+                }
+            }
+        }
+        
         rdn.setNormName( rdnNormStr.toString() );
     }
     ;
