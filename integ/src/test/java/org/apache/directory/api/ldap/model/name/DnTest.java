@@ -2038,7 +2038,7 @@ public class DnTest
 
         Dn result = new Dn( schemaManager, name );
 
-        assertEquals( "ou=Some   People+domainComponent=And   Some anImAls,DomainComponent=eXample,0.9.2342.19200300.100.1.25=cOm",
+        assertEquals( "domainComponent=And   Some anImAls+ou=Some   People,DomainComponent=eXample,0.9.2342.19200300.100.1.25=cOm",
             result.getEscaped() );
         assertEquals( "ou= Some   People   + domainComponent=  And   Some anImAls,DomainComponent = eXample,0.9.2342.19200300.100.1.25= cOm",
             result.getName() );
@@ -2468,6 +2468,19 @@ public class DnTest
         Dn dn = new Dn( "a=b+c=d+e=f,g=h" );
 
         assertEquals( "a=b+c=d+e=f,g=h", dn.toString() );
+    }
+
+
+    @Test
+    public void testCompositeRDNShemaAware() throws LdapException
+    {
+        Dn dn1 = new Dn( schemaManager, "cn=abc + cn=def + cn=ghi, ou=system" );
+        Dn dn2 = new Dn( schemaManager, "cn=def + cn=abc + cn=ghi, ou=system" );
+        Dn dn3 = new Dn( schemaManager, "cn=ghi + cn=def + cn=abc, ou=system" );
+
+        assertEquals( dn1, dn2 );
+        assertEquals( dn1, dn3 );
+        assertEquals( dn2, dn3 );
     }
 
 
@@ -2988,11 +3001,18 @@ public class DnTest
     {
         new Dn( schemaManager, "cn=\\#\\\\\\+\\, \\\"φι\\\",ou=users,ou=system" );
     }
+
     
+    @Test
+    public void testSameAttributeInDn() throws LdapInvalidDnException
+    {
+        Dn dn = new Dn( "l=eu + l=de + l=Berlin + l=Brandenburger Tor,dc=example,dc=org" );
+    }
+
     
     @Test
     @Ignore
-    public void testDnParsing() throws LdapInvalidDnException
+    public void testDnParsingPerf() throws LdapInvalidDnException
     {
         long[] deltas = new long[10];
         long allDeltas = 0L;
@@ -3096,7 +3116,7 @@ public class DnTest
     
     @Test
     @Ignore
-    public void testDnParsingOneRdn() throws LdapInvalidDnException
+    public void testDnParsingOneRdnPerf() throws LdapInvalidDnException
     {
         long t0 = System.currentTimeMillis();
         
