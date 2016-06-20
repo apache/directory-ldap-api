@@ -1047,6 +1047,12 @@ public class Dn implements Iterable<Rdn>, Externalizable
             return false;
         }
 
+        // Shortcut if the Dn is normalized
+        if ( isSchemaAware() )
+        {
+            return normName.equals( other.normName );
+        }
+        
         for ( int i = 0; i < this.size(); i++ )
         {
             if ( !other.rdns.get( i ).equals( rdns.get( i ) ) )

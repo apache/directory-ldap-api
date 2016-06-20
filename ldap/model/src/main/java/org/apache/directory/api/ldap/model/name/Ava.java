@@ -413,6 +413,8 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         
         this.upName = upName;
     }
+    
+    
     /**
      * Construct an Ava. The type and value are normalized :
      * <li> the type is trimmed and lowercased </li>

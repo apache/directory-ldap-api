@@ -481,34 +481,34 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                     
                     List<Ava> avaList = avaTypes.get( tmpAva.getNormType() );
                     
-                    if ( avaList == null )
+                    boolean empty = avaList == null;
+                    avaList = addOrdered( avaList, tmpAva );
+                    
+                    if ( empty )
                     {
-                        avaList = new ArrayList<>();
-                        avaList.add( tmpAva );
                         avaTypes.put( tmpAva.getNormType(), avaList );
-                        avas.add( tmpAva );
-                    }
-                    else if ( !avaList.contains( tmpAva ) )
-                    {
-                        avaList.add( tmpAva );
-                        avas.add( tmpAva );
                     }
                     
+                    addOrdered( avas, tmpAva );
+                }
+                
+                for ( Ava ava : avas )
+                {
                     if ( isFirst )
                     {
                         isFirst = false;
                     }
                     else
                     {
-                        sb.append( ',' );
+                        sb.append( '+' );
                     }
                     
-                    sb.append( currentAva.getNormType() );
+                    sb.append( ava.getNormType() );
                     sb.append( '=' );
                     
-                    if ( ( currentAva.getValue() != null ) && ( currentAva.getValue().getNormalized() != null ) )
+                    if ( ( ava.getValue() != null ) && ( ava.getValue().getNormalized() != null ) )
                     {
-                        sb.append( currentAva.getValue().getNormalized() );
+                        sb.append( ava.getValue().getNormalized() );
                     }
                 }
 
@@ -519,6 +519,56 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
                 return;
         }
+    }
+    
+    
+    /**
+     * Add an AVA in a List of Ava, at the right place (ordered)
+     */
+    private List<Ava> addOrdered( List<Ava> avaList, Ava newAva )
+    {
+        if ( avaList == null )
+        {
+            avaList = new ArrayList<>();
+        }
+        
+        if ( avaList.size() == 0 )
+        {
+            avaList.add( newAva );
+            return avaList;
+        }
+        
+        // Insert the AVA in the list, ordered.
+        int pos = 0;
+        boolean found = false;
+        
+        for ( Ava avaElem : avaList )
+        {
+            int comp = newAva.compareTo( avaElem );
+                
+            if ( comp < 0 )
+            {
+                avaList.add( pos, newAva );
+                found = true;
+                break;
+            }
+            else if ( comp == 0 )
+            {
+                found = true;
+                break;
+            }
+            else 
+            {
+                pos++;
+            }
+        }
+        
+        if ( !found )
+        {
+            avaList.add( newAva );
+        }
+        
+        return avaList;
     }
 
 
@@ -702,10 +752,31 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 else
                 {
                     // We have at least one Ava with the same type, check if it's the same value
-                    if ( !avaList.contains( addedAva ) )
+                    addOrdered( avaList, addedAva );
+                    
+                    boolean found = false;
+                    
+                    for ( int pos = 0; pos < avas.size(); pos++ )
                     {
-                        // Ok, we can add it
-                        avaList.add( addedAva );
+                        int comp = addedAva.compareTo( avas.get( pos ) );
+                        
+                        if ( comp < 0 )
+                        {
+                            avas.add( pos, addedAva );
+                            found = true;
+                            nbAvas++;
+                            break;
+                        }
+                        else if ( comp == 0 )
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+                    
+                    // Ok, we can add it at the end if we haven't already added it
+                    if ( !found )
+                    {
                         avas.add( addedAva );
                         nbAvas++;
                     }
@@ -2019,27 +2090,11 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 }
                 
             default :
-                // Loop on all the Avas. As we have more than one,
-                // we have to order them by their AttributeType.
-                /*
+                // Loop on all the Avas. We expect the Ava to be ordered
                 if ( isSchemaAware() )
                 {
-                    for ( Ava otherAva : otherRdn )
-                    {
-                        List<Ava> attributeAvas = avaTypes.get( otherAva.getAttributeType().getOid() );
-                        boolean found = false;
-                        
-                        for ( Ava thisAva : attributeAvas )
-                        {
-                            if ( thisAva.compareTo( otherAva ) == 0 )
-                            {
-                                found = true;
-                                break;
-                            }
-                        }
-                    }
+                    return normName.compareTo( otherRdn.normName );
                 }
-                */
                 
                 int pos = 0;
                 
