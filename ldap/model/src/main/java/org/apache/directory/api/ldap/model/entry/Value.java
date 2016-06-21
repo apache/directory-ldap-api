@@ -262,6 +262,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         {
             bytes = null;
         }
+        
         try
         {
             computeNormValue();
@@ -271,6 +272,70 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
             LOG.error( le.getMessage() );
             throw new IllegalArgumentException( "Invalid upValue, it can't be normalized" );
         }
+        
+        if ( !attributeType.isRelaxed() )
+        {
+            // Check the value
+            if ( attributeType.getSyntax().getSyntaxChecker() != null )
+            {
+                if ( !attributeType.getSyntax().getSyntaxChecker().isValidSyntax( upValue ) )
+                {
+                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, "Invalid upValue per syntax" );
+                }
+            }
+            else
+            {
+                // We should always have a SyntaxChecker
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_04139_NULL_SYNTAX_CHECKER, normValue ) );
+            }
+        }
+        
+        hashCode();
+    }
+    
+    
+    /**
+     * Creates a schema aware StringValue with an initial user provided String value and 
+     * its normalized Value
+     *
+     * @param attributeType the schema type associated with this StringValue
+     * @param upValue the value to wrap
+     * @param normValue the normalized value to wrap
+     * @throws LdapInvalidAttributeValueException If the added value is invalid accordingly
+     * to the schema
+     */
+    public Value( AttributeType attributeType, String upValue, String normValue ) throws LdapInvalidAttributeValueException
+    {
+        // The AttributeType must have a Syntax
+        if ( attributeType != null )
+        {
+            if ( attributeType.getSyntax() == null )
+            {
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
+            }
+            else
+            {
+                isHR = attributeType.getSyntax().isHumanReadable();
+            }
+        }
+        else
+        {
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04488_NULL_ATTRIBUTE_TYPE ) );
+        }
+
+        this.attributeType = attributeType;
+        this.upValue = upValue;
+        
+        if ( upValue != null )
+        {
+            bytes = Strings.getBytesUtf8( upValue );
+        }
+        else
+        {
+            bytes = null;
+        }
+        
+        this.normValue = normValue;
         
         if ( !attributeType.isRelaxed() )
         {
