@@ -369,7 +369,10 @@ public final class FilterParser
 
                 if ( attributeType == null )
                 {
-                    return new Value( Strings.utf8ToString( value, current ) );
+                    byte[] bytes = new byte[current];
+                    System.arraycopy( value, 0, bytes, 0, current );
+                    
+                    return new Value( bytes );
                 }
 
                 if ( attributeType.getSyntax().isHumanReadable() )
@@ -386,7 +389,10 @@ public final class FilterParser
             }
             else
             {
-                return new Value( Strings.utf8ToString( value, current ) );
+                byte[] bytes = new byte[current];
+                System.arraycopy( value, 0, bytes, 0, current );
+                
+                return new Value( bytes );
             }
         }
         else
@@ -712,7 +718,7 @@ public final class FilterParser
                         }
                         else
                         {
-                            return new EqualityNode( attribute, value.getValue() );
+                            return new EqualityNode( attribute, value.getBytes() );
                         }
                         
                     case '*' :
@@ -1001,7 +1007,6 @@ public final class FilterParser
                 // This is an item
                 node = parseItem( schemaManager, filterBytes, pos, b, relaxed );
                 break;
-
         }
 
         return node;
