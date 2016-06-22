@@ -2001,8 +2001,11 @@ public class DefaultAttribute implements Attribute, Cloneable
     @Override
     public void writeExternal( ObjectOutput out ) throws IOException
     {
-        // Write the UPId (the id will be deduced from the upID)
+        // Write the UPId
         out.writeUTF( upId );
+        
+        // Write the ID
+        out.writeUTF( id );
 
         // Write the HR flag, if not null
         if ( isHR != null )
@@ -2041,8 +2044,11 @@ public class DefaultAttribute implements Attribute, Cloneable
         // Read the ID and the UPId
         upId = in.readUTF();
 
-        // Compute the id
-        setUpId( upId );
+        // Read the id
+        id = in.readUTF();
+        
+        // We could have computed it, but it costs more than reading it from the disk...
+        //setUpIdInternal( upId );
 
         // Read the HR flag, if not null
         if ( in.readBoolean() )
