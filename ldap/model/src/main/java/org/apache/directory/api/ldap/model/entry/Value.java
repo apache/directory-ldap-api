@@ -1282,7 +1282,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
                         }
                     }
                     
-                    String thisNormValue = normalizer.normalize( normValue );
+                    String thisNormValue = normValue;
                     String otherNormValue = normalizer.normalize( other );
                         
                     // Compare normalized values
