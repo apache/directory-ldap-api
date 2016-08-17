@@ -2999,7 +2999,7 @@ public class DnTest
     @Test
     public void testRdnStudio() throws LdapInvalidDnException
     {
-        new Dn( schemaManager, "cn=\\#\\\\\\+\\, \\\"φι\\\",ou=users,ou=system" );
+        new Dn( schemaManager, "cn=\\#\\\\\\+\\, \\\"\u00f6\u00e9\\\",ou=users,ou=system" );
     }
 
     
