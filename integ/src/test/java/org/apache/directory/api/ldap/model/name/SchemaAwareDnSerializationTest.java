@@ -34,10 +34,6 @@ import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
