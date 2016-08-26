@@ -171,7 +171,7 @@ public interface Asn1Container
     /**
      * @param decodedBytes The number of decoded bytes for this message.
      */
-    void setDecodedBytes( int decodeBytes );
+    void setDecodedBytes( int decodedBytes );
 
 
     /**
@@ -199,7 +199,6 @@ public interface Asn1Container
      * Move backward in the stream to the first byte for a given TLV. This is useful when we have
      * read some Tag and Length in order to define the next transition, and if this transition
      * do a grammar switch.
-     * @param tlv The TLV to roll-back
      */
     void rewind();
 

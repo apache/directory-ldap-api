@@ -28,141 +28,139 @@ package org.apache.directory.api.asn1.ber.tlv;
  * <p>
  * These tags can have one of the following values:
  * </p>
- * <p>
- * </p>
- * <table border="1" cellspacing="1" width="60%">
- * <tr>
- * <th>Id</th>
- * <th>Usage</th>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 0]</td>
- * <td>reserved for BER</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 1]</td>
- * <td>BOOLEAN</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 2]</td>
- * <td>INTEGER</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 3]</td>
- * <td>BIT STRING</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 4]</td>
- * <td>OCTET STRING</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 5]</td>
- * <td>NULL</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 6]</td>
- * <td>OBJECT IDENTIFIER</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 7]</td>
- * <td>ObjectDescriptor</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 8]</td>
- * <td>EXTERNAL, INSTANCE OF</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 9]</td>
- * <td>REAL</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 10]</td>
- * <td>ENUMERATED</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 11]</td>
- * <td>EMBEDDED PDV</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 12]</td>
- * <td>UTF8String</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 13]</td>
- * <td>RELATIVE-OID</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 14]</td>
- * <td>reserved for future use</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 15]</td>
- * <td>reserved for future use</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 16]</td>
- * <td>SEQUENCE, SEQUENCE OF</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 17]</td>
- * <td>SET, SET OF</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 18]</td>
- * <td>NumericString</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 19]</td>
- * <td>PrintableString</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 20]</td>
- * <td>TeletexString, T61String</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 21]</td>
- * <td>VideotexString</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 22]</td>
- * <td>IA5String</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 23]</td>
- * <td>UTCTime</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 24]</td>
- * <td>GeneralizedTime</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 25]</td>
- * <td>GraphicString</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 26]</td>
- * <td>VisibleString, ISO646String</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 27]</td>
- * <td>GeneralString</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 28]</td>
- * <td>UniversalString</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 29]</td>
- * <td>CHARACTER STRING</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 30]</td>
- * <td>BMPString</td>
- * </tr>
- * <tr>
- * <td>[UNIVERSAL 31]</td>
- * <td>reserved for future use</td>
- * </tr>
+ * <table border="1" cellspacing="1" width="60%" summary="ASN.1 tags">
+ *   <tr>
+ *     <th>Id</th>
+ *     <th>Usage</th>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 0]</td>
+ *     <td>reserved for BER</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 1]</td>
+ *     <td>BOOLEAN</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 2]</td>
+ *     <td>INTEGER</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 3]</td>
+ *     <td>BIT STRING</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 4]</td>
+ *     <td>OCTET STRING</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 5]</td>
+ *     <td>NULL</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 6]</td>
+ *     <td>OBJECT IDENTIFIER</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 7]</td>
+ *     <td>ObjectDescriptor</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 8]</td>
+ *     <td>EXTERNAL, INSTANCE OF</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 9]</td>
+ *     <td>REAL</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 10]</td>
+ *     <td>ENUMERATED</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 11]</td>
+ *     <td>EMBEDDED PDV</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 12]</td>
+ *     <td>UTF8String</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 13]</td>
+ *     <td>RELATIVE-OID</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 14]</td>
+ *     <td>reserved for future use</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 15]</td>
+ *     <td>reserved for future use</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 16]</td>
+ *     <td>SEQUENCE, SEQUENCE OF</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 17]</td>
+ *     <td>SET, SET OF</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 18]</td>
+ *     <td>NumericString</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 19]</td>
+ *     <td>PrintableString</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 20]</td>
+ *     <td>TeletexString, T61String</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 21]</td>
+ *     <td>VideotexString</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 22]</td>
+ *     <td>IA5String</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 23]</td>
+ *     <td>UTCTime</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 24]</td>
+ *     <td>GeneralizedTime</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 25]</td>
+ *     <td>GraphicString</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 26]</td>
+ *     <td>VisibleString, ISO646String</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 27]</td>
+ *     <td>GeneralString</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 28]</td>
+ *     <td>UniversalString</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 29]</td>
+ *     <td>CHARACTER STRING</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 30]</td>
+ *     <td>BMPString</td>
+ *   </tr>
+ *   <tr>
+ *     <td>[UNIVERSAL 31]</td>
+ *     <td>reserved for future use</td>
+ *   </tr>
  * </table>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
