@@ -377,6 +377,9 @@ public final class Strings
      * more efficient.
      *
      * @see Strings#deepTrim( String )
+     * 
+     * @param string The String to modify
+     * @return The modified String
      */
     public static String deepTrimToLower( String string )
     {
@@ -531,8 +534,8 @@ public final class Strings
      * This method is used to insert HTML block dynamically
      *
      * @param source the HTML code to be processes
-     * @param replaceNl if true '\n' will be replaced by &lt;br>
-     * @param replaceTag if true '<' will be replaced by &lt; and '>' will be replaced
+     * @param replaceNl if true '\n' will be replaced by &lt;br@gt;
+     * @param replaceTag if true '&lt;' will be replaced by &lt; and '&gt;' will be replaced
      *            by &gt;
      * @param replaceQuote if true '\"' will be replaced by &quot;
      * @return the formated html block
@@ -1088,6 +1091,7 @@ public final class Strings
      * </pre>
      *
      * @param chars the chars array to be trimmed, may be null
+     * @param pos The position in the char[]
      * @return the position of the first char which is not a space, or the last
      *         position of the array.
      */
@@ -1195,6 +1199,7 @@ public final class Strings
      * </pre>
      *
      * @param bytes the byte array to be trimmed, may be null
+     * @param pos The position in the byte[]
      * @return the position of the first byte which is not a space, or the last
      *         position of the array.
      */
@@ -1315,6 +1320,7 @@ public final class Strings
      * </pre>
      *
      * @param chars the chars array to be trimmed, may be null
+     * @param pos The position in the char[]
      * @return the position of the first char which is not a space, or the last
      *         position of the array.
      */
@@ -1350,6 +1356,7 @@ public final class Strings
      * </pre>
      *
      * @param string the string to be trimmed, may be null
+     * @param pos The position in the String
      * @return the position of the first char which is not a space, or the last
      *         position of the string.
      */
@@ -1390,6 +1397,7 @@ public final class Strings
      * </pre>
      *
      * @param bytes the byte array to be trimmed, may be null
+     * @param pos The position in the byte[]
      * @return the position of the first char which is not a space, or the last
      *         position of the byte array.
      */
@@ -1437,6 +1445,7 @@ public final class Strings
      * </pre>
      *
      * @param bytes the byte array to be trimmed, may be null
+     * @param pos The position in the byte[]
      * @return the position of the first char which is not a space, or the last
      *         position of the array.
      */
@@ -1898,7 +1907,7 @@ public final class Strings
      *
      * @param value The String to uppercase
      * @return The uppercase string
-     * @deprecated Use {@link toUpperCaseAscii(String)}
+     * @deprecated Use {@link #toUpperCaseAscii(String)}
      */
     public static String toUpperCase( String value )
     {
@@ -1946,7 +1955,7 @@ public final class Strings
 
     /**
      * <p>
-     * Converts a String to upper case as per {@link String#toUpperCase( Locale.ROOT )}.
+     * Converts a String to upper case as per {@link String#toUpperCase( Locale )}.
      * </p>
      * <p>
      * A <code>null</code> input String returns <code>null</code>.
@@ -2288,7 +2297,7 @@ public final class Strings
      * Create a new UUID using a long as the least significant bits
      * 
      * @param value The least significant bits.
-     * @return
+     * @return The created UUID
      */
     public static String getUUID( long value )
     {

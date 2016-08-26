@@ -49,6 +49,8 @@ public final class OsgiUtils
      * classpath. The provided filter if not null is used to prune classpath
      * elements. Any uses terms found are stripped from the bundles.
      *
+     * @param filter The filter to use on the files
+     * @param pkgs The set of packages to use
      * @return All the exported packages of all bundles on the classpath.
      */
     public static Set<String> getAllBundleExports( FileFilter filter, Set<String> pkgs )
@@ -79,10 +81,11 @@ public final class OsgiUtils
 
 
     /**
-     * Splits an Package-Export OSGi Manifest Attribute value into packages
+     * Splits a Package-Export OSGi Manifest Attribute value into packages
      * while stripping away the key/value properties.
      *
      * @param exports The Package-Export OSGi Manifest Attribute value.
+     * @param pkgs The set that will contain the found packages.
      * @return The set of exported packages without properties.
      */
     public static Set<String> splitIntoPackages( String exports, Set<String> pkgs )
@@ -138,6 +141,12 @@ public final class OsgiUtils
     }
 
 
+    /**
+     * Get the files that fits a given filter
+     *
+     * @param filter The filter in use
+     * @return The set of Files that match the filter
+     */
     public static Set<File> getClasspathCandidates( FileFilter filter )
     {
         Set<File> candidates = new HashSet<File>();

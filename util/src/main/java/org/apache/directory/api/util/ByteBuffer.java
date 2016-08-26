@@ -89,6 +89,8 @@ public class ByteBuffer
      * Get's the bytes, the backing store for this buffer.  Note
      * that you need to use the position index to determine where
      * to stop reading from this buffer.
+     * 
+     * @return The interned Byte[]
      */
     public final byte[] buffer()
     {
@@ -98,6 +100,8 @@ public class ByteBuffer
 
     /**
      * Get's a copy of the bytes used.
+     * 
+     * @return A copy of the interned Byte[]
      */
     public final byte[] copyOfUsedBytes()
     {
@@ -109,6 +113,8 @@ public class ByteBuffer
 
     /**
      * Appends the bytes to this buffer.
+     * 
+     * @param bytes The byte[] to append to the buffer
      */
     public final void append( byte[] bytes )
     {
@@ -124,6 +130,8 @@ public class ByteBuffer
 
     /**
      * Appends a byte to this buffer.
+     * 
+     * @param b The byte to append to the buffer
      */
     public final void append( byte b )
     {
@@ -140,6 +148,8 @@ public class ByteBuffer
     /**
      * Appends an int to this buffer.  WARNING: the int is truncated to 
      * a byte value.
+     * 
+     * @param val The integer to append to the buffer
      */
     public final void append( int val )
     {

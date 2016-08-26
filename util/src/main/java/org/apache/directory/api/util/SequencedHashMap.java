@@ -244,6 +244,8 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
      * Construct a new sequenced hash map and add all the elements in the
      * specified map. The order in which the mappings in the specified map are
      * added is defined by {@link #putAll(Map)}.
+     * 
+     * @param m The original map
      */
     public SequencedHashMap( Map m )
     {

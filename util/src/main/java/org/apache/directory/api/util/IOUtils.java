@@ -234,7 +234,6 @@ public final class IOUtils
      * 
      * @param charset The name of the requested charset, may be null.
      * @return a Charset for the named charset
-     * @throws UnsupportedCharsetException If the named charset is unavailable
      */
     public static Charset toCharset( String charset )
     {
@@ -609,7 +608,6 @@ public final class IOUtils
      *            the reader to wrap or return (not null)
      * @return the given reader or a new {@link BufferedReader} for the given reader
      * @since 2.2
-     * @see #buffer(Reader)
      * @throws NullPointerException if the input parameter is null
      */
     public static BufferedReader toBufferedReader( Reader reader ) 

@@ -110,7 +110,7 @@ public final class FileUtils
      * only if the specific file is.
      * <p>
      * <b>Note:</b> the current implementation always returns {@code false} if the system
-     * is detected as Windows using {@link FilenameUtils#isSystemWindows()}
+     * is detected as Windows.
      * <p>
      * For code that runs on Java 1.7 or later, use the following method instead:
      * <br>
@@ -301,9 +301,6 @@ public final class FileUtils
      * @param encoding the encoding to use, {@code null} means platform default
      * @return the file contents, never {@code null}
      * @throws IOException in case of an I/O error
-     * @throws UnsupportedCharsetException
-     *             thrown instead of {@link UnsupportedEncodingException} in version 2.2 if the encoding is not
-     *             supported.
      * @since 2.3
      */
     public static String readFileToString( File file, String encoding ) throws IOException
@@ -369,7 +366,7 @@ public final class FileUtils
      * @param file  the file to write
      * @param data  the content to write to the file
      * @throws IOException in case of an I/O error
-     * @deprecated 2.5 use {@link #writeStringToFile(File, String, Charset)} instead
+     * @deprecated 2.5 use {@link #writeStringToFile(File, String, Charset, boolean)} instead
      */
     @Deprecated
     public static void writeStringToFile( File file, String data ) throws IOException
@@ -554,7 +551,6 @@ public final class FileUtils
      * @throws IOException if source or destination is invalid
      * @throws IOException if an IO error occurs during copying
      * @throws IOException if the output file length is not the same as the input file length after the copy completes
-     * @see #copyFileToDirectory(File, File)
      * @see #copyFile(File, File, boolean)
      */
     public static void copyFile( File srcFile, File destFile ) throws IOException
@@ -586,7 +582,6 @@ public final class FileUtils
      * @throws IOException if source or destination is invalid
      * @throws IOException if an IO error occurs during copying
      * @throws IOException if the output file length is not the same as the input file length after the copy completes
-     * @see #copyFileToDirectory(File, File, boolean)
      * @see #doCopyFile(File, File, boolean)
      */
     public static void copyFile( File srcFile, File destFile, boolean preserveFileDate ) throws IOException

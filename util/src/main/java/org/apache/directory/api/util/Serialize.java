@@ -41,6 +41,7 @@ public final class Serialize
      * @param value The value to serialize
      * @param buffer The buffer to store the value into
      * @param pos The position where we serialize the integer
+     * @return The new position in the byte[]
      */
     public static int serialize( int value, byte[] buffer, int pos )
     {
@@ -64,6 +65,7 @@ public final class Serialize
      * @param value The value to serialize
      * @param buffer The buffer to store the value into
      * @param pos The position where we serialize the byte[]
+     * @return The new position in the byte[]
      */
     public static int serialize( byte[] value, byte[] buffer, int pos )
     {
