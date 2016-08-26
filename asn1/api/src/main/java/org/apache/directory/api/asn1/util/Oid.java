@@ -23,6 +23,7 @@ package org.apache.directory.api.asn1.util;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 import org.apache.directory.api.asn1.DecoderException;
@@ -57,7 +58,7 @@ import org.apache.directory.api.i18n.I18n;
  * <p><b>8.19.4</b> The numerical value of the first subidentifier is derived 
  * from the values of the first two object identifier components in the object 
  * identifier value being encoded, using the formula:
- * <br /><code>(X*40) + Y</code><br /> 
+ * <br><code>(X*40) + Y</code><br> 
  * where X is the value of the first object identifier component and Y is the 
  * value of the second object identifier component. <i>NOTE – This packing of 
  * the first two object identifier components recognizes that only three values 
@@ -1368,9 +1369,8 @@ public final class Oid
      * to prevent the creation of copies of the actual <code>byte[]</code>.
      * 
      * @param buffer The buffer to write the bytes into
-     * @throws IOException If we can't inject the OID into a ByteBuffer 
      */
-    public void writeBytesTo( java.nio.ByteBuffer buffer )
+    public void writeBytesTo( ByteBuffer buffer )
     {
         buffer.put( oidBytes );
     }

@@ -200,7 +200,7 @@ public class BitString
     /**
      * Get the bit stored into the BitString at a specific position.
      * The bits are stored from left to right, the LSB on the left and the
-     * MSB on the right.<br/>
+     * MSB on the right.<br>
      * For instance, if we have 10 bits, then they are coded as
      * b0 b1 b2 b3 - b4 b5 b6 b7 - b8 b9 x x - x x x x
      * <pre>
