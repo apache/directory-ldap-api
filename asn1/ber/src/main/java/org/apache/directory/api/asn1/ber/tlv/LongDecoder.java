@@ -82,6 +82,10 @@ public final class LongDecoder
     /**
      * Helper method used to parse the long. We don't check any minimal or maximal
      * bound.
+     * 
+     * @param value The value to parse to a long
+     * @return The decoded long
+     * @throws LongDecoderException If we failed to decode a long
      */
     public static long parseLong( BerValue value ) throws LongDecoderException
     {
