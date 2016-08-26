@@ -129,7 +129,7 @@ public final class Hex
      *
      * @param str the string to decode
      * @return the decoded string
-     * @throws InvalidNameException
+     * @throws InvalidNameException If we can't decode the String to an UTF-8 String
      */
     public static String decodeHexString( String str ) throws InvalidNameException
     {
@@ -165,6 +165,7 @@ public final class Hex
      *
      * @param str the string containing hex escapes
      * @return the converted byte[]
+     * @throws InvalidNameException If we can't convert the String to a byte[]
      */
     public static byte[] convertEscapedHex( String str ) throws InvalidNameException
     {

@@ -73,41 +73,40 @@ import org.apache.directory.api.i18n.I18n;
  *     g-differential  = ( MINUS / PLUS ) hour [ minute ]
  *     MINUS           = %x2D  ; minus sign ("-")
  *
- *  The <DOT>, <COMMA>, and <PLUS> rules are defined in [RFC4512].
+ *  The &lt;DOT&gt;, &lt;COMMA&gt;, and &lt;PLUS&gt; rules are defined in [RFC4512].
  *
  *  The above ABNF allows character strings that do not represent valid
  *  dates (in the Gregorian calendar) and/or valid times (e.g., February
  *  31, 1994).  Such character strings SHOULD be considered invalid for
  *  this syntax.
- *
+ * <br>
  *  The time value represents coordinated universal time (equivalent to
- *  Greenwich Mean Time) if the "Z" form of <g-time-zone> is used;
+ *  Greenwich Mean Time) if the "Z" form of &lt;g-time-zone&gt; is used;
  *  otherwise, the value represents a local time in the time zone
- *  indicated by <g-differential>.  In the latter case, coordinated
+ *  indicated by &lt;g-differential&gt;.  In the latter case, coordinated
  *  universal time can be calculated by subtracting the differential from
- *  the local time.  The "Z" form of <g-time-zone> SHOULD be used in
- *  preference to <g-differential>.
- *
- *  If <minute> is omitted, then <fraction> represents a fraction of an
- *  hour; otherwise, if <second> and <leap-second> are omitted, then
- *  <fraction> represents a fraction of a minute; otherwise, <fraction>
+ *  the local time.  The "Z" form of &lt;g-time-zone&gt; SHOULD be used in
+ *  preference to &lt;g-differential&gt;.
+ *  <br>
+ *  If &lt;minute&gt; is omitted, then &lt;fraction&gt; represents a fraction of an
+ *  hour; otherwise, if &lt;second&gt; and &lt;leap-second&gt; are omitted, then
+ *  &lt;fraction&gt; represents a fraction of a minute; otherwise, &lt;fraction&gt;
  *  represents a fraction of a second.
  *
  *     Examples:
  *        199412161032Z
  *        199412160532-0500
- *
+ *  
  *  Both example values represent the same coordinated universal time:
  *  10:32 AM, December 16, 1994.
- *
+ *  <br>
  *  The LDAP definition for the Generalized Time syntax is:
- *
+ *  
  *     ( 1.3.6.1.4.1.1466.115.121.1.24 DESC 'Generalized Time' )
- *
+ *  
  *  This syntax corresponds to the GeneralizedTime ASN.1 type from
  *  [ASN.1], with the constraint that local time without a differential
  *  SHALL NOT be used.
- *
  * </pre>
  */
 public class GeneralizedTime implements Comparable<GeneralizedTime>
@@ -201,6 +200,22 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     public GeneralizedTime( Calendar calendar )
     {
         setUp( calendar );
+    }
+
+
+    private void setUp( Calendar newCalendar )
+    {
+        if ( newCalendar == null )
+        {
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04358 ) );
+        }
+
+        this.calendar = newCalendar;
+        upGeneralizedTime = null;
+        upFormat = Format.YEAR_MONTH_DAY_HOUR_MIN_SEC_FRACTION;
+        upTimeZoneFormat = TimeZoneFormat.Z;
+        upFractionDelimiter = FractionDelimiter.DOT;
+        upFractionLength = 3;
     }
 
 
@@ -348,22 +363,6 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
 
         calendar.setLenient( true );
-    }
-
-
-    private void setUp( Calendar newCalendar )
-    {
-        if ( newCalendar == null )
-        {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04358 ) );
-        }
-
-        this.calendar = newCalendar;
-        upGeneralizedTime = null;
-        upFormat = Format.YEAR_MONTH_DAY_HOUR_MIN_SEC_FRACTION;
-        upTimeZoneFormat = TimeZoneFormat.Z;
-        upFractionDelimiter = FractionDelimiter.DOT;
-        upFractionLength = 3;
     }
 
 
@@ -778,6 +777,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
                 result[pos++] = ( byte ) ( ( millisecond / 10 ) + '0' );
 
+                //if ( millisecond > 0 )
                 result[pos++] = ( byte ) ( ( millisecond % 10 ) + '0' );
 
                 break;
@@ -970,61 +970,87 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
      * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    @Override
     public int compareTo( GeneralizedTime other )
     {
         return calendar.compareTo( other.calendar );
     }
 
 
+    /**
+     * @return A Date representing the time as milliseconds
+     */
     public long getTime()
     {
         return calendar.getTimeInMillis();
     }
 
 
+    /**
+     * @return A Date representing the time
+     */
     public Date getDate()
     {
         return calendar.getTime();
     }
 
 
+    /**
+     * @return The year part of the date
+     */
     public int getYear()
     {
         return calendar.get( Calendar.YEAR );
     }
 
 
+    /**
+     * @return The month part of the date
+     */
     public int getMonth()
     {
         return calendar.get( Calendar.MONTH );
     }
 
 
+    /**
+     * @return The day part of the date
+     */
     public int getDay()
     {
         return calendar.get( Calendar.DATE );
     }
 
 
+    /**
+     * @return The hours part of the date
+     */
     public int getHour()
     {
         return calendar.get( Calendar.HOUR_OF_DAY );
     }
 
 
+    /**
+     * @return The minutes part of the date
+     */
     public int getMinutes()
     {
         return calendar.get( Calendar.MINUTE );
     }
 
 
+    /**
+     * @return The seconds part of the date
+     */
     public int getSeconds()
     {
         return calendar.get( Calendar.SECOND );
     }
 
 
+    /**
+     * @return The fractional (ie, milliseconds) part of the date
+     */
     public int getFraction()
     {
         return calendar.get( Calendar.MILLISECOND );
@@ -1032,10 +1058,11 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
 
     /**
-     * 
+     * Get a Dat einstance from a given String
      *
-     * @param zuluTime
-     * @return
+     * @param zuluTime The time as a String
+     * @return A Date instance
+     * @throws ParseException If the String is not a valid date
      */
     public static Date getDate( String zuluTime ) throws ParseException
     {

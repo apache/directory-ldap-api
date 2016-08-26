@@ -66,6 +66,7 @@ public class RuntimeMultiException extends RuntimeException
      * Constructs an Exception with a detailed message.
      *
      * @param message The message associated with the exception.
+     * @param t The Throwable that causes the Exception 
      */
     public RuntimeMultiException( String message, Throwable t )
     {

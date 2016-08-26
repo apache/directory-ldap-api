@@ -410,6 +410,8 @@ public final class Strings
      * more efficient.
      *
      * @see Strings#deepTrim( String )
+     * @param string The String to modify
+     * @return The modified String
      */
     public static String deepTrimToLower( String string )
     {
@@ -563,8 +565,8 @@ public final class Strings
      * This method is used to insert HTML block dynamically
      *
      * @param source the HTML code to be processes
-     * @param replaceNl if true '\n' will be replaced by &lt;br>
-     * @param replaceTag if true '<' will be replaced by &lt; and '>' will be replaced
+     * @param replaceNl if true '\n' will be replaced by &lt;br&gt;
+     * @param replaceTag if true '&lt;' will be replaced by &lt; and '&gt;' will be replaced
      *            by &gt;
      * @param replaceQuote if true '\"' will be replaced by &quot;
      * @return the formated html block
@@ -707,7 +709,7 @@ public final class Strings
      * function works only for character between 0 and 127, as it does compare a
      * byte and a char (which is 16 bits wide)
      *
-     * @param byteArray The buffer which contains the data
+     * @param charArray The buffer which contains the data
      * @param index Current position in the buffer
      * @param car The character we want to compare with the current buffer position
      * @return <code>true</code> if the current character equals the given character.
@@ -1133,6 +1135,7 @@ public final class Strings
      * </pre>
      *
      * @param chars the chars array to be trimmed, may be null
+     * @param pos The position in the char[]
      * @return the position of the first char which is not a space, or the last
      *         position of the array.
      */
@@ -1168,6 +1171,7 @@ public final class Strings
      * </pre>
      *
      * @param string the string to be trimmed, may be null
+     * @param pos The position in the String
      * @param pos The starting position
      */
     public static void trimLeft( String string, Position pos )
@@ -1204,6 +1208,7 @@ public final class Strings
      * </pre>
      *
      * @param bytes the byte array to be trimmed, may be null
+     * @param pos The position in the byte[]
      * @param pos The starting position
      */
     public static void trimLeft( byte[] bytes, Position pos )
@@ -1240,6 +1245,7 @@ public final class Strings
      * </pre>
      *
      * @param bytes the byte array to be trimmed, may be null
+     * @param pos The position in the byte[]
      * @return the position of the first byte which is not a space, or the last
      *         position of the array.
      */
@@ -1360,6 +1366,7 @@ public final class Strings
      * </pre>
      *
      * @param chars the chars array to be trimmed, may be null
+     * @param pos The position in the char[]
      * @return the position of the first char which is not a space, or the last
      *         position of the array.
      */
@@ -1395,6 +1402,7 @@ public final class Strings
      * </pre>
      *
      * @param string the string to be trimmed, may be null
+     * @param pos The position in the String
      * @return the position of the first char which is not a space, or the last
      *         position of the string.
      */
@@ -1435,6 +1443,7 @@ public final class Strings
      * </pre>
      *
      * @param bytes the byte array to be trimmed, may be null
+     * @param pos The position in the byte[]
      * @return the position of the first char which is not a space, or the last
      *         position of the byte array.
      */
@@ -1482,6 +1491,7 @@ public final class Strings
      * </pre>
      *
      * @param bytes the byte array to be trimmed, may be null
+     * @param pos The position in the byte[]
      * @return the position of the first char which is not a space, or the last
      *         position of the array.
      */
@@ -1863,11 +1873,13 @@ public final class Strings
      * Rewrote the toLowercase method to improve performances.
      * In Ldap, attributesType are supposed to use ASCII chars :
      * 'a'-'z', 'A'-'Z', '0'-'9', '.' and '-' only.
-     *
+     * <br>
+     * Deprecated :  Use {@link #toLowerCaseAscii(String)}
+     * 
      * @param value The String to lowercase
      * @return The lowercase string
-     * @Deprecated Use {@link #toLowerCaseAscii(String)}
      */
+    @Deprecated
     public static String toLowerCase( String value )
     {
         if ( ( null == value ) || ( value.length() == 0 ) )
@@ -1940,11 +1952,12 @@ public final class Strings
      * Rewrote the toUppercase method to improve performances.
      * In Ldap, attributesType are supposed to use ASCII chars :
      * 'a'-'z', 'A'-'Z', '0'-'9', '.' and '-' only. We also add the '_' char
-     *
+     * <br>
+     * Deprecated Use {@link #toUpperCaseAscii(String)}
      * @param value The String to uppercase
      * @return The uppercase string
-     * @Deprecated Use {@link toUpperCaseAscii(String)}
      */
+    @Deprecated
     public static String toUpperCase( String value )
     {
         if ( ( null == value ) || ( value.length() == 0 ) )
@@ -1991,7 +2004,7 @@ public final class Strings
 
     /**
      * <p>
-     * Converts a String to upper case as per {@link String#toUpperCase( Locale.ROOT )}.
+     * Converts a String to upper case as per {@link String#toUpperCase( Locale )}.
      * </p>
      * <p>
      * A <code>null</code> input String returns <code>null</code>.
@@ -2333,7 +2346,7 @@ public final class Strings
      * Create a new UUID using a long as the least significant bits
      * 
      * @param value The least significant bits.
-     * @return
+     * @return The created UUID
      */
     public static String getUUID( long value )
     {
@@ -2375,6 +2388,10 @@ public final class Strings
     
     /**
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+     * @param b1 The first byte[] to compare
+     * @param b2 The second byte[] to compare
+     * @return -1 if the first byte[] is inferior to the second one, 1 if teh first byte[]
+     * is superior to the second one, 0 if they are equal.
      */
     public static int compare( byte[] b1, byte[] b2 )
     {
