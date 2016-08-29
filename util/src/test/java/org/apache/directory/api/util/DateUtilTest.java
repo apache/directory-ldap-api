@@ -22,8 +22,6 @@ package org.apache.directory.api.util;
 
 import static org.junit.Assert.fail;
 
-import java.text.ParseException;
-
 import org.junit.Test;
 
 /**
