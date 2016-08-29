@@ -111,6 +111,9 @@ import org.apache.directory.api.i18n.I18n;
  */
 public class GeneralizedTime implements Comparable<GeneralizedTime>
 {
+    /** A Date far in the future, when Micro$oft would have vanished for a long time... */
+    private static final Date INFINITE = new Date( 0x7FFFFFFFFFFFFFFFL );
+
     /**
      * The format of the generalized time.
      */
@@ -1066,6 +1069,22 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
      */
     public static Date getDate( String zuluTime ) throws ParseException
     {
-        return new GeneralizedTime( zuluTime ).calendar.getTime();
+        try
+        {
+            return new GeneralizedTime( zuluTime ).calendar.getTime();
+        }
+        catch ( ParseException pe )
+        {
+            // Maybe one of the multiple Micro$oft ineptness to cope with Standards ?
+            if ( "9223372036854775807".equals( zuluTime) )
+            {
+                // This 0x7FFFFFFFFFFFFFFF, never ending date
+                return INFINITE;
+            }
+            else
+            {
+                throw pe;
+            }
+        }
     }
 }
