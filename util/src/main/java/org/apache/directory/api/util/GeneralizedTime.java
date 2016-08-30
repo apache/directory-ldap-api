@@ -1075,7 +1075,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         catch ( ParseException pe )
         {
             // Maybe one of the multiple Micro$oft ineptness to cope with Standards ?
-            if ( "9223372036854775807".equals( zuluTime) )
+            if ( "9223372036854775807".equals( zuluTime ) )
             {
                 // This 0x7FFFFFFFFFFFFFFF, never ending date
                 return INFINITE;
