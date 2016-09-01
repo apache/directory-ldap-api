@@ -28,16 +28,18 @@ import java.util.List;
  * of the extrinsic visitor variation. It has the following advantages over the
  * standard visitor pattern:
  * <ul>
- * <li>Visitor takes responsibility that a visitor can visit a node</li>
- * <li>Each visitor knows which types of concrete classes it can visit</li>
- * <li>New visitors can be created without changing the node class</li>
- * <li>New node classes can be added without having to change old visitors</li>
- * <li>Visitation order can be controled in every respect:</li>
- * <ul>
- * <li>Visitation rejection with canVisit() and/or getOrder()</li>
- * <li>Recursive visitation ordering with isPrefix()</li>
- * <li>Child visitation ordering with getOrder()</li>
- * </ul>
+ *   <li>Visitor takes responsibility that a visitor can visit a node</li>
+ *   <li>Each visitor knows which types of concrete classes it can visit</li>
+ *   <li>New visitors can be created without changing the node class</li>
+ *   <li>New node classes can be added without having to change old visitors</li>
+ *   <li>Visitation order can be controled in every respect:</li>
+ *   <li>
+ *     <ul>
+ *       <li>Visitation rejection with canVisit() and/or getOrder()</li>
+ *       <li>Recursive visitation ordering with isPrefix()</li>
+ *       <li>Child visitation ordering with getOrder()</li>
+ *     </ul>
+ *   </li>
  * </ul>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>

@@ -36,10 +36,10 @@ public abstract class SimpleNode<T> extends LeafNode
     /** the value */
     protected Value<T> value;
 
-    /** Constants for comparisons : > */
+    /** Constants for comparisons : &gt; */
     public static final boolean EVAL_GREATER = true;
 
-    /** Constants for comparisons : < */
+    /** Constants for comparisons : &lt; */
     public static final boolean EVAL_LESSER = false;
 
 
@@ -60,7 +60,7 @@ public abstract class SimpleNode<T> extends LeafNode
     /**
      * Creates a new SimpleNode object.
      * 
-     * @param attribute the attribute name
+     * @param attributeType the attribute name
      * @param value the value to test for
      * @param assertionType the type of assertion represented by this ExprNode
      */

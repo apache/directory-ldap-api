@@ -964,6 +964,7 @@ public final class FilterParser
      * 
      * @param filter the search filter in it's string representation
      * @return the expression node object
+     * @throws ParseException If the filter is invalid
      */
     public static ExprNode parse( String filter ) throws ParseException
     {
@@ -973,6 +974,10 @@ public final class FilterParser
 
     /**
      * @see FilterParser#parse(String)
+     * 
+     * @param filter the search filter in it's string representation
+     * @return the expression node object
+     * @throws ParseException If the filter is invalid
      */
     public static ExprNode parse( byte[] filter ) throws ParseException
     {
@@ -982,6 +987,11 @@ public final class FilterParser
 
     /**
      * @see FilterParser#parse(String)
+     * 
+     * @param schemaManager The SchemaManager
+     * @param filter the search filter in it's string representation
+     * @return the expression node object
+     * @throws ParseException If the filter is invalid
      */
     public static ExprNode parse( SchemaManager schemaManager, String filter ) throws ParseException
     {
@@ -991,6 +1001,11 @@ public final class FilterParser
 
     /**
      * @see FilterParser#parse(String)
+     * 
+     * @param schemaManager The SchemaManager
+     * @param filter the search filter in it's string representation
+     * @return the expression node object
+     * @throws ParseException If the filter is invalid
      */
     public static ExprNode parse( SchemaManager schemaManager, byte[] filter ) throws ParseException
     {
@@ -1025,6 +1040,12 @@ public final class FilterParser
 
     /**
      * @see FilterParser#parse(String)
+     * 
+     * @param schemaManager The SchemaManager
+     * @param filter the search filter in it's string representation
+     * @param pos The position in the filter
+     * @return the expression node object
+     * @throws ParseException If the filter is invalid
      */
     public static ExprNode parse( SchemaManager schemaManager, String filter, Position pos ) throws ParseException
     {
@@ -1057,6 +1078,7 @@ public final class FilterParser
      * @param filter the search filter in it's string representation
      * @param relaxed <code>true</code> to parse the filter in relaxed mode
      * @return the expression node object
+     * @throws ParseException If the filter is invalid
      */
     public static ExprNode parse( String filter, boolean relaxed ) throws ParseException
     {

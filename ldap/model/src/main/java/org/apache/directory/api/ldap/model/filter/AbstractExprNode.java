@@ -140,7 +140,7 @@ public abstract class AbstractExprNode implements ExprNode
      * Handles the escaping of special characters in LDAP search filter assertion values using the
      * &lt;valueencoding&gt; rule as described in
      * <a href="http://www.ietf.org/rfc/rfc4515.txt">RFC 4515</a>. Needed so that
-     * {@link ExprNode#printToBuffer(StringBuffer)} results in a valid filter string that can be parsed
+     * {@link ExprNode#printRefinementToBuffer(StringBuilder)} results in a valid filter string that can be parsed
      * again (as a way of cloning filters).
      *
      * @param value Right hand side of "attrId=value" assertion occurring in an LDAP search filter.
@@ -261,8 +261,7 @@ public abstract class AbstractExprNode implements ExprNode
 
 
     /**
-     * @see ExprNode#set(java.lang.Object,
-     *      java.lang.Object)
+     * @see ExprNode#set(String, java.lang.Object)
      */
     public void set( String key, Object value )
     {

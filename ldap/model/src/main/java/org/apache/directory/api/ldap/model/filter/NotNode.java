@@ -169,8 +169,9 @@ public class NotNode extends BranchNode
 
 
     /**
-     * @see ExprNode#printRefinementToBuffer(StringBuffer)
+     * @see ExprNode#printRefinementToBuffer(StringBuilder)
      * 
+     * @param buf The buffer where we store the result
      * @return The buffer in which the refinement has been appended
      * @throws UnsupportedOperationException if this node isn't a part of a refinement.
      */

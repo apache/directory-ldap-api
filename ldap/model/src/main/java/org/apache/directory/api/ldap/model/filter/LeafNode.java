@@ -63,7 +63,7 @@ public abstract class LeafNode extends AbstractExprNode
     /**
      * Creates a leaf node.
      * 
-     * @param attributeType the attribute this node is based on
+     * @param attribute the attribute this node is based on
      * @param assertionType the type of this leaf node
      */
     protected LeafNode( String attribute, AssertionType assertionType )
