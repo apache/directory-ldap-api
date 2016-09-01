@@ -140,8 +140,8 @@ public interface EntityFactory
      * @param entry The entry containing all the informations to build an ObjectClass
      * @param targetRegistries The registries containing all the enabled SchemaObjects
      * @param schemaName The schema this SchemaObject will be part of
-     * @return
-     * @throws LdapException
+     * @return The loaded ObjectClass
+     * @throws LdapException if anything fails during loading
      */
     ObjectClass getObjectClass( SchemaManager schemaManager, Entry entry, Registries targetRegistries, String schemaName )
         throws LdapException;
@@ -153,8 +153,8 @@ public interface EntityFactory
      * @param entry The entry containing all the informations to build a LdapSyntax
      * @param targetRegistries The registries containing all the enabled SchemaObjects
      * @param schemaName The schema this SchemaObject will be part of
-     * @return
-     * @throws LdapException
+     * @return The loaded Syntax
+     * @throws LdapException if anything fails during loading
      */
     LdapSyntax getSyntax( SchemaManager schemaManager, Entry entry, Registries targetRegistries, String schemaName )
         throws LdapException;

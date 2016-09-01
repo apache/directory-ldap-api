@@ -81,6 +81,7 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
      *
      * @throws LdapException if the base directory does not exist or does not
      * a valid schema.ldif file
+     * @throws IOException If we can't load the schema
      */
     public JarLdifSchemaLoader() throws IOException, LdapException
     {
