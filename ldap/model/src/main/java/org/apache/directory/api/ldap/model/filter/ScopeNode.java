@@ -51,6 +51,7 @@ public class ScopeNode extends AbstractExprNode
      * 
      * @param aliasDerefAliases the alias dereferencing mode
      * @param baseDn the search base
+     * @param baseId the search ID
      * @param scope the search scope
      */
     public ScopeNode( AliasDerefMode aliasDerefAliases, Dn baseDn, String baseId, SearchScope scope )

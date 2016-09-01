@@ -46,7 +46,7 @@ public final class FilterEncoder
      * Formats a filter and handles encoding of special characters in the value arguments using the
      * &lt;valueencoding&gt; rule as described in <a href="http://www.ietf.org/rfc/rfc4515.txt">RFC 4515</a>.
      * <p>
-     * Example of filter template format: <code>(&(cn={0})(uid={1}))</code>
+     * Example of filter template format: <code>(&amp;(cn={0})(uid={1}))</code>
      * 
      * @param filterTemplate the filter with placeholders
      * @param values the values to encode and substitute

@@ -107,7 +107,7 @@ public class AndNode extends BranchNode
 
 
     /**
-     * @see ExprNode#printRefinementToBuffer(StringBuffer)
+     * @see ExprNode#printRefinementToBuffer(StringBuilder)
      * 
      * @param buf the buffer to append to.
      * @return The buffer in which the refinement has been appended

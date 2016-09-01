@@ -43,10 +43,10 @@ public abstract class SimpleNode<T> extends LeafNode
     /** The value as a byte[] */
     protected byte[] bytes;
 
-    /** Constants for comparisons : > */
+    /** Constants for comparisons : @gt; */
     public static final boolean EVAL_GREATER = true;
 
-    /** Constants for comparisons : < */
+    /** Constants for comparisons : &lt; */
     public static final boolean EVAL_LESSER = false;
 
 

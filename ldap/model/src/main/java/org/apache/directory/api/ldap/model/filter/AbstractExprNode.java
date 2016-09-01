@@ -174,8 +174,7 @@ public abstract class AbstractExprNode implements ExprNode
 
 
     /**
-     * @see ExprNode#set(java.lang.Object,
-     *      java.lang.Object)
+     * @see ExprNode#set(String, Object)
      */
     @Override
     public void set( String key, Object value )

@@ -110,10 +110,10 @@ public class BranchNormalizedVisitor implements FilterVisitor
      * Normalizes a filter expression to a canonical representation while
      * retaining logical meaning of the expression.
      * 
+     * @param schemaManager The SchemaManager
      * @param filter the filter to normalize
      * @return the normalized version of the filter
-     * @throws java.text.ParseException
-     *             if the filter is malformed
+     * @throws java.text.ParseException if the filter is malformed
      */
     public static String getNormalizedFilter( SchemaManager schemaManager, String filter ) throws ParseException
     {

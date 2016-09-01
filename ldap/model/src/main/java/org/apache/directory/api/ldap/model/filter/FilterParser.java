@@ -53,6 +53,7 @@ public final class FilterParser
      * 
      * @param filter the search filter in it's string representation
      * @return the expression node object
+     * @throws ParseException If the filter is invalid
      */
     public static ExprNode parse( String filter ) throws ParseException
     {
@@ -68,6 +69,7 @@ public final class FilterParser
      * @param filter the search filter in it's string representation
      * @param relaxed <code>true</code> to parse the filter in relaxed mode
      * @return the expression node object
+     * @throws ParseException If the filter is invalid
      */
     public static ExprNode parse( String filter, boolean relaxed ) throws ParseException
     {
@@ -82,6 +84,7 @@ public final class FilterParser
      * @param schemaManager The SchemaManager to use
      * @param filter the search filter in it's string representation
      * @return the expression node object
+     * @throws ParseException If the filter is invalid
      */
     public static ExprNode parse( SchemaManager schemaManager, String filter ) throws ParseException
     {
@@ -97,6 +100,7 @@ public final class FilterParser
      * @param filter the search filter in it's string representation
      * @param relaxed <code>true</code> to parse the filter in relaxed mode
      * @return the expression node object
+     * @throws ParseException If the filter is invalid
      */
     public static ExprNode parse( SchemaManager schemaManager, String filter, boolean relaxed ) throws ParseException
     {
