@@ -70,7 +70,7 @@ public interface Anonymizer<K>
     
     
     /**
-     * @param latestValueMap The latest String anonymized value map
+     * @param latestStringMap The latest String anonymized value map
      */
     void setLatestStringMap( Map<Integer, String> latestStringMap );
     

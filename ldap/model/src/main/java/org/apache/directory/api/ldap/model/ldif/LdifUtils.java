@@ -115,7 +115,7 @@ public final class LdifUtils
      * <li>13 (CR)</li>
      * <li>32 (SPACE)</li>
      * <li>58 (:)</li>
-     * <li>60 (<)</li>
+     * <li>60 (&lt;)</li>
      * <li>Any character with value greater than 127</li>
      * </ul>
      *
@@ -555,7 +555,7 @@ public final class LdifUtils
     /**
      * Converts an EntryAttribute to LDIF
      * 
-     * @param attr the >EntryAttribute to convert
+     * @param attr the EntryAttribute to convert
      * @return the corresponding LDIF code as a String
      * @throws LdapException If a naming exception is encountered.
      */

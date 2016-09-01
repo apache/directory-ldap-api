@@ -116,7 +116,7 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
 
     
     /**
-     * @param latestValueMap The latest String anonymized value map
+     * @param latestStringMap The latest String anonymized value map
      */
     @Override
     public void setLatestStringMap( Map<Integer, String> latestStringMap )

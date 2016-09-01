@@ -263,7 +263,9 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
 
     /**
-     * Constructors
+     * Creates a Schema aware reader
+     * 
+     * @param schemaManager The SchemaManager
      */
     public LdifReader( SchemaManager schemaManager )
     {
@@ -2123,8 +2125,10 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
 
     /**
-     * creates a non-schemaaware LdifEntry
-     * @return an LdifEntry that is not schemaaware
+     * Creates a schema aware LdifEntry
+     * 
+     * @param schemaManager The SchemaManager
+     * @return an LdifEntry that is schema aware
      */
     protected LdifEntry createLdifEntry( SchemaManager schemaManager )
     {
