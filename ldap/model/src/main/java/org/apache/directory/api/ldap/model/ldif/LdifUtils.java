@@ -110,21 +110,21 @@ public final class LdifUtils
      *
      * The data cannot start with the following char values:
      * <ul>
-     * <li>00 (NUL)</li>
-     * <li>10 (LF)</li>
-     * <li>13 (CR)</li>
-     * <li>32 (SPACE)</li>
-     * <li>58 (:)</li>
-     * <li>60 (<)</li>
-     * <li>Any character with value greater than 127</li>
+     *   <li>00 (NUL)</li>
+     *   <li>10 (LF)</li>
+     *   <li>13 (CR)</li>
+     *   <li>32 (SPACE)</li>
+     *   <li>58 (:)</li>
+     *   <li>60 (&lt;)</li>
+     *   <li>Any character with value greater than 127</li>
      * </ul>
      *
      * The data cannot contain any of the following char values:
      * <ul>
-     * <li>00 (NUL)</li>
-     * <li>10 (LF)</li>
-     * <li>13 (CR)</li>
-     * <li>Any character with value greater than 127</li>
+     *   <li>00 (NUL)</li>
+     *   <li>10 (LF)</li>
+     *   <li>13 (CR)</li>
+     *   <li>Any character with value greater than 127</li>
      * </ul>
      *
      * The data cannot end with a space.
@@ -553,7 +553,7 @@ public final class LdifUtils
     /**
      * Converts an EntryAttribute to LDIF
      * 
-     * @param attr the >EntryAttribute to convert
+     * @param attr the EntryAttribute to convert
      * @return the corresponding LDIF code as a String
      * @throws LdapException If a naming exception is encountered.
      */

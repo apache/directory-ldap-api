@@ -127,6 +127,8 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
 
     /**
      * Creates a new schema aware LdifEntry object.
+     * 
+     * @param schemaManager The SchemaManager
      */
     public LdifEntry( SchemaManager schemaManager )
     {
@@ -142,6 +144,8 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
 
     /**
      * Creates a new LdifEntry object, storing an Entry
+     * 
+     * @param entry The entry to encapsulate
      */
     public LdifEntry( Entry entry )
     {
@@ -301,7 +305,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
      * Creates a LdifEntry using a list of strings representing the Ldif element
      * 
      * @param dn The LdifEntry DN
-     * @param avas The Ldif attributes and values to convert to an LdifEntry
+     * @param strings The Ldif attributes and values to convert to an LdifEntry
      * @throws LdapInvalidDnException If the Dn is invalid
      * @throws LdapInvalidAttributeValueException If either the AttributeType or the associated value
      * is incorrect
@@ -563,7 +567,6 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
      * Remove a list of Attributes from the LdifEntry
      *
      * @param ids The Attributes to remove
-     * @return The list of removed EntryAttributes
      */
     public void removeAttribute( String... ids )
     {
@@ -937,6 +940,8 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
      *  the lengthBeforeParsing of the comments present in entry at the time of parsing
      *  so this lengthBeforeParsing may not always match with the lengthBeforeParsing of the entry
      *  data present in memory.
+     *  
+     *  @return The entry length, comments included 
      */
     public int getLengthBeforeParsing()
     {

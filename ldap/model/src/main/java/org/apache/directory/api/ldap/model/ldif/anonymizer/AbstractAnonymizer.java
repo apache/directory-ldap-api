@@ -37,7 +37,7 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
     protected SchemaManager schemaManager;
     
     /** The map of AttributeType'sOID we want to anonymize. They are all associated with anonymizers */
-    protected Map<String, Anonymizer> attributeAnonymizers = new HashMap<String, Anonymizer>();
+    protected Map<String, Anonymizer<K>> attributeAnonymizers = new HashMap<>();
     
     /** A flag set to <tt>true</tt> if the AttributeType is case sensitive */
     protected boolean caseSensitive = false;
@@ -97,7 +97,7 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
      *
      * @param attributeAnonymizers The list of existing anonymizers
      */
-    public void setAnonymizers( Map<String, Anonymizer> attributeAnonymizers )
+    public void setAnonymizers( Map<String, Anonymizer<K>> attributeAnonymizers )
     {
         this.attributeAnonymizers = attributeAnonymizers;
     }
@@ -113,7 +113,7 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
 
     
     /**
-     * @param latestValueMap The latest String anonymized value map
+     * @param latestStringMap The latest String anonymized value map
      */
     public void setLatestStringMap( Map<Integer, String> latestStringMap )
     {
