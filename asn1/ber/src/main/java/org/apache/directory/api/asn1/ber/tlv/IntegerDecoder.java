@@ -87,7 +87,7 @@ public final class IntegerDecoder
      * sign of the integer : if it's 1, then it's a negative value, otherwise it's
      * a positive value. Integer with a high order bit set to 1 but prefixed by a 0x00
      * are positive. If the integer is negative, then the 2 complement value is
-     * stored<br/>
+     * stored<br>
      * Here are a few samples :
      * <ul>
      * <li>0x02 0x01 0x00 : integer 0</li>
