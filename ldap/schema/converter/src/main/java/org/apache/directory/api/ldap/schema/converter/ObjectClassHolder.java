@@ -56,7 +56,7 @@ public class ObjectClassHolder extends SchemaElementImpl
     /**
      * Create an instance of ObjectClass element
      * 
-     * @param OID the OjectClass OID
+     * @param oid the OjectClass OID
      */
     public ObjectClassHolder( String oid )
     {

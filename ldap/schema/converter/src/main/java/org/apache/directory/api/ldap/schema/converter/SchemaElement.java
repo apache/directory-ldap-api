@@ -51,7 +51,7 @@ public interface SchemaElement
 
 
     /**
-     * Returns the schema element's OID
+     * @return the schema element's OID
      */
     String getOid();
 
