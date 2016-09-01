@@ -55,6 +55,7 @@ public class Dsmlv2ResponseParser
     /**
      * Creates a new instance of Dsmlv2ResponseParser.
      *
+     * @param codec The Ldap Service to use
      * @throws XmlPullParserException if an error occurs while the initialization of the parser
      */
     public Dsmlv2ResponseParser( LdapApiService codec ) throws XmlPullParserException

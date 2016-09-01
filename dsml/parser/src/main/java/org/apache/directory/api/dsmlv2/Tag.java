@@ -25,7 +25,7 @@ import org.apache.directory.api.util.Strings;
 
 /**
  * This class represents a XML tag.
- * <br/>
+ * <br>
  * A XML tag is defined with :
  * <ul>
  *      <li>a name</li>

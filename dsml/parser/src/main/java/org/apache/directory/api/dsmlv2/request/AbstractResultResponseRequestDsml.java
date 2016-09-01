@@ -44,8 +44,8 @@ public abstract class AbstractResultResponseRequestDsml<E extends ResultResponse
     /**
      * Creates a new instance of AbstractRequestDsml.
      *
-     * @param ldapMessage
-     *      the message to decorate
+     * @param codec The LDAP Service to use
+     * @param ldapMessage the message to decorate
      */
     public AbstractResultResponseRequestDsml( LdapApiService codec, E ldapMessage )
     {

@@ -41,6 +41,8 @@ public class AddResponseDsml extends AbstractResultResponseDsml<AddResponse>
 
     /**
      * Creates a new getDecoratedMessage() of AddResponseDsml.
+     * 
+     * @param codec The LDAP Service to use
      */
     public AddResponseDsml( LdapApiService codec )
     {
@@ -51,8 +53,8 @@ public class AddResponseDsml extends AbstractResultResponseDsml<AddResponse>
     /**
      * Creates a new getDecoratedMessage() of AddResponseDsml.
      *
-     * @param ldapMessage
-     *      the message to decorate
+     * @param codec The LDAP Service to use
+     * @param ldapMessage the message to decorate
      */
     public AddResponseDsml( LdapApiService codec, AddResponse ldapMessage )
     {

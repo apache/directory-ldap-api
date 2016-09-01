@@ -46,6 +46,8 @@ public class SearchResultReferenceDsml
 
     /**
      * Creates a new getDecoratedMessage() of SearchResultReferenceDsml.
+     * 
+     * @param codec The LDAP Service to use
      */
     public SearchResultReferenceDsml( LdapApiService codec )
     {
@@ -56,8 +58,8 @@ public class SearchResultReferenceDsml
     /**
      * Creates a new getDecoratedMessage() of SearchResultReferenceDsml.
      *
-     * @param ldapMessage
-     *      the message to decorate
+     * @param codec The LDAP Service to use
+     * @param ldapMessage the message to decorate
      */
     public SearchResultReferenceDsml( LdapApiService codec, SearchResultReference ldapMessage )
     {

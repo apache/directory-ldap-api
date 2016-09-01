@@ -63,6 +63,7 @@ public class NotFilter extends ConnectorFilter
      * Set the NotFilter
      * 
      * @param notFilter The notFilter to set.
+     * @throws DecoderException If the filter is invalid
      */
     public void setNotFilter( Filter notFilter ) throws DecoderException
     {

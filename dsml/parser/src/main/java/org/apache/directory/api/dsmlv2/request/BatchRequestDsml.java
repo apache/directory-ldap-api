@@ -328,7 +328,7 @@ public class BatchRequestDsml
      * Note: it is better to set this flag to false while processing large DSML 
      * batch requests
      *   
-     * @param storeReq
+     * @param storeReq Tells if the request objects must be stored or not
      */
     public void setStoreReq( boolean storeReq )
     {

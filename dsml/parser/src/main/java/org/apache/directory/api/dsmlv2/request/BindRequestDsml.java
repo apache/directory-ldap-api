@@ -41,6 +41,8 @@ public class BindRequestDsml
 {
     /**
      * Creates a new getDecoratedMessage() of AuthRequestDsml.
+     * 
+     * @param codec The LDAP Service to use
      */
     public BindRequestDsml( LdapApiService codec )
     {
@@ -51,6 +53,7 @@ public class BindRequestDsml
     /**
      * Creates a new getDecoratedMessage() of AuthRequestDsml.
      *
+     * @param codec The LDAP Service to use
      * @param ldapMessage the message to decorate
      */
     public BindRequestDsml( LdapApiService codec, BindRequest ldapMessage )

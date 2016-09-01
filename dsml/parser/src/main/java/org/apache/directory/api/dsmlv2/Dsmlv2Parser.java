@@ -97,6 +97,7 @@ public class Dsmlv2Parser
     /**
      * Creates a new instance of Dsmlv2Parser.
      *
+     * @param grammar The grammar in use
      * @throws XmlPullParserException if an error occurs during the initialization of the parser
      */
     public Dsmlv2Parser( Dsmlv2Grammar grammar ) throws XmlPullParserException

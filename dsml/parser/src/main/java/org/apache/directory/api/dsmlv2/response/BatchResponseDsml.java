@@ -57,8 +57,7 @@ public class BatchResponseDsml
     /**
      * Gets the current response
      *
-     * @return
-     *      the current response
+     * @return the current response
      */
     public DsmlDecorator<? extends Response> getCurrentResponse()
     {
@@ -69,10 +68,8 @@ public class BatchResponseDsml
     /**
      * Adds a request to the Batch Response DSML.
      *
-     * @param response
-     *      the request to add
-     * @return
-     *      true (as per the general contract of the Collection.add method).
+     * @param response the request to add
+     * @return true (as per the general contract of the Collection.add method).
      */
     public boolean addResponse( DsmlDecorator<? extends Response> response )
     {
@@ -83,10 +80,8 @@ public class BatchResponseDsml
     /**
      * Removes a request from the Batch Response DSML.
      *
-     * @param response
-     *      the request to remove
-     * @return
-     *      true if this list contained the specified element.
+     * @param response the request to remove
+     * @return true if this list contained the specified element.
      */
     public boolean removeResponse( DsmlDecorator<Response> response )
     {
@@ -96,8 +91,8 @@ public class BatchResponseDsml
 
     /**
      * Gets the ID of the response
-     * @return
-     *      the ID of the response
+     * 
+     * @return the ID of the response
      */
     public int getRequestID()
     {
@@ -132,8 +127,6 @@ public class BatchResponseDsml
     /**
      * Converts this Batch Response to its XML representation in the DSMLv2 format.
      * The XML document will be formatted for pretty printing by default. 
-     * 
-     * @see {@link #toDsml(boolean)}
      * 
      * @return the XML representation in DSMLv2 format
      */

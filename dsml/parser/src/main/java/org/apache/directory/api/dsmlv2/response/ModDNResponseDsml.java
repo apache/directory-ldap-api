@@ -41,6 +41,8 @@ public class ModDNResponseDsml extends AbstractResultResponseDsml<ModifyDnRespon
 
     /**
      * Creates a new getDecoratedMessage() of ModDNResponseDsml.
+     * 
+     * @param codec The LDAP Service to use
      */
     public ModDNResponseDsml( LdapApiService codec )
     {
@@ -51,8 +53,8 @@ public class ModDNResponseDsml extends AbstractResultResponseDsml<ModifyDnRespon
     /**
      * Creates a new getDecoratedMessage() of ModDNResponseDsml.
      *
-     * @param ldapMessage
-     *      the message to decorate
+     * @param codec The LDAP Service to use
+     * @param ldapMessage the message to decorate
      */
     public ModDNResponseDsml( LdapApiService codec, ModifyDnResponse ldapMessage )
     {

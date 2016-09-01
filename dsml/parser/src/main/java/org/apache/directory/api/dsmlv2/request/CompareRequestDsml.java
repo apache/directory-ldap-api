@@ -42,6 +42,8 @@ public class CompareRequestDsml
 {
     /**
      * Creates a new getDecoratedMessage() of CompareRequestDsml.
+     * 
+     * @param codec The LDAP Service to use
      */
     public CompareRequestDsml( LdapApiService codec )
     {
@@ -52,8 +54,8 @@ public class CompareRequestDsml
     /**
      * Creates a new getDecoratedMessage() of CompareRequestDsml.
      *
-     * @param ldapMessage
-     *      the message to decorate
+     * @param codec The LDAP Service to use
+     * @param ldapMessage the message to decorate
      */
     public CompareRequestDsml( LdapApiService codec, CompareRequest ldapMessage )
     {

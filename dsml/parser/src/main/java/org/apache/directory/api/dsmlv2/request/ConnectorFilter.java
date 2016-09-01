@@ -42,6 +42,7 @@ public abstract class ConnectorFilter extends Filter
      * Add a new Filter to the list.
      * 
      * @param filter The filter to add
+     * @throws DecoderException If the added filter is invalid
      */
     public void addFilter( Filter filter ) throws DecoderException
     {

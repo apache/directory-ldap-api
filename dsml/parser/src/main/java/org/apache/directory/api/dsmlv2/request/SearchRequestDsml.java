@@ -82,6 +82,8 @@ public class SearchRequestDsml
 
     /**
      * Creates a new getDecoratedMessage() of SearchRequestDsml.
+     * 
+     * @param codec The LDAP Service to use
      */
     public SearchRequestDsml( LdapApiService codec )
     {
@@ -92,8 +94,8 @@ public class SearchRequestDsml
     /**
      * Creates a new getDecoratedMessage() of SearchRequestDsml.
      *
-     * @param ldapMessage
-     *      the message to decorate
+     * @param codec The LDAP Service to use
+     * @param ldapMessage the message to decorate
      */
     public SearchRequestDsml( LdapApiService codec, SearchRequest ldapMessage )
     {
@@ -156,15 +158,17 @@ public class SearchRequestDsml
 
     /**
      * Add a current filter. We have two cases :
-     * - there is no previous current filter : the filter
-     * is the top level filter
-     * - there is a previous current filter : the filter is added
-     * to the currentFilter set, and the current filter is changed
-     *
+     * <ul>
+     *   <li>there is no previous current filter : the filter
+     *     is the top level filter</li>
+     *   <li>there is a previous current filter : the filter is added
+     *     to the currentFilter set, and the current filter is changed</li>
+     * </ul>
      * In any case, the previous current filter will always be a
      * ConnectorFilter when this method is called.
      *
      * @param localFilter The filter to set.
+     * @throws DecoderException If the added filter is invalid
      */
     public void addCurrentFilter( Filter localFilter ) throws DecoderException
     {

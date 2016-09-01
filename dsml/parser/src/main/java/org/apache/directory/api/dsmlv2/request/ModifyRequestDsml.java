@@ -61,6 +61,8 @@ public class ModifyRequestDsml
 
     /**
      * Creates a new getDecoratedMessage() of ModifyRequestDsml.
+     * 
+     * @param codec The LDAP Service to use
      */
     public ModifyRequestDsml( LdapApiService codec )
     {
@@ -71,8 +73,8 @@ public class ModifyRequestDsml
     /**
      * Creates a new getDecoratedMessage() of ModifyRequestDsml.
      *
-     * @param ldapMessage
-     *      the message to decorate
+     * @param codec The LDAP Service to use
+     * @param ldapMessage the message to decorate
      */
     public ModifyRequestDsml( LdapApiService codec, ModifyRequest ldapMessage )
     {
@@ -81,7 +83,7 @@ public class ModifyRequestDsml
 
 
     /**
-     * Return the current attribute's type
+     * @return the current attribute's type
      */
     public String getCurrentAttributeType()
     {
@@ -118,6 +120,7 @@ public class ModifyRequestDsml
      * Add a new value to the current attribute
      * 
      * @param value The value to add
+     * @throws LdapException If we can't add a value
      */
     public void addAttributeValue( byte[] value ) throws LdapException
     {
@@ -129,6 +132,7 @@ public class ModifyRequestDsml
      * Add a new value to the current attribute
      * 
      * @param value The value to add
+     * @throws LdapException If we can't add a value
      */
     public void addAttributeValue( String value ) throws LdapException
     {

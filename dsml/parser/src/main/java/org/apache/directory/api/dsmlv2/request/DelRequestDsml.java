@@ -41,6 +41,8 @@ public class DelRequestDsml
 {
     /**
      * Creates a new getDecoratedMessage() of DelRequestDsml.
+     * 
+     * @param codec The LDAP Service to use
      */
     public DelRequestDsml( LdapApiService codec )
     {
@@ -51,8 +53,8 @@ public class DelRequestDsml
     /**
      * Creates a new getDecoratedMessage() of DelRequestDsml.
      *
-     * @param ldapMessage
-     *      the message to decorate
+     * @param codec The LDAP Service to use
+     * @param ldapMessage the message to decorate
      */
     public DelRequestDsml( LdapApiService codec, DeleteRequest ldapMessage )
     {

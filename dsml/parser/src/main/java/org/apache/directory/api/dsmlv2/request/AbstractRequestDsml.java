@@ -42,8 +42,8 @@ public abstract class AbstractRequestDsml<E extends Request>
     /**
      * Creates a new instance of AbstractRequestDsml.
      *
-     * @param ldapMessage
-     *      the message to decorate
+     * @param codec The LDAP Service to use
+     * @param ldapMessage the message to decorate
      */
     public AbstractRequestDsml( LdapApiService codec, E ldapMessage )
     {
@@ -54,10 +54,8 @@ public abstract class AbstractRequestDsml<E extends Request>
     /**
      * Creates the Request Element and adds RequestID and Controls.
      *
-     * @param root
-     *      the root element
-     * @return
-     *      the Request Element of the given name containing
+     * @param root the root element
+     * @return the Request Element of the given name containing
      */
     public Element toDsml( Element root )
     {

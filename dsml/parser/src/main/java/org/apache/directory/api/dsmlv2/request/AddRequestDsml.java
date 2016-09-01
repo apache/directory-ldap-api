@@ -54,6 +54,8 @@ public class AddRequestDsml
 
     /**
      * Creates a new getDecoratedMessage() of AddRequestDsml.
+     * 
+     * @param codec The LDAP Service to use
      */
     public AddRequestDsml( LdapApiService codec )
     {
@@ -64,8 +66,8 @@ public class AddRequestDsml
     /**
      * Creates a new getDecoratedMessage() of AddRequestDsml.
     *
-    * @param ldapMessage
-    *      the message to decorate
+     * @param codec The LDAP Service to use
+    * @param ldapMessage the message to decorate
     */
     public AddRequestDsml( LdapApiService codec, AddRequest ldapMessage )
     {
@@ -77,6 +79,7 @@ public class AddRequestDsml
      * Create a new attributeValue
      * 
      * @param type The attribute's name (called 'type' in the grammar)
+     * @throws LdapException If we can't add the type
      */
     public void addAttributeType( String type ) throws LdapException
     {
@@ -106,6 +109,7 @@ public class AddRequestDsml
      * Add a new value to the current attribute
      * 
      * @param value The value to add
+     * @throws LdapException If we can't add a new value
      */
     public void addAttributeValue( String value ) throws LdapException
     {
@@ -117,6 +121,7 @@ public class AddRequestDsml
      * Add a new value to the current attribute
      * 
      * @param value The value to add
+     * @throws LdapException If we can't add a new value
      */
     public void addAttributeValue( Value<?> value ) throws LdapException
     {
@@ -128,6 +133,7 @@ public class AddRequestDsml
      * Add a new value to the current attribute
      * 
      * @param value The value to add
+     * @throws LdapException If we can't add a new value
      */
     public void addAttributeValue( byte[] value ) throws LdapException
     {
@@ -215,6 +221,7 @@ public class AddRequestDsml
      * Add a new value to the current attribute
      * 
      * @param value The value to be added
+     * @throws LdapException If we can't add a new value
      */
     public void addAttributeValue( Object value ) throws LdapException
     {
