@@ -222,6 +222,9 @@ public class Dsmlv2Engine
      * Uses the default UTF-8 encoding for processing the DSML
      * 
      * @see #processDSML(InputStream, String, OutputStream)
+     * @param inputStream The Stream containing the DSML to process
+     * @param out The Stream where to put the result
+     * @throws Exception If we had an error while processing the DSML
      */
     public void processDSML( InputStream inputStream, OutputStream out ) throws Exception
     {
@@ -782,6 +785,7 @@ public class Dsmlv2Engine
      * Binds to the ldap server
      * 
      * @param messageId the message Id
+     * @throws LdapException If we had an issue while binding
      * @throws EncoderException If we had an issue while encoding the request
      * @throws DecoderException If we had an issue while decoding the request
      * @throws IOException If we had an issue while transmitting the request or re ceiving the response
