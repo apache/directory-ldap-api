@@ -37,7 +37,8 @@ public abstract class AbstractResultResponseDsml<E extends ResultResponse>
     /**
      * Instantiates a new abstract DSML response.
      *
-     * @param ldapMessage the LDAP message to decorate
+     * @param codec The LDAP Service to use
+     * @param resultResponse the LDAP message to decorate
      */
     public AbstractResultResponseDsml( LdapApiService codec, E resultResponse )
     {

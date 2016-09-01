@@ -31,7 +31,7 @@ import org.dom4j.tree.DefaultElement;
 
 /**
  * Class representing Error Response.
- * <br/>
+ * <br>
  * An Error Response has a requestID, a message, and a type which can be :
  * <ul>
  *     <li>NOT_ATTEMPTED,</li>
@@ -44,7 +44,7 @@ import org.dom4j.tree.DefaultElement;
  *     <li>OTHER</li>
  * </ul>
  * 
- * @TODO review this class - maybe it should not be decorated and if it is
+ * TODO review this class - maybe it should not be decorated and if it is
  * it should extend AbstractResultResponseDsml - by Alex
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>

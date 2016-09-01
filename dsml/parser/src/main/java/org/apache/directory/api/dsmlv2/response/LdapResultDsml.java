@@ -55,11 +55,9 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
     /**
      * Creates a new instance of LdapResultDsml.
      *
-     * @param result
-     *      the LdapResult to decorate
-     * @param message
-     *      the associated message
-     * @param the ldap codec service 
+     * @param codec The LDAP Service to use
+     * @param result the LdapResult to decorate
+     * @param message the associated message
      */
     public LdapResultDsml( LdapApiService codec, LdapResult result, Message message )
     {

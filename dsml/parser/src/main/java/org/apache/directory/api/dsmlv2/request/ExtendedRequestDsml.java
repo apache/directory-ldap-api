@@ -47,8 +47,8 @@ public class ExtendedRequestDsml<Q extends ExtendedRequest, P extends ExtendedRe
     /**
      * Creates a new getDecoratedMessage() of ExtendedRequestDsml.
      *
-     * @param ldapMessage
-     *      the message to decorate
+     * @param codec The LDAP Service to use
+     * @param ldapMessage the message to decorate
      */
     public ExtendedRequestDsml( LdapApiService codec, Q ldapMessage )
     {

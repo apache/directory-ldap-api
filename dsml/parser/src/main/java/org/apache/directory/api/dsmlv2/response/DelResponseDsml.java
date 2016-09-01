@@ -42,6 +42,8 @@ public class DelResponseDsml extends AbstractResultResponseDsml<DeleteResponse>
 
     /**
      * Creates a new getDecoratedMessage() of DelResponseDsml.
+     * 
+     * @param codec The LDAP Service to use
      */
     public DelResponseDsml( LdapApiService codec )
     {
@@ -52,8 +54,8 @@ public class DelResponseDsml extends AbstractResultResponseDsml<DeleteResponse>
     /**
      * Creates a new getDecoratedMessage() of DelResponseDsml.
      *
-     * @param ldapMessage
-     *      the message to decorate
+     * @param codec The LDAP Service to use
+     * @param ldapMessage the message to decorate
      */
     public DelResponseDsml( LdapApiService codec, DeleteResponse ldapMessage )
     {

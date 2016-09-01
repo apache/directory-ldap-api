@@ -55,6 +55,7 @@ public class AttributeValueAssertion
      *
      * Helper method to render an object which can be a String or a byte[]
      *
+     * @param object The Value to dump
      * @return A string representing the object
      */
     public static String dumpObject( Object object )

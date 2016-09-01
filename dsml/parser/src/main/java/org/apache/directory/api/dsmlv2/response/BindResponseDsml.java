@@ -35,6 +35,8 @@ public class BindResponseDsml extends AbstractResultResponseDsml<BindResponse> i
 {
     /**
      * Creates a new getDecoratedMessage() of AuthResponseDsml.
+     * 
+     * @param codec The LDAP Service to use
      */
     public BindResponseDsml( LdapApiService codec )
     {
@@ -45,8 +47,8 @@ public class BindResponseDsml extends AbstractResultResponseDsml<BindResponse> i
     /**
      * Creates a new getDecoratedMessage() of AuthResponseDsml.
      *
-     * @param ldapMessage
-     *      the message to decorate
+     * @param codec The LDAP Service to use
+     * @param ldapMessage the message to decorate
      */
     public BindResponseDsml( LdapApiService codec, BindResponse ldapMessage )
     {

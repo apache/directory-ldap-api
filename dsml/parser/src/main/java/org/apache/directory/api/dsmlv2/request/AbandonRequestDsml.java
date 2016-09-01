@@ -38,6 +38,8 @@ public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
 {
     /**
      * Creates a new instance of AbandonRequestDsml.
+     * 
+     * @param codec The LDAP Service to use
      */
     public AbandonRequestDsml( LdapApiService codec )
     {
@@ -48,6 +50,7 @@ public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
     /**
      * Creates a new instance of AbandonRequestDsml.
      *
+     * @param codec The LDAP Service to use
      * @param ldapMessage the message to decorate
      */
     public AbandonRequestDsml( LdapApiService codec, AbandonRequest ldapMessage )
@@ -97,6 +100,7 @@ public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
      * Set the abandoned message ID
      * 
      * @param abandonedMessageId The abandoned messageID to set.
+     * @return The modified AbandonRequest instance
      */
     public AbandonRequest setAbandonedMessageId( int abandonedMessageId )
     {

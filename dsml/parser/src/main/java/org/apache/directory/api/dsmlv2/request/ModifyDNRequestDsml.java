@@ -42,6 +42,8 @@ public class ModifyDNRequestDsml
 {
     /**
      * Creates a new getDecoratedMessage() of ModifyDNRequestDsml.
+     * 
+     * @param codec The LDAP Service to use
      */
     public ModifyDNRequestDsml( LdapApiService codec )
     {
@@ -52,8 +54,8 @@ public class ModifyDNRequestDsml
     /**
      * Creates a new getDecoratedMessage() of ModifyDNRequestDsml.
      *
-     * @param ldapMessage
-     *      the message to decorate
+     * @param codec The LDAP Service to use
+     * @param ldapMessage the message to decorate
      */
     public ModifyDNRequestDsml( LdapApiService codec, ModifyDnRequest ldapMessage )
     {

@@ -47,7 +47,6 @@ public class SearchResultEntryDsml
     extends AbstractResponseDsml<SearchResultEntry>
     implements SearchResultEntry
 {
-
     private static final String SEARCH_RESULT_ENTRY_TAG = "searchResultEntry";
 
     /** The current attribute being processed */
@@ -56,6 +55,8 @@ public class SearchResultEntryDsml
 
     /**
      * Creates a new getDecoratedMessage() of SearchResultEntryDsml.
+     * 
+     * @param codec The LDAP Service to use
      */
     public SearchResultEntryDsml( LdapApiService codec )
     {
@@ -66,8 +67,8 @@ public class SearchResultEntryDsml
     /**
      * Creates a new getDecoratedMessage() of SearchResultEntryDsml.
      *
-     * @param ldapMessage
-     *      the message to decorate
+     * @param codec The LDAP Service to use
+     * @param ldapMessage the message to decorate
      */
     public SearchResultEntryDsml( LdapApiService codec, SearchResultEntry ldapMessage )
     {
@@ -75,6 +76,9 @@ public class SearchResultEntryDsml
     }
 
 
+    /**
+     * @return The current ATtributeType
+     */
     public Attribute getCurrentAttribute()
     {
         return currentAttribute;
@@ -85,6 +89,7 @@ public class SearchResultEntryDsml
      * Create a new attribute
      * 
      * @param type The attribute's type
+     * @throws LdapException If we can't add the new attributeType
      */
     public void addAttribute( String type ) throws LdapException
     {
@@ -98,6 +103,7 @@ public class SearchResultEntryDsml
      * Add a new value to the current attribute
      * 
      * @param value The added value
+     * @throws LdapException If we can't add the new attributeType
      */
     public void addAttributeValue( Object value ) throws LdapException
     {

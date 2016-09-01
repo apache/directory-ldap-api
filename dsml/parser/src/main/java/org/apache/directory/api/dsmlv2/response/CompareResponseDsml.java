@@ -41,6 +41,8 @@ public class CompareResponseDsml extends AbstractResultResponseDsml<CompareRespo
 
     /**
      * Creates a new getDecoratedMessage() of CompareResponseDsml.
+     * 
+     * @param codec The LDAP Service to use
      */
     public CompareResponseDsml( LdapApiService codec )
     {
@@ -51,8 +53,8 @@ public class CompareResponseDsml extends AbstractResultResponseDsml<CompareRespo
     /**
      * Creates a new getDecoratedMessage() of CompareResponseDsml.
      *
-     * @param ldapMessage
-     *      the message to decorate
+     * @param codec The LDAP Service to use
+     * @param ldapMessage the message to decorate
      */
     public CompareResponseDsml( LdapApiService codec, CompareResponse ldapMessage )
     {

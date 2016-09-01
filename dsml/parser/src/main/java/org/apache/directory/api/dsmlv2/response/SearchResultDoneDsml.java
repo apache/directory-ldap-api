@@ -41,6 +41,8 @@ public class SearchResultDoneDsml extends AbstractResultResponseDsml<SearchResul
 
     /**
      * Creates a new getDecoratedMessage() of SearchResultDoneDsml.
+     * 
+     * @param codec The LDAP Service to use
      */
     public SearchResultDoneDsml( LdapApiService codec )
     {
@@ -51,8 +53,8 @@ public class SearchResultDoneDsml extends AbstractResultResponseDsml<SearchResul
     /**
      * Creates a new getDecoratedMessage() of SearchResultDoneDsml.
      *
-     * @param ldapMessage
-     *      the message to decorate
+     * @param codec The LDAP Service to use
+     * @param ldapMessage the message to decorate
      */
     public SearchResultDoneDsml( LdapApiService codec, SearchResultDone ldapMessage )
     {

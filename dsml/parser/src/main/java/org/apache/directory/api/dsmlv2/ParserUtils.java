@@ -219,6 +219,7 @@ public final class ParserUtils
     /**
      * Adds Controls to the given Element.
      *
+     * @param codec The LDAP Service to use
      * @param element the element to add the Controls to
      * @param controls a List of Controls
      */
