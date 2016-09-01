@@ -43,6 +43,8 @@ public class CursorLdapReferralException extends CursorException
 
     /**
      * Creates a new instance of CursorClosedException.
+     * 
+     * @param ldapReferralException The associated exception
      */
     public CursorLdapReferralException( LdapReferralException ldapReferralException )
     {
@@ -53,6 +55,7 @@ public class CursorLdapReferralException extends CursorException
     /**
      * Creates a new instance of CursorClosedException.
      *
+     * @param ldapReferralException The associated exception
      * @param message The associated message
      */
     public CursorLdapReferralException( LdapReferralException ldapReferralException, String message )
@@ -66,6 +69,7 @@ public class CursorLdapReferralException extends CursorException
     /**
      * Creates a new instance of CursorClosedException.
      *
+     * @param ldapReferralException The associated exception
      * @param message The associated message
      * @param cause The original cause
      */
@@ -80,7 +84,9 @@ public class CursorLdapReferralException extends CursorException
     /**
      * Always returns {@link ResultCodeEnum#REFERRAL}
      * 
-     * @see LdapException#getResultCode()
+     * @see LdapReferralException#getResultCode()
+     * 
+     * @return the underlying LdapReferral result code, if any
      */
     public ResultCodeEnum getResultCode()
     {
@@ -113,6 +119,7 @@ public class CursorLdapReferralException extends CursorException
 
     /**
      * Move to the next referral
+     * 
      * @return true if there is some next referral
      */
     public boolean skipReferral()

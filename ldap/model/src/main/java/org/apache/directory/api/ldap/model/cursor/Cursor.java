@@ -66,7 +66,10 @@ public interface Cursor<E> extends Iterable<E>, Closeable
      * the argument.
      *
      * @param element the element to be positioned before
-     * @throws Exception with problems accessing the underlying btree
+     * @throws LdapException if we have get any LDAP exception while operating
+     * the cursor
+     * @throws CursorException if there are problems advancing to this Cursor before
+     * the given element, or if this Cursor is closed 
      */
     void before( E element ) throws LdapException, CursorException;
 
@@ -83,8 +86,10 @@ public interface Cursor<E> extends Iterable<E>, Closeable
      * and all elements in the dataSet are greater than the argument.
      *
      * @param element the element to be positioned after
-     * @throws Exception if there are problems positioning this cursor or if
-     * this Cursor is closed
+     * @throws LdapException if we have get any LDAP exception while operating
+     * the cursor
+     * @throws CursorException if there are problems advancing to this Cursor after
+     * the given element, or if this Cursor is closed 
      */
     void after( E element ) throws LdapException, CursorException;
 
@@ -92,8 +97,10 @@ public interface Cursor<E> extends Iterable<E>, Closeable
     /**
      * Positions this Cursor before the first element.
      *
-     * @throws Exception if there are problems positioning this cursor or if
-     * this Cursor is closed
+     * @throws LdapException if we have get any LDAP exception while operating
+     * the cursor
+     * @throws CursorException if there are problems advancing to this Cursor before
+     * the first position, or if this Cursor is closed 
      */
     void beforeFirst() throws LdapException, CursorException;
 
@@ -101,8 +108,10 @@ public interface Cursor<E> extends Iterable<E>, Closeable
     /**
      * Positions this Cursor after the last element.
      *
-     * @throws Exception if there are problems positioning this Cursor or if
-     * this Cursor is closed
+     * @throws LdapException if we have get any LDAP exception while operating
+     * the cursor
+     * @throws CursorException if there are problems advancing to this Cursor after
+     * the last position, or if this Cursor is closed 
      */
     void afterLast() throws LdapException, CursorException;
 
@@ -112,8 +121,10 @@ public interface Cursor<E> extends Iterable<E>, Closeable
      *
      * @return true if the position has been successfully changed to the first
      * element, false otherwise
-     * @throws Exception if there are problems positioning this Cursor or if
-     * this Cursor is closed
+     * @throws LdapException if we have get any LDAP exception while operating
+     * the cursor
+     * @throws CursorException if there are problems advancing to this Cursor to
+     * the first position, or if this Cursor is closed 
      */
     boolean first() throws LdapException, CursorException;
 
@@ -123,8 +134,6 @@ public interface Cursor<E> extends Iterable<E>, Closeable
      *
      * @return true if this cursor is positioned at the first element, 
      * false otherwise
-     * @throws Exception if there are problems querying the position of this Cursor
-     * or if this Cursor is closed
      */
     boolean isFirst();
 
@@ -134,8 +143,6 @@ public interface Cursor<E> extends Iterable<E>, Closeable
      *
      * @return true if this cursor is positioned before the first element, 
      * false otherwise
-     * @throws Exception if there are problems querying the position of this Cursor
-     * or if this Cursor is closed
      */
     boolean isBeforeFirst();
 
@@ -145,8 +152,10 @@ public interface Cursor<E> extends Iterable<E>, Closeable
      *
      * @return true if the position has been successfully changed to the last
      * element, false otherwise
-     * @throws Exception if there are problems positioning this Cursor or if
-     * this Cursor is closed
+     * @throws LdapException if we have get any LDAP exception while operating
+     * the cursor
+     * @throws CursorException if there are problems advancing to this Cursor to
+     * the last position, or if this Cursor is closed 
      */
     boolean last() throws LdapException, CursorException;
 
@@ -156,8 +165,6 @@ public interface Cursor<E> extends Iterable<E>, Closeable
      *
      * @return true if this cursor is positioned at the last element, 
      * false otherwise
-     * @throws Exception if there are problems querying the position of this Cursor
-     * or if this Cursor is closed
      */
     boolean isLast();
 
@@ -167,8 +174,6 @@ public interface Cursor<E> extends Iterable<E>, Closeable
      *
      * @return true if this cursor is positioned after the last element, 
      * false otherwise
-     * @throws Exception if there are problems querying the position of this Cursor
-     * or if this Cursor is closed
      */
     boolean isAfterLast();
 
@@ -189,7 +194,10 @@ public interface Cursor<E> extends Iterable<E>, Closeable
      * last element.
      *
      * @return true if the advance succeeded, false otherwise
-     * @throws Exception if there are problems advancing to the next position
+     * @throws LdapException if we have get any LDAP exception while operating
+     * the cursor
+     * @throws CursorException if there are problems advancing to this Cursor to
+     * the previous position, or if this Cursor is closed 
      */
     boolean previous() throws LdapException, CursorException;
 
@@ -205,7 +213,6 @@ public interface Cursor<E> extends Iterable<E>, Closeable
      * the cursor
      * @throws CursorException if there are problems advancing to this Cursor to
      * the next position, or if this Cursor is closed 
-     * @throws IOException If we have had any IO Exception
      */
     boolean next() throws LdapException, CursorException;
 
@@ -218,7 +225,6 @@ public interface Cursor<E> extends Iterable<E>, Closeable
      * @return the object at the current position
      * @throws CursorException if the object at this Cursor's current position
      * cannot be retrieved, or if this Cursor is closed
-     * @throws IOException If we have had any IO Exception
      */
     E get() throws CursorException;
 
@@ -231,6 +237,7 @@ public interface Cursor<E> extends Iterable<E>, Closeable
      * CursorClosedException.
      *
      * @param reason exception thrown when this Cursor is accessed after close
+     * @throws IOException If we can't close the Cursor 
      */
     void close( Exception reason ) throws IOException;
 

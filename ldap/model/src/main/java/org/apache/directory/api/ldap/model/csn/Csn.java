@@ -43,11 +43,11 @@ import org.slf4j.LoggerFactory;
  * 
  * The CSN syntax is :
  * <pre>
- * <CSN>            ::= <timestamp> # <changeCount> # <replicaId> # <modifierNumber>
- * <timestamp>      ::= A GMT based time, YYYYmmddHHMMSS.uuuuuuZ
- * <changeCount>    ::= [000000-ffffff] 
- * <replicaId>      ::= [000-fff]
- * <modifierNumber> ::= [000000-ffffff]
+ * &lt;CSN&gt;            ::= &lt;timestamp&gt; # &lt;changeCount&gt; # &lt;replicaId&gt; # &lt;modifierNumber&gt;
+ * &lt;timestamp&gt;      ::= A GMT based time, YYYYmmddHHMMSS.uuuuuuZ
+ * &lt;changeCount&gt;    ::= [000000-ffffff] 
+ * &lt;replicaId&gt;      ::= [000-fff]
+ * &lt;modifierNumber&gt; ::= [000000-ffffff]
  * </pre>
  *  
  * It distinguishes a change made on an object on a server,
@@ -121,7 +121,7 @@ public class Csn implements Comparable<Csn>
      * Creates a new instance of SimpleCSN from a String.
      * 
      * The string format must be :
-     * &lt;timestamp> # &lt;changeCount> # &lt;replica ID> # &lt;operation number>
+     * &lt;timestamp&gt; # &lt;changeCount&gt; # &lt;replica ID&gt; # &lt;operation number&gt;
      *
      * @param value The String containing the CSN
      * @throws InvalidCSNException if the value doesn't contain a valid CSN

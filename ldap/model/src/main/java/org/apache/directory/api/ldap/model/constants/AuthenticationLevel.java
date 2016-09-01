@@ -30,7 +30,7 @@ import org.apache.directory.api.i18n.I18n;
  * <li>NONE : anonymous</li>
  * <li>SIMPLE : Simple authentication</li>
  * <li>STRONG : SASL or external authentication</li>
- * <li>UNAUTHENT>A special case when just doing some auditing</li>
+ * <li>UNAUTHENT : A special case when just doing some auditing</li>
  * </ul>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>

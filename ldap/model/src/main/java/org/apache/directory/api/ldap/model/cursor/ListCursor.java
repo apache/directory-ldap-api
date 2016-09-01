@@ -147,7 +147,7 @@ public class ListCursor<E> extends AbstractCursor<E>
      * Creates a new ListCursor with a specific upper (exclusive) bound: the
      * lower (inclusive) bound defaults to 0. We also provide a comparator.
      *
-     * @param comparator The comparator to use for the <E> elements
+     * @param comparator The comparator to use for the &lt;E&gt; elements
      * @param list the backing for this ListCursor
      * @param end the upper bound index representing the position after the
      * last element
@@ -176,7 +176,7 @@ public class ListCursor<E> extends AbstractCursor<E>
      * Creates a new ListCursor with a lower (inclusive) bound: the upper
      * (exclusive) bound is the size of the list. We also provide a comparator.
      *
-     * @param comparator The comparator to use for the <E> elements
+     * @param comparator The comparator to use for the &lt;E&gt; elements
      * @param start the lower (inclusive) bound index: the position of the
      * first entry
      * @param list the backing for this ListCursor
@@ -203,7 +203,7 @@ public class ListCursor<E> extends AbstractCursor<E>
      * Creates a new ListCursor without specific bounds: the bounds are
      * acquired from the size of the list. We also provide a comparator.
      *
-     * @param comparator The comparator to use for the <E> elements
+     * @param comparator The comparator to use for the &lt;E&gt; elements
      * @param list the backing for this ListCursor
      */
     public ListCursor( Comparator<E> comparator, List<E> list )
@@ -226,7 +226,7 @@ public class ListCursor<E> extends AbstractCursor<E>
      * Creates a new ListCursor without any elements. We also provide 
      * a comparator.
      * 
-     * @param comparator The comparator to use for the <E> elements
+     * @param comparator The comparator to use for the &lt;E&gt; elements
      */
     @SuppressWarnings("unchecked")
     public ListCursor( Comparator<E> comparator )

@@ -116,7 +116,7 @@ public class SetCursor<E> extends AbstractCursor<E>
      * Creates a new SetCursor without any elements. We also provide 
      * a comparator.
      * 
-     * @param comparator The comparator to use for the <E> elements
+     * @param comparator The comparator to use for the &lt;E&gt; elements
      */
     @SuppressWarnings("unchecked")
     public SetCursor( Comparator<E> comparator )

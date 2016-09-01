@@ -53,6 +53,8 @@ public class CursorException extends Exception
 
     /**
      * Creates a new instance of LdapException.
+     * 
+     * @param cause The root cause for this exception
      */
     public CursorException( Throwable cause )
     {
