@@ -50,6 +50,9 @@ public class InvalidCSNException extends RuntimeException
     /**
      * Creates a new instance with the specified <tt>message</tt> and
      * <tt>cause</tt>.
+     * 
+     * @param message The message associated with the exception
+     * @param cause The root cause for this exception
      */
     public InvalidCSNException( String message, Throwable cause )
     {
@@ -59,6 +62,8 @@ public class InvalidCSNException extends RuntimeException
 
     /**
      * Creates a new instance with the specified <tt>message</tt>.
+     * 
+     * @param message The message associated with the exception
      */
     public InvalidCSNException( String message )
     {
@@ -68,6 +73,8 @@ public class InvalidCSNException extends RuntimeException
 
     /**
      * Creates a new instance with the specified <tt>cause</tt>.
+     * 
+     * @param cause The root cause for this exception
      */
     public InvalidCSNException( Throwable cause )
     {

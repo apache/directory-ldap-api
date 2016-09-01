@@ -54,6 +54,8 @@ public class CsnFactory
      * Returns a new {@link Csn}.
      * Generated CSN can be duplicate if user generates CSNs more than 2G 
      * times a milliseconds.
+     * 
+     * @return The new generated CSN 
      */
     public Csn newInstance()
     {
@@ -88,6 +90,7 @@ public class CsnFactory
      * 
      * @param timestamp The timestamp to use
      * @param changeCount The change count to use
+     * @return The new generated CSN 
      */
     public Csn newInstance( long timestamp, int changeCount )
     {
@@ -100,6 +103,7 @@ public class CsnFactory
      * to a server. 
      * 
      * @param expirationDate The time up to the first CSN we want to keep 
+     * @return The new generated CSN 
      */
     public Csn newPurgeCsn( long expirationDate )
     {

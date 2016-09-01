@@ -23,7 +23,7 @@ package org.apache.directory.api.ldap.model.constants;
 /**
  * Contains constants used for populating the supportedSASLMechanisms 
  * in the RootDSE.
- * Final reference -> class shouldn't be extended
+ * Final reference -&gt; class shouldn't be extended
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

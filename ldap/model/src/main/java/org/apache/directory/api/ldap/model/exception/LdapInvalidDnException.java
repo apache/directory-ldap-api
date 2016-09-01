@@ -37,7 +37,9 @@ public class LdapInvalidDnException extends LdapOperationException
 
 
     /**
-     * to be used by some special exceptions like LdapInvalidDnException
+     * To be used by some special exceptions like LdapInvalidDnException
+     * 
+     * @param message The message for this exception
      */
     public LdapInvalidDnException( String message )
     {

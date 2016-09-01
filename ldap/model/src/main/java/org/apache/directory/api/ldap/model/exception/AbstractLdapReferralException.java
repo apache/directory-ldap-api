@@ -63,7 +63,7 @@ public class AbstractLdapReferralException extends LdapOperationException
     /**
      * Always returns {@link ResultCodeEnum#REFERRAL}
      * 
-     * @see LdapException#getResultCode()
+     * @return The interned ResultCode
      */
     @Override
     public ResultCodeEnum getResultCode()

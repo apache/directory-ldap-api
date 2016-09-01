@@ -25,7 +25,7 @@ import org.apache.directory.api.ldap.model.schema.SchemaObject;
 
 /**
  * A subclass of {@link LdapException} which is used to report issues 
- * during the integrity check of the schema by the {@link SchemaManager}.
+ * during the integrity check of the schema by the SchemaManager.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

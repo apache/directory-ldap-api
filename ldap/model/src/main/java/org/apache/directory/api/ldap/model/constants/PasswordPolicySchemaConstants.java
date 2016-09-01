@@ -23,7 +23,7 @@ package org.apache.directory.api.ldap.model.constants;
 
 /**
  * The PasswordPolicy schema ObjectClasses and AttributeTypes.
- * Final reference -> class shouldn't be extended
+ * Final reference -&gt; class shouldn't be extended
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

@@ -24,7 +24,7 @@ package org.apache.directory.api.ldap.model.constants;
 /**
  * This class contains all the Ldap specific properties described in the JNDI API.
  * See http://java.sun.com/j2se/1.5.0/docs/guide/jndi/jndi-ldap-gl.html
- * Final reference -> class shouldn't be extended
+ * Final reference -&gt; class shouldn't be extended
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
