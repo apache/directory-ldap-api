@@ -56,14 +56,17 @@ public class LdapProtocolEncoder implements ProtocolEncoder
 
     /**
      * Creates a new instance of LdapProtocolEncoder.
-     *
-     * @param codec The LDAP codec service associated with this encoder.
      */
     public LdapProtocolEncoder()
     {
         this( LdapApiServiceFactory.getSingleton() );
     }
 
+    /**
+     * Creates a new instance of LdapProtocolEncoder.
+     *
+     * @param ldapApiService The Service to use
+     */
     public LdapProtocolEncoder( LdapApiService ldapApiService )
     {
         this.encoder = new LdapEncoder( ldapApiService );

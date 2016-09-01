@@ -62,8 +62,6 @@ public class LdapProtocolDecoder implements ProtocolDecoder
 
     /**
      * Creates a new instance of LdapProtocolEncoder.
-     *
-     * @param codec The LDAP codec service associated with this encoder.
      */
     public LdapProtocolDecoder()
     {
