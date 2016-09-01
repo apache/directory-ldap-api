@@ -83,6 +83,7 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
      * @param baseDirectory the schema LDIF base directory
      * @throws LdapException if the base directory does not exist or does not
      * a valid schema.ldif file
+     * @throws IOException If we can't load the schema
      */
     public LdifSchemaLoader( File baseDirectory ) throws LdapException, IOException
     {

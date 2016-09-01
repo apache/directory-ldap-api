@@ -102,6 +102,8 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
     
     /**
      * Instantiates a new single LDIF schema loader.
+     * 
+     * @param schemaFile The Schema to load
      */
     public SingleLdifSchemaLoader( String schemaFile )
     {
@@ -129,6 +131,8 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
     
     /**
      * Instantiates a new single LDIF schema loader.
+     * 
+     * @param schemaUrl The URL of the schema to load
      */
     public SingleLdifSchemaLoader( URL schemaUrl )
     {

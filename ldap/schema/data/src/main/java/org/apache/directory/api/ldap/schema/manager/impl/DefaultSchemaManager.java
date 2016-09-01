@@ -1582,7 +1582,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * Initializes the SchemaService
      *
-     * @throws Exception If the initialization fails
+     * @throws LdapException If the initialization fails
      */
     public void initialize() throws LdapException
     {

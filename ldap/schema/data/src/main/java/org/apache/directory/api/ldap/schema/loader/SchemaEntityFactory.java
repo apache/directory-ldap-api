@@ -803,8 +803,8 @@ public class SchemaEntityFactory implements EntityFactory
 
     /**
      * {@inheritDoc}
-     * @throws LdapInvalidAttributeValueException
-     * @throws LdapUnwillingToPerformException
+     * @throws LdapInvalidAttributeValueException If the Syntax does not exist
+     * @throws LdapUnwillingToPerformException If the schema is not loaded
      */
     public LdapSyntax getSyntax( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
         String schemaName ) throws LdapInvalidAttributeValueException, LdapUnwillingToPerformException
@@ -845,8 +845,8 @@ public class SchemaEntityFactory implements EntityFactory
 
     /**
      * {@inheritDoc}
-     * @throws LdapUnwillingToPerformException
-     * @throws LdapInvalidAttributeValueException
+     * @throws LdapInvalidAttributeValueException If the MatchingRule does not exist
+     * @throws LdapUnwillingToPerformException If the schema is not loaded
      */
     public MatchingRule getMatchingRule( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
         String schemaName ) throws LdapUnwillingToPerformException, LdapInvalidAttributeValueException
@@ -991,8 +991,8 @@ public class SchemaEntityFactory implements EntityFactory
 
     /**
      * {@inheritDoc}
-     * @throws LdapInvalidAttributeValueException
-     * @throws LdapUnwillingToPerformException
+     * @throws LdapInvalidAttributeValueException If the AttributeType does not exist
+     * @throws LdapUnwillingToPerformException If the schema is not loaded
      */
     public AttributeType getAttributeType( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
         String schemaName ) throws LdapInvalidAttributeValueException, LdapUnwillingToPerformException
