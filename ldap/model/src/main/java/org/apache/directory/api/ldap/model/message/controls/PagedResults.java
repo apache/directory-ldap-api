@@ -27,7 +27,7 @@ import org.apache.directory.api.ldap.model.message.Control;
  * A request/response control used to implement a simple paging of search
  * results. This is an implementation of RFC 2696 :
  * <a href="http://www.faqs.org/rfcs/rfc2696.html">LDAP Control Extension for Simple Paged Results Manipulation</a>
- * <br/>
+ * <br>
  * <pre>
  *    This control is included in the searchRequest and searchResultDone
  *    messages as part of the controls field of the LDAPMessage, as defined

@@ -444,17 +444,21 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * refer to other objects within the registries.  Null references will be
      * handed appropriately.
      * The order in which the SchemaObjects must be :
-     * <li/>1) Normalizers, Comparators and SyntaxCheckers (as they depend on nothing)
-     * <li/>2) Syntaxes (depend on SyntaxCheckers)
-     * <li/>3) MatchingRules (depend on Syntaxes, Normalizers and Comparators
-     * <li/>4) AttributeTypes (depend on MatchingRules, Syntaxes and AttributeTypes : in this case, we first handle the superior)
-     * <li/>5) ObjectClasses (depend on AttributeTypes and ObjectClasses)
-     * <br/><br/>
+     * <ul>
+     *   <li>1) Normalizers, Comparators and SyntaxCheckers (as they depend on nothing)</li>
+     *   <li>2) Syntaxes (depend on SyntaxCheckers)</li>
+     *   <li>3) MatchingRules (depend on Syntaxes, Normalizers and Comparators</li>
+     *   <li>4) AttributeTypes (depend on MatchingRules, Syntaxes and AttributeTypes : in this case, we first handle the superior)</li>
+     *   <li>5) ObjectClasses (depend on AttributeTypes and ObjectClasses)</li>
+     * </ul>
+     * <br><br>
      * Later, when we will support them :
-     * <li/>6) MatchingRuleUses (depend on matchingRules and AttributeTypes)
-     * <li/>7) DitContentRules (depend on ObjectClasses and AttributeTypes)
-     * <li/>8) NameForms (depends on ObjectClasses and AttributeTypes)
-     * <li/>9) DitStructureRules (depends onNameForms and DitStructureRules)      *
+     * <ul>
+     *   <li>6) MatchingRuleUses (depend on matchingRules and AttributeTypes)</li>
+     *   <li>7) DitContentRules (depend on ObjectClasses and AttributeTypes)</li>
+     *   <li>8) NameForms (depends on ObjectClasses and AttributeTypes)</li>
+     *   <li>9) DitStructureRules (depends onNameForms and DitStructureRules)</li>
+     * </ul>
      *
      * @return a list of exceptions encountered while resolving entities
      */
@@ -529,9 +533,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
     
     /**
      * Delete the AT references (using and usedBy) :
-     * AT -> MR (for EQUALITY, ORDERING and SUBSTR)
-     * AT -> S
-     * AT -> AT
+     * AT -&gt; MR (for EQUALITY, ORDERING and SUBSTR)
+     * AT -&gt; S
+     * AT -&gt; AT
+     * 
+     * @param attributeType The AttributeType to remove
      */
     public void delCrossReferences( AttributeType attributeType )
     {
@@ -616,9 +622,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
     /**
      * Delete the MR references (using and usedBy) :
-     * MR -> C
-     * MR -> N
-     * MR -> S
+     * MR -&gt; C
+     * MR -&gt; N
+     * MR -&gt; S
+     * 
+     * @param matchingRule The MatchinRule refere ce to delete
      */
     public void delCrossReferences( MatchingRule matchingRule )
     {
@@ -641,6 +649,9 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
     /**
      * Build the SchemaObject references
+     * 
+     * @param errors The List that collect errors
+     * @param schemaObject The SchemaObject to add
      */
     public void buildReference( List<Throwable> errors, SchemaObject schemaObject )
     {
@@ -704,6 +715,9 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
     /**
      * Unlink the SchemaObject references
+     * 
+     * @param errors The List that collect errors
+     * @param schemaObject The SchemaObject to remove
      */
     public void removeReference( List<Throwable> errors, SchemaObject schemaObject )
     {
@@ -1330,6 +1344,12 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
     /**
      * Applies the added SchemaObject to the given register
+     *
+     * @param errors The list of collected errors
+     * @param schemaObject The SchemaObject to add
+     * @param check A flag set when we want the schema checks to be done
+     * @return The list of found errors
+     * @throws LdapException If we weren't able to add the SchemaObject
      */
     public List<Throwable> add( List<Throwable> errors, SchemaObject schemaObject, boolean check ) throws LdapException
     {
@@ -1373,6 +1393,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
     /**
      * Remove the given SchemaObject from the registries
+     * 
+     * @param errors The list of collected errors
+     * @param schemaObject The SchemaObject to delete
+     * @return The list of errors
+     * @throws LdapException If the deletion failed
      */
     public List<Throwable> delete( List<Throwable> errors, SchemaObject schemaObject ) throws LdapException
     {
@@ -1501,6 +1526,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * Create a new schema association with its content
      *
      * @param schemaName The schema name
+     * @return A set containing the associations
      */
     public Set<SchemaObjectWrapper> addSchema( String schemaName )
     {
@@ -1596,8 +1622,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * Store the given SchemaObject in the Map associating SchemaObjetcs to their
      * related Schema.
      *
+     * @param errors The list of errors we are accumulating while checking the schema
      * @param schemaObject The schemaObject to register
-     * @throws LdapException If there is a problem
      */
     public void associateWithSchema( List<Throwable> errors, SchemaObject schemaObject )
     {
@@ -1663,6 +1689,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * Store the given SchemaObject in the Map associating SchemaObjetcs to their
      * related Schema.
      *
+     * @param errors The list that collect errors
      * @param schemaObject The schemaObject to register
      * @throws LdapException If there is a problem
      */
@@ -1888,6 +1915,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
     /**
      * Dump the UsedBy data structure as a String
+     * 
+     * @return The UsedBy data structure
      */
     public String dumpUsedBy()
     {
@@ -1934,6 +1963,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
     /**
      * Dump the Using data structure as a String
+     * 
+     * @return The Using data structure
      */
     public String dumpUsing()
     {

@@ -42,6 +42,8 @@ public class BitStringComparator extends LdapComparator<String>
     /**
      * The BitStringComparator constructor. Its OID is the IntegerOrderingMatch matching
      * rule OID.
+     * 
+     * @param oid The Comparator's OID
      */
     public BitStringComparator( String oid )
     {
@@ -50,7 +52,7 @@ public class BitStringComparator extends LdapComparator<String>
 
 
     /**
-     * Implementation of the Compare method
+     * {@inheritDoc}
      */
     public int compare( String bs1, String bs2 )
     {

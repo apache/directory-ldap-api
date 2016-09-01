@@ -25,9 +25,9 @@ import org.apache.directory.api.ldap.model.message.Control;
 /**
  * Control which allows for the management of referrals and other DSA specific
  * entities without processing them: meaning the referrals are treated as
- * regular entries using this control. More information is available in <a
- * href="">RFC 3296</a>. Below we have included section 3 of the RFC describing
- * this control:
+ * regular entries using this control. More information is available in
+ * <a href="https://www.ietf.org/rfc/rfc3296.txt">RFC 3296</a>. Below we have 
+ * included section 3 of the RFC describing this control:
  *
  * <pre>
  *  3.  The ManageDsaIT Control

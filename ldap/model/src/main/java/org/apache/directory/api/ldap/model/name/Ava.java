@@ -128,6 +128,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      * 
      * @param schemaManager The SchemaManager instance
      * @param ava The AVA to copy
+     * @throws LdapInvalidDnException If the Ava is invalid
      */
     public Ava( SchemaManager schemaManager, Ava ava ) throws LdapInvalidDnException
     {
@@ -1590,6 +1591,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      * @param buffer The buffer which will contain the serialized Ava
      * @param pos The position in the buffer for the serialized value
      * @return The new position in the buffer
+     * @throws IOException Id the serialization failed
      */
     public int serialize( byte[] buffer, int pos ) throws IOException
     {
@@ -1857,7 +1859,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      * 
      * @see Externalizable#readExternal(ObjectInput)
      * 
-     * @throws IoException If the Ava can't be written in the stream
+     * @throws IOException If the Ava can't be written in the stream
      */
     @Override
     public void writeExternal( ObjectOutput out ) throws IOException

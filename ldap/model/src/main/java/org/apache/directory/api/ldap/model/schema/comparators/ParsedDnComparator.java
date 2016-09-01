@@ -41,6 +41,11 @@ public class ParsedDnComparator extends LdapComparator<Object>
     /** A reference to the schema manager */
     private transient SchemaManager schemaManager;
 
+    /**
+     * The ParsedDnComparator constructor.
+     * 
+     * @param oid The Comparator's OID
+     */
     public ParsedDnComparator( String oid )
     {
         super( oid );

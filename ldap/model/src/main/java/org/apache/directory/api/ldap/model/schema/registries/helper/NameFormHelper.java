@@ -49,7 +49,7 @@ public final class NameFormHelper
      * @param nameForm The NameForm to add to the Registries
      * @param errors The errors we got while adding the NameForm to the Registries
      * @param registries The Registries
-     * @exception If the addition failed
+     * @throws LdapException If the addition failed
      */
     public static void addToRegistries( NameForm nameForm, List<Throwable> errors, Registries registries )
         throws LdapException

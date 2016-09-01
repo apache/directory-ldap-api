@@ -86,7 +86,7 @@ import org.apache.directory.api.util.Unicode;
  * reg-name    = *( unreserved / pct-encoded / sub-delims )
  * unreserved  = ALPHA / DIGIT / "-" / "." / "_" / "~"
  * pct-encoded = "%" HEXDIG HEXDIG
- * sub-delims  = "!" | "$" | "&" | "'" | "(" | ")" | "*" | "+" | "," | ";" | "="
+ * sub-delims  = "!" | "$" | "&amp;" | "'" | "(" | ")" | "*" | "+" | "," | ";" | "="
  * h16         = 1*4HEXDIG
  * ls32        = ( h16 ":" h16 ) / IPv4address
  * DIGIT       = 0..9
@@ -1524,43 +1524,41 @@ public class LdapUrl
     /**
      * Encode a String to avoid special characters.
      *
-     *
+     * <pre>
      * RFC 4516, section 2.1. (Percent-Encoding)
      *
      * A generated LDAP URL MUST consist only of the restricted set of
      * characters included in one of the following three productions defined
      * in [RFC3986]:
      *
-     *   <reserved>
-     *   <unreserved>
-     *   <pct-encoded>
-     *
+     *   &lt;reserved&gt;
+     *   &lt;unreserved&gt;
+     *   &lt;pct-encoded&gt;
+     * 
      * Implementations SHOULD accept other valid UTF-8 strings [RFC3629] as
      * input.  An octet MUST be encoded using the percent-encoding mechanism
      * described in section 2.1 of [RFC3986] in any of these situations:
-     *
+     * 
      *  The octet is not in the reserved set defined in section 2.2 of
      *  [RFC3986] or in the unreserved set defined in section 2.3 of
      *  [RFC3986].
      *
-     *  It is the single Reserved character '?' and occurs inside a <dn>,
-     *  <filter>, or other element of an LDAP URL.
+     *  It is the single Reserved character '?' and occurs inside a &lt;dn&gt;,
+     *  &lt;filter&gt;, or other element of an LDAP URL.
      *
-     *  It is a comma character ',' that occurs inside an <exvalue>.
-     *
+     *  It is a comma character ',' that occurs inside an &lt;exvalue&gt;.
      *
      * RFC 3986, section 2.2 (Reserved Characters)
-     *
+     * 
      * reserved    = gen-delims / sub-delims
      * gen-delims  = ":" / "/" / "?" / "#" / "[" / "]" / "@"
-     * sub-delims  = "!" / "$" / "&" / "'" / "(" / ")"
+     * sub-delims  = "!" / "$" / "&amp;" / "'" / "(" / ")"
      *              / "*" / "+" / "," / ";" / "="
      *
-     *
      * RFC 3986, section 2.3 (Unreserved Characters)
-     *
+     * 
      * unreserved  = ALPHA / DIGIT / "-" / "." / "_" / "~"
-     *
+     * </pre>
      *
      * @param url The String to encode
      * @param doubleEncode Set if we need to encode the comma

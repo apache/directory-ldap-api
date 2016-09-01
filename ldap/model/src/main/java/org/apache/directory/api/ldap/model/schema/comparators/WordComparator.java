@@ -56,6 +56,8 @@ public class WordComparator extends LdapComparator<String>
     /**
      * The StringComparator constructor. Its OID is the StringMatch matching
      * rule OID.
+     * 
+     * @param oid The Comparator's OID
      */
     public WordComparator( String oid )
     {
@@ -64,7 +66,7 @@ public class WordComparator extends LdapComparator<String>
 
 
     /**
-     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+     * {@inheritDoc}
      */
     public int compare( String value, String assertion )
     {

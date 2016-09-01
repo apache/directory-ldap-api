@@ -125,7 +125,6 @@ import org.apache.directory.api.i18n.I18n;
  * @see <a
  *      href="http://www.ietf.org/internet-drafts/draft-ietf-ldapbis-models-11.txt">
  *      ldapbis [MODELS]</a>
- * @see DescriptionUtils#getDescription(MutableAttributeType)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class MutableAttributeType extends AttributeType

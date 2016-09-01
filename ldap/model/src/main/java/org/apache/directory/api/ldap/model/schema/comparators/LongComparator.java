@@ -40,6 +40,8 @@ public class LongComparator extends LdapComparator<Long> implements Serializable
     /**
      * The LongComparator constructor. Its OID is the IntegerOrderingMatch matching
      * rule OID.
+     * 
+     * @param oid The Comparator's OID
      */
     public LongComparator( String oid )
     {
@@ -48,11 +50,7 @@ public class LongComparator extends LdapComparator<Long> implements Serializable
 
 
     /**
-     * Compare two objects.
-     * 
-     * @param obj1 First object
-     * @param obj2 Second object
-     * @return 1 if obj1 > obj2, 0 if obj1 == obj2, -1 if obj1 < obj2
+     * {@inheritDoc}
      */
     public int compare( Long obj1, Long obj2 )
     {

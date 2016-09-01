@@ -65,7 +65,8 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
      * Create a new attributeValue
      * 
      * @param type The attribute's name (called 'type' in the grammar)
-     */
+     * @throws LdapException If the type can't be added
+    */
     public void addAttributeType( String type ) throws LdapException
     {
         // do not create a new attribute if we have seen this attributeType before
@@ -94,6 +95,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
      * Add a new value to the current attribute
      * 
      * @param value The value to add
+     * @throws LdapException If the value can't be added
      */
     public void addAttributeValue( String value ) throws LdapException
     {
@@ -105,6 +107,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
      * Add a new value to the current attribute
      * 
      * @param value The value to add
+     * @throws LdapException If the value can't be added
      */
     public void addAttributeValue( Value value ) throws LdapException
     {
@@ -116,6 +119,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
      * Add a new value to the current attribute
      * 
      * @param value The value to add
+     * @throws LdapException If the value can't be added
      */
     public void addAttributeValue( byte[] value ) throws LdapException
     {

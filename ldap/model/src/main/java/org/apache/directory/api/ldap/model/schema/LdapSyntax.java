@@ -65,7 +65,6 @@ import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
  * @see <a href=
  *      "http://www.ietf.org/internet-drafts/draft-ietf-ldapbis-models-09.txt">
  *      ldapbis [MODELS]</a>
- * @see DescriptionUtils#getDescription(Syntax)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class LdapSyntax extends AbstractSchemaObject

@@ -42,6 +42,8 @@ public class ObjectIdentifierComparator extends LdapComparator<Object>
     /**
      * The ObjectIdentifierComparator constructor. Its OID is the ObjectIdentifierMatch matching
      * rule OID.
+     * 
+     * @param oid The Comparator's OID
      */
     public ObjectIdentifierComparator( String oid )
     {
@@ -50,7 +52,7 @@ public class ObjectIdentifierComparator extends LdapComparator<Object>
 
 
     /**
-     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public int compare( Object o1, Object o2 )

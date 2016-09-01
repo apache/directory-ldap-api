@@ -137,8 +137,8 @@ import org.apache.directory.api.ldap.model.exception.LdapUnwillingToPerformExcep
  * as an unknown error condition. The majority of this javadoc was pasted in
  * from RFC 2251. There's and expired draft out there on error codes which makes
  * alot of sense: <a
- * href="http://www.alternic.org/drafts/drafts-j-k/draft-just-ldapv3-rescodes-
- * 02.html"> ietf (expired) draft</a> on error codes (read at your discretion).
+ * href="http://www.alternic.org/drafts/drafts-j-k/draft-just-ldapv3-rescodes-02.html"> 
+ * ietf (expired) draft</a> on error codes (read at your discretion).
  * Result codes have been identified and split into categories:
  * <ul>
  * <li> Non-Erroneous: Five result codes that may be returned in LDAPResult are
@@ -1284,6 +1284,9 @@ public enum ResultCodeEnum
 
 
     /**
+     * Gets the ResultCode enum from its integer value
+     * 
+     * @param value the ResultCode numneric value
      * @return The integer associated with the result code
      */
     public static ResultCodeEnum getResultCode( int value )

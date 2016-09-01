@@ -99,7 +99,8 @@ public interface AttributeTypeRegistry extends SchemaObjectRegistry<AttributeTyp
      * descendants.
      * 
      * @param attributeType The attributeType to register
-     * @throws org.apache.directory.api.ldap.model.exception.LdapException If something went wrong
+     * @param ancestor The attributeType's parent
+     * @throws LdapException If something went wrong
      */
     void registerDescendants( AttributeType attributeType, AttributeType ancestor ) throws LdapException;
 
@@ -117,18 +118,26 @@ public interface AttributeTypeRegistry extends SchemaObjectRegistry<AttributeTyp
 
     /**
      * Add a new Oid/Normalizer couple in the OidNormalizer map
+     * 
+     * @param attributeType The AttributeType to add
+     * @throws LdapException If something went wrong
      */
     void addMappingFor( AttributeType attributeType ) throws LdapException;
 
 
     /**
      * Remove a new Oid/Normalizer couple in the OidNormalizer map
+     * 
+     * @param attributeType The AttributeType to remove
+     * @throws LdapException If something went wrong
      */
     void removeMappingFor( AttributeType attributeType ) throws LdapException;
 
 
     /**
      * Copy the AttributeTypeRegistry
+     * 
+     * @return The copied AttributeTypeRegistry
      */
     @Override
     AttributeTypeRegistry copy();

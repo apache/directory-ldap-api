@@ -35,8 +35,8 @@ import org.slf4j.LoggerFactory;
  * A SyntaxChecker which verifies that a value is a delivery method 
  * according to RFC 4517.
  * 
- * From RFC 4517 & RFC 4512:
- * 
+ * From RFC 4517 &amp; RFC 4512:
+ * <pre>
  * DeliveryMethod = pdm *( WSP DOLLAR WSP pdm )
  *
  * pdm = "any" | "mhs" | "physical" | "telex" | "teletex" |
@@ -45,7 +45,7 @@ import org.slf4j.LoggerFactory;
  * WSP     = 0*SPACE  ; zero or more " "
  * DOLLAR  = %x24 ; dollar sign ("$")
  * SPACE   = %x20 ; space (" ")
- * 
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

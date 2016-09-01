@@ -70,6 +70,8 @@ public abstract class AbstractSchemaParser<T extends SchemaObject>
 
     /**
      * Instantiates a new abstract schema parser.
+     * 
+     * @param schemaObjectType The Schema object type
      * @param errorCodeOnNull error code used when schema element is null
      * @param errorCodeOnParseExceptionWithPosition error code used on parse error when position is known
      * @param errorCodeOnParseException error code used on parse error when position is unknown

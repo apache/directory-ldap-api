@@ -42,6 +42,15 @@ import org.apache.directory.api.util.DateUtils;
  */
 public class AttributesFactory
 {
+    /**
+     * Get a SchemaObject as an Entry
+     *
+     * @param obj The schema oobject to convert
+     * @param schema The schema which this object belongs to
+     * @param schemaManager The SchemaManager
+     * @return The converted schema object as an Entry
+     * @throws LdapException If we can't convert teh schema object
+     */
     public Entry getAttributes( SchemaObject obj, Schema schema, SchemaManager schemaManager ) throws LdapException
     {
         if ( obj instanceof LdapSyntax )
@@ -82,7 +91,7 @@ public class AttributesFactory
 
 
     /**
-     * Convert a Schema to Entry
+     * Converts a Schema to an Entry
      * 
      * @param schema The Schema to convert
      * @param schemaManager The SchemaManager
@@ -122,6 +131,14 @@ public class AttributesFactory
     }
 
 
+    /**
+     * Convert a SyntaxChecker instance into an Entry
+     *
+     * @param syntaxChecker The SyntaxChecker to convert
+     * @param schema The schema containing this SyntaxChecker
+     * @param schemaManager The SchemaManager
+     * @return An Entry containing the converted SyntaxChecker
+     */
     public Entry convert( SyntaxChecker syntaxChecker, Schema schema, SchemaManager schemaManager )
     {
         Entry entry = new DefaultEntry( schemaManager );
@@ -136,6 +153,15 @@ public class AttributesFactory
     }
 
 
+    /**
+     * Convert a Syntax instance into an Entry
+     *
+     * @param syntax The LdapSytax to convert
+     * @param schema The schema containing this Syntax
+     * @param schemaManager The SchemaManager
+     * @return And entry defining a LdapSyntax
+     * @throws LdapException If the conversion failed
+     */
     public Entry convert( LdapSyntax syntax, Schema schema, SchemaManager schemaManager ) throws LdapException
     {
         Entry entry = new DefaultEntry( schemaManager );
@@ -149,6 +175,15 @@ public class AttributesFactory
     }
 
 
+    /**
+     * Convert a Normalizer instance into an Entry
+     *
+     * @param oid The Normalizer's OID
+     * @param normalizer The Normalizer to convert
+     * @param schema The schema containing this Normalizer
+     * @param schemaManager The SchemaManager
+     * @return An Entry defining a Normalizer
+     */
     public Entry convert( String oid, Normalizer normalizer, Schema schema, SchemaManager schemaManager )
     {
         Entry entry = new DefaultEntry( schemaManager );
@@ -162,6 +197,15 @@ public class AttributesFactory
     }
 
 
+    /**
+     * Convert a LdapComparator instance into an Entry
+     *
+     * @param oid The LdapComparator's OID
+     * @param comparator The LdapComparator to convert
+     * @param schema The schema containing this Comparator
+     * @param schemaManager The SchemaManager
+     * @return An Entry defining a LdapComparator
+     */
     public Entry convert( String oid, LdapComparator<? super Object> comparator, Schema schema,
         SchemaManager schemaManager )
     {
@@ -177,10 +221,13 @@ public class AttributesFactory
 
 
     /**
+     * Converts a MatchingRule into an Entry
      * 
-     * @param matchingRule
-     * @return Attributes
-     * @throws LdapException
+     * @param matchingRule The MatchingRule to convert
+     * @param schema The schema containing this ObjectClass
+     * @param schemaManager The SchemaManager
+     * @return The converted MatchingRule
+     * @throws LdapException If the conversion failed
      */
     public Entry convert( MatchingRule matchingRule, Schema schema, SchemaManager schemaManager )
         throws LdapException
@@ -196,6 +243,14 @@ public class AttributesFactory
     }
 
 
+    /**
+     * Converts a MatchingRuleUse into an Entry
+     *
+     * @param matchingRuleUse The MatchingRuleUse to convert
+     * @param schema The schema containing this MatchingRuleUse
+     * @param schemaManager The SchemaManager
+     * @return The converted MatchingRuleUse
+     */
     public Entry convert( MatchingRuleUse matchingRuleUse, Schema schema, SchemaManager schemaManager )
     {
         Entry entry = new DefaultEntry( schemaManager );
@@ -207,6 +262,14 @@ public class AttributesFactory
     }
 
 
+    /**
+     * Converts a DitStructureRule into an Entry
+     *
+     * @param ditStructureRule The DitStructureRule to convert
+     * @param schema The schema containing this DitStructureRule
+     * @param schemaManager The SchemaManager
+     * @return The converted DitStructureRule
+     */
     public Entry convert( DitStructureRule ditStructureRule, Schema schema, SchemaManager schemaManager )
     {
         Entry entry = new DefaultEntry( schemaManager );
@@ -218,6 +281,14 @@ public class AttributesFactory
     }
 
 
+    /**
+     * Converts a DitContentRule into an Entry
+     *
+     * @param dITContentRule The DitContentRule to convert
+     * @param schema The schema containing this DitContentRule
+     * @param schemaManager The SchemaManager
+     * @return The converted DitContentRule
+     */
     public Entry convert( DitContentRule dITContentRule, Schema schema, SchemaManager schemaManager )
     {
         Entry entry = new DefaultEntry( schemaManager );
@@ -229,6 +300,15 @@ public class AttributesFactory
     }
 
 
+    /**
+     * 
+     * Converts a NameForm into an Entry
+     *
+     * @param nameForm The NameForm to convert
+     * @param schema The schema containing this NameForm
+     * @param schemaManager The SchemaManager
+     * @return The converted NameForm
+     */
     public Entry convert( NameForm nameForm, Schema schema, SchemaManager schemaManager )
     {
         Entry entry = new DefaultEntry( schemaManager );
@@ -254,9 +334,11 @@ public class AttributesFactory
      *    )
      * </pre>
      * 
-     * @param attributeType
-     * @return Attributes
-     * @throws LdapException
+     * @param attributeType The AttributeType to convert
+     * @param schema The schema containing this AttributeType
+     * @param schemaManager The SchemaManager
+     * @return The converted AttributeType 
+     * @throws LdapException If the conversion failed
      */
     public Entry convert( AttributeType attributeType, Schema schema, SchemaManager schemaManager )
         throws LdapException
@@ -320,8 +402,10 @@ public class AttributesFactory
      * </pre>
      * 
      * @param objectClass the objectClass to produce a meta schema entry for
+     * @param schema The schema containing this ObjectClass
+     * @param schemaManager The SchemaManager
      * @return the attributes of the metaSchema entry representing the objectClass
-     * @throws LdapException if there are any problems
+     * @throws LdapException If the conversion failed
      */
     public Entry convert( ObjectClass objectClass, Schema schema, SchemaManager schemaManager )
         throws LdapException

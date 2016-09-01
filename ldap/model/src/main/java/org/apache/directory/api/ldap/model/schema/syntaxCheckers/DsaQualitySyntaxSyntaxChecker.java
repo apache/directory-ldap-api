@@ -30,14 +30,14 @@ import org.slf4j.LoggerFactory;
 /**
  * A SyntaxChecker which verifies that a value is a DSAQualitySyntax according to 
  * http://tools.ietf.org/id/draft-ietf-asid-ldapv3-attributes-03.txt, par 5.2.2.2 :
- * 
- * <DsaQualitySyntax> ::= <DSAKeyword> [ '#' <description> ]
+ * <pre>
+ * &lt;DsaQualitySyntax&gt; ::= &lt;DSAKeyword&gt; [ '#' &lt;description&gt; ]
  *
- * <DSAKeyword> ::= 'DEFUNCT' | 'EXPERIMENTAL' | 'BEST-EFFORT' |
+ * &lt;DSAKeyword&gt; ::= 'DEFUNCT' | 'EXPERIMENTAL' | 'BEST-EFFORT' |
  *                  'PILOT-SERVICE' | 'FULL-SERVICE'
  *
- * <description> ::= encoded as a PrintableString
- * 
+ * &lt;description&gt; ::= encoded as a PrintableString
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

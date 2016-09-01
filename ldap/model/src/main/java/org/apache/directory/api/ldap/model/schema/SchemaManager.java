@@ -72,7 +72,7 @@ public interface SchemaManager
      * 
      * @param schemas the Schemas to load
      * @return true if the schemas have been loaded and the registries is consistent
-     * @throws LdapException @TODO 
+     * @throws LdapException If something went wrong
      */
     boolean load( Schema... schemas ) throws LdapException;
 
@@ -88,7 +88,7 @@ public interface SchemaManager
      * 
      * @param schemas the Schemas' name to load
      * @return true if the schemas have been loaded and the registries is consistent
-     * @throws LdapException @TODO 
+     * @throws LdapException If something went wrong
      */
     boolean load( String... schemas ) throws LdapException;
 
@@ -104,7 +104,7 @@ public interface SchemaManager
      * 
      * @param schemas the Schemas to load
      * @return true if the schemas have been loaded and the registries is consistent
-     * @throws LdapException @TODO 
+     * @throws LdapException If something went wrong
      */
     boolean loadWithDeps( Schema... schemas ) throws LdapException;
 
@@ -120,7 +120,7 @@ public interface SchemaManager
      * 
      * @param schemas the Schemas' name to load
      * @return true if the schemas have been loaded and the registries is consistent
-     * @throws LdapException @TODO 
+     * @throws LdapException If something went wrong
      */
     boolean loadWithDeps( String... schemas ) throws LdapException;
 
@@ -136,7 +136,7 @@ public interface SchemaManager
      * 
      * @param schemas the Schemas to load, if enabled
      * @return true if the schemas have been loaded
-     * @throws LdapException @TODO 
+     * @throws LdapException If something went wrong
      */
     boolean loadRelaxed( Schema... schemas ) throws LdapException;
 
@@ -152,7 +152,7 @@ public interface SchemaManager
      * 
      * @param schemas the Schemas' name to load, if enabled
      * @return true if the schemas have been loaded and the registries is consistent
-     * @throws LdapException @TODO 
+     * @throws LdapException If something went wrong
      */
     boolean loadRelaxed( String... schemas ) throws LdapException;
 
@@ -168,7 +168,7 @@ public interface SchemaManager
      * 
      * @param schemas the Schemas to load
      * @return true if the schemas have been loaded
-     * @throws LdapException @TODO 
+     * @throws LdapException If something went wrong
      */
     boolean loadWithDepsRelaxed( Schema... schemas ) throws LdapException;
 
@@ -184,7 +184,7 @@ public interface SchemaManager
      * 
      * @param schemas the Schemas' name to load
      * @return true if the schemas have been loaded
-     * @throws LdapException @TODO 
+     * @throws LdapException If something went wrong
      */
     boolean loadWithDepsRelaxed( String... schemas ) throws LdapException;
 
@@ -199,7 +199,7 @@ public interface SchemaManager
      *
      * @param schemas The Schemas to load
      * @return true if the schemas have been loaded
-     * @throws LdapException @TODO 
+     * @throws LdapException If something went wrong
      */
     boolean loadDisabled( Schema... schemas ) throws LdapException;
 
@@ -214,7 +214,7 @@ public interface SchemaManager
      *
      * @param schemas The Schemas' name to load
      * @return true if the schemas have been loaded
-     * @throws LdapException @TODO 
+     * @throws LdapException If something went wrong
      */
     boolean loadDisabled( String... schemas ) throws LdapException;
 
@@ -224,7 +224,7 @@ public interface SchemaManager
      * any inconsistent schema will be rejected. 
      *
      * @return true if the schemas have been loaded
-     * @throws LdapException @TODO
+     * @throws LdapException If something went wrong
      */
     boolean loadAllEnabled() throws LdapException;
 
@@ -234,7 +234,7 @@ public interface SchemaManager
      * even inconsistent schema will be loaded. 
      *
      * @return true if the schemas have been loaded
-     * @throws LdapException @TODO
+     * @throws LdapException If something went wrong
      */
     boolean loadAllEnabledRelaxed() throws LdapException;
 
@@ -244,6 +244,7 @@ public interface SchemaManager
      *
      * @param schemas The list of Schema to unload
      * @return True if all the schemas have been unloaded
+     * @throws LdapException If something went wrong
      */
     boolean unload( Schema... schemas ) throws LdapException;
 
@@ -253,6 +254,7 @@ public interface SchemaManager
      *
      * @param schemas The list of Schema to unload
      * @return True if all the schemas have been unloaded
+     * @throws LdapException If something went wrong
      */
     boolean unload( String... schemas ) throws LdapException;
 
@@ -267,9 +269,9 @@ public interface SchemaManager
      * 
      * If the modification is ok, the Registries will be updated. 
      * 
-     *  @param schemas The list of schemas to enable
-     *  @return true if the Registries is still consistent, false otherwise.
-     *  @throws If something went wrong
+     * @param schemas The list of schemas to enable
+     * @return true if the Registries is still consistent, false otherwise.
+     * @throws LdapException If something went wrong
      */
     boolean enable( Schema... schemas ) throws LdapException;
 
@@ -281,9 +283,9 @@ public interface SchemaManager
      * 
      * If the modification is ok, the Registries will be updated.
      *  
-     *  @param schemas The list of schema name to enable
-     *  @return true if the Registries is still consistent, false otherwise.
-     *  @throws If something went wrong
+     * @param schemas The list of schema name to enable
+     * @return true if the Registries is still consistent, false otherwise.
+     * @throws LdapException If something went wrong
      */
     boolean enable( String... schemas ) throws LdapException;
 
@@ -293,8 +295,8 @@ public interface SchemaManager
      * enabled, with all the dependent schemas. No check is done, the Registries
      * might become inconsistent after this operation.
      * 
-     *  @param schemas The list of schemas to enable
-     *  @return true if all the schemas have been enabled
+     * @param schemas The list of schemas to enable
+     * @return true if all the schemas have been enabled
      */
     boolean enableRelaxed( Schema... schemas );
 
@@ -304,8 +306,8 @@ public interface SchemaManager
      * enabled, with all the dependent schemas. No check is done, the Registries
      * might become inconsistent after this operation.
      * 
-     *  @param schemas The list of schema names to enable
-     *  @return true if all the schemas have been enabled
+     * @param schemas The list of schema names to enable
+     * @return true if all the schemas have been enabled
      */
     boolean enableRelaxed( String... schemas );
 
@@ -349,7 +351,7 @@ public interface SchemaManager
      * 
      *  @param schemas The list of schemas to disable
      *  @return true if the Registries is still consistent, false otherwise.
-     *  @throws If something went wrong
+     *  @throws LdapException If something went wrong
      */
     boolean disable( Schema... schemas ) throws LdapException;
 
@@ -363,7 +365,7 @@ public interface SchemaManager
      * 
      *  @param schemas The list of schema names to disable
      *  @return true if the Registries is still consistent, false otherwise.
-     *  @throws If something went wrong
+     *  @throws LdapException If something went wrong
      */
     boolean disable( String... schemas ) throws LdapException;
 
@@ -735,6 +737,7 @@ public interface SchemaManager
      * 
      * @param attributeTypeOid the attributeType OID to unregister
      * @throws LdapException if the attributeType is invalid
+     * @return the unregistred AtttributeType
      */
     SchemaObject unregisterAttributeType( String attributeTypeOid ) throws LdapException;
 
@@ -744,6 +747,7 @@ public interface SchemaManager
      * 
      * @param comparatorOid the Comparator OID to unregister
      * @throws LdapException if the Comparator is invalid
+     * @return the unregistred Comparator
      */
     SchemaObject unregisterComparator( String comparatorOid ) throws LdapException;
 
@@ -753,6 +757,7 @@ public interface SchemaManager
      * 
      * @param ditControlRuleOid the DitControlRule OID to unregister
      * @throws LdapException if the DitControlRule is invalid
+     * @return the unregistred DitControlRule
      */
     SchemaObject unregisterDitControlRule( String ditControlRuleOid ) throws LdapException;
 
@@ -762,6 +767,7 @@ public interface SchemaManager
      * 
      * @param ditStructureRuleOid the DitStructureRule OID to unregister
      * @throws LdapException if the DitStructureRule is invalid
+     * @return the unregistred DitStructureRule
      */
     SchemaObject unregisterDitStructureRule( String ditStructureRuleOid ) throws LdapException;
 
@@ -771,6 +777,7 @@ public interface SchemaManager
      * 
      * @param matchingRuleOid the MatchingRuleRule OID to unregister
      * @throws LdapException if the MatchingRule is invalid
+     * @return the unregistred MatchingRule
      */
     SchemaObject unregisterMatchingRule( String matchingRuleOid ) throws LdapException;
 
@@ -780,6 +787,7 @@ public interface SchemaManager
      * 
      * @param matchingRuleUseOid the MatchingRuleUse OID to unregister
      * @throws LdapException if the MatchingRuleUse is invalid
+     * @return the unregistred MatchingRuleUse
      */
     SchemaObject unregisterMatchingRuleUse( String matchingRuleUseOid ) throws LdapException;
 
@@ -789,6 +797,7 @@ public interface SchemaManager
      * 
      * @param nameFormOid the NameForm OID to unregister
      * @throws LdapException if the NameForm is invalid
+     * @return the unregistred NameForm
      */
     SchemaObject unregisterNameForm( String nameFormOid ) throws LdapException;
 
@@ -798,6 +807,7 @@ public interface SchemaManager
      * 
      * @param normalizerOid the Normalizer OID to unregister
      * @throws LdapException if the Normalizer is invalid
+     * @return the unregistred Normalizer
      */
     SchemaObject unregisterNormalizer( String normalizerOid ) throws LdapException;
 
@@ -807,6 +817,7 @@ public interface SchemaManager
      * 
      * @param objectClassOid the ObjectClass OID to unregister
      * @throws LdapException if the ObjectClass is invalid
+     * @return the unregistred ObjectClass
      */
     SchemaObject unregisterObjectClass( String objectClassOid ) throws LdapException;
 
@@ -816,6 +827,7 @@ public interface SchemaManager
      * 
      * @param ldapSyntaxOid the LdapSyntax OID to unregister
      * @throws LdapException if the LdapSyntax is invalid
+     * @return the unregistred Syntax
      */
     SchemaObject unregisterLdapSyntax( String ldapSyntaxOid ) throws LdapException;
 
@@ -825,6 +837,7 @@ public interface SchemaManager
      * 
      * @param syntaxCheckerOid the SyntaxChecker OID to unregister
      * @throws LdapException if the SyntaxChecker is invalid
+     * @return the unregistred SyntaxChecker
      */
     SchemaObject unregisterSyntaxChecker( String syntaxCheckerOid ) throws LdapException;
 

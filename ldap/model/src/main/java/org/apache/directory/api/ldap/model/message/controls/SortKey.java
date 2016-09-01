@@ -92,7 +92,7 @@ public class SortKey
 
 
     /**
-     * @param attributeType the attributeType to set
+     * @param attributeTypeDesc the attributeType to set
      */
     public void setAttributeTypeDesc( String attributeTypeDesc )
     {

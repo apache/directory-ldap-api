@@ -34,7 +34,7 @@ public interface PreparedNormalizer
      * Gets the normalized value.
      * 
      * @param value the value to normalize. It must *not* be null !
-     * @param assertionType The tyê pf String we have to normalize
+     * @param assertionType The type of String we have to normalize
      * @return the normalized form for a value
      * @throws LdapException if an error results during normalization
      */

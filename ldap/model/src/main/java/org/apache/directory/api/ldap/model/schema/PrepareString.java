@@ -78,6 +78,9 @@ public final class PrepareString
      * The first step defined by RFC 4518 : Transcode, which transform an
      * UTF-8 encoded String to Unicode. This is done using the {@link Strings#utf8ToString} 
      * method. This 
+     * 
+     * @param bytes The byte[] to transcode
+     * @return The transcoded String
      */
     public static String transcode( byte[] bytes )
     {
@@ -3260,7 +3263,7 @@ public final class PrepareString
      * will be transformed to :
      * "123456789"
      *
-     * @param str The numeric String
+     * @param source The numeric String
      * @return The modified numeric String
      */
     public static String insignificantNumericStringHandling( char[] source )
@@ -3288,7 +3291,7 @@ public final class PrepareString
      * will be transformed to :
      * "+(33)1123456789"
      *
-     * @param str The telephoneNumber String
+     * @param source The telephoneNumber String
      * @return The modified telephoneNumber String
      */
     public static String insignificantTelephoneNumberStringHandling( char[] source )
@@ -3341,6 +3344,7 @@ public final class PrepareString
      * 
      * @param origin The String to modify
      * @return The modified String
+     * @throws InvalidCharacterException If an invalid character is met
      */
     public static String insignificantSpacesStringValue( char[] origin )
         throws InvalidCharacterException
@@ -3608,6 +3612,7 @@ public final class PrepareString
      * 
      * @param origin The String to modify
      * @return The modified String
+     * @throws InvalidCharacterException If an invalid character is met
      */
     public static String insignificantSpacesStringInitial( char[] origin )
         throws InvalidCharacterException
@@ -3832,6 +3837,7 @@ public final class PrepareString
      * 
      * @param origin The String to modify
      * @return The modified String
+     * @throws InvalidCharacterException If an invalid character is met
      */
     public static String insignificantSpacesStringAny( char[] origin )
         throws InvalidCharacterException
@@ -4045,7 +4051,6 @@ public final class PrepareString
      * the text.
      * 
      * @param origin The String to modify
-     * @param caseSensitive A flag telling if the chars must be lower cased
      * @return The modified StringBuilder
      * @throws InvalidCharacterException If an invalid character is found in the String
      */

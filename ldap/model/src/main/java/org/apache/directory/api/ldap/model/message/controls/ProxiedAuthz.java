@@ -73,7 +73,7 @@ public interface ProxiedAuthz extends Control
 
 
     /**
-     * @returns The authzId 
+     * @return The authzId 
      */
     String getAuthzId();
 

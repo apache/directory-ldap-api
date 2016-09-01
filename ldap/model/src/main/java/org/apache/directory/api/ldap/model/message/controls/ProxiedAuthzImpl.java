@@ -63,7 +63,7 @@ public String getAuthzId()
      * The authzId syntax is given by the RFC 2829 :
      * 
      * <pre>
-     * authzId    = dnAuthzId / uAuthzId / <empty>
+     * authzId    = dnAuthzId / uAuthzId / &lt;empty&gt;
      * dnAuthzId  = "dn:" dn
      * dn         = utf8string
      * uAuthzId   = "u:" userid

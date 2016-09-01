@@ -44,6 +44,8 @@ public class StringComparator extends LdapComparator<String> implements Serializ
     /**
      * The StringComparator constructor. Its OID is the StringMatch matching
      * rule OID.
+     * 
+     * @param oid The Comparator's OID
      */
     public StringComparator( String oid )
     {
@@ -52,7 +54,7 @@ public class StringComparator extends LdapComparator<String> implements Serializ
 
 
     /**
-     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+     * {@inheritDoc}
      */
     public int compare( String s1, String s2 )
     {

@@ -42,6 +42,8 @@ public class DeepTrimComparator extends LdapComparator<String>
     
     /**
      * The NormalizingComparator constructor. Its OID is the  matching rule OID.
+     * 
+     * @param oid The Comparator's OID
      */
     public DeepTrimComparator( String oid )
     {
@@ -51,8 +53,7 @@ public class DeepTrimComparator extends LdapComparator<String>
 
 
     /**
-     * If any normalization attempt fails we compare using the unnormalized
-     * object.
+     * {@inheritDoc}
      */
     public int compare( String o1, String o2 )
     {

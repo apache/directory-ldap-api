@@ -49,6 +49,8 @@ public class NormalizingComparator extends LdapComparator<String>
 
     /**
      * The NormalizingComparator constructor. Its OID is the  matching rule OID.
+     * 
+     * @param oid The Comparator's OID
      */
     public NormalizingComparator( String oid )
     {
@@ -59,6 +61,7 @@ public class NormalizingComparator extends LdapComparator<String>
     /**
      * A comparator which normalizes a value first before comparing them.
      * 
+     * @param oid The Comparator's OID
      * @param normalizer the Normalizer to normalize values with before comparing
      * @param comparator the underlying comparator to use for comparisons
      */
@@ -71,8 +74,7 @@ public class NormalizingComparator extends LdapComparator<String>
 
 
     /**
-     * If any normalization attempt fails we compare using the unnormalized
-     * object.
+     * {@inheritDoc}
      */
     public int compare( String o1, String o2 )
     {

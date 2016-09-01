@@ -34,13 +34,13 @@ import org.slf4j.LoggerFactory;
 /**
  * A SyntaxChecker which verifies that a value is a DSEType according to 
  * http://tools.ietf.org/id/draft-ietf-asid-ldapv3-attributes-03.txt, par 6.2.1.5 :
- * 
- * <DSEType>    ::= '(' <sp>* <DSEBit> <sp>* <DSEBitList> ')'
- * <DSEBitList> ::= '$' <sp>* <DSEBit> <sp>* <DSEBitList> | e      
- * <DSEBit>     ::= 'root' | 'glue' | 'cp' | 'entry' | 'alias' | 'subr' |
+ * <pre>
+ * &lt;DSEType&gt;    ::= '(' &lt;sp&gt;* &lt;DSEBit&gt; &lt;sp&gt;* &lt;DSEBitList&gt; ')'
+ * &lt;DSEBitList&gt; ::= '$' &lt;sp&gt;* &lt;DSEBit&gt; &lt;sp&gt;* &lt;DSEBitList&gt; | e      
+ * &lt;DSEBit&gt;     ::= 'root' | 'glue' | 'cp' | 'entry' | 'alias' | 'subr' |
  *                  'nssr' | 'supr' | 'xr' | 'admPoint' | 'subentry' |
  *                  'shadow' | 'zombie' | 'immSupr' | 'rhob' | 'sa'
- * 
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

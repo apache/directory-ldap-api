@@ -41,6 +41,11 @@ public class DnComparator extends LdapComparator<Object>
     /** A reference to the schema manager */
     private transient SchemaManager schemaManager;
 
+    /**
+     * Creates a new instance of DnComparator.
+     * 
+     * @param oid The Comparator's OID
+     */
     public DnComparator( String oid )
     {
         super( oid );

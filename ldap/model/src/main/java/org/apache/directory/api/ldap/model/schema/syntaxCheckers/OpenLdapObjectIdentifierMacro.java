@@ -24,7 +24,7 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 /**
  * An OpenLDAP object identifier macro. 
  * See http://www.openldap.org/doc/admin24/schema.html#OID%20Macros
- * <br/>
+ * <br>
  * <code>objectIdentifier &lt;name&gt; { &lt;oid&gt; | &lt;name&gt;[:&lt;suffix&gt;] }</code>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>

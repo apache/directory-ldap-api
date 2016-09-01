@@ -95,6 +95,8 @@ public class MatchingRuleUse extends AbstractSchemaObject
 
     /**
      * Creates a new instance of MatchingRuleUseDescription
+     * 
+     * @param oid the MatchingRuleUse's OID
      */
     public MatchingRuleUse( String oid )
     {
@@ -212,7 +214,7 @@ public class MatchingRuleUse extends AbstractSchemaObject
      * @see Object#toString()
      */
     @Override
-public String toString()
+	public String toString()
     {
         return SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( this );
     }

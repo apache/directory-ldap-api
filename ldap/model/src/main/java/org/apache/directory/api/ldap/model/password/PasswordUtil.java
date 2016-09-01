@@ -46,6 +46,7 @@ import org.apache.directory.api.util.Strings;
  */
 public final class PasswordUtil
 {
+
     /** The SHA1 hash length */
     public static final int SHA1_LENGTH = 20;
 
@@ -149,6 +150,10 @@ public final class PasswordUtil
 
     /**
      * @see #createStoragePassword(byte[], LdapSecurityConstants)
+     * 
+     * @param credentials The password
+     * @param algorithm The algorithm to use
+     * @return The resulting byte[] containing the paswword
      */
     public static byte[] createStoragePassword( String credentials, LdapSecurityConstants algorithm )
     {
@@ -457,9 +462,8 @@ public final class PasswordUtil
      * If the algorithm is SHA, SSHA, MD5 or SMD5, the part following the algorithm
      * is base64 encoded
      *
-     * @param encryptionMethod The structure to feed
+     * @param credentials The byte[] containing the credentials to split
      * @return The password
-     * @param credentials the credentials to split
      */
     public static PasswordDetails splitCredentials( byte[] credentials )
     {

@@ -62,7 +62,7 @@ public final class MatchingRuleHelper
      * @param matchingRule The MatchingRule to add to the Registries
      * @param errors The errors we got while adding the MatchingRule to the registries
      * @param registries The Registries
-     * @exception If the addition failed
+     * @throws LdapException If the addition failed
      */
     @SuppressWarnings("rawtypes")
     public static void addToRegistries( MutableMatchingRule matchingRule, List<Throwable> errors, Registries registries )
@@ -160,7 +160,7 @@ public final class MatchingRuleHelper
      * @param matchingRule The MatchingRule to remove from the Registries
      * @param errors The errors we got while removing the MatchingRule from the registries
      * @param registries The Registries
-     * @exception If the MatchingRule is not valid
+     * @throws LdapException If the MatchingRule is not valid
      */
     public static void removeFromRegistries( MatchingRule matchingRule, List<Throwable> errors, Registries registries )
         throws LdapException

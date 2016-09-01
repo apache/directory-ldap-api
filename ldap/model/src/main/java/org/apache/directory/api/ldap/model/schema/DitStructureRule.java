@@ -76,7 +76,6 @@ import org.apache.directory.api.i18n.I18n;
  * @see <a
  *      href="http://www.ietf.org/internet-drafts/draft-ietf-ldapbis-models-11.txt">ldapbis
  *      [MODELS]</a>
- * @see DescriptionUtils#getDescription(DitStructureRule)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class DitStructureRule extends AbstractSchemaObject
@@ -96,6 +95,8 @@ public class DitStructureRule extends AbstractSchemaObject
 
     /**
      * Creates a new instance of DitStructureRule
+     * 
+     * @param ruleId The RuleId for this DitStructureRule
      */
     public DitStructureRule( int ruleId )
     {

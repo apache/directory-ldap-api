@@ -46,6 +46,8 @@ public class UuidComparator extends SerializableComparator<String>
     /**
      * The UUIDComparator constructor. Its OID is the UUIDMatch matching
      * rule OID.
+     * 
+     * @param oid The Comparator's OID
      */
     public UuidComparator( String oid )
     {
@@ -54,7 +56,7 @@ public class UuidComparator extends SerializableComparator<String>
 
 
     /**
-     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public int compare( String uuid1, String uuid2 )
@@ -77,7 +79,7 @@ public class UuidComparator extends SerializableComparator<String>
 
 
     /**
-     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+     * {@inheritDoc}
      */
     public int compare( UUID uuid1, UUID uuid2 )
     {

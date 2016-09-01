@@ -365,10 +365,10 @@ public final class SchemaUtils
     // ------------------------------------------------------------------------
 
     /**
-     * Renders the schema extensions into a new StringBuilder.
+     * Renders the schema extensions into a new StringBuffer.
      *
      * @param extensions the schema extensions map with key and values
-     * @return a StringBuilder with the extensions component of a syntax description
+     * @return a StringBuffer with the extensions component of a syntax description
      */
     public static StringBuilder render( Map<String, List<String>> extensions )
     {
@@ -420,10 +420,10 @@ public final class SchemaUtils
     /**
      * Returns a String description of a schema. The resulting String format is :
      * <br>
-     * (OID [DESC '<description>'] FQCN <fcqn> [BYTECODE <bytecode>] X-SCHEMA '<schema>')
+     * (OID [DESC '&lt;description&gt;'] FQCN &lt;fcqn&gt; [BYTECODE &lt;bytecode&gt;] X-SCHEMA '&lt;schema&gt;')
      * <br>
      * @param description The description to transform to a String
-     * @return
+     * @return The rendered schema object
      */
     public static String render( LoadableSchemaObject description )
     {
@@ -466,12 +466,17 @@ public final class SchemaUtils
 
     /**
      * Remove the options from the attributeType, and returns the ID.
-     * 
+     * <br>
      * RFC 4512 :
+     * <pre>
      * attributedescription = attributetype options
      * attributetype = oid
      * options = *( SEMI option )
      * option = 1*keychar
+     * </pre>
+     * 
+     * @param attributeId The AttributeType to parse
+     * @return The AttributeType without its options
      */
     public static String stripOptions( String attributeId )
     {
@@ -490,11 +495,14 @@ public final class SchemaUtils
 
     /**
      * Get the options from the attributeType.
-     * 
+     * <br>
      * For instance, given :
      * jpegphoto;binary;lang=jp
-     * 
+     * <br>
      * your get back a set containing { "binary", "lang=jp" }
+     * 
+     * @param attributeId The AttributeType to parse
+     * @return a Set of options found for this AttributeType, or null
      */
     public static Set<String> getOptions( String attributeId )
     {

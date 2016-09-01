@@ -61,6 +61,7 @@ public class DefaultSchema implements Schema
     /**
      * Creates a new instance of DefaultSchema.
      *
+     * @param schemaLoader The ShcemaLoader to use
      * @param name The schema's name
      */
     public DefaultSchema( SchemaLoader schemaLoader, String name )
@@ -72,6 +73,7 @@ public class DefaultSchema implements Schema
     /**
      * Creates a new instance of DefaultSchema.
      *
+     * @param schemaLoader The ShcemaLoader to use
      * @param name The schema's name
      * @param owner the schema's owner
      */
@@ -84,6 +86,7 @@ public class DefaultSchema implements Schema
     /**
      * Creates a new instance of DefaultSchema.
      *
+     * @param schemaLoader The ShcemaLoader to use
      * @param name The schema's name
      * @param owner the schema's owner
      * @param dependencies The list of schemas it depends on 
@@ -97,6 +100,7 @@ public class DefaultSchema implements Schema
     /**
      * Creates a new instance of DefaultSchema.
      *
+     * @param schemaLoader The ShcemaLoader to use
      * @param name The schema's name
      * @param owner the schema's owner
      * @param dependencies The list of schemas it depends on

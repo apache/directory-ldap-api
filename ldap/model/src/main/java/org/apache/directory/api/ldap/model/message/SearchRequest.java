@@ -202,6 +202,7 @@ public interface SearchRequest extends ManyReplyRequest, AbandonableRequest
      * 
      * @param filter the expression node for the root of the filter expression tree.
      * @return The SearchRequest instance
+     * @throws LdapException If the filter can't be added
      */
     SearchRequest setFilter( String filter ) throws LdapException;
 

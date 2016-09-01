@@ -49,7 +49,7 @@ public final class LdapSyntaxHelper
      * @param ldapSyntax The LdapSyntax to add to the Registries
      * @param errors The errors we got while adding the LdapSyntax to the Registries
      * @param registries The Registries
-     * @exception If the addition failed
+     * @throws LdapException If the addition failed
      */
     public static void addToRegistries( LdapSyntax ldapSyntax, List<Throwable> errors, Registries registries )
         throws LdapException
@@ -99,7 +99,7 @@ public final class LdapSyntaxHelper
      * @param ldapSyntax The LdapSyntax to remove from the Registries
      * @param errors The errors we got while removing the LdapSyntax from the Registries
      * @param registries The Registries
-     * @exception If the LdapSyntax is not valid
+     * @throws LdapException If the LdapSyntax is not valid
      */
     public static void removeFromRegistries( LdapSyntax ldapSyntax, List<Throwable> errors, Registries registries )
         throws LdapException
