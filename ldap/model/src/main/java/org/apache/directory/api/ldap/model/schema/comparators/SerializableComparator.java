@@ -68,7 +68,7 @@ public class SerializableComparator<E> extends LdapComparator<E> implements Seri
     // ------------------------------------------------------------------------
 
     /**
-     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+     * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
     public int compare( E o1, E o2 )

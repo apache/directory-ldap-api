@@ -267,6 +267,7 @@ public abstract class AbstractMessage implements Message
     /**
      * Get a String representation of a LdapMessage
      * 
+     * @param message The message to print
      * @return A LdapMessage String
      */
     public String toString( String message )

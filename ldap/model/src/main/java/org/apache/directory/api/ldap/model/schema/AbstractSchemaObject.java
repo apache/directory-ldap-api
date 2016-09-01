@@ -37,36 +37,42 @@ import org.apache.directory.api.util.Strings;
  * Most schema objects have some common attributes. This class
  * contains the minimum set of properties exposed by a SchemaObject.<br>
  * We have 11 types of SchemaObjects :
- * <li> AttributeType
- * <li> DitCOntentRule
- * <li> DitStructureRule
- * <li> LdapComparator (specific to ADS)
- * <li> LdapSyntaxe
- * <li> MatchingRule
- * <li> MatchingRuleUse
- * <li> NameForm
- * <li> Normalizer (specific to ADS)
- * <li> ObjectClass
- * <li> SyntaxChecker (specific to ADS)
+ * <ul>
+ *   <li> AttributeType</li>
+ *   <li> DitCOntentRule</li>
+ *   <li> DitStructureRule</li>
+ *   <li> LdapComparator (specific to ADS)</li>
+ *   <li> LdapSyntaxe</li>
+ *   <li> MatchingRule</li>
+ *   <li> MatchingRuleUse</li>
+ *   <li> NameForm</li>
+ *   <li> Normalizer (specific to ADS)</li>
+ *   <li> ObjectClass</li>
+ *   <li> SyntaxChecker (specific to ADS)</li>
+ * </ul>
  * <br>
  * <br>
  * This class provides accessors and setters for the following attributes,
  * which are common to all those SchemaObjects :
- * <li>oid : The numeric OID
- * <li>description : The SchemaObject description
- * <li>obsolete : Tells if the schema object is obsolete
- * <li>extensions : The extensions, a key/Values map
- * <li>schemaObjectType : The SchemaObject type (see upper)
- * <li>schema : The schema the SchemaObject is associated with (it's an extension).
- * Can be null
- * <li>isEnabled : The SchemaObject status (it's related to the schema status)
- * <li>isReadOnly : Tells if the SchemaObject can be modified or not
+ * <ul>
+ *  <li>oid : The numeric OID</li>
+ *   <li>description : The SchemaObject description</li>
+ *   <li>obsolete : Tells if the schema object is obsolete</li>
+ *   <li>extensions : The extensions, a key/Values map</li>
+ *   <li>schemaObjectType : The SchemaObject type (see upper)</li>
+ *   <li>schema : The schema the SchemaObject is associated with (it's an extension).
+ *     Can be null</li>
+ *   <li>isEnabled : The SchemaObject status (it's related to the schema status)</li>
+ *   <li>isReadOnly : Tells if the SchemaObject can be modified or not</li>
+ * </ul>
  * <br><br>
  * Some of those attributes are not used by some Schema elements, even if they should
  * have been used. Here is the list :
- * <b>name</b> : LdapSyntax, Comparator, Normalizer, SyntaxChecker
- * <b>numericOid</b> : DitStructureRule,
- * <b>obsolete</b> : LdapSyntax, Comparator, Normalizer, SyntaxChecker
+ * <ul>
+ *   <li><b>name</b> : LdapSyntax, Comparator, Normalizer, SyntaxChecker</li>
+ *   <li><b>numericOid</b> : DitStructureRule</li>
+ *   <li><b>obsolete</b> : LdapSyntax, Comparator, Normalizer, SyntaxChecker</li>
+ * </ul>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class AbstractSchemaObject implements SchemaObject, Serializable
@@ -667,7 +673,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
 
     /**
-     * @{@inheritDoc}
+     * {@inheritDoc}
      */
     @Override
     public boolean equals( Object o1 )

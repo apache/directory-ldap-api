@@ -45,7 +45,7 @@ public interface SortRequest extends Control
     /**
      * sets the sort keys
      *  
-     * @param sortKeys
+     * @param sortKeys The list of keys to be sorted
      */
     void setSortKeys( List<SortKey> sortKeys );
 
@@ -59,7 +59,7 @@ public interface SortRequest extends Control
     /**
      * adds a sort key
      * 
-     * @param sortKey
+     * @param sortKey The list of keys to be sorted
      */
     void addSortKey( SortKey sortKey );
 }

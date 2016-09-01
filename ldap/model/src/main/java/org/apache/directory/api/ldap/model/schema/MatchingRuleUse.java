@@ -95,6 +95,8 @@ public class MatchingRuleUse extends AbstractSchemaObject
 
     /**
      * Creates a new instance of MatchingRuleUseDescription
+     * 
+     * @param oid the MatchingRuleUse's OID
      */
     public MatchingRuleUse( String oid )
     {

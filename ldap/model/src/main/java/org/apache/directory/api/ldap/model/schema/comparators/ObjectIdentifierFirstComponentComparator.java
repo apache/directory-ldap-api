@@ -45,6 +45,8 @@ public class ObjectIdentifierFirstComponentComparator extends LdapComparator<Str
     /**
      * The ObjectIdentifierFirstComponentComparator constructor. Its OID is the 
      * ObjectIdentifierFirstComponentMatch matching rule OID.
+     * 
+     * @param oid The Comparator's OID
      */
     public ObjectIdentifierFirstComponentComparator( String oid )
     {
@@ -91,7 +93,7 @@ public class ObjectIdentifierFirstComponentComparator extends LdapComparator<Str
 
 
     /**
-     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+     * {@inheritDoc}
      */
     public int compare( String s1, String s2 )
     {

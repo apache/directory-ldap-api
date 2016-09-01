@@ -69,7 +69,6 @@ package org.apache.directory.api.ldap.model.schema;
  * @see <a
  *      href="http://www.ietf.org/internet-drafts/draft-ietf-ldapbis-models-11.txt">ldapbis
  *      [MODELS]</a>
- * @see DescriptionUtils#getDescription(MatchingRule)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class MatchingRule extends AbstractSchemaObject
@@ -179,7 +178,7 @@ public class MatchingRule extends AbstractSchemaObject
 
 
     /**
-     * @see Object#equals()
+     * @see Object#equals(Object)
      */
     @Override
     public boolean equals( Object o )

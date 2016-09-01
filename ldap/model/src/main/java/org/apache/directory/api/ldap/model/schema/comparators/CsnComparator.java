@@ -49,6 +49,8 @@ public class CsnComparator extends LdapComparator<Object>
     /**
      * The CsnComparator constructor. Its OID is the CsnMatch matching
      * rule OID.
+     * 
+     * @param oid The Comparator's OID
      */
     public CsnComparator( String oid )
     {
@@ -57,7 +59,7 @@ public class CsnComparator extends LdapComparator<Object>
 
 
     /**
-     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+     * {@inheritDoc}
      */
     public int compare( Object csnObj1, Object csnObj2 )
     {

@@ -54,6 +54,8 @@ public class SubtreeSpecificationParser
 
     /**
      * Creates a subtree specification parser.
+     * 
+     * @param schemaManager The SchemaManager
      */
     public SubtreeSpecificationParser( SchemaManager schemaManager )
     {
@@ -70,6 +72,9 @@ public class SubtreeSpecificationParser
 
     /**
      * Creates a normalizing subtree specification parser.
+     * 
+     * @param resolver The resolver to use
+     * @param schemaManager The SchemaManager
      */
     public SubtreeSpecificationParser( @SuppressWarnings("rawtypes") NormalizerMappingResolver resolver,
         SchemaManager schemaManager )

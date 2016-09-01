@@ -32,17 +32,18 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A SyntaxChecker which verifies that a name is valid for an ObjectClass
- * or an AttributeType<br/><br/>
- * 
- * &lt;m-name&gt; = &lt;keystring&gt; <br/>
- * &lt;keystring&gt; = &lt;leadkeychar&gt; *&lt;keychar&gt;<br/>
- * &lt;leadkeychar&gt; = &lt;ALPHA&gt;<br/>
- * &lt;keychar&gt; = &lt;ALPHA&gt; / &lt;DIGIT&gt; / &lt;HYPHEN&gt; / &lt;SEMI&gt;<br/>
- * &lt;ALPHA&gt;   = %x41-5A / %x61-7A   ; "A"-"Z" / "a"-"z"<br/>
- * &lt;DIGIT&gt;   = %x30 / &lt;LDIGIT       ; "0"-"9"<br/>
- * &lt;LDIGIT&gt;  = %x31-39             ; "1"-"9"<br/>
- * &lt;HYPHEN&gt;  = %x2D ; hyphen ("-")<br/>
- * &lt;SEMI&gt;    = %x3B ; semicolon (";")<br/>
+ * or an AttributeType<br><br>
+ * <pre>
+ * &lt;m-name&gt; = &lt;keystring&gt; <br>
+ * &lt;keystring&gt; = &lt;leadkeychar&gt; *&lt;keychar&gt;<br>
+ * &lt;leadkeychar&gt; = &lt;ALPHA&gt;<br>
+ * &lt;keychar&gt; = &lt;ALPHA&gt; / &lt;DIGIT&gt; / &lt;HYPHEN&gt; / &lt;SEMI&gt;<br>
+ * &lt;ALPHA&gt;   = %x41-5A / %x61-7A   ; "A"-"Z" / "a"-"z"<br>
+ * &lt;DIGIT&gt;   = %x30 / &lt;LDIGIT       ; "0"-"9"<br>
+ * &lt;LDIGIT&gt;  = %x31-39             ; "1"-"9"<br>
+ * &lt;HYPHEN&gt;  = %x2D ; hyphen ("-")<br>
+ * &lt;SEMI&gt;    = %x3B ; semicolon (";")<br>
+ * </pre>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

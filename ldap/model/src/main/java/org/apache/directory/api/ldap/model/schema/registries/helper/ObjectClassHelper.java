@@ -56,7 +56,7 @@ public final class ObjectClassHelper
      * @param objectClass The ObjectClass to add to the Registries
      * @param errors The errors we got while adding the ObjectClass to the Registries
      * @param registries The Registries
-     * @throws Exception on failure
+     * @throws LdapException on failure
      */
     public static void addToRegistries( ObjectClass objectClass, List<Throwable> errors, Registries registries ) throws LdapException
     {
@@ -368,7 +368,7 @@ public final class ObjectClassHelper
      * @param objectClass The ObjectClass to remove fro the registries
      * @param errors The errors we got while removing the ObjectClass from the registries
      * @param registries The Registries
-     * @exception If the ObjectClass is not valid
+     * @throws LdapException If the ObjectClass is not valid
      */
     public static void removeFromRegistries( ObjectClass objectClass, List<Throwable> errors, Registries registries ) throws LdapException
     {

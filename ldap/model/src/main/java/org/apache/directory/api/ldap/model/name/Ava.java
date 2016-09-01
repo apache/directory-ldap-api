@@ -444,7 +444,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 
 
     /**
-     * Apply a SchemaManager to the Ava. It will normalize the Ava.<br/>
+     * Apply a SchemaManager to the Ava. It will normalize the Ava.<br>
      * If the Ava already had a SchemaManager, then the new SchemaManager will be
      * used instead.
      * 
@@ -715,6 +715,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      * @param buffer The buffer which will contain the serialized Ava
      * @param pos The position in the buffer for the serialized value
      * @return The new position in the buffer
+     * @throws IOException If teh serialization failed
      */
     public int serialize( byte[] buffer, int pos ) throws IOException
     {
@@ -949,14 +950,14 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      *     <b>isHR</b> Tells if the value is a String or not
      *   </li>
      * </ul>
-     * <br/>
+     * <br>
      * if the value is a String :
      * <ul>
      *   <li>
      *     <b>value</b> The value
      *   </li>
      * </ul>
-     * <br/>
+     * <br>
      * if the value is binary :
      * <ul>
      *   <li>
@@ -969,7 +970,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      * 
      * @see Externalizable#readExternal(ObjectInput)
      * 
-     * @throws IoException If the Ava can't be written in the stream
+     * @throws IOException If the Ava can't be written in the stream
      */
     public void writeExternal( ObjectOutput out ) throws IOException
     {

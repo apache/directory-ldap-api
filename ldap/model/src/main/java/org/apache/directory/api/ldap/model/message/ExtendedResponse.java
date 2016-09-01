@@ -45,7 +45,7 @@ public interface ExtendedResponse extends ResultResponse
      * Sets the OID uniquely identifying this extended response (a.k.a. its
      * name).
      * 
-     * @param oidv the OID of the extended response type.
+     * @param oid the OID of the extended response type.
      */
     void setResponseName( String oid );
 }

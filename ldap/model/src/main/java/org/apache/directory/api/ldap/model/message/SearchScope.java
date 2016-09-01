@@ -68,6 +68,8 @@ public enum SearchScope
      * either base, one, or sub.
      * 
      * @see <a href="http://www.faqs.org/rfcs/rfc2255.html">RFC 2255</a>
+     * 
+     * @return the LDAP URL value
      */
     public String getLdapUrlValue()
     {
@@ -114,8 +116,9 @@ public enum SearchScope
 
 
     /**
-     * Gets the SeacrhScope associated with a scope String
-     * 
+     * Gets the SearchScope associated with a scope String
+     *
+     * @param scope The scope we are looking for
      * @return the scope
      */
     public SearchScope getScope( String scope )

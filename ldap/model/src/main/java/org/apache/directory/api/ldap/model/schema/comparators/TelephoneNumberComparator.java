@@ -45,6 +45,8 @@ public class TelephoneNumberComparator extends LdapComparator<String>
     /**
      * The TelephoneNumberComparator constructor. Its OID is the TelephoneNumberMatch matching
      * rule OID.
+     * 
+     * @param oid The Comparator's OID
      */
     public TelephoneNumberComparator( String oid )
     {
@@ -75,7 +77,7 @@ public class TelephoneNumberComparator extends LdapComparator<String>
 
 
     /**
-     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+     * {@inheritDoc}
      */
     public int compare( String telephoneNumber1, String telephoneNumber2 )
     {

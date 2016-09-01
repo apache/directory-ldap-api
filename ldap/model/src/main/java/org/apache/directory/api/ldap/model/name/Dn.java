@@ -52,18 +52,18 @@ import org.slf4j.LoggerFactory;
 
 /**
  * The Dn class contains a Dn (Distinguished Name). This class is immutable.
- * <br/>
+ * <br>
  * Its specification can be found in RFC 2253,
  * "UTF-8 String Representation of Distinguished Names".
- * <br/>
+ * <br>
  * We will store two representation of a Dn :
  * <ul>
  * <li>a user Provider representation, which is the parsed String given by a user</li>
  * <li>an internal representation.</li>
  * </ul>
  *
- * A Dn is formed of RDNs, in a specific order :<br/>
- *  Rdn[n], Rdn[n-1], ... Rdn[1], Rdn[0]<br/>
+ * A Dn is formed of RDNs, in a specific order :<br>
+ *  Rdn[n], Rdn[n-1], ... Rdn[1], Rdn[0]<br>
  *
  * It represents a position in a hierarchy, in which the root is the last Rdn (Rdn[0]) and the leaf
  * is the first Rdn (Rdn[n]).
@@ -91,8 +91,8 @@ public class Dn implements Iterable<Rdn>, Externalizable
     public static final int EQUAL = 0;
 
     /**
-     *  The RDNs that are elements of the Dn<br/>
-     * NOTE THAT THESE ARE IN THE OPPOSITE ORDER FROM THAT IMPLIED BY THE JAVADOC!<br/>
+     *  The RDNs that are elements of the Dn<br>
+     * NOTE THAT THESE ARE IN THE OPPOSITE ORDER FROM THAT IMPLIED BY THE JAVADOC!<br>
      * Rdn[0] is rdns.get(n) and Rdn[n] is rdns.get(0)
      * <br>
      * For instance,if the Dn is "dc=c, dc=b, dc=a", then the RDNs are stored as :
@@ -192,9 +192,9 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * String is either a full Rdn, or a couple of AttributeType DI and a value.
      * If the String contains a '=' symbol, the the constructor will assume that
      * the String arg contains afull Rdn, otherwise, it will consider that the
-     * following arg is the value.<br/>
+     * following arg is the value.<br>
      * The created Dn is Schema aware.
-     * <br/><br/>
+     * <br><br>
      * An example of usage would be :
      * <pre>
      * String exampleName = "example";
@@ -206,7 +206,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
      *     baseDn);
      * </pre>
      * 
-     * @param schemaManager the schema manager
      * @param upRdns The list of String composing the Dn
      * @throws LdapInvalidDnException If the resulting Dn is invalid
      */
@@ -221,9 +220,9 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * String is either a full Rdn, or a couple of AttributeType DI and a value.
      * If the String contains a '=' symbol, the the constructor will assume that
      * the String arg contains afull Rdn, otherwise, it will consider that the
-     * following arg is the value.<br/>
+     * following arg is the value.<br>
      * The created Dn is Schema aware.
-     * <br/><br/>
+     * <br><br>
      * An example of usage would be :
      * <pre>
      * String exampleName = "example";
@@ -308,7 +307,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /**
      * Create a schema aware Dn while deserializing it.
-     * <br/>
+     * <br>
      * Note : this constructor is used only by the deserialization method.
      * 
      * @param schemaManager the schema manager
@@ -493,13 +492,13 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /**
      * Get the normalized Dn. If the Dn is schema aware, the AttributeType
-     * will be represented using its OID :<br/>
+     * will be represented using its OID :<br>
      * <pre>
      * Dn dn = new Dn( schemaManager, "ou = Example , ou = com" );
      * assert( "2.5.4.11=example,2.5.4.11=com".equals( dn.getNormName ) );
      * </pre>
      * Otherwise, it will return a Dn with the AttributeType in lower case
-     * and the value trimmed : <br/>
+     * and the value trimmed : <br>
      * <pre>
      * Dn dn = new Dn( " CN = A   Test " );
      * assertEquals( "cn=A   Test", dn.getNormName() );
@@ -726,8 +725,8 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /**
      * Get the descendant of a given DN, using the ancestr DN. Assuming that
-     * a DN has two parts :<br/>
-     * DN = [descendant DN][ancestor DN]<br/>
+     * a DN has two parts :<br>
+     * DN = [descendant DN][ancestor DN]<br>
      * To get back the descendant from the full DN, you just pass the ancestor DN
      * as a parameter. Here is a working example :
      * <pre>
@@ -737,6 +736,10 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * 
      * // At this point, the descendant contains cn=test, dc=server, dc=directory"
      * </pre>
+     * 
+     * @param ancestor The parent DN
+     * @return The part of the DN that is the descendant
+     * @throws LdapInvalidDnException If the DN is invalid
      */
     public Dn getDescendantOf( String ancestor ) throws LdapInvalidDnException
     {
@@ -746,8 +749,8 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /**
      * Get the descendant of a given DN, using the ancestr DN. Assuming that
-     * a DN has two parts :<br/>
-     * DN = [descendant DN][ancestor DN]<br/>
+     * a DN has two parts :<br>
+     * DN = [descendant DN][ancestor DN]<br>
      * To get back the descendant from the full DN, you just pass the ancestor DN
      * as a parameter. Here is a working example :
      * <pre>
@@ -757,6 +760,9 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * 
      * // At this point, the descendant contains cn=test, dc=server, dc=directory"
      * </pre>
+     * @param ancestor The parent DN
+     * @return The part of the DN that is the descendant
+     * @throws LdapInvalidDnException If the DN is invalid
      */
     public Dn getDescendantOf( Dn ancestor ) throws LdapInvalidDnException
     {
@@ -807,8 +813,8 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /**
      * Get the ancestor of a given DN, using the descendant DN. Assuming that
-     * a DN has two parts :<br/>
-     * DN = [descendant DN][ancestor DN]<br/>
+     * a DN has two parts :<br>
+     * DN = [descendant DN][ancestor DN]<br>
      * To get back the ancestor from the full DN, you just pass the descendant DN
      * as a parameter. Here is a working example :
      * <pre>
@@ -818,6 +824,10 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * 
      * // At this point, the ancestor contains "dc=apache, dc=org"
      * </pre>
+     * 
+     * @param descendant The child DN
+     * @return The part of the DN that is the ancestor
+     * @throws LdapInvalidDnException If the DN is invalid
      */
     public Dn getAncestorOf( String descendant ) throws LdapInvalidDnException
     {
@@ -827,8 +837,8 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /**
      * Get the ancestor of a given DN, using the descendant DN. Assuming that
-     * a DN has two parts :<br/>
-     * DN = [descendant DN][ancestor DN]<br/>
+     * a DN has two parts :<br>
+     * DN = [descendant DN][ancestor DN]<br>
      * To get back the ancestor from the full DN, you just pass the descendant DN
      * as a parameter. Here is a working example :
      * <pre>
@@ -838,6 +848,10 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * 
      * // At this point, the ancestor contains "dc=apache, dc=org"
      * </pre>
+     * 
+     * @param descendant The child DN
+     * @return The part of the DN that is the ancestor
+     * @throws LdapInvalidDnException If the DN is invalid
      */
     public Dn getAncestorOf( Dn descendant ) throws LdapInvalidDnException
     {
@@ -950,6 +964,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      *
      * @param newRdn the Rdn to add
      * @return the updated cloned Dn
+     * @throws LdapInvalidDnException If one of the RDN is invalid
      */
     public Dn add( Rdn newRdn ) throws LdapInvalidDnException
     {
@@ -970,7 +985,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /**
      * Gets the parent Dn of this Dn. Null if this Dn doesn't have a parent, i.e. because it
-     * is the empty Dn.<br/>
+     * is the empty Dn.<br>
      * The Parent is the right part of the Dn, when the Rdn has been removed.
      *
      * @return the parent Dn of this Dn
@@ -1342,7 +1357,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /**
      * Iterate over the inner Rdn. The Rdn are returned from
-     * the rightmost to the leftmost. For instance, the following code :<br/>
+     * the rightmost to the leftmost. For instance, the following code :<br>
      * <pre>
      * Dn dn = new Dn( "sn=test, dc=apache, dc=org );
      * 
@@ -1351,7 +1366,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      *     System.out.println( rdn.toString() );
      * }
      * </pre>
-     * will produce this output : <br/>
+     * will produce this output : <br>
      * <pre>
      * dc=org
      * dc=apache
@@ -1369,7 +1384,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * Check if a DistinguishedName is null or empty.
      *
      * @param dn The Dn to check
-     * @return <code>true></code> if the Dn is null or empty, <code>false</code>
+     * @return <code>true</code> if the Dn is null or empty, <code>false</code>
      * otherwise
      */
     public static boolean isNullOrEmpty( Dn dn )
@@ -1381,9 +1396,8 @@ public class Dn implements Iterable<Rdn>, Externalizable
     /**
      * Check if a DistinguishedName is syntactically valid.
      *
-     * @param dn The Dn to validate
-     * @return <code>true></code> if the Dn is valid, <code>false</code>
-     * otherwise
+     * @param name The Dn to validate
+     * @return <code>true</code> if the Dn is valid, <code>false</code> otherwise
      */
     public static boolean isValid( String name )
     {

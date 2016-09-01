@@ -30,6 +30,8 @@ public class CertificateComparator extends ByteArrayComparator
 {
     /**
      * Creates a new instance of CertificateComparator.
+     * 
+     * @param oid The Comparator's OID
      */
     public CertificateComparator( String oid )
     {

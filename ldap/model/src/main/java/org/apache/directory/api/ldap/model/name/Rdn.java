@@ -107,7 +107,7 @@ import org.slf4j.LoggerFactory;
  * because we have more than one spaces inside the value.<br>
  * <br>
  * The Rdn is composed of one or more Ava. Those Avas
- * are ordered in the alphabetical natural order : a < b < c ... < z As the type
+ * are ordered in the alphabetical natural order : a &lt; b &lt; c ... &lt; z As the type
  * are not case sensitive, we can say that a = A
  * <br>
  * This class is immutable.
@@ -1110,8 +1110,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      * attribute type and value mappings. The order of components in
      * multi-valued Rdns is not significant.
      *
-     * @param rdn
-     *            Rdn to be compared for equality with this Rdn
+     * @param that Rdn to be compared for equality with this Rdn
      * @return true if the specified object is equal to this Rdn
      */
     public boolean equals( Object that )
@@ -1206,14 +1205,14 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
 
     /**
-     * Unescape the given string according to RFC 2253 If in <string> form, a
+     * Unescape the given string according to RFC 2253 If in &lt;string&gt; form, a
      * LDAP string representation asserted value can be obtained by replacing
-     * (left-to-right, non-recursively) each <pair> appearing in the <string> as
+     * (left-to-right, non-recursively) each &lt;pair&gt; appearing in the &lt;string&gt; as
      * follows: 
      * <ul>
-     * <li>replace &lt;ESC&gt;&lt;ESC&gt; with &lt;ESC&gt;</li>
-     * <li>replace &lt;ESC&gt;&lt;special&gt; with &lt;special&gt;</li>
-     * <li>replace &lt;ESC&gt;&lt;hexpair&gt; with the octet indicated by the &lt;hexpair&gt;</li>
+     *   <li>replace &lt;ESC&gt;&lt;ESC&gt; with &lt;ESC&gt;</li>
+     *   <li>replace &lt;ESC&gt;&lt;special&gt; with &lt;special&gt;</li>
+     *   <li>replace &lt;ESC&gt;&lt;hexpair&gt; with the octet indicated by the &lt;hexpair&gt;</li>
      * </ul>
      * If in &lt;hexstring&gt; form, a BER representation can be obtained
      * from converting each &lt;hexpair&gt; of the &lt;hexstring&gt; to the octet indicated
@@ -1626,7 +1625,10 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
     /**
      * Serialize a RDN into a byte[]
      * 
-     * @return a byte[] containing a RDN
+     * @param buffer The buffer which will contain the serilaized form of this RDN
+     * @param pos The position in the buffer where to store the RDN
+     * @return The new position in the byte[]
+     * @throws IOException If we had an error while serilaizing the RDN
      */
     public int serialize( byte[] buffer, int pos ) throws IOException
     {
@@ -1788,7 +1790,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      *     <b>Avas</b>
      *   </li>
      * </ul>
-     * <br/>
+     * <br>
      * For each Ava :
      * <ul>
      *   <li>

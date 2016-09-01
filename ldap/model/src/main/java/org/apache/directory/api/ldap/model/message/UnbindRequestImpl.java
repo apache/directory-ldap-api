@@ -37,8 +37,6 @@ public class UnbindRequestImpl extends AbstractRequest implements UnbindRequest
      * Creates an UnbindRequest which takes no parameter other than those in the
      * outer envelope to disconnect and end a client session on the server
      * without producing any response.
-     * 
-     * @param id the sequential message identifier.
      */
     public UnbindRequestImpl()
     {

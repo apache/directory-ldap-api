@@ -30,13 +30,13 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A SyntaxChecker which verifies that a value is a Boolean according to RFC 4517.
- * 
- * From RFC 4512 & RFC 4517 :
- * 
+ * <br>
+ * From RFC 4512 &amp; RFC 4517 :
+ * <pre>
  * BitString    = SQUOTE *binary-digit SQUOTE "B"
  * binary-digit = "0" / "1"
- * SQUOTE  = %x27                           ; hyphen ("'")
- * 
+ * SQUOTE       = %x27                           ; hyphen ("'")
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

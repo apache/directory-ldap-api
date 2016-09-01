@@ -29,7 +29,8 @@ import org.apache.directory.api.ldap.model.schema.SchemaObjectType;
 
 /**
  * Common schema object registry interface.
- *
+ * 
+ * @param <T> The SchemaObject type
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface SchemaObjectRegistry<T extends SchemaObject>
@@ -115,6 +116,7 @@ public interface SchemaObjectRegistry<T extends SchemaObject>
      * numeric OID.
      * 
      * @param numericOid the numeric identifier
+     * @return The unregistred schema object
      * @throws LdapException if the numeric identifier is invalid
      */
     T unregister( String numericOid ) throws LdapException;
@@ -124,6 +126,7 @@ public interface SchemaObjectRegistry<T extends SchemaObject>
      * Removes the SchemaObject registered with this registry.
      * 
      * @param schemaObject the schemaObject to unregister
+     * @return The unregistred schema object
      * @throws LdapException if the schemaObject can't be unregistered is invalid
      */
     T unregister( T schemaObject ) throws LdapException;
@@ -134,6 +137,7 @@ public interface SchemaObjectRegistry<T extends SchemaObject>
      * this registry.
      * 
      * @param schemaName the name of the schema whose SchemaObjects will be removed from
+     * @throws LdapException If we had a problem while unregistering the schema
      */
     void unregisterSchemaElements( String schemaName ) throws LdapException;
 
@@ -156,7 +160,7 @@ public interface SchemaObjectRegistry<T extends SchemaObject>
      * Copy a DefaultSchemaObjectRegistry. All the stored SchemaObject will also
      * be copied, by the cross references will be lost.
      * 
-     * @return SchemaObjectRegistry<T> The copied registry
+     * @return The copied registry
      */
     SchemaObjectRegistry<T> copy();
 
@@ -175,6 +179,8 @@ public interface SchemaObjectRegistry<T extends SchemaObject>
 
     /**
      * Clear the registry from all its content
+     * 
+     * @throws LdapException If we had a failure while clearing the registry
      */
     void clear() throws LdapException;
     

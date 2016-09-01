@@ -43,6 +43,8 @@ public class ByteArrayComparator extends LdapComparator<byte[]>
     /**
      * The ByteArrayComparator constructor. Its OID is the OctetStringMatch matching
      * rule OID.
+     * 
+     * @param oid The Comparator's OID
      */
     public ByteArrayComparator( String oid )
     {
@@ -51,7 +53,7 @@ public class ByteArrayComparator extends LdapComparator<byte[]>
 
 
     /**
-     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+     * {@inheritDoc}
      */
     public int compare( byte[] b1, byte[] b2 )
     {

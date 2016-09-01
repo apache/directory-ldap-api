@@ -64,7 +64,6 @@ import java.util.List;
  * @see <a
  *      href="http://www.ietf.org/internet-drafts/draft-ietf-ldapbis-models-11.txt">ldapbis
  *      [MODELS]</a>
- * @see DescriptionUtils#getDescription(ObjectClass)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ObjectClass extends AbstractSchemaObject

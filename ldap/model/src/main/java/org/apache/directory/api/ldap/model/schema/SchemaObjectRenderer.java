@@ -206,8 +206,6 @@ public final class SchemaObjectRenderer
      * </pre>
      * @param at the AttributeType to render the description for
      * @return the StringBuffer containing the rendered attributeType description
-     * @throws LdapException if there are problems accessing the objects
-     * associated with the attribute type.
      */
     public String render( AttributeType at )
     {
@@ -362,8 +360,6 @@ public final class SchemaObjectRenderer
      * </pre>
      * @param mr the MatchingRule to render the description for
      * @return the StringBuffer containing the rendered matchingRule description
-     * @throws LdapException if there are problems accessing the objects
-     * associated with the MatchingRule.
      */
     public String render( MatchingRule mr )
     {
@@ -445,6 +441,10 @@ public final class SchemaObjectRenderer
 
     /**
      * NOT FULLY IMPLEMENTED!
+     * Renders a MatchingRuleUse as a String
+     * 
+     * @param mru The MatchingRuleUse to render
+     * @return The MatchingRuleUse as a String
      */
     public String render( MatchingRuleUse mru )
     {
@@ -473,6 +473,10 @@ public final class SchemaObjectRenderer
 
     /**
      * NOT FULLY IMPLEMENTED!
+     * Renders a DitContentRule as a String
+     * 
+     * @param dcr The DitContentRule to render
+     * @return The DitContentRule as a String
      */
     public String render( DitContentRule dcr )
     {
@@ -499,6 +503,9 @@ public final class SchemaObjectRenderer
 
     /**
      * NOT FULLY IMPLEMENTED!
+     * 
+     * @param dsr The DitStructureRule to render
+     * @return The DitStructureRule as a String
      */
     public String render( DitStructureRule dsr )
     {
@@ -536,6 +543,10 @@ public final class SchemaObjectRenderer
 
     /**
      * NOT FULLY IMPLEMENTED!
+     * Render a NameForm as a String
+     * 
+     * @param nf The NameForm to render
+     * @return The rendered String
      */
     public String render( NameForm nf )
     {

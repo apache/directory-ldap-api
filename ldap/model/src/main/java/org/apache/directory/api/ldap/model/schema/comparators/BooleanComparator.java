@@ -42,6 +42,8 @@ public class BooleanComparator extends LdapComparator<String>
     /**
      * The BooleanComparator constructor. Its OID is the BooleanMatch matching
      * rule OID.
+     * 
+     * @param oid The Comparator's OID
      */
     public BooleanComparator( String oid )
     {
@@ -50,7 +52,7 @@ public class BooleanComparator extends LdapComparator<String>
 
 
     /**
-     * Implementation of the Compare method
+     * {@inheritDoc}
      */
     public int compare( String b1, String b2 )
     {

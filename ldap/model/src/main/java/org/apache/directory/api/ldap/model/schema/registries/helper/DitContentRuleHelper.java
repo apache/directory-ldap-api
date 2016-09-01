@@ -49,7 +49,7 @@ public final class DitContentRuleHelper
      * @param ditContentRule The DitContentRule to add to the Registries
      * @param errors The errors we got while adding the DitContentRule to the Registries
      * @param registries The Registries
-     * @exception If the addition failed
+     * @throws LdapException If the addition failed
      */
     public static void addToRegistries( DitContentRule ditContentRule, List<Throwable> errors, Registries registries )
         throws LdapException

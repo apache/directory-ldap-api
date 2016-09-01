@@ -61,10 +61,9 @@ public class Subentry
 
 
     /**
+     * Store the Set of administrative roles supported by this Subentry
      *
-     * TODO setAdministrativeRoles.
-     *
-     * @param administrativeRoles
+     * @param administrativeRoles The Administrative roles to set
      */
     public final void setAdministrativeRoles( Set<AdministrativeRole> administrativeRoles )
     {
@@ -72,6 +71,9 @@ public class Subentry
     }
 
 
+    /**
+     * @return The Set of administratoveRole supported by this Subentry
+     */
     public final Set<AdministrativeRole> getAdministrativeRoles()
     {
         return administrativeRoles;
@@ -80,6 +82,8 @@ public class Subentry
 
     /**
      * Tells if the type contains the Collective attribute Administrative Role
+     * 
+     * @return <tt>true</tt> if the type contains the Collective Attribute Administrative Role, <tt>false</tt> otherwise
      */
     public final boolean isCollectiveAdminRole()
     {
@@ -90,6 +94,8 @@ public class Subentry
 
     /**
      * Tells if the type contains the SubSchema Administrative Role
+     * 
+     * @return <tt>true</tt> if the type contains the SubSchema Administrative Role, <tt>false</tt> otherwise
      */
     public final boolean isSchemaAdminRole()
     {
@@ -99,6 +105,8 @@ public class Subentry
 
     /**
      * Tells if the type contains the Access Control Administrative Role
+     * 
+     * @return <tt>true</tt> if the type contains the Access Control Administrative Role, <tt>false</tt> otherwise
      */
     public final boolean isAccessControlAdminRole()
     {
@@ -109,6 +117,8 @@ public class Subentry
 
     /**
      * Tells if the type contains the Triggers Administrative Role
+     * 
+     * @return <tt>true</tt> if the type contains the Triggers Administrative Role, <tt>false</tt> otherwise
      */
     public final boolean isTriggersAdminRole()
     {

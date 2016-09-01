@@ -51,6 +51,8 @@ public class SubtreeSpecificationChecker
 
     /**
      * Creates a normalizing subtree specification parser.
+     * 
+     * @param schemaManager The SchemaManager
      */
     public SubtreeSpecificationChecker( SchemaManager schemaManager )
     {
@@ -68,6 +70,8 @@ public class SubtreeSpecificationChecker
     /**
      * Initializes the plumbing by creating a pipe and coupling the parser/lexer
      * pair with it. param spec the specification to be parsed
+     * 
+     * @param spec The specification to parse
      */
     private synchronized void reset( String spec )
     {
@@ -81,10 +85,8 @@ public class SubtreeSpecificationChecker
     /**
      * Parses a subtree specification without exhausting the parser.
      * 
-     * @param spec
-     *            the specification to be parsed
-     * @throws ParseException
-     *             if there are any recognition errors (bad syntax)
+     * @param spec the specification to be parsed
+     * @throws ParseException if there are any recognition errors (bad syntax)
      */
     public synchronized void parse( String spec ) throws ParseException
     {

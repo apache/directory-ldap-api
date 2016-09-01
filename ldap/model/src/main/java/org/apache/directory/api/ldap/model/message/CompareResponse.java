@@ -30,7 +30,7 @@ public interface CompareResponse extends ResultResponse
 {
     /**
      * @return True if the compared response is a success
-     * @return
+     * @return <tt>true</tt> if the compare response is TRUE, <tt>false</tt> otherwise
      */
     boolean isTrue();
 }

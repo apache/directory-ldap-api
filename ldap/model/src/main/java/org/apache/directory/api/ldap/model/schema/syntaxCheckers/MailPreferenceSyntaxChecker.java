@@ -31,9 +31,9 @@ import org.slf4j.LoggerFactory;
  * A SyntaxChecker which verifies that a value is a Boolean according to RFC 1778.
  * 
  * From RFC 1778 :
- * 
- * <mail-preference> ::= "NO-LISTS" | "ANY-LIST" | "PROFESSIONAL-LISTS"
- * 
+ * <pre>
+ * &lt;mail-preference&gt; ::= "NO-LISTS" | "ANY-LIST" | "PROFESSIONAL-LISTS"
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

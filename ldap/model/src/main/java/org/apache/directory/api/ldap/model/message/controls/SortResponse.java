@@ -23,21 +23,23 @@ import org.apache.directory.api.ldap.model.message.Control;
 
 /**
  * 
- * <pre>SortResult ::= SEQUENCE {<br>
- *           sortResult  ENUMERATED {<br>
- *           success                   (0), -- results are sorted<br>
- *           operationsError           (1), -- server internal failure<br>
- *           timeLimitExceeded         (3), -- timelimit reached before sorting was completed<br>
- *           strongAuthRequired        (8), -- refused to return sorted results via insecure protocol<br>
- *           adminLimitExceeded       (11), -- too many matching entries for the server to sort<br>
- *           noSuchAttribute          (16), -- unrecognized attribute type in sort key<br>
- *           inappropriateMatching    (18), -- unrecognized or inappropriate matching rule in sort key<br>
- *           insufficientAccessRights (50), -- refused to return sorted results to this client<br>
- *           busy                     (51), -- too busy to process<br>
- *           unwillingToPerform       (53), -- unable to sort<br>
- *           other                    (80)<br>
- *           },<br>
- *       attributeType [0] AttributeDescription OPTIONAL }<br><pre>
+ * <pre>
+ * SortResult ::= SEQUENCE {
+ *           sortResult  ENUMERATED {
+ *           success                   (0), -- results are sorted
+ *           operationsError           (1), -- server internal failure
+ *           timeLimitExceeded         (3), -- timelimit reached before sorting was completed
+ *           strongAuthRequired        (8), -- refused to return sorted results via insecure protocol
+ *           adminLimitExceeded       (11), -- too many matching entries for the server to sort
+ *           noSuchAttribute          (16), -- unrecognized attribute type in sort key
+ *           inappropriateMatching    (18), -- unrecognized or inappropriate matching rule in sort key
+ *           insufficientAccessRights (50), -- refused to return sorted results to this client
+ *           busy                     (51), -- too busy to process
+ *           unwillingToPerform       (53), -- unable to sort
+ *           other                    (80)
+ *           },
+ *       attributeType [0] AttributeDescription OPTIONAL }
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -49,7 +51,7 @@ public interface SortResponse extends Control
     /**
      * sets the sort result
      * 
-     * @param result
+     * @param result The sort result code
      */
     void setSortResult( SortResultCode result );
     
@@ -61,9 +63,9 @@ public interface SortResponse extends Control
 
     
     /**
-     * sets the name of the first offending attribute
+     * Sets the name of the first offending attribute
      *  
-     * @param attributeName
+     * @param attributeName The attribute's name 
      */
     // didn't name the method setAttribute*Type*
     // cause in our internal terminology AttributeType is a java type

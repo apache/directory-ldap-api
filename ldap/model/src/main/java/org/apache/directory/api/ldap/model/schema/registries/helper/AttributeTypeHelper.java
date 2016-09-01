@@ -62,7 +62,7 @@ public final class AttributeTypeHelper
      * @param attributeType The AttributeType to add to the Registries
      * @param errors The errors we got while adding the AttributeType to the Registries
      * @param registries The Registries
-     * @exception If the AttributeType is not valid
+     * @throws LdapException If the AttributeType is not valid
      */
     public static void addToRegistries( MutableAttributeType attributeType, List<Throwable> errors, Registries registries ) throws LdapException
     {
@@ -625,7 +625,7 @@ public final class AttributeTypeHelper
      * @param attributeType The AttributeType to remove from the Registries
      * @param errors The errors we got while removing the AttributeType from the Registries
      * @param registries The Registries
-     * @exception If the AttributeType is not valid
+     * @throws LdapException If the AttributeType is not valid
      */
     public static void removeFromRegistries( AttributeType attributeType, List<Throwable> errors, Registries registries ) throws LdapException
     {

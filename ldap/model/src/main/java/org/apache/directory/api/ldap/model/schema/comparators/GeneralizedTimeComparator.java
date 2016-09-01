@@ -48,6 +48,8 @@ public class GeneralizedTimeComparator extends LdapComparator<String>
     /**
      * The GeneralizedTimeComparator constructor. Its OID is the
      * generalizedTimeOrderingMatch matching rule OID.
+     * 
+     * @param oid The Comparator's OID
      */
     public GeneralizedTimeComparator( String oid )
     {
@@ -56,7 +58,7 @@ public class GeneralizedTimeComparator extends LdapComparator<String>
 
 
     /**
-     * Implementation of the Compare method
+     * {@inheritDoc}
      */
     public int compare( String backendValue, String assertValue )
     {

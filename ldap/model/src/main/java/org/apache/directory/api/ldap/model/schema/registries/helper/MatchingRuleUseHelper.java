@@ -48,7 +48,7 @@ public final class MatchingRuleUseHelper
      * @param matchingRuleUse The MatchingRuleUse to add to the Registries
      * @param errors The errors we got while adding the MatchingRuleUse to the Registries
      * @param registries The Registries
-     * @exception If the addition failed
+     * @throws LdapException If the addition failed
      */
     public static void addToRegistries( MatchingRuleUse matchingRuleUse, List<Throwable> errors, Registries registries )
         throws LdapException

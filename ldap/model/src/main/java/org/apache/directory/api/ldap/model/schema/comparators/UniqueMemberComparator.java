@@ -47,6 +47,8 @@ public class UniqueMemberComparator extends LdapComparator<String>
     /**
      * The IntegerComparator constructor. Its OID is the IntegerOrderingMatch matching
      * rule OID.
+     * 
+     * @param oid The Comparator's OID
      */
     public UniqueMemberComparator( String oid )
     {
@@ -55,7 +57,7 @@ public class UniqueMemberComparator extends LdapComparator<String>
 
 
     /**
-     * Implementation of the Compare method
+     * {@inheritDoc}
      */
     public int compare( String dnstr1, String dnstr2 )
     {
@@ -165,6 +167,13 @@ public class UniqueMemberComparator extends LdapComparator<String>
     }
 
 
+    /**
+     * Get the DN from the given object
+     *
+     * @param obj The object containing a DN (either as an instance of Dn or as a String)
+     * @return A Dn instance
+     * @throws LdapInvalidDnException If the Dn is invalid
+     */
     public Dn getDn( Object obj ) throws LdapInvalidDnException
     {
         Dn dn = null;

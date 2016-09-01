@@ -35,6 +35,12 @@ public class DeepTrimCachingNormalizingComparator extends NormalizingComparator
     private static final long serialVersionUID = 2L;
 
 
+    /**
+     * 
+     * Creates a new instance of DeepTrimCachingNormalizingComparator.
+     *
+     * @param oid The Comparator's OID
+     */
     @SuppressWarnings(
         { "rawtypes", "unchecked" })
     public DeepTrimCachingNormalizingComparator( String oid )

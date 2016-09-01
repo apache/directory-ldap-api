@@ -66,6 +66,9 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
 
     /**
      * Creates a new DefaultSchemaObjectRegistry instance.
+     * 
+     * @param schemaObjectType The Schema Object type
+     * @param oidRegistry The OID registry to use
      */
     protected DefaultSchemaObjectRegistry( SchemaObjectType schemaObjectType, OidRegistry<T> oidRegistry )
     {

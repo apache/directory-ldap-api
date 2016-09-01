@@ -48,6 +48,8 @@ public class IntegerComparator extends LdapComparator<Object> implements Seriali
     /**
      * The IntegerComparator constructor. Its OID is the IntegerOrderingMatch matching
      * rule OID.
+     * 
+     * @param oid The Comparator's OID
      */
     public IntegerComparator( String oid )
     {
@@ -56,7 +58,7 @@ public class IntegerComparator extends LdapComparator<Object> implements Seriali
 
 
     /**
-     * Implementation of the Compare method
+     * {@inheritDoc}
      */
     public int compare( Object v1, Object v2 )
     {

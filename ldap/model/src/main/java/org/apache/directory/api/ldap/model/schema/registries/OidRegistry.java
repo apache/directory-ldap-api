@@ -219,6 +219,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
      * Adds an OID name pair to the registry.
      * 
      * @param schemaObject The SchemaObject the oid belongs to
+     * @throws LdapException If something went wrong
      */
     public void register( T schemaObject ) throws LdapException
     {

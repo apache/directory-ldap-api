@@ -30,9 +30,10 @@ import org.slf4j.LoggerFactory;
 /**
  * A SyntaxChecker which verifies that a value is a PostalAddress according to 
  * RFC 4517 :
- * 
- * <postal-address> = <dstring> <dstring-list>
- * <dstring-list> = "$" <dstring> <dstring-list> | e
+ * <pre>
+ * &lt;postal-address&gt; = &lt;dstring&gt; &lt;dstring-list&gt;
+ * &lt;dstring-list&gt; = "$" &lt;dstring&gt; &lt;dstring-list&gt; | e
+ * </pre>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

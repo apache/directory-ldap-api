@@ -82,7 +82,7 @@ public class DnNormalizer extends Normalizer
      * Normalize a Dn
      * @param value The Dn to normalize
      * @return A normalized Dn
-     * @throws LdapException
+     * @throws LdapException If the DN is invalid
      */
     public String normalize( Dn value ) throws LdapException
     {

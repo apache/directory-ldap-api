@@ -36,12 +36,21 @@ public class ObjectClassTypeComparator<T> extends LdapComparator<T>
     private static final long serialVersionUID = 2L;
 
 
+    /**
+     * 
+     * Creates a new instance of ObjectClassTypeComparator.
+     *
+     * @param oid The Comparator's OID
+     */
     public ObjectClassTypeComparator( String oid )
     {
         super( oid );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public int compare( T o1, T o2 )
     {
         String s1 = getString( o1 );

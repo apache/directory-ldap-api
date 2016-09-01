@@ -30,7 +30,7 @@ import org.apache.directory.api.ldap.model.name.Dn;
 
 /**
  * Modify request protocol message used to alter the attributes and values of an
- * existing entry. Here's what <a href="">RFC 2255</a> says about it:
+ * existing entry. Here's what <a href="https://www.ietf.org/rfc/rfc2255.txt">RFC 2255</a> says about it:
  * 
  * <pre>
  *  4.6. Modify Operation
@@ -160,6 +160,10 @@ public interface ModifyRequest extends SingleReplyRequest, AbandonableRequest
 
     /**
      * @see #remove(String, String...)
+     * 
+     * @param attributeName name of the attribute to be added
+     * @param attributeValue values of the attribute
+     * @return The ModifyRequest instance
      */
     ModifyRequest remove( String attributeName, byte[]... attributeValue );
 
@@ -206,6 +210,10 @@ public interface ModifyRequest extends SingleReplyRequest, AbandonableRequest
 
     /**
      * @see #add(String, String...)
+     * 
+     * @param attributeName name of the attribute to be added
+     * @param attributeValue values of the attribute
+     * @return The ModifyRequest instance
      */
     ModifyRequest add( String attributeName, byte[]... attributeValue );
 
@@ -221,6 +229,9 @@ public interface ModifyRequest extends SingleReplyRequest, AbandonableRequest
 
     /**
      * @see #replace(String, String...)
+     * 
+     * @param attributeName name of the attribute to be added
+     * @return The ModifyRequest instance
      */
     ModifyRequest replace( String attributeName );
 
@@ -238,6 +249,10 @@ public interface ModifyRequest extends SingleReplyRequest, AbandonableRequest
 
     /**
      * @see #replace(String, String...)
+     * 
+     * @param attributeName name of the attribute to be added
+     * @param attributeValue values of the attribute
+     * @return The ModifyRequest instance
      */
     ModifyRequest replace( String attributeName, byte[]... attributeValue );
 

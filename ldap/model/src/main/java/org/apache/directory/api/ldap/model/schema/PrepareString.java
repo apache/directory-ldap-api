@@ -221,7 +221,7 @@ public final class PrepareString
     * @param str The String to normalize
     * @param type The string type
     * @return A normalized string.
-    * @throws IOException
+    * @throws IOException If teh normalization failed
     */
     public static String normalize( String str, StringType type ) throws IOException
     {
