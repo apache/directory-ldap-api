@@ -130,7 +130,7 @@ public class DeepTrimToLowerNormalizerTest
         char[] chars = new char[]
             { 'e', 0x0301, ' ', 'a', 0x0300, 'i', 0x0302 };
         char[] expected = new char[]
-            { ' ', 'é', ' ', ' ', 'à', 'î', ' ' };
+            { ' ', '\u00E9', ' ', ' ', '\u00E0', '\u00EE', ' ' };
         assertEquals( new String( expected ), normalizer.normalize( new String( chars ) ) );
     }
 
