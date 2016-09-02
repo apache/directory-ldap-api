@@ -50,6 +50,8 @@ public class ProxiedAuthzDecorator extends ControlDecorator<ProxiedAuthz> implem
     /**
      * Creates a new instance of ProxiedAuthzDecoder wrapping a newly created
      * ProxiedAuthz Control object.
+     * 
+     * @param codec The LDAP service instance
      */
     public ProxiedAuthzDecorator( LdapApiService codec )
     {
@@ -61,6 +63,7 @@ public class ProxiedAuthzDecorator extends ControlDecorator<ProxiedAuthz> implem
      * Creates a new instance of ProxiedAuthzDecorator wrapping the supplied
      * ProxiedAuthz Control.
      *
+     * @param codec The LDAP service instance
      * @param control The ProxiedAuthz Control to be decorated.
      */
     public ProxiedAuthzDecorator( LdapApiService codec, ProxiedAuthz control )
@@ -82,8 +85,11 @@ public class ProxiedAuthzDecorator extends ControlDecorator<ProxiedAuthz> implem
 
     /**
      * Compute the ProxiedAuthzControl length 
-     * 
-     *  0x04 L1 authzId] 
+     * <pre>
+     *  0x04 L1 authzId]
+     * </pre>
+     *  
+     * @return the control length.
      */
     public int computeLength()
     {

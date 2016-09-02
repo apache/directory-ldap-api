@@ -76,6 +76,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     /**
      * Makes a AddRequest a MessageDecorator.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated AddRequest
      */
     public AddRequestDecorator( LdapApiService codec, AddRequest decoratedMessage )
@@ -170,6 +171,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
      * Create a new attributeValue
      * 
      * @param type The attribute's name (called 'type' in the grammar)
+     * @throws LdapException If the value is invalid
      */
     public void addAttributeType( String type ) throws LdapException
     {
@@ -199,6 +201,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
      * Add a new value to the current attribute
      * 
      * @param value The value to add
+     * @throws LdapException If the value is invalid
      */
     public void addAttributeValue( String value ) throws LdapException
     {
@@ -210,6 +213,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
      * Add a new value to the current attribute
      * 
      * @param value The value to add
+     * @throws LdapException If the value is invalid
      */
     public void addAttributeValue( Value value ) throws LdapException
     {
@@ -221,6 +225,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
      * Add a new value to the current attribute
      * 
      * @param value The value to add
+     * @throws LdapException If the value is invalid
      */
     public void addAttributeValue( byte[] value ) throws LdapException
     {
@@ -233,42 +238,43 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     //-------------------------------------------------------------------------
     /**
      * Compute the AddRequest length
-     * 
+     * <br>
      * AddRequest :
-     * 
+     * <pre>
      * 0x68 L1
      *  |
-     *  +--> 0x04 L2 entry
-     *  +--> 0x30 L3 (attributes)
+     *  +--&gt; 0x04 L2 entry
+     *  +--&gt; 0x30 L3 (attributes)
      *        |
-     *        +--> 0x30 L4-1 (attribute)
+     *        +--&gt; 0x30 L4-1 (attribute)
      *        |     |
-     *        |     +--> 0x04 L5-1 type
-     *        |     +--> 0x31 L6-1 (values)
+     *        |     +--&gt; 0x04 L5-1 type
+     *        |     +--&gt; 0x31 L6-1 (values)
      *        |           |
-     *        |           +--> 0x04 L7-1-1 value
-     *        |           +--> ...
-     *        |           +--> 0x04 L7-1-n value
+     *        |           +--&gt; 0x04 L7-1-1 value
+     *        |           +--&gt; ...
+     *        |           +--&gt; 0x04 L7-1-n value
      *        |
-     *        +--> 0x30 L4-2 (attribute)
+     *        +--&gt; 0x30 L4-2 (attribute)
      *        |     |
-     *        |     +--> 0x04 L5-2 type
-     *        |     +--> 0x31 L6-2 (values)
+     *        |     +--&gt; 0x04 L5-2 type
+     *        |     +--&gt; 0x31 L6-2 (values)
      *        |           |
-     *        |           +--> 0x04 L7-2-1 value
-     *        |           +--> ...
-     *        |           +--> 0x04 L7-2-n value
+     *        |           +--&gt; 0x04 L7-2-1 value
+     *        |           +--&gt; ...
+     *        |           +--&gt; 0x04 L7-2-n value
      *        |
-     *        +--> ...
+     *        +--&gt; ...
      *        |
-     *        +--> 0x30 L4-m (attribute)
+     *        +--&gt; 0x30 L4-m (attribute)
      *              |
-     *              +--> 0x04 L5-m type
-     *              +--> 0x31 L6-m (values)
+     *              +--&gt; 0x04 L5-m type
+     *              +--&gt; 0x31 L6-m (values)
      *                    |
-     *                    +--> 0x04 L7-m-1 value
-     *                    +--> ...
-     *                    +--> 0x04 L7-m-n value
+     *                    +--&gt; 0x04 L7-m-1 value
+     *                    +--&gt; ...
+     *                    +--&gt; 0x04 L7-m-n value
+     * </pre>
      */
     public int computeLength()
     {
@@ -352,9 +358,9 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
 
     /**
      * Encode the AddRequest message to a PDU.
-     * 
+     * <br>
      * AddRequest :
-     * 
+     * <pre>
      * 0x68 LL
      *   0x04 LL entry
      *   0x30 LL attributesList
@@ -371,6 +377,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
      *         0x04 LL attributeValue
      *         ...
      *         0x04 LL attributeValue
+     * </pre>
      * 
      * @param buffer The buffer where to put the PDU
      */

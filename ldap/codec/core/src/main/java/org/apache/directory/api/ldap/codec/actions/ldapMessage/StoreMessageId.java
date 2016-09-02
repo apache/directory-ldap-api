@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 /**
  * The action used to store the LdapMessage MessageID.
  * <pre>
- * LDAPMessage --> ... MessageId ...
+ * LDAPMessage --&gt; ... MessageId ...
  *
  * Checks that MessageId is in [0 .. 2147483647] and store the value in
  * the LdapMessage Object

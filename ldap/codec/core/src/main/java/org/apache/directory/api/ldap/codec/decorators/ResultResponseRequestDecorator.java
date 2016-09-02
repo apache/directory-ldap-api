@@ -36,6 +36,7 @@ public abstract class ResultResponseRequestDecorator<M extends ResultResponseReq
     /**
      * Makes Request a MessageDecorator.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated message
      */
     public ResultResponseRequestDecorator( LdapApiService codec, M decoratedMessage )

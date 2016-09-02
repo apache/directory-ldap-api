@@ -75,6 +75,9 @@ public class ResponseCarryingException extends DecoderException
      * Creates a DecoderException
      * 
      * @param message A message with meaning to a human
+     * @param response The response to store
+     * @param code the ResultCode
+     * @param matchedDn The Matched DN
      * @param cause The Exception which caused the error
      */
     public ResponseCarryingException( String message, ResultResponse response, ResultCodeEnum code,

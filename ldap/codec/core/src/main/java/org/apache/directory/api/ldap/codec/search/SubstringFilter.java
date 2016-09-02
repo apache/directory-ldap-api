@@ -77,12 +77,11 @@ public class SubstringFilter extends Filter
     private int substringsFilterSequenceLength;
 
 
-    // ~ Methods
-    // ------------------------------------------------------------------------------------
-
     /**
      * The constructor. We will create the 'any' subsring arraylist with only
      * one element.
+     * 
+     * @param tlvId The TLV identifier
      */
     public SubstringFilter( int tlvId )
     {
@@ -208,21 +207,25 @@ public class SubstringFilter extends Filter
 
     /**
      * Compute the SubstringFilter length 
-     * 
-     * SubstringFilter : 
+     * <br>
+     * SubstringFilter :
+     * <pre> 
      * 0xA4 L1 
      *   | 
-     *   +--> 0x04 L2 type 
-     *   +--> 0x30 L3 
+     *   +--&gt; 0x04 L2 type 
+     *   +--&gt; 0x30 L3 
      *          | 
-     *         [+--> 0x80 L4 initial] 
-     *         [+--> 0x81 L5-1 any] 
-     *         [+--> 0x81 L5-2 any] 
-     *         [+--> ... 
-     *         [+--> 0x81 L5-i any] 
-     *         [+--> ... 
-     *         [+--> 0x81 L5-n any] 
-     *         [+--> 0x82 L6 final]
+     *         [+--&gt; 0x80 L4 initial] 
+     *         [+--&gt; 0x81 L5-1 any] 
+     *         [+--&gt; 0x81 L5-2 any] 
+     *         [+--&gt; ... 
+     *         [+--&gt; 0x81 L5-i any] 
+     *         [+--&gt; ... 
+     *         [+--&gt; 0x81 L5-n any] 
+     *         [+--&gt; 0x82 L6 final]
+     * </pre>
+     * 
+     * @return The encoded length
      */
     public int computeLength()
     {
@@ -264,9 +267,9 @@ public class SubstringFilter extends Filter
 
     /**
      * Encode the Substrings Filter to a PDU. 
-     * 
+     * <br>
      * Substrings Filter :
-     * 
+     * <pre>
      * 0xA4 LL 
      * 0x30 LL substringsFilter
      *   0x04 LL type
@@ -278,6 +281,7 @@ public class SubstringFilter extends Filter
      *     \   [0x82 LL final]
      *      \
      *       0x82 LL final
+     * </pre>
      * 
      * @param buffer The buffer where to put the PDU
      * @return The PDU.

@@ -53,6 +53,7 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
     /**
      * Makes a ExtendedResponse encodable.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated ExtendedResponse
      */
     public ExtendedResponseDecorator( LdapApiService codec, R decoratedMessage )
@@ -106,20 +107,21 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
     //-------------------------------------------------------------------------
     /**
      * Compute the ExtendedResponse length
-     * 
+     * <br>
      * ExtendedResponse :
-     * 
+     * <pre>
      * 0x78 L1
      *  |
-     *  +--> LdapResult
-     * [+--> 0x8A L2 name
-     * [+--> 0x8B L3 response]]
+     *  +--&gt; LdapResult
+     * [+--&gt; 0x8A L2 name
+     * [+--&gt; 0x8B L3 response]]
      * 
      * L1 = Length(LdapResult)
      *      [ + Length(0x8A) + Length(L2) + L2
      *       [ + Length(0x8B) + Length(L3) + L3]]
      * 
      * Length(ExtendedResponse) = Length(0x78) + Length(L1) + L1
+     * </pre>
      * 
      * @return The ExtendedResponse length
      */
@@ -151,10 +153,13 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
 
     /**
      * Encode the ExtendedResponse message to a PDU. 
+     * <br>
      * ExtendedResponse :
+     * <pre>
      * LdapResult.encode()
      * [0x8A LL response name]
      * [0x8B LL response]
+     * </pre>
      * 
      * @param buffer The buffer where to put the PDU
      * @return The PDU.

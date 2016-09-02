@@ -37,12 +37,11 @@ import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
  */
 public class AndFilter extends ConnectorFilter
 {
-    // ~ Methods
-    // ------------------------------------------------------------------------------------
-
     /**
      * The constructor. We wont initialize the ArrayList as they may not be
      * used.
+     * 
+     * @param tlvId The TLV identifier
      */
     public AndFilter( int tlvId )
     {
@@ -73,12 +72,16 @@ public class AndFilter extends ConnectorFilter
 
     /**
      * Compute the AndFilter length 
-     * 
-     * AndFilter : 
+     * <br>
+     * AndFilter :
+     * <pre> 
      * 0xA0 L1 super.computeLength()
      * 
      * Length(AndFilter) = Length(0xA0) + Length(super.computeLength()) +
      *          super.computeLength()
+     * </pre>
+     * 
+     * @return The encoded length
      */
     public int computeLength()
     {
@@ -90,10 +93,12 @@ public class AndFilter extends ConnectorFilter
 
     /**
      * Encode the AndFilter message to a PDU. 
-     * 
-     * AndFilter : 
+     * <br>
+     * AndFilter :
+     * <pre> 
      * 0xA0 LL
      *  filter.encode() ... filter.encode()
+     * </pre>
      * 
      * @param buffer The buffer where to put the PDU
      * @return The PDU.

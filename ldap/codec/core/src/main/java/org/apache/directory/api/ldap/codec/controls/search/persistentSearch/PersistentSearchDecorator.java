@@ -54,6 +54,8 @@ public class PersistentSearchDecorator extends ControlDecorator<PersistentSearch
     /**
      * Default constructor creates a PersistentSearch Control automatically
      * wrapped in a decorator object inside this container.
+     * 
+     * @param codec The LDAP service instance
      */
     public PersistentSearchDecorator( LdapApiService codec )
     {
@@ -65,6 +67,7 @@ public class PersistentSearchDecorator extends ControlDecorator<PersistentSearch
      * Creates a PersistentSearch Control wrapping a supplied PersistentSearch
      * Control.
      *
+     * @param codec The LDAP service instance
      * @param control The PersistentSearch Control to wrap.
      */
     public PersistentSearchDecorator( LdapApiService codec, PersistentSearch control )
@@ -82,10 +85,12 @@ public class PersistentSearchDecorator extends ControlDecorator<PersistentSearch
      * 
      * 0x30 L1 
      *   | 
-     *   +--> 0x02 0x0(1-4) [0..2^31-1] (changeTypes) 
-     *   +--> 0x01 0x01 [0x00 | 0xFF] (changeOnly) 
-     *   +--> 0x01 0x01 [0x00 | 0xFF] (returnRCs)
-     * </pre> 
+     *   +--&gt; 0x02 0x0(1-4) [0..2^31-1] (changeTypes) 
+     *   +--&gt; 0x01 0x01 [0x00 | 0xFF] (changeOnly) 
+     *   +--&gt; 0x01 0x01 [0x00 | 0xFF] (returnRCs)
+     * </pre>
+     *  
+     * @return the control length.
      */
     public int computeLength()
     {

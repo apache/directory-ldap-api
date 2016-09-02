@@ -40,6 +40,9 @@ public class CascadeDecorator extends ControlDecorator<Cascade> implements Codec
 {
     /**
      * Default constructor
+     * 
+     * @param codec The LDAP service instance
+     * @param control the Control to decorate
      */
     public CascadeDecorator( LdapApiService codec, Cascade control )
     {
@@ -48,7 +51,7 @@ public class CascadeDecorator extends ControlDecorator<Cascade> implements Codec
 
 
     /**
-     * Returns the default control length.
+     * @return the control length.
      */
     public int computeLength()
     {

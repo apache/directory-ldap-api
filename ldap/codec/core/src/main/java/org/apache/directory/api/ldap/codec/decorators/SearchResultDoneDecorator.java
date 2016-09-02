@@ -45,6 +45,7 @@ public class SearchResultDoneDecorator extends ResponseDecorator<SearchResultDon
     /**
      * Makes a SearchResultDone encodable.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated SearchResultDone
      */
     public SearchResultDoneDecorator( LdapApiService codec, SearchResultDone decoratedMessage )
@@ -59,16 +60,17 @@ public class SearchResultDoneDecorator extends ResponseDecorator<SearchResultDon
 
     /**
      * Compute the SearchResultDone length 
-     * 
+     * <br>
      * SearchResultDone : 
      * <pre>
      * 0x65 L1 
      *   | 
-     *   +--> LdapResult 
+     *   +--&gt; LdapResult 
      *   
      * L1 = Length(LdapResult) 
      * Length(SearchResultDone) = Length(0x65) + Length(L1) + L1
      * </pre>
+     * 
      */
     public int computeLength()
     {
@@ -82,7 +84,8 @@ public class SearchResultDoneDecorator extends ResponseDecorator<SearchResultDon
      * Encode the SearchResultDone message to a PDU.
      * 
      * @param buffer The buffer where to put the PDU
-     * @param searchResultDoneDecorator The SearchResultDone decorator
+     * return The encoded response
+     * @throws EncoderException If the encoding failed
      */
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {

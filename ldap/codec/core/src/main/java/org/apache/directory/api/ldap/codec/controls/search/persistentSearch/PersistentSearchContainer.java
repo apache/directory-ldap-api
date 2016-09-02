@@ -39,6 +39,8 @@ public class PersistentSearchContainer extends AbstractContainer
     /**
      * Creates a new PSearchControlContainer object. We will store one grammar,
      * it's enough ...
+     * 
+     * @param codec The LDAP service instance
      */
     public PersistentSearchContainer( LdapApiService codec )
     {
@@ -54,6 +56,7 @@ public class PersistentSearchContainer extends AbstractContainer
      * decorator wrapping the supplied control, or using the supplied control if
      * it already is a decorator.
      *
+     * @param codec The LDAP service instance
      * @param control The PersistentSearch Control or a decorating wrapper.
      */
     public PersistentSearchContainer( LdapApiService codec, PersistentSearch control )

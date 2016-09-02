@@ -64,6 +64,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * Makes a CompareRequest a MessageDecorator.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated CompareRequest
      */
     public CompareRequestDecorator( LdapApiService codec, CompareRequest decoratedMessage )
@@ -190,20 +191,22 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     //-------------------------------------------------------------------------
     /**
      * Compute the CompareRequest length
-     * 
+     * <br>
      * CompareRequest :
+     * <pre>
      * 0x6E L1
      *   |
-     *   +--> 0x04 L2 entry
-     *   +--> 0x30 L3 (ava)
+     *   +--&gt; 0x04 L2 entry
+     *   +--&gt; 0x30 L3 (ava)
      *         |
-     *         +--> 0x04 L4 attributeDesc
-     *         +--> 0x04 L5 assertionValue
+     *         +--&gt; 0x04 L4 attributeDesc
+     *         +--&gt; 0x04 L5 assertionValue
      * 
      * L3 = Length(0x04) + Length(L4) + L4 + Length(0x04) +
      *      Length(L5) + L5
      * Length(CompareRequest) = Length(0x6E) + Length(L1) + L1 +
      *      Length(0x04) + Length(L2) + L2 + Length(0x30) + Length(L3) + L3
+     * </pre>
      * 
      * @return The CompareRequest PDU's length
      */
@@ -238,13 +241,14 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
 
     /**
      * Encode the CompareRequest message to a PDU.
-     * 
+     * <pre>
      * CompareRequest :
      *   0x6E LL
      *     0x04 LL entry
      *     0x30 LL attributeValueAssertion
      *       0x04 LL attributeDesc
      *       0x04 LL assertionValue
+     * </pre>
      * 
      * @param buffer The buffer where to put the PDU
      */

@@ -55,6 +55,8 @@ public class LdapMessageContainer<E extends MessageDecorator<? extends Message>>
     /**
      * Creates a new LdapMessageContainer object. We will store ten grammars,
      * it's enough ...
+     * 
+     * @param codec The LDAP service instance
      */
     public LdapMessageContainer( LdapApiService codec )
     {
@@ -66,6 +68,7 @@ public class LdapMessageContainer<E extends MessageDecorator<? extends Message>>
      * Creates a new LdapMessageContainer object. We will store ten grammars,
      * it's enough ...
      *
+     * @param codec The LDAP service instance
      * @param binaryAttributeDetector checks if an attribute is binary
      */
     public LdapMessageContainer( LdapApiService codec, BinaryAttributeDetector binaryAttributeDetector )
@@ -81,7 +84,7 @@ public class LdapMessageContainer<E extends MessageDecorator<? extends Message>>
     /**
      * Gets the {@link LdapApiService} associated with this Container.
      *
-     * @return
+     * @return The LDAP service instance
      */
     public LdapApiService getLdapCodecService()
     {
@@ -102,7 +105,7 @@ public class LdapMessageContainer<E extends MessageDecorator<? extends Message>>
      * Set a Message Object into the container. It will be completed by the
      * ldapDecoder.
      *
-     * @param message The message to set.
+     * @param messageDecorator The message to set.
      */
     public void setMessage( E messageDecorator )
     {

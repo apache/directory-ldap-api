@@ -37,9 +37,6 @@ import org.apache.directory.api.util.Strings;
  */
 public class PresentFilter extends Filter
 {
-    // ~ Instance fields
-    // ----------------------------------------------------------------------------
-
     /** The attribute description. */
     private String attributeDescription;
 
@@ -47,11 +44,10 @@ public class PresentFilter extends Filter
     private byte[] attributeDescriptionBytes;
 
 
-    // ~ Constructors
-    // -------------------------------------------------------------------------------
-
     /**
      * The constructor.
+     * 
+     * @param tlvId The TLV identifier
      */
     public PresentFilter( int tlvId )
     {
@@ -67,9 +63,6 @@ public class PresentFilter extends Filter
         super();
     }
 
-
-    // ~ Methods
-    // ------------------------------------------------------------------------------------
 
     /**
      * Get the attribute
@@ -95,11 +88,16 @@ public class PresentFilter extends Filter
 
     /**
      * Compute the PresentFilter length 
-     * PresentFilter : 
+     * <br>
+     * PresentFilter :
+     * <pre> 
      * 0x87 L1 present
      * 
      * Length(PresentFilter) = Length(0x87) + Length(super.computeLength()) +
      *      super.computeLength()
+     * </pre>
+     * 
+     * @return The encoded length
      */
     public int computeLength()
     {

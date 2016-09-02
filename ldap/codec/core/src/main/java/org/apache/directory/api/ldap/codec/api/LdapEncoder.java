@@ -141,9 +141,9 @@ public class LdapEncoder
      * <pre>
      * 0x30 L1 
      *   | 
-     *   +--> 0x02 L2 MessageId  
-     *   +--> ProtocolOp 
-     *   +--> Controls 
+     *   +--&gt; 0x02 L2 MessageId  
+     *   +--&gt; ProtocolOp 
+     *   +--&gt; Controls 
      *   
      * L2 = Length(MessageId)
      * L1 = Length(0x02) + Length(L2) + L2 + Length(ProtocolOp) + Length(Controls)
@@ -224,16 +224,18 @@ public class LdapEncoder
 
     /**
      * Compute the LdapMessage length LdapMessage : 
+     * <pre>
      * 0x30 L1 
      *   | 
-     *   +--> 0x02 0x0(1-4) [0..2^31-1] (MessageId) 
-     *   +--> protocolOp 
-     *   [+--> Controls] 
+     *   +--&gt; 0x02 0x0(1-4) [0..2^31-1] (MessageId) 
+     *   +--&gt; protocolOp 
+     *   [+--&gt; Controls] 
      *   
      * MessageId length = Length(0x02) + length(MessageId) + MessageId.length 
      * L1 = length(ProtocolOp) 
      * LdapMessage length = Length(0x30) + Length(L1) + MessageId length + L1
-     *
+     * </pre>
+     * 
      * @param messageDecorator the decorated Message who's length is to be encoded
      */
     private int computeMessageLength( MessageDecorator<? extends Message> messageDecorator )
@@ -304,7 +306,6 @@ public class LdapEncoder
      * 
      * @param buffer The buffer where to put the PDU
      * @param referral The referral to encode
-     * @return The encoded referral
      * @exception EncoderException If the encoding failed
      */
     public static void encodeReferral( ByteBuffer buffer, Referral referral ) throws EncoderException

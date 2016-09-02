@@ -54,6 +54,7 @@ public class IntermediateResponseDecorator extends MessageDecorator<Intermediate
     /**
      * Makes a IntermediateResponse encodable.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated IntermediateResponse
      */
     public IntermediateResponseDecorator( LdapApiService codec, IntermediateResponse decoratedMessage )
@@ -107,18 +108,19 @@ public class IntermediateResponseDecorator extends MessageDecorator<Intermediate
     //-------------------------------------------------------------------------
     /**
      * Compute the intermediateResponse length
-     * 
+     * <br>
      * intermediateResponse :
-     * 
+     * <pre>
      * 0x79 L1
      *  |
-     * [+--> 0x80 L2 name
-     * [+--> 0x81 L3 response]]
+     * [+--&gt; 0x80 L2 name
+     * [+--&gt; 0x81 L3 response]]
      * 
      * L1 = [ + Length(0x80) + Length(L2) + L2
      *      [ + Length(0x81) + Length(L3) + L3]]
      * 
      * Length(IntermediateResponse) = Length(0x79) + Length(L1) + L1
+     * </pre>
      * 
      * @return The IntermediateResponse length
      */
@@ -147,10 +149,13 @@ public class IntermediateResponseDecorator extends MessageDecorator<Intermediate
 
     /**
      * Encode the IntermediateResponse message to a PDU. 
+     * <br>
      * IntermediateResponse :
+     * <pre>
      *   0x79 LL
      *     [0x80 LL response name]
      *     [0x81 LL responseValue]
+     * </pre>
      * 
      * @param buffer The buffer where to put the PDU
      */

@@ -46,6 +46,8 @@ public abstract class Filter
 
     /**
      * The constructor.
+     * 
+     * @param tlvId The TLV identifier
      */
     public Filter( int tlvId )
     {
@@ -87,6 +89,7 @@ public abstract class Filter
      * Set the parent
      * 
      * @param parent The parent to set.
+     * @param parentTlvId The Parent TLV identifier
      */
     public void setParent( Filter parent, int parentTlvId )
     {
@@ -95,6 +98,9 @@ public abstract class Filter
     }
 
 
+    /**
+     * @return The TLV identifier
+     */
     public int getTlvId()
     {
         return tlvId;
@@ -103,14 +109,18 @@ public abstract class Filter
 
     /**
      * Compute the Filter length 
+     * 
+     * @return the encoded length
      */
     public abstract int computeLength();
 
 
     /**
      * Encode the Filter message to a PDU. 
+     * 
      * @param buffer The buffer where to put the PDU
      * @return The PDU.
+     * @throws EncoderException If the encoding failed
      */
     public abstract ByteBuffer encode( ByteBuffer buffer ) throws EncoderException;
 }

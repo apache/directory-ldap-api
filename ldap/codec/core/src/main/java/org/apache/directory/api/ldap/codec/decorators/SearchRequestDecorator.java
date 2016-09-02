@@ -111,6 +111,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * Makes a SearchRequest encodable.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated SearchRequest
      */
     public SearchRequestDecorator( LdapApiService codec, SearchRequest decoratedMessage )
@@ -150,6 +151,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
      * Gets the search filter associated with this search request.
      *
      * @return the expression node for the root of the filter expression tree.
+     * @throws LdapSchemaException If the filter is invalid
      */
     public ExprNode getFilterNode() throws LdapSchemaException
     {
@@ -224,6 +226,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
      * ConnectorFilter when this method is called.
      *
      * @param localFilter The filter to set.
+     * @throws DecoderException If the filter is invalid
      */
     public void addCurrentFilter( Filter localFilter ) throws DecoderException
     {
@@ -321,9 +324,10 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
      *
      * @param filter The filter to be transformed
      * @return An ExprNode
+     * @throws LdapSchemaException If teh filter is invalid
      */
     @SuppressWarnings(
-        { "unchecked", "rawtypes" })
+        { "rawtypes" })
     private ExprNode transform( Filter filter ) throws LdapSchemaException
     {
         if ( filter != null )
@@ -882,27 +886,27 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
 
     /**
      * Compute the SearchRequest length
-     * 
+     * <br>
      * SearchRequest :
      * <pre>
      * 0x63 L1
      *  |
-     *  +--> 0x04 L2 baseObject
-     *  +--> 0x0A 0x01 scope
-     *  +--> 0x0A 0x01 derefAliases
-     *  +--> 0x02 0x0(1..4) sizeLimit
-     *  +--> 0x02 0x0(1..4) timeLimit
-     *  +--> 0x01 0x01 typesOnly
-     *  +--> filter.computeLength()
-     *  +--> 0x30 L3 (Attribute description list)
+     *  +--&gt; 0x04 L2 baseObject
+     *  +--&gt; 0x0A 0x01 scope
+     *  +--&gt; 0x0A 0x01 derefAliases
+     *  +--&gt; 0x02 0x0(1..4) sizeLimit
+     *  +--&gt; 0x02 0x0(1..4) timeLimit
+     *  +--&gt; 0x01 0x01 typesOnly
+     *  +--&gt; filter.computeLength()
+     *  +--&gt; 0x30 L3 (Attribute description list)
      *        |
-     *        +--> 0x04 L4-1 Attribute description
-     *        +--> 0x04 L4-2 Attribute description
-     *        +--> ...
-     *        +--> 0x04 L4-i Attribute description
-     *        +--> ...
-     *        +--> 0x04 L4-n Attribute description
-     *        </pre>
+     *        +--&gt; 0x04 L4-1 Attribute description
+     *        +--&gt; 0x04 L4-2 Attribute description
+     *        +--&gt; ...
+     *        +--&gt; 0x04 L4-i Attribute description
+     *        +--&gt; ...
+     *        +--&gt; 0x04 L4-n Attribute description
+     * </pre>
      */
     public int computeLength()
     {
@@ -960,7 +964,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
 
     /**
      * Encode the SearchRequest message to a PDU.
-     * 
+     * <br>
      * SearchRequest :
      * <pre>
      * 0x63 LL
@@ -976,6 +980,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
      *     ...
      *     0x04 LL attributeDescription
      * </pre>
+     * 
      * @param buffer The buffer where to put the PDU
      * @return The PDU.
      */

@@ -30,7 +30,7 @@ import org.apache.directory.api.ldap.model.message.Control;
  * decorator while processing.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @param <E>
+ * @param <E> The control type
  */
 public abstract class ControlDecorator<E extends Control> implements CodecControl<E>, Asn1Object
 {
@@ -50,6 +50,7 @@ public abstract class ControlDecorator<E extends Control> implements CodecContro
     /**
      * Creates a ControlDecorator to codec enable it.
      *
+     * @param codec The Ldap service to use
      * @param decoratedControl The Control to decorate.
      */
     public ControlDecorator( LdapApiService codec, E decoratedControl )

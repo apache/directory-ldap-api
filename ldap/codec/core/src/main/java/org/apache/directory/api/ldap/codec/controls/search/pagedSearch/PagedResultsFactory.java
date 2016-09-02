@@ -27,7 +27,7 @@ import org.apache.directory.api.ldap.model.message.controls.PagedResults;
 
 
 /**
- * A {@link ControlFactory} for {@link EntryChange} controls.
+ * A {@link ControlFactory} for {@link PagedResults} controls.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$

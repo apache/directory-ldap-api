@@ -45,6 +45,7 @@ public class AddResponseDecorator extends ResponseDecorator<AddResponse> impleme
     /**
      * Makes a AddResponse a MessageDecorator.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated AddResponse
      */
     public AddResponseDecorator( LdapApiService codec, AddResponse decoratedMessage )
@@ -67,16 +68,17 @@ public class AddResponseDecorator extends ResponseDecorator<AddResponse> impleme
     //-------------------------------------------------------------------------
     /**
      * Compute the AddResponse length 
-     * 
+     * <br>
      * AddResponse : 
-     * 
+     * <pre>
      * 0x69 L1
      *  |
-     *  +--> LdapResult
+     *  +--&gt; LdapResult
      * 
      * L1 = Length(LdapResult)
      * 
      * Length(AddResponse) = Length(0x69) + Length(L1) + L1
+     * </pre>
      */
     public int computeLength()
     {
@@ -92,7 +94,8 @@ public class AddResponseDecorator extends ResponseDecorator<AddResponse> impleme
      * Encode the AddResponse message to a PDU.
      * 
      * @param buffer The buffer where to put the PDU
-     * @param addResponseDecorator the AddResponse decorator
+     * @return The encoded response
+     * @throws EncoderException If teh encoding failed
      */
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {

@@ -53,6 +53,7 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
     /**
      * Makes a ExtendedRequest a MessageDecorator.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated ExtendedRequest
      */
     public ExtendedRequestDecorator( LdapApiService codec, Q decoratedMessage )
@@ -147,18 +148,19 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
 
     /**
      * Compute the ExtendedRequest length
-     * 
+     * <br>
      * ExtendedRequest :
-     * 
+     * <pre>
      * 0x77 L1
      *  |
-     *  +--> 0x80 L2 name
-     *  [+--> 0x81 L3 value]
+     *  +--&gt; 0x80 L2 name
+     *  [+--&gt; 0x81 L3 value]
      * 
      * L1 = Length(0x80) + Length(L2) + L2
      *      [+ Length(0x81) + Length(L3) + L3]
      * 
      * Length(ExtendedRequest) = Length(0x77) + Length(L1) + L1
+     * </pre>
      */
     public int computeLength()
     {

@@ -45,6 +45,7 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
     /**
      * Makes a BindResponse a MessageDecorator.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated BindResponse
      */
     public BindResponseDecorator( LdapApiService codec, BindResponse decoratedMessage )
@@ -80,13 +81,13 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
     //-------------------------------------------------------------------------
     /**
      * Compute the BindResponse length 
-     * 
+     * <br>
      * BindResponse : 
      * <pre>
      * 0x61 L1 
      *   | 
-     *   +--> LdapResult
-     *   +--> [serverSaslCreds] 
+     *   +--&gt; LdapResult
+     *   +--&gt; [serverSaslCreds] 
      *   
      * L1 = Length(LdapResult) [ + Length(serverSaslCreds) ] 
      * Length(BindResponse) = Length(0x61) + Length(L1) + L1
@@ -112,15 +113,15 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
 
     /**
      * Encode the BindResponse message to a PDU.
-     * 
+     * <br>
      * BindResponse :
      * <pre>
      * LdapResult.encode 
      * [0x87 LL serverSaslCreds]
      * </pre>
      * 
-     * @param bb The buffer where to put the PDU
-     * @param bindResponseDecorator The decorated BindResponse to encode
+     * @param buffer The buffer where to put the PDU
+     * @return The encoded response
      * @throws EncoderException when encoding operations fail
      */
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException

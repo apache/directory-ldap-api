@@ -82,6 +82,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * Makes a ModifyRequest encodable.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated ModifyRequest
      */
     public ModifyRequestDecorator( LdapApiService codec, ModifyRequest decoratedMessage )
@@ -116,7 +117,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
 
 
     /**
-     * Return the current attribute's type
+     * @return the current attribute's type
      */
     public String getCurrentAttributeType()
     {
@@ -128,6 +129,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
      * Add a new value to the current attribute
      * 
      * @param value The value to add
+     * @throws LdapException If teh value is invalid
      */
     public void addAttributeValue( byte[] value ) throws LdapException
     {
@@ -139,6 +141,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
      * Add a new value to the current attribute
      * 
      * @param value The value to add
+     * @throws LdapException If teh value is invalid
      */
     public void addAttributeValue( String value ) throws LdapException
     {
@@ -377,44 +380,43 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
 
     /**
      * Compute the ModifyRequest length 
-     * 
+     * <br>
      * ModifyRequest :
-     * 
      * <pre>
      * 0x66 L1
      *  |
-     *  +--> 0x04 L2 object
-     *  +--> 0x30 L3 modifications
+     *  +--&gt; 0x04 L2 object
+     *  +--&gt; 0x30 L3 modifications
      *        |
-     *        +--> 0x30 L4-1 modification sequence
+     *        +--&gt; 0x30 L4-1 modification sequence
      *        |     |
-     *        |     +--> 0x0A 0x01 (0..2) operation
-     *        |     +--> 0x30 L5-1 modification
+     *        |     +--&gt; 0x0A 0x01 (0..2) operation
+     *        |     +--&gt; 0x30 L5-1 modification
      *        |           |
-     *        |           +--> 0x04 L6-1 type
-     *        |           +--> 0x31 L7-1 vals
+     *        |           +--&gt; 0x04 L6-1 type
+     *        |           +--&gt; 0x31 L7-1 vals
      *        |                 |
-     *        |                 +--> 0x04 L8-1-1 attributeValue
-     *        |                 +--> 0x04 L8-1-2 attributeValue
-     *        |                 +--> ...
-     *        |                 +--> 0x04 L8-1-i attributeValue
-     *        |                 +--> ...
-     *        |                 +--> 0x04 L8-1-n attributeValue
+     *        |                 +--&gt; 0x04 L8-1-1 attributeValue
+     *        |                 +--&gt; 0x04 L8-1-2 attributeValue
+     *        |                 +--&gt; ...
+     *        |                 +--&gt; 0x04 L8-1-i attributeValue
+     *        |                 +--&gt; ...
+     *        |                 +--&gt; 0x04 L8-1-n attributeValue
      *        |
-     *        +--> 0x30 L4-2 modification sequence
+     *        +--&gt; 0x30 L4-2 modification sequence
      *        .     |
-     *        .     +--> 0x0A 0x01 (0..2) operation
-     *        .     +--> 0x30 L5-2 modification
+     *        .     +--&gt; 0x0A 0x01 (0..2) operation
+     *        .     +--&gt; 0x30 L5-2 modification
      *                    |
-     *                    +--> 0x04 L6-2 type
-     *                    +--> 0x31 L7-2 vals
+     *                    +--&gt; 0x04 L6-2 type
+     *                    +--&gt; 0x31 L7-2 vals
      *                          |
-     *                          +--> 0x04 L8-2-1 attributeValue
-     *                          +--> 0x04 L8-2-2 attributeValue
-     *                          +--> ...
-     *                          +--> 0x04 L8-2-i attributeValue
-     *                          +--> ...
-     *                          +--> 0x04 L8-2-n attributeValue
+     *                          +--&gt; 0x04 L8-2-1 attributeValue
+     *                          +--&gt; 0x04 L8-2-2 attributeValue
+     *                          +--&gt; ...
+     *                          +--&gt; 0x04 L8-2-i attributeValue
+     *                          +--&gt; ...
+     *                          +--&gt; 0x04 L8-2-n attributeValue
      * </pre>
      */
     public int computeLength()
@@ -488,7 +490,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
 
     /**
      * Encode the ModifyRequest message to a PDU. 
-     * 
+     * <br>
      * ModifyRequest : 
      * <pre>
      * 0x66 LL

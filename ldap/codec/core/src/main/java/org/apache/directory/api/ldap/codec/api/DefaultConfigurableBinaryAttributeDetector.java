@@ -28,9 +28,9 @@ import org.apache.mina.util.ConcurrentHashSet;
 
 /**
  * An implementation of the BinaryAttributeDetector interface. It's used
- * on the client side to detect if an Attribute is HumanRedable.<br/>
+ * on the client side to detect if an Attribute is HumanRedable.<br>
  * One can inject some new attributes, replace the existing list,
- * remove some attributes. <br/>
+ * remove some attributes. <br>
  * We provide a list of Attributes which are known to be binary :
  * <ul>
  * <li>entryACI</li>
@@ -56,7 +56,7 @@ import org.apache.mina.util.ConcurrentHashSet;
  * <li>jpegPhoto</li>
  * <li>supportedAlgorithms</li>
  * </ul>
- * <br/>
+ * <br>
  * In order to reset the detector to get back to those default value, it's enough
  * to call the setBinaryAttributes() with null as a parameter.
  * 

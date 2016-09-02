@@ -41,6 +41,7 @@ public class UnbindRequestDecorator extends RequestDecorator<UnbindRequest> impl
     /**
      * Makes Request a MessageDecorator.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated message
      */
     public UnbindRequestDecorator( LdapApiService codec, UnbindRequest decoratedMessage )
@@ -93,9 +94,11 @@ public class UnbindRequestDecorator extends RequestDecorator<UnbindRequest> impl
 
     /**
      * Compute the UnBindRequest length 
-     * 
-     * UnBindRequest : 
+     * <br>
+     * UnBindRequest :
+     * <pre> 
      * 0x42 00
+     * </pre>
      */
     public int computeLength()
     {

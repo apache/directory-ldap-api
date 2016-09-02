@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * A factory that allows callers a means to get a handle on an LdapCodecService
  * implementation regardless of the environment in which they're accessing it.
  * In an OSGi environment, the BundleActivator binds the LdapCodecService 
- * class member forever to the {@link DefaultLdapCodecService}. If in 
+ * class member forever to the DefaultLdapCodecService. If in 
  * 
  * In a standard standalone mode, the Bundle
  *

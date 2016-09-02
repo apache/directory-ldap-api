@@ -28,7 +28,7 @@ import org.apache.directory.api.ldap.model.message.Request;
 /**
  * A decorator for the LdapResultResponse message
  *
- * @TODO make this extend AbstractDsmlMessageDecorator instead of codec's 
+ * TODO make this extend AbstractDsmlMessageDecorator instead of codec's 
  * MessageDecorator.
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -37,6 +37,7 @@ public abstract class RequestDecorator<M extends Request> extends MessageDecorat
     /**
      * Makes Request a MessageDecorator.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated message
      */
     public RequestDecorator( LdapApiService codec, M decoratedMessage )

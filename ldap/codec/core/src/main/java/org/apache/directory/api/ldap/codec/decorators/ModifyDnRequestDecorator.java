@@ -57,6 +57,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     /**
      * Makes a ModifyDnRequest encodable.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated ModifyDnRequest
      */
     public ModifyDnRequestDecorator( LdapApiService codec, ModifyDnRequest decoratedMessage )
@@ -202,15 +203,15 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
 
     /**
      * Compute the ModifyDNRequest length
-     * 
+     * <br>
      * ModifyDNRequest :
      * <pre>
      * 0x6C L1
      *  |
-     *  +--> 0x04 L2 entry
-     *  +--> 0x04 L3 newRDN
-     *  +--> 0x01 0x01 (true/false) deleteOldRDN (3 bytes)
-     * [+--> 0x80 L4 newSuperior ] 
+     *  +--&gt; 0x04 L2 entry
+     *  +--&gt; 0x04 L3 newRDN
+     *  +--&gt; 0x01 0x01 (true/false) deleteOldRDN (3 bytes)
+     * [+--&gt; 0x80 L4 newSuperior ] 
      * 
      * L2 = Length(0x04) + Length(Length(entry)) + Length(entry) 
      * L3 = Length(0x04) + Length(Length(newRDN)) + Length(newRDN) 
@@ -244,7 +245,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
 
     /**
      * Encode the ModifyDNRequest message to a PDU. 
-     * 
+     * <br>
      * ModifyDNRequest :
      * <pre>
      * 0x6C LL
@@ -253,6 +254,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
      *   0x01 0x01 deleteOldRDN
      *   [0x80 LL newSuperior]
      * </pre>
+     * 
      * @param buffer The buffer where to put the PDU
      * @return The PDU.
      */

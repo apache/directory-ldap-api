@@ -46,6 +46,7 @@ public class CompareResponseDecorator extends ResponseDecorator<CompareResponse>
     /**
      * Makes a CompareResponse a MessageDecorator.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated CompareResponse
      */
     public CompareResponseDecorator( LdapApiService codec, CompareResponse decoratedMessage )
@@ -73,16 +74,17 @@ public class CompareResponseDecorator extends ResponseDecorator<CompareResponse>
 
     /**
      * Compute the CompareResponse length 
-     * 
+     * <br>
      * CompareResponse :
-     * 
+     * <pre>
      * 0x6F L1
      *  |
-     *  +--> LdapResult
+     *  +--&gt; LdapResult
      * 
      * L1 = Length(LdapResult)
      * 
      * Length(CompareResponse) = Length(0x6F) + Length(L1) + L1
+     * </pre>
      */
     public int computeLength()
     {

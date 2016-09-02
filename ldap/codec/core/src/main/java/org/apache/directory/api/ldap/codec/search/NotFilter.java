@@ -37,11 +37,10 @@ import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
  */
 public class NotFilter extends ConnectorFilter
 {
-    // ~ Methods
-    // ------------------------------------------------------------------------------------
-
     /**
      * The constructor.
+     * 
+     * @param tlvId The TLV identifier
      */
     public NotFilter( int tlvId )
     {
@@ -90,6 +89,7 @@ public class NotFilter extends ConnectorFilter
      * Set the NotFilter
      * 
      * @param notFilter The notFilter to set.
+     * @throws DecoderException If the NotFilter is already containing a filter
      */
     public void setNotFilter( Filter notFilter ) throws DecoderException
     {
@@ -104,11 +104,16 @@ public class NotFilter extends ConnectorFilter
 
     /**
      * Compute the NotFilter length 
-     * NotFilter : 
+     * <br>
+     * NotFilter :
+     * <pre> 
      * 0xA2 L1 super.computeLength()
      * 
      * Length(NotFilter) = Length(0xA2) + Length(super.computeLength()) +
      *      super.computeLength()
+     * </pre>
+     * 
+     * @return The encoded length
      */
     public int computeLength()
     {
@@ -120,8 +125,11 @@ public class NotFilter extends ConnectorFilter
 
     /**
      * Encode the NotFilter message to a PDU. 
-     * NotFilter : 
+     * <br>
+     * NotFilter :
+     * <pre> 
      * 0xA2 LL filter.encode()
+     * </pre>
      * 
      * @param buffer The buffer where to put the PDU
      * @return The PDU.

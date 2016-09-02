@@ -42,6 +42,7 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
     /**
      * Makes a AddRequest a MessageDecorator.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated AddRequest
      */
     public AbandonRequestDecorator( LdapApiService codec, AbandonRequest decoratedMessage )
@@ -145,11 +146,13 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
 
     /**
      * Compute the AbandonRequest length 
-     * 
-     * AbandonRequest : 
+     * <br>
+     * AbandonRequest :
+     * <pre> 
      * 0x50 0x0(1..4) abandoned MessageId 
      * 
      * Length(AbandonRequest) = Length(0x50) + 1 + Length(abandoned MessageId)
+     * </pre>
      */
     public int computeLength()
     {
