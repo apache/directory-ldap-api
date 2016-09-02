@@ -24,7 +24,9 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
 
 
 /**
- * An element of {@link MaxValueCount}.
+ * An element of  MaxValueCount.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class MaxValueCountElem
 {

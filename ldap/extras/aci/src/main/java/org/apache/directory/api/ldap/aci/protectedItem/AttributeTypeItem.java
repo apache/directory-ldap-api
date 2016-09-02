@@ -28,6 +28,8 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
 /**
  * Attribute type information pertaining to specific attributes but not
  * values associated with the type.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class AttributeTypeItem extends AbstractAttributeTypeProtectedItem
 {

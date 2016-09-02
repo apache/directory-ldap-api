@@ -32,6 +32,8 @@ import org.apache.directory.api.ldap.aci.ProtectedItem;
  * without regard to context or access control as though the entry addition
  * or importing were successful. If the number of subordinates exceeds
  * maxImmSub, the ACI item is treated as not granting add or import access.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class MaxImmSubItem extends ProtectedItem
 {

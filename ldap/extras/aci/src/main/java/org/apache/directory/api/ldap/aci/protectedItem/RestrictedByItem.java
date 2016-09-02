@@ -36,6 +36,8 @@ import org.apache.directory.api.ldap.aci.ProtectedItem;
  * operation which adds the values were successful. If the value to be added
  * is not present in valuesIn the ACI item is treated as not granting add
  * access.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class RestrictedByItem extends ProtectedItem
 {

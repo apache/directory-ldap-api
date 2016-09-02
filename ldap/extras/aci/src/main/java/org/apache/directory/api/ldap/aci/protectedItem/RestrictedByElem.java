@@ -25,6 +25,8 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
 
 /**
  * An element of {@link RestrictedByItem}.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class RestrictedByElem
 {

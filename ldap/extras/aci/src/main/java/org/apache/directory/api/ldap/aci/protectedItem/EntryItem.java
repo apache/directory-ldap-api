@@ -30,6 +30,8 @@ import org.apache.directory.api.ldap.aci.ProtectedItem;
  * these entries. This element shall be ignored if the classes element is
  * present, since this latter element selects protected entries (and
  * subordinate family members) on the basis of their object class.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class EntryItem extends ProtectedItem
 {

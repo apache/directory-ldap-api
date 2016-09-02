@@ -27,6 +27,8 @@ import org.apache.directory.api.ldap.model.filter.ExprNode;
 /**
  * Any attribute value which matches the specified filter, i.e. for which
  * the specified filter evaluated on that attribute value would return TRUE.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class RangeOfValuesItem extends ProtectedItem
 {

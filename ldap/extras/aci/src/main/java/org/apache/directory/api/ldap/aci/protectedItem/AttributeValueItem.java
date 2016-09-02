@@ -30,6 +30,8 @@ import org.apache.directory.api.ldap.model.entry.Attribute;
 
 /**
  * A specific value of specific attributes.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class AttributeValueItem extends ProtectedItem
 {
