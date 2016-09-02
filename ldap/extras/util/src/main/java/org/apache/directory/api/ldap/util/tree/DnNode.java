@@ -36,13 +36,13 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * A class storing nodes in a tree designed to map DNs.<br/>
+ * A class storing nodes in a tree designed to map DNs.<br>
  * Branch nodes in this tree refers to child nodes. Leaf nodes in the tree
- * don't have any children. <br/>
+ * don't have any children. <br>
  * A node may contain a reference to an object whose suffix is the path through the
- * nodes of the tree from the root. <br/>
- * A node may also have no attached element.<br/>
- * Each child node is referenced by a Rdn, and holds the full Dn corresponding to its position<br/>
+ * nodes of the tree from the root. <br>
+ * A node may also have no attached element.<br>
+ * Each child node is referenced by a Rdn, and holds the full Dn corresponding to its position<br>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @param <N> The type of node we store
@@ -553,7 +553,7 @@ public class DnNode<N> implements Cloneable
 
     /**
      * Add a new node in the tree. We can't add a node if its Dn is empty. The
-     * added element is attached to the node, which is named by the Dn's Rdn.<br/>
+     * added element is attached to the node, which is named by the Dn's Rdn.<br>
      *
      * @param dn The node's Dn
      * @param element The element to associate with this Node. Can be null.
@@ -846,7 +846,6 @@ public class DnNode<N> implements Cloneable
      * dc=acme, dc=org will be returned if it has an associated element.
      * <br>For the Dn ou=apache, dc=org, there is no parent, so null will be returned.
      *
-     * @param dn the normalized distinguished name to resolve to a parent
      * @return the Node associated with the normalized dn
      */
     public synchronized DnNode<N> getParentWithElement()
@@ -871,7 +870,7 @@ public class DnNode<N> implements Cloneable
      * rename the DnNode's Dn
      * 
      * @param newRdn the new Rdn of this node
-     * @throws LdapException
+     * @throws LdapException If the rename failed
      */
     public synchronized void rename( Rdn newRdn ) throws LdapException
     {
@@ -897,7 +896,7 @@ public class DnNode<N> implements Cloneable
      * move the DnNode's Dn
      *
      * @param newParent the new parent Dn
-     * @throws LdapException
+     * @throws LdapException If the move failed
      */
     public synchronized void move( Dn newParent ) throws LdapException
     {
