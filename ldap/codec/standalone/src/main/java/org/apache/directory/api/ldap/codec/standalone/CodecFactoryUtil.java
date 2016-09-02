@@ -94,6 +94,9 @@ public final class CodecFactoryUtil
 
     /**
      * Loads the Controls implement out of the box in the codec.
+     * 
+     * @param controlFactories The Control factories to use
+     * @param apiService The LDAP Service instance to use
      */
     public static void loadStockControls( Map<String, ControlFactory<?>> controlFactories, LdapApiService apiService )
     {
