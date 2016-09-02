@@ -27,7 +27,9 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
 
 /**
  * All attribute value information pertaining to specific attributes.
- */
+  * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+*/
 public class AllAttributeValuesItem extends AbstractAttributeTypeProtectedItem
 {
     /**

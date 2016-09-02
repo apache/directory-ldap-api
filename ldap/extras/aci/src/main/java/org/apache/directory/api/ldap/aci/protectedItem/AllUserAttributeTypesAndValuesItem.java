@@ -26,6 +26,8 @@ import org.apache.directory.api.ldap.aci.ProtectedItem;
 /**
  * All user attribute information associated with the entry, including all
  * values of all user attributes.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class AllUserAttributeTypesAndValuesItem extends ProtectedItem
 {

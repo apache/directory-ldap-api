@@ -32,6 +32,8 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
  * in the specific case where the attribute specified is of Dn and the
  * attribute value within the specified attribute matches the Dn of the
  * originator of the operation.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class SelfValueItem extends AbstractAttributeTypeProtectedItem
 {

@@ -35,6 +35,8 @@ import org.apache.directory.api.ldap.aci.ProtectedItem;
  * access control and as though the operation which adds the values were
  * successful. If the number of values in the attribute exceeds maxCount,
  * the ACI item is treated as not granting add access.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class MaxValueCountItem extends ProtectedItem
 {

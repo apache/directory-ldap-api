@@ -30,6 +30,8 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
 
 /**
  * A base class for all items which protects attribute types (or its values)
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class AbstractAttributeTypeProtectedItem extends ProtectedItem
 {

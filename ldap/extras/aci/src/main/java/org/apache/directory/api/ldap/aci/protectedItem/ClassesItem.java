@@ -31,6 +31,8 @@ import org.apache.directory.api.ldap.model.filter.ExprNode;
  * family member) with the entry contents as a whole of each subordinate
  * family member entry; it does not necessarily include the information in
  * these entries.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ClassesItem extends ProtectedItem
 {
