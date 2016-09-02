@@ -27,7 +27,7 @@ import org.apache.directory.api.util.Strings;
 
 
 /**
- * A simple SyncStateValue {@link Control} implementation.
+ * A simple SyncStateValue Control implementation.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$

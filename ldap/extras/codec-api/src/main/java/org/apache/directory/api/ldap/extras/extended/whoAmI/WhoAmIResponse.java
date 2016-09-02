@@ -86,7 +86,7 @@ public interface WhoAmIResponse extends ExtendedResponse
     /**
      * set the authzid
      * 
-     * @param The authzid to set
+     * @param authzId The authzId to set
      */
     void setAuthzId( byte[] authzId );
 }

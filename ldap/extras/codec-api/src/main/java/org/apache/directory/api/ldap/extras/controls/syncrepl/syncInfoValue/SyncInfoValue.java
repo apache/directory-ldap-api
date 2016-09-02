@@ -70,7 +70,7 @@ public interface SyncInfoValue extends Control
 
 
     /**
-     * @param syncMode the syncMode to set
+     * @param type the synchronization type to set
      */
     void setType( SynchronizationInfoEnum type );
 
@@ -124,7 +124,7 @@ public interface SyncInfoValue extends Control
 
 
     /**
-     * @param syncUUIDs the syncUUIDs to set
+     * @param syncUUID the syncUUIDs to set
      */
     void addSyncUUID( byte[] syncUUID );
 }

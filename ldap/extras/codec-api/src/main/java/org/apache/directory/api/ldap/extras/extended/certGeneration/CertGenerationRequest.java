@@ -34,7 +34,11 @@ public interface CertGenerationRequest extends ExtendedRequest
     String EXTENSION_OID = "1.3.6.1.4.1.18060.0.1.8";
 
 
-    /** Get the Traget DN for the certificate storage */
+    /** 
+     * Get the Target DN for the certificate storage
+     * 
+     * @return The target DN 
+     **/
     String getTargetDN();
 
 
