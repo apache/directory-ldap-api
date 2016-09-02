@@ -86,14 +86,14 @@ public interface LdapConnectionOperations
      * checked for warnings, and if present, a PasswordWarning is returned.
      * Otherwise, null is returned.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param password
-     * @return
-     * @throws PasswordException
-     * @see {@link #authenticate(Dn, char[])}
-     * @see {@link #searchFirst(String, String, SearchScope, EntryMapper)}
+     * @param baseDn The base DN from which to start the search for the user to authenticate
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @param password The password
+     * @return A PasswordWarning or null
+     * @throws PasswordException If the authentication failed
+     * @see #authenticate(Dn, char[])
+     * @see #searchFirst(String, String, SearchScope, EntryMapper)
      */
     PasswordWarning authenticate( String baseDn, String filter, SearchScope scope, char[] password )
         throws PasswordException;
@@ -106,14 +106,14 @@ public interface LdapConnectionOperations
      * checked for warnings, and if present, a PasswordWarning is returned.
      * Otherwise, null is returned.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param password
-     * @return
-     * @throws PasswordException
-     * @see {@link #authenticate(Dn, char[])}
-     * @see {@link #searchFirst(Dn, String, SearchScope, EntryMapper)}
+     * @param baseDn The base DN from which to start the search for the user to authenticate
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @param password The password
+     * @return A PasswordWarning or null
+     * @throws PasswordException If the authentication failed
+     * @see #authenticate(Dn, char[])
+     * @see #searchFirst(Dn, String, SearchScope, EntryMapper)
      */
     PasswordWarning authenticate( Dn baseDn, String filter, SearchScope scope, char[] password )
         throws PasswordException;
@@ -126,14 +126,12 @@ public interface LdapConnectionOperations
      * checked for warnings, and if present, a PasswordWarning is returned.
      * Otherwise, null is returned.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param password
-     * @return
-     * @throws PasswordException
-     * @see {@link #authenticate(Dn, char[])}
-     * @see {@link #searchFirst(SearchRequest, EntryMapper)}
+     * @param searchRequest The SearchRequst to use to find the user to authenticate
+     * @param password The password
+     * @return A PasswordWarning or null
+     * @throws PasswordException If the authentication failed
+     * @see #authenticate(Dn, char[])
+     * @see #searchFirst(SearchRequest, EntryMapper)
      */
     PasswordWarning authenticate( SearchRequest searchRequest, char[] password ) throws PasswordException;
 
@@ -186,6 +184,7 @@ public interface LdapConnectionOperations
      * connection.
      *
      * @param connectionCallback The callback
+     * @param <T> The type of the mapped entry
      * @return Whatever the callback returns
      */
     <T> T execute( ConnectionCallback<T> connectionCallback );
@@ -197,6 +196,7 @@ public interface LdapConnectionOperations
      *
      * @param dn The distinguished name of the entry
      * @param entryMapper The mapper from entry to model object
+     * @param <T> The type of the mapped entry
      * @return Whatever the <code>entryMapper</code> returns
      */
     <T> T lookup( Dn dn, EntryMapper<T> entryMapper );
@@ -209,6 +209,7 @@ public interface LdapConnectionOperations
      * @param dn The distinguished name of the entry
      * @param attributes The attributes to be fetched
      * @param entryMapper The mapper from entry to model object
+     * @param <T> The type of the mapped entry
      * @return Whatever the <code>entryMapper</code> returns
      */
     <T> T lookup( Dn dn, String[] attributes, EntryMapper<T> entryMapper );
@@ -218,10 +219,10 @@ public interface LdapConnectionOperations
      * Modifies the password for <code>userDn</code> to
      * <code>newPassword</code> using the admin account.
      *
-     * @param userDn
-     * @param newPassword
-     * @throws PasswordException
-     * @see {@link #modifyPassword(Dn, char[], char[], boolean)}
+     * @param userDn The DN of the entry we want to modify the pwassword for
+     * @param newPassword The new password
+     * @throws PasswordException If the password change failed
+     * @see #modifyPassword(Dn, char[], char[], boolean)
      */
     void modifyPassword( Dn userDn, char[] newPassword )
         throws PasswordException;
@@ -231,11 +232,11 @@ public interface LdapConnectionOperations
      * Modifies the password for <code>userDn</code> from 
      * <code>oldPassword</code> to <code>newPassword</code>.
      *
-     * @param userDn
-     * @param oldPassword
-     * @param newPassword
-     * @throws PasswordException
-     * @see {@link #modifyPassword(Dn, char[], char[], boolean)}
+     * @param userDn The DN of the entry we want to modify the pwassword for
+     * @param oldPassword The old password
+     * @param newPassword The new password
+     * @throws PasswordException If the password change failed
+     * @see #modifyPassword(Dn, char[], char[], boolean)
      */
     void modifyPassword( Dn userDn, char[] oldPassword,
         char[] newPassword ) throws PasswordException;
@@ -280,17 +281,16 @@ public interface LdapConnectionOperations
 
     /**
      * Checks the supplied response for its result code, and if not 
-     * {@link ResultCodeEnum#SUCCESS}, an exception is thrown. This method is 
-     * intened to be used inline:
+     * ResultCodeEnum#SUCCESS, an exception is thrown. This method is 
+     * intended to be used inline:
      * 
      * <pre>
      * template.responseOrException( template.delete( dn ) );
      * </pre>
      *
      * @param response The response to check for success
+     * @param <T> The type of response
      * @return The supplied <code>response</code>
-     * @throws LdapRequestUnsuccessfulException If the response is not
-     * {@link ResultCodeEnum#SUCCESS}
      */
     <T extends ResultResponse> T responseOrException( T response );
 
@@ -299,12 +299,13 @@ public interface LdapConnectionOperations
      * Searches for the entries matching the supplied criteria, feeding the 
      * result into the <code>entryMapper</code>.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param entryMapper
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @param entryMapper The mapper
+     * @param <T> The type of the mapped entry
      * @return The mapped entries
-     * @see {@link #search(SearchRequest, EntryMapper)}
+     * @see #search(SearchRequest, EntryMapper)
      */
     <T> List<T> search( String baseDn, FilterBuilder filter, SearchScope scope,
         EntryMapper<T> entryMapper );
@@ -314,12 +315,13 @@ public interface LdapConnectionOperations
      * Searches for the entries matching the supplied criteria, feeding the 
      * result into the <code>entryMapper</code>.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param entryMapper
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @param entryMapper The mapper
+     * @param <T> The type of the mapped entry
      * @return The mapped entries
-     * @see {@link #search(SearchRequest, EntryMapper)}
+     * @see #search(SearchRequest, EntryMapper)
      */
     <T> List<T> search( String baseDn, String filter, SearchScope scope,
         EntryMapper<T> entryMapper );
@@ -329,12 +331,13 @@ public interface LdapConnectionOperations
      * Searches for the entries matching the supplied criteria, feeding the 
      * result into the <code>entryMapper</code>.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param entryMapper
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @param entryMapper The mapper
+     * @param <T> The type of the mapped entry
      * @return The mapped entries
-     * @see {@link #search(SearchRequest, EntryMapper)}
+     * @see #search(SearchRequest, EntryMapper)
      */
     <T> List<T> search( Dn baseDn, FilterBuilder filter, SearchScope scope,
         EntryMapper<T> entryMapper );
@@ -344,12 +347,13 @@ public interface LdapConnectionOperations
      * Searches for the entries matching the supplied criteria, feeding the 
      * result into the <code>entryMapper</code>.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param entryMapper
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @param entryMapper The mapper
+     * @param <T> The type of the mapped entry
      * @return The mapped entries
-     * @see {@link #search(SearchRequest, EntryMapper)}
+     * @see #search(SearchRequest, EntryMapper)
      */
     <T> List<T> search( Dn baseDn, String filter, SearchScope scope,
         EntryMapper<T> entryMapper );
@@ -360,13 +364,14 @@ public interface LdapConnectionOperations
      * result into the <code>entryMapper</code>, querying only the requested 
      * attributes.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param attributes
-     * @param entryMapper
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @param attributes The list of AttributeType to return
+     * @param entryMapper The mapper
+     * @param <T> The type of the mapped entry
      * @return The mapped entries
-     * @see {@link #search(SearchRequest, EntryMapper)}
+     * @see #search(SearchRequest, EntryMapper)
      */
     <T> List<T> search( String baseDn, FilterBuilder filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper );
@@ -377,13 +382,14 @@ public interface LdapConnectionOperations
      * result into the <code>entryMapper</code>, querying only the requested 
      * attributes.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param attributes
-     * @param entryMapper
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @param attributes The list of AttributeType to return
+     * @param entryMapper The mapper
+     * @param <T> The type of the mapped entry
      * @return The mapped entries
-     * @see {@link #search(SearchRequest, EntryMapper)}
+     * @see #search(SearchRequest, EntryMapper)
      */
     <T> List<T> search( String baseDn, String filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper );
@@ -394,13 +400,14 @@ public interface LdapConnectionOperations
      * result into the <code>entryMapper</code>, querying only the requested 
      * attributes.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param attributes
-     * @param entryMapper
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @param attributes The list of AttributeType to return
+     * @param entryMapper The mapper
+     * @param <T> The type of the mapped entry
      * @return The mapped entries
-     * @see {@link #search(SearchRequest, EntryMapper)}
+     * @see #search(SearchRequest, EntryMapper)
      */
     <T> List<T> search( Dn baseDn, FilterBuilder filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper );
@@ -411,13 +418,14 @@ public interface LdapConnectionOperations
      * result into the <code>entryMapper</code>, querying only the requested 
      * attributes.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param attributes
-     * @param entryMapper
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @param attributes The list of AttributeType to return
+     * @param entryMapper The mapper
+     * @param <T> The type of the mapped entry
      * @return The mapped entries
-     * @see {@link #search(SearchRequest, EntryMapper)}
+     * @see #search(SearchRequest, EntryMapper)
      */
     <T> List<T> search( Dn baseDn, String filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper );
@@ -430,6 +438,7 @@ public interface LdapConnectionOperations
      *
      * @param searchRequest The search request
      * @param entryMapper The mapper
+     * @param <T> The type of the mapped entry
      * @return The mapped entries
      */
     <T> List<T> search( SearchRequest searchRequest,
@@ -440,12 +449,13 @@ public interface LdapConnectionOperations
      * Searches for the first entry matching the supplied criteria, feeding the 
      * result into the <code>entryMapper</code>.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param entryMapper
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @param entryMapper The mapper
+     * @param <T> The type of the mapped entry
      * @return The mapped entries
-     * @see {@link #searchFirst(SearchRequest, EntryMapper)}
+     * @see #searchFirst(SearchRequest, EntryMapper)
      */
     <T> T searchFirst( String baseDn, FilterBuilder filter, SearchScope scope,
         EntryMapper<T> entryMapper );
@@ -455,12 +465,13 @@ public interface LdapConnectionOperations
      * Searches for the first entry matching the supplied criteria, feeding the 
      * result into the <code>entryMapper</code>.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param entryMapper
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @param entryMapper The mapper
+     * @param <T> The type of the mapped entry
      * @return The mapped entries
-     * @see {@link #searchFirst(SearchRequest, EntryMapper)}
+     * @see #searchFirst(SearchRequest, EntryMapper)
      */
     <T> T searchFirst( String baseDn, String filter, SearchScope scope,
         EntryMapper<T> entryMapper );
@@ -470,12 +481,13 @@ public interface LdapConnectionOperations
      * Searches for the first entry matching the supplied criteria, feeding the 
      * result into the <code>entryMapper</code>.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param entryMapper
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @param entryMapper The mapper
+     * @param <T> The type of the mapped entry
      * @return The mapped entries
-     * @see {@link #searchFirst(SearchRequest, EntryMapper)}
+     * @see #searchFirst(SearchRequest, EntryMapper)
      */
     <T> T searchFirst( Dn baseDn, FilterBuilder filter, SearchScope scope,
         EntryMapper<T> entryMapper );
@@ -485,12 +497,13 @@ public interface LdapConnectionOperations
      * Searches for the first entry matching the supplied criteria, feeding the 
      * result into the <code>entryMapper</code>.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param entryMapper
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @param entryMapper The mapper
+     * @param <T> The type of the mapped entry
      * @return The mapped entries
-     * @see {@link #searchFirst(SearchRequest, EntryMapper)}
+     * @see #searchFirst(SearchRequest, EntryMapper)
      */
     <T> T searchFirst( Dn baseDn, String filter, SearchScope scope,
         EntryMapper<T> entryMapper );
@@ -501,13 +514,14 @@ public interface LdapConnectionOperations
      * result into the <code>entryMapper</code>, querying only the requested 
      * attributes.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param attributes
-     * @param entryMapper
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @param attributes The list of AttributeType to return
+     * @param entryMapper The mapper
+     * @param <T> The type of the mapped entry
      * @return The mapped entries
-     * @see {@link #searchFirst(SearchRequest, EntryMapper)}
+     * @see #searchFirst(SearchRequest, EntryMapper)
      */
     <T> T searchFirst( String baseDn, FilterBuilder filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper );
@@ -518,13 +532,14 @@ public interface LdapConnectionOperations
      * result into the <code>entryMapper</code>, querying only the requested 
      * attributes.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param attributes
-     * @param entryMapper
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @param attributes The list of AttributeType to return
+     * @param entryMapper The mapper
+     * @param <T> The type of the mapped entry
      * @return The mapped entries
-     * @see {@link #searchFirst(SearchRequest, EntryMapper)}
+     * @see #searchFirst(SearchRequest, EntryMapper)
      */
     <T> T searchFirst( String baseDn, String filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper );
@@ -535,13 +550,14 @@ public interface LdapConnectionOperations
      * result into the <code>entryMapper</code>, querying only the requested 
      * attributes.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param attributes
-     * @param entryMapper
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @param attributes The list of AttributeType to return
+     * @param entryMapper The mapper
+     * @param <T> The type of the mapped entry
      * @return The mapped entries
-     * @see {@link #searchFirst(SearchRequest, EntryMapper)}
+     * @see #searchFirst(SearchRequest, EntryMapper)
      */
     <T> T searchFirst( Dn baseDn, FilterBuilder filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper );
@@ -552,13 +568,14 @@ public interface LdapConnectionOperations
      * result into the <code>entryMapper</code>, querying only the requested 
      * attributes.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param attributes
-     * @param entryMapper
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @param attributes The list of AttributeType to return
+     * @param entryMapper The mapper
+     * @param <T> The type of the mapped entry
      * @return The mapped entries
-     * @see {@link #searchFirst(SearchRequest, EntryMapper)}
+     * @see #searchFirst(SearchRequest, EntryMapper)
      */
     <T> T searchFirst( Dn baseDn, String filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper );
@@ -575,6 +592,7 @@ public interface LdapConnectionOperations
      *
      * @param searchRequest The search request
      * @param entryMapper The mapper
+     * @param <T> The type of the mapped entry
      * @return The mapped entry
      */
     <T> T searchFirst( SearchRequest searchRequest,

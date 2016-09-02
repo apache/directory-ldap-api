@@ -80,7 +80,7 @@ public interface LdapConnectionFactory
      * instances.
      * 
      * @return A newly created, configured, and authenticated LdapConnection.
-     * @throws LdapException
+     * @throws LdapException If the new connection couldn't be established
      */
     LdapConnection newLdapConnection() throws LdapException;
 

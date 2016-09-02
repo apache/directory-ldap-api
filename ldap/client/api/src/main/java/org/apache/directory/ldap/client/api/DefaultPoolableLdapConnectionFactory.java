@@ -26,9 +26,9 @@ package org.apache.directory.ldap.client.api;
 /**
  * A factory for creating LdapConnection objects managed by LdapConnectionPool. The connections are
  * not validated when they are pulled from the pool : we just check if they are still connected, using
- * their internal flag. We don't either re-bind when we push back teh connection into the pool.
- * <br/>
- * It's up to the users to be careful with the way they deal with connectiosn -especially when using
+ * their internal flag. We don't either re-bind when we push back the connection into the pool.
+ * <br>
+ * It's up to the users to be careful with the way they deal with connections -especially when using
  * the StartTLS extended operation -.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>

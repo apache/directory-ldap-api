@@ -112,7 +112,7 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
      * Gives a LdapConnection fetched from the pool.
      *
      * @return an LdapConnection object from pool
-     * @throws Exception if an error occurs while obtaining a connection from the factory
+     * @throws LdapException if an error occurs while obtaining a connection from the factory
      */
     public LdapConnection getConnection() throws LdapException
     {
@@ -156,7 +156,7 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
      * Places the given LdapConnection back in the pool.
      * 
      * @param connection the LdapConnection to be released
-     * @throws Exception if an error occurs while releasing the connection
+     * @throws LdapException if an error occurs while releasing the connection
      */
     public void releaseConnection( LdapConnection connection ) throws LdapException
     {

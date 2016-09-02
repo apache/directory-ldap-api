@@ -27,6 +27,7 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 /**
  * A callback for processing entries from a search result.
  * 
+ * @param <T> The type of the mapped entry
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface EntryMapper<T>

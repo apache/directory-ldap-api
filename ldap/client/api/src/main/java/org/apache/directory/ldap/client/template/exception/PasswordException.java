@@ -27,7 +27,7 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 
 /**
  * Thrown when an attempt to bind or modify a userPassword fails when using
- * {@link LdapConnectionTemplate}.
+ * LdapConnectionTemplate.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
