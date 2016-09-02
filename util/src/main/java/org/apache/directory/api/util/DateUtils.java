@@ -20,7 +20,10 @@
 package org.apache.directory.api.util;
 
 
+import java.text.ParseException;
 import java.util.Date;
+
+import org.apache.directory.api.i18n.I18n;
 
 
 /**
@@ -39,6 +42,12 @@ public final class DateUtils
     }
 
 
+    /**
+     * Return a Date instance from a String 
+     *
+     * @param zuluTime The String to convert
+     * @return The Date instance
+     */
     public static Date getDate( String zuluTime )
     {
         try
@@ -88,4 +97,28 @@ public final class DateUtils
         return getGeneralizedTime( new Date( time ) );
     }
 
+    
+    /**
+     * Converts the 18-digit Active Directory timestamps, also named 'Windows NT time format' or 'Win32 FILETIME or SYSTEMTIME'.
+     * These are used in Microsoft Active Directory for pwdLastSet, accountExpires, LastLogon, LastLogonTimestamp and LastPwdSet.
+     * The timestamp is the number of 100-nanoseconds intervals (1 nanosecond = one billionth of a second) since Jan 1, 1601 UTC.
+     * <p>
+     *
+     * @param intervalDate 18-digit number. Time in 100-nanoseconds intervals since 1.1.1601
+     * @return Date the converted date
+     */
+    public Date convertIntervalDate( String intervalDate ) throws ParseException
+    {
+        if ( intervalDate == null )
+        {
+            throw new ParseException( I18n.err( I18n.ERR_04359 ), 0 );
+        }
+    
+        long offset = 11644473600000L; // offset milliseconds from Jan 1, 1601 to Jan 1, 1970
+         
+        // convert 100-nanosecond intervals to milliseconds (10000 = 1 000 000ns / 100)
+        long javaTime = ( Long.parseLong( intervalDate ) / 10000L - offset );
+        
+        return new Date( javaTime );
+    }
 }
