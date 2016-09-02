@@ -105,7 +105,8 @@ public final class DateUtils
      * <p>
      *
      * @param intervalDate 18-digit number. Time in 100-nanoseconds intervals since 1.1.1601
-     * @return Date the converted date
+     * @return The converted date
+     * @throws ParseException If the given interval is not valid
      */
     public static Date convertIntervalDate( String intervalDate ) throws ParseException
     {
