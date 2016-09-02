@@ -278,7 +278,7 @@ public final class JndiUtils
     /**
      * Convert a Dn to a {@link javax.naming.Name}
      *
-     * @param name The Dn to convert
+     * @param dn The Dn to convert
      * @return A Name
      */
     public static Name toName( Dn dn )
