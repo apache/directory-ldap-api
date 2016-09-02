@@ -40,6 +40,9 @@ public class AdShowDeletedDecorator extends ControlDecorator<AdShowDeleted> impl
 {
     /**
      * Default constructor
+     * 
+     * @param codec The LDAP Service to use
+     * @param control The AdShowDeleted control to decorate
      */
     public AdShowDeletedDecorator( LdapApiService codec, AdShowDeleted control )
     {

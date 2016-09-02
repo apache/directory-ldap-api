@@ -55,8 +55,8 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
     /**
      * Creates a new instance of GracefulShutdownRequestDecorator.
      *
-     * @param codec
-     * @param decoratedMessage
+     * @param codec The LDAP Service to use
+     * @param decoratedMessage The GracefulShutdownRequest control to decorate
      */
     public GracefulShutdownRequestDecorator( LdapApiService codec, GracefulShutdownRequest decoratedMessage )
     {
@@ -158,10 +158,10 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
      * <pre>
      * 0x30 L1 
      *   | 
-     *   +--> [0x02 0x0(1-4) [0..720] ] 
-     *   +--> [0x80 0x0(1-3) [0..86400] ] 
+     *   +--&gt; [0x02 0x0(1-4) [0..720] ] 
+     *   +--&gt; [0x80 0x0(1-3) [0..86400] ] 
      * </pre>  
-     * L1 will always be &lt 11.
+     * L1 will always be &lt; 11.
      */
     /* no qualifier */int computeLengthInternal()
     {

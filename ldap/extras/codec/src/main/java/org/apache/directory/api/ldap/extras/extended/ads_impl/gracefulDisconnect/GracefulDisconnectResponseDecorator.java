@@ -64,8 +64,8 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
     /**
      * Creates a new instance of CancelResponseDecorator.
      *
-     * @param codec
-     * @param decoratedMessage
+     * @param codec The LDAP service instance
+     * @param decoratedMessage The decorated message
      */
     public GracefulDisconnectResponseDecorator( LdapApiService codec, GracefulDisconnectResponse decoratedMessage )
     {

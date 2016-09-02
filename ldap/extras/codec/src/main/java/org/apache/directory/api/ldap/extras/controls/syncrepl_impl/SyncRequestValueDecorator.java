@@ -130,14 +130,17 @@ public class SyncRequestValueDecorator extends ControlDecorator<SyncRequestValue
 
     /**
      * Compute the SyncRequestValue length.
-     *
+     * <br>
      * SyncRequestValue :
+     * <pre>
      * 0x30 L1
      *  |
-     *  +--> 0x0A 0x01 [0x00|0x01|0x02|0x03] (mode)
-     * [+--> 0x04 L2 abcd...                 (cookie)
-     *  +--> 0x01 0x01 [0x00|0xFF]           (reloadHint)
-     *
+     *  +--&gt; 0x0A 0x01 [0x00|0x01|0x02|0x03] (mode)
+     * [+--&gt; 0x04 L2 abcd...                 (cookie)
+     *  +--&gt; 0x01 0x01 [0x00|0xFF]           (reloadHint)
+     * </pre>
+     * 
+     * @return The computed length
      */
     @Override
     public int computeLength()

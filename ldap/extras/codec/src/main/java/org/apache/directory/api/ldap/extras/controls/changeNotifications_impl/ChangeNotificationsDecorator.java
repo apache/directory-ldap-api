@@ -40,6 +40,9 @@ public class ChangeNotificationsDecorator extends ControlDecorator<ChangeNotific
 
     /**
      * Default constructor
+     * 
+     * @param codec The LDAP Service to use
+     * @param control The ChangeNotification control to decorate
      */
     public ChangeNotificationsDecorator( LdapApiService codec, ChangeNotifications control )
     {

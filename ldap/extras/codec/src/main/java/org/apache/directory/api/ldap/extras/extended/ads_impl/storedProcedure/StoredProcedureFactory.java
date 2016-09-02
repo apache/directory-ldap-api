@@ -44,7 +44,7 @@ public class StoredProcedureFactory implements ExtendedOperationFactory
     /**
      * Creates a new instance of StoredProcedureFactory.
      *
-     * @param codec
+     * @param codec The LDAP Service to use
      */
     public StoredProcedureFactory( LdapApiService codec )
     {

@@ -41,6 +41,8 @@ public class SyncInfoValueContainer extends AbstractContainer
     /**
      * Creates a new SyncInfoValueControlContainer object. We will store one grammar,
      * it's enough ...
+     * 
+     * @param codec The LDAP Service to use
      */
     public SyncInfoValueContainer( LdapApiService codec )
     {
@@ -55,6 +57,9 @@ public class SyncInfoValueContainer extends AbstractContainer
     /**
      * Creates a new SyncInfoValueControlContainer object. We will store one grammar,
      * it's enough ...
+     * 
+     * @param codec The LDAP Service to use
+     * @param control The control to decorate
      */
     public SyncInfoValueContainer( LdapApiService codec, SyncInfoValue control )
     {

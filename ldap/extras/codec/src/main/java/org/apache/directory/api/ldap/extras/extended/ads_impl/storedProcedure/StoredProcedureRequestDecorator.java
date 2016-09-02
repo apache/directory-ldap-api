@@ -101,26 +101,26 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
      * <pre>
      * 0x30 L1 
      *   | 
-     *   +--> 0x04 L2 language
-     *   +--> 0x04 L3 procedure
-     *  [+--> 0x30 L4 (parameters)
+     *   +--&gt; 0x04 L2 language
+     *   +--&gt; 0x04 L3 procedure
+     *  [+--&gt; 0x30 L4 (parameters)
      *          |
-     *          +--> 0x30 L5-1 (parameter)
+     *          +--&gt; 0x30 L5-1 (parameter)
      *          |      |
-     *          |      +--> 0x04 L6-1 type
-     *          |      +--> 0x04 L7-1 value
+     *          |      +--&gt; 0x04 L6-1 type
+     *          |      +--&gt; 0x04 L7-1 value
      *          |      
-     *          +--> 0x30 L5-2 (parameter)
+     *          +--&gt; 0x30 L5-2 (parameter)
      *          |      |
-     *          |      +--> 0x04 L6-2 type
-     *          |      +--> 0x04 L7-2 value
+     *          |      +--&gt; 0x04 L6-2 type
+     *          |      +--&gt; 0x04 L7-2 value
      *          |
-     *          +--> ...
+     *          +--&gt; ...
      *          |      
-     *          +--> 0x30 L5-m (parameter)
+     *          +--&gt; 0x30 L5-m (parameter)
      *                 |
-     *                 +--> 0x04 L6-m type
-     *                 +--> 0x04 L7-m value
+     *                 +--&gt; 0x04 L6-m type
+     *                 +--&gt; 0x04 L7-m value
      * </pre>
      */
     /* no qualifier */ int computeLengthInternal()
