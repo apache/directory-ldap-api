@@ -57,6 +57,8 @@ public class ImmutableEntry implements Entry
      * Creates a new instance of DefaultEntry. 
      * <p>
      * This entry <b>must</b> be initialized before being used !
+     * 
+     * @param entry The encapsulated entry
      */
     public ImmutableEntry( Entry entry )
     {
@@ -477,7 +479,6 @@ public Entry add( String upId, Value... values ) throws LdapException
      * </p>
      *
      * @param attributes the AttributeTypes to be removed
-     * @return the removed attributes, if any, as a list; otherwise <code>null</code>
      */
     @Override
     public void removeAttributes( AttributeType... attributes )
@@ -658,7 +659,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     /**
      * This is the place where we serialize entries, and all theirs
      * elements.
-     * <br/>
+     * <br>
      * The structure used to store the entry is the following :
      * <ul>
      *   <li>

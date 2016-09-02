@@ -49,8 +49,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A default implementation of a ServerEntry which should suite most
- * use cases.<br/>
- * <br/>
+ * use cases.<br>
+ * <br>
  * This class is final, it should not be extended.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -208,7 +208,9 @@ public final class DefaultEntry implements Entry
      * Dn and a list of IDs.
      *
      * @param dn The Dn for this serverEntry. Can be null.
-     * @param upIds The list of attributes to create.
+     * @param elements The list of elements to inject in the entry
+     * @throws LdapException If the elements are invalid
+     * @throws LdapException If the provided Dn or elements are invalid
      */
     public DefaultEntry( String dn, Object... elements ) throws LdapException
     {
@@ -221,7 +223,8 @@ public final class DefaultEntry implements Entry
      * Dn and a list of IDs.
      *
      * @param dn The Dn for this serverEntry. Can be null.
-     * @param upIds The list of attributes to create.
+     * @param elements The list of attributes to create.
+     * @throws LdapException If the provided Dn or elements are invalid
      */
     public DefaultEntry( Dn dn, Object... elements ) throws LdapException
     {
@@ -233,8 +236,10 @@ public final class DefaultEntry implements Entry
      * Creates a new instance of DefaultEntry, with a
      * Dn and a list of IDs.
      *
+     * @param schemaManager The SchemaManager
      * @param dn The Dn for this serverEntry. Can be null.
-     * @param upIds The list of attributes to create.
+     * @param elements The list of attributes to create.
+     * @throws LdapException If the provided Dn or elements are invalid
      */
     public DefaultEntry( SchemaManager schemaManager, String dn, Object... elements ) throws LdapException
     {
@@ -246,8 +251,10 @@ public final class DefaultEntry implements Entry
      * Creates a new instance of DefaultEntry, with a
      * Dn and a list of IDs.
      *
+     * @param schemaManager The reference to the schemaManager
      * @param dn The Dn for this serverEntry. Can be null.
-     * @param upIds The list of attributes to create.
+     * @param elements The list of attributes to create.
+     * @throws LdapException If the provided Dn or Elements are invalid
      */
     public DefaultEntry( SchemaManager schemaManager, Dn dn, Object... elements ) throws LdapException
     {
@@ -280,6 +287,7 @@ public final class DefaultEntry implements Entry
      *
      * @param schemaManager The reference to the schemaManager
      * @param entry the entry to copy
+     * @throws LdapException If the provided entry is invalid
      */
     public DefaultEntry( SchemaManager schemaManager, Entry entry ) throws LdapException
     {
@@ -1544,43 +1552,6 @@ public final class DefaultEntry implements Entry
 
     /**
      * {@inheritDoc}
-     **
-    public List<Attribute> set( AttributeType... attributeTypes )
-    {
-        List<Attribute> removed = new ArrayList<Attribute>();
-
-        // Now, loop on all the attributeType to add
-        for ( AttributeType attributeType : attributeTypes )
-        {
-            if ( attributeType == null )
-            {
-                String message = I18n.err( I18n.ERR_04467 );
-                LOG.error( message );
-                continue;
-            }
-
-            Attribute attribute = attributes.put( attributeType.getOid(),
-                new DefaultAttribute( attributeType ) );
-
-            if ( attribute != null )
-            {
-                removed.add( attribute );
-            }
-        }
-
-        if ( removed.size() == 0 )
-        {
-            return null;
-        }
-        else
-        {
-            return removed;
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
      */
     @Override
     public List<Attribute> put( Attribute... attributes ) throws LdapException
@@ -1991,7 +1962,6 @@ public final class DefaultEntry implements Entry
      * </p>
      *
      * @param attributes the AttributeTypes to be removed
-     * @return the removed attributes, if any, as a list; otherwise <code>null</code>
      */
     @Override
     public void removeAttributes( AttributeType... attributes )
@@ -2379,7 +2349,7 @@ public final class DefaultEntry implements Entry
     /**
      * This is the place where we serialize entries, and all theirs
      * elements.
-     * <br/>
+     * <br>
      * The structure used to store the entry is the following :
      * <ul>
      *   <li>

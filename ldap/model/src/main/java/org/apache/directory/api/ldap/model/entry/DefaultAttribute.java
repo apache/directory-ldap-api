@@ -289,6 +289,7 @@ public class DefaultAttribute implements Attribute, Cloneable
      * </p>
      * @param attributeType the attribute type according to the schema
      * @param vals an initial set of values for this attribute
+     * @throws LdapInvalidAttributeValueException If one of the value is invalid
      */
     public DefaultAttribute( AttributeType attributeType, Value... vals ) throws LdapInvalidAttributeValueException
     {
@@ -383,6 +384,7 @@ public class DefaultAttribute implements Attribute, Cloneable
      *
      * @param attributeType The attribute's type
      * @param attribute The attribute to be copied
+     * @throws LdapException If the attribute can't be created
      */
     public DefaultAttribute( AttributeType attributeType, Attribute attribute ) throws LdapException
     {

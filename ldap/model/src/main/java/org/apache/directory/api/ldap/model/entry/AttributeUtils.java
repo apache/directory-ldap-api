@@ -119,6 +119,7 @@ public final class AttributeUtils
      * (Ldap attributeTypes are *always* case insensitive)
      * 
      * @param attributes The Attributes to check
+     * @return The modified Attributes
      */
     public static Attributes toCaseInsensitive( Attributes attributes )
     {
@@ -426,7 +427,10 @@ public final class AttributeUtils
      *
      * @param str The parsed attribute,
      * @param pos The position of the attribute in the current string
+     * @param withOption A flag set if we want to parse the options
+     * @param relaxed A flag set if we want to parse without being too strict
      * @return The parsed attribute if valid
+     * @throws ParseException If we had an issue while parsing the attribute
      */
     public static String parseAttribute( char[] str, Position pos, boolean withOption, boolean relaxed )
         throws ParseException
@@ -500,7 +504,10 @@ public final class AttributeUtils
      *
      * @param bytes The parsed attribute,
      * @param pos The position of the attribute in the current string
+     * @param withOption A flag set if we want to parse the options
+     * @param relaxed A flag set if we want to parse without being too strict
      * @return The parsed attribute if valid
+     * @throws ParseException If we had an issue while parsing the attribute
      */
     public static String parseAttribute( byte[] bytes, Position pos, boolean withOption, boolean relaxed )
         throws ParseException
@@ -556,7 +563,7 @@ public final class AttributeUtils
      * 
      * @param entry The entry on which we want to apply a modification
      * @param modification the Modification to be applied
-     * @throws org.apache.directory.api.ldap.model.exception.LdapException if some operation fails.
+     * @throws LdapException if some operation fails.
      */
     public static void applyModification( Entry entry, Modification modification ) throws LdapException
     {
@@ -748,6 +755,7 @@ public final class AttributeUtils
      *
      * @param jndiAttribute the JNDI Attribute instance to convert
      * @return An instance of a LDAP API Attribute object
+     * @throws LdapInvalidAttributeValueException If the attribute is invalid
      */
     public static Attribute toApiAttribute( javax.naming.directory.Attribute jndiAttribute )
         throws LdapInvalidAttributeValueException

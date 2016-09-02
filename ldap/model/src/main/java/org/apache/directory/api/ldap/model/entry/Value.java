@@ -363,6 +363,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      *
      * @param attributeType the schema attribute type associated with this StringValue
      * @param value the original Value
+     * @throws LdapInvalidAttributeValueException If the value is invalid
      */
     public Value( AttributeType attributeType, Value value ) throws LdapInvalidAttributeValueException
     {
@@ -820,7 +821,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      * @return A new Value instance
      * @throws IOException If the stream can't be read
      * @throws ClassNotFoundException If we can't instanciate a Value
-     * @throws LdapInvalidAttributeValueException 
+     * @throws LdapInvalidAttributeValueException If the value is invalid
      */
     public static Value deserialize( ObjectInput in ) throws IOException, ClassNotFoundException, LdapInvalidAttributeValueException
     {
@@ -839,7 +840,6 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      * @return A new Value instance
      * @throws IOException If the stream can't be read
      * @throws ClassNotFoundException If we can't instanciate a Value
-     * @throws LdapInvalidAttributeValueException 
      */
     public static Value deserialize( AttributeType attributeType, ObjectInput in ) throws IOException, ClassNotFoundException
     {
@@ -857,7 +857,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      * @param pos The position in the buffer
      * @return The new position
      * @throws IOException If the serialized value is not a StringValue
-     * @throws LdapInvalidAttributeValueException 
+     * @throws LdapInvalidAttributeValueException If the value is invalid
      */
     public int deserialize( byte[] buffer, int pos ) throws IOException, LdapInvalidAttributeValueException
     {
