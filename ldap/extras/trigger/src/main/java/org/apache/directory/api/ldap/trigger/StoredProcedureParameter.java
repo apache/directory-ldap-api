@@ -88,7 +88,7 @@ public abstract class StoredProcedureParameter
 
 
     /**
-     * Returns the name of this Stored Procedure Parameter.
+     * @return the name of this Stored Procedure Parameter.
      */
     public String getName()
     {
