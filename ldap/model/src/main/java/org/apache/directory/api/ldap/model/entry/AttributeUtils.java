@@ -119,6 +119,7 @@ public final class AttributeUtils
      * (Ldap attributeTypes are *always* case insensitive)
      * 
      * @param attributes The Attributes to check
+     * @return The converted Attributes
      */
     public static Attributes toCaseInsensitive( Attributes attributes )
     {
@@ -300,7 +301,10 @@ public final class AttributeUtils
      *
      * @param str The parsed attribute,
      * @param pos The position of the attribute in the current string
+     * @param withOption A flag telling of the attribute has an option
+     * @param relaxed A flag used to tell the parser to be in relaxed mode
      * @return The parsed attribute if valid
+     * @throws ParseException If we faced an error while parsing the value
      */
     public static String parseAttribute( byte[] str, Position pos, boolean withOption, boolean relaxed )
         throws ParseException
@@ -553,6 +557,7 @@ public final class AttributeUtils
      *
      * @param jndiAttribute the JNDI Attribute instance to convert
      * @return An instance of a LDAP API Attribute object
+     * @throws LdapInvalidAttributeValueException If we can't convert some value
      */
     public static Attribute toApiAttribute( javax.naming.directory.Attribute jndiAttribute )
         throws LdapInvalidAttributeValueException

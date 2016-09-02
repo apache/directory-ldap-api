@@ -57,6 +57,8 @@ public class ImmutableEntry implements Entry
      * Creates a new instance of DefaultEntry. 
      * <p>
      * This entry <b>must</b> be initialized before being used !
+     * </p>
+     * @param entry the Entry to store
      */
     public ImmutableEntry( Entry entry )
     {
@@ -448,7 +450,6 @@ public class ImmutableEntry implements Entry
      * </p>
      *
      * @param attributes the AttributeTypes to be removed
-     * @return the removed attributes, if any, as a list; otherwise <code>null</code>
      */
     public void removeAttributes( AttributeType... attributes )
     {
@@ -619,7 +620,7 @@ public class ImmutableEntry implements Entry
     /**
      * This is the place where we serialize entries, and all theirs
      * elements.
-     * <br/>
+     * <br>
      * The structure used to store the entry is the following :
      * <ul>
      *   <li>

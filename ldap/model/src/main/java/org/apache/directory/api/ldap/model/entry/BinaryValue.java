@@ -134,8 +134,10 @@ public class BinaryValue extends AbstractValue<byte[]>
 
 
     /**
+     * Compare the current value with a provided one
      *
-     * @see ServerValue#compareTo(Value)
+     * @param value The value we want to compare to
+     * @return -1 if the current is below the provided one, 1 if it's above, 0 if they are equal
      */
     public int compareTo( Value<byte[]> value )
     {
@@ -481,7 +483,6 @@ public class BinaryValue extends AbstractValue<byte[]>
     /**
      * Deserialize a BinaryValue. It will return a new BinaryValue instance.
      * 
-     * @param attributeType The AttributeType associated with the Value. Can be null
      * @param in The input stream
      * @return A new StringValue instance
      * @throws IOException If the stream can't be read

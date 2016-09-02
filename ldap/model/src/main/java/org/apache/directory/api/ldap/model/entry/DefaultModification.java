@@ -136,6 +136,7 @@ public class DefaultModification implements Modification
      * @param operation The modification operation
      * @param attributeType The associated attributeType
      * @param values the associated values
+     * @throws LdapInvalidAttributeValueException If one of the value is not valid
      */
     public DefaultModification( ModificationOperation operation, AttributeType attributeType, String... values )
         throws LdapInvalidAttributeValueException
@@ -151,6 +152,7 @@ public class DefaultModification implements Modification
      * @param operation The modification operation
      * @param attributeType The associated attributeType
      * @param values the associated values
+     * @throws LdapInvalidAttributeValueException If one of the value is not valid
      */
     public DefaultModification( ModificationOperation operation, AttributeType attributeType, byte[]... values )
         throws LdapInvalidAttributeValueException
@@ -166,6 +168,7 @@ public class DefaultModification implements Modification
      * @param operation The modification operation
      * @param attributeType The associated attributeType
      * @param values the associated values
+     * @throws LdapInvalidAttributeValueException If one of the value is not valid
      */
     public DefaultModification( ModificationOperation operation, AttributeType attributeType, Value<?>... values )
         throws LdapInvalidAttributeValueException
@@ -180,6 +183,7 @@ public class DefaultModification implements Modification
      *
      * @param operation The modification operation
      * @param attributeType The associated attributeType
+     * @throws LdapInvalidAttributeValueException If one of the value is not valid
      */
     public DefaultModification( ModificationOperation operation, AttributeType attributeType )
         throws LdapInvalidAttributeValueException

@@ -31,17 +31,16 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
 
 
 /**
- * <p>
  * This interface represent a LDAP entry. An LDAP entry contains :
- * <li> A distinguished name (Dn)</li>
- * <li> A list of attributes</li>
- * </p>
+ * <ul>
+ *   <li> A distinguished name (Dn)</li>
+ *   <li> A list of attributes</li>
+ * </ul>
  * <p>
  * The available methods on this object are described in this interface.
- * </p>
- * <p>
+ * <br>
  * This interface is used by the serverEntry and clientEntry interfaces.
- *</p>
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
@@ -54,12 +53,16 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * Clone the current entry
+     * 
+     * @return the cloned entry
      */
     Entry clone();
 
 
     /**
      * Shallow Clone the current entry. We don't deep clone the attributes
+     * 
+     * @return A shallow clone of this entry
      */
     Entry shallowClone();
 
@@ -431,6 +434,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * <code>null</code> value: the value may be <code>null</code>.
      *
      * @param upId The User Provided ID to be stored into the AttributeEntry
+     * @param attributeType the type of the new attribute to be put
      * @param values the binary values of the new attribute to be put
      * @return the old attribute with the same identifier, if exists; otherwise
      * <code>null</code>
@@ -559,6 +563,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @param values the values to be removed
      * @return <code>true</code> if at least a value is removed, <code>false</code>
      * if not all the values have been removed or if the attribute does not exist. 
+     * @throws LdapException If the removal failed 
      */
     boolean remove( AttributeType attributeType, byte[]... values ) throws LdapException;
 
@@ -583,6 +588,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @param values the values to be removed
      * @return <code>true</code> if at least a value is removed, <code>false</code>
      * if not all the values have been removed or if the attribute does not exist. 
+     * @throws LdapException If the removal failed 
      */
     boolean remove( AttributeType attributeType, String... values ) throws LdapException;
 
@@ -607,6 +613,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @param values the values to be removed
      * @return <code>true</code> if at least a value is removed, <code>false</code>
      * if not all the values have been removed or if the attribute does not exist. 
+     * @throws LdapException If the removal failed 
      */
     boolean remove( AttributeType attributeType, Value<?>... values ) throws LdapException;
 
@@ -618,6 +625,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      *
      * @param attributes the attributes to be removed
      * @return the removed attribute, if exists; otherwise <code>null</code>
+     * @throws LdapException If the removal failed 
      */
     List<Attribute> remove( Attribute... attributes ) throws LdapException;
 
@@ -635,7 +643,6 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * </p>
      *
      * @param attributes the AttributeTypes to be removed
-     * @return the removed attributes, if any, as a list; otherwise <code>null</code>
      */
     void removeAttributes( AttributeType... attributes );
 
@@ -660,6 +667,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @param values the attribute's values to be removed
      * @return <code>true</code> if at least a value is removed, <code>false</code>
      * if not all the values have been removed or if the attribute does not exist. 
+     * @throws LdapException If the removal failed 
      */
     boolean remove( String upId, byte[]... values ) throws LdapException;
 
@@ -683,7 +691,8 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @param upId The attribute ID  
      * @param values the attribute's values to be removed
      * @return <code>true</code> if at least a value is removed, <code>false</code>
-     * if no values have been removed or if the attribute does not exist. 
+     * if no values have been removed or if the attribute does not exist.
+     * @throws LdapException If the removal failed 
      */
     boolean remove( String upId, String... values ) throws LdapException;
 
@@ -726,7 +735,6 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
       * </p>
       *
       * @param attributes an aliased name of the attribute to be removed
-      * @return the removed attributes, if any, as a list; otherwise <code>null</code>
       */
     void removeAttributes( String... attributes );
 

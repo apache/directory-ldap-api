@@ -172,6 +172,7 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      * Apply the AttributeType to this value. Note that this can't be done twice.
      *
      * @param attributeType The AttributeType to apply
+     * @throws LdapInvalidAttributeValueException If we have some invalide value
      */
     void apply( AttributeType attributeType ) throws LdapInvalidAttributeValueException;
 }
