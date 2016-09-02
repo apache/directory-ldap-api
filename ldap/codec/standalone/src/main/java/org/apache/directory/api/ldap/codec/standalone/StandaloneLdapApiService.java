@@ -37,19 +37,21 @@ import org.slf4j.LoggerFactory;
 /**
  * The default {@link org.apache.directory.api.ldap.codec.api.LdapApiService} implementation.
  * It loads the Controls and ExtendedOperations as defined in the following system parameters :
- * <li>Controls :
  * <ul>
- * <li>apacheds.controls</li> ok
- * <li>default.controls</li>
+ *   <li>Controls :
+ *     <ul>
+ *       <li>apacheds.controls</li>
+ *       <li>default.controls</li>
+ *     </ul>
+ *   </li>
+ *   <li>ExtendedOperations :
+ *     <ul>
+ *       <li>apacheds.extendedOperations</li>
+ *       <li>default.extendedOperation.responses</li>
+ *       <li>extra.extendedOperations</li>
+ *     </ul>
+ *   </li>
  * </ul>
- * </li>
- * <li>ExtendedOperations
- * <ul>
- * <li>apacheds.extendedOperations</li> ok
- * <li>default.extendedOperation.responses</li>
- * <li>extra.extendedOperations</ul>
- * </ul>
- * </li>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -73,9 +75,8 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
 
 
     /**
-     * Creates a new instance of StandaloneLdapCodecService. Optionally checks for
-     * system property {@link #PLUGIN_DIRECTORY_PROPERTY}. 
-     * <br /><br />
+     * Creates a new instance of StandaloneLdapCodecService.
+     * <br><br>
      * The following pom configuration is intended for use by unit test running 
      * tools like Maven's surefire:
      * <pre>
@@ -136,6 +137,8 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      *     &lt;/plugins&gt;
      *   &lt;/build&gt;
      * </pre>
+     * 
+     * @throws Exception If we had an issue initializing the LDAP service
      */
     public StandaloneLdapApiService() throws Exception
     {
@@ -143,6 +146,13 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
     }
 
 
+    /**
+     * Creates a new instance of StandaloneLdapApiService.
+     *
+     * @param controls The list of controls to store
+     * @param extendedOperations The list of extended operations to store
+     * @throws Exception If we had an issue with one of the two lists
+     */
     public StandaloneLdapApiService( List<String> controls, List<String> extendedOperations ) throws Exception
     {
         CodecFactoryUtil.loadStockControls( getControlFactories(), this );
