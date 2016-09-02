@@ -184,14 +184,13 @@ options    {
  * name       = name-component *("," name-component)
  *
  * RFC 1779, Section 2.3
- * <name> ::= <name-component> ( <spaced-separator> )
- *        | <name-component> <spaced-separator> <name>
- * <spaced-separator> ::= <optional-space>
- *             <separator>
- *             <optional-space>
- * <separator> ::=  "," | ";"
- * <optional-space> ::= ( <CR> ) *( " " )
- *
+ * &lt;name&gt; ::= &lt;name-component&gt; ( &lt;spaced-separator&gt; )
+ *        | &lt;name-component&gt; &lt;spaced-separator&gt; &lt;name&gt;
+ * &lt;spaced-separator&gt; ::= &lt;optional-space&gt;
+ *             &lt;separator&gt;
+ *             &lt;optional-space&gt;
+ * &lt;separator&gt; ::=  "," | ";"
+ * &lt;optional-space&gt; ::= ( &lt;CR&gt; ) *( " " )
  */
 distinguishedName [SchemaManager schemaManager, Dn dn]
     {
@@ -246,13 +245,13 @@ distinguishedName [SchemaManager schemaManager, Dn dn]
  * name       = name-component *("," name-component)
  *
  * RFC 1779, Section 2.3
- * <name> ::= <name-component> ( <spaced-separator> )
- *        | <name-component> <spaced-separator> <name>
- * <spaced-separator> ::= <optional-space>
- *             <separator>
- *             <optional-space>
- * <separator> ::=  "," | ";"
- * <optional-space> ::= ( <CR> ) *( " " )
+ * &lt;name&gt; ::= &lt;name-component&gt; ( &lt;spaced-separator&gt; )
+ *        | &lt;name-component&gt; &lt;spaced-separator&gt; &lt;name&gt;
+ * &lt;spaced-separator&gt; ::= &lt;optional-space&gt;
+ *             &lt;separator&gt;
+ *             &lt;optional-space&gt;
+ * &lt;separator&gt; ::=  "," | ";"
+ * &lt;optional-space&gt; ::= ( &lt;CR&gt; ) *( " " )
  *
  */
 relativeDistinguishedNames [SchemaManager schemaManager, List<Rdn> rdns] returns [String normNameStr]
@@ -297,9 +296,9 @@ relativeDistinguishedNames [SchemaManager schemaManager, List<Rdn> rdns] returns
  * name-component = attributeTypeAndValue *("+" attributeTypeAndValue)
  *
  * RFC 1779, Section 2.3
- * <name-component> ::= <attribute>
- *     | <attribute> <optional-space> "+"
- *       <optional-space> <name-component>
+ * &lt;name-component&gt; ::= &lt;attribute&gt;
+ *     | &lt;attribute&gt; &lt;optional-space&gt; "+"
+ *       &lt;optional-space&gt; &lt;name-component&gt;
  *
  */
 relativeDistinguishedName [SchemaManager schemaManager, Rdn rdn]
@@ -611,7 +610,7 @@ attributeValue [UpAndNormValue value]
 /**
  * RFC 2253, Section 3
  *              / QUOTATION *( quotechar / pair ) QUOTATION ; only from v2
- * quotechar     = <any character except "\" or QUOTATION >
+ * quotechar     = &lt;any character except "\" or QUOTATION &gt;
  *
  */
 quotestring [UpAndNormValue value] 
@@ -637,16 +636,16 @@ quotestring [UpAndNormValue value]
     ;
 
 
-    /**
-     * RFC 4514 Section 3
-     *
-     * hexstring = SHARP 1*hexpair
-     *
-     * If in <hexstring> form, a BER representation can be obtained from
-     * converting each <hexpair> of the <hexstring> to the octet indicated
-     * by the <hexpair>.
-     *
-     */ 
+/**
+ * RFC 4514 Section 3
+ *
+ * hexstring = SHARP 1*hexpair
+ *
+ * If in <hexstring> form, a BER representation can be obtained from
+ * converting each <hexpair> of the <hexstring> to the octet indicated
+ * by the <hexpair>.
+ *
+ */ 
 hexstring [UpAndNormValue value]
     {
         matchedProduction( "hexstring()" );
@@ -662,17 +661,17 @@ hexstring [UpAndNormValue value]
     ;
 
 
-    /**
-     * RFC 4514 Section 3
-     *
-     * ; The following characters are to be escaped when they appear
-     * ; in the value to be encoded: ESC, one of <escaped>, leading
-     * ; SHARP or SPACE, trailing SPACE, and NULL.
-     * string =   [ ( leadchar / pair ) [ *( stringchar / pair ) ( trailchar / pair ) ] ]
-     * leadchar = LUTF1 | UTFMB
-     * stringchar = SUTF1 / UTFMB
-     * trailchar = TUTF1 / UTFMB
-     */ 
+/**
+ * RFC 4514 Section 3
+ *
+ * ; The following characters are to be escaped when they appear
+ * ; in the value to be encoded: ESC, one of <escaped>, leading
+ * ; SHARP or SPACE, trailing SPACE, and NULL.
+ * string =   [ ( leadchar / pair ) [ *( stringchar / pair ) ( trailchar / pair ) ] ]
+ * leadchar = LUTF1 | UTFMB
+ * stringchar = SUTF1 / UTFMB
+ * trailchar = TUTF1 / UTFMB
+ */ 
 string [UpAndNormValue value]
     {
         matchedProduction( "string()" );
@@ -849,66 +848,6 @@ sutf1 [UpAndNormValue value]
     ;
 
 
-/**
- * RFC 4514, Section 3:
- * TUTF1 = %x01-1F / %x21 / %x23-2A / %x2D-3A /
- *    %x3D / %x3F-5B / %x5D-7F
- *
- * The rule CHAR_REST doesn't contain the following charcters,
- * so we must check them additionally
- *   EQUALS (0x3D)
- *   HYPHEN (0x2D)
- *   UNDERSCORE (0x5F)
- *   DIGIT (0x30-0x39)
- *   ALPHA (0x41-0x5A and 0x61-0x7A)
- *   SHARP (0x23)
- *
-tutf1 [UpAndNormValue value]
-    {
-        matchedProduction( "tutf1()" );
-    }
-    :
-    rest:CHAR_REST
-    { 
-        char c = rest.getText().charAt( 0 );
-        value.upValue.append( c );
-        value.bytes.append( ( byte ) c );
-    }
-    |
-    EQUALS
-    { 
-        value.upValue.append( '=' );
-        value.bytes.append( '=' );
-    }
-    |
-    HYPHEN
-    { 
-        value.upValue.append( '-' );
-        value.bytes.append( '-' );
-    }
-    |
-    UNDERSCORE
-    { 
-        value.upValue.append( '_' );
-        value.bytes.append( '_' );
-    }
-    |
-    digit:DIGIT
-    { 
-        char c = digit.getText().charAt( 0 );
-        value.upValue.append( c );
-        value.bytes.append( ( byte ) c );
-    }
-    |
-    alpha:ALPHA
-    { 
-        char c = alpha.getText().charAt( 0 );
-        value.upValue.append( c );
-        value.bytes.append( ( byte ) c );
-    }
-    ;
-*/
-
 utfmb [UpAndNormValue value]
     {
         matchedProduction( "utfmb()" );
@@ -942,8 +881,8 @@ utfmb [UpAndNormValue value]
  * special    = "," / "=" / "+" / "<" /  ">" / "#" / ";"
  * 
  * RFC 1779, Section 2.3
- * <pair> ::= "\" ( <special> | "\" | '"')
- * <special> ::= "," | "=" | <CR> | "+" | "<" |  ">"
+ * &lt;pair&gt; ::= "\" ( &lt;special&gt; | "\" | '"')
+ * &lt;special&gt; ::= "," | "=" | &lt;CR&gt; | "+" | "&lt;" |  ">"
  *           | "#" | ";"
  * 
  */ 
