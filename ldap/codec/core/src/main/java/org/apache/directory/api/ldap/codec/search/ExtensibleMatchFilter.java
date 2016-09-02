@@ -38,9 +38,6 @@ import org.apache.directory.api.util.Strings;
  */
 public class ExtensibleMatchFilter extends Filter
 {
-    // ~ Instance fields
-    // ----------------------------------------------------------------------------
-
     /** The expected lenth of the Matching Rule Assertion */
     private int expectedMatchingRuleLength;
 
@@ -65,11 +62,11 @@ public class ExtensibleMatchFilter extends Filter
     private int extensibleMatchLength;
 
 
-    // ~ Constructors
-    // -------------------------------------------------------------------------------
     /**
      * Creates a new ExtensibleMatchFilter object. The dnAttributes flag
      * defaults to false.
+     * 
+     * @param tlvId The TLV identifier
      */
     public ExtensibleMatchFilter( int tlvId )
     {
@@ -86,9 +83,6 @@ public class ExtensibleMatchFilter extends Filter
         super();
     }
 
-
-    // ~ Methods
-    // ------------------------------------------------------------------------------------
 
     /**
      * Get the dnAttributes flag
@@ -202,13 +196,18 @@ public class ExtensibleMatchFilter extends Filter
 
     /**
      * Compute the ExtensibleMatchFilter length 
-     * ExtensibleMatchFilter : 
+     * <br>
+     * ExtensibleMatchFilter :
+     * <pre> 
      * 0xA9 L1 
      *   |
-     *  [+--> 0x81 L3 matchingRule] 
-     *  [+--> 0x82 L4 type] 
-     *  [+--> 0x83 L5 matchValue]
-     *  [+--> 0x01 0x01 dnAttributes]
+     *  [+--&gt; 0x81 L3 matchingRule] 
+     *  [+--&gt; 0x82 L4 type] 
+     *  [+--&gt; 0x83 L5 matchValue]
+     *  [+--&gt; 0x01 0x01 dnAttributes]
+     * </pre>
+     * 
+     * @return The encoded length
      */
     public int computeLength()
     {
@@ -241,9 +240,9 @@ public class ExtensibleMatchFilter extends Filter
 
     /**
      * Encode the ExtensibleMatch Filters to a PDU. 
-     * 
+     * <br>
      * ExtensibleMatch filter :
-     * 
+     * <pre>
      * 0xA9 LL 
      *  |     0x81 LL matchingRule
      *  |    / |   0x82 LL Type  
@@ -254,6 +253,7 @@ public class ExtensibleMatchFilter extends Filter
      *  |     0x82 LL type
      *  |     0x83 LL matchValue
      *  +--[0x84 0x01 dnAttributes]
+     * </pre>
      * 
      * @param buffer The buffer where to put the PDU
      * @return The PDU.
@@ -328,7 +328,7 @@ public class ExtensibleMatchFilter extends Filter
     /**
      * Return a String representing an extended filter as of RFC 2254
      * 
-     * @return An Extened Filter String
+     * @return An Extended Filter String
      */
     public String toString()
     {

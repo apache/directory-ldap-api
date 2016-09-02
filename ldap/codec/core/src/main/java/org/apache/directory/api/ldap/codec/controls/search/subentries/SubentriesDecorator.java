@@ -48,6 +48,8 @@ public class SubentriesDecorator extends ControlDecorator<Subentries> implements
 
     /**
      * Default constructor
+     * 
+     * @param codec The LDAP service instance
      */
     public SubentriesDecorator( LdapApiService codec )
     {
@@ -59,6 +61,7 @@ public class SubentriesDecorator extends ControlDecorator<Subentries> implements
      * Creates a Subentries decorating implementation for use with the codec,
      * while decorating the supplied Subentries control.
      *
+     * @param codec The LDAP service instance
      * @param control The Subentries Control to wrap with this decorator.
      */
     public SubentriesDecorator( LdapApiService codec, Subentries control )
@@ -68,7 +71,12 @@ public class SubentriesDecorator extends ControlDecorator<Subentries> implements
 
 
     /**
-     * Compute the SubEntryControl length 0x01 0x01 [0x00|0xFF]
+     * Compute the SubEntryControl length 
+     * <pre>
+     * 0x01 0x01 [0x00|0xFF]
+     * </pre>
+     * 
+     * @return the control length.
      */
     public int computeLength()
     {

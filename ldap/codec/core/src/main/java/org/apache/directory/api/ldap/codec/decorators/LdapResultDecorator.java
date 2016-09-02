@@ -63,6 +63,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     /**
      * Makes a LdapResult encodable.
      *
+     * @param codec The LDAP service instance
      * @param decoratedLdapResult the decorated LdapResult
      */
     public LdapResultDecorator( LdapApiService codec, LdapResult decoratedLdapResult )
@@ -171,19 +172,20 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     //-------------------------------------------------------------------------
     /**
      * Compute the LdapResult length 
-     * 
-     * LdapResult : 
+     * <br>
+     * LdapResult :
+     * <pre> 
      *   0x0A 01 resultCode (0..80)
      *   0x04 L1 matchedDN (L1 = Length(matchedDN)) 
      *   0x04 L2 errorMessage (L2 = Length(errorMessage)) 
      *   [0x83 L3] referrals 
      *     | 
-     *     +--> 0x04 L4 referral 
-     *     +--> 0x04 L5 referral 
-     *     +--> ... 
-     *     +--> 0x04 Li referral 
-     *     +--> ... 
-     *     +--> 0x04 Ln referral 
+     *     +--&gt; 0x04 L4 referral 
+     *     +--&gt; 0x04 L5 referral 
+     *     +--&gt; ... 
+     *     +--&gt; 0x04 Li referral 
+     *     +--&gt; ... 
+     *     +--&gt; 0x04 Ln referral 
      *     
      * L1 = Length(matchedDN) 
      * L2 = Length(errorMessage) 
@@ -192,6 +194,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
      * Length(LdapResult) = Length(0x0x0A) +
      *      Length(0x01) + 1 + Length(0x04) + Length(L1) + L1 + Length(0x04) +
      *      Length(L2) + L2 + Length(0x83) + Length(L3) + L3
+     * </pre>
      */
     public int computeLength()
     {

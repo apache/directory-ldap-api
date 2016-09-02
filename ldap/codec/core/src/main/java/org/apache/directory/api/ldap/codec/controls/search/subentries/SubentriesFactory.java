@@ -42,7 +42,7 @@ public class SubentriesFactory implements ControlFactory<Subentries>
     /**
      * Creates a new instance of SubentriesFactory.
      *
-     * @param codec
+     * @param codec The LDAP service instance
      */
     public SubentriesFactory( LdapApiService codec )
     {

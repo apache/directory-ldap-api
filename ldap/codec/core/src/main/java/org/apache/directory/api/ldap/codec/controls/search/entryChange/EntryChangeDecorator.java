@@ -64,6 +64,8 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
     /**
      * Creates a new instance of EntryChangeDecoder wrapping a newly created
      * EntryChange Control object.
+     * 
+     * @param codec The LDAP service instance
      */
     public EntryChangeDecorator( LdapApiService codec )
     {
@@ -75,6 +77,7 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
      * Creates a new instance of EntryChangeDecorator wrapping the supplied
      * EntryChange Control.
      *
+     * @param codec The LDAP service instance
      * @param control The EntryChange Control to be decorated.
      */
     public EntryChangeDecorator( LdapApiService codec, EntryChange control )
@@ -97,11 +100,15 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
     /**
      * Compute the EntryChangeControl length 
      * 
+     * <pre>
      * 0x30 L1 
      *   | 
-     *   +--> 0x0A 0x0(1-4) [1|2|4|8] (changeType) 
-     *  [+--> 0x04 L2 previousDN] 
-     *  [+--> 0x02 0x0(1-4) [0..2^63-1] (changeNumber)]
+     *   +--&gt; 0x0A 0x0(1-4) [1|2|4|8] (changeType) 
+     *  [+--&gt; 0x04 L2 previousDN] 
+     *  [+--&gt; 0x02 0x0(1-4) [0..2^63-1] (changeNumber)]
+     *  </pre>
+     *  
+     * @return the control length.
      */
     public int computeLength()
     {

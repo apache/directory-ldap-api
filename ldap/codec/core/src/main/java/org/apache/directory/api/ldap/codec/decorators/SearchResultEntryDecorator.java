@@ -75,6 +75,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
     /**
      * Makes a SearchResultEntry encodable.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated SearchResultEntry
      */
     public SearchResultEntryDecorator( LdapApiService codec, SearchResultEntry decoratedMessage )
@@ -93,6 +94,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
      * Create a new attribute
      * 
      * @param type The attribute's type
+     * @throws LdapException If the value is invalid
      */
     public void addAttribute( String type ) throws LdapException
     {
@@ -106,6 +108,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
      * Create a new attribute
      * 
      * @param type The attribute's type
+     * @throws LdapException If the value is invalid
      */
     public void addAttribute( byte[] type ) throws LdapException
     {
@@ -119,6 +122,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
      * Add a new value to the current attribute
      * 
      * @param value The added value
+     * @throws LdapException If the value is invalid
      */
     public void addAttributeValue( Object value ) throws LdapException
     {
@@ -179,42 +183,42 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
 
     /**
      * Compute the SearchResultEntry length
-     * 
+     * <br>
      * SearchResultEntry :
      * <pre>
      * 0x64 L1
      *  |
-     *  +--> 0x04 L2 objectName
-     *  +--> 0x30 L3 (attributes)
+     *  +--&gt; 0x04 L2 objectName
+     *  +--&gt; 0x30 L3 (attributes)
      *        |
-     *        +--> 0x30 L4-1 (partial attributes list)
+     *        +--&gt; 0x30 L4-1 (partial attributes list)
      *        |     |
-     *        |     +--> 0x04 L5-1 type
-     *        |     +--> 0x31 L6-1 (values)
+     *        |     +--&gt; 0x04 L5-1 type
+     *        |     +--&gt; 0x31 L6-1 (values)
      *        |           |
-     *        |           +--> 0x04 L7-1-1 value
-     *        |           +--> ...
-     *        |           +--> 0x04 L7-1-n value
+     *        |           +--&gt; 0x04 L7-1-1 value
+     *        |           +--&gt; ...
+     *        |           +--&gt; 0x04 L7-1-n value
      *        |
-     *        +--> 0x30 L4-2 (partial attributes list)
+     *        +--&gt; 0x30 L4-2 (partial attributes list)
      *        |     |
-     *        |     +--> 0x04 L5-2 type
-     *        |     +--> 0x31 L6-2 (values)
+     *        |     +--&gt; 0x04 L5-2 type
+     *        |     +--&gt; 0x31 L6-2 (values)
      *        |           |
-     *        |           +--> 0x04 L7-2-1 value
-     *        |           +--> ...
-     *        |           +--> 0x04 L7-2-n value
+     *        |           +--&gt; 0x04 L7-2-1 value
+     *        |           +--&gt; ...
+     *        |           +--&gt; 0x04 L7-2-n value
      *        |
-     *        +--> ...
+     *        +--&gt; ...
      *        |
-     *        +--> 0x30 L4-m (partial attributes list)
+     *        +--&gt; 0x30 L4-m (partial attributes list)
      *              |
-     *              +--> 0x04 L5-m type
-     *              +--> 0x31 L6-m (values)
+     *              +--&gt; 0x04 L5-m type
+     *              +--&gt; 0x31 L6-m (values)
      *                    |
-     *                    +--> 0x04 L7-m-1 value
-     *                    +--> ...
-     *                    +--> 0x04 L7-m-n value
+     *                    +--&gt; 0x04 L7-m-1 value
+     *                    +--&gt; ...
+     *                    +--&gt; 0x04 L7-m-n value
      * </pre>
      */
     public int computeLength()
@@ -301,7 +305,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
 
     /**
      * Encode the SearchResultEntry message to a PDU.
-     * 
+     * <br>
      * SearchResultEntry :
      * <pre>
      * 0x64 LL
@@ -321,8 +325,8 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
      *         ...
      *         0x04 LL attributeValue
      * </pre>
+     * 
      * @param buffer The buffer where to put the PDU
-     * @param searchResultEntryDecorator the SearchResultEntry decorator
      * @return The PDU.
      */
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException

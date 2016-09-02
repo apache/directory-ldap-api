@@ -74,7 +74,7 @@ public class SortResponseDecorator extends ControlDecorator<SortResponse> implem
 
 
     /**
-     * 
+     * @return the control length.
      */
     @Override
     public int computeLength()

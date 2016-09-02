@@ -40,6 +40,7 @@ public abstract class ResponseDecorator<M extends ResultResponse> extends Messag
     /**
      * Makes a AddRequest encodable.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated AddRequest
      */
     public ResponseDecorator( LdapApiService codec, M decoratedMessage )

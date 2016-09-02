@@ -46,6 +46,7 @@ public class ModifyDnResponseDecorator extends ResponseDecorator<ModifyDnRespons
     /**
      * Makes a ModifyDnResponse encodable.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated ModifyDnResponse
      */
     public ModifyDnResponseDecorator( LdapApiService codec, ModifyDnResponse decoratedMessage )
@@ -59,12 +60,12 @@ public class ModifyDnResponseDecorator extends ResponseDecorator<ModifyDnRespons
     //-------------------------------------------------------------------------
     /**
      * Compute the ModifyDNResponse length 
-     * 
+     * <br>
      * ModifyDNResponse : 
      * <pre>
      * 0x6D L1 
      *   | 
-     *   +--> LdapResult 
+     *   +--&gt; LdapResult 
      *   
      * L1 = Length(LdapResult) 
      * Length(ModifyDNResponse) = Length(0x6D) + Length(L1) + L1

@@ -43,9 +43,6 @@ import org.apache.directory.api.util.Strings;
  */
 public class AttributeValueAssertion
 {
-    // ~ Instance fields
-    // ----------------------------------------------------------------------------
-
     /** The attribute description */
     private String attributeDesc;
 
@@ -54,9 +51,9 @@ public class AttributeValueAssertion
 
 
     /**
-     *
      * Helper method to render an object which can be a String or a byte[]
      *
+     * @param object the Object to render
      * @return A string representing the object
      */
     public static String dumpObject( Object object )
@@ -90,9 +87,6 @@ public class AttributeValueAssertion
         }
     }
 
-
-    // ~ Methods
-    // ------------------------------------------------------------------------------------
 
     /**
      * Get the assertion value

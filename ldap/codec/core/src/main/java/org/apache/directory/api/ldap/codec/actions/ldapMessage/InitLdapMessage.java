@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 /**
  * The action used to initialize an LdapMessage
  * <pre>
- * LDAPMessage --> SEQUENCE { ...
+ * LDAPMessage --&gt; SEQUENCE { ...
  *
  * We have a LDAPMessage, and the tag must be 0x30.
  *

@@ -38,6 +38,7 @@ public abstract class SingleReplyRequestDecorator<M extends SingleReplyRequest>
     /**
      * Makes Request a MessageDecorator.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated message
      */
     public SingleReplyRequestDecorator( LdapApiService codec, M decoratedMessage )
@@ -55,18 +56,27 @@ public abstract class SingleReplyRequestDecorator<M extends SingleReplyRequest>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void abandon()
     {
         ( ( AbandonableRequest ) getDecorated() ).abandon();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isAbandoned()
     {
         return ( ( AbandonableRequest ) getDecorated() ).isAbandoned();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public AbandonableRequest addAbandonListener( AbandonListener listener )
     {
         ( ( AbandonableRequest ) getDecorated() ).addAbandonListener( listener );

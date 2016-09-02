@@ -49,6 +49,7 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
     /**
      * Makes a DeleteRequest a MessageDecorator.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated DeleteRequest
      */
     public DeleteRequestDecorator( LdapApiService codec, DeleteRequest decoratedMessage )
@@ -124,12 +125,14 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
     //-------------------------------------------------------------------------
     /**
      * Compute the DelRequest length
-     * 
+     * <br>
      * DelRequest :
+     * <pre>
      * 0x4A L1 entry
      * 
      * L1 = Length(entry)
      * Length(DelRequest) = Length(0x4A) + Length(L1) + L1
+     * </pre>
      */
     public int computeLength()
     {
@@ -143,9 +146,11 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
 
     /**
      * Encode the DelRequest message to a PDU.
-     * 
+     * <br>
      * DelRequest :
+     * <pre>
      * 0x4A LL entry
+     * </pre>
      * 
      * @param buffer The buffer where to put the PDU
      */

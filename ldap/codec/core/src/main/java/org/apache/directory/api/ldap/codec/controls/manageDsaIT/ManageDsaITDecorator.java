@@ -40,6 +40,9 @@ public class ManageDsaITDecorator extends ControlDecorator<ManageDsaIT> implemen
 
     /**
      * Default constructor
+     * 
+     * @param codec The LDAP service instance
+     * @param control The ManageDsaIT to decorate
      */
     public ManageDsaITDecorator( LdapApiService codec, ManageDsaIT control )
     {
@@ -48,7 +51,7 @@ public class ManageDsaITDecorator extends ControlDecorator<ManageDsaIT> implemen
 
 
     /**
-     * Returns 0 every time.
+     * @return 0 every time.
      */
     public int computeLength()
     {

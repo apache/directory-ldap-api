@@ -69,7 +69,9 @@ public class LdapDecoder
      * decode one complete message.
      *
      * @param in The input stream to read and decode PDU bytes from
+     * @param container The LdapMessageContainer containing the message to decode
      * @return return The decoded message
+     * @throws DecoderException If the decoding failed
      */
     public Message decode( InputStream in, LdapMessageContainer<MessageDecorator<? extends Message>> container )
         throws DecoderException

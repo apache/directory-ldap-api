@@ -55,6 +55,8 @@ public class PagedResultsDecorator extends ControlDecorator<PagedResults> implem
     /**
      * Creates a new instance of PagedResultsDecorator with a newly created decorated
      * PagedResults Control.
+     * 
+     * @param codec The LDAP service instance
      */
     public PagedResultsDecorator( LdapApiService codec )
     {
@@ -66,6 +68,7 @@ public class PagedResultsDecorator extends ControlDecorator<PagedResults> implem
      * Creates a new instance of PagedResultsDecorator using the supplied PagedResults
      * Control to be decorated.
      *
+     * @param codec The LDAP service instance
      * @param  pagedResults The PagedResults Control to be decorated.
      */
     public PagedResultsDecorator( LdapApiService codec, PagedResults pagedResults )
@@ -83,9 +86,11 @@ public class PagedResultsDecorator extends ControlDecorator<PagedResults> implem
      * 
      * 0x30 L1 
      *   | 
-     *   +--> 0x02 0x0(1-4) [0..2^63-1] (size) 
-     *   +--> 0x04 L2 (cookie)
-     * </pre> 
+     *   +--&gt; 0x02 0x0(1-4) [0..2^63-1] (size) 
+     *   +--&gt; 0x04 L2 (cookie)
+     * </pre>
+     *  
+     * @return the control length.
      */
     public int computeLength()
     {

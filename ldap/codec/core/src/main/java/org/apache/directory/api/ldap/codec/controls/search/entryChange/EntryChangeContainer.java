@@ -40,6 +40,8 @@ public class EntryChangeContainer extends AbstractContainer
     /**
      * Creates a new EntryChangeContainer object. We will store one
      * grammar, it's enough ...
+     * 
+     * @param codec The LDAP service instance
      */
     public EntryChangeContainer( LdapApiService codec )
     {
@@ -54,6 +56,7 @@ public class EntryChangeContainer extends AbstractContainer
      * Creates a container with decorator, optionally decorating the supplied
      * Control if it is not a decorator implementation.
      *
+     * @param codec The LDAP service instance
      * @param control The EntryChange ControlDecorator, or a Control to be
      * wrapped by a new decorator.
      */

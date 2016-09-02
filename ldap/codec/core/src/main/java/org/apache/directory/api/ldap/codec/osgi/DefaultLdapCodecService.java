@@ -429,7 +429,6 @@ public class DefaultLdapCodecService implements LdapApiService
 
     /**
      * {@inheritDoc}
-     * @throws DecoderException 
      */
     @SuppressWarnings("unchecked")
     public <E extends ExtendedResponse> E newExtendedResponse( String responseName, int messageId,

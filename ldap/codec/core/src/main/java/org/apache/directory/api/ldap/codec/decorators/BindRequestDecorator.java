@@ -64,6 +64,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * Makes a BindRequest a MessageDecorator.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated BindRequests.
      */
     public BindRequestDecorator( LdapApiService codec, BindRequest decoratedMessage )
@@ -268,14 +269,14 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     //-------------------------------------------------------------------------
     /**
      * Compute the BindRequest length
-     * 
+     * <br>
      * BindRequest :
      * <pre>
      * 0x60 L1
      *   |
-     *   +--> 0x02 0x01 (1..127) version
-     *   +--> 0x04 L2 name
-     *   +--> authentication
+     *   +--&gt; 0x02 0x01 (1..127) version
+     *   +--&gt; 0x04 L2 name
+     *   +--&gt; authentication
      * 
      * L2 = Length(name)
      * L3/4 = Length(authentication)
@@ -351,7 +352,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
 
     /**
      * Encode the BindRequest message to a PDU.
-     * 
+     * <br>
      * BindRequest :
      * <pre>
      * 0x60 LL

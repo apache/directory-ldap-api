@@ -29,7 +29,7 @@ import org.apache.directory.api.ldap.model.message.Control;
  * then registered with the codec and used by the codec to encode and decode
  * those controls.
  *
- * @TODO must review this interface - too many methods - implementors should not
+ * TODO must review this interface - too many methods - implementors should not
  * have to implement so many methods.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>

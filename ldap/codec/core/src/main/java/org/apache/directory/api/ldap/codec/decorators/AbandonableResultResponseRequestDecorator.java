@@ -36,6 +36,7 @@ public abstract class AbandonableResultResponseRequestDecorator<M extends Abando
     /**
      * Makes Request a MessageDecorator.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated message
      */
     public AbandonableResultResponseRequestDecorator( LdapApiService codec, M decoratedMessage )

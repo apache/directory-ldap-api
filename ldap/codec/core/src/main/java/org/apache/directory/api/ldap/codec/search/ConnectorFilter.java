@@ -37,9 +37,6 @@ import org.apache.directory.api.i18n.I18n;
  */
 public abstract class ConnectorFilter extends Filter
 {
-    // ~ Instance fields
-    // ----------------------------------------------------------------------------
-
     /** The set of filters used by And/Or filters */
     protected List<Filter> filterSet;
 
@@ -47,11 +44,10 @@ public abstract class ConnectorFilter extends Filter
     protected int filtersLength;
 
 
-    // ~ Constructors
-    // -------------------------------------------------------------------------------
-
     /**
      * The constructor. We wont initialize the ArrayList as it may not be used.
+     * 
+     * @param tlvId The TLV identifier
      */
     public ConnectorFilter( int tlvId )
     {
@@ -68,13 +64,11 @@ public abstract class ConnectorFilter extends Filter
     }
 
 
-    // ~ Methods
-    // ------------------------------------------------------------------------------------
-
     /**
      * Add a new Filter to the list.
      * 
      * @param filter The filter to add
+     * @throws DecoderException If the decoding failed
      */
     public void addFilter( Filter filter ) throws DecoderException
     {
@@ -102,6 +96,8 @@ public abstract class ConnectorFilter extends Filter
     /**
      * Compute the ConnectorFilter length Length(ConnectorFilter) =
      * sum(filterSet.computeLength())
+     * 
+     * @return The encoded length
      */
     public int computeLength()
     {
@@ -121,12 +117,14 @@ public abstract class ConnectorFilter extends Filter
 
     /**
      * Encode the ConnectorFilter message to a PDU. 
-     * 
+     * <pre>
      * ConnectorFilter :
      * filter.encode() ... filter.encode()
+     * </pre>
      * 
      * @param buffer The buffer where to put the PDU
      * @return The PDU.
+     * @throws EncoderException If the encoding failed
      */
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {

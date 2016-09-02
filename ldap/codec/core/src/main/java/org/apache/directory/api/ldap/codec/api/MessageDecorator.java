@@ -72,7 +72,7 @@ import org.apache.directory.api.ldap.model.message.UnbindRequest;
 /**
  * A decorator for the generic LDAP Message
  *
- * @TODO make this class abstract, after finishing switch and all types and make default blow an EncoderException
+ * TODO make this class abstract, after finishing switch and all types and make default blow an EncoderException
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class MessageDecorator<E extends Message> implements Message, Decorator<E>, Asn1Object
@@ -211,6 +211,9 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
 
     /**
      * Makes a Message an Decorator object.
+     * 
+     * @param codec The LDAP Service instance to use
+     * @param decoratedMessage The message to decorate
      */
     protected MessageDecorator( LdapApiService codec, E decoratedMessage )
     {

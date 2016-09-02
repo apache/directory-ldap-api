@@ -37,12 +37,11 @@ import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
  */
 public class OrFilter extends ConnectorFilter
 {
-    // ~ Constructors
-    // -------------------------------------------------------------------------------
-
     /**
      * The constructor. We wont initialize the ArrayList as they may not be
      * used.
+     * 
+     * @param tlvId The TLV identifier
      */
     public OrFilter( int tlvId )
     {
@@ -60,9 +59,6 @@ public class OrFilter extends ConnectorFilter
     }
 
 
-    // ~ Methods
-    // ------------------------------------------------------------------------------------
-
     /**
      * Get the OrFilter
      * 
@@ -76,12 +72,16 @@ public class OrFilter extends ConnectorFilter
 
     /**
      * Compute the OrFilter length 
-     * 
-     * OrFilter : 
+     * <br>
+     * OrFilter :
+     * <pre> 
      * 0xA1 L1 super.computeLength()
      * 
      * Length(OrFilter) = Length(0xA1) + Length(super.computeLength()) +
      *      super.computeLength()
+     * </pre>
+     * 
+     * @return The encoded length
      */
     public int computeLength()
     {
@@ -93,8 +93,11 @@ public class OrFilter extends ConnectorFilter
 
     /**
      * Encode the OrFilter message to a PDU. 
-     * OrFilter : 
+     * <br>
+     * OrFilter :
+     * <pre> 
      *   0xA1 LL filter.encode()
+     * </pre>
      * 
      * @param buffer The buffer where to put the PDU
      * @return The PDU.

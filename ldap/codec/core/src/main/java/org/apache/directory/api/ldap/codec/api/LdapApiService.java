@@ -32,7 +32,7 @@ import org.apache.mina.filter.codec.ProtocolCodecFactory;
 
 
 /**
- * The service interface for the LDAP codec.
+ * The service interface for the LDAP codec. It gathers all the supported controls and extended operations.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -58,6 +58,7 @@ public interface LdapApiService
     /**
      * Checks if a control has been registered.
      * 
+     * @param oid The Control OID we are looking for
      * @return The OID of the control to check for registration
      */
     boolean isControlRegistered( String oid );
@@ -67,6 +68,7 @@ public interface LdapApiService
      * Registers an {@link ControlFactory} with this service.
      * 
      * @param factory The control factory
+     * @return The registred control factory
      */
     ControlFactory<?> registerControl( ControlFactory<?> factory );
 
@@ -75,6 +77,7 @@ public interface LdapApiService
      * Unregisters an {@link ControlFactory} with this service.
      * 
      * @param oid The oid of the control the factory is associated with.
+     * @return The unregistred control factory
      */
     ControlFactory<?> unregisterControl( String oid );
 
@@ -178,30 +181,30 @@ public interface LdapApiService
      * Creates a JNDI {@link javax.naming.ldap.ExtendedResponse} from the model 
      * {@link ExtendedResponse}.
      * 
-     * @param modelResponse
-     * @return
-     * @throws EncoderException
+     * @param modelResponse The extended response to convert
+     * @return A JNDI extended response
+     * @throws EncoderException If the conversion failed
      */
     javax.naming.ldap.ExtendedResponse toJndi( ExtendedResponse modelResponse ) throws EncoderException;
 
 
     /**
-     * Creates a model ExtendedResponse from the JNDI ExtendedResponse.
+     * Creates a model ExtendedResponse from the JNDI ExtendedRequest.
      *
-     * @param jndiResponse The JNDI ExtendedResponse 
-     * @return The model ExtendedResponse
-     * @throws DecoderException if the response value cannot be decoded.
+     * @param jndiRequest The JNDI ExtendedRequest 
+     * @return The model ExtendedRequest
+     * @throws DecoderException if the request value cannot be decoded.
      */
     ExtendedRequest fromJndi( javax.naming.ldap.ExtendedRequest jndiRequest ) throws DecoderException;
 
 
     /**
-     * Creates a JNDI {@link javax.naming.ldap.ExtendedResponse} from the model 
-     * {@link ExtendedResponse}.
+     * Creates a JNDI {@link javax.naming.ldap.ExtendedRequest} from the model 
+     * {@link ExtendedRequest}.
      * 
-     * @param modelResponse
-     * @return
-     * @throws EncoderException
+     * @param modelRequest The extended request to convert
+     * @return A JNDI extended request
+     * @throws EncoderException If the conversion failed
      */
     javax.naming.ldap.ExtendedRequest toJndi( ExtendedRequest modelRequest ) throws EncoderException;
 
@@ -231,7 +234,6 @@ public interface LdapApiService
     /**
      * Creates a new MessageContainer.
      *
-     * @TODO akarasulu - Wondering why is this not an LdapMessageContainer?
      * @return The newly created LDAP MessageContainer instance.
      */
     Asn1Container newMessageContainer();
@@ -244,6 +246,7 @@ public interface LdapApiService
      * @param responseName The extendedRespose OID
      * @param messageId The original message ID
      * @param serializedResponse The serialized response payload
+     * @param <E> The extended response type
      * @return The extendedResponse instance
      * 
      * @throws DecoderException If the payload is incorrect
@@ -262,8 +265,20 @@ public interface LdapApiService
     ExtendedRequest newExtendedRequest( String oid, byte[] value );
 
 
+    /**
+     * Decorates an extended request message, ie encapsulate it into a class that do the encoding/decoding
+     *
+     * @param decoratedMessage The extended request to decorate
+     * @return The decorated extended request
+     */
     ExtendedRequestDecorator<?> decorate( ExtendedRequest decoratedMessage );
 
 
+    /**
+     * Decorates an extended response message, ie encapsulate it into a class that do the encoding/decoding
+     *
+     * @param decoratedMessage The extended response to decorate
+     * @return The decorated extended response
+     */
     ExtendedResponseDecorator<?> decorate( ExtendedResponse decoratedMessage );
 }

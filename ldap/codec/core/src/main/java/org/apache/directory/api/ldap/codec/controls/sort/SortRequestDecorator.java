@@ -83,7 +83,7 @@ public class SortRequestDecorator extends ControlDecorator<SortRequest> implemen
 
 
     /**
-     * 
+     * @return the control length.
      */
     @Override
     public int computeLength()

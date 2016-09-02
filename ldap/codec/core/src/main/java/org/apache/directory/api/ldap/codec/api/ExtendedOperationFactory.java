@@ -66,6 +66,7 @@ public interface ExtendedOperationFactory
      * 
      * @param encodedValue The encoded value for the ExtendedResponse instance.
      * @return The new ExtendedResponse.
+     * @throws DecoderException If we can't decode the response
      */
     ExtendedResponse newResponse( byte[] encodedValue ) throws DecoderException;
 

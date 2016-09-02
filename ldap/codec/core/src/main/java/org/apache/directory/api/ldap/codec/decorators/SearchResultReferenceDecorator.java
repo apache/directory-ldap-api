@@ -50,6 +50,7 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
     /**
      * Makes a SearchResultReference encodable.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated SearchResultReference
      */
     public SearchResultReferenceDecorator( LdapApiService codec, SearchResultReference decoratedMessage )
@@ -86,22 +87,24 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
 
     /**
      * Compute the SearchResultReference length
-     * 
+     * <br>
      * SearchResultReference :
      * <pre>
      * 0x73 L1
      *  |
-     *  +--> 0x04 L2 reference
-     *  +--> 0x04 L3 reference
-     *  +--> ...
-     *  +--> 0x04 Li reference
-     *  +--> ...
-     *  +--> 0x04 Ln reference
+     *  +--&gt; 0x04 L2 reference
+     *  +--&gt; 0x04 L3 reference
+     *  +--&gt; ...
+     *  +--&gt; 0x04 Li reference
+     *  +--&gt; ...
+     *  +--&gt; 0x04 Ln reference
      * 
      * L1 = n*Length(0x04) + sum(Length(Li)) + sum(Length(reference[i]))
      * 
      * Length(SearchResultReference) = Length(0x73 + Length(L1) + L1
      * </pre>
+     * 
+     * @return The encoded length
      */
     public int computeLength()
     {
@@ -125,15 +128,15 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
 
     /**
      * Encode the SearchResultReference message to a PDU.
-     * 
+     * <br>
      * SearchResultReference :
      * <pre>
      * 0x73 LL
      *   0x04 LL reference
      *   [0x04 LL reference]*
      * </pre>
+     * 
      * @param buffer The buffer where to put the PDU
-     * @param searchResultReferenceDecorator The SearchResultReference decorator
      * @return The PDU.
      */
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException

@@ -46,6 +46,7 @@ public class DeleteResponseDecorator extends ResponseDecorator<DeleteResponse>
     /**
      * Makes a DeleteResponse a MessageDecorator.
      *
+     * @param codec The LDAP service instance
      * @param decoratedMessage the decorated DeleteResponse
      */
     public DeleteResponseDecorator( LdapApiService codec, DeleteResponse decoratedMessage )
@@ -60,16 +61,17 @@ public class DeleteResponseDecorator extends ResponseDecorator<DeleteResponse>
 
     /**
      * Compute the DelResponse length 
-     * 
+     * <br>
      * DelResponse :
-     * 
+     * <pre>
      * 0x6B L1
      *  |
-     *  +--> LdapResult
+     *  +--&gt; LdapResult
      * 
      * L1 = Length(LdapResult)
      * 
      * Length(DelResponse) = Length(0x6B) + Length(L1) + L1
+     * </pre>
      */
     public int computeLength()
     {
