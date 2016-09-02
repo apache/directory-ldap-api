@@ -35,8 +35,8 @@ public class CancelResponseDecorator extends ExtendedResponseDecorator<CancelRes
     /**
      * Creates a new instance of CancelResponseDecorator.
      *
-     * @param codec
-     * @param decoratedMessage
+     * @param codec The LDAP service instance
+     * @param decoratedMessage The decorated message
      */
     public CancelResponseDecorator( LdapApiService codec, CancelResponse decoratedMessage )
     {

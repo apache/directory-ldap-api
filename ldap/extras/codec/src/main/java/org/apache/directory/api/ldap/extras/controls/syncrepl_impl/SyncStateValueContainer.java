@@ -50,6 +50,8 @@ public class SyncStateValueContainer extends AbstractContainer
     /**
      * Creates a new SyncStateValueControlContainer object. We will store one grammar,
      * it's enough ...
+     * 
+     * @param control The control to store
      */
     public SyncStateValueContainer( SyncStateValue control )
     {

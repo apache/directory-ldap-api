@@ -36,8 +36,8 @@ public class StoredProcedureResponseDecorator extends ExtendedResponseDecorator<
     /**
      * Creates a new instance of CancelResponseDecorator.
      *
-     * @param codec
-     * @param decoratedMessage
+     * @param codec The LDAP service instance
+     * @param decoratedMessage The decorated message
      */
     public StoredProcedureResponseDecorator( LdapApiService codec, StoredProcedureResponse decoratedMessage )
     {

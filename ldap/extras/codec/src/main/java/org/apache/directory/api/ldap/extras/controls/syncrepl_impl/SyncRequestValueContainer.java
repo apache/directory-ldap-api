@@ -50,6 +50,8 @@ public class SyncRequestValueContainer extends AbstractContainer
     /**
      * Creates a new SyncRequestValueControlContainer object. We will store one grammar,
      * it's enough ...
+     * 
+     * @param control The control to store
      */
     public SyncRequestValueContainer( SyncRequestValue control )
     {

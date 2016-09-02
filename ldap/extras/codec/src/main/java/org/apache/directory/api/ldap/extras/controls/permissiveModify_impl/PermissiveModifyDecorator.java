@@ -40,6 +40,9 @@ public class PermissiveModifyDecorator extends ControlDecorator<PermissiveModify
 {
     /**
      * Default constructor
+     * 
+     * @param codec The LDAP Service to use
+     * @param control The PermissiveModify control to decorate
      */
     public PermissiveModifyDecorator( LdapApiService codec, PermissiveModify control )
     {

@@ -51,6 +51,13 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
     private int requestLength = 0;
 
 
+    /**
+     * 
+     * Creates a new instance of PasswordModifyResponseDecorator.
+     *
+     * @param codec The LDAP service instance
+     * @param decoratedMessage The decorated message
+     */
     public PasswordModifyResponseDecorator( LdapApiService codec, PasswordModifyResponse decoratedMessage )
     {
         super( codec, decoratedMessage );

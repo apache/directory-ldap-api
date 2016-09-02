@@ -52,6 +52,8 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
 
     /**
      * Creates a new instance of AdDirSyncControlCodec.
+     * 
+     * @param codec The LDAP Service to use
      */
     public AdDirSyncDecorator( LdapApiService codec )
     {
@@ -62,7 +64,7 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
     /**
      * Creates a new instance of AdDirSyncDecorator.
      *
-     * @param codec The LDAP codec
+     * @param codec The LDAP Service to use
      * @param control The control to be decorated
      */
     public AdDirSyncDecorator( LdapApiService codec, AdDirSync control )
@@ -155,11 +157,13 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
 
     /**
      * Compute the AdDirSync length. We use the client side control.
+     * <pre>
      * 0x30 L1
      * |
-     * +--> 0x02 0x0(1-4) nnn  (parentFirst)
-     * +--> 0x02 0x0(1-4) nnn  (maxReturnLength)
-     * +--> 0x04 L2 xkcd!!!...     (cookie)
+     * +--&gt; 0x02 0x0(1-4) nnn  (parentFirst)
+     * +--&gt; 0x02 0x0(1-4) nnn  (maxReturnLength)
+     * +--&gt; 0x04 L2 xkcd!!!...     (cookie)
+     * </pre>
      */
     @Override
     public int computeLength()

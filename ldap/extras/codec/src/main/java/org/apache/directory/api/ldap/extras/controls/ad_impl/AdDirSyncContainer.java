@@ -40,9 +40,9 @@ public class AdDirSyncContainer extends AbstractContainer
 
 
     /**
-     * 
      * Creates a new AdDirSyncControl Container object.
      *
+     * @param codec The LDAP Service to use
      */
     public AdDirSyncContainer( LdapApiService codec )
     {
@@ -55,9 +55,10 @@ public class AdDirSyncContainer extends AbstractContainer
 
 
     /**
-     * 
      * Creates a new AdDirSyncControl object.
      *
+     * @param codec The LDAP Service to use
+     * @param control The AdDirSync control to decorate
      */
     public AdDirSyncContainer( LdapApiService codec, AdDirSync control )
     {

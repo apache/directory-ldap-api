@@ -41,6 +41,7 @@ public class PasswordPolicyFactory implements ControlFactory<PasswordPolicy>
     /**
      * Creates a new instance of PasswordPolicyFactory.
      *
+     * @param codec The LDAP Service to use
      */
     public PasswordPolicyFactory( LdapApiService codec )
     {

@@ -56,6 +56,8 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
 
     /**
      * The constructor for this codec. Dont't forget to set the type.
+     * 
+     * @param codec The LDAP Service to use
      */
     public SyncInfoValueDecorator( LdapApiService codec )
     {
@@ -65,6 +67,9 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
 
     /**
      * The constructor for this codec. Dont't forget to set the type.
+     * 
+     * @param codec The LDAP Service to use
+     * @param control The SyncInfoValue to decorate
      */
     public SyncInfoValueDecorator( LdapApiService codec, SyncInfoValue control )
     {
@@ -74,6 +79,8 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
 
     /**
      * The constructor for this codec.
+     * 
+     * @param codec The LDAP Service to use
      * @param type The kind of syncInfo we will store. Can be newCookie,
      * refreshPresent, refreshDelete or syncIdSet
      */
@@ -205,33 +212,29 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
 
     /**
      * Compute the SyncInfoValue length.
-     *
+     * <br>
      * SyncInfoValue :
-     *
+     * <pre>
      * 0xA0 L1 abcd                   // newCookie
      * 0xA1 L2                        // refreshDelete
      *   |
-     *  [+--> 0x04 L3 abcd]           // cookie
-     *  [+--> 0x01 0x01 (0x00|0xFF)   // refreshDone
+     *  [+--&gt; 0x04 L3 abcd]           // cookie
+     *  [+--&gt; 0x01 0x01 (0x00|0xFF)   // refreshDone
      * 0xA2 L4                        // refreshPresent
      *   |
-     *  [+--> 0x04 L5 abcd]           // cookie
-     *  [+--> 0x01 0x01 (0x00|0xFF)   // refreshDone
+     *  [+--&gt; 0x04 L5 abcd]           // cookie
+     *  [+--&gt; 0x01 0x01 (0x00|0xFF)   // refreshDone
      * 0xA3 L6                        // syncIdSet
      *   |
-     *  [+--> 0x04 L7 abcd]           // cookie
-     *  [+--> 0x01 0x01 (0x00|0xFF)   // refreshDeletes
-     *   +--> 0x31 L8                 // SET OF syncUUIDs
+     *  [+--&gt; 0x04 L7 abcd]           // cookie
+     *  [+--&gt; 0x01 0x01 (0x00|0xFF)   // refreshDeletes
+     *   +--&gt; 0x31 L8                 // SET OF syncUUIDs
      *          |
-     *         [+--> 0x04 L9 abcd]    // syncUUID    public static final int AND_FILTER_TAG = 0xA0;
-
-    public static final int OR_FILTER_TAG = 0xA1;
-
-    public static final int NOT_FILTER_TAG = 0xA2;
-
-    public static final int BIND_REQUEST_SASL_TAG = 0xA3;
-
-     */
+     *         [+--&gt; 0x04 L9 abcd]    // syncUUID
+     * </pre>
+     * 
+     * @return The computed length
+     **/
     @Override
     public int computeLength()
     {

@@ -119,14 +119,17 @@ public class SyncStateValueDecorator extends ControlDecorator<SyncStateValue> im
 
     /**
      * Compute the SyncStateValue length.
-     *
+     * <br>
      * SyncStateValue :
+     * <pre>
      * 0x30 L1
      *  |
-     *  +--> 0x0A 0x01 [0x00|0x01|0x02|0x03] (type)
-     * [+--> 0x04 L2 abcd...                 (entryUUID)
-     * [+--> 0x04 L3 abcd...                 (cookie)
-     *
+     *  +--&gt; 0x0A 0x01 [0x00|0x01|0x02|0x03] (type)
+     * [+--&gt; 0x04 L2 abcd...                 (entryUUID)
+     * [+--&gt; 0x04 L3 abcd...                 (cookie)
+     * </pre>
+     * 
+     * @return The computed length
      */
     @Override
     public int computeLength()

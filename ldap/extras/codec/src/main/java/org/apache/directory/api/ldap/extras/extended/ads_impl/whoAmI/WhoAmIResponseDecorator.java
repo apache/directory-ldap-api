@@ -49,6 +49,12 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
     private WhoAmIResponse whoAmIResponse;
 
 
+    /**
+     * Creates a new instance of WhoAmIResponseDecorator.
+     *
+     * @param codec The LDAP service instance
+     * @param decoratedMessage The decorated message
+     */
     public WhoAmIResponseDecorator( LdapApiService codec, WhoAmIResponse decoratedMessage )
     {
         super( codec, decoratedMessage );

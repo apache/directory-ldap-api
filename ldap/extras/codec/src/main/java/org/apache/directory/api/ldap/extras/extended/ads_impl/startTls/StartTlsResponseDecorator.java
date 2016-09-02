@@ -33,6 +33,12 @@ import org.apache.directory.api.util.Strings;
  */
 public class StartTlsResponseDecorator extends ExtendedResponseDecorator<StartTlsResponse> implements StartTlsResponse
 {
+    /**
+     * Creates a new instance of StartTlsResponseDecorator.
+     *
+     * @param codec The LDAP service instance
+     * @param decoratedMessage The decorated message
+     */
     public StartTlsResponseDecorator( LdapApiService codec, StartTlsResponse decoratedMessage )
     {
         super( codec, decoratedMessage );

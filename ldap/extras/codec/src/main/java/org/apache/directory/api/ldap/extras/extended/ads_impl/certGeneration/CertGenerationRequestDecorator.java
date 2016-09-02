@@ -210,10 +210,10 @@ public class CertGenerationRequestDecorator extends ExtendedRequestDecorator<Cer
      * <pre>
      * 0x30 L1 
      *   | 
-     *   +--> 0x04 LL target DN
-     *   +--> 0x04 LL issuer DN
-     *   +--> 0x04 LL subject DN
-     *   +--> 0x04 LL key algorithm
+     *   +--&gt; 0x04 LL target DN
+     *   +--&gt; 0x04 LL issuer DN
+     *   +--&gt; 0x04 LL subject DN
+     *   +--&gt; 0x04 LL key algorithm
      * </pre>
      */
     /* no qualifier */int computeLengthInternal()

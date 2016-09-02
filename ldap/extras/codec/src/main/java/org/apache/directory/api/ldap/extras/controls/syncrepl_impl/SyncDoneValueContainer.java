@@ -40,9 +40,9 @@ public class SyncDoneValueContainer extends AbstractContainer
 
 
     /**
-     * 
      * Creates a new SyncDoneValueControlContainer object.
      *
+     * @param codec The LDAP Service to use
      */
     public SyncDoneValueContainer( LdapApiService codec )
     {
@@ -55,9 +55,10 @@ public class SyncDoneValueContainer extends AbstractContainer
 
 
     /**
-     * 
      * Creates a new SyncDoneValueControlContainer object.
      *
+     * @param codec The LDAP Service to use
+     * @param control The control to decorate
      */
     public SyncDoneValueContainer( LdapApiService codec, SyncDoneValue control )
     {

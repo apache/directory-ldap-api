@@ -64,8 +64,7 @@ public class StoredProcedureContainer extends AbstractContainer
      * Set a StoredProcedure object into the container. It will be completed by the
      * ldapDecoder.
      * 
-     * @param ldapMessage
-     *            The ldapMessage to set.
+     * @param storedProcedure The Stored Procedure to set
      */
     public void setStoredProcedure( StoredProcedureRequestDecorator storedProcedure )
     {
@@ -73,6 +72,9 @@ public class StoredProcedureContainer extends AbstractContainer
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void clean()
     {
         super.clean();

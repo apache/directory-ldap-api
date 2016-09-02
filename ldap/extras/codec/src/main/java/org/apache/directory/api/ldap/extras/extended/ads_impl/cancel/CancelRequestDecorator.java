@@ -109,7 +109,7 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
     /**
      * Sets the extended request's <b>requestValue</b> portion of the PDU.
      *
-     * @param payload byte array of data encapsulating ext. req. parameters
+     * @param requestValue byte array of data encapsulating ext. req. parameters
      */
     @Override
     public void setRequestValue( byte[] requestValue )
@@ -143,10 +143,11 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
 
     /**
      * Compute the Cancel length 
-     * 
+     * <pre>
      * 0x30 L1 
      *   | 
-     *   +--> 0x02 0x0(1-4) [0..2^31-1] 
+     *   +--&gt; 0x02 0x0(1-4) [0..2^31-1]
+     * </pre> 
      */
     /* no qualifier */int computeLengthInternal()
     {

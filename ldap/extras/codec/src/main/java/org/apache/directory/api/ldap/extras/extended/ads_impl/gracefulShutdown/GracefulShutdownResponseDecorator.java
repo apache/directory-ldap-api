@@ -36,8 +36,8 @@ public class GracefulShutdownResponseDecorator extends ExtendedResponseDecorator
     /**
      * Creates a new instance of GracefulShutdownResponseDecorator.
      *
-     * @param codec
-     * @param decoratedMessage
+     * @param codec The LDAP service instance
+     * @param decoratedMessage The decorated message
      */
     public GracefulShutdownResponseDecorator( LdapApiService codec, GracefulShutdownResponse decoratedMessage )
     {

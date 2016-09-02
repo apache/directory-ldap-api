@@ -53,6 +53,8 @@ public class SyncDoneValueDecorator extends ControlDecorator<SyncDoneValue> impl
 
     /**
      * Creates a new instance of SyncDoneValueControlCodec.
+     * 
+     * @param codec The LDAP Service to use
      */
     public SyncDoneValueDecorator( LdapApiService codec )
     {
@@ -74,10 +76,14 @@ public class SyncDoneValueDecorator extends ControlDecorator<SyncDoneValue> impl
 
     /**
      * Compute the syncDoneValue length.
+     * <pre>
      * 0x30 L1
      * |
-     * +--> 0x04 L2 xkcd!!!...     (cookie)
-     * +--> 0x01 0x01 [0x00|0xFF]  (refreshDeletes)
+     * +--&gt; 0x04 L2 xkcd!!!...     (cookie)
+     * +--&gt; 0x01 0x01 [0x00|0xFF]  (refreshDeletes)
+     * </pre>
+     * 
+     * @return The computed length
      */
     @Override
     public int computeLength()
