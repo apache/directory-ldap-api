@@ -167,13 +167,13 @@ options    {
      * name       = name-component *("," name-component)
      *
      * RFC 1779, Section 2.3
-     * <name> ::= <name-component> ( <spaced-separator> )
-     *        | <name-component> <spaced-separator> <name>
-     * <spaced-separator> ::= <optional-space>
-     *             <separator>
-     *             <optional-space>
-     * <separator> ::=  "," | ";"
-     * <optional-space> ::= ( <CR> ) *( " " )
+     * &lt;name&gt; ::= &lt;name-component&gt; ( &lt;spaced-separator&gt; )
+     *        | &lt;name-component&gt; &lt;spaced-separator&gt; &lt;name&gt;
+     * &lt;spaced-separator&gt; ::= &lt;optional-space&gt;
+     *             &lt;separator&gt;
+     *             &lt;optional-space&gt;
+     * &lt;separator&gt; ::=  "," | ";"
+     * &lt;optional-space&gt; ::= ( &lt;CR&gt; ) *( " " )
      *
      */
 distinguishedName [Dn dn]
@@ -229,13 +229,13 @@ distinguishedName [Dn dn]
      * name       = name-component *("," name-component)
      *
      * RFC 1779, Section 2.3
-     * <name> ::= <name-component> ( <spaced-separator> )
-     *        | <name-component> <spaced-separator> <name>
-     * <spaced-separator> ::= <optional-space>
-     *             <separator>
-     *             <optional-space>
-     * <separator> ::=  "," | ";"
-     * <optional-space> ::= ( <CR> ) *( " " )
+     * &lt;name&gt; ::= &lt;name-component&gt; ( &lt;spaced-separator&gt; )
+     *        | &lt;name-component&gt; &lt;spaced-separator&gt; &lt;name&gt;
+     * &lt;spaced-separator&gt; ::= &lt;optional-space&gt;
+     *             &lt;separator&gt;
+     *             &lt;optional-space&gt;
+     * &lt;separator&gt; ::=  "," | ";"
+     * &lt;optional-space&gt; ::= ( &lt;CR&gt; ) *( " " )
      *
      */
 relativeDistinguishedNames [List<Rdn> rdns]
@@ -271,9 +271,9 @@ relativeDistinguishedNames [List<Rdn> rdns]
      * name-component = attributeTypeAndValue *("+" attributeTypeAndValue)
      *
      * RFC 1779, Section 2.3
-     * <name-component> ::= <attribute>
-     *     | <attribute> <optional-space> "+"
-     *       <optional-space> <name-component>
+     * &lt;name-component&gt; ::= &lt;attribute&gt;
+     *     | &lt;attribute&gt; &lt;optional-space&gt; "+"
+     *       &lt;optional-space&gt; &lt;name-component&gt;
      *
      */
 relativeDistinguishedName [Rdn initialRdn] returns [Rdn rdn]
@@ -544,7 +544,7 @@ attributeValue [UpAndNormValue value]
     /**
      * RFC 2253, Section 3
      *              / QUOTATION *( quotechar / pair ) QUOTATION ; only from v2
-     * quotechar     = <any character except "\" or QUOTATION >
+     * quotechar     = &lt;any character except "\" or QUOTATION &gt;
      *
      */
 quotestring [UpAndNormValue value] 
@@ -581,9 +581,9 @@ quotestring [UpAndNormValue value]
      *
      * hexstring = SHARP 1*hexpair
      *
-     * If in <hexstring> form, a BER representation can be obtained from
-     * converting each <hexpair> of the <hexstring> to the octet indicated
-     * by the <hexpair>.
+     * If in &lt;hexstring&gt; form, a BER representation can be obtained from
+     * converting each &lt;hexpair&gt; of the &lt;hexstring&gt; to the octet indicated
+     * by the &lt;hexpair&gt;.
      *
      */ 
 hexstring [UpAndNormValue value]
@@ -604,7 +604,7 @@ hexstring [UpAndNormValue value]
      * RFC 4514 Section 3
      *
      * ; The following characters are to be escaped when they appear
-     * ; in the value to be encoded: ESC, one of <escaped>, leading
+     * ; in the value to be encoded: ESC, one of &lt;escaped&gt;, leading
      * ; SHARP or SPACE, trailing SPACE, and NULL.
      * string =   [ ( leadchar / pair ) [ *( stringchar / pair )
      *    ( trailchar / pair ) ] ]
@@ -771,20 +771,20 @@ utfmb returns [String utfmb]
      * escaped = DQUOTE / PLUS / COMMA / SEMI / LANGLE / RANGLE
      * hexpair = HEX HEX
      *
-     * If in <string> form, a LDAP string representation asserted value can
-     * be obtained by replacing (left to right, non-recursively) each <pair>
-     * appearing in the <string> as follows:
-     *   replace <ESC><ESC> with <ESC>;
-     *   replace <ESC><special> with <special>;
-     *   replace <ESC><hexpair> with the octet indicated by the <hexpair>.
+     * If in &lt;string&gt; form, a LDAP string representation asserted value can
+     * be obtained by replacing (left to right, non-recursively) each &lt;pair&gt;
+     * appearing in the &lt;string&gt; as follows:
+     *   replace &lt;ESC&gt;&lt;ESC&gt; with &lt;ESC&gt;;
+     *   replace &lt;ESC&gt;&lt;special&gt; with &lt;special&gt;;
+     *   replace &lt;ESC&gt;&lt;hexpair&gt; with the octet indicated by the &lt;hexpair&gt;.
      * 
      * RFC 2253, Section 3
      * pair       = "\" ( special / "\" / QUOTATION / hexpair )
-     * special    = "," / "=" / "+" / "<" /  ">" / "#" / ";"
+     * special    = "," / "=" / "+" / "&lt;" /  "&gt;" / "#" / ";"
      * 
      * RFC 1779, Section 2.3
-     * <pair> ::= "\" ( <special> | "\" | '"')
-     * <special> ::= "," | "=" | <CR> | "+" | "<" |  ">"
+     * &lt;pair&gt; ::= "\" ( &lt;special&gt; | "\" | '"')
+     * &lt;special&gt; ::= "," | "=" | &lt;CR&gt; | "+" | "&lt;" |  "&gt;"
      *           | "#" | ";"
      * 
      */ 
