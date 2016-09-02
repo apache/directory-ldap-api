@@ -50,7 +50,7 @@ public interface PasswordModifyRequest extends ExtendedRequest
     /**
      * Set the user identity
      * 
-     * @param the userIdentity to set
+     * @param userIdentity The userIdentity to set
      */
     void setUserIdentity( byte[] userIdentity );
 
@@ -64,7 +64,7 @@ public interface PasswordModifyRequest extends ExtendedRequest
     /**
      * Set the old password
      * 
-     * @param the oldPassword to set
+     * @param oldPassword The oldPassword to set
      */
     void setOldPassword( byte[] oldPassword );
 
@@ -78,7 +78,7 @@ public interface PasswordModifyRequest extends ExtendedRequest
     /**
      * Set a new password
      * 
-     * @param the new password to set
+     * @param newPassword The new password to set
      */
     void setNewPassword( byte[] newPassword );
 }

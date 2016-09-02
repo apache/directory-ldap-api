@@ -21,7 +21,7 @@ package org.apache.directory.api.ldap.extras.controls.ppolicy;
 
 
 /**
- * A simple {@link PasswordPolicy} {@link Control} implementation.
+ * A simple {@link PasswordPolicy} Control implementation.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -48,6 +48,8 @@ public class PasswordPolicyImpl implements PasswordPolicy
     /**
      * Creates a new instance of a PasswordPolicy request Control without any
      * response data associated with it.
+     * 
+     * @param hasResponse A flag set to <tt>true</tt> if the control should have a response
      */
     public PasswordPolicyImpl( boolean hasResponse )
     {
@@ -65,6 +67,8 @@ public class PasswordPolicyImpl implements PasswordPolicy
     /**
      * Creates a new instance of PasswordPolicy response Control with response 
      * information packaged into the control.
+     * 
+     * @param response The encapsulated response
      */
     public PasswordPolicyImpl( PasswordPolicyResponse response )
     {
@@ -158,7 +162,7 @@ public class PasswordPolicyImpl implements PasswordPolicy
         StringBuilder sb = new StringBuilder();
 
         sb.append( "    PasswordPolicy[" );
-        sb.append( "criticality:" ).append( criticality ).append( "]" );
+        sb.append( "criticality:" ).append( criticality ).append( "] " );
 
         if ( response != null )
         {

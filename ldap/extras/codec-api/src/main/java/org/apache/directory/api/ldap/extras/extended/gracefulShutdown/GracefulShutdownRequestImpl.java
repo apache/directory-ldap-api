@@ -54,8 +54,6 @@ public class GracefulShutdownRequestImpl extends AbstractExtendedRequest impleme
 
     /**
      * Instantiates a new graceful shutdown request.
-     *
-     * @param messageId the message id
      */
     public GracefulShutdownRequestImpl()
     {

@@ -42,7 +42,7 @@ public interface SyncRequestValue extends Control
 
 
     /**
-     * @param syncMode the syncMode to set
+     * @param mode the syncMode to set
      */
     void setMode( SynchronizationModeEnum mode );
 

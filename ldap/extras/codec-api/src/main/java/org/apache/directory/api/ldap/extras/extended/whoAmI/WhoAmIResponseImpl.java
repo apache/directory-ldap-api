@@ -164,6 +164,8 @@ public class WhoAmIResponseImpl extends ExtendedResponseImpl implements WhoAmIRe
 
     /**
      * Set the userId
+     * 
+     * @param userId The User ID
      */
     public void setUserId( String userId )
     {
@@ -182,6 +184,8 @@ public class WhoAmIResponseImpl extends ExtendedResponseImpl implements WhoAmIRe
 
     /**
      * Set the DN
+     * 
+     * @param dn The DN to set
      */
     public void setDn( Dn dn )
     {

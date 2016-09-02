@@ -66,7 +66,7 @@ public interface VirtualListViewRequest extends Control
 
 
     /**
-     * @param beforeCount Set the number of entries to be returned after the target entry
+     * @param afterCount Set the number of entries to be returned after the target entry
      */
     void setAfterCount( int afterCount );
 
@@ -78,7 +78,7 @@ public interface VirtualListViewRequest extends Control
 
 
     /**
-     * @param the position of the target entry
+     * @param offset the position of the target entry
      */
     void setOffset( int offset );
 
