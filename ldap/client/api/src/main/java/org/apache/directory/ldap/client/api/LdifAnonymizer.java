@@ -517,8 +517,8 @@ public class LdifAnonymizer
     /**
      * Anonymize a LDIF 
      * 
-     * @param ldif The ldif content to anonymize
-     * @return an anonymized version of the given ldif
+     * @param ldifFile The ldif file to anonymize
+     * @param writer The Writer to use to write the result
      * @throws LdapException If we got some LDAP related exception
      * @throws IOException If we had some issue during some IO operations
      */
@@ -1111,6 +1111,8 @@ public class LdifAnonymizer
      *
      * @param args Contains the arguments : the file to convert. The anonymized 
      * LDIF will be printed on stdout
+     * @throws IOException If we had an issue opening the file to anonymise ot writing the result
+     * @throws LdapException If we had some issue while processing the LDAP data
      */
     public static void main( String[] args ) throws IOException, LdapException
     {

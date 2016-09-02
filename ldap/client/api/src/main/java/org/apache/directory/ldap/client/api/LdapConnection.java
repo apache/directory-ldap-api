@@ -152,7 +152,6 @@ public interface LdapConnection extends Closeable
      * Bind on a server, using the {@link LdapConnectionConfig} information of this connection.
      *
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
     void bind() throws LdapException;
 
@@ -325,7 +324,6 @@ public interface LdapConnection extends Closeable
      *
      * @param dn The entry's distinguished name, it must be a valid {@link Dn}
      * @param modifications The list of modifications to be applied
-     * @return the modify operation's response
      * @throws LdapException in case of modify operation failure or timeout happens
      */
     void modify( String dn, Modification... modifications ) throws LdapException;
@@ -336,7 +334,6 @@ public interface LdapConnection extends Closeable
      *
      * @param entry the entry with the attributes to be modified
      * @param modOp the operation to be applied on all the attributes of the above entry
-     * @return the modify operation's response
      * @throws LdapException in case of modify operation failure or timeout happens
      */
     void modify( Entry entry, ModificationOperation modOp ) throws LdapException;
@@ -395,7 +392,6 @@ public interface LdapConnection extends Closeable
      * @param entryDn the target Dn
      * @param newRdn new Rdn for the target Dn
      * @param deleteOldRdn flag to indicate whether to delete the old Rdn
-     * @return modifyDn operation's response
      * @throws LdapException if some error occurred
      */
     void rename( Dn entryDn, Rdn newRdn, boolean deleteOldRdn ) throws LdapException;
@@ -537,7 +533,7 @@ public interface LdapConnection extends Closeable
      *
      * @param dn the target entry's distinguished name, it must be a valid {@link Dn}
      * @param attributeName the attribute's name
-     * @param value a Value<?> value with which the target entry's attribute value to be compared with
+     * @param value a Value&lt;?&gt; value with which the target entry's attribute value to be compared with
      * @return <code>true</code> if the value matches, <code>false</code> otherwise
      * @throws LdapException if some error occurred
      */
@@ -576,7 +572,7 @@ public interface LdapConnection extends Closeable
      *
      * @param dn the target entry's distinguished name
      * @param attributeName the attribute's name
-     * @param value a Value<?> value with which the target entry's attribute value to be compared with
+     * @param value a Value&lt;?&gt; value with which the target entry's attribute value to be compared with
      * @return <code>true</code> if the value matches, <code>false</code> otherwise
      * @throws LdapException if some error occurred
      */
@@ -793,7 +789,7 @@ public interface LdapConnection extends Closeable
 
     /**
      * Loads all the default schemas that are bundled with the API, in a relaxed mode.<br><br>
-     * <b>Note:</b> This method enables <b>all</b> schemas prior to loading.<br/>
+     * <b>Note:</b> This method enables <b>all</b> schemas prior to loading.<br>
      * The relaxed mode will allow inconsistencies in the schema.
      * 
      * @throws LdapException in case of problems while loading the schema
@@ -833,12 +829,15 @@ public interface LdapConnection extends Closeable
 
     /**
      * Sets the object responsible for the detection of binary attributes.
+     * 
+     * @param binaryAttributeDetecter The Binary Attribute Detector to use
      */
     void setBinaryAttributeDetector( BinaryAttributeDetector binaryAttributeDetecter );
 
 
     /**
      * sets a SchemaManager to be used by this connection
+     * @param schemaManager The SchemaManager to set
      */
     void setSchemaManager( SchemaManager schemaManager );
 }

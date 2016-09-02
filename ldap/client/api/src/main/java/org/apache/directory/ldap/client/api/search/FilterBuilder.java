@@ -61,7 +61,7 @@ public class FilterBuilder
 
 
     /**
-     * Returns a new FilterBuilder that will <code>&</code> together all of the 
+     * Returns a new FilterBuilder that will <code>&amp;</code> together all of the 
      * supplied filters.  For example:
      * 
      * <pre>
@@ -69,7 +69,7 @@ public class FilterBuilder
      * </pre>
      * would result in the string:
      * <pre>
-     * (&(givenName=kermit)(sn=the frog))
+     * (&amp;(givenName=kermit)(sn=the frog))
      * </pre>
      * 
      * Which would match all entries with a given name of <code>kermit</code>
@@ -126,7 +126,7 @@ public class FilterBuilder
      * </pre>
      * would result in the string:
      * <pre>
-     * (cn>=Kermit The Frog)
+     * (cn&gt;=Kermit The Frog)
      * </pre>
      * 
      * Which would match entries with the common name 
@@ -203,7 +203,7 @@ public class FilterBuilder
      * </pre>
      * would result in the string:
      * <pre>
-     * (sn>=n)
+     * (sn&gt;=n)
      * </pre>
      * 
      * which would match results whose surname starts with the second half of
@@ -228,7 +228,7 @@ public class FilterBuilder
      * </pre>
      * would result in the string:
      * <pre>
-     * (sn<=mzzzzzz)
+     * (sn&lt;=mzzzzzz)
      * </pre>
      * 
      * which would match results whose surname starts with the first half of
@@ -321,7 +321,7 @@ public class FilterBuilder
 
 
     /**
-     * Returns a new FilterBuilder that will construct a SubString filter, with an <em>initial</em part, 
+     * Returns a new FilterBuilder that will construct a SubString filter, with an <em>initial</em> part, 
      * and zero to N <em>any</em> part, but no <em>final</em> part.  
      * 
      * For instance:
@@ -338,7 +338,7 @@ public class FilterBuilder
      * having a <code>Soft</code> and <code>Foun</code> strings in the middle, like 
      * 'The Apache Software Foundation'.
      *
-     * @param builders The filters to or together
+     * @param attribute The attribute to use in the filter
      * @param parts The sub elements to use in the filter
      * @return A new FilterBuilder
      */
@@ -354,13 +354,13 @@ public class FilterBuilder
 
 
     /**
-     * Returns a new FilterBuilder that will construct a SubString filter, with an <em>initial</em part, 
+     * Returns a new FilterBuilder that will construct a SubString filter, with an <em>initial</em> part, 
      * and zero to N <em>any</em> parts, but no <em>final</em> part.  
      * 
      * For instance:
      * 
      * <pre>
-     * startswith( "sn", "Th", "Soft", "Foun" )).toString()
+     * startswith( "sn", "Th", "Soft", "Foun" ).toString()
      * </pre>
      * would result in the string:
      * <pre>
@@ -371,7 +371,7 @@ public class FilterBuilder
      * having a <code>Soft</code> and <code>Foun</code> strings in the middle, like 
      * 'The Apache Software Foundation'.
      *
-     * @param builders The filters to or together
+     * @param attribute The attribute to use in the filter
      * @param parts The sub elements to use in the filter
      * @return A new FilterBuilder
      */
@@ -404,7 +404,7 @@ public class FilterBuilder
      * and <code>Foun</code> strings in the middle, like 
      * 'The Apache Software Foundation'.
      *
-     * @param builders The filters to or together
+     * @param attribute The attribute to use in the filter
      * @param parts The sub elements to use in the filter
      * @return A new FilterBuilder
      */
@@ -447,7 +447,7 @@ public class FilterBuilder
      * (sn=The*ion)
      * </pre>
      * 
-     * @param builders The filters to or together
+     * @param attribute The attribute to use in the filter
      * @param parts The sub elements to use in the filter
      * @return A new FilterBuilder
      */

@@ -318,6 +318,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * Get the largest timeout from the search time limit and the connection
      * timeout.
+     * 
+     * @param connectionTimoutInMS Connection timeout
+     * @param searchTimeLimitInSeconds Search timeout
+     * @return The largest timeout
      */
     public long getTimeout( long connectionTimoutInMS, int searchTimeLimitInSeconds )
     {
@@ -1310,7 +1314,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * @param authcid The Authentication identity
      * @param credentials The password. It can't be null
      * @return The BindResponse LdapResponse
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      */
     public BindResponse bindSaslPlain( String authcid, String credentials ) throws LdapException
     {
@@ -1325,7 +1329,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * @param authcid The Authentication identity
      * @param credentials The password. It can't be null
      * @return The BindResponse LdapResponse
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      */
     public BindResponse bindSaslPlain( String authzid, String authcid, String credentials ) throws LdapException
     {
@@ -2805,7 +2809,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * deletes the entry with the given Dn, and all its children
      *
      * @param dn the target entry's Dn
-     * @return operation's response
      * @throws LdapException If the Dn is not valid or if the deletion failed
      */
     public void deleteTree( Dn dn ) throws LdapException
@@ -2835,7 +2838,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * deletes the entry with the given Dn, and all its children
      *
      * @param dn the target entry's Dn as a String
-     * @return operation's response
      * @throws LdapException If the Dn is not valid or if the deletion failed
      */
     public void deleteTree( String dn ) throws LdapException
@@ -3538,7 +3540,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * loads schema using the specified schema loader
      *
      * @param loader the {@link SchemaLoader} to be used to load schema
-     * @throws LdapException
+     * @throws LdapException If the schema loading failed
      */
     public void loadSchema( SchemaLoader loader ) throws LdapException
     {
@@ -3622,6 +3624,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     /**
      * @see #addSchema(File)
+     * @param schemaFileName The schema file name to add
+     * @throws LdapException If the schema addition failed
      */
     public void addSchema( String schemaFileName ) throws LdapException
     {
@@ -3851,7 +3855,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * upon receiving a response with successful result. Note that we will use
      * the default LDAP connection.
      *
-     * @throws LdapException
+     * @throws LdapException If the StartTLS operation failed
      */
     public void startTls() throws LdapException
     {

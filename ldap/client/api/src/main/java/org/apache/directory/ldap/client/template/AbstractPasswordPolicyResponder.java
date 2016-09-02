@@ -57,8 +57,8 @@ public abstract class AbstractPasswordPolicyResponder implements PasswordPolicyR
      * <code>PasswordException</code> to be thrown when 
      * {@link #process(PasswordPolicyOperation)} fails.
      * 
-     * @param e
-     * @return
+     * @param e The exception to set
+     * @return The created PasswordException
      */
     protected PasswordException exception( LdapException e )
     {
@@ -70,10 +70,10 @@ public abstract class AbstractPasswordPolicyResponder implements PasswordPolicyR
      * Returns an exception to be thrown in the case of a non SUCCESS 
      * <code>resultCode</code>.
      * 
-     * @param resultResponse
-     * @param passwordPolicy
-     * @param resultCode
-     * @return
+     * @param resultResponse The result response
+     * @param passwordPolicy The password policy in use
+     * @param resultCode The result
+     * @return The created PasswordException
      */
     protected PasswordException fail( ResultResponse resultResponse, 
             PasswordPolicy passwordPolicy, ResultCodeEnum resultCode )
@@ -127,8 +127,8 @@ public abstract class AbstractPasswordPolicyResponder implements PasswordPolicyR
      * Returns a <code>PasswordWarning</code>, or <code>null</code> if no 
      * warnings were present in the supplied <code>passwordPolicy</code>.
      * 
-     * @param passwordPolicy
-     * @return
+     * @param passwordPolicy The PasswordPolicy in use
+     * @return The created PasswordWarning
      */
     protected PasswordWarning success( PasswordPolicy passwordPolicy ) 
     {

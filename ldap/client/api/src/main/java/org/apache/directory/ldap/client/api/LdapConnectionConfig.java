@@ -326,7 +326,7 @@ public class LdapConnectionConfig
     /**
      * Sets the timeout.
      *
-     * @return the timeout
+     * @param timeout the timeout to set
      */
     public void setTimeout( long timeout )
     {

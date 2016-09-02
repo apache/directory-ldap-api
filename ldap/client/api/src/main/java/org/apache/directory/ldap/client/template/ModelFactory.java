@@ -42,8 +42,8 @@ public interface ModelFactory
     /**
      * Returns a new <code>AddRequest</code> for the <code>entry</code>.
      *
-     * @param entry
-     * @return
+     * @param entry The Entry to add
+     * @return The resulting AddRequest
      */
     AddRequest newAddRequest( Entry entry );
 
@@ -53,8 +53,8 @@ public interface ModelFactory
      * a null value.  This is useful for clearing out an Attribute with a
      * ModifyRequest, replace function.
      *
-     * @param name
-     * @return
+     * @param name The attribute's name
+     * @return The resulting Attribute
      */
     Attribute newAttribute( String name );
 
@@ -63,9 +63,9 @@ public interface ModelFactory
      * Returns a new Attribute for with the provided <code>name</code> and
      * <code>value(s)</code>.
      *
-     * @param name
-     * @param values
-     * @return
+     * @param name The attribute's name
+     * @param values The attribute's values
+     * @return The resulting Attribute
      */
     Attribute newAttribute( String name, byte[]... values );
 
@@ -74,9 +74,9 @@ public interface ModelFactory
      * Returns a new Attribute for with the provided <code>name</code> and
      * <code>value(s)</code>.
      *
-     * @param name
-     * @param values
-     * @return
+     * @param name The attribute's name
+     * @param values The attribute's values
+     * @return The resulting Attribute
      */
     Attribute newAttribute( String name, String... values );
 
@@ -85,9 +85,9 @@ public interface ModelFactory
      * Returns a new Attribute for with the provided <code>name</code> and
      * <code>value(s)</code>.
      *
-     * @param name
-     * @param values
-     * @return
+     * @param name The attribute's name
+     * @param values The attribute's values
+     * @return The resulting Attribute
      */
     Attribute newAttribute( String name, Value<?>... values );
 
@@ -95,8 +95,8 @@ public interface ModelFactory
     /**
      * Returns a new <code>DeleteRequest</code> for the <code>dn</code>.
      *
-     * @param dn
-     * @return
+     * @param dn The Dn for the Entry to delete
+     * @return The resulting DeleteRequest
      */
     DeleteRequest newDeleteRequest( Dn dn );
 
@@ -104,8 +104,8 @@ public interface ModelFactory
     /**
      * Returns a <code>Dn</code> that represents <code>dn</code>.
      *
-     * @param dn
-     * @return
+     * @param dn The Entry's Dn
+     * @return The resulting Dn
      */
     Dn newDn( String dn );
 
@@ -113,8 +113,8 @@ public interface ModelFactory
     /**
      * Returns a <code>Entry</code> with the specified <code>dn</code>.
      *
-     * @param dn
-     * @return
+     * @param dn The Entry's Dn
+     * @return The resulting Entry
      */
     Entry newEntry( String dn );
 
@@ -122,8 +122,8 @@ public interface ModelFactory
     /**
      * Returns a <code>Entry</code> with the specified <code>dn</code>.
      *
-     * @param dn
-     * @return
+     * @param dn The Entry's Dn
+     * @return The resulting Entry
      */
     Entry newEntry( Dn dn );
 
@@ -131,8 +131,8 @@ public interface ModelFactory
     /**
      * Returns a new <code>ModifyRequest</code> for the <code>dn</code>.
      *
-     * @param dn 
-     * @return
+     * @param dn  The Dn of the entry to modify
+     * @return The resulting ModifyRequest
      */
     ModifyRequest newModifyRequest( String dn );
 
@@ -140,8 +140,8 @@ public interface ModelFactory
     /**
      * Returns a new <code>ModifyRequest</code> for the <code>dn</code>.
      *
-     * @param dn
-     * @return
+     * @param dn The DN of the entry to modify
+     * @return The resulting ModifyRequest
      */
     ModifyRequest newModifyRequest( Dn dn );
 
@@ -151,10 +151,10 @@ public interface ModelFactory
      * <code>scope</code> matching <code>filter</code> returning 
      * all normal attributes for each matching entry.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @return
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @return The resulting SearchRequest
      */
     SearchRequest newSearchRequest( String baseDn, FilterBuilder filter,
         SearchScope scope );
@@ -165,10 +165,10 @@ public interface ModelFactory
      * <code>scope</code> matching <code>filter</code> returning 
      * all normal attributes for each matching entry.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @return
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @return The resulting SearchRequest
      */
     SearchRequest newSearchRequest( String baseDn, String filter,
         SearchScope scope );
@@ -179,10 +179,10 @@ public interface ModelFactory
      * <code>scope</code> matching <code>filter</code> returning 
      * all normal attributes for each matching entry.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @return
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @return The resulting SearchRequest
      */
     SearchRequest newSearchRequest( Dn baseDn, String filter,
         SearchScope scope );
@@ -193,10 +193,10 @@ public interface ModelFactory
      * <code>scope</code> matching <code>filter</code> returning 
      * all normal attributes for each matching entry.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @return
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @return The resulting SearchRequest
      */
     SearchRequest newSearchRequest( Dn baseDn, FilterBuilder filter,
         SearchScope scope );
@@ -207,11 +207,11 @@ public interface ModelFactory
      * <code>scope</code> matching <code>filter</code> returning 
      * <code>attributes</code> for each matching entry.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param attributes
-     * @return
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @param attributes The list of AttributeType to return
+     * @return The resulting SearchRequest
      */
     SearchRequest newSearchRequest( String baseDn, String filter,
         SearchScope scope, String... attributes );
@@ -222,11 +222,11 @@ public interface ModelFactory
      * <code>scope</code> matching <code>filter</code> returning 
      * <code>attributes</code> for each matching entry.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param attributes
-     * @return
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @param attributes The list of AttributeType to return
+     * @return The resulting SearchRequest
      */
     SearchRequest newSearchRequest( String baseDn, FilterBuilder filter,
         SearchScope scope, String... attributes );
@@ -237,11 +237,11 @@ public interface ModelFactory
      * <code>scope</code> matching <code>filter</code> returning 
      * <code>attributes</code> for each matching entry.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param attributes
-     * @return
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @param attributes The list of AttributeType to return
+     * @return The resulting SearchRequest
      */
     SearchRequest newSearchRequest( Dn baseDn, String filter,
         SearchScope scope, String... attributes );
@@ -252,11 +252,11 @@ public interface ModelFactory
      * <code>scope</code> matching <code>filter</code> returning 
      * <code>attributes</code> for each matching entry.
      *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param attributes
-     * @return
+     * @param baseDn The base DN from which to start the search
+     * @param filter The filter selecting the entries
+     * @param scope The scope to look from
+     * @param attributes The list of AttributeType to return
+     * @return The resulting SearchRequest
      */
     SearchRequest newSearchRequest( Dn baseDn, FilterBuilder filter,
         SearchScope scope, String... attributes );
