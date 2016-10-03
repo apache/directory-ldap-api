@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * A Decorator for PasswordModifyResponse extended request.
+ * A Decorator for PasswordModifyResponse extended response.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -47,8 +47,8 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
 
     private PasswordModifyResponse passwordModifyResponse;
 
-    /** stores the length of the request*/
-    private int requestLength = 0;
+    /** stores the length of the response*/
+    private int responseLength = 0;
 
 
     /**
@@ -156,15 +156,15 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
      */
     /* no qualifier */int computeLengthInternal()
     {
-        requestLength = 0;
+        responseLength = 0;
 
         if ( passwordModifyResponse.getGenPassword() != null )
         {
             int len = passwordModifyResponse.getGenPassword().length;
-            requestLength = 1 + TLV.getNbBytes( len ) + len;
+            responseLength = 1 + TLV.getNbBytes( len ) + len;
         }
 
-        return 1 + TLV.getNbBytes( requestLength ) + requestLength;
+        return 1 + TLV.getNbBytes( responseLength ) + responseLength;
     }
 
 
@@ -180,7 +180,7 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
         ByteBuffer bb = ByteBuffer.allocate( computeLengthInternal() );
 
         bb.put( UniversalTag.SEQUENCE.getValue() );
-        bb.put( TLV.getBytes( requestLength ) );
+        bb.put( TLV.getBytes( responseLength ) );
 
         if ( passwordModifyResponse.getGenPassword() != null )
         {
