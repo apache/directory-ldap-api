@@ -131,34 +131,47 @@ public class PasswordModifyFactory implements ExtendedOperationFactory
         Asn1Decoder decoder = new Asn1Decoder();
 
         byte[] value = response.getResponseValue();
-        ByteBuffer buffer = ByteBuffer.wrap( value );
-
         PasswordModifyResponseContainer container = new PasswordModifyResponseContainer();
+        
         PasswordModifyResponse pwdModifyResponse = null;
-
-        try
+        
+        if ( value != null )
         {
-            decoder.decode( buffer, container );
+            ByteBuffer buffer = ByteBuffer.wrap( value );
+    
+            try
+            {
+                decoder.decode( buffer, container );
+                pwdModifyResponse = container.getPwdModifyResponse();
 
-            pwdModifyResponse = container.getPwdModifyResponse();
-
+                // Now, update the created response with what we got from the extendedResponse
+                pwdModifyResponse.getLdapResult().setResultCode( response.getLdapResult().getResultCode() );
+                pwdModifyResponse.getLdapResult().setDiagnosticMessage( response.getLdapResult().getDiagnosticMessage() );
+                pwdModifyResponse.getLdapResult().setMatchedDn( response.getLdapResult().getMatchedDn() );
+                pwdModifyResponse.getLdapResult().setReferral( response.getLdapResult().getReferral() );
+            }
+            catch ( DecoderException de )
+            {
+                StringWriter sw = new StringWriter();
+                de.printStackTrace( new PrintWriter( sw ) );
+                String stackTrace = sw.toString();
+    
+                // Error while decoding the value. 
+                pwdModifyResponse = new PasswordModifyResponseImpl(
+                    decoratedResponse.getMessageId(),
+                    ResultCodeEnum.OPERATIONS_ERROR,
+                    stackTrace );
+            }
+        }
+        else
+        {
+            pwdModifyResponse = new PasswordModifyResponseImpl();
+    
             // Now, update the created response with what we got from the extendedResponse
             pwdModifyResponse.getLdapResult().setResultCode( response.getLdapResult().getResultCode() );
             pwdModifyResponse.getLdapResult().setDiagnosticMessage( response.getLdapResult().getDiagnosticMessage() );
             pwdModifyResponse.getLdapResult().setMatchedDn( response.getLdapResult().getMatchedDn() );
             pwdModifyResponse.getLdapResult().setReferral( response.getLdapResult().getReferral() );
-        }
-        catch ( DecoderException de )
-        {
-            StringWriter sw = new StringWriter();
-            de.printStackTrace( new PrintWriter( sw ) );
-            String stackTrace = sw.toString();
-
-            // Error while decoding the value. 
-            pwdModifyResponse = new PasswordModifyResponseImpl(
-                decoratedResponse.getMessageId(),
-                ResultCodeEnum.OPERATIONS_ERROR,
-                stackTrace );
         }
 
         PasswordModifyResponseDecorator decorated = new PasswordModifyResponseDecorator( codec, pwdModifyResponse );
