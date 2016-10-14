@@ -24,13 +24,8 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
 import org.apache.directory.api.ldap.codec.decorators.BindRequestDecorator;
-import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.BindRequest;
-import org.apache.directory.api.ldap.model.message.BindResponseImpl;
-import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,24 +78,7 @@ public class StoreName extends GrammarAction<LdapMessageContainer<BindRequestDec
         {
             byte[] nameBytes = tlv.getValue().getData();
             String nameStr = Strings.utf8ToString( nameBytes );
-
-            try
-            {
-                // Testing the name as a DN
-                new Dn( nameStr );
-                bindRequestMessage.setName( nameStr );
-            }
-            catch ( LdapInvalidDnException ine )
-            {
-                String msg = "Incorrect DN given : " + nameStr + " (" + Strings.dumpBytes( nameBytes )
-                    + ") is invalid";
-                LOG.error( "{} : {}", msg, ine.getMessage() );
-
-                BindResponseImpl response = new BindResponseImpl( bindRequestMessage.getMessageId() );
-
-                throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_DN_SYNTAX,
-                    Dn.EMPTY_DN, ine );
-            }
+            bindRequestMessage.setName( nameStr );
         }
 
         if ( IS_DEBUG )

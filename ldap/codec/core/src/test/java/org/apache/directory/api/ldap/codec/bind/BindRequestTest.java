@@ -24,6 +24,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.junit.Assert.assertNull;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -349,6 +350,10 @@ public class BindRequestTest extends AbstractCodecServiceTest
         try
         {
             ldapDecoder.decode( stream, container );
+            
+            BindRequest bindRequest = ((BindRequestDecorator)container.getMessage());
+            assertNull( bindRequest.getDn() );
+            assertEquals( "uid:akarasulu,dc=example,dc=com", bindRequest.getName() );
         }
         catch ( DecoderException de )
         {
@@ -359,8 +364,6 @@ public class BindRequestTest extends AbstractCodecServiceTest
                 .getResultCode() );
             return;
         }
-
-        fail( "We should not reach this point" );
     }
 
 
