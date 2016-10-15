@@ -59,11 +59,8 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
 
 // TODO: all the SASL bind methods are not declared in this interface, but implemented in LdapNetworkConnection. Is that intended?
 // TODO: why does connect() return a boolean? What is the difference between false and an Exception?
-// TODO: think about usage of abbrevisions (Dn/Rdn) vs. spelled out (relative distinguished name) in javadoc
 // TODO: describe better which type of LdapException are thrown in which case?
-// TODO: remove the "we" language in javadoc
 // TODO: does method getCodecService() belong into the interface? It returns a LdapApiService, should it be renamed?
-// TODO: does method doesFutureExistFor() belong into the interface? Move to LdapAsyncConnection?
 
 /**
  * The root interface for all the LDAP connection implementations. All operations defined in this interface are blocking (synchronous).
@@ -73,17 +70,17 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
 public interface LdapConnection extends Closeable
 {
     /**
-     * Check if we are connected.
+     * Check if the connection is established
      *
-     * @return <code>true</code> if we are connected.
+     * @return <code>true</code> if the connection is established
      */
     boolean isConnected();
 
 
     /**
-     * Check if we are authenticated.
+     * Check if the connection is authenticated.
      *
-     * @return <code>true</code> if we are connected.
+     * @return <code>true</code> if the connection is authenticated
      */
     boolean isAuthenticated();
 
@@ -168,8 +165,8 @@ public interface LdapConnection extends Closeable
     /**
      * Unauthenticated authentication bind on a server.
      *
-     * @param name The name we use to authenticate the user. It must be a
-     * valid {@link Dn}
+     * @param name The name used to authenticate the user. It must be a
+     * valid distinguished name.
      * @throws LdapException if some error occurred
      */
     void bind( String name ) throws LdapException;
@@ -178,8 +175,8 @@ public interface LdapConnection extends Closeable
     /**
      * Simple bind on a server.
      *
-     * @param name The name we use to authenticate the user. It must be a
-     * valid {@link Dn}
+     * @param name The name used to authenticate the user. It must be a
+     * valid distinguished name.
      * @param credentials The password, it can't be <code>null</code>
      * @throws LdapException if some error occurred
      */
@@ -212,7 +209,7 @@ public interface LdapConnection extends Closeable
     /**
      * Unauthenticated authentication bind on a server.
      *
-     * @param name The name we use to authenticate the user.
+     * @param name The name used to authenticate the user.
      * @throws LdapException if some error occurred
      */
     void bind( Dn name ) throws LdapException;
@@ -221,7 +218,7 @@ public interface LdapConnection extends Closeable
     /**
      * Simple bind on a server.
      *
-     * @param name The name we use to authenticate the user.
+     * @param name The name used to authenticate the user.
      * @param credentials The password, it can't be null
      * @throws LdapException if some error occurred
      */
@@ -323,7 +320,7 @@ public interface LdapConnection extends Closeable
     /**
      * Applies all the modifications to the entry specified by its distinguished name.
      *
-     * @param dn The entry's distinguished name, it must be a valid {@link Dn}
+     * @param dn The entry's distinguished name, it must be a valid distinguished name.
      * @param modifications The list of modifications to be applied
      * @throws LdapException in case of modify operation failure or timeout happens
      */
@@ -352,10 +349,11 @@ public interface LdapConnection extends Closeable
 
 
     /**
-     * Renames the given entryDn with new Rdn and deletes the old Rdn.
+     * Renames the given entryDn with new relative distinguished name and deletes the 
+     * old relative distinguished name.
      *
-     * @param entryDn the target Dn
-     * @param newRdn new Rdn for the target Dn
+     * @param entryDn the target distinguished name.
+     * @param newRdn new relative distinguished name for the target distinguished name.
      * @throws LdapException if some error occurred
      * @see #rename(String, String, boolean)
      */
@@ -363,10 +361,11 @@ public interface LdapConnection extends Closeable
 
 
     /**
-     * Renames the given entryDn with new Rdn and deletes the old Rdn.
+     * Renames the given entryDn with new relative distinguished name and deletes the 
+     * old relative distinguished name.
      *
-     * @param entryDn the target Dn
-     * @param newRdn new Rdn for the target Dn
+     * @param entryDn the target distinguished name.
+     * @param newRdn new relative distinguished name for the target distinguished name.
      * @throws LdapException if some error occurred
      * @see #rename(Dn, Rdn, boolean)
      */
@@ -374,12 +373,12 @@ public interface LdapConnection extends Closeable
 
 
     /**
-     * Renames the given entryDn with new Rdn and deletes the old Rdn if
-     * deleteOldRdn is set to true.
+     * Renames the given entryDn with new relative distinguished name and deletes the 
+     * old relative distinguished name if deleteOldRdn is set to true.
      *
-     * @param entryDn the target Dn
-     * @param newRdn new Rdn for the target Dn
-     * @param deleteOldRdn flag to indicate whether to delete the old Rdn
+     * @param entryDn the target distinguished name.
+     * @param newRdn new relative distinguished name for the target distinguished name.
+     * @param deleteOldRdn flag to indicate whether to delete the old relative distinguished name
      * @throws LdapException if some error occurred
      * @see #rename(Dn, Rdn, boolean)
      */
@@ -387,22 +386,22 @@ public interface LdapConnection extends Closeable
 
 
     /**
-     * Renames the given entryDn with new Rdn and deletes the old Rdn if
-     * deleteOldRdn is set to true.
+     * Renames the given entryDn with new relative distinguished name and deletes the 
+     * old relative distinguished name if deleteOldRdn is set to true.
      *
-     * @param entryDn the target Dn
-     * @param newRdn new Rdn for the target Dn
-     * @param deleteOldRdn flag to indicate whether to delete the old Rdn
+     * @param entryDn the target distinguished name.
+     * @param newRdn new relative distinguished name for the target distinguished name.
+     * @param deleteOldRdn flag to indicate whether to delete the old relative distinguished name
      * @throws LdapException if some error occurred
      */
     void rename( Dn entryDn, Rdn newRdn, boolean deleteOldRdn ) throws LdapException;
 
 
     /**
-     * Moves the given entry Dn under the new superior Dn.
+     * Moves the given entry distinguished name under the new superior distinguished name.
      *
-     * @param entryDn the Dn of the target entry
-     * @param newSuperiorDn Dn of the new parent/superior
+     * @param entryDn the distinguished name of the target entry
+     * @param newSuperiorDn distinguished name of the new parent/superior
      * @throws LdapException if some error occurred
      * @see #move(Dn, Dn)
      */
@@ -410,20 +409,20 @@ public interface LdapConnection extends Closeable
 
 
     /**
-     * Moves the given entry Dn under the new superior Dn.
+     * Moves the given entry distinguished name under the new superior distinguished name.
      *
-     * @param entryDn the Dn of the target entry
-     * @param newSuperiorDn Dn of the new parent/superior
+     * @param entryDn the distinguished name of the target entry
+     * @param newSuperiorDn distinguished name of the new parent/superior
      * @throws LdapException if some error occurred
      */
     void move( Dn entryDn, Dn newSuperiorDn ) throws LdapException;
 
 
     /**
-     * Moves and renames the given entryDn. The old Rdn will be deleted.
+     * Moves and renames the given entryDn. The old relative distinguished name will be deleted.
      *
-     * @param entryDn The original entry Dn
-     * @param newDn The new entry Dn
+     * @param entryDn The original entry distinguished name.
+     * @param newDn The new entry distinguished name.
      * @throws LdapException if some error occurred
      * @see #moveAndRename(Dn, Dn, boolean)
      */
@@ -431,10 +430,11 @@ public interface LdapConnection extends Closeable
 
 
     /**
-     * Moves and renames the given entryDn.The old Rdn will be deleted
+     * Moves and renames the given entry distinguished name. The old relative 
+     * distinguished name will be deleted
      *
-     * @param entryDn The original entry Dn
-     * @param newDn The new entry Dn
+     * @param entryDn The original entry distinguished name.
+     * @param newDn The new entry distinguished name.
      * @throws LdapException if some error occurred
      * @see #moveAndRename(Dn, Dn, boolean)
      */
@@ -442,22 +442,22 @@ public interface LdapConnection extends Closeable
 
 
     /**
-     * Moves and renames the given entryDn. The old Rdn will be deleted if requested.
+     * Moves and renames the given entryDn. The old relative distinguished name will be deleted if requested.
      *
-     * @param entryDn The original entry Dn
-     * @param newDn The new entry Dn
-     * @param deleteOldRdn Tells if the old Rdn must be removed
+     * @param entryDn The original entry distinguished name.
+     * @param newDn The new entry distinguished name.
+     * @param deleteOldRdn Tells if the old relative distinguished name must be removed
      * @throws LdapException if some error occurred
      */
     void moveAndRename( Dn entryDn, Dn newDn, boolean deleteOldRdn ) throws LdapException;
 
 
     /**
-     * Moves and renames the given entryDn. The old Rdn will be deleted if requested.
+     * Moves and renames the given entryDn. The old relative distinguished name will be deleted if requested.
      *
-     * @param entryDn The original entry Dn
-     * @param newDn The new entry Dn
-     * @param deleteOldRdn Tells if the old Rdn must be removed
+     * @param entryDn The original entry distinguished name.
+     * @param newDn The new entry distinguished name.
+     * @param deleteOldRdn Tells if the old relative distinguished name must be removed
      * @throws LdapException if some error occurred
      */
     void moveAndRename( String entryDn, String newDn, boolean deleteOldRdn )
@@ -477,8 +477,8 @@ public interface LdapConnection extends Closeable
     /**
      * Deletes the entry with the given distinguished name.
      *
-     * @param dn the target entry's distinguished name, it must be a valid {@link Dn}
-     * @throws LdapException If the Dn is not valid or if the deletion failed
+     * @param dn the target entry's distinguished name, it must be a valid distinguished name.
+     * @throws LdapException If the distinguished name is not valid or if the deletion failed
      */
     void delete( String dn ) throws LdapException;
 
@@ -487,7 +487,7 @@ public interface LdapConnection extends Closeable
      * Deletes the entry with the given distinguished name.
      *
      * @param dn the target entry's distinguished name
-     * @throws LdapException If the Dn is not valid or if the deletion failed
+     * @throws LdapException If the distinguished name is not valid or if the deletion failed
      */
     void delete( Dn dn ) throws LdapException;
 
@@ -497,7 +497,7 @@ public interface LdapConnection extends Closeable
      *
      * @param deleteRequest the delete operation's request
      * @return delete operation's response
-     * @throws LdapException If the Dn is not valid or if the deletion failed
+     * @throws LdapException If the distinguished name is not valid or if the deletion failed
      */
     DeleteResponse delete( DeleteRequest deleteRequest ) throws LdapException;
 
@@ -506,7 +506,7 @@ public interface LdapConnection extends Closeable
      * Compares whether a given attribute's value matches that of the
      * existing value of the attribute present in the entry with the given distinguished name.
      *
-     * @param dn the target entry's distinguished name, it must be a valid {@link Dn}
+     * @param dn the target entry's distinguished name, it must be a valid distinguished name.
      * @param attributeName the attribute's name
      * @param value a String value with which the target entry's attribute value to be compared with
      * @return <code>true</code> if the value matches, <code>false</code> otherwise
@@ -519,7 +519,7 @@ public interface LdapConnection extends Closeable
      * Compares whether a given attribute's value matches that of the
      * existing value of the attribute present in the entry with the given distinguished name.
      *
-     * @param dn the target entry's distinguished name, it must be a valid {@link Dn}
+     * @param dn the target entry's distinguished name, it must be a valid distinguished name.
      * @param attributeName the attribute's name
      * @param value a byte[] value with which the target entry's attribute value to be compared with
      * @return <code>true</code> if the value matches, <code>false</code> otherwise
@@ -532,7 +532,7 @@ public interface LdapConnection extends Closeable
      * Compares whether a given attribute's value matches that of the
      * existing value of the attribute present in the entry with the given distinguished name.
      *
-     * @param dn the target entry's distinguished name, it must be a valid {@link Dn}
+     * @param dn the target entry's distinguished name, it must be a valid distinguished name.
      * @param attributeName the attribute's name
      * @param value a Value&lt;?&gt; value with which the target entry's attribute value to be compared with
      * @return <code>true</code> if the value matches, <code>false</code> otherwise
@@ -583,7 +583,8 @@ public interface LdapConnection extends Closeable
     /**
      * Compares an entry's attribute's value with that of the given value.
      *
-     * @param compareRequest the compare request which contains the target Dn, attribute name and value
+     * @param compareRequest the compare request which contains the target distinguished name, 
+     * attribute name and value
      * @return compare operation's response
      * @throws LdapException if some error occurred
      */
@@ -648,7 +649,7 @@ public interface LdapConnection extends Closeable
     /**
      * Tells if an entry exists in the server.
      * 
-     * @param dn The distinguished name of the entry we want to check the existence, must be a valid {@link Dn}
+     * @param dn The distinguished name of the entry to check for existence, must be a valid distinguished name.
      * @return <code>true</code> if the entry exists, <code>false</code> otherwise.
      * Note that if the entry exists but if the user does not have the permission to
      * read it, <code>false</code> will also be returned
@@ -660,7 +661,7 @@ public interface LdapConnection extends Closeable
     /**
      * Tells if an Entry exists in the server.
      * 
-     * @param dn The distinguished name of the entry we want to check the existence
+     * @param dn The distinguished name of the entry to check for existence
      * @return <code>true</code> if the entry exists, <code>false</code> otherwise.
      * Note that if the entry exists but if the user does not have the permission to
      * read it, <code>false</code> will also be returned
@@ -691,71 +692,81 @@ public interface LdapConnection extends Closeable
 
 
     /**
-     * Searches for an entry having the given Dn.
+     * Searches for an entry having the given distinguished name..
      *
-     * @param dn the Dn of the entry to be fetched
-     * @return the Entry with the given Dn or null if no entry exists with that Dn
-     * @throws LdapException in case of any problems while searching for the Dn or if the returned response contains a referral
-     * @see #lookup(org.apache.directory.api.ldap.model.name.Dn, String...)
+     * @param dn the distinguished name of the entry to be fetched
+     * @return the Entry with the given distinguished name or null if no entry exists with that distinguished name.
+     * @throws LdapException in case of any problems while searching for the distinguished name or if the returned 
+     * response contains a referral
+     * @see #lookup(Dn, String...)
      */
     Entry lookup( Dn dn ) throws LdapException;
 
 
     /**
-     * Searches for an entry having the given Dn.
+     * Searches for an entry having the given distinguished name.
      *
-     * @param dn the Dn of the entry to be fetched
-     * @return the Entry with the given Dn or null if no entry exists with that Dn
-     * @throws LdapException in case of any problems while searching for the Dn or if the returned response contains a referral
+     * @param dn the distinguished name of the entry to be fetched
+     * @return the Entry with the given distinguished name or null if no entry exists with that distinguished name.
+     * @throws LdapException in case of any problems while searching for the distinguished name or 
+     * if the returned response contains a referral
      * @see #lookup(String, String...)
      */
     Entry lookup( String dn ) throws LdapException;
 
 
     /**
-     * Searches for an entry having the given Dn.
+     * Searches for an entry having the given distinguished name.
      *
-     * @param dn the Dn of the entry to be fetched
+     * @param dn the distinguished name of the entry to be fetched
      * @param attributes the attributes to be returned along with entry
-     * @return the Entry with the given Dn or null if no entry exists with that Dn
-     * @throws LdapException in case of any problems while searching for the Dn or if the returned response contains a referral
+     * @return the Entry with the given distinguished name or null if no entry exists with 
+     * that distinguished name.
+     * @throws LdapException in case of any problems while searching for the distinguished name 
+     * or if the returned response contains a referral
      */
     Entry lookup( Dn dn, String... attributes ) throws LdapException;
 
 
     /**
-     * Searches for an entry having the given Dn.
+     * Searches for an entry having the given distinguished name.
      *
-     * @param dn the Dn of the entry to be fetched
+     * @param dn the distinguished name of the entry to be fetched
      * @param controls the controls to use
      * @param attributes the attributes to be returned along with entry
-     * @return the Entry with the given Dn or null if no entry exists with that Dn
-     * @throws LdapException in case of any problems while searching for the Dn or if the returned response contains a referral
+     * @return the Entry with the given distinguished name or null if no entry exists with
+     *  that distinguished name.
+     * @throws LdapException in case of any problems while searching for the distinguished name
+     *  or if the returned response contains a referral
      */
     Entry lookup( Dn dn, Control[] controls, String... attributes ) throws LdapException;
 
 
     /**
-     * Searches for an entry having the given Dn.
+     * Searches for an entry having the given distinguished name.
      *
-     * @param dn the Dn of the entry to be fetched
+     * @param dn the distinguished name of the entry to be fetched
      * @param attributes the attributes to be returned along with entry
-     * @return the Entry with the given Dn or null if no entry exists with that Dn
-     * @throws LdapException in case of any problems while searching for the Dn or if the returned response contains a referral
-     * @see #lookup(org.apache.directory.api.ldap.model.name.Dn, String...)
+     * @return the Entry with the given distinguished name or null if no entry exists with 
+     * that distinguished name.
+     * @throws LdapException in case of any problems while searching for the distinguished name
+     *  or if the returned response contains a referral
+     * @see #lookup(Dn, String...)
      */
     Entry lookup( String dn, String... attributes ) throws LdapException;
 
 
     /**
-     * Searches for an entry having the given Dn.
+     * Searches for an entry having the given distinguished name.
      *
-     * @param dn the Dn of the entry to be fetched
+     * @param dn the distinguished name of the entry to be fetched
      * @param controls the controls to use
      * @param attributes the attributes to be returned along with entry
-     * @return the Entry with the given Dn or null if no entry exists with that Dn
-     * @throws LdapException in case of any problems while searching for the Dn or if the returned response contains a referral
-     * @see #lookup(org.apache.directory.api.ldap.model.name.Dn, String...)
+     * @return the Entry with the given distinguished name or null if no entry exists with 
+     * that distinguished name.
+     * @throws LdapException in case of any problems while searching for the distinguished name
+     *  or if the returned response contains a referral
+     * @see #lookup(Dn, String...)
      */
     Entry lookup( String dn, Control[] controls, String... attributes ) throws LdapException;
 
@@ -814,10 +825,20 @@ public interface LdapConnection extends Closeable
 
 
     /**
+     * Checks if a request has been completed, or not. 
+     *
+     * @param messageId ID of the request
+     * @return true if the request has been completed, false is still being processed
+     */
+    boolean isRequestCompleted( int messageId );
+
+
+    /**
      * Checks if there is a ResponseFuture associated with the given message ID.
      *
      * @param messageId ID of the request
      * @return true if there is a non-null future exists, false otherwise
+     * @deprecated Use {@link #isRequestCompleted(int)}
      */
     boolean doesFutureExistFor( int messageId );
 

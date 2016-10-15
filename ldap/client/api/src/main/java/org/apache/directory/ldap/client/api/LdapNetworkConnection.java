@@ -3827,6 +3827,17 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    public boolean isRequestCompleted( int messageId )
+    {
+        ResponseFuture<?> responseFuture = futureMap.get( messageId );
+        
+        return responseFuture == null;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean doesFutureExistFor( int messageId )
     {
