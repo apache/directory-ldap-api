@@ -84,7 +84,7 @@ public class ResponseFuture<R extends Response> implements Future<Response>
         cancelled = true;
 
         // Send an abandonRequest only if this future exists
-        if ( connection.doesFutureExistFor( messageId ) )
+        if ( !connection.isRequestCompleted( messageId ) )
         {
             connection.abandon( messageId );
         }

@@ -3763,6 +3763,17 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
 
     /**
+     * {@inheritDoc}
+     */
+    public boolean isRequestCompleted( int messageId )
+    {
+        ResponseFuture<?> responseFuture = futureMap.get( messageId );
+        
+        return responseFuture == null;
+    }
+
+
+    /**
      * Adds the connection closed event listener.
      *
      * @param ccListener the connection closed listener
