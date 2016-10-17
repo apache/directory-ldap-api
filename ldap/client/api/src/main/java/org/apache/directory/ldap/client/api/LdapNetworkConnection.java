@@ -192,6 +192,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     /** configuration object for the connection */
     private LdapConnectionConfig config;
+    
+    /** The Sockect configuratio */
+    private SocketSessionConfig connectionConfig;
 
     /** The connector open with the remote server */
     private IoConnector connector;
@@ -420,8 +423,15 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         // Use only one thread inside the connector
         connector = new NioSocketConnector( 1 );
-
-        ( ( SocketSessionConfig ) connector.getSessionConfig() ).setReuseAddress( true );
+        
+        if ( connectionConfig != null )
+        {
+            ( ( SocketSessionConfig ) connector.getSessionConfig() ).setAll( connectionConfig );
+        }
+        else
+        {
+            ( ( SocketSessionConfig ) connector.getSessionConfig() ).setReuseAddress( true );
+        }
 
         // Add the codec to the chain
         connector.getFilterChain().addLast( "ldapCodec", ldapProtocolFilter );
@@ -4363,5 +4373,23 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     public void setSchemaManager( SchemaManager schemaManager )
     {
         this.schemaManager = schemaManager;
+    }
+
+
+    /**
+     * @return the connectionConfig
+     */
+    public SocketSessionConfig getConnectionConfig()
+    {
+        return connectionConfig;
+    }
+
+
+    /**
+     * @param connectionConfig the connectionConfig to set
+     */
+    public void setConnectionConfig( SocketSessionConfig connectionConfig )
+    {
+        this.connectionConfig = connectionConfig;
     }
 }
