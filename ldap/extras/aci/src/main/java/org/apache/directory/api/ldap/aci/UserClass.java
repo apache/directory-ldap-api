@@ -221,7 +221,7 @@ public abstract class UserClass
                 
                 if ( h != 0 )
                 {
-                    result = result * dn.hashCode();
+                    result = result * h;
                 }
             }
 
