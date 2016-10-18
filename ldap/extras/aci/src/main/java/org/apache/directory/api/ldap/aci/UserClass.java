@@ -210,9 +210,19 @@ public abstract class UserClass
         {
             int result = 37;
 
+            // Use a slightly different hashcode here : we multiple
+            // each DN in the set with the result to have a result that
+            // is not dependent on the DN order in the Set.
+            // In order to avoid result of 0 if one of the DN hashcode,
+            // we discard them.
             for ( Dn dn : this.names )
             {
-                result = result * 17 + dn.hashCode();
+                int h = dn.hashCode();
+                
+                if ( h != 0 )
+                {
+                    result = result * dn.hashCode();
+                }
             }
 
             return result;
