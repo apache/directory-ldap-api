@@ -103,6 +103,17 @@
         </plugin>
 
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-report-plugin</artifactId>
+          <configuration>
+            <aggregate>true</aggregate>
+           <forkCount>3</forkCount>
+           <reuseForks>true</reuseForks>
+           <argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
+          </configuration>
+        </plugin>
+
+        <plugin>
           <groupId>org.apache.rat</groupId>
           <artifactId>apache-rat-plugin</artifactId>
           <configuration>
