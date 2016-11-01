@@ -662,44 +662,15 @@
 
         <reportSets>
           <reportSet>
-            <id>aggregate</id>
-            <inherited>false</inherited>
-            <reports>
-              <report>aggregate</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-
-        <!-- reportSets>
-          <reportSet>
             <id>apidocs</id>
-            <configuration>
-              <doctitle>Apache LDAP API ${project.version} Javadoc</doctitle>
-              <windowtitle>Apache LDAP API ${project.version} Javadoc</windowtitle>
-
-              <tags>
-                <tag>
-                  <name>@todo</name>
-                  <name>TODO</name>
-                  <name>FIXME</name>
-                  <placement>a</placement>
-                  <head>To do :</head>
-                </tag>
-              </tags>
- 
-            </configuration>
- 
-            <reports>
-              <report>apidocs</report>
-            </reports>
-    
-
+            <inherited>false</inherited>
             <reports>
               <report>aggregate</report>
               <report>test-aggregate</report>
             </reports>
           </reportSet>
-        </reportSets -->
+        </reportSets>
+
       </plugin>
     </plugins>
   </reporting>
