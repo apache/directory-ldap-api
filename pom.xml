@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
-    <version>37</version>
+    <version>38-SNAPSHOT</version>
     <relativePath />
   </parent>
 
@@ -30,7 +30,7 @@
   <artifactId>api-parent</artifactId>
   <name>Apache Directory LDAP API</name>
   <packaging>pom</packaging>
-  <version>1.0.0-RC2</version>
+  <version>1.0.0-RC3-SNAPSHOT</version>
 
   <properties>
     <additionalparam>-Xdoclint:none</additionalparam>
@@ -94,6 +94,18 @@
   <build>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <dependencies>
+            <dependency><!-- downgrade Velocity to 1.5 until skin is updated to Velocity 1.7 -->
+              <groupId>org.apache.velocity</groupId>
+              <artifactId>velocity</artifactId>
+              <version>1.5</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
