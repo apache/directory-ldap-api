@@ -40,7 +40,7 @@
     <maven.compiler.target>1.7</maven.compiler.target>
     
     <!-- Set versions for depending projects -->
-    <skin.version>1.0.2</skin.version>
+    <skin.version>1.0.3-SNAPSHOT</skin.version>
     <org.apache.directory.junit.junit-addons.version>0.1</org.apache.directory.junit.junit-addons.version>
     <org.apache.directory.checkstyle-configuration.version>0.3</org.apache.directory.checkstyle-configuration.version>
     
