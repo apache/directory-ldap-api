@@ -643,7 +643,6 @@
         <configuration>
           <windowtitle>Apache LDAP API ${project.version} API Documentation</windowtitle>
           <doctitle>Apache LDAP API ${project.version} API Documentation</doctitle>
-          <sourcepath>${project.basedir}/src/main/java</sourcepath>
           <minmemory>512m</minmemory>
           <maxmemory>1g</maxmemory>
           <linksource>true</linksource>
