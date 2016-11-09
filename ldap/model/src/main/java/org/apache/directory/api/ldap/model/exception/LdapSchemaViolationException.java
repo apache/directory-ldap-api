@@ -94,6 +94,7 @@ public class LdapSchemaViolationException extends LdapOperationException
             case OBJECT_CLASS_VIOLATION:
             case NOT_ALLOWED_ON_RDN:
             case OBJECT_CLASS_MODS_PROHIBITED:
+            case INVALID_ATTRIBUTE_SYNTAX: // may happen during schema processing
                 return;
 
             default:
