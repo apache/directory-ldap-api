@@ -84,7 +84,7 @@ public class ExtrasBundleActivator implements BundleActivator
         private BundleContext context;
 
 
-        public LdapApiServiceTracker( BundleContext context )
+        LdapApiServiceTracker( BundleContext context )
         {
             this.context = context;
         }

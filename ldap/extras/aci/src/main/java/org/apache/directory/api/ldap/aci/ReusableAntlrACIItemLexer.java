@@ -55,7 +55,7 @@ class ReusableAntlrACIItemLexer extends AntlrACIItemLexer
      * @param in
      *            the input to the lexer
      */
-    public ReusableAntlrACIItemLexer( Reader in )
+    ReusableAntlrACIItemLexer( Reader in )
     {
         super( in );
         savedCaseSensitive = getCaseSensitive();

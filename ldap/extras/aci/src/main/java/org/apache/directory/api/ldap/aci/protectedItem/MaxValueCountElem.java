@@ -36,7 +36,6 @@ public class MaxValueCountElem
     /** The maximum number of accepted values for this attributeType */
     private int maxCount;
 
-
     /**
      * Creates a new instance.
      * 
@@ -82,6 +81,7 @@ public class MaxValueCountElem
         int hash = 37;
         hash = hash * 17 + maxCount;
         hash = hash * 17 + attributeType.hashCode();
+        
         return hash;
     }
 
@@ -92,11 +92,6 @@ public class MaxValueCountElem
     @Override
     public boolean equals( Object o )
     {
-        if ( o == null )
-        {
-            return false;
-        }
-
         if ( this == o )
         {
             return true;
@@ -105,18 +100,20 @@ public class MaxValueCountElem
         if ( o instanceof MaxValueCountElem )
         {
             MaxValueCountElem that = ( MaxValueCountElem ) o;
-            if ( this.maxCount == that.maxCount )
+            
+            if ( maxCount == that.maxCount )
             {
-                if ( this.attributeType == null )
+                if ( attributeType == null )
                 {
                     return that.attributeType == null;
                 }
                 else
                 {
-                    return this.attributeType.equals( that.attributeType );
+                    return attributeType.equals( that.attributeType );
                 }
             }
         }
+        
         return false;
     }
 

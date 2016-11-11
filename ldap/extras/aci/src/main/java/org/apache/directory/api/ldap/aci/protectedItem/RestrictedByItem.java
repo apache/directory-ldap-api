@@ -44,7 +44,6 @@ public class RestrictedByItem extends ProtectedItem
     /** The set of restricted elements */
     private final Set<RestrictedByElem> items;
 
-
     /**
      * Creates a new instance.
      * 
@@ -74,7 +73,22 @@ public class RestrictedByItem extends ProtectedItem
     public int hashCode()
     {
         int hash = 37;
-        hash = hash * 17 + items.hashCode();
+        
+        if ( items != null )
+        {
+            for ( RestrictedByElem item : items )
+            {
+                if ( item != null )
+                {
+                    hash = hash * 17 + item.hashCode();
+                }
+                else
+                {
+                    hash = hash * 17 + 37;
+                }
+            }
+        }
+
         return hash;
     }
 
@@ -90,15 +104,36 @@ public class RestrictedByItem extends ProtectedItem
             return true;
         }
 
-        if ( o == null )
-        {
-            return false;
-        }
-
         if ( o instanceof RestrictedByItem )
         {
             RestrictedByItem that = ( RestrictedByItem ) o;
-            return this.items.equals( that.items );
+            
+            if ( items != null )
+            {
+                if ( that.items == null )
+                {
+                    return false;
+                }
+                
+                if ( items.size() != that.items.size() )
+                {
+                    return false;
+                }
+                
+                for ( RestrictedByElem item : items )
+                {
+                    if ( !that.items.contains( item ) )
+                    {
+                        return false;
+                    }
+                }
+                
+                return true;
+            }
+            else
+            {
+                return that.items == null;
+            }
         }
 
         return false;
@@ -117,18 +152,21 @@ public class RestrictedByItem extends ProtectedItem
 
         boolean isFirst = true;
 
-        for ( RestrictedByElem item : items )
+        if ( items != null )
         {
-            if ( isFirst )
+            for ( RestrictedByElem item : items )
             {
-                isFirst = false;
+                if ( isFirst )
+                {
+                    isFirst = false;
+                }
+                else
+                {
+                    buf.append( ", " );
+                }
+    
+                buf.append( item.toString() );
             }
-            else
-            {
-                buf.append( ", " );
-            }
-
-            buf.append( item.toString() );
         }
 
         buf.append( '}' );

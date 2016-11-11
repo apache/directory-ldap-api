@@ -39,7 +39,7 @@ public enum SyncModifyDnType
     /**
      * Creates the value
      */
-    private SyncModifyDnType( int value )
+    SyncModifyDnType( int value )
     {
         this.value = value;
     }

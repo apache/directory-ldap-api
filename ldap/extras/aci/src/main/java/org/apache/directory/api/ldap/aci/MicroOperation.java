@@ -74,7 +74,7 @@ public enum MicroOperation
     private final String name;
 
 
-    private MicroOperation( String name )
+    MicroOperation( String name )
     {
         this.name = name;
     }

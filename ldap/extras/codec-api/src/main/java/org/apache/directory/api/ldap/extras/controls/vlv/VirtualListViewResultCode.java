@@ -59,7 +59,7 @@ public enum VirtualListViewResultCode
     private String desc;
 
 
-    private VirtualListViewResultCode( int value, String desc )
+    VirtualListViewResultCode( int value, String desc )
     {
         this.value = value;
         this.desc = desc;

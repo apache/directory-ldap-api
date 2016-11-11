@@ -106,7 +106,7 @@ public enum LdapSecurityConstants
      * @param algorithm the associated algorithm
      * @param prefix the associated prefix
      */
-    private LdapSecurityConstants( String name, String algorithm, String prefix )
+    LdapSecurityConstants( String name, String algorithm, String prefix )
     {
         this( name, algorithm, prefix, "" );
     }
@@ -119,7 +119,7 @@ public enum LdapSecurityConstants
      * @param prefix the associated prefix
      * @param subPrefix the optional sub-prefix
      */
-    private LdapSecurityConstants( String name, String algorithm, String prefix, String subPrefix )
+    LdapSecurityConstants( String name, String algorithm, String prefix, String subPrefix )
     {
         this.name = name;
         this.algorithm = algorithm;

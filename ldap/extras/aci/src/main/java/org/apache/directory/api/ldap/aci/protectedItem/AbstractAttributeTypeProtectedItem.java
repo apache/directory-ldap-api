@@ -38,7 +38,6 @@ public abstract class AbstractAttributeTypeProtectedItem extends ProtectedItem
     /** The attribute types. */
     protected final Set<AttributeType> attributeTypes;
 
-
     /**
      * Creates a new instance.
      * 
@@ -69,12 +68,15 @@ public abstract class AbstractAttributeTypeProtectedItem extends ProtectedItem
     {
         int hash = 37;
         
-        for ( AttributeType attributeType : attributeTypes )
+        if ( attributeTypes != null )
         {
-            hash = hash * 17 + attributeType.hashCode();
+            for ( AttributeType attributeType : attributeTypes )
+            {
+                hash = hash * 17 + attributeType.hashCode();
+            }
         }
         
-        hash = hash * 17 + this.getClass().getName().hashCode();
+        hash = hash * 17 + getClass().getName().hashCode();
 
         return hash;
     }
@@ -99,7 +101,15 @@ public abstract class AbstractAttributeTypeProtectedItem extends ProtectedItem
         if ( getClass().isAssignableFrom( o.getClass() ) )
         {
             AbstractAttributeTypeProtectedItem that = ( AbstractAttributeTypeProtectedItem ) o;
-            return this.attributeTypes.equals( that.attributeTypes );
+            
+            if ( attributeTypes != null )
+            {
+                return attributeTypes.equals( that.attributeTypes );
+            }
+            else
+            {
+                return that.attributeTypes == null;
+            }
         }
 
         return false;
@@ -117,18 +127,21 @@ public abstract class AbstractAttributeTypeProtectedItem extends ProtectedItem
         buf.append( "{ " );
         boolean isFirst = true;
 
-        for ( AttributeType attributeType : attributeTypes )
+        if ( attributeTypes != null )
         {
-            if ( isFirst )
+            for ( AttributeType attributeType : attributeTypes )
             {
-                isFirst = false;
+                if ( isFirst )
+                {
+                    isFirst = false;
+                }
+                else
+                {
+                    buf.append( ", " );
+                }
+    
+                buf.append( attributeType.getName() );
             }
-            else
-            {
-                buf.append( ", " );
-            }
-
-            buf.append( attributeType.getName() );
         }
 
         buf.append( " }" );

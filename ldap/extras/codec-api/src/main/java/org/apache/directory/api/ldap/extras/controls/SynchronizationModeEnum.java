@@ -55,7 +55,7 @@ public enum SynchronizationModeEnum
      * 
      * @param value the integer value of the enumeration.
      */
-    private SynchronizationModeEnum( int value )
+    SynchronizationModeEnum( int value )
     {
         this.value = value;
     }

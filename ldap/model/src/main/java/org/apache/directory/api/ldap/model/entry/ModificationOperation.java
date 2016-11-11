@@ -40,7 +40,7 @@ public enum ModificationOperation
     /**
      * Creates a new instance of ModificationOperation.
      */
-    private ModificationOperation( int value )
+    ModificationOperation( int value )
     {
         this.value = value;
     }

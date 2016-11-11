@@ -352,7 +352,7 @@ class SchemaMarker
     private int end;
 
 
-    public SchemaMarker( int start )
+    SchemaMarker( int start )
     {
         this.start = start;
     }

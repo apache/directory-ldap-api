@@ -727,7 +727,7 @@ public enum ResultCodeEnum
      * @param value the integer value of the enumeration.
      * @param message the description of the enumeration.
      */
-    private ResultCodeEnum( int value, String message )
+    ResultCodeEnum( int value, String message )
     {
         this.value = value;
         this.message = message;

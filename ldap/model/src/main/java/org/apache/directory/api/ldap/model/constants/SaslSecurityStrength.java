@@ -46,7 +46,7 @@ public enum SaslSecurityStrength
      * @param value
      *      the equivalent string value
      */
-    private SaslSecurityStrength( String value )
+    SaslSecurityStrength( String value )
     {
         this.value = value;
     }

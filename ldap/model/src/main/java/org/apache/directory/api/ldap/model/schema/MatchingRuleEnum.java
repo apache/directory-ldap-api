@@ -53,7 +53,7 @@ public enum MatchingRuleEnum
      * @param value
      *            the integer value of the enumeration.
      */
-    private MatchingRuleEnum( int value )
+    MatchingRuleEnum( int value )
     {
         this.value = value;
     }

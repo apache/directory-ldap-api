@@ -61,7 +61,7 @@ public enum AdministrativeRole
     /**
      * Creates an instance of AdministrativeRole
      */
-    private AdministrativeRole( String role )
+    AdministrativeRole( String role )
     {
         this.role = Strings.toLowerCaseAscii( Strings.trim( role ) );
     }

@@ -32,14 +32,6 @@ import org.apache.directory.api.ldap.aci.ProtectedItem;
 public class AllUserAttributeTypesAndValuesItem extends ProtectedItem
 {
     /**
-     * Creates a new instance of AllUserAttributeTypesAndValuesItem.
-     */
-    public AllUserAttributeTypesAndValuesItem()
-    {
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     @Override

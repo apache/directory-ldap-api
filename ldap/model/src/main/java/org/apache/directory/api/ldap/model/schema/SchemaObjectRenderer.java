@@ -65,7 +65,7 @@ public final class SchemaObjectRenderer
         final boolean printSchemaName;
 
 
-        private Style( boolean startWithSchemaType, boolean prettyPrint, boolean printSchemaName )
+        Style( boolean startWithSchemaType, boolean prettyPrint, boolean printSchemaName )
         {
             this.startWithSchemaType = startWithSchemaType;
             this.prettyPrint = prettyPrint;

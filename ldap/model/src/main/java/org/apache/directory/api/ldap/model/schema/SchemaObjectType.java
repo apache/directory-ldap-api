@@ -49,7 +49,7 @@ public enum SchemaObjectType
     /**
      * A private constructor to associated a number to the type
      */
-    private SchemaObjectType( int value )
+    SchemaObjectType( int value )
     {
         this.value = value;
     }

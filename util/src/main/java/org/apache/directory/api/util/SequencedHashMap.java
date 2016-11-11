@@ -65,7 +65,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
      * {@link java.util.Map.Entry} that doubles as a node in the linked list of
      * sequenced mappings.
      */
-    private static class Entry implements Map.Entry, KeyValue
+    private static final class Entry implements Map.Entry, KeyValue
     {
         // Note: This class cannot easily be made clonable. While the actual
         // implementation of a clone would be simple, defining the semantics is
@@ -91,7 +91,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
         Entry prev = null;
 
 
-        public Entry( Object key, Object value )
+        Entry( Object key, Object value )
         {
             this.key = key;
             this.value = value;
@@ -910,7 +910,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
 
     private static final int REMOVED_MASK = 0x80000000;
 
-    private class OrderedIterator implements Iterator
+    private final class OrderedIterator implements Iterator
     {
         /**
          * Holds the type that should be returned from the iterator. The value
@@ -943,7 +943,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
          * specified by <code>returnType</code> which must be either KEY,
          * VALUE, or ENTRY.
          */
-        public OrderedIterator( int returnType )
+        OrderedIterator( int returnType )
         {
             // Set the "removed" bit so that the iterator starts in a state
             // where "next" must be called before "remove" will succeed.
