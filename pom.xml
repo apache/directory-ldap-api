@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
-    <version>38-SNAPSHOT</version>
+    <version>38</version>
     <relativePath />
   </parent>
 
@@ -40,7 +40,7 @@
     <maven.compiler.target>1.7</maven.compiler.target>
     
     <!-- Set versions for depending projects -->
-    <skin.version>1.0.3-SNAPSHOT</skin.version>
+    <skin.version>1.0.3</skin.version>
     <org.apache.directory.junit.junit-addons.version>0.1</org.apache.directory.junit.junit-addons.version>
     <org.apache.directory.checkstyle-configuration.version>0.3</org.apache.directory.checkstyle-configuration.version>
     
