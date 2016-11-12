@@ -16,13 +16,14 @@
   KIND, either express or implied.  See the License for the
   specific language governing permissions and limitations
   under the License.
---><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
-    <version>35</version>
-    <relativePath/>
+    <version>38</version>
+    <relativePath />
   </parent>
 
   <groupId>org.apache.directory.api</groupId>
@@ -39,7 +40,7 @@
     <maven.compiler.target>1.7</maven.compiler.target>
     
     <!-- Set versions for depending projects -->
-    <skin.version>1.0.2</skin.version>
+    <skin.version>1.0.3</skin.version>
     <org.apache.directory.junit.junit-addons.version>0.1</org.apache.directory.junit.junit-addons.version>
     <org.apache.directory.checkstyle-configuration.version>0.3</org.apache.directory.checkstyle-configuration.version>
     
@@ -54,11 +55,11 @@
     <junit.version>4.12</junit.version>
     <log4j.version>1.2.17</log4j.version>
     <logback.version>1.1.7</logback.version>
-    <mina.core.version>2.0.13</mina.core.version>
+    <mina.core.version>2.0.16</mina.core.version>
     <org.osgi.core.version>6.0.0</org.osgi.core.version>
-    <org.apache.felix.version>5.4.0</org.apache.felix.version>
-    <pax-exam.version>4.9.1</pax-exam.version>
-    <pax-url.version>2.4.7</pax-url.version>
+    <org.apache.felix.version>5.6.1</org.apache.felix.version>
+    <pax-exam.version>4.9.2</pax-exam.version>
+    <pax-url.version>2.5.1</pax-url.version>
     <slf4j.api.version>1.7.21</slf4j.api.version>
     <slf4j.api.bundleversion>"$«range;[==,=+)»"</slf4j.api.bundleversion>
     <slf4j.log4j12.version>1.7.21</slf4j.log4j12.version>
@@ -88,7 +89,6 @@
     <module>integ</module>
     <module>integ-osgi</module>
     <module>distribution</module>
-    <module>first-benchmark</module>
   </modules>
 
   <build>
@@ -96,9 +96,32 @@
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <dependencies>
+            <dependency><!-- downgrade Velocity to 1.5 until skin is updated to Velocity 1.7 -->
+              <groupId>org.apache.velocity</groupId>
+              <artifactId>velocity</artifactId>
+              <version>1.5</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
           <configuration>
             <tagNameFormat>@{project.version}</tagNameFormat>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-report-plugin</artifactId>
+          <configuration>
+            <aggregate>true</aggregate>
+           <forkCount>3</forkCount>
+           <reuseForks>true</reuseForks>
+           <argLine>-Xmx2048m -XX:MaxPermSize=512</argLine>
           </configuration>
         </plugin>
 
@@ -175,7 +198,7 @@
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore/>
+                    <ignore />
                   </action>
                 </pluginExecution>
                 
@@ -189,7 +212,7 @@
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore/>
+                    <ignore />
                   </action>
                 </pluginExecution>
                 
@@ -203,7 +226,7 @@
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore/>
+                    <ignore />
                   </action>
                 </pluginExecution>
                 <pluginExecution>
@@ -216,7 +239,7 @@
                         </goals>
                     </pluginExecutionFilter>
                     <action>
-                        <ignore/>
+                        <ignore />
                     </action>
                 </pluginExecution>
               </pluginExecutions>
@@ -263,205 +286,17 @@
             <version>2.1</version>
           </dependency>
         </dependencies>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
-          <reportPlugins>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-jxr-plugin</artifactId>
-              <configuration>
-                  <aggregate>true</aggregate>
-              </configuration>
-            </plugin>
-       
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-surefire-report-plugin</artifactId>
-              <configuration>
-                <aggregate>true</aggregate>
-              </configuration>
-            </plugin>
-      
-            <!-- plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-pmd-plugin</artifactId>
-              <configuration>
-                <linkXref>true</linkXref>
-                <sourceEncoding>utf-8</sourceEncoding>
-                <minimumTokens>100</minimumTokens>
-                <targetJdk>1.7</targetJdk>
-                <aggregate>true</aggregate>
-              </configuration>
-            </plugin -->
-      
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-project-info-reports-plugin</artifactId>
-            </plugin>
-      
-            <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>taglist-maven-plugin</artifactId>
-              <configuration>
-                <tags>
-                  <tag>TODO</tag>
-                  <tag>@todo</tag>
-                  <tag>@deprecated</tag>
-                  <tag>FIXME</tag>
-                </tags>
-              </configuration>
-            </plugin>
-      
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-javadoc-plugin</artifactId>
-              <configuration>
-                <minmemory>512m</minmemory>
-                <maxmemory>1g</maxmemory>
-                <linksource>true</linksource>
-                <tags>
-                  <tag>
-                    <name>todo</name>
-                    <!-- todo tag for all places -->
-                    <placement>a</placement>
-                    <head>To do:</head>
-                  </tag>
-                </tags>
-                <source>1.7</source>
-              </configuration>
-              <reportSets>
-                <reportSet>
-                  <reports>
-                    <report>aggregate</report>
-                    <report>test-aggregate</report>
-                  </reports>
-                </reportSet>
-              </reportSets>
-            </plugin>
-      
-<!-- Disabled because of Hudson problems, see http://jira.codehaus.org/browse/MFINDBUGS-126
-            <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>findbugs-maven-plugin</artifactId>
-              <configuration>
-                <xrefLocation>${project.reporting.outputDirectory}/../xref</xrefLocation>
-                <xrefTestLocation>${project.reporting.outputDirectory}/../xref-test</xrefTestLocation>
-                <! - - required by dashboard plugin and hudson - - >
-                <xmlOutput>true</xmlOutput>
-                <effort>Max</effort>
-                <findbugsXmlOutput>true</findbugsXmlOutput>
-                <findbugsXmlWithMessages>true</findbugsXmlWithMessages>
-              </configuration>
-            </plugin>
--->
-      
-<!-- Disabled because of Hudson problems
-            <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>cobertura-maven-plugin</artifactId>
-              <configuration>
-                <instrumentation>
-                  <excludes>
-                    <exclude>org/apache/directory/api/**/*Constants.class</exclude>
-                  </excludes>
-                </instrumentation>
-              </configuration>
-            </plugin>
--->
-      
-            <!-- plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-checkstyle-plugin</artifactId>
-              <configuration>
-                <configLocation>directory-checks.xml</configLocation>
-                <suppressionsLocation>${basedir}/src/checkstyle/suppressions.xml</suppressionsLocation>
-                <suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
-                <xrefLocation>${project.reporting.outputDirectory}/../xref</xrefLocation>
-              </configuration>
-            </plugin -->
-      
-            <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>versions-maven-plugin</artifactId>
-              <reportSets>
-                <reportSet>
-                  <reports>
-                    <report>dependency-updates-report</report>
-                    <report>plugin-updates-report</report>
-                    <report>property-updates-report</report>
-                  </reports>
-                </reportSet>
-              </reportSets>
-            </plugin>
-      
-            <plugin>
-              <groupId>org.apache.rat</groupId>
-              <artifactId>apache-rat-plugin</artifactId>
-              <!-- must add configuration here too, it isn't inherited from <pluginConfiguration> :-( -->
-              <configuration>
-                <excludeSubProjects>false</excludeSubProjects>
-                <excludes>
-                  <!-- MAVEN_DEFAULT_EXCLUDES -->
-                  <exclude>**/target/**/*</exclude>
-                  <exclude>**/cobertura.ser</exclude>
-                  <!-- ECLIPSE_DEFAULT_EXCLUDES -->
-                  <exclude>**/.classpath</exclude>
-                  <exclude>**/.project</exclude>
-                  <exclude>**/.settings/**/*</exclude>
-                  <!-- IDEA_DEFAULT_EXCLUDES -->
-                  <exclude>**/*.iml</exclude>
-                  <exclude>**/*.ipr</exclude>
-                  <exclude>**/*.iws</exclude>
-                  <!-- MANIFEST_MF_EXCLUDES -->
-                  <exclude>**/MANIFEST.MF</exclude>
-                  <!-- 3RD_PARTY_LICENSES -->
-                  <exclude>distribution/src/main/release/licenses/*</exclude>
-                  <exclude>src/main/release/licenses/*</exclude>
-                  <!-- Missing license header in dependency reduced pom, see http://jira.codehaus.org/browse/MSHADE-48 -->
-                  <exclude>**/dependency-reduced-pom.xml</exclude>
-                  <!-- Generated ldif files -->
-                  <exclude>**/src/main/resources/schema/**/*.ldif</exclude>
-                  <exclude>**/src/main/resources/schema-all.ldif</exclude>
-                  <exclude>**/src/main/resources/schema/**/*.ldif</exclude>
-                  <exclude>**/src/main/resources/schema-all.ldif</exclude>
-                  <!-- Files having a Bouncy Castle license -->
-                  <exclude>ldap/src/main/java/org/apache/directory/api/asn1/der/*.java</exclude>
-                  <exclude>src/main/java/org/apache/directory/api/asn1/der/*.java</exclude>
-                </excludes>
-              </configuration>
-            </plugin>
-      
-            <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>javancss-maven-plugin</artifactId>
-            </plugin>
-      
-            <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>jdepend-maven-plugin</artifactId>
-            </plugin>
-      
-<!--
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-changes-plugin</artifactId>
-              <configuration>
-                <onlyCurrentVersion>true</onlyCurrentVersion>
-                <resolutionIds>Fixed</resolutionIds>
-                <statusIds>Resolved,Closed</statusIds>
-                <columnNames>Type,Key,Summary,Status,Resolution,Fix Version</columnNames>
-              </configuration>
-              <reportSets>
-                <reportSet>
-                  <reports>
-                    <report>jira-report</report>
-                  </reports>
-                </reportSet>
-              </reportSets>
-            </plugin>
--->
-          </reportPlugins>
+          <show>private</show>
+          <nohelp>true</nohelp>
         </configuration>
       </plugin>
+
 
       <plugin>
         <groupId>de.thetaphi</groupId>
@@ -763,13 +598,81 @@
     </dependencies>
   </dependencyManagement>
 
-  <dependencies/>
-
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/shared/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/shared/trunk</developerConnection>
-    <url>http://svn.apache.org/viewvc/directory/shared/trunk</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/shared/tags/1.0.0-RC2</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/shared/tags/1.0.0-RC2</developerConnection>
+    <url>http://svn.apache.org/viewvc/directory/shared/tags/1.0.0-RC2</url>
   </scm>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <configuration>
+          <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
+          <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+        </configuration>
+        
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>dependencies</report>
+              <report>scm</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+     
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <inherited>false</inherited>
+        <configuration>
+          <aggregate>true</aggregate>
+          <inputEncoding>UTF-8</inputEncoding>
+          <outputEncoding>UTF-8</outputEncoding>
+          <windowTitle>Apache LDAP API ${project.version} Cross Reference</windowTitle>
+          <docTitle>Apache LDAP API ${project.version} Cross Reference</docTitle>
+        </configuration>
+      </plugin>
+ 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <windowtitle>Apache LDAP API ${project.version} API Documentation</windowtitle>
+          <doctitle>Apache LDAP API ${project.version} API Documentation</doctitle>
+          <minmemory>512m</minmemory>
+          <maxmemory>1g</maxmemory>
+          <linksource>true</linksource>
+          <tags>
+            <tag>
+              <name>todo</name>
+              <!-- todo tag for all places -->
+              <placement>a</placement>
+              <head>To do:</head>
+            </tag>
+          </tags>
+          <source>1.7</source>
+          <excludePackageNames>org.apache.directory.api.ldap.model.schema.syntaxes</excludePackageNames>
+          <show>public</show>
+        </configuration>
+
+        <reportSets>
+          <reportSet>
+            <id>apidocs</id>
+            <inherited>false</inherited>
+            <reports>
+              <report>aggregate</report>
+              <report>test-aggregate</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+
+      </plugin>
+    </plugins>
+  </reporting>
 
   <profiles>
     <profile>
