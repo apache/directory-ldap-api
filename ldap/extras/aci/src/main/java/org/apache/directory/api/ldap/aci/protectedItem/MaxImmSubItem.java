@@ -40,7 +40,6 @@ public class MaxImmSubItem extends ProtectedItem
     /** The maximum number of allowed subordinates */
     private final int value;
 
-
     /**
      * Creates a new instance.
      * 
@@ -71,6 +70,7 @@ public class MaxImmSubItem extends ProtectedItem
     {
         int hash = 37;
         hash = hash * 17 + value;
+
         return hash;
     }
 
@@ -89,6 +89,7 @@ public class MaxImmSubItem extends ProtectedItem
         if ( o instanceof MaxImmSubItem )
         {
             MaxImmSubItem that = ( MaxImmSubItem ) o;
+
             return this.value == that.value;
         }
 

@@ -53,7 +53,7 @@ public enum SyncStateTypeEnum
      * 
      * @param value the integer value of the enumeration.
      */
-    private SyncStateTypeEnum( int value )
+    SyncStateTypeEnum( int value )
     {
         this.value = value;
     }

@@ -70,7 +70,7 @@ public enum AuthenticationLevel
      * @param level The level
      * @param name The associated name
      */
-    private AuthenticationLevel( int level, String name )
+    AuthenticationLevel( int level, String name )
     {
         this.level = level;
         this.name = name;

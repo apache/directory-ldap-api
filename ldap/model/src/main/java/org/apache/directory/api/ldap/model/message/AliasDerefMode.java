@@ -61,7 +61,7 @@ public enum AliasDerefMode
      * 
      * @param value the integer value of the enumeration.
      */
-    private AliasDerefMode( int value, String jndiValue )
+    AliasDerefMode( int value, String jndiValue )
     {
         this.value = value;
         this.jndiValue = jndiValue;

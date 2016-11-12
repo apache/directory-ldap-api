@@ -329,7 +329,23 @@ public final class AttributeTypeHelper
             // We inherit from the superior's syntax, if any
             if ( attributeType.getSuperior() != null )
             {
-                attributeType.setSyntax( attributeType.getSuperior().getSyntax() );
+                if ( attributeType.getSuperior().getSyntax() != null )
+                {
+                    attributeType.setSyntax( attributeType.getSuperior().getSyntax() );
+                }
+                else
+                {
+                    String msg = I18n.err( I18n.ERR_04306, syntaxOid, attributeType.getName() );
+
+                    LdapSchemaException ldapSchemaException = new LdapSchemaException(
+                        LdapSchemaExceptionCodes.AT_NONEXISTENT_SYNTAX, msg );
+                    ldapSchemaException.setSourceObject( attributeType );
+                    ldapSchemaException.setRelatedId( syntaxOid );
+                    errors.add( ldapSchemaException );
+                    LOG.info( msg );
+                    
+                    return;
+                }
             }
             else
             {

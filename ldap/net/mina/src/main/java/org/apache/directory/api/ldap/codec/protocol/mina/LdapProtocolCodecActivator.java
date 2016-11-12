@@ -45,7 +45,7 @@ public class LdapProtocolCodecActivator implements BundleActivator
         private ServiceRegistration<?> registration;
 
 
-        public LdapApiServiceTracker( BundleContext context )
+        LdapApiServiceTracker( BundleContext context )
         {
             this.bundleContext = context;
         }

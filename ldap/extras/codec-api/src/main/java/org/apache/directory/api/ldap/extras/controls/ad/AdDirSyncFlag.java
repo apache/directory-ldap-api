@@ -26,17 +26,17 @@ package org.apache.directory.api.ldap.extras.controls.ad;
  */
 public enum AdDirSyncFlag
 {
-    DEFAULT (0x0000),
-    LDAP_DIRSYNC_OBJECT_SECURITY (0x0001),
-    LDAP_DIRSYNC_ANCESTORS_FIRST_ORDER (0x0800),
-    LDAP_DIRSYNC_PUBLIC_DATA_ONLY (0x2000),
-    LDAP_DIRSYNC_INCREMENTAL_VALUES (0x7FFFFFFF);
+    DEFAULT( 0x0000 ),
+    LDAP_DIRSYNC_OBJECT_SECURITY( 0x0001 ),
+    LDAP_DIRSYNC_ANCESTORS_FIRST_ORDER( 0x0800 ),
+    LDAP_DIRSYNC_PUBLIC_DATA_ONLY( 0x2000 ),
+    LDAP_DIRSYNC_INCREMENTAL_VALUES( 0x7FFFFFFF );
 
     /** The interned value */
     private int value;
     
     /** A private constructor that associates a value to each flag */
-    private AdDirSyncFlag( int value )
+    AdDirSyncFlag( int value )
     {
         this.value = value;
     }

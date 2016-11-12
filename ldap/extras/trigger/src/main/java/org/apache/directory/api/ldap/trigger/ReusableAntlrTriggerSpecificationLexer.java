@@ -53,7 +53,7 @@ class ReusableAntlrTriggerSpecificationLexer extends AntlrTriggerSpecificationLe
      * @param in
      *            the input to the lexer
      */
-    public ReusableAntlrTriggerSpecificationLexer( Reader in )
+    ReusableAntlrTriggerSpecificationLexer( Reader in )
     {
         super( in );
         savedCaseSensitive = getCaseSensitive();

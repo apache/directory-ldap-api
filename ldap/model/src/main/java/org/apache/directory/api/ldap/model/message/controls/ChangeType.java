@@ -59,7 +59,7 @@ public enum ChangeType
      *
      * @param value The value for the ChangeType.
      */
-    private ChangeType( int value )
+    ChangeType( int value )
     {
         this.value = value;
     }

@@ -73,7 +73,7 @@ public enum Loggers
      * Creates a new instance of LdapSecurityConstants.
      * @param name the associated name
      */
-    private Loggers( String name )
+    Loggers( String name )
     {
         this.name = name;
     }

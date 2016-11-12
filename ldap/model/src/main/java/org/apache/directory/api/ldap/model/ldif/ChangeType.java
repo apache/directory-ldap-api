@@ -75,7 +75,7 @@ public enum ChangeType
      *
      * @param changeType The associated value 
      */
-    private ChangeType( int changeType )
+    ChangeType( int changeType )
     {
         this.changeType = changeType;
     }

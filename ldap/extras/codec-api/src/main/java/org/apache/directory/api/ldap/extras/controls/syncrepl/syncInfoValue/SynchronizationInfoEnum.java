@@ -50,7 +50,7 @@ public enum SynchronizationInfoEnum
      * 
      * @param value the integer value of the enumeration.
      */
-    private SynchronizationInfoEnum( int value )
+    SynchronizationInfoEnum( int value )
     {
         this.value = value;
     }

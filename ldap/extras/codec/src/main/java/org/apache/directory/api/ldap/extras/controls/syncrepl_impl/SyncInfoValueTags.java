@@ -41,7 +41,7 @@ public enum SyncInfoValueTags
      * Create the private instance
      * @param value The internal tag value
      */
-    private SyncInfoValueTags( int value )
+    SyncInfoValueTags( int value )
     {
         this.value = value;
     }

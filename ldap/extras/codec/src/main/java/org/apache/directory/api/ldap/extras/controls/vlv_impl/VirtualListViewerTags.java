@@ -37,7 +37,7 @@ public enum VirtualListViewerTags
     private int value;
 
 
-    private VirtualListViewerTags( int value )
+    VirtualListViewerTags( int value )
     {
         this.value = value;
     }

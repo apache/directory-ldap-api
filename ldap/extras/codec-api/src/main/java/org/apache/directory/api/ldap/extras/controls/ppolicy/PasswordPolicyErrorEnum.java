@@ -42,7 +42,7 @@ public enum PasswordPolicyErrorEnum
     private int value;
 
 
-    private PasswordPolicyErrorEnum( int value )
+    PasswordPolicyErrorEnum( int value )
     {
         this.value = value;
     }

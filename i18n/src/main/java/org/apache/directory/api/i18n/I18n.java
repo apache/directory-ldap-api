@@ -785,7 +785,7 @@ public enum I18n
      * 
      * @param errorCode the error code
      */
-    private I18n( String errorCode )
+    I18n( String errorCode )
     {
         this.errorCode = errorCode;
     }

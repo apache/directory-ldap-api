@@ -40,13 +40,10 @@ public class ItemPermission extends Permission
     /**
      * Creates a new instance
      * 
-     * @param precedence
-     *            the precedence of this permission (<tt>-1</tt> to use the
-     *            default)
-     * @param grantsAndDenials
-     *            the collection of {@link GrantAndDenial}s
-     * @param userClasses
-     *            the collection of {@link UserClass}es
+     * @param precedence the precedence of this permission (<tt>-1</tt> to use the
+     *         default)
+     * @param grantsAndDenials the collection of {@link GrantAndDenial}s
+     * @param userClasses the collection of {@link UserClass}es
      */
     public ItemPermission( Integer precedence, Collection<GrantAndDenial> grantsAndDenials,
         Collection<UserClass> userClasses )

@@ -329,7 +329,7 @@ class WrappedReferralException extends ReferralException
     private LdapReferralException lre;
 
 
-    public WrappedReferralException( LdapReferralException lre )
+    WrappedReferralException( LdapReferralException lre )
     {
         this.lre = lre;
     }
@@ -399,7 +399,7 @@ class WrappedPartialResultException extends PartialResultException
     private LdapPartialResultException lpre;
 
 
-    public WrappedPartialResultException( LdapPartialResultException lpre )
+    WrappedPartialResultException( LdapPartialResultException lpre )
     {
         this.lpre = lpre;
     }

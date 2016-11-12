@@ -278,7 +278,7 @@ public enum UniversalTag
      *
      * @param value The tag value
      */
-    private UniversalTag( byte value )
+    UniversalTag( byte value )
     {
         this.value = value;
     }

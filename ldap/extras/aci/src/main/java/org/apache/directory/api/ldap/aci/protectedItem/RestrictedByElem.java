@@ -36,7 +36,6 @@ public class RestrictedByElem
     /** The list of allowed AttributeType values */
     private AttributeType valuesIn;
 
-
     /**
      * Creates a new instance.
      * 
@@ -80,8 +79,17 @@ public class RestrictedByElem
     public int hashCode()
     {
         int hash = 37;
-        hash = hash * 17 + attributeType.hashCode();
-        hash = hash * 17 + valuesIn.hashCode();
+        
+        if ( attributeType != null )
+        {
+            hash = hash * 17 + attributeType.hashCode();
+        }
+        
+        if ( valuesIn != null )
+        {
+            hash = hash * 17 + valuesIn.hashCode();
+        }
+
         return hash;
     }
 
@@ -92,11 +100,6 @@ public class RestrictedByElem
     @Override
     public boolean equals( Object o )
     {
-        if ( o == null )
-        {
-            return false;
-        }
-
         if ( this == o )
         {
             return true;
@@ -105,37 +108,37 @@ public class RestrictedByElem
         if ( o instanceof RestrictedByElem )
         {
             RestrictedByElem that = ( RestrictedByElem ) o;
-            if ( this.attributeType == null )
+
+            if ( attributeType == null )
             {
                 if ( that.attributeType == null )
                 {
-                    if ( this.valuesIn == null )
+                    if ( valuesIn == null ) 
                     {
                         return that.valuesIn == null;
                     }
                     else
                     {
-                        return this.valuesIn.equals( that.valuesIn );
+                        return valuesIn.equals( that.valuesIn );
                     }
                 }
-                return false;
             }
             else
             {
-                if ( this.attributeType.equals( that.attributeType ) )
+                if ( attributeType.equals( that.attributeType ) )
                 {
-                    if ( this.valuesIn == null )
+                    if ( valuesIn == null )
                     {
                         return that.valuesIn == null;
                     }
                     else
                     {
-                        return this.valuesIn.equals( that.valuesIn );
+                        return valuesIn.equals( that.valuesIn );
                     }
                 }
-                return false;
             }
         }
+
         return false;
     }
 
@@ -146,6 +149,32 @@ public class RestrictedByElem
     @Override
     public String toString()
     {
-        return "{ type " + attributeType.getName() + ", valuesIn " + valuesIn.getName() + " }";
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append( "{ type " );
+        
+        if ( attributeType != null )
+        {
+            sb.append( attributeType.getName() );
+        }
+        else
+        {
+            sb.append( "null" );
+        }
+        
+        sb.append( ", valuesIn " );
+
+        if ( valuesIn != null )
+        {
+            sb.append( valuesIn.getName() );
+        }
+        else
+        {
+            sb.append( "null" );
+        }
+        
+        sb.append( "}" );
+        
+        return sb.toString();
     }
 }

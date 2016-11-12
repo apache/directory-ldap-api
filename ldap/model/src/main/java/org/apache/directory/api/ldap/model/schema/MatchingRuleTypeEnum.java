@@ -57,7 +57,7 @@ public enum MatchingRuleTypeEnum
     /**
      * Create an instance of MatchingRuleTypeEnum
      */
-    private MatchingRuleTypeEnum( String oid )
+    MatchingRuleTypeEnum( String oid )
     {
         this.oid = oid;
     }

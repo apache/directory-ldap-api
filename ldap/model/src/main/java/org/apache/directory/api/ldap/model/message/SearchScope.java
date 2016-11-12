@@ -56,7 +56,7 @@ public enum SearchScope
      * @param scope the scope constant
      * @param ldapUrlValue LDAP URL scope string value: base, one, or sub
      */
-    private SearchScope( int scope, String ldapUrlValue )
+    SearchScope( int scope, String ldapUrlValue )
     {
         this.scope = scope;
         this.ldapUrlValue = ldapUrlValue;

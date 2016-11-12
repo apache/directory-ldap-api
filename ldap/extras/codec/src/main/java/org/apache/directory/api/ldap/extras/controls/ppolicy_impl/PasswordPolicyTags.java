@@ -41,7 +41,7 @@ public enum PasswordPolicyTags
     private int value;
 
 
-    private PasswordPolicyTags( int value )
+    PasswordPolicyTags( int value )
     {
         this.value = value;
     }

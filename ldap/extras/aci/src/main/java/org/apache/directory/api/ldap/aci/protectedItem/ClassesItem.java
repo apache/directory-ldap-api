@@ -39,7 +39,6 @@ public class ClassesItem extends ProtectedItem
     /** The classes refinement. */
     private final ExprNode classes;
 
-
     /**
      * Creates a new instance.
      * 
@@ -69,7 +68,16 @@ public class ClassesItem extends ProtectedItem
     public int hashCode()
     {
         int hash = 37;
-        hash = hash * 17 + getClass().getName().hashCode();
+        
+        if ( classes != null )
+        {
+            hash = hash * 17 + classes.hashCode();
+        }
+        else
+        {
+            hash = hash * 17 + getClass().getName().hashCode();
+        }
+
         return hash;
     }
 
@@ -88,7 +96,13 @@ public class ClassesItem extends ProtectedItem
         if ( o instanceof ClassesItem )
         {
             ClassesItem that = ( ClassesItem ) o;
-            return this.classes.equals( that.classes );
+            
+            if ( classes == null )
+            {
+                return that.classes == null;
+            }
+
+            return classes.equals( that.classes );
         }
 
         return false;
@@ -104,7 +118,11 @@ public class ClassesItem extends ProtectedItem
         StringBuilder buf = new StringBuilder();
 
         buf.append( "classes " );
-        classes.printRefinementToBuffer( buf );
+        
+        if ( classes != null )
+        {
+            classes.printRefinementToBuffer( buf );
+        }
 
         return buf.toString();
     }
