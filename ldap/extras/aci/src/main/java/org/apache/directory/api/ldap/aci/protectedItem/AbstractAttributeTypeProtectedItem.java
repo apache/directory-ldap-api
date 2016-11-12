@@ -104,7 +104,20 @@ public abstract class AbstractAttributeTypeProtectedItem extends ProtectedItem
             
             if ( attributeTypes != null )
             {
-                return attributeTypes.equals( that.attributeTypes );
+                if ( ( that.attributeTypes == null ) || ( that.attributeTypes.size() != attributeTypes.size() ) )
+                {
+                    return false;
+                }
+                
+                for ( AttributeType attributeType : attributeTypes )
+                {
+                    if ( !that.attributeTypes.contains( attributeType ) )
+                    {
+                        return false;
+                    }
+                }
+                
+                return true;
             }
             else
             {

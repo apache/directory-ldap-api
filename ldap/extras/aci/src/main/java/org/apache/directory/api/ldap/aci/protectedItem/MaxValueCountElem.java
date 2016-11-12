@@ -80,7 +80,11 @@ public class MaxValueCountElem
     {
         int hash = 37;
         hash = hash * 17 + maxCount;
-        hash = hash * 17 + attributeType.hashCode();
+        
+        if ( attributeType != null )
+        {
+            hash = hash * 17 + attributeType.hashCode();
+        }
         
         return hash;
     }
@@ -124,6 +128,22 @@ public class MaxValueCountElem
     @Override
     public String toString()
     {
-        return "{ type " + attributeType.getName() + ", maxCount " + maxCount + " }";
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append( "{ type " );
+        
+        if ( attributeType != null )
+        {
+            sb.append( attributeType.getName() );
+        }
+        else
+        {
+            sb.append( "null" );
+        }
+        
+        sb.append( ", maxCount " ).append( maxCount );
+        sb.append( "}" );
+        
+        return sb.toString();
     }
 }
