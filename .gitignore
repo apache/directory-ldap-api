@@ -13,3 +13,6 @@ out/
 /bootstrap
 /dependencies.xml
 .java-version
+META-INF/
+dependency-reduced-pom.xml
+
