@@ -149,7 +149,7 @@ public class RuntimeMultiException extends RuntimeException
                 out.println( "\n\t<<========= Next Nested Exception" + " ========>>\n" );
             }
 
-            throwable.printStackTrace();
+            throwable.printStackTrace( out );
         }
 
         out.println( "\n\t<<========= Last Nested Exception" + " ========>>\n" );
@@ -181,7 +181,7 @@ public class RuntimeMultiException extends RuntimeException
                 out.println( "\n\t<<========= Next Nested Exception" + " ========>>\n" );
             }
 
-            throwable.printStackTrace();
+            throwable.printStackTrace( out );
         }
 
         out.println( "\n\t<<========= Last Nested Exception" + " ========>>\n" );

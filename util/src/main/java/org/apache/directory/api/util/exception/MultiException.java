@@ -139,7 +139,7 @@ public class MultiException extends Exception
                 out.println( "\n\t<<========= Next Nested Exception" + " ========>>\n" );
             }
 
-            throwable.printStackTrace();
+            throwable.printStackTrace( out );
         }
 
         out.println( "\n\t<<========= Last Nested Exception" + " ========>>\n" );
@@ -171,7 +171,7 @@ public class MultiException extends Exception
                 out.println( "\n\t<<========= Next Nested Exception" + " ========>>\n" );
             }
 
-            throwable.printStackTrace();
+            throwable.printStackTrace( out );
         }
 
         out.println( "\n\t<<========= Last Nested Exception" + " ========>>\n" );
