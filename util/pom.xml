@@ -80,6 +80,16 @@
           </instructions>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>de.thetaphi</groupId>
+        <artifactId>forbiddenapis</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>**/MultiExceptionTest.class</exclude>
+            <exclude>**/RuntimeMultiExceptionTest.class</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>
