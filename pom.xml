@@ -302,7 +302,7 @@
       <plugin>
         <groupId>de.thetaphi</groupId>
         <artifactId>forbiddenapis</artifactId>
-        <version>2.0</version>
+        <version>${forbiddenapis.version}</version>
         <configuration>
           <internalRuntimeForbidden>false</internalRuntimeForbidden>
           <failOnUnsupportedJava>true</failOnUnsupportedJava>
@@ -559,12 +559,6 @@
         <groupId>antlr</groupId>
         <artifactId>antlr</artifactId>
         <version>${antlr.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>de.thetaphi</groupId>
-        <artifactId>forbiddenapis</artifactId>
-        <version>${forbiddenapis.version}</version>
       </dependency>
 
       <dependency>
