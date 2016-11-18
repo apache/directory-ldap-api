@@ -47,8 +47,7 @@ public class NotImplementedException extends RuntimeException
     /**
      * Constructs an Exception with a detailed message.
      * 
-     * @param msg
-     *            The message associated with the exception.
+     * @param msg The message associated with the exception.
      */
     public NotImplementedException( String msg )
     {

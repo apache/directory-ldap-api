@@ -39,7 +39,7 @@ public class MultiException extends Exception
     static final long serialVersionUID = 2889747406899775761L;
 
     /** Collection of nested exceptions. */
-    private Collection<Throwable> nestedExceptions = new ArrayList<Throwable>();
+    private final Collection<Throwable> nestedExceptions = new ArrayList<>();
 
 
     /**
@@ -54,8 +54,7 @@ public class MultiException extends Exception
     /**
      * Constructs an Exception with a detailed message.
      * 
-     * @param message
-     *            The message associated with the exception.
+     * @param message The message associated with the exception.
      */
     public MultiException( String message )
     {
@@ -99,10 +98,9 @@ public class MultiException extends Exception
 
 
     /**
-     * Add an exeception to this multiexception.
+     * Add an exception to this multiexception.
      * 
-     * @param nested
-     *            exception to add to this MultiException.
+     * @param nested exception to add to this MultiException.
      */
     public void addThrowable( Throwable nested )
     {
@@ -118,9 +116,9 @@ public class MultiException extends Exception
      * Beside printing out the standard stack trace this method prints out the
      * stack traces of all the nested exceptions.
      * 
-     * @param out
-     *            PrintWriter to write the nested stack trace to.
+     * @param out PrintWriter to write the nested stack trace to.
      */
+    @Override
     public void printStackTrace( PrintWriter out )
     {
         super.printStackTrace( out );
@@ -150,9 +148,9 @@ public class MultiException extends Exception
      * Beside printing out the standard stack trace this method prints out the
      * stack traces of all the nested exceptions.
      * 
-     * @param out
-     *            PrintStream to write the nested stack trace to.
+     * @param out PrintStream to write the nested stack trace to.
      */
+    @Override
     public void printStackTrace( PrintStream out )
     {
         super.printStackTrace( out );
@@ -182,6 +180,7 @@ public class MultiException extends Exception
      * Beside printing out the standard stack trace this method prints out the
      * stack traces of all the nested exceptions using standard error.
      */
+    @Override
     public void printStackTrace()
     {
         this.printStackTrace( System.err );
