@@ -31,15 +31,22 @@ import org.apache.directory.api.i18n.I18n;
 public class InvalidCharacterException extends IOException
 {
     private static final long serialVersionUID = 1L;
-    private int input;
+    private final int input;
 
-
+    /**
+     * Creates a new instance of an InvalidCharacterException
+     * 
+     * @param input The char that has caused the exception
+     */
     public InvalidCharacterException( int input )
     {
         this.input = input;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getMessage()
     {

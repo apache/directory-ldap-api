@@ -39,7 +39,7 @@ public class RuntimeMultiException extends RuntimeException
     private static final long serialVersionUID = 8582253398936366771L;
 
     /** Collection of nested exceptions. */
-    private Collection<Throwable> nestedExceptions = new ArrayList<>();
+    private final Collection<Throwable> nestedExceptions = new ArrayList<>();
 
 
     /**
@@ -111,8 +111,7 @@ public class RuntimeMultiException extends RuntimeException
     /**
      * Add an exeception to this multiexception.
      * 
-     * @param nested
-     *            exception to add to this MultiException.
+     * @param nested exception to add to this MultiException.
      */
     public void addThrowable( Throwable nested )
     {
@@ -128,8 +127,7 @@ public class RuntimeMultiException extends RuntimeException
      * Beside printing out the standard stack trace this method prints out the
      * stack traces of all the nested exceptions.
      * 
-     * @param out
-     *            PrintWriter to write the nested stack trace to.
+     * @param out PrintWriter to write the nested stack trace to.
      */
     @Override
     public void printStackTrace( PrintWriter out )
@@ -161,8 +159,7 @@ public class RuntimeMultiException extends RuntimeException
      * Beside printing out the standard stack trace this method prints out the
      * stack traces of all the nested exceptions.
      * 
-     * @param out
-     *            PrintStream to write the nested stack trace to.
+     * @param out PrintStream to write the nested stack trace to.
      */
     @Override
     public void printStackTrace( PrintStream out )
