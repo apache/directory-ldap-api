@@ -35,7 +35,6 @@ import org.apache.directory.api.ldap.model.schema.comparators.ByteArrayComparato
 import org.apache.directory.api.ldap.model.schema.comparators.StringComparator;
 import org.apache.directory.api.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.OctetStringSyntaxChecker;
-import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -58,10 +57,10 @@ public class ValueSerializationTest
     private static byte[] data = new byte[]
         { 0x01, 0x02, 0x03, 0x04 };
     BinaryValue bv1 = new BinaryValue( data );
-    BinaryValue bv2 = new BinaryValue( StringConstants.EMPTY_BYTES );
+    BinaryValue bv2 = new BinaryValue( Strings.EMPTY_BYTES );
     BinaryValue bv3 = new BinaryValue( ( byte[] ) null );
     BinaryValue bv1n = new BinaryValue( data );
-    BinaryValue bv2n = new BinaryValue( StringConstants.EMPTY_BYTES );
+    BinaryValue bv2n = new BinaryValue( Strings.EMPTY_BYTES );
     BinaryValue bv3n = new BinaryValue( ( byte[] ) null );
     StringValue sv1 = new StringValue( "test" );
     StringValue sv2 = new StringValue( "" );

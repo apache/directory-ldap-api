@@ -38,7 +38,6 @@ import javax.naming.directory.InvalidAttributeValueException;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
-import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -641,10 +640,10 @@ public class AttributeTest
 
         Attribute attr2 = new DefaultAttribute( "test" );
 
-        nbAdded = attr2.add( StringConstants.EMPTY_BYTES );
+        nbAdded = attr2.add( Strings.EMPTY_BYTES );
         assertEquals( 1, nbAdded );
         assertFalse( attr2.isHumanReadable() );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, attr2.getBytes() ) );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, attr2.getBytes() ) );
         assertEquals( 1, attr2.size() );
 
         Attribute attr3 = new DefaultAttribute( "test" );
@@ -1179,10 +1178,10 @@ public class AttributeTest
 
         Attribute attr2 = new DefaultAttribute( "test" );
 
-        nbAdded = attr2.add( StringConstants.EMPTY_BYTES );
+        nbAdded = attr2.add( Strings.EMPTY_BYTES );
         assertEquals( 1, nbAdded );
         assertFalse( attr2.isHumanReadable() );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, attr2.getBytes() ) );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, attr2.getBytes() ) );
 
         Attribute attr3 = new DefaultAttribute( "test" );
 

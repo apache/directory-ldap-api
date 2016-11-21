@@ -26,7 +26,7 @@ import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.OctetStringSyntaxChecker;
-import org.apache.directory.api.util.StringConstants;
+import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -53,7 +53,7 @@ public class OctetStringSyntaxCheckerTest
     @Test
     public void testEmptyOctetString()
     {
-        assertTrue( checker.isValidSyntax( StringConstants.EMPTY_BYTES ) );
+        assertTrue( checker.isValidSyntax( Strings.EMPTY_BYTES ) );
     }
 
 

@@ -31,7 +31,7 @@ import java.io.ObjectOutputStream;
 import org.apache.directory.api.ldap.model.ldif.LdifControl;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.OpaqueControl;
-import org.apache.directory.api.util.StringConstants;
+import org.apache.directory.api.util.Strings;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -71,7 +71,7 @@ public class LdifControlSerializationTest
 
         controlCriticalEmptyData = new OpaqueControl( "1.2.3.4.3" );
         controlCriticalEmptyData.setCritical( true );
-        ( ( OpaqueControl ) controlCriticalEmptyData ).setEncodedValue( StringConstants.EMPTY_BYTES );
+        ( ( OpaqueControl ) controlCriticalEmptyData ).setEncodedValue( Strings.EMPTY_BYTES );
 
         controlNoCriticalWithData = new OpaqueControl( "1.2.3.4.4" );
         controlNoCriticalWithData.setCritical( false );

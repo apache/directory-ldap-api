@@ -1034,7 +1034,7 @@ public class LdapUrl
     {
         if ( bytes == null )
         {
-            return StringConstants.EMPTY_BYTES;
+            return Strings.EMPTY_BYTES;
         }
 
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
