@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.model.message.controls;
 
 
-import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 
 import java.util.Arrays;
@@ -63,7 +62,7 @@ public class PagedResultsImpl extends AbstractControl implements PagedResults
     private int size;
 
     /** The exchanged cookie */
-    private byte[] cookie = StringConstants.EMPTY_BYTES;
+    private byte[] cookie = Strings.EMPTY_BYTES;
 
 
     /**

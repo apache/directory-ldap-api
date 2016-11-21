@@ -39,7 +39,6 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.util.Chars;
 import org.apache.directory.api.util.Hex;
 import org.apache.directory.api.util.Serialize;
-import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.api.util.Unicode;
 import org.slf4j.Logger;
@@ -1309,7 +1308,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
             if ( chars.length == 1 )
             {
                 // The value is only containing a #
-                return StringConstants.EMPTY_BYTES;
+                return Strings.EMPTY_BYTES;
             }
 
             if ( ( chars.length % 2 ) != 1 )

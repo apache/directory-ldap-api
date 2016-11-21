@@ -27,7 +27,6 @@ import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.UuidSyntaxChecker;
-import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,7 +54,7 @@ public class UuidSyntaxCheckerTest
     @Test
     public void testEmptyUuid()
     {
-        assertFalse( checker.isValidSyntax( StringConstants.EMPTY_BYTES ) );
+        assertFalse( checker.isValidSyntax( Strings.EMPTY_BYTES ) );
     }
 
 
