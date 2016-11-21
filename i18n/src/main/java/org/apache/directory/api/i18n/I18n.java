@@ -804,11 +804,11 @@ public enum I18n
 
     /** The file containing the errors */
     private static final ResourceBundle ERR_BUNDLE = ResourceBundle
-        .getBundle( "org/apache/directory/api/i18n/errors" );
+        .getBundle( "org/apache/directory/api/i18n/errors", Locale.ROOT );
 
     /** The file containing the messages */
     private static final ResourceBundle MSG_BUNDLE = ResourceBundle
-        .getBundle( "org/apache/directory/api/i18n/messages" );
+        .getBundle( "org/apache/directory/api/i18n/messages", Locale.ROOT );
 
 
     /**
