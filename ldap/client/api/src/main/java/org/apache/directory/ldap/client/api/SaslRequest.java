@@ -28,7 +28,6 @@ import java.util.List;
 import org.apache.directory.api.ldap.model.constants.SaslQoP;
 import org.apache.directory.api.ldap.model.constants.SaslSecurityStrength;
 import org.apache.directory.api.ldap.model.message.Control;
-import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 
 
@@ -136,7 +135,7 @@ public abstract class SaslRequest
         }
         else
         {
-            return StringConstants.EMPTY_BYTES;
+            return Strings.EMPTY_BYTES;
         }
     }
 
