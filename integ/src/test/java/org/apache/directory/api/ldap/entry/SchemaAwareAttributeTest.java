@@ -791,10 +791,10 @@ public class SchemaAwareAttributeTest
 
         Attribute attr2 = new DefaultAttribute( atPwd );
 
-        nbAdded = attr2.add( StringConstants.EMPTY_BYTES );
+        nbAdded = attr2.add( Strings.EMPTY_BYTES );
         assertEquals( 1, nbAdded );
         assertFalse( attr2.isHumanReadable() );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, attr2.getBytes() ) );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, attr2.getBytes() ) );
 
         Attribute attr3 = new DefaultAttribute( atPwd );
 
@@ -1159,10 +1159,10 @@ public class SchemaAwareAttributeTest
 
         Attribute attr2 = new DefaultAttribute( atPwd );
 
-        nbAdded = attr2.add( StringConstants.EMPTY_BYTES );
+        nbAdded = attr2.add( Strings.EMPTY_BYTES );
         assertEquals( 1, nbAdded );
         assertFalse( attr2.isHumanReadable() );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, attr2.getBytes() ) );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, attr2.getBytes() ) );
 
         Attribute attr3 = new DefaultAttribute( atPwd );
 

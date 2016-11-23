@@ -34,7 +34,7 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
-import org.apache.directory.api.util.StringConstants;
+import org.apache.directory.api.util.Strings;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -85,10 +85,10 @@ public class SchemaAwareValueSerializationTest
         userCertificate = schemaManager.getAttributeType( "userCertificate" );
 
         bv1 = new BinaryValue( userCertificate, DATA );
-        bv2 = new BinaryValue( userCertificate, StringConstants.EMPTY_BYTES );
+        bv2 = new BinaryValue( userCertificate, Strings.EMPTY_BYTES );
         bv3 = new BinaryValue( userCertificate, null );
         bv1n = new BinaryValue( userCertificate, DATA );
-        bv2n = new BinaryValue( userCertificate, StringConstants.EMPTY_BYTES );
+        bv2n = new BinaryValue( userCertificate, Strings.EMPTY_BYTES );
         bv3n = new BinaryValue( userCertificate, null );
         sv1 = new StringValue( cn, "test" );
         sv2 = new StringValue( dc, "" );
