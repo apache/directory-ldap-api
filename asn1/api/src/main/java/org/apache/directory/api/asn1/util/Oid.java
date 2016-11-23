@@ -249,7 +249,7 @@ public final class Oid
                             result[pos--] = ( byte ) ( ( oidBytes[2] << 4 ) | ( ( oidBytes[3] & 0x78 ) >> 3 ) );
                             result[pos--] = ( byte ) ( ( oidBytes[1] << 3 ) | ( ( oidBytes[2] & 0x70 ) >> 4 ) );
                             result[pos--] = ( byte ) ( ( oidBytes[0] << 2 ) | ( ( oidBytes[1] & 0x60 ) >> 5 ) );
-                            result[pos--] = ( byte ) ( ( oidBytes[0] & 0x40 ) >> 6 );
+                            result[pos] = ( byte ) ( ( oidBytes[0] & 0x40 ) >> 6 );
                             break;
                             
                         case 6 :
@@ -258,7 +258,7 @@ public final class Oid
                             result[pos--] = ( byte ) ( ( oidBytes[2] << 5 ) | ( ( oidBytes[3] & 0x7C ) >> 2 ) );
                             result[pos--] = ( byte ) ( ( oidBytes[1] << 4 ) | ( ( oidBytes[2] & 0x78 ) >> 3 ) );
                             result[pos--] = ( byte ) ( ( oidBytes[0] << 3 ) | ( ( oidBytes[1] & 0x70 ) >> 4 ) );
-                            result[pos--] = ( byte ) ( ( oidBytes[0] & 0x60 ) >> 5 );
+                            result[pos] = ( byte ) ( ( oidBytes[0] & 0x60 ) >> 5 );
                             break;
 
                         case 5 :
@@ -266,29 +266,29 @@ public final class Oid
                             result[pos--] = ( byte ) ( ( oidBytes[2] << 6 ) | ( ( oidBytes[3] & 0x7E ) >> 1 ) );
                             result[pos--] = ( byte ) ( ( oidBytes[1] << 5 ) | ( ( oidBytes[2] & 0x7C ) >> 2 ) );
                             result[pos--] = ( byte ) ( ( oidBytes[0] << 4 ) | ( ( oidBytes[1] & 0x78 ) >> 3 ) );
-                            result[pos--] = ( byte ) ( ( oidBytes[0] & 0x70 ) >> 4 );
+                            result[pos] = ( byte ) ( ( oidBytes[0] & 0x70 ) >> 4 );
                             break;
                             
                         case 4 :
                             result[pos--] = ( byte ) ( ( oidBytes[2] << 7 ) | ( oidBytes[3] & 0x7F ) );
                             result[pos--] = ( byte ) ( ( oidBytes[1] << 6 ) | ( ( oidBytes[2] & 0x7E ) >> 1 ) );
                             result[pos--] = ( byte ) ( ( oidBytes[0] << 5 ) | ( ( oidBytes[1] & 0x7C ) >> 2 ) );
-                            result[pos--] = ( byte ) ( ( oidBytes[0] & 0x78 ) >> 3 );
+                            result[pos] = ( byte ) ( ( oidBytes[0] & 0x78 ) >> 3 );
                             break;
                             
                         case 3 :
                             result[pos--] = ( byte ) ( ( oidBytes[1] << 7 ) | ( oidBytes[2] & 0x7F ) );
                             result[pos--] = ( byte ) ( ( oidBytes[0] << 6 ) | ( ( oidBytes[1] & 0x7E ) >> 1 ) );
-                            result[pos--] = ( byte ) ( ( oidBytes[0] & 0x7C ) >> 2 );
+                            result[pos] = ( byte ) ( ( oidBytes[0] & 0x7C ) >> 2 );
                             break;
 
                         case 2 :
                             result[pos--] = ( byte ) ( ( oidBytes[0] << 7 ) | ( oidBytes[1] & 0x7F ) );
-                            result[pos--] = ( byte ) ( ( oidBytes[0] & 0x7E ) >> 1 );
+                            result[pos] = ( byte ) ( ( oidBytes[0] & 0x7E ) >> 1 );
                             break;
                             
                         case 1 :
-                            result[pos--] = ( byte ) ( oidBytes[0] & 0x7F );
+                            result[pos] = ( byte ) ( oidBytes[0] & 0x7F );
                             break;
                             
                         default :
@@ -296,7 +296,7 @@ public final class Oid
                             break;
                     }
                     
-                    BigInteger bigInteger = null;
+                    BigInteger bigInteger;
                     
                     if ( ( result[0] & 0x80 ) == 0x80 )
                     {
@@ -352,7 +352,6 @@ public final class Oid
     
                     // normal processing
                     builder.append( '.' ).append( value );
-                    value = 0;
                 }
                 
                 valStart = i;
@@ -621,16 +620,17 @@ public final class Oid
     {
         char c = oid.charAt( pos );
         
-        switch ( c )
+        if ( c == '.' )
         {
-            case '.' :
-                // The first 2 arcs are single digit, we can collapse them in one byte.
-                buffer[0] = ( byte ) ( 80 + buffer[1] );
-                return OidFSAState.STATE_K;
-                
-            default :
-                // Expecting a digit here
-                throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "a digit is expected" ) );
+            // The first 2 arcs are single digit, we can collapse them in one byte.
+            buffer[0] = ( byte ) ( 80 + buffer[1] );
+            
+            return OidFSAState.STATE_K;
+        }
+        else
+        {
+            // Expecting a digit here
+            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "a digit is expected" ) );
         }
     }
     
@@ -756,14 +756,14 @@ public final class Oid
     {
         char c = oid.charAt( pos );
         
-        switch ( c )
+        if ( c == '.' )
         {
-            case '.' :
                 return OidFSAState.STATE_K;
-                
-            default :
-                // Expecting a '.' here
-                throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "a '.' is expected" ) );
+        }
+        else
+        {
+            // Expecting a '.' here
+            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "a '.' is expected" ) );
         }
     }
 
@@ -1078,7 +1078,7 @@ public final class Oid
         int startArc = 0;
         
         // The number of bytes in the resulting OID byte[]
-        int nbBytes = 0;
+        int nbBytes;
         
         for ( int i = 0; i < oidString.length(); i++ )
         {
