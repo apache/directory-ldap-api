@@ -778,6 +778,13 @@ public enum I18n
     /** The error code */
     private String errorCode;
 
+    /** The file containing the errors */
+    private static final ResourceBundle ERR_BUNDLE = ResourceBundle
+        .getBundle( "org/apache/directory/api/i18n/errors", Locale.ROOT );
+
+    /** The file containing the messages */
+    private static final ResourceBundle MSG_BUNDLE = ResourceBundle
+        .getBundle( "org/apache/directory/api/i18n/messages", Locale.ROOT );
 
     /**
      * Creates a new instance of I18n.
@@ -800,14 +807,6 @@ public enum I18n
     {
         return errorCode;
     }
-
-    /** The file containing the errors */
-    private static final ResourceBundle ERR_BUNDLE = ResourceBundle
-        .getBundle( "org/apache/directory/api/i18n/errors", Locale.ROOT );
-
-    /** The file containing the messages */
-    private static final ResourceBundle MSG_BUNDLE = ResourceBundle
-        .getBundle( "org/apache/directory/api/i18n/messages", Locale.ROOT );
 
 
     /**
