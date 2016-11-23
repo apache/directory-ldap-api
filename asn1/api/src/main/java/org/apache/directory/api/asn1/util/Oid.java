@@ -353,7 +353,6 @@ public final class Oid
     
                     // normal processing
                     builder.append( '.' ).append( value );
-                    value = 0;
                 }
                 
                 valStart = i;
