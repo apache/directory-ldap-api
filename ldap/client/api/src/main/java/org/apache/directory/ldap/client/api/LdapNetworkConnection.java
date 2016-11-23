@@ -1090,7 +1090,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         LOG.debug( "Anonymous Bind request" );
 
         // Create the BindRequest
-        BindRequest bindRequest = createBindRequest( StringConstants.EMPTY, StringConstants.EMPTY_BYTES );
+        BindRequest bindRequest = createBindRequest( StringConstants.EMPTY, Strings.EMPTY_BYTES );
 
         BindResponse bindResponse = bind( bindRequest );
 
@@ -1122,7 +1122,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         LOG.debug( "Anonymous asynchronous Bind request" );
 
         // Create the BindRequest
-        BindRequest bindRequest = createBindRequest( StringConstants.EMPTY, StringConstants.EMPTY_BYTES );
+        BindRequest bindRequest = createBindRequest( StringConstants.EMPTY, Strings.EMPTY_BYTES );
 
         return bindAsync( bindRequest );
     }
@@ -1141,7 +1141,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         LOG.debug( "Bind request : {}", name );
 
         // Create the BindRequest
-        BindRequest bindRequest = createBindRequest( name, StringConstants.EMPTY_BYTES );
+        BindRequest bindRequest = createBindRequest( name, Strings.EMPTY_BYTES );
 
         return bindAsync( bindRequest );
     }
@@ -1182,7 +1182,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         LOG.debug( "Bind request : {}", name );
 
         // Create the BindRequest
-        BindRequest bindRequest = createBindRequest( name, StringConstants.EMPTY_BYTES );
+        BindRequest bindRequest = createBindRequest( name, Strings.EMPTY_BYTES );
 
         return bindAsync( bindRequest );
     }
