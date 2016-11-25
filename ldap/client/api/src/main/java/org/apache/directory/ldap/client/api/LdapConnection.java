@@ -840,6 +840,7 @@ public interface LdapConnection extends Closeable
      * @return true if there is a non-null future exists, false otherwise
      * @deprecated Use {@link #isRequestCompleted(int)}
      */
+    @Deprecated
     boolean doesFutureExistFor( int messageId );
 
 

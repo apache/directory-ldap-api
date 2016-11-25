@@ -551,7 +551,7 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     @Override
     public boolean doesFutureExistFor( int messageId )
     {
-        return connection.doesFutureExistFor( messageId );
+        return connection.isRequestCompleted( messageId );
     }
 
 

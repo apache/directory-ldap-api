@@ -32,8 +32,7 @@ import org.apache.directory.api.ldap.model.name.Dn;
 
 
 /**
- * 
- * TODO MonitoringLdapConnection.
+ * A class used to monitor the use of a LdapConnection
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

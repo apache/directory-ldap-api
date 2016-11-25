@@ -34,7 +34,7 @@ public class LdapRequestUnsuccessfulException extends RuntimeException
 {
     private static final long serialVersionUID = 1982294624076306127L;
 
-    private ResultResponse response;
+    private final transient ResultResponse response;
 
 
     public LdapRequestUnsuccessfulException( ResultResponse response )

@@ -1056,9 +1056,9 @@ public class LdifAnonymizer
         LdifAnonymizer anonymizer = new LdifAnonymizer();
 
         String ldifString = null;
+        FileInputStream fis = new FileInputStream( args[0] );
 
-        try ( BufferedReader br = new BufferedReader( new InputStreamReader( new FileInputStream( args[0] ),
-            Charset.defaultCharset() ) ) )
+        try ( BufferedReader br = new BufferedReader( new InputStreamReader( fis, Charset.defaultCharset() ) ) )
         {
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
@@ -1071,6 +1071,10 @@ public class LdifAnonymizer
             }
 
             ldifString = sb.toString();
+        }
+        finally
+        {
+            fis.close();
         }
 
         String result = anonymizer.anonymize( ldifString );

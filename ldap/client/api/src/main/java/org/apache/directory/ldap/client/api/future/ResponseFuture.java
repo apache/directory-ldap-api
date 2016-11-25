@@ -22,11 +22,9 @@ package org.apache.directory.ldap.client.api.future;
 
 
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import org.apache.directory.api.ldap.model.message.Response;
 import org.apache.directory.ldap.client.api.LdapConnection;
@@ -103,7 +101,7 @@ public class ResponseFuture<R extends Response> implements Future<Response>
      * @throws InterruptedException if the operation has been cancelled by client
      */
     @Override
-    public R get() throws InterruptedException, ExecutionException
+    public R get() throws InterruptedException
     {
         return queue.take();
     }
@@ -113,7 +111,7 @@ public class ResponseFuture<R extends Response> implements Future<Response>
      * {@inheritDoc}
      * @throws InterruptedException if the operation has been cancelled by client
      */
-    public void set( R response ) throws InterruptedException, ExecutionException
+    public void set( R response ) throws InterruptedException
     {
         queue.add( response );
     }
@@ -124,7 +122,7 @@ public class ResponseFuture<R extends Response> implements Future<Response>
      * @throws InterruptedException if the operation has been cancelled by client
      */
     @Override
-    public R get( long timeout, TimeUnit unit ) throws InterruptedException, ExecutionException, TimeoutException
+    public R get( long timeout, TimeUnit unit ) throws InterruptedException
     {
         return queue.poll( timeout, unit );
     }
