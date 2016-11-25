@@ -123,6 +123,7 @@ public class ValidatingPoolableLdapConnectionFactory extends AbstractPoolableLda
      * 
      * @throws LdapException If unable to connect.
      */
+    @Override
     public MonitoringLdapConnection makeObject() throws LdapException
     {
         LOG.debug( "Creating a LDAP connection" );
@@ -138,6 +139,7 @@ public class ValidatingPoolableLdapConnectionFactory extends AbstractPoolableLda
      * 
      * @throws LdapException If unable to reconfigure and rebind.
      */
+    @Override
     public void passivateObject( LdapConnection connection ) throws LdapException
     {
         LOG.debug( "Passivating {}", connection );

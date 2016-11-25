@@ -118,6 +118,28 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
 
     /**
+     * Creates a new instance of NetworkSchemaLoader.
+     *
+     * @param connection the LDAP connection
+     * @param subschemaSubentryDn The SubschemaSubentry
+     * @throws LdapException if the connection is not authenticated or if there are any problems
+     *                   while loading the schema entries
+     */
+    public DefaultSchemaLoader( LdapConnection connection, Dn subschemaSubentryDn ) throws LdapException
+    {
+        if ( !connection.isAuthenticated() )
+        {
+            throw new IllegalArgumentException( "connection is not authenticated" );
+        }
+
+        this.connection = connection;
+        this.subschemaSubentryDn = subschemaSubentryDn;
+
+        loadSchemas();
+    }
+
+
+    /**
      * Creates a new instance of DefaultSchemaLoader.
      *
      * @param connection the LDAP connection
@@ -231,28 +253,6 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
         }
 
         return false;
-    }
-
-
-    /**
-     * Creates a new instance of NetworkSchemaLoader.
-     *
-     * @param connection the LDAP connection
-     * @param subschemaSubentryDn The SubschemaSubentry
-     * @throws Exception if the connection is not authenticated or if there are any problems
-     *                   while loading the schema entries
-     */
-    public DefaultSchemaLoader( LdapConnection connection, Dn subschemaSubentryDn ) throws Exception
-    {
-        if ( !connection.isAuthenticated() )
-        {
-            throw new IllegalArgumentException( "connection is not authenticated" );
-        }
-
-        this.connection = connection;
-        this.subschemaSubentryDn = subschemaSubentryDn;
-
-        loadSchemas();
     }
 
 
@@ -638,7 +638,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     private void updateSchemas( SchemaObject schemaObject )
     {
         String schemaName = schemaObject.getSchemaName();
-        Schema schema = null;
+        Schema schema;
 
         if ( Strings.isEmpty( schemaName ) || Strings.equals( "null", schemaName ) )
         {
@@ -665,9 +665,10 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadAttributeTypes( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> attributeTypeEntries = new ArrayList<Entry>();
+        List<Entry> attributeTypeEntries = new ArrayList<>();
 
         if ( schemas == null )
         {
@@ -702,9 +703,10 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadComparators( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> comparatorEntries = new ArrayList<Entry>();
+        List<Entry> comparatorEntries = new ArrayList<>();
 
         if ( schemas == null )
         {
@@ -736,9 +738,10 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadDitContentRules( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> ditContentRuleEntries = new ArrayList<Entry>();
+        List<Entry> ditContentRuleEntries = new ArrayList<>();
 
         if ( schemas == null )
         {
@@ -773,9 +776,10 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadDitStructureRules( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> ditStructureRuleEntries = new ArrayList<Entry>();
+        List<Entry> ditStructureRuleEntries = new ArrayList<>();
 
         if ( schemas == null )
         {
@@ -810,9 +814,10 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadMatchingRuleUses( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> matchingRuleUseEntries = new ArrayList<Entry>();
+        List<Entry> matchingRuleUseEntries = new ArrayList<>();
 
         if ( schemas == null )
         {
@@ -847,9 +852,10 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadMatchingRules( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> matchingRuleEntries = new ArrayList<Entry>();
+        List<Entry> matchingRuleEntries = new ArrayList<>();
 
         if ( schemas == null )
         {
@@ -884,9 +890,10 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadNameForms( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> nameFormEntries = new ArrayList<Entry>();
+        List<Entry> nameFormEntries = new ArrayList<>();
 
         if ( schemas == null )
         {
@@ -921,9 +928,10 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadNormalizers( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> normalizerEntries = new ArrayList<Entry>();
+        List<Entry> normalizerEntries = new ArrayList<>();
 
         if ( schemas == null )
         {
@@ -955,9 +963,10 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadObjectClasses( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> objectClassEntries = new ArrayList<Entry>();
+        List<Entry> objectClassEntries = new ArrayList<>();
 
         if ( schemas == null )
         {
@@ -992,9 +1001,10 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadSyntaxCheckers( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> syntaxCheckerEntries = new ArrayList<Entry>();
+        List<Entry> syntaxCheckerEntries = new ArrayList<>();
 
         if ( schemas == null )
         {
@@ -1026,9 +1036,10 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadSyntaxes( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> syntaxEntries = new ArrayList<Entry>();
+        List<Entry> syntaxEntries = new ArrayList<>();
 
         if ( schemas == null )
         {

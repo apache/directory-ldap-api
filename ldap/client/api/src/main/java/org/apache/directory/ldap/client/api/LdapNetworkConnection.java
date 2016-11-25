@@ -39,9 +39,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -56,7 +54,6 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.ldap.codec.api.BinaryAttributeDetector;
 import org.apache.directory.api.ldap.codec.api.DefaultConfigurableBinaryAttributeDetector;
-import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.codec.api.LdapDecoder;
@@ -210,7 +207,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     private IoSession ldapSession;
 
     /** a map to hold the ResponseFutures for all operations */
-    private Map<Integer, ResponseFuture<? extends Response>> futureMap = new ConcurrentHashMap<Integer, ResponseFuture<? extends Response>>();
+    private Map<Integer, ResponseFuture<? extends Response>> futureMap = new ConcurrentHashMap<>();
 
     /** list of controls supported by the server */
     private List<String> supportedControls;
@@ -243,114 +240,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     static final String TIME_OUT_ERROR = "TimeOut occurred";
 
     static final String NO_RESPONSE_ERROR = "The response queue has been emptied, no response was found.";
-
-
-    //--------------------------- Helper methods ---------------------------//
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isConnected()
-    {
-        return ( ldapSession != null ) && connected.get() && !ldapSession.isClosing();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isAuthenticated()
-    {
-        return isConnected() && authenticated.get();
-    }
-
-
-    /**
-     * Check that a session is valid, ie we can send requests to the
-     * server
-     *
-     * @throws Exception If the session is not valid
-     */
-    private void checkSession() throws InvalidConnectionException
-    {
-        if ( ldapSession == null )
-        {
-            throw new InvalidConnectionException( "Cannot connect on the server, the connection is null" );
-        }
-
-        if ( !connected.get() )
-        {
-            throw new InvalidConnectionException( "Cannot connect on the server, the connection is invalid" );
-        }
-    }
-
-
-    private void addToFutureMap( int messageId, ResponseFuture<? extends Response> future )
-    {
-        LOG.debug( "Adding <" + messageId + ", " + future.getClass().getName() + ">" );
-        futureMap.put( messageId, future );
-    }
-
-
-    private ResponseFuture<? extends Response> getFromFutureMap( int messageId )
-    {
-        ResponseFuture<? extends Response> future = futureMap.remove( messageId );
-
-        if ( future != null )
-        {
-            LOG.debug( "Removing <" + messageId + ", " + future.getClass().getName() + ">" );
-        }
-
-        return future;
-    }
-
-
-    private ResponseFuture<? extends Response> peekFromFutureMap( int messageId )
-    {
-        ResponseFuture<? extends Response> future = futureMap.get( messageId );
-
-        // future can be null if there was a abandon operation on that messageId
-        if ( future != null )
-        {
-            LOG.debug( "Getting <" + messageId + ", " + future.getClass().getName() + ">" );
-        }
-
-        return future;
-    }
-
-
-    /**
-     * Get the largest timeout from the search time limit and the connection
-     * timeout.
-     * 
-     * @param connectionTimoutInMS Connection timeout
-     * @param searchTimeLimitInSeconds Search timeout
-     * @return The largest timeout
-     */
-    public long getTimeout( long connectionTimoutInMS, int searchTimeLimitInSeconds )
-    {
-        if ( searchTimeLimitInSeconds < 0 )
-        {
-            return connectionTimoutInMS;
-        }
-        else if ( searchTimeLimitInSeconds == 0 )
-        {
-            if ( config.getTimeout() == 0 )
-            {
-                return Long.MAX_VALUE;
-            }
-            else
-            {
-                return config.getTimeout();
-            }
-        }
-        else
-        {
-            long searchTimeLimitInMS = searchTimeLimitInSeconds * 1000L;
-            return Math.max( searchTimeLimitInMS, connectionTimoutInMS );
-        }
-    }
-
-
+    
+    
     //------------------------- The constructors --------------------------//
     /**
      * Create a new instance of a LdapConnection on localhost,
@@ -485,6 +376,114 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     }
 
 
+    //--------------------------- Helper methods ---------------------------//
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isConnected()
+    {
+        return ( ldapSession != null ) && connected.get() && !ldapSession.isClosing();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isAuthenticated()
+    {
+        return isConnected() && authenticated.get();
+    }
+
+
+    /**
+     * Check that a session is valid, ie we can send requests to the
+     * server
+     *
+     * @throws Exception If the session is not valid
+     */
+    private void checkSession() throws InvalidConnectionException
+    {
+        if ( ldapSession == null )
+        {
+            throw new InvalidConnectionException( "Cannot connect on the server, the connection is null" );
+        }
+
+        if ( !connected.get() )
+        {
+            throw new InvalidConnectionException( "Cannot connect on the server, the connection is invalid" );
+        }
+    }
+
+
+    private void addToFutureMap( int messageId, ResponseFuture<? extends Response> future )
+    {
+        LOG.debug( "Adding <" + messageId + ", " + future.getClass().getName() + ">" );
+        futureMap.put( messageId, future );
+    }
+
+
+    private ResponseFuture<? extends Response> getFromFutureMap( int messageId )
+    {
+        ResponseFuture<? extends Response> future = futureMap.remove( messageId );
+
+        if ( future != null )
+        {
+            LOG.debug( "Removing <" + messageId + ", " + future.getClass().getName() + ">" );
+        }
+
+        return future;
+    }
+
+
+    private ResponseFuture<? extends Response> peekFromFutureMap( int messageId )
+    {
+        ResponseFuture<? extends Response> future = futureMap.get( messageId );
+
+        // future can be null if there was a abandon operation on that messageId
+        if ( future != null )
+        {
+            LOG.debug( "Getting <" + messageId + ", " + future.getClass().getName() + ">" );
+        }
+
+        return future;
+    }
+
+
+    /**
+     * Get the largest timeout from the search time limit and the connection
+     * timeout.
+     * 
+     * @param connectionTimoutInMS Connection timeout
+     * @param searchTimeLimitInSeconds Search timeout
+     * @return The largest timeout
+     */
+    public long getTimeout( long connectionTimoutInMS, int searchTimeLimitInSeconds )
+    {
+        if ( searchTimeLimitInSeconds < 0 )
+        {
+            return connectionTimoutInMS;
+        }
+        else if ( searchTimeLimitInSeconds == 0 )
+        {
+            if ( config.getTimeout() == 0 )
+            {
+                return Long.MAX_VALUE;
+            }
+            else
+            {
+                return config.getTimeout();
+            }
+        }
+        else
+        {
+            long searchTimeLimitInMS = searchTimeLimitInSeconds * 1000L;
+            return Math.max( searchTimeLimitInMS, connectionTimoutInMS );
+        }
+    }
+
+
     private static LdapConnectionConfig buildConfig( String server, int port, boolean useSsl )
     {
         LdapConnectionConfig config = new LdapConnectionConfig();
@@ -558,6 +557,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean connect() throws LdapException
     {
         if ( ( ldapSession != null ) && connected.get() )
@@ -616,7 +616,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                             // No need to wait
                             // We know that there was a permanent error such as "connection refused".
                             LOG.debug( "------>> Connection error: {}", connectionFuture.getException().getMessage() );
-                            break;
                         }
 
                         LOG.debug( "------>>   Cannot get the connection... Retrying" );
@@ -634,10 +633,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                                 config.getLdapPort(), e );
                             throw new LdapOtherException( e.getMessage(), e );
                         }
-                    }
-                    else
-                    {
-                        break;
                     }
                 }
             }
@@ -693,14 +688,16 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         // Add a listener to close the session in the session.
         closeFuture.addListener( new IoFutureListener<IoFuture>()
         {
+            @Override
             public void operationComplete( IoFuture future )
             {
                 // Process all the waiting operations and cancel them
                 LOG.debug( "received a NoD, closing everything" );
 
-                for ( int messageId : futureMap.keySet() )
+                for ( Map.Entry<Integer, ResponseFuture<? extends Response>> entry : futureMap.entrySet() )
                 {
-                    ResponseFuture<?> responseFuture = futureMap.get( messageId );
+                    int messageId = entry.getKey();
+                    ResponseFuture<?> responseFuture = entry.getValue();
                     LOG.debug( "closing {}", responseFuture );
 
                     responseFuture.cancel();
@@ -739,10 +736,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                         {
                             ( ( SearchFuture ) responseFuture ).set( SearchNoDResponse.PROTOCOLERROR );
                         }
-                    }
-                    catch ( ExecutionException e )
-                    {
-                        LOG.error( "Error while processing the NoD for {}", responseFuture );
                     }
                     catch ( InterruptedException e )
                     {
@@ -797,12 +790,13 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void close() throws IOException
     {
         // Close the session
         if ( ( ldapSession != null ) && connected.get() )
         {
-            ldapSession.close( true );
+            ldapSession.closeNow();
         }
 
         connected.set( false );
@@ -835,6 +829,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void add( Entry entry ) throws LdapException
     {
         if ( entry == null )
@@ -856,6 +851,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public AddFuture addAsync( Entry entry ) throws LdapException
     {
         if ( entry == null )
@@ -875,6 +871,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public AddResponse add( AddRequest addRequest ) throws LdapException
     {
         if ( addRequest == null )
@@ -920,18 +917,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             return addResponse;
         }
-        catch ( TimeoutException te )
-        {
-            // Send an abandon request
-            if ( !addFuture.isCancelled() )
-            {
-                abandon( addRequest.getMessageId() );
-            }
-
-            // We didn't received anything : this is an error
-            LOG.error( "Add failed : timeout occurred" );
-            throw new LdapException( TIME_OUT_ERROR, te );
-        }
         catch ( Exception ie )
         {
             // Catch all other exceptions
@@ -951,6 +936,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public AddFuture addAsync( AddRequest addRequest ) throws LdapException
     {
         if ( addRequest == null )
@@ -988,6 +974,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void abandon( int messageId )
     {
         if ( messageId < 0 )
@@ -1007,6 +994,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void abandon( AbandonRequest abandonRequest )
     {
         if ( abandonRequest == null )
@@ -1060,6 +1048,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void bind() throws LdapException
     {
         LOG.debug( "Bind request" );
@@ -1076,6 +1065,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void anonymousBind() throws LdapException
     {
         LOG.debug( "Anonymous Bind request" );
@@ -1092,6 +1082,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindFuture bindAsync() throws LdapException
     {
         LOG.debug( "Asynchronous Bind request" );
@@ -1106,6 +1097,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindFuture anonymousBindAsync() throws LdapException
     {
         LOG.debug( "Anonymous asynchronous Bind request" );
@@ -1139,6 +1131,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindFuture bindAsync( String name, String credentials ) throws LdapException
     {
         LOG.debug( "Bind request : {}", name );
@@ -1179,6 +1172,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindFuture bindAsync( Dn name, String credentials ) throws LdapException
     {
         LOG.debug( "Bind request : {}", name );
@@ -1200,6 +1194,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindResponse bind( BindRequest bindRequest ) throws LdapException
     {
         if ( bindRequest == null )
@@ -1240,12 +1235,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             return bindResponse;
         }
-        catch ( TimeoutException te )
-        {
-            // We didn't received anything : this is an error
-            LOG.error( "Bind failed : timeout occurred" );
-            throw new LdapException( TIME_OUT_ERROR, te );
-        }
         catch ( Exception ie )
         {
             // Catch all other exceptions
@@ -1276,6 +1265,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindFuture bindAsync( BindRequest bindRequest ) throws LdapException
     {
         if ( bindRequest == null )
@@ -1382,12 +1372,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             return bindResponse;
         }
-        catch ( TimeoutException te )
-        {
-            // We didn't received anything : this is an error
-            LOG.error( "Bind failed : timeout occurred" );
-            throw new LdapException( TIME_OUT_ERROR, te );
-        }
         catch ( Exception ie )
         {
             // Catch all other exceptions
@@ -1444,12 +1428,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             }
 
             return bindResponse;
-        }
-        catch ( TimeoutException te )
-        {
-            // We didn't received anything : this is an error
-            LOG.error( "Bind failed : timeout occurred" );
-            throw new LdapException( TIME_OUT_ERROR, te );
         }
         catch ( Exception ie )
         {
@@ -1522,12 +1500,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             return bindResponse;
         }
-        catch ( TimeoutException te )
-        {
-            // We didn't received anything : this is an error
-            LOG.error( "Bind failed : timeout occurred" );
-            throw new LdapException( TIME_OUT_ERROR, te );
-        }
         catch ( Exception ie )
         {
             // Catch all other exceptions
@@ -1584,12 +1556,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             }
 
             return bindResponse;
-        }
-        catch ( TimeoutException te )
-        {
-            // We didn't received anything : this is an error
-            LOG.error( "Bind failed : timeout occurred" );
-            throw new LdapException( TIME_OUT_ERROR, te );
         }
         catch ( Exception ie )
         {
@@ -1660,6 +1626,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             final SaslGssApiRequest requetFinal = request;
             return ( BindFuture ) Subject.doAs( loginContext.getSubject(), new PrivilegedExceptionAction<Object>()
             {
+                @Override
                 public Object run() throws Exception
                 {
                     return bindSasl( requetFinal );
@@ -1676,6 +1643,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public EntryCursor search( Dn baseDn, String filter, SearchScope scope, String... attributes )
         throws LdapException
     {
@@ -1702,6 +1670,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public EntryCursor search( String baseDn, String filter, SearchScope scope, String... attributes )
         throws LdapException
     {
@@ -1712,6 +1681,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchFuture searchAsync( Dn baseDn, String filter, SearchScope scope, String... attributes )
         throws LdapException
     {
@@ -1732,6 +1702,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchFuture searchAsync( String baseDn, String filter, SearchScope scope, String... attributes )
         throws LdapException
     {
@@ -1742,6 +1713,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchFuture searchAsync( SearchRequest searchRequest ) throws LdapException
     {
         if ( searchRequest == null )
@@ -1793,6 +1765,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchCursor search( SearchRequest searchRequest ) throws LdapException
     {
         if ( searchRequest == null )
@@ -1816,6 +1789,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unBind() throws LdapException
     {
         // If the session has not been establish, or is closed, we get out immediately
@@ -1835,9 +1809,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         // Use this for logging instead: WriteFuture unbindFuture = ldapSession.write( unbindRequest );
         WriteFuture unbindFuture = ldapSession.write( unbindRequest );
 
-        //LOG.debug( "waiting for unbindFuture" );
         unbindFuture.awaitUninterruptibly( timeout );
-        //LOG.debug( "unbindFuture done" );
 
         authenticated.set( false );
 
@@ -1857,8 +1829,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         }
         catch ( IOException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOG.error( e.getMessage() );
+            throw new LdapException( e.getMessage() );
         }
 
         connected.set( false );
@@ -1885,6 +1857,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setTimeOut( long timeout )
     {
         if ( timeout <= 0 )
@@ -1926,7 +1899,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             }
         }
 
-        session.close( true );
+        session.closeNow();
     }
 
 
@@ -1980,7 +1953,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( isNoD )
         {
             // close the session
-            session.close( true );
+            session.closeNow();
 
             return;
         }
@@ -2131,7 +2104,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 break;
 
             case INTERMEDIATE_RESPONSE:
-                IntermediateResponse intermediateResponse = null;
+                IntermediateResponse intermediateResponse;
 
                 if ( responseFuture instanceof SearchFuture )
                 {
@@ -2287,6 +2260,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void modify( Entry entry, ModificationOperation modOp ) throws LdapException
     {
         if ( entry == null )
@@ -2314,6 +2288,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void modify( Dn dn, Modification... modifications ) throws LdapException
     {
         if ( dn == null )
@@ -2346,6 +2321,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void modify( String dn, Modification... modifications ) throws LdapException
     {
         modify( new Dn( dn ), modifications );
@@ -2355,6 +2331,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyResponse modify( ModifyRequest modRequest ) throws LdapException
     {
         if ( modRequest == null )
@@ -2399,18 +2376,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             return modifyResponse;
         }
-        catch ( TimeoutException te )
-        {
-            // Send an abandon request
-            if ( !modifyFuture.isCancelled() )
-            {
-                abandon( modRequest.getMessageId() );
-            }
-
-            // We didn't received anything : this is an error
-            LOG.error( "Modify failed : timeout occurred" );
-            throw new LdapException( TIME_OUT_ERROR, te );
-        }
         catch ( Exception ie )
         {
             // Catch all other exceptions
@@ -2430,6 +2395,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyFuture modifyAsync( ModifyRequest modRequest ) throws LdapException
     {
         if ( modRequest == null )
@@ -2465,6 +2431,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void rename( String entryDn, String newRdn ) throws LdapException
     {
         rename( entryDn, newRdn, true );
@@ -2474,6 +2441,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void rename( Dn entryDn, Rdn newRdn ) throws LdapException
     {
         rename( entryDn, newRdn, true );
@@ -2483,6 +2451,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void rename( String entryDn, String newRdn, boolean deleteOldRdn ) throws LdapException
     {
         if ( entryDn == null )
@@ -2514,6 +2483,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void rename( Dn entryDn, Rdn newRdn, boolean deleteOldRdn ) throws LdapException
     {
         if ( entryDn == null )
@@ -2544,6 +2514,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void move( String entryDn, String newSuperiorDn ) throws LdapException
     {
         if ( entryDn == null )
@@ -2575,6 +2546,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void move( Dn entryDn, Dn newSuperiorDn ) throws LdapException
     {
         if ( entryDn == null )
@@ -2595,7 +2567,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         modDnRequest.setName( entryDn );
         modDnRequest.setNewSuperior( newSuperiorDn );
 
-        //TODO not setting the below value is resulting in error
         modDnRequest.setNewRdn( entryDn.getRdn() );
 
         ModifyDnResponse modifyDnResponse = modifyDn( modDnRequest );
@@ -2607,6 +2578,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void moveAndRename( Dn entryDn, Dn newDn ) throws LdapException
     {
         moveAndRename( entryDn, newDn, true );
@@ -2616,6 +2588,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void moveAndRename( String entryDn, String newDn ) throws LdapException
     {
         moveAndRename( new Dn( entryDn ), new Dn( newDn ), true );
@@ -2625,6 +2598,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void moveAndRename( Dn entryDn, Dn newDn, boolean deleteOldRdn ) throws LdapException
     {
         // Check the parameters first
@@ -2675,6 +2649,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void moveAndRename( String entryDn, String newDn, boolean deleteOldRdn ) throws LdapException
     {
         moveAndRename( new Dn( entryDn ), new Dn( newDn ), true );
@@ -2684,6 +2659,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnResponse modifyDn( ModifyDnRequest modDnRequest ) throws LdapException
     {
         if ( modDnRequest == null )
@@ -2722,18 +2698,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             return modifyDnResponse;
         }
-        catch ( TimeoutException te )
-        {
-            // Send an abandon request
-            if ( !modifyDnFuture.isCancelled() )
-            {
-                abandon( modDnRequest.getMessageId() );
-            }
-
-            // We didn't received anything : this is an error
-            LOG.error( "Modify failed : timeout occurred" );
-            throw new LdapException( TIME_OUT_ERROR, te );
-        }
         catch ( Exception ie )
         {
             // Catch all other exceptions
@@ -2753,6 +2717,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnFuture modifyDnAsync( ModifyDnRequest modDnRequest ) throws LdapException
     {
         if ( modDnRequest == null )
@@ -2795,6 +2760,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void delete( String dn ) throws LdapException
     {
         delete( new Dn( dn ) );
@@ -2804,6 +2770,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void delete( Dn dn ) throws LdapException
     {
         DeleteRequest deleteRequest = new DeleteRequestImpl();
@@ -2885,6 +2852,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public DeleteResponse delete( DeleteRequest deleteRequest ) throws LdapException
     {
         if ( deleteRequest == null )
@@ -2923,18 +2891,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             return delResponse;
         }
-        catch ( TimeoutException te )
-        {
-            // Send an abandon request
-            if ( !deleteFuture.isCancelled() )
-            {
-                abandon( deleteRequest.getMessageId() );
-            }
-
-            // We didn't received anything : this is an error
-            LOG.error( "Del failed : timeout occurred" );
-            throw new LdapException( TIME_OUT_ERROR, te );
-        }
         catch ( Exception ie )
         {
             // Catch all other exceptions
@@ -2954,6 +2910,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public DeleteFuture deleteAsync( DeleteRequest deleteRequest ) throws LdapException
     {
         if ( deleteRequest == null )
@@ -2990,6 +2947,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean compare( String dn, String attributeName, String value ) throws LdapException
     {
         return compare( new Dn( dn ), attributeName, value );
@@ -2999,6 +2957,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean compare( String dn, String attributeName, byte[] value ) throws LdapException
     {
         return compare( new Dn( dn ), attributeName, value );
@@ -3008,6 +2967,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean compare( String dn, String attributeName, Value<?> value ) throws LdapException
     {
         return compare( new Dn( dn ), attributeName, value );
@@ -3017,6 +2977,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean compare( Dn dn, String attributeName, String value ) throws LdapException
     {
         CompareRequest compareRequest = new CompareRequestImpl();
@@ -3033,6 +2994,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean compare( Dn dn, String attributeName, byte[] value ) throws LdapException
     {
         CompareRequest compareRequest = new CompareRequestImpl();
@@ -3049,6 +3011,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean compare( Dn dn, String attributeName, Value<?> value ) throws LdapException
     {
         CompareRequest compareRequest = new CompareRequestImpl();
@@ -3073,6 +3036,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareResponse compare( CompareRequest compareRequest ) throws LdapException
     {
         if ( compareRequest == null )
@@ -3111,18 +3075,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             return compareResponse;
         }
-        catch ( TimeoutException te )
-        {
-            // Send an abandon request
-            if ( !compareFuture.isCancelled() )
-            {
-                abandon( compareRequest.getMessageId() );
-            }
-
-            // We didn't received anything : this is an error
-            LOG.error( "Compare failed : timeout occurred" );
-            throw new LdapException( TIME_OUT_ERROR, te );
-        }
         catch ( Exception ie )
         {
             // Catch all other exceptions
@@ -3142,6 +3094,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareFuture compareAsync( CompareRequest compareRequest ) throws LdapException
     {
         if ( compareRequest == null )
@@ -3178,6 +3131,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedResponse extended( String oid ) throws LdapException
     {
         return extended( oid, null );
@@ -3187,6 +3141,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedResponse extended( String oid, byte[] value ) throws LdapException
     {
         try
@@ -3205,6 +3160,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedResponse extended( Oid oid ) throws LdapException
     {
         return extended( oid, null );
@@ -3214,6 +3170,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedResponse extended( Oid oid, byte[] value ) throws LdapException
     {
         ExtendedRequest extendedRequest =
@@ -3225,6 +3182,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedResponse extended( ExtendedRequest extendedRequest ) throws LdapException
     {
         if ( extendedRequest == null )
@@ -3269,21 +3227,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             }
 
             // Decode the payload now
-            ExtendedResponseDecorator<?> decoratedResponse = codec.decorate( response );
-
-            return decoratedResponse;
-        }
-        catch ( TimeoutException te )
-        {
-            // Send an abandon request
-            if ( !extendedFuture.isCancelled() )
-            {
-                abandon( extendedRequest.getMessageId() );
-            }
-
-            // We didn't received anything : this is an error
-            LOG.error( "Extended failed : timeout occurred" );
-            throw new LdapException( TIME_OUT_ERROR, te );
+            return codec.decorate( response );
         }
         catch ( Exception ie )
         {
@@ -3304,6 +3248,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedFuture extendedAsync( ExtendedRequest extendedRequest ) throws LdapException
     {
         if ( extendedRequest == null )
@@ -3332,6 +3277,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean exists( String dn ) throws LdapException
     {
         return exists( new Dn( dn ) );
@@ -3341,6 +3287,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean exists( Dn dn ) throws LdapException
     {
         try
@@ -3364,6 +3311,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry getRootDse() throws LdapException
     {
         return lookup( Dn.ROOT_DSE, SchemaConstants.ALL_USER_ATTRIBUTES_ARRAY );
@@ -3373,6 +3321,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry getRootDse( String... attributes ) throws LdapException
     {
         return lookup( Dn.ROOT_DSE, attributes );
@@ -3382,6 +3331,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry lookup( Dn dn ) throws LdapException
     {
         return lookup( dn, SchemaConstants.ALL_USER_ATTRIBUTES_ARRAY );
@@ -3391,6 +3341,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry lookup( String dn ) throws LdapException
     {
         return lookup( dn, SchemaConstants.ALL_USER_ATTRIBUTES_ARRAY );
@@ -3400,6 +3351,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry lookup( Dn dn, String... attributes ) throws LdapException
     {
         return lookup( dn, null, attributes );
@@ -3409,6 +3361,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry lookup( Dn dn, Control[] controls, String... attributes ) throws LdapException
     {
         Entry entry = null;
@@ -3463,6 +3416,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry lookup( String dn, String... attributes ) throws LdapException
     {
         return lookup( new Dn( dn ), null, attributes );
@@ -3472,6 +3426,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry lookup( String dn, Control[] controls, String... attributes ) throws LdapException
     {
         return lookup( new Dn( dn ), controls, attributes );
@@ -3481,6 +3436,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isControlSupported( String controlOID ) throws LdapException
     {
         return getSupportedControls().contains( controlOID );
@@ -3490,6 +3446,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<String> getSupportedControls() throws LdapException
     {
         if ( supportedControls != null )
@@ -3502,7 +3459,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             fetchRootDSE();
         }
 
-        supportedControls = new ArrayList<String>();
+        supportedControls = new ArrayList<>();
 
         Attribute attr = rootDse.get( SchemaConstants.SUPPORTED_CONTROL_AT );
 
@@ -3531,6 +3488,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void loadSchema() throws LdapException
     {
         loadSchema( new DefaultSchemaLoader( this ) );
@@ -3540,6 +3498,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void loadSchemaRelaxed() throws LdapException
     {
         loadSchema( new DefaultSchemaLoader( this, true ) );
@@ -3602,13 +3561,18 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             {
                 loadSchema();
             }
+            
+            if ( schemaManager == null )
+            {
+                throw new LdapException( "Cannot load the schema" );
+            }
 
             OpenLdapSchemaParser olsp = new OpenLdapSchemaParser();
             olsp.setQuirksMode( true );
             olsp.parse( schemaFile );
 
             Registries registries = schemaManager.getRegistries();
-            List<Throwable> errors = new ArrayList<Throwable>();
+            List<Throwable> errors = new ArrayList<>();
 
             for ( AttributeType atType : olsp.getAttributeTypes() )
             {
@@ -3646,6 +3610,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public LdapApiService getCodecService()
     {
         return codec;
@@ -3655,6 +3620,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaManager getSchemaManager()
     {
         return schemaManager;
@@ -3716,6 +3682,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      *
      * @return the configuration of the connection
      */
+    @Override
     public LdapConnectionConfig getConfig()
     {
         return config;
@@ -3765,6 +3732,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean doesFutureExistFor( int messageId )
     {
         ResponseFuture<?> responseFuture = futureMap.get( messageId );
@@ -3775,6 +3743,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isRequestCompleted( int messageId )
     {
         ResponseFuture<?> responseFuture = futureMap.get( messageId );
@@ -3792,7 +3761,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( conCloseListeners == null )
         {
-            conCloseListeners = new ArrayList<ConnectionClosedEventListener>();
+            conCloseListeners = new ArrayList<>();
         }
 
         conCloseListeners.add( ccListener );
@@ -3802,9 +3771,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void inputClosed( IoSession session ) throws Exception 
     {
-        session.close( true );
+        session.closeNow();
     }
 
 
@@ -3814,12 +3784,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * 
      * @param session the newly created session
      */
+    @Override
     public void sessionCreated( IoSession session ) throws Exception
     {
         // Last, store the message container
         LdapMessageContainer<? extends MessageDecorator<Message>> ldapMessageContainer =
-            new LdapMessageContainer<MessageDecorator<Message>>(
-                codec, config.getBinaryAttributeDetector() );
+            new LdapMessageContainer<>( codec, config.getBinaryAttributeDetector() );
 
         session.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR, ldapMessageContainer );
     }
@@ -3837,7 +3807,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             return;
         }
 
-        ldapSession.close( true );
+        ldapSession.closeNow();
         connected.set( false );
         // Reset the messageId
         messageId.set( 0 );
@@ -4008,12 +3978,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         try
         {
-            BindResponse bindResponse = null;
-            byte[] response = null;
-            ResultCodeEnum result = null;
+            BindResponse bindResponse;
+            byte[] response;
+            ResultCodeEnum result;
 
             // Creating a map for SASL properties
-            Map<String, Object> properties = new HashMap<String, Object>();
+            Map<String, Object> properties = new HashMap<>();
 
             // Quality of Protection SASL property
             if ( saslRequest.getQualityOfProtection() != null )
@@ -4145,7 +4115,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         }
         catch ( Exception e )
         {
-            e.printStackTrace();
+            LOG.error( e.getMessage() );
             throw new LdapException( e );
         }
     }
@@ -4264,6 +4234,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public BinaryAttributeDetector getBinaryAttributeDetector()
     {
         if ( config != null )
@@ -4280,6 +4251,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setBinaryAttributeDetector( BinaryAttributeDetector binaryAttributeDetector )
     {
         if ( config != null )

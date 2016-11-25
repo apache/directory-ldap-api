@@ -45,6 +45,7 @@ public class NoVerificationTrustManager implements X509TrustManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public void checkClientTrusted( X509Certificate[] x509Certificates, String s ) throws CertificateException
     {
         LOG.debug( "checkClientTrusted {}", x509Certificates[0] );
@@ -54,6 +55,7 @@ public class NoVerificationTrustManager implements X509TrustManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public void checkServerTrusted( X509Certificate[] x509Certificates, String s ) throws CertificateException
     {
         LOG.debug( "checkServerTrusted {}", x509Certificates[0] );
@@ -63,6 +65,7 @@ public class NoVerificationTrustManager implements X509TrustManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public X509Certificate[] getAcceptedIssuers()
     {
         return new X509Certificate[0];

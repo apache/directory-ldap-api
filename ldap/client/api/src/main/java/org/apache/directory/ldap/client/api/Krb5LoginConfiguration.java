@@ -44,7 +44,7 @@ public class Krb5LoginConfiguration extends Configuration
     {
         String loginModule = "com.sun.security.auth.module.Krb5LoginModule";
 
-        HashMap<String, Object> options = new HashMap<String, Object>();
+        HashMap<String, Object> options = new HashMap<>();
 
         // TODO: this only works for Sun JVM
         options.put( "refreshKrb5Config", "true" );
@@ -60,6 +60,7 @@ public class Krb5LoginConfiguration extends Configuration
      * @param applicationName the application name
      * @return the configuration entry
      */
+    @Override
     public AppConfigurationEntry[] getAppConfigurationEntry( String applicationName )
     {
         // We will ignore the applicationName, since we want all apps to use Kerberos V5
@@ -70,6 +71,7 @@ public class Krb5LoginConfiguration extends Configuration
     /**
      * Interface method for reloading the configuration.  We don't need this.
      */
+    @Override
     public void refresh()
     {
         // Right now this is a load once scheme and we will not implement the refresh method

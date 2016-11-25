@@ -674,7 +674,7 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     public <T> List<T> search( SearchRequest searchRequest,
         EntryMapper<T> entryMapper )
     {
-        List<T> entries = new ArrayList<T>();
+        List<T> entries = new ArrayList<>();
 
         LdapConnection connection = null;
         try
