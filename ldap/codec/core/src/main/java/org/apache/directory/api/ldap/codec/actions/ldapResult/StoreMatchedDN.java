@@ -73,8 +73,8 @@ public class StoreMatchedDN extends GrammarAction<LdapMessageContainer<MessageDe
     {
         // Get the Value and store it in the BindResponse
         TLV tlv = container.getCurrentTLV();
-        Dn matchedDn = null;
-        ResultCodeEnum resultCode = null;
+        Dn matchedDn;
+        ResultCodeEnum resultCode;
 
         ResultResponse response = ( ResultResponse ) container.getMessage();
         LdapResult ldapResult = response.getLdapResult();

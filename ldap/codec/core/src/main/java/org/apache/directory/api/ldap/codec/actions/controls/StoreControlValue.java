@@ -29,7 +29,6 @@ import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.MessageDecorator;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
-import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,7 +80,7 @@ public class StoreControlValue extends GrammarAction<LdapMessageContainer<Messag
         // Store the value - have to handle the special case of a 0 length value
         if ( tlv.getLength() == 0 )
         {
-            control.setValue( StringConstants.EMPTY_BYTES );
+            control.setValue( Strings.EMPTY_BYTES );
         }
         else
         {
