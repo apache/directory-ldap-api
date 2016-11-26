@@ -49,6 +49,7 @@ public abstract class RequestDecorator<M extends Request> extends MessageDecorat
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasResponse()
     {
         return ( getDecorated() ).hasResponse();

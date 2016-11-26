@@ -48,6 +48,7 @@ public abstract class ResultResponseRequestDecorator<M extends ResultResponseReq
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasResponse()
     {
         return getDecorated().hasResponse();
@@ -57,6 +58,7 @@ public abstract class ResultResponseRequestDecorator<M extends ResultResponseReq
     /**
      * {@inheritDoc}
      */
+    @Override
     public ResultResponse getResultResponse()
     {
         return getDecorated().getResultResponse();

@@ -63,6 +63,7 @@ public abstract class ControlDecorator<E extends Control> implements CodecContro
     /**
      * {@inheritDoc}
      */
+    @Override
     public E getDecorated()
     {
         return decorated;
@@ -81,6 +82,7 @@ public abstract class ControlDecorator<E extends Control> implements CodecContro
     /**
      * {@inheritDoc}
      */
+    @Override
     public LdapApiService getCodecService()
     {
         return codec;
@@ -96,6 +98,7 @@ public abstract class ControlDecorator<E extends Control> implements CodecContro
      * 
      * @return A string which represent the control oid
      */
+    @Override
     public String getOid()
     {
         return decorated.getOid();
@@ -105,6 +108,7 @@ public abstract class ControlDecorator<E extends Control> implements CodecContro
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasValue()
     {
         return value != null;
@@ -116,6 +120,7 @@ public abstract class ControlDecorator<E extends Control> implements CodecContro
      * 
      * @return The control value
      */
+    @Override
     public byte[] getValue()
     {
         return value;
@@ -127,6 +132,7 @@ public abstract class ControlDecorator<E extends Control> implements CodecContro
      * 
      * @param value The encoded control value to store
      */
+    @Override
     public void setValue( byte[] value )
     {
         if ( value != null )
@@ -147,6 +153,7 @@ public abstract class ControlDecorator<E extends Control> implements CodecContro
      * 
      * @return <code>true</code> if the criticality flag is true.
      */
+    @Override
     public boolean isCritical()
     {
         return decorated.isCritical();
@@ -158,6 +165,7 @@ public abstract class ControlDecorator<E extends Control> implements CodecContro
      * 
      * @param criticality The criticality value
      */
+    @Override
     public void setCritical( boolean criticality )
     {
         decorated.setCritical( criticality );
@@ -171,6 +179,7 @@ public abstract class ControlDecorator<E extends Control> implements CodecContro
     /**
      * {@inheritDoc}
      */
+    @Override
     public int computeLength()
     {
         return 0;
@@ -184,6 +193,7 @@ public abstract class ControlDecorator<E extends Control> implements CodecContro
     /**
      * @see Object#hashCode()
      */
+    @Override
     public int hashCode()
     {
         return decorated.hashCode();
@@ -193,6 +203,7 @@ public abstract class ControlDecorator<E extends Control> implements CodecContro
     /**
      * @see Object#equals(Object)
      */
+    @Override
     public boolean equals( Object o )
     {
         if ( decorated == null )
@@ -209,6 +220,7 @@ public abstract class ControlDecorator<E extends Control> implements CodecContro
     /**
      * Return a String representing a Control
      */
+    @Override
     public String toString()
     {
         return decorated.toString();

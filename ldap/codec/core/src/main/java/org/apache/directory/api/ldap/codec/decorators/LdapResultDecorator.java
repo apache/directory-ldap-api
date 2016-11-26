@@ -80,6 +80,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     /**
      * {@inheritDoc}
      */
+    @Override
     public ResultCodeEnum getResultCode()
     {
         return decoratedLdapResult.getResultCode();
@@ -89,6 +90,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setResultCode( ResultCodeEnum resultCode )
     {
         decoratedLdapResult.setResultCode( resultCode );
@@ -98,6 +100,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dn getMatchedDn()
     {
         return decoratedLdapResult.getMatchedDn();
@@ -107,6 +110,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setMatchedDn( Dn dn )
     {
         decoratedLdapResult.setMatchedDn( dn );
@@ -116,6 +120,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getDiagnosticMessage()
     {
         return decoratedLdapResult.getDiagnosticMessage();
@@ -125,6 +130,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setDiagnosticMessage( String diagnosticMessage )
     {
         decoratedLdapResult.setDiagnosticMessage( diagnosticMessage );
@@ -134,6 +140,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isReferral()
     {
         return decoratedLdapResult.isReferral();
@@ -143,6 +150,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Referral getReferral()
     {
         return decoratedLdapResult.getReferral();
@@ -152,6 +160,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setReferral( Referral referral )
     {
         decoratedLdapResult.setReferral( referral );
@@ -161,6 +170,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         return decoratedLdapResult.toString();
@@ -196,6 +206,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
      *      Length(L2) + L2 + Length(0x83) + Length(L3) + L3
      * </pre>
      */
+    @Override
     public int computeLength()
     {
         if ( decoratedLdapResult.isDefaultSuccess() )
@@ -204,7 +215,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
             return DEFAULT_SUCCESS.length;
         }
 
-        int ldapResultLength = 0;
+        int ldapResultLength;
 
         // The result code
         ldapResultLength = 1 + 1 + BerValue.getNbBytes( getResultCode().getValue() );
@@ -242,6 +253,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
      * @param buffer The buffer where to put the PDU
      * @return The PDU.
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         if ( buffer == null )
@@ -288,6 +300,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     /**
      * {@inheritDoc}
      */
+    @Override
     public LdapResult getDecorated()
     {
         return decoratedLdapResult;
@@ -297,6 +310,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     /**
      * {@inheritDoc}
      */
+    @Override
     public LdapApiService getCodecService()
     {
         return codec;
@@ -306,6 +320,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isDefaultSuccess()
     {
         return decoratedLdapResult.isDefaultSuccess();

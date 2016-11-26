@@ -184,6 +184,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setFilter( ExprNode filter )
     {
         topFilter = transform( filter );
@@ -195,6 +196,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setFilter( String filter ) throws LdapException
     {
         getDecorated().setFilter( filter );
@@ -335,7 +337,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
             // Transform OR, AND or NOT leaves
             if ( filter instanceof ConnectorFilter )
             {
-                BranchNode branch = null;
+                BranchNode branch;
 
                 if ( filter instanceof AndFilter )
                 {
@@ -345,7 +347,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
                 {
                     branch = new OrNode();
                 }
-                else if ( filter instanceof NotFilter )
+                else
                 {
                     branch = new NotNode();
                 }
@@ -422,7 +424,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
 
                     if ( substrFilter.getAnySubstrings() != null )
                     {
-                        anyString = new ArrayList<String>();
+                        anyString = new ArrayList<>();
 
                         for ( String any : substrFilter.getAnySubstrings() )
                         {
@@ -482,7 +484,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
                 {
                     filter = new OrFilter();
                 }
-                else if ( exprNode instanceof NotNode )
+                else
                 {
                     filter = new NotFilter();
                 }
@@ -662,7 +664,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
             return false;
         }
 
-        if ( ( o == null ) || ( o instanceof SearchRequestDecorator ) )
+        if ( o instanceof SearchRequestDecorator )
         {
             return false;
         }
@@ -714,6 +716,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum[] getResponseTypes()
     {
         return getDecorated().getResponseTypes();
@@ -723,6 +726,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dn getBase()
     {
         return getDecorated().getBase();
@@ -732,6 +736,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setBase( Dn baseDn )
     {
         getDecorated().setBase( baseDn );
@@ -743,6 +748,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchScope getScope()
     {
         return getDecorated().getScope();
@@ -752,6 +758,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setScope( SearchScope scope )
     {
         getDecorated().setScope( scope );
@@ -763,6 +770,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public AliasDerefMode getDerefAliases()
     {
         return getDecorated().getDerefAliases();
@@ -772,6 +780,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setDerefAliases( AliasDerefMode aliasDerefAliases )
     {
         getDecorated().setDerefAliases( aliasDerefAliases );
@@ -783,6 +792,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public long getSizeLimit()
     {
         return getDecorated().getSizeLimit();
@@ -792,6 +802,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setSizeLimit( long entriesMax )
     {
         getDecorated().setSizeLimit( entriesMax );
@@ -803,6 +814,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getTimeLimit()
     {
         return getDecorated().getTimeLimit();
@@ -812,6 +824,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setTimeLimit( int secondsMax )
     {
         getDecorated().setTimeLimit( secondsMax );
@@ -823,6 +836,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean getTypesOnly()
     {
         return getDecorated().getTypesOnly();
@@ -832,6 +846,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setTypesOnly( boolean typesOnly )
     {
         getDecorated().setTypesOnly( typesOnly );
@@ -843,6 +858,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExprNode getFilter()
     {
         return getDecorated().getFilter();
@@ -852,6 +868,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<String> getAttributes()
     {
         return getDecorated().getAttributes();
@@ -861,6 +878,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest addAttributes( String... attributes )
     {
         getDecorated().addAttributes( attributes );
@@ -872,6 +890,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest removeAttribute( String attribute )
     {
         getDecorated().removeAttribute( attribute );
@@ -908,6 +927,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
      *        +--&gt; 0x04 L4-n Attribute description
      * </pre>
      */
+    @Override
     public int computeLength()
     {
         searchRequestLength = 0;
@@ -939,7 +959,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
         // The attributes description list
         attributeDescriptionListLength = 0;
 
-        if ( ( getAttributes() != null ) && ( getAttributes().size() != 0 ) )
+        if ( ( getAttributes() != null ) && ( !getAttributes().isEmpty() ) )
         {
             attributeNameBytes = new byte[getAttributes().size()][];
             int attributeNb = 0;
@@ -984,6 +1004,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
      * @param buffer The buffer where to put the PDU
      * @return The PDU.
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         try
@@ -1017,7 +1038,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
             buffer.put( UniversalTag.SEQUENCE.getValue() );
             buffer.put( TLV.getBytes( attributeDescriptionListLength ) );
 
-            if ( ( getAttributes() != null ) && ( getAttributes().size() != 0 ) )
+            if ( ( getAttributes() != null ) && ( !getAttributes().isEmpty() ) )
             {
                 // encode each attribute
                 for ( byte[] attributeBytes : attributeNameBytes )
@@ -1035,30 +1056,35 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     }
 
 
+    @Override
     public SearchResultDone getResultResponse()
     {
         return ( SearchResultDone ) getDecorated().getResultResponse();
     }
 
 
+    @Override
     public boolean hasResponse()
     {
         return getDecorated().hasResponse();
     }
 
 
+    @Override
     public void abandon()
     {
         getDecorated().abandon();
     }
 
 
+    @Override
     public boolean isAbandoned()
     {
         return getDecorated().isAbandoned();
     }
 
 
+    @Override
     public SearchRequest addAbandonListener( AbandonListener listener )
     {
         getDecorated().addAbandonListener( listener );
@@ -1070,6 +1096,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setMessageId( int messageId )
     {
         return ( SearchRequest ) super.setMessageId( messageId );
@@ -1079,6 +1106,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest addControl( Control control )
     {
         return ( SearchRequest ) super.addControl( control );
@@ -1088,6 +1116,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest addAllControls( Control[] controls )
     {
         return ( SearchRequest ) super.addAllControls( controls );
@@ -1097,6 +1126,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest removeControl( Control control )
     {
         return ( SearchRequest ) super.removeControl( control );
@@ -1106,6 +1136,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isFollowReferrals()
     {
         return getDecorated().isFollowReferrals();
@@ -1115,6 +1146,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest followReferrals()
     {
         return getDecorated().followReferrals();
@@ -1124,7 +1156,8 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
-    public boolean isIgnoreReferrals()
+    @Override
+public boolean isIgnoreReferrals()
     {
         return getDecorated().isIgnoreReferrals();
     }
@@ -1133,6 +1166,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest ignoreReferrals()
     {
         return getDecorated().ignoreReferrals();

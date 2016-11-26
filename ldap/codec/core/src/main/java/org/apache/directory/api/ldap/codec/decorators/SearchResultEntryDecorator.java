@@ -144,6 +144,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dn getObjectName()
     {
         return getDecorated().getObjectName();
@@ -153,6 +154,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setObjectName( Dn objectName )
     {
         getDecorated().setObjectName( objectName );
@@ -162,6 +164,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry getEntry()
     {
         return getDecorated().getEntry();
@@ -171,6 +174,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setEntry( Entry entry )
     {
         getDecorated().setEntry( entry );
@@ -221,6 +225,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
      *                    +--&gt; 0x04 L7-m-n value
      * </pre>
      */
+    @Override
     public int computeLength()
     {
         Dn dn = getObjectName();
@@ -237,17 +242,17 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
 
         if ( ( entry != null ) && ( entry.size() != 0 ) )
         {
-            attributeLength = new LinkedList<Integer>();
-            attributeIds = new LinkedList<byte[]>();
-            valuesLength = new LinkedList<Integer>();
+            attributeLength = new LinkedList<>();
+            attributeIds = new LinkedList<>();
+            valuesLength = new LinkedList<>();
 
             // Store those lists in the object
-            valuesLength = new LinkedList<Integer>();
+            valuesLength = new LinkedList<>();
 
             // Compute the attributes length
             for ( Attribute attribute : entry )
             {
-                int localAttributeLength = 0;
+                int localAttributeLength;
                 int localValuesLength = 0;
 
                 // Get the type length
@@ -329,6 +334,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
      * @param buffer The buffer where to put the PDU
      * @return The PDU.
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         try
@@ -375,7 +381,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
                         }
                     }
 
-                    // Go to the next attribute number;
+                    // Go to the next attribute number
                     attributeNumber++;
                 }
             }

@@ -52,7 +52,7 @@ public class SortRequestDecorator extends ControlDecorator<SortRequest> implemen
 
     private int sortReqLen = 0;
 
-    private List<Integer> sortKeyLenList = new ArrayList<Integer>();
+    private List<Integer> sortKeyLenList = new ArrayList<>();
 
     public static final int ORDERING_RULE_TAG = 0x80;
 
@@ -181,6 +181,7 @@ public class SortRequestDecorator extends ControlDecorator<SortRequest> implemen
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getValue()
     {
         if ( value == null )

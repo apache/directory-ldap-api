@@ -156,6 +156,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dn getName()
     {
         return getDecorated().getName();
@@ -165,6 +166,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest setName( Dn name )
     {
         getDecorated().setName( name );
@@ -176,6 +178,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public Collection<Modification> getModifications()
     {
         return getDecorated().getModifications();
@@ -185,6 +188,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest addModification( Modification mod )
     {
         getDecorated().addModification( mod );
@@ -196,6 +200,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest removeModification( Modification mod )
     {
         getDecorated().removeModification( mod );
@@ -207,6 +212,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest remove( String attributeName, String... attributeValue )
     {
         getDecorated().remove( attributeName, attributeValue );
@@ -229,6 +235,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest remove( Attribute attr )
     {
         getDecorated().remove( attr );
@@ -240,6 +247,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest remove( String attributeName )
     {
         getDecorated().remove( attributeName );
@@ -251,6 +259,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest addModification( Attribute attr, ModificationOperation modOp )
     {
         getDecorated().addModification( attr, modOp );
@@ -262,6 +271,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest add( String attributeName, String... attributeValue )
     {
         getDecorated().add( attributeName, attributeValue );
@@ -284,6 +294,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest add( Attribute attr )
     {
         getDecorated().add( attr );
@@ -295,6 +306,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest replace( String attributeName )
     {
         getDecorated().replace( attributeName );
@@ -306,6 +318,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest replace( String attributeName, String... attributeValue )
     {
         getDecorated().replace( attributeName, attributeValue );
@@ -328,6 +341,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest replace( Attribute attr )
     {
         getDecorated().replace( attr );
@@ -339,6 +353,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -350,6 +365,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest addControl( Control control )
     {
         return ( ModifyRequest ) super.addControl( control );
@@ -359,6 +375,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest addAllControls( Control[] controls )
     {
         return ( ModifyRequest ) super.addAllControls( controls );
@@ -368,6 +385,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest removeControl( Control control )
     {
         return ( ModifyRequest ) super.removeControl( control );
@@ -419,6 +437,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
      *                          +--&gt; 0x04 L8-2-n attributeValue
      * </pre>
      */
+    @Override
     public int computeLength()
     {
         // Initialized with name
@@ -430,11 +449,11 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
 
         Collection<Modification> modifications = getModifications();
 
-        if ( ( modifications != null ) && ( modifications.size() != 0 ) )
+        if ( ( modifications != null ) && ( !modifications.isEmpty() ) )
         {
-            changeLength = new LinkedList<Integer>();
-            modificationLength = new LinkedList<Integer>();
-            valuesLength = new LinkedList<Integer>();
+            changeLength = new LinkedList<>();
+            modificationLength = new LinkedList<>();
+            valuesLength = new LinkedList<>();
 
             for ( Modification modification : modifications )
             {
@@ -518,6 +537,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
      * @param buffer The buffer where to put the PDU
      * @return The PDU.
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         try
@@ -536,7 +556,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
             // The modifications list
             Collection<Modification> modifications = getModifications();
 
-            if ( ( modifications != null ) && ( modifications.size() != 0 ) )
+            if ( ( modifications != null ) && ( !modifications.isEmpty() ) )
             {
                 int modificationNumber = 0;
 
@@ -582,7 +602,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
                         }
                     }
 
-                    // Go to the next modification number;
+                    // Go to the next modification number
                     modificationNumber++;
                 }
             }

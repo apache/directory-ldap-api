@@ -47,13 +47,14 @@ public abstract class ResponseDecorator<M extends ResultResponse> extends Messag
     {
         super( codec, decoratedMessage );
 
-        ldapResultDecorator = new LdapResultDecorator( codec, ( ( ResultResponse ) decoratedMessage ).getLdapResult() );
+        ldapResultDecorator = new LdapResultDecorator( codec, decoratedMessage.getLdapResult() );
     }
 
 
     /**
      * @return the ldapResultDecorator
      */
+    @Override
     public LdapResult getLdapResult()
     {
         return ldapResultDecorator;

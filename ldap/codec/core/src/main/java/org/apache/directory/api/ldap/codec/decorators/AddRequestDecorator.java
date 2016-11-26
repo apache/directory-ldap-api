@@ -88,6 +88,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public AddRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -99,6 +100,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public AddRequest addControl( Control control )
     {
         return ( AddRequest ) super.addControl( control );
@@ -108,6 +110,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public AddRequest addAllControls( Control[] controls )
     {
         return ( AddRequest ) super.addAllControls( controls );
@@ -117,6 +120,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public AddRequest removeControl( Control control )
     {
         return ( AddRequest ) super.removeControl( control );
@@ -130,6 +134,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dn getEntryDn()
     {
         return getDecorated().getEntryDn();
@@ -139,6 +144,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public AddRequest setEntryDn( Dn entry )
     {
         getDecorated().setEntryDn( entry );
@@ -150,6 +156,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry getEntry()
     {
         return getDecorated().getEntry();
@@ -159,6 +166,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public AddRequest setEntry( Entry entry )
     {
         getDecorated().setEntry( entry );
@@ -276,6 +284,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
      *                    +--&gt; 0x04 L7-m-n value
      * </pre>
      */
+    @Override
     public int computeLength()
     {
         AddRequest addRequest = getDecorated();
@@ -297,15 +306,15 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
 
         if ( entry.size() != 0 )
         {
-            attributesLength = new LinkedList<Integer>();
-            attributeIds = new LinkedList<byte[]>();
-            valuesLength = new LinkedList<Integer>();
+            attributesLength = new LinkedList<>();
+            attributeIds = new LinkedList<>();
+            valuesLength = new LinkedList<>();
 
             // Compute the attributes length
             for ( Attribute attribute : entry )
             {
-                int localAttributeLength = 0;
-                int localValuesLength = 0;
+                int localAttributeLength;
+                int localValuesLength;
 
                 // Get the type length
                 byte[] attributeIdBytes = Strings.getBytesUtf8( attribute.getUpId() );
@@ -381,6 +390,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
      * 
      * @param buffer The buffer where to put the PDU
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         try
@@ -431,7 +441,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
                         BerValue.encode( buffer, Strings.EMPTY_BYTES );
                     }
 
-                    // Go to the next attribute number;
+                    // Go to the next attribute number
                     attributeNumber++;
                 }
             }

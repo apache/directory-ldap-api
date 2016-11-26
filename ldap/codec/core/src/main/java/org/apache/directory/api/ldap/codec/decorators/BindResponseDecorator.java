@@ -61,6 +61,7 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getServerSaslCreds()
     {
         return getDecorated().getServerSaslCreds();
@@ -70,6 +71,7 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setServerSaslCreds( byte[] serverSaslCreds )
     {
         getDecorated().setServerSaslCreds( serverSaslCreds );
@@ -93,6 +95,7 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
      * Length(BindResponse) = Length(0x61) + Length(L1) + L1
      * </pre>
      */
+    @Override
     public int computeLength()
     {
         BindResponse bindResponse = getDecorated();
@@ -124,6 +127,7 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
      * @return The encoded response
      * @throws EncoderException when encoding operations fail
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         BindResponse bindResponse = getDecorated();

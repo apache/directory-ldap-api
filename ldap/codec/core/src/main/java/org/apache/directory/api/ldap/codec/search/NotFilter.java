@@ -63,6 +63,7 @@ public class NotFilter extends ConnectorFilter
      * 
      * @param filter The Filter to add
      */
+    @Override
     public void addFilter( Filter filter ) throws DecoderException
     {
         if ( filterSet != null )
@@ -115,6 +116,7 @@ public class NotFilter extends ConnectorFilter
      * 
      * @return The encoded length
      */
+    @Override
     public int computeLength()
     {
         filtersLength = super.computeLength();
@@ -134,6 +136,7 @@ public class NotFilter extends ConnectorFilter
      * @param buffer The buffer where to put the PDU
      * @return The PDU.
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         if ( buffer == null )
@@ -163,9 +166,10 @@ public class NotFilter extends ConnectorFilter
      * 
      * @return The NOT filter string
      */
+    @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( '!' ).append( super.toString() );
 

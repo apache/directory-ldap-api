@@ -30,7 +30,7 @@ import org.apache.directory.api.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.util.StringConstants;
+import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -150,7 +150,7 @@ public final class PagedResultsGrammar extends AbstractGrammar<PagedResultsConta
 
                         if ( container.getCurrentTLV().getLength() == 0 )
                         {
-                            container.getDecorator().setCookie( StringConstants.EMPTY_BYTES );
+                            container.getDecorator().setCookie( Strings.EMPTY_BYTES );
                         }
                         else
                         {

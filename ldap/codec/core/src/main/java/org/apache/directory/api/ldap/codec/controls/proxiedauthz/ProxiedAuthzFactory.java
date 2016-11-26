@@ -52,6 +52,7 @@ public class ProxiedAuthzFactory implements ControlFactory<ProxiedAuthz>
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return ProxiedAuthz.OID;
@@ -61,6 +62,7 @@ public class ProxiedAuthzFactory implements ControlFactory<ProxiedAuthz>
     /**
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<ProxiedAuthz> newCodecControl()
     {
         return new ProxiedAuthzDecorator( codec );
@@ -70,6 +72,7 @@ public class ProxiedAuthzFactory implements ControlFactory<ProxiedAuthz>
     /**
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<ProxiedAuthz> newCodecControl( ProxiedAuthz control )
     {
         return new ProxiedAuthzDecorator( codec, control );

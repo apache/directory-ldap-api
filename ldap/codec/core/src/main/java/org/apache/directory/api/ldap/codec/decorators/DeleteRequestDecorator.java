@@ -65,6 +65,7 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dn getName()
     {
         return getDecorated().getName();
@@ -74,6 +75,7 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public DeleteRequest setName( Dn name )
     {
         getDecorated().setName( name );
@@ -85,6 +87,7 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public DeleteRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -96,6 +99,7 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public DeleteRequest addControl( Control control )
     {
         return ( DeleteRequest ) super.addControl( control );
@@ -105,6 +109,7 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public DeleteRequest addAllControls( Control[] controls )
     {
         return ( DeleteRequest ) super.addAllControls( controls );
@@ -114,6 +119,7 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public DeleteRequest removeControl( Control control )
     {
         return ( DeleteRequest ) super.removeControl( control );
@@ -134,6 +140,7 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
      * Length(DelRequest) = Length(0x4A) + Length(L1) + L1
      * </pre>
      */
+    @Override
     public int computeLength()
     {
         dnBytes = Strings.getBytesUtf8( getName().getName() );
@@ -154,6 +161,7 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
      * 
      * @param buffer The buffer where to put the PDU
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         try

@@ -70,6 +70,7 @@ public class IntermediateResponseDecorator extends MessageDecorator<Intermediate
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getResponseName()
     {
         return getDecorated().getResponseName();
@@ -79,6 +80,7 @@ public class IntermediateResponseDecorator extends MessageDecorator<Intermediate
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setResponseName( String oid )
     {
         getDecorated().setResponseName( oid );
@@ -88,6 +90,7 @@ public class IntermediateResponseDecorator extends MessageDecorator<Intermediate
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getResponseValue()
     {
         return getDecorated().getResponseValue();
@@ -97,6 +100,7 @@ public class IntermediateResponseDecorator extends MessageDecorator<Intermediate
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setResponseValue( byte[] value )
     {
         getDecorated().setResponseValue( value );
@@ -124,6 +128,7 @@ public class IntermediateResponseDecorator extends MessageDecorator<Intermediate
      * 
      * @return The IntermediateResponse length
      */
+    @Override
     public int computeLength()
     {
         intermediateResponseLength = 0;
@@ -159,6 +164,7 @@ public class IntermediateResponseDecorator extends MessageDecorator<Intermediate
      * 
      * @param buffer The buffer where to put the PDU
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         try

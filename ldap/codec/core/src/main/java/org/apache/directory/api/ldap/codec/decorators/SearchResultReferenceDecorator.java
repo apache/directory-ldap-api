@@ -66,6 +66,7 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
     /**
      * {@inheritDoc}
      */
+    @Override
     public Referral getReferral()
     {
         return getDecorated().getReferral();
@@ -75,6 +76,7 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setReferral( Referral referral )
     {
         getDecorated().setReferral( referral );
@@ -106,6 +108,7 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
      * 
      * @return The encoded length
      */
+    @Override
     public int computeLength()
     {
         searchResultReferenceLength = 0;
@@ -139,6 +142,7 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
      * @param buffer The buffer where to put the PDU
      * @return The PDU.
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         SearchResultReference searchResultReference = getDecorated();

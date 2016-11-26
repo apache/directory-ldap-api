@@ -88,13 +88,14 @@ public enum SubentriesStates implements States
      */
     public String getState( int state )
     {
-        return ( ( state == END_STATE.ordinal() ) ? "SUB_ENTRY_END_STATE" : name() );
+        return ( state == END_STATE.ordinal() ) ? "SUB_ENTRY_END_STATE" : name();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isEndState()
     {
         return this == END_STATE;
@@ -104,6 +105,7 @@ public enum SubentriesStates implements States
     /**
      * {@inheritDoc}
      */
+    @Override
     public SubentriesStates getStartState()
     {
         return START_STATE;

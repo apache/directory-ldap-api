@@ -65,7 +65,7 @@ public class SubstringFilter extends Filter
     private String initialSubstrings;
 
     /** The any filter. It's a list of LdapString */
-    private List<String> anySubstrings = new ArrayList<String>( 1 );
+    private List<String> anySubstrings = new ArrayList<>( 1 );
 
     /** The final filter */
     private String finalSubstrings;
@@ -227,6 +227,7 @@ public class SubstringFilter extends Filter
      * 
      * @return The encoded length
      */
+    @Override
     public int computeLength()
     {
         // The type
@@ -286,6 +287,7 @@ public class SubstringFilter extends Filter
      * @param buffer The buffer where to put the PDU
      * @return The PDU.
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         if ( buffer == null )
@@ -306,7 +308,7 @@ public class SubstringFilter extends Filter
             buffer.put( UniversalTag.SEQUENCE.getValue() );
             buffer.put( TLV.getBytes( substringsFilterSequenceLength ) );
 
-            if ( ( initialSubstrings == null ) && ( ( anySubstrings == null ) || ( anySubstrings.size() == 0 ) )
+            if ( ( initialSubstrings == null ) && ( ( anySubstrings == null ) || anySubstrings.isEmpty() )
                 && ( finalSubstrings == null ) )
             {
                 throw new EncoderException( I18n.err( I18n.ERR_04058 ) );
@@ -356,10 +358,11 @@ public class SubstringFilter extends Filter
      * 
      * @return The substring filter string
      */
+    @Override
     public String toString()
     {
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         if ( initialSubstrings != null )
         {

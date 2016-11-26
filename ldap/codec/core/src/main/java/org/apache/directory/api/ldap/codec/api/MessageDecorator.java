@@ -72,7 +72,6 @@ import org.apache.directory.api.ldap.model.message.UnbindRequest;
 /**
  * A decorator for the generic LDAP Message
  *
- * TODO make this class abstract, after finishing switch and all types and make default blow an EncoderException
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class MessageDecorator<E extends Message> implements Message, Decorator<E>, Asn1Object
@@ -96,6 +95,27 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     private final LdapApiService codec;
 
 
+    /**
+     * Makes a Message an Decorator object.
+     * 
+     * @param codec The LDAP Service instance to use
+     * @param decoratedMessage The message to decorate
+     */
+    protected MessageDecorator( LdapApiService codec, E decoratedMessage )
+    {
+        this.codec = codec;
+        this.decoratedMessage = decoratedMessage;
+        controls = new HashMap<>();
+    }
+
+
+    /**
+     * Gets the decorator associated with a given message
+     * 
+     * @param codec The LdapApiService to use
+     * @param decoratedMessage The message to decorate
+     * @return The decorator instance
+     */
     public static MessageDecorator<? extends Message> getDecorator( LdapApiService codec, Message decoratedMessage )
     {
         if ( decoratedMessage instanceof MessageDecorator )
@@ -103,7 +123,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
             return ( MessageDecorator<?> ) decoratedMessage;
         }
 
-        MessageDecorator<?> decorator = null;
+        MessageDecorator<?> decorator;
 
         switch ( decoratedMessage.getType() )
         {
@@ -210,20 +230,6 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
 
 
     /**
-     * Makes a Message an Decorator object.
-     * 
-     * @param codec The LDAP Service instance to use
-     * @param decoratedMessage The message to decorate
-     */
-    protected MessageDecorator( LdapApiService codec, E decoratedMessage )
-    {
-        this.codec = codec;
-        this.decoratedMessage = decoratedMessage;
-        controls = new HashMap<String, Control>();
-    }
-
-
-    /**
      * @param controlsLength the encoded controls length
      */
     public void setControlsLength( int controlsLength )
@@ -277,6 +283,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getType()
     {
         return decoratedMessage.getType();
@@ -286,6 +293,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<String, Control> getControls()
     {
         return controls;
@@ -295,6 +303,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     /**
      * {@inheritDoc}
      */
+    @Override
     public Control getControl( String oid )
     {
         return controls.get( oid );
@@ -304,6 +313,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasControl( String oid )
     {
         return controls.containsKey( oid );
@@ -314,6 +324,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
+    @Override
     public Message addControl( Control control )
     {
         Control decorated;
@@ -341,6 +352,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     /**
      * {@inheritDoc}
      */
+    @Override
     public Message addAllControls( Control[] controls )
     {
         for ( Control control : controls )
@@ -355,6 +367,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     /**
      * {@inheritDoc}
      */
+    @Override
     public Message removeControl( Control control )
     {
         decoratedMessage.removeControl( control );
@@ -367,6 +380,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMessageId()
     {
         return decoratedMessage.getMessageId();
@@ -376,6 +390,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object get( Object key )
     {
         return decoratedMessage.get( key );
@@ -385,6 +400,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object put( Object key, Object value )
     {
         return decoratedMessage.put( key, value );
@@ -394,6 +410,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     /**
      * {@inheritDoc}
      */
+    @Override
     public Message setMessageId( int messageId )
     {
         decoratedMessage.setMessageId( messageId );
@@ -405,6 +422,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     /**
      * Delegates to the toString() method of the decorated Message.
      */
+    @Override
     public String toString()
     {
         return decoratedMessage.toString();
@@ -414,6 +432,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     /**
      * {@inheritDoc}
      */
+    @Override
     public E getDecorated()
     {
         return decoratedMessage;
@@ -423,6 +442,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     /**
      * {@inheritDoc}
      */
+    @Override
     public LdapApiService getCodecService()
     {
         return codec;

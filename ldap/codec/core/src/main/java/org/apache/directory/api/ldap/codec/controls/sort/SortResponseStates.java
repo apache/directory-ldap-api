@@ -78,17 +78,23 @@ public enum SortResponseStates implements States
      */
     public String getState( int state )
     {
-        return ( ( state == END_STATE.ordinal() ) ? "SORT_REQUEST_END_STATE" : name() );
+        return ( state == END_STATE.ordinal() ) ? "SORT_REQUEST_END_STATE" : name();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEndState()
     {
-        return ( this == END_STATE );
+        return this == END_STATE;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Enum<?> getStartState()
     {

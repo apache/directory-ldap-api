@@ -73,6 +73,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dn getName()
     {
         return getDecorated().getName();
@@ -82,6 +83,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnRequest setName( Dn name )
     {
         getDecorated().setName( name );
@@ -93,6 +95,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     /**
      * {@inheritDoc}
      */
+    @Override
     public Rdn getNewRdn()
     {
         return getDecorated().getNewRdn();
@@ -102,6 +105,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnRequest setNewRdn( Rdn newRdn )
     {
         getDecorated().setNewRdn( newRdn );
@@ -113,6 +117,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean getDeleteOldRdn()
     {
         return getDecorated().getDeleteOldRdn();
@@ -122,6 +127,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnRequest setDeleteOldRdn( boolean deleteOldRdn )
     {
         getDecorated().setDeleteOldRdn( deleteOldRdn );
@@ -133,6 +139,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dn getNewSuperior()
     {
         return getDecorated().getNewSuperior();
@@ -142,6 +149,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnRequest setNewSuperior( Dn newSuperior )
     {
         getDecorated().setNewSuperior( newSuperior );
@@ -153,6 +161,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isMove()
     {
         return getDecorated().isMove();
@@ -162,6 +171,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -173,6 +183,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnRequest addControl( Control control )
     {
         return ( ModifyDnRequest ) super.addControl( control );
@@ -182,6 +193,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnRequest addAllControls( Control[] controls )
     {
         return ( ModifyDnRequest ) super.addAllControls( controls );
@@ -191,6 +203,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnRequest removeControl( Control control )
     {
         return ( ModifyDnRequest ) super.removeControl( control );
@@ -258,6 +271,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
      * @param buffer The buffer where to put the PDU
      * @return The PDU.
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         try

@@ -69,6 +69,7 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getResponseName()
     {
         return getDecorated().getResponseName();
@@ -78,6 +79,7 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setResponseName( String oid )
     {
         getDecorated().setResponseName( oid );
@@ -125,6 +127,7 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
      * 
      * @return The ExtendedResponse length
      */
+    @Override
     public int computeLength()
     {
         int ldapResultLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
@@ -164,6 +167,7 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
      * @param buffer The buffer where to put the PDU
      * @return The PDU.
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         try

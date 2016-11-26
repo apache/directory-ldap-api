@@ -59,7 +59,7 @@ public class AddResponseDecorator extends ResponseDecorator<AddResponse> impleme
      */
     public AddResponse getAddResponse()
     {
-        return ( AddResponse ) getDecorated();
+        return getDecorated();
     }
 
 
@@ -80,6 +80,7 @@ public class AddResponseDecorator extends ResponseDecorator<AddResponse> impleme
      * Length(AddResponse) = Length(0x69) + Length(L1) + L1
      * </pre>
      */
+    @Override
     public int computeLength()
     {
         AddResponse addResponse = getAddResponse();
@@ -97,6 +98,7 @@ public class AddResponseDecorator extends ResponseDecorator<AddResponse> impleme
      * @return The encoded response
      * @throws EncoderException If teh encoding failed
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         try

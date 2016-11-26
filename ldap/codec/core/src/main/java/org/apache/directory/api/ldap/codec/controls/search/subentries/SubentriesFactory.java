@@ -54,6 +54,7 @@ public class SubentriesFactory implements ControlFactory<Subentries>
      * 
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return Subentries.OID;
@@ -64,6 +65,7 @@ public class SubentriesFactory implements ControlFactory<Subentries>
      * 
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<Subentries> newCodecControl()
     {
         return new SubentriesDecorator( codec );
@@ -74,6 +76,7 @@ public class SubentriesFactory implements ControlFactory<Subentries>
      * 
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<Subentries> newCodecControl( Subentries control )
     {
         return new SubentriesDecorator( codec, control );

@@ -50,6 +50,7 @@ public abstract class SingleReplyRequestDecorator<M extends SingleReplyRequest>
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getResponseType()
     {
         return getDecorated().getResponseType();
@@ -59,6 +60,7 @@ public abstract class SingleReplyRequestDecorator<M extends SingleReplyRequest>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void abandon()
     {
         ( ( AbandonableRequest ) getDecorated() ).abandon();
@@ -68,6 +70,7 @@ public abstract class SingleReplyRequestDecorator<M extends SingleReplyRequest>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isAbandoned()
     {
         return ( ( AbandonableRequest ) getDecorated() ).isAbandoned();
@@ -77,6 +80,7 @@ public abstract class SingleReplyRequestDecorator<M extends SingleReplyRequest>
     /**
      * {@inheritDoc}
      */
+    @Override
     public AbandonableRequest addAbandonListener( AbandonListener listener )
     {
         ( ( AbandonableRequest ) getDecorated() ).addAbandonListener( listener );

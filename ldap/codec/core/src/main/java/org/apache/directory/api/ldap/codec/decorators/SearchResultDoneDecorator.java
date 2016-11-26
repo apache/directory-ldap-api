@@ -72,6 +72,7 @@ public class SearchResultDoneDecorator extends ResponseDecorator<SearchResultDon
      * </pre>
      * 
      */
+    @Override
     public int computeLength()
     {
         searchResultDoneLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
@@ -87,6 +88,7 @@ public class SearchResultDoneDecorator extends ResponseDecorator<SearchResultDon
      * return The encoded response
      * @throws EncoderException If the encoding failed
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         try

@@ -95,13 +95,14 @@ public enum PersistentSearchStates implements States
      */
     public String getState( int state )
     {
-        return ( ( state == END_STATE.ordinal() ) ? "PSEARCH_END_STATE" : name() );
+        return ( state == END_STATE.ordinal() ) ? "PSEARCH_END_STATE" : name();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isEndState()
     {
         return this == END_STATE;
@@ -111,6 +112,7 @@ public enum PersistentSearchStates implements States
     /**
      * {@inheritDoc}
      */
+    @Override
     public PersistentSearchStates getStartState()
     {
         return START_STATE;

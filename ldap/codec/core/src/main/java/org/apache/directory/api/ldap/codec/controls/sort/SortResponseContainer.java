@@ -103,6 +103,7 @@ public class SortResponseContainer extends AbstractContainer
     /**
      * Clean the container
      */
+    @Override
     public void clean()
     {
         super.clean();

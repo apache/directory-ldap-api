@@ -75,7 +75,7 @@ public abstract class ConnectorFilter extends Filter
 
         if ( filterSet == null )
         {
-            filterSet = new ArrayList<Filter>();
+            filterSet = new ArrayList<>();
         }
 
         filterSet.add( filter );
@@ -99,11 +99,12 @@ public abstract class ConnectorFilter extends Filter
      * 
      * @return The encoded length
      */
+    @Override
     public int computeLength()
     {
         int connectorFilterLength = 0;
 
-        if ( ( filterSet != null ) && ( filterSet.size() != 0 ) )
+        if ( ( filterSet != null ) && ( !filterSet.isEmpty() ) )
         {
             for ( Filter filter : filterSet )
             {
@@ -126,6 +127,7 @@ public abstract class ConnectorFilter extends Filter
      * @return The PDU.
      * @throws EncoderException If the encoding failed
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         if ( buffer == null )
@@ -134,7 +136,7 @@ public abstract class ConnectorFilter extends Filter
         }
 
         // encode each filter
-        if ( ( filterSet != null ) && ( filterSet.size() != 0 ) )
+        if ( ( filterSet != null ) && ( !filterSet.isEmpty() ) )
         {
             for ( Filter filter : filterSet )
             {
@@ -152,11 +154,12 @@ public abstract class ConnectorFilter extends Filter
      * 
      * @return The composite filter string
      */
+    @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
-        if ( ( filterSet != null ) && ( filterSet.size() != 0 ) )
+        if ( ( filterSet != null ) && ( !filterSet.isEmpty() ) )
         {
             for ( Filter filter : filterSet )
             {

@@ -210,6 +210,7 @@ public class ExtensibleMatchFilter extends Filter
      * 
      * @return The encoded length
      */
+    @Override
     public int computeLength()
     {
         if ( matchingRule != null )
@@ -259,6 +260,7 @@ public class ExtensibleMatchFilter extends Filter
      * @param buffer The buffer where to put the PDU
      * @return The PDU.
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         if ( buffer == null )
@@ -331,10 +333,11 @@ public class ExtensibleMatchFilter extends Filter
      * 
      * @return An Extended Filter String
      */
+    @Override
     public String toString()
     {
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         if ( type != null )
         {

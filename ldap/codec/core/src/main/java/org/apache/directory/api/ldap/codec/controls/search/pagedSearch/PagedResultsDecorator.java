@@ -92,6 +92,7 @@ public class PagedResultsDecorator extends ControlDecorator<PagedResults> implem
      *  
      * @return the control length.
      */
+    @Override
     public int computeLength()
     {
         int sizeLength = 1 + 1 + BerValue.getNbBytes( getSize() );
@@ -121,6 +122,7 @@ public class PagedResultsDecorator extends ControlDecorator<PagedResults> implem
      * @return A ByteBuffer that contains the encoded PDU
      * @throws EncoderException If anything goes wrong.
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         if ( buffer == null )
@@ -142,6 +144,7 @@ public class PagedResultsDecorator extends ControlDecorator<PagedResults> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getValue()
     {
         if ( value == null )
@@ -173,6 +176,7 @@ public class PagedResultsDecorator extends ControlDecorator<PagedResults> implem
     /**
      * @return The requested or returned number of entries
      */
+    @Override
     public int getSize()
     {
         return getDecorated().getSize();
@@ -184,6 +188,7 @@ public class PagedResultsDecorator extends ControlDecorator<PagedResults> implem
      *
      * @param size The number of entries 
      */
+    @Override
     public void setSize( int size )
     {
         getDecorated().setSize( size );
@@ -193,6 +198,7 @@ public class PagedResultsDecorator extends ControlDecorator<PagedResults> implem
     /**
      * @return The stored cookie
      */
+    @Override
     public byte[] getCookie()
     {
         return getDecorated().getCookie();
@@ -204,6 +210,7 @@ public class PagedResultsDecorator extends ControlDecorator<PagedResults> implem
      *
      * @param cookie The cookie to store in this control
      */
+    @Override
     public void setCookie( byte[] cookie )
     {
         // Copy the bytes
@@ -223,6 +230,7 @@ public class PagedResultsDecorator extends ControlDecorator<PagedResults> implem
     /**
      * @return The integer value for the current cookie
      */
+    @Override
     public int getCookieValue()
     {
         int value = 0;
@@ -290,9 +298,10 @@ public class PagedResultsDecorator extends ControlDecorator<PagedResults> implem
     /**
      * Return a String representing this PagedSearchControl.
      */
+    @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( "    Paged Search Control\n" );
         sb.append( "        oid : " ).append( getOid() ).append( '\n' );
@@ -307,6 +316,7 @@ public class PagedResultsDecorator extends ControlDecorator<PagedResults> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );

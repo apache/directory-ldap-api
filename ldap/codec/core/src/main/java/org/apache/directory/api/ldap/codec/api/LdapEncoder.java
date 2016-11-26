@@ -211,9 +211,7 @@ public class LdapEncoder
         }
         catch ( EncoderException ee )
         {
-            MessageEncoderException exception = new MessageEncoderException( message.getMessageId(), ee.getMessage(), ee );
-
-            throw exception;
+            throw new MessageEncoderException( message.getMessageId(), ee.getMessage(), ee );
         }
 
         buffer.flip();
@@ -284,7 +282,7 @@ public class LdapEncoder
             }
 
             // Computes the controls length
-            // 1 + Length.getNbBytes( controlsSequenceLength ) + controlsSequenceLength;
+            // 1 + Length.getNbBytes( controlsSequenceLength ) + controlsSequenceLength
             messageDecorator.setControlsLength( controlsSequenceLength );
 
             // Now, add the tag and the length of the controls length
@@ -312,7 +310,7 @@ public class LdapEncoder
     {
         Collection<byte[]> ldapUrlsBytes = referral.getLdapUrlsBytes();
 
-        if ( ( ldapUrlsBytes != null ) && ( ldapUrlsBytes.size() != 0 ) )
+        if ( ( ldapUrlsBytes != null ) && ( !ldapUrlsBytes.isEmpty() ) )
         {
             // Encode the referrals sequence
             // The referrals length MUST have been computed before !
@@ -340,7 +338,7 @@ public class LdapEncoder
         {
             Collection<String> ldapUrls = referral.getLdapUrls();
 
-            if ( ( ldapUrls != null ) && ( ldapUrls.size() != 0 ) )
+            if ( ( ldapUrls != null ) && ( !ldapUrls.isEmpty() ) )
             {
                 int referralLength = 0;
 

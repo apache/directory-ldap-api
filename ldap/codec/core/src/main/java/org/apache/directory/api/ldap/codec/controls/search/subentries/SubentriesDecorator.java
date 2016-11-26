@@ -78,6 +78,7 @@ public class SubentriesDecorator extends ControlDecorator<Subentries> implements
      * 
      * @return the control length.
      */
+    @Override
     public int computeLength()
     {
         return 1 + 1 + 1;
@@ -91,6 +92,7 @@ public class SubentriesDecorator extends ControlDecorator<Subentries> implements
      * @return A ByteBuffer that contains the encoded PDU
      * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         if ( buffer == null )
@@ -108,6 +110,7 @@ public class SubentriesDecorator extends ControlDecorator<Subentries> implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getValue()
     {
         if ( value == null )
@@ -132,12 +135,14 @@ public class SubentriesDecorator extends ControlDecorator<Subentries> implements
     }
 
 
+    @Override
     public boolean isVisible()
     {
         return getDecorated().isVisible();
     }
 
 
+    @Override
     public void setVisibility( boolean visibility )
     {
         getDecorated().setVisibility( visibility );
@@ -147,6 +152,7 @@ public class SubentriesDecorator extends ControlDecorator<Subentries> implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );

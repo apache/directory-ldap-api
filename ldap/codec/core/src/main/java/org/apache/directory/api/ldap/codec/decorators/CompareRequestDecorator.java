@@ -80,6 +80,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dn getName()
     {
         return getDecorated().getName();
@@ -89,6 +90,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareRequest setName( Dn name )
     {
         getDecorated().setName( name );
@@ -100,6 +102,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
+    @Override
     public Value getAssertionValue()
     {
         return getDecorated().getAssertionValue();
@@ -109,6 +112,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareRequest setAssertionValue( String value )
     {
         getDecorated().setAssertionValue( value );
@@ -120,6 +124,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareRequest setAssertionValue( byte[] value )
     {
         getDecorated().setAssertionValue( value );
@@ -131,6 +136,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getAttributeId()
     {
         return getDecorated().getAttributeId();
@@ -140,6 +146,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareRequest setAttributeId( String attrId )
     {
         getDecorated().setAttributeId( attrId );
@@ -151,6 +158,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -162,6 +170,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareRequest addControl( Control control )
     {
         return ( CompareRequest ) super.addControl( control );
@@ -171,6 +180,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareRequest addAllControls( Control[] controls )
     {
         return ( CompareRequest ) super.addAllControls( controls );
@@ -180,7 +190,8 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
-    public CompareRequest removeControl( Control control )
+    @Override
+public CompareRequest removeControl( Control control )
     {
         return ( CompareRequest ) super.removeControl( control );
     }
@@ -210,6 +221,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
      * 
      * @return The CompareRequest PDU's length
      */
+    @Override
     public int computeLength()
     {
         // The entry Dn
@@ -220,18 +232,8 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
         attrIdBytes = Strings.getBytesUtf8( getAttributeId() );
         avaLength = 1 + TLV.getNbBytes( attrIdBytes.length ) + attrIdBytes.length;
 
-        org.apache.directory.api.ldap.model.entry.Value assertionValue = getAssertionValue();
-
-        if ( assertionValue instanceof Value )
-        {
-            attrValBytes = getAssertionValue().getBytes();
-            avaLength += 1 + TLV.getNbBytes( attrValBytes.length ) + attrValBytes.length;
-        }
-        else
-        {
-            attrValBytes = Strings.getBytesUtf8( getAssertionValue().getValue() );
-            avaLength += 1 + TLV.getNbBytes( attrValBytes.length ) + attrValBytes.length;
-        }
+        attrValBytes = getAssertionValue().getBytes();
+        avaLength += 1 + TLV.getNbBytes( attrValBytes.length ) + attrValBytes.length;
 
         compareRequestLength += 1 + TLV.getNbBytes( avaLength ) + avaLength;
 
@@ -252,6 +254,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
      * 
      * @param buffer The buffer where to put the PDU
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         try
