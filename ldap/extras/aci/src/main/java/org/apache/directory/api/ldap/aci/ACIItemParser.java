@@ -27,6 +27,7 @@ import java.text.ParseException;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.normalizers.NameComponentNormalizer;
+import org.apache.directory.api.util.StringConstants;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
@@ -112,9 +113,9 @@ public class ACIItemParser
      */
     public synchronized ACIItem parse( String spec ) throws ParseException
     {
-        ACIItem aCIItem = null;
+        ACIItem aCIItem;
 
-        if ( spec == null || spec.trim().equals( "" ) )
+        if ( spec == null || StringConstants.EMPTY .equals( spec.trim() ) )
         {
             return null;
         }
