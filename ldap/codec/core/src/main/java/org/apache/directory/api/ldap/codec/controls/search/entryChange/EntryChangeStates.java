@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.codec.controls.search.entryChange;
 
 
-import org.apache.directory.api.asn1.ber.grammar.Grammar;
 import org.apache.directory.api.asn1.ber.grammar.States;
 
 
@@ -68,23 +67,6 @@ public enum EntryChangeStates implements States
     public String getGrammarName()
     {
         return "EC_GRAMMAR";
-    }
-
-
-    /**
-     * Get the grammar name
-     * 
-     * @param grammar The grammar class
-     * @return The grammar name
-     */
-    public String getGrammarName( Grammar<?> grammar )
-    {
-        if ( grammar instanceof EntryChangeGrammar )
-        {
-            return "EC_GRAMMAR";
-        }
-
-        return "UNKNOWN GRAMMAR";
     }
 
 

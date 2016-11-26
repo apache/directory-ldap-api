@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.codec.controls.sort;
 
 
-import org.apache.directory.api.asn1.ber.grammar.Grammar;
 import org.apache.directory.api.asn1.ber.grammar.States;
 
 
@@ -48,29 +47,11 @@ public enum SortRequestStates implements States
     /**
      * Get the grammar name
      * 
-     * @param grammar The grammar code
      * @return The grammar name
      */
-    public String getGrammarName( int grammar )
+    public String getGrammarName()
     {
         return "SORT_REQUEST_GRAMMAR";
-    }
-
-
-    /**
-     * Get the grammar name
-     * 
-     * @param grammar The grammar class
-     * @return The grammar name
-     */
-    public String getGrammarName( Grammar<?> grammar )
-    {
-        if ( grammar instanceof SortRequestGrammar )
-        {
-            return "SORT_REQUEST_GRAMMAR";
-        }
-
-        return "UNKNOWN GRAMMAR";
     }
 
 
