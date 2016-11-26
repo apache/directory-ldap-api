@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.codec.controls.search.pagedSearch;
 
 
-import org.apache.directory.api.asn1.ber.grammar.Grammar;
 import org.apache.directory.api.asn1.ber.grammar.States;
 
 
@@ -64,23 +63,6 @@ public enum PagedResultsStates implements States
     public String getGrammarName()
     {
         return "PAGED_SEARCH_GRAMMAR";
-    }
-
-
-    /**
-     * Get the grammar name
-     * 
-     * @param grammar The grammar class
-     * @return The grammar name
-     */
-    public String getGrammarName( Grammar<?> grammar )
-    {
-        if ( grammar instanceof PagedResultsGrammar )
-        {
-            return "PAGEDSEARCH_GRAMMAR";
-        }
-
-        return "UNKNOWN GRAMMAR";
     }
 
 
