@@ -184,7 +184,23 @@ public final class CodecFactoryUtil
     }
 
 
-    public static void loadStockExtendedOperations(
+    /**
+     * Load the standard extended operations :
+     * <ul>
+     * <li>cancel</li>
+     * <li>certGeneration</li>
+     * <li>gracefuShutdown</li>
+     * <li>storedProcedure</li>
+     * <li>gracefulDisconnect</li>
+     * <li>passwordModify</li>
+     * <li>whoAmI</li>
+     * <li>startTls</li>
+     * </ul>
+     * 
+     * @param extendendOperationsFactories The map of extended operation factories
+     * @param apiService The LdapApiService to use
+     */
+    public static void loadStockExtendedOperations( 
         Map<String, ExtendedOperationFactory> extendendOperationsFactories, LdapApiService apiService )
     {
         CancelFactory cancelFactory = new CancelFactory( apiService );
