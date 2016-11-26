@@ -59,9 +59,9 @@ public abstract class Permission
     {
         this.precedence = precedence;
 
-        Set<GrantAndDenial> tmpGrantsAndDenials = new HashSet<GrantAndDenial>();
-        Set<GrantAndDenial> tmpGrants = new HashSet<GrantAndDenial>();
-        Set<GrantAndDenial> tmpDenials = new HashSet<GrantAndDenial>();
+        Set<GrantAndDenial> tmpGrantsAndDenials = new HashSet<>();
+        Set<GrantAndDenial> tmpGrants = new HashSet<>();
+        Set<GrantAndDenial> tmpDenials = new HashSet<>();
 
         for ( GrantAndDenial gad : grantsAndDenials )
         {

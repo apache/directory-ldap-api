@@ -147,9 +147,10 @@ public class ItemFirstACIItem extends ACIItem
      * 
      * @return The list of created Tuples
      */
+    @Override
     public Collection<ACITuple> toTuples()
     {
-        Collection<ACITuple> tuples = new ArrayList<ACITuple>();
+        Collection<ACITuple> tuples = new ArrayList<>();
 
         for ( ItemPermission itemPermission : itemPermissions )
         {
@@ -159,13 +160,13 @@ public class ItemFirstACIItem extends ACIItem
                 ? itemPermission.getPrecedence()
                 : this.getPrecedence();
 
-            if ( grants.size() > 0 )
+            if ( !grants.isEmpty() )
             {
                 tuples.add( new ACITuple( itemPermission.getUserClasses(), getAuthenticationLevel(), protectedItems,
                     toMicroOperations( grants ), true, precedence ) );
             }
 
-            if ( denials.size() > 0 )
+            if ( !denials.isEmpty() )
             {
                 tuples.add( new ACITuple( itemPermission.getUserClasses(), getAuthenticationLevel(), protectedItems,
                     toMicroOperations( denials ), false, precedence ) );

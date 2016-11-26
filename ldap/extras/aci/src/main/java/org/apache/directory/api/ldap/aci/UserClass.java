@@ -231,6 +231,7 @@ public abstract class UserClass
         /**
          * {@inheritDoc}
          */
+        @Override
         public String toString()
         {
             StringBuilder buffer = new StringBuilder();
@@ -250,7 +251,7 @@ public abstract class UserClass
                 }
 
                 buffer.append( '"' );
-                buffer.append( name.toString() );
+                buffer.append( name );
                 buffer.append( '"' );
             }
 

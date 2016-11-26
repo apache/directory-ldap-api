@@ -52,11 +52,9 @@ public class RangeOfValuesItem extends ProtectedItem
 
 
     /**
-     * Gets the filter.
-     * 
-     * TODO: rename to getFilter()
+     * Gets the refinement.
      *
-     * @return the filter
+     * @return the refinement
      */
     public ExprNode getRefinement()
     {
@@ -106,6 +104,7 @@ public class RangeOfValuesItem extends ProtectedItem
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         StringBuilder buf = new StringBuilder();

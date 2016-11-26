@@ -43,7 +43,7 @@ public class ACIItemSyntaxChecker extends SyntaxChecker
     private static final Logger LOG = LoggerFactory.getLogger( ACIItemSyntaxChecker.class );
 
     /** An instance of ACI Item Checker */
-    private ACIItemChecker aciItemChecker;
+    private transient ACIItemChecker aciItemChecker;
 
 
     /**
@@ -58,9 +58,10 @@ public class ACIItemSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -108,6 +109,7 @@ public class ACIItemSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setSchemaManager( SchemaManager schemaManager )
     {
         aciItemChecker = new ACIItemChecker( schemaManager );
