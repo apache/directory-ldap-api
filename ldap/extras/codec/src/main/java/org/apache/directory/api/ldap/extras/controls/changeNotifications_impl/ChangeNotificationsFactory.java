@@ -53,6 +53,7 @@ public class ChangeNotificationsFactory implements ControlFactory<ChangeNotifica
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return ChangeNotifications.OID;
@@ -62,6 +63,7 @@ public class ChangeNotificationsFactory implements ControlFactory<ChangeNotifica
     /**
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<ChangeNotifications> newCodecControl()
     {
         return new ChangeNotificationsDecorator( codec, new ChangeNotificationsImpl() );
@@ -71,6 +73,7 @@ public class ChangeNotificationsFactory implements ControlFactory<ChangeNotifica
     /**
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<ChangeNotifications> newCodecControl( ChangeNotifications control )
     {
         return new ChangeNotificationsDecorator( codec, control );

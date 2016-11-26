@@ -127,8 +127,7 @@ public class PasswordModifyResponseGrammar extends AbstractGrammar<PasswordModif
                             genPassword = Strings.EMPTY_BYTES;
                         }
 
-                        ( ( PasswordModifyResponseDecorator ) container.getPwdModifyResponse() )
-                            .setGenPassword( genPassword );
+                        container.getPwdModifyResponse().setGenPassword( genPassword );
 
                         // We may have nothing left
                         container.setGrammarEndAllowed( true );

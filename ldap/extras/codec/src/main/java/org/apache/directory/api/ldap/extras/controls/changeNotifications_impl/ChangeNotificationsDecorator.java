@@ -53,6 +53,7 @@ public class ChangeNotificationsDecorator extends ControlDecorator<ChangeNotific
     /**
      * Returns 0 every time.
      */
+    @Override
     public int computeLength()
     {
         return 0;
@@ -62,6 +63,7 @@ public class ChangeNotificationsDecorator extends ControlDecorator<ChangeNotific
     /**
      * {@inheritDoc}
      */
+    @Override
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
         return this;

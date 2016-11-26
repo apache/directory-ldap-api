@@ -70,6 +70,7 @@ public class GracefulShutdownContainer extends AbstractContainer
     /**
      * Clean the container for the next decoding.
      */
+    @Override
     public void clean()
     {
         super.clean();

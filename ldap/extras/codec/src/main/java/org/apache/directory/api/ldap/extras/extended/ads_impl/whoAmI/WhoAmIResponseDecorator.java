@@ -114,6 +114,7 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getAuthzId()
     {
         return getDecorated().getAuthzId();
@@ -123,6 +124,7 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setAuthzId( byte[] authzId )
     {
         ( ( WhoAmIResponseImpl ) getDecorated() ).setAuthzId( authzId );
@@ -150,6 +152,7 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isDnAuthzId()
     {
         return whoAmIResponse.isDnAuthzId();
@@ -159,6 +162,7 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isUserAuthzId()
     {
         return whoAmIResponse.isUserAuthzId();
@@ -168,6 +172,7 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getAuthzIdString()
     {
         return whoAmIResponse.getAuthzIdString();
@@ -177,6 +182,7 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getUserId()
     {
         return whoAmIResponse.getUserId();
@@ -186,6 +192,7 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dn getDn()
     {
         return whoAmIResponse.getDn();
@@ -196,6 +203,7 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
      * Overload the parent's getResponseName method, as the WhoAmI response should not
      * contain the responseName.
      */
+    @Override
     public String getResponseName()
     {
         return null;

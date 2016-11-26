@@ -220,6 +220,7 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
     /**
      * {@inheritDoc}
      */
+    @Override
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
         if ( !hasResponse() )
@@ -238,6 +239,7 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean hasResponse()
     {
         return getDecorated().hasResponse();
@@ -248,6 +250,7 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
      *
      * {@inheritDoc}
      */
+    @Override
     public void setResponse( PasswordPolicyResponse response )
     {
         getDecorated().setResponse( response );
@@ -258,6 +261,7 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
      *
      * {@inheritDoc}
      */
+    @Override
     public PasswordPolicyResponse setResponse( boolean hasResponse )
     {
         return getDecorated().setResponse( hasResponse );
@@ -268,6 +272,7 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
      *
      * {@inheritDoc}
      */
+    @Override
     public PasswordPolicyResponse getResponse()
     {
         return getDecorated().getResponse();

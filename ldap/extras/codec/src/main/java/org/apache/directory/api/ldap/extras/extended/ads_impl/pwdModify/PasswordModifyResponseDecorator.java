@@ -121,6 +121,7 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getGenPassword()
     {
         return getDecorated().getGenPassword();
@@ -140,6 +141,7 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
      * Overload the parent's getResponseName method, as the pwdModify response should not
      * contain the responseName.
      */
+    @Override
     public String getResponseName()
     {
         return null;

@@ -68,6 +68,7 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setRequestValue( byte[] requestValue )
     {
         GracefulShutdownDecoder decoder = new GracefulShutdownDecoder();
@@ -97,6 +98,7 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getRequestValue()
     {
         if ( requestValue == null )
@@ -119,6 +121,7 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getDelay()
     {
         return getDecorated().getDelay();
@@ -128,6 +131,7 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setDelay( int delay )
     {
         getDecorated().setDelay( delay );
@@ -137,6 +141,7 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getTimeOffline()
     {
         return getDecorated().getTimeOffline();
@@ -146,6 +151,7 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setTimeOffline( int timeOffline )
     {
         getDecorated().setTimeOffline( timeOffline );
@@ -214,9 +220,10 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
     /**
      * Return a string representation of the graceful shutdown
      */
+    @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( "Graceful Shutdown extended operation" );
         sb.append( "    TimeOffline : " ).append( gracefulShutdownRequest.getTimeOffline() ).append( '\n' );

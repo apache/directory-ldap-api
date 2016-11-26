@@ -79,6 +79,10 @@ public class VirtualListViewResponseContainer extends AbstractContainer
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void clean()
     {
         super.clean();

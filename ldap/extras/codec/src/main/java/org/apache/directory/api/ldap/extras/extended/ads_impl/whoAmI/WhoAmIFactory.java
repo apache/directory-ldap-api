@@ -58,6 +58,7 @@ public class WhoAmIFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return WhoAmIRequest.EXTENSION_OID;
@@ -67,6 +68,7 @@ public class WhoAmIFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public WhoAmIResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
         WhoAmIResponseDecorator response = new WhoAmIResponseDecorator( codec,
@@ -79,6 +81,7 @@ public class WhoAmIFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public WhoAmIRequest newRequest( byte[] value )
     {
         WhoAmIRequestDecorator req = new WhoAmIRequestDecorator( codec, new WhoAmIRequestImpl() );
@@ -95,6 +98,7 @@ public class WhoAmIFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public WhoAmIRequestDecorator decorate( ExtendedRequest modelRequest )
     {
         if ( modelRequest instanceof WhoAmIRequestDecorator )
@@ -109,6 +113,7 @@ public class WhoAmIFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public WhoAmIResponseDecorator decorate( ExtendedResponse decoratedResponse )
     {
         if ( decoratedResponse instanceof WhoAmIResponseDecorator )
@@ -159,8 +164,6 @@ public class WhoAmIFactory implements ExtendedOperationFactory
                 stackTrace );
         }
 
-        WhoAmIResponseDecorator decorated = new WhoAmIResponseDecorator( codec, whoAmIResponse );
-
-        return decorated;
+        return new WhoAmIResponseDecorator( codec, whoAmIResponse );
     }
 }

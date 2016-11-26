@@ -50,6 +50,7 @@ public class GracefulDisconnectFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedRequestDecorator<ExtendedRequest> decorate(
         ExtendedRequest modelRequest )
     {
@@ -61,6 +62,7 @@ public class GracefulDisconnectFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedResponse decorate( ExtendedResponse decoratedMessage )
     {
         if ( decoratedMessage instanceof GracefulDisconnectResponseDecorator )
@@ -75,6 +77,7 @@ public class GracefulDisconnectFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return GracefulDisconnectResponse.EXTENSION_OID;
@@ -84,6 +87,7 @@ public class GracefulDisconnectFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedRequest newRequest( byte[] value )
     {
         // Nothing to do (there's no request associated to GracefulDisconnectResponse)
@@ -94,6 +98,7 @@ public class GracefulDisconnectFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public GracefulDisconnectResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
         GracefulDisconnectResponseDecorator req = new GracefulDisconnectResponseDecorator( codec,

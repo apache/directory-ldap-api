@@ -66,6 +66,7 @@ public class SyncStateValueDecorator extends ControlDecorator<SyncStateValue> im
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getCookie()
     {
         return getDecorated().getCookie();
@@ -75,6 +76,7 @@ public class SyncStateValueDecorator extends ControlDecorator<SyncStateValue> im
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCookie( byte[] cookie )
     {
         getDecorated().setCookie( cookie );
@@ -84,6 +86,7 @@ public class SyncStateValueDecorator extends ControlDecorator<SyncStateValue> im
     /**
      * {@inheritDoc}
      */
+    @Override
     public SyncStateTypeEnum getSyncStateType()
     {
         return getDecorated().getSyncStateType();
@@ -93,6 +96,7 @@ public class SyncStateValueDecorator extends ControlDecorator<SyncStateValue> im
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setSyncStateType( SyncStateTypeEnum syncStateType )
     {
         getDecorated().setSyncStateType( syncStateType );
@@ -102,6 +106,7 @@ public class SyncStateValueDecorator extends ControlDecorator<SyncStateValue> im
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getEntryUUID()
     {
         return getDecorated().getEntryUUID();
@@ -111,6 +116,7 @@ public class SyncStateValueDecorator extends ControlDecorator<SyncStateValue> im
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setEntryUUID( byte[] entryUUID )
     {
         getDecorated().setEntryUUID( entryUUID );
@@ -234,6 +240,7 @@ public class SyncStateValueDecorator extends ControlDecorator<SyncStateValue> im
     /**
      * {@inheritDoc}
      */
+    @Override
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );

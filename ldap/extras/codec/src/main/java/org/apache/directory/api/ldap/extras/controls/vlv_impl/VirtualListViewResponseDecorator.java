@@ -66,6 +66,7 @@ public class VirtualListViewResponseDecorator extends ControlDecorator<VirtualLi
     /**
      * {@inheritDoc}
      */
+    @Override
     public int computeLength()
     {
         vlvSeqLength = 1 + 1 + BerValue.getNbBytes( getTargetPosition() );
@@ -88,6 +89,7 @@ public class VirtualListViewResponseDecorator extends ControlDecorator<VirtualLi
     /**
      * {@inheritDoc}
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         if ( buffer == null )
@@ -115,6 +117,7 @@ public class VirtualListViewResponseDecorator extends ControlDecorator<VirtualLi
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getValue()
     {
         if ( value == null )
