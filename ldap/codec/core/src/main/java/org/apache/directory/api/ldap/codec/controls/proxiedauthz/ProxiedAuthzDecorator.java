@@ -79,7 +79,7 @@ public class ProxiedAuthzDecorator extends ControlDecorator<ProxiedAuthz> implem
      */
     private ProxiedAuthz getProxiedAuthz()
     {
-        return ( ProxiedAuthz ) getDecorated();
+        return getDecorated();
     }
 
 
@@ -91,6 +91,7 @@ public class ProxiedAuthzDecorator extends ControlDecorator<ProxiedAuthz> implem
      *  
      * @return the control length.
      */
+    @Override
     public int computeLength()
     {
         int valueLength = 0;
@@ -112,6 +113,7 @@ public class ProxiedAuthzDecorator extends ControlDecorator<ProxiedAuthz> implem
      * @return A ByteBuffer that contains the encoded PDU
      * @throws EncoderException If anything goes wrong.
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         if ( buffer == null )
@@ -131,6 +133,7 @@ public class ProxiedAuthzDecorator extends ControlDecorator<ProxiedAuthz> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getValue()
     {
         if ( value == null )
@@ -164,6 +167,7 @@ public class ProxiedAuthzDecorator extends ControlDecorator<ProxiedAuthz> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getAuthzId()
     {
         return getProxiedAuthz().getAuthzId();
@@ -173,6 +177,7 @@ public class ProxiedAuthzDecorator extends ControlDecorator<ProxiedAuthz> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setAuthzId( String authzId )
     {
         getProxiedAuthz().setAuthzId( authzId );
@@ -182,6 +187,7 @@ public class ProxiedAuthzDecorator extends ControlDecorator<ProxiedAuthz> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
         getProxiedAuthz().setAuthzId( Strings.utf8ToString( controlBytes ) );

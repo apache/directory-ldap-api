@@ -30,7 +30,6 @@ import org.apache.directory.api.ldap.codec.search.AttributeValueAssertionFilter;
 import org.apache.directory.api.ldap.model.entry.BinaryValue;
 import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
-import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,16 +68,7 @@ public class InitAssertionValueFilter extends GrammarAction<LdapMessageContainer
         TLV tlv = container.getCurrentTLV();
 
         // The value can be null.
-        Value<?> assertionValue = null;
-
-        if ( tlv.getLength() != 0 )
-        {
-            assertionValue = new BinaryValue( tlv.getValue().getData() );
-        }
-        else
-        {
-            assertionValue = new BinaryValue( StringConstants.EMPTY_BYTES );
-        }
+        Value<?> assertionValue;
 
         AttributeValueAssertionFilter terminalFilter = ( AttributeValueAssertionFilter )
             searchRequestDecorator.getTerminalFilter();
@@ -92,7 +82,7 @@ public class InitAssertionValueFilter extends GrammarAction<LdapMessageContainer
             }
             else
             {
-                assertionValue = new BinaryValue( StringConstants.EMPTY_BYTES );
+                assertionValue = new BinaryValue( Strings.EMPTY_BYTES );
             }
 
             assertion.setAssertionValue( assertionValue );

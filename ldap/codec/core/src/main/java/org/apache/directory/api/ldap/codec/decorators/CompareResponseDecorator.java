@@ -62,6 +62,7 @@ public class CompareResponseDecorator extends ResponseDecorator<CompareResponse>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isTrue()
     {
         return getDecorated().isTrue();
@@ -86,6 +87,7 @@ public class CompareResponseDecorator extends ResponseDecorator<CompareResponse>
      * Length(CompareResponse) = Length(0x6F) + Length(L1) + L1
      * </pre>
      */
+    @Override
     public int computeLength()
     {
         compareResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
@@ -99,8 +101,8 @@ public class CompareResponseDecorator extends ResponseDecorator<CompareResponse>
      * 
      * @param buffer The buffer where to put the PDU
      */
-    public ByteBuffer encode( ByteBuffer buffer )
-        throws EncoderException
+    @Override
+    public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         try
         {

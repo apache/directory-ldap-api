@@ -58,7 +58,7 @@ public class InitExtendedResponse extends GrammarAction<LdapMessageContainer<Ext
     public void action( LdapMessageContainer<ExtendedResponseDecorator<?>> container ) throws DecoderException
     {
         // Now, we can allocate the ExtendedResponse Object
-        ExtendedResponseDecorator<?> extendedResponse = new ExtendedResponseDecorator<ExtendedResponseImpl>(
+        ExtendedResponseDecorator<?> extendedResponse = new ExtendedResponseDecorator<>(
             container.getLdapCodecService(), new ExtendedResponseImpl( container.getMessageId() ) );
         container.setMessage( extendedResponse );
 

@@ -30,6 +30,7 @@ import org.apache.directory.api.asn1.EncoderException;
  * objects during encoding and decoding,
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @param <E> The element to decorate
  */
 public interface Decorator<E>
 {

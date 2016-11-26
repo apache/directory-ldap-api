@@ -26,7 +26,6 @@ import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.BindResponseDecorator;
 import org.apache.directory.api.ldap.model.message.BindResponse;
-import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,11 +68,11 @@ public class StoreServerSASLCreds extends GrammarAction<LdapMessageContainer<Bin
 
         // We have to handle the special case of a 0 length server
         // sasl credentials
-        byte[] serverSaslCreds = null;
+        byte[] serverSaslCreds;
 
         if ( tlv.getLength() == 0 )
         {
-            serverSaslCreds = StringConstants.EMPTY_BYTES;
+            serverSaslCreds = Strings.EMPTY_BYTES;
         }
         else
         {

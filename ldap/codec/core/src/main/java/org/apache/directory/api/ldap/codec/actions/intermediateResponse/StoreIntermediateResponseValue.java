@@ -26,7 +26,6 @@ import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.IntermediateResponseDecorator;
 import org.apache.directory.api.ldap.model.message.IntermediateResponse;
-import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,7 +74,7 @@ public class StoreIntermediateResponseValue extends GrammarAction<LdapMessageCon
         // value
         if ( tlv.getLength() == 0 )
         {
-            intermediateResponse.setResponseValue( StringConstants.EMPTY_BYTES );
+            intermediateResponse.setResponseValue( Strings.EMPTY_BYTES );
         }
         else
         {

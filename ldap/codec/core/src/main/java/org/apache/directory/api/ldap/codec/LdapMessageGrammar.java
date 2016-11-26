@@ -145,8 +145,9 @@ import org.slf4j.LoggerFactory;
  * an action is to be added or modified, this is where the work is to be done !
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @param <E> The Grammar type
  */
-public final class LdapMessageGrammar<E> extends
+public final class LdapMessageGrammar extends
     AbstractGrammar<LdapMessageContainer<MessageDecorator<? extends Message>>>
 {
     /** The logger */
@@ -157,7 +158,7 @@ public final class LdapMessageGrammar<E> extends
 
     /** The instance of grammar. LdapMessageGrammar is a singleton */
     private static Grammar<LdapMessageContainer<MessageDecorator<? extends Message>>> instance =
-        new LdapMessageGrammar<LdapMessageContainer<MessageDecorator<? extends Message>>>();
+        new LdapMessageGrammar();
 
 
     /**

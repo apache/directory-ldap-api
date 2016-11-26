@@ -70,7 +70,7 @@ public class StoreExtendedResponseName extends GrammarAction<LdapMessageContaine
     public void action( LdapMessageContainer<ExtendedResponseDecorator<?>> container ) throws DecoderException
     {
         // We can allocate the ExtendedResponse Object
-        ExtendedResponse extendedResponse = null;
+        ExtendedResponse extendedResponse;
 
         // Get the Value and store it in the ExtendedResponse
         TLV tlv = container.getCurrentTLV();
@@ -91,8 +91,8 @@ public class StoreExtendedResponseName extends GrammarAction<LdapMessageContaine
             extendedResponse = LdapApiServiceFactory.getSingleton().newExtendedResponse( responseName,
                 container.getMessageId(), null );
             
-            ( ( ExtendedResponseDecorator<?> ) extendedResponse ).setLdapResult( ( ( LdapResultDecorator ) ( container
-                .getMessage().getLdapResult() ) ) );
+            ( ( ExtendedResponseDecorator<?> ) extendedResponse ).setLdapResult( ( LdapResultDecorator ) ( container
+                .getMessage().getLdapResult() ) );
             container.setMessage( LdapApiServiceFactory.getSingleton().decorate( extendedResponse ) );
         }
 

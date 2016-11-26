@@ -33,6 +33,7 @@ import org.apache.directory.api.ldap.model.message.Message;
  * container.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @param <E> The decorated message
  */
 public class LdapMessageContainer<E extends MessageDecorator<? extends Message>> extends AbstractContainer
 {

@@ -40,7 +40,7 @@ import org.apache.directory.api.ldap.model.message.Control;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class BasicControlDecorator<E> extends ControlDecorator<Control>
+public class BasicControlDecorator extends ControlDecorator<Control>
 {
     /**
      * Creates a new instance of BasicControlDecorator, decorating a 
@@ -58,6 +58,7 @@ public class BasicControlDecorator<E> extends ControlDecorator<Control>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
         return null;
@@ -67,6 +68,7 @@ public class BasicControlDecorator<E> extends ControlDecorator<Control>
     /**
      * {@inheritDoc}
      */
+    @Override
     public int computeLength()
     {
         // Call the super class to compute the global control length
@@ -86,6 +88,7 @@ public class BasicControlDecorator<E> extends ControlDecorator<Control>
     /**
      * {@inheritDoc}
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         if ( buffer == null )

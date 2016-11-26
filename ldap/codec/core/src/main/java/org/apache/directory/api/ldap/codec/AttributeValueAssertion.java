@@ -140,7 +140,7 @@ public class AttributeValueAssertion
      */
     public String toString( String tabs )
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( tabs ).append( "AttributeValueAssertion\n" );
         sb.append( tabs ).append( "    Assertion description : '" );
@@ -161,7 +161,7 @@ public class AttributeValueAssertion
      */
     public String toStringRFC2254( int filterType )
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( attributeDesc );
 
@@ -198,6 +198,7 @@ public class AttributeValueAssertion
      * 
      * @return An AttributeValueAssertion String
      */
+    @Override
     public String toString()
     {
         return toString( "" );

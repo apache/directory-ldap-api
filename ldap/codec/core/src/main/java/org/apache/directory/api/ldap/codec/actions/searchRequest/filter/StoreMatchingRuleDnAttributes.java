@@ -66,6 +66,9 @@ public class StoreMatchingRuleDnAttributes extends GrammarAction<LdapMessageCont
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void action( LdapMessageContainer<SearchRequestDecorator> container ) throws DecoderException
     {
         SearchRequestDecorator searchRequest = container.getMessage();

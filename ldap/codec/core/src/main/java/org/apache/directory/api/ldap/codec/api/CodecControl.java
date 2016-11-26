@@ -30,6 +30,8 @@ import org.apache.directory.api.ldap.model.message.Control;
  * Control objects during encoding and decoding.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * 
+ * @param <E> The control being handled by this codec
  */
 public interface CodecControl<E extends Control> extends Control, Decorator<E>
 {

@@ -25,7 +25,6 @@ import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.ModifyRequestDecorator;
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,7 +63,7 @@ public class StoreModifyRequestAttributeValue extends GrammarAction<LdapMessageC
         TLV tlv = container.getCurrentTLV();
 
         // Store the value. It can't be null
-        byte[] value = StringConstants.EMPTY_BYTES;
+        byte[] value = Strings.EMPTY_BYTES;
 
         try
         {

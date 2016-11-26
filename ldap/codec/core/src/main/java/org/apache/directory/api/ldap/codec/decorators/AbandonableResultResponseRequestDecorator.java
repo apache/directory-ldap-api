@@ -29,6 +29,8 @@ import org.apache.directory.api.ldap.model.message.ResultResponseRequest;
  * A decorator for the LdapResultResponse message
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * 
+ * @param <M> The message response to decorate
  */
 public abstract class AbandonableResultResponseRequestDecorator<M extends AbandonableResultResponseRequest>
     extends AbandonableRequestDecorator<M> implements ResultResponseRequest
@@ -48,6 +50,7 @@ public abstract class AbandonableResultResponseRequestDecorator<M extends Abando
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasResponse()
     {
         return getDecorated().hasResponse();
@@ -57,6 +60,7 @@ public abstract class AbandonableResultResponseRequestDecorator<M extends Abando
     /**
      * {@inheritDoc}
      */
+    @Override
     public ResultResponse getResultResponse()
     {
         return getDecorated().getResultResponse();

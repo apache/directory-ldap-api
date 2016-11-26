@@ -34,7 +34,7 @@ public class MessageEncoderException extends EncoderException
     private static final long serialVersionUID = -4634398228257729537L;
 
     /** The message ID */
-    private int messageId;
+    private final int messageId;
 
 
     /**

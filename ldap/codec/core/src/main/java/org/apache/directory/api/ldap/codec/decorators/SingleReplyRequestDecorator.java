@@ -31,6 +31,7 @@ import org.apache.directory.api.ldap.model.message.SingleReplyRequest;
  * A decorator for the LdapResultResponse message
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @param <M> The request to be decorated
  */
 public abstract class SingleReplyRequestDecorator<M extends SingleReplyRequest>
     extends ResultResponseRequestDecorator<M> implements SingleReplyRequest, AbandonableRequest
@@ -50,6 +51,7 @@ public abstract class SingleReplyRequestDecorator<M extends SingleReplyRequest>
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getResponseType()
     {
         return getDecorated().getResponseType();
@@ -59,6 +61,7 @@ public abstract class SingleReplyRequestDecorator<M extends SingleReplyRequest>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void abandon()
     {
         ( ( AbandonableRequest ) getDecorated() ).abandon();
@@ -68,6 +71,7 @@ public abstract class SingleReplyRequestDecorator<M extends SingleReplyRequest>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isAbandoned()
     {
         return ( ( AbandonableRequest ) getDecorated() ).isAbandoned();
@@ -77,6 +81,7 @@ public abstract class SingleReplyRequestDecorator<M extends SingleReplyRequest>
     /**
      * {@inheritDoc}
      */
+    @Override
     public AbandonableRequest addAbandonListener( AbandonListener listener )
     {
         ( ( AbandonableRequest ) getDecorated() ).addAbandonListener( listener );

@@ -36,6 +36,7 @@ import org.apache.directory.api.util.Strings;
  * A decorator for the ExtendedRequest message
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @param <Q> The extended request to decorate
  */
 public class ExtendedRequestDecorator<Q extends ExtendedRequest>
     extends SingleReplyRequestDecorator<Q> implements ExtendedRequest
@@ -69,6 +70,7 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getRequestName()
     {
         return getDecorated().getRequestName();
@@ -78,6 +80,7 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedRequest setRequestName( String oid )
     {
         getDecorated().setRequestName( oid );
@@ -107,6 +110,7 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -118,6 +122,7 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedRequest addControl( Control control )
     {
         return ( ExtendedRequest ) super.addControl( control );
@@ -127,6 +132,7 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedRequest addAllControls( Control[] controls )
     {
         return ( ExtendedRequest ) super.addAllControls( controls );
@@ -136,6 +142,7 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedRequest removeControl( Control control )
     {
         return ( ExtendedRequest ) super.removeControl( control );
@@ -162,6 +169,7 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
      * Length(ExtendedRequest) = Length(0x77) + Length(L1) + L1
      * </pre>
      */
+    @Override
     public int computeLength()
     {
         requestNameBytes = Strings.getBytesUtf8( getRequestName() );
@@ -189,6 +197,7 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
      * @param buffer The buffer where to put the PDU
      * @return The PDU.
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         try

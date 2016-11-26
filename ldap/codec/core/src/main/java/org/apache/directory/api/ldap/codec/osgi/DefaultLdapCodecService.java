@@ -81,10 +81,10 @@ public class DefaultLdapCodecService implements LdapApiService
     private static final Logger LOG = LoggerFactory.getLogger( DefaultLdapCodecService.class );
 
     /** The map of registered {@link org.apache.directory.api.ldap.codec.api.ControlFactory}'s */
-    private Map<String, ControlFactory<? extends Control>> controlFactories = new HashMap<String, ControlFactory<? extends Control>>();
+    private Map<String, ControlFactory<? extends Control>> controlFactories = new HashMap<>();
 
     /** The map of registered {@link org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory}'s by request OID */
-    private Map<String, ExtendedOperationFactory> extendedOperationsFactories = new HashMap<String, ExtendedOperationFactory>();
+    private Map<String, ExtendedOperationFactory> extendedOperationsFactories = new HashMap<>();
 
     /** The registered ProtocolCodecFactory */
     private ProtocolCodecFactory protocolCodecFactory;
@@ -141,6 +141,7 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
+    @Override
     public ControlFactory<?> registerControl( ControlFactory<?> factory )
     {
         return controlFactories.put( factory.getOid(), factory );
@@ -150,6 +151,7 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
+    @Override
     public ControlFactory<?> unregisterControl( String oid )
     {
         return controlFactories.remove( oid );
@@ -159,6 +161,7 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<String> registeredControls()
     {
         return Collections.unmodifiableSet( controlFactories.keySet() ).iterator();
@@ -168,6 +171,7 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isControlRegistered( String oid )
     {
         return controlFactories.containsKey( oid );
@@ -177,6 +181,7 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<String> registeredExtendedRequests()
     {
         return Collections.unmodifiableSet( extendedOperationsFactories.keySet() ).iterator();
@@ -186,6 +191,7 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedOperationFactory registerExtendedRequest( ExtendedOperationFactory factory )
     {
         return extendedOperationsFactories.put( factory.getOid(), factory );
@@ -195,12 +201,14 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
+    @Override
     public ProtocolCodecFactory getProtocolCodecFactory()
     {
         return protocolCodecFactory;
     }
 
 
+    @Override
     public ProtocolCodecFactory registerProtocolCodecFactory( ProtocolCodecFactory protocolCodecFactory )
     {
         ProtocolCodecFactory oldFactory = this.protocolCodecFactory;
@@ -212,13 +220,14 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<? extends Control> newControl( String oid )
     {
         ControlFactory<?> factory = controlFactories.get( oid );
 
         if ( factory == null )
         {
-            return new BasicControlDecorator<Control>( this, new OpaqueControl( oid ) );
+            return new BasicControlDecorator( this, new OpaqueControl( oid ) );
         }
 
         return factory.newCodecControl();
@@ -229,6 +238,7 @@ public class DefaultLdapCodecService implements LdapApiService
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
+    @Override
     public CodecControl<? extends Control> newControl( Control control )
     {
         if ( control == null )
@@ -247,7 +257,7 @@ public class DefaultLdapCodecService implements LdapApiService
 
         if ( factory == null )
         {
-            return new BasicControlDecorator<Control>( this, control );
+            return new BasicControlDecorator( this, control );
         }
 
         return factory.newCodecControl( control );
@@ -257,21 +267,22 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
+    @Override
     public javax.naming.ldap.Control toJndiControl( Control control ) throws EncoderException
     {
         CodecControl<? extends Control> decorator = newControl( control );
         ByteBuffer bb = ByteBuffer.allocate( decorator.computeLength() );
         decorator.encode( bb );
         bb.flip();
-        BasicControl jndiControl =
-            new BasicControl( control.getOid(), control.isCritical(), bb.array() );
-        return jndiControl;
+
+        return new BasicControl( control.getOid(), control.isCritical(), bb.array() );
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public Control fromJndiControl( javax.naming.ldap.Control control ) throws DecoderException
     {
         @SuppressWarnings("rawtypes")
@@ -281,8 +292,8 @@ public class DefaultLdapCodecService implements LdapApiService
         {
             OpaqueControl ourControl = new OpaqueControl( control.getID() );
             ourControl.setCritical( control.isCritical() );
-            BasicControlDecorator<Control> decorator =
-                new BasicControlDecorator<Control>( this, ourControl );
+            BasicControlDecorator decorator =
+                new BasicControlDecorator( this, ourControl );
             decorator.setValue( control.getEncodedValue() );
             return decorator;
         }
@@ -300,6 +311,7 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
+    @Override
     public Asn1Container newMessageContainer()
     {
         return new LdapMessageContainer<MessageDecorator<? extends Message>>( this );
@@ -309,6 +321,7 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedOperationFactory unregisterExtendedRequest( String oid )
     {
         return extendedOperationsFactories.remove( oid );
@@ -318,6 +331,7 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
+    @Override
     public javax.naming.ldap.ExtendedResponse toJndi( final ExtendedResponse modelResponse ) throws EncoderException
     {
         throw new NotImplementedException( "Figure out how to transform" );
@@ -327,6 +341,7 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedResponse fromJndi( javax.naming.ldap.ExtendedResponse jndiResponse ) throws DecoderException
     {
         throw new NotImplementedException( "Figure out how to transform" );
@@ -336,17 +351,17 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedRequest fromJndi( javax.naming.ldap.ExtendedRequest jndiRequest ) throws DecoderException
     {
-        ExtendedRequestDecorator<?> decorator =
-            ( ExtendedRequestDecorator<?> ) newExtendedRequest( jndiRequest.getID(), jndiRequest.getEncodedValue() );
-        return decorator;
+        return newExtendedRequest( jndiRequest.getID(), jndiRequest.getEncodedValue() );
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public javax.naming.ldap.ExtendedRequest toJndi( final ExtendedRequest modelRequest ) throws EncoderException
     {
         final String oid = modelRequest.getRequestName();
@@ -367,23 +382,26 @@ public class DefaultLdapCodecService implements LdapApiService
             value = decorator.getRequestValue();
         }
 
-        javax.naming.ldap.ExtendedRequest jndiRequest = new javax.naming.ldap.ExtendedRequest()
+        return new javax.naming.ldap.ExtendedRequest()
         {
             private static final long serialVersionUID = -4160980385909987475L;
 
 
+            @Override
             public String getID()
             {
                 return oid;
             }
 
 
+            @Override
             public byte[] getEncodedValue()
             {
                 return value;
             }
 
 
+            @Override
             public javax.naming.ldap.ExtendedResponse createExtendedResponse( String id, byte[] berValue, int offset,
                 int length ) throws NamingException
             {
@@ -394,24 +412,25 @@ public class DefaultLdapCodecService implements LdapApiService
                 {
                     final ExtendedResponseDecorator<?> resp = ( ExtendedResponseDecorator<?> ) factory
                         .newResponse( berValue );
-                    javax.naming.ldap.ExtendedResponse jndiResponse = new javax.naming.ldap.ExtendedResponse()
+                    
+                    return new javax.naming.ldap.ExtendedResponse()
                     {
                         private static final long serialVersionUID = -7686354122066100703L;
 
 
+                        @Override
                         public String getID()
                         {
                             return oid;
                         }
 
 
+                        @Override
                         public byte[] getEncodedValue()
                         {
                             return resp.getResponseValue();
                         }
                     };
-
-                    return jndiResponse;
                 }
                 catch ( DecoderException de )
                 {
@@ -422,8 +441,6 @@ public class DefaultLdapCodecService implements LdapApiService
                 }
             }
         };
-
-        return jndiRequest;
     }
 
 
@@ -431,6 +448,7 @@ public class DefaultLdapCodecService implements LdapApiService
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
+    @Override
     public <E extends ExtendedResponse> E newExtendedResponse( String responseName, int messageId,
         byte[] serializedResponse )
         throws DecoderException
@@ -461,9 +479,10 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedRequest newExtendedRequest( String oid, byte[] value )
     {
-        ExtendedRequest req = null;
+        ExtendedRequest req;
 
         ExtendedOperationFactory extendedRequestFactory = extendedOperationsFactories.get( oid );
 
@@ -488,9 +507,10 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedRequestDecorator<?> decorate( ExtendedRequest decoratedMessage )
     {
-        ExtendedRequestDecorator<?> req = null;
+        ExtendedRequestDecorator<?> req;
 
         ExtendedOperationFactory extendedRequestFactory = extendedOperationsFactories.get( decoratedMessage
             .getRequestName() );
@@ -501,7 +521,7 @@ public class DefaultLdapCodecService implements LdapApiService
         }
         else
         {
-            req = new ExtendedRequestDecorator<ExtendedRequest>( this, decoratedMessage );
+            req = new ExtendedRequestDecorator<>( this, decoratedMessage );
         }
 
         return req;
@@ -511,9 +531,10 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedResponseDecorator<?> decorate( ExtendedResponse decoratedMessage )
     {
-        ExtendedResponseDecorator<?> resp = null;
+        ExtendedResponseDecorator<?> resp;
 
         ExtendedOperationFactory extendedRequestFactory = extendedOperationsFactories.get( decoratedMessage
             .getResponseName() );
@@ -524,7 +545,7 @@ public class DefaultLdapCodecService implements LdapApiService
         }
         else
         {
-            resp = new ExtendedResponseDecorator<ExtendedResponse>( this, decoratedMessage );
+            resp = new ExtendedResponseDecorator<>( this, decoratedMessage );
         }
 
         return resp;
@@ -534,6 +555,7 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isExtendedOperationRegistered( String oid )
     {
         return extendedOperationsFactories.containsKey( oid );

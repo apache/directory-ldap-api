@@ -29,6 +29,8 @@ import org.apache.directory.api.ldap.model.message.AbandonableRequest;
  * A decorator for the LdapResultResponse message
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * 
+ * @param <M> The Request to decorate
  */
 public abstract class AbandonableRequestDecorator<M extends AbandonableResultResponseRequest>
     extends ResultResponseRequestDecorator<M>
@@ -60,6 +62,7 @@ public abstract class AbandonableRequestDecorator<M extends AbandonableResultRes
     /**
      * {@inheritDoc}
      */
+    @Override
     public void abandon()
     {
         getAbandonableRequest().abandon();
@@ -69,6 +72,7 @@ public abstract class AbandonableRequestDecorator<M extends AbandonableResultRes
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isAbandoned()
     {
         return getAbandonableRequest().isAbandoned();
@@ -78,6 +82,7 @@ public abstract class AbandonableRequestDecorator<M extends AbandonableResultRes
     /**
      * {@inheritDoc}
      */
+    @Override
     public AbandonableRequest addAbandonListener( AbandonListener listener )
     {
         getAbandonableRequest().addAbandonListener( listener );

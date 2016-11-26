@@ -71,6 +71,7 @@ public class ModifyDnResponseDecorator extends ResponseDecorator<ModifyDnRespons
      * Length(ModifyDNResponse) = Length(0x6D) + Length(L1) + L1
      * </pre>
      */
+    @Override
     public int computeLength()
     {
         modifyDnResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
@@ -84,6 +85,7 @@ public class ModifyDnResponseDecorator extends ResponseDecorator<ModifyDnRespons
      * 
      * @param buffer The buffer where to put the PDU
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         try

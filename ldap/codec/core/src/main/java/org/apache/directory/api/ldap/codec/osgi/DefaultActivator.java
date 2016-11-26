@@ -38,6 +38,9 @@ public class DefaultActivator implements BundleActivator
     private ServiceRegistration<?> registration;
 
 
+    /**
+     * Creates a new instance of DefaultActivator 
+     */
     public DefaultActivator()
     {
         this.codec = new DefaultLdapCodecService();
@@ -47,6 +50,7 @@ public class DefaultActivator implements BundleActivator
     /**
      * {@inheritDoc}
      */
+    @Override
     public void start( BundleContext bundleContext ) throws Exception
     {
         registration = bundleContext.registerService( LdapApiService.class.getName(), codec, null );
@@ -57,6 +61,7 @@ public class DefaultActivator implements BundleActivator
     /**
      * {@inheritDoc}
      */
+    @Override
     public void stop( BundleContext bundleContext ) throws Exception
     {
         registration.unregister();

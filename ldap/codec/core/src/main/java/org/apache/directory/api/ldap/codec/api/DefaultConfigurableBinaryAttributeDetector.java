@@ -66,7 +66,7 @@ public class DefaultConfigurableBinaryAttributeDetector extends SchemaBinaryAttr
     implements ConfigurableBinaryAttributeDetector
 {
     /** A set of binary Attribute ID */
-    private Set<String> binaryAttributes = new ConcurrentHashSet<String>();
+    private Set<String> binaryAttributes = new ConcurrentHashSet<>();
 
     /** A list of all the known binary attributes */
     public static final String[] DEFAULT_BINARY_ATTRIBUTES = new String[]
@@ -137,6 +137,7 @@ public class DefaultConfigurableBinaryAttributeDetector extends SchemaBinaryAttr
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isBinary( String attributeId )
     {
         boolean isBinary = super.isBinary( attributeId );
@@ -155,6 +156,7 @@ public class DefaultConfigurableBinaryAttributeDetector extends SchemaBinaryAttr
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addBinaryAttribute( String... binaryAttributes )
     {
         if ( binaryAttributes != null )
@@ -171,6 +173,7 @@ public class DefaultConfigurableBinaryAttributeDetector extends SchemaBinaryAttr
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeBinaryAttribute( String... binaryAttributes )
     {
         if ( binaryAttributes != null )
@@ -187,6 +190,7 @@ public class DefaultConfigurableBinaryAttributeDetector extends SchemaBinaryAttr
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setBinaryAttributes( String... binaryAttributes )
     {
         this.binaryAttributes.clear();
@@ -195,9 +199,11 @@ public class DefaultConfigurableBinaryAttributeDetector extends SchemaBinaryAttr
         if ( binaryAttributes == null )
         {
             // Reseting to the default list of binary attributes
-            binaryAttributes = DEFAULT_BINARY_ATTRIBUTES;
+            addBinaryAttribute( DEFAULT_BINARY_ATTRIBUTES );
         }
-
-        addBinaryAttribute( binaryAttributes );
+        else
+        {
+            addBinaryAttribute( binaryAttributes );
+        }
     }
 }

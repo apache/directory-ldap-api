@@ -52,6 +52,7 @@ public class PagedResultsFactory implements ControlFactory<PagedResults>
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return PagedResults.OID;
@@ -61,6 +62,7 @@ public class PagedResultsFactory implements ControlFactory<PagedResults>
     /**
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<PagedResults> newCodecControl()
     {
         return new PagedResultsDecorator( codec );
@@ -70,6 +72,7 @@ public class PagedResultsFactory implements ControlFactory<PagedResults>
     /**
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<PagedResults> newCodecControl( PagedResults control )
     {
         return new PagedResultsDecorator( codec, control );

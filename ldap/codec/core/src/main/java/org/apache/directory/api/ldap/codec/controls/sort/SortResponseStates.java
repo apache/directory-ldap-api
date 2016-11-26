@@ -44,10 +44,9 @@ public enum SortResponseStates implements States
     /**
      * Get the grammar name
      * 
-     * @param grammar The grammar code
      * @return The grammar name
      */
-    public String getGrammarName( int grammar )
+    public String getGrammarName()
     {
         return "SORT_RESPONSE_GRAMMAR";
     }
@@ -78,14 +77,14 @@ public enum SortResponseStates implements States
      */
     public String getState( int state )
     {
-        return ( ( state == END_STATE.ordinal() ) ? "SORT_REQUEST_END_STATE" : name() );
+        return ( state == END_STATE.ordinal() ) ? "SORT_REQUEST_END_STATE" : name();
     }
 
 
     @Override
     public boolean isEndState()
     {
-        return ( this == END_STATE );
+        return this == END_STATE;
     }
 
 

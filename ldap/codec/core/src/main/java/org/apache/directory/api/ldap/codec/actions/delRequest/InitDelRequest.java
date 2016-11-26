@@ -84,7 +84,7 @@ public class InitDelRequest extends GrammarAction<LdapMessageContainer<DeleteReq
 
         // We have to handle the special case of a 0 length matched
         // Dn
-        Dn entry = null;
+        Dn entry;
 
         if ( tlv.getLength() == 0 )
         {
