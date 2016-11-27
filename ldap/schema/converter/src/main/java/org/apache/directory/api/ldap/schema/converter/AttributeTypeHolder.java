@@ -306,6 +306,7 @@ public class AttributeTypeHolder extends SchemaElementImpl
      * @return A ldif formatted string
      * @throws org.apache.directory.api.ldap.model.exception.LdapException If something went wrong
      */
+    @Override
     public String toLdif( String schemaName ) throws LdapException
     {
         StringBuilder sb = new StringBuilder();
@@ -385,6 +386,7 @@ public class AttributeTypeHolder extends SchemaElementImpl
     /**
      * @return a String representing this AttributeType.
      */
+    @Override
     public String toString()
     {
         return getOid();
@@ -397,6 +399,7 @@ public class AttributeTypeHolder extends SchemaElementImpl
      * @param schemaName The schema name
      * @return the Dn associated with this schema in the DIT
      */
+    @Override
     public String dnToLdif( String schemaName ) throws LdapException
     {
         StringBuilder sb = new StringBuilder();

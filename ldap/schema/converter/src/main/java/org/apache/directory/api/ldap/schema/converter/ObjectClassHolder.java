@@ -41,13 +41,13 @@ import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 public class ObjectClassHolder extends SchemaElementImpl
 {
     /** The list of superiors */
-    private List<String> superiors = new ArrayList<String>();
+    private List<String> superiors = new ArrayList<>();
 
     /** The list of mandatory attributes */
-    private List<String> must = new ArrayList<String>();
+    private List<String> must = new ArrayList<>();
 
     /** The list of optional attributes */
-    private List<String> may = new ArrayList<String>();
+    private List<String> may = new ArrayList<>();
 
     /** The ObjectClass type */
     private ObjectClassTypeEnum classType = ObjectClassTypeEnum.STRUCTURAL;
@@ -148,6 +148,7 @@ public class ObjectClassHolder extends SchemaElementImpl
      * @return A ldif formatted string
      * @throws org.apache.directory.api.ldap.model.exception.LdapException If something went wrong
      */
+    @Override
     public String toLdif( String schemaName ) throws LdapException
     {
         StringBuilder sb = new StringBuilder();
@@ -155,7 +156,7 @@ public class ObjectClassHolder extends SchemaElementImpl
         sb.append( schemaToLdif( schemaName, "metaObjectClass" ) );
 
         // The superiors
-        if ( superiors.size() != 0 )
+        if ( !superiors.isEmpty() )
         {
             for ( String superior : superiors )
             {
@@ -170,7 +171,7 @@ public class ObjectClassHolder extends SchemaElementImpl
         }
 
         // The 'must'
-        if ( must.size() != 0 )
+        if ( !must.isEmpty() )
         {
             for ( String attr : must )
             {
@@ -179,7 +180,7 @@ public class ObjectClassHolder extends SchemaElementImpl
         }
 
         // The 'may'
-        if ( may.size() != 0 )
+        if ( !may.isEmpty() )
         {
             for ( String attr : may )
             {
@@ -188,7 +189,7 @@ public class ObjectClassHolder extends SchemaElementImpl
         }
 
         // The extensions
-        if ( extensions.size() != 0 )
+        if ( !extensions.isEmpty() )
         {
             extensionsToLdif( "m-extensionObjectClass" );
         }
@@ -200,6 +201,7 @@ public class ObjectClassHolder extends SchemaElementImpl
     /**
      * @return a String representing this ObjectClass.
      */
+    @Override
     public String toString()
     {
         return getOid();
@@ -212,6 +214,7 @@ public class ObjectClassHolder extends SchemaElementImpl
      * @param schemaName The schema name
      * @return the Dn associated with this schema in the DIT
      */
+    @Override
     public String dnToLdif( String schemaName ) throws LdapException
     {
         StringBuilder sb = new StringBuilder();
