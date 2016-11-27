@@ -79,6 +79,7 @@ public class LdapProtocolCodecFactory implements ProtocolCodecFactory
      * @param session the IO session
      * @return the decoder
      */
+    @Override
     public ProtocolDecoder getDecoder( IoSession session )
     {
         return ldapDecoder;
@@ -91,6 +92,7 @@ public class LdapProtocolCodecFactory implements ProtocolCodecFactory
      * @param session the IO session
      * @return the encoder
      */
+    @Override
     public ProtocolEncoder getEncoder( IoSession session )
     {
         return ldapEncoder;
