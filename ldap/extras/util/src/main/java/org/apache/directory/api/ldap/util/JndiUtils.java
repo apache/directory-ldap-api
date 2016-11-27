@@ -285,9 +285,7 @@ public final class JndiUtils
     {
         try
         {
-            Name name = new LdapName( dn.toString() );
-
-            return name;
+            return new LdapName( dn.toString() );
         }
         catch ( InvalidNameException ine )
         {
