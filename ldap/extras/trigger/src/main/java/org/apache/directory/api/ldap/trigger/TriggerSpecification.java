@@ -52,16 +52,17 @@ public class TriggerSpecification
     public TriggerSpecification( LdapOperation ldapOperation, ActionTime actionTime, List<SPSpec> spSpecs )
     {
         super();
-        if ( ldapOperation == null
-            || actionTime == null
-            || spSpecs == null )
+        
+        if ( ( ldapOperation == null ) || ( actionTime == null ) || ( spSpecs == null ) )
         {
             throw new NullArgumentException( I18n.err( I18n.ERR_04331 ) );
         }
-        if ( spSpecs.size() == 0 )
+        
+        if ( spSpecs.isEmpty() )
         {
             throw new IllegalArgumentException( I18n.err( I18n.ERR_04332 ) );
         }
+        
         this.ldapOperation = ldapOperation;
         this.actionTime = actionTime;
         this.spSpecs = spSpecs;

@@ -55,6 +55,7 @@ public abstract class StoredProcedureParameter
         }
 
 
+        @Override
         public String toString()
         {
             return name + " \"" + ctxName.getName() + "\"";
@@ -96,6 +97,7 @@ public abstract class StoredProcedureParameter
     }
 
 
+    @Override
     public String toString()
     {
         return name;
@@ -106,6 +108,7 @@ public abstract class StoredProcedureParameter
      * @see java.lang.Object#hashCode()
      * @return the instance's hash code 
      */
+    @Override
     public int hashCode()
     {
         int h = 37;
@@ -119,6 +122,7 @@ public abstract class StoredProcedureParameter
     /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals( Object obj )
     {
         if ( this == obj )

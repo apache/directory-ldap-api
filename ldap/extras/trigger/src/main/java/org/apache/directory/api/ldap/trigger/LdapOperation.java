@@ -66,6 +66,10 @@ public enum LdapOperation
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String toString()
     {
         return name;
