@@ -72,6 +72,7 @@ public class PasswordModifyRequestImpl extends AbstractExtendedRequest implement
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getUserIdentity()
     {
         return userIdentity;
@@ -81,6 +82,7 @@ public class PasswordModifyRequestImpl extends AbstractExtendedRequest implement
     /**
      * @param userIdentity the userIdentity to set
      */
+    @Override
     public void setUserIdentity( byte[] userIdentity )
     {
         this.userIdentity = userIdentity;
@@ -90,6 +92,7 @@ public class PasswordModifyRequestImpl extends AbstractExtendedRequest implement
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getOldPassword()
     {
         return oldPassword;
@@ -99,6 +102,7 @@ public class PasswordModifyRequestImpl extends AbstractExtendedRequest implement
     /**
      * @param oldPassword the oldPassword to set
      */
+    @Override
     public void setOldPassword( byte[] oldPassword )
     {
         this.oldPassword = oldPassword;
@@ -108,6 +112,7 @@ public class PasswordModifyRequestImpl extends AbstractExtendedRequest implement
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getNewPassword()
     {
         return newPassword;
@@ -117,6 +122,7 @@ public class PasswordModifyRequestImpl extends AbstractExtendedRequest implement
     /**
      * @param newPassword the newPassword to set
      */
+    @Override
     public void setNewPassword( byte[] newPassword )
     {
         this.newPassword = newPassword;
@@ -141,6 +147,7 @@ public class PasswordModifyRequestImpl extends AbstractExtendedRequest implement
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

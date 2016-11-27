@@ -69,6 +69,7 @@ public class StartTlsRequestImpl extends AbstractExtendedRequest implements Star
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         return "StartTLS extended request";

@@ -79,6 +79,7 @@ public class PasswordPolicyImpl implements PasswordPolicy
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return PasswordPolicy.OID;
@@ -88,6 +89,7 @@ public class PasswordPolicyImpl implements PasswordPolicy
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isCritical()
     {
         return criticality;
@@ -97,6 +99,7 @@ public class PasswordPolicyImpl implements PasswordPolicy
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCritical( boolean isCritical )
     {
         this.criticality = isCritical;
@@ -107,6 +110,7 @@ public class PasswordPolicyImpl implements PasswordPolicy
      * 
      * {@inheritDoc}
      */
+    @Override
     public void setResponse( PasswordPolicyResponse response )
     {
         this.response = response;
@@ -116,6 +120,7 @@ public class PasswordPolicyImpl implements PasswordPolicy
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasResponse()
     {
         return response != null;
@@ -126,6 +131,7 @@ public class PasswordPolicyImpl implements PasswordPolicy
      * 
      * {@inheritDoc}
      */
+    @Override
     public PasswordPolicyResponse setResponse( boolean hasResponse )
     {
         PasswordPolicyResponse old = this.response;
@@ -146,6 +152,7 @@ public class PasswordPolicyImpl implements PasswordPolicy
     /**
      * {@inheritDoc}
      */
+    @Override
     public PasswordPolicyResponse getResponse()
     {
         return response;
@@ -157,6 +164,7 @@ public class PasswordPolicyImpl implements PasswordPolicy
      * 
      * @return A BindResponse String
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

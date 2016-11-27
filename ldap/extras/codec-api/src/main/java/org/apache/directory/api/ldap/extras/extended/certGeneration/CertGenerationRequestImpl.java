@@ -79,6 +79,7 @@ public class CertGenerationRequestImpl extends AbstractExtendedRequest implement
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getTargetDN()
     {
         return targetDN;
@@ -88,6 +89,7 @@ public class CertGenerationRequestImpl extends AbstractExtendedRequest implement
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setTargetDN( String targetDN )
     {
         this.targetDN = targetDN;
@@ -97,6 +99,7 @@ public class CertGenerationRequestImpl extends AbstractExtendedRequest implement
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getIssuerDN()
     {
         return issuerDN;
@@ -106,6 +109,7 @@ public class CertGenerationRequestImpl extends AbstractExtendedRequest implement
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setIssuerDN( String issuerDN )
     {
         this.issuerDN = issuerDN;
@@ -115,6 +119,7 @@ public class CertGenerationRequestImpl extends AbstractExtendedRequest implement
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSubjectDN()
     {
         return subjectDN;
@@ -124,6 +129,7 @@ public class CertGenerationRequestImpl extends AbstractExtendedRequest implement
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setSubjectDN( String subjectDN )
     {
         this.subjectDN = subjectDN;
@@ -133,6 +139,7 @@ public class CertGenerationRequestImpl extends AbstractExtendedRequest implement
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getKeyAlgorithm()
     {
         return keyAlgorithm;
@@ -142,6 +149,7 @@ public class CertGenerationRequestImpl extends AbstractExtendedRequest implement
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setKeyAlgorithm( String keyAlgorithm )
     {
         this.keyAlgorithm = keyAlgorithm;

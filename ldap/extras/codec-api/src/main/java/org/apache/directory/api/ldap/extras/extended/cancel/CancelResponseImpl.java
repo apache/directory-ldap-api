@@ -83,6 +83,7 @@ public class CancelResponseImpl extends ExtendedResponseImpl implements CancelRe
      * 
      * @return the OID of the extended response type.
      */
+    @Override
     public String getResponseName()
     {
         return "";
@@ -114,6 +115,6 @@ public class CancelResponseImpl extends ExtendedResponseImpl implements CancelRe
             return true;
         }
 
-        return ( obj instanceof CancelResponseImpl );
+        return obj instanceof CancelResponseImpl;
     }
 }

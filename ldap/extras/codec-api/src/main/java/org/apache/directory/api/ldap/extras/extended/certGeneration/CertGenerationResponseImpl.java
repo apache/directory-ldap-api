@@ -76,6 +76,7 @@ public class CertGenerationResponseImpl extends ExtendedResponseImpl implements 
      * 
      * @return the OID of the extended response type.
      */
+    @Override
     public String getResponseName()
     {
         return EXTENSION_OID;
@@ -89,6 +90,7 @@ public class CertGenerationResponseImpl extends ExtendedResponseImpl implements 
      * @param oid
      *            the OID of the extended response type.
      */
+    @Override
     public void setResponseName( String oid )
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_04168, EXTENSION_OID ) );
@@ -120,6 +122,6 @@ public class CertGenerationResponseImpl extends ExtendedResponseImpl implements 
             return true;
         }
 
-        return ( obj instanceof CertGenerationResponseImpl );
+        return obj instanceof CertGenerationResponseImpl;
     }
 }

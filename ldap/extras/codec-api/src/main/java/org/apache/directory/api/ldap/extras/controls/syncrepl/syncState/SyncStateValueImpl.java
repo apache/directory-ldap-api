@@ -68,6 +68,7 @@ public class SyncStateValueImpl extends AbstractControl implements SyncStateValu
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getCookie()
     {
         return cookie;
@@ -77,6 +78,7 @@ public class SyncStateValueImpl extends AbstractControl implements SyncStateValu
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCookie( byte[] cookie )
     {
         this.cookie = cookie;
@@ -86,6 +88,7 @@ public class SyncStateValueImpl extends AbstractControl implements SyncStateValu
     /**
      * {@inheritDoc}
      */
+    @Override
     public SyncStateTypeEnum getSyncStateType()
     {
         return type;
@@ -95,6 +98,7 @@ public class SyncStateValueImpl extends AbstractControl implements SyncStateValu
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setSyncStateType( SyncStateTypeEnum syncStateType )
     {
         this.type = syncStateType;
@@ -104,6 +108,7 @@ public class SyncStateValueImpl extends AbstractControl implements SyncStateValu
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getEntryUUID()
     {
         return entryUuid;
@@ -113,6 +118,7 @@ public class SyncStateValueImpl extends AbstractControl implements SyncStateValu
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setEntryUUID( byte[] entryUUID )
     {
         this.entryUuid = entryUUID;

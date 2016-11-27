@@ -91,6 +91,7 @@ public class SyncRequestValueImpl extends AbstractControl implements SyncRequest
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getCookie()
     {
         return this.cookie;
@@ -100,6 +101,7 @@ public class SyncRequestValueImpl extends AbstractControl implements SyncRequest
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCookie( byte[] cookie )
     {
         this.cookie = cookie;
@@ -109,6 +111,7 @@ public class SyncRequestValueImpl extends AbstractControl implements SyncRequest
     /**
      * {@inheritDoc}
      */
+    @Override
     public SynchronizationModeEnum getMode()
     {
         return mode;
@@ -118,6 +121,7 @@ public class SyncRequestValueImpl extends AbstractControl implements SyncRequest
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setMode( SynchronizationModeEnum mode )
     {
         this.mode = mode;
@@ -127,6 +131,7 @@ public class SyncRequestValueImpl extends AbstractControl implements SyncRequest
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isReloadHint()
     {
         return isReloadHint;
@@ -136,6 +141,7 @@ public class SyncRequestValueImpl extends AbstractControl implements SyncRequest
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setReloadHint( boolean reloadHint )
     {
         this.isReloadHint = reloadHint;

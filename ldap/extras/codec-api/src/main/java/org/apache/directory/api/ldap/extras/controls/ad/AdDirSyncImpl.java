@@ -56,6 +56,7 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getParentFirst()
     {
         return parentFirst;
@@ -65,6 +66,7 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setParentFirst( int parentFirst )
     {
         this.parentFirst = parentFirst;
@@ -74,6 +76,7 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
     /**
      * {@inheritDoc}
      */
+    @Override
     public AdDirSyncFlag getFlag()
     {
         return flag;
@@ -83,6 +86,7 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setFlag( AdDirSyncFlag flag )
     {
         this.flag = flag;
@@ -92,6 +96,7 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMaxReturnLength()
     {
         return maxReturnLength;
@@ -101,6 +106,7 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setMaxReturnLength( int maxReturnLength )
     {
         this.maxReturnLength = maxReturnLength;
@@ -110,6 +116,7 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getCookie()
     {
         return cookie;
@@ -119,6 +126,7 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCookie( byte[] cookie )
     {
         if ( cookie != null )
