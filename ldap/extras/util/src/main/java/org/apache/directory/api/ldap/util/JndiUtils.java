@@ -162,17 +162,14 @@ public final class JndiUtils
             throw ( NamingException ) t;
         }
 
-        NamingException ne = null;
+        NamingException ne;
 
-        if ( t instanceof LdapAffectMultipleDsaException )
-        {
-            ne = new NamingException( t.getLocalizedMessage() );
-        }
-        else if ( t instanceof LdapAliasDereferencingException )
-        {
-            ne = new NamingException( t.getLocalizedMessage() );
-        }
-        else if ( t instanceof LdapAliasException )
+        if ( ( t instanceof LdapAffectMultipleDsaException )
+            || ( t instanceof LdapAliasDereferencingException )
+            || ( t instanceof LdapLoopDetectedException )
+            || ( t instanceof LdapAliasException ) 
+            || ( t instanceof LdapOperationErrorException ) 
+            || ( t instanceof LdapOtherException ) )
         {
             ne = new NamingException( t.getLocalizedMessage() );
         }
@@ -212,10 +209,6 @@ public final class JndiUtils
         {
             ne = new InvalidSearchFilterException( t.getLocalizedMessage() );
         }
-        else if ( t instanceof LdapLoopDetectedException )
-        {
-            ne = new NamingException( t.getLocalizedMessage() );
-        }
         else if ( t instanceof LdapNoPermissionException )
         {
             ne = new NoPermissionException( t.getLocalizedMessage() );
@@ -227,14 +220,6 @@ public final class JndiUtils
         else if ( t instanceof LdapNoSuchObjectException )
         {
             ne = new NameNotFoundException( t.getLocalizedMessage() );
-        }
-        else if ( t instanceof LdapOperationErrorException )
-        {
-            ne = new NamingException( t.getLocalizedMessage() );
-        }
-        else if ( t instanceof LdapOtherException )
-        {
-            ne = new NamingException( t.getLocalizedMessage() );
         }
         else if ( t instanceof LdapProtocolErrorException )
         {
@@ -285,9 +270,7 @@ public final class JndiUtils
     {
         try
         {
-            Name name = new LdapName( dn.toString() );
-
-            return name;
+            return new LdapName( dn.toString() );
         }
         catch ( InvalidNameException ine )
         {
@@ -308,9 +291,7 @@ public final class JndiUtils
     {
         try
         {
-            Dn dn = new Dn( name.toString() );
-
-            return dn;
+            return new Dn( name.toString() );
         }
         catch ( LdapInvalidDnException lide )
         {

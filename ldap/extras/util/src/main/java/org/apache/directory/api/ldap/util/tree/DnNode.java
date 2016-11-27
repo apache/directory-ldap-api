@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @param <N> The type of node we store
  */
-public class DnNode<N> implements Cloneable
+public class DnNode<N>
 {
     /** The logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( DnNode.class );
@@ -69,6 +69,68 @@ public class DnNode<N> implements Cloneable
 
     /** Stores the list of all the descendant */
     private Map<String, DnNode<N>> children;
+
+
+    //-------------------------------------------------------------------------
+    // Constructors
+    //-------------------------------------------------------------------------
+    /**
+     * Creates a new instance of DnNode.
+     */
+    public DnNode()
+    {
+        children = new HashMap<>();
+        nodeDn = Dn.EMPTY_DN;
+        nodeRdn = Rdn.EMPTY_RDN;
+    }
+
+
+    /**
+     * Creates a new instance of DnNode.
+     *
+     * @param element the element to store
+     */
+    public DnNode( N element )
+    {
+        this.nodeElement = element;
+        children = new HashMap<>();
+    }
+
+
+    /**
+     * Creates a new instance of DnNode.
+     *
+     * @param dn the node's Dn
+     * @param element the element to store
+     */
+    public DnNode( Dn dn, N element )
+    {
+        if ( ( dn == null ) || ( dn.isEmpty() ) )
+        {
+            children = new HashMap<>();
+            this.nodeDn = Dn.EMPTY_DN;
+
+            return;
+        }
+
+        try
+        {
+            DnNode<N> rootNode = createNode( dn, element, dn.size() );
+
+            // Now copy back the created node into this
+            this.children = rootNode.children;
+            this.depth = rootNode.depth;
+            this.nodeDn = rootNode.nodeDn;
+            this.nodeElement = rootNode.nodeElement;
+            this.nodeRdn = rootNode.nodeRdn;
+            this.parent = null;
+        }
+        catch ( LdapException le )
+        {
+            // Special cas e: the Dn is empty, this is not allowed
+            throw new IllegalArgumentException( le.getMessage(), le );
+        }
+    }
 
 
     //-------------------------------------------------------------------------
@@ -108,7 +170,7 @@ public class DnNode<N> implements Cloneable
             if ( rootNode == null )
             {
                 // Create the new top node
-                DnNode<N> node = new DnNode<N>( element );
+                DnNode<N> node = new DnNode<>( element );
                 node.nodeRdn = rdn;
                 node.nodeDn = dn;
                 node.depth = dn.size() + depth;
@@ -117,7 +179,7 @@ public class DnNode<N> implements Cloneable
             }
             else
             {
-                DnNode<N> node = new DnNode<N>();
+                DnNode<N> node = new DnNode<>();
                 node.nodeRdn = rdn;
                 node.nodeDn = rootNode.nodeDn.getParent();
                 node.depth = node.nodeDn.size() + depth;
@@ -139,68 +201,6 @@ public class DnNode<N> implements Cloneable
     private synchronized void setElement( N element )
     {
         this.nodeElement = element;
-    }
-
-
-    //-------------------------------------------------------------------------
-    // Constructors
-    //-------------------------------------------------------------------------
-    /**
-     * Creates a new instance of DnNode.
-     */
-    public DnNode()
-    {
-        children = new HashMap<String, DnNode<N>>();
-        nodeDn = Dn.EMPTY_DN;
-        nodeRdn = Rdn.EMPTY_RDN;
-    }
-
-
-    /**
-     * Creates a new instance of DnNode.
-     *
-     * @param element the element to store
-     */
-    public DnNode( N element )
-    {
-        this.nodeElement = element;
-        children = new HashMap<String, DnNode<N>>();
-    }
-
-
-    /**
-     * Creates a new instance of DnNode.
-     *
-     * @param dn the node's Dn
-     * @param element the element to store
-     */
-    public DnNode( Dn dn, N element )
-    {
-        if ( ( dn == null ) || ( dn.isEmpty() ) )
-        {
-            children = new HashMap<String, DnNode<N>>();
-            this.nodeDn = Dn.EMPTY_DN;
-
-            return;
-        }
-
-        try
-        {
-            DnNode<N> rootNode = createNode( dn, element, dn.size() );
-
-            // Now copy back the created node into this
-            this.children = rootNode.children;
-            this.depth = rootNode.depth;
-            this.nodeDn = rootNode.nodeDn;
-            this.nodeElement = rootNode.nodeElement;
-            this.nodeRdn = rootNode.nodeRdn;
-            this.parent = null;
-        }
-        catch ( LdapException le )
-        {
-            // Special cas e: the Dn is empty, this is not allowed
-            throw new IllegalArgumentException( le.getMessage(), le );
-        }
     }
 
 
@@ -409,7 +409,7 @@ public class DnNode<N> implements Cloneable
      */
     public synchronized List<N> getDescendantElements( Dn dn )
     {
-        List<N> descendants = new ArrayList<N>();
+        List<N> descendants = new ArrayList<>();
 
         DnNode<N> node = getNode( dn );
 
@@ -534,7 +534,7 @@ public class DnNode<N> implements Cloneable
             }
         }
 
-        return ( parentNode != null );
+        return parentNode != null;
     }
 
 
@@ -968,28 +968,6 @@ public class DnNode<N> implements Cloneable
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
-    public synchronized DnNode<N> clone()
-    {
-        DnNode<N> clonedDnNode = new DnNode<N>();
-
-        clonedDnNode.nodeElement = nodeElement;
-        clonedDnNode.depth = depth;
-        clonedDnNode.parent = parent;
-        clonedDnNode.nodeRdn = nodeRdn;
-        clonedDnNode.nodeDn = nodeDn;
-
-        for ( DnNode<N> node : children.values() )
-        {
-            clonedDnNode.children.put( node.getRdn().getNormName(), node.clone() );
-        }
-
-        return clonedDnNode;
-    }
-
-
     private String toString( String tabs )
     {
         if ( nodeRdn == null )
@@ -1047,6 +1025,7 @@ public class DnNode<N> implements Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         return toString( "" );
