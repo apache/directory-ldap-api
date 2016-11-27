@@ -50,18 +50,19 @@ public abstract class SchemaElementImpl implements SchemaElement
     protected String description;
 
     /** The list of names for this schemaElements */
-    protected List<String> names = new ArrayList<String>();
+    protected List<String> names = new ArrayList<>();
 
     /** The obsolete flag */
     protected boolean obsolete = false;
 
     /** The optional list of extensions */
-    protected Map<String, List<String>> extensions = new HashMap<String, List<String>>();
+    protected Map<String, List<String>> extensions = new HashMap<>();
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isObsolete()
     {
         return obsolete;
@@ -71,6 +72,7 @@ public abstract class SchemaElementImpl implements SchemaElement
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setObsolete( boolean obsolete )
     {
         this.obsolete = obsolete;
@@ -80,6 +82,7 @@ public abstract class SchemaElementImpl implements SchemaElement
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return oid;
@@ -89,6 +92,7 @@ public abstract class SchemaElementImpl implements SchemaElement
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getDescription()
     {
         return description;
@@ -98,6 +102,7 @@ public abstract class SchemaElementImpl implements SchemaElement
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setDescription( String description )
     {
         this.description = description;
@@ -107,6 +112,7 @@ public abstract class SchemaElementImpl implements SchemaElement
     /**
      * @see SchemaElement#getNames()
      */
+    @Override
     public List<String> getNames()
     {
         return names;
@@ -116,6 +122,7 @@ public abstract class SchemaElementImpl implements SchemaElement
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setNames( List<String> names )
     {
         this.names = names;
@@ -125,6 +132,7 @@ public abstract class SchemaElementImpl implements SchemaElement
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<String> getExtension( String key )
     {
         return extensions.get( key );
@@ -134,6 +142,7 @@ public abstract class SchemaElementImpl implements SchemaElement
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<String, List<String>> getExtensions()
     {
         return extensions;
@@ -143,6 +152,7 @@ public abstract class SchemaElementImpl implements SchemaElement
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setExtensions( Map<String, List<String>> extensions )
     {
         this.extensions = extensions;
@@ -164,7 +174,7 @@ public abstract class SchemaElementImpl implements SchemaElement
      */
     private String nameToLdif() throws LdapException
     {
-        if ( names.size() == 0 )
+        if ( names.isEmpty() )
         {
             return "";
         }

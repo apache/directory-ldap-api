@@ -208,6 +208,7 @@ public class SchemaParser
         /**
          * {@inheritDoc}
          */
+        @Override
         public void run()
         {
             int count = -1;
