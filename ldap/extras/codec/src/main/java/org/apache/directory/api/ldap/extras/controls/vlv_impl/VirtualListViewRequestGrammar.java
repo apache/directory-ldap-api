@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * TODO VirtualListViewRequestGrammar.
+ * The VLV grammar
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

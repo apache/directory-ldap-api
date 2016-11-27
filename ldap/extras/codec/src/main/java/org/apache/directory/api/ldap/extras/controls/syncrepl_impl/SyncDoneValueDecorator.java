@@ -182,6 +182,7 @@ public class SyncDoneValueDecorator extends ControlDecorator<SyncDoneValue> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getCookie()
     {
         return getDecorated().getCookie();
@@ -191,6 +192,7 @@ public class SyncDoneValueDecorator extends ControlDecorator<SyncDoneValue> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCookie( byte[] cookie )
     {
         // Copy the bytes
@@ -210,6 +212,7 @@ public class SyncDoneValueDecorator extends ControlDecorator<SyncDoneValue> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isRefreshDeletes()
     {
         return getDecorated().isRefreshDeletes();
@@ -219,6 +222,7 @@ public class SyncDoneValueDecorator extends ControlDecorator<SyncDoneValue> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setRefreshDeletes( boolean refreshDeletes )
     {
         getDecorated().setRefreshDeletes( refreshDeletes );
@@ -228,6 +232,7 @@ public class SyncDoneValueDecorator extends ControlDecorator<SyncDoneValue> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );

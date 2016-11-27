@@ -53,6 +53,7 @@ public class AdShowDeletedDecorator extends ControlDecorator<AdShowDeleted> impl
     /**
      * Returns the default control length.
      */
+    @Override
     public int computeLength()
     {
         return 0;

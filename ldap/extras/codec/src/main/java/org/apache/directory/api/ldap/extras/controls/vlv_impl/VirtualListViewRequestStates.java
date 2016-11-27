@@ -21,7 +21,6 @@
 package org.apache.directory.api.ldap.extras.controls.vlv_impl;
 
 
-import org.apache.directory.api.asn1.ber.grammar.Grammar;
 import org.apache.directory.api.asn1.ber.grammar.States;
 
 
@@ -44,26 +43,20 @@ public enum VirtualListViewRequestStates implements States
     VLV_ASSERTION_VALUE_STATE,
     END_STATE;
 
-    public String getGrammarName( int grammar )
+    /**
+     * Get the grammar name
+     * 
+     * @return The grammar name
+     */
+    public String getGrammarName()
     {
         return "VLV_REQUEST_GRAMMAR";
     }
 
 
-    public String getGrammarName( Grammar<?> grammar )
-    {
-        if ( grammar instanceof VirtualListViewRequestGrammar )
-        {
-            return "VLV_REQUEST_GRAMMAR";
-        }
-
-        return "UNKNOWN GRAMMAR";
-    }
-
-
     public String getState( int state )
     {
-        return ( ( state == END_STATE.ordinal() ) ? "VLV_REQUEST_END_STATE" : name() );
+        return ( state == END_STATE.ordinal() ) ? "VLV_REQUEST_END_STATE" : name();
     }
 
 

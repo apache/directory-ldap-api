@@ -51,6 +51,7 @@ public class GracefulShutdownFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return GracefulShutdownRequest.EXTENSION_OID;
@@ -60,6 +61,7 @@ public class GracefulShutdownFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public GracefulShutdownResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
         GracefulShutdownResponseDecorator response = new GracefulShutdownResponseDecorator(
@@ -72,6 +74,7 @@ public class GracefulShutdownFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public GracefulShutdownRequest newRequest( byte[] value )
     {
         GracefulShutdownRequestDecorator req = new GracefulShutdownRequestDecorator( codec,
@@ -84,6 +87,7 @@ public class GracefulShutdownFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedRequest decorate( ExtendedRequest modelRequest )
     {
         if ( modelRequest instanceof GracefulShutdownRequestDecorator )
@@ -98,6 +102,7 @@ public class GracefulShutdownFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedResponse decorate( ExtendedResponse decoratedMessage )
     {
         if ( decoratedMessage instanceof GracefulShutdownResponseDecorator )

@@ -67,6 +67,7 @@ public class SyncRequestValueDecorator extends ControlDecorator<SyncRequestValue
     /**
      * {@inheritDoc}
      */
+    @Override
     public SynchronizationModeEnum getMode()
     {
         return getDecorated().getMode();
@@ -76,6 +77,7 @@ public class SyncRequestValueDecorator extends ControlDecorator<SyncRequestValue
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setMode( SynchronizationModeEnum mode )
     {
         getDecorated().setMode( mode );
@@ -85,6 +87,7 @@ public class SyncRequestValueDecorator extends ControlDecorator<SyncRequestValue
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getCookie()
     {
         return getDecorated().getCookie();
@@ -94,6 +97,7 @@ public class SyncRequestValueDecorator extends ControlDecorator<SyncRequestValue
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCookie( byte[] cookie )
     {
         // Copy the bytes
@@ -113,6 +117,7 @@ public class SyncRequestValueDecorator extends ControlDecorator<SyncRequestValue
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isReloadHint()
     {
         return getDecorated().isReloadHint();
@@ -122,6 +127,7 @@ public class SyncRequestValueDecorator extends ControlDecorator<SyncRequestValue
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setReloadHint( boolean reloadHint )
     {
         getDecorated().setReloadHint( reloadHint );
@@ -256,11 +262,13 @@ public class SyncRequestValueDecorator extends ControlDecorator<SyncRequestValue
     /**
      * {@inheritDoc}
      */
+    @Override
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );
         SyncRequestValueContainer container = new SyncRequestValueContainer( this );
         DECODER.decode( bb, container );
+        
         return this;
     }
 }

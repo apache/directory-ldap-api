@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect;
 
 
-import org.apache.directory.api.asn1.ber.grammar.Grammar;
 import org.apache.directory.api.asn1.ber.grammar.States;
 
 
@@ -65,22 +64,9 @@ public enum GracefulDisconnectStatesEnum implements States
     /**
      * Get the grammar name
      * 
-     * @param grammar The grammar code
      * @return The grammar name
      */
-    public String getGrammarName( int grammar )
-    {
-        return "GRACEFUL_DISCONNECT_GRAMMAR";
-    }
-
-
-    /**
-     * Get the grammar name
-     * 
-     * @param grammar The grammar class
-     * @return The grammar name
-     */
-    public String getGrammarName( Grammar<GracefulDisconnectContainer> grammar )
+    public String getGrammarName()
     {
         return "GRACEFUL_DISCONNECT_GRAMMAR";
     }
@@ -94,13 +80,14 @@ public enum GracefulDisconnectStatesEnum implements States
      */
     public String getState( int state )
     {
-        return ( ( state == END_STATE.ordinal() ) ? "GRACEFUL_DISCONNECT_END_STATE" : name() );
+        return ( state == END_STATE.ordinal() ) ? "GRACEFUL_DISCONNECT_END_STATE" : name();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isEndState()
     {
         return this == END_STATE;
@@ -110,6 +97,7 @@ public enum GracefulDisconnectStatesEnum implements States
     /**
      * {@inheritDoc}
      */
+    @Override
     public GracefulDisconnectStatesEnum getStartState()
     {
         return START_STATE;

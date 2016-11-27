@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify;
 
 
-import org.apache.directory.api.asn1.ber.grammar.Grammar;
 import org.apache.directory.api.asn1.ber.grammar.States;
 
 
@@ -54,25 +53,13 @@ public enum PasswordModifyRequestStatesEnum implements States
     /** Last state */
     LAST_PASSWORD_MODIFY_REQUEST_STATE;
 
-    /**
-     * Get the grammar name
-     * 
-     * @param grammar The grammar class
-     * @return The grammar name
-     */
-    public String getGrammarName( Grammar<PasswordModifyRequestContainer> grammar )
-    {
-        return "PASSWORD_MODIFY_REQUEST_GRAMMER";
-    }
-
 
     /**
      * Get the grammar name
      * 
-     * @param grammar The grammar code
      * @return The grammar name
      */
-    public String getGrammarName( int grammar )
+    public String getGrammarName()
     {
         return "PASSWORD_MODIFY_REQUEST_GRAMMER";
     }
@@ -86,13 +73,14 @@ public enum PasswordModifyRequestStatesEnum implements States
      */
     public String getState( int state )
     {
-        return ( ( state == END_STATE.ordinal() ) ? "PASSWORD_MODIFY_REQUEST_GRAMMER" : this.name() );
+        return ( state == END_STATE.ordinal() ) ? "PASSWORD_MODIFY_REQUEST_GRAMMER" : name();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isEndState()
     {
         return this == END_STATE;
@@ -102,6 +90,7 @@ public enum PasswordModifyRequestStatesEnum implements States
     /**
      * {@inheritDoc}
      */
+    @Override
     public PasswordModifyRequestStatesEnum getStartState()
     {
         return START_STATE;

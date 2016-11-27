@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration;
 
 
-import org.apache.directory.api.asn1.ber.grammar.Grammar;
 import org.apache.directory.api.asn1.ber.grammar.States;
 
 
@@ -57,25 +56,13 @@ public enum CertGenerationStatesEnum implements States
     /** terminal state */
     LAST_CERT_GENERATION_STATE;
 
-    /**
-     * Get the grammar name
-     * 
-     * @param grammar The grammar class
-     * @return The grammar name
-     */
-    public String getGrammarName( Grammar<CertGenerationContainer> grammar )
-    {
-        return "CERT_GENERATION_GRAMMER";
-    }
-
 
     /**
      * Get the grammar name
      * 
-     * @param grammar The grammar code
      * @return The grammar name
      */
-    public String getGrammarName( int grammar )
+    public String getGrammarName()
     {
         return "CERT_GENERATION_GRAMMER";
     }
@@ -89,13 +76,14 @@ public enum CertGenerationStatesEnum implements States
      */
     public String getState( int state )
     {
-        return ( ( state == END_STATE.ordinal() ) ? "CERT_GENERATION_END_STATE" : this.name() );
+        return ( state == END_STATE.ordinal() ) ? "CERT_GENERATION_END_STATE" : name();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isEndState()
     {
         return this == END_STATE;
@@ -105,6 +93,7 @@ public enum CertGenerationStatesEnum implements States
     /**
      * {@inheritDoc}
      */
+    @Override
     public CertGenerationStatesEnum getStartState()
     {
         return START_STATE;

@@ -51,6 +51,7 @@ public class CertGenerationFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return CertGenerationRequest.EXTENSION_OID;
@@ -60,6 +61,7 @@ public class CertGenerationFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public CertGenerationResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
         CertGenerationResponseDecorator response = new CertGenerationResponseDecorator( codec,
@@ -73,6 +75,7 @@ public class CertGenerationFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public CertGenerationRequest newRequest( byte[] value )
     {
         CertGenerationRequestDecorator req = new CertGenerationRequestDecorator( codec, new CertGenerationRequestImpl() );
@@ -84,6 +87,7 @@ public class CertGenerationFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public CertGenerationRequestDecorator decorate( ExtendedRequest modelRequest )
     {
         if ( modelRequest instanceof CertGenerationRequestDecorator )
@@ -98,6 +102,7 @@ public class CertGenerationFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public CertGenerationResponseDecorator decorate( ExtendedResponse decoratedMessage )
     {
         if ( decoratedMessage instanceof CertGenerationResponseDecorator )

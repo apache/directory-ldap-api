@@ -55,6 +55,7 @@ public class StoredProcedureFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return StoredProcedureRequest.EXTENSION_OID;
@@ -64,6 +65,7 @@ public class StoredProcedureFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public StoredProcedureResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
         StoredProcedureResponseDecorator response = new StoredProcedureResponseDecorator( codec,
@@ -76,6 +78,7 @@ public class StoredProcedureFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public StoredProcedureRequest newRequest( byte[] value )
     {
         StoredProcedureRequestDecorator req = new StoredProcedureRequestDecorator( codec );
@@ -91,6 +94,7 @@ public class StoredProcedureFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public StoredProcedureRequestDecorator decorate( ExtendedRequest modelRequest )
     {
         if ( modelRequest instanceof StoredProcedureRequestDecorator )
@@ -105,6 +109,7 @@ public class StoredProcedureFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public StoredProcedureResponseDecorator decorate( ExtendedResponse decoratedMessage )
     {
         if ( decoratedMessage instanceof StoredProcedureResponseDecorator )

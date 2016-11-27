@@ -53,6 +53,7 @@ public class AdShowDeletedFactory implements ControlFactory<AdShowDeleted>
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return AdShowDeleted.OID;
@@ -62,6 +63,7 @@ public class AdShowDeletedFactory implements ControlFactory<AdShowDeleted>
     /**
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<AdShowDeleted> newCodecControl()
     {
         return new AdShowDeletedDecorator( codec, new AdShowDeletedImpl() );
@@ -71,6 +73,7 @@ public class AdShowDeletedFactory implements ControlFactory<AdShowDeleted>
     /**
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<AdShowDeleted> newCodecControl( AdShowDeleted control )
     {
         return new AdShowDeletedDecorator( codec, control );

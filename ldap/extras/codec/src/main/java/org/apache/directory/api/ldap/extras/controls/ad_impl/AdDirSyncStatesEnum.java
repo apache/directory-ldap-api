@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.extras.controls.ad_impl;
 
 
-import org.apache.directory.api.asn1.ber.grammar.Grammar;
 import org.apache.directory.api.asn1.ber.grammar.States;
 
 
@@ -56,29 +55,11 @@ public enum AdDirSyncStatesEnum implements States
     /**
      * Get the grammar name
      * 
-     * @param grammar The grammar code
      * @return The grammar name
      */
-    public String getGrammarName( int grammar )
+    public String getGrammarName()
     {
         return "AD_DIR_SYNC_GRAMMAR";
-    }
-
-
-    /**
-     * Get the grammar name
-     * 
-     * @param grammar The grammar class
-     * @return The grammar name
-     */
-    public String getGrammarName( Grammar<AdDirSyncContainer> grammar )
-    {
-        if ( grammar instanceof AdDirSyncGrammar )
-        {
-            return "AD_DIR_SYNC_GRAMMAR";
-        }
-
-        return "UNKNOWN GRAMMAR";
     }
 
 
@@ -90,13 +71,14 @@ public enum AdDirSyncStatesEnum implements States
      */
     public String getState( int state )
     {
-        return ( ( state == END_STATE.ordinal() ) ? "AD_DIR_SYNC_GRAMMAR" : this.name() );
+        return ( state == END_STATE.ordinal() ) ? "AD_DIR_SYNC_GRAMMAR" : name();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isEndState()
     {
         return this == END_STATE;
@@ -106,6 +88,7 @@ public enum AdDirSyncStatesEnum implements States
     /**
      * {@inheritDoc}
      */
+    @Override
     public AdDirSyncStatesEnum getStartState()
     {
         return START_STATE;

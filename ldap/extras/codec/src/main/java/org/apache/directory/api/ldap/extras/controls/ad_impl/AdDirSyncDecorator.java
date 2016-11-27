@@ -76,6 +76,7 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getParentFirst()
     {
         return getDecorated().getParentFirst();
@@ -85,6 +86,7 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setParentFirst( int parentFirst )
     {
         getDecorated().setParentFirst( parentFirst );
@@ -94,6 +96,7 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
     /**
      * {@inheritDoc}
      */
+    @Override
     public AdDirSyncFlag getFlag()
     {
         return getDecorated().getFlag();
@@ -103,6 +106,7 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setFlag( AdDirSyncFlag flag )
     {
         getDecorated().setFlag( flag );
@@ -112,6 +116,7 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMaxReturnLength()
     {
         return getDecorated().getMaxReturnLength();
@@ -121,6 +126,7 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setMaxReturnLength( int maxReturnLength )
     {
         getDecorated().setMaxReturnLength( maxReturnLength );
@@ -130,6 +136,7 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getCookie()
     {
         return getDecorated().getCookie();
@@ -139,6 +146,7 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCookie( byte[] cookie )
     {
         // Copy the bytes
@@ -266,6 +274,7 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
     /**
      * {@inheritDoc}
      */
+    @Override
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );

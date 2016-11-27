@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.extras.controls.syncrepl_impl;
 
 
-import org.apache.directory.api.asn1.ber.grammar.Grammar;
 import org.apache.directory.api.asn1.ber.grammar.States;
 
 
@@ -62,29 +61,11 @@ public enum SyncRequestValueStatesEnum implements States
     /**
      * Get the grammar name
      * 
-     * @param grammar The grammar code
      * @return The grammar name
      */
-    public String getGrammarName( int grammar )
+    public String getGrammarName()
     {
         return "SYNC_REQUEST_VALUE_GRAMMAR";
-    }
-
-
-    /**
-     * Get the grammar name
-     * 
-     * @param grammar The grammar class
-     * @return The grammar name
-     */
-    public String getGrammarName( Grammar<SyncRequestValueContainer> grammar )
-    {
-        if ( grammar instanceof SyncRequestValueGrammar )
-        {
-            return "SYNC_REQUEST_VALUE_GRAMMAR";
-        }
-
-        return "UNKNOWN GRAMMAR";
     }
 
 
@@ -96,13 +77,14 @@ public enum SyncRequestValueStatesEnum implements States
      */
     public String getState( int state )
     {
-        return ( ( state == END_STATE.ordinal() ) ? "SYNC_REQUEST_VALUE_END_STATE" : this.name() );
+        return ( state == END_STATE.ordinal() ) ? "SYNC_REQUEST_VALUE_END_STATE" : name();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isEndState()
     {
         return this == END_STATE;
@@ -112,6 +94,7 @@ public enum SyncRequestValueStatesEnum implements States
     /**
      * {@inheritDoc}
      */
+    @Override
     public SyncRequestValueStatesEnum getStartState()
     {
         return START_STATE;

@@ -82,6 +82,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
      * 
      * @return the response specific encoded response values.
      */
+    @Override
     public byte[] getResponseValue()
     {
         if ( responseValue == null )
@@ -106,6 +107,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
      * 
      * @param responseValue the response specific encoded response values.
      */
+    @Override
     public void setResponseValue( byte[] responseValue )
     {
         GracefulDisconnectDecoder decoder = new GracefulDisconnectDecoder();
@@ -133,6 +135,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getDelay()
     {
         return gracefulDisconnectResponse.getDelay();
@@ -142,6 +145,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setDelay( int delay )
     {
         gracefulDisconnectResponse.setDelay( delay );
@@ -151,6 +155,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getTimeOffline()
     {
         return gracefulDisconnectResponse.getTimeOffline();
@@ -160,6 +165,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setTimeOffline( int timeOffline )
     {
         gracefulDisconnectResponse.setTimeOffline( timeOffline );
@@ -169,6 +175,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
     /**
      * {@inheritDoc}
      */
+    @Override
     public Referral getReplicatedContexts()
     {
         return gracefulDisconnectResponse.getReplicatedContexts();
@@ -178,6 +185,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addReplicatedContexts( String replicatedContext )
     {
         gracefulDisconnectResponse.getReplicatedContexts().addLdapUrl( replicatedContext );
@@ -211,11 +219,11 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
         }
 
         if ( ( gracefulDisconnectResponse.getReplicatedContexts() != null )
-            && ( gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().size() != 0 ) )
+            && ( !gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().isEmpty() ) )
         {
             replicatedContextsLength = 0;
             
-            ldapUrlBytes = new ArrayList<byte[]>( gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().size() );
+            ldapUrlBytes = new ArrayList<>( gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().size() );
 
             // We may have more than one reference.
             for ( String replicatedContext : gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls() )
@@ -262,7 +270,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
         }
 
         if ( ( gracefulDisconnectResponse.getReplicatedContexts() != null )
-            && ( gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().size() != 0 ) )
+            && ( !gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().isEmpty() ) )
         {
             bb.put( UniversalTag.SEQUENCE.getValue() );
             bb.put( TLV.getBytes( replicatedContextsLength ) );
@@ -281,15 +289,17 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
     /**
      * Return a string representation of the graceful disconnect
      */
+    @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( "Graceful Disconnect extended operation" );
         sb.append( "    TimeOffline : " ).append( gracefulDisconnectResponse.getTimeOffline() ).append( '\n' );
         sb.append( "    Delay : " ).append( gracefulDisconnectResponse.getDelay() ).append( '\n' );
 
-        if ( ( gracefulDisconnectResponse.getReplicatedContexts() != null ) && ( gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().size() != 0 ) )
+        if ( ( gracefulDisconnectResponse.getReplicatedContexts() != null ) 
+            && ( !gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().isEmpty() ) )
         {
             sb.append( "    Replicated contexts :" );
 

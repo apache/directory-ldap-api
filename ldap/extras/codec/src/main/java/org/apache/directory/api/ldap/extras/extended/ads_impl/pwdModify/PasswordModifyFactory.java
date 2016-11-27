@@ -60,6 +60,7 @@ public class PasswordModifyFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return PasswordModifyRequest.EXTENSION_OID;
@@ -69,6 +70,7 @@ public class PasswordModifyFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public PasswordModifyResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
         PasswordModifyResponseDecorator response = new PasswordModifyResponseDecorator( codec,
@@ -81,6 +83,7 @@ public class PasswordModifyFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public PasswordModifyRequest newRequest( byte[] value )
     {
         PasswordModifyRequestDecorator req = new PasswordModifyRequestDecorator( codec, new PasswordModifyRequestImpl() );
@@ -97,6 +100,7 @@ public class PasswordModifyFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public PasswordModifyRequestDecorator decorate( ExtendedRequest modelRequest )
     {
         if ( modelRequest instanceof PasswordModifyRequestDecorator )
@@ -111,6 +115,7 @@ public class PasswordModifyFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public PasswordModifyResponseDecorator decorate( ExtendedResponse decoratedResponse )
     {
         if ( decoratedResponse instanceof PasswordModifyResponseDecorator )
@@ -133,7 +138,7 @@ public class PasswordModifyFactory implements ExtendedOperationFactory
         byte[] value = response.getResponseValue();
         PasswordModifyResponseContainer container = new PasswordModifyResponseContainer();
         
-        PasswordModifyResponse pwdModifyResponse = null;
+        PasswordModifyResponse pwdModifyResponse;
         
         if ( value != null )
         {

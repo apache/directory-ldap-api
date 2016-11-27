@@ -242,7 +242,7 @@ public final class StoredProcedureGrammar extends AbstractGrammar<StoredProcedur
                 {
                     public void action( StoredProcedureContainer container ) throws DecoderException
                     {
-                        StoredProcedureContainer storedProcedureContainer = ( StoredProcedureContainer ) container;
+                        StoredProcedureContainer storedProcedureContainer = container;
 
                         TLV tlv = storedProcedureContainer.getCurrentTLV();
                         StoredProcedureRequestDecorator storedProcedure = storedProcedureContainer.getStoredProcedure();

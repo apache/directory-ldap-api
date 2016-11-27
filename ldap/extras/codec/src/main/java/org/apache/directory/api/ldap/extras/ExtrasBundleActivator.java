@@ -113,134 +113,135 @@ public class ExtrasBundleActivator implements BundleActivator
             unregisterExtrasExtendedOps( ldapApiService );
         }
 
+
+        /**
+         * Registers all the extras extended operations present in this control pack.
+         *
+         * @param codec The codec service.
+         */
+        private void registerExtrasExtendedOps( LdapApiService codec )
+        {
+            // --------------------------------------------------------------------
+            // Register Extended Request Factories
+            // --------------------------------------------------------------------
+
+            CancelFactory cancelFactory = new CancelFactory( codec );
+            codec.registerExtendedRequest( cancelFactory );
+
+            CertGenerationFactory certGenerationFactory = new CertGenerationFactory( codec );
+            codec.registerExtendedRequest( certGenerationFactory );
+
+            GracefulShutdownFactory gracefulShutdownFactory = new GracefulShutdownFactory( codec );
+            codec.registerExtendedRequest( gracefulShutdownFactory );
+
+            StoredProcedureFactory storedProcedureFactory = new StoredProcedureFactory( codec );
+            codec.registerExtendedRequest( storedProcedureFactory );
+
+            PasswordModifyFactory passwordModifyFactory = new PasswordModifyFactory( codec );
+            codec.registerExtendedRequest( passwordModifyFactory );
+
+            GracefulDisconnectFactory gracefulDisconnectFactory = new GracefulDisconnectFactory( codec );
+            codec.registerExtendedRequest( gracefulDisconnectFactory );
+
+            WhoAmIFactory whoAmIFactory = new WhoAmIFactory( codec );
+            codec.registerExtendedRequest( whoAmIFactory );
+
+            StartTlsFactory startTlsFactory = new StartTlsFactory( codec );
+            codec.registerExtendedRequest( startTlsFactory );
+        }
+
+
+        private void unregisterExtrasControls( LdapApiService codec )
+        {
+            codec.unregisterControl( AdDirSync.OID );
+            codec.unregisterControl( AdShowDeleted.OID );
+            codec.unregisterControl( ChangeNotifications.OID );
+            codec.unregisterControl( PasswordPolicy.OID );
+            codec.unregisterControl( SyncDoneValue.OID );
+            codec.unregisterControl( SyncInfoValue.OID );
+            codec.unregisterControl( SyncRequestValue.OID );
+            codec.unregisterControl( SyncStateValue.OID );
+            codec.unregisterControl( VirtualListViewRequest.OID );
+            codec.unregisterControl( VirtualListViewResponse.OID );
+        }
+
+
+        private void unregisterExtrasExtendedOps( LdapApiService codec )
+        {
+            codec.unregisterExtendedRequest( CancelRequest.EXTENSION_OID );
+            codec.unregisterExtendedRequest( CertGenerationRequest.EXTENSION_OID );
+            codec.unregisterExtendedRequest( GracefulShutdownRequest.EXTENSION_OID );
+            codec.unregisterExtendedRequest( StoredProcedureRequest.EXTENSION_OID );
+            codec.unregisterExtendedRequest( GracefulDisconnectResponse.EXTENSION_OID );
+            codec.unregisterExtendedRequest( PasswordModifyRequest.EXTENSION_OID );
+            codec.unregisterExtendedRequest( WhoAmIRequest.EXTENSION_OID );
+            codec.unregisterExtendedRequest( StartTlsRequest.EXTENSION_OID );
+        }
+
+
+        /**
+         * Registers all the extras controls present in this control pack.
+         *
+         * @param codec The codec service.
+         */
+        private void registerExtrasControls( LdapApiService codec )
+        {
+            ControlFactory<AdDirSync> adDirSyncFactory = new AdDirSyncFactory( codec );
+            codec.registerControl( adDirSyncFactory );
+            
+            ControlFactory<AdShowDeleted> adDeletedFactory = new AdShowDeletedFactory( codec );
+            codec.registerControl( adDeletedFactory );
+            
+            ControlFactory<ChangeNotifications> changeNotificationsFactory = new ChangeNotificationsFactory( codec );
+            codec.registerControl( changeNotificationsFactory );
+
+            ControlFactory<PasswordPolicy> passwordPolicyFactory = new PasswordPolicyFactory( codec );
+            codec.registerControl( passwordPolicyFactory );
+
+            ControlFactory<PermissiveModify> permissiveModifyFactory = new PermissiveModifyFactory( codec );
+            codec.registerControl( permissiveModifyFactory );
+
+            ControlFactory<SyncDoneValue> syncDoneValuefactory = new SyncDoneValueFactory( codec );
+            codec.registerControl( syncDoneValuefactory );
+
+            ControlFactory<SyncInfoValue> syncInfoValueFactory = new SyncInfoValueFactory( codec );
+            codec.registerControl( syncInfoValueFactory );
+
+            ControlFactory<SyncRequestValue> syncRequestValueFactory = new SyncRequestValueFactory( codec );
+            codec.registerControl( syncRequestValueFactory );
+
+            ControlFactory<SyncStateValue> syncStateValuefactory = new SyncStateValueFactory( codec );
+            codec.registerControl( syncStateValuefactory );
+
+            ControlFactory<VirtualListViewRequest> virtualListViewRequestFactory = new VirtualListViewRequestFactory( codec );
+            codec.registerControl( virtualListViewRequestFactory );
+
+            ControlFactory<VirtualListViewResponse> virtualListViewResponseFactory = new VirtualListViewResponseFactory(
+                codec );
+            codec.registerControl( virtualListViewResponseFactory );
+        }
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void start( BundleContext context ) throws Exception
     {
         LdapApiServiceTracker ldapApiServiceTracker = new LdapApiServiceTracker( context );
-        serviceTracker = new ServiceTracker<LdapApiService, LdapApiService>(
+        serviceTracker = new ServiceTracker<>(
             context, LdapApiService.class, ldapApiServiceTracker );
         serviceTracker.open();
     }
-
-
-    /**
-     * Registers all the extras controls present in this control pack.
-     *
-     * @param codec The codec service.
-     */
-    private void registerExtrasControls( LdapApiService codec )
-    {
-        ControlFactory<AdDirSync> adDirSyncFactory = new AdDirSyncFactory( codec );
-        codec.registerControl( adDirSyncFactory );
-        
-        ControlFactory<AdShowDeleted> adDeletedFactory = new AdShowDeletedFactory( codec );
-        codec.registerControl( adDeletedFactory );
-        
-        ControlFactory<ChangeNotifications> changeNotificationsFactory = new ChangeNotificationsFactory( codec );
-        codec.registerControl( changeNotificationsFactory );
-
-        ControlFactory<PasswordPolicy> passwordPolicyFactory = new PasswordPolicyFactory( codec );
-        codec.registerControl( passwordPolicyFactory );
-
-        ControlFactory<PermissiveModify> permissiveModifyFactory = new PermissiveModifyFactory( codec );
-        codec.registerControl( permissiveModifyFactory );
-
-        ControlFactory<SyncDoneValue> syncDoneValuefactory = new SyncDoneValueFactory( codec );
-        codec.registerControl( syncDoneValuefactory );
-
-        ControlFactory<SyncInfoValue> syncInfoValueFactory = new SyncInfoValueFactory( codec );
-        codec.registerControl( syncInfoValueFactory );
-
-        ControlFactory<SyncRequestValue> syncRequestValueFactory = new SyncRequestValueFactory( codec );
-        codec.registerControl( syncRequestValueFactory );
-
-        ControlFactory<SyncStateValue> syncStateValuefactory = new SyncStateValueFactory( codec );
-        codec.registerControl( syncStateValuefactory );
-
-        ControlFactory<VirtualListViewRequest> virtualListViewRequestFactory = new VirtualListViewRequestFactory( codec );
-        codec.registerControl( virtualListViewRequestFactory );
-
-        ControlFactory<VirtualListViewResponse> virtualListViewResponseFactory = new VirtualListViewResponseFactory(
-            codec );
-        codec.registerControl( virtualListViewResponseFactory );
-    }
-
-
-    /**
-     * Registers all the extras extended operations present in this control pack.
-     *
-     * @param codec The codec service.
-     */
-    private void registerExtrasExtendedOps( LdapApiService codec )
-    {
-        // --------------------------------------------------------------------
-        // Register Extended Request Factories
-        // --------------------------------------------------------------------
-
-        CancelFactory cancelFactory = new CancelFactory( codec );
-        codec.registerExtendedRequest( cancelFactory );
-
-        CertGenerationFactory certGenerationFactory = new CertGenerationFactory( codec );
-        codec.registerExtendedRequest( certGenerationFactory );
-
-        GracefulShutdownFactory gracefulShutdownFactory = new GracefulShutdownFactory( codec );
-        codec.registerExtendedRequest( gracefulShutdownFactory );
-
-        StoredProcedureFactory storedProcedureFactory = new StoredProcedureFactory( codec );
-        codec.registerExtendedRequest( storedProcedureFactory );
-
-        PasswordModifyFactory passwordModifyFactory = new PasswordModifyFactory( codec );
-        codec.registerExtendedRequest( passwordModifyFactory );
-
-        GracefulDisconnectFactory gracefulDisconnectFactory = new GracefulDisconnectFactory( codec );
-        codec.registerExtendedRequest( gracefulDisconnectFactory );
-
-        WhoAmIFactory whoAmIFactory = new WhoAmIFactory( codec );
-        codec.registerExtendedRequest( whoAmIFactory );
-
-        StartTlsFactory startTlsFactory = new StartTlsFactory( codec );
-        codec.registerExtendedRequest( startTlsFactory );
-    }
-
-
+    
+    
     /**
      * {@inheritDoc}
      */
+    @Override
     public void stop( BundleContext context ) throws Exception
     {
         serviceTracker.close();
-    }
-
-
-    private void unregisterExtrasControls( LdapApiService codec )
-    {
-        codec.unregisterControl( AdDirSync.OID );
-        codec.unregisterControl( AdShowDeleted.OID );
-        codec.unregisterControl( ChangeNotifications.OID );
-        codec.unregisterControl( PasswordPolicy.OID );
-        codec.unregisterControl( SyncDoneValue.OID );
-        codec.unregisterControl( SyncInfoValue.OID );
-        codec.unregisterControl( SyncRequestValue.OID );
-        codec.unregisterControl( SyncStateValue.OID );
-        codec.unregisterControl( VirtualListViewRequest.OID );
-        codec.unregisterControl( VirtualListViewResponse.OID );
-    }
-
-
-    private void unregisterExtrasExtendedOps( LdapApiService codec )
-    {
-        codec.unregisterExtendedRequest( CancelRequest.EXTENSION_OID );
-        codec.unregisterExtendedRequest( CertGenerationRequest.EXTENSION_OID );
-        codec.unregisterExtendedRequest( GracefulShutdownRequest.EXTENSION_OID );
-        codec.unregisterExtendedRequest( StoredProcedureRequest.EXTENSION_OID );
-        codec.unregisterExtendedRequest( GracefulDisconnectResponse.EXTENSION_OID );
-        codec.unregisterExtendedRequest( PasswordModifyRequest.EXTENSION_OID );
-        codec.unregisterExtendedRequest( WhoAmIRequest.EXTENSION_OID );
-        codec.unregisterExtendedRequest( StartTlsRequest.EXTENSION_OID );
     }
 }

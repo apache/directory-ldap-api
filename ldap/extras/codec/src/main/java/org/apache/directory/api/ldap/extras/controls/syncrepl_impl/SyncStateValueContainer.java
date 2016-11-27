@@ -86,6 +86,7 @@ public class SyncStateValueContainer extends AbstractContainer
     /**
      * Clean the container
      */
+    @Override
     public void clean()
     {
         super.clean();
