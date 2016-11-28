@@ -80,7 +80,7 @@ public final class Hex
             return -1;
         }
 
-        return ( byte ) ( ( HEX_VALUE[high] << 4 ) | HEX_VALUE[low] );
+        return ( byte ) ( ( HEX_VALUE[high] << 4 ) | HEX_VALUE[low] & 0xff );
     }
 
 
@@ -99,7 +99,7 @@ public final class Hex
             return -1;
         }
 
-        return ( byte ) ( ( HEX_VALUE[high] << 4 ) | HEX_VALUE[low] );
+        return ( byte ) ( ( HEX_VALUE[high] << 4 ) | HEX_VALUE[low] & 0xff );
     }
 
 
@@ -152,7 +152,7 @@ public final class Hex
         for ( int ii = 1, jj = 0; ii < chars.length; ii += 2, jj++ )
         {
             int ch = ( HEX_VALUE[chars[ii]] << 4 )
-                + HEX_VALUE[chars[ii + 1]];
+                + ( HEX_VALUE[chars[ii + 1]] & 0xff );
             decoded[jj] = ( byte ) ch;
         }
 
@@ -196,7 +196,7 @@ public final class Hex
                 if ( Chars.isHex( str, i + 1 ) && Chars.isHex( str, i + 2 ) )
                 {
                     byte value = ( byte ) ( ( HEX_VALUE[str.charAt( i + 1 )] << 4 )
-                        + HEX_VALUE[str.charAt( i + 2 )] );
+                        + ( HEX_VALUE[str.charAt( i + 2 )] & 0xff ) );
 
                     i += 2;
                     buf[pos++] = value;

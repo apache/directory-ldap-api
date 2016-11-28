@@ -488,7 +488,7 @@ public final class Unicode
         // Start reading the string
         strBuf = new StringBuffer( objectInput.readUTF() );
 
-        if ( strLength == 0 && strBuf.toString().equals( "null" ) )
+        if ( ( strLength == 0 ) && ( "null".equals( strBuf.toString() ) ) ) 
         {
             // The special case of a 'null' string
             return null;

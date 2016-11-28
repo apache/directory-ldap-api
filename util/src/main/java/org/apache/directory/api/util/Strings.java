@@ -207,6 +207,16 @@ public final class Strings
             0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0
     };
+    
+    private static final byte[] UTF8 = new byte[]
+        { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A,
+            0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C,
+            0x1D, 0x1E, 0x1F, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E,
+            0x2F, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F, 0x40,
+            0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4A, 0x4B, 0x4C, 0x4D, 0x4E, 0x4F, 0x50, 0x51, 0x52,
+            0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5A, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F, 0x60, 0x61, 0x62, 0x63, 0x64,
+            0x65, 0x66, 0x67, 0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F, 0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76,
+            0x77, 0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7D, 0x7E, 0x7F };
 
     /** An empty byte array */
     public static final byte[] EMPTY_BYTES = new byte[0];
@@ -236,7 +246,7 @@ public final class Strings
             return "";
         }
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         for ( int i = 0; i < buffer.length; i++ )
         {
@@ -288,8 +298,9 @@ public final class Strings
         }
 
         char[] str = new char[buffer.length << 1];
+        int pos = 0;
 
-        for ( int i = 0, pos = 0; i < buffer.length; i++ )
+        for ( int i = 0; i < buffer.length; i++ )
         {
             str[pos++] = ( char ) ( HEX_CHAR[( buffer[i] & 0x00F0 ) >> 4] );
             str[pos++] = ( char ) ( HEX_CHAR[buffer[i] & 0x000F] );
@@ -306,8 +317,6 @@ public final class Strings
      * @param toLowerCase how to normalize for case: upper or lower
      * @return the deep trimmed string
      * @see Strings#deepTrim( String )
-     *
-     * TODO Replace the toCharArray() by substring manipulations
      */
     public static String deepTrim( String str, boolean toLowerCase )
     {
@@ -317,15 +326,15 @@ public final class Strings
         }
 
         char ch;
-        char[] buf = str.toCharArray();
-        char[] newbuf = new char[buf.length];
+        int length = str.length();
+        char[] newbuf = new char[length];
         boolean wsSeen = false;
         boolean isStart = true;
         int pos = 0;
 
-        for ( int i = 0; i < str.length(); i++ )
+        for ( int i = 0; i < length; i++ )
         {
-            ch = buf[i];
+            ch = str.charAt( i );
 
             // filter out all uppercase characters
             if ( toLowerCase && Character.isUpperCase( ch ) )
@@ -366,7 +375,7 @@ public final class Strings
             }
         }
 
-        return ( pos == 0 ? "" : new String( newbuf, 0, ( wsSeen ? pos - 1 : pos ) ) );
+        return pos == 0 ? "" : new String( newbuf, 0, wsSeen ? pos - 1 : pos );
     }
 
 
@@ -462,8 +471,6 @@ public final class Strings
      */
     public static String centerTrunc( String str, int head, int tail )
     {
-        StringBuffer buf = null;
-
         // Return as-is if String is smaller than or equal to the head plus the
         // tail plus the number of characters added to the trunc representation
         // plus the number of digits in the string length.
@@ -472,7 +479,7 @@ public final class Strings
             return str;
         }
 
-        buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         buf.append( '[' ).append( str.length() ).append( "][" );
         buf.append( str.substring( 0, head ) ).append( "..." );
         buf.append( str.substring( str.length() - tail ) );
@@ -489,7 +496,7 @@ public final class Strings
      */
     public static String toHexString( byte[] res )
     {
-        StringBuffer buf = new StringBuffer( res.length << 1 );
+        StringBuilder buf = new StringBuilder( res.length << 1 );
 
         for ( int ii = 0; ii < res.length; ii++ )
         {
@@ -543,12 +550,12 @@ public final class Strings
     public static String formatHtml( String source, boolean replaceNl, boolean replaceTag,
         boolean replaceQuote )
     {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         int len = source.length();
 
-        for ( int ii = 0; ii < len; ii++ )
+        for ( int i = 0; i < len; i++ )
         {
-            char ch = source.charAt( ii );
+            char ch = source.charAt( i );
 
             switch ( ch )
             {
@@ -668,7 +675,7 @@ public final class Strings
         }
         else
         {
-            return ( ( byteArray[index] == car ) ? true : false );
+            return ( byteArray[index] == car ) ? true : false;
         }
     }
 
@@ -699,17 +706,6 @@ public final class Strings
             return string.charAt( index ) == car;
         }
     }
-
-    private static final byte[] UTF8 = new byte[]
-        { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A,
-            0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C,
-            0x1D, 0x1E, 0x1F, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E,
-            0x2F, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F, 0x40,
-            0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4A, 0x4B, 0x4C, 0x4D, 0x4E, 0x4F, 0x50, 0x51, 0x52,
-            0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5A, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F, 0x60, 0x61, 0x62, 0x63, 0x64,
-            0x65, 0x66, 0x67, 0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F, 0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76,
-            0x77, 0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7D, 0x7E, 0x7F };
-
 
     /**
      * Return an UTF-8 encoded String
@@ -988,7 +984,7 @@ public final class Strings
      */
     public static String trim( String str )
     {
-        return ( isEmpty( str ) ? "" : str.trim() );
+        return isEmpty( str ) ? "" : str.trim();
     }
 
 
@@ -1015,7 +1011,7 @@ public final class Strings
     {
         if ( isEmpty( bytes ) )
         {
-            return StringConstants.EMPTY_BYTES;
+            return EMPTY_BYTES;
         }
 
         int start = trimLeft( bytes, 0 );
@@ -1033,7 +1029,7 @@ public final class Strings
         }
         else
         {
-            return StringConstants.EMPTY_BYTES;
+            return EMPTY_BYTES;
         }
     }
 
@@ -1071,7 +1067,7 @@ public final class Strings
             start++;
         }
 
-        return ( start == 0 ? str : str.substring( start ) );
+        return start == 0 ? str : str.substring( start );
     }
 
 
@@ -1257,7 +1253,7 @@ public final class Strings
             end--;
         }
 
-        return ( end == length ? str : str.substring( 0, end ) );
+        return end == length ? str : str.substring( 0, end );
     }
 
 
@@ -1300,7 +1296,7 @@ public final class Strings
             end--;
         }
 
-        return ( end == length ? str : str.substring( 0, end ) );
+        return end == length ? str : str.substring( 0, end );
     }
 
 
@@ -1377,7 +1373,7 @@ public final class Strings
             pos.end--;
         }
 
-        return ( pos.end == string.length() ? string : string.substring( 0, pos.end ) );
+        return pos.end == string.length() ? string : string.substring( 0, pos.end );
     }
 
 
@@ -1671,7 +1667,7 @@ public final class Strings
      */
     public static String listToString( List<?> list )
     {
-        if ( ( list == null ) || ( list.size() == 0 ) )
+        if ( ( list == null ) || list.isEmpty() )
         {
             return "";
         }
@@ -1705,7 +1701,7 @@ public final class Strings
      */
     public static String setToString( Set<?> set )
     {
-        if ( ( set == null ) || ( set.size() == 0 ) )
+        if ( ( set == null ) || set.isEmpty() )
         {
             return "";
         }
@@ -1740,12 +1736,12 @@ public final class Strings
      */
     public static String listToString( List<?> list, String tabs )
     {
-        if ( ( list == null ) || ( list.size() == 0 ) )
+        if ( ( list == null ) || list.isEmpty() )
         {
             return "";
         }
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         for ( Object elem : list )
         {
@@ -1767,12 +1763,12 @@ public final class Strings
      */
     public static String mapToString( Map<?, ?> map )
     {
-        if ( ( map == null ) || ( map.size() == 0 ) )
+        if ( ( map == null ) || map.isEmpty() )
         {
             return "";
         }
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         boolean isFirst = true;
 
         for ( Map.Entry<?, ?> entry : map.entrySet() )
@@ -1804,12 +1800,12 @@ public final class Strings
      */
     public static String mapToString( Map<?, ?> map, String tabs )
     {
-        if ( ( map == null ) || ( map.size() == 0 ) )
+        if ( ( map == null ) || map.isEmpty() )
         {
             return "";
         }
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         for ( Map.Entry<?, ?> entry : map.entrySet() )
         {
@@ -1832,6 +1828,7 @@ public final class Strings
      * @return The lowercase string
      * @deprecated Use {@link #toLowerCaseAscii(String)}
      */
+    @Deprecated
     public static String toLowerCase( String value )
     {
         if ( ( null == value ) || ( value.length() == 0 ) )
@@ -1909,6 +1906,7 @@ public final class Strings
      * @return The uppercase string
      * @deprecated Use {@link #toUpperCaseAscii(String)}
      */
+    @Deprecated
     public static String toUpperCase( String value )
     {
         if ( ( null == value ) || ( value.length() == 0 ) )
@@ -2167,7 +2165,7 @@ public final class Strings
         }
 
         char[] hex = encodeHex( bytes );
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append( hex, 0, 8 );
         sb.append( '-' );
         sb.append( hex, 8, 4 );
@@ -2178,7 +2176,7 @@ public final class Strings
         sb.append( '-' );
         sb.append( hex, 20, 12 );
 
-        return Strings.toLowerCase( sb.toString() );
+        return Strings.toLowerCaseAscii( sb.toString() );
     }
 
 
@@ -2232,7 +2230,7 @@ public final class Strings
     {
         if ( isEmpty( value ) )
         {
-            return StringConstants.EMPTY_BYTES;
+            return EMPTY_BYTES;
         }
 
         byte[] copy = new byte[value.length];
@@ -2310,9 +2308,8 @@ public final class Strings
      *
      * @param value The string to parse
      * @return the parsed value.
-     * @throws NumberFormatException If we don't have a number
      */
-    public static int parseInt( String value ) throws NumberFormatException
+    public static int parseInt( String value )
     {
         long res = 0;
         

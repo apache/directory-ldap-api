@@ -52,7 +52,6 @@ public class MandatoryAndOptionalComponentsMonitor implements ComponentsMonitor
      * @throws IllegalArgumentException if the same component is defined as mandatory and optional
      */
     public MandatoryAndOptionalComponentsMonitor( String[] mandatoryComponents, String[] optionalComponents )
-        throws IllegalArgumentException
     {
         // check for common elements
         for ( int i = 0; i < mandatoryComponents.length; i++ )
