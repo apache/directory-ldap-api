@@ -47,7 +47,7 @@ public class NoDuplicateKeysMap extends HashMap
      */
     @SuppressWarnings("unchecked")
     @Override
-    public Object put( Object key, Object value ) throws IllegalArgumentException
+    public Object put( Object key, Object value )
     {
         if ( containsKey( key ) )
         {

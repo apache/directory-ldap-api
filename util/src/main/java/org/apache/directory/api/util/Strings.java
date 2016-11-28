@@ -350,15 +350,15 @@ public final class Strings
         }
 
         char ch;
-        char[] buf = str.toCharArray();
-        char[] newbuf = new char[buf.length];
+        int length = str.length();
+        char[] newbuf = new char[length];
         boolean wsSeen = false;
         boolean isStart = true;
         int pos = 0;
 
-        for ( int i = 0; i < str.length(); i++ )
+        for ( int i = 0; i < length; i++ )
         {
-            ch = buf[i];
+            ch = str.charAt( i );
 
             // filter out all uppercase characters
             if ( toLowerCase && Character.isUpperCase( ch ) )
@@ -577,9 +577,9 @@ public final class Strings
         StringBuilder buf = new StringBuilder();
         int len = source.length();
 
-        for ( int ii = 0; ii < len; ii++ )
+        for ( int i = 0; i < len; i++ )
         {
-            char ch = source.charAt( ii );
+            char ch = source.charAt( i );
 
             switch ( ch )
             {
@@ -1059,7 +1059,7 @@ public final class Strings
     {
         if ( isEmpty( bytes ) )
         {
-            return StringConstants.EMPTY_BYTES;
+            return EMPTY_BYTES;
         }
 
         int start = trimLeft( bytes, 0 );
@@ -1077,7 +1077,7 @@ public final class Strings
         }
         else
         {
-            return StringConstants.EMPTY_BYTES;
+            return EMPTY_BYTES;
         }
     }
 
@@ -1878,6 +1878,7 @@ public final class Strings
      * 
      * @param value The String to lowercase
      * @return The lowercase string
+     * @deprecated Use {@link #toLowerCaseAscii(String)}
      */
     @Deprecated
     public static String toLowerCase( String value )
@@ -1956,6 +1957,7 @@ public final class Strings
      * Deprecated Use {@link #toUpperCaseAscii(String)}
      * @param value The String to uppercase
      * @return The uppercase string
+     * @deprecated Use {@link #toUpperCaseAscii(String)}
      */
     @Deprecated
     public static String toUpperCase( String value )
@@ -2281,7 +2283,7 @@ public final class Strings
     {
         if ( isEmpty( value ) )
         {
-            return StringConstants.EMPTY_BYTES;
+            return EMPTY_BYTES;
         }
 
         byte[] copy = new byte[value.length];
@@ -2359,7 +2361,6 @@ public final class Strings
      *
      * @param value The string to parse
      * @return the parsed value.
-     * @throws NumberFormatException If we don't have a number
      */
     public static int parseInt( String value )
     {

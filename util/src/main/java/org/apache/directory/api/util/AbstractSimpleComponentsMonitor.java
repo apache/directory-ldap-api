@@ -57,7 +57,7 @@ public abstract class AbstractSimpleComponentsMonitor implements ComponentsMonit
      * {@inheritDoc}
      */
     @Override
-    public ComponentsMonitor useComponent( String component ) throws IllegalArgumentException
+    public ComponentsMonitor useComponent( String component )
     {
         if ( !components.remove( component ) )
         {

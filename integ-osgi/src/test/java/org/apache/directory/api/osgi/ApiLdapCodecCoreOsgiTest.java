@@ -27,12 +27,12 @@ import static org.junit.Assert.assertTrue;
 import javax.inject.Inject;
 
 import org.apache.directory.api.ldap.codec.LdapStatesEnum;
-import org.apache.directory.api.ldap.codec.actions.addRequest.InitAddRequest;
-import org.apache.directory.api.ldap.codec.actions.addResponse.InitAddResponse;
-import org.apache.directory.api.ldap.codec.actions.bindRequest.InitBindRequest;
-import org.apache.directory.api.ldap.codec.actions.bindResponse.InitBindResponse;
-import org.apache.directory.api.ldap.codec.actions.searchRequest.InitSearchRequest;
-import org.apache.directory.api.ldap.codec.actions.searchResultDone.InitSearchResultDone;
+import org.apache.directory.api.ldap.codec.actions.request.add.InitAddRequest;
+import org.apache.directory.api.ldap.codec.actions.request.bind.InitBindRequest;
+import org.apache.directory.api.ldap.codec.actions.request.search.InitSearchRequest;
+import org.apache.directory.api.ldap.codec.actions.response.add.InitAddResponse;
+import org.apache.directory.api.ldap.codec.actions.response.bind.InitBindResponse;
+import org.apache.directory.api.ldap.codec.actions.response.search.done.InitSearchResultDone;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;

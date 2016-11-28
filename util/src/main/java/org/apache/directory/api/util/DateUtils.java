@@ -118,7 +118,7 @@ public final class DateUtils
         long offset = 11644473600000L; // offset milliseconds from Jan 1, 1601 to Jan 1, 1970
          
         // convert 100-nanosecond intervals to milliseconds (10000 = 1 000 000ns / 100)
-        long javaTime = ( Long.parseLong( intervalDate ) / 10000L - offset );
+        long javaTime = Long.parseLong( intervalDate ) / 10000L - offset;
         
         return new Date( javaTime );
     }
