@@ -89,11 +89,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
 
             initializeSchemas( in );
         }
-        catch ( LdapException e )
-        {
-            throw new RuntimeException( e );
-        }
-        catch ( IOException e )
+        catch ( LdapException | IOException e )
         {
             throw new RuntimeException( e );
         }
@@ -118,11 +114,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
 
             initializeSchemas( in );
         }
-        catch ( LdapException e )
-        {
-            throw new RuntimeException( e );
-        }
-        catch ( IOException e )
+        catch ( LdapException | IOException e )
         {
             throw new RuntimeException( e );
         }
@@ -147,11 +139,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
 
             initializeSchemas( in );
         }
-        catch ( LdapException e )
-        {
-            throw new RuntimeException( e );
-        }
-        catch ( IOException e )
+        catch ( LdapException | IOException e )
         {
             throw new RuntimeException( e );
         }
@@ -163,28 +151,27 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
      */
     private void initializeSchemas( InputStream in ) throws LdapException, IOException
     {
-        LdifReader ldifReader = new LdifReader( in );
-
-        Schema currentSchema = null;
-
-        while ( ldifReader.hasNext() )
+        try ( LdifReader ldifReader = new LdifReader( in ) )
         {
-            LdifEntry ldifEntry = ldifReader.next();
-            String dn = ldifEntry.getDn().getName();
-            
-            if ( SCHEMA_START_PATTERN.matcher( dn ).matches() )
+            Schema currentSchema = null;
+    
+            while ( ldifReader.hasNext() )
             {
-                Schema schema = getSchema( ldifEntry.getEntry() );
-                schemaMap.put( schema.getSchemaName(), schema );
-                currentSchema = schema;
-            }
-            else
-            {
-                loadSchemaObject( currentSchema.getSchemaName(), ldifEntry );
+                LdifEntry ldifEntry = ldifReader.next();
+                String dn = ldifEntry.getDn().getName();
+                
+                if ( SCHEMA_START_PATTERN.matcher( dn ).matches() )
+                {
+                    Schema schema = getSchema( ldifEntry.getEntry() );
+                    schemaMap.put( schema.getSchemaName(), schema );
+                    currentSchema = schema;
+                }
+                else
+                {
+                    loadSchemaObject( currentSchema.getSchemaName(), ldifEntry );
+                }
             }
         }
-
-        ldifReader.close();
     }
 
 

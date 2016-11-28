@@ -31,7 +31,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 import org.slf4j.Logger;
@@ -79,7 +78,7 @@ public final class ResourceMap
      */
     public static Map<String, Boolean> getResources( Pattern pattern )
     {
-        HashMap<String, Boolean> retval = new HashMap<String, Boolean>();
+        HashMap<String, Boolean> retval = new HashMap<>();
 
         String schemaResourceLoc = System.getProperty( SCHEMA_RESOURCE_LOCATION, "" );
 
@@ -139,10 +138,6 @@ public final class ResourceMap
         try
         {
             zf = new ZipFile( file );
-        }
-        catch ( ZipException e )
-        {
-            throw new Error( e );
         }
         catch ( IOException e )
         {
