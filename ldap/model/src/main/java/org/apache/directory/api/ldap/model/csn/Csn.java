@@ -80,15 +80,9 @@ public class Csn implements Comparable<Csn>
     private byte[] bytes;
 
     /** The Timestamp syntax. The last 'z' is _not_ the Time Zone */
-    private static final SimpleDateFormat SDF = new SimpleDateFormat( "yyyyMMddHHmmss", Locale.ROOT );
+    private final SimpleDateFormat sdf = new SimpleDateFormat( "yyyyMMddHHmmss", Locale.ROOT );
 
     private static final TimeZone UTC_TIME_ZONE = TimeZone.getTimeZone( "UTC" );
-
-    // Initialize the dateFormat with the UTC TZ
-    static
-    {
-        SDF.setTimeZone( UTC_TIME_ZONE );
-    }
 
     /** Padding used to format number with a fixed size */
     private static final String[] PADDING_6 = new String[]
@@ -114,6 +108,7 @@ public class Csn implements Comparable<Csn>
         this.replicaId = replicaId;
         this.operationNumber = operationNumber;
         this.changeCount = changeCount;
+        sdf.setTimeZone( UTC_TIME_ZONE );
     }
 
 
@@ -124,10 +119,11 @@ public class Csn implements Comparable<Csn>
      * &lt;timestamp&gt; # &lt;changeCount&gt; # &lt;replica ID&gt; # &lt;operation number&gt;
      *
      * @param value The String containing the CSN
-     * @throws InvalidCSNException if the value doesn't contain a valid CSN
      */
-    public Csn( String value ) throws InvalidCSNException
+    public Csn( String value )
     {
+        sdf.setTimeZone( UTC_TIME_ZONE );
+        
         if ( Strings.isEmpty( value ) )
         {
             String message = I18n.err( I18n.ERR_04114 );
@@ -166,11 +162,11 @@ public class Csn implements Comparable<Csn>
 
         long tempTimestamp = 0L;
 
-        synchronized ( SDF )
+        synchronized ( sdf )
         {
             try
             {
-                tempTimestamp = SDF.parse( realTimestamp ).getTime();
+                tempTimestamp = sdf.parse( realTimestamp ).getTime();
             }
             catch ( ParseException pe )
             {
@@ -368,20 +364,12 @@ public class Csn implements Comparable<Csn>
                 break;
                 
             case '1' :
+            case '2' : // Special case for february...
                 if ( !Chars.isDigit( chars[7] ) )
                 {
                     return false;
                 }
                 
-                break;
-                
-            case '2' :
-                if ( !Chars.isDigit( chars[7] ) )
-                {
-                    return false;
-                }
-                
-                // Special case for february...
                 break;
                 
             case '3' :
@@ -596,9 +584,9 @@ public class Csn implements Comparable<Csn>
         {
             StringBuilder buf = new StringBuilder( 40 );
 
-            synchronized ( SDF )
+            synchronized ( sdf )
             {
-                buf.append( SDF.format( new Date( timestamp ) ) );
+                buf.append( sdf.format( new Date( timestamp ) ) );
             }
 
             // Add the milliseconds part

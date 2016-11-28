@@ -91,7 +91,7 @@ public class UniqueResourceException extends RuntimeException
 
     private static List<URL> toList( URL first, Enumeration<URL> urlEnum )
     {
-        ArrayList<URL> urls = new ArrayList<URL>();
+        ArrayList<URL> urls = new ArrayList<>();
         urls.add( first );
         while ( urlEnum.hasMoreElements() )
         {
@@ -104,9 +104,11 @@ public class UniqueResourceException extends RuntimeException
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getMessage()
     {
-        StringBuffer buf = new StringBuffer( "Problem locating " ).append( resourceDescription ).append( "\n" );
+        StringBuilder buf = new StringBuilder( "Problem locating " ).append( resourceDescription ).append( "\n" );
+        
         if ( urls == null )
         {
             buf.append( "No resources named '" ).append( resourceName ).append( "' located on classpath" );
@@ -115,11 +117,13 @@ public class UniqueResourceException extends RuntimeException
         {
             buf.append( "Multiple copies of resource named '" ).append( resourceName ).append(
                 "' located on classpath at urls" );
+            
             for ( URL url : urls )
             {
                 buf.append( "\n    " ).append( url );
             }
         }
+        
         return buf.toString();
     }
 

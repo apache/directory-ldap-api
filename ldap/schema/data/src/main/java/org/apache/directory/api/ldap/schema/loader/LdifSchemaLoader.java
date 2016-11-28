@@ -68,6 +68,7 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
     /** a filter for listing all the LDIF files within a directory */
     private final FilenameFilter ldifFilter = new FilenameFilter()
     {
+        @Override
         public boolean accept( File file, String name )
         {
             return name.endsWith( LDIF_EXT );
@@ -136,11 +137,10 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
             {
                 File file = new File( schemaDirectory, ldifFile );
 
-                try
+                try ( LdifReader reader = new LdifReader( file ) )
                 {
-                    LdifReader reader = new LdifReader( file );
+                    
                     LdifEntry entry = reader.next();
-                    reader.close();
                     Schema schema = getSchema( entry.getEntry() );
 
                     if ( schema == null )
@@ -182,9 +182,10 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadComparators( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> comparatorList = new ArrayList<Entry>();
+        List<Entry> comparatorList = new ArrayList<>();
 
         if ( schemas == null )
         {
@@ -222,9 +223,10 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadSyntaxCheckers( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> syntaxCheckerList = new ArrayList<Entry>();
+        List<Entry> syntaxCheckerList = new ArrayList<>();
 
         if ( schemas == null )
         {
@@ -262,9 +264,10 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadNormalizers( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> normalizerList = new ArrayList<Entry>();
+        List<Entry> normalizerList = new ArrayList<>();
 
         if ( schemas == null )
         {
@@ -302,9 +305,10 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadMatchingRules( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> matchingRuleList = new ArrayList<Entry>();
+        List<Entry> matchingRuleList = new ArrayList<>();
 
         if ( schemas == null )
         {
@@ -342,9 +346,10 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadSyntaxes( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> syntaxList = new ArrayList<Entry>();
+        List<Entry> syntaxList = new ArrayList<>();
 
         if ( schemas == null )
         {
@@ -382,9 +387,10 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadAttributeTypes( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> attributeTypeList = new ArrayList<Entry>();
+        List<Entry> attributeTypeList = new ArrayList<>();
 
         if ( schemas == null )
         {
@@ -424,9 +430,10 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadMatchingRuleUses( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> matchingRuleUseList = new ArrayList<Entry>();
+        List<Entry> matchingRuleUseList = new ArrayList<>();
 
         if ( schemas == null )
         {
@@ -465,9 +472,10 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadNameForms( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> nameFormList = new ArrayList<Entry>();
+        List<Entry> nameFormList = new ArrayList<>();
 
         if ( schemas == null )
         {
@@ -505,9 +513,10 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadDitContentRules( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> ditContentRuleList = new ArrayList<Entry>();
+        List<Entry> ditContentRuleList = new ArrayList<>();
 
         if ( schemas == null )
         {
@@ -546,9 +555,10 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadDitStructureRules( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> ditStructureRuleList = new ArrayList<Entry>();
+        List<Entry> ditStructureRuleList = new ArrayList<>();
 
         if ( schemas == null )
         {
@@ -587,9 +597,10 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadObjectClasses( Schema... schemas ) throws LdapException, IOException
     {
-        List<Entry> objectClassList = new ArrayList<Entry>();
+        List<Entry> objectClassList = new ArrayList<>();
 
         if ( schemas == null )
         {
