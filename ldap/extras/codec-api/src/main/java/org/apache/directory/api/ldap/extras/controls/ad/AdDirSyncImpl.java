@@ -21,6 +21,8 @@
 package org.apache.directory.api.ldap.extras.controls.ad;
 
 import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.Set;
 
 import org.apache.directory.api.ldap.model.message.controls.AbstractControl;
 import org.apache.directory.api.util.Strings;
@@ -32,14 +34,12 @@ import org.apache.directory.api.util.Strings;
  */
 public class AdDirSyncImpl extends AbstractControl implements AdDirSync
 {
-    /** A flag used to tell the server to return the parent before the children */
-    int parentFirst = 1;
-    
-    /** A flag used to indicate that there are more data to return */
-    AdDirSyncFlag flag = AdDirSyncFlag.DEFAULT;
+    /** Flags used to control return values (client-to-server) or indicate that there are more data to return (server-to-client) */
+    private Set<AdDirSyncFlag> flags = EnumSet.noneOf( AdDirSyncFlag.class );
+     
 
     /** The maximum number of attributes to return */
-    int maxReturnLength = 0;
+    private int maxReturnLength = 0;
     
     /** The DirSync cookie */
     private byte[] cookie;
@@ -52,24 +52,14 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
         super( OID, Boolean.TRUE );
     }
 
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getParentFirst()
-    {
-        return parentFirst;
-    }
 
-    
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setParentFirst( int parentFirst )
+    public Set<AdDirSyncFlag> getFlags()
     {
-        this.parentFirst = parentFirst;
+        return flags;
     }
 
 
@@ -77,9 +67,19 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
      * {@inheritDoc}
      */
     @Override
-    public AdDirSyncFlag getFlag()
+    public void setFlags( Set<AdDirSyncFlag> flags )
     {
-        return flag;
+        this.flags = flags;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addFlag( AdDirSyncFlag flag )
+    {
+        flags.add( flag );
     }
     
 
@@ -87,9 +87,9 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
      * {@inheritDoc}
      */
     @Override
-    public void setFlag( AdDirSyncFlag flag )
+    public void removeFlag( AdDirSyncFlag flag )
     {
-        this.flag = flag;
+        flags.remove( flag );
     }
 
 
@@ -150,7 +150,7 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
         int h = 37;
 
         h = h * 17 + super.hashCode();
-        h = h * 17 + parentFirst;
+        h = h * 17 + AdDirSyncFlag.getBitmask( flags );
         h = h * 17 + maxReturnLength;
 
         if ( cookie != null )
@@ -184,7 +184,7 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
         AdDirSync otherControl = ( AdDirSync ) o;
 
         return ( maxReturnLength == otherControl.getMaxReturnLength() )
-            && ( parentFirst == otherControl.getParentFirst() )
+            && ( flags.equals( otherControl.getFlags() ) )
             && ( Arrays.equals( cookie, otherControl.getCookie() ) )
             && ( isCritical() == otherControl.isCritical() );
     }
@@ -201,7 +201,8 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
         sb.append( "    DirSync control :\n" );
         sb.append( "        oid : " ).append( getOid() ).append( '\n' );
         sb.append( "        critical : " ).append( isCritical() ).append( '\n' );
-        sb.append( "        parentFirst : '" ).append( getParentFirst() ).append( "'\n" );
+        sb.append( "        flags : 0x" ).append( Integer.toHexString( AdDirSyncFlag.getBitmask( flags ) ) )
+                    .append( ' ' ).append( flags.toString() ).append( "\n" );
         sb.append( "        maxReturnLength : '" ).append( getMaxReturnLength() ).append( "'\n" );
         sb.append( "        cookie            : '" ).append( Strings.dumpBytes( getCookie() ) ).append( "'\n" );
 

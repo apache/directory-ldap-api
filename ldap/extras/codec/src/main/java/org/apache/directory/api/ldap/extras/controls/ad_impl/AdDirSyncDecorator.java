@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.extras.controls.ad_impl;
 
 import java.nio.ByteBuffer;
+import java.util.Set;
 
 import org.apache.directory.api.asn1.Asn1Object;
 import org.apache.directory.api.asn1.DecoderException;
@@ -77,9 +78,9 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
      * {@inheritDoc}
      */
     @Override
-    public int getParentFirst()
+    public Set<AdDirSyncFlag> getFlags()
     {
-        return getDecorated().getParentFirst();
+        return getDecorated().getFlags();
     }
 
     
@@ -87,9 +88,9 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
      * {@inheritDoc}
      */
     @Override
-    public void setParentFirst( int parentFirst )
+    public void setFlags( Set<AdDirSyncFlag> flags )
     {
-        getDecorated().setParentFirst( parentFirst );
+        getDecorated().setFlags( flags );
     }
     
     
@@ -97,9 +98,9 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
      * {@inheritDoc}
      */
     @Override
-    public AdDirSyncFlag getFlag()
+    public void addFlag( AdDirSyncFlag flag )
     {
-        return getDecorated().getFlag();
+        getDecorated().addFlag( flag );
     }
 
     
@@ -107,9 +108,9 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
      * {@inheritDoc}
      */
     @Override
-    public void setFlag( AdDirSyncFlag flag )
+    public void removeFlag( AdDirSyncFlag flag )
     {
-        getDecorated().setFlag( flag );
+        getDecorated().removeFlag( flag );
     }
 
     
@@ -168,7 +169,7 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
      * <pre>
      * 0x30 L1
      * |
-     * +--&gt; 0x02 0x0(1-4) nnn  (parentFirst)
+     * +--&gt; 0x02 0x0(1-4) nnn  (flags)
      * +--&gt; 0x02 0x0(1-4) nnn  (maxReturnLength)
      * +--&gt; 0x04 L2 xkcd!!!...     (cookie)
      * </pre>
@@ -176,11 +177,13 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
     @Override
     public int computeLength()
     {
-        // the parentFirst flag length
-        adDirSyncLength = 1 + TLV.getNbBytes( getParentFirst() ) + BerValue.getNbBytes( getParentFirst() );
+        // the flags length
+        int flagsLength = BerValue.getNbBytes( AdDirSyncFlag.getBitmask( getFlags() ) );
+        adDirSyncLength = 1 + TLV.getNbBytes( flagsLength ) + flagsLength;
 
         // the maxReturnLength length
-        adDirSyncLength += 1 + TLV.getNbBytes( getMaxReturnLength() ) + BerValue.getNbBytes( getMaxReturnLength() );
+        int maxReturnLengthLength = BerValue.getNbBytes( getMaxReturnLength() );
+        adDirSyncLength += 1 + TLV.getNbBytes( maxReturnLengthLength ) + maxReturnLengthLength;
 
         // cookie's length
         byte[] cookie = getCookie();
@@ -220,8 +223,8 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
         buffer.put( UniversalTag.SEQUENCE.getValue() );
         buffer.put( TLV.getBytes( adDirSyncLength ) );
 
-        // Encode the ParentFirst flag
-        BerValue.encode( buffer, getParentFirst() );
+        // Encode the flags
+        BerValue.encode( buffer, AdDirSyncFlag.getBitmask( getFlags() ) );
 
         // Encode the MaxReturnLength
         BerValue.encode( buffer, getMaxReturnLength() );
@@ -250,8 +253,8 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
                 buffer.put( UniversalTag.SEQUENCE.getValue() );
                 buffer.put( TLV.getBytes( adDirSyncLength ) );
 
-                // Encode the ParentFirst flag
-                BerValue.encode( buffer, getParentFirst() );
+                // Encode the Flags flag
+                BerValue.encode( buffer, AdDirSyncFlag.getBitmask( getFlags() ) );
 
                 // Encode the MaxReturnLength
                 BerValue.encode( buffer, getMaxReturnLength() );

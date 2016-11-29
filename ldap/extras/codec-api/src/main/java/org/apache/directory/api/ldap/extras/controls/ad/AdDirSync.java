@@ -22,6 +22,8 @@ package org.apache.directory.api.ldap.extras.controls.ad;
 
 import org.apache.directory.api.ldap.model.message.Control;
 
+import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * The DirSync control, as described in http://tools.ietf.org/html/draft-armijo-ldap-dirsync-00.
@@ -39,9 +41,9 @@ import org.apache.directory.api.ldap.model.message.Control;
  * 
  * Client side :
  * realReplControlValue ::= SEQUENCE {
- *     parentsFirst            integer
- *     maxReturnLength         integer
- *     cookie                  OCTET STRING
+ *     flags                 integer
+ *     maxBytes              integer
+ *     cookie                OCTET STRING
  * }
  * 
  * or
@@ -49,7 +51,7 @@ import org.apache.directory.api.ldap.model.message.Control;
  * server side :
  * realReplControlValue ::= SEQUENCE {
  *     flag                  integer
- *     maxReturnLength       integer
+ *     maxBytes              integer
  *     cookie                OCTET STRING
  * }
  * </pre> 
@@ -61,19 +63,6 @@ public interface AdDirSync extends Control
 {
     /** This control OID */
     String OID = "1.2.840.113556.1.4.841";
-
-
-    /**
-     * @return 1 if the parents are guaranteed to be returned before the children.
-     */
-    int getParentFirst();
-
-
-    /**
-     * @param parentFirst The parentFirst flag. A value of 1 will tell the server to return the parents first.
-     */
-    void setParentFirst( int parentFirst );
-
 
     /**
      * @return The maximum length of attributes to be returned
@@ -101,7 +90,7 @@ public interface AdDirSync extends Control
 
 
     /**
-     * @return The flag returned by the server. One of :
+     * @return The flags returned by the server. Zero or more of :
      * <ul>
      * <li>LDAP_DIRSYNC_OBJECT_SECURITY (0x0001)</li>
      * <li>LDAP_DIRSYNC_ANCESTORS_FIRST_ORDER (0x0800)</li>
@@ -109,11 +98,23 @@ public interface AdDirSync extends Control
      * <li>LDAP_DIRSYNC_INCREMENTAL_VALUES (0x7FFFFFFF)</li>
      * </ul>
      */
-    AdDirSyncFlag getFlag();
+    Set<AdDirSyncFlag> getFlags();
 
 
     /**
-     * @param flag The flag. 
+     * @param flags The flags to be set. See {@link EnumSet} for how to generate EnumSets.
      */
-    void setFlag( AdDirSyncFlag flag );
+    void setFlags( Set<AdDirSyncFlag> flags );
+
+
+    /**
+     * @param flag The flag to be added to the current collection of flags.
+     */
+    void addFlag( AdDirSyncFlag flag );
+
+
+    /**
+     * @param flag The flag to be removed from the current collection of flags. 
+     */
+    void removeFlag( AdDirSyncFlag flag );
 }
