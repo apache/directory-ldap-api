@@ -362,7 +362,6 @@ public class BaseSubtreeSpecification implements SubtreeSpecification
         {
             if ( isFirst )
             {
-                isFirst = false;
                 buffer.append( " " );
             }
             else

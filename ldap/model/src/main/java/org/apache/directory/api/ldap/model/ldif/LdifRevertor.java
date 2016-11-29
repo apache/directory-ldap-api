@@ -470,7 +470,7 @@ public final class LdifRevertor
         newDn = newDn.add( newRdn );
 
         List<LdifEntry> entries = new ArrayList<>( 1 );
-        LdifEntry reverted = new LdifEntry();
+        LdifEntry reverted;
 
         // Start with the cases here
         if ( newRdn.size() == 1 )

@@ -399,26 +399,13 @@ public final class DefaultEntry implements Entry
                 .err( I18n.ERR_12087 ) );
         }
 
-        LdifAttributesReader reader = null;
-
-        try
+        try ( LdifAttributesReader reader = new LdifAttributesReader() )
         {
-            reader = new LdifAttributesReader();
-
             return reader.parseEntry( schemaManager, sb.toString() );
         }
-        finally
+        catch ( IOException e )
         {
-            try
-            {
-                if ( reader != null )
-                {
-                    reader.close();
-                }
-            }
-            catch ( IOException e )
-            {
-            }
+            throw new LdapLdifException( "Cannot read an entry" );
         }
     }
 

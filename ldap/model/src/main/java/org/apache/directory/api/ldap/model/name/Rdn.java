@@ -533,7 +533,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
             avaList = new ArrayList<>();
         }
         
-        if ( avaList.size() == 0 )
+        if ( avaList.isEmpty() )
         {
             avaList.add( newAva );
             return avaList;
@@ -1288,7 +1288,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      *         array.
      * @throws IllegalArgumentException When an Illegal value is provided.
      */
-    public static Object unescapeValue( String value ) throws IllegalArgumentException
+    public static Object unescapeValue( String value )
     {
         if ( Strings.isEmpty( value ) )
         {

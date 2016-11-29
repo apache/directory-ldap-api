@@ -53,7 +53,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
     private Map<String, T> byOid = new HashMap<>();
     
     /** A flag indicating that the Registry is relaxed or not */
-    private boolean isRelaxed = Registries.STRICT;;
+    private boolean isRelaxed = Registries.STRICT;
 
 
     /**

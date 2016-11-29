@@ -798,6 +798,8 @@ public class LdapUrl
                     {
                         return -1;
                     }
+                    
+                    break;
 
                 default:
                     // Wrong char
@@ -878,30 +880,37 @@ public class LdapUrl
     {
         int ipElemValue = 0;
         boolean ipElemSeen = false;
-        boolean hasHeadingZero = false;
+        boolean hasHeadingZeroes = false;
 
         while ( Chars.isDigit( chars, pos ) )
         {
             ipElemSeen = true;
-            ipElemValue = ( ipElemValue * 10 ) + ( chars[pos] - '0' );
-
+            
             if ( chars[pos] == '0' )
             {
-                if ( hasHeadingZero )
+                if ( hasHeadingZeroes )
                 {
                     // Two 0 at the beginning : not allowed
                     return -1;
                 }
                 
-                if ( ipElemValue == 0 )
+                if ( ipElemValue > 0 )
                 {
-                    hasHeadingZero = true;
+                    ipElemValue = ipElemValue * 10;
                 }
+                else
+                { 
+                    hasHeadingZeroes = true;
+                }
+            }
+            else
+            {
+                hasHeadingZeroes = false;
+                ipElemValue = ( ipElemValue * 10 ) + ( chars[pos] - '0' );
             }
 
             if ( ipElemValue > 255 )
             {
-                // We don't allow IPV4 address with values > 255
                 return -1;
             }
 
@@ -911,7 +920,7 @@ public class LdapUrl
         if ( ipElemSeen )
         {
             ipElem[octetNb] = ipElemValue;
-
+    
             return pos;
         }
         else
@@ -1124,11 +1133,7 @@ public class LdapUrl
             String dnStr = new String( chars, pos, end - pos );
             dn = new Dn( decode( dnStr ) );
         }
-        catch ( LdapUriException ue )
-        {
-            return -1;
-        }
-        catch ( LdapInvalidDnException de )
+        catch ( LdapUriException | LdapInvalidDnException e )
         {
             return -1;
         }
@@ -1303,11 +1308,7 @@ public class LdapUrl
             filter = decode( new String( chars, pos, end - pos ) );
             FilterParser.parse( filter );
         }
-        catch ( LdapUriException ue )
-        {
-            return -1;
-        }
-        catch ( ParseException pe )
+        catch ( LdapUriException | ParseException e )
         {
             return -1;
         }

@@ -719,38 +719,6 @@ public enum ResultCodeEnum
     /** Stores the description of each element of the enumeration */
     private String message;
 
-
-    /**
-     * Private construct so no other instances can be created other than the
-     * public static constants in this class.
-     * 
-     * @param value the integer value of the enumeration.
-     * @param message the description of the enumeration.
-     */
-    ResultCodeEnum( int value, String message )
-    {
-        this.value = value;
-        this.message = message;
-    }
-
-
-    /**
-     * @return The value associated with the current element.
-     */
-    public int getValue()
-    {
-        return value;
-    }
-
-
-    /**
-     * @return The description associated with the current element.
-     */
-    public String getMessage()
-    {
-        return message;
-    }
-
     private static final Set<ResultCodeEnum> EMPTY_RESULT_CODE_SET = new HashSet<>();
 
     // ------------------------------------------------------------------------
@@ -1273,123 +1241,6 @@ public enum ResultCodeEnum
         EXTENDED_CODES = Collections.unmodifiableSet( set );
     }
 
-
-    /**
-     * @return The integer associated with the result code
-     */
-    public int getResultCode()
-    {
-        return value;
-    }
-
-
-    /**
-     * Gets the ResultCode enum from its integer value
-     * 
-     * @param value the ResultCode numneric value
-     * @return The integer associated with the result code
-     */
-    public static ResultCodeEnum getResultCode( int value )
-    {
-        switch ( value )
-        {
-            case 0:
-                return SUCCESS;
-            case 1:
-                return OPERATIONS_ERROR;
-            case 2:
-                return PROTOCOL_ERROR;
-            case 3:
-                return TIME_LIMIT_EXCEEDED;
-            case 4:
-                return SIZE_LIMIT_EXCEEDED;
-            case 5:
-                return COMPARE_FALSE;
-            case 6:
-                return COMPARE_TRUE;
-            case 7:
-                return AUTH_METHOD_NOT_SUPPORTED;
-            case 8:
-                return STRONG_AUTH_REQUIRED;
-            case 9:
-                return PARTIAL_RESULTS;
-            case 10:
-                return REFERRAL;
-            case 11:
-                return ADMIN_LIMIT_EXCEEDED;
-            case 12:
-                return UNAVAILABLE_CRITICAL_EXTENSION;
-            case 13:
-                return CONFIDENTIALITY_REQUIRED;
-            case 14:
-                return SASL_BIND_IN_PROGRESS;
-            case 16:
-                return NO_SUCH_ATTRIBUTE;
-            case 17:
-                return UNDEFINED_ATTRIBUTE_TYPE;
-            case 18:
-                return INAPPROPRIATE_MATCHING;
-            case 19:
-                return CONSTRAINT_VIOLATION;
-            case 20:
-                return ATTRIBUTE_OR_VALUE_EXISTS;
-            case 21:
-                return INVALID_ATTRIBUTE_SYNTAX;
-            case 32:
-                return NO_SUCH_OBJECT;
-            case 33:
-                return ALIAS_PROBLEM;
-            case 34:
-                return INVALID_DN_SYNTAX;
-            case 35:
-                return UNKNOWN;
-            case 36:
-                return ALIAS_DEREFERENCING_PROBLEM;
-            case 48:
-                return INAPPROPRIATE_AUTHENTICATION;
-            case 49:
-                return INVALID_CREDENTIALS;
-            case 50:
-                return INSUFFICIENT_ACCESS_RIGHTS;
-            case 51:
-                return BUSY;
-            case 52:
-                return UNAVAILABLE;
-            case 53:
-                return UNWILLING_TO_PERFORM;
-            case 54:
-                return LOOP_DETECT;
-            case 64:
-                return NAMING_VIOLATION;
-            case 65:
-                return OBJECT_CLASS_VIOLATION;
-            case 66:
-                return NOT_ALLOWED_ON_NON_LEAF;
-            case 67:
-                return NOT_ALLOWED_ON_RDN;
-            case 68:
-                return ENTRY_ALREADY_EXISTS;
-            case 69:
-                return OBJECT_CLASS_MODS_PROHIBITED;
-            case 71:
-                return AFFECTS_MULTIPLE_DSAS;
-            case 80:
-                return OTHER;
-            case 118:
-                return CANCELED;
-            case 119:
-                return NO_SUCH_OPERATION;
-            case 120:
-                return TOO_LATE;
-            case 121:
-                return CANNOT_CANCEL;
-            case 4096:
-                return E_SYNC_REFRESH_REQUIRED;
-            default:
-                return UNKNOWN;
-        }
-    }
-
     // ------------------------------------------------------------------------
     // Getting Result Code Enumeration Object Using Integer Values
     // ------------------------------------------------------------------------
@@ -1572,6 +1423,155 @@ public enum ResultCodeEnum
         set.add( ResultCodeEnum.NOT_ALLOWED_ON_RDN );
         set.add( ResultCodeEnum.OBJECT_CLASS_MODS_PROHIBITED );
         SCHEMA_VIOLATION_EXCEPTION_CODES = Collections.unmodifiableSet( set );
+    }
+
+
+    /**
+     * Private construct so no other instances can be created other than the
+     * public static constants in this class.
+     * 
+     * @param value the integer value of the enumeration.
+     * @param message the description of the enumeration.
+     */
+    ResultCodeEnum( int value, String message )
+    {
+        this.value = value;
+        this.message = message;
+    }
+
+
+    /**
+     * @return The value associated with the current element.
+     */
+    public int getValue()
+    {
+        return value;
+    }
+
+
+    /**
+     * @return The description associated with the current element.
+     */
+    public String getMessage()
+    {
+        return message;
+    }
+
+
+    /**
+     * @return The integer associated with the result code
+     */
+    public int getResultCode()
+    {
+        return value;
+    }
+
+
+    /**
+     * Gets the ResultCode enum from its integer value
+     * 
+     * @param value the ResultCode numneric value
+     * @return The integer associated with the result code
+     */
+    public static ResultCodeEnum getResultCode( int value )
+    {
+        switch ( value )
+        {
+            case 0:
+                return SUCCESS;
+            case 1:
+                return OPERATIONS_ERROR;
+            case 2:
+                return PROTOCOL_ERROR;
+            case 3:
+                return TIME_LIMIT_EXCEEDED;
+            case 4:
+                return SIZE_LIMIT_EXCEEDED;
+            case 5:
+                return COMPARE_FALSE;
+            case 6:
+                return COMPARE_TRUE;
+            case 7:
+                return AUTH_METHOD_NOT_SUPPORTED;
+            case 8:
+                return STRONG_AUTH_REQUIRED;
+            case 9:
+                return PARTIAL_RESULTS;
+            case 10:
+                return REFERRAL;
+            case 11:
+                return ADMIN_LIMIT_EXCEEDED;
+            case 12:
+                return UNAVAILABLE_CRITICAL_EXTENSION;
+            case 13:
+                return CONFIDENTIALITY_REQUIRED;
+            case 14:
+                return SASL_BIND_IN_PROGRESS;
+            case 16:
+                return NO_SUCH_ATTRIBUTE;
+            case 17:
+                return UNDEFINED_ATTRIBUTE_TYPE;
+            case 18:
+                return INAPPROPRIATE_MATCHING;
+            case 19:
+                return CONSTRAINT_VIOLATION;
+            case 20:
+                return ATTRIBUTE_OR_VALUE_EXISTS;
+            case 21:
+                return INVALID_ATTRIBUTE_SYNTAX;
+            case 32:
+                return NO_SUCH_OBJECT;
+            case 33:
+                return ALIAS_PROBLEM;
+            case 34:
+                return INVALID_DN_SYNTAX;
+            case 35:
+                return UNKNOWN;
+            case 36:
+                return ALIAS_DEREFERENCING_PROBLEM;
+            case 48:
+                return INAPPROPRIATE_AUTHENTICATION;
+            case 49:
+                return INVALID_CREDENTIALS;
+            case 50:
+                return INSUFFICIENT_ACCESS_RIGHTS;
+            case 51:
+                return BUSY;
+            case 52:
+                return UNAVAILABLE;
+            case 53:
+                return UNWILLING_TO_PERFORM;
+            case 54:
+                return LOOP_DETECT;
+            case 64:
+                return NAMING_VIOLATION;
+            case 65:
+                return OBJECT_CLASS_VIOLATION;
+            case 66:
+                return NOT_ALLOWED_ON_NON_LEAF;
+            case 67:
+                return NOT_ALLOWED_ON_RDN;
+            case 68:
+                return ENTRY_ALREADY_EXISTS;
+            case 69:
+                return OBJECT_CLASS_MODS_PROHIBITED;
+            case 71:
+                return AFFECTS_MULTIPLE_DSAS;
+            case 80:
+                return OTHER;
+            case 118:
+                return CANCELED;
+            case 119:
+                return NO_SUCH_OPERATION;
+            case 120:
+                return TOO_LATE;
+            case 121:
+                return CANNOT_CANCEL;
+            case 4096:
+                return E_SYNC_REFRESH_REQUIRED;
+            default:
+                return UNKNOWN;
+        }
     }
 
 

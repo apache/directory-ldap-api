@@ -276,17 +276,9 @@ public final class LdifUtils
      */
     public static Attributes getJndiAttributesFromLdif( String ldif ) throws LdapLdifException
     {
-        LdifAttributesReader reader;
-
-        try
+        try ( LdifAttributesReader reader = new LdifAttributesReader() )
         {
-            reader = new LdifAttributesReader();
-            
-            Attributes attributes = AttributeUtils.toAttributes( reader.parseEntry( ldif ) );
-
-            reader.close();
-
-            return attributes;
+            return AttributeUtils.toAttributes( reader.parseEntry( ldif ) );
         }
         catch ( IOException ioe )
         {
@@ -761,14 +753,9 @@ public final class LdifUtils
                 .err( I18n.ERR_12087 ) );
         }
 
-        try
+        try ( LdifAttributesReader reader = new LdifAttributesReader() ) 
         {
-            LdifAttributesReader reader = new LdifAttributesReader();
-            Attributes attributes = AttributeUtils.toAttributes( reader.parseEntry( sb.toString() ) );
-    
-            reader.close();
-
-            return attributes;
+            return AttributeUtils.toAttributes( reader.parseEntry( sb.toString() ) );
         }
         catch ( IOException ioe )
         {

@@ -206,7 +206,7 @@ public class ReferralImpl implements Referral
     {
         StringBuilder sb = new StringBuilder();
 
-        if ( ( urls != null ) && !urls.isEmpty() )
+        if ( !urls.isEmpty() )
         {
             sb.append( "            Referrals :\n" );
 

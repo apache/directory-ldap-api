@@ -1545,17 +1545,13 @@ public class Registries implements SchemaLoaderListener, Cloneable
         LOG.debug( "Registering {}:{}", schemaObject.getObjectType(), schemaObject.getOid() );
 
         // Check that the SchemaObject is not already registered
-        // TODO : Check for existing Loadable SchemaObject
-        if ( !( schemaObject instanceof LoadableSchemaObject ) )
+        if ( !( schemaObject instanceof LoadableSchemaObject ) && globalOidRegistry.contains( schemaObject.getOid() ) )
         {
-            if ( globalOidRegistry.contains( schemaObject.getOid() ) )
-            {
-                String msg = I18n.err( I18n.ERR_04301, schemaObject.getObjectType(), schemaObject.getOid() );
-                LOG.error( msg );
-                Throwable error = new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
-                errors.add( error );
-                return;
-            }
+            String msg = I18n.err( I18n.ERR_04301, schemaObject.getObjectType(), schemaObject.getOid() );
+            LOG.error( msg );
+            Throwable error = new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
+            errors.add( error );
+            return;
         }
 
         try
@@ -1760,18 +1756,14 @@ public class Registries implements SchemaLoaderListener, Cloneable
         LOG.debug( "Unregistering {}:{}", schemaObject.getObjectType(), schemaObject.getOid() );
 
         // Check that the SchemaObject is present in the registries
-        // TODO : check for an existing Loadable SchemaObject
-        if ( !( schemaObject instanceof LoadableSchemaObject ) )
+        if ( !( schemaObject instanceof LoadableSchemaObject ) && !globalOidRegistry.contains( schemaObject.getOid() ) )
         {
-            if ( !globalOidRegistry.contains( schemaObject.getOid() ) )
-            {
-                String msg = I18n.err( I18n.ERR_04302, schemaObject.getObjectType(), schemaObject.getOid() );
-                LOG.error( msg );
-                throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
-            }
+            String msg = I18n.err( I18n.ERR_04302, schemaObject.getObjectType(), schemaObject.getOid() );
+            LOG.error( msg );
+            throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
         }
 
-        SchemaObject unregistered = null;
+        SchemaObject unregistered;
 
         // First call the specific registry's register method
         switch ( schemaObject.getObjectType() )

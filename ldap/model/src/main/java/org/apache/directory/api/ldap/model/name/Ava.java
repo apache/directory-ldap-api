@@ -1643,16 +1643,6 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             length += 1 + 4 + upTypeBytes.length;
         }
 
-        // The normType
-        /*byte[] normTypeBytes = null;
-
-        if ( normType != null )
-        {
-            normTypeBytes = Strings.getBytesUtf8( normType );
-            length += 1 + 4 + normTypeBytes.length;
-        }
-        */
-
         // Is HR
         length++;
 
@@ -1686,19 +1676,6 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         {
             buffer[pos++] = Serialize.FALSE;
         }
-
-        // Write the normType
-        /*
-        if ( normType != null )
-        {
-            buffer[pos++] = Serialize.TRUE;
-            pos = Serialize.serialize( normTypeBytes, buffer, pos );
-        }
-        else
-        {
-            buffer[pos++] = Serialize.FALSE;
-        }
-        */
 
         // Write the isHR flag
         if ( value.isHumanReadable() )
@@ -1760,19 +1737,6 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             pos += 4 + upTypeBytes.length;
             upType = Strings.utf8ToString( upTypeBytes );
         }
-
-        // Read the normType value, if it's not null
-        /*
-        boolean hasNormType = Serialize.deserializeBoolean( buffer, pos );
-        pos++;
-
-        if ( hasNormType )
-        {
-            byte[] normTypeBytes = Serialize.deserializeBytes( buffer, pos );
-            pos += 4 + normTypeBytes.length;
-            normType = Strings.utf8ToString( normTypeBytes );
-        }
-        */
 
         // Update the AtributeType
         if ( schemaManager != null )
@@ -1983,14 +1947,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 
         boolean isHR = in.readBoolean();
 
-        if ( isHR )
-        {
-            value = Value.deserialize( attributeType, in );
-        }
-        else
-        {
-            value = Value.deserialize( attributeType, in );
-        }
+        value = Value.deserialize( attributeType, in );
 
         h = in.readInt();
     }
