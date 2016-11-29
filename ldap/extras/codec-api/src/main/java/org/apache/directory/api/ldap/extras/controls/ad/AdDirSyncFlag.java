@@ -19,6 +19,9 @@
  */
 package org.apache.directory.api.ldap.extras.controls.ad;
 
+import java.util.EnumSet;
+import java.util.Set;
+
 /**
  * The flags used in the AdDirSync response.
  *
@@ -26,19 +29,22 @@ package org.apache.directory.api.ldap.extras.controls.ad;
  */
 public enum AdDirSyncFlag
 {
-    DEFAULT( 0x0000 ),
-    LDAP_DIRSYNC_OBJECT_SECURITY( 0x0001 ),
-    LDAP_DIRSYNC_ANCESTORS_FIRST_ORDER( 0x0800 ),
-    LDAP_DIRSYNC_PUBLIC_DATA_ONLY( 0x2000 ),
-    LDAP_DIRSYNC_INCREMENTAL_VALUES( 0x7FFFFFFF );
+    LDAP_DIRSYNC_OBJECT_SECURITY( 0x0001, "Object Security" ),
+    LDAP_DIRSYNC_ANCESTORS_FIRST_ORDER( 0x0800, "Ancestors First Order" ),
+    LDAP_DIRSYNC_PUBLIC_DATA_ONLY( 0x2000, "Public Data Only" ),
+    LDAP_DIRSYNC_INCREMENTAL_VALUES( 0x80000000, "Incremental Values" );
 
-    /** The interned value */
+    /** The int value */
     private int value;
+
+    /** The string description **/
+    private String description;
     
-    /** A private constructor that associates a value to each flag */
-    AdDirSyncFlag( int value )
+    /** A private constructor that associates a value and description to each flag */
+    AdDirSyncFlag( int value, String description )
     {
         this.value = value;
+        this.description = description;
     }
     
     
@@ -52,20 +58,48 @@ public enum AdDirSyncFlag
     
     
     /**
-     * Get back the flag associated with a given value
-     * @param value The integer value
-     * @return The associated flag
+     * @see Object#toString()
      */
-    public static AdDirSyncFlag getFlag( int value )
+    @Override
+    public String toString()
     {
-        switch ( value )
+        return this.description;
+    }
+
+
+    /**
+     * Get back the combination of flags associated with a given value
+     * @param value The integer value
+     * @return a set of all flags associated with the integer value
+     */
+    public static Set<AdDirSyncFlag> getFlags( int value )
+    {
+        EnumSet<AdDirSyncFlag> result = EnumSet.noneOf( AdDirSyncFlag.class );
+        for ( AdDirSyncFlag flag : EnumSet.allOf( AdDirSyncFlag.class ) )
         {
-            case 0x0000 : return DEFAULT;
-            case 0x0001 : return LDAP_DIRSYNC_OBJECT_SECURITY;
-            case 0x0800 : return LDAP_DIRSYNC_ANCESTORS_FIRST_ORDER;
-            case 0x2000 : return LDAP_DIRSYNC_PUBLIC_DATA_ONLY;
-            case 0x7FFFFFFF : return LDAP_DIRSYNC_INCREMENTAL_VALUES;
-            default : return null;
+            if ( ( flag.getValue() & value ) == flag.getValue() )
+            {
+                result.add( flag );
+            }
         }
+        return result;
+    }
+
+
+    /**
+     * Get back the bitmask (as an integer) associated with the given flags
+     * @param flags The AdDirSync flags
+     * @return a bitmask in integer form associated with the set of flags
+     */
+    public static int getBitmask( Set<AdDirSyncFlag> flags )
+    {
+        int mask = 0;
+        
+        for ( AdDirSyncFlag flag : flags )
+        {
+            mask += flag.getValue();
+        }
+        
+        return mask;
     }
 }

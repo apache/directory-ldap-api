@@ -24,6 +24,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
+import java.util.EnumSet;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
@@ -50,12 +51,12 @@ public class AdDirSyncControlTest extends AbstractCodecServiceTest
     @Test
     public void testAdDirSyncControl() throws Exception
     {
-        ByteBuffer bb = ByteBuffer.allocate( 0x0E );
+        ByteBuffer bb = ByteBuffer.allocate( 0x0F );
 
         bb.put( new byte[]
             {
-                0x30, 0x0C,
-                  0x02, 0x01, 0x01,  // flag (LDAP_DIRSYNC_OBJECT_SECURITY)
+                0x30, 0x0D,
+                  0x02, 0x02, 0x08, 0x01,  // flag (LDAP_DIRSYNC_OBJECT_SECURITY, LDAP_DIRSYNC_ANCESTORS_FIRST_ORDER)
                   0x02, 0x01, 0x00,  // maxReturnLength (no limit)
                   0x04, 0x04, 'x', 'k', 'c', 'd' // the cookie 
         } );
@@ -66,18 +67,19 @@ public class AdDirSyncControlTest extends AbstractCodecServiceTest
 
         AdDirSync adDirSync = ( AdDirSync ) ( ( AdDirSyncDecorator ) decorator ).decode( bb.array() );
 
-        assertEquals( AdDirSyncFlag.LDAP_DIRSYNC_OBJECT_SECURITY, adDirSync.getFlag() );
+        assertEquals( EnumSet.of( 
+            AdDirSyncFlag.LDAP_DIRSYNC_OBJECT_SECURITY, 
+            AdDirSyncFlag.LDAP_DIRSYNC_ANCESTORS_FIRST_ORDER ), 
+            adDirSync.getFlags() );
         assertEquals( 0, adDirSync.getMaxReturnLength() );
         assertEquals( "xkcd", Strings.utf8ToString( adDirSync.getCookie() ) );
 
         // test encoding
-        adDirSync.setParentFirst( 1 );
-        
         try
         {
             ByteBuffer buffer = ( ( AdDirSyncDecorator ) adDirSync ).encode( ByteBuffer
                 .allocate( ( ( AdDirSyncDecorator ) adDirSync ).computeLength() ) );
-            String expected = "0x30 0x0C 0x02 0x01 0x01 0x02 0x01 0x00 0x04 0x04 0x78 0x6B 0x63 0x64 ";
+            String expected = "0x30 0x0D 0x02 0x02 0x08 0x01 0x02 0x01 0x00 0x04 0x04 0x78 0x6B 0x63 0x64 ";
             String decoded = Strings.dumpBytes( buffer.array() );
             assertEquals( expected, decoded );
         }
@@ -107,13 +109,11 @@ public class AdDirSyncControlTest extends AbstractCodecServiceTest
 
         AdDirSync adDirSync = ( AdDirSync ) ( ( AdDirSyncDecorator ) decorator ).decode( bb.array() );
 
-        assertEquals( AdDirSyncFlag.LDAP_DIRSYNC_OBJECT_SECURITY, adDirSync.getFlag() );
+        assertEquals( EnumSet.of( AdDirSyncFlag.LDAP_DIRSYNC_OBJECT_SECURITY ), adDirSync.getFlags() );
         assertEquals( 0, adDirSync.getMaxReturnLength() );
         assertEquals( "", Strings.utf8ToString( adDirSync.getCookie() ) );
 
         // test encoding
-        adDirSync.setParentFirst( 1 );
-
         try
         {
             ByteBuffer buffer = ( ( AdDirSyncDecorator ) adDirSync ).encode( ByteBuffer
