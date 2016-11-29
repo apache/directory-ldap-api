@@ -58,9 +58,10 @@ public class AttributeTypeUsageSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -92,7 +93,7 @@ public class AttributeTypeUsageSyntaxChecker extends SyntaxChecker
 
         switch ( ch )
         {
-            case ( 'd' ):
+            case 'd':
                 if ( "dSAOperation".equals( strValue )
                     || "directoryOperation".equals( strValue )
                     || "distributedOperation".equals( strValue ) )
@@ -104,7 +105,7 @@ public class AttributeTypeUsageSyntaxChecker extends SyntaxChecker
                 LOG.debug( "Syntax invalid for '{}'", value );
                 return false;
 
-            case ( 'u' ):
+            case 'u':
                 boolean comp = "userApplications".equals( strValue );
 
                 if ( comp )

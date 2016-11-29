@@ -136,7 +136,7 @@ public class DefaultSchema implements Schema
 
         this.disabled = disabled;
 
-        content = new HashSet<SchemaObjectWrapper>();
+        content = new HashSet<>();
         
         this.schemaLoader = schemaLoader;
     }
@@ -145,6 +145,7 @@ public class DefaultSchema implements Schema
     /**
      * {@inheritDoc}
      */
+    @Override
     public String[] getDependencies()
     {
         String[] copy = new String[dependencies.length];
@@ -156,6 +157,7 @@ public class DefaultSchema implements Schema
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addDependencies( String... dependenciesToAdd )
     {
         if ( dependenciesToAdd != null )
@@ -182,6 +184,7 @@ public class DefaultSchema implements Schema
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOwner()
     {
         return owner;
@@ -191,6 +194,7 @@ public class DefaultSchema implements Schema
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSchemaName()
     {
         return name;
@@ -200,6 +204,7 @@ public class DefaultSchema implements Schema
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isDisabled()
     {
         return disabled;
@@ -209,6 +214,7 @@ public class DefaultSchema implements Schema
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isEnabled()
     {
         return !disabled;
@@ -218,6 +224,7 @@ public class DefaultSchema implements Schema
     /**
      * {@inheritDoc}
      */
+    @Override
     public void disable()
     {
         this.disabled = true;
@@ -227,6 +234,7 @@ public class DefaultSchema implements Schema
     /**
      * {@inheritDoc}
      */
+    @Override
     public void enable()
     {
         this.disabled = false;
@@ -236,6 +244,7 @@ public class DefaultSchema implements Schema
     /**
      * {@inheritDoc}
      */
+    @Override
     public Set<SchemaObjectWrapper> getContent()
     {
         return content;
@@ -245,6 +254,7 @@ public class DefaultSchema implements Schema
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaLoader getSchemaLoader()
     {
         return schemaLoader;

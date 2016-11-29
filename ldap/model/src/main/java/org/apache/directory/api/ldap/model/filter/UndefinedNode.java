@@ -46,6 +46,7 @@ public final class UndefinedNode extends AbstractExprNode
      * 
      * This implementation always returns false.
      */
+    @Override
     public boolean isLeaf()
     {
         return false;
@@ -57,6 +58,7 @@ public final class UndefinedNode extends AbstractExprNode
      * 
      * This implementation always returns null.
      */
+    @Override
     public Object accept( FilterVisitor visitor )
     {
         return null;

@@ -297,7 +297,7 @@ public class CountrySyntaxChecker extends SyntaxChecker
     };
 
     /** The Set which contains the countries */
-    private static final Set<String> COUNTRIES = new HashSet<String>();
+    private static final Set<String> COUNTRIES = new HashSet<>();
 
     /** Initialization of the country set */
     static
@@ -323,9 +323,10 @@ public class CountrySyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {

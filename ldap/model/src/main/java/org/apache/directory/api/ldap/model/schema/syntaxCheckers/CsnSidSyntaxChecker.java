@@ -50,6 +50,7 @@ public class CsnSidSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
         if ( value == null )

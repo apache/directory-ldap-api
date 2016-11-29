@@ -56,6 +56,7 @@ public class AudioSyntaxChecker extends BinarySyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
         LOG.debug( "Syntax valid for '{}'", value );

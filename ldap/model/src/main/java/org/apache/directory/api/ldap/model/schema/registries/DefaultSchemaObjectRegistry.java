@@ -72,7 +72,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
      */
     protected DefaultSchemaObjectRegistry( SchemaObjectType schemaObjectType, OidRegistry<T> oidRegistry )
     {
-        byName = new HashMap<String, T>();
+        byName = new HashMap<>();
         this.schemaObjectType = schemaObjectType;
         this.oidRegistry = oidRegistry;
         this.isRelaxed = Registries.STRICT;
@@ -126,6 +126,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( String oid )
     {
         if ( !byName.containsKey( oid ) )
@@ -140,6 +141,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSchemaName( String oid ) throws LdapException
     {
         if ( !Oid.isOid( oid ) )
@@ -165,6 +167,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public void renameSchema( String originalSchemaName, String newSchemaName )
     {
         // Loop on all the SchemaObjects stored and remove those associated
@@ -187,6 +190,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<T> iterator()
     {
         return oidRegistry.iterator();
@@ -196,6 +200,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<String> oidsIterator()
     {
         return byName.keySet().iterator();
@@ -205,6 +210,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public T lookup( String oid ) throws LdapException
     {
         if ( oid == null )
@@ -239,6 +245,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public void register( T schemaObject ) throws LdapException
     {
         String oid = schemaObject.getOid();
@@ -291,6 +298,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public T unregister( String numericOid ) throws LdapException
     {
         if ( !Oid.isOid( numericOid ) )
@@ -322,6 +330,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public T unregister( T schemaObject ) throws LdapException
     {
         String oid = schemaObject.getOid();
@@ -355,6 +364,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterSchemaElements( String schemaName ) throws LdapException
     {
         if ( schemaName == null )
@@ -383,6 +393,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOidByName( String name ) throws LdapException
     {
         T schemaObject = byName.get( name );
@@ -466,6 +477,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public T get( String oid )
     {
         try
@@ -482,6 +494,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaObjectType getType()
     {
         return schemaObjectType;
@@ -491,6 +504,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public int size()
     {
         return oidRegistry.size();
@@ -500,6 +514,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
@@ -531,6 +546,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear()
     {
         // Clear all the schemaObjects

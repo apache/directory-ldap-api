@@ -73,9 +73,10 @@ public class DitStructureRuleDescriptionSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
-    public boolean isValidSyntax( Object value )
+    @Override
+public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {

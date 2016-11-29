@@ -50,36 +50,42 @@ public class EntryChangeImpl extends AbstractControl implements EntryChange
     }
 
 
+    @Override
     public ChangeType getChangeType()
     {
         return changeType;
     }
 
 
+    @Override
     public void setChangeType( ChangeType changeType )
     {
         this.changeType = changeType;
     }
 
 
+    @Override
     public Dn getPreviousDn()
     {
         return previousDn;
     }
 
 
+    @Override
     public void setPreviousDn( Dn previousDn )
     {
         this.previousDn = previousDn;
     }
 
 
+    @Override
     public long getChangeNumber()
     {
         return changeNumber;
     }
 
 
+    @Override
     public void setChangeNumber( long changeNumber )
     {
         this.changeNumber = changeNumber;
@@ -89,11 +95,12 @@ public class EntryChangeImpl extends AbstractControl implements EntryChange
     /**
      * @see Object#hashCode()
      */
+    @Override
     public int hashCode()
     {
         int h = super.hashCode();
 
-        h = h * 37 + Long.valueOf( changeNumber ).intValue();
+        h = h * 37 + ( int ) changeNumber;
         h = h * 37 + ( changeType == null ? 0 : changeType.hashCode() );
         h = h * 37 + ( previousDn == null ? 0 : previousDn.hashCode() );
 
@@ -122,9 +129,10 @@ public class EntryChangeImpl extends AbstractControl implements EntryChange
     /**
      * Return a String representing this EntryChangeControl.
      */
+    @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( "    Entry Change Control\n" );
         sb.append( "        oid : " ).append( getOid() ).append( '\n' );

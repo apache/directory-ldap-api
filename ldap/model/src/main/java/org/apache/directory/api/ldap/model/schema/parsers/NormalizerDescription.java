@@ -49,6 +49,7 @@ public class NormalizerDescription extends LoadableSchemaObject
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         return "SyntaxChecker description : " + getDescription();

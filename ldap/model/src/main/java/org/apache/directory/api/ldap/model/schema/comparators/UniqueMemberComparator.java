@@ -103,8 +103,8 @@ public class UniqueMemberComparator extends LdapComparator<String>
                 return 1;
             }
 
-            Dn dn1 = null;
-            Dn dn2 = null;
+            Dn dn1;
+            Dn dn2;
 
             // This is an UID if the '#' is immediatly
             // followed by a BitString, except if the '#' is
@@ -161,6 +161,7 @@ public class UniqueMemberComparator extends LdapComparator<String>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setSchemaManager( SchemaManager schemaManager )
     {
         this.schemaManager = schemaManager;
@@ -176,13 +177,13 @@ public class UniqueMemberComparator extends LdapComparator<String>
      */
     public Dn getDn( Object obj ) throws LdapInvalidDnException
     {
-        Dn dn = null;
+        Dn dn;
 
         if ( obj instanceof Dn )
         {
             dn = ( Dn ) obj;
 
-            dn = ( dn.isSchemaAware() ? dn : dn.apply( schemaManager ) );
+            dn = dn.isSchemaAware() ? dn : dn.apply( schemaManager );
         }
         else if ( obj instanceof String )
         {
@@ -190,7 +191,7 @@ public class UniqueMemberComparator extends LdapComparator<String>
         }
         else
         {
-            throw new IllegalStateException( I18n.err( I18n.ERR_04218, ( obj == null ? null : obj.getClass() ) ) );
+            throw new IllegalStateException( I18n.err( I18n.ERR_04218, obj == null ? null : obj.getClass()  ) );
         }
 
         return dn;

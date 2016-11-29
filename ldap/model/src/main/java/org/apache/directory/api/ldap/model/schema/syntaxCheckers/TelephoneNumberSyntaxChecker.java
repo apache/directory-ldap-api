@@ -93,8 +93,8 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
 
             if ( regexps == null )
             {
-                regexps = new ArrayList<String>();
-                compiledREs = new ArrayList<Pattern>();
+                regexps = new ArrayList<>();
+                compiledREs = new ArrayList<>();
             }
 
             regexps.add( regexp );
@@ -132,9 +132,10 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {

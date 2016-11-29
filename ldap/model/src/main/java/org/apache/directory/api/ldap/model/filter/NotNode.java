@@ -81,9 +81,10 @@ public class NotNode extends BranchNode
      * 
      * @param node the child expression to add to this NOT node
      */
+    @Override
     public void addNode( ExprNode node )
     {
-        if ( ( children == null ) || ( children.size() >= 1 ) )
+        if ( ( children == null ) || ( !children.isEmpty() ) )
         {
             throw new IllegalStateException( I18n.err( I18n.ERR_04159 ) );
         }
@@ -97,9 +98,10 @@ public class NotNode extends BranchNode
      * 
      * @param node the child expression to add to this branch node
      */
+    @Override
     public void addNodeToHead( ExprNode node )
     {
-        if ( children.size() >= 1 )
+        if ( !children.isEmpty() )
         {
             throw new IllegalStateException( I18n.err( I18n.ERR_04159 ) );
         }
@@ -113,6 +115,7 @@ public class NotNode extends BranchNode
      * 
      * @param childList the list of children to set.
      */
+    @Override
     public void setChildren( List<ExprNode> childList )
     {
         if ( ( childList != null ) && ( childList.size() > 1 ) )
@@ -175,6 +178,7 @@ public class NotNode extends BranchNode
      * @return The buffer in which the refinement has been appended
      * @throws UnsupportedOperationException if this node isn't a part of a refinement.
      */
+    @Override
     public StringBuilder printRefinementToBuffer( StringBuilder buf )
     {
         buf.append( "not: " );
@@ -193,6 +197,7 @@ public class NotNode extends BranchNode
      * @see java.lang.Object#toString()
      * @return A string representing the AndNode
      */
+    @Override
     public String toString()
     {
         StringBuilder buf = new StringBuilder();

@@ -53,23 +53,27 @@ public interface DeleteRequest extends SingleReplyRequest, AbandonableRequest
     /**
      * {@inheritDoc}
      */
+    @Override
     DeleteRequest setMessageId( int messageId );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     DeleteRequest addControl( Control control );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     DeleteRequest addAllControls( Control[] controls );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     DeleteRequest removeControl( Control control );
 }

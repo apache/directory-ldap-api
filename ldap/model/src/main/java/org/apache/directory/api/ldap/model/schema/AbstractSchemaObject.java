@@ -128,8 +128,8 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     {
         this.objectType = objectType;
         this.oid = oid;
-        extensions = new HashMap<String, List<String>>();
-        names = new ArrayList<String>();
+        extensions = new HashMap<>();
+        names = new ArrayList<>();
     }
 
 
@@ -142,8 +142,8 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     protected AbstractSchemaObject( SchemaObjectType objectType )
     {
         this.objectType = objectType;
-        extensions = new HashMap<String, List<String>>();
-        names = new ArrayList<String>();
+        extensions = new HashMap<>();
+        names = new ArrayList<>();
     }
 
 
@@ -157,6 +157,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * @return an OID for this SchemaObject or its MatchingRule if this
      *         SchemaObject is a MatchingRuleUse object
      */
+    @Override
     public String getOid()
     {
         return oid;
@@ -168,6 +169,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * change it's OID
      * @param oid The new OID
      */
+    @Override
     public void setOid( String oid )
     {
         if ( locked )
@@ -185,6 +187,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * 
      * @return the names for this SchemaObject
      */
+    @Override
     public List<String> getNames()
     {
         if ( names != null )
@@ -205,9 +208,10 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * @return the first of the names for this SchemaObject or the oid
      * if one does not exist
      */
+    @Override
     public String getName()
     {
-        if ( ( names != null ) && ( names.size() != 0 ) )
+        if ( ( names != null ) && !names.isEmpty() )
         {
             return names.get( 0 );
         }
@@ -224,6 +228,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * 
      * @param namesToAdd The names to add
      */
+    @Override
     public void addName( String... namesToAdd )
     {
         if ( locked )
@@ -234,7 +239,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         if ( !isReadOnly )
         {
             // We must avoid duplicated names, as names are case insensitive
-            Set<String> lowerNames = new HashSet<String>();
+            Set<String> lowerNames = new HashSet<>();
 
             // Fills a set with all the existing names
             for ( String name : this.names )
@@ -265,6 +270,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * 
      * @param names The list of names. Can be empty
      */
+    @Override
     public void setNames( List<String> names )
     {
         if ( locked )
@@ -279,7 +285,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
         if ( !isReadOnly )
         {
-            this.names = new ArrayList<String>( names.size() );
+            this.names = new ArrayList<>( names.size() );
 
             for ( String name : names )
             {
@@ -330,6 +336,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * 
      * @return a short description about this SchemaObject
      */
+    @Override
     public String getDescription()
     {
         return description;
@@ -341,6 +348,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * 
      * @param description The SchemaObject's description
      */
+    @Override
     public void setDescription( String description )
     {
         if ( locked )
@@ -360,6 +368,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * 
      * @return the SchemaObject specification
      */
+    @Override
     public String getSpecification()
     {
         return specification;
@@ -371,6 +380,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * 
      * @param specification The SchemaObject's specification
      */
+    @Override
     public void setSpecification( String specification )
     {
         if ( locked )
@@ -391,6 +401,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * @return true if the SchemaObject is enabled, or if it depends on
      * an enabled schema
      */
+    @Override
     public boolean isEnabled()
     {
         return isEnabled;
@@ -402,6 +413,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * 
      * @return true if the SchemaObject is disabled
      */
+    @Override
     public boolean isDisabled()
     {
         return !isEnabled;
@@ -413,6 +425,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * 
      * @param enabled The current SchemaObject state
      */
+    @Override
     public void setEnabled( boolean enabled )
     {
         if ( !isReadOnly )
@@ -427,6 +440,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * 
      * @return true if the SchemaObject is not modifiable
      */
+    @Override
     public boolean isReadOnly()
     {
         return isReadOnly;
@@ -438,6 +452,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * 
      * @param readOnly The current SchemaObject ReadOnly status
      */
+    @Override
     public void setReadOnly( boolean readOnly )
     {
         if ( locked )
@@ -457,6 +472,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * 
      * @return true if inactive, false if active
      */
+    @Override
     public boolean isObsolete()
     {
         return isObsolete;
@@ -468,6 +484,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * 
      * @param obsolete The Obsolete flag state
      */
+    @Override
     public void setObsolete( boolean obsolete )
     {
         if ( locked )
@@ -485,6 +502,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<String, List<String>> getExtensions()
     {
         return extensions;
@@ -494,7 +512,8 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     /**
      * {@inheritDoc}
      */
-    public boolean hasExtension( String extension )
+    @Override
+public boolean hasExtension( String extension )
     {
         return extensions.containsKey( Strings.toUpperCaseAscii( extension ) );
     }
@@ -503,6 +522,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<String> getExtension( String extension )
     {
         String name = Strings.toUpperCaseAscii( extension );
@@ -529,6 +549,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * @param key The extension key
      * @param values The associated values
      */
+    @Override
     public void addExtension( String key, String... values )
     {
         if ( locked )
@@ -538,7 +559,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
         if ( !isReadOnly )
         {
-            List<String> valueList = new ArrayList<String>();
+            List<String> valueList = new ArrayList<>();
 
             for ( String value : values )
             {
@@ -555,6 +576,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * @param key The extension key
      * @param values The associated values
      */
+    @Override
     public void addExtension( String key, List<String> values )
     {
         if ( locked )
@@ -574,6 +596,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * 
      * @param extensions The extensions map
      */
+    @Override
     public void setExtensions( Map<String, List<String>> extensions )
     {
         if ( locked )
@@ -583,11 +606,11 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
         if ( !isReadOnly && ( extensions != null ) )
         {
-            this.extensions = new HashMap<String, List<String>>();
+            this.extensions = new HashMap<>();
 
             for ( Map.Entry<String, List<String>> entry : extensions.entrySet() )
             {
-                List<String> values = new ArrayList<String>();
+                List<String> values = new ArrayList<>();
 
                 for ( String value : entry.getValue() )
                 {
@@ -619,6 +642,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * 
      * @return the SchemaObject type
      */
+    @Override
     public SchemaObjectType getObjectType()
     {
         return objectType;
@@ -630,6 +654,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      *
      * @return the name of the schema associated with this schemaObject
      */
+    @Override
     public String getSchemaName()
     {
         return schemaName;
@@ -641,6 +666,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * 
      * @param schemaName the new schema name
      */
+    @Override
     public void setSchemaName( String schemaName )
     {
         if ( locked )
@@ -826,14 +852,6 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
 
     /**
-     * Copy the current SchemaObject on place
-     *
-     * @return The copied SchemaObject
-     */
-    public abstract SchemaObject copy();
-
-
-    /**
      * Compare two oids, and return true if they are both null or equal.
      *
      * @param oid1 the first OID
@@ -856,6 +874,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaObject copy( SchemaObject original )
     {
         // copy the description
@@ -867,7 +886,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         isReadOnly = original.isReadOnly();
 
         // copy the names
-        names = new ArrayList<String>();
+        names = new ArrayList<>();
 
         for ( String name : original.getNames() )
         {
@@ -875,13 +894,13 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         }
 
         // copy the extensions
-        extensions = new HashMap<String, List<String>>();
+        extensions = new HashMap<>();
 
         for ( String key : original.getExtensions().keySet() )
         {
             List<String> extensionValues = original.getExtension( key );
 
-            List<String> cloneExtension = new ArrayList<String>();
+            List<String> cloneExtension = new ArrayList<>();
 
             for ( String value : extensionValues )
             {
@@ -905,6 +924,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * Clear the current SchemaObject : remove all the references to other objects,
      * and all the Maps.
      */
+    @Override
     public void clear()
     {
         // Clear the extensions
@@ -931,6 +951,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     /**
      * {@inheritDoc}
      */
+    @Override
     public final void lock()
     {
         if ( locked )
@@ -947,7 +968,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         h += h * 17 + objectType.getValue();
 
         // The Names, if any
-        if ( ( names != null ) && ( names.size() != 0 ) )
+        if ( ( names != null ) && !names.isEmpty() )
         {
             for ( String name : names )
             {

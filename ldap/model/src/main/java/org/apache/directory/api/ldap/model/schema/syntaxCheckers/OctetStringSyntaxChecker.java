@@ -61,6 +61,7 @@ public class OctetStringSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
         // Always true.

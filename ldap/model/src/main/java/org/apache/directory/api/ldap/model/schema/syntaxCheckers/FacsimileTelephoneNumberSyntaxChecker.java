@@ -66,7 +66,7 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
     private static final String UNCOMPRESSED = "uncompressed";
 
     /** A set which contaons all the possible fax parameters values */
-    private static Set<String> faxParameters = new HashSet<String>();
+    private static Set<String> faxParameters = new HashSet<>();
 
     /** Initialization of the fax parameters set of values */
     static
@@ -94,9 +94,10 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -156,11 +157,11 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
             // Now, try to validate the fax-parameters : we may
             // have more than one, so we will store the seen params
             // in a set to check that we don't have the same param twice
-            Set<String> paramsSeen = new HashSet<String>();
+            Set<String> paramsSeen = new HashSet<>();
 
             while ( dollarPos > 0 )
             {
-                String faxParam = null;
+                String faxParam;
                 int newDollar = strValue.indexOf( '$', dollarPos + 1 );
 
                 if ( newDollar == -1 )

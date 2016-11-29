@@ -80,6 +80,7 @@ public abstract class LeafNode extends AbstractExprNode
      * 
      * @return true always
      */
+    @Override
     public final boolean isLeaf()
     {
         return true;
@@ -144,6 +145,7 @@ public abstract class LeafNode extends AbstractExprNode
      * @param visitor the filter expression tree structure visitor
      * @return The modified element
      */
+    @Override
     public final Object accept( FilterVisitor visitor )
     {
         if ( visitor.canVisit( this ) )
@@ -161,6 +163,7 @@ public abstract class LeafNode extends AbstractExprNode
      * @see Object#hashCode()
      * @return the instance's hash code 
      */
+    @Override
     public int hashCode()
     {
         int h = 37;
@@ -183,6 +186,7 @@ public abstract class LeafNode extends AbstractExprNode
     /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals( Object other )
     {
         if ( this == other )

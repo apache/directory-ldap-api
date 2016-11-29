@@ -71,7 +71,7 @@ public class BooleanComparator extends LdapComparator<String>
         // have been catched by the previous test
         if ( ( b1 == null ) || ( b2 == null ) )
         {
-            return ( b1 == null ? -1 : 1 );
+            return b1 == null ? -1 : 1;
         }
 
         // The boolean should have been stored as 'TRUE' or 'FALSE'
@@ -79,14 +79,14 @@ public class BooleanComparator extends LdapComparator<String>
         // with normalized booleans, so no need to upper case them.
         // We don't need to check the assertion value, because we
         // are dealing with booleans.
-        boolean boolean1 = Boolean.valueOf( b1 );
-        boolean boolean2 = Boolean.valueOf( b2 );
+        boolean boolean1 = Boolean.parseBoolean( b1 );
+        boolean boolean2 = Boolean.parseBoolean( b2 );
 
         if ( boolean1 == boolean2 )
         {
             return 0;
         }
 
-        return ( boolean1 ? 1 : -1 );
+        return boolean1 ? 1 : -1;
     }
 }

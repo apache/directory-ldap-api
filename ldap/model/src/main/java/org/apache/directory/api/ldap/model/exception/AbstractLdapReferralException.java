@@ -20,7 +20,7 @@
 package org.apache.directory.api.ldap.model.exception;
 
 
-import java.util.Hashtable;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
@@ -44,7 +44,7 @@ public class AbstractLdapReferralException extends LdapOperationException
     /** The remaining Dn */
     private Dn remainingDn;
 
-    /** TODO */
+    /** The entry the referal refers to */
     private Object resolvedObject;
 
 
@@ -65,6 +65,7 @@ public class AbstractLdapReferralException extends LdapOperationException
      * 
      * @return The interned ResultCode
      */
+    @Override
     public ResultCodeEnum getResultCode()
     {
         return ResultCodeEnum.REFERRAL;
@@ -77,7 +78,7 @@ public class AbstractLdapReferralException extends LdapOperationException
     }
 
 
-    public Context getReferralContext( Hashtable<?, ?> arg ) throws NamingException
+    public Context getReferralContext( Map<?, ?> arg ) throws NamingException
     {
         throw new NotImplementedException();
     }

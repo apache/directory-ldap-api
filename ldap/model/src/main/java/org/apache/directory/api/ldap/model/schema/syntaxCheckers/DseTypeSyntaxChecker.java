@@ -59,7 +59,7 @@ public class DseTypeSyntaxChecker extends SyntaxChecker
     };
 
     /** The Set which contains the DESBits */
-    private static final Set<String> DSE_BITS = new HashSet<String>();
+    private static final Set<String> DSE_BITS = new HashSet<>();
 
     /** Initialization of the country set */
     static
@@ -85,9 +85,10 @@ public class DseTypeSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -123,7 +124,7 @@ public class DseTypeSyntaxChecker extends SyntaxChecker
             return false;
         }
 
-        Set<String> keywords = new HashSet<String>();
+        Set<String> keywords = new HashSet<>();
         int len = strValue.length() - 1;
         boolean needKeyword = true;
 

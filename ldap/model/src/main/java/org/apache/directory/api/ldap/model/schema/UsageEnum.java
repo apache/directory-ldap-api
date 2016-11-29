@@ -82,9 +82,7 @@ public enum UsageEnum
     {
         try
         {
-            UsageEnum result = valueOf( usage );
-
-            return result;
+            return valueOf( usage );
         }
         catch ( IllegalArgumentException iae )
         {

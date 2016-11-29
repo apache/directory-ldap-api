@@ -89,7 +89,7 @@ public class SortResponseControlImpl extends AbstractControl  implements SortRes
         
         if ( attributeName != null )
         {
-            return ( attributeName.equalsIgnoreCase( that.getAttributeName() ) );
+            return attributeName.equalsIgnoreCase( that.getAttributeName() );
         }
         else if ( that.getAttributeName() == null )
         {

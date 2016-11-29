@@ -145,6 +145,7 @@ public class StringValue extends AbstractValue<String>
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getValue()
     {
         // The String is immutable, we can safely return the internal
@@ -156,6 +157,7 @@ public class StringValue extends AbstractValue<String>
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getNormValue()
     {
         return normalizedValue;
@@ -172,6 +174,7 @@ public class StringValue extends AbstractValue<String>
      * @throws IllegalStateException on failures to extract the comparator, or the
      * normalizers needed to perform the required comparisons based on the schema
      */
+    @Override
     public int compareTo( Value<String> value )
     {
         if ( isNull() )
@@ -239,6 +242,7 @@ public class StringValue extends AbstractValue<String>
     /**
      * {@inheritDoc}
      */
+    @Override
     public StringValue clone()
     {
         return ( StringValue ) super.clone();
@@ -252,6 +256,7 @@ public class StringValue extends AbstractValue<String>
      * @see Object#hashCode()
      * @return the instance's hashcode
      */
+    @Override
     public int hashCode()
     {
         if ( h == 0 )
@@ -288,6 +293,7 @@ public class StringValue extends AbstractValue<String>
      * 
      * @see Object#equals(Object)
      */
+    @Override
     public boolean equals( Object obj )
     {
         if ( this == obj )
@@ -459,6 +465,7 @@ public class StringValue extends AbstractValue<String>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isHumanReadable()
     {
         return true;
@@ -468,6 +475,7 @@ public class StringValue extends AbstractValue<String>
     /**
      * @return The length of the interned value
      */
+    @Override
     public int length()
     {
         return upValue != null ? upValue.length() : 0;
@@ -478,6 +486,7 @@ public class StringValue extends AbstractValue<String>
      * Get the user provided value as a byte[].
      * @return the user provided value as a byte[]
      */
+    @Override
     public byte[] getBytes()
     {
         return bytes;
@@ -489,6 +498,7 @@ public class StringValue extends AbstractValue<String>
      *
      * @return the user provided value as a String
      */
+    @Override
     public String getString()
     {
         return upValue != null ? upValue : "";
@@ -534,6 +544,7 @@ public class StringValue extends AbstractValue<String>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void readExternal( ObjectInput in ) throws IOException, ClassNotFoundException
     {
         // Read the STRING flag
@@ -793,6 +804,7 @@ public class StringValue extends AbstractValue<String>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void writeExternal( ObjectOutput out ) throws IOException
     {
         // Write a boolean for the HR flag
@@ -844,6 +856,7 @@ public class StringValue extends AbstractValue<String>
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         return upValue == null ? "null" : upValue;

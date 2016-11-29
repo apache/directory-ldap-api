@@ -55,6 +55,7 @@ public class ImmutableSyntaxCheckerRegistry implements SyntaxCheckerRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void register( SyntaxChecker syntaxChecker ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04285 ) );
@@ -64,6 +65,7 @@ public class ImmutableSyntaxCheckerRegistry implements SyntaxCheckerRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public SyntaxChecker unregister( String numericOid ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04285 ) );
@@ -73,6 +75,7 @@ public class ImmutableSyntaxCheckerRegistry implements SyntaxCheckerRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterSchemaElements( String schemaName ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04285 ) );
@@ -82,6 +85,7 @@ public class ImmutableSyntaxCheckerRegistry implements SyntaxCheckerRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public ImmutableSyntaxCheckerRegistry copy()
     {
         return ( ImmutableSyntaxCheckerRegistry ) immutableSyntaxCheckerRegistry.copy();
@@ -91,6 +95,7 @@ public class ImmutableSyntaxCheckerRegistry implements SyntaxCheckerRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public int size()
     {
         return immutableSyntaxCheckerRegistry.size();
@@ -100,6 +105,7 @@ public class ImmutableSyntaxCheckerRegistry implements SyntaxCheckerRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( String oid )
     {
         return immutableSyntaxCheckerRegistry.contains( oid );
@@ -109,6 +115,7 @@ public class ImmutableSyntaxCheckerRegistry implements SyntaxCheckerRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOidByName( String name ) throws LdapException
     {
         return immutableSyntaxCheckerRegistry.getOidByName( name );
@@ -118,6 +125,7 @@ public class ImmutableSyntaxCheckerRegistry implements SyntaxCheckerRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSchemaName( String oid ) throws LdapException
     {
         return immutableSyntaxCheckerRegistry.getSchemaName( oid );
@@ -127,6 +135,7 @@ public class ImmutableSyntaxCheckerRegistry implements SyntaxCheckerRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaObjectType getType()
     {
         return immutableSyntaxCheckerRegistry.getType();
@@ -136,6 +145,7 @@ public class ImmutableSyntaxCheckerRegistry implements SyntaxCheckerRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<SyntaxChecker> iterator()
     {
         return immutableSyntaxCheckerRegistry.iterator();
@@ -145,6 +155,7 @@ public class ImmutableSyntaxCheckerRegistry implements SyntaxCheckerRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public SyntaxChecker lookup( String oid ) throws LdapException
     {
         return immutableSyntaxCheckerRegistry.lookup( oid );
@@ -154,6 +165,7 @@ public class ImmutableSyntaxCheckerRegistry implements SyntaxCheckerRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<String> oidsIterator()
     {
         return immutableSyntaxCheckerRegistry.oidsIterator();
@@ -163,6 +175,7 @@ public class ImmutableSyntaxCheckerRegistry implements SyntaxCheckerRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void renameSchema( String originalSchemaName, String newSchemaName ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04285 ) );
@@ -172,6 +185,7 @@ public class ImmutableSyntaxCheckerRegistry implements SyntaxCheckerRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public SyntaxChecker get( String oid )
     {
         return immutableSyntaxCheckerRegistry.get( oid );
@@ -181,6 +195,7 @@ public class ImmutableSyntaxCheckerRegistry implements SyntaxCheckerRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear() throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04285 ) );
@@ -190,6 +205,7 @@ public class ImmutableSyntaxCheckerRegistry implements SyntaxCheckerRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public SyntaxChecker unregister( SyntaxChecker schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04285 ) );

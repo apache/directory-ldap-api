@@ -74,7 +74,7 @@ public class CsnSidComparator extends LdapComparator<String>
         }
 
         int sid1 = 0;
-        int sid2 = 0;
+        int sid2;
 
         try
         {

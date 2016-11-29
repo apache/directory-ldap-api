@@ -99,7 +99,7 @@ import org.apache.directory.api.ldap.model.exception.LdapUnwillingToPerformExcep
  *           attributeOrValueExists       (20),
  *           invalidAttributeSyntax       (21),
  *           -- 22-31 unused --
- *           NO_SUCH_OBJECT                 (32),
+ *           NO_SUCH_OBJECT               (32),
  *           aliasProblem                 (33),
  *           invalidDNSyntax              (34),
  *           -- 35 reserved for undefined isLeaf --
@@ -719,39 +719,7 @@ public enum ResultCodeEnum
     /** Stores the description of each element of the enumeration */
     private String message;
 
-
-    /**
-     * Private construct so no other instances can be created other than the
-     * public static constants in this class.
-     * 
-     * @param value the integer value of the enumeration.
-     * @param message the description of the enumeration.
-     */
-    ResultCodeEnum( int value, String message )
-    {
-        this.value = value;
-        this.message = message;
-    }
-
-
-    /**
-     * @return The value associated with the current element.
-     */
-    public int getValue()
-    {
-        return value;
-    }
-
-
-    /**
-     * @return The description associated with the current element.
-     */
-    public String getMessage()
-    {
-        return message;
-    }
-
-    private static final Set<ResultCodeEnum> EMPTY_RESULT_CODE_SET = new HashSet<ResultCodeEnum>();
+    private static final Set<ResultCodeEnum> EMPTY_RESULT_CODE_SET = new HashSet<>();
 
     // ------------------------------------------------------------------------
     // Error Codes Grouped Into Categories & Static Accessors
@@ -775,7 +743,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.SUCCESS );
         set.add( ResultCodeEnum.COMPARE_TRUE );
         set.add( ResultCodeEnum.COMPARE_FALSE );
@@ -813,7 +781,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.BUSY );
         set.add( ResultCodeEnum.OTHER );
         set.add( ResultCodeEnum.SUCCESS );
@@ -866,7 +834,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.BUSY );
         set.add( ResultCodeEnum.OTHER );
         set.add( ResultCodeEnum.SUCCESS );
@@ -926,7 +894,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.BUSY );
         set.add( ResultCodeEnum.OTHER );
         set.add( ResultCodeEnum.SUCCESS );
@@ -988,7 +956,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.BUSY );
         set.add( ResultCodeEnum.OTHER );
         set.add( ResultCodeEnum.SUCCESS );
@@ -1043,7 +1011,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.BUSY );
         set.add( ResultCodeEnum.OTHER );
         set.add( ResultCodeEnum.SUCCESS );
@@ -1097,7 +1065,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.BUSY );
         set.add( ResultCodeEnum.OTHER );
         set.add( ResultCodeEnum.SUCCESS );
@@ -1154,7 +1122,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.OPERATIONS_ERROR );
         set.add( ResultCodeEnum.PROTOCOL_ERROR );
         set.add( ResultCodeEnum.TIME_LIMIT_EXCEEDED );
@@ -1229,7 +1197,7 @@ public enum ResultCodeEnum
 
     static
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> set = new HashSet<>();
         set.add( ResultCodeEnum.SUCCESS );
         set.add( ResultCodeEnum.OPERATIONS_ERROR );
         set.add( ResultCodeEnum.PROTOCOL_ERROR );
@@ -1271,6 +1239,204 @@ public enum ResultCodeEnum
         set.add( ResultCodeEnum.OTHER );
         set.add( ResultCodeEnum.CANCELED );
         EXTENDED_CODES = Collections.unmodifiableSet( set );
+    }
+    // ------------------------------------------------------------------------
+    // Getting Result Code Enumeration Object Using Integer Values
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    // JNDI Exception to ResultCodeEnum Mappings
+    // ------------------------------------------------------------------------
+
+    /**
+     * A set of ResultCodes containing those that may correspond to NamingException.
+     * <ul>
+     * <li><a href="#OPERATIONSERROR">operationsError(1)</a></li>
+     * <li><a href="#ALIAS_PROBLEM">aliasProblem(33)</a></li>
+     * <li><a href="#ALIAS_DEREFERENCING_PROBLEM">aliasDereferencingProblem(36)</a></li>
+     * <li><a href="#LOOP_DETECT">loopDetect(54)</a></li>
+     * <li><a href="#AFFECTS_MULTIPLE_DSAS">affectsMultipleDSAs(71)</a></li>
+     * <li><a href="#OTHER">other(80)</a></li>
+     * </ul>
+     */
+    private static final Set<ResultCodeEnum> NAMING_EXCEPTION_CODES;
+
+    static
+    {
+        Set<ResultCodeEnum> set = new HashSet<>();
+        set.add( ResultCodeEnum.OPERATIONS_ERROR );
+        set.add( ResultCodeEnum.ALIAS_PROBLEM );
+        set.add( ResultCodeEnum.ALIAS_DEREFERENCING_PROBLEM );
+        set.add( ResultCodeEnum.LOOP_DETECT );
+        set.add( ResultCodeEnum.AFFECTS_MULTIPLE_DSAS );
+        set.add( ResultCodeEnum.OTHER );
+        NAMING_EXCEPTION_CODES = Collections.unmodifiableSet( set );
+    }
+
+    /**
+     * A set of ResultCodes containing those that may correspond to a
+     * {@link Exception}.
+     * <ul>
+     * <li><a href="#AUTH_METHOD_NOT_SUPPORTED">authMethodNotSupported(7)</a></li>
+     * <li><a href="#STRONG_AUTH_REQUIRED">strongAuthRequired(8)</a></li>
+     * <li><a href="#CONFIDENTIALITY_REQUIRED">confidentialityRequired(13)</a></li>
+     * <li><a
+     * href="#INAPPROPRIATE_AUTHENTICATION">inappropriateAuthentication(48)</a></li>
+     * </ul>
+     */
+    private static final Set<ResultCodeEnum> AUTHENTICATION_NOT_SUPPORTED_EXCEPTION_CODES;
+
+    static
+    {
+        Set<ResultCodeEnum> set = new HashSet<>();
+        set.add( ResultCodeEnum.AUTH_METHOD_NOT_SUPPORTED );
+        set.add( ResultCodeEnum.STRONG_AUTH_REQUIRED );
+        set.add( ResultCodeEnum.CONFIDENTIALITY_REQUIRED );
+        set.add( ResultCodeEnum.INAPPROPRIATE_AUTHENTICATION );
+        AUTHENTICATION_NOT_SUPPORTED_EXCEPTION_CODES = Collections.unmodifiableSet( set );
+    }
+
+    /**
+     * A set of ResultCodes containing those that may correspond to a
+     * {@link Exception}.
+     * <ul>
+     * <li><a href="#BUSY">busy(51)</a></li>
+     * <li><a href="#UNAVAILABLE">unavailable(52)</a></li>
+     * </ul>
+     */
+    private static final Set<ResultCodeEnum> SERVICE_UNAVAILABLE_CODES;
+
+    static
+    {
+        Set<ResultCodeEnum> set = new HashSet<>();
+        set.add( ResultCodeEnum.BUSY );
+        set.add( ResultCodeEnum.UNAVAILABLE );
+        SERVICE_UNAVAILABLE_CODES = Collections.unmodifiableSet( set );
+    }
+
+    /**
+     * A set of ResultCodes containing those that may correspond to a
+     * {@link Exception}.
+     * <ul>
+     * <li><a href="#CONSTRAINT_VIOLATION">constraintViolation(19)</a></li>
+     * <li><a href="#INVALID_ATTRIBUTE_SYNTAX">invalidAttributeSyntax(21)</a></li>
+     * </ul>
+     */
+    private static final Set<ResultCodeEnum> INVALID_ATTRIBUTE_VALUE_EXCEPTION_CODES;
+
+    static
+    {
+        Set<ResultCodeEnum> set = new HashSet<>();
+        set.add( ResultCodeEnum.CONSTRAINT_VIOLATION );
+        set.add( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX );
+        INVALID_ATTRIBUTE_VALUE_EXCEPTION_CODES = Collections.unmodifiableSet( set );
+    }
+
+    
+    /**
+     * A set of ResultCodes containing those that may correspond to a
+     * {@link Exception}.
+     * <ul>
+     * <li><a href="#PARTIAL_RESULTS">partialResults(9)</a></li>
+     * <li><a href="#REFERRAL">referral(10)</a></li>
+     * </ul>
+     */
+    private static final Set<ResultCodeEnum> PARTIAL_RESULTS_EXCEPTION_CODES;
+
+    static
+    {
+        Set<ResultCodeEnum> set = new HashSet<>();
+        set.add( ResultCodeEnum.PARTIAL_RESULTS );
+        set.add( ResultCodeEnum.REFERRAL );
+        PARTIAL_RESULTS_EXCEPTION_CODES = Collections.unmodifiableSet( set );
+    }
+
+    /**
+     * A set of ResultCodes containing those that may correspond to a
+     * {@link Exception}.
+     * <ul>
+     * <li><a href="#REFERRAL">referal(9)</a></li>
+     * <li><a href="#ADMIN_LIMIT_EXCEEDED">adminLimitExceeded(11)</a></li>
+     * </ul>
+     */
+    private static final Set<ResultCodeEnum> LIMIT_EXCEEDED_EXCEPTION_CODES;
+
+    static
+    {
+        Set<ResultCodeEnum> set = new HashSet<>();
+        set.add( ResultCodeEnum.REFERRAL );
+        set.add( ResultCodeEnum.ADMIN_LIMIT_EXCEEDED );
+        LIMIT_EXCEEDED_EXCEPTION_CODES = Collections.unmodifiableSet( set );
+    }
+
+    /**
+     * A set of ResultCodes containing those that may correspond to a
+     * {@link Exception}.
+     * <ul>
+     * <li><a
+     * href="#UNAVAILABLECRITICALEXTENTION">unavailableCriticalExtention(12)</a></li>
+     * <li><a href="#UNWILLING_TO_PERFORM">unwillingToPerform(53)</a></li>
+     * </ul>
+     */
+    private static final Set<ResultCodeEnum> OPERATION_NOT_SUPPORTED_EXCEPTION_CODES;
+
+    static
+    {
+        Set<ResultCodeEnum> set = new HashSet<>();
+        set.add( ResultCodeEnum.UNAVAILABLE_CRITICAL_EXTENSION );
+        set.add( ResultCodeEnum.UNWILLING_TO_PERFORM );
+        OPERATION_NOT_SUPPORTED_EXCEPTION_CODES = Collections.unmodifiableSet( set );
+    }
+
+    /**
+     * A set of ResultCodes containing those that may correspond to a
+     * {@link Exception}.
+     * <ul>
+     * <li><a href="#INVALID_DN_SYNTAX">invalidDNSyntax(34)</a></li>
+     * <li><a href="#NAMING_VIOLATION">namingViolation(64)</a></li>
+     * </ul>
+     */
+    private static final Set<ResultCodeEnum> INVALID_NAME_EXCEPTION_CODES;
+
+    static
+    {
+        Set<ResultCodeEnum> set = new HashSet<>();
+        set.add( ResultCodeEnum.INVALID_DN_SYNTAX );
+        set.add( ResultCodeEnum.NAMING_VIOLATION );
+        INVALID_NAME_EXCEPTION_CODES = Collections.unmodifiableSet( set );
+    }
+
+    /**
+     * A set of ResultCodes containing those that may correspond to a
+     * {@link javax.naming.directory.SchemaViolationException}.
+     * <ul>
+     * <li><a href="#OBJECT_CLASS_VIOLATION">objectClassViolation(65)</a></li>
+     * <li><a href="#NOT_ALLOWED_ON_RDN">notAllowedOnRDN(67)</a></li>
+     * <li><a href="#OBJECT_CLASS_MODS_PROHIBITED">objectClassModsProhibited(69)</a></li>
+     * </ul>
+     */
+    private static final Set<ResultCodeEnum> SCHEMA_VIOLATION_EXCEPTION_CODES;
+
+    static
+    {
+        Set<ResultCodeEnum> set = new HashSet<>();
+        set.add( ResultCodeEnum.OBJECT_CLASS_VIOLATION );
+        set.add( ResultCodeEnum.NOT_ALLOWED_ON_RDN );
+        set.add( ResultCodeEnum.OBJECT_CLASS_MODS_PROHIBITED );
+        SCHEMA_VIOLATION_EXCEPTION_CODES = Collections.unmodifiableSet( set );
+    }
+
+
+    /**
+     * Private construct so no other instances can be created other than the
+     * public static constants in this class.
+     * 
+     * @param value the integer value of the enumeration.
+     * @param message the description of the enumeration.
+     */
+    ResultCodeEnum( int value, String message )
+    {
+        this.value = value;
+        this.message = message;
     }
 
 
@@ -1390,188 +1556,23 @@ public enum ResultCodeEnum
         }
     }
 
-    // ------------------------------------------------------------------------
-    // Getting Result Code Enumeration Object Using Integer Values
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-    // JNDI Exception to ResultCodeEnum Mappings
-    // ------------------------------------------------------------------------
+
 
     /**
-     * A set of ResultCodes containing those that may correspond to NamingException.
-     * <ul>
-     * <li><a href="#OPERATIONSERROR">operationsError(1)</a></li>
-     * <li><a href="#ALIAS_PROBLEM">aliasProblem(33)</a></li>
-     * <li><a href="#ALIAS_DEREFERENCING_PROBLEM">aliasDereferencingProblem(36)</a></li>
-     * <li><a href="#LOOP_DETECT">loopDetect(54)</a></li>
-     * <li><a href="#AFFECTS_MULTIPLE_DSAS">affectsMultipleDSAs(71)</a></li>
-     * <li><a href="#OTHER">other(80)</a></li>
-     * </ul>
+     * @return The value associated with the current element.
      */
-    private static final Set<ResultCodeEnum> NAMING_EXCEPTION_CODES;
-
-    static
+    public int getValue()
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
-        set.add( ResultCodeEnum.OPERATIONS_ERROR );
-        set.add( ResultCodeEnum.ALIAS_PROBLEM );
-        set.add( ResultCodeEnum.ALIAS_DEREFERENCING_PROBLEM );
-        set.add( ResultCodeEnum.LOOP_DETECT );
-        set.add( ResultCodeEnum.AFFECTS_MULTIPLE_DSAS );
-        set.add( ResultCodeEnum.OTHER );
-        NAMING_EXCEPTION_CODES = Collections.unmodifiableSet( set );
+        return value;
     }
 
-    /**
-     * A set of ResultCodes containing those that may correspond to a
-     * {@link Exception}.
-     * <ul>
-     * <li><a href="#AUTH_METHOD_NOT_SUPPORTED">authMethodNotSupported(7)</a></li>
-     * <li><a href="#STRONG_AUTH_REQUIRED">strongAuthRequired(8)</a></li>
-     * <li><a href="#CONFIDENTIALITY_REQUIRED">confidentialityRequired(13)</a></li>
-     * <li><a
-     * href="#INAPPROPRIATE_AUTHENTICATION">inappropriateAuthentication(48)</a></li>
-     * </ul>
-     */
-    private static final Set<ResultCodeEnum> AUTHENTICATION_NOT_SUPPORTED_EXCEPTION_CODES;
-
-    static
-    {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
-        set.add( ResultCodeEnum.AUTH_METHOD_NOT_SUPPORTED );
-        set.add( ResultCodeEnum.STRONG_AUTH_REQUIRED );
-        set.add( ResultCodeEnum.CONFIDENTIALITY_REQUIRED );
-        set.add( ResultCodeEnum.INAPPROPRIATE_AUTHENTICATION );
-        AUTHENTICATION_NOT_SUPPORTED_EXCEPTION_CODES = Collections.unmodifiableSet( set );
-    }
 
     /**
-     * A set of ResultCodes containing those that may correspond to a
-     * {@link Exception}.
-     * <ul>
-     * <li><a href="#BUSY">busy(51)</a></li>
-     * <li><a href="#UNAVAILABLE">unavailable(52)</a></li>
-     * </ul>
+     * @return The description associated with the current element.
      */
-    private static final Set<ResultCodeEnum> SERVICE_UNAVAILABLE_CODES;
-
-    static
+    public String getMessage()
     {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
-        set.add( ResultCodeEnum.BUSY );
-        set.add( ResultCodeEnum.UNAVAILABLE );
-        SERVICE_UNAVAILABLE_CODES = Collections.unmodifiableSet( set );
-    }
-
-    /**
-     * A set of ResultCodes containing those that may correspond to a
-     * {@link Exception}.
-     * <ul>
-     * <li><a href="#CONSTRAINT_VIOLATION">constraintViolation(19)</a></li>
-     * <li><a href="#INVALID_ATTRIBUTE_SYNTAX">invalidAttributeSyntax(21)</a></li>
-     * </ul>
-     */
-    private static final Set<ResultCodeEnum> INVALID_ATTRIBUTE_VALUE_EXCEPTION_CODES;
-
-    static
-    {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
-        set.add( ResultCodeEnum.CONSTRAINT_VIOLATION );
-        set.add( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX );
-        INVALID_ATTRIBUTE_VALUE_EXCEPTION_CODES = Collections.unmodifiableSet( set );
-    }
-
-    /**
-     * A set of ResultCodes containing those that may correspond to a
-     * {@link Exception}.
-     * <ul>
-     * <li><a href="#PARTIAL_RESULTS">partialResults(9)</a></li>
-     * <li><a href="#REFERRAL">referral(10)</a></li>
-     * </ul>
-     */
-    private static final Set<ResultCodeEnum> PARTIAL_RESULTS_EXCEPTION_CODES;
-
-    static
-    {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
-        set.add( ResultCodeEnum.PARTIAL_RESULTS );
-        set.add( ResultCodeEnum.REFERRAL );
-        PARTIAL_RESULTS_EXCEPTION_CODES = Collections.unmodifiableSet( set );
-    }
-
-    /**
-     * A set of ResultCodes containing those that may correspond to a
-     * {@link Exception}.
-     * <ul>
-     * <li><a href="#REFERRAL">referal(9)</a></li>
-     * <li><a href="#ADMIN_LIMIT_EXCEEDED">adminLimitExceeded(11)</a></li>
-     * </ul>
-     */
-    private static final Set<ResultCodeEnum> LIMIT_EXCEEDED_EXCEPTION_CODES;
-
-    static
-    {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
-        set.add( ResultCodeEnum.REFERRAL );
-        set.add( ResultCodeEnum.ADMIN_LIMIT_EXCEEDED );
-        LIMIT_EXCEEDED_EXCEPTION_CODES = Collections.unmodifiableSet( set );
-    }
-
-    /**
-     * A set of ResultCodes containing those that may correspond to a
-     * {@link Exception}.
-     * <ul>
-     * <li><a
-     * href="#UNAVAILABLECRITICALEXTENTION">unavailableCriticalExtention(12)</a></li>
-     * <li><a href="#UNWILLING_TO_PERFORM">unwillingToPerform(53)</a></li>
-     * </ul>
-     */
-    private static final Set<ResultCodeEnum> OPERATION_NOT_SUPPORTED_EXCEPTION_CODES;
-
-    static
-    {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
-        set.add( ResultCodeEnum.UNAVAILABLE_CRITICAL_EXTENSION );
-        set.add( ResultCodeEnum.UNWILLING_TO_PERFORM );
-        OPERATION_NOT_SUPPORTED_EXCEPTION_CODES = Collections.unmodifiableSet( set );
-    }
-
-    /**
-     * A set of ResultCodes containing those that may correspond to a
-     * {@link Exception}.
-     * <ul>
-     * <li><a href="#INVALID_DN_SYNTAX">invalidDNSyntax(34)</a></li>
-     * <li><a href="#NAMING_VIOLATION">namingViolation(64)</a></li>
-     * </ul>
-     */
-    private static final Set<ResultCodeEnum> INVALID_NAME_EXCEPTION_CODES;
-
-    static
-    {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
-        set.add( ResultCodeEnum.INVALID_DN_SYNTAX );
-        set.add( ResultCodeEnum.NAMING_VIOLATION );
-        INVALID_NAME_EXCEPTION_CODES = Collections.unmodifiableSet( set );
-    }
-
-    /**
-     * A set of ResultCodes containing those that may correspond to a
-     * {@link javax.naming.directory.SchemaViolationException}.
-     * <ul>
-     * <li><a href="#OBJECT_CLASS_VIOLATION">objectClassViolation(65)</a></li>
-     * <li><a href="#NOT_ALLOWED_ON_RDN">notAllowedOnRDN(67)</a></li>
-     * <li><a href="#OBJECT_CLASS_MODS_PROHIBITED">objectClassModsProhibited(69)</a></li>
-     * </ul>
-     */
-    private static final Set<ResultCodeEnum> SCHEMA_VIOLATION_EXCEPTION_CODES;
-
-    static
-    {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
-        set.add( ResultCodeEnum.OBJECT_CLASS_VIOLATION );
-        set.add( ResultCodeEnum.NOT_ALLOWED_ON_RDN );
-        set.add( ResultCodeEnum.OBJECT_CLASS_MODS_PROHIBITED );
-        SCHEMA_VIOLATION_EXCEPTION_CODES = Collections.unmodifiableSet( set );
+        return message;
     }
 
 
@@ -1603,7 +1604,7 @@ public enum ResultCodeEnum
 
         if ( type == null )
         {
-            Set<ResultCodeEnum> tmp = new HashSet<ResultCodeEnum>();
+            Set<ResultCodeEnum> tmp = new HashSet<>();
             tmp.addAll( set );
             tmp.removeAll( NON_ERRONEOUS_CODES );
 
@@ -1615,7 +1616,7 @@ public enum ResultCodeEnum
             return tmp.iterator().next();
         }
 
-        Set<ResultCodeEnum> candidates = EMPTY_RESULT_CODE_SET;
+        Set<ResultCodeEnum> candidates;
 
         switch ( type )
         {
@@ -1721,10 +1722,10 @@ public enum ResultCodeEnum
     {
         if ( s1.isEmpty() || s2.isEmpty() )
         {
-            return new HashSet<ResultCodeEnum>();
+            return new HashSet<>();
         }
 
-        Set<ResultCodeEnum> intersection = new HashSet<ResultCodeEnum>();
+        Set<ResultCodeEnum> intersection = new HashSet<>();
 
         if ( s1.size() <= s2.size() )
         {

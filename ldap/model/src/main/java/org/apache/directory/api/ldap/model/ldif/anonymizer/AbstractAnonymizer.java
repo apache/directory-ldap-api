@@ -86,6 +86,7 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setSchemaManager( SchemaManager schemaManager )
     {
         this.schemaManager = schemaManager;
@@ -97,6 +98,7 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
      *
      * @param attributeAnonymizers The list of existing anonymizers
      */
+    @Override
     public void setAnonymizers( Map<String, Anonymizer<K>> attributeAnonymizers )
     {
         this.attributeAnonymizers = attributeAnonymizers;
@@ -106,6 +108,7 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<Integer, String> getLatestStringMap()
     {
         return null;
@@ -115,6 +118,7 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
     /**
      * @param latestStringMap The latest String anonymized value map
      */
+    @Override
     public void setLatestStringMap( Map<Integer, String> latestStringMap )
     {
         // Do nothing
@@ -124,6 +128,7 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<Integer, byte[]> getLatestBytesMap()
     {
         return null;
@@ -133,6 +138,7 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
     /**
      * @param latestBytesMap The latest byte[] anonymized value map
      */
+    @Override
     public void setLatestBytesMap( Map<Integer, byte[]> latestBytesMap )
     {
         // Do nothing

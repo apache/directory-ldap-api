@@ -71,6 +71,7 @@ public class ScopeNode extends AbstractExprNode
      * @see ExprNode#isLeaf()
      * @return <code>true</code>
      */
+    @Override
     public boolean isLeaf()
     {
         return true;
@@ -128,6 +129,7 @@ public class ScopeNode extends AbstractExprNode
      * @param visitor the filter expression tree structure visitor
      * @return The modified element
      */
+    @Override
     public Object accept( FilterVisitor visitor )
     {
         if ( visitor.canVisit( this ) )
@@ -215,6 +217,7 @@ public class ScopeNode extends AbstractExprNode
      * @see Object#toString()
      * @return A string representing the AndNode
      */
+    @Override
     public String toString()
     {
         StringBuilder buf = new StringBuilder();

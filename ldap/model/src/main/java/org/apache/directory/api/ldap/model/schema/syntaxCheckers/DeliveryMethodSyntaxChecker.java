@@ -62,7 +62,7 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
     };
 
     /** The Set which contains the delivery methods */
-    private static final Set<String> DELIVERY_METHODS = new HashSet<String>();
+    private static final Set<String> DELIVERY_METHODS = new HashSet<>();
 
     /** Initialization of the delivery methods set */
     static
@@ -137,9 +137,10 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -169,7 +170,7 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
         // We will get the first delivery method
         int length = strValue.length();
         int pos = 0;
-        Set<String> pmds = new HashSet<String>();
+        Set<String> pmds = new HashSet<>();
 
         pos = isPdm( strValue, pos, pmds );
         if ( pos == -1 )

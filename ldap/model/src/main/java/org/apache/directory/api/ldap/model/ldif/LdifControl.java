@@ -69,6 +69,7 @@ public class LdifControl implements Control, Externalizable
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         return "LdifControl : {" + getOid() + ", " + isCritical() + ", " + Strings.dumpBytes( getValue() ) + "}";
@@ -78,6 +79,7 @@ public class LdifControl implements Control, Externalizable
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return oid;
@@ -87,6 +89,7 @@ public class LdifControl implements Control, Externalizable
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isCritical()
     {
         return criticality;
@@ -96,6 +99,7 @@ public class LdifControl implements Control, Externalizable
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCritical( boolean criticality )
     {
         this.criticality = criticality;
@@ -132,6 +136,7 @@ public class LdifControl implements Control, Externalizable
     /**
      * {@inheritDoc}
      */
+    @Override
     public void writeExternal( ObjectOutput out ) throws IOException
     {
         out.writeUTF( oid );
@@ -159,6 +164,7 @@ public class LdifControl implements Control, Externalizable
     /**
      * {@inheritDoc}
      */
+    @Override
     public void readExternal( ObjectInput in ) throws IOException, ClassNotFoundException
     {
         oid = in.readUTF();
@@ -180,6 +186,7 @@ public class LdifControl implements Control, Externalizable
     /**
      * @see Object#hashCode()
      */
+    @Override
     public int hashCode()
     {
         int h = 17;
@@ -201,6 +208,7 @@ public class LdifControl implements Control, Externalizable
     /**
      * @see Object#equals(Object)
      */
+    @Override
     public boolean equals( Object o )
     {
         if ( o == this )

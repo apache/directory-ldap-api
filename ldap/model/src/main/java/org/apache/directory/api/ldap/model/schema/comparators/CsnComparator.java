@@ -61,6 +61,7 @@ public class CsnComparator extends LdapComparator<Object>
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compare( Object csnObj1, Object csnObj2 )
     {
         LOG.debug( "comparing CSN objects '{}' with '{}'", csnObj1, csnObj2 );
@@ -75,7 +76,7 @@ public class CsnComparator extends LdapComparator<Object>
         // -------------------------------------------------------------------
         if ( csnObj1 == null )
         {
-            return ( csnObj2 == null ) ? 0 : -1;
+            return -1;
         }
 
         if ( csnObj2 == null )
@@ -83,8 +84,8 @@ public class CsnComparator extends LdapComparator<Object>
             return 1;
         }
 
-        String csnStr1 = null;
-        String csnStr2 = null;
+        String csnStr1;
+        String csnStr2;
 
         if ( csnObj1 instanceof StringValue )
         {

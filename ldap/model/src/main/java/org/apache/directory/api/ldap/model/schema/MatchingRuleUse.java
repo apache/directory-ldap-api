@@ -102,8 +102,8 @@ public class MatchingRuleUse extends AbstractSchemaObject
     {
         super( SchemaObjectType.MATCHING_RULE_USE, oid );
 
-        applicableAttributeOids = new ArrayList<String>();
-        applicableAttributes = new ArrayList<AttributeType>();
+        applicableAttributeOids = new ArrayList<>();
+        applicableAttributes = new ArrayList<>();
     }
 
 
@@ -213,6 +213,7 @@ public class MatchingRuleUse extends AbstractSchemaObject
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         return SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( this );
@@ -222,6 +223,7 @@ public class MatchingRuleUse extends AbstractSchemaObject
     /**
      * Copy an MatchingRuleUse
      */
+    @Override
     public MatchingRuleUse copy()
     {
         MatchingRuleUse copy = new MatchingRuleUse( oid );
@@ -230,7 +232,7 @@ public class MatchingRuleUse extends AbstractSchemaObject
         copy.copy( this );
 
         // Clone the APPLY AttributeTypes
-        copy.applicableAttributeOids = new ArrayList<String>();
+        copy.applicableAttributeOids = new ArrayList<>();
 
         // Copy the APPLIES oid list
         for ( String oid : applicableAttributeOids )
@@ -239,7 +241,7 @@ public class MatchingRuleUse extends AbstractSchemaObject
         }
 
         // Copy the APPLIES list (will be empty)
-        copy.applicableAttributes = new ArrayList<AttributeType>();
+        copy.applicableAttributes = new ArrayList<>();
 
         return copy;
     }
@@ -272,6 +274,7 @@ public class MatchingRuleUse extends AbstractSchemaObject
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear()
     {
         // Clear the common elements

@@ -4739,12 +4739,17 @@ public final class PrepareString
                 case 0xFE63: // SMALL HYPHEN-MINUS
                 case 0xFF0D: // FULLWIDTH HYPHEN-MINUS
                     soh = c;
+                    isSpaceOrHyphen = true;
                     break;
 
                 default:
                     if ( isSpaceOrHyphen && isCombiningMark( c ) )
                     {
                         array[pos++] = soh;
+                        isSpaceOrHyphen = false;
+                    }
+                    else
+                    {
                         isSpaceOrHyphen = false;
                     }
 
@@ -4830,7 +4835,7 @@ public final class PrepareString
         // TODO : we have to find a way to prevent this waste of space.
         char[] target = new char[str.length() * 3 + 2];
         
-        int pos = 0;
+        int pos;
         char lowerCase = ( char ) ( caseSensitive ? 0x00 : 0x20 );
 
         // First pass to map the chars. This will copy the array into the target
@@ -4882,7 +4887,7 @@ public final class PrepareString
         }
 
         // Now remove the spaces at the end
-        int i = 0;
+        int i;
         
         for ( i = limit - 1; i >= start; i-- )
         {
@@ -4993,10 +4998,9 @@ public final class PrepareString
         {
             target[pos++] = '\\';
         }
+        
         // Ends by unescaping the escaped elements
-        String result = unescape( target, pos );
-
-        return result;
+        return unescape( target, pos );
     }
 
 
@@ -5022,7 +5026,7 @@ public final class PrepareString
         
         char[] array = str.toCharArray();
 
-        int pos = 0;
+        int pos;
         char lowerCase = ( char ) ( caseSensitive ? 0x00 : 0x20 );
 
         // First pass to map the chars
@@ -5067,7 +5071,7 @@ public final class PrepareString
         }
 
         // Now remove the spaces at the end
-        int i = 0;
+        int i;
         
         for ( i = limit - 1; i >= start; i-- )
         {
@@ -5121,11 +5125,7 @@ public final class PrepareString
 
             checkProhibited( c );
 
-            /*if ( isCombiningMark( c ) )
-            {
-                throw new InvalidCharacterException( c );
-            }
-            else*/ if ( c == ' ' )
+            if ( c == ' ' )
             {
                 if ( escapeSeen )
                 {
@@ -5184,9 +5184,7 @@ public final class PrepareString
         }
         
         // Ends by unescaping the escaped elements
-        String result = unescape( array, pos );
-        
-        return result;
+        return unescape( array, pos );
     }
     
     
@@ -5249,7 +5247,8 @@ public final class PrepareString
                         case '7' :
                         case '8' :
                         case '9' :
-                            bytes[pos++] = ( byte ) ( ( ( byte ) ( array[i] - '0' ) << 4 ) + toByte( array[i + 1] ) );
+                            bytes[pos++] = ( byte ) ( ( ( byte ) ( array[i] - '0' ) << 4 ) 
+                                + ( toByte( array[i + 1] ) & 0xff ) );
                             i++;
                             break;
                             
@@ -5259,7 +5258,8 @@ public final class PrepareString
                         case 'd' :
                         case 'e' :
                         case 'f' :
-                            bytes[pos++] = ( byte ) ( ( ( byte ) ( array[i] - 'a' + 10 ) << 4 ) + toByte( array[i + 1] ) );
+                            bytes[pos++] = ( byte ) ( ( ( byte ) ( array[i] - 'a' + 10 ) << 4 ) 
+                                + ( toByte( array[i + 1] ) & 0xFF ) );
                             i++;
                             break;
                             
@@ -5269,7 +5269,8 @@ public final class PrepareString
                         case 'D' :
                         case 'E' :
                         case 'F' :
-                            bytes[pos++] = ( byte ) ( ( ( byte ) ( array[i] - 'A' + 10 ) << 4 ) + toByte( array[i + 1] ) );
+                            bytes[pos++] = ( byte ) ( ( ( byte ) ( array[i] - 'A' + 10 ) << 4 ) 
+                                + ( toByte( array[i + 1] ) & 0xff ) );
                             i++;
                             break;
                             
@@ -5308,9 +5309,7 @@ public final class PrepareString
             bytes[pos++] = '\\';
         }
         
-        String result = Strings.utf8ToString( bytes, pos );
-        
-        return result;
+        return Strings.utf8ToString( bytes, pos );
     }
     
     

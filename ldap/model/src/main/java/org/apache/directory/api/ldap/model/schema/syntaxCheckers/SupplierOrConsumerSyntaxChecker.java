@@ -50,6 +50,7 @@ public class SupplierOrConsumerSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
         LOG.debug( "Syntax valid for '{}'", value );

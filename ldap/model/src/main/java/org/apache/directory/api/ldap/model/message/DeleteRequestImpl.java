@@ -62,6 +62,7 @@ public class DeleteRequestImpl extends AbstractAbandonableRequest implements Del
      * 
      * @return the Dn of the leaf entry to delete.
      */
+    @Override
     public Dn getName()
     {
         return name;
@@ -71,6 +72,7 @@ public class DeleteRequestImpl extends AbstractAbandonableRequest implements Del
     /**
      * {@inheritDoc}
      */
+    @Override
     public DeleteRequest setName( Dn name )
     {
         this.name = name;
@@ -82,6 +84,7 @@ public class DeleteRequestImpl extends AbstractAbandonableRequest implements Del
     /**
      * {@inheritDoc}
      */
+    @Override
     public DeleteRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -93,6 +96,7 @@ public class DeleteRequestImpl extends AbstractAbandonableRequest implements Del
     /**
      * {@inheritDoc}
      */
+    @Override
     public DeleteRequest addControl( Control control )
     {
         return ( DeleteRequest ) super.addControl( control );
@@ -102,6 +106,7 @@ public class DeleteRequestImpl extends AbstractAbandonableRequest implements Del
     /**
      * {@inheritDoc}
      */
+    @Override
     public DeleteRequest addAllControls( Control[] controls )
     {
         return ( DeleteRequest ) super.addAllControls( controls );
@@ -111,6 +116,7 @@ public class DeleteRequestImpl extends AbstractAbandonableRequest implements Del
     /**
      * {@inheritDoc}
      */
+    @Override
     public DeleteRequest removeControl( Control control )
     {
         return ( DeleteRequest ) super.removeControl( control );
@@ -127,6 +133,7 @@ public class DeleteRequestImpl extends AbstractAbandonableRequest implements Del
      * 
      * @return the message type of the response.
      */
+    @Override
     public MessageTypeEnum getResponseType()
     {
         return MessageTypeEnum.DEL_RESPONSE;
@@ -138,6 +145,7 @@ public class DeleteRequestImpl extends AbstractAbandonableRequest implements Del
      * 
      * @return the result containing response for this request
      */
+    @Override
     public DeleteResponse getResultResponse()
     {
         if ( response == null )
@@ -178,6 +186,7 @@ public class DeleteRequestImpl extends AbstractAbandonableRequest implements Del
      * @param obj the object to test for equality to this
      * @return true if the obj is equal to this DeleteRequest, false otherwise
      */
+    @Override
     public boolean equals( Object obj )
     {
         if ( this == obj )
@@ -216,6 +225,7 @@ public class DeleteRequestImpl extends AbstractAbandonableRequest implements Del
      * 
      * @return A DelRequest String
      */
+    @Override
     public String toString()
     {
 

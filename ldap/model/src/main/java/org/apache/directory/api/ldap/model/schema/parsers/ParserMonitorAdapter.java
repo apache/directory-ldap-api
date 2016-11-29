@@ -30,6 +30,7 @@ public class ParserMonitorAdapter implements ParserMonitor
     /**
      * {@inheritDoc}
      */
+    @Override
     public void matchedProduction( String prod )
     {
     }
@@ -38,6 +39,7 @@ public class ParserMonitorAdapter implements ParserMonitor
     /**
      * {@inheritDoc}
      */
+    @Override
     public void startedParse( String s )
     {
     }
@@ -46,6 +48,7 @@ public class ParserMonitorAdapter implements ParserMonitor
     /**
      * {@inheritDoc}
      */
+    @Override
     public void finishedParse( String s )
     {
     }

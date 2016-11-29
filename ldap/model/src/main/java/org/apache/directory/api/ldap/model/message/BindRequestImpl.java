@@ -93,6 +93,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isSimple()
     {
         return isSimple;
@@ -102,6 +103,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean getSimple()
     {
         return isSimple;
@@ -111,6 +113,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setSimple( boolean simple )
     {
         this.isSimple = simple;
@@ -122,6 +125,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getCredentials()
     {
         return credentials;
@@ -131,6 +135,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setCredentials( String credentials )
     {
         return setCredentials( Strings.getBytesUtf8( credentials ) );
@@ -140,6 +145,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setCredentials( byte[] credentials )
     {
         if ( credentials != null )
@@ -174,6 +180,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSaslMechanism()
     {
         return mechanism;
@@ -183,6 +190,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setSaslMechanism( String saslMechanism )
     {
         this.isSimple = false;
@@ -195,6 +203,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getName()
     {
         return name;
@@ -204,6 +213,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setName( String name )
     {
         this.name = name;
@@ -226,6 +236,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dn getDn()
     {
         return dn;
@@ -235,6 +246,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setDn( Dn dn )
     {
         this.dn = dn;
@@ -247,6 +259,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isVersion3()
     {
         return isVersion3;
@@ -256,6 +269,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean getVersion3()
     {
         return isVersion3;
@@ -265,6 +279,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setVersion3( boolean version3 )
     {
         this.isVersion3 = version3;
@@ -276,6 +291,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -287,6 +303,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest addControl( Control control )
     {
         return ( BindRequest ) super.addControl( control );
@@ -296,6 +313,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest addAllControls( Control[] controls )
     {
         return ( BindRequest ) super.addAllControls( controls );
@@ -305,6 +323,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest removeControl( Control control )
     {
         return ( BindRequest ) super.removeControl( control );
@@ -320,6 +339,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
      * 
      * @return the message type of the response.
      */
+    @Override
     public MessageTypeEnum getResponseType()
     {
         return MessageTypeEnum.BIND_RESPONSE;
@@ -331,6 +351,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
      * 
      * @return the result containing response for this request
      */
+    @Override
     public BindResponse getResultResponse()
     {
         if ( response == null )
@@ -346,6 +367,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
      * RFC 2251/4511 [Section 4.11]: Abandon, Bind, Unbind, and StartTLS operations
      * cannot be abandoned.
      */
+    @Override
     public void abandon()
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_04185 ) );
@@ -457,9 +479,10 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
      * 
      * @return A BindRequest String
      */
+    @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( "    BindRequest\n" );
         sb.append( "        Version : '" ).append( isVersion3 ? "3" : "2" ).append( "'\n" );

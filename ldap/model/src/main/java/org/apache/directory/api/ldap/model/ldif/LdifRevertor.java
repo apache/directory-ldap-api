@@ -136,7 +136,7 @@ public final class LdifRevertor
 
         // As the reversed modifications should be pushed in reversed order,
         // we create a list to temporarily store the modifications.
-        List<Modification> reverseModifications = new ArrayList<Modification>();
+        List<Modification> reverseModifications = new ArrayList<>();
 
         // Loop through all the modifications. For each modification, we will
         // have to apply it to the modified entry in order to be able to generate
@@ -236,7 +236,7 @@ public final class LdifRevertor
         }
 
         // Special case if we don't have any reverse modifications
-        if ( reverseModifications.size() == 0 )
+        if ( reverseModifications.isEmpty() )
         {
             throw new IllegalArgumentException( I18n.err( I18n.ERR_12073, forwardModifications ) );
         }
@@ -469,7 +469,7 @@ public final class LdifRevertor
         newDn = newDn.getParent();
         newDn = newDn.add( newRdn );
 
-        List<LdifEntry> entries = new ArrayList<LdifEntry>( 1 );
+        List<LdifEntry> entries = new ArrayList<>( 1 );
         LdifEntry reverted = new LdifEntry();
 
         // Start with the cases here
@@ -530,7 +530,7 @@ public final class LdifRevertor
                 boolean overlapping = false;
                 boolean existInEntry = false;
 
-                Set<Ava> oldAtavs = new HashSet<Ava>();
+                Set<Ava> oldAtavs = new HashSet<>();
 
                 // We first build a set with all the oldRDN ATAVs
                 for ( Ava atav : oldRdn )

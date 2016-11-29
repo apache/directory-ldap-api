@@ -58,6 +58,7 @@ public interface SearchRequest extends ManyReplyRequest, AbandonableRequest
      * @return the RESPONSE_TYPES array
      * @see #RESPONSE_TYPES
      */
+    @Override
     MessageTypeEnum[] getResponseTypes();
 
 
@@ -252,24 +253,28 @@ public interface SearchRequest extends ManyReplyRequest, AbandonableRequest
     /**
      * {@inheritDoc}
      */
+    @Override
     SearchRequest setMessageId( int messageId );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     SearchRequest addControl( Control control );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     SearchRequest addAllControls( Control[] controls );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     SearchRequest removeControl( Control control );
     
     

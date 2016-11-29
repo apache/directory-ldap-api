@@ -60,6 +60,7 @@ public class AbandonRequestImpl extends AbstractRequest implements AbandonReques
      * 
      * @return the id of the request message to abandon
      */
+    @Override
     public int getAbandoned()
     {
         return abandonId;
@@ -69,6 +70,7 @@ public class AbandonRequestImpl extends AbstractRequest implements AbandonReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public AbandonRequest setAbandoned( int abandonId )
     {
         this.abandonId = abandonId;
@@ -90,6 +92,7 @@ public class AbandonRequestImpl extends AbstractRequest implements AbandonReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public AbandonRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -101,6 +104,7 @@ public class AbandonRequestImpl extends AbstractRequest implements AbandonReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public AbandonRequest addControl( Control control )
     {
         return ( AbandonRequest ) super.addControl( control );
@@ -110,6 +114,7 @@ public class AbandonRequestImpl extends AbstractRequest implements AbandonReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public AbandonRequest addAllControls( Control[] controls )
     {
         return ( AbandonRequest ) super.addAllControls( controls );
@@ -119,6 +124,7 @@ public class AbandonRequestImpl extends AbstractRequest implements AbandonReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public AbandonRequest removeControl( Control control )
     {
         return ( AbandonRequest ) super.removeControl( control );
@@ -133,6 +139,7 @@ public class AbandonRequestImpl extends AbstractRequest implements AbandonReques
      * @param obj the object to test for equality to this AbandonRequest
      * @return true if the obj equals this request, false otherwise
      */
+    @Override
     public boolean equals( Object obj )
     {
         if ( this == obj )
@@ -160,6 +167,7 @@ public class AbandonRequestImpl extends AbstractRequest implements AbandonReques
      * @see Object#hashCode()
      * @return the instance's hash code 
      */
+    @Override
     public int hashCode()
     {
         int hash = 37;
@@ -175,6 +183,7 @@ public class AbandonRequestImpl extends AbstractRequest implements AbandonReques
      * 
      * @return A String representing the AbandonRequest
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

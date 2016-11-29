@@ -58,6 +58,7 @@ public class UuidComparator extends SerializableComparator<String>
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compare( String uuid1, String uuid2 )
     {
         if ( IS_DEBUG )

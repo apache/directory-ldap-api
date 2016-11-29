@@ -56,9 +56,10 @@ public class OtherMailboxSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -97,8 +98,8 @@ public class OtherMailboxSyntaxChecker extends SyntaxChecker
 
         String mailboxType = strValue.substring( 0, dollar );
 
-        String mailbox = ( ( dollar < strValue.length() - 1 )
-            ? strValue.substring( dollar + 1 ) : "" );
+        String mailbox = ( dollar < strValue.length() - 1 )
+            ? strValue.substring( dollar + 1 ) : "";
 
         // The mailbox should not contains a '$'
         if ( mailbox.indexOf( '$' ) != -1 )
@@ -115,7 +116,7 @@ public class OtherMailboxSyntaxChecker extends SyntaxChecker
         }
 
         // Check that the mailbox is an IA5String
-        boolean result = ( Strings.isIA5String( mailbox ) );
+        boolean result = Strings.isIA5String( mailbox );
 
         if ( result )
         {

@@ -53,6 +53,7 @@ public class DefaultStringNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public Value<?> normalize( Value<?> value ) throws LdapException
     {
         String str = value.getString();
@@ -69,6 +70,7 @@ public class DefaultStringNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public String normalize( String value ) throws LdapException
     {
         if ( Strings.isEmpty( value ) )

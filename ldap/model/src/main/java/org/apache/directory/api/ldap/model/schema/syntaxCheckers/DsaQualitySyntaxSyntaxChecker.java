@@ -60,9 +60,10 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -89,7 +90,7 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
             return false;
         }
 
-        String remaining = null;
+        String remaining;
 
         switch ( strValue.charAt( 0 ) )
         {

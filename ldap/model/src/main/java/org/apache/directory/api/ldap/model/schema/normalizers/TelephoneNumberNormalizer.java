@@ -52,6 +52,7 @@ public class TelephoneNumberNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public Value<?> normalize( Value<?> value ) throws LdapException
     {
         try
@@ -71,6 +72,7 @@ public class TelephoneNumberNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public String normalize( String value ) throws LdapException
     {
         try

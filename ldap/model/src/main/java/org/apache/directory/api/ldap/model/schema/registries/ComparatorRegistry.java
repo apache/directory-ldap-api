@@ -39,6 +39,7 @@ public interface ComparatorRegistry extends SchemaObjectRegistry<LdapComparator<
      * @throws LdapException if the LdapComparator is already registered or
      * the registration operation is not supported
      */
+    @Override
     void register( LdapComparator<?> comparator ) throws LdapException;
 
 
@@ -49,6 +50,7 @@ public interface ComparatorRegistry extends SchemaObjectRegistry<LdapComparator<
      * @param numericOid the numeric identifier
      * @throws LdapException if the numeric identifier is invalid
      */
+    @Override
     LdapComparator<?> unregister( String numericOid ) throws LdapException;
 
 
@@ -58,11 +60,13 @@ public interface ComparatorRegistry extends SchemaObjectRegistry<LdapComparator<
      * 
      * @param schemaName the name of the schema whose LdapComparators will be removed from
      */
+    @Override
     void unregisterSchemaElements( String schemaName ) throws LdapException;
 
 
     /**
      * Copy the ComparatorRegistry
      */
+    @Override
     ComparatorRegistry copy();
 }

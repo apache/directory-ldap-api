@@ -43,24 +43,6 @@ public class LdapOperationException extends LdapException
 
 
     /**
-     * @return the resolvedDn
-     */
-    public Dn getResolvedDn()
-    {
-        return resolvedDn;
-    }
-
-
-    /**
-     * @param resolvedDn the resolvedDn to set
-     */
-    public void setResolvedDn( Dn resolvedDn )
-    {
-        this.resolvedDn = resolvedDn;
-    }
-
-
-    /**
      * Creates a new instance of LdapOperationException.
      *
      * @param resultCode The operation resultCode
@@ -107,6 +89,24 @@ public class LdapOperationException extends LdapException
     public LdapOperationException( String message, Throwable cause )
     {
         super( message, cause );
+    }
+
+
+    /**
+     * @return the resolvedDn
+     */
+    public Dn getResolvedDn()
+    {
+        return resolvedDn;
+    }
+
+
+    /**
+     * @param resolvedDn the resolvedDn to set
+     */
+    public void setResolvedDn( Dn resolvedDn )
+    {
+        this.resolvedDn = resolvedDn;
     }
 
 

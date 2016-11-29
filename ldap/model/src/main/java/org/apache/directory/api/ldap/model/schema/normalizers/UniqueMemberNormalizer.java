@@ -49,6 +49,7 @@ public class UniqueMemberNormalizer extends Normalizer
     }
 
 
+    @Override
     public Value<?> normalize( Value<?> value ) throws LdapException
     {
         String nameAndUid = value.getString();
@@ -96,6 +97,7 @@ public class UniqueMemberNormalizer extends Normalizer
     }
 
 
+    @Override
     public String normalize( String value ) throws LdapException
     {
         if ( Strings.isEmpty( value ) )
@@ -144,6 +146,7 @@ public class UniqueMemberNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setSchemaManager( SchemaManager schemaManager )
     {
         this.schemaManager = schemaManager;

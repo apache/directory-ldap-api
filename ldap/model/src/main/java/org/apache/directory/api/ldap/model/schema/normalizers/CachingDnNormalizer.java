@@ -44,6 +44,7 @@ public class CachingDnNormalizer extends CachingNormalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setSchemaManager( SchemaManager schemaManager )
     {
         super.normalizer.setSchemaManager( schemaManager );

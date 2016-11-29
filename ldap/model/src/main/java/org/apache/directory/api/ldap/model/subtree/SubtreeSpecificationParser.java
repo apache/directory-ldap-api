@@ -115,9 +115,9 @@ public class SubtreeSpecificationParser
      */
     public synchronized SubtreeSpecification parse( String spec ) throws ParseException
     {
-        SubtreeSpecification ss = null;
+        SubtreeSpecification ss;
 
-        if ( spec == null || spec.trim().equals( "" ) )
+        if ( ( spec == null ) || ( spec.trim().length() == 0 ) )
         {
             return null;
         }
@@ -129,17 +129,7 @@ public class SubtreeSpecificationParser
         {
             ss = this.parser.wrapperEntryPoint();
         }
-        catch ( TokenStreamException e )
-        {
-            String msg = I18n.err( I18n.ERR_04329, spec, e.getLocalizedMessage() );
-            throw new ParseException( msg, 0 );
-        }
-        catch ( RecognitionException e )
-        {
-            String msg = I18n.err( I18n.ERR_04329, spec, e.getLocalizedMessage() );
-            throw new ParseException( msg, e.getColumn() );
-        }
-        catch ( Exception e )
+        catch ( TokenStreamException | RecognitionException e )
         {
             String msg = I18n.err( I18n.ERR_04329, spec, e.getLocalizedMessage() );
             throw new ParseException( msg, 0 );

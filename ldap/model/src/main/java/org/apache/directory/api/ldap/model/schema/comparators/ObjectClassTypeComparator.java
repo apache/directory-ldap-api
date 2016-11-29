@@ -51,6 +51,7 @@ public class ObjectClassTypeComparator<T> extends LdapComparator<T>
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compare( T o1, T o2 )
     {
         String s1 = getString( o1 );

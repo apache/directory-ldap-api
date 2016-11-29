@@ -63,9 +63,10 @@ public class IntegerSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -141,7 +142,7 @@ public class IntegerSyntaxChecker extends SyntaxChecker
             pos++;
         }
 
-        boolean result = ( pos == strValue.length() );
+        boolean result = pos == strValue.length();
 
         if ( result )
         {

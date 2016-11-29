@@ -674,9 +674,9 @@ public final class FilterParser
             attribute = AttributeUtils.parseAttribute( filter, pos, true, relaxed );
 
             // Now, we may have a present, substring, simple or an extensible
-            b = Strings.byteAt( filter, pos.start );
+            byte currentByte = Strings.byteAt( filter, pos.start );
 
-            switch ( b )
+            switch ( currentByte )
             {
                 case '=':
                     // It can be a presence, an equal or a substring

@@ -138,7 +138,7 @@ public class LdapSyntax extends AbstractSchemaObject
         {
             List<String> values = getExtension( MetaSchemaConstants.X_NOT_HUMAN_READABLE_AT );
 
-            if ( ( values == null ) || ( values.size() == 0 ) )
+            if ( ( values == null ) || values.isEmpty() )
             {
                 // Default to String if the flag is not set
                 return true;
@@ -148,7 +148,7 @@ public class LdapSyntax extends AbstractSchemaObject
                 String value = values.get( 0 );
                 hasHumanReadableFlag = true;
 
-                if ( value.equalsIgnoreCase( "FALSE" ) )
+                if ( "FALSE".equalsIgnoreCase( value ) )
                 {
                     isHumanReadable = true;
                     return true;
@@ -243,6 +243,7 @@ public class LdapSyntax extends AbstractSchemaObject
     /**
      * {@inheritDoc}
      */
+    @Override
     public LdapSyntax copy()
     {
         LdapSyntax copy = new LdapSyntax( oid );
@@ -307,6 +308,7 @@ public class LdapSyntax extends AbstractSchemaObject
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear()
     {
         // Clear the common elements

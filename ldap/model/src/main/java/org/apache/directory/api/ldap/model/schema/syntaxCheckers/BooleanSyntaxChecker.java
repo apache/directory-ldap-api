@@ -56,9 +56,10 @@ public class BooleanSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -85,7 +86,7 @@ public class BooleanSyntaxChecker extends SyntaxChecker
             return false;
         }
 
-        boolean valid = ( ( "TRUE".equalsIgnoreCase( strValue ) ) || ( "FALSE".equalsIgnoreCase( strValue ) ) );
+        boolean valid = "TRUE".equalsIgnoreCase( strValue ) || "FALSE".equalsIgnoreCase( strValue );
 
         if ( valid )
         {

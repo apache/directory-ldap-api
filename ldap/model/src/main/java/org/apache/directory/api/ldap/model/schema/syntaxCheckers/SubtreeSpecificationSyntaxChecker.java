@@ -60,9 +60,10 @@ public class SubtreeSpecificationSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -110,6 +111,7 @@ public class SubtreeSpecificationSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setSchemaManager( SchemaManager schemaManager )
     {
         subtreeSpecificationChecker = new SubtreeSpecificationChecker( schemaManager );

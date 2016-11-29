@@ -53,9 +53,10 @@ public class DnNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public Value<?> normalize( Value<?> value ) throws LdapException
     {
-        Dn dn = null;
+        Dn dn;
 
         String dnStr = value.getString();
 
@@ -68,9 +69,10 @@ public class DnNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public String normalize( String value ) throws LdapException
     {
-        Dn dn = null;
+        Dn dn;
 
         dn = new Dn( schemaManager, value );
 
@@ -86,7 +88,7 @@ public class DnNormalizer extends Normalizer
      */
     public String normalize( Dn value ) throws LdapException
     {
-        Dn dn = null;
+        Dn dn;
 
         dn = value.apply( schemaManager );
 
@@ -97,6 +99,7 @@ public class DnNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setSchemaManager( SchemaManager schemaManager )
     {
         this.schemaManager = schemaManager;

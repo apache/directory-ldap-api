@@ -160,8 +160,6 @@ public class SubtreeSpecificationModifier
      * Sets a filter using only assertions on objectClass attributes for subtree
      * refinement.
      * 
-     * TODO: there is a setFilter() method, remove this method?
-     * 
      * @param refinement a filter using only assertions on objectClass attributes for
      *            subtree refinement
      */

@@ -79,6 +79,7 @@ public class CursorIterator<E> implements Iterator<E>
         {
             E element = cursor.get();
             available = cursor.next();
+            
             return element;
         }
         catch ( Exception e )

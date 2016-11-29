@@ -71,7 +71,7 @@ public enum SchemaObjectType
      */
     public String getRdn()
     {
-        String schemaObjectPath = null;
+        String schemaObjectPath;
 
         switch ( this )
         {

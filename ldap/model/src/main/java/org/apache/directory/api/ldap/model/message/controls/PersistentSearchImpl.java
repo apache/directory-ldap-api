@@ -64,48 +64,56 @@ public class PersistentSearchImpl extends AbstractControl implements PersistentS
     }
 
 
+    @Override
     public void setChangesOnly( boolean changesOnly )
     {
         this.changesOnly = changesOnly;
     }
 
 
+    @Override
     public boolean isChangesOnly()
     {
         return changesOnly;
     }
 
 
+    @Override
     public void setReturnECs( boolean returnECs )
     {
         this.returnECs = returnECs;
     }
 
 
+    @Override
     public boolean isReturnECs()
     {
         return returnECs;
     }
 
 
+    @Override
     public void setChangeTypes( int changeTypes )
     {
         this.changeTypes = changeTypes;
     }
 
 
+    @Override
     public int getChangeTypes()
     {
         return changeTypes;
     }
 
 
+    @Override
     public boolean isNotificationEnabled( ChangeType changeType )
     {
         return ( changeType.getValue() & changeTypes ) > 0;
     }
 
 
+    @Override
     public void enableNotification( ChangeType changeType )
     {
         changeTypes |= changeType.getValue();
@@ -115,9 +123,10 @@ public class PersistentSearchImpl extends AbstractControl implements PersistentS
     /**
      * Return a String representing this PSearchControl.
      */
+    @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( "    Persistant Search Control\n" );
         sb.append( "        oid : " ).append( getOid() ).append( '\n' );

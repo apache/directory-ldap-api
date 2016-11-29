@@ -65,6 +65,7 @@ public class GeneralizedTimeNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public Value<?> normalize( Value<?> value ) throws LdapException
     {
         try
@@ -84,6 +85,7 @@ public class GeneralizedTimeNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public String normalize( String value ) throws LdapException
     {
         try
@@ -91,10 +93,9 @@ public class GeneralizedTimeNormalizer extends Normalizer
             String prepared = PrepareString.normalize( value, PrepareString.StringType.DIRECTORY_STRING );
 
             GeneralizedTime time = new GeneralizedTime( prepared );
-            String normalized = time.toGeneralizedTime( Format.YEAR_MONTH_DAY_HOUR_MIN_SEC_FRACTION,
-                FractionDelimiter.DOT, 3, TimeZoneFormat.Z );
 
-            return normalized;
+            return time.toGeneralizedTime( Format.YEAR_MONTH_DAY_HOUR_MIN_SEC_FRACTION,
+                FractionDelimiter.DOT, 3, TimeZoneFormat.Z );
         }
         catch ( IOException ioe )
         {

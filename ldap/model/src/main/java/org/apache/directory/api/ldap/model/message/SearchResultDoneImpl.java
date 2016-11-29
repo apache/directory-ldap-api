@@ -74,6 +74,7 @@ public class SearchResultDoneImpl extends AbstractResultResponse implements Sear
      *            the object to be tested for equality
      * @return true if obj is equivalent to this SearchResponseDone impl
      */
+    @Override
     public boolean equals( Object obj )
     {
         // quickly return if the obj is this object
@@ -98,6 +99,7 @@ public class SearchResultDoneImpl extends AbstractResultResponse implements Sear
      * 
      * @return A SearchResultDone String
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

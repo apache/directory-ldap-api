@@ -130,6 +130,7 @@ public class Subentry
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         return "Subentry[" + administrativeRoles + ", " + ss + "]";

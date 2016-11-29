@@ -76,20 +76,17 @@ public interface ExprNode extends Cloneable
      * Recursively appends the refinement string representation of this node and its
      * descendants in prefix notation to a buffer.
      *
-     * TODO - Why is this here? Why not put it in some utility class?
-     * 
      * @param buf the buffer to append to.
      * @return The buffer in which the refinement has been appended
      * @throws UnsupportedOperationException if this node isn't a part of a refinement.
      */
-    StringBuilder printRefinementToBuffer( StringBuilder buf ) throws UnsupportedOperationException;
+    StringBuilder printRefinementToBuffer( StringBuilder buf );
 
 
     /**
      * Element/node accept method for visitor pattern.
      * 
      * @param visitor the filter expression tree structure visitor
-     * TODO - what is this modified element ?
      * @return the modified element
      */
     Object accept( FilterVisitor visitor );

@@ -61,7 +61,7 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
         char[] newVal = new char[value.length()];
         int escaped = 0;
         char high = 0;
-        char low = 0;
+        char low;
         int pos = 0;
 
         for ( int index = 0; index < value.length(); index++  )
@@ -105,6 +105,7 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object normalizeByName( String name, String value ) throws LdapException
     {
         AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( name );
@@ -127,6 +128,7 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object normalizeByName( String name, byte[] value ) throws LdapException
     {
         AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( name );
@@ -146,6 +148,7 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object normalizeByOid( String oid, String value ) throws LdapException
     {
         return lookup( oid ).normalize( value );
@@ -155,6 +158,7 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object normalizeByOid( String oid, byte[] value ) throws LdapException
     {
         return lookup( oid ).normalize( new BinaryValue( value ) );
@@ -189,12 +193,14 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
     /**
      * @see NameComponentNormalizer#isDefined(String)
      */
+    @Override
     public boolean isDefined( String id )
     {
         return schemaManager.getAttributeTypeRegistry().contains( id );
     }
 
 
+    @Override
     public String normalizeName( String attributeName ) throws LdapException
     {
         return schemaManager.getAttributeTypeRegistry().getOidByName( attributeName );

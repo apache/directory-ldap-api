@@ -78,6 +78,10 @@ public final class PasswordUtil
     public static final int CRYPT_SHA512_LENGTH = 86;
 
 
+    private static final byte[] CRYPT_SALT_CHARS = Strings
+        .getBytesUtf8( "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" );
+
+
     private PasswordUtil()
     {
     }
@@ -210,7 +214,7 @@ public final class PasswordUtil
         }
 
         byte[] hashedPassword = encryptPassword( credentials, algorithm, salt );
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( '{' ).append( Strings.upperCase( algorithm.getPrefix() ) ).append( '}' );
 
@@ -474,7 +478,7 @@ public final class PasswordUtil
         }
 
         int algoLength = algorithm.getPrefix().length() + 2;
-        byte[] password = null;
+        byte[] password;
 
         switch ( algorithm )
         {
@@ -641,10 +645,6 @@ public final class PasswordUtil
 
         return new PasswordDetails( algorithm, salt, password );
     }
-
-
-    private static final byte[] CRYPT_SALT_CHARS = Strings
-        .getBytesUtf8( "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" );
 
 
     private static byte[] generateCryptSalt( int length )

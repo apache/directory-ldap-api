@@ -57,13 +57,14 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
     public DefaultDitStructureRuleRegistry()
     {
         super( SchemaObjectType.DIT_STRUCTURE_RULE, new OidRegistry<DitStructureRule>() );
-        byRuleId = new HashMap<Integer, DitStructureRule>();
+        byRuleId = new HashMap<>();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( int ruleId )
     {
         return byRuleId.containsKey( ruleId );
@@ -73,6 +74,7 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<DitStructureRule> iterator()
     {
         return byRuleId.values().iterator();
@@ -82,6 +84,7 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<Integer> ruleIdIterator()
     {
         return byRuleId.keySet().iterator();
@@ -91,6 +94,7 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSchemaName( int ruleId ) throws LdapException
     {
         DitStructureRule ditStructureRule = byRuleId.get( ruleId );
@@ -109,6 +113,7 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void register( DitStructureRule ditStructureRule ) throws LdapException
     {
         int ruleId = ditStructureRule.getRuleId();
@@ -132,6 +137,7 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public DitStructureRule lookup( int ruleId ) throws LdapException
     {
         DitStructureRule ditStructureRule = byRuleId.get( ruleId );
@@ -155,6 +161,7 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregister( int ruleId ) throws LdapException
     {
         DitStructureRule ditStructureRule = byRuleId.remove( ruleId );
@@ -169,6 +176,7 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterSchemaElements( String schemaName )
     {
         if ( schemaName == null )
@@ -197,6 +205,7 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void renameSchema( String originalSchemaName, String newSchemaName )
     {
         // Loop on all the SchemaObjects stored and remove those associated
@@ -219,6 +228,7 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public DefaultDitStructureRuleRegistry copy()
     {
         DefaultDitStructureRuleRegistry copy = new DefaultDitStructureRuleRegistry();

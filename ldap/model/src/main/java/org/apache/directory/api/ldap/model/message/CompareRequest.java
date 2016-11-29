@@ -97,23 +97,27 @@ public interface CompareRequest extends SingleReplyRequest, AbandonableRequest
     /**
      * {@inheritDoc}
      */
+    @Override
     CompareRequest setMessageId( int messageId );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     CompareRequest addControl( Control control );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     CompareRequest addAllControls( Control[] controls );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     CompareRequest removeControl( Control control );
 }

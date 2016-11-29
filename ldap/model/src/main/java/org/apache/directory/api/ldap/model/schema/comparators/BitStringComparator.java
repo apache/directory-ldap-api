@@ -71,7 +71,7 @@ public class BitStringComparator extends LdapComparator<String>
         // have been caught by the previous test
         if ( ( bs1 == null ) || ( bs2 == null ) )
         {
-            return ( bs1 == null ? -1 : 1 );
+            return bs1 == null ? -1 : 1;
         }
 
         // We have to get rid of 0 from left of each BitString

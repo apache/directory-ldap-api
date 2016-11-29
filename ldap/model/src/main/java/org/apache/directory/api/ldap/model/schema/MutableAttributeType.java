@@ -588,6 +588,7 @@ public class MutableAttributeType extends AttributeType
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear()
     {
         // Clear the common elements

@@ -378,7 +378,7 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
      * @throws IllegalArgumentException If the ID is empty or null or
      * resolve to an empty value after being trimmed
      */
-    void setUpId( String upId ) throws IllegalArgumentException;
+    void setUpId( String upId );
 
 
     /**

@@ -165,23 +165,27 @@ public interface ModifyDnRequest extends SingleReplyRequest, AbandonableRequest
     /**
      * {@inheritDoc}
      */
+    @Override
     ModifyDnRequest setMessageId( int messageId );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     ModifyDnRequest addControl( Control control );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     ModifyDnRequest addAllControls( Control[] controls );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     ModifyDnRequest removeControl( Control control );
 }

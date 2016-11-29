@@ -55,6 +55,7 @@ public class ImmutableDitContentRuleRegistry implements DitContentRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public ImmutableDitContentRuleRegistry copy()
     {
         return ( ImmutableDitContentRuleRegistry ) immutableDITContentRuleRegistry.copy();
@@ -64,6 +65,7 @@ public class ImmutableDitContentRuleRegistry implements DitContentRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public int size()
     {
         return immutableDITContentRuleRegistry.size();
@@ -73,6 +75,7 @@ public class ImmutableDitContentRuleRegistry implements DitContentRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( String oid )
     {
         return immutableDITContentRuleRegistry.contains( oid );
@@ -82,6 +85,7 @@ public class ImmutableDitContentRuleRegistry implements DitContentRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOidByName( String name ) throws LdapException
     {
         return immutableDITContentRuleRegistry.getOidByName( name );
@@ -91,6 +95,7 @@ public class ImmutableDitContentRuleRegistry implements DitContentRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSchemaName( String oid ) throws LdapException
     {
         return immutableDITContentRuleRegistry.getSchemaName( oid );
@@ -100,6 +105,7 @@ public class ImmutableDitContentRuleRegistry implements DitContentRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaObjectType getType()
     {
         return immutableDITContentRuleRegistry.getType();
@@ -109,6 +115,7 @@ public class ImmutableDitContentRuleRegistry implements DitContentRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<DitContentRule> iterator()
     {
         return immutableDITContentRuleRegistry.iterator();
@@ -118,6 +125,7 @@ public class ImmutableDitContentRuleRegistry implements DitContentRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public DitContentRule lookup( String oid ) throws LdapException
     {
         return immutableDITContentRuleRegistry.lookup( oid );
@@ -127,6 +135,7 @@ public class ImmutableDitContentRuleRegistry implements DitContentRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<String> oidsIterator()
     {
         return immutableDITContentRuleRegistry.oidsIterator();
@@ -136,6 +145,7 @@ public class ImmutableDitContentRuleRegistry implements DitContentRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void register( DitContentRule schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04277 ) );
@@ -145,6 +155,7 @@ public class ImmutableDitContentRuleRegistry implements DitContentRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void renameSchema( String originalSchemaName, String newSchemaName ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04277 ) );
@@ -154,6 +165,7 @@ public class ImmutableDitContentRuleRegistry implements DitContentRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public DitContentRule unregister( String numericOid ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04277 ) );
@@ -163,6 +175,7 @@ public class ImmutableDitContentRuleRegistry implements DitContentRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterSchemaElements( String schemaName ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04277 ) );
@@ -172,6 +185,7 @@ public class ImmutableDitContentRuleRegistry implements DitContentRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public DitContentRule get( String oid )
     {
         return immutableDITContentRuleRegistry.get( oid );
@@ -181,6 +195,7 @@ public class ImmutableDitContentRuleRegistry implements DitContentRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear() throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04277 ) );
@@ -190,6 +205,7 @@ public class ImmutableDitContentRuleRegistry implements DitContentRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public DitContentRule unregister( DitContentRule schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04277 ) );

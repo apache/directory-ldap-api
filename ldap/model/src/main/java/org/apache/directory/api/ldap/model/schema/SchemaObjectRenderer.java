@@ -452,7 +452,7 @@ public final class SchemaObjectRenderer
 
         List<String> applies = mru.getApplicableAttributeOids();
 
-        if ( ( applies != null ) && ( applies.size() > 0 ) )
+        if ( ( applies != null ) && !applies.isEmpty() )
         {
             prettyPrintIndent( buf );
             buf.append( "APPLIES " );
@@ -592,7 +592,7 @@ public final class SchemaObjectRenderer
     {
         List<String> names = so.getNames();
 
-        if ( ( names != null ) && ( names.size() > 0 ) )
+        if ( ( names != null ) && !names.isEmpty() )
         {
             buf.append( " NAME " );
             renderQDescrs( buf, names );
@@ -662,7 +662,7 @@ public final class SchemaObjectRenderer
      */
     private StringBuilder renderQDescrs( StringBuilder buf, List<String> qdescrs )
     {
-        if ( ( qdescrs == null ) || ( qdescrs.size() == 0 ) )
+        if ( ( qdescrs == null ) || qdescrs.isEmpty() )
         {
             return buf;
         }
@@ -689,7 +689,7 @@ public final class SchemaObjectRenderer
 
     private void renderOids( StringBuilder buf, String prefix, List<String> oids )
     {
-        if ( ( oids != null ) && ( oids.size() > 0 ) )
+        if ( ( oids != null ) && !oids.isEmpty() )
         {
             prettyPrintIndent( buf );
             buf.append( prefix ).append( ' ' );
@@ -778,7 +778,7 @@ public final class SchemaObjectRenderer
 
     private StringBuilder renderRuleIds( StringBuilder buf, List<Integer> ruleIds )
     {
-        if ( ( ruleIds != null ) && ( ruleIds.size() > 0 ) )
+        if ( ( ruleIds != null ) && !ruleIds.isEmpty() )
         {
             prettyPrintIndent( buf );
             buf.append( "SUP " );
@@ -832,14 +832,12 @@ public final class SchemaObjectRenderer
 
     private void renderClose( StringBuilder buf )
     {
-        if ( style.prettyPrint )
+        if ( ( style.prettyPrint ) &&  ( buf.charAt( buf.length() - 1 ) == '\n' ) )
         {
-            if ( buf.charAt( buf.length() - 1 ) == '\n' )
-            {
-                buf.deleteCharAt( buf.length() - 1 );
-                buf.append( " " );
-            }
+            buf.deleteCharAt( buf.length() - 1 );
+            buf.append( " " );
         }
+    
         buf.append( ")" );
     }
 

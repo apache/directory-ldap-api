@@ -81,18 +81,6 @@ public abstract class AssertionNode extends AbstractExprNode
 
 
     /**
-     * Makes a full clone in new memory space of the current node and children
-     * 
-     * @return the clone
-     */
-    @Override
-    public ExprNode clone()
-    {
-        return ( ExprNode ) super.clone();
-    }
-
-
-    /**
      * Gets the Assertion used by this assertion node.
      * 
      * @return the assertion used by this node
@@ -113,6 +101,7 @@ public abstract class AssertionNode extends AbstractExprNode
      * @see ExprNode#isLeaf()
      * @return true if the node is a leaf,false otherwise
      */
+    @Override
     public boolean isLeaf()
     {
         return true;
@@ -122,7 +111,8 @@ public abstract class AssertionNode extends AbstractExprNode
     /**
      * @see ExprNode#printRefinementToBuffer(StringBuilder) 
      */
-    public StringBuilder printRefinementToBuffer( StringBuilder buf ) throws UnsupportedOperationException
+    @Override
+    public StringBuilder printRefinementToBuffer( StringBuilder buf )
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_04145 ) );
     }
@@ -197,6 +187,7 @@ public abstract class AssertionNode extends AbstractExprNode
      * @see ExprNode#accept(
      *FilterVisitor)
      */
+    @Override
     public Object accept( FilterVisitor visitor )
     {
         return visitor.visit( this );
@@ -207,6 +198,7 @@ public abstract class AssertionNode extends AbstractExprNode
      * @see Object#toString
      * @return A string representing the AndNode
      */
+    @Override
     public String toString()
     {
         StringBuilder buf = new StringBuilder();

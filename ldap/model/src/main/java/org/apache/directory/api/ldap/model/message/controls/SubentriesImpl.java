@@ -69,6 +69,7 @@ public class SubentriesImpl extends AbstractControl implements Subentries
     /**
      * returns Tells if the Subentry values are visible or not
      */
+    @Override
     public boolean isVisible()
     {
         return visibility;
@@ -78,6 +79,7 @@ public class SubentriesImpl extends AbstractControl implements Subentries
     /**
      * @param visibility Set the visibility flag
      */
+    @Override
     public void setVisibility( boolean visibility )
     {
         this.visibility = visibility;
@@ -101,6 +103,7 @@ public class SubentriesImpl extends AbstractControl implements Subentries
     /**
      * @see Object#equals(Object)
      */
+    @Override
     public boolean equals( Object o )
     {
         if ( !super.equals( o ) )
@@ -110,16 +113,17 @@ public class SubentriesImpl extends AbstractControl implements Subentries
 
         Subentries otherDecorator = ( Subentries ) o;
 
-        return ( visibility == otherDecorator.isVisible() );
+        return visibility == otherDecorator.isVisible();
     }
 
 
     /**
      * Return a String representing this EntryChangeControl.
      */
+    @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( "    Subentries Control\n" );
         sb.append( "        oid : " ).append( getOid() ).append( '\n' );

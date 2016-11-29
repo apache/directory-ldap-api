@@ -55,6 +55,7 @@ public class ImmutableNameFormRegistry implements NameFormRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public ImmutableNameFormRegistry copy()
     {
         return ( ImmutableNameFormRegistry ) immutableNameFormRegistry.copy();
@@ -64,6 +65,7 @@ public class ImmutableNameFormRegistry implements NameFormRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public int size()
     {
         return immutableNameFormRegistry.size();
@@ -73,6 +75,7 @@ public class ImmutableNameFormRegistry implements NameFormRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( String oid )
     {
         return immutableNameFormRegistry.contains( oid );
@@ -82,6 +85,7 @@ public class ImmutableNameFormRegistry implements NameFormRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOidByName( String name ) throws LdapException
     {
         return immutableNameFormRegistry.getOidByName( name );
@@ -91,6 +95,7 @@ public class ImmutableNameFormRegistry implements NameFormRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSchemaName( String oid ) throws LdapException
     {
         return immutableNameFormRegistry.getSchemaName( oid );
@@ -100,6 +105,7 @@ public class ImmutableNameFormRegistry implements NameFormRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaObjectType getType()
     {
         return immutableNameFormRegistry.getType();
@@ -109,6 +115,7 @@ public class ImmutableNameFormRegistry implements NameFormRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<NameForm> iterator()
     {
         return immutableNameFormRegistry.iterator();
@@ -118,6 +125,7 @@ public class ImmutableNameFormRegistry implements NameFormRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public NameForm lookup( String oid ) throws LdapException
     {
         return immutableNameFormRegistry.lookup( oid );
@@ -127,6 +135,7 @@ public class ImmutableNameFormRegistry implements NameFormRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<String> oidsIterator()
     {
         return immutableNameFormRegistry.oidsIterator();
@@ -136,6 +145,7 @@ public class ImmutableNameFormRegistry implements NameFormRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void register( NameForm schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04282 ) );
@@ -145,6 +155,7 @@ public class ImmutableNameFormRegistry implements NameFormRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void renameSchema( String originalSchemaName, String newSchemaName ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04282 ) );
@@ -154,6 +165,7 @@ public class ImmutableNameFormRegistry implements NameFormRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public NameForm unregister( String numericOid ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04282 ) );
@@ -163,6 +175,7 @@ public class ImmutableNameFormRegistry implements NameFormRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterSchemaElements( String schemaName ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04282 ) );
@@ -172,6 +185,7 @@ public class ImmutableNameFormRegistry implements NameFormRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public NameForm get( String oid )
     {
         return immutableNameFormRegistry.get( oid );
@@ -181,6 +195,7 @@ public class ImmutableNameFormRegistry implements NameFormRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear() throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04282 ) );
@@ -190,6 +205,7 @@ public class ImmutableNameFormRegistry implements NameFormRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public NameForm unregister( NameForm schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04282 ) );

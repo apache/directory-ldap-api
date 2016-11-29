@@ -52,9 +52,10 @@ public class ObjectClassTypeSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -85,7 +86,7 @@ public class ObjectClassTypeSyntaxChecker extends SyntaxChecker
 
         switch ( ch )
         {
-            case ( 'A' ):
+            case 'A':
                 if ( "AUXILIARY".equals( strValue ) || "ABSTRACT".equals( strValue ) )
                 {
                     LOG.debug( "Syntax valid for '{}'", value );
@@ -95,7 +96,7 @@ public class ObjectClassTypeSyntaxChecker extends SyntaxChecker
                 LOG.debug( "Syntax invalid for '{}'", value );
                 return false;
 
-            case ( 'S' ):
+            case 'S':
                 boolean result = "STRUCTURAL".equals( strValue );
 
                 if ( result )

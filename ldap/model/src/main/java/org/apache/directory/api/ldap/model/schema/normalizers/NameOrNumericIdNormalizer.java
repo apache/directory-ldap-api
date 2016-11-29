@@ -63,6 +63,7 @@ public class NameOrNumericIdNormalizer extends Normalizer
     /**
      * {@inheritDoc} 
      */
+    @Override
     public Value<?> normalize( Value<?> value ) throws LdapException
     {
         if ( value == null )
@@ -99,6 +100,7 @@ public class NameOrNumericIdNormalizer extends Normalizer
     /**
      * {@inheritDoc} 
      */
+    @Override
     public String normalize( String value ) throws LdapException
     {
         if ( value == null )
@@ -133,6 +135,7 @@ public class NameOrNumericIdNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setSchemaManager( SchemaManager schemaManager )
     {
         this.schemaManager = schemaManager;

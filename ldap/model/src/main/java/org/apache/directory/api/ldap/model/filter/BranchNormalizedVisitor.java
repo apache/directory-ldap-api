@@ -47,6 +47,7 @@ public class BranchNormalizedVisitor implements FilterVisitor
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object visit( ExprNode node )
     {
         if ( !( node instanceof BranchNode ) )
@@ -58,7 +59,7 @@ public class BranchNormalizedVisitor implements FilterVisitor
 
         Comparator<ExprNode> nodeComparator = new NodeComparator();
 
-        Set<ExprNode> set = new TreeSet<ExprNode>( nodeComparator );
+        Set<ExprNode> set = new TreeSet<>( nodeComparator );
 
         List<ExprNode> children = branch.getChildren();
 
@@ -90,6 +91,7 @@ public class BranchNormalizedVisitor implements FilterVisitor
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean canVisit( ExprNode node )
     {
         return node instanceof BranchNode;
@@ -99,6 +101,7 @@ public class BranchNormalizedVisitor implements FilterVisitor
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isPrefix()
     {
         return false;
@@ -108,6 +111,7 @@ public class BranchNormalizedVisitor implements FilterVisitor
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<ExprNode> getOrder( BranchNode node, List<ExprNode> children )
     {
         return children;
@@ -149,13 +153,14 @@ public class BranchNormalizedVisitor implements FilterVisitor
 
     static class NodeComparator implements Comparator<ExprNode>
     {
+        @Override
         public int compare( ExprNode o1, ExprNode o2 )
         {
             StringBuilder buf = new StringBuilder();
 
             buf.setLength( 0 );
 
-            String s1 = null;
+            String s1;
 
             buf.append( o1.toString() );
 
@@ -163,7 +168,7 @@ public class BranchNormalizedVisitor implements FilterVisitor
 
             buf.setLength( 0 );
 
-            String s2 = null;
+            String s2;
 
             buf.append( o2.toString() );
 

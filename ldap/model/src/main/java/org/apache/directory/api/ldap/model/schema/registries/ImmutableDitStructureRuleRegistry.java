@@ -55,6 +55,7 @@ public class ImmutableDitStructureRuleRegistry implements DitStructureRuleRegist
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( int ruleId )
     {
         return immutableDITStructureRuleRegistry.contains( ruleId );
@@ -64,6 +65,7 @@ public class ImmutableDitStructureRuleRegistry implements DitStructureRuleRegist
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<DitStructureRule> iterator()
     {
         return immutableDITStructureRuleRegistry.iterator();
@@ -73,6 +75,7 @@ public class ImmutableDitStructureRuleRegistry implements DitStructureRuleRegist
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<Integer> ruleIdIterator()
     {
         return immutableDITStructureRuleRegistry.ruleIdIterator();
@@ -82,6 +85,7 @@ public class ImmutableDitStructureRuleRegistry implements DitStructureRuleRegist
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSchemaName( int ruleId ) throws LdapException
     {
         return immutableDITStructureRuleRegistry.getSchemaName( ruleId );
@@ -91,6 +95,7 @@ public class ImmutableDitStructureRuleRegistry implements DitStructureRuleRegist
     /**
      * {@inheritDoc}
      */
+    @Override
     public void register( DitStructureRule ditStructureRule ) throws LdapException
     {
     }
@@ -99,6 +104,7 @@ public class ImmutableDitStructureRuleRegistry implements DitStructureRuleRegist
     /**
      * {@inheritDoc}
      */
+    @Override
     public DitStructureRule lookup( int ruleId ) throws LdapException
     {
         return immutableDITStructureRuleRegistry.lookup( ruleId );
@@ -108,6 +114,7 @@ public class ImmutableDitStructureRuleRegistry implements DitStructureRuleRegist
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregister( int ruleId ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04278 ) );
@@ -117,6 +124,7 @@ public class ImmutableDitStructureRuleRegistry implements DitStructureRuleRegist
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterSchemaElements( String schemaName ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04278 ) );
@@ -126,6 +134,7 @@ public class ImmutableDitStructureRuleRegistry implements DitStructureRuleRegist
     /**
      * {@inheritDoc}
      */
+    @Override
     public void renameSchema( String originalSchemaName, String newSchemaName ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04278 ) );
@@ -135,6 +144,7 @@ public class ImmutableDitStructureRuleRegistry implements DitStructureRuleRegist
     /**
      * {@inheritDoc}
      */
+    @Override
     public ImmutableDitStructureRuleRegistry copy()
     {
         return ( ImmutableDitStructureRuleRegistry ) immutableDITStructureRuleRegistry.copy();
@@ -144,6 +154,7 @@ public class ImmutableDitStructureRuleRegistry implements DitStructureRuleRegist
     /**
      * {@inheritDoc}
      */
+    @Override
     public int size()
     {
         return immutableDITStructureRuleRegistry.size();
@@ -153,6 +164,7 @@ public class ImmutableDitStructureRuleRegistry implements DitStructureRuleRegist
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( String oid )
     {
         return immutableDITStructureRuleRegistry.contains( oid );
@@ -162,6 +174,7 @@ public class ImmutableDitStructureRuleRegistry implements DitStructureRuleRegist
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOidByName( String name ) throws LdapException
     {
         return immutableDITStructureRuleRegistry.getOidByName( name );
@@ -171,6 +184,7 @@ public class ImmutableDitStructureRuleRegistry implements DitStructureRuleRegist
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSchemaName( String oid ) throws LdapException
     {
         return immutableDITStructureRuleRegistry.getSchemaName( oid );
@@ -180,6 +194,7 @@ public class ImmutableDitStructureRuleRegistry implements DitStructureRuleRegist
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaObjectType getType()
     {
         return immutableDITStructureRuleRegistry.getType();
@@ -189,6 +204,7 @@ public class ImmutableDitStructureRuleRegistry implements DitStructureRuleRegist
     /**
      * {@inheritDoc}
      */
+    @Override
     public DitStructureRule lookup( String oid ) throws LdapException
     {
         return immutableDITStructureRuleRegistry.lookup( oid );
@@ -198,6 +214,7 @@ public class ImmutableDitStructureRuleRegistry implements DitStructureRuleRegist
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<String> oidsIterator()
     {
         return immutableDITStructureRuleRegistry.oidsIterator();
@@ -207,6 +224,7 @@ public class ImmutableDitStructureRuleRegistry implements DitStructureRuleRegist
     /**
      * {@inheritDoc}
      */
+    @Override
     public DitStructureRule unregister( String numericOid ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04278 ) );
@@ -216,6 +234,7 @@ public class ImmutableDitStructureRuleRegistry implements DitStructureRuleRegist
     /**
      * {@inheritDoc}
      */
+    @Override
     public DitStructureRule get( String oid )
     {
         return immutableDITStructureRuleRegistry.get( oid );
@@ -225,6 +244,7 @@ public class ImmutableDitStructureRuleRegistry implements DitStructureRuleRegist
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear() throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04278 ) );
@@ -234,6 +254,7 @@ public class ImmutableDitStructureRuleRegistry implements DitStructureRuleRegist
     /**
      * {@inheritDoc}
      */
+    @Override
     public DitStructureRule unregister( DitStructureRule schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04278 ) );

@@ -60,9 +60,10 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
@@ -92,7 +93,7 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
         // Search for the first '$' separator
         int dollar = strValue.indexOf( '$' );
 
-        String terminalIdentifier = ( ( dollar == -1 ) ? strValue : strValue.substring( 0, dollar ) );
+        String terminalIdentifier = ( dollar == -1 ) ? strValue : strValue.substring( 0, dollar );
 
         if ( terminalIdentifier.length() == 0 )
         {

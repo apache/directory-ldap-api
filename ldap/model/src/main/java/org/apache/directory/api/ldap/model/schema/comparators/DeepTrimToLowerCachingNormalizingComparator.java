@@ -25,7 +25,9 @@ import org.apache.directory.api.ldap.model.schema.normalizers.DeepTrimToLowerNor
 
 
 /**
- * TODO DeepTrimCachingNormalizingComparator.
+ * A comparator that compare two Strings after having trimmed them on left and right,
+ * and replaced any contiguous spaces in the middle by 1 single space. The Strings are compared
+ * case insensitive. We also keep a cache
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

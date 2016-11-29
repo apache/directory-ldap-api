@@ -39,6 +39,7 @@ public interface NormalizerRegistry extends SchemaObjectRegistry<Normalizer>,
      * @throws LdapException if the Normalizer is already registered or
      * the registration operation is not supported
      */
+    @Override
     void register( Normalizer normalizer ) throws LdapException;
 
 
@@ -49,6 +50,7 @@ public interface NormalizerRegistry extends SchemaObjectRegistry<Normalizer>,
      * @param numericOid the numeric identifier
      * @throws LdapException if the numeric identifier is invalid
      */
+    @Override
     Normalizer unregister( String numericOid ) throws LdapException;
 
 
@@ -58,11 +60,13 @@ public interface NormalizerRegistry extends SchemaObjectRegistry<Normalizer>,
      * 
      * @param schemaName the name of the schema whose Normalizers will be removed from
      */
+    @Override
     void unregisterSchemaElements( String schemaName ) throws LdapException;
 
 
     /**
      * Copy the NormalizerRegistry
      */
+    @Override
     NormalizerRegistry copy();
 }

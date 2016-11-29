@@ -52,7 +52,7 @@ public final class SchemaObjectSorter
      */
     public static Iterable<AttributeType> hierarchicalOrdered( List<AttributeType> attributeTypes )
     {
-        return new SchemaObjectIterable<AttributeType>( attributeTypes, new ReferenceCallback<AttributeType>()
+        return new SchemaObjectIterable<>( attributeTypes, new ReferenceCallback<AttributeType>()
         {
             @Override
             public Collection<String> getSuperiorOids( AttributeType at )
@@ -71,7 +71,7 @@ public final class SchemaObjectSorter
      */
     public static Iterable<ObjectClass> sortObjectClasses( List<ObjectClass> objectClasses )
     {
-        return new SchemaObjectIterable<ObjectClass>( objectClasses, new ReferenceCallback<ObjectClass>()
+        return new SchemaObjectIterable<>( objectClasses, new ReferenceCallback<ObjectClass>()
         {
             @Override
             public Collection<String> getSuperiorOids( ObjectClass oc )
@@ -105,7 +105,7 @@ public final class SchemaObjectSorter
         @Override
         public Iterator<T> iterator()
         {
-            return new SchemaObjectIterator<T>( schemaObjects, callback );
+            return new SchemaObjectIterator<>( schemaObjects, callback );
         }
 
     }
@@ -127,8 +127,8 @@ public final class SchemaObjectSorter
             this.schemaObjects = schemaObjects;
             this.callback = callback;
 
-            this.oid2numericOid = new HashMap<String, String>();
-            this.numericOid2schemaObject = new TreeMap<String, T>();
+            this.oid2numericOid = new HashMap<>();
+            this.numericOid2schemaObject = new TreeMap<>();
             this.loopCount = 0;
 
             for ( T schemaObject : schemaObjects )

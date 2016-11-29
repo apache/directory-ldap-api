@@ -44,6 +44,7 @@ public class DefaultNameFormRegistry extends DefaultSchemaObjectRegistry<NameFor
     /**
      * {@inheritDoc}
      */
+    @Override
     public DefaultNameFormRegistry copy()
     {
         DefaultNameFormRegistry copy = new DefaultNameFormRegistry();

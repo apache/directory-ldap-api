@@ -97,19 +97,21 @@ public enum AliasDerefMode
         }
         else
         {
-            if ( property.trim().equalsIgnoreCase( "always" ) )
+            String trimmedProperty = property.trim();
+            
+            if ( "always".equalsIgnoreCase( trimmedProperty ) )
             {
                 return DEREF_ALWAYS;
             }
-            else if ( property.trim().equalsIgnoreCase( "never" ) )
+            else if ( "never".equalsIgnoreCase( trimmedProperty ) )
             {
                 return NEVER_DEREF_ALIASES;
             }
-            else if ( property.trim().equalsIgnoreCase( "finding" ) )
+            else if ( "finding".equalsIgnoreCase( trimmedProperty ) )
             {
                 return DEREF_FINDING_BASE_OBJ;
             }
-            else if ( property.trim().equalsIgnoreCase( "searching" ) )
+            else if ( "searching".equalsIgnoreCase( trimmedProperty ) )
             {
                 return DEREF_IN_SEARCHING;
             }
