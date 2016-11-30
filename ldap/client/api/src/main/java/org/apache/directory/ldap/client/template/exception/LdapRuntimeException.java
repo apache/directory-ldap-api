@@ -34,6 +34,11 @@ public class LdapRuntimeException extends RuntimeException
     private static final long serialVersionUID = 3618077059423567243L;
 
 
+    /**
+     * Creates a new LdapRuntimeException instance
+     * 
+     * @param exception The wrapped exception
+     */
     public LdapRuntimeException( LdapException exception )
     {
         super( exception );

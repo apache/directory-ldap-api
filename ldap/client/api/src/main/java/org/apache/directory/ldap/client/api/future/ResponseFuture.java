@@ -108,7 +108,9 @@ public class ResponseFuture<R extends Response> implements Future<Response>
 
 
     /**
-     * {@inheritDoc}
+     * Set the associated Response in this Future
+     * 
+     * @param response The response to add into the Future
      * @throws InterruptedException if the operation has been cancelled by client
      */
     public void set( R response ) throws InterruptedException

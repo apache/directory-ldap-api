@@ -327,9 +327,6 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     private void loadAttributeTypes( Attribute attributeTypes ) throws LdapException
     {
         if ( attributeTypes == null )
@@ -355,9 +352,6 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     private void loadComparators( Attribute comparators ) throws LdapException
     {
         if ( comparators == null )
@@ -383,9 +377,6 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     private void loadDitContentRules( Attribute ditContentRules ) throws LdapException
     {
         if ( ditContentRules == null )
@@ -411,9 +402,6 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     private void loadDitStructureRules( Attribute ditStructureRules ) throws LdapException
     {
         if ( ditStructureRules == null )
@@ -439,9 +427,6 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     private void loadLdapSyntaxes( Attribute ldapSyntaxes ) throws LdapException
     {
         if ( ldapSyntaxes == null )
@@ -467,9 +452,6 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     private void loadMatchingRules( Attribute matchingRules ) throws LdapException
     {
         if ( matchingRules == null )
@@ -495,9 +477,6 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     private void loadMatchingRuleUses( Attribute matchingRuleUses ) throws LdapException
     {
         if ( matchingRuleUses == null )
@@ -523,9 +502,6 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     private void loadNameForms( Attribute nameForms ) throws LdapException
     {
         if ( nameForms == null )
@@ -551,9 +527,6 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     private void loadNormalizers( Attribute normalizers ) throws LdapException
     {
         if ( normalizers == null )
@@ -579,9 +552,6 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     private void loadObjectClasses( Attribute objectClasses ) throws LdapException
     {
         if ( objectClasses == null )
@@ -607,9 +577,6 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     private void loadSyntaxCheckers( Attribute syntaxCheckers ) throws LdapException
     {
         if ( syntaxCheckers == null )

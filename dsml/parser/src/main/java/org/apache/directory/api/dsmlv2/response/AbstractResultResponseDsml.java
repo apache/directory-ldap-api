@@ -29,6 +29,8 @@ import org.dom4j.Element;
 /**
  * Base class for all DSML responses.
  * 
+ * @param <E> The response result type
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class AbstractResultResponseDsml<E extends ResultResponse>

@@ -53,7 +53,7 @@ package org.apache.directory.ldap.client.api.search;
     /**
      * Constructs a NOT filter with the associated inner Filter
      *
-     * @param Filter The inner Filter
+     * @param filter The inner Filter
      * @return The constructed NOT Filter
      */
     public static UnaryFilter not( Filter filter )

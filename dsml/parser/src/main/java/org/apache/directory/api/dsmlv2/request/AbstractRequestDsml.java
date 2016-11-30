@@ -32,6 +32,8 @@ import org.dom4j.Element;
 
 /**
  * Abstract class for DSML requests.
+ * 
+ * @param <E> The request type
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -118,12 +120,22 @@ public abstract class AbstractRequestDsml<E extends Request>
     }
 
 
+    /**
+     * @return the buffer's length (always 0)
+     */
     public int computeLength()
     {
         return 0;
     }
 
 
+    /**
+     * Encode the request. Always return an empty buffer.
+     * 
+     * @param buffer The buffer to allocate
+     * @return The resulting buffer
+     * @throws EncoderException If we had an error while encoding the request
+     */
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         return null;

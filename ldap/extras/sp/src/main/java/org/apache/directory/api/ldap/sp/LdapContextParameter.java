@@ -33,15 +33,24 @@ public class LdapContextParameter implements Serializable
 {
     private static final long serialVersionUID = -8703671542595407603L;
 
+    /** The parameter name */
     private String name;
 
 
+    /**
+     * Creates a new LdapContextParameter instance
+     * 
+     * @param name The parameter name
+     */
     public LdapContextParameter( String name )
     {
         this.name = name;
     }
 
 
+    /**
+     * @return The parameter's name
+     */
     public String getValue()
     {
         return name;
