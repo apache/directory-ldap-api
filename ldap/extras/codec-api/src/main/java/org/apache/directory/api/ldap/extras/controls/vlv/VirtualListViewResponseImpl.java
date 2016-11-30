@@ -59,6 +59,9 @@ public class VirtualListViewResponseImpl extends AbstractControl implements Virt
     private byte[] contextId;
 
 
+    /**
+     * Creates a new VirtualListViewResponseImpl instance
+     */
     public VirtualListViewResponseImpl()
     {
         super( OID );

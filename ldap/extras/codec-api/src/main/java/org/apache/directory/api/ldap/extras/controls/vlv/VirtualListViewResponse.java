@@ -56,26 +56,58 @@ public interface VirtualListViewResponse extends Control
     String OID = "2.16.840.1.113730.3.4.10";
 
 
+    /**
+     * @return the position in the list of entries
+     */
     int getTargetPosition();
 
 
+    /**
+     * Sets the position in the list of entries
+     * 
+     * @param targetPosition the position in the list of entries
+     */
     void setTargetPosition( int targetPosition );
 
 
+    /**
+     * @return The number of returned entries
+     */
     int getContentCount();
 
 
+    /**
+     * Sets the number of returned entries
+     * 
+     * @param contentCount The number of returned entries
+     */
     void setContentCount( int contentCount );
 
 
+    /**
+     * @return The VLV result
+     */
     VirtualListViewResultCode getVirtualListViewResult();
 
 
+    /**
+     * Store the VLV result
+     * 
+     * @param virtualListViewResultCode The result
+     */
     void setVirtualListViewResult( VirtualListViewResultCode virtualListViewResultCode );
 
 
+    /**
+     * @return The context ID
+     */
     byte[] getContextId();
 
 
+    /**
+     * Sets the context ID
+     * 
+     * @param contextId The context ID
+     */
     void setContextId( byte[] contextId );
 }

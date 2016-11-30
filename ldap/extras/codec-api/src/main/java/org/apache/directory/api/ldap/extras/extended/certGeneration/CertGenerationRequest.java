@@ -42,24 +42,52 @@ public interface CertGenerationRequest extends ExtendedRequest
     String getTargetDN();
 
 
+    /**
+     * Sets the target DN
+     * 
+     * @param targetDN The target DN
+     */
     void setTargetDN( String targetDN );
 
 
+    /**
+     * @return The issuer's DN
+     */
     String getIssuerDN();
 
 
+    /**
+     * Sets the issuer's DN
+     *  
+     * @param issuerDN the issuer's DN 
+     */
     void setIssuerDN( String issuerDN );
 
 
+    /**
+     * @return The subect's DN
+     */
     String getSubjectDN();
 
 
+    /**
+     * Sets the subect's DN
+     * 
+     * @param subjectDN The subect's DN
+     */
     void setSubjectDN( String subjectDN );
 
 
+    /**
+     * @return The Key algorithm 
+     */
     String getKeyAlgorithm();
 
 
+    /**
+     * Sets the Key algorithm
+     * @param keyAlgorithm The Key algorithm
+     */
     void setKeyAlgorithm( String keyAlgorithm );
 
 }

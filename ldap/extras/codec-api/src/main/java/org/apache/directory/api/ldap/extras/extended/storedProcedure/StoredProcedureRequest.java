@@ -125,8 +125,16 @@ public interface StoredProcedureRequest extends ExtendedRequest
     void addParameter( Object type, Object value );
 
 
+    /**
+     * Adds a parameter
+     * 
+     * @param parameter The parameter to add
+     */
     void addParameter( StoredProcedureParameter parameter );
 
 
+    /**
+     * @return The list of parameters for this stored procedure
+     */
     List<StoredProcedureParameter> getParameters();
 }

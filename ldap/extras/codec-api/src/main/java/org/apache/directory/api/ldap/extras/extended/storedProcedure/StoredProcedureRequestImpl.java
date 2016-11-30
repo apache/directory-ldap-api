@@ -151,7 +151,9 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
 
 
     /**
-     * {@inheritDoc}
+     * Store the procedure's name
+     * 
+     * @param procedure The procedure's name
      */
     public void setProcedure( String procedure )
     {
@@ -195,7 +197,10 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
 
 
     /**
-     * {@inheritDoc}
+     * Get the parameter type 
+     * 
+     * @param index The parameter position in the list of parameters
+     * @return The found parameter type
      */
     public Object getParameterTypeString( int index )
     {
@@ -239,7 +244,10 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
 
 
     /**
-     * {@inheritDoc}
+     * Get a parameter value
+     * 
+     * @param index The position of the parameter in the list of parameters
+     * @return The paremeter's value
      */
     public Object getParameterValueString( int index )
     {

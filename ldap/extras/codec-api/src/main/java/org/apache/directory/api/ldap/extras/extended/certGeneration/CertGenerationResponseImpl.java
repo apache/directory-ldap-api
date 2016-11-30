@@ -33,6 +33,12 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
  */
 public class CertGenerationResponseImpl extends ExtendedResponseImpl implements CertGenerationResponse
 {
+    /**
+     * Create a new CertGenerationResponseImpl instance
+     * 
+     * @param messageId The request's message ID
+     * @param rcode The result code
+     */
     public CertGenerationResponseImpl( int messageId, ResultCodeEnum rcode )
     {
         super( messageId, EXTENSION_OID );
@@ -54,6 +60,11 @@ public class CertGenerationResponseImpl extends ExtendedResponseImpl implements 
     }
 
 
+    /**
+     * Create a new CertGenerationResponseImpl instance
+     * 
+     * @param messageId The request's message ID
+     */
     public CertGenerationResponseImpl( int messageId )
     {
         super( messageId, EXTENSION_OID );
@@ -62,6 +73,9 @@ public class CertGenerationResponseImpl extends ExtendedResponseImpl implements 
     }
 
 
+    /**
+     * Create a new CertGenerationResponseImpl instance
+     */
     public CertGenerationResponseImpl()
     {
         super( EXTENSION_OID );

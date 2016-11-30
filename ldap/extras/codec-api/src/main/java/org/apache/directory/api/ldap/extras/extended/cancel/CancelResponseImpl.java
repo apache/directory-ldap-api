@@ -34,8 +34,9 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 public class CancelResponseImpl extends ExtendedResponseImpl implements CancelResponse
 {
     /**
-     * Create a new CancelResponse object
-     * @param messageId The messageId
+     * Create a new CancelResponse instance
+     * 
+     * @param messageId The request's messageId
      * @param rcode the result code
      */
     public CancelResponseImpl( int messageId, ResultCodeEnum rcode )
@@ -61,6 +62,11 @@ public class CancelResponseImpl extends ExtendedResponseImpl implements CancelRe
     }
 
 
+    /**
+     * Create a new CancelResponse instance
+     * 
+     * @param messageId The request's messageId
+     */
     public CancelResponseImpl( int messageId )
     {
         super( messageId );
@@ -69,6 +75,9 @@ public class CancelResponseImpl extends ExtendedResponseImpl implements CancelRe
     }
 
 
+    /**
+     * Create a new CancelResponse instance
+     */
     public CancelResponseImpl()
     {
         super( CancelRequest.EXTENSION_OID );
