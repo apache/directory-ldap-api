@@ -582,7 +582,6 @@ public final class FileUtils
      * @throws IOException if source or destination is invalid
      * @throws IOException if an IO error occurs during copying
      * @throws IOException if the output file length is not the same as the input file length after the copy completes
-     * @see #doCopyFile(File, File, boolean)
      */
     public static void copyFile( File srcFile, File destFile, boolean preserveFileDate ) throws IOException
     {

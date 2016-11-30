@@ -32,10 +32,10 @@ import javax.naming.NamingEnumeration;
  * throws a NoSuchElementException.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @param <T> The element in the enumeration
  */
-public class EmptyEnumeration<T> implements NamingEnumeration<T>
+public class EmptyEnumeration<T> implements NamingEnumeration<Object>
 {
-
     /**
      * @see javax.naming.NamingEnumeration#close()
      */

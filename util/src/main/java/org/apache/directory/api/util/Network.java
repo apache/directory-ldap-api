@@ -31,7 +31,6 @@ import java.net.InetAddress;
  */
 public final class Network
 {
-
     /**
      * Private constructor.
      */
@@ -39,7 +38,10 @@ public final class Network
     {
     }
 
+    /** The loopback address (ie, ::1 or 127.0.0.1 */
     public static final InetAddress LOOPBACK = getLoopbackAddress();
+    
+    /** The loopback hostname */
     public static final String LOOPBACK_HOSTNAME = getLoopbackHostName();
 
 
@@ -57,9 +59,14 @@ public final class Network
     }
 
 
+    /**
+     * Construct a LDAP URL using the loopback address.
+     * 
+     * @param port The port
+     * @return The Loopback URL
+     */
     public static String ldapLoopbackUrl( int port )
     {
         return "ldap://" + LOOPBACK_HOSTNAME + ":" + port;
     }
-
 }

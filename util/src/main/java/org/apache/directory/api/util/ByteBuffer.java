@@ -42,13 +42,20 @@ public class ByteBuffer
     /** the bytes of the buffer */
     private byte[] buf;
 
-
+    /**
+     * Create a default ByteBuffer capable of holding 10 bytes
+     */
     public ByteBuffer()
     {
         this( DEFAULT_INITIAL_SIZE );
     }
 
 
+    /**
+     * Creates a ByteBuffer which has an initialze size
+     *  
+     * @param initialSize The initial buffer size
+     */
     public ByteBuffer( int initialSize )
     {
         if ( initialSize <= 0 )
@@ -61,24 +68,42 @@ public class ByteBuffer
     }
 
 
+    /**
+     * Reset the Buffer position to 0. Every new added byte will be put on position 0.
+     * Note that whatever this buffer contained before a call to the clear() method
+     * will not be removed.
+     */
     public final void clear()
     {
         pos = 0;
     }
 
 
+    /**
+     * @return The current position in the buffer
+     */
     public final int position()
     {
         return pos;
     }
 
 
+    /**
+     * @return The number of bytes that can be added into this buffer
+     */
     public final int capacity()
     {
         return buf.length;
     }
 
 
+    /**
+     * Returns the byte at a given position. Note that no control is done
+     * on the position validity.
+     * 
+     * @param i The position
+     * @return The byte at the given position in the buffer
+     */
     public final byte get( int i )
     {
         return buf[i];
