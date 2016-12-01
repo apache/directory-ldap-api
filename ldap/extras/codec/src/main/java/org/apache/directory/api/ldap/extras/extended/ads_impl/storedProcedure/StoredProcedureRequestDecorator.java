@@ -62,12 +62,21 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
     private List<Integer> parameterLength;
 
 
+    /**
+     * Create a new StoredProcedureRequestDecorator instance 
+     * @param codec The LDAP API service to use
+     */
     public StoredProcedureRequestDecorator( LdapApiService codec )
     {
         super( codec, new StoredProcedureRequestImpl() );
     }
 
 
+    /**
+     * Create a new StoredProcedureRequestDecorator instance 
+     * @param codec The LDAP API service to use
+     * @param decoratedRequest The decorated request
+     */
     public StoredProcedureRequestDecorator( LdapApiService codec, StoredProcedureRequest decoratedRequest )
     {
         super( codec, decoratedRequest );
@@ -78,12 +87,20 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
     }
 
 
+    /**
+     * @return The current parameter
+     */
     public StoredProcedureParameter getCurrentParameter()
     {
         return currentParameter;
     }
 
 
+    /**
+     * Sets the current parameter
+     * 
+     * @param currentParameter The current parameter
+     */
     public void setCurrentParameter( StoredProcedureParameter currentParameter )
     {
         this.currentParameter = currentParameter;

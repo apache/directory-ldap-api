@@ -32,12 +32,25 @@ import org.apache.directory.api.asn1.ber.grammar.States;
  */
 public enum VirtualListViewResponseStates implements States
 {
+    /** Initial state */
     START_STATE,
+    
+    /** VirtualListViewResponse ::= SEQUENCE transition */
     VLV_SEQUENCE_STATE,
+    
+    /** targetPosition    INTEGER (0 .. maxInt) transition */
     VLV_TARGET_POSITION_STATE,
+
+    /** contentCount     INTEGER (0 .. maxInt) transition */
     VLV_CONTENT_COUNT_STATE,
+
+    /** virtualListViewResult ENUMERATED transition */
     VLV_VIRTUAL_LIST_VIEW_RESULT_STATE,
+
+    /** contextID     OCTET STRING OPTIONAL transition */
     VLV_CONTEXT_ID_STATE,
+    
+    /** Final state */
     END_STATE;
 
     /**
@@ -51,6 +64,12 @@ public enum VirtualListViewResponseStates implements States
     }
 
 
+    /**
+     * Get the string representing the state
+     * 
+     * @param state The state number
+     * @return The String representing the state
+     */
     public String getState( int state )
     {
         return ( state == END_STATE.ordinal() ) ? "VLV_RESPONSE_END_STATE" : name();

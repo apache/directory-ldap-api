@@ -43,6 +43,11 @@ public class StartTlsFactory implements ExtendedOperationFactory
     private LdapApiService codec;
 
 
+    /**
+     * Creates a new instance of StartTlsFactory.
+     *
+     * @param codec The codec for this factory.
+     */
     public StartTlsFactory( LdapApiService codec )
     {
         this.codec = codec;

@@ -42,6 +42,11 @@ public class CertGenerationFactory implements ExtendedOperationFactory
     private LdapApiService codec;
 
 
+    /**
+     * Creates a new instance of CertGenerationFactory.
+     *
+     * @param codec The codec for this factory.
+     */
     public CertGenerationFactory( LdapApiService codec )
     {
         this.codec = codec;

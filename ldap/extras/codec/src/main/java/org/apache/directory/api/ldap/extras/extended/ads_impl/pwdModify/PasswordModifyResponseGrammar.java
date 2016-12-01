@@ -60,6 +60,9 @@ public class PasswordModifyResponseGrammar extends AbstractGrammar<PasswordModif
     private static Grammar<PasswordModifyResponseContainer> instance = new PasswordModifyResponseGrammar();
 
 
+    /**
+     * Creates a new PasswordModifyResponseGrammar object.
+     */
     @SuppressWarnings("unchecked")
     public PasswordModifyResponseGrammar()
     {

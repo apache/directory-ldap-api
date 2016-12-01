@@ -52,18 +52,35 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
     private int warningLength = 0;
 
 
+    /**
+     * Creates a new instance of PasswordPolicyDecorator.
+     * 
+     * @param codec The LDAP Service to use
+     */
     public PasswordPolicyDecorator( LdapApiService codec )
     {
         super( codec, new PasswordPolicyImpl() );
     }
 
 
+    /**
+     * Creates a new instance of PasswordPolicyDecorator.
+     * 
+     * @param codec The LDAP Service to use
+     * @param hasResponse The hasResponse flag
+     */
     public PasswordPolicyDecorator( LdapApiService codec, boolean hasResponse )
     {
         super( codec, new PasswordPolicyImpl( hasResponse ) );
     }
 
 
+    /**
+     * Creates a new instance of PasswordPolicyDecorator.
+     * 
+     * @param codec The LDAP Service to use
+     * @param policy The asswordPolicy to use
+     */
     public PasswordPolicyDecorator( LdapApiService codec, PasswordPolicy policy )
     {
         super( codec, policy );

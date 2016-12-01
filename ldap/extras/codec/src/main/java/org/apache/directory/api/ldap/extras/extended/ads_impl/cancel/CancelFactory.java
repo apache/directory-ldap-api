@@ -42,6 +42,11 @@ public class CancelFactory implements ExtendedOperationFactory
     private LdapApiService codec;
 
 
+    /**
+     * Creates a new instance of CancelFactory.
+     *
+     * @param codec The codec for this factory.
+     */
     public CancelFactory( LdapApiService codec )
     {
         this.codec = codec;

@@ -42,6 +42,11 @@ public class GracefulShutdownFactory implements ExtendedOperationFactory
     private LdapApiService codec;
 
 
+    /**
+     * Creates a new instance of GracefulShutdownFactory.
+     *
+     * @param codec The codec for this factory.
+     */
     public GracefulShutdownFactory( LdapApiService codec )
     {
         this.codec = codec;

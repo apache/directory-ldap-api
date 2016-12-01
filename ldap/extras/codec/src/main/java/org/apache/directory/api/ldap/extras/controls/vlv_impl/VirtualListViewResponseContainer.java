@@ -38,6 +38,11 @@ public class VirtualListViewResponseContainer extends AbstractContainer
     private LdapApiService codec;
 
 
+    /**
+     * Creates a new VirtualListViewResponseContainer object.
+     *
+     * @param codec The LDAP Service to use
+     */
     public VirtualListViewResponseContainer( LdapApiService codec )
     {
         super();
@@ -47,6 +52,12 @@ public class VirtualListViewResponseContainer extends AbstractContainer
     }
 
 
+    /**
+     * Creates a new VirtualListViewResponseContainer object.
+     *
+     * @param control The VLV control to decorate
+     * @param codec The LDAP Service to use
+     */
     public VirtualListViewResponseContainer( VirtualListViewResponseDecorator control, LdapApiService codec )
     {
         this( codec );
@@ -54,12 +65,20 @@ public class VirtualListViewResponseContainer extends AbstractContainer
     }
 
 
+    /**
+     * @return The decorared VLV control
+     */
     public VirtualListViewResponseDecorator getDecorator()
     {
         return control;
     }
 
 
+    /**
+     * Decorate a VLV control
+     *  
+     * @param control The VLV control to decorate
+     */
     public void decorate( VirtualListViewResponse control )
     {
         if ( control instanceof VirtualListViewResponseDecorator )
@@ -73,6 +92,11 @@ public class VirtualListViewResponseContainer extends AbstractContainer
     }
 
 
+    /**
+     * Set the VLV control
+     * 
+     * @param control The VLV control
+     */
     public void setVirtualListViewResponseControl( VirtualListViewResponseDecorator control )
     {
         this.control = control;

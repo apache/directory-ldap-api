@@ -37,6 +37,11 @@ public class VirtualListViewRequestFactory implements ControlFactory<VirtualList
     private LdapApiService codec;
 
 
+    /**
+     * Creates a new instance of VirtualListViewRequestFactory.
+     *
+     * @param codec The codec for this factory.
+     */
     public VirtualListViewRequestFactory( LdapApiService codec )
     {
         this.codec = codec;

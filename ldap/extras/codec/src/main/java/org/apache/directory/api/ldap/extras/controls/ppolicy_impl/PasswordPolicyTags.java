@@ -28,13 +28,16 @@ package org.apache.directory.api.ldap.extras.controls.ppolicy_impl;
  */
 public enum PasswordPolicyTags
 {
-    // warning [0]
+    /** warning [0] */
     PPOLICY_WARNING_TAG(0xA0),
-    // error [1]
+    
+    /** error [1] */
     PPOLICY_ERROR_TAG(0x81),
-    // timeBeforeExpiration [0]
+    
+    /** timeBeforeExpiration [0] */
     TIME_BEFORE_EXPIRATION_TAG(0x80),
-    // graceAuthNsRemaining [1]
+    
+    /** graceAuthNsRemaining [1] */
     GRACE_AUTHNS_REMAINING_TAG(0x81);
 
     /** Internal value for each tag */
@@ -47,6 +50,9 @@ public enum PasswordPolicyTags
     }
 
 
+    /**
+     * @return The numeric value associated with the PasswordPolicy tag
+     */
     public int getValue()
     {
         return value;

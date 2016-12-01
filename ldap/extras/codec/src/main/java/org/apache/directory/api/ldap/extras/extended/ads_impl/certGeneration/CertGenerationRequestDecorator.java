@@ -53,6 +53,12 @@ public class CertGenerationRequestDecorator extends ExtendedRequestDecorator<Cer
     private int requestLength = 0;
 
 
+    /**
+     * Creates a new instance of CertGenerationRequestDecorator.
+     * 
+     * @param codec The LDAP Service to use
+     * @param decoratedMessage The certificate generation request
+     */
     public CertGenerationRequestDecorator( LdapApiService codec, CertGenerationRequest decoratedMessage )
     {
         super( codec, decoratedMessage );
@@ -60,6 +66,9 @@ public class CertGenerationRequestDecorator extends ExtendedRequestDecorator<Cer
     }
 
 
+    /**
+     * @return The certificate generation request
+     */
     public CertGenerationRequest getCertGenerationRequest()
     {
         return certGenerationRequest;

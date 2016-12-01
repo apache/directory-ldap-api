@@ -91,6 +91,9 @@ public class AdDirSyncContainer extends AbstractContainer
     }
 
 
+    /**
+     * @return The LdapAPi service instance
+     */
     public LdapApiService getCodecService()
     {
         return codec;

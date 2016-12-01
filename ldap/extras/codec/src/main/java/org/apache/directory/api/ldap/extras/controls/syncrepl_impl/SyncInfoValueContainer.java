@@ -92,6 +92,9 @@ public class SyncInfoValueContainer extends AbstractContainer
     }
 
 
+    /**
+     * @return The LDAP API service
+     */
     public LdapApiService getCodecService()
     {
         return codec;

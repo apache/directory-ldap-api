@@ -52,7 +52,7 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
 
 
     /**
-     * Creates a new instance of AdDirSyncControlCodec.
+     * Creates a new instance of AdDirSyncDecorator.
      * 
      * @param codec The LDAP Service to use
      */

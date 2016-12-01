@@ -53,6 +53,12 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
     private int cancelSequenceLength;
 
 
+    /**
+     * Creates a new instance of CancelRequestDecorator.
+     * 
+     * @param codec The LDAP Service to use
+     * @param decoratedMessage The canceled request
+     */
     public CancelRequestDecorator( LdapApiService codec, CancelRequest decoratedMessage )
     {
         super( codec, decoratedMessage );
