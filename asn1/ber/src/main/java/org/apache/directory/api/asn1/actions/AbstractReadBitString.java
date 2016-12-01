@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 /**
  * The action used read a BITSTRING from a TLV
  * 
- * @param C The container type
+ * @param <C> The container type
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

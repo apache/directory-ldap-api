@@ -890,7 +890,13 @@ public enum I18n
         }
     }
 
-
+    /**
+     * Format a message injecting some parameters in the pattern.
+     * 
+     * @param pattern The message pattern
+     * @param args The arguments to inject in the pattern
+     * @return The resulting messages
+     */
     public static String format( String pattern, Object... args )
     {
         return new MessageFormat( pattern, Locale.ROOT ).format( args );

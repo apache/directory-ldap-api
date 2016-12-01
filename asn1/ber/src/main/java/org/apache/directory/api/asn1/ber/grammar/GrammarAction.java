@@ -27,7 +27,7 @@ import org.apache.directory.api.asn1.ber.Asn1Container;
  * A top level grammar class that store meta informations about the actions.
  * Those informations are not mandatory, but they can be useful for debugging.
  * 
- * @param C The container type
+ * @param <C> The container type
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
