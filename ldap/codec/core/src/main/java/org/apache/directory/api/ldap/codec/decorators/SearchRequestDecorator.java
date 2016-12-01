@@ -126,6 +126,9 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     }
 
 
+    /**
+     * @return The current search filter
+     */
     public Filter getCurrentFilter()
     {
         return currentFilter;

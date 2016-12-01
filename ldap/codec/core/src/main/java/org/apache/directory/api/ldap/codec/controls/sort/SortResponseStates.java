@@ -30,14 +30,19 @@ import org.apache.directory.api.asn1.ber.grammar.States;
  */
 public enum SortResponseStates implements States
 {
+    /** Initialstate */ 
     START_STATE,
 
+    /** SortResult ::= SEQUENCE transition */
     SEQUENCE_STATE,
 
+    /** sortResult  ENUMERATED transition */
     RESULT_CODE_STATE,
     
+    /** attributeType [0] AttributeDescription OPTIONAL transition */
     AT_DESC_STATE,
 
+    /** Final state */
     END_STATE;
 
     /**

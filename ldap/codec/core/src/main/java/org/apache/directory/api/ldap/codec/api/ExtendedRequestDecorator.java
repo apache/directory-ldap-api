@@ -90,7 +90,9 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
 
 
     /**
-     * {@inheritDoc}
+     * Gets the Extended request payload 
+     * 
+     * @return The extended payload
      */
     public byte[] getRequestValue()
     {
@@ -99,7 +101,9 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
 
 
     /**
-     * {@inheritDoc}
+     * sets the Extended request payload 
+     * 
+     * @param requestValue The extended payload
      */
     public void setRequestValue( byte[] requestValue )
     {

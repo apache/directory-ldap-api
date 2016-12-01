@@ -30,18 +30,25 @@ import org.apache.directory.api.asn1.ber.grammar.States;
  */
 public enum SortRequestStates implements States
 {
+    /** Initial state */
     START_STATE,
 
+    /** SortKeyList ::= SEQUENCE OF transition */
     SEQUENCE_OF_SEQUENCE_STATE,
     
+    /** SortKeyList ::= SEQUENCE OF SEQUENCE transition */
     SORT_KEY_SEQUENCE_STATE,
 
+    /** attributeType   AttributeDescription transition */
     AT_DESC_STATE,
 
+    /** orderingRule    [0] MatchingRuleId OPTIONAL transition */
     ORDER_RULE_STATE,
 
+    /** reverseOrder    [1] BOOLEAN DEFAULT FALSE transition */
     REVERSE_ORDER_STATE,
 
+    /** Final state */
     END_STATE;
 
     /**

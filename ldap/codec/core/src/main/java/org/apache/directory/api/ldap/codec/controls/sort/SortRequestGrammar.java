@@ -39,7 +39,14 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Grammar used for decoding a SortRequestControl.
+ * Grammar used for decoding a SortRequestControl. It's defined in https://tools.ietf.org/html/rfc2891
+ * 
+ * <pre>
+ * SortKeyList ::= SEQUENCE OF SEQUENCE {
+ *               attributeType   AttributeDescription,
+ *               orderingRule    [0] MatchingRuleId OPTIONAL,
+ *               reverseOrder    [1] BOOLEAN DEFAULT FALSE }
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
