@@ -111,7 +111,8 @@ public class BinaryAnonymizer extends AbstractAnonymizer<byte[]>
     /**
      * {@inheritDoc}
      */
-    public void setLatestBytesgMap( Map<Integer, byte[]> latestBytesMap )
+    @Override
+    public void setLatestBytesMap( Map<Integer, byte[]> latestBytesMap )
     {
         this.latestBytesMap = latestBytesMap;
     }

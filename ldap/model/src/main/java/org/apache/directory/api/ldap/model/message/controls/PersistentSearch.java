@@ -35,32 +35,75 @@ public interface PersistentSearch extends Control
     /** Min and Max values for the possible combined change types */
     int CHANGE_TYPES_MIN = ChangeType.ADD.getValue();
 
+    /** The maximum value for the possible combined changes type */
     int CHANGE_TYPES_MAX = ChangeType.ADD.getValue()
         | ChangeType.DELETE.getValue()
         | ChangeType.MODIFY.getValue()
         | ChangeType.MODDN.getValue();
 
 
+    /**
+     * Sets the ChangesOnly flag
+     *   
+     * @param changesOnly The ChangesOnly flag
+     */
     void setChangesOnly( boolean changesOnly );
 
 
+    /**
+     * @return <T>TRUE</T> if the changesOnly flag is set
+     */
     boolean isChangesOnly();
 
 
+    /**
+     * Sets the return entry changes flag
+     * 
+     * @param returnECs the return entry changes flag
+     */
     void setReturnECs( boolean returnECs );
 
 
+    /**
+     * @return <T>TRUE</T> if the return entry changes flag is set
+     */
     boolean isReturnECs();
 
 
+    /**
+     * Set the changeType value we want to get back ( a combinaison of Add, Delete,
+     * Modify and ModifyDN)
+     *  
+     * @param changeTypes The changeType values (Add, Modify, Delete and ModifyDn)
+     */
     void setChangeTypes( int changeTypes );
 
 
+    /**
+     * @return The changeTypes value
+     */
     int getChangeTypes();
 
 
+    /**
+     * For each changeType, tells if the notification is enabled
+     * 
+     * @param changeType The ChnageType we are interested in
+     * @return <T>TRUE<T> if the notification is set for this ChangeType
+     */
     boolean isNotificationEnabled( ChangeType changeType );
 
 
+    /**
+     * Sets the notification for a given changeType 
+     * @param changeType The chnageType we want some notification to be set
+     */
     void enableNotification( ChangeType changeType );
+
+
+    /**
+     * Unsets the notification for a given changeType 
+     * @param changeType The chnageType we want some notification to be unset
+     */
+    void disableNotification( ChangeType changeType );
 }

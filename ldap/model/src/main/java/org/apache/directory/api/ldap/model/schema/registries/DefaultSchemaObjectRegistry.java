@@ -39,6 +39,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Common schema object registry interface.
+ * 
+ * @param <T> The type of SchemaObject
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -418,7 +420,10 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
 
 
     /**
-     * {@inheritDoc}
+     * Copy a SchemaObject registry
+     * 
+     * @param original The SchemaObject registry to copy
+     * @return The copied ShcemaObject registry
      */
     // This will suppress PMD.EmptyCatchBlock warnings in this method
     @SuppressWarnings("unchecked")

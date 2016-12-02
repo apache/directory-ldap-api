@@ -41,6 +41,10 @@ public class IntermediateResponseImpl extends AbstractResultResponse implements 
     protected byte[] responseValue;
 
 
+    /**
+     * Creates a new IntermediateResponseImpl instance
+     * @param id The request ID
+     */
     public IntermediateResponseImpl( int id )
     {
         super( id, TYPE );

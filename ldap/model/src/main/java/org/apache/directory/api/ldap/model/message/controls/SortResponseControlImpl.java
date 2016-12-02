@@ -32,6 +32,9 @@ public class SortResponseControlImpl extends AbstractControl  implements SortRes
     /** name of the first offending attribute */
     private String attributeName;
     
+    /**
+     * Creates a new SortResponseControlImpl instance
+     */
     public SortResponseControlImpl()
     {
         super( OID );

@@ -43,6 +43,10 @@ public class CsnFactory
     private Object lock = new Object();
 
 
+    /**
+     * Creates a new CsnFactory instance
+     * @param replicaId The replica ID
+     */
     public CsnFactory( int replicaId )
     {
         changeCount = 0;
@@ -111,6 +115,10 @@ public class CsnFactory
     }
 
 
+    /**
+     * Sets the replica ID
+     * @param replicaId The replica ID
+     */
     public void setReplicaId( int replicaId )
     {
         this.replicaId = replicaId;

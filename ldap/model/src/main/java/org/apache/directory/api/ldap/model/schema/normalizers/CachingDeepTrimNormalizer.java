@@ -32,6 +32,9 @@ package org.apache.directory.api.ldap.model.schema.normalizers;
 @SuppressWarnings("serial")
 public class CachingDeepTrimNormalizer extends CachingNormalizer
 {
+    /**
+     * Creates a new CachingDeepTrimNormalizer instance
+     */
     public CachingDeepTrimNormalizer()
     {
         super( new DeepTrimNormalizer() );

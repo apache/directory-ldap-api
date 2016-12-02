@@ -38,6 +38,8 @@ import antlr.TokenStreamRecognitionException;
 
 /**
  * Base class of all schema parsers.
+ * 
+ * @param <T> The type of SchemaObject
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

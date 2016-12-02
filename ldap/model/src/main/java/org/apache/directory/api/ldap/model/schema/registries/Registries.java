@@ -127,8 +127,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /** A flag indicating that disabled SchemaObject are accepted */
     private boolean disabledAccepted;
 
-    /** Two flags for RELAXED and STRUCT */
+    /** Two flags for RELAXED and STRiCT */
+    /** The strict mode */
     public static final boolean STRICT = false;
+    
+    /** The relaxed mode */
     public static final boolean RELAXED = true;
 
     /**

@@ -27,25 +27,66 @@ package org.apache.directory.api.ldap.model.message;
  */
 public enum MessageTypeEnum
 {
+    /** The AbandonRequest message */
     ABANDON_REQUEST,
+    
+    /** The AddResquest message */
     ADD_REQUEST,
+    
+    /** The Response message */
     ADD_RESPONSE,
+    
+    /** The BindRequest message */
     BIND_REQUEST,
+    
+    /** The BindResponse message */
     BIND_RESPONSE,
+    
+    /** The  ompareRequest message */
     COMPARE_REQUEST,
+    
+    /** The CompareResponse message */
     COMPARE_RESPONSE,
+    
+    /** The DelRequest message */
     DEL_REQUEST,
+    
+    /** The DelResponse message */
     DEL_RESPONSE,
+    
+    /** The ExtendedRequest message */
     EXTENDED_REQUEST,
+    
+    /** The ExtendedResponse message */
     EXTENDED_RESPONSE,
+    
+    /** The ModifyDNRequest message */
     MODIFYDN_REQUEST,
+    
+    /** The ModifyDNResponse message */
     MODIFYDN_RESPONSE,
+    
+    /** The ModifyRequest message */
     MODIFY_REQUEST,
+    
+    /** The ModifyResponse message */
     MODIFY_RESPONSE,
+    
+    /** The SearchRequest message */
     SEARCH_REQUEST,
+    
+    /** The SeaechResultDone response message */
     SEARCH_RESULT_DONE,
+    
+    /** The SearchResultEntry Response message */
     SEARCH_RESULT_ENTRY,
+    
+    /** The earchResultReference Response message */
     SEARCH_RESULT_REFERENCE,
+    
+    /** The UnbindRequest message */
     UNBIND_REQUEST,
+    
+    /** The IntermediateResponse message */
     INTERMEDIATE_RESPONSE;
 }

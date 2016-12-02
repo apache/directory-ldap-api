@@ -158,15 +158,34 @@ public final class PrepareString
      */
     public enum StringType
     {
+        /** Not a String */
         NOT_STRING,
+        
+        /** A numeric String */
         NUMERIC_STRING,
+        
+        /** Case sensitive String */
         CASE_EXACT,
+        
+        /** IA5 case sensitive String */
         CASE_EXACT_IA5,
+        
+        /** IA5 case insensitive String */
         CASE_IGNORE_IA5,
+        
+        /** Case insensitive String list */
         CASE_IGNORE_LIST,
+        
+        /** Case insensitive String */
         CASE_IGNORE,
+        
+        /** Directory String */
         DIRECTORY_STRING,
+        
+        /** Telephone number String */
         TELEPHONE_NUMBER,
+        
+        /** A word */
         WORD
     }
 

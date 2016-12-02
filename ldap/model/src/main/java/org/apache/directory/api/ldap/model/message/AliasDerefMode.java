@@ -231,7 +231,7 @@ public enum AliasDerefMode
 
 
     /**
-     * get the AliasDerefMode corresponding to the string value {@link  #jndiValue} passed
+     * get the AliasDerefMode corresponding to the string value jndiValue passed
      *
      * @param val the AliasDerefMode's string value
      * @return the AliasDerefMode whose value is equivalent to the given string value
@@ -265,6 +265,9 @@ public enum AliasDerefMode
     }
 
 
+    /**
+     * @return The JNDI value
+     */
     public String getJndiValue()
     {
         return jndiValue;

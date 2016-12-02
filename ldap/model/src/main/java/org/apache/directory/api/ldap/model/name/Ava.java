@@ -1173,7 +1173,6 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     /**
      * @see Comparable#compareTo(Object)
      */
-    @SuppressWarnings("unchecked")
     @Override
     public int compareTo( Ava that )
     {

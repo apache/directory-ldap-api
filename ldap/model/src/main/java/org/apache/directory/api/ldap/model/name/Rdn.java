@@ -329,6 +329,13 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
     }
 
 
+    /**
+     * A constructor that constructs a Schema aware Rdn from some values.
+     * 
+     * @param schemaManager The schemaManager to use
+     * @param avas The list of values
+     * @throws LdapInvalidDnException If the Rdn is invalid
+     */
     public Rdn( SchemaManager schemaManager, Ava... avas ) throws LdapInvalidDnException
     {
         StringBuilder buffer = new StringBuilder();
@@ -349,6 +356,12 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
     }
 
 
+    /**
+     * A constructor that constructs a Rdn from some values.
+     * 
+     * @param avas The list of values
+     * @throws LdapInvalidDnException If the Rdn is invalid
+     */
     public Rdn( Ava... avas ) throws LdapInvalidDnException
     {
         this( null, avas );

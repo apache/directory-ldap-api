@@ -942,6 +942,9 @@ public boolean hasExtension( String extension )
     }
 
 
+    /**
+     * Unlock the Schema Object and make it modifiable again.
+     */
     public void unlock()
     {
         locked = false;

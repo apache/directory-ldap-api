@@ -30,8 +30,13 @@ import org.apache.directory.api.i18n.I18n;
  */
 public enum SearchScope
 {
+    /** Base scope */
     OBJECT(0, "base"),
+    
+    /** One Level scope */
     ONELEVEL(1, "one"),
+    
+    /** Subtree scope */
     SUBTREE(2, "sub");
 
     /** 

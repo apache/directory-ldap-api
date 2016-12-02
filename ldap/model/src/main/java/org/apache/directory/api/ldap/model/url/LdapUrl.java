@@ -213,6 +213,7 @@ public class LdapUrl
 
         // The scheme
         pos = Strings.areEquals( chars, 0, LDAP_SCHEME );
+        
         if ( pos == StringConstants.NOT_EQUAL )
         {
             pos = Strings.areEquals( chars, 0, LDAPS_SCHEME );
@@ -1720,7 +1721,6 @@ public class LdapUrl
      * Get a string representation of a LdapUrl.
      *
      * @return A LdapUrl string
-     * @see LdapUrl#forceScopeRendering
      */
     @Override
     public String toString()

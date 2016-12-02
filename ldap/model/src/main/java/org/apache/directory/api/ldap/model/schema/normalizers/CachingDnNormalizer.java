@@ -35,6 +35,9 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
 @SuppressWarnings("serial")
 public class CachingDnNormalizer extends CachingNormalizer
 {
+    /**
+     * Creates a new CachingDnNormalizer instance
+     */
     public CachingDnNormalizer()
     {
         super( new DnNormalizer() );

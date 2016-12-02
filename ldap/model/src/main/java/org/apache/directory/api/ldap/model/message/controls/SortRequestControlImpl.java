@@ -37,6 +37,9 @@ public class SortRequestControlImpl extends AbstractControl implements SortReque
     private List<SortKey> sortKeys;
 
 
+    /**
+     * Creates a new SortRequestControlImpl instance
+     */
     public SortRequestControlImpl()
     {
         super( OID );

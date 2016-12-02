@@ -117,9 +117,9 @@ public class IntegerAnonymizer extends AbstractAnonymizer<String>
         return result;
     }
     
-    
+
     /**
-     * {@inheritDoc}
+     * @return The Map containing the latest anonymized value for each integer
      */
     public Map<Integer, String> getLatestIntegerMap()
     {
@@ -128,7 +128,8 @@ public class IntegerAnonymizer extends AbstractAnonymizer<String>
     
     
     /**
-     * {@inheritDoc}
+     * Set the Map containing anonymized integers
+     * @param latestIntegerMap The Map containing the latest anonymized value for each integer
      */
     public void setLatestIntegerMap( Map<Integer, String> latestIntegerMap )
     {

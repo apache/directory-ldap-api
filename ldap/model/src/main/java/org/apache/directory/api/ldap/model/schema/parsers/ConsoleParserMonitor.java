@@ -28,9 +28,13 @@ package org.apache.directory.api.ldap.model.schema.parsers;
  */
 public class ConsoleParserMonitor implements ParserMonitor
 {
+    /** The maven property to add on the commmand line */
     public static final String TRACE_KEY = "maven.eve.schema.parser.trace";
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void matchedProduction( String prod )
     {
@@ -41,6 +45,9 @@ public class ConsoleParserMonitor implements ParserMonitor
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void startedParse( String s )
     {
@@ -51,6 +58,9 @@ public class ConsoleParserMonitor implements ParserMonitor
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void finishedParse( String s )
     {

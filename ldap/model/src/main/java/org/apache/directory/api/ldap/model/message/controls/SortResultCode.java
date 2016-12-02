@@ -58,6 +58,9 @@ public enum SortResultCode
         this.desc = desc;
     }
 
+    /**
+     * @return The internet value
+     */
     public int getVal()
     {
         return val;
