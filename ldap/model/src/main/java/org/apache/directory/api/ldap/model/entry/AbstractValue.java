@@ -36,7 +36,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A wrapper around byte[] values in entries.
- *
+ * 
+ * @param <T> The valye type
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class AbstractValue<T> implements Value<T>

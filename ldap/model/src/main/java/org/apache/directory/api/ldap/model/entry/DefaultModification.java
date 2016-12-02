@@ -290,7 +290,7 @@ public class DefaultModification implements Modification
 
 
     /**
-     * {@inheritDoc}
+     * @return The associated AttributeType
      */
     public AttributeType getAttributeType()
     {

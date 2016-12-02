@@ -31,12 +31,16 @@ import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
  * A interface for wrapping attribute values stored into an EntryAttribute. These
  * values can be a String or a byte[].
  *
+ * @param <T> The valye type
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>>
 {
-    /** Two flags used to tell if the value is HR or not in serialization */
+    /** A flag used to tell if the value is HR in serialization */
     boolean STRING = true;
+
+    /** A flag used to tell if the value is not HR in serialization */
     boolean BINARY = false;
 
 

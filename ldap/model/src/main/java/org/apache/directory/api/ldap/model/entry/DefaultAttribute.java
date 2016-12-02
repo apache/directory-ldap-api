@@ -570,7 +570,9 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
-     * {@inheritDoc}
+     * Sets the User Provided ID as a byte[]
+     * 
+     * @param upId The User Provided ID
      */
     public void setUpId( byte[] upId )
     {
@@ -625,7 +627,10 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
-     * {@inheritDoc}
+     * Sets the User Provided ID as a byte[]
+     * 
+     * @param upId The User Provided ID
+     * @param attributeType The asscoiated AttributeType
      */
     public void setUpId( byte[] upId, AttributeType attributeType )
     {
@@ -642,9 +647,6 @@ public class DefaultAttribute implements Attribute, Cloneable
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     private void setUpIdInternal( String upId, String newId, AttributeType attributeType )
     {
         if ( attributeType == null )

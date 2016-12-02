@@ -27,6 +27,8 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
 /**
  * A assertion value node for LessOrEqual.
  * 
+ * @param <T> The Value type
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class LessEqNode<T> extends SimpleNode<T>

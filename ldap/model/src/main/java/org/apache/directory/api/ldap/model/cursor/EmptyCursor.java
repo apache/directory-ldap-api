@@ -43,6 +43,9 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     private static final boolean IS_DEBUG = LOG_CURSOR.isDebugEnabled();
 
 
+    /**
+     * Creates a new EmptyCursor instance
+     */
     public EmptyCursor()
     {
         if ( IS_DEBUG )

@@ -27,6 +27,8 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
 /**
  * A simple assertion value node.
  * 
+ * @param <T> The Value type
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ApproximateNode<T> extends SimpleNode<T>

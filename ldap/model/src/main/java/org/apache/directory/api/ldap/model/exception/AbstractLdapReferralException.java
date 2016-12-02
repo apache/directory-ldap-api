@@ -72,18 +72,33 @@ public class AbstractLdapReferralException extends LdapOperationException
     }
 
 
+    /**
+     * Not yet implemented
+     * 
+     * @return The Referral Context
+     * @throws NamingException If the operation failed
+     */
     public Context getReferralContext() throws NamingException
     {
         throw new NotImplementedException();
     }
 
 
+    /**
+     * Not yet implemented
+     * @param arg The arguments
+     * @return The referral context
+     * @throws NamingException If the operation failed
+     */
     public Context getReferralContext( Map<?, ?> arg ) throws NamingException
     {
         throw new NotImplementedException();
     }
 
 
+    /**
+     * Retry. Not yet implemented
+     */
     public void retryReferral()
     {
         throw new NotImplementedException();
