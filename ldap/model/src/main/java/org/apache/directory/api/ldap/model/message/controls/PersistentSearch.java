@@ -51,7 +51,7 @@ public interface PersistentSearch extends Control
 
 
     /**
-     * @return <T>TRUE</T> if the changesOnly flag is set
+     * @return <TT>TRUE</TT> if the changesOnly flag is set
      */
     boolean isChangesOnly();
 
@@ -65,7 +65,7 @@ public interface PersistentSearch extends Control
 
 
     /**
-     * @return <T>TRUE</T> if the return entry changes flag is set
+     * @return <TT>TRUE</TT> if the return entry changes flag is set
      */
     boolean isReturnECs();
 
