@@ -282,7 +282,7 @@ public class BatchRequestDsml
         // RequestID
         if ( requestID != 0 )
         {
-            element.addAttribute( "requestID", "" + requestID );
+            element.addAttribute( "requestID", Integer.toString( requestID ) );
         }
 
         // ResponseOrder

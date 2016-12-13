@@ -35,8 +35,9 @@ import org.apache.directory.api.util.Strings;
 /**
  * A decorator for the ExtendedRequest message
  *
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @param <Q> The extended request to decorate
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ExtendedRequestDecorator<Q extends ExtendedRequest>
     extends SingleReplyRequestDecorator<Q> implements ExtendedRequest

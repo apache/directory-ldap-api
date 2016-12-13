@@ -29,8 +29,9 @@ import org.apache.directory.api.asn1.EncoderException;
  * The codec uses this interface to add additional information to LDAP Model
  * objects during encoding and decoding,
  *
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @param <E> The element to decorate
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface Decorator<E>
 {

@@ -23,7 +23,6 @@ package org.apache.directory.api.dsmlv2.response;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.LdapResult;
 import org.apache.directory.api.ldap.model.message.ResultResponse;
-import org.dom4j.Element;
 
 
 /**
@@ -46,12 +45,6 @@ public abstract class AbstractResultResponseDsml<E extends ResultResponse>
     {
         super( codec, resultResponse );
     }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public abstract Element toDsml( Element root );
 
 
     /**

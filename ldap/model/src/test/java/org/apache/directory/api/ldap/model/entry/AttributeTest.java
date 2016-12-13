@@ -154,7 +154,7 @@ public class AttributeTest
 
 
     /**
-     * @throws java.lang.Exception
+     * @throws Exception
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception

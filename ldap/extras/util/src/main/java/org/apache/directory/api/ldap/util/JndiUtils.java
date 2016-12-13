@@ -99,6 +99,7 @@ public final class JndiUtils
     * @param control The control to convert
     * @return A JNDI control
     * @throws EncoderException If the conversion failed
+     * @deprecated We don't use JNDI anymore
     */
     @Deprecated
     public static javax.naming.ldap.Control toJndiControl( LdapApiService codec, Control control )
@@ -112,8 +113,9 @@ public final class JndiUtils
      * Convert some LDAP API controls to JNDI controls
      * @param codec The LDAP API service to use
      * @param controls The controls to convert
-     * @return Aarray of JNDI control
+     * @return Array of JNDI control
      * @throws EncoderException If the conversion failed
+     * @deprecated We don't use JNDI anymore
      */
     @Deprecated
     public static javax.naming.ldap.Control[] toJndiControls( LdapApiService codec, Control... controls )
@@ -144,6 +146,7 @@ public final class JndiUtils
      * @param jndiControl The control to convert
      * @return A LDAP API control
      * @throws DecoderException If the conversion failed
+     * @deprecated We don't use JNDI anymore
      */
     @Deprecated
     public static Control fromJndiControl( LdapApiService codec, javax.naming.ldap.Control jndiControl )
@@ -157,8 +160,9 @@ public final class JndiUtils
      * Convert some JNDI controls to LDAP API controls
      * @param codec The LDAP API service to use
      * @param jndiControls The controls to convert
-     * @return An arrau of LDAP API control
+     * @return An array of LDAP API control
      * @throws DecoderException If the conversion failed
+     * @deprecated We don't use JNDI anymore
      */
     @Deprecated
     public static Control[] fromJndiControls( LdapApiService codec, javax.naming.ldap.Control... jndiControls )

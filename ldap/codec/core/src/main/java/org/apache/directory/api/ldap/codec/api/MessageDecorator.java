@@ -72,8 +72,9 @@ import org.apache.directory.api.ldap.model.message.UnbindRequest;
 /**
  * A decorator for the generic LDAP Message
  *
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @param <E> The message to decorate
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class MessageDecorator<E extends Message> implements Message, Decorator<E>, Asn1Object
 {

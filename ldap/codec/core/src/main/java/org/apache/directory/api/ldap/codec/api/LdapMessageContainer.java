@@ -32,8 +32,9 @@ import org.apache.directory.api.ldap.model.message.Message;
  * When dealing with an encoding PDU, we will obtain a LdapMessage in the
  * container.
  *
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @param <E> The decorated message
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class LdapMessageContainer<E extends MessageDecorator<? extends Message>> extends AbstractContainer
 {

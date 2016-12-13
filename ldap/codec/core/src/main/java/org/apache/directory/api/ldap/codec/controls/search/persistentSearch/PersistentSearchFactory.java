@@ -27,7 +27,7 @@ import org.apache.directory.api.ldap.model.message.controls.PersistentSearch;
 
 
 /**
- * 
+ * A factory to create a PersistentSearch control 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$

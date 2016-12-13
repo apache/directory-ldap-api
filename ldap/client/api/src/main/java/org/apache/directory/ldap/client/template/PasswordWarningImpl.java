@@ -66,6 +66,9 @@ final class PasswordWarningImpl implements PasswordWarning
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getTimeBeforeExpiration()
     {
@@ -73,6 +76,9 @@ final class PasswordWarningImpl implements PasswordWarning
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getGraceAuthNsRemaining()
     {
@@ -80,6 +86,9 @@ final class PasswordWarningImpl implements PasswordWarning
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isChangeAfterReset()
     {

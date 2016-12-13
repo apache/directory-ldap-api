@@ -77,7 +77,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
         int requestID = message.getMessageId();
         if ( requestID > 0 )
         {
-            root.addAttribute( "requestID", "" + requestID );
+            root.addAttribute( "requestID", Integer.toString( requestID ) );
         }
 
         // Matched Dn
@@ -93,12 +93,13 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
 
         // ResultCode
         Element resultCodeElement = root.addElement( "resultCode" );
-        resultCodeElement.addAttribute( "code", "" + result.getResultCode().getResultCode() );
+        resultCodeElement.addAttribute( "code", Integer.toString( result.getResultCode().getResultCode() ) );
         resultCodeElement.addAttribute( "descr", result.getResultCode().getMessage() );
 
         // ErrorMessage
         String errorMessage = ( result.getDiagnosticMessage() );
-        if ( ( errorMessage != null ) && ( !errorMessage.equals( "" ) ) )
+        
+        if ( ( errorMessage != null ) && ( errorMessage.length() != 0 ) )
         {
             Element errorMessageElement = root.addElement( "errorMessage" );
             errorMessageElement.addText( errorMessage );

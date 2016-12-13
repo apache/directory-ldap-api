@@ -115,7 +115,7 @@ public final class TriggerUtils
 
 
     /**
-     * Load the etrigger specification entry
+     * Load the trigger specification entry
      * 
      * @param ctx The context
      * @param triggerSpec The trigger specification

@@ -35,8 +35,9 @@ import org.apache.directory.api.util.Strings;
 /**
  * A decorator for the ExtendedResponse message
  *
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @param <R> The extended response to decorate
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ExtendedResponseDecorator<R extends ExtendedResponse> extends ResponseDecorator<R>
     implements ExtendedResponse

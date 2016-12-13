@@ -28,9 +28,10 @@ import org.apache.directory.api.ldap.model.message.ResultResponse;
 
 /**
  * A decorator for the Response message. It will store the LdapResult.
+ * 
+ * @param <M> The response to be decorated
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @param <M> The response to be decorated
  */
 public abstract class ResponseDecorator<M extends ResultResponse> extends MessageDecorator<M> implements ResultResponse
 {

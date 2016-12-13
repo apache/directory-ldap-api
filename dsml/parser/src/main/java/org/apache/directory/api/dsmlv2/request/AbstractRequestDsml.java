@@ -67,7 +67,7 @@ public abstract class AbstractRequestDsml<E extends Request>
         int requestID = getDecorated().getMessageId();
         if ( requestID > 0 )
         {
-            element.addAttribute( "requestID", "" + requestID );
+            element.addAttribute( "requestID", Integer.toString( requestID ) );
         }
 
         // Controls

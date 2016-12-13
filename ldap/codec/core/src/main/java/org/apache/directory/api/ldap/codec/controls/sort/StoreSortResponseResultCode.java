@@ -28,9 +28,9 @@ import org.apache.directory.api.ldap.model.message.controls.SortResultCode;
 /**
  * The action used to store the result code of a SortResponseControl
  * 
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * 
  * @param <C> The Asn1Container type to use
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class StoreSortResponseResultCode<C extends Asn1Container> extends AbstractReadInteger<C>
 {
