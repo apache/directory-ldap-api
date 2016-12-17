@@ -63,6 +63,7 @@ public abstract class AbstractValue<T> implements Value<T>
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
+    @Override
     public Value<T> clone()
     {
         try
@@ -80,6 +81,7 @@ public abstract class AbstractValue<T> implements Value<T>
     /**
      * {@inheritDoc}
      */
+    @Override
     public T getReference()
     {
         return upValue;
@@ -91,6 +93,7 @@ public abstract class AbstractValue<T> implements Value<T>
      *
      * @return the wrapped value as a String
      */
+    @Override
     public String getString()
     {
         throw new UnsupportedOperationException( "Cannot call this method on a binary value" );
@@ -102,6 +105,7 @@ public abstract class AbstractValue<T> implements Value<T>
      *
      * @return the wrapped value as a byte[]
      */
+    @Override
     public byte[] getBytes()
     {
         throw new UnsupportedOperationException( "Cannot call this method on a String value" );
@@ -111,6 +115,7 @@ public abstract class AbstractValue<T> implements Value<T>
     /**
      * {@inheritDoc}
      */
+    @Override
     public AttributeType getAttributeType()
     {
         return attributeType;
@@ -125,6 +130,7 @@ public abstract class AbstractValue<T> implements Value<T>
      * to the schema
      */
     @SuppressWarnings("unchecked")
+    @Override
     public void apply( AttributeType attributeType ) throws LdapInvalidAttributeValueException
     {
         if ( this.attributeType != null )
@@ -264,6 +270,7 @@ public abstract class AbstractValue<T> implements Value<T>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isInstanceOf( AttributeType attributeType )
     {
         return ( attributeType != null )
@@ -274,6 +281,7 @@ public abstract class AbstractValue<T> implements Value<T>
     /**
      * {@inheritDoc}
      */
+    @Override
     public T getNormReference()
     {
         if ( isNull() )
@@ -293,6 +301,7 @@ public abstract class AbstractValue<T> implements Value<T>
     /**
      * {@inheritDoc}
      */
+    @Override
     public final boolean isNull()
     {
         return upValue == null;
@@ -302,6 +311,7 @@ public abstract class AbstractValue<T> implements Value<T>
     /**
      * {@inheritDoc}
      */
+    @Override
     public final boolean isValid( SyntaxChecker syntaxChecker ) throws LdapInvalidAttributeValueException
     {
         if ( syntaxChecker == null )
@@ -325,6 +335,7 @@ public abstract class AbstractValue<T> implements Value<T>
     /**
      * {@inheritDoc}
      */
+    @Override
     public final boolean isSchemaAware()
     {
         return attributeType != null;

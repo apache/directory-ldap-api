@@ -54,7 +54,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     private AttributeType attributeType;
 
     /** The set of contained values */
-    private Set<Value<?>> values = new LinkedHashSet<Value<?>>();
+    private Set<Value<?>> values = new LinkedHashSet<>();
 
     /** The User provided ID */
     private String upId;
@@ -68,51 +68,6 @@ public class DefaultAttribute implements Attribute, Cloneable
 
     /** The computed hashcode. We don't want to compute it each time the hashcode() method is called */
     private volatile int h;
-
-
-    //-------------------------------------------------------------------------
-    // Helper methods
-    //-------------------------------------------------------------------------
-    private Value<String> createStringValue( AttributeType attributeType, String value )
-    {
-        Value<String> stringValue = null;
-
-        if ( attributeType != null )
-        {
-            try
-            {
-                stringValue = new StringValue( attributeType, value );
-            }
-            catch ( LdapInvalidAttributeValueException iae )
-            {
-                return null;
-            }
-        }
-        else
-        {
-            stringValue = new StringValue( value );
-        }
-
-        return stringValue;
-    }
-
-
-    private Value<byte[]> createBinaryValue( AttributeType attributeType, byte[] value )
-        throws LdapInvalidAttributeValueException
-    {
-        Value<byte[]> binaryValue = null;
-
-        if ( attributeType != null )
-        {
-            binaryValue = new BinaryValue( attributeType, value );
-        }
-        else
-        {
-            binaryValue = new BinaryValue( value );
-        }
-
-        return binaryValue;
-    }
 
 
     //-------------------------------------------------------------------------
@@ -506,9 +461,55 @@ public class DefaultAttribute implements Attribute, Cloneable
     }
 
 
+    //-------------------------------------------------------------------------
+    // Helper methods
+    //-------------------------------------------------------------------------
+    private Value<String> createStringValue( AttributeType attributeType, String value )
+    {
+        Value<String> stringValue;
+
+        if ( attributeType != null )
+        {
+            try
+            {
+                stringValue = new StringValue( attributeType, value );
+            }
+            catch ( LdapInvalidAttributeValueException iae )
+            {
+                return null;
+            }
+        }
+        else
+        {
+            stringValue = new StringValue( value );
+        }
+
+        return stringValue;
+    }
+
+
+    private Value<byte[]> createBinaryValue( AttributeType attributeType, byte[] value )
+        throws LdapInvalidAttributeValueException
+    {
+        Value<byte[]> binaryValue;
+
+        if ( attributeType != null )
+        {
+            binaryValue = new BinaryValue( attributeType, value );
+        }
+        else
+        {
+            binaryValue = new BinaryValue( value );
+        }
+
+        return binaryValue;
+    }
+
+
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getBytes() throws LdapInvalidAttributeValueException
     {
         Value<?> value = get();
@@ -527,6 +528,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getString() throws LdapInvalidAttributeValueException
     {
         Value<?> value = get();
@@ -545,6 +547,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getId()
     {
         return id;
@@ -554,6 +557,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getUpId()
     {
         return upId;
@@ -563,6 +567,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setUpId( String upId )
     {
         setUpId( upId, attributeType );
@@ -611,6 +616,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setUpId( String upId, AttributeType attributeType )
     {
         String trimmed = Strings.trim( upId );
@@ -712,6 +718,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isHumanReadable()
     {
         return isHR != null ? isHR : false;
@@ -721,6 +728,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValid( AttributeType attributeType ) throws LdapInvalidAttributeValueException
     {
         LdapSyntax syntax = attributeType.getSyntax();
@@ -738,7 +746,7 @@ public class DefaultAttribute implements Attribute, Cloneable
         }
 
         // Check that we can have no value for this attributeType
-        if ( values.size() == 0 )
+        if ( values.isEmpty() )
         {
             return syntaxChecker.isValidSyntax( null );
         }
@@ -772,6 +780,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public int add( Value<?>... vals )
     {
         int nbAdded = 0;
@@ -1041,6 +1050,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public int add( String... vals ) throws LdapInvalidAttributeValueException
     {
         int nbAdded = 0;
@@ -1190,7 +1200,7 @@ public class DefaultAttribute implements Attribute, Cloneable
         {
             for ( byte[] val : valArray )
             {
-                Value<byte[]> value = null;
+                Value<byte[]> value;
 
                 if ( attributeType == null )
                 {
@@ -1225,6 +1235,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear()
     {
         values.clear();
@@ -1234,6 +1245,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( Value<?>... vals )
     {
         if ( isHR == null )
@@ -1361,6 +1373,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( String... vals )
     {
         if ( isHR == null )
@@ -1520,6 +1533,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public Value<?> get()
     {
         if ( values.isEmpty() )
@@ -1534,6 +1548,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public int size()
     {
         return values.size();
@@ -1543,9 +1558,10 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean remove( Value<?>... vals )
     {
-        if ( ( isHR == null ) || ( values.size() == 0 ) )
+        if ( ( isHR == null ) || values.isEmpty() )
         {
             // Trying to remove a value from an empty list will fail
             return false;
@@ -1651,7 +1667,7 @@ public class DefaultAttribute implements Attribute, Cloneable
      */
     public boolean remove( byte[]... vals )
     {
-        if ( ( isHR == null ) || ( values.size() == 0 ) )
+        if ( ( isHR == null ) || values.isEmpty() )
         {
             // Trying to remove a value from an empty list will fail
             return false;
@@ -1711,9 +1727,10 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean remove( String... vals )
     {
-        if ( ( isHR == null ) || ( values.size() == 0 ) )
+        if ( ( isHR == null ) || values.isEmpty() )
         {
             // Trying to remove a value from an empty list will fail
             return false;
@@ -1775,6 +1792,7 @@ public class DefaultAttribute implements Attribute, Cloneable
      * 
      * @return an iterator over the stored values.
      */
+    @Override
     public Iterator<Value<?>> iterator()
     {
         return values.iterator();
@@ -1784,6 +1802,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public AttributeType getAttributeType()
     {
         return attributeType;
@@ -1793,6 +1812,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public void apply( AttributeType attributeType ) throws LdapInvalidAttributeValueException
     {
         if ( attributeType == null )
@@ -1817,7 +1837,7 @@ public class DefaultAttribute implements Attribute, Cloneable
 
         if ( values != null )
         {
-            Set<Value<?>> newValues = new LinkedHashSet<Value<?>>( values.size() );
+            Set<Value<?>> newValues = new LinkedHashSet<>( values.size() );
 
             for ( Value<?> value : values )
             {
@@ -1844,6 +1864,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isInstanceOf( AttributeType attributeType ) throws LdapInvalidAttributeValueException
     {
         return ( attributeType != null )
@@ -1885,6 +1906,7 @@ public class DefaultAttribute implements Attribute, Cloneable
      * @see Object#hashCode()
      * @return the instance's hashcode
      */
+    @Override
     public int hashCode()
     {
         if ( h == 0 )
@@ -1899,6 +1921,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * @see Object#equals(Object)
      */
+    @Override
     public boolean equals( Object obj )
     {
         if ( obj == this )
@@ -1972,6 +1995,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute clone()
     {
         try
@@ -1984,7 +2008,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                 attribute.attributeType = attributeType;
             }
 
-            attribute.values = new LinkedHashSet<Value<?>>( values.size() );
+            attribute.values = new LinkedHashSet<>( values.size() );
 
             for ( Value<?> value : values )
             {
@@ -2007,6 +2031,7 @@ public class DefaultAttribute implements Attribute, Cloneable
      * 
      * {@inheritDoc}
      */
+    @Override
     public void writeExternal( ObjectOutput out ) throws IOException
     {
         // Write the UPId (the id will be deduced from the upID)
@@ -2043,6 +2068,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public void readExternal( ObjectInput in ) throws IOException, ClassNotFoundException
     {
         // Read the ID and the UPId
@@ -2064,7 +2090,7 @@ public class DefaultAttribute implements Attribute, Cloneable
         {
             for ( int i = 0; i < nbValues; i++ )
             {
-                Value<?> value = null;
+                Value<?> value;
 
                 if ( isHR )
                 {
@@ -2086,7 +2112,8 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * @see Object#toString()
      */
-    public String toString()
+    @Override
+public String toString()
     {
         return toString( "" );
     }
@@ -2095,11 +2122,12 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString( String tabs )
     {
         StringBuilder sb = new StringBuilder();
 
-        if ( ( values != null ) && ( values.size() != 0 ) )
+        if ( ( values != null ) && !values.isEmpty() )
         {
             boolean isFirst = true;
 
