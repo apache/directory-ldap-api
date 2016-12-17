@@ -58,6 +58,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean available()
     {
         return false;
@@ -67,6 +68,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void before( E element ) throws LdapException, CursorException
     {
         checkNotClosed( "before()" );
@@ -76,6 +78,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void after( E element ) throws LdapException, CursorException
     {
         checkNotClosed( "after()" );
@@ -85,6 +88,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void beforeFirst() throws LdapException, CursorException
     {
         checkNotClosed( "beforeFirst()" );
@@ -94,6 +98,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void afterLast() throws LdapException, CursorException
     {
         checkNotClosed( "afterLast()" );
@@ -103,6 +108,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean first() throws LdapException, CursorException
     {
         checkNotClosed( "first()" );
@@ -113,6 +119,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean last() throws LdapException, CursorException
     {
         checkNotClosed( "last()" );
@@ -123,6 +130,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean previous() throws LdapException, CursorException
     {
         checkNotClosed( "previous()" );
@@ -133,6 +141,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean next() throws LdapException, CursorException
     {
         checkNotClosed( "next()" );
@@ -143,6 +152,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public E get() throws CursorException
     {
         checkNotClosed( "get()" );

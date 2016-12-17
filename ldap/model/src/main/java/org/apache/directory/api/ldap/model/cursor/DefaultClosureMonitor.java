@@ -43,6 +43,7 @@ public class DefaultClosureMonitor implements ClosureMonitor
     /**
      * {@inheritDoc}
      */
+    @Override
     public final void close()
     {
         // state check needed to "try" not to overwrite exception (lack of
@@ -61,6 +62,7 @@ public class DefaultClosureMonitor implements ClosureMonitor
     /**
      * {@inheritDoc}
      */
+    @Override
     public final void close( final String cause )
     {
         // state check needed to "try" not to overwrite exception (lack of
@@ -79,6 +81,7 @@ public class DefaultClosureMonitor implements ClosureMonitor
     /**
      * {@inheritDoc}
      */
+    @Override
     public final void close( final Exception cause )
     {
         // state check needed to "try" not to overwrite exception (lack of
@@ -97,6 +100,7 @@ public class DefaultClosureMonitor implements ClosureMonitor
     /**
      * {@inheritDoc}
      */
+    @Override
     public final Exception getCause()
     {
         return cause;
@@ -106,6 +110,7 @@ public class DefaultClosureMonitor implements ClosureMonitor
     /**
      * {@inheritDoc}
      */
+    @Override
     public final boolean isClosed()
     {
         return closed;
@@ -115,6 +120,7 @@ public class DefaultClosureMonitor implements ClosureMonitor
     /**
      * {@inheritDoc}
      */
+    @Override
     public void checkNotClosed() throws CursorClosedException
     {
         // lack of synchronization may cause pass but eventually it will work

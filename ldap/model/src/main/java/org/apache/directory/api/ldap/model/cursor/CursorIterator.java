@@ -64,6 +64,7 @@ public class CursorIterator<E> implements Iterator<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasNext()
     {
         return available;
@@ -73,6 +74,7 @@ public class CursorIterator<E> implements Iterator<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public E next()
     {
         try
@@ -92,6 +94,7 @@ public class CursorIterator<E> implements Iterator<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void remove()
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02003_REMOVAL_NOT_SUPPORTED ) );
