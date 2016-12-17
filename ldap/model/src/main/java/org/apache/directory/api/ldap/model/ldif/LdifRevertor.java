@@ -265,9 +265,9 @@ public final class LdifRevertor
     public static LdifEntry reverseMove( Dn newSuperiorDn, Dn modifiedDn ) throws LdapException
     {
         LdifEntry entry = new LdifEntry();
-        Dn currentParent = null;
-        Rdn currentRdn = null;
-        Dn newDn = null;
+        Dn currentParent;
+        Rdn currentRdn;
+        Dn newDn;
 
         if ( newSuperiorDn == null )
         {
@@ -445,7 +445,7 @@ public final class LdifRevertor
         throws LdapInvalidDnException
     {
         Dn parentDn = entry.getDn();
-        Dn newDn = null;
+        Dn newDn;
 
         if ( newRdn == null )
         {
@@ -470,7 +470,7 @@ public final class LdifRevertor
         newDn = newDn.add( newRdn );
 
         List<LdifEntry> entries = new ArrayList<>( 1 );
-        LdifEntry reverted = new LdifEntry();
+        LdifEntry reverted;
 
         // Start with the cases here
         if ( newRdn.size() == 1 )

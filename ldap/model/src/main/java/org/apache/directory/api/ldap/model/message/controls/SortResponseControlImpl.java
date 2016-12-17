@@ -40,30 +40,45 @@ public class SortResponseControlImpl extends AbstractControl  implements SortRes
         super( OID );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setSortResult( SortResultCode result )
     {
         this.result = result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SortResultCode getSortResult()
     {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setAttributeName( String attributeName )
     {
         this.attributeName = attributeName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getAttributeName()
     {
         return attributeName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode()
     {
@@ -75,6 +90,9 @@ public class SortResponseControlImpl extends AbstractControl  implements SortRes
         return hash;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals( Object o )
     {
@@ -102,6 +120,9 @@ public class SortResponseControlImpl extends AbstractControl  implements SortRes
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString()
     {

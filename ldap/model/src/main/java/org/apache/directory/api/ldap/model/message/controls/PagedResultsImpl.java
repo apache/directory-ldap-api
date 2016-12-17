@@ -74,6 +74,9 @@ public class PagedResultsImpl extends AbstractControl implements PagedResults
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getSize()
     {
@@ -81,6 +84,9 @@ public class PagedResultsImpl extends AbstractControl implements PagedResults
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setSize( int size )
     {
@@ -88,6 +94,9 @@ public class PagedResultsImpl extends AbstractControl implements PagedResults
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public byte[] getCookie()
     {
@@ -95,6 +104,9 @@ public class PagedResultsImpl extends AbstractControl implements PagedResults
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setCookie( byte[] cookie )
     {
@@ -102,6 +114,9 @@ public class PagedResultsImpl extends AbstractControl implements PagedResults
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getCookieValue()
     {

@@ -66,6 +66,9 @@ public class SortRequestControlImpl extends AbstractControl implements SortReque
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addSortKey( SortKey skey )
     {
@@ -78,6 +81,9 @@ public class SortRequestControlImpl extends AbstractControl implements SortReque
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString()
     {

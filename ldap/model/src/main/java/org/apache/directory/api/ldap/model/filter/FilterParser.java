@@ -59,7 +59,7 @@ public final class FilterParser
     private static ExprNode parseExtensible( SchemaManager schemaManager, String attribute, byte[] filter,
         Position pos, boolean relaxed ) throws LdapException, ParseException
     {
-        ExtensibleNode node = null;
+        ExtensibleNode node;
 
         if ( schemaManager != null )
         {
@@ -443,7 +443,7 @@ public final class FilterParser
         if ( Strings.isCharASCII( filter, pos.start, '*' ) )
         {
             // We have found a '*' : this is a substring
-            SubstringNode node = null;
+            SubstringNode node;
 
             if ( schemaManager != null )
             {
@@ -656,7 +656,7 @@ public final class FilterParser
     private static ExprNode parseItem( SchemaManager schemaManager, byte[] filter, Position pos, byte b,
         boolean relaxed ) throws ParseException, LdapException
     {
-        String attribute = null;
+        String attribute;
 
         if ( b == '\0' )
         {
@@ -873,7 +873,7 @@ public final class FilterParser
     private static ExprNode parseFilterComp( SchemaManager schemaManager, byte[] filter, Position pos,
         boolean relaxed ) throws ParseException, LdapException
     {
-        ExprNode node = null;
+        ExprNode node;
 
         if ( pos.start == pos.length )
         {

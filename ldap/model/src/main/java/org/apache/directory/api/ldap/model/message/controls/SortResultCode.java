@@ -66,6 +66,7 @@ public enum SortResultCode
         return val;
     }
     
+    
     /**
      * returns the enum value representing the given code.
      * 
