@@ -29,6 +29,8 @@ import org.apache.directory.api.ldap.model.message.Control;
  * then registered with the codec and used by the codec to encode and decode
  * those controls.
  *
+ * @param <C> The Control to create
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface ControlFactory<C extends Control>

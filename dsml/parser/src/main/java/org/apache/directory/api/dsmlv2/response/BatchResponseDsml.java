@@ -50,7 +50,7 @@ public class BatchResponseDsml
      */
     public BatchResponseDsml()
     {
-        responses = new ArrayList<DsmlDecorator<? extends Response>>();
+        responses = new ArrayList<>();
     }
 
 
@@ -154,7 +154,7 @@ public class BatchResponseDsml
         // RequestID
         if ( requestID != 0 )
         {
-            element.addAttribute( "requestID", "" + requestID );
+            element.addAttribute( "requestID", Integer.toString( requestID ) );
         }
 
         for ( DsmlDecorator<? extends Response> response : responses )

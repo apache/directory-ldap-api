@@ -40,6 +40,7 @@ public class UuidComparator extends SerializableComparator<String>
     private static final Logger LOG = LoggerFactory.getLogger( UuidComparator.class );
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
+    /** A static instance of the UuidComparator */
     public static final UuidComparator INSTANCE = new UuidComparator( "1.3.6.1.1.16.4" );
 
 
@@ -79,7 +80,12 @@ public class UuidComparator extends SerializableComparator<String>
 
 
     /**
-     * {@inheritDoc}
+     * Compare two UUID.
+     * 
+     * @param uuid1 The first UUID
+     * @param uuid2 he second UUID
+     * @return -1 if the first UUID is lower than the second UUID, 1 if it's higher, 0
+     * if they are equal  
      */
     public int compare( UUID uuid1, UUID uuid2 )
     {

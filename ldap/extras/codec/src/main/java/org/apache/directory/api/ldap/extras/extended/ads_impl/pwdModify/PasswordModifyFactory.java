@@ -51,6 +51,11 @@ public class PasswordModifyFactory implements ExtendedOperationFactory
     private LdapApiService codec;
 
 
+    /**
+     * Creates a new instance of PasswordModifyFactory.
+     *
+     * @param codec The codec for this factory.
+     */
     public PasswordModifyFactory( LdapApiService codec )
     {
         this.codec = codec;

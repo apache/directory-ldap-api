@@ -62,7 +62,7 @@ public abstract class AbstractDsmlMessageDecorator<M extends Message>
     {
         this.codec = codec;
         this.message = message;
-        controls = new HashMap<String, Control>();
+        controls = new HashMap<>();
     }
 
 
@@ -89,6 +89,7 @@ public abstract class AbstractDsmlMessageDecorator<M extends Message>
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getType()
     {
         return message.getType();
@@ -98,6 +99,7 @@ public abstract class AbstractDsmlMessageDecorator<M extends Message>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<String, Control> getControls()
     {
         return controls;
@@ -107,6 +109,7 @@ public abstract class AbstractDsmlMessageDecorator<M extends Message>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Control getControl( String oid )
     {
         return controls.get( oid );
@@ -116,6 +119,7 @@ public abstract class AbstractDsmlMessageDecorator<M extends Message>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasControl( String oid )
     {
         return controls.containsKey( oid );
@@ -125,6 +129,7 @@ public abstract class AbstractDsmlMessageDecorator<M extends Message>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Message addControl( Control control )
     {
         Control decorated;
@@ -137,7 +142,7 @@ public abstract class AbstractDsmlMessageDecorator<M extends Message>
         }
         else
         {
-            decorator = new DsmlControl<Control>( codec, codec.newControl( control ) );
+            decorator = new DsmlControl<>( codec, codec.newControl( control ) );
             decorated = control;
         }
 
@@ -152,6 +157,7 @@ public abstract class AbstractDsmlMessageDecorator<M extends Message>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Message addAllControls( Control[] controlsToAdd )
     {
         for ( Control control : controlsToAdd )
@@ -166,6 +172,7 @@ public abstract class AbstractDsmlMessageDecorator<M extends Message>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Message removeControl( Control control )
     {
         controls.remove( control.getOid() );
@@ -178,6 +185,7 @@ public abstract class AbstractDsmlMessageDecorator<M extends Message>
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMessageId()
     {
         return message.getMessageId();
@@ -187,6 +195,7 @@ public abstract class AbstractDsmlMessageDecorator<M extends Message>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object get( Object key )
     {
         return message.get( key );
@@ -196,6 +205,7 @@ public abstract class AbstractDsmlMessageDecorator<M extends Message>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object put( Object key, Object value )
     {
         return message.put( key, value );
@@ -205,6 +215,7 @@ public abstract class AbstractDsmlMessageDecorator<M extends Message>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Message setMessageId( int messageId )
     {
         message.setMessageId( messageId );
@@ -216,6 +227,7 @@ public abstract class AbstractDsmlMessageDecorator<M extends Message>
     /**
      * {@inheritDoc}
      */
+    @Override
     public M getDecorated()
     {
         return message;

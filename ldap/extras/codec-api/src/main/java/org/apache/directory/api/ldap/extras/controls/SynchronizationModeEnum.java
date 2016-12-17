@@ -40,9 +40,16 @@ package org.apache.directory.api.ldap.extras.controls;
  */
 public enum SynchronizationModeEnum
 {
+    /** Unused */
     UNUSED(0),
+    
+    /** Refresh only mode */
     REFRESH_ONLY(1),
+
+    /** Unused */
     RESERVED(2),
+    
+    /** Refresh and Persist mode */
     REFRESH_AND_PERSIST(3);
 
     /** The internal value */

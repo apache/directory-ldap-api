@@ -152,6 +152,7 @@ public class Dsmlv2Container implements Container
      * 
      * @return the current grammar state
      */
+    @Override
     public Enum<Dsmlv2StatesEnum> getState()
     {
         return state;
@@ -163,6 +164,7 @@ public class Dsmlv2Container implements Container
      * 
      * @param state the new state
      */
+    @Override
     public void setState( Enum<Dsmlv2StatesEnum> state )
     {
         this.state = state;
@@ -174,6 +176,7 @@ public class Dsmlv2Container implements Container
      * 
      * @return the transition from the previous state to the new state
      */
+    @Override
     public Enum<Dsmlv2StatesEnum> getTransition()
     {
         return transition;
@@ -185,6 +188,7 @@ public class Dsmlv2Container implements Container
      * 
      * @param transition the transition to set
      */
+    @Override
     public void setTransition( Enum<Dsmlv2StatesEnum> transition )
     {
         this.transition = transition;
@@ -196,6 +200,7 @@ public class Dsmlv2Container implements Container
      * 
      * @return the states.
      */
+    @Override
     public Enum<Dsmlv2StatesEnum>[] getStates()
     {
         return states;

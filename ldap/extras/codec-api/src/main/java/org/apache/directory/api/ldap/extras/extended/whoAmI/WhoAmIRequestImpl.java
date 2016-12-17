@@ -69,6 +69,7 @@ public class WhoAmIRequestImpl extends AbstractExtendedRequest implements WhoAmI
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         return "Who Am I extended request";

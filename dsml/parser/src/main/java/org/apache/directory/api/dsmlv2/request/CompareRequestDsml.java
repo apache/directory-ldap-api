@@ -66,6 +66,7 @@ public class CompareRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getType()
     {
         return getDecorated().getType();
@@ -75,6 +76,7 @@ public class CompareRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public Element toDsml( Element root )
     {
         Element element = super.toDsml( root );
@@ -107,6 +109,7 @@ public class CompareRequestDsml
      * 
      * @return Returns the entry.
      */
+    @Override
     public Dn getName()
     {
         return getDecorated().getName();
@@ -118,6 +121,7 @@ public class CompareRequestDsml
      * 
      * @param entry The entry to set.
      */
+    @Override
     public CompareRequest setName( Dn entry )
     {
         getDecorated().setName( entry );
@@ -169,6 +173,7 @@ public class CompareRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getResponseType()
     {
         return getDecorated().getResponseType();
@@ -178,6 +183,7 @@ public class CompareRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareRequest setAssertionValue( String value )
     {
         getDecorated().setAssertionValue( value );
@@ -189,6 +195,7 @@ public class CompareRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareRequest setAssertionValue( byte[] value )
     {
         getDecorated().setAssertionValue( value );
@@ -200,6 +207,7 @@ public class CompareRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getAttributeId()
     {
         return getDecorated().getAttributeId();
@@ -209,6 +217,7 @@ public class CompareRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareRequest setAttributeId( String attrId )
     {
         getDecorated().setAttributeId( attrId );
@@ -220,6 +229,7 @@ public class CompareRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public Value getAssertionValue()
     {
         return getDecorated().getAssertionValue();
@@ -229,6 +239,7 @@ public class CompareRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -240,6 +251,7 @@ public class CompareRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareRequest addControl( Control control )
     {
         return ( CompareRequest ) super.addControl( control );
@@ -249,6 +261,7 @@ public class CompareRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareRequest addAllControls( Control[] controls )
     {
         return ( CompareRequest ) super.addAllControls( controls );
@@ -258,6 +271,7 @@ public class CompareRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public CompareRequest removeControl( Control control )
     {
         return ( CompareRequest ) super.removeControl( control );

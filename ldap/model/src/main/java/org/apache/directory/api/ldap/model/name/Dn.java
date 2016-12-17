@@ -908,7 +908,13 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
 
     /**
-     * {@inheritDoc}
+     * Add a suffix to the Dn. For instance, if the current Dn is "ou=people",
+     * and the suffix "dc=example,dc=com", then the resulting Dn will be 
+     * "ou=people,dc=example,dc=com" 
+     * 
+     * @param suffix the suffix to add
+     * @return The resulting Dn with the additional suffix
+     * @throws LdapInvalidDnException If the resulting Dn is not valid 
      */
     public Dn add( Dn suffix ) throws LdapInvalidDnException
     {
@@ -940,7 +946,13 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
 
     /**
-     * {@inheritDoc}
+     * Add a suffix to the Dn. For instance, if the current Dn is "ou=people",
+     * and the suffix "dc=example,dc=com", then the resulting Dn will be 
+     * "ou=people,dc=example,dc=com" 
+     * 
+     * @param comp the suffix to add
+     * @return The resulting Dn with the additional suffix
+     * @throws LdapInvalidDnException If the resulting Dn is not valid 
      */
     public Dn add( String comp ) throws LdapInvalidDnException
     {

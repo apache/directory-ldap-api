@@ -48,6 +48,7 @@ public abstract class GrammarAction implements Action
      * 
      * @return the action's name
      */
+    @Override
     public String toString()
     {
         return name;

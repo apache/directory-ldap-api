@@ -66,6 +66,7 @@ public class DelResponseDsml extends AbstractResultResponseDsml<DeleteResponse>
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getType()
     {
         return getDecorated().getType();
@@ -75,9 +76,10 @@ public class DelResponseDsml extends AbstractResultResponseDsml<DeleteResponse>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Element toDsml( Element root )
     {
-        Element element = null;
+        Element element;
 
         if ( root != null )
         {

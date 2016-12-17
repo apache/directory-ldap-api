@@ -46,10 +46,11 @@ public class OrFilter extends ConnectorFilter
      * 
      * @return The OR filter string
      */
+    @Override
     public String toString()
     {
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( '|' ).append( super.toString() );
 

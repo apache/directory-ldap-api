@@ -35,6 +35,8 @@ import org.apache.directory.api.util.Strings;
 /**
  * A decorator for the ExtendedRequest message
  *
+ * @param <Q> The extended request to decorate
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ExtendedRequestDecorator<Q extends ExtendedRequest>
@@ -89,7 +91,9 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
 
 
     /**
-     * {@inheritDoc}
+     * Gets the Extended request payload 
+     * 
+     * @return The extended payload
      */
     public byte[] getRequestValue()
     {
@@ -98,7 +102,9 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
 
 
     /**
-     * {@inheritDoc}
+     * sets the Extended request payload 
+     * 
+     * @param requestValue The extended payload
      */
     public void setRequestValue( byte[] requestValue )
     {

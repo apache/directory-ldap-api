@@ -51,12 +51,23 @@ public class VirtualListViewResponseDecorator extends ControlDecorator<VirtualLi
     private static final Asn1Decoder DECODER = new Asn1Decoder();
 
 
+    /**
+     * Create a new SyncRequestValueDecorator instance 
+     * 
+     * @param codec The LDAP API service to use
+     */
     public VirtualListViewResponseDecorator( LdapApiService codec )
     {
         this( codec, new VirtualListViewResponseImpl() );
     }
 
 
+    /**
+     * Create a new SyncRequestValueDecorator instance 
+     * 
+     * @param codec The LDAP API service to use
+     * @param vlvRequest The decorated VLV request
+     */
     public VirtualListViewResponseDecorator( LdapApiService codec, VirtualListViewResponse vlvRequest )
     {
         super( codec, vlvRequest );

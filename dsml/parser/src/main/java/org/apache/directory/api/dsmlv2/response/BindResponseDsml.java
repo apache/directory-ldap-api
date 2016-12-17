@@ -59,6 +59,7 @@ public class BindResponseDsml extends AbstractResultResponseDsml<BindResponse> i
     /**
      * {@inheritDoc}
      */
+    @Override
     public Element toDsml( Element root )
     {
         Element element = root.addElement( "authResponse" );
@@ -73,6 +74,7 @@ public class BindResponseDsml extends AbstractResultResponseDsml<BindResponse> i
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getServerSaslCreds()
     {
         return getDecorated().getServerSaslCreds();
@@ -82,6 +84,7 @@ public class BindResponseDsml extends AbstractResultResponseDsml<BindResponse> i
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setServerSaslCreds( byte[] serverSaslCreds )
     {
         getDecorated().setServerSaslCreds( serverSaslCreds );

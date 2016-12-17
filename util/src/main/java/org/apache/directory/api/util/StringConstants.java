@@ -39,6 +39,8 @@ public final class StringConstants
      */
     public static final String[] EMPTY_STRINGS = new String[]
         {};
+    
+    /** A flag used when comparing values */
     public static final int NOT_EQUAL = -1;
 
 

@@ -28,18 +28,25 @@ package org.apache.directory.api.ldap.trigger;
  */
 public enum LdapOperation
 {
+    /** The Modify operation */
     MODIFY("Modify"),
 
+    /** The Add operation */
     ADD("Add"),
 
+    /** The Delete operation */
     DELETE("Delete"),
 
+    /** The ModDN operation */
     MODIFYDN("ModifyDN"),
 
+    /** The Rename operation */
     MODIFYDN_RENAME("ModifyDN.Rename"),
 
+    /** The Export operation */
     MODIFYDN_EXPORT("ModifyDN.Export"),
 
+    /** The Import operation */
     MODIFYDN_IMPORT("ModifyDN.Import");
 
     private final String name;

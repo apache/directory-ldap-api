@@ -46,7 +46,11 @@ public class NumericNormalizer extends Normalizer implements PreparedNormalizer
 
 
     /**
-     * {@inheritDoc}
+     * Normalize a Value
+     * 
+     * @param value The value to normalize
+     * @return The normalized value
+     * @exception LdapException If teh value cannot be normalized or is invalid
      */
     public Value normalize( Value value ) throws LdapException
     {

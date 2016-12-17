@@ -37,12 +37,20 @@ public class VirtualListViewRequestFactory implements ControlFactory<VirtualList
     private LdapApiService codec;
 
 
+    /**
+     * Creates a new instance of VirtualListViewRequestFactory.
+     *
+     * @param codec The codec for this factory.
+     */
     public VirtualListViewRequestFactory( LdapApiService codec )
     {
         this.codec = codec;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getOid()
     {
@@ -50,6 +58,9 @@ public class VirtualListViewRequestFactory implements ControlFactory<VirtualList
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CodecControl<VirtualListViewRequest> newCodecControl()
     {
@@ -57,10 +68,12 @@ public class VirtualListViewRequestFactory implements ControlFactory<VirtualList
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CodecControl<VirtualListViewRequest> newCodecControl( VirtualListViewRequest control )
     {
         return new VirtualListViewRequestDecorator( codec, control );
     }
-
 }

@@ -49,6 +49,11 @@ public class WhoAmIFactory implements ExtendedOperationFactory
     private LdapApiService codec;
 
 
+    /**
+     * Creates a new instance of WhoAmIFactory.
+     *
+     * @param codec The codec for this factory.
+     */
     public WhoAmIFactory( LdapApiService codec )
     {
         this.codec = codec;

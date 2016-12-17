@@ -36,7 +36,11 @@ public class LdapRequestUnsuccessfulException extends RuntimeException
 
     private final transient ResultResponse response;
 
-
+    /**
+     * Creates a new LdapRequestUnsuccessfulException instance
+     * 
+     * @param response The associated LDAP Response
+     */
     public LdapRequestUnsuccessfulException( ResultResponse response )
     {
         super();
@@ -44,9 +48,11 @@ public class LdapRequestUnsuccessfulException extends RuntimeException
     }
 
 
+    /**
+     * @return the associate LDAP Response
+     */
     public ResultResponse getResponse()
     {
         return response;
     }
-
 }

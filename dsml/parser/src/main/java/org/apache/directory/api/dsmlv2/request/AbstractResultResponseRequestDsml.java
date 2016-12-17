@@ -35,6 +35,9 @@ import org.dom4j.Element;
 /**
  * Abstract class for DSML requests.
  *
+ * @param <E> The response request result type
+ * @param <F> The response result type
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class AbstractResultResponseRequestDsml<E extends ResultResponseRequest, F extends ResultResponse>
@@ -56,11 +59,10 @@ public abstract class AbstractResultResponseRequestDsml<E extends ResultResponse
     /**
      * Creates the Request Element and adds RequestID and Controls.
      *
-     * @param root
-     *      the root element
-     * @return
-     *      the Request Element of the given name containing
+     * @param root the root element
+     * @return the Request Element of the given name containing
      */
+    @Override
     public Element toDsml( Element root )
     {
         Element element = root.addElement( getRequestName() );
@@ -69,7 +71,7 @@ public abstract class AbstractResultResponseRequestDsml<E extends ResultResponse
         int requestID = getDecorated().getMessageId();
         if ( requestID > 0 )
         {
-            element.addAttribute( "requestID", "" + requestID );
+            element.addAttribute( "requestID", Integer.toString( requestID ) );
         }
 
         // Controls
@@ -122,12 +124,14 @@ public abstract class AbstractResultResponseRequestDsml<E extends ResultResponse
     }
 
 
+    @Override
     public int computeLength()
     {
         return 0;
     }
 
 
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         return null;
@@ -137,6 +141,7 @@ public abstract class AbstractResultResponseRequestDsml<E extends ResultResponse
     /**
      * {@inheritDoc}
      */
+    @Override
     public ResultResponse getResultResponse()
     {
         return getDecorated().getResultResponse();
@@ -146,6 +151,7 @@ public abstract class AbstractResultResponseRequestDsml<E extends ResultResponse
     /**
      * {@inheritDoc}
      */
+    @Override
     public void abandon()
     {
         ( ( AbandonableRequest ) getDecorated() ).abandon();
@@ -155,6 +161,7 @@ public abstract class AbstractResultResponseRequestDsml<E extends ResultResponse
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isAbandoned()
     {
         return ( ( AbandonableRequest ) getDecorated() ).isAbandoned();
@@ -164,6 +171,7 @@ public abstract class AbstractResultResponseRequestDsml<E extends ResultResponse
     /**
      * {@inheritDoc}
      */
+    @Override
     public AbandonableRequest addAbandonListener( AbandonListener listener )
     {
         ( ( AbandonableRequest ) getDecorated() ).addAbandonListener( listener );

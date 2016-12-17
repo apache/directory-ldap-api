@@ -98,6 +98,7 @@ public class PasswordModifyResponseImpl extends ExtendedResponseImpl implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getGenPassword()
     {
         return genPassword;
@@ -117,6 +118,7 @@ public class PasswordModifyResponseImpl extends ExtendedResponseImpl implements 
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

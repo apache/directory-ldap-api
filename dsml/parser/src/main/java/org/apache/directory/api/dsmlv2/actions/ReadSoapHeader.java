@@ -48,6 +48,7 @@ public class ReadSoapHeader extends GrammarAction
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( Dsmlv2Container container ) throws XmlPullParserException
     {
         try
@@ -61,7 +62,7 @@ public class ReadSoapHeader extends GrammarAction
             // string '<' and '>'
             startTag = startTag.substring( 1, startTag.length() - 1 );
 
-            int tagType = -1;
+            int tagType;
             String endTag = "";
 
             // continue parsing till we get to the end tag of SOAP header

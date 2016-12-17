@@ -64,13 +64,19 @@ public class PersistentSearchImpl extends AbstractControl implements PersistentS
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-public void setChangesOnly( boolean changesOnly )
+    public void setChangesOnly( boolean changesOnly )
     {
         this.changesOnly = changesOnly;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isChangesOnly()
     {
@@ -78,6 +84,9 @@ public void setChangesOnly( boolean changesOnly )
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setReturnECs( boolean returnECs )
     {
@@ -85,6 +94,9 @@ public void setChangesOnly( boolean changesOnly )
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isReturnECs()
     {
@@ -92,6 +104,9 @@ public void setChangesOnly( boolean changesOnly )
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setChangeTypes( int changeTypes )
     {
@@ -99,6 +114,9 @@ public void setChangesOnly( boolean changesOnly )
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getChangeTypes()
     {
@@ -106,6 +124,9 @@ public void setChangesOnly( boolean changesOnly )
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isNotificationEnabled( ChangeType changeType )
     {
@@ -113,10 +134,23 @@ public void setChangesOnly( boolean changesOnly )
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void enableNotification( ChangeType changeType )
     {
         changeTypes |= changeType.getValue();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void disableNotification( ChangeType changeType )
+    {
+        changeTypes &= ~changeType.getValue();
     }
 
 

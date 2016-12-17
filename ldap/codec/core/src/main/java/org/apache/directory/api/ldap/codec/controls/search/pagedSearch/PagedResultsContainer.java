@@ -77,6 +77,11 @@ public class PagedResultsContainer extends AbstractContainer
     }
 
 
+    /**
+     * Decorate the PageResult control
+     * 
+     * @param control The PageResult control instance
+     */
     public void decorate( PagedResults control )
     {
         if ( control instanceof PagedResultsDecorator )

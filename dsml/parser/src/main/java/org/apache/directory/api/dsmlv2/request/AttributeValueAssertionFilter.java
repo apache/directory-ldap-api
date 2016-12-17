@@ -94,6 +94,7 @@ public class AttributeValueAssertionFilter extends Filter
      * 
      * @return The item filter string
      */
+    @Override
     public String toString()
     {
         return assertion != null ? assertion.toStringRFC2254( filterType ) : "";

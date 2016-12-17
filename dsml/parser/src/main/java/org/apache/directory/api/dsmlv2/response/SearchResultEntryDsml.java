@@ -121,6 +121,7 @@ public class SearchResultEntryDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getType()
     {
         return getDecorated().getType();
@@ -130,9 +131,10 @@ public class SearchResultEntryDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public Element toDsml( Element root )
     {
-        Element element = null;
+        Element element;
 
         if ( root != null )
         {
@@ -143,7 +145,7 @@ public class SearchResultEntryDsml
             element = new DefaultElement( SEARCH_RESULT_ENTRY_TAG );
         }
 
-        SearchResultEntry searchResultEntry = ( SearchResultEntry ) getDecorated();
+        SearchResultEntry searchResultEntry = getDecorated();
         element.addAttribute( "dn", searchResultEntry.getObjectName().getName() );
 
         Entry entry = searchResultEntry.getEntry();
@@ -189,6 +191,7 @@ public class SearchResultEntryDsml
      * 
      * @return Returns the objectName.
      */
+    @Override
     public Dn getObjectName()
     {
         return getDecorated().getObjectName();
@@ -200,6 +203,7 @@ public class SearchResultEntryDsml
      * 
      * @param objectName The objectName to set.
      */
+    @Override
     public void setObjectName( Dn objectName )
     {
         getDecorated().setObjectName( objectName );
@@ -211,6 +215,7 @@ public class SearchResultEntryDsml
      * 
      * @return Returns the entry.
      */
+    @Override
     public Entry getEntry()
     {
         return getDecorated().getEntry();
@@ -222,6 +227,7 @@ public class SearchResultEntryDsml
      * 
      * @param entry the entry
      */
+    @Override
     public void setEntry( Entry entry )
     {
         getDecorated().setEntry( entry );

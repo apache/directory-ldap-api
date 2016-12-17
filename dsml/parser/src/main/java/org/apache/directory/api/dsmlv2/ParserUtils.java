@@ -87,6 +87,10 @@ public final class ParserUtils
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( ParserUtils.class );
 
+    /**
+     * GrammarAction that reads the SOAP header data
+     */
+    public static final GrammarAction READ_SOAP_HEADER = new ReadSoapHeader();
 
     private ParserUtils()
     {
@@ -107,7 +111,7 @@ public final class ParserUtils
         for ( int i = 0; i < nbAttributes; i++ )
         {
             // Checking if the attribute 'type' from XML Schema Instance namespace is used.
-            if ( xpp.getAttributeName( i ).equals( "type" )
+            if ( "type".equals( xpp.getAttributeName( i ) )
                 && xpp.getNamespace( xpp.getAttributePrefix( i ) ).equals( XML_SCHEMA_INSTANCE_URI ) )
             {
                 type = xpp.getAttributeValue( i );
@@ -290,7 +294,7 @@ public final class ParserUtils
             throw new XmlPullParserException( I18n.err( I18n.ERR_03040 ), container.getParser(), null );
         }
 
-        return ( ( batchRequest.getProcessing() == Processing.PARALLEL ) && ( batchRequest.getResponseOrder() == ResponseOrder.UNORDERED ) );
+        return ( batchRequest.getProcessing() == Processing.PARALLEL ) && ( batchRequest.getResponseOrder() == ResponseOrder.UNORDERED );
     }
 
 
@@ -333,12 +337,6 @@ public final class ParserUtils
         }
 
         // return the transformed document
-        Document transformedDoc = result.getDocument();
-        return transformedDoc;
+        return result.getDocument();
     }
-
-    /**
-     * GrammarAction that reads the SOAP header data
-     */
-    public static final GrammarAction READ_SOAP_HEADER = new ReadSoapHeader();
 }

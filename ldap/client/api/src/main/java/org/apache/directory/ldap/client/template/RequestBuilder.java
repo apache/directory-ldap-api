@@ -25,6 +25,8 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 
 /**
  * Edits a supplied request adding specifics.
+ * 
+ * @param <T> The request type
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

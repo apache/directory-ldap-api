@@ -110,6 +110,7 @@ public class DsmlControl<C extends Control> implements Control, DsmlDecorator<C>
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return decorated.getOid();
@@ -119,6 +120,7 @@ public class DsmlControl<C extends Control> implements Control, DsmlDecorator<C>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isCritical()
     {
         return decorated.isCritical();
@@ -128,6 +130,7 @@ public class DsmlControl<C extends Control> implements Control, DsmlDecorator<C>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCritical( boolean isCritical )
     {
         decorated.setCritical( isCritical );
@@ -137,6 +140,7 @@ public class DsmlControl<C extends Control> implements Control, DsmlDecorator<C>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Element toDsml( Element root )
     {
         return null;
@@ -146,6 +150,7 @@ public class DsmlControl<C extends Control> implements Control, DsmlDecorator<C>
     /**
      * {@inheritDoc}
      */
+    @Override
     public C getDecorated()
     {
         return decorated;

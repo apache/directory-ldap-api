@@ -310,20 +310,21 @@ public class Asn1Decoder implements TLVBerDecoderMBean
         StringBuilder buffer = new StringBuilder();
 
         buffer.append( "TLV expected length stack : " );
+        TLV currentTlv = tlv;
 
         while ( true )
         {
-            if ( tlv == null )
+            if ( currentTlv == null )
             {
                 buffer.append( " - null" );
                 break;
             }
             else
             {
-                buffer.append( " - " ).append( tlv.getExpectedLength() );
+                buffer.append( " - " ).append( currentTlv.getExpectedLength() );
             }
 
-            tlv = tlv.getParent();
+            currentTlv = currentTlv.getParent();
         }
 
         return buffer.toString();

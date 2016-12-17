@@ -1945,7 +1945,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             }
         }
 
-        boolean isHR = in.readBoolean();
+        in.readBoolean();
 
         value = Value.deserialize( attributeType, in );
 

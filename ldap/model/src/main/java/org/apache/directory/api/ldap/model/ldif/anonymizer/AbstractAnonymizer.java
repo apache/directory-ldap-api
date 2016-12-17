@@ -28,6 +28,8 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
 
 /**
  * An abstract class implementing the default behavior of an Aninymizer instance
+ * 
+ * @param <K> The type of object being anonymized
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

@@ -84,6 +84,7 @@ public class GracefulShutdownRequestImpl extends AbstractExtendedRequest impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getDelay()
     {
         return delay;
@@ -93,6 +94,7 @@ public class GracefulShutdownRequestImpl extends AbstractExtendedRequest impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setDelay( int delay )
     {
         this.delay = delay;
@@ -102,6 +104,7 @@ public class GracefulShutdownRequestImpl extends AbstractExtendedRequest impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getTimeOffline()
     {
         return timeOffline;
@@ -111,12 +114,16 @@ public class GracefulShutdownRequestImpl extends AbstractExtendedRequest impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setTimeOffline( int timeOffline )
     {
         this.timeOffline = timeOffline;
     }
 
-
+    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GracefulShutdownResponse getResultResponse()
     {

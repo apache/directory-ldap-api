@@ -549,7 +549,9 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
-     * {@inheritDoc}
+     * Sets the User Provided ID as a byte[]
+     * 
+     * @param upId The User Provided ID
      */
     public void setUpId( byte[] upId )
     {
@@ -605,7 +607,10 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
-     * {@inheritDoc}
+     * Sets the User Provided ID as a byte[]
+     * 
+     * @param upId The User Provided ID
+     * @param attributeType The asscoiated AttributeType
      */
     public void setUpId( byte[] upId, AttributeType attributeType )
     {
@@ -622,9 +627,6 @@ public class DefaultAttribute implements Attribute, Cloneable
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     private void setUpIdInternal( String upId, String newId, AttributeType attributeType )
     {
         if ( attributeType == null )
@@ -2049,9 +2051,6 @@ public class DefaultAttribute implements Attribute, Cloneable
         // Read the id
         id = in.readUTF();
         
-        // We could have computed it, but it costs more than reading it from the disk...
-        //setUpIdInternal( upId );
-
         // Read the HR flag, if not null
         if ( in.readBoolean() )
         {

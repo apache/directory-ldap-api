@@ -27,10 +27,16 @@ package org.apache.directory.api.ldap.extras.controls.syncrepl_impl;
  */
 public enum SyncInfoValueTags
 {
-    /** The tags */
+    /** A new cookie */
     NEW_COOKIE_TAG(0x0080),
+    
+    /** Refresh delete phase */
     REFRESH_DELETE_TAG(0x00A1),
+    
+    /** Refresh present phase */
     REFRESH_PRESENT_TAG(0x00A2),
+    
+    /** Sync ID set */
     SYNC_ID_SET_TAG(0x00A3);
 
     /** Internal value for each tag */

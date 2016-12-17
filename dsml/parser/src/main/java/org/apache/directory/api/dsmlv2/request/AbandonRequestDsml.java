@@ -62,6 +62,7 @@ public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getType()
     {
         return getDecorated().getType();
@@ -71,6 +72,7 @@ public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Element toDsml( Element root )
     {
         Element element = super.toDsml( root );
@@ -78,7 +80,7 @@ public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
         // AbandonID
         if ( getDecorated().getAbandoned() != 0 )
         {
-            element.addAttribute( "abandonID", "" + getDecorated().getAbandoned() );
+            element.addAttribute( "abandonID", Integer.toString( getDecorated().getAbandoned() ) );
         }
 
         return element;
@@ -113,6 +115,7 @@ public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getAbandoned()
     {
         return getDecorated().getAbandoned();
@@ -122,6 +125,7 @@ public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
     /**
      * {@inheritDoc}
      */
+    @Override
     public AbandonRequest setAbandoned( int requestId )
     {
         getDecorated().setAbandoned( requestId );
@@ -133,6 +137,7 @@ public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
     /**
      * {@inheritDoc}
      */
+    @Override
     public AbandonRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -144,6 +149,7 @@ public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
     /**
      * {@inheritDoc}
      */
+    @Override
     public AbandonRequest addControl( Control control )
     {
         return ( AbandonRequest ) super.addControl( control );
@@ -153,6 +159,7 @@ public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
     /**
      * {@inheritDoc}
      */
+    @Override
     public AbandonRequest addAllControls( Control[] controls )
     {
         return ( AbandonRequest ) super.addAllControls( controls );
@@ -162,6 +169,7 @@ public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
     /**
      * {@inheritDoc}
      */
+    @Override
     public AbandonRequest removeControl( Control control )
     {
         return ( AbandonRequest ) super.removeControl( control );

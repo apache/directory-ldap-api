@@ -57,9 +57,7 @@ import org.apache.directory.api.ldap.model.message.CompareRequest;
 import org.apache.directory.api.ldap.model.message.CompareRequestImpl;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.DeleteRequestImpl;
-import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedRequestImpl;
-import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.api.ldap.model.message.ModifyDnRequestImpl;
 import org.apache.directory.api.ldap.model.message.ModifyRequestImpl;
 import org.apache.directory.api.ldap.model.message.Request;
@@ -103,6 +101,1986 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     private static final String NAME = "name";
     private static final String TRUE = "true";
     private static final String FALSE = "false";
+    //*************************
+    //*    GRAMMAR ACTIONS    *
+    //*************************
+
+    /**
+     * GrammarAction that creates a Batch Request
+     */
+    private final GrammarAction batchRequestCreation = new GrammarAction( "Create Batch Request" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            BatchRequestDsml batchRequest = new BatchRequestDsml();
+
+            container.setBatchRequest( batchRequest );
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the batchRequest's attributes
+            String attributeValue;
+            // requestID
+            attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
+
+            if ( attributeValue != null )
+            {
+                batchRequest.setRequestID( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+            // processing
+            attributeValue = xpp.getAttributeValue( "", "processing" );
+
+            if ( attributeValue != null )
+            {
+                if ( "sequential".equals( attributeValue ) )
+                {
+                    batchRequest.setProcessing( Processing.SEQUENTIAL );
+                }
+                else if ( "parallel".equals( attributeValue ) )
+                {
+                    batchRequest.setProcessing( Processing.PARALLEL );
+                }
+                else
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03013 ), xpp, null );
+                }
+            }
+            else
+            {
+                batchRequest.setProcessing( Processing.SEQUENTIAL );
+            }
+
+            // onError
+            attributeValue = xpp.getAttributeValue( "", "onError" );
+
+            if ( attributeValue != null )
+            {
+                if ( "resume".equals( attributeValue ) )
+                {
+                    batchRequest.setOnError( OnError.RESUME );
+                }
+                else if ( "exit".equals( attributeValue ) )
+                {
+                    batchRequest.setOnError( OnError.EXIT );
+                }
+                else
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03014 ), xpp, null );
+                }
+            }
+            else
+            {
+                batchRequest.setOnError( OnError.EXIT );
+            }
+
+            // responseOrder
+            attributeValue = xpp.getAttributeValue( "", "responseOrder" );
+
+            if ( attributeValue != null )
+            {
+                if ( "sequential".equals( attributeValue ) )
+                {
+                    batchRequest.setResponseOrder( ResponseOrder.SEQUENTIAL );
+                }
+                else if ( "unordered".equals( attributeValue ) )
+                {
+                    batchRequest.setResponseOrder( ResponseOrder.UNORDERED );
+                }
+                else
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03015 ), xpp, null );
+                }
+            }
+            else
+            {
+                batchRequest.setResponseOrder( ResponseOrder.SEQUENTIAL );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates an Abandon Request
+     */
+    private final GrammarAction abandonRequestCreation = new GrammarAction( "Create Abandon Request" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            AbandonRequestDsml abandonRequest = new AbandonRequestDsml( codec, new AbandonRequestImpl() );
+            container.getBatchRequest().addRequest( abandonRequest );
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the request's attributes
+            String attributeValue;
+            // requestID
+            attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
+            
+            if ( attributeValue != null )
+            {
+                abandonRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+            else
+            {
+                if ( ParserUtils.isRequestIdNeeded( container ) )
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03016 ), xpp, null );
+                }
+            }
+            
+            // abandonID
+            attributeValue = xpp.getAttributeValue( "", "abandonID" );
+            
+            if ( attributeValue != null )
+            {
+                try
+                {
+                    abandonRequest.setAbandoned( Integer.parseInt( attributeValue ) );
+                }
+                catch ( NumberFormatException nfe )
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03017 ), xpp, nfe );
+                }
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03018 ), xpp, null );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates an Add Request
+     */
+    private final GrammarAction addRequestCreation = new GrammarAction( "Create Add Request" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            AddRequestDsml addRequest = new AddRequestDsml( codec, new AddRequestImpl() );
+            container.getBatchRequest().addRequest( addRequest );
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the request's attributes
+            String attributeValue;
+            // requestID
+            attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
+            
+            if ( attributeValue != null )
+            {
+                addRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+            else
+            {
+                if ( ParserUtils.isRequestIdNeeded( container ) )
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03016 ), xpp, null );
+                }
+            }
+            
+            // dn
+            attributeValue = xpp.getAttributeValue( "", "dn" );
+            
+            if ( attributeValue != null )
+            {
+                try
+                {
+                    addRequest.setEntryDn( new Dn( attributeValue ) );
+                }
+                catch ( LdapInvalidDnException lide )
+                {
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
+                }
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03019 ), xpp, null );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that adds an attribute to an Add Request
+     */
+    private final GrammarAction addRequestAddAttribute = new GrammarAction( "Add Attribute to Add Request" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            AddRequestDsml addRequest = ( AddRequestDsml )
+                container.getBatchRequest().getCurrentRequest();
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the request's attributes
+            String attributeValue;
+            // name
+            attributeValue = xpp.getAttributeValue( "", NAME );
+
+            if ( attributeValue != null )
+            {
+                try
+                {
+                    addRequest.addAttributeType( attributeValue );
+                }
+                catch ( LdapException le )
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03020 ), xpp, le );
+                }
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that adds a Value to an Attribute of an Add Request
+     */
+    private final GrammarAction addRequestAddValue = new GrammarAction( "Add Value to Attribute" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            AddRequestDsml addRequest = ( AddRequestDsml )
+                container.getBatchRequest().getCurrentRequest();
+
+            XmlPullParser xpp = container.getParser();
+
+            try
+            {
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+
+                // Getting the value
+                String nextText = xpp.nextText();
+                
+                if ( !Strings.isEmpty( nextText ) )
+                {
+                    try
+                    {
+                        if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                        {
+                            addRequest.addAttributeValue( Base64.decode( nextText.trim().toCharArray() ) );
+                        }
+                        else
+                        {
+                            addRequest.addAttributeValue( nextText.trim() );
+                        }
+                    }
+                    catch ( LdapException le )
+                    {
+                        throw new XmlPullParserException( le.getMessage(), xpp, le );
+                    }
+                }
+            }
+            catch ( IOException ioe )
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates an Auth Request
+     */
+    private final GrammarAction authRequestCreation = new GrammarAction( "Create Auth Request" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            BindRequestDsml authRequest = new BindRequestDsml( codec, new BindRequestImpl() );
+            container.getBatchRequest().addRequest( authRequest );
+
+            authRequest.setSimple( true );
+            authRequest.setVersion3( true );
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the request's attributes
+            String attributeValue;
+            // requestID
+            attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
+
+            if ( attributeValue != null )
+            {
+                authRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+            else
+            {
+                if ( ParserUtils.isRequestIdNeeded( container ) )
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03016 ), xpp, null );
+                }
+            }
+            // principal
+            attributeValue = xpp.getAttributeValue( "", "principal" );
+
+            if ( attributeValue != null )
+            {
+                authRequest.setName( attributeValue );
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03021 ), xpp, null );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates an Compare Request
+     */
+    private final GrammarAction compareRequestCreation = new GrammarAction( "Create Compare Request" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            CompareRequestDsml compareRequest = new CompareRequestDsml( codec, new CompareRequestImpl() );
+            container.getBatchRequest().addRequest( compareRequest );
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the request's attributes
+            String attributeValue;
+            // requestID
+            attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
+
+            if ( attributeValue != null )
+            {
+                compareRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+            else
+            {
+                if ( ParserUtils.isRequestIdNeeded( container ) )
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03016 ), xpp, null );
+                }
+            }
+
+            // dn
+            attributeValue = xpp.getAttributeValue( "", "dn" );
+
+            if ( attributeValue != null )
+            {
+                try
+                {
+                    compareRequest.setName( new Dn( attributeValue ) );
+                }
+                catch ( LdapInvalidDnException lide )
+                {
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
+                }
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03019 ), xpp, null );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that adds an Assertion to a Compare Request
+     */
+    private final GrammarAction compareRequestAddAssertion = new GrammarAction( "Add Assertion to Compare Request" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            CompareRequest compareRequest = ( CompareRequest ) container.getBatchRequest().getCurrentRequest();
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the request's attributes
+            String attributeId;
+
+            // name
+            attributeId = xpp.getAttributeValue( "", NAME );
+
+            if ( attributeId != null )
+            {
+                compareRequest.setAttributeId( attributeId );
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that adds a Value to a Compare Request
+     */
+    private final GrammarAction compareRequestAddValue = new GrammarAction( "Add Value to Compare Request" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            CompareRequest compareRequest = ( CompareRequest ) container.getBatchRequest().getCurrentRequest();
+
+            XmlPullParser xpp = container.getParser();
+
+            try
+            {
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+
+                // Getting the value
+                String nextText = xpp.nextText();
+
+                if ( !Strings.isEmpty( nextText ) )
+                {
+                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                    {
+                        compareRequest.setAssertionValue( Base64.decode( nextText.trim().toCharArray() ) );
+                    }
+                    else
+                    {
+                        compareRequest.setAssertionValue( nextText.trim() );
+                    }
+                }
+            }
+            catch ( IOException ioe )
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates a Del Request
+     */
+    private final GrammarAction delRequestCreation = new GrammarAction( "Create Del Request" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            DelRequestDsml delRequest = new DelRequestDsml( codec, new DeleteRequestImpl() );
+            container.getBatchRequest().addRequest( delRequest );
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the request's attributes
+            String attributeValue;
+            // requestID
+            attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
+
+            if ( attributeValue != null )
+            {
+                delRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+            else
+            {
+                if ( ParserUtils.isRequestIdNeeded( container ) )
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03016 ), xpp, null );
+                }
+            }
+
+            // dn
+            attributeValue = xpp.getAttributeValue( "", "dn" );
+
+            if ( attributeValue != null )
+            {
+                try
+                {
+                    delRequest.setName( new Dn( attributeValue ) );
+                }
+                catch ( LdapInvalidDnException lide )
+                {
+                    throw new XmlPullParserException( "" + lide.getMessage(), xpp, lide );
+                }
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03019 ), xpp, null );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates an Extended Request
+     */
+    private final GrammarAction extendedRequestCreation = new GrammarAction( "Create Extended Request" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            ExtendedRequestDsml<?, ?> extendedRequest =
+                new ExtendedRequestDsml<>( codec,
+                    new ExtendedRequestImpl() );
+            container.getBatchRequest().addRequest( extendedRequest );
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the request's attributes
+            String attributeValue;
+            // requestID
+            attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
+
+            if ( attributeValue != null )
+            {
+                extendedRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+            else
+            {
+                if ( ParserUtils.isRequestIdNeeded( container ) )
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03016 ), xpp, null );
+                }
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that adds a Name to an Extended Request
+     */
+    private final GrammarAction extendedRequestAddName = new GrammarAction( "Add Name to Extended Request" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            ExtendedRequestDsml<?, ?> extendedRequest = ( ExtendedRequestDsml<?, ?> )
+                container.getBatchRequest().getCurrentRequest();
+
+            XmlPullParser xpp = container.getParser();
+
+            try
+            {
+                String nextText = xpp.nextText();
+
+                if ( Strings.isEmpty( nextText ) )
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03022 ), xpp, null );
+                }
+                else
+                {
+                    String oid = nextText.trim();
+
+                    if ( Oid.isOid( oid ) )
+                    {
+                        extendedRequest.setRequestName( nextText.trim() );
+                    }
+                    else
+                    {
+                        throw new XmlPullParserException( "Bad oid : " + oid, xpp, null );
+                    }
+                }
+            }
+            catch ( IOException ioe )
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that adds a Value to an Extended Request
+     */
+    private final GrammarAction extendedRequestAddValue = new GrammarAction( "Add Value to Extended Request" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            ExtendedRequestDsml<?, ?> extendedRequest = ( ExtendedRequestDsml<?, ?> )
+                container.getBatchRequest().getCurrentRequest();
+
+            XmlPullParser xpp = container.getParser();
+
+            try
+            {
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+
+                // Getting the value
+                String nextText = xpp.nextText();
+
+                if ( !Strings.isEmpty( nextText ) )
+                {
+                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                    {
+                        extendedRequest.setRequestValue( Base64.decode( nextText.trim().toCharArray() ) );
+                    }
+                    else
+                    {
+                        extendedRequest.setRequestValue( Strings.getBytesUtf8( nextText.trim() ) );
+                    }
+                }
+            }
+            catch ( IOException ioe )
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates a Modify Dn Request
+     */
+    private final GrammarAction modDNRequestCreation = new GrammarAction( "Create Modify Dn Request" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            ModifyDNRequestDsml modifyDNRequest = new ModifyDNRequestDsml( codec, new ModifyDnRequestImpl() );
+            container.getBatchRequest().addRequest( modifyDNRequest );
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the request's attributes
+            String attributeValue;
+            // requestID
+            attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
+
+            if ( attributeValue != null )
+            {
+                modifyDNRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+            else
+            {
+                if ( ParserUtils.isRequestIdNeeded( container ) )
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03016 ), xpp, null );
+                }
+            }
+
+            // dn
+            attributeValue = xpp.getAttributeValue( "", "dn" );
+
+            if ( attributeValue != null )
+            {
+                try
+                {
+                    modifyDNRequest.setName( new Dn( attributeValue ) );
+                }
+                catch ( LdapInvalidDnException lide )
+                {
+                    throw new XmlPullParserException( "" + lide.getMessage(), xpp, lide );
+                }
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03019 ), xpp, null );
+            }
+
+            // newrdn
+            attributeValue = xpp.getAttributeValue( "", "newrdn" );
+
+            if ( attributeValue != null )
+            {
+                try
+                {
+                    modifyDNRequest.setNewRdn( new Rdn( attributeValue ) );
+                }
+                catch ( LdapInvalidDnException lide )
+                {
+                    throw new XmlPullParserException( "" + lide.getMessage(), xpp, lide );
+                }
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03023 ), xpp, null );
+            }
+
+            // deleteoldrdn
+            attributeValue = xpp.getAttributeValue( "", "deleteoldrdn" );
+
+            if ( attributeValue != null )
+            {
+                if ( ( attributeValue.equalsIgnoreCase( TRUE ) ) || ( "1".equals( attributeValue ) ) )
+                {
+                    modifyDNRequest.setDeleteOldRdn( true );
+                }
+                else if ( ( attributeValue.equalsIgnoreCase( FALSE ) ) || ( "0".equals( attributeValue ) ) )
+                {
+                    modifyDNRequest.setDeleteOldRdn( false );
+                }
+                else
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03024 ), xpp, null );
+                }
+            }
+            else
+            {
+                modifyDNRequest.setDeleteOldRdn( true );
+            }
+
+            // newsuperior
+            attributeValue = xpp.getAttributeValue( "", "newSuperior" );
+
+            if ( attributeValue != null )
+            {
+                try
+                {
+                    modifyDNRequest.setNewSuperior( new Dn( attributeValue ) );
+                }
+                catch ( LdapInvalidDnException lide )
+                {
+                    throw new XmlPullParserException( "" + lide.getMessage(), xpp, lide );
+                }
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates a Modify Request
+     */
+    private final GrammarAction modifyRequestCreation = new GrammarAction( "Create Modify Request" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            ModifyRequestDsml modifyRequest = new ModifyRequestDsml( codec, new ModifyRequestImpl() );
+            container.getBatchRequest().addRequest( modifyRequest );
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the request's attributes
+            String attributeValue;
+            // requestID
+            attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
+
+            if ( attributeValue != null )
+            {
+                modifyRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+            else
+            {
+                if ( ParserUtils.isRequestIdNeeded( container ) )
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03016 ), xpp, null );
+                }
+            }
+
+            // dn
+            attributeValue = xpp.getAttributeValue( "", "dn" );
+
+            if ( attributeValue != null )
+            {
+                try
+                {
+                    modifyRequest.setName( new Dn( attributeValue ) );
+                }
+                catch ( LdapInvalidDnException lide )
+                {
+                    throw new XmlPullParserException( "" + lide.getLocalizedMessage(), xpp, lide );
+                }
+            }
+            else
+            {
+                throw new XmlPullParserException( "dn attribute is required", xpp, null );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that adds a Modification to a Modify Request
+     */
+    private final GrammarAction modifyRequestAddModification = new GrammarAction( "Adds Modification to Modify Request" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            ModifyRequestDsml modifyRequest = ( ModifyRequestDsml )
+                container.getBatchRequest().getCurrentRequest();
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the request's attributes
+            String attributeValue;
+            // operation
+            attributeValue = xpp.getAttributeValue( "", "operation" );
+
+            if ( attributeValue != null )
+            {
+                if ( "add".equals( attributeValue ) )
+                {
+                    modifyRequest.setCurrentOperation( LdapCodecConstants.OPERATION_ADD );
+                }
+                else if ( "delete".equals( attributeValue ) )
+                {
+                    modifyRequest.setCurrentOperation( LdapCodecConstants.OPERATION_DELETE );
+                }
+                else if ( "replace".equals( attributeValue ) )
+                {
+                    modifyRequest.setCurrentOperation( LdapCodecConstants.OPERATION_REPLACE );
+                }
+                else
+                {
+                    throw new XmlPullParserException(
+                        "unknown operation. Operation can be 'add', 'delete' or 'replace'.", xpp, null );
+                }
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03025 ), xpp, null );
+            }
+
+            // name
+            attributeValue = xpp.getAttributeValue( "", NAME );
+
+            if ( attributeValue != null )
+            {
+                modifyRequest.addAttributeTypeAndValues( attributeValue );
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that adds a Value to a Modification of a Modify Request
+     */
+    private final GrammarAction modifyRequestAddValue = new GrammarAction(
+        "Add Value to Modification of Modify Request" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            ModifyRequestDsml modifyRequest = ( ModifyRequestDsml )
+                container.getBatchRequest().getCurrentRequest();
+
+            XmlPullParser xpp = container.getParser();
+
+            try
+            {
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+
+                // Getting the value
+                String nextText = xpp.nextText();
+                // We are testing if nextText equals "" since a modification can be "".
+
+                try
+                {
+                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                    {
+                        modifyRequest.addAttributeValue( Base64.decode( nextText.trim().toCharArray() ) );
+                    }
+                    else
+                    {
+                        modifyRequest.addAttributeValue( nextText.trim() );
+                    }
+                }
+                catch ( LdapException le )
+                {
+                    throw new XmlPullParserException( le.getMessage(), xpp, le );
+                }
+            }
+            catch ( IOException ioe )
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates a Search Request
+     */
+    private final GrammarAction searchRequestCreation = new GrammarAction( "Create Search Request" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchRequestDsml searchRequest = new SearchRequestDsml( codec, new SearchRequestImpl() );
+            container.getBatchRequest().addRequest( searchRequest );
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the request's attributes
+            String attributeValue;
+            // requestID
+            attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
+
+            if ( attributeValue != null )
+            {
+                searchRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+            else
+            {
+                if ( ParserUtils.isRequestIdNeeded( container ) )
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03016 ), xpp, null );
+                }
+            }
+
+            // dn
+            attributeValue = xpp.getAttributeValue( "", "dn" );
+
+            if ( attributeValue != null )
+            {
+                try
+                {
+                    searchRequest.setBase( new Dn( attributeValue ) );
+                }
+                catch ( LdapInvalidDnException lide )
+                {
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
+                }
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03019 ), xpp, null );
+            }
+
+            // scope
+            attributeValue = xpp.getAttributeValue( "", "scope" );
+
+            if ( attributeValue != null )
+            {
+                if ( "baseObject".equals( attributeValue ) )
+                {
+                    searchRequest.setScope( SearchScope.OBJECT );
+                }
+                else if ( "singleLevel".equals( attributeValue ) )
+                {
+                    searchRequest.setScope( SearchScope.ONELEVEL );
+                }
+                else if ( "wholeSubtree".equals( attributeValue ) )
+                {
+                    searchRequest.setScope( SearchScope.SUBTREE );
+                }
+                else
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03026 ), xpp, null );
+                }
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03027 ), xpp, null );
+            }
+
+            // derefAliases
+            attributeValue = xpp.getAttributeValue( "", "derefAliases" );
+
+            if ( attributeValue != null )
+            {
+                if ( "neverDerefAliases".equals( attributeValue ) )
+                {
+                    searchRequest.setDerefAliases( AliasDerefMode.NEVER_DEREF_ALIASES );
+                }
+                else if ( "derefInSearching".equals( attributeValue ) )
+                {
+                    searchRequest.setDerefAliases( AliasDerefMode.DEREF_IN_SEARCHING );
+                }
+                else if ( "derefFindingBaseObj".equals( attributeValue ) )
+                {
+                    searchRequest.setDerefAliases( AliasDerefMode.DEREF_FINDING_BASE_OBJ );
+                }
+                else if ( "derefAlways".equals( attributeValue ) )
+                {
+                    searchRequest.setDerefAliases( AliasDerefMode.DEREF_ALWAYS );
+                }
+                else
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03028 ), xpp, null );
+                }
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03029 ), xpp, null );
+            }
+
+            // sizeLimit
+            attributeValue = xpp.getAttributeValue( "", "sizeLimit" );
+
+            if ( attributeValue != null )
+            {
+                try
+                {
+                    searchRequest.setSizeLimit( Long.parseLong( attributeValue ) );
+                }
+                catch ( NumberFormatException nfe )
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03030 ), xpp, nfe );
+                }
+            }
+            else
+            {
+                searchRequest.setSizeLimit( 0L );
+            }
+
+            // timeLimit
+            attributeValue = xpp.getAttributeValue( "", "timeLimit" );
+
+            if ( attributeValue != null )
+            {
+                try
+                {
+                    searchRequest.setTimeLimit( Integer.parseInt( attributeValue ) );
+                }
+                catch ( NumberFormatException nfe )
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03031 ), xpp, nfe );
+                }
+            }
+            else
+            {
+                searchRequest.setTimeLimit( 0 );
+            }
+
+            // typesOnly
+            attributeValue = xpp.getAttributeValue( "", "typesOnly" );
+
+            if ( attributeValue != null )
+            {
+                if ( ( attributeValue.equals( TRUE ) ) || ( "1".equals( attributeValue ) ) )
+                {
+                    searchRequest.setTypesOnly( true );
+                }
+                else if ( ( attributeValue.equals( FALSE ) ) || ( "0".equals( attributeValue ) ) )
+                {
+                    searchRequest.setTypesOnly( false );
+                }
+                else
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03032 ), xpp, null );
+                }
+            }
+            else
+            {
+                searchRequest.setTypesOnly( false );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that adds an Attribute to a Search Request
+     */
+    private final GrammarAction searchRequestAddAttribute = new GrammarAction(
+        "Add Value to Modification of Modify Request" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchRequest searchRequest = ( SearchRequest ) container.getBatchRequest().getCurrentRequest();
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the request's attribute name
+            String attributeName = xpp.getAttributeValue( "", NAME );
+
+            if ( attributeName != null )
+            {
+                searchRequest.addAttributes( attributeName );
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that create a Substring Filter
+     */
+    private final GrammarAction substringsFilterCreation = new GrammarAction( "Create Substring Filter" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
+                container.getBatchRequest().getCurrentRequest();
+
+            XmlPullParser xpp = container.getParser();
+
+            SubstringFilter filter = new SubstringFilter();
+
+            // Adding the filter to the Search Filter
+            try
+            {
+                searchRequestDecorator.addCurrentFilter( filter );
+            }
+            catch ( DecoderException de )
+            {
+                throw new XmlPullParserException( de.getMessage(), xpp, de );
+            }
+
+            searchRequestDecorator.setTerminalFilter( filter );
+
+            // Checking and adding the filter's attributes
+            String attributeValue;
+            // name
+            attributeValue = xpp.getAttributeValue( "", NAME );
+
+            if ( attributeValue != null )
+            {
+                filter.setType( attributeValue );
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that sets the Initial value to a Substring Filter
+     */
+    private final GrammarAction substringsFilterSetInitial = new GrammarAction( "Set Initial value to Substring Filter" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
+                container.getBatchRequest().getCurrentRequest();
+
+            SubstringFilter substringFilter = ( SubstringFilter )
+                searchRequestDecorator.getTerminalFilter();
+
+            XmlPullParser xpp = container.getParser();
+
+            try
+            {
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+
+                // Getting the value
+                String nextText = xpp.nextText();
+
+                if ( !Strings.isEmpty( nextText ) )
+                {
+                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                    {
+                        substringFilter
+                            .setInitialSubstrings( Strings.utf8ToString( Base64.decode( nextText.trim().toCharArray() ) ) );
+                    }
+                    else
+                    {
+                        substringFilter.setInitialSubstrings( nextText.trim() );
+                    }
+                }
+            }
+            catch ( IOException ioe )
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that adds a Any value to a Substring Filter
+     */
+    private final GrammarAction substringsFilterAddAny = new GrammarAction( "Add Any value to Substring Filter" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
+                container.getBatchRequest().getCurrentRequest();
+
+            SubstringFilter substringFilter = ( SubstringFilter ) searchRequestDecorator.getTerminalFilter();
+
+            XmlPullParser xpp = container.getParser();
+
+            try
+            {
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+
+                // Getting the value
+                String nextText = xpp.nextText();
+
+                if ( !Strings.isEmpty( nextText ) )
+                {
+                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                    {
+                        substringFilter.addAnySubstrings( Strings.utf8ToString( Base64.decode( nextText.trim().toCharArray() ) ) );
+                    }
+                    else
+                    {
+                        substringFilter.addAnySubstrings( nextText.trim() );
+                    }
+                }
+            }
+            catch ( IOException ioe )
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that sets the Final value to a Substring Filter
+     */
+    private final GrammarAction substringsFilterSetFinal = new GrammarAction( "Set Final value to Substring Filter" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
+                container.getBatchRequest().getCurrentRequest();
+
+            SubstringFilter substringFilter = ( SubstringFilter ) searchRequestDecorator.getTerminalFilter();
+
+            XmlPullParser xpp = container.getParser();
+
+            try
+            {
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+
+                // Getting the value
+                String nextText = xpp.nextText();
+
+                if ( !Strings.isEmpty( nextText ) )
+                {
+                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                    {
+                        substringFilter
+                            .setFinalSubstrings( Strings.utf8ToString( Base64.decode( nextText.trim().toCharArray() ) ) );
+                    }
+                    else
+                    {
+                        substringFilter.setFinalSubstrings( nextText.trim() );
+                    }
+                }
+            }
+            catch ( IOException ioe )
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that closes a Substring Filter
+     */
+    private final GrammarAction substringsFilterClose = new GrammarAction( "Close Substring Filter" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
+                container.getBatchRequest().getCurrentRequest();
+
+            searchRequestDecorator.setTerminalFilter( null );
+        }
+    };
+
+    /**
+     * GrammarAction that create a And Filter
+     */
+    private final GrammarAction andFilterCreation = new GrammarAction( "Create And Filter" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
+                container.getBatchRequest().getCurrentRequest();
+
+            XmlPullParser xpp = container.getParser();
+
+            AndFilter filter = new AndFilter();
+
+            // Adding the filter to the Search Filter
+            try
+            {
+                searchRequestDecorator.addCurrentFilter( filter );
+            }
+            catch ( DecoderException de )
+            {
+                throw new XmlPullParserException( de.getMessage(), xpp, de );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that closes a Connector Filter (And, Or, Not)
+     */
+    private final GrammarAction connectorFilterClose = new GrammarAction( "Close Connector Filter" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
+                container.getBatchRequest().getCurrentRequest();
+
+            searchRequestDecorator.endCurrentConnectorFilter();
+        }
+    };
+
+    /**
+     * GrammarAction that create a Or Filter
+     */
+    private final GrammarAction orFilterCreation = new GrammarAction( "Create Or Filter" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
+                container.getBatchRequest().getCurrentRequest();
+
+            XmlPullParser xpp = container.getParser();
+
+            OrFilter filter = new OrFilter();
+
+            // Adding the filter to the Search Filter
+            try
+            {
+                searchRequestDecorator.addCurrentFilter( filter );
+            }
+            catch ( DecoderException de )
+            {
+                throw new XmlPullParserException( de.getMessage(), xpp, de );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that create a Not Filter
+     */
+    private final GrammarAction notFilterCreation = new GrammarAction( "Create Not Filter" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
+                container.getBatchRequest().getCurrentRequest();
+
+            XmlPullParser xpp = container.getParser();
+
+            NotFilter filter = new NotFilter();
+
+            // Adding the filter to the Search Filter
+            try
+            {
+                searchRequestDecorator.addCurrentFilter( filter );
+            }
+            catch ( DecoderException de )
+            {
+                throw new XmlPullParserException( de.getMessage(), xpp, de );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that create a Equality Match Filter
+     */
+    private final GrammarAction equalityMatchFilterCreation = new GrammarAction( "Create Equality Match Filter" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
+                container.getBatchRequest().getCurrentRequest();
+
+            XmlPullParser xpp = container.getParser();
+
+            AttributeValueAssertion assertion = new AttributeValueAssertion();
+
+            // Checking and adding the filter's attributes
+            String attributeName = xpp.getAttributeValue( "", NAME );
+
+            if ( attributeName != null )
+            {
+                assertion.setAttributeDesc( attributeName );
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
+            }
+
+            AttributeValueAssertionFilter filter = new AttributeValueAssertionFilter(
+                LdapCodecConstants.EQUALITY_MATCH_FILTER );
+
+            filter.setAssertion( assertion );
+
+            // Adding the filter to the Search Filter
+            try
+            {
+                searchRequestDecorator.addCurrentFilter( filter );
+            }
+            catch ( DecoderException de )
+            {
+                throw new XmlPullParserException( de.getMessage(), xpp, de );
+            }
+
+            searchRequestDecorator.setTerminalFilter( filter );
+        }
+    };
+
+    /**
+     * GrammarAction that create a Greater Or Equal Filter
+     */
+    private final GrammarAction greaterOrEqualFilterCreation = new GrammarAction( "Create Greater Or Equal Filter" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
+                container.getBatchRequest().getCurrentRequest();
+
+            XmlPullParser xpp = container.getParser();
+
+            AttributeValueAssertion assertion = new AttributeValueAssertion();
+
+            // Checking and adding the filter's attributes
+            String attributeName = xpp.getAttributeValue( "", NAME );
+
+            if ( attributeName != null )
+            {
+                assertion.setAttributeDesc( attributeName );
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
+            }
+
+            AttributeValueAssertionFilter filter = new AttributeValueAssertionFilter(
+                LdapCodecConstants.GREATER_OR_EQUAL_FILTER );
+
+            filter.setAssertion( assertion );
+
+            // Adding the filter to the Search Filter
+            try
+            {
+                searchRequestDecorator.addCurrentFilter( filter );
+            }
+            catch ( DecoderException de )
+            {
+                throw new XmlPullParserException( de.getMessage(), xpp, de );
+            }
+
+            searchRequestDecorator.setTerminalFilter( filter );
+        }
+    };
+
+    /**
+     * GrammarAction that create a Less Or Equal Filter
+     */
+    private final GrammarAction lessOrEqualFilterCreation = new GrammarAction( "Create Less Or Equal Filter" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
+                container.getBatchRequest().getCurrentRequest();
+
+            XmlPullParser xpp = container.getParser();
+
+            AttributeValueAssertion assertion = new AttributeValueAssertion();
+
+            // Checking and adding the filter's attributes
+            String attributeValue;
+            // name
+            attributeValue = xpp.getAttributeValue( "", NAME );
+
+            if ( attributeValue != null )
+            {
+                assertion.setAttributeDesc( attributeValue );
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
+            }
+
+            AttributeValueAssertionFilter filter = new AttributeValueAssertionFilter(
+                LdapCodecConstants.LESS_OR_EQUAL_FILTER );
+
+            filter.setAssertion( assertion );
+
+            // Adding the filter to the Search Filter
+            try
+            {
+                searchRequestDecorator.addCurrentFilter( filter );
+            }
+            catch ( DecoderException de )
+            {
+                throw new XmlPullParserException( de.getMessage(), xpp, de );
+            }
+
+            searchRequestDecorator.setTerminalFilter( filter );
+        }
+    };
+
+    /**
+     * GrammarAction that create an Approx Match Filter
+     */
+    private final GrammarAction approxMatchFilterCreation = new GrammarAction( "Create Approx Match Filter" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
+                container.getBatchRequest().getCurrentRequest();
+
+            XmlPullParser xpp = container.getParser();
+
+            AttributeValueAssertion assertion = new AttributeValueAssertion();
+
+            // Checking and adding the filter's attributes
+            String attributeName = xpp.getAttributeValue( "", NAME );
+
+            if ( attributeName != null )
+            {
+                assertion.setAttributeDesc( attributeName );
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
+            }
+
+            AttributeValueAssertionFilter filter = new AttributeValueAssertionFilter(
+                LdapCodecConstants.APPROX_MATCH_FILTER );
+
+            filter.setAssertion( assertion );
+
+            // Adding the filter to the Search Filter
+            try
+            {
+                searchRequestDecorator.addCurrentFilter( filter );
+            }
+            catch ( DecoderException de )
+            {
+                throw new XmlPullParserException( de.getMessage(), xpp, de );
+            }
+
+            searchRequestDecorator.setTerminalFilter( filter );
+        }
+    };
+
+    /**
+     * GrammarAction that adds a Value to a Filter
+     */
+    private final GrammarAction filterAddValue = new GrammarAction( "Adds Value to Filter" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
+                container.getBatchRequest().getCurrentRequest();
+            AttributeValueAssertionFilter filter = ( AttributeValueAssertionFilter ) searchRequestDecorator
+                .getTerminalFilter();
+            AttributeValueAssertion assertion = filter.getAssertion();
+
+            XmlPullParser xpp = container.getParser();
+
+            try
+            {
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+
+                // Getting the value
+                String nextText = xpp.nextText();
+
+                if ( !Strings.isEmpty( nextText ) )
+                {
+                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                    {
+                        Value value = new Value( Base64.decode( nextText.trim().toCharArray() ) );
+                        assertion.setAssertionValue( value );
+                    }
+                    else
+                    {
+                        Value value = new Value( nextText.trim() );
+                        assertion.setAssertionValue( value );
+                    }
+                }
+            }
+            catch ( IOException ioe )
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates a Present Filter
+     */
+    private final GrammarAction presentFilterCreation = new GrammarAction( "Create Present Filter" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            PresentFilter presentFilter = new PresentFilter();
+
+            XmlPullParser xpp = container.getParser();
+
+            // Adding the filter to the Search Filter
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
+                container.getBatchRequest().getCurrentRequest();
+
+            try
+            {
+                searchRequestDecorator.addCurrentFilter( presentFilter );
+            }
+            catch ( DecoderException de )
+            {
+                throw new XmlPullParserException( de.getMessage(), xpp, de );
+            }
+
+            // Checking and adding the filter's attributes
+            String attributeValue;
+            // name
+            attributeValue = xpp.getAttributeValue( "", NAME );
+
+            if ( attributeValue != null )
+            {
+                presentFilter.setAttributeDescription( attributeValue );
+            }
+            else
+            {
+                throw new XmlPullParserException( "name attribute is required", xpp, null );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that store the Filter into the searchRequest
+     */
+    private final GrammarAction storeFilter = new GrammarAction( "Store Filter" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            // Adding the filter to the Search Filter
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
+                container.getBatchRequest().getCurrentRequest();
+            SearchRequest searchRequest = searchRequestDecorator.getDecorated();
+
+            try
+            {
+                ExprNode exprNode = searchRequestDecorator.getFilterNode();
+                
+                if ( exprNode == null )
+                {
+                    throw new IllegalStateException( "No filter element present in the DSML search request" );
+                }
+                
+                searchRequest.setFilter( exprNode );
+            }
+            catch ( LdapSchemaException lse )
+            {
+                
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates an Extensible Match Filter
+     */
+    private final GrammarAction extensibleMatchFilterCreation = new GrammarAction( "Create Extensible Match Filter" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            ExtensibleMatchFilter extensibleMatchFilter = new ExtensibleMatchFilter();
+
+            XmlPullParser xpp = container.getParser();
+
+            // Adding the filter to the Search Filter
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
+                container.getBatchRequest().getCurrentRequest();
+
+            try
+            {
+                searchRequestDecorator.addCurrentFilter( extensibleMatchFilter );
+            }
+            catch ( DecoderException de )
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, de );
+            }
+
+            searchRequestDecorator.setTerminalFilter( extensibleMatchFilter );
+
+            // Checking and adding the filter's attributes
+            String attributeValue;
+            // dnAttributes
+            attributeValue = xpp.getAttributeValue( "", "dnAttributes" );
+
+            if ( attributeValue != null )
+            {
+                if ( ( attributeValue.equals( TRUE ) ) || ( "1".equals( attributeValue ) ) )
+                {
+                    extensibleMatchFilter.setDnAttributes( true );
+                }
+                else if ( ( attributeValue.equals( FALSE ) ) || ( "0".equals( attributeValue ) ) )
+                {
+                    extensibleMatchFilter.setDnAttributes( false );
+                }
+                else
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03033 ), xpp, null );
+                }
+            }
+            else
+            {
+                extensibleMatchFilter.setDnAttributes( false );
+            }
+
+            // matchingRule
+            attributeValue = xpp.getAttributeValue( "", "matchingRule" );
+
+            if ( attributeValue != null )
+            {
+                extensibleMatchFilter.setMatchingRule( attributeValue );
+            }
+
+            // name
+            attributeValue = xpp.getAttributeValue( "", NAME );
+
+            if ( attributeValue != null )
+            {
+                extensibleMatchFilter.setType( attributeValue );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that adds a Value to an Extensible Match Filter
+     */
+    private final GrammarAction extensibleMatchAddValue = new GrammarAction( "Adds Value to Extensible MatchFilter" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
+                container.getBatchRequest().getCurrentRequest();
+            ExtensibleMatchFilter filter = ( ExtensibleMatchFilter ) searchRequestDecorator.getTerminalFilter();
+
+            XmlPullParser xpp = container.getParser();
+
+            try
+            {
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+
+                // Getting the value
+                String nextText = xpp.nextText();
+                
+                if ( !Strings.isEmpty( nextText ) )
+                {
+                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                    {
+                        filter.setMatchValue( new Value( Base64.decode( nextText.trim().toCharArray() ) ) );
+                    }
+                    else
+                    {
+                        filter.setMatchValue( new Value( nextText.trim() ) );
+                    }
+                }
+            }
+            catch ( IOException ioe )
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates a Control
+     */
+    private final GrammarAction controlCreation = new GrammarAction( "Create Control" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            XmlPullParser xpp = container.getParser();
+            CodecControl<? extends Control> control;
+
+            // Checking and adding the Control's attributes
+            String attributeValue;
+            // TYPE
+            attributeValue = xpp.getAttributeValue( "", "type" );
+
+            if ( attributeValue != null )
+            {
+                if ( !Oid.isOid( attributeValue ) )
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03034 ), xpp, null );
+                }
+
+                control = codec.newControl( codec.newControl( attributeValue ) );
+                ( ( Request ) container.getBatchRequest().getCurrentRequest() ).addControl( control );
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03035 ), xpp, null );
+            }
+
+            // CRITICALITY
+            attributeValue = xpp.getAttributeValue( "", "criticality" );
+
+            if ( attributeValue != null )
+            {
+                if ( attributeValue.equals( TRUE ) )
+                {
+                    control.setCritical( true );
+                }
+                else if ( attributeValue.equals( FALSE ) )
+                {
+                    control.setCritical( false );
+                }
+                else
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03007 ), xpp, null );
+                }
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that adds a Value to a Control
+     */
+    private final GrammarAction controlValueCreation = new GrammarAction( "Add ControlValue to Control" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            AbstractRequestDsml<? extends Request> request =
+                ( AbstractRequestDsml<? extends Request> ) container.getBatchRequest().getCurrentRequest();
+            DsmlControl<? extends Control> control = request.getCurrentControl();
+
+            XmlPullParser xpp = container.getParser();
+
+            try
+            {
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+
+                // Getting the value
+                String nextText = xpp.nextText();
+
+                if ( !Strings.isEmpty( nextText ) )
+                {
+                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                    {
+                        control.setValue( Base64.decode( nextText.trim().toCharArray() ) );
+                    }
+                    else
+                    {
+                        control.setValue( Strings.getBytesUtf8( nextText.trim() ) );
+                    }
+                }
+            }
+            catch ( IOException ioe )
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+            }
+        }
+    };
 
 
     /**
@@ -1206,1829 +3184,4 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         return codec;
     }
-
-    //*************************
-    //*    GRAMMAR ACTIONS    *
-    //*************************
-
-    /**
-     * GrammarAction that creates a Batch Request
-     */
-    private final GrammarAction batchRequestCreation = new GrammarAction( "Create Batch Request" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            BatchRequestDsml batchRequest = new BatchRequestDsml();
-
-            container.setBatchRequest( batchRequest );
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the batchRequest's attributes
-            String attributeValue;
-            // requestID
-            attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
-
-            if ( attributeValue != null )
-            {
-                batchRequest.setRequestID( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
-            }
-            // processing
-            attributeValue = xpp.getAttributeValue( "", "processing" );
-
-            if ( attributeValue != null )
-            {
-                if ( "sequential".equals( attributeValue ) )
-                {
-                    batchRequest.setProcessing( Processing.SEQUENTIAL );
-                }
-                else if ( "parallel".equals( attributeValue ) )
-                {
-                    batchRequest.setProcessing( Processing.PARALLEL );
-                }
-                else
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03013 ), xpp, null );
-                }
-            }
-            else
-            {
-                batchRequest.setProcessing( Processing.SEQUENTIAL );
-            }
-
-            // onError
-            attributeValue = xpp.getAttributeValue( "", "onError" );
-
-            if ( attributeValue != null )
-            {
-                if ( "resume".equals( attributeValue ) )
-                {
-                    batchRequest.setOnError( OnError.RESUME );
-                }
-                else if ( "exit".equals( attributeValue ) )
-                {
-                    batchRequest.setOnError( OnError.EXIT );
-                }
-                else
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03014 ), xpp, null );
-                }
-            }
-            else
-            {
-                batchRequest.setOnError( OnError.EXIT );
-            }
-
-            // responseOrder
-            attributeValue = xpp.getAttributeValue( "", "responseOrder" );
-
-            if ( attributeValue != null )
-            {
-                if ( "sequential".equals( attributeValue ) )
-                {
-                    batchRequest.setResponseOrder( ResponseOrder.SEQUENTIAL );
-                }
-                else if ( "unordered".equals( attributeValue ) )
-                {
-                    batchRequest.setResponseOrder( ResponseOrder.UNORDERED );
-                }
-                else
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03015 ), xpp, null );
-                }
-            }
-            else
-            {
-                batchRequest.setResponseOrder( ResponseOrder.SEQUENTIAL );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that creates an Abandon Request
-     */
-    private final GrammarAction abandonRequestCreation = new GrammarAction( "Create Abandon Request" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            AbandonRequestDsml abandonRequest = new AbandonRequestDsml( codec, new AbandonRequestImpl() );
-            container.getBatchRequest().addRequest( abandonRequest );
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the request's attributes
-            String attributeValue;
-            // requestID
-            attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
-            
-            if ( attributeValue != null )
-            {
-                abandonRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
-            }
-            else
-            {
-                if ( ParserUtils.isRequestIdNeeded( container ) )
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03016 ), xpp, null );
-                }
-            }
-            
-            // abandonID
-            attributeValue = xpp.getAttributeValue( "", "abandonID" );
-            
-            if ( attributeValue != null )
-            {
-                try
-                {
-                    abandonRequest.setAbandoned( Integer.parseInt( attributeValue ) );
-                }
-                catch ( NumberFormatException nfe )
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03017 ), xpp, nfe );
-                }
-            }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03018 ), xpp, null );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that creates an Add Request
-     */
-    private final GrammarAction addRequestCreation = new GrammarAction( "Create Add Request" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            AddRequestDsml addRequest = new AddRequestDsml( codec, new AddRequestImpl() );
-            container.getBatchRequest().addRequest( addRequest );
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the request's attributes
-            String attributeValue;
-            // requestID
-            attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
-            
-            if ( attributeValue != null )
-            {
-                addRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
-            }
-            else
-            {
-                if ( ParserUtils.isRequestIdNeeded( container ) )
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03016 ), xpp, null );
-                }
-            }
-            
-            // dn
-            attributeValue = xpp.getAttributeValue( "", "dn" );
-            
-            if ( attributeValue != null )
-            {
-                try
-                {
-                    addRequest.setEntryDn( new Dn( attributeValue ) );
-                }
-                catch ( LdapInvalidDnException lide )
-                {
-                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
-                }
-            }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03019 ), xpp, null );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that adds an attribute to an Add Request
-     */
-    private final GrammarAction addRequestAddAttribute = new GrammarAction( "Add Attribute to Add Request" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            AddRequestDsml addRequest = ( AddRequestDsml )
-                container.getBatchRequest().getCurrentRequest();
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the request's attributes
-            String attributeValue;
-            // name
-            attributeValue = xpp.getAttributeValue( "", NAME );
-
-            if ( attributeValue != null )
-            {
-                try
-                {
-                    addRequest.addAttributeType( attributeValue );
-                }
-                catch ( LdapException le )
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03020 ), xpp, le );
-                }
-            }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that adds a Value to an Attribute of an Add Request
-     */
-    private final GrammarAction addRequestAddValue = new GrammarAction( "Add Value to Attribute" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            AddRequestDsml addRequest = ( AddRequestDsml )
-                container.getBatchRequest().getCurrentRequest();
-
-            XmlPullParser xpp = container.getParser();
-
-            try
-            {
-                // We have to catch the type Attribute Value before going to the next Text node
-                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
-
-                // Getting the value
-                String nextText = xpp.nextText();
-                
-                if ( !nextText.equals( "" ) )
-                {
-                    try
-                    {
-                        if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
-                        {
-                            addRequest.addAttributeValue( Base64.decode( nextText.trim().toCharArray() ) );
-                        }
-                        else
-                        {
-                            addRequest.addAttributeValue( nextText.trim() );
-                        }
-                    }
-                    catch ( LdapException le )
-                    {
-                        throw new XmlPullParserException( le.getMessage(), xpp, le );
-                    }
-                }
-            }
-            catch ( IOException ioe )
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that creates an Auth Request
-     */
-    private final GrammarAction authRequestCreation = new GrammarAction( "Create Auth Request" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            BindRequestDsml authRequest = new BindRequestDsml( codec, new BindRequestImpl() );
-            container.getBatchRequest().addRequest( authRequest );
-
-            authRequest.setSimple( true );
-            authRequest.setVersion3( true );
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the request's attributes
-            String attributeValue;
-            // requestID
-            attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
-
-            if ( attributeValue != null )
-            {
-                authRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
-            }
-            else
-            {
-                if ( ParserUtils.isRequestIdNeeded( container ) )
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03016 ), xpp, null );
-                }
-            }
-            // principal
-            attributeValue = xpp.getAttributeValue( "", "principal" );
-
-            if ( attributeValue != null )
-            {
-                authRequest.setName( attributeValue );
-            }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03021 ), xpp, null );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that creates an Compare Request
-     */
-    private final GrammarAction compareRequestCreation = new GrammarAction( "Create Compare Request" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            CompareRequestDsml compareRequest = new CompareRequestDsml( codec, new CompareRequestImpl() );
-            container.getBatchRequest().addRequest( compareRequest );
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the request's attributes
-            String attributeValue;
-            // requestID
-            attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
-
-            if ( attributeValue != null )
-            {
-                compareRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
-            }
-            else
-            {
-                if ( ParserUtils.isRequestIdNeeded( container ) )
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03016 ), xpp, null );
-                }
-            }
-
-            // dn
-            attributeValue = xpp.getAttributeValue( "", "dn" );
-
-            if ( attributeValue != null )
-            {
-                try
-                {
-                    compareRequest.setName( new Dn( attributeValue ) );
-                }
-                catch ( LdapInvalidDnException lide )
-                {
-                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
-                }
-            }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03019 ), xpp, null );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that adds an Assertion to a Compare Request
-     */
-    private final GrammarAction compareRequestAddAssertion = new GrammarAction( "Add Assertion to Compare Request" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            CompareRequest compareRequest = ( CompareRequest ) container.getBatchRequest().getCurrentRequest();
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the request's attributes
-            String attributeId;
-
-            // name
-            attributeId = xpp.getAttributeValue( "", NAME );
-
-            if ( attributeId != null )
-            {
-                compareRequest.setAttributeId( attributeId );
-            }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that adds a Value to a Compare Request
-     */
-    private final GrammarAction compareRequestAddValue = new GrammarAction( "Add Value to Compare Request" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            CompareRequest compareRequest = ( CompareRequest ) container.getBatchRequest().getCurrentRequest();
-
-            XmlPullParser xpp = container.getParser();
-
-            try
-            {
-                // We have to catch the type Attribute Value before going to the next Text node
-                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
-
-                // Getting the value
-                String nextText = xpp.nextText();
-
-                if ( !nextText.equals( "" ) )
-                {
-                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
-                    {
-                        compareRequest.setAssertionValue( Base64.decode( nextText.trim().toCharArray() ) );
-                    }
-                    else
-                    {
-                        compareRequest.setAssertionValue( nextText.trim() );
-                    }
-                }
-            }
-            catch ( IOException ioe )
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that creates a Del Request
-     */
-    private final GrammarAction delRequestCreation = new GrammarAction( "Create Del Request" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            DelRequestDsml delRequest = new DelRequestDsml( codec, new DeleteRequestImpl() );
-            container.getBatchRequest().addRequest( delRequest );
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the request's attributes
-            String attributeValue;
-            // requestID
-            attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
-
-            if ( attributeValue != null )
-            {
-                delRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
-            }
-            else
-            {
-                if ( ParserUtils.isRequestIdNeeded( container ) )
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03016 ), xpp, null );
-                }
-            }
-
-            // dn
-            attributeValue = xpp.getAttributeValue( "", "dn" );
-
-            if ( attributeValue != null )
-            {
-                try
-                {
-                    delRequest.setName( new Dn( attributeValue ) );
-                }
-                catch ( LdapInvalidDnException lide )
-                {
-                    throw new XmlPullParserException( "" + lide.getMessage(), xpp, lide );
-                }
-            }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03019 ), xpp, null );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that creates an Extended Request
-     */
-    private final GrammarAction extendedRequestCreation = new GrammarAction( "Create Extended Request" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            ExtendedRequestDsml<?, ?> extendedRequest =
-                new ExtendedRequestDsml<ExtendedRequest, ExtendedResponse>( codec,
-                    new ExtendedRequestImpl() );
-            container.getBatchRequest().addRequest( extendedRequest );
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the request's attributes
-            String attributeValue;
-            // requestID
-            attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
-
-            if ( attributeValue != null )
-            {
-                extendedRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
-            }
-            else
-            {
-                if ( ParserUtils.isRequestIdNeeded( container ) )
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03016 ), xpp, null );
-                }
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that adds a Name to an Extended Request
-     */
-    private final GrammarAction extendedRequestAddName = new GrammarAction( "Add Name to Extended Request" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            ExtendedRequestDsml<?, ?> extendedRequest = ( ExtendedRequestDsml<?, ?> )
-                container.getBatchRequest().getCurrentRequest();
-
-            XmlPullParser xpp = container.getParser();
-
-            try
-            {
-                String nextText = xpp.nextText();
-
-                if ( nextText.equals( "" ) )
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03022 ), xpp, null );
-                }
-                else
-                {
-                    String oid = nextText.trim();
-
-                    if ( Oid.isOid( oid ) )
-                    {
-                        extendedRequest.setRequestName( nextText.trim() );
-                    }
-                    else
-                    {
-                        throw new XmlPullParserException( "Bad oid : " + oid, xpp, null );
-                    }
-                }
-            }
-            catch ( IOException ioe )
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that adds a Value to an Extended Request
-     */
-    private final GrammarAction extendedRequestAddValue = new GrammarAction( "Add Value to Extended Request" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            ExtendedRequestDsml<?, ?> extendedRequest = ( ExtendedRequestDsml<?, ?> )
-                container.getBatchRequest().getCurrentRequest();
-
-            XmlPullParser xpp = container.getParser();
-
-            try
-            {
-                // We have to catch the type Attribute Value before going to the next Text node
-                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
-
-                // Getting the value
-                String nextText = xpp.nextText();
-
-                if ( !nextText.equals( "" ) )
-                {
-                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
-                    {
-                        extendedRequest.setRequestValue( Base64.decode( nextText.trim().toCharArray() ) );
-                    }
-                    else
-                    {
-                        extendedRequest.setRequestValue( Strings.getBytesUtf8( nextText.trim() ) );
-                    }
-                }
-            }
-            catch ( IOException ioe )
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that creates a Modify Dn Request
-     */
-    private final GrammarAction modDNRequestCreation = new GrammarAction( "Create Modify Dn Request" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            ModifyDNRequestDsml modifyDNRequest = new ModifyDNRequestDsml( codec, new ModifyDnRequestImpl() );
-            container.getBatchRequest().addRequest( modifyDNRequest );
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the request's attributes
-            String attributeValue;
-            // requestID
-            attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
-
-            if ( attributeValue != null )
-            {
-                modifyDNRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
-            }
-            else
-            {
-                if ( ParserUtils.isRequestIdNeeded( container ) )
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03016 ), xpp, null );
-                }
-            }
-
-            // dn
-            attributeValue = xpp.getAttributeValue( "", "dn" );
-
-            if ( attributeValue != null )
-            {
-                try
-                {
-                    modifyDNRequest.setName( new Dn( attributeValue ) );
-                }
-                catch ( LdapInvalidDnException lide )
-                {
-                    throw new XmlPullParserException( "" + lide.getMessage(), xpp, lide );
-                }
-            }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03019 ), xpp, null );
-            }
-
-            // newrdn
-            attributeValue = xpp.getAttributeValue( "", "newrdn" );
-
-            if ( attributeValue != null )
-            {
-                try
-                {
-                    modifyDNRequest.setNewRdn( new Rdn( attributeValue ) );
-                }
-                catch ( LdapInvalidDnException lide )
-                {
-                    throw new XmlPullParserException( "" + lide.getMessage(), xpp, lide );
-                }
-            }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03023 ), xpp, null );
-            }
-
-            // deleteoldrdn
-            attributeValue = xpp.getAttributeValue( "", "deleteoldrdn" );
-
-            if ( attributeValue != null )
-            {
-                if ( ( attributeValue.equalsIgnoreCase( TRUE ) ) || ( attributeValue.equals( "1" ) ) )
-                {
-                    modifyDNRequest.setDeleteOldRdn( true );
-                }
-                else if ( ( attributeValue.equalsIgnoreCase( FALSE ) ) || ( attributeValue.equals( "0" ) ) )
-                {
-                    modifyDNRequest.setDeleteOldRdn( false );
-                }
-                else
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03024 ), xpp, null );
-                }
-            }
-            else
-            {
-                modifyDNRequest.setDeleteOldRdn( true );
-            }
-
-            // newsuperior
-            attributeValue = xpp.getAttributeValue( "", "newSuperior" );
-
-            if ( attributeValue != null )
-            {
-                try
-                {
-                    modifyDNRequest.setNewSuperior( new Dn( attributeValue ) );
-                }
-                catch ( LdapInvalidDnException lide )
-                {
-                    throw new XmlPullParserException( "" + lide.getMessage(), xpp, lide );
-                }
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that creates a Modify Request
-     */
-    private final GrammarAction modifyRequestCreation = new GrammarAction( "Create Modify Request" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            ModifyRequestDsml modifyRequest = new ModifyRequestDsml( codec, new ModifyRequestImpl() );
-            container.getBatchRequest().addRequest( modifyRequest );
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the request's attributes
-            String attributeValue;
-            // requestID
-            attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
-
-            if ( attributeValue != null )
-            {
-                modifyRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
-            }
-            else
-            {
-                if ( ParserUtils.isRequestIdNeeded( container ) )
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03016 ), xpp, null );
-                }
-            }
-
-            // dn
-            attributeValue = xpp.getAttributeValue( "", "dn" );
-
-            if ( attributeValue != null )
-            {
-                try
-                {
-                    modifyRequest.setName( new Dn( attributeValue ) );
-                }
-                catch ( LdapInvalidDnException lide )
-                {
-                    throw new XmlPullParserException( "" + lide.getLocalizedMessage(), xpp, lide );
-                }
-            }
-            else
-            {
-                throw new XmlPullParserException( "dn attribute is required", xpp, null );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that adds a Modification to a Modify Request
-     */
-    private final GrammarAction modifyRequestAddModification = new GrammarAction( "Adds Modification to Modify Request" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            ModifyRequestDsml modifyRequest = ( ModifyRequestDsml )
-                container.getBatchRequest().getCurrentRequest();
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the request's attributes
-            String attributeValue;
-            // operation
-            attributeValue = xpp.getAttributeValue( "", "operation" );
-
-            if ( attributeValue != null )
-            {
-                if ( "add".equals( attributeValue ) )
-                {
-                    modifyRequest.setCurrentOperation( LdapCodecConstants.OPERATION_ADD );
-                }
-                else if ( "delete".equals( attributeValue ) )
-                {
-                    modifyRequest.setCurrentOperation( LdapCodecConstants.OPERATION_DELETE );
-                }
-                else if ( "replace".equals( attributeValue ) )
-                {
-                    modifyRequest.setCurrentOperation( LdapCodecConstants.OPERATION_REPLACE );
-                }
-                else
-                {
-                    throw new XmlPullParserException(
-                        "unknown operation. Operation can be 'add', 'delete' or 'replace'.", xpp, null );
-                }
-            }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03025 ), xpp, null );
-            }
-
-            // name
-            attributeValue = xpp.getAttributeValue( "", NAME );
-
-            if ( attributeValue != null )
-            {
-                modifyRequest.addAttributeTypeAndValues( attributeValue );
-            }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that adds a Value to a Modification of a Modify Request
-     */
-    private final GrammarAction modifyRequestAddValue = new GrammarAction(
-        "Add Value to Modification of Modify Request" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            ModifyRequestDsml modifyRequest = ( ModifyRequestDsml )
-                container.getBatchRequest().getCurrentRequest();
-
-            XmlPullParser xpp = container.getParser();
-
-            try
-            {
-                // We have to catch the type Attribute Value before going to the next Text node
-                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
-
-                // Getting the value
-                String nextText = xpp.nextText();
-                // We are testing if nextText equals "" since a modification can be "".
-
-                try
-                {
-                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
-                    {
-                        modifyRequest.addAttributeValue( Base64.decode( nextText.trim().toCharArray() ) );
-                    }
-                    else
-                    {
-                        modifyRequest.addAttributeValue( nextText.trim() );
-                    }
-                }
-                catch ( LdapException le )
-                {
-                    throw new XmlPullParserException( le.getMessage(), xpp, le );
-                }
-            }
-            catch ( IOException ioe )
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that creates a Search Request
-     */
-    private final GrammarAction searchRequestCreation = new GrammarAction( "Create Search Request" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchRequestDsml searchRequest = new SearchRequestDsml( codec, new SearchRequestImpl() );
-            container.getBatchRequest().addRequest( searchRequest );
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the request's attributes
-            String attributeValue;
-            // requestID
-            attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
-
-            if ( attributeValue != null )
-            {
-                searchRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
-            }
-            else
-            {
-                if ( ParserUtils.isRequestIdNeeded( container ) )
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03016 ), xpp, null );
-                }
-            }
-
-            // dn
-            attributeValue = xpp.getAttributeValue( "", "dn" );
-
-            if ( attributeValue != null )
-            {
-                try
-                {
-                    searchRequest.setBase( new Dn( attributeValue ) );
-                }
-                catch ( LdapInvalidDnException lide )
-                {
-                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
-                }
-            }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03019 ), xpp, null );
-            }
-
-            // scope
-            attributeValue = xpp.getAttributeValue( "", "scope" );
-
-            if ( attributeValue != null )
-            {
-                if ( "baseObject".equals( attributeValue ) )
-                {
-                    searchRequest.setScope( SearchScope.OBJECT );
-                }
-                else if ( "singleLevel".equals( attributeValue ) )
-                {
-                    searchRequest.setScope( SearchScope.ONELEVEL );
-                }
-                else if ( "wholeSubtree".equals( attributeValue ) )
-                {
-                    searchRequest.setScope( SearchScope.SUBTREE );
-                }
-                else
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03026 ), xpp, null );
-                }
-            }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03027 ), xpp, null );
-            }
-
-            // derefAliases
-            attributeValue = xpp.getAttributeValue( "", "derefAliases" );
-
-            if ( attributeValue != null )
-            {
-                if ( "neverDerefAliases".equals( attributeValue ) )
-                {
-                    searchRequest.setDerefAliases( AliasDerefMode.NEVER_DEREF_ALIASES );
-                }
-                else if ( "derefInSearching".equals( attributeValue ) )
-                {
-                    searchRequest.setDerefAliases( AliasDerefMode.DEREF_IN_SEARCHING );
-                }
-                else if ( "derefFindingBaseObj".equals( attributeValue ) )
-                {
-                    searchRequest.setDerefAliases( AliasDerefMode.DEREF_FINDING_BASE_OBJ );
-                }
-                else if ( "derefAlways".equals( attributeValue ) )
-                {
-                    searchRequest.setDerefAliases( AliasDerefMode.DEREF_ALWAYS );
-                }
-                else
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03028 ), xpp, null );
-                }
-            }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03029 ), xpp, null );
-            }
-
-            // sizeLimit
-            attributeValue = xpp.getAttributeValue( "", "sizeLimit" );
-
-            if ( attributeValue != null )
-            {
-                try
-                {
-                    searchRequest.setSizeLimit( Long.parseLong( attributeValue ) );
-                }
-                catch ( NumberFormatException nfe )
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03030 ), xpp, nfe );
-                }
-            }
-            else
-            {
-                searchRequest.setSizeLimit( 0L );
-            }
-
-            // timeLimit
-            attributeValue = xpp.getAttributeValue( "", "timeLimit" );
-
-            if ( attributeValue != null )
-            {
-                try
-                {
-                    searchRequest.setTimeLimit( Integer.parseInt( attributeValue ) );
-                }
-                catch ( NumberFormatException nfe )
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03031 ), xpp, nfe );
-                }
-            }
-            else
-            {
-                searchRequest.setTimeLimit( 0 );
-            }
-
-            // typesOnly
-            attributeValue = xpp.getAttributeValue( "", "typesOnly" );
-
-            if ( attributeValue != null )
-            {
-                if ( ( attributeValue.equals( TRUE ) ) || ( attributeValue.equals( "1" ) ) )
-                {
-                    searchRequest.setTypesOnly( true );
-                }
-                else if ( ( attributeValue.equals( FALSE ) ) || ( attributeValue.equals( "0" ) ) )
-                {
-                    searchRequest.setTypesOnly( false );
-                }
-                else
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03032 ), xpp, null );
-                }
-            }
-            else
-            {
-                searchRequest.setTypesOnly( false );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that adds an Attribute to a Search Request
-     */
-    private final GrammarAction searchRequestAddAttribute = new GrammarAction(
-        "Add Value to Modification of Modify Request" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchRequest searchRequest = ( SearchRequest ) container.getBatchRequest().getCurrentRequest();
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the request's attribute name
-            String attributeName = xpp.getAttributeValue( "", NAME );
-
-            if ( attributeName != null )
-            {
-                searchRequest.addAttributes( attributeName );
-            }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that create a Substring Filter
-     */
-    private final GrammarAction substringsFilterCreation = new GrammarAction( "Create Substring Filter" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
-                container.getBatchRequest().getCurrentRequest();
-
-            XmlPullParser xpp = container.getParser();
-
-            SubstringFilter filter = new SubstringFilter();
-
-            // Adding the filter to the Search Filter
-            try
-            {
-                searchRequestDecorator.addCurrentFilter( filter );
-            }
-            catch ( DecoderException de )
-            {
-                throw new XmlPullParserException( de.getMessage(), xpp, de );
-            }
-
-            searchRequestDecorator.setTerminalFilter( filter );
-
-            // Checking and adding the filter's attributes
-            String attributeValue;
-            // name
-            attributeValue = xpp.getAttributeValue( "", NAME );
-
-            if ( attributeValue != null )
-            {
-                filter.setType( attributeValue );
-            }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that sets the Initial value to a Substring Filter
-     */
-    private final GrammarAction substringsFilterSetInitial = new GrammarAction( "Set Initial value to Substring Filter" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
-                container.getBatchRequest().getCurrentRequest();
-
-            SubstringFilter substringFilter = ( SubstringFilter )
-                searchRequestDecorator.getTerminalFilter();
-
-            XmlPullParser xpp = container.getParser();
-
-            try
-            {
-                // We have to catch the type Attribute Value before going to the next Text node
-                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
-
-                // Getting the value
-                String nextText = xpp.nextText();
-
-                if ( !nextText.equals( "" ) )
-                {
-                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
-                    {
-                        substringFilter
-                            .setInitialSubstrings( Strings.utf8ToString( Base64.decode( nextText.trim().toCharArray() ) ) );
-                    }
-                    else
-                    {
-                        substringFilter.setInitialSubstrings( nextText.trim() );
-                    }
-                }
-            }
-            catch ( IOException ioe )
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that adds a Any value to a Substring Filter
-     */
-    private final GrammarAction substringsFilterAddAny = new GrammarAction( "Add Any value to Substring Filter" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
-                container.getBatchRequest().getCurrentRequest();
-
-            SubstringFilter substringFilter = ( SubstringFilter ) searchRequestDecorator.getTerminalFilter();
-
-            XmlPullParser xpp = container.getParser();
-
-            try
-            {
-                // We have to catch the type Attribute Value before going to the next Text node
-                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
-
-                // Getting the value
-                String nextText = xpp.nextText();
-
-                if ( !nextText.equals( "" ) )
-                {
-                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
-                    {
-                        substringFilter.addAnySubstrings( Strings.utf8ToString( Base64.decode( nextText.trim().toCharArray() ) ) );
-                    }
-                    else
-                    {
-                        substringFilter.addAnySubstrings( nextText.trim() );
-                    }
-                }
-            }
-            catch ( IOException ioe )
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that sets the Final value to a Substring Filter
-     */
-    private final GrammarAction substringsFilterSetFinal = new GrammarAction( "Set Final value to Substring Filter" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
-                container.getBatchRequest().getCurrentRequest();
-
-            SubstringFilter substringFilter = ( SubstringFilter ) searchRequestDecorator.getTerminalFilter();
-
-            XmlPullParser xpp = container.getParser();
-
-            try
-            {
-                // We have to catch the type Attribute Value before going to the next Text node
-                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
-
-                // Getting the value
-                String nextText = xpp.nextText();
-
-                if ( !nextText.equals( "" ) )
-                {
-                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
-                    {
-                        substringFilter
-                            .setFinalSubstrings( Strings.utf8ToString( Base64.decode( nextText.trim().toCharArray() ) ) );
-                    }
-                    else
-                    {
-                        substringFilter.setFinalSubstrings( nextText.trim() );
-                    }
-                }
-            }
-            catch ( IOException ioe )
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that closes a Substring Filter
-     */
-    private final GrammarAction substringsFilterClose = new GrammarAction( "Close Substring Filter" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
-                container.getBatchRequest().getCurrentRequest();
-
-            searchRequestDecorator.setTerminalFilter( null );
-        }
-    };
-
-    /**
-     * GrammarAction that create a And Filter
-     */
-    private final GrammarAction andFilterCreation = new GrammarAction( "Create And Filter" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
-                container.getBatchRequest().getCurrentRequest();
-
-            XmlPullParser xpp = container.getParser();
-
-            AndFilter filter = new AndFilter();
-
-            // Adding the filter to the Search Filter
-            try
-            {
-                searchRequestDecorator.addCurrentFilter( filter );
-            }
-            catch ( DecoderException de )
-            {
-                throw new XmlPullParserException( de.getMessage(), xpp, de );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that closes a Connector Filter (And, Or, Not)
-     */
-    private final GrammarAction connectorFilterClose = new GrammarAction( "Close Connector Filter" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
-                container.getBatchRequest().getCurrentRequest();
-
-            searchRequestDecorator.endCurrentConnectorFilter();
-        }
-    };
-
-    /**
-     * GrammarAction that create a Or Filter
-     */
-    private final GrammarAction orFilterCreation = new GrammarAction( "Create Or Filter" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
-                container.getBatchRequest().getCurrentRequest();
-
-            XmlPullParser xpp = container.getParser();
-
-            OrFilter filter = new OrFilter();
-
-            // Adding the filter to the Search Filter
-            try
-            {
-                searchRequestDecorator.addCurrentFilter( filter );
-            }
-            catch ( DecoderException de )
-            {
-                throw new XmlPullParserException( de.getMessage(), xpp, de );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that create a Not Filter
-     */
-    private final GrammarAction notFilterCreation = new GrammarAction( "Create Not Filter" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
-                container.getBatchRequest().getCurrentRequest();
-
-            XmlPullParser xpp = container.getParser();
-
-            NotFilter filter = new NotFilter();
-
-            // Adding the filter to the Search Filter
-            try
-            {
-                searchRequestDecorator.addCurrentFilter( filter );
-            }
-            catch ( DecoderException de )
-            {
-                throw new XmlPullParserException( de.getMessage(), xpp, de );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that create a Equality Match Filter
-     */
-    private final GrammarAction equalityMatchFilterCreation = new GrammarAction( "Create Equality Match Filter" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
-                container.getBatchRequest().getCurrentRequest();
-
-            XmlPullParser xpp = container.getParser();
-
-            AttributeValueAssertion assertion = new AttributeValueAssertion();
-
-            // Checking and adding the filter's attributes
-            String attributeName = xpp.getAttributeValue( "", NAME );
-
-            if ( attributeName != null )
-            {
-                assertion.setAttributeDesc( attributeName );
-            }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
-            }
-
-            AttributeValueAssertionFilter filter = new AttributeValueAssertionFilter(
-                LdapCodecConstants.EQUALITY_MATCH_FILTER );
-
-            filter.setAssertion( assertion );
-
-            // Adding the filter to the Search Filter
-            try
-            {
-                searchRequestDecorator.addCurrentFilter( filter );
-            }
-            catch ( DecoderException de )
-            {
-                throw new XmlPullParserException( de.getMessage(), xpp, de );
-            }
-
-            searchRequestDecorator.setTerminalFilter( filter );
-        }
-    };
-
-    /**
-     * GrammarAction that create a Greater Or Equal Filter
-     */
-    private final GrammarAction greaterOrEqualFilterCreation = new GrammarAction( "Create Greater Or Equal Filter" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
-                container.getBatchRequest().getCurrentRequest();
-
-            XmlPullParser xpp = container.getParser();
-
-            AttributeValueAssertion assertion = new AttributeValueAssertion();
-
-            // Checking and adding the filter's attributes
-            String attributeName = xpp.getAttributeValue( "", NAME );
-
-            if ( attributeName != null )
-            {
-                assertion.setAttributeDesc( attributeName );
-            }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
-            }
-
-            AttributeValueAssertionFilter filter = new AttributeValueAssertionFilter(
-                LdapCodecConstants.GREATER_OR_EQUAL_FILTER );
-
-            filter.setAssertion( assertion );
-
-            // Adding the filter to the Search Filter
-            try
-            {
-                searchRequestDecorator.addCurrentFilter( filter );
-            }
-            catch ( DecoderException de )
-            {
-                throw new XmlPullParserException( de.getMessage(), xpp, de );
-            }
-
-            searchRequestDecorator.setTerminalFilter( filter );
-        }
-    };
-
-    /**
-     * GrammarAction that create a Less Or Equal Filter
-     */
-    private final GrammarAction lessOrEqualFilterCreation = new GrammarAction( "Create Less Or Equal Filter" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
-                container.getBatchRequest().getCurrentRequest();
-
-            XmlPullParser xpp = container.getParser();
-
-            AttributeValueAssertion assertion = new AttributeValueAssertion();
-
-            // Checking and adding the filter's attributes
-            String attributeValue;
-            // name
-            attributeValue = xpp.getAttributeValue( "", NAME );
-
-            if ( attributeValue != null )
-            {
-                assertion.setAttributeDesc( attributeValue );
-            }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
-            }
-
-            AttributeValueAssertionFilter filter = new AttributeValueAssertionFilter(
-                LdapCodecConstants.LESS_OR_EQUAL_FILTER );
-
-            filter.setAssertion( assertion );
-
-            // Adding the filter to the Search Filter
-            try
-            {
-                searchRequestDecorator.addCurrentFilter( filter );
-            }
-            catch ( DecoderException de )
-            {
-                throw new XmlPullParserException( de.getMessage(), xpp, de );
-            }
-
-            searchRequestDecorator.setTerminalFilter( filter );
-        }
-    };
-
-    /**
-     * GrammarAction that create an Approx Match Filter
-     */
-    private final GrammarAction approxMatchFilterCreation = new GrammarAction( "Create Approx Match Filter" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
-                container.getBatchRequest().getCurrentRequest();
-
-            XmlPullParser xpp = container.getParser();
-
-            AttributeValueAssertion assertion = new AttributeValueAssertion();
-
-            // Checking and adding the filter's attributes
-            String attributeName = xpp.getAttributeValue( "", NAME );
-
-            if ( attributeName != null )
-            {
-                assertion.setAttributeDesc( attributeName );
-            }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
-            }
-
-            AttributeValueAssertionFilter filter = new AttributeValueAssertionFilter(
-                LdapCodecConstants.APPROX_MATCH_FILTER );
-
-            filter.setAssertion( assertion );
-
-            // Adding the filter to the Search Filter
-            try
-            {
-                searchRequestDecorator.addCurrentFilter( filter );
-            }
-            catch ( DecoderException de )
-            {
-                throw new XmlPullParserException( de.getMessage(), xpp, de );
-            }
-
-            searchRequestDecorator.setTerminalFilter( filter );
-        }
-    };
-
-    /**
-     * GrammarAction that adds a Value to a Filter
-     */
-    private final GrammarAction filterAddValue = new GrammarAction( "Adds Value to Filter" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
-                container.getBatchRequest().getCurrentRequest();
-            AttributeValueAssertionFilter filter = ( AttributeValueAssertionFilter ) searchRequestDecorator
-                .getTerminalFilter();
-            AttributeValueAssertion assertion = filter.getAssertion();
-
-            XmlPullParser xpp = container.getParser();
-
-            try
-            {
-                // We have to catch the type Attribute Value before going to the next Text node
-                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
-
-                // Getting the value
-                String nextText = xpp.nextText();
-
-                if ( !nextText.equals( "" ) )
-                {
-                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
-                    {
-                        Value value = new Value( Base64.decode( nextText.trim().toCharArray() ) );
-                        assertion.setAssertionValue( value );
-                    }
-                    else
-                    {
-                        Value value = new Value( nextText.trim() );
-                        assertion.setAssertionValue( value );
-                    }
-                }
-            }
-            catch ( IOException ioe )
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that creates a Present Filter
-     */
-    private final GrammarAction presentFilterCreation = new GrammarAction( "Create Present Filter" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            PresentFilter presentFilter = new PresentFilter();
-
-            XmlPullParser xpp = container.getParser();
-
-            // Adding the filter to the Search Filter
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
-                container.getBatchRequest().getCurrentRequest();
-
-            try
-            {
-                searchRequestDecorator.addCurrentFilter( presentFilter );
-            }
-            catch ( DecoderException de )
-            {
-                throw new XmlPullParserException( de.getMessage(), xpp, de );
-            }
-
-            // Checking and adding the filter's attributes
-            String attributeValue;
-            // name
-            attributeValue = xpp.getAttributeValue( "", NAME );
-
-            if ( attributeValue != null )
-            {
-                presentFilter.setAttributeDescription( attributeValue );
-            }
-            else
-            {
-                throw new XmlPullParserException( "name attribute is required", xpp, null );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that store the Filter into the searchRequest
-     */
-    private final GrammarAction storeFilter = new GrammarAction( "Store Filter" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            // Adding the filter to the Search Filter
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
-                container.getBatchRequest().getCurrentRequest();
-            SearchRequest searchRequest = searchRequestDecorator.getDecorated();
-
-            try
-            {
-                ExprNode exprNode = searchRequestDecorator.getFilterNode();
-                
-                if ( exprNode == null )
-                {
-                    throw new IllegalStateException( "No filter element present in the DSML search request" );
-                }
-                
-                searchRequest.setFilter( exprNode );
-            }
-            catch ( LdapSchemaException lse )
-            {
-                
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that creates an Extensible Match Filter
-     */
-    private final GrammarAction extensibleMatchFilterCreation = new GrammarAction( "Create Extensible Match Filter" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            ExtensibleMatchFilter extensibleMatchFilter = new ExtensibleMatchFilter();
-
-            XmlPullParser xpp = container.getParser();
-
-            // Adding the filter to the Search Filter
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
-                container.getBatchRequest().getCurrentRequest();
-
-            try
-            {
-                searchRequestDecorator.addCurrentFilter( extensibleMatchFilter );
-            }
-            catch ( DecoderException de )
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, de );
-            }
-
-            searchRequestDecorator.setTerminalFilter( extensibleMatchFilter );
-
-            // Checking and adding the filter's attributes
-            String attributeValue;
-            // dnAttributes
-            attributeValue = xpp.getAttributeValue( "", "dnAttributes" );
-
-            if ( attributeValue != null )
-            {
-                if ( ( attributeValue.equals( TRUE ) ) || ( attributeValue.equals( "1" ) ) )
-                {
-                    extensibleMatchFilter.setDnAttributes( true );
-                }
-                else if ( ( attributeValue.equals( FALSE ) ) || ( attributeValue.equals( "0" ) ) )
-                {
-                    extensibleMatchFilter.setDnAttributes( false );
-                }
-                else
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03033 ), xpp, null );
-                }
-            }
-            else
-            {
-                extensibleMatchFilter.setDnAttributes( false );
-            }
-
-            // matchingRule
-            attributeValue = xpp.getAttributeValue( "", "matchingRule" );
-
-            if ( attributeValue != null )
-            {
-                extensibleMatchFilter.setMatchingRule( attributeValue );
-            }
-
-            // name
-            attributeValue = xpp.getAttributeValue( "", NAME );
-
-            if ( attributeValue != null )
-            {
-                extensibleMatchFilter.setType( attributeValue );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that adds a Value to an Extensible Match Filter
-     */
-    private final GrammarAction extensibleMatchAddValue = new GrammarAction( "Adds Value to Extensible MatchFilter" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
-                container.getBatchRequest().getCurrentRequest();
-            ExtensibleMatchFilter filter = ( ExtensibleMatchFilter ) searchRequestDecorator.getTerminalFilter();
-
-            XmlPullParser xpp = container.getParser();
-
-            try
-            {
-                // We have to catch the type Attribute Value before going to the next Text node
-                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
-
-                // Getting the value
-                String nextText = xpp.nextText();
-                
-                if ( !nextText.equals( "" ) )
-                {
-                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
-                    {
-                        filter.setMatchValue( new Value( Base64.decode( nextText.trim().toCharArray() ) ) );
-                    }
-                    else
-                    {
-                        filter.setMatchValue( new Value( nextText.trim() ) );
-                    }
-                }
-            }
-            catch ( IOException ioe )
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that creates a Control
-     */
-    private final GrammarAction controlCreation = new GrammarAction( "Create Control" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            XmlPullParser xpp = container.getParser();
-            CodecControl<? extends Control> control;
-
-            // Checking and adding the Control's attributes
-            String attributeValue;
-            // TYPE
-            attributeValue = xpp.getAttributeValue( "", "type" );
-
-            if ( attributeValue != null )
-            {
-                if ( !Oid.isOid( attributeValue ) )
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03034 ), xpp, null );
-                }
-
-                control = codec.newControl( codec.newControl( attributeValue ) );
-                ( ( Request ) container.getBatchRequest().getCurrentRequest() ).addControl( control );
-            }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03035 ), xpp, null );
-            }
-
-            // CRITICALITY
-            attributeValue = xpp.getAttributeValue( "", "criticality" );
-
-            if ( attributeValue != null )
-            {
-                if ( attributeValue.equals( TRUE ) )
-                {
-                    control.setCritical( true );
-                }
-                else if ( attributeValue.equals( FALSE ) )
-                {
-                    control.setCritical( false );
-                }
-                else
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03007 ), xpp, null );
-                }
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that adds a Value to a Control
-     */
-    private final GrammarAction controlValueCreation = new GrammarAction( "Add ControlValue to Control" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            AbstractRequestDsml<? extends Request> request =
-                ( AbstractRequestDsml<? extends Request> ) container.getBatchRequest().getCurrentRequest();
-            DsmlControl<? extends Control> control = request.getCurrentControl();
-
-            XmlPullParser xpp = container.getParser();
-
-            try
-            {
-                // We have to catch the type Attribute Value before going to the next Text node
-                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
-
-                // Getting the value
-                String nextText = xpp.nextText();
-
-                if ( !nextText.equals( "" ) )
-                {
-                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
-                    {
-                        control.setValue( Base64.decode( nextText.trim().toCharArray() ) );
-                    }
-                    else
-                    {
-                        control.setValue( Strings.getBytesUtf8( nextText.trim() ) );
-                    }
-                }
-            }
-            catch ( IOException ioe )
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
-            }
-        }
-    };
 }

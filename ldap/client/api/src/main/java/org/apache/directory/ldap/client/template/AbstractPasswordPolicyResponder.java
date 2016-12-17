@@ -33,9 +33,9 @@ import org.apache.directory.ldap.client.template.exception.PasswordException;
 
 /**
  * A base, abstract, implementation of <code>PasswordPolicyResponder</code>.  
- * Extend this class and override {@link #success(PasswordPolicy)}, 
- * {@link #fail(ResultResponse, PasswordPolicy, ResultCodeEnum)}, or
- * {@link #exception(LdapException)}.  If that does not offer enough
+ * Extend this class and override success(PasswordPolicy), 
+ * fail(ResultResponse, PasswordPolicy, ResultCodeEnum), or
+ * exception(LdapException).  If that does not offer enough
  * flexibility, you must implement PasswordPolicyResponder yourself.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>

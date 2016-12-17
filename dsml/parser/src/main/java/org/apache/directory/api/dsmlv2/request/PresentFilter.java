@@ -58,10 +58,10 @@ public class PresentFilter extends Filter
      * 
      * @return The Present filter string
      */
+    @Override
     public String toString()
     {
-
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( attributeDescription ).append( "=*" );
 

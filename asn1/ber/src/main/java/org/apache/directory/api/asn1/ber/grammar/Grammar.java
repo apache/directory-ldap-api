@@ -27,7 +27,7 @@ import org.apache.directory.api.asn1.ber.Asn1Container;
 /**
  * The interface which expose common behavior of a Grammar implementer.
  *
- * @param C The container type
+ * @param <C> The container type
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

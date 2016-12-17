@@ -33,6 +33,8 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
  * A serializable wrapper around a Comparator which uses delayed initialization
  * of the underlying wrapped comparator which is JIT resolved from a static
  * global registry.
+ * 
+ * @param <E> The type of object to compare
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

@@ -33,6 +33,8 @@ import org.apache.directory.api.util.Strings;
 /**
  * A simple assertion value node.
  * 
+ * @param <T> The Value type
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class SimpleNode<T> extends LeafNode

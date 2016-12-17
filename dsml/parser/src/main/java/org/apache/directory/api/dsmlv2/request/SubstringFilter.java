@@ -49,7 +49,7 @@ public class SubstringFilter extends Filter
     private String initialSubstrings;
 
     /** The any filter. It's a list of LdapString */
-    private List<String> anySubstrings = new ArrayList<String>( 1 );
+    private List<String> anySubstrings = new ArrayList<>( 1 );
 
     /** The final filter */
     private String finalSubstrings;
@@ -148,10 +148,10 @@ public class SubstringFilter extends Filter
      * 
      * @return The substring filter string
      */
+    @Override
     public String toString()
     {
-
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         if ( initialSubstrings != null )
         {

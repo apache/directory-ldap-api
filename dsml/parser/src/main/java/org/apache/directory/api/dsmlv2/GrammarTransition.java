@@ -97,11 +97,11 @@ public class GrammarTransition
     public String toString( int grammar, Enum<Dsmlv2StatesEnum> statesEnum )
     {
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( "Transition from <" ).append( currentState ).append( "> to <" ).append(
             nextState ).append( ">, action : " ).append(
-            ( ( action == null ) ? "no action" : action.toString() ) ).append( ">" );
+            ( action == null ) ? "no action" : action.toString() ).append( ">" );
 
         return sb.toString();
     }

@@ -104,6 +104,7 @@ public class WhoAmIResponseImpl extends ExtendedResponseImpl implements WhoAmIRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getAuthzId()
     {
         return authzId;
@@ -113,6 +114,7 @@ public class WhoAmIResponseImpl extends ExtendedResponseImpl implements WhoAmIRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setAuthzId( byte[] authzId )
     {
         this.authzId = authzId;
@@ -122,22 +124,17 @@ public class WhoAmIResponseImpl extends ExtendedResponseImpl implements WhoAmIRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isDnAuthzId()
     {
-        if ( dn != null )
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return dn != null;
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isUserAuthzId()
     {
         return userId != null;
@@ -147,6 +144,7 @@ public class WhoAmIResponseImpl extends ExtendedResponseImpl implements WhoAmIRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getAuthzIdString()
     {
         return Strings.utf8ToString( authzId );
@@ -156,6 +154,7 @@ public class WhoAmIResponseImpl extends ExtendedResponseImpl implements WhoAmIRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getUserId()
     {
         return userId;
@@ -176,6 +175,7 @@ public class WhoAmIResponseImpl extends ExtendedResponseImpl implements WhoAmIRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dn getDn()
     {
         return dn;
@@ -196,6 +196,7 @@ public class WhoAmIResponseImpl extends ExtendedResponseImpl implements WhoAmIRe
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

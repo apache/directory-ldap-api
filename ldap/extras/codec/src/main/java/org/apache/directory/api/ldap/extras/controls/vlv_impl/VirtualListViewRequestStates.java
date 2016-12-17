@@ -32,15 +32,34 @@ import org.apache.directory.api.asn1.ber.grammar.States;
  */
 public enum VirtualListViewRequestStates implements States
 {
+    /** Initial state */
     START_STATE,
+    
+    /** VirtualListViewRequest ::= SEQUENCE  transition */
     VLV_SEQUENCE_STATE,
+    
+    /** beforeCount    INTEGER (0..maxInt) transition */
     VLV_BEFORE_COUNT_STATE,
+    
+    /** afterCount     INTEGER (0..maxInt) transition */
     VLV_AFTER_COUNT_STATE,
+    
+    /** byOffset        [0] SEQUENCE transition */
     VLV_TARGET_BY_OFFSET_STATE,
+    
+    /** offset          INTEGER (1 .. maxInt) transition */
     VLV_OFFSET_STATE,
+    
+    /** contentCount    INTEGER (0 .. maxInt) transition */
     VLV_CONTENT_COUNT_STATE,
+    
+    /** contextID     OCTET STRING OPTIONAL transition */
     VLV_CONTEXT_ID_STATE,
+    
+    /** greaterThanOrEqual [1] AssertionValue  transition */
     VLV_ASSERTION_VALUE_STATE,
+    
+    /** Final state */
     END_STATE;
 
     /**
@@ -54,12 +73,21 @@ public enum VirtualListViewRequestStates implements States
     }
 
 
+    /**
+     * Get the string representing the state
+     * 
+     * @param state The state number
+     * @return The String representing the state
+     */
     public String getState( int state )
     {
         return ( state == END_STATE.ordinal() ) ? "VLV_REQUEST_END_STATE" : name();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEndState()
     {
@@ -67,6 +95,9 @@ public enum VirtualListViewRequestStates implements States
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Enum<?> getStartState()
     {

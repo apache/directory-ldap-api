@@ -35,10 +35,10 @@ import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
 public class SearchResponse extends AbstractResponse
 {
     /** The List of contained Search Result Entries */
-    private List<SearchResultEntryDsml> searchResultEntryList = new ArrayList<SearchResultEntryDsml>();
+    private List<SearchResultEntryDsml> searchResultEntryList = new ArrayList<>();
 
     /** The List of contained Search Result References */
-    private List<SearchResultReferenceDsml> searchResultReferenceList = new ArrayList<SearchResultReferenceDsml>();
+    private List<SearchResultReferenceDsml> searchResultReferenceList = new ArrayList<>();
 
     /** The Search Result Done object */
     private SearchResultDoneDsml searchResultDone;
@@ -100,7 +100,7 @@ public class SearchResponse extends AbstractResponse
      */
     public SearchResultEntryDsml getCurrentSearchResultEntry()
     {
-        if ( searchResultEntryList.size() > 0 )
+        if ( !searchResultEntryList.isEmpty() )
         {
             return searchResultEntryList.get( searchResultEntryList.size() - 1 );
         }
@@ -159,7 +159,7 @@ public class SearchResponse extends AbstractResponse
      */
     public SearchResultReferenceDsml getCurrentSearchResultReference()
     {
-        if ( searchResultReferenceList.size() > 0 )
+        if ( !searchResultReferenceList.isEmpty() )
         {
             return searchResultReferenceList.get( searchResultReferenceList.size() - 1 );
         }

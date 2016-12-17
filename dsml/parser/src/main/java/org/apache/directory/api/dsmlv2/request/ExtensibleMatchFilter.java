@@ -134,10 +134,10 @@ public class ExtensibleMatchFilter extends Filter
      * 
      * @return An Extened Filter String
      */
+    @Override
     public String toString()
     {
-
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         if ( type != null )
         {

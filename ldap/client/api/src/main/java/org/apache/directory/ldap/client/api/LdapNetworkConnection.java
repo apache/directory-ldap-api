@@ -236,11 +236,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     private static final String EXCEPTION_KEY = "sessionException";
 
     // ~~~~~~~~~~~~~~~~~ common error messages ~~~~~~~~~~~~~~~~~~~~~~~~~~
-
     static final String TIME_OUT_ERROR = "TimeOut occurred";
 
     static final String NO_RESPONSE_ERROR = "The response queue has been emptied, no response was found.";
-
 
    //------------------------- The constructors --------------------------//
     /**
@@ -265,6 +263,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     }
 
 
+    /**
+     * Creates a new LdapNetworkConnection instance
+     * 
+     * @param config The configuration to use
+     * @param ldapApiService The LDAP API Service to use
+     */
     public LdapNetworkConnection( LdapConnectionConfig config, LdapApiService ldapApiService )
     {
         super( ldapApiService );
@@ -289,6 +293,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     }
 
 
+    /**
+     * Creates a new LdapNetworkConnection instance
+     * 
+     * @param useSsl If we are going to create a secure connection or not
+     * @param ldapApiService The LDAP API Service to use
+     */
     public LdapNetworkConnection( boolean useSsl, LdapApiService ldapApiService )
     {
         this( null, -1, useSsl, ldapApiService );
@@ -308,6 +318,13 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     }
 
 
+    /**
+     * Creates a new LdapNetworkConnection instance
+     * 
+     * @param server The server we want to be connected to. If null or empty,
+     * we will default to LocalHost.
+     * @param ldapApiService The LDAP API Service to use
+     */
     public LdapNetworkConnection( String server, LdapApiService ldapApiService )
     {
         this( server, -1, false, ldapApiService );
@@ -329,6 +346,14 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     }
 
 
+    /**
+     * Creates a new LdapNetworkConnection instance
+     * 
+     * @param server The server we want to be connected to. If null or empty,
+     * we will default to LocalHost.
+     * @param useSsl A flag to tell if it's a SSL connection or not.
+     * @param ldapApiService The LDAP API Service to use
+     */
     public LdapNetworkConnection( String server, boolean useSsl, LdapApiService ldapApiService )
     {
         this( server, -1, useSsl, ldapApiService );
@@ -348,6 +373,15 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     }
 
 
+    /**
+     * Create a new instance of a LdapConnection on a
+     * given server and a given port. We don't use ssl.
+     *
+     * @param server The server we want to be connected to. If null or empty,
+     * we will default to LocalHost.
+     * @param port The port the server is listening on
+     * @param ldapApiService The LDAP API Service to use
+     */
     public LdapNetworkConnection( String server, int port, LdapApiService ldapApiService )
     {
         this( server, port, false, ldapApiService );
@@ -370,6 +404,16 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     }
 
 
+    /**
+     * Create a new instance of a LdapConnection on a
+     * given server and a given port. We don't use ssl.
+     *
+     * @param server The server we want to be connected to. If null or empty,
+     * we will default to LocalHost.
+     * @param port The port the server is listening on
+     * @param useSsl A flag to tell if it's a SSL connection or not.
+     * @param ldapApiService The LDAP API Service to use
+     */
     public LdapNetworkConnection( String server, int port, boolean useSsl, LdapApiService ldapApiService )
     {
         this( buildConfig( server, port, useSsl ), ldapApiService );
@@ -1805,7 +1849,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         LOG.debug( "Sending Unbind request \n{}", unbindRequest );
 
         // Send the request to the server
-        // Use this for logging instead: WriteFuture unbindFuture = ldapSession.write( unbindRequest );
+        // Use this for logging instead: WriteFuture unbindFuture = ldapSession.write( unbindRequest )
         WriteFuture unbindFuture = ldapSession.write( unbindRequest );
 
         unbindFuture.awaitUninterruptibly( timeout );

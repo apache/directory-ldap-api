@@ -168,6 +168,13 @@ public class UniqueMemberComparator extends LdapComparator<String>
     }
 
 
+    /**
+     * Get the DN from the given object
+     *
+     * @param obj The object containing a DN (either as an instance of Dn or as a String)
+     * @return A Dn instance
+     * @throws LdapInvalidDnException If the Dn is invalid
+     */
     public Dn getDn( Object obj ) throws LdapInvalidDnException
     {
         Dn dn;

@@ -42,12 +42,16 @@ import org.apache.directory.api.i18n.I18n;
  */
 public enum ChangeType
 {
+    /** An ADD */
     ADD(1),
 
+    /** A Delete */
     DELETE(2),
 
+    /** A Modify */
     MODIFY(4),
 
+    /** A MODDN */
     MODDN(8);
 
     private int value;

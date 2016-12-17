@@ -70,6 +70,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
     /**
      * {@inheritDoc}
      */
+    @Override
     public Element toDsml( Element root )
     {
 
@@ -77,7 +78,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
         int requestID = message.getMessageId();
         if ( requestID > 0 )
         {
-            root.addAttribute( "requestID", "" + requestID );
+            root.addAttribute( "requestID", Integer.toString( requestID ) );
         }
 
         // Matched Dn
@@ -93,12 +94,13 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
 
         // ResultCode
         Element resultCodeElement = root.addElement( "resultCode" );
-        resultCodeElement.addAttribute( "code", "" + result.getResultCode().getResultCode() );
+        resultCodeElement.addAttribute( "code", Integer.toString( result.getResultCode().getResultCode() ) );
         resultCodeElement.addAttribute( "descr", result.getResultCode().getMessage() );
 
         // ErrorMessage
-        String errorMessage = ( result.getDiagnosticMessage() );
-        if ( ( errorMessage != null ) && ( !errorMessage.equals( "" ) ) )
+        String errorMessage = result.getDiagnosticMessage();
+        
+        if ( ( errorMessage != null ) && ( errorMessage.length() != 0 ) )
         {
             Element errorMessageElement = root.addElement( "errorMessage" );
             errorMessageElement.addText( errorMessage );
@@ -126,6 +128,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getDiagnosticMessage()
     {
         return result.getDiagnosticMessage();
@@ -135,6 +138,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setDiagnosticMessage( String diagnosticMessage )
     {
         result.setDiagnosticMessage( diagnosticMessage );
@@ -146,6 +150,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
      * 
      * @return Returns the matchedDN.
      */
+    @Override
     public Dn getMatchedDn()
     {
         return result.getMatchedDn();
@@ -157,6 +162,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
      * 
      * @param matchedDn The matchedDn to set.
      */
+    @Override
     public void setMatchedDn( Dn matchedDn )
     {
         result.setMatchedDn( matchedDn );
@@ -190,6 +196,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
      * 
      * @return Returns the resultCode.
      */
+    @Override
     public ResultCodeEnum getResultCode()
     {
         return result.getResultCode();
@@ -201,6 +208,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
      * 
      * @param resultCode The resultCode to set.
      */
+    @Override
     public void setResultCode( ResultCodeEnum resultCode )
     {
         result.setResultCode( resultCode );
@@ -210,6 +218,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
     /**
      * {@inheritDoc}
      */
+    @Override
     public LdapResult getDecorated()
     {
         return result;
@@ -219,6 +228,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isReferral()
     {
         return getDecorated().isReferral();
@@ -228,6 +238,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
     /**
      * {@inheritDoc}
      */
+    @Override
     public Referral getReferral()
     {
         return getDecorated().getReferral();
@@ -237,6 +248,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setReferral( Referral referral )
     {
         getDecorated().setReferral( referral );
@@ -246,6 +258,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isDefaultSuccess()
     {
         return false;

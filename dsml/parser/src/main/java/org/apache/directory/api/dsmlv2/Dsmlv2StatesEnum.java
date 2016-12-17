@@ -40,6 +40,7 @@ public enum Dsmlv2StatesEnum
     /** The &lt;batchRequest&gt; tag */
     BATCHREQUEST_START_TAG,
 
+    /** The BatchRequest loop */
     BATCHREQUEST_LOOP,
 
     /** The &lt;/batchRequest&gt; tag */

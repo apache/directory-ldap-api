@@ -210,7 +210,7 @@ public class SearchRequestDsml
             // Transform OR, AND or NOT leaves
             if ( filter instanceof ConnectorFilter )
             {
-                BranchNode branch = null;
+                BranchNode branch;
 
                 if ( filter instanceof AndFilter )
                 {
@@ -305,7 +305,7 @@ public class SearchRequestDsml
 
                     if ( substrFilter.getAnySubstrings() != null )
                     {
-                        anyString = new ArrayList<String>();
+                        anyString = new ArrayList<>();
 
                         for ( String any : substrFilter.getAnySubstrings() )
                         {
@@ -345,6 +345,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getType()
     {
         return getDecorated().getType();
@@ -354,6 +355,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public Element toDsml( Element root )
     {
         Element element = super.toDsml( root );
@@ -412,13 +414,13 @@ public class SearchRequestDsml
         // SizeLimit
         if ( request.getSizeLimit() != 0L )
         {
-            element.addAttribute( "sizeLimit", "" + request.getSizeLimit() );
+            element.addAttribute( "sizeLimit", Long.toString( request.getSizeLimit() ) );
         }
 
         // TimeLimit
         if ( request.getTimeLimit() != 0 )
         {
-            element.addAttribute( "timeLimit", "" + request.getTimeLimit() );
+            element.addAttribute( "timeLimit", Integer.toString( request.getTimeLimit() ) );
         }
 
         // TypesOnly
@@ -434,7 +436,7 @@ public class SearchRequestDsml
         // Attributes
         List<String> attributes = request.getAttributes();
 
-        if ( attributes.size() > 0 )
+        if ( !attributes.isEmpty() )
         {
             Element attributesElement = element.addElement( "attributes" );
 
@@ -527,7 +529,7 @@ public class SearchRequestDsml
         // APPROXMATCH, EQUALITYMATCH, GREATEROREQUALS & LESSOREQUAL FILTERS
         else if ( filter instanceof SimpleNode )
         {
-            Element newElement = null;
+            Element newElement;
 
             if ( filter instanceof ApproximateNode )
             {
@@ -624,6 +626,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum[] getResponseTypes()
     {
         return getDecorated().getResponseTypes();
@@ -633,6 +636,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dn getBase()
     {
         return getDecorated().getBase();
@@ -642,6 +646,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setBase( Dn baseDn )
     {
         getDecorated().setBase( baseDn );
@@ -653,6 +658,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchScope getScope()
     {
         return getDecorated().getScope();
@@ -662,6 +668,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setScope( SearchScope scope )
     {
         getDecorated().setScope( scope );
@@ -673,6 +680,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public AliasDerefMode getDerefAliases()
     {
         return getDecorated().getDerefAliases();
@@ -682,6 +690,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setDerefAliases( AliasDerefMode aliasDerefAliases )
     {
         getDecorated().setDerefAliases( aliasDerefAliases );
@@ -693,6 +702,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public long getSizeLimit()
     {
         return getDecorated().getSizeLimit();
@@ -702,6 +712,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setSizeLimit( long entriesMax )
     {
         getDecorated().setSizeLimit( entriesMax );
@@ -713,6 +724,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getTimeLimit()
     {
         return getDecorated().getTimeLimit();
@@ -722,6 +734,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setTimeLimit( int secondsMax )
     {
         getDecorated().setTimeLimit( secondsMax );
@@ -733,6 +746,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean getTypesOnly()
     {
         return getDecorated().getTypesOnly();
@@ -742,6 +756,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setTypesOnly( boolean typesOnly )
     {
         getDecorated().setTypesOnly( typesOnly );
@@ -753,6 +768,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExprNode getFilter()
     {
         return getDecorated().getFilter();
@@ -762,6 +778,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setFilter( ExprNode filter )
     {
         getDecorated().setFilter( filter );
@@ -773,6 +790,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setFilter( String filter ) throws LdapException
     {
         getDecorated().setFilter( filter );
@@ -784,6 +802,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<String> getAttributes()
     {
         return getDecorated().getAttributes();
@@ -793,6 +812,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest addAttributes( String... attributes )
     {
         getDecorated().addAttributes( attributes );
@@ -804,6 +824,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest removeAttribute( String attribute )
     {
         getDecorated().removeAttribute( attribute );
@@ -815,6 +836,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest setMessageId( int messageId )
     {
         return ( SearchRequest ) super.setMessageId( messageId );
@@ -824,6 +846,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest addControl( Control control )
     {
         return ( SearchRequest ) super.addControl( control );
@@ -833,6 +856,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest addAllControls( Control[] controls )
     {
         return ( SearchRequest ) super.addAllControls( controls );
@@ -842,6 +866,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest removeControl( Control control )
     {
         return ( SearchRequest ) super.removeControl( control );
@@ -851,6 +876,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isFollowReferrals()
     {
         return getDecorated().isFollowReferrals();
@@ -860,6 +886,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest followReferrals()
     {
         return getDecorated().followReferrals();
@@ -869,6 +896,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isIgnoreReferrals()
     {
         return getDecorated().isIgnoreReferrals();
@@ -878,6 +906,7 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchRequest ignoreReferrals()
     {
         return getDecorated().ignoreReferrals();

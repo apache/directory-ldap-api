@@ -87,7 +87,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
     private static final Set<String> DSMLV2_DESCR_TAGS;
     static
     {
-        DSMLV2_DESCR_TAGS = new HashSet<String>();
+        DSMLV2_DESCR_TAGS = new HashSet<>();
         DSMLV2_DESCR_TAGS.add( "success" );
         DSMLV2_DESCR_TAGS.add( "operationsError" );
         DSMLV2_DESCR_TAGS.add( "protocolError" );
@@ -128,6 +128,1173 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         DSMLV2_DESCR_TAGS.add( "affectMultipleDSAs" );
         DSMLV2_DESCR_TAGS.add( "other" );
     }
+
+    /**
+     * GrammarAction that creates the Batch Response
+     */
+    private final GrammarAction batchResponseCreation = new GrammarAction( "Create Batch Response" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            BatchResponseDsml batchResponse = new BatchResponseDsml();
+
+            container.setBatchResponse( batchResponse );
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the batchRequest's attributes
+            String attributeValue;
+            // requestID
+            attributeValue = xpp.getAttributeValue( "", "requestID" );
+
+            if ( attributeValue != null )
+            {
+                batchResponse.setRequestID( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates the Add Response
+     */
+    private final GrammarAction addResponseCreation = new GrammarAction( "Create Add Response" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            AddResponseDsml addResponse = new AddResponseDsml(
+                container.getLdapCodecService(), new AddResponseImpl() );
+            container.getBatchResponse().addResponse( addResponse );
+
+            LdapResult ldapResult = addResponse.getLdapResult();
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the batchRequest's attributes
+            String attributeValue;
+            // requestID
+            attributeValue = xpp.getAttributeValue( "", "requestID" );
+
+            if ( attributeValue != null )
+            {
+                addResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+
+            // MatchedDN
+            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
+
+            if ( attributeValue != null )
+            {
+                try
+                {
+                    ldapResult.setMatchedDn( new Dn( attributeValue ) );
+                }
+                catch ( LdapInvalidDnException lide )
+                {
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
+                }
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates the Auth Response
+     */
+    private final GrammarAction authResponseCreation = new GrammarAction( "Create Auth Response" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            BindResponseDsml bindResponse = new BindResponseDsml(
+                container.getLdapCodecService(), new BindResponseImpl() );
+            container.getBatchResponse().addResponse( bindResponse );
+
+            LdapResult ldapResult = bindResponse.getLdapResult();
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the batchRequest's attributes
+            String attributeValue;
+            // requestID
+            attributeValue = xpp.getAttributeValue( "", "requestID" );
+
+            if ( attributeValue != null )
+            {
+                bindResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+
+            }
+
+            // MatchedDN
+            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
+
+            if ( attributeValue != null )
+            {
+                try
+                {
+                    ldapResult.setMatchedDn( new Dn( attributeValue ) );
+                }
+                catch ( LdapInvalidDnException lide )
+                {
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
+                }
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates the Compare Response
+     */
+    private final GrammarAction compareResponseCreation = new GrammarAction( "Create Compare Response" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            CompareResponseDsml compareResponse = new CompareResponseDsml(
+                container.getLdapCodecService(), new CompareResponseImpl() );
+            container.getBatchResponse().addResponse( compareResponse );
+
+            LdapResult ldapResult = compareResponse.getLdapResult();
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the batchRequest's attributes
+            String attributeValue;
+            // requestID
+            attributeValue = xpp.getAttributeValue( "", "requestID" );
+
+            if ( attributeValue != null )
+            {
+                compareResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+
+            // MatchedDN
+            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
+
+            if ( attributeValue != null )
+            {
+                try
+                {
+                    ldapResult.setMatchedDn( new Dn( attributeValue ) );
+                }
+                catch ( LdapInvalidDnException lide )
+                {
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
+                }
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates the Del Response
+     */
+    private final GrammarAction delResponseCreation = new GrammarAction( "Create Del Response" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            DelResponseDsml delResponse = new DelResponseDsml(
+                container.getLdapCodecService(), new DeleteResponseImpl() );
+            container.getBatchResponse().addResponse( delResponse );
+
+            LdapResult ldapResult = delResponse.getLdapResult();
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the batchRequest's attributes
+            String attributeValue;
+            // requestID
+            attributeValue = xpp.getAttributeValue( "", "requestID" );
+
+            if ( attributeValue != null )
+            {
+                delResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+
+            // MatchedDN
+            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
+
+            if ( attributeValue != null )
+            {
+                try
+                {
+                    ldapResult.setMatchedDn( new Dn( attributeValue ) );
+                }
+                catch ( LdapInvalidDnException lide )
+                {
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
+                }
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates the Modify Response
+     */
+    private final GrammarAction modifyResponseCreation = new GrammarAction( "Create Modify Response" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            ModifyResponseDsml modifyResponse = new ModifyResponseDsml(
+                container.getLdapCodecService(), new ModifyResponseImpl() );
+            container.getBatchResponse().addResponse( modifyResponse );
+
+            LdapResult ldapResult = modifyResponse.getLdapResult();
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the batchRequest's attributes
+            String attributeValue;
+            // requestID
+            attributeValue = xpp.getAttributeValue( "", "requestID" );
+
+            if ( attributeValue != null )
+            {
+                modifyResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+
+            // MatchedDN
+            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
+
+            if ( attributeValue != null )
+            {
+                try
+                {
+                    ldapResult.setMatchedDn( new Dn( attributeValue ) );
+                }
+                catch ( LdapInvalidDnException lide )
+                {
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
+                }
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates the Mod Dn Response
+     */
+    private final GrammarAction modDNResponseCreation = new GrammarAction( "Create Mod Dn Response" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            ModDNResponseDsml modDNResponse = new ModDNResponseDsml(
+                container.getLdapCodecService(), new ModifyDnResponseImpl() );
+            container.getBatchResponse().addResponse( modDNResponse );
+
+            LdapResult ldapResult = modDNResponse.getLdapResult();
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the batchRequest's attributes
+            String attributeValue;
+            // requestID
+            attributeValue = xpp.getAttributeValue( "", "requestID" );
+
+            if ( attributeValue != null )
+            {
+                modDNResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+
+            // MatchedDN
+            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
+
+            if ( attributeValue != null )
+            {
+                try
+                {
+                    ldapResult.setMatchedDn( new Dn( attributeValue ) );
+                }
+                catch ( LdapInvalidDnException lide )
+                {
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
+                }
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates the Extended Response
+     */
+    private final GrammarAction extendedResponseCreation = new GrammarAction( "Create Extended Response" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            ExtendedResponseDsml extendedResponse;
+
+            // Checking and adding the batchRequest's attributes
+            String attributeValue;
+
+            XmlPullParser xpp = container.getParser();
+
+            // requestID
+            attributeValue = xpp.getAttributeValue( "", "requestID" );
+
+            if ( attributeValue != null )
+            {
+                extendedResponse = new ExtendedResponseDsml(
+                    container.getLdapCodecService(), new ExtendedResponseImpl(
+                        ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) ) );
+            }
+            else
+            {
+                extendedResponse = new ExtendedResponseDsml(
+                    container.getLdapCodecService(), new ExtendedResponseImpl( -1 ) );
+            }
+
+            container.getBatchResponse().addResponse( extendedResponse );
+
+            LdapResult ldapResult = extendedResponse.getLdapResult();
+
+            // MatchedDN
+            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
+
+            if ( attributeValue != null )
+            {
+                try
+                {
+                    ldapResult.setMatchedDn( new Dn( attributeValue ) );
+                }
+                catch ( LdapInvalidDnException lide )
+                {
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
+                }
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates the Error Response
+     */
+    private final GrammarAction errorResponseCreation = new GrammarAction( "Create Error Response" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            ErrorResponse errorResponse = null;
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the batchRequest's attributes
+            String attributeValue;
+            
+            // requestID
+            attributeValue = xpp.getAttributeValue( "", "requestID" );
+
+            if ( attributeValue != null )
+            {
+                errorResponse = new ErrorResponse( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ), null );
+
+                container.getBatchResponse().addResponse( errorResponse );
+            }
+            
+            // type
+            attributeValue = xpp.getAttributeValue( "", "type" );
+            
+            if ( attributeValue != null )
+            {
+                if ( attributeValue.equals( errorResponse.getTypeDescr( ErrorResponseType.NOT_ATTEMPTED ) ) )
+                {
+                    errorResponse.setErrorType( ErrorResponseType.NOT_ATTEMPTED );
+                }
+                else if ( attributeValue.equals( errorResponse.getTypeDescr( ErrorResponseType.COULD_NOT_CONNECT ) ) )
+                {
+                    errorResponse.setErrorType( ErrorResponseType.COULD_NOT_CONNECT );
+                }
+                else if ( attributeValue.equals( errorResponse.getTypeDescr( ErrorResponseType.CONNECTION_CLOSED ) ) )
+                {
+                    errorResponse.setErrorType( ErrorResponseType.CONNECTION_CLOSED );
+                }
+                else if ( attributeValue.equals( errorResponse.getTypeDescr( ErrorResponseType.MALFORMED_REQUEST ) ) )
+                {
+                    errorResponse.setErrorType( ErrorResponseType.MALFORMED_REQUEST );
+                }
+                else if ( attributeValue
+                    .equals( errorResponse.getTypeDescr( ErrorResponseType.GATEWAY_INTERNAL_ERROR ) ) )
+                {
+                    errorResponse.setErrorType( ErrorResponseType.GATEWAY_INTERNAL_ERROR );
+                }
+                else if ( attributeValue.equals( errorResponse.getTypeDescr( ErrorResponseType.AUTHENTICATION_FAILED ) ) )
+                {
+                    errorResponse.setErrorType( ErrorResponseType.AUTHENTICATION_FAILED );
+                }
+                else if ( attributeValue.equals( errorResponse.getTypeDescr( ErrorResponseType.UNRESOLVABLE_URI ) ) )
+                {
+                    errorResponse.setErrorType( ErrorResponseType.UNRESOLVABLE_URI );
+                }
+                else if ( attributeValue.equals( errorResponse.getTypeDescr( ErrorResponseType.OTHER ) ) )
+                {
+                    errorResponse.setErrorType( ErrorResponseType.OTHER );
+                }
+                else
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03004 ), xpp, null );
+                }
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03005 ), xpp, null );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that adds Message to an Error Response
+     */
+    private final GrammarAction errorResponseAddMessage = new GrammarAction( "Add Message to Error Response" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            ErrorResponse errorResponse = ( ErrorResponse ) container.getBatchResponse().getCurrentResponse();
+
+            XmlPullParser xpp = container.getParser();
+            try
+            {
+                String nextText = xpp.nextText();
+                if ( !Strings.isEmpty( nextText ) )
+                {
+                    errorResponse.setMessage( nextText.trim() );
+                }
+            }
+            catch ( IOException ioe )
+            {
+                throw new XmlPullParserException( ioe.getMessage(), xpp, ioe );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that adds Detail to an Error Response
+     */
+    // TODO Look for documentation about this Detail element (the DSML documentation doesn't give enough information)
+    private static final GrammarAction ERROR_RESPONSE_ADD_DETAIL = null;
+
+
+    /**
+     * GrammarAction that creates a Control for LDAP Result
+     */
+    private final GrammarAction ldapResultControlCreation = new GrammarAction( "Create Control for LDAP Result" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            AbstractDsmlMessageDecorator<? extends Message> message =
+                ( AbstractDsmlMessageDecorator<? extends Message> )
+                container.getBatchResponse().getCurrentResponse();
+
+            if ( message instanceof SearchResponseDsml )
+            {
+                createAndAddControl( container,
+                    ( ( SearchResponse ) ( ( SearchResponseDsml ) message ).getDecorated() ).getSearchResultDone() );
+            }
+            else
+            {
+                createAndAddControl( container, message );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates a Control for Search Result Entry
+     */
+    private final GrammarAction searchResultEntryControlCreation = new GrammarAction(
+        "Create Control for Search Result Entry" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchResponse response = ( SearchResponse )
+                ( ( SearchResponseDsml ) container.getBatchResponse()
+                    .getCurrentResponse() ).getDecorated();
+
+            createAndAddControl( container, response.getCurrentSearchResultEntry() );
+        }
+    };
+
+    /**
+     * GrammarAction that creates a Control for Search Result Entry
+     */
+    private final GrammarAction searchResultReferenceControlCreation = new GrammarAction(
+        "Create Control for Search Result Reference" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchResponse response = ( SearchResponse )
+                ( ( SearchResponseDsml ) container.getBatchResponse()
+                    .getCurrentResponse() ).getDecorated();
+
+            createAndAddControl( container, response.getCurrentSearchResultReference() );
+        }
+    };
+
+    /**
+     * GrammarAction that creates a Control Value for LDAP Result
+     */
+    private final GrammarAction ldapResultControlValueCreation = new GrammarAction(
+        "Add ControlValue to Control for LDAP Result" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            AbstractDsmlMessageDecorator<? extends Response> response
+            = ( AbstractDsmlMessageDecorator<? extends Response> )
+                container.getBatchResponse().getCurrentResponse();
+
+            if ( response instanceof SearchResponseDsml )
+            {
+                SearchResponse searchResponse = ( SearchResponse )
+                    response.getDecorated();
+                createAndAddControlValue( container,
+                    searchResponse.getSearchResultDone() );
+            }
+            else
+            {
+                createAndAddControlValue( container, response );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates a Control Value for Search Result Entry
+     */
+    private final GrammarAction searchResultEntryControlValueCreation = new GrammarAction(
+        "Add ControlValue to Control for Search Result Entry" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchResponse response = ( SearchResponse )
+                container.getBatchResponse().getCurrentResponse().getDecorated();
+            createAndAddControlValue( container,
+                response.getCurrentSearchResultEntry() );
+        }
+    };
+
+    /**
+     * GrammarAction that creates a Control Value for Search Result Reference
+     */
+    private final GrammarAction searchResultReferenceControlValueCreation = new GrammarAction(
+        "Add ControlValue to Control for Search Result Entry" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchResponseDsml response = ( SearchResponseDsml )
+                container.getBatchResponse().getCurrentResponse();
+            createAndAddControlValue( container,
+                ( ( SearchResponse ) response.getDecorated() ).getCurrentSearchResultReference() );
+        }
+    };
+
+    /**
+     * GrammarAction that adds a Result Code to a LDAP Result
+     */
+    private final GrammarAction ldapResultAddResultCode = new GrammarAction( "Add ResultCode to LDAP Result" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            DsmlDecorator<? extends Response> ldapResponse =
+                container.getBatchResponse().getCurrentResponse();
+
+            LdapResult ldapResult;
+
+            // Search Response is a special case
+            // ResultCode can only occur in a case of Search Result Done in a Search Response
+            if ( ldapResponse.getDecorated() instanceof SearchResponse )
+            {
+                SearchResponse searchResponse = ( SearchResponse ) ldapResponse.getDecorated();
+                ldapResult = searchResponse.getSearchResultDone().getLdapResult();
+            }
+            else
+            {
+                ldapResult = ( ( ResultResponse ) ldapResponse.getDecorated() ).getLdapResult();
+            }
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the request's attributes
+            String attributeValue;
+            // code
+            attributeValue = xpp.getAttributeValue( "", "code" );
+
+            if ( attributeValue != null )
+            {
+                try
+                {
+                    ldapResult.setResultCode( ResultCodeEnum.getResultCode( Integer.parseInt( attributeValue ) ) );
+                }
+                catch ( NumberFormatException nfe )
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03009 ), xpp, nfe );
+                }
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03010 ), xpp, null );
+            }
+
+            // descr
+            attributeValue = xpp.getAttributeValue( "", "descr" );
+
+            if ( ( attributeValue != null ) && !DSMLV2_DESCR_TAGS.contains( attributeValue ) )
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03011, attributeValue ), xpp, null );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that adds a Error Message to a LDAP Result
+     */
+    private final GrammarAction ldapResultAddErrorMessage = new GrammarAction( "Add Error Message to LDAP Result" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            DsmlDecorator<? extends Response> ldapResponse =
+                container.getBatchResponse().getCurrentResponse();
+
+            LdapResult ldapResult;
+
+            // Search Response is a special case
+            // ResultCode can only occur in a case of Search Result Done in a Search Response
+            if ( ldapResponse.getDecorated() instanceof SearchResponse )
+            {
+                SearchResponse searchResponse = ( SearchResponse ) ldapResponse.getDecorated();
+                ldapResult = searchResponse.getSearchResultDone().getLdapResult();
+            }
+            else
+            {
+                ldapResult = ( ( ResultResponse ) ldapResponse.getDecorated() ).getLdapResult();
+            }
+
+            XmlPullParser xpp = container.getParser();
+
+            try
+            {
+                String nextText = xpp.nextText();
+
+                if ( !Strings.isEmpty( nextText ) )
+                {
+                    ldapResult.setDiagnosticMessage( nextText.trim() );
+                }
+            }
+            catch ( IOException ioe )
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that adds a Referral to a LDAP Result
+     */
+    private final GrammarAction ldapResultAddReferral = new GrammarAction( "Add Referral to LDAP Result" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            DsmlDecorator<? extends Response> ldapResponse =
+                container.getBatchResponse().getCurrentResponse();
+
+            LdapResult ldapResult;
+
+            // Search Response is a special case
+            // ResultCode can only occur in a case of Search Result Done in a Search Response
+            if ( ldapResponse.getDecorated() instanceof SearchResponse )
+            {
+                SearchResponse searchResponse = ( SearchResponse ) ldapResponse.getDecorated();
+                ldapResult = searchResponse.getSearchResultDone().getLdapResult();
+            }
+            else
+            {
+                ldapResult = ( ( ResultResponse ) ldapResponse.getDecorated() ).getLdapResult();
+            }
+
+            // Initialization of the Referrals if needed
+            if ( ldapResult.getReferral() == null )
+            {
+                ldapResult.setReferral( new ReferralImpl() );
+            }
+
+            XmlPullParser xpp = container.getParser();
+
+            try
+            {
+                String nextText = xpp.nextText();
+
+                if ( !Strings.isEmpty( nextText ) )
+                {
+                    try
+                    {
+                        String urlStr = nextText.trim();
+                        LdapUrl ldapUrl = new LdapUrl( urlStr );
+                        ldapResult.getReferral().addLdapUrl( ldapUrl.toString() );
+                    }
+                    catch ( LdapURLEncodingException luee )
+                    {
+                        throw new XmlPullParserException( luee.getMessage(), xpp, luee );
+                    }
+                }
+            }
+            catch ( IOException ioe )
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates the Search Response
+     */
+    private final GrammarAction searchResponseCreation = new GrammarAction( "Create Search Response" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            XmlPullParser xpp = container.getParser();
+            SearchResponse searchResponse;
+
+            // Checking and adding the batchRequest's attributes
+            String attributeValue = xpp.getAttributeValue( "", "requestID" );
+
+            if ( attributeValue != null )
+            {
+                searchResponse = new SearchResponse(
+                    ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+            else
+            {
+                searchResponse = new SearchResponse();
+            }
+
+            container.getBatchResponse().addResponse( new SearchResponseDsml(
+                container.getLdapCodecService(), searchResponse ) );
+        }
+    };
+
+    /**
+     * GrammarAction that creates a Search Result Entry
+     */
+    private final GrammarAction searchResultEntryCreation = new GrammarAction(
+        "Add Search Result Entry to Search Response" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchResultEntryDsml searchResultEntry =
+                new SearchResultEntryDsml( container.getLdapCodecService(),
+                    new SearchResultEntryImpl() );
+            SearchResponseDsml searchResponse = ( SearchResponseDsml )
+                container.getBatchResponse().getCurrentResponse();
+            searchResponse.addResponse( searchResultEntry );
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the request's attributes
+            String attributeValue;
+            // requestID
+            attributeValue = xpp.getAttributeValue( "", "requestID" );
+
+            if ( attributeValue != null )
+            {
+                searchResultEntry.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+
+            // dn
+            attributeValue = xpp.getAttributeValue( "", "dn" );
+
+            if ( attributeValue != null )
+            {
+                try
+                {
+                    searchResultEntry.setObjectName( new Dn( attributeValue ) );
+                }
+                catch ( LdapInvalidDnException lide )
+                {
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
+                }
+            }
+            else
+            {
+                throw new XmlPullParserException( "dn attribute is required", xpp, null );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates a Search Result Reference
+     */
+    private final GrammarAction searchResultReferenceCreation = new GrammarAction(
+        "Add Search Result Reference to Search Response" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchResultReferenceDsml searchResultReference =
+                new SearchResultReferenceDsml(
+                    container.getLdapCodecService(),
+                    new SearchResultReferenceImpl() );
+
+            SearchResponseDsml searchResponseDsml = ( SearchResponseDsml )
+                container.getBatchResponse().getCurrentResponse();
+
+            searchResponseDsml.addResponse( searchResultReference );
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the request's attributes
+            String attributeValue;
+            // requestID
+            attributeValue = xpp.getAttributeValue( "", "requestID" );
+
+            if ( attributeValue != null )
+            {
+                searchResultReference.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that creates a Search Result Done
+     */
+    private final GrammarAction searchResultDoneCreation = new GrammarAction(
+        "Add Search Result Done to Search Response" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchResultDoneDsml searchResultDone =
+                new SearchResultDoneDsml( container.getLdapCodecService(),
+                    new SearchResultDoneImpl() );
+
+            SearchResponseDsml searchResponseDsml = ( SearchResponseDsml )
+                container.getBatchResponse().getCurrentResponse();
+            searchResponseDsml.addResponse( searchResultDone );
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the batchRequest's attributes
+            String attributeValue;
+            // requestID
+            attributeValue = xpp.getAttributeValue( "", "requestID" );
+
+            if ( attributeValue != null )
+            {
+                searchResultDone.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+
+            // MatchedDN
+            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
+
+            if ( attributeValue != null )
+            {
+                try
+                {
+                    searchResultDone.getLdapResult().setMatchedDn( new Dn( attributeValue ) );
+                }
+                catch ( LdapInvalidDnException lide )
+                {
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
+                }
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that adds an Attr to a Search Result Entry
+     */
+    private final GrammarAction searchResultEntryAddAttr = new GrammarAction( "Add Attr to Search Result Entry" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchResponse searchResponse = ( SearchResponse )
+                container.getBatchResponse().getCurrentResponse().getDecorated();
+
+            SearchResultEntryDsml searchResultEntry = searchResponse.getCurrentSearchResultEntry();
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the request's attributes
+            String attributeValue;
+            // name
+            attributeValue = xpp.getAttributeValue( "", "name" );
+
+            if ( attributeValue != null )
+            {
+                try
+                {
+                    searchResultEntry.addAttribute( attributeValue );
+                }
+                catch ( LdapException le )
+                {
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, le );
+                }
+            }
+            else
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that adds a Value to an Attr of a Search Result Entry
+     */
+    private final GrammarAction searchResultEntryAddValue = new GrammarAction(
+        "Add a Value to an Attr of a Search Result Entry" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchResponse searchResponse = ( SearchResponse )
+                container.getBatchResponse().getCurrentResponse().getDecorated();
+            SearchResultEntryDsml searchResultEntry = searchResponse.getCurrentSearchResultEntry();
+
+            XmlPullParser xpp = container.getParser();
+
+            try
+            {
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+
+                // Getting the value
+                String nextText = xpp.nextText();
+
+                try
+                {
+                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                    {
+                        searchResultEntry.addAttributeValue( Base64.decode( nextText.toCharArray() ) );
+                    }
+                    else
+                    {
+                        searchResultEntry.addAttributeValue( nextText );
+                    }
+                }
+                catch ( LdapException le )
+                {
+                    throw new XmlPullParserException( le.getMessage(), xpp, le );
+                }
+            }
+            catch ( IOException ioe )
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that adds a Ref to a Search Result Reference
+     */
+    private final GrammarAction searchResultReferenceAddRef = new GrammarAction(
+        "Add a Ref to a Search Result Reference" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            SearchResponse searchResponse = ( SearchResponse )
+                container.getBatchResponse().getCurrentResponse().getDecorated();
+            SearchResultReference searchResultReference = searchResponse.getCurrentSearchResultReference();
+
+            XmlPullParser xpp = container.getParser();
+
+            try
+            {
+                String nextText = xpp.nextText();
+
+                if ( !Strings.isEmpty( nextText ) )
+                {
+                    LdapUrl ldapUrl = new LdapUrl( nextText );
+
+                    searchResultReference.getReferral().addLdapUrl( ldapUrl.toString() );
+                }
+            }
+            catch ( IOException ioe )
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+            }
+            catch ( LdapURLEncodingException luee )
+            {
+                throw new XmlPullParserException( luee.getMessage(), xpp, luee );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that adds Result Code to an Extended Response
+     */
+    private final GrammarAction extendedResponseAddResultCode = ldapResultAddResultCode;
+
+    /**
+     * GrammarAction that creates the Search Response
+     */
+    private final GrammarAction extendedResponseAddErrorMessage = ldapResultAddErrorMessage;
+
+    /**
+     * GrammarAction that adds a Referral to an Extended Response
+     */
+    private final GrammarAction extendedResponseAddReferral = ldapResultAddReferral;
+
+    /**
+     * GrammarAction that adds a Response Name to an Extended Response
+     */
+    private final GrammarAction extendedResponseAddResponseName = new GrammarAction(
+        "Add Response Name to Extended Response" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            ExtendedResponse extendedResponse = ( ExtendedResponse ) container.getBatchResponse().getCurrentResponse();
+
+            XmlPullParser xpp = container.getParser();
+
+            try
+            {
+                String nextText = xpp.nextText();
+
+                if ( !Strings.isEmpty( nextText ) )
+                {
+                    extendedResponse.setResponseName( Oid.fromString( nextText.trim() ).toString() );
+                }
+
+            }
+            catch ( IOException ioe )
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+            }
+            catch ( DecoderException de )
+            {
+                throw new XmlPullParserException( de.getMessage(), xpp, de );
+            }
+        }
+    };
+
+    /**
+     * GrammarAction that adds a Response to an Extended Response
+     */
+    private final GrammarAction extendedResponseAddResponse = new GrammarAction( "Add Response to Extended Response" )
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            ExtendedResponseDsml extendedResponse = ( ExtendedResponseDsml ) container.getBatchResponse()
+                .getCurrentResponse();
+
+            XmlPullParser xpp = container.getParser();
+
+            try
+            {
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+
+                // Getting the value
+                String nextText = xpp.nextText();
+
+                if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                {
+                    extendedResponse.setResponseValue( Base64.decode( nextText.trim().toCharArray() ) );
+                }
+                else
+                {
+                    extendedResponse.setResponseValue( Strings.getBytesUtf8( nextText.trim() ) );
+                }
+            }
+            catch ( IOException ioe )
+            {
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+            }
+        }
+    };
 
 
     @SuppressWarnings("unchecked")
@@ -869,436 +2036,59 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         //------------------------------------------
     }
 
-    /**
-     * GrammarAction that creates the Batch Response
-     */
-    private final GrammarAction batchResponseCreation = new GrammarAction( "Create Batch Response" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            BatchResponseDsml batchResponse = new BatchResponseDsml();
-
-            container.setBatchResponse( batchResponse );
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the batchRequest's attributes
-            String attributeValue;
-            // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
-
-            if ( attributeValue != null )
-            {
-                batchResponse.setRequestID( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
-            }
-        }
-    };
 
     /**
-     * GrammarAction that creates the Add Response
+     * Get the instance of this grammar
+     * 
+     * @return
+     *      an instance on this grammar
      */
-    private final GrammarAction addResponseCreation = new GrammarAction( "Create Add Response" )
+    public static Dsmlv2ResponseGrammar getInstance()
     {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            AddResponseDsml addResponse = new AddResponseDsml(
-                container.getLdapCodecService(), new AddResponseImpl() );
-            container.getBatchResponse().addResponse( addResponse );
+        return instance;
+    }
 
-            LdapResult ldapResult = addResponse.getLdapResult();
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the batchRequest's attributes
-            String attributeValue;
-            // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
-
-            if ( attributeValue != null )
-            {
-                addResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
-            }
-
-            // MatchedDN
-            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
-
-            if ( attributeValue != null )
-            {
-                try
-                {
-                    ldapResult.setMatchedDn( new Dn( attributeValue ) );
-                }
-                catch ( LdapInvalidDnException lide )
-                {
-                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
-                }
-            }
-        }
-    };
 
     /**
-     * GrammarAction that creates the Auth Response
+     * Creates a Control Value parsing the current node and adds it to the given parent 
+     * @param container the DSMLv2Container
+     * @param parent the parent 
+     * @throws XmlPullParserException
      */
-    private final GrammarAction authResponseCreation = new GrammarAction( "Create Auth Response" )
+    private void createAndAddControlValue( Dsmlv2Container container,
+        AbstractDsmlMessageDecorator<? extends Message> parent )
+        throws XmlPullParserException
     {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        DsmlControl<? extends Control> control = parent.getCurrentControl();
+
+        XmlPullParser xpp = container.getParser();
+        try
         {
-            BindResponseDsml bindResponse = new BindResponseDsml(
-                container.getLdapCodecService(), new BindResponseImpl() );
-            container.getBatchResponse().addResponse( bindResponse );
+            // We have to catch the type Attribute Value before going to the next Text node
+            String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
 
-            LdapResult ldapResult = bindResponse.getLdapResult();
+            // Getting the value
+            String nextText = xpp.nextText();
 
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the batchRequest's attributes
-            String attributeValue;
-            // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
-
-            if ( attributeValue != null )
+            if ( !Strings.isEmpty( nextText ) )
             {
-                bindResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
-
-            }
-
-            // MatchedDN
-            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
-
-            if ( attributeValue != null )
-            {
-                try
+                if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                 {
-                    ldapResult.setMatchedDn( new Dn( attributeValue ) );
-                }
-                catch ( LdapInvalidDnException lide )
-                {
-                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
-                }
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that creates the Compare Response
-     */
-    private final GrammarAction compareResponseCreation = new GrammarAction( "Create Compare Response" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            CompareResponseDsml compareResponse = new CompareResponseDsml(
-                container.getLdapCodecService(), new CompareResponseImpl() );
-            container.getBatchResponse().addResponse( compareResponse );
-
-            LdapResult ldapResult = compareResponse.getLdapResult();
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the batchRequest's attributes
-            String attributeValue;
-            // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
-
-            if ( attributeValue != null )
-            {
-                compareResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
-            }
-
-            // MatchedDN
-            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
-
-            if ( attributeValue != null )
-            {
-                try
-                {
-                    ldapResult.setMatchedDn( new Dn( attributeValue ) );
-                }
-                catch ( LdapInvalidDnException lide )
-                {
-                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
-                }
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that creates the Del Response
-     */
-    private final GrammarAction delResponseCreation = new GrammarAction( "Create Del Response" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            DelResponseDsml delResponse = new DelResponseDsml(
-                container.getLdapCodecService(), new DeleteResponseImpl() );
-            container.getBatchResponse().addResponse( delResponse );
-
-            LdapResult ldapResult = delResponse.getLdapResult();
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the batchRequest's attributes
-            String attributeValue;
-            // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
-
-            if ( attributeValue != null )
-            {
-                delResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
-            }
-
-            // MatchedDN
-            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
-
-            if ( attributeValue != null )
-            {
-                try
-                {
-                    ldapResult.setMatchedDn( new Dn( attributeValue ) );
-                }
-                catch ( LdapInvalidDnException lide )
-                {
-                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
-                }
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that creates the Modify Response
-     */
-    private final GrammarAction modifyResponseCreation = new GrammarAction( "Create Modify Response" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            ModifyResponseDsml modifyResponse = new ModifyResponseDsml(
-                container.getLdapCodecService(), new ModifyResponseImpl() );
-            container.getBatchResponse().addResponse( modifyResponse );
-
-            LdapResult ldapResult = modifyResponse.getLdapResult();
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the batchRequest's attributes
-            String attributeValue;
-            // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
-
-            if ( attributeValue != null )
-            {
-                modifyResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
-            }
-
-            // MatchedDN
-            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
-
-            if ( attributeValue != null )
-            {
-                try
-                {
-                    ldapResult.setMatchedDn( new Dn( attributeValue ) );
-                }
-                catch ( LdapInvalidDnException lide )
-                {
-                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
-                }
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that creates the Mod Dn Response
-     */
-    private final GrammarAction modDNResponseCreation = new GrammarAction( "Create Mod Dn Response" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            ModDNResponseDsml modDNResponse = new ModDNResponseDsml(
-                container.getLdapCodecService(), new ModifyDnResponseImpl() );
-            container.getBatchResponse().addResponse( modDNResponse );
-
-            LdapResult ldapResult = modDNResponse.getLdapResult();
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the batchRequest's attributes
-            String attributeValue;
-            // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
-
-            if ( attributeValue != null )
-            {
-                modDNResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
-            }
-
-            // MatchedDN
-            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
-
-            if ( attributeValue != null )
-            {
-                try
-                {
-                    ldapResult.setMatchedDn( new Dn( attributeValue ) );
-                }
-                catch ( LdapInvalidDnException lide )
-                {
-                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
-                }
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that creates the Extended Response
-     */
-    private final GrammarAction extendedResponseCreation = new GrammarAction( "Create Extended Response" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            ExtendedResponseDsml extendedResponse = null;
-
-            // Checking and adding the batchRequest's attributes
-            String attributeValue;
-
-            XmlPullParser xpp = container.getParser();
-
-            // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
-
-            if ( attributeValue != null )
-            {
-                extendedResponse = new ExtendedResponseDsml(
-                    container.getLdapCodecService(), new ExtendedResponseImpl(
-                        ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) ) );
-            }
-            else
-            {
-                extendedResponse = new ExtendedResponseDsml(
-                    container.getLdapCodecService(), new ExtendedResponseImpl( -1 ) );
-            }
-
-            container.getBatchResponse().addResponse( extendedResponse );
-
-            LdapResult ldapResult = extendedResponse.getLdapResult();
-
-            // MatchedDN
-            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
-
-            if ( attributeValue != null )
-            {
-                try
-                {
-                    ldapResult.setMatchedDn( new Dn( attributeValue ) );
-                }
-                catch ( LdapInvalidDnException lide )
-                {
-                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
-                }
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that creates the Error Response
-     */
-    private final GrammarAction errorResponseCreation = new GrammarAction( "Create Error Response" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            ErrorResponse errorResponse = null;
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the batchRequest's attributes
-            String attributeValue;
-            // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
-
-            if ( attributeValue != null )
-            {
-                errorResponse = new ErrorResponse( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ), null );
-
-                container.getBatchResponse().addResponse( errorResponse );
-            }
-            // type
-            attributeValue = xpp.getAttributeValue( "", "type" );
-            if ( attributeValue != null )
-            {
-                if ( attributeValue.equals( errorResponse.getTypeDescr( ErrorResponseType.NOT_ATTEMPTED ) ) )
-                {
-                    errorResponse.setErrorType( ErrorResponseType.NOT_ATTEMPTED );
-                }
-                else if ( attributeValue.equals( errorResponse.getTypeDescr( ErrorResponseType.COULD_NOT_CONNECT ) ) )
-                {
-                    errorResponse.setErrorType( ErrorResponseType.COULD_NOT_CONNECT );
-                }
-                else if ( attributeValue.equals( errorResponse.getTypeDescr( ErrorResponseType.CONNECTION_CLOSED ) ) )
-                {
-                    errorResponse.setErrorType( ErrorResponseType.CONNECTION_CLOSED );
-                }
-                else if ( attributeValue.equals( errorResponse.getTypeDescr( ErrorResponseType.MALFORMED_REQUEST ) ) )
-                {
-                    errorResponse.setErrorType( ErrorResponseType.MALFORMED_REQUEST );
-                }
-                else if ( attributeValue
-                    .equals( errorResponse.getTypeDescr( ErrorResponseType.GATEWAY_INTERNAL_ERROR ) ) )
-                {
-                    errorResponse.setErrorType( ErrorResponseType.GATEWAY_INTERNAL_ERROR );
-                }
-                else if ( attributeValue.equals( errorResponse.getTypeDescr( ErrorResponseType.AUTHENTICATION_FAILED ) ) )
-                {
-                    errorResponse.setErrorType( ErrorResponseType.AUTHENTICATION_FAILED );
-                }
-                else if ( attributeValue.equals( errorResponse.getTypeDescr( ErrorResponseType.UNRESOLVABLE_URI ) ) )
-                {
-                    errorResponse.setErrorType( ErrorResponseType.UNRESOLVABLE_URI );
-                }
-                else if ( attributeValue.equals( errorResponse.getTypeDescr( ErrorResponseType.OTHER ) ) )
-                {
-                    errorResponse.setErrorType( ErrorResponseType.OTHER );
+                    control.setValue( Base64.decode( nextText.trim().toCharArray() ) );
                 }
                 else
                 {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03004 ), xpp, null );
+                    control.setValue( Strings.getBytesUtf8( nextText.trim() ) );
                 }
             }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03005 ), xpp, null );
-            }
         }
-    };
-
-    /**
-     * GrammarAction that adds Message to an Error Response
-     */
-    private final GrammarAction errorResponseAddMessage = new GrammarAction( "Add Message to Error Response" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        catch ( IOException ioe )
         {
-            ErrorResponse errorResponse = ( ErrorResponse ) container.getBatchResponse().getCurrentResponse();
-
-            XmlPullParser xpp = container.getParser();
-            try
-            {
-                String nextText = xpp.nextText();
-                if ( !nextText.equals( "" ) )
-                {
-                    errorResponse.setMessage( nextText.trim() );
-                }
-            }
-            catch ( IOException ioe )
-            {
-                throw new XmlPullParserException( ioe.getMessage(), xpp, ioe );
-            }
+            throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
         }
-    };
-
-    /**
-     * GrammarAction that adds Detail to an Error Response
-     */
-    // TODO Look for documentation about this Detail element (the DSML documentation doesn't give enough information)
-    private static final GrammarAction ERROR_RESPONSE_ADD_DETAIL = null;
-
-
+    }
+    
+    
     /**
      * Creates a Control parsing the current node and adds it to the given parent 
      * @param container the DSMLv2Container
@@ -1308,7 +2098,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
     private void createAndAddControl( Dsmlv2Container container,
         AbstractDsmlMessageDecorator<? extends Message> parent ) throws XmlPullParserException
     {
-        CodecControl<? extends Control> control = null;
+        CodecControl<? extends Control> control;
 
         XmlPullParser xpp = container.getParser();
 
@@ -1331,16 +2121,17 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         {
             throw new XmlPullParserException( I18n.err( I18n.ERR_03005 ), xpp, null );
         }
+        
         // CRITICALITY
         attributeValue = xpp.getAttributeValue( "", "criticality" );
 
         if ( attributeValue != null )
         {
-            if ( attributeValue.equals( "true" ) )
+            if ( "true".equals( attributeValue ) )
             {
                 control.setCritical( true );
             }
-            else if ( attributeValue.equals( "false" ) )
+            else if ( "false".equals( attributeValue ) )
             {
                 control.setCritical( false );
             }
@@ -1349,682 +2140,5 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 throw new XmlPullParserException( I18n.err( I18n.ERR_03007 ), xpp, null );
             }
         }
-    }
-
-    /**
-     * GrammarAction that creates a Control for LDAP Result
-     */
-    private final GrammarAction ldapResultControlCreation = new GrammarAction( "Create Control for LDAP Result" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            AbstractDsmlMessageDecorator<? extends Message> message =
-                ( AbstractDsmlMessageDecorator<? extends Message> )
-                container.getBatchResponse().getCurrentResponse();
-
-            if ( message instanceof SearchResponseDsml )
-            {
-                createAndAddControl( container,
-                    ( ( SearchResponse ) ( ( SearchResponseDsml ) message ).getDecorated() ).getSearchResultDone() );
-            }
-            else
-            {
-                createAndAddControl( container, message );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that creates a Control for Search Result Entry
-     */
-    private final GrammarAction searchResultEntryControlCreation = new GrammarAction(
-        "Create Control for Search Result Entry" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchResponse response = ( SearchResponse )
-                ( ( SearchResponseDsml ) container.getBatchResponse()
-                    .getCurrentResponse() ).getDecorated();
-
-            createAndAddControl( container, response.getCurrentSearchResultEntry() );
-        }
-    };
-
-    /**
-     * GrammarAction that creates a Control for Search Result Entry
-     */
-    private final GrammarAction searchResultReferenceControlCreation = new GrammarAction(
-        "Create Control for Search Result Reference" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchResponse response = ( SearchResponse )
-                ( ( SearchResponseDsml ) container.getBatchResponse()
-                    .getCurrentResponse() ).getDecorated();
-
-            createAndAddControl( container, response.getCurrentSearchResultReference() );
-        }
-    };
-
-
-    /**
-     * Creates a Control Value parsing the current node and adds it to the given parent 
-     * @param container the DSMLv2Container
-     * @param parent the parent 
-     * @throws XmlPullParserException
-     */
-    private void createAndAddControlValue( Dsmlv2Container container,
-        AbstractDsmlMessageDecorator<? extends Message> parent )
-        throws XmlPullParserException
-    {
-        DsmlControl<? extends Control> control =
-            ( ( AbstractDsmlMessageDecorator<?> ) parent ).getCurrentControl();
-
-        XmlPullParser xpp = container.getParser();
-        try
-        {
-            // We have to catch the type Attribute Value before going to the next Text node
-            String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
-
-            // Getting the value
-            String nextText = xpp.nextText();
-
-            if ( !nextText.equals( "" ) )
-            {
-                if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
-                {
-                    control.setValue( Base64.decode( nextText.trim().toCharArray() ) );
-                }
-                else
-                {
-                    control.setValue( Strings.getBytesUtf8( nextText.trim() ) );
-                }
-            }
-        }
-        catch ( IOException ioe )
-        {
-            throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
-        }
-    }
-
-    /**
-     * GrammarAction that creates a Control Value for LDAP Result
-     */
-    private final GrammarAction ldapResultControlValueCreation = new GrammarAction(
-        "Add ControlValue to Control for LDAP Result" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            AbstractDsmlMessageDecorator<? extends Response> response
-            = ( AbstractDsmlMessageDecorator<? extends Response> )
-                container.getBatchResponse().getCurrentResponse();
-
-            if ( response instanceof SearchResponseDsml )
-            {
-                SearchResponse searchResponse = ( SearchResponse )
-                    response.getDecorated();
-                createAndAddControlValue( container,
-                    searchResponse.getSearchResultDone() );
-            }
-            else
-            {
-                createAndAddControlValue( container, response );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that creates a Control Value for Search Result Entry
-     */
-    private final GrammarAction searchResultEntryControlValueCreation = new GrammarAction(
-        "Add ControlValue to Control for Search Result Entry" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchResponse response = ( SearchResponse )
-                container.getBatchResponse().getCurrentResponse().getDecorated();
-            createAndAddControlValue( container,
-                response.getCurrentSearchResultEntry() );
-        }
-    };
-
-    /**
-     * GrammarAction that creates a Control Value for Search Result Reference
-     */
-    private final GrammarAction searchResultReferenceControlValueCreation = new GrammarAction(
-        "Add ControlValue to Control for Search Result Entry" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchResponseDsml response = ( SearchResponseDsml )
-                container.getBatchResponse().getCurrentResponse();
-            createAndAddControlValue( container,
-                ( ( SearchResponse ) response.getDecorated() ).getCurrentSearchResultReference() );
-        }
-    };
-
-    /**
-     * GrammarAction that adds a Result Code to a LDAP Result
-     */
-    private final GrammarAction ldapResultAddResultCode = new GrammarAction( "Add ResultCode to LDAP Result" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            DsmlDecorator<? extends Response> ldapResponse =
-                container.getBatchResponse().getCurrentResponse();
-
-            LdapResult ldapResult = null;
-
-            // Search Response is a special case
-            // ResultCode can only occur in a case of Search Result Done in a Search Response
-            if ( ldapResponse.getDecorated() instanceof SearchResponse )
-            {
-                SearchResponse searchResponse = ( SearchResponse ) ldapResponse.getDecorated();
-                ldapResult = searchResponse.getSearchResultDone().getLdapResult();
-            }
-            else
-            {
-                ldapResult = ( ( ResultResponse ) ldapResponse.getDecorated() ).getLdapResult();
-            }
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the request's attributes
-            String attributeValue;
-            // code
-            attributeValue = xpp.getAttributeValue( "", "code" );
-
-            if ( attributeValue != null )
-            {
-                try
-                {
-                    ldapResult.setResultCode( ResultCodeEnum.getResultCode( Integer.parseInt( attributeValue ) ) );
-                }
-                catch ( NumberFormatException nfe )
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03009 ), xpp, nfe );
-                }
-            }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03010 ), xpp, null );
-            }
-
-            // descr
-            attributeValue = xpp.getAttributeValue( "", "descr" );
-
-            if ( ( attributeValue != null ) && !DSMLV2_DESCR_TAGS.contains( attributeValue ) )
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03011, attributeValue ), xpp, null );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that adds a Error Message to a LDAP Result
-     */
-    private final GrammarAction ldapResultAddErrorMessage = new GrammarAction( "Add Error Message to LDAP Result" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            DsmlDecorator<? extends Response> ldapResponse =
-                container.getBatchResponse().getCurrentResponse();
-
-            LdapResult ldapResult = null;
-
-            // Search Response is a special case
-            // ResultCode can only occur in a case of Search Result Done in a Search Response
-            if ( ldapResponse.getDecorated() instanceof SearchResponse )
-            {
-                SearchResponse searchResponse = ( SearchResponse ) ldapResponse.getDecorated();
-                ldapResult = searchResponse.getSearchResultDone().getLdapResult();
-            }
-            else
-            {
-                ldapResult = ( ( ResultResponse ) ldapResponse.getDecorated() ).getLdapResult();
-            }
-
-            XmlPullParser xpp = container.getParser();
-
-            try
-            {
-                String nextText = xpp.nextText();
-
-                if ( !nextText.equals( "" ) )
-                {
-                    ldapResult.setDiagnosticMessage( nextText.trim() );
-                }
-            }
-            catch ( IOException ioe )
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that adds a Referral to a LDAP Result
-     */
-    private final GrammarAction ldapResultAddReferral = new GrammarAction( "Add Referral to LDAP Result" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            DsmlDecorator<? extends Response> ldapResponse =
-                container.getBatchResponse().getCurrentResponse();
-
-            LdapResult ldapResult = null;
-
-            // Search Response is a special case
-            // ResultCode can only occur in a case of Search Result Done in a Search Response
-            if ( ldapResponse.getDecorated() instanceof SearchResponse )
-            {
-                SearchResponse searchResponse = ( SearchResponse ) ldapResponse.getDecorated();
-                ldapResult = searchResponse.getSearchResultDone().getLdapResult();
-            }
-            else
-            {
-                ldapResult = ( ( ResultResponse ) ldapResponse.getDecorated() ).getLdapResult();
-            }
-
-            // Initialization of the Referrals if needed
-            if ( ldapResult.getReferral() == null )
-            {
-                ldapResult.setReferral( new ReferralImpl() );
-            }
-
-            XmlPullParser xpp = container.getParser();
-
-            try
-            {
-                String nextText = xpp.nextText();
-
-                if ( !nextText.equals( "" ) )
-                {
-                    try
-                    {
-                        String urlStr = nextText.trim();
-                        LdapUrl ldapUrl = new LdapUrl( urlStr );
-                        ldapResult.getReferral().addLdapUrl( ldapUrl.toString() );
-                    }
-                    catch ( LdapURLEncodingException luee )
-                    {
-                        throw new XmlPullParserException( luee.getMessage(), xpp, luee );
-                    }
-                }
-            }
-            catch ( IOException ioe )
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that creates the Search Response
-     */
-    private final GrammarAction searchResponseCreation = new GrammarAction( "Create Search Response" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            XmlPullParser xpp = container.getParser();
-            SearchResponse searchResponse = null;
-
-            // Checking and adding the batchRequest's attributes
-            String attributeValue = xpp.getAttributeValue( "", "requestID" );
-
-            if ( attributeValue != null )
-            {
-                searchResponse = new SearchResponse(
-                    ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
-            }
-            else
-            {
-                searchResponse = new SearchResponse();
-            }
-
-            container.getBatchResponse().addResponse( new SearchResponseDsml(
-                container.getLdapCodecService(), searchResponse ) );
-        }
-    };
-
-    /**
-     * GrammarAction that creates a Search Result Entry
-     */
-    private final GrammarAction searchResultEntryCreation = new GrammarAction(
-        "Add Search Result Entry to Search Response" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchResultEntryDsml searchResultEntry =
-                new SearchResultEntryDsml( container.getLdapCodecService(),
-                    new SearchResultEntryImpl() );
-            SearchResponseDsml searchResponse = ( SearchResponseDsml )
-                container.getBatchResponse().getCurrentResponse();
-            searchResponse.addResponse( searchResultEntry );
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the request's attributes
-            String attributeValue;
-            // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
-
-            if ( attributeValue != null )
-            {
-                searchResultEntry.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
-            }
-
-            // dn
-            attributeValue = xpp.getAttributeValue( "", "dn" );
-
-            if ( attributeValue != null )
-            {
-                try
-                {
-                    searchResultEntry.setObjectName( new Dn( attributeValue ) );
-                }
-                catch ( LdapInvalidDnException lide )
-                {
-                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
-                }
-            }
-            else
-            {
-                throw new XmlPullParserException( "dn attribute is required", xpp, null );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that creates a Search Result Reference
-     */
-    private final GrammarAction searchResultReferenceCreation = new GrammarAction(
-        "Add Search Result Reference to Search Response" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchResultReferenceDsml searchResultReference =
-                new SearchResultReferenceDsml(
-                    container.getLdapCodecService(),
-                    new SearchResultReferenceImpl() );
-
-            SearchResponseDsml searchResponseDsml = ( SearchResponseDsml )
-                container.getBatchResponse().getCurrentResponse();
-
-            searchResponseDsml.addResponse( searchResultReference );
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the request's attributes
-            String attributeValue;
-            // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
-
-            if ( attributeValue != null )
-            {
-                searchResultReference.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that creates a Search Result Done
-     */
-    private final GrammarAction searchResultDoneCreation = new GrammarAction(
-        "Add Search Result Done to Search Response" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchResultDoneDsml searchResultDone =
-                new SearchResultDoneDsml( container.getLdapCodecService(),
-                    new SearchResultDoneImpl() );
-
-            SearchResponseDsml searchResponseDsml = ( SearchResponseDsml )
-                container.getBatchResponse().getCurrentResponse();
-            searchResponseDsml.addResponse( searchResultDone );
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the batchRequest's attributes
-            String attributeValue;
-            // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
-
-            if ( attributeValue != null )
-            {
-                searchResultDone.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
-            }
-
-            // MatchedDN
-            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
-
-            if ( attributeValue != null )
-            {
-                try
-                {
-                    searchResultDone.getLdapResult().setMatchedDn( new Dn( attributeValue ) );
-                }
-                catch ( LdapInvalidDnException lide )
-                {
-                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
-                }
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that adds an Attr to a Search Result Entry
-     */
-    private final GrammarAction searchResultEntryAddAttr = new GrammarAction( "Add Attr to Search Result Entry" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchResponse searchResponse = ( SearchResponse )
-                container.getBatchResponse().getCurrentResponse().getDecorated();
-
-            SearchResultEntryDsml searchResultEntry = ( SearchResultEntryDsml )
-                searchResponse.getCurrentSearchResultEntry();
-
-            XmlPullParser xpp = container.getParser();
-
-            // Checking and adding the request's attributes
-            String attributeValue;
-            // name
-            attributeValue = xpp.getAttributeValue( "", "name" );
-
-            if ( attributeValue != null )
-            {
-                try
-                {
-                    searchResultEntry.addAttribute( attributeValue );
-                }
-                catch ( LdapException le )
-                {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, le );
-                }
-            }
-            else
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that adds a Value to an Attr of a Search Result Entry
-     */
-    private final GrammarAction searchResultEntryAddValue = new GrammarAction(
-        "Add a Value to an Attr of a Search Result Entry" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchResponse searchResponse = ( SearchResponse )
-                container.getBatchResponse().getCurrentResponse().getDecorated();
-            SearchResultEntryDsml searchResultEntry = ( SearchResultEntryDsml )
-                searchResponse.getCurrentSearchResultEntry();
-
-            XmlPullParser xpp = container.getParser();
-
-            try
-            {
-                // We have to catch the type Attribute Value before going to the next Text node
-                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
-
-                // Getting the value
-                String nextText = xpp.nextText();
-
-                try
-                {
-                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
-                    {
-                        searchResultEntry.addAttributeValue( Base64.decode( nextText.toCharArray() ) );
-                    }
-                    else
-                    {
-                        searchResultEntry.addAttributeValue( nextText );
-                    }
-                }
-                catch ( LdapException le )
-                {
-                    throw new XmlPullParserException( le.getMessage(), xpp, le );
-                }
-            }
-            catch ( IOException ioe )
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that adds a Ref to a Search Result Reference
-     */
-    private final GrammarAction searchResultReferenceAddRef = new GrammarAction(
-        "Add a Ref to a Search Result Reference" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            SearchResponse searchResponse = ( SearchResponse )
-                container.getBatchResponse().getCurrentResponse().getDecorated();
-            SearchResultReference searchResultReference = searchResponse.getCurrentSearchResultReference();
-
-            XmlPullParser xpp = container.getParser();
-
-            try
-            {
-                String nextText = xpp.nextText();
-
-                if ( !nextText.equals( "" ) )
-                {
-                    LdapUrl ldapUrl = new LdapUrl( nextText );
-
-                    searchResultReference.getReferral().addLdapUrl( ldapUrl.toString() );
-                }
-            }
-            catch ( IOException ioe )
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
-            }
-            catch ( LdapURLEncodingException luee )
-            {
-                throw new XmlPullParserException( luee.getMessage(), xpp, luee );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that adds Result Code to an Extended Response
-     */
-    private final GrammarAction extendedResponseAddResultCode = ldapResultAddResultCode;
-
-    /**
-     * GrammarAction that creates the Search Response
-     */
-    private final GrammarAction extendedResponseAddErrorMessage = ldapResultAddErrorMessage;
-
-    /**
-     * GrammarAction that adds a Referral to an Extended Response
-     */
-    private final GrammarAction extendedResponseAddReferral = ldapResultAddReferral;
-
-    /**
-     * GrammarAction that adds a Response Name to an Extended Response
-     */
-    private final GrammarAction extendedResponseAddResponseName = new GrammarAction(
-        "Add Response Name to Extended Response" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            ExtendedResponse extendedResponse = ( ExtendedResponse ) container.getBatchResponse().getCurrentResponse();
-
-            XmlPullParser xpp = container.getParser();
-
-            try
-            {
-                String nextText = xpp.nextText();
-
-                if ( !nextText.equals( "" ) )
-                {
-                    extendedResponse.setResponseName( Oid.fromString( nextText.trim() ).toString() );
-                }
-
-            }
-            catch ( IOException ioe )
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
-            }
-            catch ( DecoderException de )
-            {
-                throw new XmlPullParserException( de.getMessage(), xpp, de );
-            }
-        }
-    };
-
-    /**
-     * GrammarAction that adds a Response to an Extended Response
-     */
-    private final GrammarAction extendedResponseAddResponse = new GrammarAction( "Add Response to Extended Response" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            ExtendedResponseDsml extendedResponse = ( ExtendedResponseDsml ) container.getBatchResponse()
-                .getCurrentResponse();
-
-            XmlPullParser xpp = container.getParser();
-
-            try
-            {
-                // We have to catch the type Attribute Value before going to the next Text node
-                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
-
-                // Getting the value
-                String nextText = xpp.nextText();
-
-                if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
-                {
-                    extendedResponse.setResponseValue( Base64.decode( nextText.trim().toCharArray() ) );
-                }
-                else
-                {
-                    extendedResponse.setResponseValue( Strings.getBytesUtf8( nextText.trim() ) );
-                }
-            }
-            catch ( IOException ioe )
-            {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
-            }
-        }
-    };
-
-
-    /**
-     * Get the instance of this grammar
-     * 
-     * @return
-     *      an instance on this grammar
-     */
-    public static Dsmlv2ResponseGrammar getInstance()
-    {
-        return instance;
     }
 }

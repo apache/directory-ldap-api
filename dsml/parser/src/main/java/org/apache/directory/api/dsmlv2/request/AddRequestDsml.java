@@ -144,6 +144,7 @@ public class AddRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getType()
     {
         return getDecorated().getType();
@@ -153,6 +154,7 @@ public class AddRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public Element toDsml( Element root )
     {
         Element element = super.toDsml( root );
@@ -211,6 +213,7 @@ public class AddRequestDsml
      * 
      * @return Returns the entry.
      */
+    @Override
     public Entry getEntry()
     {
         return getDecorated().getEntry();
@@ -245,6 +248,7 @@ public class AddRequestDsml
      * 
      * @return Returns the entry Dn.
      */
+    @Override
     public Dn getEntryDn()
     {
         return getDecorated().getEntryDn();
@@ -254,6 +258,7 @@ public class AddRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public AddRequest setEntryDn( Dn entryDn )
     {
         getDecorated().setEntryDn( entryDn );
@@ -265,6 +270,7 @@ public class AddRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public AddRequest setEntry( Entry entry )
     {
         getDecorated().setEntry( entry );
@@ -276,6 +282,7 @@ public class AddRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public AddRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -287,6 +294,7 @@ public class AddRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public AddRequest addControl( Control control )
     {
         return ( AddRequest ) super.addControl( control );
@@ -296,6 +304,7 @@ public class AddRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public AddRequest addAllControls( Control[] controls )
     {
         return ( AddRequest ) super.addAllControls( controls );
@@ -305,6 +314,7 @@ public class AddRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public AddRequest removeControl( Control control )
     {
         return ( AddRequest ) super.removeControl( control );
@@ -314,6 +324,7 @@ public class AddRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getResponseType()
     {
         return getDecorated().getResponseType();

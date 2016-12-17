@@ -51,12 +51,23 @@ public class SyncStateValueDecorator extends ControlDecorator<SyncStateValue> im
     private static final Asn1Decoder DECODER = new Asn1Decoder();
 
 
+    /**
+     * Creates a new instance of SyncStateValueDecorator.
+     * 
+     * @param codec The LDAP Service to use
+     */
     public SyncStateValueDecorator( LdapApiService codec )
     {
         super( codec, new SyncStateValueImpl() );
     }
 
 
+    /**
+     * Creates a new instance of SyncStateValueDecorator.
+     * 
+     * @param codec The LDAP Service to use
+     * @param value The SyncState value to use
+     */
     public SyncStateValueDecorator( LdapApiService codec, SyncStateValue value )
     {
         super( codec, value );

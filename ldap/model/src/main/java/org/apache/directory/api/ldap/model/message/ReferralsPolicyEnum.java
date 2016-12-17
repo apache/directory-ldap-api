@@ -30,7 +30,12 @@ package org.apache.directory.api.ldap.model.message;
  */
 public enum ReferralsPolicyEnum
 {
+    /** Ignore referral */
     IGNORE,
+    
+    /** Floow referral */
     FOLLOW,
+    
+    /** Throw an exception */
     THROW
 }

@@ -27,13 +27,6 @@ package org.apache.directory.api.ldap.codec.api;
  */
 public final class LdapCodecConstants
 {
-    /**
-     * Private constructor.
-     */
-    private LdapCodecConstants()
-    {
-    }
-
     /** The scope constants */
     public static final int SCOPE_BASE_OBJECT = 0;
 
@@ -168,4 +161,11 @@ public final class LdapCodecConstants
     public static final int APPROX_MATCH_FILTER_TAG = 0xA8;
 
     public static final int EXTENSIBLE_MATCH_FILTER_TAG = 0xA9;
+
+    /**
+     * Private constructor.
+     */
+    private LdapCodecConstants()
+    {
+    }
 }

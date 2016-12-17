@@ -61,6 +61,11 @@ public class CancelResponseImpl extends ExtendedResponseImpl implements CancelRe
     }
 
 
+    /**
+     * Create a new CancelResponse instance
+     * 
+     * @param messageId The request's messageId
+     */
     public CancelResponseImpl( int messageId )
     {
         super( messageId );
@@ -69,6 +74,9 @@ public class CancelResponseImpl extends ExtendedResponseImpl implements CancelRe
     }
 
 
+    /**
+     * Create a new CancelResponse instance
+     */
     public CancelResponseImpl()
     {
         super( CancelRequest.EXTENSION_OID );
@@ -83,6 +91,7 @@ public class CancelResponseImpl extends ExtendedResponseImpl implements CancelRe
      * 
      * @return the OID of the extended response type.
      */
+    @Override
     public String getResponseName()
     {
         return "";
@@ -114,6 +123,6 @@ public class CancelResponseImpl extends ExtendedResponseImpl implements CancelRe
             return true;
         }
 
-        return ( obj instanceof CancelResponseImpl );
+        return obj instanceof CancelResponseImpl;
     }
 }

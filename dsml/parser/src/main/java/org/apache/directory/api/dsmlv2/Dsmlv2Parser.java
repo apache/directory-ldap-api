@@ -155,7 +155,7 @@ public class Dsmlv2Parser
 
     /**
      * Launches the parsing on the input
-     * This method will parse the whole DSML document, without considering the flag {@link #storeMsgInBatchReq}
+     * This method will parse the whole DSML document, without considering the flag storeMsgInBatchReq
      * @throws XmlPullParserException when an unrecoverable error occurs
      * @throws IOException when an IO execption occurs
      */

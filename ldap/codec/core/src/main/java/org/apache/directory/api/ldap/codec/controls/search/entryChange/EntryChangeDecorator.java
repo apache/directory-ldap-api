@@ -48,7 +48,7 @@ import org.apache.directory.api.util.Strings;
  */
 public class EntryChangeDecorator extends ControlDecorator<EntryChange> implements EntryChange
 {
-
+    /** Default value when no change number is provided */
     public static final int UNDEFINED_CHANGE_NUMBER = -1;
 
     /** A temporary storage for the previous Dn */

@@ -30,6 +30,8 @@ import org.apache.directory.api.ldap.model.message.SingleReplyRequest;
 /**
  * A decorator for the LdapResultResponse message
  *
+ * @param <M> The request to be decorated
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class SingleReplyRequestDecorator<M extends SingleReplyRequest>

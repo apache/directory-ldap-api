@@ -30,6 +30,8 @@ import org.apache.directory.api.ldap.model.schema.normalizers.NoOpNormalizer;
  * An class used for Comparator. It inherits from the general AbstractAdsSchemaObject class. It
  * also implements the Comparator interface
  * 
+ * @param <T> The comparator type
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class LdapComparator<T> extends LoadableSchemaObject implements Comparator<T>, Serializable

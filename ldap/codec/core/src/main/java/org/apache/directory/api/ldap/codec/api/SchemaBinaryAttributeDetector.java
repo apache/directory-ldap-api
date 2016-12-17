@@ -41,6 +41,11 @@ public class SchemaBinaryAttributeDetector implements BinaryAttributeDetector
     }
     
     
+    /**
+     * Create an instance of SchemaBinaryAttributeDetector.
+     * 
+     * @param schemaManager The SchemaManager to use
+     */
     public SchemaBinaryAttributeDetector( SchemaManager schemaManager )
     {
         this.schemaManager = schemaManager;

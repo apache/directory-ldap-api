@@ -29,6 +29,8 @@ import org.apache.directory.api.ldap.model.message.Control;
  * The codec uses this interface to add additional information to LDAP Model
  * Control objects during encoding and decoding.
  *
+ * @param <E> The control being handled by this codec
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface CodecControl<E extends Control> extends Control, Decorator<E>

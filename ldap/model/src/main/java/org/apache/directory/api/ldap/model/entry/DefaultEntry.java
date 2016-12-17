@@ -164,8 +164,7 @@ public final class DefaultEntry implements Entry
         }
         else
         {
-            this.dn = new Dn( dn );
-            normalizeDN( this.dn );
+            this.dn = new Dn( schemaManager, dn );
         }
 
         // Initialize the ObjectClass object
@@ -194,8 +193,7 @@ public final class DefaultEntry implements Entry
         }
         else
         {
-            this.dn = dn;
-            normalizeDN( this.dn );
+            this.dn = normalizeDn( dn );
         }
 
         // Initialize the ObjectClass object
@@ -299,8 +297,7 @@ public final class DefaultEntry implements Entry
         // We will clone the existing entry, because it may be normalized
         if ( entry.getDn() != null )
         {
-            dn = entry.getDn();
-            normalizeDN( dn );
+            dn = normalizeDn( entry.getDn() );
         }
         else
         {
@@ -508,19 +505,25 @@ public final class DefaultEntry implements Entry
      *
      * @param dn the Dn to be normalized
      */
-    private void normalizeDN( Dn dn )
+    private Dn normalizeDn( Dn dn )
     {
         if ( !dn.isSchemaAware() )
         {
             try
             {
                 // The dn must be normalized
-                dn = new Dn( schemaManager, dn );
+                return new Dn( schemaManager, dn );
             }
             catch ( LdapException ne )
             {
                 LOG.warn( "The Dn '{}' cannot be normalized", dn );
+                
+                return dn;
             }
+        }
+        else
+        {
+            return dn;
         }
     }
 

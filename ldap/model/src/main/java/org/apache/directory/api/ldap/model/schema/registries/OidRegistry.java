@@ -38,6 +38,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Object identifier registry. It stores the OIDs for AT, OC, MR, LS, MRU, DSR, DCR and NF.
  * An OID is unique, and associated with a SO.
+ * 
+ * @param <T> The type of SchemaObject
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -329,6 +331,9 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
     }
 
 
+    /**
+     * Empty the byOid map
+     */
     public void clear()
     {
         // remove all the OID

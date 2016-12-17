@@ -50,6 +50,9 @@ public class EntryChangeImpl extends AbstractControl implements EntryChange
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ChangeType getChangeType()
     {
@@ -57,6 +60,9 @@ public class EntryChangeImpl extends AbstractControl implements EntryChange
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setChangeType( ChangeType changeType )
     {
@@ -64,6 +70,9 @@ public class EntryChangeImpl extends AbstractControl implements EntryChange
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Dn getPreviousDn()
     {
@@ -71,6 +80,9 @@ public class EntryChangeImpl extends AbstractControl implements EntryChange
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setPreviousDn( Dn previousDn )
     {
@@ -78,6 +90,9 @@ public class EntryChangeImpl extends AbstractControl implements EntryChange
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public long getChangeNumber()
     {
@@ -85,6 +100,9 @@ public class EntryChangeImpl extends AbstractControl implements EntryChange
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setChangeNumber( long changeNumber )
     {

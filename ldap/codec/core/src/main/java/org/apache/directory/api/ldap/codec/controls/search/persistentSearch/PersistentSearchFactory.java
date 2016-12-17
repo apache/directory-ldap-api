@@ -27,7 +27,7 @@ import org.apache.directory.api.ldap.model.message.controls.PersistentSearch;
 
 
 /**
- * 
+ * A factory to create a PersistentSearch control 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -37,6 +37,11 @@ public class PersistentSearchFactory implements ControlFactory<PersistentSearch>
     private LdapApiService codec;
 
 
+    /**
+     * Create a new PersistentSearchFactory instance
+     * 
+     * @param codec The LdapApiService instance
+     */
     public PersistentSearchFactory( LdapApiService codec )
     {
         this.codec = codec;

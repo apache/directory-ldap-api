@@ -109,13 +109,14 @@ public class Tag
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals( Object obj )
     {
         if ( obj instanceof Tag )
         {
             Tag tag = ( Tag ) obj;
             
-            return ( ( this.name.equals( tag.getName() ) ) && ( this.type == tag.getType() ) );
+            return ( this.name.equals( tag.getName() ) ) && ( this.type == tag.getType() );
 
         }
         else
@@ -128,6 +129,7 @@ public class Tag
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode()
     {
         return name.hashCode() + type << 24;
@@ -137,6 +139,7 @@ public class Tag
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         if ( name != null )

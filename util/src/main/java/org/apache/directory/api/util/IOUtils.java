@@ -359,7 +359,7 @@ public final class IOUtils
      * This method buffers the input internally, so there is no need to use a
      * <code>BufferedReader</code>.
      * <p>
-     * The buffer size is given by {@link #DEFAULT_BUFFER_SIZE}.
+     * The buffer size is given by #DEFAULT_BUFFER_SIZE.
      *
      * @param input  the <code>Reader</code> to read from
      * @param output  the <code>Writer</code> to write to
@@ -381,7 +381,7 @@ public final class IOUtils
      * This method buffers the input internally, so there is no need to use a
      * <code>BufferedInputStream</code>.
      * <p>
-     * The buffer size is given by {@link #DEFAULT_BUFFER_SIZE}.
+     * The buffer size is given by #DEFAULT_BUFFER_SIZE.
      *
      * @param input  the <code>InputStream</code> to read from
      * @param output  the <code>OutputStream</code> to write to

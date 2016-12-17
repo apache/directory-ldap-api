@@ -65,6 +65,7 @@ public class DelRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getType()
     {
         return getDecorated().getType();
@@ -74,6 +75,7 @@ public class DelRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public Element toDsml( Element root )
     {
         Element element = super.toDsml( root );
@@ -113,6 +115,7 @@ public class DelRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getResponseType()
     {
         return getDecorated().getResponseType();
@@ -122,6 +125,7 @@ public class DelRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dn getName()
     {
         return getDecorated().getName();
@@ -131,6 +135,7 @@ public class DelRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public DeleteRequest setName( Dn name )
     {
         getDecorated().setName( name );
@@ -142,6 +147,7 @@ public class DelRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public DeleteRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -153,6 +159,7 @@ public class DelRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public DeleteRequest addControl( Control control )
     {
         return ( DeleteRequest ) super.addControl( control );
@@ -162,6 +169,7 @@ public class DelRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public DeleteRequest addAllControls( Control[] controls )
     {
         return ( DeleteRequest ) super.addAllControls( controls );
@@ -171,6 +179,7 @@ public class DelRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public DeleteRequest removeControl( Control control )
     {
         return ( DeleteRequest ) super.removeControl( control );

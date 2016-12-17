@@ -71,6 +71,7 @@ public class ExtendedResponseDsml extends AbstractResultResponseDsml<ExtendedRes
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getType()
     {
         return getDecorated().getType();
@@ -80,9 +81,10 @@ public class ExtendedResponseDsml extends AbstractResultResponseDsml<ExtendedRes
     /**
      * {@inheritDoc}
      */
+    @Override
     public Element toDsml( Element root )
     {
-        Element element = null;
+        Element element;
 
         if ( root != null )
         {
@@ -137,6 +139,7 @@ public class ExtendedResponseDsml extends AbstractResultResponseDsml<ExtendedRes
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setResponseName( String oid )
     {
         getDecorated().setResponseName( oid );
@@ -148,6 +151,7 @@ public class ExtendedResponseDsml extends AbstractResultResponseDsml<ExtendedRes
      * 
      * @return Returns the name.
      */
+    @Override
     public String getResponseName()
     {
         return getDecorated().getResponseName();

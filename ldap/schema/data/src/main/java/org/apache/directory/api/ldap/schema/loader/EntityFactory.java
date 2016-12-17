@@ -37,6 +37,12 @@ import org.apache.directory.api.ldap.model.schema.registries.Registries;
 import org.apache.directory.api.ldap.model.schema.registries.Schema;
 
 
+/**
+ * An interface to be implemented by classes needed to create Schema elements. The factory
+ * will creates schema elements based on an Entry.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public interface EntityFactory
 {
     /**

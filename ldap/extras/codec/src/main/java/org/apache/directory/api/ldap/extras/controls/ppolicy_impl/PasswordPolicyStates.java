@@ -31,12 +31,25 @@ import org.apache.directory.api.asn1.ber.grammar.States;
  */
 public enum PasswordPolicyStates implements States
 {
+    /** Initial state */
     START_STATE,
+    
+    /** PasswordPolicyResponseValue ::= SEQUENCE  transition */
     PPOLICY_SEQ_STATE,
+    
+    /** warning [0] CHOICE transition */
     PPOLICY_WARNING_TAG_STATE,
+    
+    /** timeBeforeExpiration [0] INTEGER (0 .. maxInt) transition */
     PPOLICY_TIME_BEFORE_EXPIRATION_STATE,
+    
+    /** graceAuthNsRemaining [1] INTEGER (0 .. maxInt) } OPTIONAL transition */
     PPOLICY_GRACE_AUTHNS_REMAINING_STATE,
+    
+    /** error   [1] ENUMERATED transition */
     PPOLICY_ERROR_TAG_STATE,
+
+    /** end state */
     END_STATE;
 
 
@@ -52,7 +65,10 @@ public enum PasswordPolicyStates implements States
 
 
     /**
-     * {@inheritDoc}
+     * Get the string representing the state
+     * 
+     * @param state The state number
+     * @return The String representing the state
      */
     public String getState( int state )
     {

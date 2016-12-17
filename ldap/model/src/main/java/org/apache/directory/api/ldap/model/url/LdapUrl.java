@@ -1717,7 +1717,6 @@ public class LdapUrl
      * Get a string representation of a LdapUrl.
      *
      * @return A LdapUrl string
-     * @see LdapUrl#forceScopeRendering
      */
     @Override
     public String toString()

@@ -629,7 +629,9 @@ public class DefaultSchemaManager implements SchemaManager
 
 
     /**
-     * {@inheritDoc}
+     * Currently not implemented.
+     * 
+     * @return Always FALSE
      */
     public boolean isDisabledAccepted()
     {

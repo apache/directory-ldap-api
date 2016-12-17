@@ -28,6 +28,8 @@ import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyError
 /**
  * The action used to store the error
  * 
+ * @param <C> The container type
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class StoreError<C extends Asn1Container> extends AbstractReadInteger<C>

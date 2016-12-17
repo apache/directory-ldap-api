@@ -53,7 +53,7 @@ public class ProxiedAuthzImpl extends AbstractControl implements ProxiedAuthz
      * @return the authzId
      */
     @Override
-public String getAuthzId()
+    public String getAuthzId()
     {
         return authzId;
     }

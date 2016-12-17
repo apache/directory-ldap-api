@@ -35,6 +35,9 @@ import org.dom4j.QName;
 /**
  * DSML Decorator for ExtendedRequest
  *
+ * @param <Q> The extended request type
+ * @param <P> The extended response type
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ExtendedRequestDsml<Q extends ExtendedRequest, P extends ExtendedResponse>
@@ -59,6 +62,7 @@ public class ExtendedRequestDsml<Q extends ExtendedRequest, P extends ExtendedRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getType()
     {
         return getDecorated().getType();
@@ -68,6 +72,7 @@ public class ExtendedRequestDsml<Q extends ExtendedRequest, P extends ExtendedRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public Element toDsml( Element root )
     {
         Element element = super.toDsml( root );
@@ -99,6 +104,7 @@ public class ExtendedRequestDsml<Q extends ExtendedRequest, P extends ExtendedRe
      * 
      * @return Returns the request name.
      */
+    @Override
     public String getRequestName()
     {
         return getDecorated().getRequestName();
@@ -141,6 +147,7 @@ public class ExtendedRequestDsml<Q extends ExtendedRequest, P extends ExtendedRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getResponseType()
     {
         return getDecorated().getResponseType();
@@ -150,6 +157,7 @@ public class ExtendedRequestDsml<Q extends ExtendedRequest, P extends ExtendedRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedRequest setRequestName( String oid )
     {
         getDecorated().setRequestName( oid );
@@ -161,6 +169,7 @@ public class ExtendedRequestDsml<Q extends ExtendedRequest, P extends ExtendedRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -172,6 +181,7 @@ public class ExtendedRequestDsml<Q extends ExtendedRequest, P extends ExtendedRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedRequest addControl( Control control )
     {
         return ( ExtendedRequest ) super.addControl( control );
@@ -181,6 +191,7 @@ public class ExtendedRequestDsml<Q extends ExtendedRequest, P extends ExtendedRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedRequest addAllControls( Control[] controls )
     {
         return ( ExtendedRequest ) super.addAllControls( controls );
@@ -190,6 +201,7 @@ public class ExtendedRequestDsml<Q extends ExtendedRequest, P extends ExtendedRe
     /**
      * {@inheritDoc}
      */
+    @Override
     public ExtendedRequest removeControl( Control control )
     {
         return ( ExtendedRequest ) super.removeControl( control );

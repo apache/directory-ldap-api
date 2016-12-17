@@ -53,6 +53,7 @@ public abstract class AbstractGrammar implements Grammar
      * 
      * @return The grammar name
      */
+    @Override
     public String getName()
     {
         return name;
@@ -64,6 +65,7 @@ public abstract class AbstractGrammar implements Grammar
      * 
      * @param name the name to set
      */
+    @Override
     public void setName( String name )
     {
         this.name = name;
@@ -88,6 +90,7 @@ public abstract class AbstractGrammar implements Grammar
      * 
      * @return Returns the statesEnum.
      */
+    @Override
     public Enum<Dsmlv2StatesEnum>[] getStatesEnum()
     {
         return Dsmlv2StatesEnum.values();
@@ -97,6 +100,7 @@ public abstract class AbstractGrammar implements Grammar
     /**
      * {@inheritDoc}
      */
+    @Override
     public void executeAction( Dsmlv2Container container ) throws XmlPullParserException, IOException
     {
         XmlPullParser xpp = container.getParser();

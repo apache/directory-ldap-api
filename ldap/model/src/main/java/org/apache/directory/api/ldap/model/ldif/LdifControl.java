@@ -107,7 +107,9 @@ public class LdifControl implements Control, Externalizable
 
 
     /**
-     * {@inheritDoc}
+     * Get back the control value
+     * 
+     * @return The control's value
      */
     public byte[] getValue()
     {
@@ -116,7 +118,9 @@ public class LdifControl implements Control, Externalizable
 
 
     /**
-     * {@inheritDoc}
+     * Store the control value
+     * 
+     * @param value The value to store
      */
     public void setValue( byte[] value )
     {
@@ -125,7 +129,7 @@ public class LdifControl implements Control, Externalizable
 
 
     /**
-     * {@inheritDoc}
+     * @return <t>TRUE</t> if the control has a value
      */
     public boolean hasValue()
     {

@@ -41,6 +41,11 @@ public class GracefulDisconnectFactory implements ExtendedOperationFactory
     private LdapApiService codec;
 
 
+    /**
+     * Creates a new instance of GracefulDisconnectFactory.
+     *
+     * @param codec The codec for this factory.
+     */
     public GracefulDisconnectFactory( LdapApiService codec )
     {
         this.codec = codec;

@@ -262,9 +262,10 @@ public class VirtualListViewRequestImpl extends AbstractControl implements Virtu
     /**
      * Return a String representing this VirtualListViewRequestImpl.
      */
+    @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( "    Virtual List View Request Control\n" );
         sb.append( "        oid : " ).append( getOid() ).append( '\n' );

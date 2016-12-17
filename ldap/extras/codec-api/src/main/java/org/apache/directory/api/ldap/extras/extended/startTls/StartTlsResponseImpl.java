@@ -88,6 +88,7 @@ public class StartTlsResponseImpl extends ExtendedResponseImpl implements StartT
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

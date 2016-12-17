@@ -65,6 +65,7 @@ public class ModifyResponseDsml extends AbstractResultResponseDsml<ModifyRespons
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getType()
     {
         return getDecorated().getType();
@@ -74,9 +75,10 @@ public class ModifyResponseDsml extends AbstractResultResponseDsml<ModifyRespons
     /**
      * {@inheritDoc}
      */
+    @Override
     public Element toDsml( Element root )
     {
-        Element element = null;
+        Element element;
 
         if ( root != null )
         {

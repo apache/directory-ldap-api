@@ -28,6 +28,7 @@ package org.apache.directory.api.ldap.model.schema.parsers;
  */
 public class ConsoleParserMonitor implements ParserMonitor
 {
+    /** The maven property to add on the commmand line */
     public static final String TRACE_KEY = "maven.eve.schema.parser.trace";
 
 

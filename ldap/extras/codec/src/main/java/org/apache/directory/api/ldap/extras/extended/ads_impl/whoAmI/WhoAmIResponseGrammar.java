@@ -59,6 +59,9 @@ public class WhoAmIResponseGrammar extends AbstractGrammar<WhoAmIResponseContain
     private static Grammar<WhoAmIResponseContainer> instance = new WhoAmIResponseGrammar();
 
 
+    /**
+     * Creates a new WhoAmIResponseGrammar object.
+     */
     @SuppressWarnings("unchecked")
     public WhoAmIResponseGrammar()
     {

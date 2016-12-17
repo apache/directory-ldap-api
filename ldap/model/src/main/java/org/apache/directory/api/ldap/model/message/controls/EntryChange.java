@@ -73,6 +73,7 @@ import org.apache.directory.api.ldap.model.name.Dn;
  */
 public interface EntryChange extends Control
 {
+    /** No defined change number */ 
     int UNDEFINED_CHANGE_NUMBER = -1;
 
     /** The EntryChange control */
@@ -93,14 +94,30 @@ public interface EntryChange extends Control
     void setChangeType( ChangeType changeType );
 
 
+    /**
+     * @return The previous DN
+     */
     Dn getPreviousDn();
 
 
+    /**
+     * Sets the previous DN
+     * 
+     * @param previousDn The previous DN
+     */
     void setPreviousDn( Dn previousDn );
 
 
+    /**
+     * @return The change number
+     */
     long getChangeNumber();
 
 
+    /**
+     * Sets the ChangeNumber
+     * 
+     * @param changeNumber The ChanegNumber
+     */
     void setChangeNumber( long changeNumber );
 }

@@ -231,6 +231,16 @@ public void setChangesOnly( boolean changesOnly )
      * {@inheritDoc}
      */
     @Override
+    public void disableNotification( ChangeType changeType )
+    {
+        getPersistentSearch().disableNotification( changeType );
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );

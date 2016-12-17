@@ -66,6 +66,7 @@ public class ModifyDNRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getType()
     {
         return getDecorated().getType();
@@ -75,6 +76,7 @@ public class ModifyDNRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public Element toDsml( Element root )
     {
         Element element = super.toDsml( root );
@@ -94,7 +96,7 @@ public class ModifyDNRequestDsml
         }
 
         // DeleteOldRDN
-        element.addAttribute( "deleteoldrdn", ( request.getDeleteOldRdn() ? "true" : "false" ) );
+        element.addAttribute( "deleteoldrdn", request.getDeleteOldRdn() ? "true" : "false" );
 
         // NewSuperior
         if ( request.getNewRdn() != null )
@@ -111,6 +113,7 @@ public class ModifyDNRequestDsml
      * 
      * @return Returns the name.
      */
+    @Override
     public Dn getName()
     {
         return getDecorated().getName();
@@ -177,6 +180,7 @@ public class ModifyDNRequestDsml
      * 
      * @return Returns the newSuperior.
      */
+    @Override
     public Dn getNewSuperior()
     {
         return getDecorated().getNewSuperior();
@@ -188,6 +192,7 @@ public class ModifyDNRequestDsml
      * 
      * @param newSuperior The newSuperior to set.
      */
+    @Override
     public ModifyDnRequest setNewSuperior( Dn newSuperior )
     {
         getDecorated().setNewSuperior( newSuperior );
@@ -199,6 +204,7 @@ public class ModifyDNRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getResponseType()
     {
         return getDecorated().getResponseType();
@@ -208,6 +214,7 @@ public class ModifyDNRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnRequest setName( Dn name )
     {
         getDecorated().setName( name );
@@ -219,6 +226,7 @@ public class ModifyDNRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public Rdn getNewRdn()
     {
         return getDecorated().getNewRdn();
@@ -228,6 +236,7 @@ public class ModifyDNRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnRequest setNewRdn( Rdn newRdn )
     {
         getDecorated().setNewRdn( newRdn );
@@ -239,6 +248,7 @@ public class ModifyDNRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean getDeleteOldRdn()
     {
         return getDecorated().getDeleteOldRdn();
@@ -248,6 +258,7 @@ public class ModifyDNRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnRequest setDeleteOldRdn( boolean deleteOldRdn )
     {
         getDecorated().setDeleteOldRdn( deleteOldRdn );
@@ -259,6 +270,7 @@ public class ModifyDNRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isMove()
     {
         return getDecorated().isMove();
@@ -268,6 +280,7 @@ public class ModifyDNRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -279,6 +292,7 @@ public class ModifyDNRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnRequest addControl( Control control )
     {
         return ( ModifyDnRequest ) super.addControl( control );
@@ -288,6 +302,7 @@ public class ModifyDNRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnRequest addAllControls( Control[] controls )
     {
         return ( ModifyDnRequest ) super.addAllControls( controls );
@@ -297,6 +312,7 @@ public class ModifyDNRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnRequest removeControl( Control control )
     {
         return ( ModifyDnRequest ) super.removeControl( control );

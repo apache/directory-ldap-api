@@ -96,6 +96,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AddResponse add( Dn dn, final Attribute... attributes )
     {
@@ -111,6 +114,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AddResponse add( Dn dn, RequestBuilder<AddRequest> requestBuilder )
     {
@@ -127,6 +133,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AddResponse add( AddRequest addRequest )
     {
@@ -147,6 +156,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PasswordWarning authenticate( String baseDn, String filter, SearchScope scope, char[] password )
         throws PasswordException
@@ -155,6 +167,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PasswordWarning authenticate( Dn baseDn, String filter, SearchScope scope, char[] password )
         throws PasswordException
@@ -163,6 +178,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PasswordWarning authenticate( SearchRequest searchRequest, char[] password ) throws PasswordException
     {
@@ -176,6 +194,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PasswordWarning authenticate( Dn userDn, char[] password ) throws PasswordException
     {
@@ -224,6 +245,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteResponse delete( Dn dn )
     {
@@ -231,6 +255,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteResponse delete( Dn dn, RequestBuilder<DeleteRequest> requestBuilder )
     {
@@ -250,6 +277,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteResponse delete( DeleteRequest deleteRequest )
     {
@@ -270,6 +300,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> T execute( ConnectionCallback<T> connectionCallback )
     {
@@ -290,6 +323,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> T lookup( Dn dn, EntryMapper<T> entryMapper )
     {
@@ -297,6 +333,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> T lookup( Dn dn, String[] attributes, EntryMapper<T> entryMapper )
     {
@@ -352,6 +391,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void modifyPassword( Dn userDn, char[] newPassword )
         throws PasswordException
@@ -360,6 +402,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void modifyPassword( Dn userDn, char[] oldPassword,
         char[] newPassword ) throws PasswordException
@@ -368,6 +413,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void modifyPassword( Dn userDn, char[] oldPassword,
         char[] newPassword, boolean asAdmin ) throws PasswordException
@@ -394,6 +442,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ModifyResponse modify( Dn dn, RequestBuilder<ModifyRequest> requestBuilder )
     {
@@ -410,6 +461,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ModifyResponse modify( ModifyRequest modifyRequest )
     {
@@ -430,6 +484,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AddRequest newAddRequest( Entry entry )
     {
@@ -437,6 +494,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Attribute newAttribute( String name )
     {
@@ -444,13 +504,18 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     public Attribute newAttribute( String name, byte[]... values )
     {
         return modelFactory.newAttribute( name, values );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Attribute newAttribute( String name, String... values )
     {
@@ -458,6 +523,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Attribute newAttribute( String name, Value... values )
     {
@@ -465,6 +533,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteRequest newDeleteRequest( Dn dn )
     {
@@ -472,6 +543,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Dn newDn( String dn )
     {
@@ -479,6 +553,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Entry newEntry( String dn )
     {
@@ -486,6 +563,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Entry newEntry( Dn dn )
     {
@@ -493,6 +573,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ModifyRequest newModifyRequest( String dn )
     {
@@ -500,6 +583,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ModifyRequest newModifyRequest( Dn dn )
     {
@@ -507,6 +593,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchRequest newSearchRequest( String baseDn, FilterBuilder filter, SearchScope scope )
     {
@@ -514,6 +603,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchRequest newSearchRequest( String baseDn, String filter, SearchScope scope )
     {
@@ -521,6 +613,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchRequest newSearchRequest( Dn baseDn, FilterBuilder filter, SearchScope scope )
     {
@@ -528,6 +623,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchRequest newSearchRequest( Dn baseDn, String filter, SearchScope scope )
     {
@@ -535,6 +633,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchRequest newSearchRequest( String baseDn, FilterBuilder filter, SearchScope scope, String... attributes )
     {
@@ -542,6 +643,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchRequest newSearchRequest( String baseDn, String filter, SearchScope scope, String... attributes )
     {
@@ -549,6 +653,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchRequest newSearchRequest( Dn baseDn, FilterBuilder filter, SearchScope scope, String... attributes )
     {
@@ -556,6 +663,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchRequest newSearchRequest( Dn baseDn, String filter, SearchScope scope, String... attributes )
     {
@@ -563,6 +673,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T extends ResultResponse> T responseOrException( T response )
     {
@@ -590,6 +703,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> List<T> search( String baseDn, FilterBuilder filter, SearchScope scope,
         EntryMapper<T> entryMapper )
@@ -600,6 +716,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> List<T> search( String baseDn, String filter, SearchScope scope,
         EntryMapper<T> entryMapper )
@@ -610,6 +729,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> List<T> search( Dn baseDn, FilterBuilder filter, SearchScope scope,
         EntryMapper<T> entryMapper )
@@ -620,6 +742,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> List<T> search( Dn baseDn, String filter, SearchScope scope,
         EntryMapper<T> entryMapper )
@@ -630,6 +755,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> List<T> search( String baseDn, FilterBuilder filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper )
@@ -640,6 +768,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> List<T> search( String baseDn, String filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper )
@@ -650,6 +781,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> List<T> search( Dn baseDn, FilterBuilder filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper )
@@ -660,6 +794,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> List<T> search( Dn baseDn, String filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper )
@@ -670,11 +807,14 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> List<T> search( SearchRequest searchRequest,
         EntryMapper<T> entryMapper )
     {
-        List<T> entries = new ArrayList<T>();
+        List<T> entries = new ArrayList<>();
 
         LdapConnection connection = null;
         try
@@ -699,6 +839,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> T searchFirst( String baseDn, FilterBuilder filter, SearchScope scope,
         EntryMapper<T> entryMapper )
@@ -709,6 +852,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> T searchFirst( String baseDn, String filter, SearchScope scope,
         EntryMapper<T> entryMapper )
@@ -719,6 +865,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> T searchFirst( Dn baseDn, FilterBuilder filter, SearchScope scope,
         EntryMapper<T> entryMapper )
@@ -729,6 +878,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> T searchFirst( Dn baseDn, String filter, SearchScope scope,
         EntryMapper<T> entryMapper )
@@ -739,6 +891,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> T searchFirst( String baseDn, FilterBuilder filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper )
@@ -749,6 +904,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> T searchFirst( String baseDn, String filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper )
@@ -759,6 +917,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> T searchFirst( Dn baseDn, FilterBuilder filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper )
@@ -769,6 +930,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> T searchFirst( Dn baseDn, String filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper )
@@ -779,6 +943,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> T searchFirst( SearchRequest searchRequest,
         EntryMapper<T> entryMapper )

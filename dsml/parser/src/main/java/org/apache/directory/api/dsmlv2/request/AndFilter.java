@@ -46,9 +46,10 @@ public class AndFilter extends ConnectorFilter
      * 
      * @return The AND filter string
      */
+    @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( '&' ).append( super.toString() );
 

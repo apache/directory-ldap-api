@@ -543,7 +543,8 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
 
 
     /**
-     * @return The normalized String
+     * Compute the normalized value
+     * 
      * @throws LdapException If we were'nt able to normalize the value
      */
     private void computeNormValue() throws LdapException

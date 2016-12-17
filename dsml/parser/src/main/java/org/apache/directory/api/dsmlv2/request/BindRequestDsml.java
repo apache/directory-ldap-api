@@ -65,6 +65,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getType()
     {
         return getDecorated().getType();
@@ -74,6 +75,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public Element toDsml( Element root )
     {
         Element element = super.toDsml( root );
@@ -105,6 +107,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getResponseType()
     {
         return getDecorated().getResponseType();
@@ -114,6 +117,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isSimple()
     {
         return getDecorated().isSimple();
@@ -123,6 +127,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean getSimple()
     {
         return getDecorated().getSimple();
@@ -132,6 +137,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setSimple( boolean isSimple )
     {
         getDecorated().setSimple( isSimple );
@@ -143,6 +149,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getCredentials()
     {
         return getDecorated().getCredentials();
@@ -152,6 +159,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setCredentials( String credentials )
     {
         getDecorated().setCredentials( credentials );
@@ -163,6 +171,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setCredentials( byte[] credentials )
     {
         getDecorated().setCredentials( credentials );
@@ -174,6 +183,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getName()
     {
         return getDecorated().getName();
@@ -183,6 +193,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setName( String name )
     {
         getDecorated().setName( name );
@@ -194,6 +205,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dn getDn()
     {
         return getDecorated().getDn();
@@ -203,6 +215,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setDn( Dn dn )
     {
         getDecorated().setDn( dn );
@@ -214,6 +227,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isVersion3()
     {
         return getDecorated().isVersion3();
@@ -223,6 +237,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean getVersion3()
     {
         return getDecorated().getVersion3();
@@ -232,6 +247,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setVersion3( boolean isVersion3 )
     {
         getDecorated().setVersion3( isVersion3 );
@@ -243,6 +259,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSaslMechanism()
     {
         return getDecorated().getSaslMechanism();
@@ -252,6 +269,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setSaslMechanism( String saslMechanism )
     {
         getDecorated().setSaslMechanism( saslMechanism );
@@ -263,6 +281,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -274,6 +293,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest addControl( Control control )
     {
         return ( BindRequest ) super.addControl( control );
@@ -283,6 +303,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest addAllControls( Control[] controls )
     {
         return ( BindRequest ) super.addAllControls( controls );
@@ -292,6 +313,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest removeControl( Control control )
     {
         return ( BindRequest ) super.removeControl( control );

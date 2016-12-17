@@ -62,6 +62,9 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
     private static Grammar<PasswordModifyRequestContainer> instance = new PasswordModifyRequestGrammar();
 
 
+    /**
+     * Creates a new PasswordModifyRequestGrammar object.
+     */
     @SuppressWarnings("unchecked")
     public PasswordModifyRequestGrammar()
     {

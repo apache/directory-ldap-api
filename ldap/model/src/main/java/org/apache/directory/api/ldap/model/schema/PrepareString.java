@@ -56,10 +56,17 @@ public final class PrepareString
      */
     public enum AssertionType
     {
-        SUBSTRING_INITIAL,  // The INITIAL part of a substring assertion value
-        SUBSTRING_ANY,      // The ANY part of a substring assertion value
-        SUBSTRING_FINAL,    // The FINAL part of a substring assertion value
-        ATTRIBUTE_VALUE     // An Attribute Value
+        /** The INITIAL part of a substring assertion value */
+        SUBSTRING_INITIAL,
+        
+        /** The ANY part of a substring assertion value */
+        SUBSTRING_ANY,
+        
+        /** The FINAL part of a substring assertion value */
+        SUBSTRING_FINAL,
+        
+        /** An Attribute Value */
+        ATTRIBUTE_VALUE
     }
     
     /** An exception used to get out of the map method quickly */

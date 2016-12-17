@@ -29,8 +29,9 @@ import org.apache.directory.api.ldap.model.message.Control;
  * so the codec to store transient information associated with the Control in the
  * decorator while processing.
  * 
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @param <E> The control type
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class ControlDecorator<E extends Control> implements CodecControl<E>, Asn1Object
 {
@@ -71,7 +72,9 @@ public abstract class ControlDecorator<E extends Control> implements CodecContro
 
 
     /**
-     * {@inheritDoc}
+     * Set the control to be decorated.
+     * 
+     * @param decorated The decorated control
      */
     public void setDecorated( E decorated )
     {

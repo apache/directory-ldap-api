@@ -106,7 +106,7 @@ public class BatchRequestDsml
      */
     public BatchRequestDsml()
     {
-        requests = new ArrayList<DsmlDecorator<? extends Request>>();
+        requests = new ArrayList<>();
         responseOrder = ResponseOrder.SEQUENTIAL;
         processing = Processing.SEQUENTIAL;
         onError = OnError.EXIT;
@@ -282,7 +282,7 @@ public class BatchRequestDsml
         // RequestID
         if ( requestID != 0 )
         {
-            element.addAttribute( "requestID", "" + requestID );
+            element.addAttribute( "requestID", Integer.toString( requestID ) );
         }
 
         // ResponseOrder
@@ -342,7 +342,7 @@ public class BatchRequestDsml
     @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( "[" );
         sb.append( "processing: " ).append( processing );

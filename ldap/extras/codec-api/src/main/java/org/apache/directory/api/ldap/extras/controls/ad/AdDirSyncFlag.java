@@ -29,9 +29,16 @@ import java.util.Set;
  */
 public enum AdDirSyncFlag
 {
+    /** The Object Security flag */
     LDAP_DIRSYNC_OBJECT_SECURITY( 0x0001, "Object Security" ),
+
+    /** The Ancestors First Order flag */
     LDAP_DIRSYNC_ANCESTORS_FIRST_ORDER( 0x0800, "Ancestors First Order" ),
+    
+    /** The Public Data Only flag */
     LDAP_DIRSYNC_PUBLIC_DATA_ONLY( 0x2000, "Public Data Only" ),
+    
+    /** The Incremental Values flag */
     LDAP_DIRSYNC_INCREMENTAL_VALUES( 0x80000000, "Incremental Values" );
 
     /** The int value */

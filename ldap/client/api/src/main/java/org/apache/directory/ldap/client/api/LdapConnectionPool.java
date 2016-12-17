@@ -123,7 +123,7 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
             connection = super.borrowObject();
             LOG.trace( "borrowed connection {}", connection );
         }
-        catch ( LdapException e )
+        catch ( LdapException | RuntimeException e )
         {
             throw e;
         }

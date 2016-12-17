@@ -84,6 +84,9 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
     }
 
 
+    /**
+     * @return The current attribute
+     */
     public Attribute getCurrentAttribute()
     {
         return currentAttribute;

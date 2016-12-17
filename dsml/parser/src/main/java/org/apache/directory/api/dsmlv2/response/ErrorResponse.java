@@ -122,9 +122,10 @@ public class ErrorResponse extends AbstractResponse implements Response, DsmlDec
     /**
      * {@inheritDoc}
      */
+    @Override
     public Element toDsml( Element root )
     {
-        Element element = null;
+        Element element;
 
         if ( root != null )
         {
@@ -138,7 +139,7 @@ public class ErrorResponse extends AbstractResponse implements Response, DsmlDec
         // RequestID
         if ( requestID != 0 )
         {
-            element.addAttribute( "requestID", "" + requestID );
+            element.addAttribute( "requestID", Integer.toString( requestID ) );
         }
 
         // Type
@@ -275,6 +276,9 @@ public class ErrorResponse extends AbstractResponse implements Response, DsmlDec
     }
 
 
+    /**
+     * @return The LdapApiService instance
+     */
     public LdapApiService getCodecService()
     {
         throw new IllegalArgumentException( "This should not be a decorator "
@@ -283,6 +287,10 @@ public class ErrorResponse extends AbstractResponse implements Response, DsmlDec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Response getDecorated()
     {
         return this;

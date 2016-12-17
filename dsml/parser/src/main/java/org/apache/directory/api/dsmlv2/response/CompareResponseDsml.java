@@ -65,6 +65,7 @@ public class CompareResponseDsml extends AbstractResultResponseDsml<CompareRespo
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getType()
     {
         return getDecorated().getType();
@@ -74,9 +75,10 @@ public class CompareResponseDsml extends AbstractResultResponseDsml<CompareRespo
     /**
      * {@inheritDoc}
      */
+    @Override
     public Element toDsml( Element root )
     {
-        Element element = null;
+        Element element;
 
         if ( root != null )
         {
@@ -97,6 +99,7 @@ public class CompareResponseDsml extends AbstractResultResponseDsml<CompareRespo
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isTrue()
     {
         return getDecorated().isTrue();

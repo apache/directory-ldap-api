@@ -53,7 +53,12 @@ public class DnComparator extends LdapComparator<Object>
 
 
     /**
-     * {@inheritDoc}
+     * Compare two String DNs
+     *  
+     * @param dn1 The first DN
+     * @param dn2 The second DN
+     * 
+     * @return -1 i the first DN is inferior to the second DN, 1 if the second DN is superior, 0 of they are equal
      */
     public int compare( String dn1, String dn2 )
     {

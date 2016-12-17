@@ -52,12 +52,23 @@ public class SyncRequestValueDecorator extends ControlDecorator<SyncRequestValue
     private static final Asn1Decoder DECODER = new Asn1Decoder();
 
 
+    /**
+     * Create a new SyncRequestValueDecorator instance 
+     * 
+     * @param codec The LDAP API service to use
+     */
     public SyncRequestValueDecorator( LdapApiService codec )
     {
         super( codec, new SyncRequestValueImpl() );
     }
 
 
+    /**
+     * Create a new SyncRequestValueDecorator instance 
+     * 
+     * @param codec The LDAP API service to use
+     * @param control The decorated SyncRequestValue control
+     */
     public SyncRequestValueDecorator( LdapApiService codec, SyncRequestValue control )
     {
         super( codec, control );

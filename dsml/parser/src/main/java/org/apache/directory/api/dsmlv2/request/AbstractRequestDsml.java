@@ -33,6 +33,8 @@ import org.dom4j.Element;
 /**
  * Abstract class for DSML requests.
  *
+ * @param <E> The request type
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class AbstractRequestDsml<E extends Request>
@@ -57,6 +59,7 @@ public abstract class AbstractRequestDsml<E extends Request>
      * @param root the root element
      * @return the Request Element of the given name containing
      */
+    @Override
     public Element toDsml( Element root )
     {
         Element element = root.addElement( getRequestName() );
@@ -65,7 +68,7 @@ public abstract class AbstractRequestDsml<E extends Request>
         int requestID = getDecorated().getMessageId();
         if ( requestID > 0 )
         {
-            element.addAttribute( "requestID", "" + requestID );
+            element.addAttribute( "requestID", Integer.toString( requestID ) );
         }
 
         // Controls
@@ -78,8 +81,7 @@ public abstract class AbstractRequestDsml<E extends Request>
     /**
      * Gets the name of the request according to the type of the decorated element.
      *
-     * @return
-     *      the name of the request according to the type of the decorated element.
+     * @return the name of the request according to the type of the decorated element.
      */
     private String getRequestName()
     {
@@ -118,12 +120,22 @@ public abstract class AbstractRequestDsml<E extends Request>
     }
 
 
+    /**
+     * @return the buffer's length (always 0)
+     */
     public int computeLength()
     {
         return 0;
     }
 
 
+    /**
+     * Encode the request. Always return an empty buffer.
+     * 
+     * @param buffer The buffer to allocate
+     * @return The resulting buffer
+     * @throws EncoderException If we had an error while encoding the request
+     */
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         return null;
@@ -133,6 +145,7 @@ public abstract class AbstractRequestDsml<E extends Request>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasResponse()
     {
         return getDecorated().hasResponse();

@@ -93,7 +93,15 @@ public final class JndiUtils
     }
 
 
-    // @TODO not really needed and can be moved out
+    /**
+     * Convert a LDAP API control to a JNDI control
+     * @param codec The LDAP API service to use
+     * @param control The control to convert
+     * @return A JNDI control
+     * @throws EncoderException If the conversion failed
+     * @deprecated We don't use JNDI anymore
+     */
+    @Deprecated
     public static javax.naming.ldap.Control toJndiControl( LdapApiService codec, Control control )
         throws EncoderException
     {
@@ -101,7 +109,15 @@ public final class JndiUtils
     }
 
 
-    // @TODO not really needed and can be moved out
+    /**
+     * Convert some LDAP API controls to JNDI controls
+     * @param codec The LDAP API service to use
+     * @param controls The controls to convert
+     * @return Array of JNDI control
+     * @throws EncoderException If the conversion failed
+     * @deprecated We don't use JNDI anymore
+     */
+    @Deprecated
     public static javax.naming.ldap.Control[] toJndiControls( LdapApiService codec, Control... controls )
         throws EncoderException
     {
@@ -124,7 +140,15 @@ public final class JndiUtils
     }
 
 
-    // @TODO not really needed and can be moved out
+    /**
+     * Convert a JNDI control to a LDAP API control
+     * @param codec The LDAP API service to use
+     * @param jndiControl The control to convert
+     * @return A LDAP API control
+     * @throws DecoderException If the conversion failed
+     * @deprecated We don't use JNDI anymore
+     */
+    @Deprecated
     public static Control fromJndiControl( LdapApiService codec, javax.naming.ldap.Control jndiControl )
         throws DecoderException
     {
@@ -132,7 +156,15 @@ public final class JndiUtils
     }
 
 
-    // @TODO not really needed and can be moved out
+    /**
+     * Convert some JNDI controls to LDAP API controls
+     * @param codec The LDAP API service to use
+     * @param jndiControls The controls to convert
+     * @return An array of LDAP API control
+     * @throws DecoderException If the conversion failed
+     * @deprecated We don't use JNDI anymore
+     */
+    @Deprecated
     public static Control[] fromJndiControls( LdapApiService codec, javax.naming.ldap.Control... jndiControls )
         throws DecoderException
     {
@@ -155,6 +187,12 @@ public final class JndiUtils
     }
 
 
+    /**
+     * Wraps a LDAP exception into a NaingException
+     * 
+     * @param t The original exception
+     * @throws NamingException The wrapping JNDI exception
+     */
     public static void wrap( Throwable t ) throws NamingException
     {
         if ( t instanceof NamingException )
@@ -316,6 +354,9 @@ class WrappedReferralException extends ReferralException
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean skipReferral()
     {
@@ -323,6 +364,9 @@ class WrappedReferralException extends ReferralException
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void retryReferral()
     {
@@ -330,6 +374,9 @@ class WrappedReferralException extends ReferralException
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object getReferralInfo()
     {
@@ -337,6 +384,9 @@ class WrappedReferralException extends ReferralException
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Context getReferralContext( Hashtable<?, ?> env ) throws NamingException
     {
@@ -344,6 +394,9 @@ class WrappedReferralException extends ReferralException
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Context getReferralContext() throws NamingException
     {
@@ -351,6 +404,9 @@ class WrappedReferralException extends ReferralException
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Name getRemainingName()
     {
@@ -358,6 +414,9 @@ class WrappedReferralException extends ReferralException
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object getResolvedObj()
     {
@@ -365,6 +424,9 @@ class WrappedReferralException extends ReferralException
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Name getResolvedName()
     {
@@ -386,6 +448,9 @@ class WrappedPartialResultException extends PartialResultException
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Name getRemainingName()
     {
@@ -393,6 +458,9 @@ class WrappedPartialResultException extends PartialResultException
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object getResolvedObj()
     {
@@ -400,6 +468,9 @@ class WrappedPartialResultException extends PartialResultException
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Name getResolvedName()
     {

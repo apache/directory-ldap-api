@@ -200,15 +200,6 @@ public abstract class AbstractExprNode implements ExprNode
 
 
     /**
-     * Tells if this Node is Schema aware.
-     * 
-     * @return true if the Node is SchemaAware
-     */
-    @Override
-    public abstract boolean isSchemaAware();
-
-
-    /**
      * Default implementation for this method : just throw an exception.
      * 
      * @param buf the buffer to append to.

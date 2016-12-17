@@ -41,6 +41,13 @@ public class PasswordDetails
     private final byte[] password;
 
 
+    /**
+     * Creates a new PasswordDetails instance
+     * 
+     * @param algorithm The algorithm to use
+     * @param salt The Salt to use
+     * @param password The password
+     */
     public PasswordDetails( LdapSecurityConstants algorithm, byte[] salt, byte[] password )
     {
         this.algorithm = algorithm;

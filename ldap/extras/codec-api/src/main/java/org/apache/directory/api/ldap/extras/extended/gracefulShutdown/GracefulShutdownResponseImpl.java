@@ -99,6 +99,7 @@ public class GracefulShutdownResponseImpl extends ExtendedResponseImpl implement
      * 
      * @return the OID of the extended response type.
      */
+    @Override
     public String getResponseName()
     {
         return EXTENSION_OID;
@@ -109,9 +110,9 @@ public class GracefulShutdownResponseImpl extends ExtendedResponseImpl implement
      * Sets the OID uniquely identifying this extended response (a.k.a. its
      * name).
      * 
-     * @param oid
-     *            the OID of the extended response type.
+     * @param oid the OID of the extended response type.
      */
+    @Override
     public void setResponseName( String oid )
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_04168, EXTENSION_OID ) );
@@ -143,6 +144,6 @@ public class GracefulShutdownResponseImpl extends ExtendedResponseImpl implement
             return true;
         }
 
-        return ( obj instanceof GracefulShutdownResponseImpl );
+        return obj instanceof GracefulShutdownResponseImpl;
     }
 }

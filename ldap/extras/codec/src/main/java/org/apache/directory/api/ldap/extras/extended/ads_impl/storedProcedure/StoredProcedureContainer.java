@@ -31,16 +31,13 @@ import org.apache.directory.api.asn1.ber.AbstractContainer;
  */
 public class StoredProcedureContainer extends AbstractContainer
 {
-    // ~ Instance fields
-    // ----------------------------------------------------------------------------
-
     /** StoredProcedure */
     private StoredProcedureRequestDecorator storedProcedure;
 
 
-    // ~ Constructors
-    // -------------------------------------------------------------------------------
-
+    /**
+     * Creates a new StoredProcedureContainer instance
+     */
     public StoredProcedureContainer()
     {
         super();
@@ -49,8 +46,6 @@ public class StoredProcedureContainer extends AbstractContainer
     }
 
 
-    // ~ Methods
-    // ------------------------------------------------------------------------------------
     /**
      * @return Returns the ldapMessage.
      */

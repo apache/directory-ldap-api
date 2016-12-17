@@ -42,6 +42,9 @@ public class UniqueMemberNormalizer extends Normalizer
     private transient SchemaManager schemaManager;
 
 
+    /**
+     * Creates a new UniqueMemberNormalizer instance
+     */
     public UniqueMemberNormalizer()
     {
         super( SchemaConstants.UNIQUE_MEMBER_MATCH_MR_OID );

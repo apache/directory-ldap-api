@@ -70,6 +70,7 @@ public class SearchResultReferenceDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getType()
     {
         return getDecorated().getType();
@@ -79,9 +80,10 @@ public class SearchResultReferenceDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public Element toDsml( Element root )
     {
-        Element element = null;
+        Element element;
 
         if ( root != null )
         {
@@ -127,6 +129,7 @@ public class SearchResultReferenceDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public Referral getReferral()
     {
         return getDecorated().getReferral();
@@ -136,6 +139,7 @@ public class SearchResultReferenceDsml
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setReferral( Referral referral )
     {
         getDecorated().setReferral( referral );

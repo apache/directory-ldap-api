@@ -71,7 +71,9 @@ public class SortRequestContainer extends AbstractContainer
 
 
     /**
-     * {@inheritDoc}
+     * Decorate a SortRequest control
+     * 
+     * @param control The control to decorate
      */
     public void decorate( SortRequest control )
     {

@@ -49,7 +49,7 @@ public abstract class ConnectorFilter extends Filter
 
         if ( filterSet == null )
         {
-            filterSet = new ArrayList<Filter>();
+            filterSet = new ArrayList<>();
         }
 
         filterSet.add( filter );
@@ -73,11 +73,12 @@ public abstract class ConnectorFilter extends Filter
      * 
      * @return The composite filter string
      */
+    @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
-        if ( ( filterSet != null ) && ( filterSet.size() != 0 ) )
+        if ( ( filterSet != null ) && !filterSet.isEmpty() )
         {
             for ( Filter filter : filterSet )
             {

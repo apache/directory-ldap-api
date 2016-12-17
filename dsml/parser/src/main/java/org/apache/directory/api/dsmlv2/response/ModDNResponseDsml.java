@@ -65,6 +65,7 @@ public class ModDNResponseDsml extends AbstractResultResponseDsml<ModifyDnRespon
     /**
      * {@inheritDoc}
      */
+    @Override
     public MessageTypeEnum getType()
     {
         return getDecorated().getType();
@@ -74,9 +75,10 @@ public class ModDNResponseDsml extends AbstractResultResponseDsml<ModifyDnRespon
     /**
      * {@inheritDoc}
      */
+    @Override
     public Element toDsml( Element root )
     {
-        Element element = null;
+        Element element;
 
         if ( root != null )
         {

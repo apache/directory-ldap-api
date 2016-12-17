@@ -28,27 +28,60 @@ package org.apache.directory.api.ldap.model.schema;
 public enum MatchingRuleTypeEnum
 {
     // The EQUALITY matching rules
+    /** Case Exact Match */
     CASE_EXACT_MATCH( "2.5.13.5" ),
+    
+    /** Case Exact IA5 Match */
     CASE_EXACT_IA5_MATCH( "1.3.6.1.4.1.1466.109.114.1" ),
+
+    /** Case Ignore Match */
     CASE_IGNORE_IA5_MATCH( "1.3.6.1.4.1.1466.109.114.2" ),
+
+    /** Case Ignore List Match */
     CASE_IGNORE_LIST_MATCH( "2.5.13.11" ),
+    
+    /** Case Ignore Match */
     CASE_IGNORE_MATCH( "2.5.13.2" ),
+    
+    /** DirectoryString First Component Match */
     DIRECTORY_STRING_FIRST_COMPONENT_MATCH( "2.5.13.31" ),
+    
+    /** Numeric String Match */
     NUMERIC_STRING_MATCH( "2.5.13.8" ),
+
+    /** Telephone Number Match */
     TELEPHONE_NUMBER_MATCH( "2.5.13.20" ),
+    
+    /** Word Match */
     WORD_MATCH( "2.5.13.32" ),
 
     // The ORDERING matching rules
+    /** Case Exact Ordering Match */
     CASE_EXACT_ORDERING_MATCH( "2.5.13.6" ),
+
+    /** Case Ignore Ordering Match */
     CASE_IGNORE_ORDERING_MATCH( "2.5.13.3" ),
+
+    /** Numeric String Ordering Match */
     NUMERIC_STRING_ORDERING_MATCH( "2.5.13.9" ),
 
     // The SUBSTRING matching rules
+    /** Case Exact Substring Match */
     CASE_EXACT_SUBSTRINGS_MATCH( "2.5.13.7" ),
+    
+    /** Case Ignore IA5 Substring Match */
     CASE_IGNORE_IA5_SUBSTRINGS_MATCH( "1.3.6.1.4.1.1466.109.114.3" ),
+    
+    /** Case Ignore List Substring Match */
     CASE_IGNORE_LIST_SUBSTRINGS_MATCH( "2.5.13.12" ),
+    
+    /** CaseIgnore Substring Match */
     CASE_IGNORE_SUBSTRINGS_MATCH( "2.5.13.4" ),
+    
+    /** Numeric String Substring Match */
     NUMERIC_STRING_SUBSTRINGS_MATCH( "2.5.13.10" ),
+    
+    /** Telephone Number Substring Match */
     TELEPHONE_NUMBER_SUBSTRINGS_MATCH( "2.5.13.21" );
 
     /** The interned MR OID */

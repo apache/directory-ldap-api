@@ -70,7 +70,7 @@ public class GracefulDisconnectResponseImpl extends ExtendedResponseImpl impleme
         this.timeOffline = timeOffline;
         this.delay = delay;
 
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         buf.append( "The server will disconnect and will be unavailable for " ).append( timeOffline );
         buf.append( " minutes in " ).append( delay ).append( " seconds." );
 
@@ -86,6 +86,7 @@ public class GracefulDisconnectResponseImpl extends ExtendedResponseImpl impleme
      * 
      * @return the OID of the extended response type.
      */
+    @Override
     public String getResponseName()
     {
         return EXTENSION_OID;
@@ -98,6 +99,7 @@ public class GracefulDisconnectResponseImpl extends ExtendedResponseImpl impleme
      * 
      * @param oid the OID of the extended response type.
      */
+    @Override
     public void setResponseName( String oid )
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_04168, EXTENSION_OID ) );
@@ -110,6 +112,7 @@ public class GracefulDisconnectResponseImpl extends ExtendedResponseImpl impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getDelay()
     {
         return delay;
@@ -119,6 +122,7 @@ public class GracefulDisconnectResponseImpl extends ExtendedResponseImpl impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setDelay( int delay )
     {
         this.delay = delay;
@@ -128,6 +132,7 @@ public class GracefulDisconnectResponseImpl extends ExtendedResponseImpl impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getTimeOffline()
     {
         return timeOffline;
@@ -137,12 +142,17 @@ public class GracefulDisconnectResponseImpl extends ExtendedResponseImpl impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setTimeOffline( int timeOffline )
     {
         this.timeOffline = timeOffline;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Referral getReplicatedContexts()
     {
         return replicatedContexts;
@@ -153,6 +163,7 @@ public class GracefulDisconnectResponseImpl extends ExtendedResponseImpl impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addReplicatedContexts( String replicatedContext )
     {
         replicatedContexts.addLdapUrl( replicatedContext );

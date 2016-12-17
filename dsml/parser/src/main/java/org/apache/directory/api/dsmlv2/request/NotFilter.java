@@ -37,6 +37,7 @@ public class NotFilter extends ConnectorFilter
      * 
      * @param filter The Filter to add
      */
+    @Override
     public void addFilter( Filter filter ) throws DecoderException
     {
         if ( filterSet != null )
@@ -81,9 +82,10 @@ public class NotFilter extends ConnectorFilter
      * 
      * @return The NOT filter string
      */
+    @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( '!' ).append( super.toString() );
 

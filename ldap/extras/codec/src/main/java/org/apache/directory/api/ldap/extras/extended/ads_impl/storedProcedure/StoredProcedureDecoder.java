@@ -31,9 +31,10 @@ import org.apache.directory.api.asn1.ber.Asn1Decoder;
  */
 public class StoredProcedureDecoder extends Asn1Decoder
 {
-
+    /**
+     * Creates a new StoredProcedureDecoder instance
+     */
     public StoredProcedureDecoder()
     {
     }
-
 }

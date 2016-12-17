@@ -58,10 +58,14 @@ public enum SortResultCode
         this.desc = desc;
     }
 
+    /**
+     * @return The internet value
+     */
     public int getVal()
     {
         return val;
     }
+    
     
     /**
      * returns the enum value representing the given code.

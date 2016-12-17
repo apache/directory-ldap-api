@@ -1172,7 +1172,6 @@ public final class Strings
      *
      * @param string the string to be trimmed, may be null
      * @param pos The position in the String
-     * @param pos The starting position
      */
     public static void trimLeft( String string, Position pos )
     {
@@ -1209,7 +1208,6 @@ public final class Strings
      *
      * @param bytes the byte array to be trimmed, may be null
      * @param pos The position in the byte[]
-     * @param pos The starting position
      */
     public static void trimLeft( byte[] bytes, Position pos )
     {

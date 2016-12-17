@@ -852,15 +852,6 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
 
     /**
-     * Copy the current SchemaObject on place
-     *
-     * @return The copied SchemaObject
-     */
-    @Override
-    public abstract SchemaObject copy();
-
-
-    /**
      * Compare two oids, and return true if they are both null or equal.
      *
      * @param oid1 the first OID
@@ -951,6 +942,9 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     }
 
 
+    /**
+     * Unlock the Schema Object and make it modifiable again.
+     */
     public void unlock()
     {
         locked = false;
