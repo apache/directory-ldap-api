@@ -1136,7 +1136,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 
     private int compareValues( Ava that )
     {
-        int comp = 0;
+        int comp;
 
         if ( value.getNormValue() instanceof String )
         {
@@ -1181,7 +1181,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             return 1;
         }
 
-        int comp = 0;
+        int comp;
 
         if ( schemaManager == null )
         {
