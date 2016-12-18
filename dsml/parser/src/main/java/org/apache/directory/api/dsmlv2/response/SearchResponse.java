@@ -206,6 +206,9 @@ public class SearchResponse extends AbstractResponse
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MessageTypeEnum getType()
     {

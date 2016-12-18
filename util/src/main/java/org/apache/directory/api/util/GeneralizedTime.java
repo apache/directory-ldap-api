@@ -931,6 +931,9 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString()
     {
@@ -938,6 +941,9 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode()
     {
@@ -948,6 +954,9 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals( Object obj )
     {

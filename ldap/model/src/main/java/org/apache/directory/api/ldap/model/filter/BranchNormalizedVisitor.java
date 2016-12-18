@@ -85,6 +85,9 @@ public class BranchNormalizedVisitor implements FilterVisitor
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean canVisit( ExprNode node )
     {
@@ -92,6 +95,9 @@ public class BranchNormalizedVisitor implements FilterVisitor
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isPrefix()
     {
@@ -99,6 +105,9 @@ public class BranchNormalizedVisitor implements FilterVisitor
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<ExprNode> getOrder( BranchNode node, List<ExprNode> children )
     {

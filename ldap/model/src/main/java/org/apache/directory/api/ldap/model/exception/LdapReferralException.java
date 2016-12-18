@@ -105,6 +105,9 @@ public class LdapReferralException extends AbstractLdapReferralException
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Context getReferralContext() throws NamingException
     {
@@ -112,6 +115,9 @@ public class LdapReferralException extends AbstractLdapReferralException
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Context getReferralContext( Map<?, ?> arg ) throws NamingException
     {
@@ -130,6 +136,9 @@ public class LdapReferralException extends AbstractLdapReferralException
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void retryReferral()
     {

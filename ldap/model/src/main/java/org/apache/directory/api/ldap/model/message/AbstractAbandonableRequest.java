@@ -54,6 +54,9 @@ public class AbstractAbandonableRequest extends AbstractRequest implements Aband
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void abandon()
     {
@@ -73,6 +76,9 @@ public class AbstractAbandonableRequest extends AbstractRequest implements Aband
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isAbandoned()
     {

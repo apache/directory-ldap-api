@@ -107,6 +107,9 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public byte[] getProcedure()
     {
@@ -121,6 +124,9 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setProcedure( byte[] procedure )
     {
@@ -136,6 +142,9 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<StoredProcedureParameter> getParameters()
     {
@@ -143,6 +152,9 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addParameter( StoredProcedureParameter parameter )
     {
@@ -331,6 +343,9 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     /**
      * {@inheritDoc}

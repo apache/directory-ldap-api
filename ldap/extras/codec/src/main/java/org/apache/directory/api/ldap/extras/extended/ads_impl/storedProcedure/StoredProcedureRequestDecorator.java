@@ -273,6 +273,9 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setProcedure( byte[] procedure )
     {

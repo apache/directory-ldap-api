@@ -126,6 +126,9 @@ public class OpenLdapObjectIdentifierMacro
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString()
     {

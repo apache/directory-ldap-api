@@ -65,7 +65,10 @@ public class VirtualListViewResponseImpl extends AbstractControl implements Virt
         super( OID );
     }
 
-
+    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getTargetPosition()
     {
@@ -73,6 +76,9 @@ public class VirtualListViewResponseImpl extends AbstractControl implements Virt
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setTargetPosition( int targetPosition )
     {
@@ -80,6 +86,9 @@ public class VirtualListViewResponseImpl extends AbstractControl implements Virt
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getContentCount()
     {
@@ -87,6 +96,9 @@ public class VirtualListViewResponseImpl extends AbstractControl implements Virt
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setContentCount( int contentCount )
     {
@@ -94,6 +106,9 @@ public class VirtualListViewResponseImpl extends AbstractControl implements Virt
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualListViewResultCode getVirtualListViewResult()
     {
@@ -101,6 +116,9 @@ public class VirtualListViewResponseImpl extends AbstractControl implements Virt
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setVirtualListViewResult( VirtualListViewResultCode virtualListViewResultCode )
     {
@@ -108,6 +126,9 @@ public class VirtualListViewResponseImpl extends AbstractControl implements Virt
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public byte[] getContextId()
     {
@@ -115,6 +136,9 @@ public class VirtualListViewResponseImpl extends AbstractControl implements Virt
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setContextId( byte[] contextId )
     {

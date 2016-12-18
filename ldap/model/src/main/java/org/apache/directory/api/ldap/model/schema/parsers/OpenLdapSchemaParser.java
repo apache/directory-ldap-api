@@ -82,6 +82,9 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser<SchemaObject>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected SchemaObject doParse() throws RecognitionException, TokenStreamException
     {

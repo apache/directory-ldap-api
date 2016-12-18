@@ -76,6 +76,9 @@ public enum VirtualListViewResponseStates implements States
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEndState()
     {
@@ -83,6 +86,9 @@ public enum VirtualListViewResponseStates implements States
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Enum<?> getStartState()
     {

@@ -48,6 +48,9 @@ public class VirtualListViewResponseFactory implements ControlFactory<VirtualLis
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getOid()
     {
@@ -55,6 +58,9 @@ public class VirtualListViewResponseFactory implements ControlFactory<VirtualLis
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CodecControl<VirtualListViewResponse> newCodecControl()
     {
@@ -62,6 +68,9 @@ public class VirtualListViewResponseFactory implements ControlFactory<VirtualLis
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CodecControl<VirtualListViewResponse> newCodecControl( VirtualListViewResponse control )
     {

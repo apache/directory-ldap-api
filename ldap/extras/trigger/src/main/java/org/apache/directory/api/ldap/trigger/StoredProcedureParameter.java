@@ -119,6 +119,9 @@ public abstract class StoredProcedureParameter
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString()
     {

@@ -124,6 +124,9 @@ public abstract class AbstractResultResponseRequestDsml<E extends ResultResponse
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int computeLength()
     {
@@ -131,6 +134,9 @@ public abstract class AbstractResultResponseRequestDsml<E extends ResultResponse
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {

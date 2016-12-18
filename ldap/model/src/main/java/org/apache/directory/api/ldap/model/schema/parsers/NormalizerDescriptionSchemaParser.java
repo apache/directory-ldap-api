@@ -75,6 +75,9 @@ public class NormalizerDescriptionSchemaParser extends AbstractSchemaParser<Norm
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected NormalizerDescription doParse() throws RecognitionException, TokenStreamException
     {

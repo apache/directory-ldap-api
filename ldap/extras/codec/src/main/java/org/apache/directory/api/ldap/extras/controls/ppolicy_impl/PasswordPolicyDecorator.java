@@ -106,6 +106,9 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int computeLength()
     {
@@ -146,6 +149,9 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
@@ -205,6 +211,9 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString()
     {
