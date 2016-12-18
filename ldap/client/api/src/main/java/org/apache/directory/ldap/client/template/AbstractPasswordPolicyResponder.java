@@ -99,6 +99,9 @@ public abstract class AbstractPasswordPolicyResponder implements PasswordPolicyR
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final PasswordWarning process( PasswordPolicyOperation operation )
         throws PasswordException

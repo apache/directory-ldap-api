@@ -70,6 +70,9 @@ public class CascadeDecorator extends ControlDecorator<Cascade> implements Codec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {

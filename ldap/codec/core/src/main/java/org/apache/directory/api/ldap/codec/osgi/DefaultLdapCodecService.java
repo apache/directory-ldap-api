@@ -208,6 +208,9 @@ public class DefaultLdapCodecService implements LdapApiService
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProtocolCodecFactory registerProtocolCodecFactory( ProtocolCodecFactory protocolCodecFactory )
     {

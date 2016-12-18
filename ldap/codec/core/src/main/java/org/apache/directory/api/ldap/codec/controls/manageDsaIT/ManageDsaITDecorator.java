@@ -70,6 +70,9 @@ public class ManageDsaITDecorator extends ControlDecorator<ManageDsaIT> implemen
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {

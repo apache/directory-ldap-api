@@ -125,6 +125,9 @@ public class SortRequestDecorator extends ControlDecorator<SortRequest> implemen
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
@@ -170,6 +173,9 @@ public class SortRequestDecorator extends ControlDecorator<SortRequest> implemen
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
@@ -205,6 +211,9 @@ public class SortRequestDecorator extends ControlDecorator<SortRequest> implemen
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setSortKeys( List<SortKey> sortKeys )
     {
@@ -212,6 +221,9 @@ public class SortRequestDecorator extends ControlDecorator<SortRequest> implemen
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<SortKey> getSortKeys()
     {
@@ -219,6 +231,9 @@ public class SortRequestDecorator extends ControlDecorator<SortRequest> implemen
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addSortKey( SortKey sortKey )
     {

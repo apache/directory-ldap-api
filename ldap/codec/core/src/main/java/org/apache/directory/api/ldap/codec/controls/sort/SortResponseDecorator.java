@@ -97,6 +97,9 @@ public class SortResponseDecorator extends ControlDecorator<SortResponse> implem
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
@@ -157,6 +160,9 @@ public class SortResponseDecorator extends ControlDecorator<SortResponse> implem
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setSortResult( SortResultCode result )
     {
@@ -164,6 +170,9 @@ public class SortResponseDecorator extends ControlDecorator<SortResponse> implem
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SortResultCode getSortResult()
     {
@@ -171,6 +180,9 @@ public class SortResponseDecorator extends ControlDecorator<SortResponse> implem
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setAttributeName( String attributeName )
     {
@@ -178,10 +190,12 @@ public class SortResponseDecorator extends ControlDecorator<SortResponse> implem
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getAttributeName()
     {
         return getDecorated().getAttributeName();
     }
-
 }

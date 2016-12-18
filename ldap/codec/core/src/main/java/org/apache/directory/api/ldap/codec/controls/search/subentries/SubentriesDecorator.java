@@ -135,6 +135,9 @@ public class SubentriesDecorator extends ControlDecorator<Subentries> implements
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isVisible()
     {
@@ -142,6 +145,9 @@ public class SubentriesDecorator extends ControlDecorator<Subentries> implements
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setVisibility( boolean visibility )
     {

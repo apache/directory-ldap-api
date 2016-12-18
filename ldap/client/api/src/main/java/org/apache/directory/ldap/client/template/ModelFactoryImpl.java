@@ -47,6 +47,9 @@ import org.apache.directory.ldap.client.template.exception.LdapRuntimeException;
  */
 class ModelFactoryImpl implements ModelFactory
 {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AddRequest newAddRequest( Entry entry )
     {
@@ -54,6 +57,9 @@ class ModelFactoryImpl implements ModelFactory
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Attribute newAttribute( String name )
     {
@@ -61,6 +67,9 @@ class ModelFactoryImpl implements ModelFactory
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Attribute newAttribute( String name, byte[]... values )
     {
@@ -68,6 +77,9 @@ class ModelFactoryImpl implements ModelFactory
     }
 
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Attribute newAttribute( String name, String... values )
     {
@@ -75,6 +87,9 @@ class ModelFactoryImpl implements ModelFactory
     }
     
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Attribute newAttribute( String name, Value... values )
     {
@@ -82,6 +97,9 @@ class ModelFactoryImpl implements ModelFactory
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteRequest newDeleteRequest( Dn dn )
     {
@@ -90,6 +108,9 @@ class ModelFactoryImpl implements ModelFactory
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Dn newDn( String dn )
     {
@@ -104,6 +125,9 @@ class ModelFactoryImpl implements ModelFactory
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Entry newEntry( String dn )
     {
@@ -111,6 +135,9 @@ class ModelFactoryImpl implements ModelFactory
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Entry newEntry( Dn dn )
     {
@@ -118,6 +145,9 @@ class ModelFactoryImpl implements ModelFactory
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ModifyRequest newModifyRequest( String dn )
     {
@@ -125,6 +155,9 @@ class ModelFactoryImpl implements ModelFactory
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ModifyRequest newModifyRequest( Dn dn )
     {
@@ -132,6 +165,9 @@ class ModelFactoryImpl implements ModelFactory
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchRequest newSearchRequest( String baseDn, FilterBuilder filter,
         SearchScope scope )
@@ -140,6 +176,9 @@ class ModelFactoryImpl implements ModelFactory
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchRequest newSearchRequest( String baseDn, String filter,
         SearchScope scope )
@@ -148,6 +187,9 @@ class ModelFactoryImpl implements ModelFactory
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchRequest newSearchRequest( Dn baseDn, FilterBuilder filter,
         SearchScope scope )
@@ -156,6 +198,9 @@ class ModelFactoryImpl implements ModelFactory
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchRequest newSearchRequest( Dn baseDn, String filter,
         SearchScope scope )
@@ -164,6 +209,9 @@ class ModelFactoryImpl implements ModelFactory
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchRequest newSearchRequest( String baseDn, FilterBuilder filter,
         SearchScope scope, String... attributes )
@@ -172,6 +220,9 @@ class ModelFactoryImpl implements ModelFactory
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchRequest newSearchRequest( String baseDn, String filter,
         SearchScope scope, String... attributes )
@@ -180,6 +231,9 @@ class ModelFactoryImpl implements ModelFactory
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchRequest newSearchRequest( Dn baseDn, FilterBuilder filter,
         SearchScope scope, String... attributes )
@@ -188,6 +242,9 @@ class ModelFactoryImpl implements ModelFactory
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchRequest newSearchRequest( Dn baseDn, String filter,
         SearchScope scope, String... attributes )

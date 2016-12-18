@@ -1059,6 +1059,9 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchResultDone getResultResponse()
     {
@@ -1066,6 +1069,9 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean hasResponse()
     {
@@ -1073,6 +1079,9 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void abandon()
     {
@@ -1080,6 +1089,9 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isAbandoned()
     {
@@ -1087,6 +1099,9 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchRequest addAbandonListener( AbandonListener listener )
     {

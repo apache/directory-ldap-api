@@ -90,6 +90,9 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void bind() throws LdapException
     {
@@ -98,6 +101,9 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void anonymousBind() throws LdapException
     {
@@ -106,6 +112,9 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void bind( String name ) throws LdapException
     {
@@ -114,6 +123,9 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void bind( String name, String credentials ) throws LdapException
     {
@@ -122,6 +134,9 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void bind( Dn name ) throws LdapException
     {
@@ -130,6 +145,9 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void bind( Dn name, String credentials ) throws LdapException
     {
@@ -138,6 +156,9 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BindResponse bind( BindRequest bindRequest ) throws LdapException
     {
@@ -147,6 +168,9 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExtendedResponse extended( String oid ) throws LdapException
     {
@@ -158,6 +182,9 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExtendedResponse extended( String oid, byte[] value ) throws LdapException
     {
@@ -169,6 +196,9 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExtendedResponse extended( Oid oid ) throws LdapException
     {
@@ -180,6 +210,9 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExtendedResponse extended( Oid oid, byte[] value ) throws LdapException
     {
@@ -191,6 +224,9 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExtendedResponse extended( ExtendedRequest extendedRequest ) throws LdapException
     {

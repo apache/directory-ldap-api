@@ -56,6 +56,9 @@ public class DefaultLdapConnectionFactory implements LdapConnectionFactory
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LdapConnection bindConnection( LdapConnection connection ) throws LdapException
     {
@@ -85,6 +88,9 @@ public class DefaultLdapConnectionFactory implements LdapConnectionFactory
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LdapConnection configureConnection( LdapConnection connection )
     {
@@ -94,6 +100,9 @@ public class DefaultLdapConnectionFactory implements LdapConnectionFactory
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LdapApiService getLdapApiService()
     {
@@ -101,6 +110,9 @@ public class DefaultLdapConnectionFactory implements LdapConnectionFactory
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LdapConnection newLdapConnection() throws LdapException
     {
@@ -108,6 +120,9 @@ public class DefaultLdapConnectionFactory implements LdapConnectionFactory
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LdapConnection newUnboundLdapConnection()
     {
