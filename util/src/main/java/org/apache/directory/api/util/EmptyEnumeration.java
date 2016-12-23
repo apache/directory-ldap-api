@@ -31,10 +31,11 @@ import javax.naming.NamingEnumeration;
  * hasMore/hasMoreElements() always returns false, and next/nextElement() always
  * throws a NoSuchElementException.
  * 
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @param <T> The element in the enumeration
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class EmptyEnumeration<T> implements NamingEnumeration<Object>
+public class EmptyEnumeration<T> implements NamingEnumeration<T>
 {
     /**
      * @see javax.naming.NamingEnumeration#close()
