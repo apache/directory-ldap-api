@@ -44,6 +44,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
 import javax.security.auth.Subject;
 import javax.security.auth.login.Configuration;
 import javax.security.auth.login.LoginContext;
@@ -612,7 +613,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             // No need to connect if we already have a connected session
             return true;
         }
-
+        
         // Create the connector if needed
         if ( connector == null )
         {
@@ -680,6 +681,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                                 config.getLdapPort(), e );
                             throw new LdapOtherException( e.getMessage(), e );
                         }
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
             }
@@ -3944,6 +3949,14 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         try
         {
             SSLContext sslContext = SSLContext.getInstance( config.getSslProtocol() );
+            
+            TrustManager[] trustManagers = config.getTrustManagers();
+            
+            if ( ( trustManagers == null ) || ( trustManagers.length == 0 ) )
+            {
+                trustManagers = new TrustManager[] { new NoVerificationTrustManager() };
+            }
+            
             sslContext.init( config.getKeyManagers(), config.getTrustManagers(), config.getSecureRandom() );
 
             SslFilter sslFilter = new SslFilter( sslContext, true );
@@ -4204,6 +4217,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     }
                     else
                     {
+                        exception.printStackTrace();
                         throw new InvalidConnectionException( exception.getMessage() );
                     }
                 }
