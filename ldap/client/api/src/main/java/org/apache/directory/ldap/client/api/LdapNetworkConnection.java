@@ -409,6 +409,24 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
 
     /**
+     * Create a new instance of a LdapConnection on a given
+     * server, and a give port. This SSL connection will use the provided
+     * TrustManagers
+     *
+     * @param server The server we want to be connected to. If null or empty,
+     * we will default to LocalHost.
+     * @param port The port the server is listening to
+     * @param trustManagers The TrustManager to use
+     */
+    public LdapNetworkConnection( String server, int port, TrustManager... trustManagers )
+    {
+        this( buildConfig( server, port, true ) );
+        
+        config.setTrustManagers( trustManagers );
+    }
+
+
+    /**
      * Create a new instance of a LdapConnection on a
      * given server and a given port. We don't use ssl.
      *
