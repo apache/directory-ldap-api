@@ -44,6 +44,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
 import javax.security.auth.Subject;
 import javax.security.auth.login.Configuration;
 import javax.security.auth.login.LoginContext;
@@ -402,6 +403,24 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         this( buildConfig( server, port, useSsl ) );
     }
+    
+    
+    /**
+     * Create a new instance of a LdapConnection on a given
+     * server, and a give port. This SSL connection will use the provided
+     * TrustManagers
+     *
+     * @param server The server we want to be connected to. If null or empty,
+     * we will default to LocalHost.
+     * @param port The port the server is listening to
+     * @param trustManagers The TrustManager to use
+     */
+    public LdapNetworkConnection( String server, int port, TrustManager... trustManagers )
+    {
+        this( buildConfig( server, port, true ) );
+        
+        config.setTrustManagers( trustManagers );
+    }
 
 
     /**
@@ -679,6 +698,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                                 config.getLdapPort(), e );
                             throw new LdapOtherException( e.getMessage(), e );
                         }
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
             }
@@ -3942,7 +3965,15 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         try
         {
             SSLContext sslContext = SSLContext.getInstance( config.getSslProtocol() );
-            sslContext.init( config.getKeyManagers(), config.getTrustManagers(), config.getSecureRandom() );
+            
+            TrustManager[] trustManagers = config.getTrustManagers();
+            
+            if ( ( trustManagers == null ) || ( trustManagers.length == 0 ) )
+            {
+                trustManagers = new TrustManager[] { new NoVerificationTrustManager() };
+            }
+            
+            sslContext.init( config.getKeyManagers(), trustManagers, config.getSecureRandom() );
 
             SslFilter sslFilter = new SslFilter( sslContext, true );
             sslFilter.setUseClientMode( true );

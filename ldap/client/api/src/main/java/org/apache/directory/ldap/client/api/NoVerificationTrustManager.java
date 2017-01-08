@@ -21,9 +21,12 @@
 package org.apache.directory.ldap.client.api;
 
 
+import java.net.Socket;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
+import javax.net.ssl.SSLEngine;
+import javax.net.ssl.X509ExtendedTrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import org.slf4j.Logger;
@@ -35,11 +38,49 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class NoVerificationTrustManager implements X509TrustManager
+public class NoVerificationTrustManager extends X509ExtendedTrustManager
 {
-
     /** The logger. */
     private static final Logger LOG = LoggerFactory.getLogger( NoVerificationTrustManager.class );
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void checkClientTrusted( X509Certificate[] x509Certificates, String authType, Socket socket )
+        throws CertificateException 
+    {
+        LOG.debug( "checkClientTrusted {}", x509Certificates[0] );
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void checkClientTrusted( X509Certificate[] x509Certificates, String authType, SSLEngine engine )
+        throws CertificateException 
+    {
+        LOG.debug( "checkClientTrusted {}", x509Certificates[0] );
+    }
+    
+    
+    public void checkServerTrusted( X509Certificate[] x509Certificates, String authType, Socket socket )
+        throws CertificateException 
+    {
+        LOG.debug( "checkServerTrusted {}", x509Certificates[0] );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void checkServerTrusted( X509Certificate[] x509Certificates, String authType, SSLEngine engine )
+        throws CertificateException 
+    {
+        LOG.debug( "checkServerTrusted {}", x509Certificates[0] );
+    }
 
 
     /**
@@ -70,5 +111,4 @@ public class NoVerificationTrustManager implements X509TrustManager
     {
         return new X509Certificate[0];
     }
-
 }

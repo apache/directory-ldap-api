@@ -21,14 +21,10 @@
 package org.apache.directory.ldap.client.api;
 
 
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import org.apache.directory.api.ldap.codec.api.BinaryAttributeDetector;
@@ -123,38 +119,13 @@ public class LdapConnectionConfig
 
 
     /**
-     * sets the default trust manager based on the SunX509 trustManagement algorithm
-     */
+     * Sets the default trust manager based on the SunX509 trustManagement algorithm
+     * 
+     * We use a non-verification Trust Manager    
+     **/
     private void setDefaultTrustManager()
     {
-        String trustMgmtAlgo = TrustManagerFactory.getDefaultAlgorithm();
-
-        try
-        {
-            TrustManagerFactory tmFactory = TrustManagerFactory.getInstance( trustMgmtAlgo );
-            tmFactory.init( ( KeyStore ) null );
-
-            TrustManager[] factoryTrustManagers = tmFactory.getTrustManagers();
-
-            for ( int i = 0; i < factoryTrustManagers.length; i++ )
-            {
-                if ( factoryTrustManagers[i] instanceof X509TrustManager )
-                {
-                    trustManagers = new TrustManager[]
-                        { factoryTrustManagers[i] };
-                    LOG.debug( "found X509TrustManager {}", factoryTrustManagers[i] );
-                    break;
-                }
-            }
-        }
-        catch ( NoSuchAlgorithmException e )
-        {
-            LOG.warn( "couldn't find any default X509 TrustManager with algorithm {}", trustMgmtAlgo, e );
-        }
-        catch ( KeyStoreException e )
-        {
-            LOG.warn( "couldn't initialize TrustManagerFactory with keystore {}", KeyStore.getDefaultType(), e );
-        }
+        trustManagers = new X509TrustManager[] { new NoVerificationTrustManager() };
     }
 
 
