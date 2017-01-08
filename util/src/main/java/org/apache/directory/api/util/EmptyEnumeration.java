@@ -35,7 +35,7 @@ import javax.naming.NamingEnumeration;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class EmptyEnumeration<T> implements NamingEnumeration<Object>
+public class EmptyEnumeration<T> implements NamingEnumeration<T>
 {
     /**
      * @see javax.naming.NamingEnumeration#close()
