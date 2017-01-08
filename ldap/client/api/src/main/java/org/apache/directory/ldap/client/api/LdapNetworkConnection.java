@@ -3975,7 +3975,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 trustManagers = new TrustManager[] { new NoVerificationTrustManager() };
             }
             
-            sslContext.init( config.getKeyManagers(), config.getTrustManagers(), config.getSecureRandom() );
+            sslContext.init( config.getKeyManagers(), trustManagers, config.getSecureRandom() );
 
             SslFilter sslFilter = new SslFilter( sslContext, true );
             sslFilter.setUseClientMode( true );
@@ -4235,7 +4235,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     }
                     else
                     {
-                        exception.printStackTrace();
                         throw new InvalidConnectionException( exception.getMessage() );
                     }
                 }
