@@ -530,6 +530,17 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
 
     /**
+     * Tells if the connection is using a secured channel
+     * 
+     * @return <tt>true</tt> if the session is using a secured channel
+     */
+    public boolean isSecured()
+    {
+        return isConnected() && ldapSession.isSecured();
+    }
+
+    
+    /**
      * Check that a session is valid, ie we can send requests to the
      * server
      *
@@ -1018,6 +1029,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             LOG.debug( msg );
             throw new IllegalArgumentException( msg );
         }
+
+        // try to connect, if we aren't already connected.
+        connect();
 
         checkSession();
 
@@ -1796,6 +1810,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             throw new IllegalArgumentException( msg );
         }
 
+        // try to connect, if we aren't already connected.
+        connect();
+
         // If the session has not been establish, or is closed, we get out immediately
         checkSession();
 
@@ -2478,6 +2495,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             throw new IllegalArgumentException( msg );
         }
 
+        // try to connect, if we aren't already connected.
+        connect();
+
         checkSession();
 
         int newId = messageId.incrementAndGet();
@@ -2807,6 +2827,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             throw new IllegalArgumentException( msg );
         }
 
+        // try to connect, if we aren't already connected.
+        connect();
+
         checkSession();
 
         int newId = messageId.incrementAndGet();
@@ -2993,6 +3016,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             throw new IllegalArgumentException( msg );
         }
 
+        // try to connect, if we aren't already connected.
+        connect();
+
         checkSession();
 
         int newId = messageId.incrementAndGet();
@@ -3177,6 +3203,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             throw new IllegalArgumentException( msg );
         }
 
+        // try to connect, if we aren't already connected.
+        connect();
+
         checkSession();
 
         int newId = messageId.incrementAndGet();
@@ -3323,6 +3352,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             LOG.debug( msg );
             throw new IllegalArgumentException( msg );
         }
+
+        // try to connect, if we aren't already connected.
+        connect();
 
         checkSession();
 
@@ -3924,6 +3956,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             {
                 throw new LdapException( "Cannot use TLS when the useSsl flag is set true in the configuration" );
             }
+
+            // try to connect, if we aren't already connected.
+            connect();
 
             checkSession();
 
