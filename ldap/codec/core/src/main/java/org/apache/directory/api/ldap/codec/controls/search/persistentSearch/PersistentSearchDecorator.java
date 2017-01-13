@@ -142,7 +142,7 @@ public class PersistentSearchDecorator extends ControlDecorator<PersistentSearch
         {
             try
             {
-                computeLength();
+                valueLength = computeLength();
                 ByteBuffer buffer = ByteBuffer.allocate( valueLength );
 
                 // Now encode the PagedSearch specific part
