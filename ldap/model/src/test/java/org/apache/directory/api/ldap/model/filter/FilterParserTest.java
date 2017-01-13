@@ -1146,4 +1146,25 @@ public class FilterParserTest
         String str = "(&(o_u~=people)(a_g_e>=30))";
         FilterParser.parse( str, false );
     }
+
+
+    @Test
+    public void testRelaxedFilterParse() throws ParseException
+    {
+        String str = " ( cn =*) ";
+        ExprNode node = FilterParser.parse( str, false );
+        
+        assertTrue( node instanceof PresenceNode );
+        assertEquals( "cn", ((PresenceNode)node).attribute );
+        
+        str = " ( & ( cn =*) ) ";
+        node = FilterParser.parse( str, false );
+
+        assertTrue( node instanceof AndNode );
+        assertEquals( 1, ((AndNode)node).children.size() );
+        
+        ExprNode child = ((AndNode)node).children.get( 0 );
+        assertTrue( child instanceof PresenceNode );
+        assertEquals( "cn", ((PresenceNode)child).attribute );
+    }
 }

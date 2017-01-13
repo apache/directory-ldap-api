@@ -580,6 +580,7 @@ public final class FilterParser
                 // Definitively a substring with no initial or an error
                 // Push back the '*' on the string
                 pos.start--;
+                
                 return parseSubstring( schemaManager, attribute, null, filter, pos );
             }
         }
@@ -641,10 +642,10 @@ public final class FilterParser
     /**
      * Parse the following grammar :
      * item           = simple / present / substring / extensible
-     * simple         = attr filtertype assertionvalue
+     * simple         = attr WSP* filtertype assertionvalue
      * filtertype     = '=' / '~=' / '>=' / '<='
-     * present        = attr '=' '*'
-     * substring      = attr '=' [initial] any [final]
+     * present        = attr WSP* '=' '*'
+     * substring      = attr WSP* '=' [initial] any [final]
      * extensible     = ( attr [":dn"] [':' oid] ":=" assertionvalue )
      *                  / ( [":dn"] ':' oid ":=" assertionvalue )
      * matchingrule   = ":" oid
@@ -672,6 +673,9 @@ public final class FilterParser
         {
             // We must have an attribute
             attribute = AttributeUtils.parseAttribute( filter, pos, true, relaxed );
+            
+            // Skip spaces
+            skipWhiteSpaces( filter, pos );
 
             // Now, we may have a present, substring, simple or an extensible
             byte currentByte = Strings.byteAt( filter, pos.start );
@@ -681,6 +685,7 @@ public final class FilterParser
                 case '=':
                     // It can be a presence, an equal or a substring
                     pos.start++;
+                    
                     return parsePresenceEqOrSubstring( schemaManager, attribute, filter, pos );
 
                 case '~':
@@ -694,7 +699,7 @@ public final class FilterParser
                     }
 
                     pos.start++;
-
+                    
                     // Parse the value and create the node
                     if ( schemaManager == null )
                     {
@@ -858,13 +863,13 @@ public final class FilterParser
 
     /**
      * filtercomp     = and / or / not / item
-     * and            = '&' filterlist
-     * or             = '|' filterlist
-     * not            = '!' filter
+     * and            = '&' WSP* filterlist
+     * or             = '|' WSP* filterlist
+     * not            = '!' WSP* filter
      * item           = simple / present / substring / extensible
-     * simple         = attr filtertype assertionvalue
-     * present        = attr EQUALS ASTERISK
-     * substring      = attr EQUALS [initial] any [final]
+     * simple         = attr WSP* filtertype WSP* assertionvalue
+     * present        = attr WSP* EQUALS ASTERISK
+     * substring      = attr WSP* EQUALS WSP* [initial] any [final]
      * extensible     = ( attr [dnattrs]
      *                    [matchingrule] COLON EQUALS assertionvalue )
      *                    / ( [dnattrs]
@@ -887,6 +892,10 @@ public final class FilterParser
             case '&':
                 // This is a AND node
                 pos.start++;
+                
+                // Skip spaces
+                skipWhiteSpaces( filter, pos );
+
                 node = new AndNode();
                 node = parseBranchNode( schemaManager, node, filter, pos, relaxed );
                 break;
@@ -894,6 +903,10 @@ public final class FilterParser
             case '|':
                 // This is an OR node
                 pos.start++;
+                
+                // Skip spaces
+                skipWhiteSpaces( filter, pos );
+
                 node = new OrNode();
                 node = parseBranchNode( schemaManager, node, filter, pos, relaxed );
                 break;
@@ -901,6 +914,10 @@ public final class FilterParser
             case '!':
                 // This is a NOT node
                 pos.start++;
+                
+                // Skip spaces
+                skipWhiteSpaces( filter, pos );
+
                 node = new NotNode();
                 node = parseBranchNode( schemaManager, node, filter, pos, relaxed );
                 break;
@@ -914,15 +931,34 @@ public final class FilterParser
 
         return node;
     }
+    
+    
+    /**
+     * Skip teh white spaces (0x20, 0x09, 0x0a and 0x0d)
+     * @param filter
+     * @param pos
+     */
+    private static void skipWhiteSpaces( byte[] filter, Position pos )
+    {
+        while ( Strings.isCharASCII( filter, pos.start, ' ' )
+                || Strings.isCharASCII( filter, pos.start, '\t' )
+                || Strings.isCharASCII( filter, pos.start, '\n' ) )
+        {
+            pos.start++;
+        }
+    }
 
 
     /**
-     * Pasre the grammar rule :
-     * filter ::= '(' filterComp ')'
+     * Parse the grammar rule :
+     * filter ::= WSP* '(' WSP* filterComp WSP* ')' WSP*
      */
     private static ExprNode parseFilterInternal( SchemaManager schemaManager, byte[] filter, Position pos,
         boolean relaxed ) throws ParseException, LdapException
     {
+        // Skip spaces
+        skipWhiteSpaces( filter, pos );
+        
         // Check for the left '('
         if ( !Strings.isCharASCII( filter, pos.start, '(' ) )
         {
@@ -939,6 +975,9 @@ public final class FilterParser
 
         pos.start++;
 
+        // Skip spaces
+        skipWhiteSpaces( filter, pos );
+        
         // parse the filter component
         ExprNode node = parseFilterComp( schemaManager, filter, pos, relaxed );
 
@@ -947,6 +986,9 @@ public final class FilterParser
             return UndefinedNode.UNDEFINED_NODE;
         }
 
+        // Skip spaces
+        skipWhiteSpaces( filter, pos );
+        
         // Check that we have a right ')'
         if ( !Strings.isCharASCII( filter, pos.start, ')' ) )
         {
@@ -955,6 +997,9 @@ public final class FilterParser
 
         pos.start++;
 
+        // Skip spaces
+        skipWhiteSpaces( filter, pos );
+        
         return node;
     }
 
@@ -1029,7 +1074,16 @@ public final class FilterParser
 
         try
         {
-            return parseFilterInternal( schemaManager, filter, pos, relaxed );
+            ExprNode node = parseFilterInternal( schemaManager, filter, pos, relaxed );
+            
+            if ( node == UndefinedNode.UNDEFINED_NODE )
+            {
+                return null;
+            }
+            else
+            {
+                return node;
+            }
         }
         catch ( LdapException le )
         {
