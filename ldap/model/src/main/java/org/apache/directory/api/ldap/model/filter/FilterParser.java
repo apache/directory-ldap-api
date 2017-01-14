@@ -697,9 +697,6 @@ public final class FilterParser
                 else
                 {
                     // Definitively a substring with no initial or an error
-                    // Push back the '*'
-                    pos.start--;
-                    
                     return parseSubstring( schemaManager, attribute, null, filterBytes, pos );
                 }
                 
