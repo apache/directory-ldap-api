@@ -40,6 +40,7 @@ import org.apache.directory.api.ldap.codec.search.AndFilter;
 import org.apache.directory.api.ldap.codec.search.SubstringFilter;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.apache.directory.api.ldap.model.message.SearchRequestImpl;
+import org.apache.directory.api.ldap.model.message.controls.SortRequest;
 import org.junit.Test;
 import org.osgi.framework.ServiceReference;
 
@@ -100,8 +101,11 @@ public class ApiLdapCodecCoreOsgiTest extends ApiOsgiTestBase
     {
         assertTrue( LdapApiServiceFactory.isInitialized() );
         assertFalse( LdapApiServiceFactory.isUsingStandaloneImplementation() );
-        assertNotNull( LdapApiServiceFactory.getSingleton() );
-        assertNotNull( LdapApiServiceFactory.getSingleton().getProtocolCodecFactory() );
-    }
 
+        LdapApiService ldapApiService = LdapApiServiceFactory.getSingleton();
+        assertNotNull( ldapApiService );
+        assertNotNull( ldapApiService.getProtocolCodecFactory() );
+        
+        assertTrue( ldapApiService.isControlRegistered( SortRequest.OID ) );
+    }
 }

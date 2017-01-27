@@ -48,6 +48,8 @@ import org.apache.directory.api.ldap.codec.controls.search.entryChange.EntryChan
 import org.apache.directory.api.ldap.codec.controls.search.pagedSearch.PagedResultsFactory;
 import org.apache.directory.api.ldap.codec.controls.search.persistentSearch.PersistentSearchFactory;
 import org.apache.directory.api.ldap.codec.controls.search.subentries.SubentriesFactory;
+import org.apache.directory.api.ldap.codec.controls.sort.SortRequestFactory;
+import org.apache.directory.api.ldap.codec.controls.sort.SortResponseFactory;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedRequestImpl;
@@ -61,6 +63,8 @@ import org.apache.directory.api.ldap.model.message.controls.OpaqueControl;
 import org.apache.directory.api.ldap.model.message.controls.PagedResults;
 import org.apache.directory.api.ldap.model.message.controls.PersistentSearch;
 import org.apache.directory.api.ldap.model.message.controls.ProxiedAuthz;
+import org.apache.directory.api.ldap.model.message.controls.SortRequest;
+import org.apache.directory.api.ldap.model.message.controls.SortResponse;
 import org.apache.directory.api.ldap.model.message.controls.Subentries;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.api.util.exception.NotImplementedException;
@@ -131,6 +135,14 @@ public class DefaultLdapCodecService implements LdapApiService
         ControlFactory<Subentries> subentriesFactory = new SubentriesFactory( this );
         controlFactories.put( subentriesFactory.getOid(), subentriesFactory );
         LOG.info( "Registered pre-bundled control factory: {}", subentriesFactory.getOid() );
+
+        ControlFactory<SortRequest> sortRequestFactory = new SortRequestFactory( this );
+        controlFactories.put( sortRequestFactory.getOid(), sortRequestFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", sortRequestFactory.getOid() );
+
+        ControlFactory<SortResponse> sortResponseFactory = new SortResponseFactory( this );
+        controlFactories.put( sortResponseFactory.getOid(), sortResponseFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", sortResponseFactory.getOid() );
     }
 
 
