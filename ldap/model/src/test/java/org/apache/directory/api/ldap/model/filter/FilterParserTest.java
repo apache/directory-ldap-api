@@ -29,6 +29,7 @@ import static org.junit.Assert.fail;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Locale;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
@@ -1156,5 +1157,18 @@ public class FilterParserTest
         ExprNode child = ((AndNode)node).children.get( 0 );
         assertTrue( child instanceof PresenceNode );
         assertEquals( "cn", ((PresenceNode)child).attribute );
+    }
+    
+    
+    @Test
+    public void testFilterWithSpecialChars() throws ParseException
+    {
+        String filterStr = String.format( Locale.ROOT, "(%s=%s)", "cn", FilterEncoder.encodeFilterValue( "ACME(tm)" ) );
+        
+        assertEquals( "(cn=ACME\\28tm\\29)", filterStr );
+        
+        String filterStr2 = new EqualityNode<>( "cn", "ACME(tm)" ).toString();
+        
+        assertEquals( "(cn=ACME\\28tm\\29)", filterStr2 );
     }
 }
