@@ -93,7 +93,7 @@ public final class FilterParser
     
     
     /**
-     * Skip teh white spaces (0x20, 0x09, 0x0a and 0x0d)
+     * Skip the white spaces (0x20, 0x09, 0x0a and 0x0d)
      * @param filter
      * @param pos
      */
@@ -156,9 +156,11 @@ public final class FilterParser
     /**
      * Parse an extensible
      *
+     *<pre>>
      * extensible     = ( attr [":dn"] [':' oid] ":=" assertionvalue )
      *                  / ( [":dn"] ':' oid ":=" assertionvalue )
      * matchingrule   = ":" oid
+     * </pre>
      */
     private static ExprNode parseExtensible( SchemaManager schemaManager, String attribute, byte[] filterBytes,
         Position pos, boolean relaxed ) throws LdapException, ParseException
@@ -307,6 +309,8 @@ public final class FilterParser
 
     /**
      * An assertion value :
+     * 
+     * <pre>
      * assertionvalue = valueencoding
      * valueencoding  = 0*(normal / escaped)
      * normal         = UTF1SUBSET / UTFMB
@@ -318,24 +322,31 @@ public final class FilterParser
      * UTF2           = %xC2-DF UTF0
      * UTF3           = %xE0 %xA0-BF UTF0 / %xE1-EC UTF0 UTF0 / %xED %x80-9F UTF0 / %xEE-EF UTF0 UTF0
      * UTF4           = %xF0 %x90-BF UTF0 UTF0 / %xF1-F3 UTF0 UTF0 UTF0 / %xF4 %x80-8F UTF0 UTF0
+     * </pre>
      *
      * With the specific constraints (RFC 4515):
+     * 
+     * <pre>
      *    "The <valueencoding> rule ensures that the entire filter string is a"
      *    "valid UTF-8 string and provides that the octets that represent the"
      *    "ASCII characters "*" (ASCII 0x2a), "(" (ASCII 0x28), ")" (ASCII"
      *    "0x29), "\" (ASCII 0x5c), and NUL (ASCII 0x00) are represented as a"
      *    "backslash "\" (ASCII 0x5c) followed by the two hexadecimal digits"
      *    "representing the value of the encoded octet."
-     *
+     * </pre>
+     * 
      * The incoming String is already transformed from UTF-8 to unicode, so we must assume that the
      * grammar we have to check is the following :
-     *
+     * 
+     * <pre>
      * assertionvalue = valueencoding
      * valueencoding  = 0*(normal / escaped)
      * normal         = unicodeSubset
      * escaped        = '\' HEX HEX
      * HEX            = '0'-'9' / 'A'-'F' / 'a'-'f'
      * unicodeSubset     = %x01-27 / %x2B-5B / %x5D-FFFF
+     * </pre>
+     * 
      * @throws LdapInvalidAttributeValueException 
      */
     private static Value parseAssertionValue( SchemaManager schemaManager, String attribute, byte[] filterBytes,
@@ -449,6 +460,8 @@ public final class FilterParser
 
     /**
      * An assertion value :
+     * 
+     * <pre>
      * assertionvalue = valueencoding
      * valueencoding  = 0*(normal / escaped)
      * normal         = UTF1SUBSET / UTFMB
@@ -460,24 +473,30 @@ public final class FilterParser
      * UTF2           = %xC2-DF UTF0
      * UTF3           = %xE0 %xA0-BF UTF0 / %xE1-EC UTF0 UTF0 / %xED %x80-9F UTF0 / %xEE-EF UTF0 UTF0
      * UTF4           = %xF0 %x90-BF UTF0 UTF0 / %xF1-F3 UTF0 UTF0 UTF0 / %xF4 %x80-8F UTF0 UTF0
+     * </pre>
      *
      * With the specific constraints (RFC 4515):
+     * 
+     * <pre>
      *    "The <valueencoding> rule ensures that the entire filter string is a"
      *    "valid UTF-8 string and provides that the octets that represent the"
      *    "ASCII characters "*" (ASCII 0x2a), "(" (ASCII 0x28), ")" (ASCII"
      *    "0x29), "\" (ASCII 0x5c), and NUL (ASCII 0x00) are represented as a"
      *    "backslash "\" (ASCII 0x5c) followed by the two hexadecimal digits"
      *    "representing the value of the encoded octet."
+     * </pre>
      *
      * The incoming String is already transformed from UTF-8 to unicode, so we must assume that the
      * grammar we have to check is the following :
      *
+     * <pre>
      * assertionvalue = valueencoding
      * valueencoding  = 0*(normal / escaped)
      * normal         = unicodeSubset
      * escaped        = '\' HEX HEX
      * HEX            = '0'-'9' / 'A'-'F' / 'a'-'f'
      * unicodeSubset     = %x01-27 / %x2B-5B / %x5D-FFFF
+     * </pre>
      */
     private static Value parseAssertionValue( SchemaManager schemaManager, byte[] filterBytes, Position pos )
         throws ParseException
@@ -640,27 +659,24 @@ public final class FilterParser
 
     /**
      * Here is the grammar to parse :
-     *
+     * <pre>
      * simple    ::= '=' assertionValue
      * present   ::= '=' '*'
      * substring ::= '=' [initial] any [final]
      * initial   ::= assertionValue
      * any       ::= '*' ( assertionValue '*')*
-     *
+     * </pre>
      * As we can see, there is an ambiguity in the grammar : attr=* can be
      * seen as a present or as a substring. As stated in the RFC :
      *
+     * <pre>
      * "Note that although both the <substring> and <present> productions in"
      * "the grammar above can produce the "attr=*" construct, this construct"
      * "is used only to denote a presence filter." (RFC 4515, 3)
-     *
+     * </pre>
+     * 
      * We have also to consider the difference between a substring and the
      * equality node : this last node does not contain a '*'
-     *
-     * @param attributeType
-     * @param filter
-     * @param pos
-     * @return
      */
     private static ExprNode parsePresenceEqOrSubstring( SchemaManager schemaManager, String attribute, byte[] filterBytes,
         Position pos ) throws ParseException, LdapException
@@ -766,6 +782,8 @@ public final class FilterParser
 
     /**
      * Parse the following grammar :
+     * 
+     * <pre>
      * item           = simple / present / substring / extensible
      * simple         = attr WSP* filtertype WSP* assertionvalue
      * filtertype     = '=' / '~=' / '>=' / '<='
@@ -774,7 +792,7 @@ public final class FilterParser
      * extensible     = ( attr [":dn"] [':' oid] ":=" assertionvalue )
      *                  / ( [":dn"] ':' oid ":=" assertionvalue )
      * matchingrule   = ":" oid
-     *
+     * </pre>
      * An item starts with an attribute or a colon.
      */
     @SuppressWarnings({ "rawtypes", })
@@ -927,13 +945,12 @@ public final class FilterParser
 
     /**
      * Parse AND, OR and NOT nodes :
-     *
+     * <pre>
      * and            = '&' filterlist
      * or             = '|' filterlist
      * not            = '!' filter
      * filterlist     = 1*filter
-     *
-     * @return
+     * </pre>
      */
     private static ExprNode parseBranchNode( SchemaManager schemaManager, ExprNode node, byte[] filterBytes, Position pos,
         boolean relaxed ) throws ParseException, LdapException
@@ -988,6 +1005,7 @@ public final class FilterParser
 
 
     /**
+     * <pre>
      * filtercomp     = and / or / not / item
      * and            = '&' WSP* filterlist
      * or             = '|' WSP* filterlist
@@ -1000,6 +1018,7 @@ public final class FilterParser
      *                    [matchingrule] COLON EQUALS assertionvalue )
      *                    / ( [dnattrs]
      *                         matchingrule COLON EQUALS assertionvalue )
+     * </pre>
      */
     private static ExprNode parseFilterComp( SchemaManager schemaManager, byte[] filterBytes, Position pos,
         boolean relaxed ) throws ParseException, LdapException
@@ -1060,7 +1079,9 @@ public final class FilterParser
 
     /**
      * Parse the grammar rule :
+     * <pre>
      * filter ::= WSP* '(' WSP* filterComp WSP* ')' WSP*
+     * </pre>
      */
     private static ExprNode parseFilterInternal( SchemaManager schemaManager, byte[] filterBytes, Position pos,
         boolean relaxed ) throws ParseException, LdapException
