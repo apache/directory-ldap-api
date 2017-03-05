@@ -68,6 +68,9 @@ public enum LdapSecurityConstants
     
     /** The crypt (SHA-512) encryption method */
     HASH_METHOD_CRYPT_SHA512("CRYPT-SHA-512", "SHA-512", "crypt", "$6$"),
+    
+    /** The BCrypt encryption method */
+    HASH_METHOD_CRYPT_BCRYPT("CRYPT-BCRYPT", "BCRYPT", "crypt", "$2a$"),
 
     /** The PBKDF2-based encryption method */
     HASH_METHOD_PKCS5S2("PKCS5S2", "PBKDF2WithHmacSHA1", "PKCS5S2");
@@ -209,6 +212,11 @@ public enum LdapSecurityConstants
         if ( matches( algorithm, HASH_METHOD_CRYPT_SHA512 ) )
         {
             return HASH_METHOD_CRYPT_SHA512;
+        }
+
+        if ( matches( algorithm, HASH_METHOD_CRYPT_BCRYPT ) )
+        {
+            return HASH_METHOD_CRYPT_BCRYPT;
         }
 
         if ( matches( algorithm, HASH_METHOD_SHA256 ) )
