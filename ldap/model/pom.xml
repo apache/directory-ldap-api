@@ -92,11 +92,6 @@
     </dependency>
 
     <dependency>
-      <groupId>de.svenkubiak</groupId>
-      <artifactId>jBCrypt</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>findbugs</groupId>
       <artifactId>annotations</artifactId>
       <scope>provided</scope>

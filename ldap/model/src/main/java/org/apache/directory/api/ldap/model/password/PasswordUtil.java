@@ -38,8 +38,6 @@ import org.apache.directory.api.util.Base64;
 import org.apache.directory.api.util.DateUtils;
 import org.apache.directory.api.util.Strings;
 
-import org.mindrot.jbcrypt.BCrypt;
-
 /**
  * A utility class containing methods related to processing passwords.
  *
@@ -219,7 +217,7 @@ public final class PasswordUtil
                 break;
                 
             case HASH_METHOD_CRYPT_BCRYPT:
-                salt = Strings.getBytesUtf8( BCrypt.gensalt() );
+                salt = Strings.getBytesUtf8( BCrypt.genSalt() );
                 break;
     
             default:
@@ -428,7 +426,7 @@ public final class PasswordUtil
                 return Strings.getBytesUtf8( crypted2 );
 
             case HASH_METHOD_CRYPT_BCRYPT:
-                String crypted3 = BCrypt.hashpw( Strings.utf8ToString( credentials ), Strings.utf8ToString( salt ) );
+                String crypted3 = BCrypt.hashPw( Strings.utf8ToString( credentials ), Strings.utf8ToString( salt ) );
                 return Strings.getBytesUtf8( crypted3.substring( crypted3.length() - 31 ) );
                 
             case HASH_METHOD_PKCS5S2:
