@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
@@ -30,7 +31,7 @@ import org.slf4j.LoggerFactory;
 /**
  * A SyntaxChecker which verifies that a value is a TeletexTerminalIdentifier according to 
  * RFC 4517 :
- * 
+ * <pre>
  * teletex-id = ttx-term *(DOLLAR ttx-param)
  * ttx-term   = PrintableString          ; terminal identifier
  * ttx-param  = ttx-key COLON ttx-value  ; parameter
@@ -38,7 +39,7 @@ import org.slf4j.LoggerFactory;
  * ttx-value  = *ttx-value-octet
  *
  * ttx-value-octet = %x00-23 | (%x5C "24") | %x25-5B | (%x5C "5C") | %x5D-FF
- * 
+ * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
@@ -46,8 +47,13 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( TeletexTerminalIdentifierSyntaxChecker.class );
+    
+    /**
+     * A static instance of TeletexTerminalIdentifierSyntaxChecker
+     */
+    public static final TeletexTerminalIdentifierSyntaxChecker INSTANCE = new TeletexTerminalIdentifierSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of TeletexTerminalIdentifier.
      */
@@ -67,7 +73,7 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -86,7 +92,7 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -98,21 +104,21 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
         if ( terminalIdentifier.length() == 0 )
         {
             // It should not be null
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             return false;
         }
 
         if ( !Strings.isPrintableString( terminalIdentifier ) )
         {
             // It's not a valid PrintableString 
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             return false;
         }
 
         if ( dollar == -1 )
         {
             // No ttx-param : let's get out
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
             return true;
         }
 
@@ -121,7 +127,7 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
 
         if ( ttxParams.length == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -132,7 +138,7 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
             if ( colon == -1 )
             {
                 // we must have a ':' separator
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
                 return false;
             }
 
@@ -146,7 +152,7 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
             {
                 if ( colon + 1 == ttxParam.length() )
                 {
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
                     return false;
                 }
 
@@ -158,14 +164,14 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
                     {
                         case 0x24:
                             // '$' is not accepted
-                            LOG.debug( "Syntax invalid for '{}'", value );
+                            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
                             return false;
 
                         case 0x5c:
                             if ( hasEsc )
                             {
                                 // two following \ are not accepted
-                                LOG.debug( "Syntax invalid for '{}'", value );
+                                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
                                 return false;
                             }
                             else
@@ -205,12 +211,12 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
             }
             else
             {
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
                 return false;
             }
         }
 
-        LOG.debug( "Syntax valid for '{}'", value );
+        LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
         return true;
     }
 }

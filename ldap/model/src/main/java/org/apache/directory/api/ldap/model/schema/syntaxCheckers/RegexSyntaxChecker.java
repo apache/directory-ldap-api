@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,8 +43,8 @@ public class RegexSyntaxChecker extends SyntaxChecker
 
     /** the set of regular expressions */
     private List<String> expressions;
-
-
+    
+    
     /**
      * Creates a Syntax validator for a specific Syntax using Perl5 matching
      * rules for validation.
@@ -113,11 +114,11 @@ public class RegexSyntaxChecker extends SyntaxChecker
 
         if ( match )
         {
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
         }
         else
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
         }
 
         return match;

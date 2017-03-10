@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import java.util.regex.Pattern;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
@@ -32,8 +33,9 @@ import org.slf4j.LoggerFactory;
 /**
  * A SyntaxChecker which verifies that a value is a generalized time
  * according to RFC 4517.
- * 
+ * <p>
  * From RFC 4517 :
+ * <pre>
  * GeneralizedTime = century year month day hour
  *                          [ minute [ second / leap-second ] ]
  *                          [ fraction ]
@@ -63,7 +65,7 @@ import org.slf4j.LoggerFactory;
  * PLUS    = %x2B ; plus sign ("+")
  * DOT     = %x2E ; period (".")
  * COMMA   = %x2C ; comma (",")
- * 
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -96,8 +98,13 @@ public class GeneralizedTimeSyntaxChecker extends SyntaxChecker
 
     /** The date pattern. The regexp pattern is immutable, only one instance needed. */
     private static final Pattern DATE_PATTERN = Pattern.compile( GENERALIZED_TIME_PATTERN );
+    
+    /**
+     * A static instance of GeneralizedTimeSyntaxChecker
+     */
+    public static final GeneralizedTimeSyntaxChecker INSTANCE = new GeneralizedTimeSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of GeneralizedTimeSyntaxChecker.
      */
@@ -117,7 +124,7 @@ public class GeneralizedTimeSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -137,7 +144,7 @@ public class GeneralizedTimeSyntaxChecker extends SyntaxChecker
         // A generalized time must have a minimal length of 11 
         if ( strValue.length() < 11 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -146,11 +153,11 @@ public class GeneralizedTimeSyntaxChecker extends SyntaxChecker
 
         if ( result )
         {
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
         }
         else
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
         }
 
         return result;

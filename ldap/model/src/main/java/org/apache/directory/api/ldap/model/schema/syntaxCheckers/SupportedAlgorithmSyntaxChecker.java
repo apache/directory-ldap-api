@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A SyntaxChecker which verifies that a value is a SupportedAlgorithm according to RFC 2252.
- * 
+ * <p>
  * It has been removed in RFC 4517
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -37,15 +38,19 @@ public class SupportedAlgorithmSyntaxChecker extends BinarySyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( SupportedAlgorithmSyntaxChecker.class );
+    
+    /**
+     * A static instance of SupportedAlgorithmSyntaxChecker
+     */
+    public static final SupportedAlgorithmSyntaxChecker INSTANCE = new SupportedAlgorithmSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of SupportedAlgorithmSyntaxChecker.
      */
     public SupportedAlgorithmSyntaxChecker()
     {
-        super();
-        setOid( SchemaConstants.SUPPORTED_ALGORITHM_SYNTAX );
+        super( SchemaConstants.SUPPORTED_ALGORITHM_SYNTAX );
     }
 
 
@@ -55,7 +60,7 @@ public class SupportedAlgorithmSyntaxChecker extends BinarySyntaxChecker
     @Override
     public boolean isValidSyntax( Object value )
     {
-        LOG.debug( "Syntax valid for '{}'", value );
+        LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
         return true;
     }
 }

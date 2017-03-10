@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.csn.Csn;
 import org.apache.directory.api.ldap.model.csn.InvalidCSNException;
@@ -38,8 +39,13 @@ public class CsnSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( CsnSyntaxChecker.class );
+    
+    /**
+     * A static instance of CsnSyntaxChecker
+     */
+    public static final CsnSyntaxChecker INSTANCE = new CsnSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of CsnSyntaxChecker.
      */
@@ -57,13 +63,13 @@ public class CsnSyntaxChecker extends SyntaxChecker
     {
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
         if ( !( value instanceof String ) )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -76,18 +82,18 @@ public class CsnSyntaxChecker extends SyntaxChecker
 
             if ( result )
             {
-                LOG.debug( "Syntax valid for '{}'", value );
+                LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
             }
             else
             {
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             }
 
             return result;
         }
         catch ( InvalidCSNException icsne )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             return false;
         }
     }

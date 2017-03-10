@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import java.text.ParseException;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.parsers.MatchingRuleUseDescriptionSchemaParser;
@@ -34,7 +35,7 @@ import org.slf4j.LoggerFactory;
  * A SyntaxChecker which verifies that a value follows the
  * matching rule use descripton syntax according to RFC 4512, par 4.2.4:
  * 
- *  <pre>
+ * <pre>
  * MatchingRuleUseDescription = LPAREN WSP
  *    numericoid                 ; object identifier
  *    [ SP "NAME" SP qdescrs ]   ; short names (descriptors)
@@ -42,7 +43,6 @@ import org.slf4j.LoggerFactory;
  *    [ SP "OBSOLETE" ]          ; not active
  *    SP "APPLIES" SP oids       ; attribute types
  *    extensions WSP RPAREN      ; extensions
- * 
  * </pre>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -55,8 +55,13 @@ public class MatchingRuleUseDescriptionSyntaxChecker extends SyntaxChecker
 
     /** The schema parser used to parse the MatchingRuleUseDescription Syntax */
     private MatchingRuleUseDescriptionSchemaParser schemaParser = new MatchingRuleUseDescriptionSchemaParser();
+    
+    /**
+     * A static instance of MatchingRuleUseDescriptionSyntaxChecker
+     */
+    public static final MatchingRuleUseDescriptionSyntaxChecker INSTANCE = new MatchingRuleUseDescriptionSyntaxChecker();
 
-
+    
     /**
      * 
      * Creates a new instance of MatchingRuleUseDescriptionSchemaParser.
@@ -78,7 +83,7 @@ public class MatchingRuleUseDescriptionSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -98,13 +103,13 @@ public class MatchingRuleUseDescriptionSyntaxChecker extends SyntaxChecker
         try
         {
             schemaParser.parseMatchingRuleUseDescription( strValue );
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
 
             return true;
         }
         catch ( ParseException pe )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             return false;
         }
     }

@@ -26,18 +26,26 @@ import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 
 /**
  * A SyntaxChecker which verifies that a value is a Octet String according to RFC 4517.
- * 
+ * <p>
  * From RFC 4517 :
+ * <pre>
  * OctetString = *OCTET
- * 
+ * </pre>
  * From RFC 4512 :
+ * <pre>
  * OCTET   = %x00-FF ; Any octet (8-bit data unit)
- * 
+ * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
 public class OctetStringSyntaxChecker extends SyntaxChecker
 {
+    /**
+     * A static instance of OctetStringSyntaxChecker
+     */
+    public static final OctetStringSyntaxChecker INSTANCE = new OctetStringSyntaxChecker();
+
+    
     /**
      * Creates a new instance of OctetStringSyntaxChecker.
      */

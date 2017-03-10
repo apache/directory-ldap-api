@@ -79,6 +79,11 @@ public class AttributeTypeDescriptionSyntaxChecker extends SyntaxChecker
 
     /** The schema parser used to parse the AttributeTypeDescription Syntax */
     private AttributeTypeDescriptionSchemaParser schemaParser = new AttributeTypeDescriptionSchemaParser();
+    
+    /**
+     * A static instance of AttributeTypeDescriptionSyntaxChecker
+     */
+    public static final AttributeTypeDescriptionSyntaxChecker INSTANCE = new AttributeTypeDescriptionSyntaxChecker();
 
 
     /**

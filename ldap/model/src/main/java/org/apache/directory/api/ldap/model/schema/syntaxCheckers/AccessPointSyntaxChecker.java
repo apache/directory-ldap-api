@@ -36,7 +36,12 @@ public class AccessPointSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( AccessPointSyntaxChecker.class );
-
+    
+    /**
+     * A static instance of AccessPointSyntaxChecker
+     */
+    public static final AccessPointSyntaxChecker INSTANCE = new AccessPointSyntaxChecker();
+    
 
     /**
      * The AccessPoint SyntaxChecker constructor

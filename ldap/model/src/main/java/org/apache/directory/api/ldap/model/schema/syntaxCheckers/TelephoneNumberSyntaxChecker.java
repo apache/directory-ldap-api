@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
@@ -35,10 +36,12 @@ import org.slf4j.LoggerFactory;
 /**
  * A SyntaxChecker which verifies that a value is a TelephoneNumber according to ITU
  * recommendation E.123 (which is quite vague ...).
- * 
+ * <p>
  * A valid Telephone number respects more or less this syntax :
  * 
+ * <pre>
  * " *[+]? *((\([0-9- ,;/#*]+\))|[0-9- ,;/#*]+)+"
+ * </pre>
  * 
  * If needed, and to allow more syntaxes, a list of regexps has been added
  * which can be initialized to other values
@@ -65,14 +68,30 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
 
     /** A flag set when only the default regexp should be tested */
     protected boolean defaultMandatory = false;
+    
+    /**
+     * A static instance of TelephoneNumberSyntaxChecker
+     */
+    public static final TelephoneNumberSyntaxChecker INSTANCE = new TelephoneNumberSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of TelephoneNumberSyntaxChecker.
      */
     public TelephoneNumberSyntaxChecker()
     {
         super( SchemaConstants.TELEPHONE_NUMBER_SYNTAX );
+    }
+
+    
+    /**
+     * Creates a new instance of a child of this class, with an OID.
+     * 
+     * @param oid the child's OID
+     */
+    protected TelephoneNumberSyntaxChecker( String oid )
+    {
+        super( oid );
     }
 
 
@@ -139,7 +158,7 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -158,7 +177,7 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -170,11 +189,11 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
 
             if ( result )
             {
-                LOG.debug( "Syntax valid for '{}'", value );
+                LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
             }
             else
             {
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             }
 
             return result;
@@ -183,14 +202,14 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
         {
             if ( defaultPattern.matcher( strValue ).matches() )
             {
-                LOG.debug( "Syntax valid for '{}'", value );
+                LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
                 return true;
             }
             else
             {
                 if ( compiledREs == null )
                 {
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
                     return false;
                 }
 
@@ -200,12 +219,12 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
                 {
                     if ( pattern.matcher( strValue ).matches() )
                     {
-                        LOG.debug( "Syntax valid for '{}'", value );
+                        LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
                         return true;
                     }
                 }
 
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
                 return false;
             }
         }

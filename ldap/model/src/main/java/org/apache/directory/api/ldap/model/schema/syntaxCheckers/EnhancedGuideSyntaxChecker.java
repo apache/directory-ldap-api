@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,15 +39,19 @@ public class EnhancedGuideSyntaxChecker extends BinarySyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( EnhancedGuideSyntaxChecker.class );
+    
+    /**
+     * A static instance of EnhancedGuideSyntaxChecker
+     */
+    public static final EnhancedGuideSyntaxChecker INSTANCE = new EnhancedGuideSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of EnhancedGuideSyntaxChecker.
      */
     public EnhancedGuideSyntaxChecker()
     {
-        super();
-        setOid( SchemaConstants.ENHANCED_GUIDE_SYNTAX );
+        super( SchemaConstants.ENHANCED_GUIDE_SYNTAX );
     }
 
 
@@ -56,7 +61,7 @@ public class EnhancedGuideSyntaxChecker extends BinarySyntaxChecker
     @Override
     public boolean isValidSyntax( Object value )
     {
-        LOG.debug( "Syntax valid for '{}'", value );
+        LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
         return true;
     }
 }

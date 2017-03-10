@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -34,6 +35,7 @@ import org.slf4j.LoggerFactory;
  * to ITU recommendation E.123 for the Telephone number part, and from RFC 4517, par. 
  * 3.3.11 :
  * 
+ * <pre>
  * fax-number       = telephone-number *( DOLLAR fax-parameter )
  * telephone-number = PrintableString
  * fax-parameter    = "twoDimensional" |
@@ -43,7 +45,7 @@ import org.slf4j.LoggerFactory;
  *                    "a3Width" |
  *                    "b4Width" |
  *                    "uncompressed"
- *
+ * </pre>
  * 
  * If needed, and to allow more syntaxes, a list of regexps has been added
  * which can be initialized to other values
@@ -79,15 +81,19 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
         faxParameters.add( Strings.toLowerCaseAscii( B4_WIDTH ) );
         faxParameters.add( Strings.toLowerCaseAscii( UNCOMPRESSED ) );
     }
+    
+    /**
+     * A static instance of FacsimileTelephoneNumberSyntaxChecker
+     */
+    public static final FacsimileTelephoneNumberSyntaxChecker INSTANCE = new FacsimileTelephoneNumberSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of TelephoneNumberSyntaxChecker.
      */
     public FacsimileTelephoneNumberSyntaxChecker()
     {
-        super();
-        setOid( SchemaConstants.FACSIMILE_TELEPHONE_NUMBER_SYNTAX );
+        super( SchemaConstants.FACSIMILE_TELEPHONE_NUMBER_SYNTAX );
     }
 
 
@@ -101,7 +107,7 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -120,7 +126,7 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -135,11 +141,11 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
 
             if ( result )
             {
-                LOG.debug( "Syntax valid for '{}'", value );
+                LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
             }
             else
             {
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             }
 
             return result;
@@ -150,7 +156,7 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
         {
             if ( !super.isValidSyntax( strValue.substring( 0, dollarPos - 1 ) ) )
             {
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
                 return false;
             }
 
@@ -176,23 +182,17 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
                 if ( faxParam.length() == 0 )
                 {
                     // Not allowed
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
                     return false;
                 }
 
                 // Relax a little bit the syntax by lowercasing the param
                 faxParam = Strings.toLowerCaseAscii( faxParam );
 
-                if ( !faxParameters.contains( faxParam ) )
+                if ( !faxParameters.contains( faxParam ) || paramsSeen.contains( faxParam ) )
                 {
                     // This parameter is not in the possible set
-                    LOG.debug( "Syntax invalid for '{}'", value );
-                    return false;
-                }
-                else if ( paramsSeen.contains( faxParam ) )
-                {
-                    // We have the same parameters twice...
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
                     return false;
                 }
                 else
@@ -205,12 +205,12 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
                 dollarPos = newDollar;
             }
 
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
             return true;
         }
 
         // We must have a valid telephone number !
-        LOG.debug( "Syntax invalid for '{}'", value );
+        LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
         return false;
     }
 }

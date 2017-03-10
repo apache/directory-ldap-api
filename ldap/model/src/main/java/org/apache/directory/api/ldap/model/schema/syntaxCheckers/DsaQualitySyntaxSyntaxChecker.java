@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
@@ -46,8 +47,13 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( DsaQualitySyntaxSyntaxChecker.class );
+    
+    /**
+     * A static instance of DsaQualitySyntaxSyntaxChecker
+     */
+    public static final DsaQualitySyntaxSyntaxChecker INSTANCE = new DsaQualitySyntaxSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of DSAQualitySyntaxSyntaxChecker.
      */
@@ -67,7 +73,7 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -86,7 +92,7 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() < 7 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -97,7 +103,7 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
             case 'B':
                 if ( !strValue.startsWith( "BEST-EFFORT" ) )
                 {
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
                     return false;
                 }
 
@@ -107,7 +113,7 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
             case 'D':
                 if ( !strValue.startsWith( "DEFUNCT" ) )
                 {
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
                     return false;
                 }
 
@@ -117,7 +123,7 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
             case 'E':
                 if ( !strValue.startsWith( "EXPERIMENTAL" ) )
                 {
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
                     return false;
                 }
 
@@ -127,7 +133,7 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
             case 'F':
                 if ( !strValue.startsWith( "FULL-SERVICE" ) )
                 {
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
                     return false;
                 }
 
@@ -137,7 +143,7 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
             case 'P':
                 if ( !strValue.startsWith( "PILOT-SERVICE" ) )
                 {
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
                     return false;
                 }
 
@@ -145,7 +151,7 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
                 break;
 
             default:
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
                 return false;
         }
 
@@ -153,14 +159,14 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
         // but this is optional
         if ( remaining.length() == 0 )
         {
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
             return true;
         }
 
         if ( remaining.charAt( 0 ) != '#' )
         {
             // We were expecting a '#'
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -169,11 +175,11 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
 
         if ( result )
         {
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
         }
         else
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
         }
 
         return result;

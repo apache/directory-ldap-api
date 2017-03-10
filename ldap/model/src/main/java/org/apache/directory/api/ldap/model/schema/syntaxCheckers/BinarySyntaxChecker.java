@@ -36,14 +36,29 @@ public class BinarySyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( BinarySyntaxChecker.class );
+    
+    /**
+     * A static instance of BinarySyntaxChecker
+     */
+    public static final BinarySyntaxChecker INSTANCE = new BinarySyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of BinarySyntaxChecker
      */
     public BinarySyntaxChecker()
     {
         super( SchemaConstants.BINARY_SYNTAX );
+    }
+    
+    
+    /**
+     * Creates a new instance of the child class
+     * @param oid The child's OID
+     */
+    protected BinarySyntaxChecker( String oid )
+    {
+        super( oid );
     }
 
 

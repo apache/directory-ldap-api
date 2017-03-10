@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
 import org.apache.directory.api.asn1.util.Oid;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
@@ -31,15 +32,15 @@ import org.slf4j.LoggerFactory;
 /**
  * A SyntaxChecker which verifies that a value is a numeric oid 
  * according to RFC 4512.
- * 
+ * <p>
  * From RFC 4512 :
- * 
+ * <pre>
  * numericoid = number 1*( DOT number )
  * number  = DIGIT | ( LDIGIT 1*DIGIT )
  * DIGIT   = %x30 | LDIGIT                  ; "0"-"9"
  * LDIGIT  = %x31-39                        ; "1"-"9"
  * DOT     = %x2E                           ; period (".")
-
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -48,8 +49,13 @@ public class NumericOidSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( NumericOidSyntaxChecker.class );
+    
+    /**
+     * A static instance of NumericOidSyntaxChecker
+     */
+    public static final NumericOidSyntaxChecker INSTANCE = new NumericOidSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of NumericOidSyntaxChecker.
      */
@@ -69,7 +75,7 @@ public class NumericOidSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -88,7 +94,7 @@ public class NumericOidSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -97,11 +103,11 @@ public class NumericOidSyntaxChecker extends SyntaxChecker
 
         if ( result )
         {
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
         }
         else
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
         }
 
         return result;

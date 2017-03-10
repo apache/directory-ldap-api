@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.slf4j.Logger;
@@ -36,8 +37,13 @@ public class CsnSidSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( CsnSidSyntaxChecker.class );
+    
+    /**
+     * A static instance of CsnSidSyntaxChecker
+     */
+    public static final CsnSidSyntaxChecker INSTANCE = new CsnSidSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of CsnSyntaxChecker.
      */
@@ -55,13 +61,13 @@ public class CsnSidSyntaxChecker extends SyntaxChecker
     {
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
         if ( !( value instanceof String ) )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -69,7 +75,7 @@ public class CsnSidSyntaxChecker extends SyntaxChecker
 
         if ( sidStr.length() > 3 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -81,17 +87,17 @@ public class CsnSidSyntaxChecker extends SyntaxChecker
 
             if ( ( sid < 0 ) || ( sid > 0x0fff ) )
             {
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
                 return false;
             }
         }
         catch ( NumberFormatException nfe )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             return false;
         }
 
-        LOG.debug( "Syntax valid for '{}'", value );
+        LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
         return true;
     }
 }

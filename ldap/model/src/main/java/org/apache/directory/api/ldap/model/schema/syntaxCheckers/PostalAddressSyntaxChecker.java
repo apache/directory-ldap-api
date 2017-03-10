@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
@@ -42,8 +43,13 @@ public class PostalAddressSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( PostalAddressSyntaxChecker.class );
+    
+    /**
+     * A static instance of PostalAddressSyntaxChecker
+     */
+    public static final PostalAddressSyntaxChecker INSTANCE = new PostalAddressSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of PostalAddressSyntaxChecker.
      */
@@ -63,7 +69,7 @@ public class PostalAddressSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -82,7 +88,7 @@ public class PostalAddressSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -92,7 +98,7 @@ public class PostalAddressSyntaxChecker extends SyntaxChecker
         if ( dollar == -1 )
         {
             // No '$' => only a dstring
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
             return true;
         }
 
@@ -104,7 +110,7 @@ public class PostalAddressSyntaxChecker extends SyntaxChecker
 
             if ( Strings.isEmpty( address ) )
             {
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
                 return false;
             }
 
@@ -113,7 +119,7 @@ public class PostalAddressSyntaxChecker extends SyntaxChecker
             if ( pos == strValue.length() )
             {
                 // we should not have a '$' at the end
-                LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
                 return false;
             }
 

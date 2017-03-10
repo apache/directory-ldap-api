@@ -626,7 +626,8 @@ public enum I18n
     ERR_04485_COLLECTIVE_NOT_ALLOWED_IN_MAY("ERR_04485_COLLECTIVE_NOT_ALLOWED_IN_MAY"),
     ERR_04486_VALUE_ALREADY_EXISTS("ERR_04486_VALUE_ALREADY_EXISTS"),
     ERR_04487_ATTRIBUTE_IS_SINGLE_VALUED("ERR_04487_ATTRIBUTE_IS_SINGLE_VALUED"),
-
+    ERR_04488_SYNTAX_INVALID("ERR_04488_SYNTAX_INVALID"),
+    
     // ldap-constants
     ERR_05001_UNKNOWN_AUTHENT_LEVEL("ERR_05001_UNKNOWN_AUTHENT_LEVEL"),
 
@@ -773,8 +774,11 @@ public enum I18n
     ERR_12084("ERR_12084"),
     ERR_12085("ERR_12085"),
     ERR_12086("ERR_12086"),
-    ERR_12087("ERR_12087");
+    ERR_12087("ERR_12087"),
 
+    // The messages
+    MSG_04489_SYNTAX_VALID( "MSG_04489_SYNTAX_VALID" );
+    
     /** The error code */
     private String errorCode;
 
@@ -842,6 +846,43 @@ public enum I18n
                 sb.append( obj );
             }
             return err + " (" + sb.toString() + ")";
+        }
+    }
+
+
+    /**
+     *
+     * Translate a message code with argument(s)
+     *
+     * @param msg The message code
+     * @param args The argument(s)
+     * @return The translated error
+     */
+    public static String msg( I18n msg, Object... args )
+    {
+        try
+        {
+            return msg + " " + format( ERR_BUNDLE.getString( msg.getErrorCode() ), args );
+        }
+        catch ( Exception e )
+        {
+            StringBuilder sb = new StringBuilder();
+            boolean comma = false;
+
+            for ( Object obj : args )
+            {
+                if ( comma )
+                {
+                    sb.append( "," );
+                }
+                else
+                {
+                    comma = true;
+                }
+
+                sb.append( obj );
+            }
+            return msg + " (" + sb.toString() + ")";
         }
     }
 

@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import java.text.ParseException;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.parsers.DitStructureRuleDescriptionSchemaParser;
@@ -59,8 +60,13 @@ public class DitStructureRuleDescriptionSyntaxChecker extends SyntaxChecker
 
     /** The schema parser used to parse the DITContentRuleDescription Syntax */
     private DitStructureRuleDescriptionSchemaParser schemaParser = new DitStructureRuleDescriptionSchemaParser();
+    
+    /**
+     * A static instance of DitStructureRuleDescriptionSyntaxChecker
+     */
+    public static final DitStructureRuleDescriptionSyntaxChecker INSTANCE = new DitStructureRuleDescriptionSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of DITContentRuleDescriptionSyntaxChecker.
      */
@@ -80,7 +86,7 @@ public boolean isValidSyntax( Object value )
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -100,12 +106,12 @@ public boolean isValidSyntax( Object value )
         try
         {
             schemaParser.parseDITStructureRuleDescription( strValue );
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
             return true;
         }
         catch ( ParseException pe )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             return false;
         }
     }

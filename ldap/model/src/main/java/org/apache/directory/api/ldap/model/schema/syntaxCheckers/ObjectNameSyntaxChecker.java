@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
@@ -56,8 +57,13 @@ public class ObjectNameSyntaxChecker extends SyntaxChecker
     private static final String REGEXP = "^([a-zA-Z][a-zA-Z0-9-;]*)$";
 
     private static final Pattern PATTERN = Pattern.compile( REGEXP );
+    
+    /**
+     * A static instance of ObjectNameSyntaxChecker
+     */
+    public static final ObjectNameSyntaxChecker INSTANCE = new ObjectNameSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of ObjectNameSyntaxChecker.
      */
@@ -77,7 +83,7 @@ public class ObjectNameSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -96,7 +102,7 @@ public class ObjectNameSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -107,11 +113,11 @@ public class ObjectNameSyntaxChecker extends SyntaxChecker
 
         if ( result )
         {
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
         }
         else
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
         }
 
         return result;

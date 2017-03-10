@@ -29,8 +29,8 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * A SyntaxChecker which verifies that a value is a valid Dn. We just check
- * that the Dn is valid, we don't need to verify each of the Rdn syntax.
+ * A SyntaxChecker which verifies that a value is a valid {@link Dn}. We just check
+ * that the {@link Dn} is valid, we don't need to verify each of the {@link Rdn} syntax.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -39,8 +39,13 @@ public class DnSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( DnSyntaxChecker.class );
+    
+    /**
+     * A static instance of DnSyntaxChecker
+     */
+    public static final DnSyntaxChecker INSTANCE = new DnSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of DNSyntaxChecker.
      */

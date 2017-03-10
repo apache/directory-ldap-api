@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import java.text.ParseException;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.parsers.NameFormDescriptionSchemaParser;
@@ -56,8 +57,13 @@ public class NameFormDescriptionSyntaxChecker extends SyntaxChecker
 
     /** The schema parser used to parse the DITContentRuleDescription Syntax */
     private NameFormDescriptionSchemaParser schemaParser = new NameFormDescriptionSchemaParser();
+    
+    /**
+     * A static instance of NameFormDescriptionSyntaxChecker
+     */
+    public static final NameFormDescriptionSyntaxChecker INSTANCE = new NameFormDescriptionSyntaxChecker();
 
-
+    
     /**
      * 
      * Creates a new instance of DITContentRuleDescriptionSyntaxChecker.
@@ -79,7 +85,7 @@ public class NameFormDescriptionSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -103,7 +109,7 @@ public class NameFormDescriptionSyntaxChecker extends SyntaxChecker
         }
         catch ( ParseException pe )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             return false;
         }
     }

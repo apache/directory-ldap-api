@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
@@ -29,16 +30,16 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A SyntaxChecker which verifies that a value is a Numeric String according to RFC 4517.
- * 
+ * <p>
  * From RFC 4517 :
- * 
+ * <pre>
  * NumericString = 1*(DIGIT / SPACE)
  * 
  * From RFC 4512 :
  * DIGIT   = %x30 | LDIGIT       ; "0"-"9"
  * LDIGIT  = %x31-39             ; "1"-"9"
  * SPACE   = %x20                ; space (" ")
- * 
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -47,8 +48,13 @@ public class NumericStringSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( NumericStringSyntaxChecker.class );
+    
+    /**
+     * A static instance of NumericStringSyntaxChecker
+     */
+    public static final NumericStringSyntaxChecker INSTANCE = new NumericStringSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of NumericStringSyntaxChecker.
      */
@@ -68,7 +74,7 @@ public class NumericStringSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -88,7 +94,7 @@ public class NumericStringSyntaxChecker extends SyntaxChecker
         // We should have at least one char
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -111,12 +117,12 @@ public class NumericStringSyntaxChecker extends SyntaxChecker
                     continue;
 
                 default:
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
                     return false;
             }
         }
 
-        LOG.debug( "Syntax valid for '{}'", value );
+        LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
         return true;
     }
 }
