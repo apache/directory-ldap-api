@@ -42,6 +42,11 @@ public class BooleanSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( BooleanSyntaxChecker.class );
+    
+    /**
+     * A public instance of this SyntaxChecker
+     */
+    public static final BooleanSyntaxChecker INSTANCE = new BooleanSyntaxChecker();
 
 
     /**
