@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import java.text.ParseException;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.parsers.AttributeTypeDescriptionSchemaParser;
@@ -65,8 +66,6 @@ import org.slf4j.LoggerFactory;
  * COLLECTIVE requires usage userApplications.
  * 
  * NO-USER-MODIFICATION requires an operational usage.
- * 
- * 
  * </pre>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -78,7 +77,7 @@ public class AttributeTypeDescriptionSyntaxChecker extends SyntaxChecker
     private static final Logger LOG = LoggerFactory.getLogger( AttributeTypeDescriptionSyntaxChecker.class );
 
     /** The schema parser used to parse the AttributeTypeDescription Syntax */
-    private AttributeTypeDescriptionSchemaParser schemaParser = new AttributeTypeDescriptionSchemaParser();
+    private transient AttributeTypeDescriptionSchemaParser schemaParser = new AttributeTypeDescriptionSchemaParser();
     
     /**
      * A static instance of AttributeTypeDescriptionSyntaxChecker
@@ -107,7 +106,7 @@ public class AttributeTypeDescriptionSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -127,12 +126,12 @@ public class AttributeTypeDescriptionSyntaxChecker extends SyntaxChecker
         try
         {
             schemaParser.parseAttributeTypeDescription( strValue );
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
             return true;
         }
         catch ( ParseException pe )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             return false;
         }
     }

@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class BooleanSyntaxCheckerTest
 {
-    BooleanSyntaxChecker checker = new BooleanSyntaxChecker();
+    BooleanSyntaxChecker checker = BooleanSyntaxChecker.INSTANCE;
 
 
     @Test

@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
@@ -65,7 +66,7 @@ public class DnSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -87,7 +88,7 @@ public class DnSyntaxChecker extends SyntaxChecker
             // TODO: this should be a false, but for 
             // some reason, the principal is empty in 
             // some cases.
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, strValue ) );
             return true;
         }
 
@@ -96,11 +97,11 @@ public class DnSyntaxChecker extends SyntaxChecker
 
         if ( result )
         {
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, strValue ) );
         }
         else
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, strValue ) );
         }
 
         return result;

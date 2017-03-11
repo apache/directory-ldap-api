@@ -97,11 +97,11 @@ public class BooleanSyntaxChecker extends SyntaxChecker
 
         if ( valid )
         {
-            LOG.debug( "Syntax valid for '{}'", strValue );
+            LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, strValue ) );
         }
         else
         {
-            LOG.debug( "Syntax invalid for '{}'", strValue );
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, strValue ) );
         }
 
         return valid;
