@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
@@ -30,14 +31,15 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A SyntaxChecker which verifies that a value is a valid Name and Optional UID.
- * 
- * This element is a composition of two parts : a Dn and an optional UID :
+ * <p>
+ * This element is a composition of two parts, a {@link Dn} and an optional UID :
+ * <pre>
  * NameAndOptionalUID = distinguishedName [ SHARP BitString ]
- * 
+ * </pre>
  * Both part already have their syntax checkers, so we will just call them
  * after having split the element in two ( if necessary)
- * 
- * We just check that the Dn is valid, we don't need to verify each of the Rdn
+ * <p>
+ * We just check that the {@link Dn} is valid, we don't need to verify each of the {@link Rdn}
  * syntax.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -47,8 +49,13 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( NameAndOptionalUIDSyntaxChecker.class );
+    
+    /**
+     * A static instance of NameAndOptionalUIDSyntaxChecker
+     */
+    public static final NameAndOptionalUIDSyntaxChecker INSTANCE = new NameAndOptionalUIDSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of NameAndOptionalUIDSyntaxChecker.
      */
@@ -68,7 +75,7 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -87,7 +94,7 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -101,7 +108,7 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
             {
                 // Yes, we have one : this is not allowed, it should have been
                 // escaped.
-                LOG.debug( INVALID_SYNTAX_FOR, value );
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
                 return false;
             }
 
@@ -119,11 +126,11 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
 
                     if ( result )
                     {
-                        LOG.debug( "Syntax valid for '{}'", value );
+                        LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
                     }
                     else
                     {
-                        LOG.debug( INVALID_SYNTAX_FOR, value );
+                        LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
                     }
 
                     return result;
@@ -132,14 +139,14 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
                 else
                 {
                     // The Dn must not be null ?
-                    LOG.debug( INVALID_SYNTAX_FOR, value );
+                    LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
                     return false;
                 }
             }
             else
             {
                 // We have found a '#' but no UID part.
-                LOG.debug( INVALID_SYNTAX_FOR, value );
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
                 return false;
             }
         }
@@ -151,11 +158,11 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
 
             if ( result )
             {
-                LOG.debug( "Syntax valid for '{}'", value );
+                LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
             }
             else
             {
-                LOG.debug( INVALID_SYNTAX_FOR, value );
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             }
 
             return result;

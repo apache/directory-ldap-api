@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import java.text.ParseException;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.parsers.DitContentRuleDescriptionSchemaParser;
@@ -56,9 +57,14 @@ public class DitContentRuleDescriptionSyntaxChecker extends SyntaxChecker
     private static final Logger LOG = LoggerFactory.getLogger( DitContentRuleDescriptionSyntaxChecker.class );
 
     /** The schema parser used to parse the DITContentRuleDescription Syntax */
-    private transient DitContentRuleDescriptionSchemaParser schemaParser = new DitContentRuleDescriptionSchemaParser();
+    private DitContentRuleDescriptionSchemaParser schemaParser = new DitContentRuleDescriptionSchemaParser();
+    
+    /**
+     * A static instance of DitContentRuleDescriptionSyntaxChecker
+     */
+    public static final DitContentRuleDescriptionSyntaxChecker INSTANCE = new DitContentRuleDescriptionSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of DITContentRuleDescriptionSyntaxChecker.
      */
@@ -78,7 +84,7 @@ public class DitContentRuleDescriptionSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -98,12 +104,12 @@ public class DitContentRuleDescriptionSyntaxChecker extends SyntaxChecker
         try
         {
             schemaParser.parseDITContentRuleDescription( strValue );
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
             return true;
         }
         catch ( ParseException pe )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
     }

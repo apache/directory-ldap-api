@@ -32,11 +32,15 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 public class SyntaxCheckerSyntaxChecker extends Ia5StringSyntaxChecker
 {
     /**
+     * A static instance of SyntaxCheckerSyntaxChecker
+     */
+    public static final SyntaxCheckerSyntaxChecker INSTANCE = new SyntaxCheckerSyntaxChecker();
+
+    /**
      * Creates a new instance of SyntaxCheckerSyntaxChecker.
      */
     public SyntaxCheckerSyntaxChecker()
     {
-        super();
-        setOid( SchemaConstants.SYNTAX_CHECKER_SYNTAX );
+        super( SchemaConstants.SYNTAX_CHECKER_SYNTAX );
     }
 }

@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
@@ -30,11 +31,11 @@ import org.slf4j.LoggerFactory;
 /**
  * A SyntaxChecker which verifies that a value is an OtherMailbox according to 
  * RFC 4517 :
- * 
+ * <pre>
  * OtherMailbox = mailbox-type DOLLAR mailbox
  * mailbox-type = PrintableString
  * mailbox      = IA5String
- * 
+ * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
@@ -42,8 +43,13 @@ public class OtherMailboxSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( OtherMailboxSyntaxChecker.class );
+    
+    /**
+     * A static instance of OtherMailboxSyntaxChecker
+     */
+    public static final OtherMailboxSyntaxChecker INSTANCE = new OtherMailboxSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of OtherMailboxSyntaxChecker.
      */
@@ -63,7 +69,7 @@ public class OtherMailboxSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -82,7 +88,7 @@ public class OtherMailboxSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -92,25 +98,26 @@ public class OtherMailboxSyntaxChecker extends SyntaxChecker
         if ( dollar == -1 )
         {
             // No '$' => error
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
         String mailboxType = strValue.substring( 0, dollar );
 
-        String mailbox = dollar < strValue.length() - 1 ? strValue.substring( dollar + 1 ) : "";
+        String mailbox = ( dollar < strValue.length() - 1 )
+            ? strValue.substring( dollar + 1 ) : "";
 
         // The mailbox should not contains a '$'
         if ( mailbox.indexOf( '$' ) != -1 )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
         // Check that the mailboxType is a PrintableString
         if ( !Strings.isPrintableString( mailboxType ) )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -119,11 +126,11 @@ public class OtherMailboxSyntaxChecker extends SyntaxChecker
 
         if ( result )
         {
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
         }
         else
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
         }
 
         return result;

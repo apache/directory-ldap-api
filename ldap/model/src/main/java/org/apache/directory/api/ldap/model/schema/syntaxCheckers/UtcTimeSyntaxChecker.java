@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import java.util.regex.Pattern;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
@@ -32,8 +33,9 @@ import org.slf4j.LoggerFactory;
 /**
  * A SyntaxChecker which verifies that a value is a UTC time
  * according to RFC 4517.
- * 
+ * <p>
  * From RFC 4517 :
+ * <pre>
  * UTCTime         = year month day hour minute [ second ] [ u-time-zone ]
  * u-time-zone     = %x5A          ; "Z" | u-differential
  * u-differential  = ( MINUS | PLUS ) hour minute
@@ -57,7 +59,7 @@ import org.slf4j.LoggerFactory;
  * 
  * From RFC 4512 :
  * PLUS    = %x2B ; plus sign ("+")
- * 
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -88,8 +90,13 @@ public class UtcTimeSyntaxChecker extends SyntaxChecker
 
     // The regexp pattern, java.util.regex.Pattern is immutable so only one instance is needed.
     private static final Pattern DATE_PATTERN = Pattern.compile( UTC_TIME_PATTERN );
+    
+    /**
+     * A static instance of UtcTimeSyntaxChecker
+     */
+    public static final UtcTimeSyntaxChecker INSTANCE = new UtcTimeSyntaxChecker();
 
-
+    
     /**
      * 
      * Creates a new instance of UtcTimeSyntaxChecker.
@@ -111,7 +118,7 @@ public class UtcTimeSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -131,7 +138,7 @@ public class UtcTimeSyntaxChecker extends SyntaxChecker
         // A generalized time must have a minimal length of 11 
         if ( strValue.length() < 11 )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -140,12 +147,13 @@ public class UtcTimeSyntaxChecker extends SyntaxChecker
 
         if ( result )
         {
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
         }
         else
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
         }
+        
         return result;
     }
 }

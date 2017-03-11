@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import java.text.ParseException;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
@@ -33,7 +34,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A SyntaxChecker which verifies that a value is a subtree specification.
- * 
+ * <p>
  * It has been removed in RFC 4517
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -45,9 +46,14 @@ public class SubtreeSpecificationSyntaxChecker extends SyntaxChecker
     private static final Logger LOG = LoggerFactory.getLogger( SubtreeSpecificationSyntaxChecker.class );
 
     /** The associated checker */
-    private transient SubtreeSpecificationChecker subtreeSpecificationChecker;
+    private SubtreeSpecificationChecker subtreeSpecificationChecker;
+    
+    /**
+     * A static instance of SubtreeSpecificationSyntaxChecker
+     */
+    public static final SubtreeSpecificationSyntaxChecker INSTANCE = new SubtreeSpecificationSyntaxChecker();
 
-
+    
     /**
      * Creates an instance of SubtreeSpecificationSyntaxChecker
      */
@@ -67,7 +73,7 @@ public class SubtreeSpecificationSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -86,7 +92,7 @@ public class SubtreeSpecificationSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -97,12 +103,12 @@ public class SubtreeSpecificationSyntaxChecker extends SyntaxChecker
                 subtreeSpecificationChecker.parse( strValue );
             }
 
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
             return true;
         }
         catch ( ParseException pe )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
     }

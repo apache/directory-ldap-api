@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
@@ -29,11 +30,14 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A syntax checker which checks to see if an attributeType's type is either: 
- * userApplications
- * directoryOperation
- * distributedOperation
- * dSAOperation
-.*  The case is NOT ignored.
+ * <ul>
+ *   <li>userApplications</li>
+ *   <lidirectoryOperation</li>
+ *   <lidistributedOperation</li>
+ *   <lidSAOperation</li>
+ * </ul>
+.* 
+ * The case is NOT ignored.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -42,8 +46,13 @@ public class AttributeTypeUsageSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( AttributeTypeUsageSyntaxChecker.class );
+    
+    /**
+     * A static instance of AttributeTypeUsageSyntaxChecker
+     */
+    public static final AttributeTypeUsageSyntaxChecker INSTANCE = new AttributeTypeUsageSyntaxChecker();
 
-
+    
     /**
      * 
      * Creates a new instance of AttributeTypeUsageSyntaxChecker.
@@ -65,7 +74,7 @@ public class AttributeTypeUsageSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -82,46 +91,19 @@ public class AttributeTypeUsageSyntaxChecker extends SyntaxChecker
             strValue = value.toString();
         }
 
-        if ( ( strValue.length() < "userApplications".length() )
-            || ( strValue.length() > "userApplications".length() ) )
+        switch ( strValue )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
-            return false;
-        }
+            case "dSAOperation" :
+            case "directoryOperation" :
+            case "distributedOperation" :
+            case "userApplications" :
+                LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
+                
+                return true;
 
-        char ch = strValue.charAt( 0 );
-
-        switch ( ch )
-        {
-            case 'd':
-                if ( "dSAOperation".equals( strValue )
-                    || "directoryOperation".equals( strValue )
-                    || "distributedOperation".equals( strValue ) )
-                {
-                    LOG.debug( "Syntax valid for '{}'", value );
-                    return true;
-                }
-
-                LOG.debug( INVALID_SYNTAX_FOR, value );
-                return false;
-
-            case 'u':
-                boolean comp = "userApplications".equals( strValue );
-
-                if ( comp )
-                {
-                    LOG.debug( "Syntax valid for '{}'", value );
-                }
-                else
-                {
-                    LOG.debug( INVALID_SYNTAX_FOR, value );
-
-                }
-
-                return comp;
-
-            default:
-                LOG.debug( INVALID_SYNTAX_FOR, value );
+            default :
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                
                 return false;
         }
     }

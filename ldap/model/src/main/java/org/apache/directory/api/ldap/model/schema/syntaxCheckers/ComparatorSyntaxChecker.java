@@ -32,13 +32,18 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 public class ComparatorSyntaxChecker extends Ia5StringSyntaxChecker
 {
     /**
+     * A static instance of ComparatorSyntaxChecker
+     */
+    public static final ComparatorSyntaxChecker INSTANCE = new ComparatorSyntaxChecker();
+
+    
+    /**
      * 
      * Creates a new instance of ComparatorSyntaxChecker.
      *
      */
     public ComparatorSyntaxChecker()
     {
-        super();
-        setOid( SchemaConstants.COMPARATOR_SYNTAX );
+        super( SchemaConstants.COMPARATOR_SYNTAX );
     }
 }

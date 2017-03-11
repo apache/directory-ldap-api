@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A SyntaxChecker which verifies that a value is a Guide according to RFC 4517.
- * 
+ * <p>
  * Implemented as binary right now ...
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -37,15 +38,19 @@ public class GuideSyntaxChecker extends BinarySyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( GuideSyntaxChecker.class );
+    
+    /**
+     * A static instance of GuideSyntaxChecker
+     */
+    public static final GuideSyntaxChecker INSTANCE = new GuideSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of GuideSyntaxChecker
      */
     public GuideSyntaxChecker()
     {
-        super();
-        setOid( SchemaConstants.GUIDE_SYNTAX );
+        super( SchemaConstants.GUIDE_SYNTAX );
     }
 
 
@@ -55,7 +60,7 @@ public class GuideSyntaxChecker extends BinarySyntaxChecker
     @Override
     public boolean isValidSyntax( Object value )
     {
-        LOG.debug( "Syntax valid for '{}'", value );
+        LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
         return true;
     }
 }

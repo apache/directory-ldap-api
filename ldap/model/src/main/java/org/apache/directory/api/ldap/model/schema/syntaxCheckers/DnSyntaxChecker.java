@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
@@ -29,8 +30,8 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * A SyntaxChecker which verifies that a value is a valid Dn. We just check
- * that the Dn is valid, we don't need to verify each of the Rdn syntax.
+ * A SyntaxChecker which verifies that a value is a valid {@link Dn}. We just check
+ * that the {@link Dn} is valid, we don't need to verify each of the {@link Rdn} syntax.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -39,8 +40,13 @@ public class DnSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( DnSyntaxChecker.class );
+    
+    /**
+     * A static instance of DnSyntaxChecker
+     */
+    public static final DnSyntaxChecker INSTANCE = new DnSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of DNSyntaxChecker.
      */
@@ -60,7 +66,7 @@ public class DnSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -82,7 +88,7 @@ public class DnSyntaxChecker extends SyntaxChecker
             // TODO: this should be a false, but for 
             // some reason, the principal is empty in 
             // some cases.
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
             return true;
         }
 
@@ -91,11 +97,11 @@ public class DnSyntaxChecker extends SyntaxChecker
 
         if ( result )
         {
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
         }
         else
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
         }
 
         return result;

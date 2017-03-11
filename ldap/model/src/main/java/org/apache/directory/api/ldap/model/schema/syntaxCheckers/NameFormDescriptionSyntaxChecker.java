@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import java.text.ParseException;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.parsers.NameFormDescriptionSchemaParser;
@@ -55,9 +56,14 @@ public class NameFormDescriptionSyntaxChecker extends SyntaxChecker
     private static final Logger LOG = LoggerFactory.getLogger( NameFormDescriptionSyntaxChecker.class );
 
     /** The schema parser used to parse the DITContentRuleDescription Syntax */
-    private transient NameFormDescriptionSchemaParser schemaParser = new NameFormDescriptionSchemaParser();
+    private NameFormDescriptionSchemaParser schemaParser = new NameFormDescriptionSchemaParser();
+    
+    /**
+     * A static instance of NameFormDescriptionSyntaxChecker
+     */
+    public static final NameFormDescriptionSyntaxChecker INSTANCE = new NameFormDescriptionSyntaxChecker();
 
-
+    
     /**
      * 
      * Creates a new instance of DITContentRuleDescriptionSyntaxChecker.
@@ -79,7 +85,7 @@ public class NameFormDescriptionSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -103,7 +109,7 @@ public class NameFormDescriptionSyntaxChecker extends SyntaxChecker
         }
         catch ( ParseException pe )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
     }

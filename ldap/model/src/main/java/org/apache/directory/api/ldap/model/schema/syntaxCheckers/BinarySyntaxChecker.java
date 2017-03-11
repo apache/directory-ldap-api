@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.slf4j.Logger;
@@ -36,14 +37,29 @@ public class BinarySyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( BinarySyntaxChecker.class );
+    
+    /**
+     * A static instance of BinarySyntaxChecker
+     */
+    public static final BinarySyntaxChecker INSTANCE = new BinarySyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of BinarySyntaxChecker
      */
     public BinarySyntaxChecker()
     {
         super( SchemaConstants.BINARY_SYNTAX );
+    }
+    
+    
+    /**
+     * Creates a new instance of the child class
+     * @param oid The child's OID
+     */
+    protected BinarySyntaxChecker( String oid )
+    {
+        super( oid );
     }
 
 
@@ -53,7 +69,7 @@ public class BinarySyntaxChecker extends SyntaxChecker
     @Override
     public boolean isValidSyntax( Object value )
     {
-        LOG.debug( "Syntax valid for '{}'", value );
+        LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
         return true;
     }
 }

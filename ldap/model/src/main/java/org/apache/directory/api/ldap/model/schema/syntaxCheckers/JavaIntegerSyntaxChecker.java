@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Chars;
@@ -32,9 +33,9 @@ import org.slf4j.LoggerFactory;
  * A SyntaxChecker which verifies that a value is a valid Java primitive int or
  * the Integer wrapper.  Essentially this constrains the min and max values of
  * the Integer.
- *
+ * <p>
  * From RFC 4517 :
- *
+ * <pre>
  * Integer = ( HYPHEN LDIGIT *DIGIT ) | number
  *
  * From RFC 4512 :
@@ -42,7 +43,7 @@ import org.slf4j.LoggerFactory;
  * DIGIT   = %x30 | LDIGIT       ; "0"-"9"
  * LDIGIT  = %x31-39             ; "1"-"9"
  * HYPHEN  = %x2D                ; hyphen ("-")
- *
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -51,8 +52,13 @@ public class JavaIntegerSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( JavaIntegerSyntaxChecker.class );
+    
+    /**
+     * A static instance of JavaIntegerSyntaxChecker
+     */
+    public static final JavaIntegerSyntaxChecker INSTANCE = new JavaIntegerSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of JavaIntegerSyntaxChecker.
      */
@@ -72,7 +78,7 @@ public class JavaIntegerSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -91,7 +97,7 @@ public class JavaIntegerSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -106,7 +112,7 @@ public class JavaIntegerSyntaxChecker extends SyntaxChecker
         }
         else if ( !Chars.isDigit( c ) )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
         else if ( c == '0' )
@@ -115,25 +121,20 @@ public class JavaIntegerSyntaxChecker extends SyntaxChecker
 
             if ( result )
             {
-                LOG.debug( "Syntax valid for '{}'", value );
+                LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
             }
             else
             {
-                LOG.debug( INVALID_SYNTAX_FOR, value );
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             }
 
             return result;
         }
 
         // We must have at least a digit which is not '0'
-        if ( !Chars.isDigit( strValue, pos ) )
+        if ( !Chars.isDigit( strValue, pos ) || Strings.isCharASCII( strValue, pos, '0' ) )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
-            return false;
-        }
-        else if ( Strings.isCharASCII( strValue, pos, '0' ) )
-        {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
         else
@@ -148,19 +149,19 @@ public class JavaIntegerSyntaxChecker extends SyntaxChecker
 
         if ( pos != strValue.length() )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
         try
         {
             Integer.valueOf( strValue );
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
             return true;
         }
         catch ( NumberFormatException e )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
     }

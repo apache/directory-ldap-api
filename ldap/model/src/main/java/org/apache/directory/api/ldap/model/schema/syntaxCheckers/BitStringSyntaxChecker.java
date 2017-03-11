@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Chars;
@@ -45,8 +46,13 @@ public class BitStringSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( BitStringSyntaxChecker.class );
+    
+    /**
+     * A static instance of BitStringSyntaxChecker
+     */
+    public static final BitStringSyntaxChecker INSTANCE = new BitStringSyntaxChecker();
 
-
+    
     /**
      * 
      * Creates a new instance of BitStringSyntaxChecker.
@@ -71,7 +77,7 @@ public class BitStringSyntaxChecker extends SyntaxChecker
     {
         if ( strValue.length() == 0 )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, strValue );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, strValue ) );
             return false;
         }
 
@@ -80,14 +86,14 @@ public class BitStringSyntaxChecker extends SyntaxChecker
         // Check that the String respect the syntax : ' ([01]+) ' B
         if ( !Strings.isCharASCII( strValue, pos++, '\'' ) )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, strValue );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, strValue ) );
             return false;
         }
 
         // We must have at least one bit
         if ( !Chars.isBit( strValue, pos++ ) )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, strValue );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, strValue ) );
             return false;
         }
 
@@ -100,18 +106,18 @@ public class BitStringSyntaxChecker extends SyntaxChecker
         // Now, we must have a simple quote 
         if ( !Strings.isCharASCII( strValue, pos++, '\'' ) )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, strValue );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, strValue ) );
             return false;
         }
 
         // followed by a 'B'
         if ( !Strings.isCharASCII( strValue, pos, 'B' ) )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, strValue );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, strValue ) );
             return false;
         }
 
-        LOG.debug( "Syntax valid for '{}'", strValue );
+        LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, strValue ) );
         return true;
     }
 
@@ -126,7 +132,7 @@ public class BitStringSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
             return false;
         }
 

@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
 import org.apache.directory.api.asn1.util.Oid;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Chars;
@@ -31,9 +32,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A SyntaxChecker which verifies that a value is an oid according to RFC 4512.
- * 
+ * <p>
  * From RFC 4512 :
- * 
+ * <pre>
  * oid = descr | numericoid
  * descr = keystring
  * keystring = leadkeychar *keychar
@@ -46,7 +47,7 @@ import org.slf4j.LoggerFactory;
  * HYPHEN  = %x2D                           ; hyphen ("-")
  * numericoid = number 1*( DOT number )
  * DOT     = %x2E                           ; period (".")
- * 
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -55,8 +56,13 @@ public class OidSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( OidSyntaxChecker.class );
+    
+    /**
+     * A static instance of OidSyntaxChecker
+     */
+    public static final OidSyntaxChecker INSTANCE = new OidSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of OidSyntaxChecker.
      */
@@ -76,7 +82,7 @@ public class OidSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -95,7 +101,7 @@ public class OidSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -105,12 +111,12 @@ public class OidSyntaxChecker extends SyntaxChecker
         {
             if ( !Oid.isOid( strValue ) )
             {
-                LOG.debug( INVALID_SYNTAX_FOR, value );
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
                 return false;
             }
             else
             {
-                LOG.debug( "Syntax valid for '{}'", value );
+                LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
                 return true;
             }
         }
@@ -125,17 +131,17 @@ public class OidSyntaxChecker extends SyntaxChecker
                 
                 if ( !Chars.isAlphaDigitMinus( c ) )
                 {
-                    LOG.debug( INVALID_SYNTAX_FOR, value );
+                    LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
                     return false;
                 }
             }
 
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
             return true;
         }
         else
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
     }

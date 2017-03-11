@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
@@ -29,8 +30,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A SyntaxChecker which verifies that a value is a Boolean according to RFC 4517.
- * <br>
+ * 
  * From RFC 4517 :
+ * 
  * <pre>
  * Boolean = "TRUE" / "FALSE"
  * </pre>
@@ -42,8 +44,13 @@ public class BooleanSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( BooleanSyntaxChecker.class );
+    
+    /**
+     * A static instance of BooleanSyntaxChecker
+     */
+    public static final BooleanSyntaxChecker INSTANCE = new BooleanSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of BooleanSyntaxChecker.
      */
@@ -63,7 +70,7 @@ public class BooleanSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -82,7 +89,7 @@ public class BooleanSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, strValue );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, strValue ) );
             return false;
         }
 
@@ -90,11 +97,11 @@ public class BooleanSyntaxChecker extends SyntaxChecker
 
         if ( valid )
         {
-            LOG.debug( "Syntax valid for '{}'", strValue );
+            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, strValue ) );
         }
         else
         {
-            LOG.debug( INVALID_SYNTAX_FOR, strValue );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, strValue ) );
         }
 
         return valid;

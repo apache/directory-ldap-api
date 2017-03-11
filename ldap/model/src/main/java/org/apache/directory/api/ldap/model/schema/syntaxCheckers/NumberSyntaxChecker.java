@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
@@ -29,12 +30,13 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A SyntaxChecker which verifies that a value is a Number according to RFC 4512.
- * 
+ * <p>
  * From RFC 4512 :
+ * <pre>
  * number  = DIGIT | ( LDIGIT 1*DIGIT )
  * DIGIT   = %x30 | LDIGIT       ; "0"-"9"
  * LDIGIT  = %x31-39             ; "1"-"9"
- * 
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -43,8 +45,13 @@ public class NumberSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( NumberSyntaxChecker.class );
+    
+    /**
+     * A static instance of NumberSyntaxChecker
+     */
+    public static final NumberSyntaxChecker INSTANCE = new NumberSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of NumberSyntaxChecker.
      */
@@ -64,7 +71,7 @@ public class NumberSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -84,7 +91,7 @@ public class NumberSyntaxChecker extends SyntaxChecker
         // We should have at least one char
         if ( strValue.length() == 0 )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -106,7 +113,7 @@ public class NumberSyntaxChecker extends SyntaxChecker
                     continue;
 
                 default:
-                    LOG.debug( INVALID_SYNTAX_FOR, value );
+                    LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
                     return false;
             }
         }
@@ -115,11 +122,11 @@ public class NumberSyntaxChecker extends SyntaxChecker
         {
             // A number can't start with a '0' unless it's the only
             // number
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
-        LOG.debug( "Syntax valid for '{}'", value );
+        LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
         return true;
     }
 }

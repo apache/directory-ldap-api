@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
@@ -42,8 +43,13 @@ public class MailPreferenceSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( MailPreferenceSyntaxChecker.class );
+    
+    /**
+     * A static instance of MailPreferenceSyntaxChecker
+     */
+    public static final MailPreferenceSyntaxChecker INSTANCE = new MailPreferenceSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of MailPreferenceSyntaxChecker.
      */
@@ -76,7 +82,7 @@ public class MailPreferenceSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -95,20 +101,20 @@ public class MailPreferenceSyntaxChecker extends SyntaxChecker
 
         if ( ( strValue.length() < 8 ) || ( strValue.length() > 18 ) )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
-        boolean result = "NO-LISTS".equals( strValue ) || "ANY-LIST".equals( strValue )
-            || "PROFESSIONAL-LISTS".equals( strValue );
+        boolean result = ( "NO-LISTS".equals( strValue ) ) || ( "ANY-LIST".equals( strValue ) )
+            || ( "PROFESSIONAL-LISTS".equals( strValue ) );
 
         if ( result )
         {
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
         }
         else
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
         }
 
         return result;

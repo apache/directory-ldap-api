@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,7 @@ import org.slf4j.LoggerFactory;
 /**
  * A SyntaxChecker which verifies that a value is a SubstringAssertion 
  * according to RFC 4517.
- * 
+ * <p>
  * Implemented as binary right now ...
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -38,15 +39,19 @@ public class SubstringAssertionSyntaxChecker extends BinarySyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( SubstringAssertionSyntaxChecker.class );
+    
+    /**
+     * A static instance of SubstringAssertionSyntaxChecker
+     */
+    public static final SubstringAssertionSyntaxChecker INSTANCE = new SubstringAssertionSyntaxChecker();
 
-
+    
     /**
      * Creates an instance of SubstringAssertionSyntaxChecker
      */
     public SubstringAssertionSyntaxChecker()
     {
-        super();
-        setOid( SchemaConstants.SUBSTRING_ASSERTION_SYNTAX );
+        super( SchemaConstants.SUBSTRING_ASSERTION_SYNTAX );
     }
 
 
@@ -56,7 +61,7 @@ public class SubstringAssertionSyntaxChecker extends BinarySyntaxChecker
     @Override
     public boolean isValidSyntax( Object value )
     {
-        LOG.debug( "Syntax valid for '{}'", value );
+        LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
         return true;
     }
 }

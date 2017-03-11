@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,11 +29,13 @@ import org.slf4j.LoggerFactory;
 /**
  * A SyntaxChecker which verifies that a value is a certificateList according to RFC 4523 :
  * 
+ * <pre>
  * "Due to changes made to the definition of a CertificateList through time,
  *  no LDAP-specific encoding is defined for this syntax.  Values of this
  *  syntax SHOULD be encoded using Distinguished Encoding Rules (DER)
  *  [X.690] and MUST only be transferred using the ;binary transfer
  *  option"
+ * </pre>
  * 
  * It has been removed in RFC 4517
  *  
@@ -43,15 +46,19 @@ public class CertificateListSyntaxChecker extends BinarySyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( CertificateListSyntaxChecker.class );
+    
+    /**
+     * A static instance of CertificateListSyntaxChecker
+     */
+    public static final CertificateListSyntaxChecker INSTANCE = new CertificateListSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of CertificateListSyntaxChecker.
      */
     public CertificateListSyntaxChecker()
     {
-        super();
-        setOid( SchemaConstants.CERTIFICATE_LIST_SYNTAX );
+        super( SchemaConstants.CERTIFICATE_LIST_SYNTAX );
     }
 
 
@@ -61,7 +68,7 @@ public class CertificateListSyntaxChecker extends BinarySyntaxChecker
     @Override
     public boolean isValidSyntax( Object value )
     {
-        LOG.debug( "Syntax valid for '{}'", value );
+        LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
         return true;
     }
 }

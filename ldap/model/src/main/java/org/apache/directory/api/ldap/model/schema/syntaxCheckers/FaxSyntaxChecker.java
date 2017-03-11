@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A SyntaxChecker which verifies that a value is a Fax according to RFC 4517.
- * 
+ * <p>
  * We didn't implemented the check against RFC 804, so the value is considered
  * to contain an OctetString.
  *  
@@ -38,15 +39,19 @@ public class FaxSyntaxChecker extends BinarySyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( FaxSyntaxChecker.class );
+    
+    /**
+     * A static instance of FaxSyntaxChecker
+     */
+    public static final FaxSyntaxChecker INSTANCE = new FaxSyntaxChecker();
 
-
+    
     /**
      * Private default constructor to prevent unnecessary instantiation.
      */
     public FaxSyntaxChecker()
     {
-        super();
-        setOid( SchemaConstants.FAX_SYNTAX );
+        super( SchemaConstants.FAX_SYNTAX );
     }
 
 
@@ -56,7 +61,7 @@ public class FaxSyntaxChecker extends BinarySyntaxChecker
     @Override
     public boolean isValidSyntax( Object value )
     {
-        LOG.debug( "Syntax valid for '{}'", value );
+        LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
         return true;
     }
 }

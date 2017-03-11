@@ -36,8 +36,7 @@ public class OpenLdapObjectIdentifierMacro
     private String rawOidOrNameSuffix;
 
     private String resolvedOid;
-
-
+    
     /**
      * Instantiates a new OpenLDAP object identifier macro.
      */
@@ -126,9 +125,6 @@ public class OpenLdapObjectIdentifierMacro
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString()
     {

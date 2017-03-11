@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
@@ -35,9 +36,10 @@ import org.slf4j.LoggerFactory;
  * 
  * From RFC 4517 :
  * 
+ * <pre>
  * A value of the Country String syntax is one of the two-character
  * codes from ISO 3166 [ISO3166] for representing a country.
- * 
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -307,8 +309,13 @@ public class CountrySyntaxChecker extends SyntaxChecker
             COUNTRIES.add( country );
         }
     }
+    
+    /**
+     * A static instance of CountrySyntaxChecker
+     */
+    public static final CountrySyntaxChecker INSTANCE = new CountrySyntaxChecker();
 
-
+    
     /**
      * 
      * Creates a new instance of CountrySyntaxChecker.
@@ -330,7 +337,7 @@ public class CountrySyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -349,7 +356,7 @@ public class CountrySyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -357,11 +364,11 @@ public class CountrySyntaxChecker extends SyntaxChecker
 
         if ( result )
         {
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
         }
         else
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
         }
 
         return result;

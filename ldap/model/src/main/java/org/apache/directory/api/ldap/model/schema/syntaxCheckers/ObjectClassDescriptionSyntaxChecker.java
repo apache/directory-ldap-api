@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import java.text.ParseException;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.parsers.ObjectClassDescriptionSchemaParser;
@@ -61,9 +62,14 @@ public class ObjectClassDescriptionSyntaxChecker extends SyntaxChecker
     private static final Logger LOG = LoggerFactory.getLogger( ObjectClassDescriptionSyntaxChecker.class );
 
     /** The schema parser used to parse the ObjectClassDescription Syntax */
-    private transient ObjectClassDescriptionSchemaParser schemaParser = new ObjectClassDescriptionSchemaParser();
+    private ObjectClassDescriptionSchemaParser schemaParser = new ObjectClassDescriptionSchemaParser();
+    
+    /**
+     * A static instance of ObjectClassDescriptionSyntaxChecker
+     */
+    public static final ObjectClassDescriptionSyntaxChecker INSTANCE = new ObjectClassDescriptionSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of ObjectClassDescriptionSyntaxChecker.
      */
@@ -83,7 +89,7 @@ public class ObjectClassDescriptionSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -103,12 +109,12 @@ public class ObjectClassDescriptionSyntaxChecker extends SyntaxChecker
         try
         {
             schemaParser.parseObjectClassDescription( strValue );
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
             return true;
         }
         catch ( ParseException pe )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
     }

@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
@@ -30,12 +31,12 @@ import org.slf4j.LoggerFactory;
 /**
  * A SyntaxChecker which verifies that a value is a Telex Number according to 
  * RFC 4517 :
- * 
+ * <pre>
  * telex-number  = actual-number DOLLAR country-code DOLLAR answerback
  * actual-number = PrintableString
  * country-code  = PrintableString
  * answerback    = PrintableString
- * 
+ * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
@@ -43,8 +44,13 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( TelexNumberSyntaxChecker.class );
+    
+    /**
+     * A static instance of TelexNumberSyntaxChecker
+     */
+    public static final TelexNumberSyntaxChecker INSTANCE = new TelexNumberSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of TelexNumberSyntaxChecker.
      */
@@ -64,7 +70,7 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -83,7 +89,7 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -94,7 +100,7 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
         if ( dollar <= 0 )
         {
             // No '$' => error
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -103,14 +109,14 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
         // The actualNumber must not be empty
         if ( actualNumber.length() == 0 )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
         // The actual number should be a PrintableString 
         if ( !Strings.isPrintableString( actualNumber ) )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -121,7 +127,7 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
         if ( dollar2 == -1 )
         {
             // No '$' => error
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -130,14 +136,14 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
         // The countryCode must not be empty
         if ( countryCode.length() == 0 )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
         // The country Code should be a PrintableString 
         if ( !Strings.isPrintableString( countryCode ) )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -145,7 +151,7 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
         if ( dollar2 + 1 == strValue.length() )
         {
             // The last string should not be null
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -154,7 +160,7 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
         // The answerBack should be a PrintableString 
         if ( !Strings.isPrintableString( answerBack ) )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -163,11 +169,11 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
 
         if ( result )
         {
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
         }
         else
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
         }
 
         return result;

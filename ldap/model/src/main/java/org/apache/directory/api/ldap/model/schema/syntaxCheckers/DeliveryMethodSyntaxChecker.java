@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Chars;
@@ -59,7 +60,7 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
         {
             "any", "mhs", "physical", "telex", "teletex",
             "g3fax", "g4fax", "ia5", "videotex", "telephone"
-    };
+        };
 
     /** The Set which contains the delivery methods */
     private static final Set<String> DELIVERY_METHODS = new HashSet<>();
@@ -72,6 +73,11 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
             DELIVERY_METHODS.add( country );
         }
     }
+    
+    /**
+     * A static instance of DeliveryMethodSyntaxChecker
+     */
+    public static final DeliveryMethodSyntaxChecker INSTANCE = new DeliveryMethodSyntaxChecker();
 
 
     /**
@@ -144,7 +150,7 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -163,7 +169,7 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -173,9 +179,10 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
         Set<String> pmds = new HashSet<>();
 
         pos = isPdm( strValue, pos, pmds );
+        
         if ( pos == -1 )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
 
@@ -193,7 +200,7 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
             if ( !Strings.isCharASCII( strValue, pos, '$' ) )
             {
                 // A '$' was expected
-                LOG.debug( INVALID_SYNTAX_FOR, value );
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
                 return false;
             }
             else
@@ -208,14 +215,15 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
             }
 
             pos = isPdm( strValue, pos, pmds );
+            
             if ( pos == -1 )
             {
-                LOG.debug( INVALID_SYNTAX_FOR, value );
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
                 return false;
             }
         }
 
-        LOG.debug( "Syntax valid for '{}'", value );
+        LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
         return true;
     }
 }

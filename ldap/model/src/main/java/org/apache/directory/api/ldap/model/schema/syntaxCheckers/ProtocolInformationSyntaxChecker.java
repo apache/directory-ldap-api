@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.slf4j.Logger;
@@ -37,8 +38,13 @@ public class ProtocolInformationSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( ProtocolInformationSyntaxChecker.class );
+    
+    /**
+     * A static instance of ProtocolInformationSyntaxChecker
+     */
+    public static final ProtocolInformationSyntaxChecker INSTANCE = new ProtocolInformationSyntaxChecker();
 
-
+    
     /**
      * Creates a new instance of ProtocolInformationSyntaxChecker.
      */
@@ -54,7 +60,7 @@ public class ProtocolInformationSyntaxChecker extends SyntaxChecker
     @Override
     public boolean isValidSyntax( Object value )
     {
-        LOG.debug( "Syntax valid for '{}'", value );
+        LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
         return true;
     }
 }

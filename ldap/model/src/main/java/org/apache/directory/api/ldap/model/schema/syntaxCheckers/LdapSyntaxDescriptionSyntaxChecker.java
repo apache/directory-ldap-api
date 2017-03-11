@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import java.text.ParseException;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.parsers.LdapSyntaxDescriptionSchemaParser;
@@ -32,7 +33,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A SyntaxChecker which verifies that a value follows the
- * LDAP syntax descripton syntax according to RFC 4512, par 4.2.2:
+ * LDAP syntax description syntax according to RFC 4512, par 4.2.2:
  * 
  * <pre>
  * SyntaxDescription = LPAREN WSP
@@ -50,9 +51,14 @@ public class LdapSyntaxDescriptionSyntaxChecker extends SyntaxChecker
     private static final Logger LOG = LoggerFactory.getLogger( LdapSyntaxDescriptionSyntaxChecker.class );
 
     /** The schema parser used to parse the LdapSyntax description Syntax */
-    private transient LdapSyntaxDescriptionSchemaParser schemaParser = new LdapSyntaxDescriptionSchemaParser();
+    private LdapSyntaxDescriptionSchemaParser schemaParser = new LdapSyntaxDescriptionSchemaParser();
+    
+    /**
+     * A static instance of LdapSyntaxDescriptionSyntaxChecker
+     */
+    public static final LdapSyntaxDescriptionSyntaxChecker INSTANCE = new LdapSyntaxDescriptionSyntaxChecker();
 
-
+    
     /**
      * 
      * Creates a new instance of LdapSyntaxDescriptionSyntaxChecker.
@@ -74,7 +80,7 @@ public class LdapSyntaxDescriptionSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
             return false;
         }
 
@@ -94,13 +100,13 @@ public class LdapSyntaxDescriptionSyntaxChecker extends SyntaxChecker
         try
         {
             schemaParser.parseLdapSyntaxDescription( strValue );
-            LOG.debug( "Syntax valid for '{}'", value );
+            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
 
             return true;
         }
         catch ( ParseException pe )
         {
-            LOG.debug( INVALID_SYNTAX_FOR, value );
+            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
             return false;
         }
     }
