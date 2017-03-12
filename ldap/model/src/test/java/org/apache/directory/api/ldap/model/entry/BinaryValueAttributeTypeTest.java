@@ -86,7 +86,7 @@ public class BinaryValueAttributeTypeTest
     public void initAT()
     {
         s = EntryUtils.syntaxFactory( "1.1.1.1", false );
-        s.setSyntaxChecker( new OctetStringSyntaxChecker() );
+        s.setSyntaxChecker( OctetStringSyntaxChecker.INSTANCE );
         mr = EntryUtils.matchingRuleFactory( "1.1.2.1" );
         mr.setSyntax( s );
 

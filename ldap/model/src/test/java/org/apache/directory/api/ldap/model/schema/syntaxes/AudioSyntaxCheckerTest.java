@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class AudioSyntaxCheckerTest
 {
-    AudioSyntaxChecker checker = new AudioSyntaxChecker();
+    AudioSyntaxChecker checker = AudioSyntaxChecker.INSTANCE;
 
 
     @Test

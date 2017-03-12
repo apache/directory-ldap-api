@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class PresentationAddressSyntaxCheckerTest
 {
-    PresentationAddressSyntaxChecker checker = new PresentationAddressSyntaxChecker();
+    PresentationAddressSyntaxChecker checker = PresentationAddressSyntaxChecker.INSTANCE;
 
 
     @Test

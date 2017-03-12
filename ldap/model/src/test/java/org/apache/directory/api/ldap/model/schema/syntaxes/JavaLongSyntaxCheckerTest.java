@@ -42,7 +42,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class JavaLongSyntaxCheckerTest
 {
-    JavaLongSyntaxChecker checker = new JavaLongSyntaxChecker();
+    JavaLongSyntaxChecker checker = JavaLongSyntaxChecker.INSTANCE;
 
 
     @Test

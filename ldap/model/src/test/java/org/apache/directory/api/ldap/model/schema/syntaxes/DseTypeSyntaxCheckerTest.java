@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class DseTypeSyntaxCheckerTest
 {
-    DseTypeSyntaxChecker checker = new DseTypeSyntaxChecker();
+    DseTypeSyntaxChecker checker = DseTypeSyntaxChecker.INSTANCE;
 
 
     @Test

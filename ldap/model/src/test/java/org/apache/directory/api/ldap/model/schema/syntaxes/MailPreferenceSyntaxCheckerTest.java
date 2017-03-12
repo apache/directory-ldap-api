@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class MailPreferenceSyntaxCheckerTest
 {
-    MailPreferenceSyntaxChecker checker = new MailPreferenceSyntaxChecker();
+    MailPreferenceSyntaxChecker checker = MailPreferenceSyntaxChecker.INSTANCE;
 
 
     @Test

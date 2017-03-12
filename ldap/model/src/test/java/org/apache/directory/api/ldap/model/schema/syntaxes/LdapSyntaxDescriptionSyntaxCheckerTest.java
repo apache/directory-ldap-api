@@ -42,7 +42,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class LdapSyntaxDescriptionSyntaxCheckerTest
 {
-    private LdapSyntaxDescriptionSyntaxChecker checker = new LdapSyntaxDescriptionSyntaxChecker();
+    private LdapSyntaxDescriptionSyntaxChecker checker = LdapSyntaxDescriptionSyntaxChecker.INSTANCE;
 
 
     @Test

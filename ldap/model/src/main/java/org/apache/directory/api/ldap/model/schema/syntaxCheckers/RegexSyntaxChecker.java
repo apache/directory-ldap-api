@@ -95,7 +95,6 @@ public class RegexSyntaxChecker extends SyntaxChecker
     public boolean isValidSyntax( Object value )
     {
         String str;
-        boolean match = true;
 
         if ( value instanceof String )
         {
@@ -103,25 +102,18 @@ public class RegexSyntaxChecker extends SyntaxChecker
 
             for ( String regexp : expressions )
             {
-                match = match && str.matches( regexp );
-
-                if ( !match )
+                if ( !str.matches( regexp ) )
                 {
-                    break;
+                    LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                    
+                    return false;
                 }
             }
         }
 
-        if ( match )
-        {
-            LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
-        }
-        else
-        {
-            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
-        }
+        LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
 
-        return match;
+        return true;
     }
 
 

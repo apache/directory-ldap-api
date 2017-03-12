@@ -185,7 +185,13 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
         if ( defaultMandatory )
         {
             // We have a unique regexp to check, the default one
-            boolean result = defaultPattern.matcher( strValue ).matches();
+            // We have to do that in a protected section
+            boolean result;
+            
+            synchronized ( defaultPattern )
+            {
+                result = defaultPattern.matcher( strValue ).matches();
+            }
 
             if ( result )
             {
@@ -200,7 +206,14 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
         }
         else
         {
-            if ( defaultPattern.matcher( strValue ).matches() )
+            boolean result;
+        
+            synchronized ( defaultPattern )
+            {
+                result = defaultPattern.matcher( strValue ).matches();
+            }
+            
+            if ( result )
             {
                 LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
                 return true;
@@ -213,14 +226,17 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
                     return false;
                 }
 
-                // The default is not enough, let's try
-                // the other regexps
-                for ( Pattern pattern : compiledREs )
+                synchronized ( compiledREs )
                 {
-                    if ( pattern.matcher( strValue ).matches() )
+                    // The default is not enough, let's try
+                    // the other regexps
+                    for ( Pattern pattern : compiledREs )
                     {
-                        LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
-                        return true;
+                        if ( pattern.matcher( strValue ).matches() )
+                        {
+                            LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+                            return true;
+                        }
                     }
                 }
 

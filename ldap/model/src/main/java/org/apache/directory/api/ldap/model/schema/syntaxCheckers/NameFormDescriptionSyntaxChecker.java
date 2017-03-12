@@ -56,7 +56,7 @@ public class NameFormDescriptionSyntaxChecker extends SyntaxChecker
     private static final Logger LOG = LoggerFactory.getLogger( NameFormDescriptionSyntaxChecker.class );
 
     /** The schema parser used to parse the DITContentRuleDescription Syntax */
-    private NameFormDescriptionSchemaParser schemaParser = new NameFormDescriptionSchemaParser();
+    private transient NameFormDescriptionSchemaParser schemaParser = new NameFormDescriptionSchemaParser();
     
     /**
      * A static instance of NameFormDescriptionSyntaxChecker

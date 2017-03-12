@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class SupportedAlgorithmSyntaxCheckerTest
 {
-    SupportedAlgorithmSyntaxChecker checker = new SupportedAlgorithmSyntaxChecker();
+    SupportedAlgorithmSyntaxChecker checker = SupportedAlgorithmSyntaxChecker.INSTANCE;
 
 
     @Test

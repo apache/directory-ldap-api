@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class BinarySyntaxCheckerTest
 {
-    BinarySyntaxChecker checker = new BinarySyntaxChecker();
+    BinarySyntaxChecker checker = BinarySyntaxChecker.INSTANCE;
 
 
     @Test

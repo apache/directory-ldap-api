@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class DataQualitySyntaxSyntaxCheckerTest
 {
-    DataQualitySyntaxSyntaxChecker checker = new DataQualitySyntaxSyntaxChecker();
+    DataQualitySyntaxSyntaxChecker checker = DataQualitySyntaxSyntaxChecker.INSTANCE;
 
 
     @Test

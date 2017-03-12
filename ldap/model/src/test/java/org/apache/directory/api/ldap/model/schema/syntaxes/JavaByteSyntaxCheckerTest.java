@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class JavaByteSyntaxCheckerTest
 {
-    JavaByteSyntaxChecker checker = new JavaByteSyntaxChecker();
+    JavaByteSyntaxChecker checker = JavaByteSyntaxChecker.INSTANCE;
 
 
     @Test

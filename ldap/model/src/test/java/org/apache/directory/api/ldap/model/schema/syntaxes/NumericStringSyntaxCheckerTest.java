@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class NumericStringSyntaxCheckerTest
 {
-    NumericStringSyntaxChecker checker = new NumericStringSyntaxChecker();
+    NumericStringSyntaxChecker checker = NumericStringSyntaxChecker.INSTANCE;
 
 
     @Test

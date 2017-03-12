@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class FaxSyntaxCheckerTest
 {
-    FaxSyntaxChecker checker = new FaxSyntaxChecker();
+    FaxSyntaxChecker checker = FaxSyntaxChecker.INSTANCE;
 
 
     @Test

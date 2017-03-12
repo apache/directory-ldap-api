@@ -41,7 +41,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class UuidSyntaxCheckerTest
 {
-    UuidSyntaxChecker checker = new UuidSyntaxChecker();
+    UuidSyntaxChecker checker = UuidSyntaxChecker.INSTANCE;
 
 
     @Test

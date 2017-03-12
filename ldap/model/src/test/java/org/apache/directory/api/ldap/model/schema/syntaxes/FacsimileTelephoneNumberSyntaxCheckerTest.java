@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class FacsimileTelephoneNumberSyntaxCheckerTest
 {
-    FacsimileTelephoneNumberSyntaxChecker checker = new FacsimileTelephoneNumberSyntaxChecker();
+    FacsimileTelephoneNumberSyntaxChecker checker = FacsimileTelephoneNumberSyntaxChecker.INSTANCE;
 
 
     @Test
@@ -89,6 +89,8 @@ public class FacsimileTelephoneNumberSyntaxCheckerTest
     public void testWithNewMandatoryRegexp()
     {
         // Adding french telephone number regexp
+        checker = new FacsimileTelephoneNumberSyntaxChecker();
+        
         checker.setDefaultRegexp( " *0[1-8](( *|[-/.]{1})\\d\\d){4} *" );
 
         assertFalse( checker.isValidSyntax( "+ 123 ( 456 )7891   12345" ) );

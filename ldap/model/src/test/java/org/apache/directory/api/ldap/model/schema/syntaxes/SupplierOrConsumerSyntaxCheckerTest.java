@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class SupplierOrConsumerSyntaxCheckerTest
 {
-    SupplierOrConsumerSyntaxChecker checker = new SupplierOrConsumerSyntaxChecker();
+    SupplierOrConsumerSyntaxChecker checker = SupplierOrConsumerSyntaxChecker.INSTANCE;
 
 
     @Test

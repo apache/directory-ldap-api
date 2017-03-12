@@ -51,7 +51,7 @@ public class LdapSyntaxDescriptionSyntaxChecker extends SyntaxChecker
     private static final Logger LOG = LoggerFactory.getLogger( LdapSyntaxDescriptionSyntaxChecker.class );
 
     /** The schema parser used to parse the LdapSyntax description Syntax */
-    private LdapSyntaxDescriptionSchemaParser schemaParser = new LdapSyntaxDescriptionSchemaParser();
+    private transient LdapSyntaxDescriptionSchemaParser schemaParser = new LdapSyntaxDescriptionSchemaParser();
     
     /**
      * A static instance of LdapSyntaxDescriptionSyntaxChecker

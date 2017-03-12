@@ -41,7 +41,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class TelephoneNumberSyntaxCheckerTest
 {
-    TelephoneNumberSyntaxChecker checker = new TelephoneNumberSyntaxChecker();
+    TelephoneNumberSyntaxChecker checker = TelephoneNumberSyntaxChecker.INSTANCE;
 
 
     @Test
@@ -98,6 +98,7 @@ public class TelephoneNumberSyntaxCheckerTest
     public void testWithNewMandatoryRegexp()
     {
         // Adding french telephone number regexp
+        checker = new TelephoneNumberSyntaxChecker();
         checker.setDefaultRegexp( " *0[1-8](( *|[-/.]{1})\\d\\d){4} *" );
 
         assertFalse( checker.isValidSyntax( "+ 123 ( 456 )7891   12345" ) );

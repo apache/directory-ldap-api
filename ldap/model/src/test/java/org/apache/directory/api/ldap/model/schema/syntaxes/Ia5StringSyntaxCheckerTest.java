@@ -41,7 +41,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class Ia5StringSyntaxCheckerTest
 {
-    Ia5StringSyntaxChecker checker = new Ia5StringSyntaxChecker();
+    Ia5StringSyntaxChecker checker = Ia5StringSyntaxChecker.INSTANCE;
 
 
     @Test

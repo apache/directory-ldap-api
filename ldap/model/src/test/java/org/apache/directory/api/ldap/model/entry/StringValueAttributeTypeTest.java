@@ -84,7 +84,7 @@ public class StringValueAttributeTypeTest
     public void initAT()
     {
         s = new EntryUtils.S( "1.1.1.1", true );
-        s.setSyntaxChecker( new OctetStringSyntaxChecker() );
+        s.setSyntaxChecker( OctetStringSyntaxChecker.INSTANCE );
         mr = new EntryUtils.MR( "1.1.2.1" );
         mr.setSyntax( s );
         mr.setLdapComparator( new StringComparator( "1.1.2.1" ) );
