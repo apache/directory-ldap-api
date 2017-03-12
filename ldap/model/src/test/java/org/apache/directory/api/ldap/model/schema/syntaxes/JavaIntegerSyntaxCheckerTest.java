@@ -42,7 +42,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class JavaIntegerSyntaxCheckerTest
 {
-    JavaIntegerSyntaxChecker checker = new JavaIntegerSyntaxChecker();
+    JavaIntegerSyntaxChecker checker = JavaIntegerSyntaxChecker.INSTANCE;
 
 
     @Test

@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class AccessPointSyntaxCheckerTest
 {
-    AccessPointSyntaxChecker checker = new AccessPointSyntaxChecker();
+    AccessPointSyntaxChecker checker = AccessPointSyntaxChecker.INSTANCE;
 
 
     @Test

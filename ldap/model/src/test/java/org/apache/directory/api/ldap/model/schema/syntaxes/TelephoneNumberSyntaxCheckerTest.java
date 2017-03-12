@@ -41,7 +41,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class TelephoneNumberSyntaxCheckerTest
 {
-    TelephoneNumberSyntaxChecker checker = new TelephoneNumberSyntaxChecker();
+    TelephoneNumberSyntaxChecker checker = TelephoneNumberSyntaxChecker.INSTANCE;
 
 
     @Test

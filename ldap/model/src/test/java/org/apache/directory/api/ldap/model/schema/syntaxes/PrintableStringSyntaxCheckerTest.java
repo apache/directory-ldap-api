@@ -41,7 +41,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class PrintableStringSyntaxCheckerTest
 {
-    PrintableStringSyntaxChecker checker = new PrintableStringSyntaxChecker();
+    PrintableStringSyntaxChecker checker = PrintableStringSyntaxChecker.INSTANCE;
 
 
     @Test

@@ -88,7 +88,7 @@ public class ValueSerializationTest
     public void initAT()
     {
         sb = new EntryUtils.S( "1.1.1.1", false );
-        sb.setSyntaxChecker( new OctetStringSyntaxChecker() );
+        sb.setSyntaxChecker( OctetStringSyntaxChecker.INSTANCE );
         mrb = new EntryUtils.MR( "1.1.2.1" );
         mrb.setSyntax( sb );
 
@@ -127,7 +127,7 @@ public class ValueSerializationTest
         atb.setSyntax( sb );
 
         ss = new EntryUtils.S( "1.1.1.1", true );
-        ss.setSyntaxChecker( new OctetStringSyntaxChecker() );
+        ss.setSyntaxChecker( OctetStringSyntaxChecker.INSTANCE );
         mrs = new EntryUtils.MR( "1.1.2.1" );
         mrs.setSyntax( ss );
         mrs.setLdapComparator( new StringComparator( "1.1.2.1" ) );

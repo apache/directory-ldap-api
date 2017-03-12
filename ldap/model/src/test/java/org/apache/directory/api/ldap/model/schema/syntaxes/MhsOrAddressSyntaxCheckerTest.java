@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class MhsOrAddressSyntaxCheckerTest
 {
-    MhsOrAddressSyntaxChecker checker = new MhsOrAddressSyntaxChecker();
+    MhsOrAddressSyntaxChecker checker = MhsOrAddressSyntaxChecker.INSTANCE;
 
 
     @Test

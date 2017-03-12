@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class BitStringSyntaxCheckerTest
 {
-    BitStringSyntaxChecker checker = new BitStringSyntaxChecker();
+    BitStringSyntaxChecker checker = BitStringSyntaxChecker.INSTANCE;
 
 
     @Test

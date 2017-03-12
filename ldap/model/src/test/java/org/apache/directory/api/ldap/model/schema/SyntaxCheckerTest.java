@@ -55,10 +55,10 @@ public class SyntaxCheckerTest
     @Before
     public void initNames() throws Exception
     {
-        objectClassA = new AccessPointSyntaxChecker();
-        objectClassACopy = new AccessPointSyntaxChecker();
-        objectClassB = new AccessPointSyntaxChecker();
-        objectClassC = new CountrySyntaxChecker();
+        objectClassA = AccessPointSyntaxChecker.INSTANCE;
+        objectClassACopy = AccessPointSyntaxChecker.INSTANCE;
+        objectClassB = AccessPointSyntaxChecker.INSTANCE;
+        objectClassC = CountrySyntaxChecker.INSTANCE;
     }
 
 

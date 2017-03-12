@@ -42,7 +42,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class AttributeTypeDescriptionSyntaxCheckerTest
 {
-    private AttributeTypeDescriptionSyntaxChecker checker = new AttributeTypeDescriptionSyntaxChecker();
+    private AttributeTypeDescriptionSyntaxChecker checker = AttributeTypeDescriptionSyntaxChecker.INSTANCE;
 
 
     @Test

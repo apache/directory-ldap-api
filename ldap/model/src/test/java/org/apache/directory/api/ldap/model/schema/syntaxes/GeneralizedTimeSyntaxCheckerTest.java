@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class GeneralizedTimeSyntaxCheckerTest
 {
-    GeneralizedTimeSyntaxChecker checker = new GeneralizedTimeSyntaxChecker();
+    GeneralizedTimeSyntaxChecker checker = GeneralizedTimeSyntaxChecker.INSTANCE;
 
 
     @Test

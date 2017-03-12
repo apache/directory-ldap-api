@@ -54,7 +54,7 @@ public class MatchingRuleUseDescriptionSyntaxChecker extends SyntaxChecker
     private static final Logger LOG = LoggerFactory.getLogger( MatchingRuleUseDescriptionSyntaxChecker.class );
 
     /** The schema parser used to parse the MatchingRuleUseDescription Syntax */
-    private MatchingRuleUseDescriptionSchemaParser schemaParser = new MatchingRuleUseDescriptionSchemaParser();
+    private transient MatchingRuleUseDescriptionSchemaParser schemaParser = new MatchingRuleUseDescriptionSchemaParser();
     
     /**
      * A static instance of MatchingRuleUseDescriptionSyntaxChecker

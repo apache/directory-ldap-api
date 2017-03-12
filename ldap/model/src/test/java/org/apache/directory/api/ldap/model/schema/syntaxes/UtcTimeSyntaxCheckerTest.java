@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class UtcTimeSyntaxCheckerTest
 {
-    UtcTimeSyntaxChecker checker = new UtcTimeSyntaxChecker();
+    UtcTimeSyntaxChecker checker = UtcTimeSyntaxChecker.INSTANCE;
 
 
     @Test

@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class CsnSidSyntaxCheckerTest
 {
-    CsnSidSyntaxChecker checker = new CsnSidSyntaxChecker();
+    CsnSidSyntaxChecker checker = CsnSidSyntaxChecker.INSTANCE;
 
 
     @Test

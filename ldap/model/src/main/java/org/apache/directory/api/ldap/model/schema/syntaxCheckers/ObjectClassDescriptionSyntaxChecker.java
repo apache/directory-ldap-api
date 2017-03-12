@@ -62,7 +62,7 @@ public class ObjectClassDescriptionSyntaxChecker extends SyntaxChecker
     private static final Logger LOG = LoggerFactory.getLogger( ObjectClassDescriptionSyntaxChecker.class );
 
     /** The schema parser used to parse the ObjectClassDescription Syntax */
-    private ObjectClassDescriptionSchemaParser schemaParser = new ObjectClassDescriptionSchemaParser();
+    private transient ObjectClassDescriptionSchemaParser schemaParser = new ObjectClassDescriptionSchemaParser();
     
     /**
      * A static instance of ObjectClassDescriptionSyntaxChecker

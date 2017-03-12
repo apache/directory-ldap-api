@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class OctetStringSyntaxCheckerTest
 {
-    OctetStringSyntaxChecker checker = new OctetStringSyntaxChecker();
+    OctetStringSyntaxChecker checker = OctetStringSyntaxChecker.INSTANCE;
 
 
     @Test

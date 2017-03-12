@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class CertificateSyntaxCheckerTest
 {
-    CertificateSyntaxChecker checker = new CertificateSyntaxChecker();
+    CertificateSyntaxChecker checker = CertificateSyntaxChecker.INSTANCE;
 
 
     @Test

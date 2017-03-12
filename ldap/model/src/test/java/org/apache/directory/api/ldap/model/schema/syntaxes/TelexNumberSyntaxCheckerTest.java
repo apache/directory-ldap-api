@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class TelexNumberSyntaxCheckerTest
 {
-    TelexNumberSyntaxChecker checker = new TelexNumberSyntaxChecker();
+    TelexNumberSyntaxChecker checker = TelexNumberSyntaxChecker.INSTANCE;
 
 
     @Test

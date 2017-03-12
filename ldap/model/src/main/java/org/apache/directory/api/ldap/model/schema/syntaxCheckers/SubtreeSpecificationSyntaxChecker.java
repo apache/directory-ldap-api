@@ -46,7 +46,7 @@ public class SubtreeSpecificationSyntaxChecker extends SyntaxChecker
     private static final Logger LOG = LoggerFactory.getLogger( SubtreeSpecificationSyntaxChecker.class );
 
     /** The associated checker */
-    private SubtreeSpecificationChecker subtreeSpecificationChecker;
+    private transient SubtreeSpecificationChecker subtreeSpecificationChecker;
     
     /**
      * A static instance of SubtreeSpecificationSyntaxChecker

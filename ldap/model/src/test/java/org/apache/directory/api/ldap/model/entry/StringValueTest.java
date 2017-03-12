@@ -70,7 +70,7 @@ public class StringValueTest
     public static void initAT()
     {
         s = new EntryUtils.S( "1.1.1.1", true );
-        s.setSyntaxChecker( new DirectoryStringSyntaxChecker() );
+        s.setSyntaxChecker( DirectoryStringSyntaxChecker.INSTANCE );
         mr = new EntryUtils.MR( "1.1.2.1" );
         mr.setSyntax( s );
         mr.setLdapComparator( new StringComparator( "1.1.2.1" ) );
@@ -214,7 +214,7 @@ public class StringValueTest
 
         assertNull( csv.getValue() );
         assertFalse( csv.isSchemaAware() );
-        assertTrue( csv.isValid( new Ia5StringSyntaxChecker() ) );
+        assertTrue( csv.isValid( Ia5StringSyntaxChecker.INSTANCE ) );
         assertTrue( csv.isNull() );
         assertEquals( 0, csv.compareTo( ( String ) null ) );
     }
@@ -231,7 +231,7 @@ public class StringValueTest
         assertNotNull( csv.getValue() );
         assertEquals( "", csv.getValue() );
         assertFalse( csv.isSchemaAware() );
-        assertTrue( csv.isValid( new Ia5StringSyntaxChecker() ) );
+        assertTrue( csv.isValid( Ia5StringSyntaxChecker.INSTANCE ) );
         assertFalse( csv.isNull() );
         assertEquals( 0, csv.compareTo( "" ) );
     }
@@ -247,7 +247,7 @@ public class StringValueTest
 
         assertEquals( "test", csv.getValue() );
         assertFalse( csv.isSchemaAware() );
-        assertTrue( csv.isValid( new Ia5StringSyntaxChecker() ) );
+        assertTrue( csv.isValid( Ia5StringSyntaxChecker.INSTANCE ) );
         assertFalse( csv.isNull() );
         assertEquals( 0, csv.compareTo( "test" ) );
     }
@@ -292,21 +292,21 @@ public class StringValueTest
 
         assertNull( sv.getValue() );
         assertFalse( sv.isSchemaAware() );
-        assertTrue( sv.isValid( new Ia5StringSyntaxChecker() ) );
+        assertTrue( sv.isValid( Ia5StringSyntaxChecker.INSTANCE ) );
         assertTrue( sv.isNull() );
 
         sv = new Value( "" );
         assertNotNull( sv.getValue() );
         assertEquals( "", sv.getValue() );
         assertFalse( sv.isSchemaAware() );
-        assertTrue( sv.isValid( new Ia5StringSyntaxChecker() ) );
+        assertTrue( sv.isValid( Ia5StringSyntaxChecker.INSTANCE ) );
         assertFalse( sv.isNull() );
 
         sv = new Value( "Test" );
         assertNotNull( sv.getValue() );
         assertEquals( "Test", sv.getValue() );
         assertFalse( sv.isSchemaAware() );
-        assertTrue( sv.isValid( new Ia5StringSyntaxChecker() ) );
+        assertTrue( sv.isValid( Ia5StringSyntaxChecker.INSTANCE ) );
         assertFalse( sv.isNull() );
     }
 
@@ -435,10 +435,10 @@ public class StringValueTest
     {
         Value sv = new Value( "Test" );
 
-        assertTrue( sv.isValid( new Ia5StringSyntaxChecker() ) );
+        assertTrue( sv.isValid( Ia5StringSyntaxChecker.INSTANCE ) );
 
         sv = new Value( "é" );
-        assertFalse( sv.isValid( new Ia5StringSyntaxChecker() ) );
+        assertFalse( sv.isValid( Ia5StringSyntaxChecker.INSTANCE ) );
     }
 
 
@@ -526,7 +526,7 @@ public class StringValueTest
     {
         Value csv = new Value( "TEST" );
         csv = new Value( at, csv );
-        csv.isValid( new Ia5StringSyntaxChecker() );
+        csv.isValid( Ia5StringSyntaxChecker.INSTANCE );
 
         Value csvSer = deserializeValue( at, serializeValue( csv ) );
         assertNotSame( csv, csvSer );
@@ -543,7 +543,7 @@ public class StringValueTest
     public void testSerializeNotNormalized() throws LdapException, IOException, ClassNotFoundException
     {
         Value csv = new Value( "Test" );
-        csv.isValid( new Ia5StringSyntaxChecker() );
+        csv.isValid( Ia5StringSyntaxChecker.INSTANCE );
 
         Value csvSer = deserializeValue( null, serializeValue( csv ) );
         assertNotSame( csv, csvSer );
@@ -560,7 +560,7 @@ public class StringValueTest
     public void testSerializeEmptyNormalized() throws LdapException, IOException, ClassNotFoundException
     {
         Value csv = new Value( "  " );
-        csv.isValid( new Ia5StringSyntaxChecker() );
+        csv.isValid( Ia5StringSyntaxChecker.INSTANCE );
         csv = new Value( at, csv );
 
         Value csvSer = deserializeValue( at, serializeValue( csv ) );
@@ -578,7 +578,7 @@ public class StringValueTest
     public void testSerializeNullValue() throws LdapException, IOException, ClassNotFoundException
     {
         Value csv = new Value( ( String ) null );
-        csv.isValid( new Ia5StringSyntaxChecker() );
+        csv.isValid( Ia5StringSyntaxChecker.INSTANCE );
         csv = new Value( at, csv );
 
         Value csvSer = deserializeValue( at, serializeValue( csv ) );
@@ -596,7 +596,7 @@ public class StringValueTest
     public void testSerializeEmptyValue() throws LdapException, IOException, ClassNotFoundException
     {
         Value csv = new Value( "" );
-        csv.isValid( new Ia5StringSyntaxChecker() );
+        csv.isValid( Ia5StringSyntaxChecker.INSTANCE );
         csv = new Value( at, csv );
 
         Value csvSer = deserializeValue( at, serializeValue( csv ) );
@@ -614,7 +614,7 @@ public class StringValueTest
     public void testSerializeEmptyValueNotNormalized() throws LdapException, IOException, ClassNotFoundException
     {
         Value csv = new Value( "" );
-        csv.isValid( new Ia5StringSyntaxChecker() );
+        csv.isValid( Ia5StringSyntaxChecker.INSTANCE );
 
         Value csvSer = deserializeValue( null, serializeValue( csv ) );
         assertNotSame( csv, csvSer );

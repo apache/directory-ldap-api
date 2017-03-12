@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class TeletexTerminalIdentifierSyntaxCheckerTest
 {
-    TeletexTerminalIdentifierSyntaxChecker checker = new TeletexTerminalIdentifierSyntaxChecker();
+    TeletexTerminalIdentifierSyntaxChecker checker = TeletexTerminalIdentifierSyntaxChecker.INSTANCE;
 
 
     @Test

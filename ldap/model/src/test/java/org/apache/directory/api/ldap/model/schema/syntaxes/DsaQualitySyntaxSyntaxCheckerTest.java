@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class DsaQualitySyntaxSyntaxCheckerTest
 {
-    DsaQualitySyntaxSyntaxChecker checker = new DsaQualitySyntaxSyntaxChecker();
+    DsaQualitySyntaxSyntaxChecker checker = DsaQualitySyntaxSyntaxChecker.INSTANCE;
 
 
     @Test

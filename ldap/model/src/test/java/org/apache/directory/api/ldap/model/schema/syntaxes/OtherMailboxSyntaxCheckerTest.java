@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class OtherMailboxSyntaxCheckerTest
 {
-    OtherMailboxSyntaxChecker checker = new OtherMailboxSyntaxChecker();
+    OtherMailboxSyntaxChecker checker = OtherMailboxSyntaxChecker.INSTANCE;
 
 
     @Test
