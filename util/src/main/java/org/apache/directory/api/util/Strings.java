@@ -234,6 +234,9 @@ public final class Strings
     
     /** An empty String */
     public static final String EMPTY_STRING = "";
+    
+    /** An empty String array */
+    public static final String[] EMPTY_STRING_ARRAY = new String[]{};
 
 
     /**

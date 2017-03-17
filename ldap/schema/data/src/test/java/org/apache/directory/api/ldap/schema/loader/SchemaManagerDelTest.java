@@ -1018,7 +1018,7 @@ public class SchemaManagerDelTest
         int scrSize = schemaManager.getSyntaxCheckerRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        SyntaxChecker sc = BooleanSyntaxChecker.INSTANCE;
+        SyntaxChecker sc = new BooleanSyntaxChecker();
         sc.setOid( "0.1.1" );
         assertTrue( schemaManager.add( sc ) );
 
@@ -1051,7 +1051,7 @@ public class SchemaManagerDelTest
         int scrSize = schemaManager.getSyntaxCheckerRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        SyntaxChecker sc = BooleanSyntaxChecker.INSTANCE;
+        SyntaxChecker sc = new BooleanSyntaxChecker();
         sc.setOid( "0.0" );
         assertFalse( schemaManager.delete( sc ) );
 
