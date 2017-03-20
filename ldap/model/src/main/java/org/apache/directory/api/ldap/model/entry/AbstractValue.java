@@ -162,7 +162,12 @@ public abstract class AbstractValue<T> implements Value<T>
             {
                 if ( upValue != null )
                 {
-                    boolean isHR = attributeType.getSyntax().isHumanReadable();
+                    boolean isHR = true;
+                    // Some broken LDAP servers do not have proper syntax definitions
+                    if ( attributeType.getSyntax() != null )
+                    {
+                        isHR = attributeType.getSyntax().isHumanReadable();
+                    }
                     
 
                     if ( isHR != isHumanReadable() )
