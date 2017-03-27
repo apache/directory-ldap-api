@@ -4268,7 +4268,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     }
                     else
                     {
-                        throw new InvalidConnectionException( exception.getMessage() );
+                        throw new InvalidConnectionException( exception.getMessage(), exception );
                     }
                 }
 

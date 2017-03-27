@@ -208,7 +208,10 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         {
             if ( attributeType.getSyntax() == null )
             {
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
+                // Some broken LDAP servers do not have proper syntax definitions, default to HR
+                LOG.info( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
+                isHR = true;
+                //throw new IllegalArgumentException( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
             }
             else
             {
@@ -239,7 +242,10 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         {
             if ( attributeType.getSyntax() == null )
             {
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
+                // Some broken LDAP servers do not have proper syntax definitions, default to HR
+                LOG.info( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
+                isHR = true;
+                //throw new IllegalArgumentException( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
             }
             else
             {
@@ -311,7 +317,10 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         {
             if ( attributeType.getSyntax() == null )
             {
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
+                // Some broken LDAP servers do not have proper syntax definitions, default to HR
+                LOG.info( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
+                isHR = true;
+                //throw new IllegalArgumentException( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
             }
             else
             {
@@ -372,7 +381,10 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         {
             if ( attributeType.getSyntax() == null )
             {
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
+                // Some broken LDAP servers do not have proper syntax definitions, default to HR
+                LOG.info( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
+                isHR = true;
+                //throw new IllegalArgumentException( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
             }
             else
             {

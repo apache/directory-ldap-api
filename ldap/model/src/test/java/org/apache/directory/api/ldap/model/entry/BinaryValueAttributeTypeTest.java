@@ -202,13 +202,14 @@ public class BinaryValueAttributeTypeTest
      * Test the constructor with bad AttributeType
      * @throws LdapInvalidAttributeValueException 
      */
-    @Test( expected=IllegalArgumentException.class)
+    @Test
     public void testBadConstructor()
     {
-        // create a AT without no syntax
+        // create a AT with no syntax
         MutableAttributeType attribute = new MutableAttributeType( "1.1.3.1" );
 
-        Value.createValue( attribute );
+        Value value = Value.createValue( attribute );
+        assertTrue( value.isHumanReadable() );
     }
 
 

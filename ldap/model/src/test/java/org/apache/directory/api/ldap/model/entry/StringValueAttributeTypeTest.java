@@ -329,15 +329,9 @@ public class StringValueAttributeTypeTest
         // create a AT without any syntax
         AttributeType attribute = new EntryUtils.AT( "1.1.3.1" );
 
-        try
-        {
-            Value.createValue( attribute );
-            fail();
-        }
-        catch ( IllegalArgumentException iae )
-        {
-            // Expected...
-        }
+        Value value = Value.createValue( attribute );
+        
+        assertTrue( value.isHumanReadable() );
     }
 
 
