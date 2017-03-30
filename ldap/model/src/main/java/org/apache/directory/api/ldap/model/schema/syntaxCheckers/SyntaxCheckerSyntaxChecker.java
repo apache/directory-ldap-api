@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 
 
 /**
@@ -29,18 +30,55 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class SyntaxCheckerSyntaxChecker extends Ia5StringSyntaxChecker
+public final class SyntaxCheckerSyntaxChecker extends SyntaxChecker
 {
     /**
      * A static instance of SyntaxCheckerSyntaxChecker
      */
-    public static final SyntaxCheckerSyntaxChecker INSTANCE = new SyntaxCheckerSyntaxChecker();
+    public static final SyntaxCheckerSyntaxChecker INSTANCE = 
+        new SyntaxCheckerSyntaxChecker( SchemaConstants.SYNTAX_CHECKER_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<SyntaxCheckerSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.SYNTAX_CHECKER_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of SyntaxCheckerSyntaxChecker
+         * @return A new instance of SyntaxCheckerSyntaxChecker
+         */
+        @Override
+        public SyntaxCheckerSyntaxChecker build()
+        {
+            return new SyntaxCheckerSyntaxChecker( oid );
+        }
+    }
 
     /**
      * Creates a new instance of SyntaxCheckerSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public SyntaxCheckerSyntaxChecker()
+    private SyntaxCheckerSyntaxChecker( String oid )
     {
-        super( SchemaConstants.SYNTAX_CHECKER_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 }

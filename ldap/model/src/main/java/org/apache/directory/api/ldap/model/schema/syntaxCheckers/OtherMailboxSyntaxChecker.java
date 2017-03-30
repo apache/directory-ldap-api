@@ -24,8 +24,6 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -39,23 +37,55 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class OtherMailboxSyntaxChecker extends SyntaxChecker
+public final class OtherMailboxSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( OtherMailboxSyntaxChecker.class );
-    
     /**
      * A static instance of OtherMailboxSyntaxChecker
      */
-    public static final OtherMailboxSyntaxChecker INSTANCE = new OtherMailboxSyntaxChecker();
+    public static final OtherMailboxSyntaxChecker INSTANCE = 
+        new OtherMailboxSyntaxChecker( SchemaConstants.OTHER_MAILBOX_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<OtherMailboxSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.OTHER_MAILBOX_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of OtherMailboxSyntaxChecker
+         * @return A new instance of OtherMailboxSyntaxChecker
+         */
+        @Override
+        public OtherMailboxSyntaxChecker build()
+        {
+            return new OtherMailboxSyntaxChecker( oid );
+        }
+    }
 
     
     /**
      * Creates a new instance of OtherMailboxSyntaxChecker.
      */
-    public OtherMailboxSyntaxChecker()
+    private OtherMailboxSyntaxChecker( String oid )
     {
-        super( SchemaConstants.OTHER_MAILBOX_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
@@ -69,7 +99,11 @@ public class OtherMailboxSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -88,7 +122,11 @@ public class OtherMailboxSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
@@ -98,7 +136,11 @@ public class OtherMailboxSyntaxChecker extends SyntaxChecker
         if ( dollar == -1 )
         {
             // No '$' => error
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
@@ -110,27 +152,38 @@ public class OtherMailboxSyntaxChecker extends SyntaxChecker
         // The mailbox should not contains a '$'
         if ( mailbox.indexOf( '$' ) != -1 )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
         // Check that the mailboxType is a PrintableString
         if ( !Strings.isPrintableString( mailboxType ) )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
         // Check that the mailbox is an IA5String
         boolean result = Strings.isIA5String( mailbox );
 
-        if ( result )
+        if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
-        }
-        else
-        {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            if ( result )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
+            }
+            else
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
         }
 
         return result;

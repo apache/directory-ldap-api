@@ -27,8 +27,6 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -44,11 +42,8 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class CountrySyntaxChecker extends SyntaxChecker
+public final class CountrySyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( CountrySyntaxChecker.class );
-
     /** The ISO 3166 list of countries, as of 2006 */
     private static final String[] COUNTRY_ISO_3166 =
         {
@@ -313,17 +308,51 @@ public class CountrySyntaxChecker extends SyntaxChecker
     /**
      * A static instance of CountrySyntaxChecker
      */
-    public static final CountrySyntaxChecker INSTANCE = new CountrySyntaxChecker();
+    public static final CountrySyntaxChecker INSTANCE = new CountrySyntaxChecker( SchemaConstants.COUNTRY_STRING_SYNTAX );
+
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<CountrySyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.COUNTRY_STRING_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of CountrySyntaxChecker
+         * @return A new instance of CountrySyntaxChecker
+         */
+        @Override
+        public CountrySyntaxChecker build()
+        {
+            return new CountrySyntaxChecker( oid );
+        }
+    }
+
+
+    /**
+     * Creates a new instance of CountrySyntaxChecker.
+     *
+     * @param oid The OID to use for this SyntaxChecker
+     */
+    private CountrySyntaxChecker( String oid )
+    {
+        super( oid );
+    }
 
     
     /**
-     * 
-     * Creates a new instance of CountrySyntaxChecker.
-     *
+     * @return An instance of the Builder for this class
      */
-    public CountrySyntaxChecker()
+    public static Builder builder()
     {
-        super( SchemaConstants.COUNTRY_STRING_SYNTAX );
+        return new Builder();
     }
 
 
@@ -337,7 +366,11 @@ public class CountrySyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -356,19 +389,26 @@ public class CountrySyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
         boolean result = COUNTRIES.contains( Strings.toUpperCaseAscii( strValue ) );
 
-        if ( result )
+        if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
-        }
-        else
-        {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            if ( result )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
+            }
+            else
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
         }
 
         return result;

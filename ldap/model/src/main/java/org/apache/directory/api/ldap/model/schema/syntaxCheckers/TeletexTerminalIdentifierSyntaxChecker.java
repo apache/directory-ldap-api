@@ -24,8 +24,6 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -43,23 +41,57 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
+public final class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( TeletexTerminalIdentifierSyntaxChecker.class );
-    
     /**
      * A static instance of TeletexTerminalIdentifierSyntaxChecker
      */
-    public static final TeletexTerminalIdentifierSyntaxChecker INSTANCE = new TeletexTerminalIdentifierSyntaxChecker();
+    public static final TeletexTerminalIdentifierSyntaxChecker INSTANCE = 
+        new TeletexTerminalIdentifierSyntaxChecker( SchemaConstants.TELETEX_TERMINAL_IDENTIFIER_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<TeletexTerminalIdentifierSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.TELETEX_TERMINAL_IDENTIFIER_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of TeletexTerminalIdentifierSyntaxChecker
+         * @return A new instance of TeletexTerminalIdentifierSyntaxChecker
+         */
+        @Override
+        public TeletexTerminalIdentifierSyntaxChecker build()
+        {
+            return new TeletexTerminalIdentifierSyntaxChecker( oid );
+        }
+    }
 
     
     /**
      * Creates a new instance of TeletexTerminalIdentifier.
+     * 
+     * @param oid the child's OID
      */
-    public TeletexTerminalIdentifierSyntaxChecker()
+    private TeletexTerminalIdentifierSyntaxChecker( String oid )
     {
-        super( SchemaConstants.TELETEX_TERMINAL_IDENTIFIER_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
@@ -73,7 +105,11 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -92,7 +128,11 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
@@ -104,30 +144,46 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
         if ( terminalIdentifier.length() == 0 )
         {
             // It should not be null
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
         if ( !Strings.isPrintableString( terminalIdentifier ) )
         {
             // It's not a valid PrintableString 
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
         if ( dollar == -1 )
         {
             // No ttx-param : let's get out
-            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
+            }
+            
             return true;
         }
 
-        // Ok, now let's deal withh optional ttx-params
+        // Ok, now let's deal with optional ttx-params
         String[] ttxParams = strValue.substring( dollar + 1 ).split( "\\$" );
 
         if ( ttxParams.length == 0 )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
@@ -138,7 +194,11 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
             if ( colon == -1 )
             {
                 // we must have a ':' separator
-                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                }
+                
                 return false;
             }
 
@@ -152,7 +212,11 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
             {
                 if ( colon + 1 == ttxParam.length() )
                 {
-                    LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                    }
+                    
                     return false;
                 }
 
@@ -164,14 +228,22 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
                     {
                         case 0x24:
                             // '$' is not accepted
-                            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                            if ( LOG.isDebugEnabled() )
+                            {
+                                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                            }
+                            
                             return false;
 
                         case 0x5c:
                             if ( hasEsc )
                             {
                                 // two following \ are not accepted
-                                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                                if ( LOG.isDebugEnabled() )
+                                {
+                                    LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                                }
+                                
                                 return false;
                             }
                             else
@@ -211,12 +283,20 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
             }
             else
             {
-                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                }
+                
                 return false;
             }
         }
 
-        LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
+        }
+        
         return true;
     }
 }

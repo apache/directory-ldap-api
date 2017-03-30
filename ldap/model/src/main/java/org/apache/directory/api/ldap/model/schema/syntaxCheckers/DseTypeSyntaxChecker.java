@@ -28,8 +28,6 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Chars;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -46,11 +44,8 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class DseTypeSyntaxChecker extends SyntaxChecker
+public final class DseTypeSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( DseTypeSyntaxChecker.class );
-
     /** The DSE BITS keywords */
     private static final String[] DSE_BITS_STRINGS =
         {
@@ -62,11 +57,45 @@ public class DseTypeSyntaxChecker extends SyntaxChecker
     /** The Set which contains the DESBits */
     private static final Set<String> DSE_BITS = new HashSet<>();
     
+    /** Initialization of the country set */
+    static
+    {
+        for ( String country : DSE_BITS_STRINGS )
+        {
+            DSE_BITS.add( country );
+        }
+    }
+
     /**
      * A static instance of DseTypeSyntaxChecker
      */
-    public static final DseTypeSyntaxChecker INSTANCE = new DseTypeSyntaxChecker();
+    public static final DseTypeSyntaxChecker INSTANCE = new DseTypeSyntaxChecker( SchemaConstants.DSE_TYPE_SYNTAX );
     
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<DseTypeSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.DSE_TYPE_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of DseTypeSyntaxChecker
+         * @return A new instance of DseTypeSyntaxChecker
+         */
+        @Override
+        public DseTypeSyntaxChecker build()
+        {
+            return new DseTypeSyntaxChecker( oid );
+        }
+    }
+
     
     /** Initialization of the country set */
     static
@@ -79,13 +108,22 @@ public class DseTypeSyntaxChecker extends SyntaxChecker
 
 
     /**
-     * 
      * Creates a new instance of DSETypeSyntaxChecker.
      *
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public DseTypeSyntaxChecker()
+    private DseTypeSyntaxChecker( String oid )
     {
-        super( SchemaConstants.DSE_TYPE_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
@@ -99,7 +137,11 @@ public class DseTypeSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -119,7 +161,11 @@ public class DseTypeSyntaxChecker extends SyntaxChecker
         // We must have at least '(cp)', '(xr)' or '(ca)'
         if ( strValue.length() < 4 )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
@@ -127,7 +173,11 @@ public class DseTypeSyntaxChecker extends SyntaxChecker
         if ( ( strValue.charAt( 0 ) != '(' )
             || ( strValue.charAt( strValue.length() - 1 ) != ')' ) )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
@@ -155,7 +205,11 @@ public class DseTypeSyntaxChecker extends SyntaxChecker
             if ( pos == i )
             {
                 // No keyword : error
-                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                }
+                
                 return false;
             }
 
@@ -165,14 +219,22 @@ public class DseTypeSyntaxChecker extends SyntaxChecker
             if ( !DSE_BITS.contains( keyword ) )
             {
                 // Unknown keyword
-                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                }
+                
                 return false;
             }
 
             // Check that the keyword has not been met
             if ( keywords.contains( keyword ) )
             {
-                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                }
+                
                 return false;
             }
 
@@ -196,13 +258,16 @@ public class DseTypeSyntaxChecker extends SyntaxChecker
         }
 
         // We are done
-        if ( needKeyword )
+        if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
-        }
-        else
-        {
-            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
+            if ( needKeyword )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
+            else
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
+            }
         }
 
         return !needKeyword;

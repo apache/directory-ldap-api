@@ -28,8 +28,6 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Chars;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -51,11 +49,8 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class DeliveryMethodSyntaxChecker extends SyntaxChecker
+public final class DeliveryMethodSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( DeliveryMethodSyntaxChecker.class );
-
     private static final String[] PDMS =
         {
             "any", "mhs", "physical", "telex", "teletex",
@@ -77,17 +72,52 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
     /**
      * A static instance of DeliveryMethodSyntaxChecker
      */
-    public static final DeliveryMethodSyntaxChecker INSTANCE = new DeliveryMethodSyntaxChecker();
+    public static final DeliveryMethodSyntaxChecker INSTANCE = 
+        new DeliveryMethodSyntaxChecker( SchemaConstants.DELIVERY_METHOD_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<DeliveryMethodSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.DELIVERY_METHOD_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of DeliveryMethodSyntaxChecker
+         * @return A new instance of DeliveryMethodSyntaxChecker
+         */
+        @Override
+        public DeliveryMethodSyntaxChecker build()
+        {
+            return new DeliveryMethodSyntaxChecker( oid );
+        }
+    }
 
 
     /**
-     * 
      * Creates a new instance of DeliveryMethodSyntaxChecker.
      *
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public DeliveryMethodSyntaxChecker()
+    private DeliveryMethodSyntaxChecker( String oid )
     {
-        super( SchemaConstants.DELIVERY_METHOD_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
@@ -150,7 +180,11 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -169,7 +203,11 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
@@ -182,7 +220,11 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
         
         if ( pos == -1 )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
@@ -200,7 +242,11 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
             if ( !Strings.isCharASCII( strValue, pos, '$' ) )
             {
                 // A '$' was expected
-                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                }
+                
                 return false;
             }
             else
@@ -218,12 +264,20 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
             
             if ( pos == -1 )
             {
-                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                }
+                
                 return false;
             }
         }
 
-        LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
+        }
+        
         return true;
     }
 }

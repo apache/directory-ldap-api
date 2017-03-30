@@ -25,8 +25,6 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -45,23 +43,57 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
+public final class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( NameAndOptionalUIDSyntaxChecker.class );
-    
     /**
      * A static instance of NameAndOptionalUIDSyntaxChecker
      */
-    public static final NameAndOptionalUIDSyntaxChecker INSTANCE = new NameAndOptionalUIDSyntaxChecker();
+    public static final NameAndOptionalUIDSyntaxChecker INSTANCE = 
+        new NameAndOptionalUIDSyntaxChecker( SchemaConstants.NAME_AND_OPTIONAL_UID_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<NameAndOptionalUIDSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.NAME_AND_OPTIONAL_UID_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of NameAndOptionalUIDSyntaxChecker
+         * @return A new instance of NameAndOptionalUIDSyntaxChecker
+         */
+        @Override
+        public NameAndOptionalUIDSyntaxChecker build()
+        {
+            return new NameAndOptionalUIDSyntaxChecker( oid );
+        }
+    }
 
     
     /**
      * Creates a new instance of NameAndOptionalUIDSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public NameAndOptionalUIDSyntaxChecker()
+    private NameAndOptionalUIDSyntaxChecker( String oid )
     {
-        super( SchemaConstants.NAME_AND_OPTIONAL_UID_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
@@ -75,7 +107,11 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -94,7 +130,11 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
@@ -108,7 +148,11 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
             {
                 // Yes, we have one : this is not allowed, it should have been
                 // escaped.
-                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                }
+                
                 return false;
             }
 
@@ -124,13 +168,16 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
                 {
                     boolean result = Dn.isValid( strValue.substring( 0, sharpPos ) );
 
-                    if ( result )
+                    if ( LOG.isDebugEnabled() )
                     {
-                        LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
-                    }
-                    else
-                    {
-                        LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                        if ( result )
+                        {
+                            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
+                        }
+                        else
+                        {
+                            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                        }
                     }
 
                     return result;
@@ -139,14 +186,22 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
                 else
                 {
                     // The Dn must not be null ?
-                    LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                    }
+                    
                     return false;
                 }
             }
             else
             {
                 // We have found a '#' but no UID part.
-                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                }
+                
                 return false;
             }
         }
@@ -156,13 +211,16 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
             // Check that the value is a valid Dn
             boolean result = Dn.isValid( strValue );
 
-            if ( result )
+            if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
-            }
-            else
-            {
-                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                if ( result )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
+                }
+                else
+                {
+                    LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                }
             }
 
             return result;

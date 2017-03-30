@@ -20,11 +20,8 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
-import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -34,33 +31,56 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class MhsOrAddressSyntaxChecker extends SyntaxChecker
+public final class MhsOrAddressSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( MhsOrAddressSyntaxChecker.class );
-    
     /**
      * A static instance of MhsOrAddressSyntaxChecker
      */
-    public static final MhsOrAddressSyntaxChecker INSTANCE = new MhsOrAddressSyntaxChecker();
+    public static final MhsOrAddressSyntaxChecker INSTANCE = 
+        new MhsOrAddressSyntaxChecker( SchemaConstants.MHS_OR_ADDRESS_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<MhsOrAddressSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.MHS_OR_ADDRESS_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of MhsOrAddressSyntaxChecker
+         * @return A new instance of MhsOrAddressSyntaxChecker
+         */
+        @Override
+        public MhsOrAddressSyntaxChecker build()
+        {
+            return new MhsOrAddressSyntaxChecker( oid );
+        }
+    }
 
     
     /**
      * Creates a new instance of MHSORAddressSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public MhsOrAddressSyntaxChecker()
+    private MhsOrAddressSyntaxChecker( String oid )
     {
-        super( SchemaConstants.MHS_OR_ADDRESS_SYNTAX );
+        super( oid );
     }
 
-
+    
     /**
-     * {@inheritDoc}
+     * @return An instance of the Builder for this class
      */
-    @Override
-    public boolean isValidSyntax( Object value )
+    public static Builder builder()
     {
-        LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
-        return true;
+        return new Builder();
     }
 }

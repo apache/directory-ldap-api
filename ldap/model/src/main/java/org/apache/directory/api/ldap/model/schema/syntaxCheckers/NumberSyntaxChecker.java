@@ -24,8 +24,6 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -41,23 +39,56 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class NumberSyntaxChecker extends SyntaxChecker
+public final class NumberSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( NumberSyntaxChecker.class );
-    
     /**
      * A static instance of NumberSyntaxChecker
      */
-    public static final NumberSyntaxChecker INSTANCE = new NumberSyntaxChecker();
+    public static final NumberSyntaxChecker INSTANCE = new NumberSyntaxChecker( SchemaConstants.NUMBER_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<NumberSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.NUMBER_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of NumberSyntaxChecker
+         * @return A new instance of NumberSyntaxChecker
+         */
+        @Override
+        public NumberSyntaxChecker build()
+        {
+            return new NumberSyntaxChecker( oid );
+        }
+    }
 
     
     /**
      * Creates a new instance of NumberSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public NumberSyntaxChecker()
+    private NumberSyntaxChecker( String oid )
     {
-        super( SchemaConstants.NUMBER_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
@@ -71,7 +102,11 @@ public class NumberSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -91,7 +126,11 @@ public class NumberSyntaxChecker extends SyntaxChecker
         // We should have at least one char
         if ( strValue.length() == 0 )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
@@ -113,7 +152,11 @@ public class NumberSyntaxChecker extends SyntaxChecker
                     continue;
 
                 default:
-                    LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                    }
+                    
                     return false;
             }
         }
@@ -122,11 +165,19 @@ public class NumberSyntaxChecker extends SyntaxChecker
         {
             // A number can't start with a '0' unless it's the only
             // number
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
-        LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
+        }
+        
         return true;
     }
 }

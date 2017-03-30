@@ -24,8 +24,6 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -61,23 +59,57 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class PrintableStringSyntaxChecker extends SyntaxChecker
+public final class PrintableStringSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( PrintableStringSyntaxChecker.class );
-    
     /**
      * A static instance of PrintableStringSyntaxChecker
      */
-    public static final PrintableStringSyntaxChecker INSTANCE = new PrintableStringSyntaxChecker();
+    public static final PrintableStringSyntaxChecker INSTANCE = 
+        new PrintableStringSyntaxChecker( SchemaConstants.PRINTABLE_STRING_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<PrintableStringSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.PRINTABLE_STRING_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of PrintableStringSyntaxChecker
+         * @return A new instance of PrintableStringSyntaxChecker
+         */
+        @Override
+        public PrintableStringSyntaxChecker build()
+        {
+            return new PrintableStringSyntaxChecker( oid );
+        }
+    }
 
     
     /**
      * Creates a new instance of PrintableStringSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public PrintableStringSyntaxChecker()
+    private PrintableStringSyntaxChecker( String oid )
     {
-        super( SchemaConstants.PRINTABLE_STRING_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
@@ -91,7 +123,11 @@ public class PrintableStringSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -110,26 +146,37 @@ public class PrintableStringSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
         // We must have at least one char
         if ( strValue.length() == 0 )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
         boolean result = Strings.isPrintableString( strValue );
 
-        if ( result )
+        if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
-        }
-        else
-        {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            if ( result )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
+            }
+            else
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
         }
 
         return result;

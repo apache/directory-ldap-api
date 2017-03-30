@@ -25,8 +25,6 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -45,23 +43,57 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class NumericOidSyntaxChecker extends SyntaxChecker
+public final class NumericOidSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( NumericOidSyntaxChecker.class );
-    
     /**
      * A static instance of NumericOidSyntaxChecker
      */
-    public static final NumericOidSyntaxChecker INSTANCE = new NumericOidSyntaxChecker();
+    public static final NumericOidSyntaxChecker INSTANCE = 
+        new NumericOidSyntaxChecker( SchemaConstants.NUMERIC_OID_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<NumericOidSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.NUMERIC_OID_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of NumericOidSyntaxChecker
+         * @return A new instance of NumericOidSyntaxChecker
+         */
+        @Override
+        public NumericOidSyntaxChecker build()
+        {
+            return new NumericOidSyntaxChecker( oid );
+        }
+    }
 
     
     /**
      * Creates a new instance of NumericOidSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public NumericOidSyntaxChecker()
+    private NumericOidSyntaxChecker( String oid )
     {
-        super( SchemaConstants.NUMERIC_OID_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
@@ -75,7 +107,11 @@ public class NumericOidSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -94,20 +130,27 @@ public class NumericOidSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
         // Just check that the value is a valid OID
         boolean result = Oid.isOid( strValue );
 
-        if ( result )
+        if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
-        }
-        else
-        {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            if ( result )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
+            }
+            else
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+            }
         }
 
         return result;

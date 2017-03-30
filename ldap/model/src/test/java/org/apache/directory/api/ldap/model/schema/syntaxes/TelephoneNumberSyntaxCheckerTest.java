@@ -98,8 +98,7 @@ public class TelephoneNumberSyntaxCheckerTest
     public void testWithNewMandatoryRegexp()
     {
         // Adding french telephone number regexp
-        checker = new TelephoneNumberSyntaxChecker();
-        checker.setDefaultRegexp( " *0[1-8](( *|[-/.]{1})\\d\\d){4} *" );
+        checker = TelephoneNumberSyntaxChecker.builder().setDefaultRegexp( " *0[1-8](( *|[-/.]{1})\\d\\d){4} *" ).build();
 
         assertFalse( checker.isValidSyntax( "+ 123 ( 456 )7891   12345" ) );
         assertTrue( checker.isValidSyntax( " 01 02 03 04 05 " ) );

@@ -24,8 +24,6 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -40,23 +38,56 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class BooleanSyntaxChecker extends SyntaxChecker
+public final class BooleanSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( BooleanSyntaxChecker.class );
-    
     /**
      * A static instance of BooleanSyntaxChecker
      */
-    public static final BooleanSyntaxChecker INSTANCE = new BooleanSyntaxChecker();
+    public static final BooleanSyntaxChecker INSTANCE = new BooleanSyntaxChecker( SchemaConstants.BOOLEAN_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<BooleanSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.BOOLEAN_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of BooleanSyntaxChecker
+         * @return A new instance of BooleanSyntaxChecker
+         */
+        @Override
+        public BooleanSyntaxChecker build()
+        {
+            return new BooleanSyntaxChecker( oid );
+        }
+    }
 
     
     /**
      * Creates a new instance of BooleanSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public BooleanSyntaxChecker()
+    private BooleanSyntaxChecker( String oid )
     {
-        super( SchemaConstants.BOOLEAN_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
@@ -70,7 +101,11 @@ public class BooleanSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -89,19 +124,26 @@ public class BooleanSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, strValue ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, strValue ) );
+            }
+            
             return false;
         }
 
         boolean valid = "TRUE".equalsIgnoreCase( strValue ) || "FALSE".equalsIgnoreCase( strValue );
 
-        if ( valid )
+        if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, strValue ) );
-        }
-        else
-        {
-            LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, strValue ) );
+            if ( valid )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, strValue ) );
+            }
+            else
+            {
+                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, strValue ) );
+            }
         }
 
         return valid;

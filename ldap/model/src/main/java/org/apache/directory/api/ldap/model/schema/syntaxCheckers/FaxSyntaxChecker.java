@@ -20,10 +20,8 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
-import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 
 
 /**
@@ -35,33 +33,55 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class FaxSyntaxChecker extends BinarySyntaxChecker
+public final class FaxSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( FaxSyntaxChecker.class );
-    
     /**
      * A static instance of FaxSyntaxChecker
      */
-    public static final FaxSyntaxChecker INSTANCE = new FaxSyntaxChecker();
+    public static final FaxSyntaxChecker INSTANCE = new FaxSyntaxChecker( SchemaConstants.FAX_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<FaxSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.FAX_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of FaxSyntaxChecker
+         * @return A new instance of FaxSyntaxChecker
+         */
+        @Override
+        public FaxSyntaxChecker build()
+        {
+            return new FaxSyntaxChecker( oid );
+        }
+    }
 
     
     /**
      * Private default constructor to prevent unnecessary instantiation.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public FaxSyntaxChecker()
+    private FaxSyntaxChecker( String oid )
     {
-        super( SchemaConstants.FAX_SYNTAX );
+        super( oid );
     }
 
-
+    
     /**
-     * {@inheritDoc}
+     * @return An instance of the Builder for this class
      */
-    @Override
-    public boolean isValidSyntax( Object value )
+    public static Builder builder()
     {
-        LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
-        return true;
+        return new Builder();
     }
 }

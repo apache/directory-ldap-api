@@ -70,7 +70,7 @@ public final class LdapSyntaxHelper
                 catch ( LdapException ne )
                 {
                     // No SyntaxChecker ? Associate the Syntax to a catch all SyntaxChecker
-                    syntaxChecker = new OctetStringSyntaxChecker( ldapSyntax.getOid() );
+                    syntaxChecker = OctetStringSyntaxChecker.builder().setOid( ldapSyntax.getOid() ).build();
                 }
 
                 // Add the references for S :

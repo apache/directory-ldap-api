@@ -20,10 +20,8 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
-import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 
 
 /**
@@ -35,33 +33,56 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class EnhancedGuideSyntaxChecker extends BinarySyntaxChecker
+public final class EnhancedGuideSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( EnhancedGuideSyntaxChecker.class );
-    
     /**
      * A static instance of EnhancedGuideSyntaxChecker
      */
-    public static final EnhancedGuideSyntaxChecker INSTANCE = new EnhancedGuideSyntaxChecker();
+    public static final EnhancedGuideSyntaxChecker INSTANCE = 
+        new EnhancedGuideSyntaxChecker( SchemaConstants.ENHANCED_GUIDE_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<EnhancedGuideSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.DIRECTORY_STRING_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of EnhancedGuideSyntaxChecker
+         * @return A new instance of EnhancedGuideSyntaxChecker
+         */
+        @Override
+        public EnhancedGuideSyntaxChecker build()
+        {
+            return new EnhancedGuideSyntaxChecker( oid );
+        }
+    }
 
     
     /**
      * Creates a new instance of EnhancedGuideSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public EnhancedGuideSyntaxChecker()
+    private EnhancedGuideSyntaxChecker( String oid )
     {
-        super( SchemaConstants.ENHANCED_GUIDE_SYNTAX );
+        super( oid );
     }
 
-
+    
     /**
-     * {@inheritDoc}
+     * @return An instance of the Builder for this class
      */
-    @Override
-    public boolean isValidSyntax( Object value )
+    public static Builder builder()
     {
-        LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
-        return true;
+        return new Builder();
     }
 }

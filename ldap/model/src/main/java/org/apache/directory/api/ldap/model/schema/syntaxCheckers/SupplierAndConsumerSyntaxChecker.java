@@ -20,11 +20,8 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
-import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -33,33 +30,56 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class SupplierAndConsumerSyntaxChecker extends SyntaxChecker
+public final class SupplierAndConsumerSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( SupplierAndConsumerSyntaxChecker.class );
-    
     /**
      * A static instance of SupplierAndConsumerSyntaxChecker
      */
-    public static final SupplierAndConsumerSyntaxChecker INSTANCE = new SupplierAndConsumerSyntaxChecker();
+    public static final SupplierAndConsumerSyntaxChecker INSTANCE = 
+        new SupplierAndConsumerSyntaxChecker( SchemaConstants.SUPPLIER_AND_CONSUMER_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<SupplierAndConsumerSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.SUPPLIER_AND_CONSUMER_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of SupplierAndConsumerSyntaxChecker
+         * @return A new instance of SupplierAndConsumerSyntaxChecker
+         */
+        @Override
+        public SupplierAndConsumerSyntaxChecker build()
+        {
+            return new SupplierAndConsumerSyntaxChecker( oid );
+        }
+    }
 
     
     /**
      * Creates an instance of SupplierAndConsumerSyntaxChecker
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public SupplierAndConsumerSyntaxChecker()
+    private SupplierAndConsumerSyntaxChecker( String oid )
     {
-        super( SchemaConstants.SUPPLIER_AND_CONSUMER_SYNTAX );
+        super( oid );
     }
 
-
+    
     /**
-     * {@inheritDoc}
+     * @return An instance of the Builder for this class
      */
-    @Override
-    public boolean isValidSyntax( Object value )
+    public static Builder builder()
     {
-        LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
-        return true;
+        return new Builder();
     }
 }
