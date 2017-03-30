@@ -25,8 +25,6 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.csn.Csn;
 import org.apache.directory.api.ldap.model.csn.InvalidCSNException;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -35,23 +33,56 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class CsnSyntaxChecker extends SyntaxChecker
+public final class CsnSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( CsnSyntaxChecker.class );
-    
     /**
      * A static instance of CsnSyntaxChecker
      */
-    public static final CsnSyntaxChecker INSTANCE = new CsnSyntaxChecker();
+    public static final CsnSyntaxChecker INSTANCE = new CsnSyntaxChecker( SchemaConstants.CSN_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<CsnSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.CSN_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of CsnSyntaxChecker
+         * @return A new instance of CsnSyntaxChecker
+         */
+        @Override
+        public CsnSyntaxChecker build()
+        {
+            return new CsnSyntaxChecker( oid );
+        }
+    }
 
     
     /**
      * Creates a new instance of CsnSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public CsnSyntaxChecker()
+    private CsnSyntaxChecker( String oid )
     {
-        super( SchemaConstants.CSN_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
@@ -63,13 +94,21 @@ public class CsnSyntaxChecker extends SyntaxChecker
     {
         if ( value == null )
         {
-            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
         if ( !( value instanceof String ) )
         {
-            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
@@ -80,20 +119,27 @@ public class CsnSyntaxChecker extends SyntaxChecker
         {
             boolean result = Csn.isValid( csnStr );
 
-            if ( result )
+            if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
-            }
-            else
-            {
-                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                if ( result )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+                }
+                else
+                {
+                    LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                }
             }
 
             return result;
         }
         catch ( InvalidCSNException icsne )
         {
-            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
     }

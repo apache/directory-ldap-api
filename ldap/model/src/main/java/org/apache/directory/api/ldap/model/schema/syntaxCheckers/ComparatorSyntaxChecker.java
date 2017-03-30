@@ -20,7 +20,10 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
+import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -29,21 +32,104 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class ComparatorSyntaxChecker extends Ia5StringSyntaxChecker
+public final class ComparatorSyntaxChecker extends SyntaxChecker
 {
     /**
      * A static instance of ComparatorSyntaxChecker
      */
-    public static final ComparatorSyntaxChecker INSTANCE = new ComparatorSyntaxChecker();
+    public static final ComparatorSyntaxChecker INSTANCE = new ComparatorSyntaxChecker( SchemaConstants.COMPARATOR_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<ComparatorSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.COMPARATOR_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of ComparatorSyntaxChecker
+         * @return A new instance of ComparatorSyntaxChecker
+         */
+        @Override
+        public ComparatorSyntaxChecker build()
+        {
+            return new ComparatorSyntaxChecker( oid );
+        }
+    }
 
     
     /**
-     * 
      * Creates a new instance of ComparatorSyntaxChecker.
      *
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public ComparatorSyntaxChecker()
+    private ComparatorSyntaxChecker( String oid )
     {
-        super( SchemaConstants.COMPARATOR_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isValidSyntax( Object value )
+    {
+        String strValue;
+
+        if ( value == null )
+        {
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
+            }
+            
+            return true;
+        }
+
+        if ( value instanceof String )
+        {
+            strValue = ( String ) value;
+        }
+        else if ( value instanceof byte[] )
+        {
+            strValue = Strings.utf8ToString( ( byte[] ) value );
+        }
+        else
+        {
+            strValue = value.toString();
+        }
+
+        boolean result = Strings.isIA5String( strValue );
+
+        if ( LOG.isDebugEnabled() )
+        {
+            if ( result )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+            }
+            else
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+        }
+
+        return result;
     }
 }

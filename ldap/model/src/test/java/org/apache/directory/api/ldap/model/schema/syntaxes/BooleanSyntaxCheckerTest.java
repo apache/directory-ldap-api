@@ -46,6 +46,7 @@ public class BooleanSyntaxCheckerTest
     @Test
     public void testNullString()
     {
+        BooleanSyntaxChecker checker = BooleanSyntaxChecker.builder().setOid( "1.2.3.4" ).build();
         assertFalse( checker.isValidSyntax( null ) );
     }
 

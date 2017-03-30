@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.schema.loader;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -57,6 +58,7 @@ import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
+import org.apache.directory.api.ldap.model.schema.SyntaxChecker.SCBuilder;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
 import org.apache.directory.api.ldap.model.schema.parsers.LdapComparatorDescription;
 import org.apache.directory.api.ldap.model.schema.parsers.NormalizerDescription;
@@ -312,12 +314,18 @@ public class SchemaEntityFactory implements EntityFactory
         // Create the syntaxChecker instance
         try
         {
-            syntaxChecker = ( SyntaxChecker ) clazz.newInstance();
+            Method builder = clazz.getMethod( "builder", null );
+            syntaxChecker = ( SyntaxChecker ) ( ( SCBuilder ) builder.invoke( null, null ) ).setOid( oid ).build();
         }
-        catch ( InstantiationException ie )
+        catch ( NoSuchMethodException nsme )
         {
             LOG.error( "Cannot instantiate the syntax checker class constructor for class {}", className );
-            throw new LdapSchemaException( "Cannot instantiate the syntax checker class " + ie.getMessage() );
+            throw new LdapSchemaException( "Cannot instantiate the syntax checker class " + nsme.getMessage() );
+        }
+        catch ( InvocationTargetException ite )
+        {
+            LOG.error( "Cannot instantiate the syntax checker class constructor for class {}", className );
+            throw new LdapSchemaException( "Cannot instantiate the syntax checker class " + ite.getMessage() );
         }
         catch ( IllegalAccessException iae )
         {
@@ -328,9 +336,6 @@ public class SchemaEntityFactory implements EntityFactory
         // Update the common fields
         syntaxChecker.setBytecode( byteCodeStr );
         syntaxChecker.setFqcn( className );
-
-        // Inject the new OID, as the loaded syntaxChecker might have its own
-        syntaxChecker.setOid( oid );
 
         // Inject the SchemaManager for the comparator who needs it
         syntaxChecker.setSchemaManager( schemaManager );

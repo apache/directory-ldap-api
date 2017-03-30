@@ -26,8 +26,6 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Chars;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -52,23 +50,56 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class OidSyntaxChecker extends SyntaxChecker
+public final class OidSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( OidSyntaxChecker.class );
-    
     /**
      * A static instance of OidSyntaxChecker
      */
-    public static final OidSyntaxChecker INSTANCE = new OidSyntaxChecker();
+    public static final OidSyntaxChecker INSTANCE = new OidSyntaxChecker( SchemaConstants.OID_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<OidSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.OID_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of OidSyntaxChecker
+         * @return A new instance of OidSyntaxChecker
+         */
+        @Override
+        public OidSyntaxChecker build()
+        {
+            return new OidSyntaxChecker( oid );
+        }
+    }
 
     
     /**
      * Creates a new instance of OidSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public OidSyntaxChecker()
+    private OidSyntaxChecker( String oid )
     {
-        super( SchemaConstants.OID_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
@@ -82,7 +113,11 @@ public class OidSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -101,7 +136,11 @@ public class OidSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
@@ -109,16 +148,21 @@ public class OidSyntaxChecker extends SyntaxChecker
         // checked to make sure there are no other chars except '.' and digits.
         if ( Chars.isDigit( strValue.charAt( 0 ) ) )
         {
-            if ( !Oid.isOid( strValue ) )
+            boolean result = Oid.isOid(  strValue  );
+            
+            if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
-                return false;
+                if ( result )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+                }
+                else
+                {
+                    LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                }
             }
-            else
-            {
-                LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
-                return true;
-            }
+            
+            return result;
         }
 
         // here we just need to make sure that we have the right characters in the 
@@ -131,17 +175,29 @@ public class OidSyntaxChecker extends SyntaxChecker
                 
                 if ( !Chars.isAlphaDigitMinus( c ) )
                 {
-                    LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                    }
+                    
                     return false;
                 }
             }
 
-            LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+            }
+            
             return true;
         }
         else
         {
-            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
     }

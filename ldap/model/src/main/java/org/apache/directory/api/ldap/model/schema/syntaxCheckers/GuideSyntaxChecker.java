@@ -20,10 +20,8 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
-import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 
 
 /**
@@ -34,33 +32,55 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class GuideSyntaxChecker extends BinarySyntaxChecker
+public final class GuideSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( GuideSyntaxChecker.class );
-    
     /**
      * A static instance of GuideSyntaxChecker
      */
-    public static final GuideSyntaxChecker INSTANCE = new GuideSyntaxChecker();
+    public static final GuideSyntaxChecker INSTANCE = new GuideSyntaxChecker( SchemaConstants.GUIDE_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final  class Builder extends SCBuilder<GuideSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.GUIDE_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of GuideSyntaxChecker
+         * @return A new instance of GuideSyntaxChecker
+         */
+        @Override
+        public GuideSyntaxChecker build()
+        {
+            return new GuideSyntaxChecker( oid );
+        }
+    }
 
     
     /**
      * Creates a new instance of GuideSyntaxChecker
      */
-    public GuideSyntaxChecker()
+    private GuideSyntaxChecker( String oid )
     {
-        super( SchemaConstants.GUIDE_SYNTAX );
+        super( oid );
     }
 
-
+    
     /**
-     * {@inheritDoc}
+     * @return An instance of the Builder for this class
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    @Override
-    public boolean isValidSyntax( Object value )
+    public static Builder builder()
     {
-        LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
-        return true;
+        return new Builder();
     }
 }

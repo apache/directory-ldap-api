@@ -20,11 +20,8 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
-import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -33,33 +30,56 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class AccessPointSyntaxChecker extends SyntaxChecker
+public final class AccessPointSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( AccessPointSyntaxChecker.class );
-    
     /**
      * A static instance of AccessPointSyntaxChecker
      */
-    public static final AccessPointSyntaxChecker INSTANCE = new AccessPointSyntaxChecker();
-    
+    public static final AccessPointSyntaxChecker INSTANCE = 
+        new AccessPointSyntaxChecker( SchemaConstants.ACCESS_POINT_SYNTAX );
 
     /**
-     * The AccessPoint SyntaxChecker constructor
+     * A static Builder for this class
      */
-    public AccessPointSyntaxChecker()
+    public static final class Builder extends SCBuilder<AccessPointSyntaxChecker>
     {
-        super( SchemaConstants.ACCESS_POINT_SYNTAX );
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.ACCESS_POINT_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of AccessPointSyntaxChecker
+         * @return A new instance of AccessPointSyntaxChecker
+         */
+        @Override
+        public AccessPointSyntaxChecker build()
+        {
+            return new AccessPointSyntaxChecker( oid );
+        }
     }
 
 
     /**
-     * {@inheritDoc}
+     * The AccessPoint SyntaxChecker constructor
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    @Override
-    public boolean isValidSyntax( Object value )
+    private AccessPointSyntaxChecker( String oid )
     {
-        LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
-        return true;
+        super( oid );
+    }
+
+
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 }

@@ -20,11 +20,8 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
-import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -33,32 +30,56 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class DataQualitySyntaxSyntaxChecker extends SyntaxChecker
+public final class DataQualitySyntaxSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( DataQualitySyntaxSyntaxChecker.class );
-    
     /**
      * A static instance of DataQualitySyntaxSyntaxChecker
      */
-    public static final DataQualitySyntaxSyntaxChecker INSTANCE = new DataQualitySyntaxSyntaxChecker();
+    public static final DataQualitySyntaxSyntaxChecker INSTANCE = 
+        new DataQualitySyntaxSyntaxChecker( SchemaConstants.DATA_QUALITY_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<DataQualitySyntaxSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.DATA_QUALITY_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of DataQualitySyntaxSyntaxChecker
+         * @return A new instance of DataQualitySyntaxSyntaxChecker
+         */
+        @Override
+        public DataQualitySyntaxSyntaxChecker build()
+        {
+            return new DataQualitySyntaxSyntaxChecker( oid );
+        }
+    }
 
     
     /**
      * Creates a new instance of DataQualitySyntaxSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public DataQualitySyntaxSyntaxChecker()
+    private DataQualitySyntaxSyntaxChecker( String oid )
     {
-        super( SchemaConstants.DATA_QUALITY_SYNTAX );
+        super( oid );
     }
 
+    
     /**
-     * {@inheritDoc}
+     * @return An instance of the Builder for this class
      */
-    @Override
-    public boolean isValidSyntax( Object value )
+    public static Builder builder()
     {
-        LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
-        return true;
+        return new Builder();
     }
 }

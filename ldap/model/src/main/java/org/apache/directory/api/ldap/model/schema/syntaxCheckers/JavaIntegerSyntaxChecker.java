@@ -25,8 +25,6 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Chars;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -48,23 +46,57 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class JavaIntegerSyntaxChecker extends SyntaxChecker
+public final class JavaIntegerSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( JavaIntegerSyntaxChecker.class );
-    
     /**
      * A static instance of JavaIntegerSyntaxChecker
      */
-    public static final JavaIntegerSyntaxChecker INSTANCE = new JavaIntegerSyntaxChecker();
+    public static final JavaIntegerSyntaxChecker INSTANCE = 
+        new JavaIntegerSyntaxChecker( SchemaConstants.JAVA_INT_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<JavaIntegerSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.JAVA_INT_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of JavaIntegerSyntaxChecker
+         * @return A new instance of JavaIntegerSyntaxChecker
+         */
+        @Override
+        public JavaIntegerSyntaxChecker build()
+        {
+            return new JavaIntegerSyntaxChecker( oid );
+        }
+    }
 
     
     /**
      * Creates a new instance of JavaIntegerSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public JavaIntegerSyntaxChecker()
+    private JavaIntegerSyntaxChecker( String oid )
     {
-        super( SchemaConstants.JAVA_INT_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
@@ -78,7 +110,11 @@ public class JavaIntegerSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -97,7 +133,11 @@ public class JavaIntegerSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
@@ -112,20 +152,27 @@ public class JavaIntegerSyntaxChecker extends SyntaxChecker
         }
         else if ( !Chars.isDigit( c ) )
         {
-            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
         else if ( c == '0' )
         {
             boolean result = strValue.length() <= 1;
 
-            if ( result )
+            if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
-            }
-            else
-            {
-                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                if ( result )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+                }
+                else
+                {
+                    LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                }
             }
 
             return result;
@@ -134,7 +181,11 @@ public class JavaIntegerSyntaxChecker extends SyntaxChecker
         // We must have at least a digit which is not '0'
         if ( !Chars.isDigit( strValue, pos ) || Strings.isCharASCII( strValue, pos, '0' ) )
         {
-            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
         else
@@ -149,19 +200,32 @@ public class JavaIntegerSyntaxChecker extends SyntaxChecker
 
         if ( pos != strValue.length() )
         {
-            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
         try
         {
             Integer.valueOf( strValue );
-            LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+            }
+            
             return true;
         }
         catch ( NumberFormatException e )
         {
-            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
     }

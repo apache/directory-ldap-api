@@ -22,12 +22,11 @@ package org.apache.directory.api.ldap.aci;
 
 import java.text.ParseException;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -37,21 +36,72 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class ACIItemSyntaxChecker extends SyntaxChecker
+public final class ACIItemSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( ACIItemSyntaxChecker.class );
-
     /** An instance of ACI Item Checker */
     private transient ACIItemChecker aciItemChecker;
+    
+    /**
+     * A static instance of ACIItemSyntaxChecker
+     */
+    public static final ACIItemSyntaxChecker INSTANCE = 
+        new ACIItemSyntaxChecker( SchemaConstants.ACI_ITEM_SYNTAX, null );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<ACIItemSyntaxChecker>
+    {
+        /** The schemaManager to use */
+        private SchemaManager schemaManager;
+        
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.ACI_ITEM_SYNTAX );
+        }
+        
+        
+        public Builder setSchemaManager( SchemaManager schemaManager )
+        {
+            this.schemaManager = schemaManager;
+            
+            return this;
+        }
+        
+        /**
+         * Create a new instance of ACIItemSyntaxChecker
+         * @return A new instance of ACIItemSyntaxChecker
+         */
+        @Override
+        public ACIItemSyntaxChecker build()
+        {
+            return new ACIItemSyntaxChecker( oid, schemaManager );
+        }
+    }
 
 
     /**
      * Creates a new instance of ACIItemSyntaxChecker
+     * 
+     * @param oid The OID to use for this SyntaxChecker
+     * @param schemaManager The SchemaManager instance
      */
-    public ACIItemSyntaxChecker()
+    private ACIItemSyntaxChecker( String oid, SchemaManager schemaManager )
     {
-        super( SchemaConstants.ACI_ITEM_SYNTAX );
+        super( oid );
+        aciItemChecker = new ACIItemChecker( schemaManager );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
@@ -65,7 +115,11 @@ public class ACIItemSyntaxChecker extends SyntaxChecker
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -84,7 +138,11 @@ public class ACIItemSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
@@ -95,23 +153,21 @@ public class ACIItemSyntaxChecker extends SyntaxChecker
                 aciItemChecker.parse( strValue );
             }
 
-            LOG.debug( "Syntax valid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+            }
+            
             return true;
         }
         catch ( ParseException pe )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setSchemaManager( SchemaManager schemaManager )
-    {
-        aciItemChecker = new ACIItemChecker( schemaManager );
     }
 }

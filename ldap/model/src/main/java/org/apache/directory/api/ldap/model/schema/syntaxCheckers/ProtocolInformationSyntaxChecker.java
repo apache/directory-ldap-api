@@ -20,11 +20,8 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
-import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -34,33 +31,56 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class ProtocolInformationSyntaxChecker extends SyntaxChecker
+public final class ProtocolInformationSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( ProtocolInformationSyntaxChecker.class );
-    
     /**
      * A static instance of ProtocolInformationSyntaxChecker
      */
-    public static final ProtocolInformationSyntaxChecker INSTANCE = new ProtocolInformationSyntaxChecker();
+    public static final ProtocolInformationSyntaxChecker INSTANCE = 
+        new ProtocolInformationSyntaxChecker( SchemaConstants.PROTOCOL_INFORMATION_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<ProtocolInformationSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.PROTOCOL_INFORMATION_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of ProtocolInformationSyntaxChecker
+         * @return A new instance of ProtocolInformationSyntaxChecker
+         */
+        @Override
+        public ProtocolInformationSyntaxChecker build()
+        {
+            return new ProtocolInformationSyntaxChecker( oid );
+        }
+    }
 
     
     /**
      * Creates a new instance of ProtocolInformationSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public ProtocolInformationSyntaxChecker()
+    private ProtocolInformationSyntaxChecker( String oid )
     {
-        super( SchemaConstants.PROTOCOL_INFORMATION_SYNTAX );
+        super( oid );
     }
 
-
+    
     /**
-     * {@inheritDoc}
+     * @return An instance of the Builder for this class
      */
-    @Override
-    public boolean isValidSyntax( Object value )
+    public static Builder builder()
     {
-        LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
-        return true;
+        return new Builder();
     }
 }
