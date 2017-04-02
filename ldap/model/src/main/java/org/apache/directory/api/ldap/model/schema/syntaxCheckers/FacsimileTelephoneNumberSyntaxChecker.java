@@ -59,11 +59,11 @@ public final class FacsimileTelephoneNumberSyntaxChecker extends SyntaxChecker
     /** The default pattern used to check a TelephoneNumber */
     private static final String DEFAULT_REGEXP = "^ *[+]? *((\\([0-9- ,;/#*]+\\))|[0-9- ,;/#*]+)+$";
     
-    /** The compiled default pattern */
-    private String defaultRegexp;
+    /** The default pattern */
+    private final String defaultRegexp;
 
     /** The compiled default pattern */
-    private Pattern defaultPattern = Pattern.compile( DEFAULT_REGEXP );
+    private Pattern defaultPattern;
     
     /** Fax parameters possible values */
     private static final String TWO_DIMENSIONAL = "twoDimensional";
@@ -112,9 +112,10 @@ public final class FacsimileTelephoneNumberSyntaxChecker extends SyntaxChecker
         private Builder()
         {
             super( SchemaConstants.FACSIMILE_TELEPHONE_NUMBER_SYNTAX );
+            setDefaultRegexp( DEFAULT_REGEXP );
         }
-        
-        
+
+
         /**
          * Create a new instance of FacsimileTelephoneNumberSyntaxChecker
          * @return A new instance of FacsimileTelephoneNumberSyntaxChecker
@@ -149,28 +150,28 @@ public final class FacsimileTelephoneNumberSyntaxChecker extends SyntaxChecker
         }
     }
 
-    
+
     /**
      * Creates a new instance of TelephoneNumberSyntaxChecker.
      */
     private FacsimileTelephoneNumberSyntaxChecker( String oid )
     {
-        super( oid );
+        this( oid, DEFAULT_REGEXP, Pattern.compile( DEFAULT_REGEXP ) );
     }
 
-    
+
     /**
      * Creates a new instance of TelephoneNumberSyntaxChecker.
      */
     private FacsimileTelephoneNumberSyntaxChecker( String oid, String defaultRegexp, Pattern defaultPattern )
     {
         super( oid );
-        
+
         this.defaultPattern = defaultPattern;
         this.defaultRegexp = defaultRegexp;
     }
 
-    
+
     /**
      * @return An instance of the Builder for this class
      */

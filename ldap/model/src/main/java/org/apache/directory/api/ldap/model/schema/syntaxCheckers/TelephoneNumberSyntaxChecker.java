@@ -50,11 +50,11 @@ public final class TelephoneNumberSyntaxChecker extends SyntaxChecker
     /** The default pattern used to check a TelephoneNumber */
     private static final String DEFAULT_REGEXP = "^ *[+]? *((\\([0-9- ,;/#*]+\\))|[0-9- ,;/#*]+)+$";
     
-    /** The compiled default pattern */
-    private String defaultRegexp;
+    /** The default pattern */
+    private final String defaultRegexp;
 
     /** The compiled default pattern */
-    private Pattern defaultPattern = Pattern.compile( DEFAULT_REGEXP );
+    private final Pattern defaultPattern;
 
     /**
      * A static instance of TelephoneNumberSyntaxChecker
@@ -67,7 +67,7 @@ public final class TelephoneNumberSyntaxChecker extends SyntaxChecker
      */
     public static final class Builder extends SCBuilder<TelephoneNumberSyntaxChecker>
     {
-        /** The compiled default pattern */
+        /** The default pattern */
         private String defaultRegexp;
 
         /** The compiled default pattern */
@@ -79,6 +79,7 @@ public final class TelephoneNumberSyntaxChecker extends SyntaxChecker
         private Builder()
         {
             super( SchemaConstants.TELEPHONE_NUMBER_SYNTAX );
+            setDefaultRegexp( DEFAULT_REGEXP );
         }
         
         
@@ -124,7 +125,7 @@ public final class TelephoneNumberSyntaxChecker extends SyntaxChecker
      */
     private TelephoneNumberSyntaxChecker( String oid )
     {
-        super( oid );
+        this( oid, DEFAULT_REGEXP, Pattern.compile( DEFAULT_REGEXP ) );
     }
 
     
@@ -138,7 +139,7 @@ public final class TelephoneNumberSyntaxChecker extends SyntaxChecker
     private TelephoneNumberSyntaxChecker( String oid, String defaultRegexp, Pattern defaultPattern )
     {
         super( oid );
-        
+
         this.defaultPattern = defaultPattern;
         this.defaultRegexp = defaultRegexp;
     }
@@ -160,14 +161,7 @@ public final class TelephoneNumberSyntaxChecker extends SyntaxChecker
      */
     public String getRegexp()
     {
-        if ( defaultRegexp == null )
-        {
-            return DEFAULT_REGEXP;
-        }
-        else
-        {
-            return defaultRegexp;
-        }
+        return defaultRegexp;
     }
 
 

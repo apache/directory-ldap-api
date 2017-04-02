@@ -27,6 +27,7 @@ import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.FacsimileTelephoneNumberSyntaxChecker;
+import org.apache.directory.api.ldap.model.schema.syntaxCheckers.TelephoneNumberSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -98,6 +99,14 @@ public class FacsimileTelephoneNumberSyntaxCheckerTest
         assertTrue( checker.isValidSyntax( " 01 02 03 04  05 " ) );
         assertTrue( checker.isValidSyntax( " 01/02/03/04/05 " ) );
         assertFalse( checker.isValidSyntax( " 01 / 02 .03 04--  05 " ) );
+    }
+
+
+    @Test
+    public void testBuilderSetsDefaultPattern()
+    {
+        checker = FacsimileTelephoneNumberSyntaxChecker.builder().build();
+        assertTrue( checker.isValidSyntax( "1" ) );
     }
 
 
