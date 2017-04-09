@@ -107,4 +107,12 @@ public class TelephoneNumberSyntaxCheckerTest
         assertTrue( checker.isValidSyntax( " 01/02/03/04/05 " ) );
         assertFalse( checker.isValidSyntax( " 01 / 02 .03 04--  05 " ) );
     }
+
+
+    @Test
+    public void testBuilderSetsDefaultPattern()
+    {
+        checker = TelephoneNumberSyntaxChecker.builder().build();
+        assertTrue( checker.isValidSyntax( "1" ) );
+    }
 }

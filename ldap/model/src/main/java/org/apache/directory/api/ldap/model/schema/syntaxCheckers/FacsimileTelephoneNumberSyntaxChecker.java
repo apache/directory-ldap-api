@@ -112,6 +112,7 @@ public final class FacsimileTelephoneNumberSyntaxChecker extends SyntaxChecker
         private Builder()
         {
             super( SchemaConstants.FACSIMILE_TELEPHONE_NUMBER_SYNTAX );
+            setDefaultRegexp( DEFAULT_REGEXP );
         }
         
         
