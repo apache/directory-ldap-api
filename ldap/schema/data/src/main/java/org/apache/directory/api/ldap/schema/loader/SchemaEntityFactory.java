@@ -279,6 +279,7 @@ public class SchemaEntityFactory implements EntityFactory
     {
         // Try to class load the syntaxChecker
         Class<?> clazz;
+        Class<?> clazz2;
         SyntaxChecker syntaxChecker;
         String byteCodeStr = StringConstants.EMPTY;
 
@@ -307,6 +308,7 @@ public class SchemaEntityFactory implements EntityFactory
                 LOG.error( "Cannot load the syntax checker class constructor for class {}", className );
                 throw new LdapSchemaException( "Cannot load the syntax checker class " + cnfe.getMessage() );
             }
+            
                 
             byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
         }
