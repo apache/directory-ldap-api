@@ -279,7 +279,6 @@ public class SchemaEntityFactory implements EntityFactory
     {
         // Try to class load the syntaxChecker
         Class<?> clazz;
-        Class<?> clazz2;
         SyntaxChecker syntaxChecker;
         String byteCodeStr = StringConstants.EMPTY;
 
