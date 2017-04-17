@@ -20,12 +20,21 @@
 package org.apache.directory.api.ldap.schema.loader;
 
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
+
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 
 
 /**
@@ -35,7 +44,6 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
  */
 public class AttributeClassLoader extends ClassLoader
 {
-
     /** The attribute. */
     private Attribute attribute;
 
@@ -65,6 +73,64 @@ public class AttributeClassLoader extends ClassLoader
 
         this.attribute = attribute;
     }
+    
+    
+    /**
+     * Read data from a jar, and write them into a byte[]
+     */
+    private static byte[] getBytes( InputStream input ) throws IOException 
+    {
+        ByteArrayOutputStream result = new ByteArrayOutputStream();
+
+        byte[] buf = new byte[2048];
+        int bytesRead = input.read( buf );
+
+        while ( bytesRead != -1 ) 
+        {
+            result.write( buf, 0, bytesRead );
+            bytesRead = input.read( buf );
+        }
+      
+        result.flush();
+        result.close();
+        
+        return result.toByteArray();
+    }
+
+    
+    private Map<String, Class<?>> loadClasses( byte[] jarBytes ) throws IOException 
+    {
+        Map<String, Class<?>> map = new HashMap<>();
+        
+        try ( JarInputStream jis = new JarInputStream( new ByteArrayInputStream( jarBytes ) ) ) 
+        {
+            JarEntry entry;
+            boolean isJar = false;
+            
+            while ( ( entry = jis.getNextJarEntry() ) != null ) 
+            {
+                String fileName = entry.getName();
+                isJar = true;
+                
+                // Just consider the files ending with .class
+                if ( fileName.endsWith( ".class" ) )
+                {
+                    String className = fileName.substring( 0,  fileName.length() - ".class".length() ).replace( '/', '.' );
+                    byte[] classBytes = getBytes( jis );
+                    
+                    Class<?> clazz = defineClass( className, classBytes, 0, classBytes.length );
+                    map.put( className, clazz );
+                }
+            }
+            
+            if ( !isJar )
+            {
+                return null;
+            }
+        }
+
+        return map;
+    }
 
 
     /**
@@ -84,6 +150,31 @@ public class AttributeClassLoader extends ClassLoader
 
         classBytes = value.getBytes();
 
-        return defineClass( name, classBytes, 0, classBytes.length );
+        // May be we are dealing with a JAR ?
+        try 
+        {
+            Map<String, Class<?>> classes = loadClasses( classBytes );
+            
+            if ( classes == null )
+            {
+                // May be a simple class ?
+                return defineClass( name, classBytes, 0, classBytes.length );
+            }
+            
+            for ( Map.Entry<String, Class<?>> entry : classes.entrySet() )
+            {
+                if ( entry.getKey().contains( name ) )
+                {
+                    return entry.getValue();
+                }
+            }
+        }
+        catch ( IOException ioe )
+        {
+            // Ok, may be a pure class
+            return defineClass( name, classBytes, 0, classBytes.length );
+        }
+        
+        return null;
     }
 }
