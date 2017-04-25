@@ -11,7 +11,7 @@ This product uses Apache Ant (http://ant.apache.org/).
 
 This product includes/uses Apache Commons (http://commons.apache.org/).
 
-This product includes/uses Apache Loggin Services (http://logging.apache.org/).
+This product includes/uses Apache Logging Services (http://logging.apache.org/).
 
 This product includes/uses Apache Felix (http://felix.apache.org/).
 
