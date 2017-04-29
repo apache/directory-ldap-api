@@ -22,14 +22,16 @@ package org.apache.directory.api.ldap.schema.extractor.impl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InvalidObjectException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Enumeration;
@@ -212,7 +214,8 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
             throw new FileNotFoundException( I18n.err( I18n.ERR_08002, source.getAbsolutePath() ) );
         }
 
-        try ( Writer out = new OutputStreamWriter( new FileOutputStream( destination ), Charset.defaultCharset() );
+        try ( Writer out = new OutputStreamWriter( Files.newOutputStream( Paths.get( destination.getPath() ) ), 
+            Charset.defaultCharset() );
             LdifReader ldifReader = new LdifReader( source ) )
         {
             boolean first = true;
@@ -396,7 +399,7 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
                     .getParentFile().getAbsolutePath() ) );
             }
 
-            FileOutputStream out = new FileOutputStream( destination );
+            OutputStream out = Files.newOutputStream( Paths.get( destination.getPath() ) );
             try
             {
                 while ( in.available() > 0 )

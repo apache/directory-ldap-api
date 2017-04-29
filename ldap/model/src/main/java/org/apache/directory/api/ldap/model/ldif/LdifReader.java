@@ -24,7 +24,6 @@ import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,6 +33,8 @@ import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -351,8 +352,9 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
         try
         {
+            InputStream is = Files.newInputStream( Paths.get( file.getPath() ) );
             initReader(
-                new BufferedReader( new InputStreamReader( new FileInputStream( file ), Charset.defaultCharset() ) ) );
+                new BufferedReader( new InputStreamReader( is, Charset.defaultCharset() ) ) );
         }
         catch ( FileNotFoundException fnfe )
         {
@@ -363,6 +365,10 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         catch ( LdapInvalidDnException lide )
         {
             throw new LdapLdifException( lide.getMessage(), lide );
+        }
+        catch ( IOException ioe )
+        {
+            throw new LdapLdifException( ioe.getMessage(), ioe );
         }
         catch ( LdapException le )
         {
@@ -691,7 +697,9 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                             else
                             {
                                 byte[] data = new byte[( int ) length];
-                                try ( DataInputStream inf = new DataInputStream( new FileInputStream( file ) ) )
+                                
+                                try ( DataInputStream inf = new DataInputStream( 
+                                    Files.newInputStream( Paths.get( fileName ) ) ) )
                                 {
                                     inf.readFully( data );
 
@@ -1786,9 +1794,9 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
         // Open the file and then get a channel from the stream
         try ( 
-            FileInputStream fis = new FileInputStream( file );
+            InputStream is = Files.newInputStream( Paths.get( fileName ) );
             BufferedReader bufferReader = new BufferedReader(
-                new InputStreamReader( fis, Charset.forName( encoding ) ) ) )
+                new InputStreamReader( is, Charset.forName( encoding ) ) ) )
         {
             return parseLdif( bufferReader );
         }

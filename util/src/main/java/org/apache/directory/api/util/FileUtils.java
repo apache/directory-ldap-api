@@ -30,6 +30,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.OpenOption;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 
 
@@ -337,7 +341,7 @@ public final class FileUtils
      * @throws IOException if the file cannot be read
      * @since 1.3
      */
-    public static FileInputStream openInputStream( File file ) throws IOException
+    public static InputStream openInputStream( File file ) throws IOException
     {
         if ( file.exists() )
         {
@@ -356,7 +360,7 @@ public final class FileUtils
             throw new FileNotFoundException( "File '" + file + "' does not exist" );
         }
 
-        return new FileInputStream( file );
+        return Files.newInputStream( Paths.get( file.getPath() ) );
     }
 
 
@@ -443,7 +447,7 @@ public final class FileUtils
      * @throws IOException if a parent directory needs creating but that fails
      * @since 2.1
      */
-    public static FileOutputStream openOutputStream( File file, boolean append ) throws IOException
+    public static OutputStream openOutputStream( File file, boolean append ) throws IOException
     {
         if ( file.exists() )
         {
@@ -470,7 +474,14 @@ public final class FileUtils
             }
         }
 
-        return new FileOutputStream( file, append );
+        OpenOption option = StandardOpenOption.READ;
+        
+        if ( append )
+        {
+            option = StandardOpenOption.APPEND;
+        }
+        
+        return Files.newOutputStream( Paths.get( file.getPath() ), option );
     }
 
 
@@ -658,8 +669,8 @@ public final class FileUtils
 
         try
         {
-            fis = new FileInputStream( srcFile );
-            fos = new FileOutputStream( destFile );
+            fis = ( FileInputStream ) Files.newInputStream( Paths.get( srcFile.getPath() ) );
+            fos = ( FileOutputStream ) Files.newOutputStream( Paths.get( destFile.getPath() ) );
             input = fis.getChannel();
             output = fos.getChannel();
             long size = input.size(); // TODO See IO-386
@@ -810,7 +821,7 @@ public final class FileUtils
      * @throws IOException if a parent directory needs creating but that fails
      * @since 1.3
      */
-    public static FileOutputStream openOutputStream( File file ) throws IOException 
+    public static OutputStream openOutputStream( File file ) throws IOException 
     {
         return openOutputStream( file, false );
     }

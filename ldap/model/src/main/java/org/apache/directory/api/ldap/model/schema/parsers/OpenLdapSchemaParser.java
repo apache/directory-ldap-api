@@ -21,11 +21,12 @@ package org.apache.directory.api.ldap.model.schema.parsers;
 
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -329,7 +330,8 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser<SchemaObject>
      */
     public void parse( File schemaFile ) throws IOException, ParseException
     {
-        InputStreamReader in = new InputStreamReader( new FileInputStream( schemaFile ), Charset.defaultCharset() );
+        InputStreamReader in = new InputStreamReader(
+            Files.newInputStream( Paths.get( schemaFile.getPath() ) ), Charset.defaultCharset() );
         lexer.prepareNextInput( in );
         parser.resetState();
 

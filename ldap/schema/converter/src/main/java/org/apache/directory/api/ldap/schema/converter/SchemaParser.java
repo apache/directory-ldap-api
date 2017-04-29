@@ -22,11 +22,12 @@ package org.apache.directory.api.ldap.schema.converter;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.List;
 
@@ -187,7 +188,7 @@ public class SchemaParser
      */
     public synchronized void parse( File schemaFile ) throws IOException, ParseException
     {
-        schemaIn = new FileInputStream( schemaFile );
+        schemaIn = Files.newInputStream( Paths.get( schemaFile.getPath() ) );
 
         if ( producerThread == null )
         {
