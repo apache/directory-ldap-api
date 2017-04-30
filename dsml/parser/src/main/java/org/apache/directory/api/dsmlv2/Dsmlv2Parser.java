@@ -20,14 +20,14 @@
 package org.apache.directory.api.dsmlv2;
 
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.api.dsmlv2.request.Dsmlv2Grammar;
@@ -121,10 +121,13 @@ public class Dsmlv2Parser
      * @throws FileNotFoundException if the file does not exist
      * @throws XmlPullParserException if an error occurs in the parser
      */
-    public void setInputFile( String fileName ) throws FileNotFoundException, XmlPullParserException
+    public void setInputFile( String fileName ) throws IOException, XmlPullParserException
     {
-        Reader reader = new InputStreamReader( new FileInputStream( fileName ), Charset.defaultCharset() );
-        container.getParser().setInput( reader );
+        try ( Reader reader = new InputStreamReader( Files.newInputStream( Paths.get( ( fileName ) ) ), 
+            Charset.defaultCharset() ) )
+        {
+            container.getParser().setInput( reader );
+        }
     }
 
 

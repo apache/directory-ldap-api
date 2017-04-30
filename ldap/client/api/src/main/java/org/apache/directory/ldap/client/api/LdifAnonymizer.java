@@ -23,12 +23,14 @@ package org.apache.directory.ldap.client.api;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1055,25 +1057,23 @@ public class LdifAnonymizer
         LdifAnonymizer anonymizer = new LdifAnonymizer();
 
         String ldifString = null;
-        FileInputStream fis = new FileInputStream( args[0] );
-
-        try ( BufferedReader br = new BufferedReader( new InputStreamReader( fis, Charset.defaultCharset() ) ) )
+        
+        try ( InputStream fis = Files.newInputStream( Paths.get( args[0] ) ) )
         {
-            StringBuilder sb = new StringBuilder();
-            String line = br.readLine();
-
-            while ( line != null )
+            try ( BufferedReader br = new BufferedReader( new InputStreamReader( fis, Charset.defaultCharset() ) ) )
             {
-                sb.append( line );
-                sb.append( System.lineSeparator() );
-                line = br.readLine();
-            }
+                StringBuilder sb = new StringBuilder();
+                String line = br.readLine();
+    
+                while ( line != null )
+                {
+                    sb.append( line );
+                    sb.append( System.lineSeparator() );
+                    line = br.readLine();
+                }
 
-            ldifString = sb.toString();
-        }
-        finally
-        {
-            fis.close();
+                ldifString = sb.toString();
+            }
         }
 
         String result = anonymizer.anonymize( ldifString );

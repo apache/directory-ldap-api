@@ -21,10 +21,11 @@
 package org.apache.directory.api.ldap.schema.loader;
 
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -110,7 +111,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
                 scObjEntryMap.put( s, new HashMap<String, List<Entry>>() );
             }
 
-            InputStream in = new FileInputStream( schemaFile );
+            InputStream in = Files.newInputStream( Paths.get( schemaFile ) );
 
             initializeSchemas( in );
         }

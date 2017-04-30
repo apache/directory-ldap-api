@@ -23,7 +23,6 @@ package org.apache.directory.ldap.client.api;
 import static org.apache.directory.api.ldap.model.message.ResultCodeEnum.processResponse;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -32,6 +31,8 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.channels.UnresolvedAddressException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -4329,7 +4330,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         File krb5Conf = File.createTempFile( "client-api-krb5", ".conf" );
         krb5Conf.deleteOnExit();
 
-        try ( Writer writer = new OutputStreamWriter( new FileOutputStream( krb5Conf ), Charset.defaultCharset() ) )
+        try ( Writer writer = new OutputStreamWriter( Files.newOutputStream( Paths.get( krb5Conf.getPath() ) ), 
+            Charset.defaultCharset() ) )
         {
             writer.write( sb.toString() );
         }
