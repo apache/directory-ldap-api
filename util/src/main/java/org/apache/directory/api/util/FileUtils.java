@@ -31,7 +31,6 @@ import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
@@ -471,14 +470,14 @@ public final class FileUtils
             }
         }
 
-        OpenOption option = StandardOpenOption.READ;
-        
         if ( append )
         {
-            option = StandardOpenOption.APPEND;
+            return Files.newOutputStream( Paths.get( file.getPath() ), StandardOpenOption.CREATE, StandardOpenOption.APPEND );
         }
-        
-        return Files.newOutputStream( Paths.get( file.getPath() ), option );
+        else
+        {
+            return Files.newOutputStream( Paths.get( file.getPath() ) );
+        }
     }
 
 
