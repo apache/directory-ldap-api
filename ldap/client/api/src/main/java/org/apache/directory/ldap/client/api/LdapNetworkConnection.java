@@ -1998,9 +1998,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( message instanceof ExtendedResponse )
         {
-            ExtendedResponse response = ( ExtendedResponse ) message;
+            String responseName = ( ( ExtendedResponse ) message ).getResponseName();
 
-            if ( response.getResponseName().equals( NoticeOfDisconnect.EXTENSION_OID ) )
+            if ( NoticeOfDisconnect.EXTENSION_OID.equals( responseName ) )
             {
                 return true;
             }
