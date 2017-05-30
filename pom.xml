@@ -130,7 +130,7 @@
           <groupId>org.apache.rat</groupId>
           <artifactId>apache-rat-plugin</artifactId>
           <configuration>
-            <excludeSubProjects>false</excludeSubProjects>
+            <excludeSubProjects>true</excludeSubProjects>
             <excludes>
               <!-- MAVEN_DEFAULT_EXCLUDES -->
               <exclude>**/target/**/*</exclude>
@@ -159,6 +159,8 @@
               <exclude>data/src/main/resources/schema-all.ldif</exclude>
               <exclude>src/main/resources/schema/**</exclude>
               <exclude>src/main/resources/schema-all.ldif</exclude>
+              <!-- Exlude the imported external java code -->
+              <exclude>**/src/main/java/org/apache/directory/api/ldap/model/password/BCrypt.java</exclude>
             </excludes>
           </configuration>
         </plugin>
