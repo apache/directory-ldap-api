@@ -153,7 +153,7 @@ public final class JavaStoredProcUtils
      * 
      * @param ctx The execution context
      * @param procedureName The procedure to execute
-     * @param arguments The procédure's arguments
+     * @param arguments The procedure's arguments
      * @return The execution resut
      * @throws NamingException If we have had an error whil executing the stored procedure
      */
