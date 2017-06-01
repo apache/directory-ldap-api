@@ -89,6 +89,7 @@
     <module>dsml</module>
     <module>integ</module>
     <module>integ-osgi</module>
+    <module>integ-osgi2</module>
     <module>distribution</module>
   </modules>
 
