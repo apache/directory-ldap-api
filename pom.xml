@@ -30,7 +30,7 @@
   <artifactId>api-parent</artifactId>
   <name>Apache Directory LDAP API</name>
   <packaging>pom</packaging>
-  <version>1.0.0-RC3-SNAPSHOT</version>
+  <version>1.0.0</version>
 
   <properties>
     <additionalparam>-Xdoclint:none</additionalparam>
@@ -602,9 +602,9 @@
   </dependencyManagement>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/shared/tags/1.0.0-RC2</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/shared/tags/1.0.0-RC2</developerConnection>
-    <url>http://svn.apache.org/viewvc/directory/shared/tags/1.0.0-RC2</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/shared/tags/1.0.0</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/shared/tags/1.0.0</developerConnection>
+    <url>http://svn.apache.org/viewvc/directory/shared/tags/1.0.0</url>
   </scm>
 
   <reporting>
