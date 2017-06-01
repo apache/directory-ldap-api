@@ -67,6 +67,9 @@ public class CertGenerationGrammar extends AbstractGrammar<CertGenerationContain
     private static Grammar<CertGenerationContainer> instance = new CertGenerationGrammar();
 
 
+    /**
+     * Creates a new CertGenerationGrammar object.
+     */
     @SuppressWarnings("unchecked")
     public CertGenerationGrammar()
     {

@@ -19,6 +19,9 @@
  */
 package org.apache.directory.api.ldap.model.schema;
 
+import org.apache.directory.api.i18n.I18n;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Used to validate values of a particular syntax. This interface does not
@@ -31,6 +34,42 @@ public abstract class SyntaxChecker extends LoadableSchemaObject
 {
     /** The mandatory serialVersionUID */
     public static final long serialVersionUID = 1L;
+    
+    /** A logger for this class */
+    protected static final Logger LOG = LoggerFactory.getLogger( SyntaxChecker.class );
+
+    /**
+     * A static Builder for this class
+     */
+    public abstract static class SCBuilder<SC>
+    {
+        /** The SyntaxChecker OID */
+        protected String oid;
+        
+        /**
+         * The Builder constructor
+         */
+        protected SCBuilder( String oid )
+        {
+            this.oid = oid;
+        }
+        
+        
+        /**
+         * Set the SyntaxChecker's OID
+         * 
+         * @param oid The OID
+         * @return The Builder's Instance
+         */
+        public SCBuilder<SC> setOid( String oid )
+        {
+            this.oid = oid;
+            
+            return this;
+        }
+        
+        public abstract SC build();
+    }
 
 
     /**
@@ -59,7 +98,15 @@ public abstract class SyntaxChecker extends LoadableSchemaObject
      * @param value the value of some attribute with the syntax
      * @return true if the value is in the valid syntax, false otherwise
      */
-    public abstract boolean isValidSyntax( Object value );
+    public boolean isValidSyntax( Object value )
+    {
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+        }
+        
+        return true;
+    }
 
 
     /**

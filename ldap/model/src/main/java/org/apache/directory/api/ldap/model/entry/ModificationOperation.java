@@ -29,8 +29,13 @@ package org.apache.directory.api.ldap.model.entry;
  */
 public enum ModificationOperation
 {
+    /** Added attribute value */
     ADD_ATTRIBUTE(0),
+    
+    /** Removed attribute value */
     REMOVE_ATTRIBUTE(1),
+    
+    /** Replaced attribute value */
     REPLACE_ATTRIBUTE(2);
 
     /** Internal value */
@@ -40,7 +45,7 @@ public enum ModificationOperation
     /**
      * Creates a new instance of ModificationOperation.
      */
-    private ModificationOperation( int value )
+    ModificationOperation( int value )
     {
         this.value = value;
     }
@@ -86,6 +91,7 @@ public enum ModificationOperation
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         switch ( this )

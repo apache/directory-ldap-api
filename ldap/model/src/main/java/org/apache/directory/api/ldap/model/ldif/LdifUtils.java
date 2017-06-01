@@ -160,7 +160,7 @@ public final class LdifUtils
         }
 
         // The String cannot end with a space
-        return ( currentChar != ' ' );
+        return currentChar != ' ';
     }
 
 
@@ -276,9 +276,7 @@ public final class LdifUtils
      */
     public static Attributes getJndiAttributesFromLdif( String ldif ) throws LdapLdifException
     {
-        LdifAttributesReader reader = new LdifAttributesReader();
-
-        try
+        try ( LdifAttributesReader reader = new LdifAttributesReader() )
         {
             Attributes attributes = AttributeUtils.toAttributes( reader.parseEntry( ldif ) );
 
@@ -429,7 +427,7 @@ public final class LdifUtils
                 // Fallthrough
 
             case Add:
-                if ( ( entry.getEntry() == null ) )
+                if ( entry.getEntry() == null )
                 {
                     throw new LdapException( I18n.err( I18n.ERR_12082 ) );
                 }
@@ -716,7 +714,7 @@ public final class LdifUtils
                 if ( !( ava instanceof String ) )
                 {
                     throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                        I18n.ERR_12085, ( pos + 1 ) ) );
+                        I18n.ERR_12085, pos + 1 ) );
                 }
 
                 String attribute = ( String ) ava;
@@ -746,7 +744,7 @@ public final class LdifUtils
                 else
                 {
                     throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                        I18n.ERR_12086, ( pos + 1 ) ) );
+                        I18n.ERR_12086, pos + 1 ) );
                 }
 
                 valueExpected = false;

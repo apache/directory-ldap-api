@@ -21,40 +21,67 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 
 
 /**
  * A SyntaxChecker which verifies that a value is a SupportedAlgorithm according to RFC 2252.
- * 
+ * <p>
  * It has been removed in RFC 4517
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class SupportedAlgorithmSyntaxChecker extends BinarySyntaxChecker
+public final class SupportedAlgorithmSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( SupportedAlgorithmSyntaxChecker.class );
-
-
     /**
-     * Creates a new instance of SupportedAlgorithmSyntaxChecker.
+     * A static instance of SupportedAlgorithmSyntaxChecker
      */
-    public SupportedAlgorithmSyntaxChecker()
+    public static final SupportedAlgorithmSyntaxChecker INSTANCE = 
+        new SupportedAlgorithmSyntaxChecker( SchemaConstants.SUPPORTED_ALGORITHM_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<SupportedAlgorithmSyntaxChecker>
     {
-        super();
-        setOid( SchemaConstants.SUPPORTED_ALGORITHM_SYNTAX );
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.SUPPORTED_ALGORITHM_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of SupportedAlgorithmSyntaxChecker
+         * @return A new instance of SupportedAlgorithmSyntaxChecker
+         */
+        @Override
+        public SupportedAlgorithmSyntaxChecker build()
+        {
+            return new SupportedAlgorithmSyntaxChecker( oid );
+        }
     }
 
-
+    
     /**
-     * {@inheritDoc}
+     * Creates a new instance of SupportedAlgorithmSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public boolean isValidSyntax( Object value )
+    private SupportedAlgorithmSyntaxChecker( String oid )
     {
-        LOG.debug( "Syntax valid for '{}'", value );
-        return true;
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 }

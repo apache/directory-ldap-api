@@ -27,6 +27,8 @@ import org.apache.directory.ldap.client.api.LdapConnection;
 /**
  * A callback for running code against a managed {@link LdapConnection}.
  * 
+ * @param <T> The callback type
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface ConnectionCallback<T>

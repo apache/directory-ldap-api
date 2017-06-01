@@ -59,6 +59,9 @@ public class VirtualListViewResponseImpl extends AbstractControl implements Virt
     private byte[] contextId;
 
 
+    /**
+     * Creates a new VirtualListViewResponseImpl instance
+     */
     public VirtualListViewResponseImpl()
     {
         super( OID );
@@ -168,9 +171,10 @@ public class VirtualListViewResponseImpl extends AbstractControl implements Virt
     /**
      * Return a String representing this VirtualListViewResponseImpl.
      */
+    @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( "    Virtual List View Response Control\n" );
         sb.append( "        oid : " ).append( getOid() ).append( '\n' );

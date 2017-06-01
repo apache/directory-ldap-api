@@ -53,6 +53,12 @@ public class CertGenerationRequestDecorator extends ExtendedRequestDecorator<Cer
     private int requestLength = 0;
 
 
+    /**
+     * Creates a new instance of CertGenerationRequestDecorator.
+     * 
+     * @param codec The LDAP Service to use
+     * @param decoratedMessage The certificate generation request
+     */
     public CertGenerationRequestDecorator( LdapApiService codec, CertGenerationRequest decoratedMessage )
     {
         super( codec, decoratedMessage );
@@ -60,6 +66,9 @@ public class CertGenerationRequestDecorator extends ExtendedRequestDecorator<Cer
     }
 
 
+    /**
+     * @return The certificate generation request
+     */
     public CertGenerationRequest getCertGenerationRequest()
     {
         return certGenerationRequest;
@@ -135,6 +144,7 @@ public class CertGenerationRequestDecorator extends ExtendedRequestDecorator<Cer
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getTargetDN()
     {
         return getDecorated().getTargetDN();
@@ -144,6 +154,7 @@ public class CertGenerationRequestDecorator extends ExtendedRequestDecorator<Cer
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setTargetDN( String targetDN )
     {
         getDecorated().setTargetDN( targetDN );
@@ -153,6 +164,7 @@ public class CertGenerationRequestDecorator extends ExtendedRequestDecorator<Cer
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getIssuerDN()
     {
         return getDecorated().getIssuerDN();
@@ -162,6 +174,7 @@ public class CertGenerationRequestDecorator extends ExtendedRequestDecorator<Cer
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setIssuerDN( String issuerDN )
     {
         getDecorated().setIssuerDN( issuerDN );
@@ -171,6 +184,7 @@ public class CertGenerationRequestDecorator extends ExtendedRequestDecorator<Cer
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSubjectDN()
     {
         return getDecorated().getSubjectDN();
@@ -180,6 +194,7 @@ public class CertGenerationRequestDecorator extends ExtendedRequestDecorator<Cer
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setSubjectDN( String subjectDN )
     {
         getDecorated().setSubjectDN( subjectDN );
@@ -189,6 +204,7 @@ public class CertGenerationRequestDecorator extends ExtendedRequestDecorator<Cer
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getKeyAlgorithm()
     {
         return getDecorated().getKeyAlgorithm();
@@ -198,6 +214,7 @@ public class CertGenerationRequestDecorator extends ExtendedRequestDecorator<Cer
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setKeyAlgorithm( String keyAlgorithm )
     {
         getDecorated().setKeyAlgorithm( keyAlgorithm );

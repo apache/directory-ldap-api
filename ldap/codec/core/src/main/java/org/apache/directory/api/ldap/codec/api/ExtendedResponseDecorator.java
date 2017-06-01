@@ -35,6 +35,8 @@ import org.apache.directory.api.util.Strings;
 /**
  * A decorator for the ExtendedResponse message
  *
+ * @param <R> The extended response to decorate
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ExtendedResponseDecorator<R extends ExtendedResponse> extends ResponseDecorator<R>
@@ -69,6 +71,7 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getResponseName()
     {
         return getDecorated().getResponseName();
@@ -78,6 +81,7 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setResponseName( String oid )
     {
         getDecorated().setResponseName( oid );
@@ -85,7 +89,9 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
 
 
     /**
-     * {@inheritDoc}
+     * Gets the Extended response payload 
+     * 
+     * @return The extended payload
      */
     public byte[] getResponseValue()
     {
@@ -94,7 +100,9 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
 
 
     /**
-     * {@inheritDoc}
+     * sets the Extended response payload 
+     * 
+     * @param responseValue The extended payload
      */
     public void setResponseValue( byte[] responseValue )
     {
@@ -125,6 +133,7 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
      * 
      * @return The ExtendedResponse length
      */
+    @Override
     public int computeLength()
     {
         int ldapResultLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
@@ -164,6 +173,7 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
      * @param buffer The buffer where to put the PDU
      * @return The PDU.
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         try

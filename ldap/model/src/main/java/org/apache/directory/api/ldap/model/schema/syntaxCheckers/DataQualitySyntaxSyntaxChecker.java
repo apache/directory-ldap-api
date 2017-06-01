@@ -22,8 +22,6 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -32,27 +30,56 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class DataQualitySyntaxSyntaxChecker extends SyntaxChecker
+public final class DataQualitySyntaxSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( DataQualitySyntaxSyntaxChecker.class );
-
-
     /**
-     * Creates a new instance of DataQualitySyntaxSyntaxChecker.
+     * A static instance of DataQualitySyntaxSyntaxChecker
      */
-    public DataQualitySyntaxSyntaxChecker()
+    public static final DataQualitySyntaxSyntaxChecker INSTANCE = 
+        new DataQualitySyntaxSyntaxChecker( SchemaConstants.DATA_QUALITY_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<DataQualitySyntaxSyntaxChecker>
     {
-        super( SchemaConstants.DATA_QUALITY_SYNTAX );
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.DATA_QUALITY_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of DataQualitySyntaxSyntaxChecker
+         * @return A new instance of DataQualitySyntaxSyntaxChecker
+         */
+        @Override
+        public DataQualitySyntaxSyntaxChecker build()
+        {
+            return new DataQualitySyntaxSyntaxChecker( oid );
+        }
     }
 
-
+    
     /**
-     * {@inheritDoc}
+     * Creates a new instance of DataQualitySyntaxSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public boolean isValidSyntax( Object value )
+    private DataQualitySyntaxSyntaxChecker( String oid )
     {
-        LOG.debug( "Syntax valid for '{}'", value );
-        return true;
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 }

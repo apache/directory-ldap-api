@@ -32,8 +32,7 @@ import org.apache.directory.api.ldap.model.name.Dn;
 
 
 /**
- * 
- * TODO MonitoringLdapConnection.
+ * A class used to monitor the use of a LdapConnection
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -63,12 +62,18 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
     }
 
 
+    /**
+     * @return tells if a Bind has been issued 
+     */
     public boolean bindCalled()
     {
         return bindCalled;
     }
 
 
+    /**
+     * Reset the Bind and StartTLS flags
+     */
     public void resetMonitors()
     {
         bindCalled = false;
@@ -76,6 +81,9 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
     }
 
 
+    /**
+     * @return tells if the StarTLS extended operation has been called
+     */
     public boolean startTlsCalled()
     {
         return startTlsCalled;

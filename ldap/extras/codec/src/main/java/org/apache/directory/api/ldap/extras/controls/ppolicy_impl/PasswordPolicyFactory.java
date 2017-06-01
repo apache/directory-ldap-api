@@ -53,6 +53,7 @@ public class PasswordPolicyFactory implements ControlFactory<PasswordPolicy>
      * 
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return PasswordPolicy.OID;
@@ -63,6 +64,7 @@ public class PasswordPolicyFactory implements ControlFactory<PasswordPolicy>
      * 
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<PasswordPolicy> newCodecControl()
     {
         return new PasswordPolicyDecorator( codec );
@@ -73,6 +75,7 @@ public class PasswordPolicyFactory implements ControlFactory<PasswordPolicy>
      * 
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<PasswordPolicy> newCodecControl( PasswordPolicy control )
     {
         return new PasswordPolicyDecorator( codec, control );

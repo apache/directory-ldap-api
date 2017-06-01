@@ -92,6 +92,7 @@ public class PersistentSearchDecorator extends ControlDecorator<PersistentSearch
      *  
      * @return the control length.
      */
+    @Override
     public int computeLength()
     {
         int changeTypesLength = 1 + 1 + BerValue.getNbBytes( getChangeTypes() );
@@ -99,9 +100,8 @@ public class PersistentSearchDecorator extends ControlDecorator<PersistentSearch
         int returnRCsLength = 1 + 1 + 1;
 
         psearchSeqLength = changeTypesLength + changesOnlyLength + returnRCsLength;
-        int valueLength = 1 + TLV.getNbBytes( psearchSeqLength ) + psearchSeqLength;
-
-        return valueLength;
+        
+        return 1 + TLV.getNbBytes( psearchSeqLength ) + psearchSeqLength;
     }
 
 
@@ -112,6 +112,7 @@ public class PersistentSearchDecorator extends ControlDecorator<PersistentSearch
      * @return A ByteBuffer that contains the encoded PDU
      * @throws EncoderException If anything goes wrong.
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         if ( buffer == null )
@@ -134,13 +135,14 @@ public class PersistentSearchDecorator extends ControlDecorator<PersistentSearch
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getValue()
     {
         if ( value == null )
         {
             try
             {
-                computeLength();
+                valueLength = computeLength();
                 ByteBuffer buffer = ByteBuffer.allocate( valueLength );
 
                 // Now encode the PagedSearch specific part
@@ -153,7 +155,7 @@ public class PersistentSearchDecorator extends ControlDecorator<PersistentSearch
 
                 value = buffer.array();
             }
-            catch ( Exception e )
+            catch ( EncoderException ee )
             {
                 return null;
             }
@@ -165,52 +167,84 @@ public class PersistentSearchDecorator extends ControlDecorator<PersistentSearch
 
     private PersistentSearch getPersistentSearch()
     {
-        return ( PersistentSearch ) getDecorated();
+        return getDecorated();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setChangesOnly( boolean changesOnly )
     {
         getPersistentSearch().setChangesOnly( changesOnly );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean isChangesOnly()
     {
         return getPersistentSearch().isChangesOnly();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setReturnECs( boolean returnECs )
     {
         getPersistentSearch().setReturnECs( returnECs );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean isReturnECs()
     {
         return getPersistentSearch().isReturnECs();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setChangeTypes( int changeTypes )
     {
         getPersistentSearch().setChangeTypes( changeTypes );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int getChangeTypes()
     {
         return getPersistentSearch().getChangeTypes();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean isNotificationEnabled( ChangeType changeType )
     {
         return getPersistentSearch().isNotificationEnabled( changeType );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void enableNotification( ChangeType changeType )
     {
         getPersistentSearch().enableNotification( changeType );
@@ -220,6 +254,17 @@ public class PersistentSearchDecorator extends ControlDecorator<PersistentSearch
     /**
      * {@inheritDoc}
      */
+    @Override
+    public void disableNotification( ChangeType changeType )
+    {
+        getPersistentSearch().disableNotification( changeType );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );

@@ -98,6 +98,7 @@ public class CachingNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public Value<?> normalize( Value<?> value ) throws LdapException
     {
         if ( value == null )
@@ -105,15 +106,14 @@ public class CachingNormalizer extends Normalizer
             return null;
         }
 
-        Value<?> normalized = normalizer.normalize( value );
-
-        return normalized;
+        return normalizer.normalize( value );
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public String normalize( String value ) throws LdapException
     {
         if ( value == null )
@@ -121,9 +121,7 @@ public class CachingNormalizer extends Normalizer
             return null;
         }
 
-        String normalized = normalizer.normalize( value );
-
-        return normalized;
+        return normalizer.normalize( value );
     }
 
 
@@ -132,6 +130,7 @@ public class CachingNormalizer extends Normalizer
      * 
      * @param schemaManager The SchemaManager
      */
+    @Override
     public void setSchemaManager( SchemaManager schemaManager )
     {
         normalizer.setSchemaManager( schemaManager );

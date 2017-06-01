@@ -29,6 +29,7 @@ import static org.junit.Assert.fail;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Locale;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
@@ -1145,5 +1146,39 @@ public class FilterParserTest
     {
         String str = "(&(o_u~=people)(a_g_e>=30))";
         FilterParser.parse( str, false );
+    }
+
+
+    @Test
+    public void testRelaxedFilterParse() throws ParseException
+    {
+        String str = " ( cn =*) ";
+        ExprNode node = FilterParser.parse( str, false );
+        
+        assertTrue( node instanceof PresenceNode );
+        assertEquals( "cn", ((PresenceNode)node).attribute );
+        
+        str = " ( & ( cn =*) ) ";
+        node = FilterParser.parse( str, false );
+
+        assertTrue( node instanceof AndNode );
+        assertEquals( 1, ((AndNode)node).children.size() );
+        
+        ExprNode child = ((AndNode)node).children.get( 0 );
+        assertTrue( child instanceof PresenceNode );
+        assertEquals( "cn", ((PresenceNode)child).attribute );
+    }
+    
+    
+    @Test
+    public void testFilterWithSpecialChars() throws ParseException
+    {
+        String filterStr = String.format( Locale.ROOT, "(%s=%s)", "cn", FilterEncoder.encodeFilterValue( "ACME(tm)" ) );
+        
+        assertEquals( "(cn=ACME\\28tm\\29)", filterStr );
+        
+        String filterStr2 = new EqualityNode<>( "cn", new StringValue( "ACME(tm)" ) ).toString();
+        
+        assertEquals( "(cn=ACME\\28tm\\29)", filterStr2 );
     }
 }

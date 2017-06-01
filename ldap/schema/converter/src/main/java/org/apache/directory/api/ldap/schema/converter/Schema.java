@@ -107,6 +107,7 @@ public class Schema
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         return "Schema " + name + ".schema";

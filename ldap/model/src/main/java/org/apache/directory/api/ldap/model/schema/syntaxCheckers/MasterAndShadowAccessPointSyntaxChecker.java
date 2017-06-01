@@ -22,8 +22,6 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -33,27 +31,56 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class MasterAndShadowAccessPointSyntaxChecker extends SyntaxChecker
+public final class MasterAndShadowAccessPointSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( MasterAndShadowAccessPointSyntaxChecker.class );
-
-
     /**
-     * Create a new instance of MasterAndShadowAccessPointSyntaxChecker
+     * A static instance of MasterAndShadowAccessPointSyntaxChecker
      */
-    public MasterAndShadowAccessPointSyntaxChecker()
+    public static final MasterAndShadowAccessPointSyntaxChecker INSTANCE = 
+        new MasterAndShadowAccessPointSyntaxChecker( SchemaConstants.MASTER_AND_SHADOW_ACCESS_POINTS_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<MasterAndShadowAccessPointSyntaxChecker>
     {
-        super( SchemaConstants.MASTER_AND_SHADOW_ACCESS_POINTS_SYNTAX );
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.MASTER_AND_SHADOW_ACCESS_POINTS_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of MasterAndShadowAccessPointSyntaxChecker
+         * @return A new instance of MasterAndShadowAccessPointSyntaxChecker
+         */
+        @Override
+        public MasterAndShadowAccessPointSyntaxChecker build()
+        {
+            return new MasterAndShadowAccessPointSyntaxChecker( oid );
+        }
     }
 
-
+    
     /**
-     * {@inheritDoc}
+     * Create a new instance of MasterAndShadowAccessPointSyntaxChecker
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public boolean isValidSyntax( Object value )
+    private MasterAndShadowAccessPointSyntaxChecker( String oid )
     {
-        LOG.debug( "Syntax valid for '{}'", value );
-        return true;
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 }

@@ -24,10 +24,8 @@ import java.util.List;
 
 
 /**
- * <p>
  * Provides utilities for manipulating and examining <code>Throwable</code>
  * objects.
- * </p>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

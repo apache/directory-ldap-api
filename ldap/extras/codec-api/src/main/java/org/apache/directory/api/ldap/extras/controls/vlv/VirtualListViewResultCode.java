@@ -28,28 +28,40 @@ package org.apache.directory.api.ldap.extras.controls.vlv;
  */
 public enum VirtualListViewResultCode
 {
+    /** A success */
     SUCCESS(0, "Success"),
 
+    /** The operation failed dur to some internal error */
     OPERATIONSERROR(1, "Server internal failure"),
 
+    /** teh time limit has been exceeded */
     TIMELIMITEXCEEDED(3, "Timelimit exceeded"),
 
+    /** The admin limit has been exceeded */
     ADMINLIMITEXCEEDED(11, "Admin limit exceeded"),
 
+    /** The matching rule is inappropriate */
     INAPPROPRIATEMATCHING(18, "Unrecognized or inappropriate matching rule"),
 
+    /** The access right are insufficient */
     INSUFFICIENTACCESSRIGHTS(50, "Insufficient access rights"),
 
+    /** Unwilling to perform the operation */
     UNWILLINGTOPERFORM(53, "Unwilling to perform"),
 
+    /** No Sort Control provided */
     SORTCONTROLMISSING(60, "Sort control missing"),
 
+    /** The offset is incorrect */
     OFFSETRANGEERROR(61, "Offset range error"),
     
+    /** SS is missing */
     OPENLDAP_SSSMISSING(76, "SSS missing"), // OpenLDAP-specific error code
     
+    /** The range is invalid */
     OPENLDAP_RANGEERRROR(77, "Range error"), // OpenLDAP-specific error code
 
+    /** Another error */
     OTHER(80, "Other");
 
     /** The associated value */
@@ -59,7 +71,7 @@ public enum VirtualListViewResultCode
     private String desc;
 
 
-    private VirtualListViewResultCode( int value, String desc )
+    VirtualListViewResultCode( int value, String desc )
     {
         this.value = value;
         this.desc = desc;

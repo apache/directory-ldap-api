@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class EnhancedGuideSyntaxCheckerTest
 {
-    EnhancedGuideSyntaxChecker checker = new EnhancedGuideSyntaxChecker();
+    EnhancedGuideSyntaxChecker checker = EnhancedGuideSyntaxChecker.INSTANCE;
 
 
     @Test

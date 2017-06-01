@@ -30,8 +30,13 @@ import org.apache.directory.api.i18n.I18n;
  */
 public enum SearchScope
 {
+    /** Base scope */
     OBJECT(0, "base"),
+    
+    /** One Level scope */
     ONELEVEL(1, "one"),
+    
+    /** Subtree scope */
     SUBTREE(2, "sub");
 
     /** 
@@ -56,7 +61,7 @@ public enum SearchScope
      * @param scope the scope constant
      * @param ldapUrlValue LDAP URL scope string value: base, one, or sub
      */
-    private SearchScope( int scope, String ldapUrlValue )
+    SearchScope( int scope, String ldapUrlValue )
     {
         this.scope = scope;
         this.ldapUrlValue = ldapUrlValue;
@@ -173,6 +178,7 @@ public enum SearchScope
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         return ldapUrlValue;

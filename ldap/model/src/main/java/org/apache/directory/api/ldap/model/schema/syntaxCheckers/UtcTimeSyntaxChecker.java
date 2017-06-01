@@ -22,18 +22,18 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import java.util.regex.Pattern;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
  * A SyntaxChecker which verifies that a value is a UTC time
  * according to RFC 4517.
- * 
+ * <p>
  * From RFC 4517 :
+ * <pre>
  * UTCTime         = year month day hour minute [ second ] [ u-time-zone ]
  * u-time-zone     = %x5A          ; "Z" | u-differential
  * u-differential  = ( MINUS | PLUS ) hour minute
@@ -57,16 +57,13 @@ import org.slf4j.LoggerFactory;
  * 
  * From RFC 4512 :
  * PLUS    = %x2B ; plus sign ("+")
- * 
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class UtcTimeSyntaxChecker extends SyntaxChecker
+public final class UtcTimeSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( UtcTimeSyntaxChecker.class );
-
     /** The GeneralizedDate pattern matching */
     private static final String UTC_TIME_PATTERN =
         // year : 00 to 99
@@ -88,29 +85,73 @@ public class UtcTimeSyntaxChecker extends SyntaxChecker
 
     // The regexp pattern, java.util.regex.Pattern is immutable so only one instance is needed.
     private static final Pattern DATE_PATTERN = Pattern.compile( UTC_TIME_PATTERN );
-
-
+    
     /**
-     * 
+     * A static instance of UtcTimeSyntaxChecker
+     */
+    public static final UtcTimeSyntaxChecker INSTANCE = new UtcTimeSyntaxChecker( SchemaConstants.UTC_TIME_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<UtcTimeSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.UTC_TIME_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of UtcTimeSyntaxChecker
+         * @return A new instance of UtcTimeSyntaxChecker
+         */
+        @Override
+        public UtcTimeSyntaxChecker build()
+        {
+            return new UtcTimeSyntaxChecker( oid );
+        }
+    }
+
+    
+    /**
      * Creates a new instance of UtcTimeSyntaxChecker.
      *
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public UtcTimeSyntaxChecker()
+    private UtcTimeSyntaxChecker( String oid )
     {
-        super( SchemaConstants.UTC_TIME_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -130,21 +171,37 @@ public class UtcTimeSyntaxChecker extends SyntaxChecker
         // A generalized time must have a minimal length of 11 
         if ( strValue.length() < 11 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
         // Start the date parsing
-        boolean result = DATE_PATTERN.matcher( strValue ).find();
+        boolean result;
+        
+        synchronized ( DATE_PATTERN )
+        {
+            result = DATE_PATTERN.matcher( strValue ).find();
+        }
 
         if ( result )
         {
-            LOG.debug( "Syntax valid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+            }
         }
         else
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
         }
+        
         return result;
     }
 }

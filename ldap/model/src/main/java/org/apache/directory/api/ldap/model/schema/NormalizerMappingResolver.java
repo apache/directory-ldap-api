@@ -38,9 +38,17 @@ import java.util.Map;
  * these server side objects that generate these mappings.  Instead when a 
  * resolver is used we can create mock or almost right implementations.
  * 
+ * @param <E> The normalizer type
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface NormalizerMappingResolver<E extends Normalizer>
 {
+    /**
+     * Gets the Map containing the normalizers associated to an OID or name
+     * 
+     * @return The normalizer Map
+     * @throws Exception If not found
+     */
     Map<String, E> getNormalizerMapping() throws Exception;
 }

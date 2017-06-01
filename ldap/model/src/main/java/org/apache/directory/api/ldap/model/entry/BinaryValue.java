@@ -120,6 +120,7 @@ public class BinaryValue extends AbstractValue<byte[]>
      *
      * @return the normalized version of the user provided value
      */
+    @Override
     public byte[] getNormValue()
     {
         if ( isNull() )
@@ -139,6 +140,7 @@ public class BinaryValue extends AbstractValue<byte[]>
      * @param value The value we want to compare to
      * @return -1 if the current is below the provided one, 1 if it's above, 0 if they are equal
      */
+    @Override
     public int compareTo( Value<byte[]> value )
     {
         if ( isNull() )
@@ -200,6 +202,7 @@ public class BinaryValue extends AbstractValue<byte[]>
      * @see Object#hashCode()
      * @return the instance's hashcode 
      */
+    @Override
     public int hashCode()
     {
         if ( h == 0 )
@@ -225,6 +228,7 @@ public class BinaryValue extends AbstractValue<byte[]>
      * This equals implementation overrides the BinaryValue implementation which
      * is not schema aware.
      */
+    @Override
     public boolean equals( Object obj )
     {
         if ( this == obj )
@@ -399,6 +403,7 @@ public class BinaryValue extends AbstractValue<byte[]>
     /**
      * {@inheritDoc}
      */
+    @Override
     public BinaryValue clone()
     {
         BinaryValue clone = ( BinaryValue ) super.clone();
@@ -423,6 +428,7 @@ public class BinaryValue extends AbstractValue<byte[]>
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getValue()
     {
         if ( upValue == null )
@@ -442,6 +448,7 @@ public class BinaryValue extends AbstractValue<byte[]>
      * 
      * @return <code>true</code> if the value is HR, <code>false</code> otherwise
      */
+    @Override
     public boolean isHumanReadable()
     {
         return false;
@@ -451,6 +458,7 @@ public class BinaryValue extends AbstractValue<byte[]>
     /**
      * @return The length of the interned value
      */
+    @Override
     public int length()
     {
         return upValue != null ? upValue.length : 0;
@@ -463,6 +471,7 @@ public class BinaryValue extends AbstractValue<byte[]>
      * 
      * @return the user provided value as a byte[]
      */
+    @Override
     public byte[] getBytes()
     {
         return getValue();
@@ -474,6 +483,7 @@ public class BinaryValue extends AbstractValue<byte[]>
      *
      * @return the user provided value as a String
      */
+    @Override
     public String getString()
     {
         return Strings.utf8ToString( upValue );
@@ -519,6 +529,7 @@ public class BinaryValue extends AbstractValue<byte[]>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void readExternal( ObjectInput in ) throws IOException, ClassNotFoundException
     {
         // Read the BINARY flag
@@ -620,6 +631,7 @@ public class BinaryValue extends AbstractValue<byte[]>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void writeExternal( ObjectOutput out ) throws IOException
     {
         // Write the BINARY flag
@@ -677,6 +689,7 @@ public class BinaryValue extends AbstractValue<byte[]>
      *
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         if ( upValue == null )

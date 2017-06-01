@@ -75,6 +75,7 @@ public class RegexNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public Value<?> normalize( final Value<?> value )
     {
         if ( value == null )
@@ -102,6 +103,7 @@ public class RegexNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public String normalize( String value )
     {
         if ( value == null )
@@ -124,9 +126,10 @@ public class RegexNormalizer extends Normalizer
     /**
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString()
     {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         buf.append( "RegexNormalizer( " );
 
         for ( int i = 0; i < regexes.length; i++ )

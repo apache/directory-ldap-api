@@ -94,8 +94,8 @@ public class StoreSearchRequestTypesOnly extends GrammarAction<LdapMessageContai
 
         if ( IS_DEBUG )
         {
-            LOG.debug( "The search will return {}", ( searchRequest.getTypesOnly() ? "only attributs type"
-                : "attributes types and values" ) );
+            LOG.debug( "The search will return {}", searchRequest.getTypesOnly() ? "only attributs type"
+                : "attributes types and values" );
         }
     }
 }

@@ -28,7 +28,6 @@ import java.util.List;
 import org.apache.directory.api.ldap.model.constants.SaslQoP;
 import org.apache.directory.api.ldap.model.constants.SaslSecurityStrength;
 import org.apache.directory.api.ldap.model.message.Control;
-import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 
 
@@ -43,7 +42,7 @@ public abstract class SaslRequest
     protected String saslMechanism;
 
     /** The list of controls */
-    protected List<Control> controls = new ArrayList<Control>();
+    protected List<Control> controls = new ArrayList<>();
 
     /** The username */
     protected String username;
@@ -136,7 +135,7 @@ public abstract class SaslRequest
         }
         else
         {
-            return StringConstants.EMPTY_BYTES;
+            return Strings.EMPTY_BYTES;
         }
     }
 

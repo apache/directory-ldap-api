@@ -28,6 +28,8 @@ import org.apache.directory.api.util.Strings;
  * A comparator that compares the objectClass type with values: AUXILIARY,
  * ABSTRACT, and STRUCTURAL.
  * 
+ * @param <T> The type of object to compare
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ObjectClassTypeComparator<T> extends LdapComparator<T>
@@ -51,6 +53,7 @@ public class ObjectClassTypeComparator<T> extends LdapComparator<T>
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compare( T o1, T o2 )
     {
         String s1 = getString( o1 );

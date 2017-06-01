@@ -29,7 +29,7 @@ import org.apache.directory.api.asn1.util.Asn1StringUtils;
  * Define a transition between two states of a grammar. It stores the next
  * state, and the action to execute while executing the transition.
  * 
- * @param C The container type
+ * @param <C> The container type
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

@@ -34,9 +34,14 @@ public class LdapRequestUnsuccessfulException extends RuntimeException
 {
     private static final long serialVersionUID = 1982294624076306127L;
 
-    private ResultResponse response;
+    private final transient ResultResponse response;
 
 
+    /**
+     * Creates a new LdapRequestUnsuccessfulException instance
+     * 
+     * @param response The associated LDAP Response
+     */
     public LdapRequestUnsuccessfulException( ResultResponse response )
     {
         super();
@@ -44,6 +49,9 @@ public class LdapRequestUnsuccessfulException extends RuntimeException
     }
 
 
+    /**
+     * @return the associate LDAP Response
+     */
     public ResultResponse getResponse()
     {
         return response;

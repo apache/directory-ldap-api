@@ -32,7 +32,6 @@ import org.apache.directory.api.ldap.model.filter.ExprNode;
  */
 public class RangeOfValuesItem extends ProtectedItem
 {
-
     /** The filter. */
     private final ExprNode filter;
 
@@ -73,7 +72,12 @@ public class RangeOfValuesItem extends ProtectedItem
     public int hashCode()
     {
         int hash = 37;
-        hash = hash * 17 + filter.hashCode();
+        
+        if ( filter != null )
+        {
+            hash = hash * 17 + filter.hashCode();
+        }
+        
         return hash;
     }
 
@@ -92,7 +96,8 @@ public class RangeOfValuesItem extends ProtectedItem
         if ( o instanceof RangeOfValuesItem )
         {
             RangeOfValuesItem that = ( RangeOfValuesItem ) o;
-            return this.filter.equals( that.filter );
+            
+            return filter.equals( that.filter );
         }
 
         return false;
@@ -102,12 +107,17 @@ public class RangeOfValuesItem extends ProtectedItem
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         StringBuilder buf = new StringBuilder();
 
         buf.append( "rangeOfValues " );
-        buf.append( filter.toString() );
+        
+        if ( filter != null )
+        {
+            buf.append( filter.toString() );
+        }
 
         return buf.toString();
     }

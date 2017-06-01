@@ -73,7 +73,7 @@ public class StoreControlCriticality extends GrammarAction<LdapMessageContainer<
         TLV tlv = container.getCurrentTLV();
 
         // Get the current control
-        Control control = null;
+        Control control;
 
         MessageDecorator<? extends Message> message = container.getMessage();
         control = message.getCurrentControl();

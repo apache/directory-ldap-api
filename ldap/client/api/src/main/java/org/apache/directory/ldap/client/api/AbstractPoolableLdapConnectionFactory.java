@@ -51,6 +51,7 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PoolableO
      * 
      * There is nothing to do to activate a connection.
      */
+    @Override
     public void activateObject( LdapConnection connection ) throws LdapException
     {
         LOG.debug( "Activating {}", connection );
@@ -68,6 +69,7 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PoolableO
      * Destroying a connection will unbind it which will result on a shutdown
      * of teh underlying protocol.
      */
+    @Override
     public void destroyObject( LdapConnection connection ) throws LdapException
     {
         LOG.debug( "Destroying {}", connection );
@@ -104,6 +106,7 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PoolableO
      * 
      * @throws LdapException If unable to connect.
      */
+    @Override
     public LdapConnection makeObject() throws LdapException
     {
         LOG.debug( "Creating a LDAP connection" );
@@ -136,6 +139,7 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PoolableO
      * 
      * @throws LdapException If unable to reconfigure and rebind.
      */
+    @Override
     public void passivateObject( LdapConnection connection ) throws LdapException
     {
         LOG.debug( "Passivating {}", connection );
@@ -167,6 +171,7 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PoolableO
      * 
      * Validating a connection is done by checking the connection status.
      */
+    @Override
     public boolean validateObject( LdapConnection connection )
     {
         LOG.debug( "Validating {}", connection );

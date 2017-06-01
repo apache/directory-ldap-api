@@ -205,22 +205,6 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     }
 
 
-    private void setUp( Calendar newCalendar )
-    {
-        if ( newCalendar == null )
-        {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04358 ) );
-        }
-
-        this.calendar = newCalendar;
-        upGeneralizedTime = null;
-        upFormat = Format.YEAR_MONTH_DAY_HOUR_MIN_SEC_FRACTION;
-        upTimeZoneFormat = TimeZoneFormat.Z;
-        upFractionDelimiter = FractionDelimiter.DOT;
-        upFractionLength = 3;
-    }
-
-
     /**
      * Creates a new instance of GeneralizedTime, based on the
      * given generalized time string.
@@ -365,6 +349,22 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
 
         calendar.setLenient( true );
+    }
+
+
+    private void setUp( Calendar newCalendar )
+    {
+        if ( newCalendar == null )
+        {
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04358 ) );
+        }
+
+        this.calendar = newCalendar;
+        upGeneralizedTime = null;
+        upFormat = Format.YEAR_MONTH_DAY_HOUR_MIN_SEC_FRACTION;
+        upTimeZoneFormat = TimeZoneFormat.Z;
+        upFractionDelimiter = FractionDelimiter.DOT;
+        upFractionLength = 3;
     }
 
 
@@ -972,6 +972,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
      * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
+    @Override
     public int compareTo( GeneralizedTime other )
     {
         return calendar.compareTo( other.calendar );

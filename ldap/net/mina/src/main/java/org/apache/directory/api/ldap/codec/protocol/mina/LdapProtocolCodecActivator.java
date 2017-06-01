@@ -45,7 +45,7 @@ public class LdapProtocolCodecActivator implements BundleActivator
         private ServiceRegistration<?> registration;
 
 
-        public LdapApiServiceTracker( BundleContext context )
+        LdapApiServiceTracker( BundleContext context )
         {
             this.bundleContext = context;
         }
@@ -71,8 +71,6 @@ public class LdapProtocolCodecActivator implements BundleActivator
         @Override
         public void removedService( ServiceReference<LdapApiService> reference, LdapApiService service )
         {
-            // TODO should we unregister the LdapProtocolCodecFactory at LdapApiService?
-            // ldapApiService.unregisterProtocolCodecFactory( factory );
             registration.unregister();
         }
     }
@@ -89,10 +87,11 @@ public class LdapProtocolCodecActivator implements BundleActivator
     /**
      * {@inheritDoc}
      */
+    @Override
     public void start( BundleContext bundleContext ) throws Exception
     {
         LdapApiServiceTracker ldapApiServiceTracker = new LdapApiServiceTracker( bundleContext );
-        serviceTracker = new ServiceTracker<LdapApiService, LdapApiService>( bundleContext, LdapApiService.class,
+        serviceTracker = new ServiceTracker<>( bundleContext, LdapApiService.class,
             ldapApiServiceTracker );
         serviceTracker.open();
     }
@@ -101,6 +100,7 @@ public class LdapProtocolCodecActivator implements BundleActivator
     /**
      * {@inheritDoc}
      */
+    @Override
     public void stop( BundleContext bundleContext ) throws Exception
     {
         serviceTracker.close();

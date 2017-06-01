@@ -45,7 +45,7 @@ public enum SaslQoP
      *
      * @param value the equivalent string value
      */
-    private SaslQoP( String value )
+    SaslQoP( String value )
     {
         this.value = value;
     }

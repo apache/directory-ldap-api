@@ -20,54 +20,97 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
  * A SyntaxChecker which verifies that a value is a Numeric String according to RFC 4517.
- * 
+ * <p>
  * From RFC 4517 :
- * 
+ * <pre>
  * NumericString = 1*(DIGIT / SPACE)
  * 
  * From RFC 4512 :
  * DIGIT   = %x30 | LDIGIT       ; "0"-"9"
  * LDIGIT  = %x31-39             ; "1"-"9"
  * SPACE   = %x20                ; space (" ")
- * 
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class NumericStringSyntaxChecker extends SyntaxChecker
+public final class NumericStringSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( NumericStringSyntaxChecker.class );
+    /**
+     * A static instance of NumericStringSyntaxChecker
+     */
+    public static final NumericStringSyntaxChecker INSTANCE = 
+        new NumericStringSyntaxChecker( SchemaConstants.NUMERIC_STRING_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<NumericStringSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.NUMERIC_STRING_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of NumericStringSyntaxChecker
+         * @return A new instance of NumericStringSyntaxChecker
+         */
+        @Override
+        public NumericStringSyntaxChecker build()
+        {
+            return new NumericStringSyntaxChecker( oid );
+        }
+    }
 
-
+    
     /**
      * Creates a new instance of NumericStringSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public NumericStringSyntaxChecker()
+    private NumericStringSyntaxChecker( String oid )
     {
-        super( SchemaConstants.NUMERIC_STRING_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -87,7 +130,11 @@ public class NumericStringSyntaxChecker extends SyntaxChecker
         // We should have at least one char
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
@@ -110,12 +157,20 @@ public class NumericStringSyntaxChecker extends SyntaxChecker
                     continue;
 
                 default:
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                    }
+                    
                     return false;
             }
         }
 
-        LOG.debug( "Syntax valid for '{}'", value );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+        }
+        
         return true;
     }
 }

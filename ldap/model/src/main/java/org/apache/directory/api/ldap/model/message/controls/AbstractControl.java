@@ -69,6 +69,7 @@ public abstract class AbstractControl implements Control
      * 
      * @return A string which represent the control oid
      */
+    @Override
     public String getOid()
     {
         return oid == null ? "" : oid;
@@ -80,6 +81,7 @@ public abstract class AbstractControl implements Control
      * 
      * @return <code>true</code> if the criticality flag is true.
      */
+    @Override
     public boolean isCritical()
     {
         return criticality;
@@ -91,6 +93,7 @@ public abstract class AbstractControl implements Control
      * 
      * @param criticality The criticality value
      */
+    @Override
     public void setCritical( boolean criticality )
     {
         this.criticality = criticality;
@@ -100,6 +103,7 @@ public abstract class AbstractControl implements Control
     /**
      * @see Object#hashCode()
      */
+    @Override
     public int hashCode()
     {
         int h = 17;
@@ -113,6 +117,7 @@ public abstract class AbstractControl implements Control
     /**
      * @see Object#equals(Object)
      */
+    @Override
     public boolean equals( Object o )
     {
         if ( o == this )
@@ -144,9 +149,10 @@ public abstract class AbstractControl implements Control
     /**
      * Return a String representing a Control
      */
+    @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( "    " ).append( getClass().getSimpleName() ).append( " " );
         sb.append( "Control\n" );

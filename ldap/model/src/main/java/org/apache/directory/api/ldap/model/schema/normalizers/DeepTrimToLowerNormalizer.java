@@ -66,6 +66,7 @@ public class DeepTrimToLowerNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public Value<?> normalize( Value<?> value ) throws LdapException
     {
         if ( value == null )
@@ -91,6 +92,7 @@ public class DeepTrimToLowerNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public String normalize( String value ) throws LdapException
     {
         if ( value == null )
@@ -100,10 +102,7 @@ public class DeepTrimToLowerNormalizer extends Normalizer
 
         try
         {
-            String normalized = PrepareString.normalize( value,
-                PrepareString.StringType.CASE_IGNORE );
-
-            return normalized;
+            return PrepareString.normalize( value, PrepareString.StringType.CASE_IGNORE );
         }
         catch ( IOException ioe )
         {

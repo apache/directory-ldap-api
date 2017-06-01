@@ -46,9 +46,11 @@ public final class LdapApiServiceFactory
     private static boolean usingStandaloneImplementation;
 
 
+    /**
+     * Private constructor
+     */
     private LdapApiServiceFactory()
     {
-        // TODO Auto-generated constructor stub
     }
 
 

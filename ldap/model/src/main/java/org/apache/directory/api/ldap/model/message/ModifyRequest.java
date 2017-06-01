@@ -269,23 +269,27 @@ public interface ModifyRequest extends SingleReplyRequest, AbandonableRequest
     /**
      * {@inheritDoc}
      */
+    @Override
     ModifyRequest setMessageId( int messageId );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     ModifyRequest addControl( Control control );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     ModifyRequest addAllControls( Control[] controls );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     ModifyRequest removeControl( Control control );
 }

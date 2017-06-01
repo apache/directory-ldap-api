@@ -29,6 +29,8 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
 /**
  * A simple assertion value node.
  * 
+ * @param <T> The Value type
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class SimpleNode<T> extends LeafNode
@@ -121,8 +123,6 @@ public abstract class SimpleNode<T> extends LeafNode
     /**
      * Pretty prints this expression node along with annotation information.
      *
-     * TODO - perhaps this belong in some utility class?
-     *
      * @param buf the buffer to print into
      * @return the same buf argument returned for call chaining
      */
@@ -146,6 +146,7 @@ public abstract class SimpleNode<T> extends LeafNode
      * @return The buffer in which the refinement has been appended
      * @throws UnsupportedOperationException if this node isn't a part of a refinement.
      */
+    @Override
     public StringBuilder printRefinementToBuffer( StringBuilder buf )
     {
         if ( isSchemaAware )
@@ -175,6 +176,7 @@ public abstract class SimpleNode<T> extends LeafNode
      * @see Object#hashCode()
      * @return the instance's hash code 
      */
+    @Override
     public int hashCode()
     {
         int h = 37;
@@ -189,6 +191,7 @@ public abstract class SimpleNode<T> extends LeafNode
     /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals( Object other )
     {
         if ( this == other )

@@ -59,6 +59,7 @@ public class NoOpNormalizer extends Normalizer
      * @return the value argument returned as-is
      * @see org.apache.directory.api.ldap.model.schema.Normalizer#normalize(Value)
      */
+    @Override
     public Value<?> normalize( Value<?> value )
     {
         return value;
@@ -72,6 +73,7 @@ public class NoOpNormalizer extends Normalizer
      * @return the value argument returned as-is
      * @see org.apache.directory.api.ldap.model.schema.Normalizer#normalize(String)
      */
+    @Override
     public String normalize( String value )
     {
         return value;

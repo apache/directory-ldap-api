@@ -76,7 +76,7 @@ public class StoreModifyDnRequestEntryName extends GrammarAction<LdapMessageCont
 
         // We have to handle the special case of a 0 length matched
         // Dn
-        Dn entry = null;
+        Dn entry;
 
         if ( tlv.getLength() == 0 )
         {

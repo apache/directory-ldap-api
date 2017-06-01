@@ -52,6 +52,7 @@ public class SyncRequestValueFactory implements ControlFactory<SyncRequestValue>
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return SyncRequestValue.OID;
@@ -61,6 +62,7 @@ public class SyncRequestValueFactory implements ControlFactory<SyncRequestValue>
     /**
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<SyncRequestValue> newCodecControl()
     {
         return new SyncRequestValueDecorator( codec );
@@ -70,6 +72,7 @@ public class SyncRequestValueFactory implements ControlFactory<SyncRequestValue>
     /**
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<SyncRequestValue> newCodecControl( SyncRequestValue control )
     {
         return new SyncRequestValueDecorator( codec, control );

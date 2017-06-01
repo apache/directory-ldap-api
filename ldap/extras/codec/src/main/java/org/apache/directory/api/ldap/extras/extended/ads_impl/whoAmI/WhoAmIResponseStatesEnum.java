@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.whoAmI;
 
 
-import org.apache.directory.api.asn1.ber.grammar.Grammar;
 import org.apache.directory.api.asn1.ber.grammar.States;
 
 
@@ -45,25 +44,13 @@ public enum WhoAmIResponseStatesEnum implements States
     /** Last state */
     LAST_WHO_AM_I_RESPONSE_STATE;
 
-    /**
-     * Get the grammar name
-     * 
-     * @param grammar The grammar class
-     * @return The grammar name
-     */
-    public String getGrammarName( Grammar<WhoAmIResponseContainer> grammar )
-    {
-        return "WHO_AM_I_RESPONSE_GRAMMER";
-    }
-
 
     /**
      * Get the grammar name
      * 
-     * @param grammar The grammar code
      * @return The grammar name
      */
-    public String getGrammarName( int grammar )
+    public String getGrammarName()
     {
         return "WHO_AM_I_RESPONSE_GRAMMER";
     }
@@ -77,13 +64,14 @@ public enum WhoAmIResponseStatesEnum implements States
      */
     public String getState( int state )
     {
-        return ( ( state == END_STATE.ordinal() ) ? "WHO_AM_I_RESPONSE_GRAMMER" : this.name() );
+        return ( state == END_STATE.ordinal() ) ? "WHO_AM_I_RESPONSE_GRAMMER" : name();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isEndState()
     {
         return this == END_STATE;
@@ -93,6 +81,7 @@ public enum WhoAmIResponseStatesEnum implements States
     /**
      * {@inheritDoc}
      */
+    @Override
     public WhoAmIResponseStatesEnum getStartState()
     {
         return START_STATE;

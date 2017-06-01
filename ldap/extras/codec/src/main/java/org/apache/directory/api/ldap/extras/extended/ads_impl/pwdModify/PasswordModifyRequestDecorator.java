@@ -130,6 +130,7 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pas
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getUserIdentity()
     {
         return passwordModifyRequest.getUserIdentity();
@@ -139,6 +140,7 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pas
     /**
      * @param userIdentity the userIdentity to set
      */
+    @Override
     public void setUserIdentity( byte[] userIdentity )
     {
         passwordModifyRequest.setUserIdentity( userIdentity );
@@ -148,6 +150,7 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pas
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getOldPassword()
     {
         return passwordModifyRequest.getOldPassword();
@@ -157,6 +160,7 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pas
     /**
      * @param oldPassword the oldPassword to set
      */
+    @Override
     public void setOldPassword( byte[] oldPassword )
     {
         passwordModifyRequest.setOldPassword( oldPassword );
@@ -166,6 +170,7 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pas
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getNewPassword()
     {
         return passwordModifyRequest.getNewPassword();
@@ -175,6 +180,7 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pas
     /**
      * @param newPassword the newPassword to set
      */
+    @Override
     public void setNewPassword( byte[] newPassword )
     {
         passwordModifyRequest.setNewPassword( newPassword );

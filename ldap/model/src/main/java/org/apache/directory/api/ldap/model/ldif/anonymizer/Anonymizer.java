@@ -31,6 +31,8 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
 
 /**
  * An interface for Anonymizers.
+ * 
+ * @param <K> The type of object that will be anonymized
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

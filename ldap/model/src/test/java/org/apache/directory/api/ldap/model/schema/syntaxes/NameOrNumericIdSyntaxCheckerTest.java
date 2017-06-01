@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class NameOrNumericIdSyntaxCheckerTest
 {
-    NumericOidSyntaxChecker checker = new NumericOidSyntaxChecker();
+    NumericOidSyntaxChecker checker = NumericOidSyntaxChecker.INSTANCE;
 
 
     @Test

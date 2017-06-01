@@ -21,44 +21,72 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 
 
 /**
  * A SyntaxChecker which verifies that a value is an Audio according to RFC 2252.
  * 
+ * <pre>
  * The encoding of a value with Audio syntax is the octets of the value
  * itself, an 8KHz uncompressed encoding compatible with the SunOS 
  * 4.1.3 'play' utility. We implement it as a binary element.
+ * </pre>
  * 
  * It has been removed in RFC 4517
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class AudioSyntaxChecker extends BinarySyntaxChecker
+public final class AudioSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( AudioSyntaxChecker.class );
-
+    /**
+     * A static instance of AudioSyntaxChecker
+     */
+    public static final AudioSyntaxChecker INSTANCE = new AudioSyntaxChecker( SchemaConstants.AUDIO_SYNTAX );
 
     /**
-     * Creates a new instance of AudioSyntaxChecker
+     * A static Builder for this class
      */
-    public AudioSyntaxChecker()
+    public static final class Builder extends SCBuilder<AudioSyntaxChecker>
     {
-        super();
-        setOid( SchemaConstants.AUDIO_SYNTAX );
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.AUDIO_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of AudioSyntaxChecker
+         * @return A new instance of AudioSyntaxChecker
+         */
+        @Override
+        public AudioSyntaxChecker build()
+        {
+            return new AudioSyntaxChecker( oid );
+        }
+    }
+
+    
+    /**
+     * Creates a new instance of AudioSyntaxChecker
+     * 
+     * @param oid The OID to use for this SyntaxChecker
+     */
+    private AudioSyntaxChecker( String oid )
+    {
+        super( oid );
     }
 
 
     /**
-     * {@inheritDoc}
+     * @return An instance of the Builder for this class
      */
-    public boolean isValidSyntax( Object value )
+    public static Builder builder()
     {
-        LOG.debug( "Syntax valid for '{}'", value );
-        return true;
+        return new Builder();
     }
 }

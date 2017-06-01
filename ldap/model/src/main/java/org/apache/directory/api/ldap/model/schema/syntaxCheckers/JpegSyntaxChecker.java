@@ -20,58 +20,106 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
  * A SyntaxChecker which verifies that a value is a Jpeg according to RFC 4517.
- * 
+ * <p>
  * The JFIF (Jpeg File Interchange Format) specify that a jpeg image starts with
  * the following bytes :
+ * <pre>
  * 0xFF 0xD8 (SOI, Start Of Image)
  * 0xFF 0xE0 (App0 for JFIF) or 0xDD 0xE1 (App1 for Exif)
  * 0xNN 0xNN (Header length)
  * "JFIF\0" (JFIF string with an ending \0)
  * some other bytes which are related to the image.
+ * <pre>
  * 
  * We will check for those 11 bytes, except the length.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class JpegSyntaxChecker extends SyntaxChecker
+public final class JpegSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( JpegSyntaxChecker.class );
+    /**
+     * A static instance of JpegSyntaxChecker
+     */
+    public static final JpegSyntaxChecker INSTANCE = new JpegSyntaxChecker( SchemaConstants.JPEG_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<JpegSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.JPEG_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of JpegSyntaxChecker
+         * @return A new instance of JpegSyntaxChecker
+         */
+        @Override
+        public JpegSyntaxChecker build()
+        {
+            return new JpegSyntaxChecker( oid );
+        }
+    }
 
-
+    
     /**
      * Creates a new instance of JpegSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public JpegSyntaxChecker()
+    private JpegSyntaxChecker( String oid )
     {
-        super( SchemaConstants.JPEG_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
         // The value must be a byte array
         if ( !( value instanceof byte[] ) )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
@@ -80,7 +128,11 @@ public class JpegSyntaxChecker extends SyntaxChecker
         // The header must be at least 11 bytes long
         if ( bytes.length < 11 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
@@ -97,7 +149,11 @@ public class JpegSyntaxChecker extends SyntaxChecker
                 && ( bytes[9] == 'F' )
                 && ( bytes[10] == 0x00 ) )
             {
-                LOG.debug( "Syntax valid for '{}'", value );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+                }
+                
                 return true;
             }
         // EXIF Format
@@ -108,12 +164,20 @@ public class JpegSyntaxChecker extends SyntaxChecker
                     && ( bytes[9] == 'f' )
                     && ( bytes[10] == 0x00 ) )
             {
-                LOG.debug( "Syntax valid for '{}'", value );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+                }
+                
                 return true;
             }
         }
 
-        LOG.debug( "Syntax invalid for '{}'", value );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+        }
+        
         return false;
     }
 }

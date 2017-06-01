@@ -131,6 +131,7 @@ public abstract class LoadableSchemaObject extends AbstractSchemaObject
     /**
      * {@inheritDoc}
      */
+    @Override
     public LoadableSchemaObject copy()
     {
         return null;
@@ -156,7 +157,6 @@ public abstract class LoadableSchemaObject extends AbstractSchemaObject
         LoadableSchemaObject that = ( LoadableSchemaObject ) o;
 
         // Check the byteCode
-        // TODO
 
         // Check the FQCN
         if ( fqcn == null )

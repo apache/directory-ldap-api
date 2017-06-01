@@ -68,7 +68,15 @@ public class AttributeValueItem extends ProtectedItem
     public int hashCode()
     {
         int hash = 37;
-        hash = hash * 17 + attributes.hashCode();
+        
+        if ( attributes != null )
+        {
+            for ( Attribute attribute : attributes )
+            {
+                hash = hash * 17 + attribute.hashCode();
+            }
+        }
+        
         return hash;
     }
 
@@ -84,16 +92,31 @@ public class AttributeValueItem extends ProtectedItem
             return true;
         }
 
-        if ( o == null )
-        {
-            return false;
-        }
-
         if ( o instanceof AttributeValueItem )
         {
             AttributeValueItem that = ( AttributeValueItem ) o;
 
-            return this.attributes.equals( that.attributes );
+            if ( attributes != null )
+            {
+                if ( ( that.attributes == null ) || ( that.attributes.size() != attributes.size() ) )
+                {
+                    return false;
+                }
+                
+                for ( Attribute attribute : attributes )
+                {
+                    if ( !that.attributes.contains( attribute ) )
+                    {
+                        return false;
+                    }
+                }
+                
+                return true;
+            }
+            else
+            {
+                return attributes == null;
+            }
         }
 
         return false;
@@ -103,6 +126,7 @@ public class AttributeValueItem extends ProtectedItem
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         StringBuilder buf = new StringBuilder();
@@ -111,20 +135,23 @@ public class AttributeValueItem extends ProtectedItem
 
         boolean isFirst = true;
 
-        for ( Attribute attribute : attributes )
+        if ( attributes != null )
         {
-            if ( isFirst )
+            for ( Attribute attribute : attributes )
             {
-                isFirst = false;
+                if ( isFirst )
+                {
+                    isFirst = false;
+                }
+                else
+                {
+                    buf.append( ", " );
+                }
+    
+                buf.append( attribute.getId() );
+                buf.append( '=' );
+                buf.append( attribute.get() );
             }
-            else
-            {
-                buf.append( ", " );
-            }
-
-            buf.append( attribute.getId() );
-            buf.append( '=' );
-            buf.append( attribute.get() );
         }
 
         buf.append( " }" );

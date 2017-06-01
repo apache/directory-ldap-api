@@ -1,0 +1,75 @@
+#############################################################################
+#    Licensed to the Apache Software Foundation (ASF) under one or more
+#    contributor license agreements.  See the NOTICE file distributed with
+#    this work for additional information regarding copyright ownership.
+#    The ASF licenses this file to You under the Apache License, Version 2.0
+#    (the "License"); you may not use this file except in compliance with
+#    the License.  You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#    Unless required by applicable law or agreed to in writing, software
+#    distributed under the License is distributed on an "AS IS" BASIS,
+#    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#    See the License for the specific language governing permissions and
+#    limitations under the License.
+#############################################################################
+# Quirky schema. There are a lot of issues with the schema. It is not
+# standard-compliant.
+dn: cn=schema
+objectClass: top
+objectClass: subentry
+objectClass: subschema
+cn: schema
+ldapSyntaxes: ( 1.3.6.1.4.1.1466.115.121.1.12 DESC 'Distinguished Name' )
+ldapSyntaxes: ( 1.3.6.1.4.1.1466.115.121.1.15 DESC 'Directory String' )
+ldapSyntaxes: ( 1.3.6.1.4.1.1466.115.121.1.26 DESC 'IA5 String' )
+ldapSyntaxes: ( 1.3.6.1.4.1.1466.115.121.1.50 DESC 'Telephone Number' )
+# We do not have syntax 1.3.6.1.4.1.1466.115.121.1.38, 40 and 58 
+matchingRules: ( 1.3.6.1.4.1.4203.1.2.1 NAME 'caseExactIA5SubstringsMatch' SYN
+ TAX 1.3.6.1.4.1.1466.115.121.1.26 )
+matchingRules: ( 2.5.13.0 NAME 'objectIdentifierMatch' SYNTAX 1.3.6.1.4.1.1466
+ .115.121.1.38 )
+matchingRules: ( 2.5.13.1 NAME 'distinguishedNameMatch' SYNTAX 1.3.6.1.4.1.146
+ 6.115.121.1.12 )
+matchingRules: ( 2.5.13.2 NAME 'caseIgnoreMatch' SYNTAX 1.3.6.1.4.1.1466.115.1
+ 21.1.15 )
+matchingRules: ( 2.5.13.4 NAME 'caseIgnoreSubstringsMatch' SYNTAX 1.3.6.1.4.1.
+ 1466.115.121.1.58 )
+matchingRules: ( 2.5.13.17 NAME 'octetStringMatch' SYNTAX 1.3.6.1.4.1.1466.115
+ .121.1.40 )
+matchingRules: ( 2.5.13.20 NAME 'telephoneNumberMatch' SYNTAX 1.3.6.1.4.1.1466
+ .115.121.1.50 )
+ # No definition for telephoneNumberSubstringsMatch (2.5.13.21)
+attributeTypes: ( 2.5.4.0 NAME 'objectClass' DESC 'RFC4512: object classes of 
+ the entity' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.
+ 38 )
+ # No definition for 'description' attribute (2.5.4.13)
+attributeTypes: ( 2.5.4.20 NAME 'telephoneNumber' DESC 'RFC2256: Telephone Num
+ ber' EQUALITY telephoneNumberMatch SUBSTR telephoneNumberSubstringsMatch SYNT
+ AX 1.3.6.1.4.1.1466.115.121.1.50{32} )
+attributeTypes: ( 2.5.4.41 NAME 'name' DESC 'RFC4519: common supertype of name
+  attributes' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX
+  1.3.6.1.4.1.1466.115.121.1.15{32768} )
+attributeTypes: ( 2.5.4.49 NAME 'distinguishedName' DESC 'RFC4519: common supe
+ rtype of DN attributes' EQUALITY distinguishedNameMatch SYNTAX 1.3.6.1.4.1.14
+ 66.115.121.1.12 )
+attributeTypes: ( 2.5.4.3 NAME ( 'cn' 'commonName' ) DESC 'RFC4519: common nam
+ e(s) for which the entity is known by' SUP name )
+# 'sn' definition has no syntax
+attributeTypes: ( 2.5.4.4 NAME 'sn' )
+attributeTypes: ( 2.5.4.34 NAME 'seeAlso' DESC 'RFC4519: DN of related object'
+  SUP distinguishedName )
+# userPassword has matching rule, but it does not have syntax
+attributeTypes: ( 2.5.4.35 NAME 'userPassword' DESC 'RFC4519/2307: password of
+  user' EQUALITY octetStringMatch )
+objectClasses: ( 2.5.6.0 NAME 'top' DESC 'top of the superclass chain' ABSTRAC
+ T MUST objectClass )
+# subSn is a subtype of sn which does not have a syntax OID
+attributeTypes: ( 1.3.6.1.4.1.45689.1.4.300.1 NAME 'subSn' SUP sn )
+# subPassword is a subtype of userPassword which does has syntax OID, but has no
+# syntax definition
+attributeTypes: ( 1.3.6.1.4.1.45689.1.4.300.2 NAME 'subPassword' SUP userPassword )
+objectClasses: ( 2.5.6.6 NAME 'person' DESC 'RFC2256: a person' SUP top STRUCT
+ URAL MUST ( sn $ cn ) MAY ( userPassword $ telephoneNumber $ seeAlso $ descri
+ ption $ subSn $ subPassword ) )

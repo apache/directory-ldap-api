@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.api</groupId>
     <artifactId>api-parent</artifactId>
-    <version>1.0.0-RC2</version>
+    <version>1.0.0</version>
   </parent>
   
   <artifactId>api-util</artifactId>
@@ -78,6 +78,16 @@
               javax.naming.ldap
             </Import-Package>
           </instructions>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>de.thetaphi</groupId>
+        <artifactId>forbiddenapis</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>**/MultiExceptionTest.class</exclude>
+            <exclude>**/RuntimeMultiExceptionTest.class</exclude>
+          </excludes>
         </configuration>
       </plugin>
     </plugins>

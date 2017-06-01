@@ -48,7 +48,7 @@ public class IntegerAnonymizer extends AbstractAnonymizer<String>
      */
     public IntegerAnonymizer()
     {
-        latestIntegerMap = new HashMap<Integer, String>();
+        latestIntegerMap = new HashMap<>();
     }
 
     
@@ -61,7 +61,7 @@ public class IntegerAnonymizer extends AbstractAnonymizer<String>
     {
         if ( latestIntegerMap == null ) 
         {
-            this.latestIntegerMap = new HashMap<Integer, String>();
+            this.latestIntegerMap = new HashMap<>();
         }
         else
         {
@@ -72,6 +72,7 @@ public class IntegerAnonymizer extends AbstractAnonymizer<String>
     /**
      * Anonymize an attribute using pure random values (either chars of bytes, depending on the Attribute type)
      */
+    @Override
     public Attribute anonymize( Map<Value<String>, Value<String>> valueMap, Set<Value<String>> valueSet, Attribute attribute )
     {
         Attribute result = new DefaultAttribute( attribute.getAttributeType() );
@@ -116,9 +117,9 @@ public class IntegerAnonymizer extends AbstractAnonymizer<String>
         return result;
     }
     
-    
+
     /**
-     * {@inheritDoc}
+     * @return The Map containing the latest anonymized value for each integer
      */
     public Map<Integer, String> getLatestIntegerMap()
     {
@@ -127,7 +128,8 @@ public class IntegerAnonymizer extends AbstractAnonymizer<String>
     
     
     /**
-     * {@inheritDoc}
+     * Set the Map containing anonymized integers
+     * @param latestIntegerMap The Map containing the latest anonymized value for each integer
      */
     public void setLatestIntegerMap( Map<Integer, String> latestIntegerMap )
     {

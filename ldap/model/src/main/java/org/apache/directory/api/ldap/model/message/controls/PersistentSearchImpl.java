@@ -64,48 +64,80 @@ public class PersistentSearchImpl extends AbstractControl implements PersistentS
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setChangesOnly( boolean changesOnly )
     {
         this.changesOnly = changesOnly;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean isChangesOnly()
     {
         return changesOnly;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setReturnECs( boolean returnECs )
     {
         this.returnECs = returnECs;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean isReturnECs()
     {
         return returnECs;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setChangeTypes( int changeTypes )
     {
         this.changeTypes = changeTypes;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int getChangeTypes()
     {
         return changeTypes;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean isNotificationEnabled( ChangeType changeType )
     {
         return ( changeType.getValue() & changeTypes ) > 0;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void enableNotification( ChangeType changeType )
     {
         changeTypes |= changeType.getValue();
@@ -113,11 +145,22 @@ public class PersistentSearchImpl extends AbstractControl implements PersistentS
 
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void disableNotification( ChangeType changeType )
+    {
+        changeTypes &= ~changeType.getValue();
+    }
+
+
+    /**
      * Return a String representing this PSearchControl.
      */
+    @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( "    Persistant Search Control\n" );
         sb.append( "        oid : " ).append( getOid() ).append( '\n' );

@@ -33,7 +33,33 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Grammar for decoding SortResponseControl.
+ * Grammar for decoding SortResponseControl. It's defined in https://tools.ietf.org/html/rfc2891
+ * 
+ * <pre>
+ *       SortResult ::= SEQUENCE {
+ *       sortResult  ENUMERATED {
+ *           success                   (0), -- results are sorted
+ *           operationsError           (1), -- server internal failure
+ *           timeLimitExceeded         (3), -- timelimit reached before
+ *                                          -- sorting was completed
+ *           strongAuthRequired        (8), -- refused to return sorted
+ *                                          -- results via insecure
+ *                                          -- protocol
+ *           adminLimitExceeded       (11), -- too many matching entries
+ $                                          -- for the server to sort
+ *           noSuchAttribute          (16), -- unrecognized attribute
+ *                                          -- type in sort key
+ *           inappropriateMatching    (18), -- unrecognized or
+ *                                          -- inappropriate matching
+ *                                          -- rule in sort key
+ *           insufficientAccessRights (50), -- refused to return sorted
+ *                                          -- results to this client
+ *           busy                     (51), -- too busy to process
+ *           unwillingToPerform       (53), -- unable to sort
+ *           other                    (80)
+ *           },
+ *     attributeType [0] AttributeDescription OPTIONAL }
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

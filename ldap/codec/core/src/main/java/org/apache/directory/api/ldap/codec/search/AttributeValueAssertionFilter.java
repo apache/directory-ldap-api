@@ -140,6 +140,7 @@ public class AttributeValueAssertionFilter extends Filter
      * 
      * @return The encoded length
      */
+    @Override
     public int computeLength()
     {
         avaLength = 0;
@@ -149,7 +150,7 @@ public class AttributeValueAssertionFilter extends Filter
 
         org.apache.directory.api.ldap.model.entry.Value<?> assertionValue = assertion.getAssertionValue();
 
-        int assertionValueLength = 0;
+        int assertionValueLength;
 
         assertionValueLength = assertionValue.getBytes().length;
 
@@ -180,6 +181,7 @@ public class AttributeValueAssertionFilter extends Filter
      * @param buffer The buffer where to put the PDU
      * @return The PDU.
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         if ( buffer == null )
@@ -241,6 +243,7 @@ public class AttributeValueAssertionFilter extends Filter
      * 
      * @return The item filter string
      */
+    @Override
     public String toString()
     {
         return assertion != null ? assertion.toStringRFC2254( filterType ) : "";

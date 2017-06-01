@@ -446,6 +446,7 @@ public class MutableObjectClass extends ObjectClass
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear()
     {
         // Clear the common elements

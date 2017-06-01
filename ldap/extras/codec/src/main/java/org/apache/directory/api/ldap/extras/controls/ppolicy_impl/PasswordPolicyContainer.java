@@ -37,6 +37,11 @@ public class PasswordPolicyContainer extends AbstractContainer
     private PasswordPolicyDecorator control;
 
 
+    /**
+     * Creates a new StoredProcedureContainer instance
+     * 
+     * @param codec The LDAP Service to use
+     */
     public PasswordPolicyContainer( LdapApiService codec )
     {
         super();
@@ -46,6 +51,12 @@ public class PasswordPolicyContainer extends AbstractContainer
     }
 
 
+    /**
+     * Creates a new StoredProcedureContainer instance
+     * 
+     * @param codec The LDAP Service to use
+     * @param ppolicyResponse The PasswordPolicy response
+     */
     public PasswordPolicyContainer( LdapApiService codec, PasswordPolicy ppolicyResponse )
     {
         super();
@@ -64,12 +75,20 @@ public class PasswordPolicyContainer extends AbstractContainer
     }
 
 
+    /**
+     * @return The decorated PasswordPolicy control
+     */
     public PasswordPolicyDecorator getPasswordPolicyResponseControl()
     {
         return control;
     }
 
 
+    /**
+     * Sets the password policy control
+     * 
+     * @param control The decorated PasswordPolicy control
+     */
     public void setPasswordPolicyResponseControl( PasswordPolicyDecorator control )
     {
         this.control = control;

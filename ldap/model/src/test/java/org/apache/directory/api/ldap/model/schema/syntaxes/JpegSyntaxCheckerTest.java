@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class JpegSyntaxCheckerTest
 {
-    JpegSyntaxChecker checker = new JpegSyntaxChecker();
+    JpegSyntaxChecker checker = JpegSyntaxChecker.INSTANCE;
 
 
     @Test

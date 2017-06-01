@@ -52,6 +52,7 @@ public class SortResponseFactory implements ControlFactory<SortResponse>
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return SortResponse.OID;
@@ -61,6 +62,7 @@ public class SortResponseFactory implements ControlFactory<SortResponse>
     /**
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<SortResponse> newCodecControl()
     {
         return new SortResponseDecorator( codec );
@@ -70,6 +72,7 @@ public class SortResponseFactory implements ControlFactory<SortResponse>
     /**
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<SortResponse> newCodecControl( SortResponse control )
     {
         return new SortResponseDecorator( codec, control );

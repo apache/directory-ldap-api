@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class NameAndOptionalUIDSyntaxCheckerTest
 {
-    NameAndOptionalUIDSyntaxChecker checker = new NameAndOptionalUIDSyntaxChecker();
+    NameAndOptionalUIDSyntaxChecker checker = NameAndOptionalUIDSyntaxChecker.INSTANCE;
 
 
     @Test

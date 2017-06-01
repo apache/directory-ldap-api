@@ -38,7 +38,6 @@ import org.apache.directory.api.util.Base64;
 import org.apache.directory.api.util.DateUtils;
 import org.apache.directory.api.util.Strings;
 
-
 /**
  * A utility class containing methods related to processing passwords.
  *
@@ -76,6 +75,12 @@ public final class PasswordUtil
 
     /** The CRYPT (SHA-512) hash length */
     public static final int CRYPT_SHA512_LENGTH = 86;
+
+    /** The CRYPT (BCrypt) hash length */
+    public static final int CRYPT_BCRYPT_LENGTH = 31;
+
+    private static final byte[] CRYPT_SALT_CHARS = Strings
+        .getBytesUtf8( "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" );
 
 
     private PasswordUtil()
@@ -123,11 +128,17 @@ public final class PasswordUtil
                 String algorithm = Strings.toLowerCaseAscii( Strings.utf8ToString( credentials, 1, pos - 1 ) );
 
                 // support for crypt additional encryption algorithms (e.g. {crypt}$1$salt$ez2vlPGdaLYkJam5pWs/Y1)
-                // currently only one-digit IDs are defined thus this quick check
                 if ( credentials.length > pos + 3 && credentials[pos + 1] == '$'
-                    && Character.isDigit( credentials[pos + 2] ) && credentials[pos + 3] == '$' )
+                    && Character.isDigit( credentials[pos + 2] ) )
                 {
-                    algorithm += Strings.utf8ToString( credentials, pos + 1, 3 );
+                    if ( credentials[pos + 3] == '$' )
+                    {
+                        algorithm += Strings.utf8ToString( credentials, pos + 1, 3 );
+                    }
+                    else if ( credentials.length > pos + 4 && credentials[pos + 4] == '$' )
+                    {
+                        algorithm += Strings.utf8ToString( credentials, pos + 1, 4 );
+                    }
                 }
 
                 return LdapSecurityConstants.getAlgorithm( algorithm );
@@ -204,17 +215,22 @@ public final class PasswordUtil
             case HASH_METHOD_CRYPT_SHA512:
                 salt = generateCryptSalt( 8 );
                 break;
-
+                
+            case HASH_METHOD_CRYPT_BCRYPT:
+                salt = Strings.getBytesUtf8( BCrypt.genSalt() );
+                break;
+    
             default:
                 salt = null;
         }
 
         byte[] hashedPassword = encryptPassword( credentials, algorithm, salt );
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( '{' ).append( Strings.upperCase( algorithm.getPrefix() ) ).append( '}' );
 
-        if ( algorithm == LdapSecurityConstants.HASH_METHOD_CRYPT )
+        if ( algorithm == LdapSecurityConstants.HASH_METHOD_CRYPT
+            || algorithm == LdapSecurityConstants.HASH_METHOD_CRYPT_BCRYPT )
         {
             sb.append( Strings.utf8ToString( salt ) );
             sb.append( Strings.utf8ToString( hashedPassword ) );
@@ -311,7 +327,7 @@ public final class PasswordUtil
             // be able to encrypt the submitted user password in the next step
             PasswordDetails passwordDetails = PasswordUtil.splitCredentials( storedCredentials );
 
-            // Reuse the saltedPassword informations to construct the encrypted
+            // Reuse the saltedPassword information to construct the encrypted
             // password given by the user.
             byte[] userPassword = PasswordUtil.encryptPassword( receivedCredentials, passwordDetails.getAlgorithm(),
                 passwordDetails.getSalt() );
@@ -408,6 +424,10 @@ public final class PasswordUtil
                     algorithm.getSubPrefix() + Strings.utf8ToString( salt ) );
                 String crypted2 = saltWithCrypted2.substring( saltWithCrypted2.lastIndexOf( '$' ) + 1 );
                 return Strings.getBytesUtf8( crypted2 );
+
+            case HASH_METHOD_CRYPT_BCRYPT:
+                String crypted3 = BCrypt.hashPw( Strings.utf8ToString( credentials ), Strings.utf8ToString( salt ) );
+                return Strings.getBytesUtf8( crypted3.substring( crypted3.length() - 31 ) );
                 
             case HASH_METHOD_PKCS5S2:
                 return generatePbkdf2Hash( credentials, algorithm, salt );
@@ -474,7 +494,7 @@ public final class PasswordUtil
         }
 
         int algoLength = algorithm.getPrefix().length() + 2;
-        byte[] password = null;
+        byte[] password;
 
         switch ( algorithm )
         {
@@ -511,6 +531,11 @@ public final class PasswordUtil
                 split( credentials, algoLength, salt, password );
                 return new PasswordDetails( algorithm, salt, password );
 
+            case HASH_METHOD_CRYPT_BCRYPT:
+                    salt = Arrays.copyOfRange( credentials, algoLength, credentials.length - 31 );
+                    password = Arrays.copyOfRange( credentials, credentials.length - 31, credentials.length );
+                    
+                    return new PasswordDetails( algorithm, salt, password );
             case HASH_METHOD_CRYPT_MD5:
             case HASH_METHOD_CRYPT_SHA256:
             case HASH_METHOD_CRYPT_SHA512:
@@ -598,8 +623,8 @@ public final class PasswordUtil
      * 
      * Note: this has been implemented to generate hashes compatible with what JIRA generates.
      *       See the <a href="http://pythonhosted.org/passlib/lib/passlib.hash.atlassian_pbkdf2_sha1.html">JIRA's passlib</a>
+     * @param credentials the credentials
      * @param algorithm the algorithm to use
-     * @param password the credentials
      * @param salt the optional salt
      * @return the digested credentials
      */
@@ -641,10 +666,6 @@ public final class PasswordUtil
 
         return new PasswordDetails( algorithm, salt, password );
     }
-
-
-    private static final byte[] CRYPT_SALT_CHARS = Strings
-        .getBytesUtf8( "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" );
 
 
     private static byte[] generateCryptSalt( int length )

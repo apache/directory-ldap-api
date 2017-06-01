@@ -52,10 +52,12 @@ public class SortRequestDecorator extends ControlDecorator<SortRequest> implemen
 
     private int sortReqLen = 0;
 
-    private List<Integer> sortKeyLenList = new ArrayList<Integer>();
+    private List<Integer> sortKeyLenList = new ArrayList<>();
 
+    /** ASN.1 BER tag for the forward ordering rule */
     public static final int ORDERING_RULE_TAG = 0x80;
 
+    /** ASN.1 BER tag for the backward ordering rule */
     public static final int REVERSE_ORDER_TAG = 0x81;
 
 
@@ -181,6 +183,7 @@ public class SortRequestDecorator extends ControlDecorator<SortRequest> implemen
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getValue()
     {
         if ( value == null )

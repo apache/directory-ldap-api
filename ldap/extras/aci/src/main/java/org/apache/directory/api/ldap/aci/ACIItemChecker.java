@@ -26,6 +26,7 @@ import java.text.ParseException;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
+import org.apache.directory.api.util.StringConstants;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
@@ -82,7 +83,7 @@ public class ACIItemChecker
      */
     public synchronized void parse( String spec ) throws ParseException
     {
-        if ( spec == null || spec.trim().equals( "" ) )
+        if ( spec == null || StringConstants.EMPTY .equals( spec.trim() ) )
         {
             return;
         }

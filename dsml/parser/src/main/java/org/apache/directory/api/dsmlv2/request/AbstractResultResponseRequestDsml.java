@@ -35,6 +35,9 @@ import org.dom4j.Element;
 /**
  * Abstract class for DSML requests.
  *
+ * @param <E> The response request result type
+ * @param <F> The response result type
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class AbstractResultResponseRequestDsml<E extends ResultResponseRequest, F extends ResultResponse>
@@ -69,7 +72,7 @@ public abstract class AbstractResultResponseRequestDsml<E extends ResultResponse
         int requestID = getDecorated().getMessageId();
         if ( requestID > 0 )
         {
-            element.addAttribute( "requestID", "" + requestID );
+            element.addAttribute( "requestID", Integer.toString( requestID ) );
         }
 
         // Controls

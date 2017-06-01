@@ -37,6 +37,9 @@ public class SortRequestControlImpl extends AbstractControl implements SortReque
     private List<SortKey> sortKeys;
 
 
+    /**
+     * Creates a new SortRequestControlImpl instance
+     */
     public SortRequestControlImpl()
     {
         super( OID );
@@ -46,6 +49,7 @@ public class SortRequestControlImpl extends AbstractControl implements SortReque
     /**
      * @return the sortKeys
      */
+    @Override
     public List<SortKey> getSortKeys()
     {
         return sortKeys;
@@ -55,23 +59,31 @@ public class SortRequestControlImpl extends AbstractControl implements SortReque
     /**
      * @param sortKeys the sortKeys to set
      */
+    @Override
     public void setSortKeys( List<SortKey> sortKeys )
     {
         this.sortKeys = sortKeys;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void addSortKey( SortKey skey )
     {
         if ( sortKeys == null )
         {
-            sortKeys = new ArrayList<SortKey>();
+            sortKeys = new ArrayList<>();
         }
 
         sortKeys.add( skey );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString()
     {

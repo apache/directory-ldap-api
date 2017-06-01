@@ -22,11 +22,13 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -34,6 +36,7 @@ import org.slf4j.LoggerFactory;
  * to ITU recommendation E.123 for the Telephone number part, and from RFC 4517, par. 
  * 3.3.11 :
  * 
+ * <pre>
  * fax-number       = telephone-number *( DOLLAR fax-parameter )
  * telephone-number = PrintableString
  * fax-parameter    = "twoDimensional" |
@@ -43,7 +46,7 @@ import org.slf4j.LoggerFactory;
  *                    "a3Width" |
  *                    "b4Width" |
  *                    "uncompressed"
- *
+ * </pre>
  * 
  * If needed, and to allow more syntaxes, a list of regexps has been added
  * which can be initialized to other values
@@ -51,11 +54,17 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntaxChecker
+public final class FacsimileTelephoneNumberSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( FacsimileTelephoneNumberSyntaxChecker.class );
+    /** The default pattern used to check a TelephoneNumber */
+    private static final String DEFAULT_REGEXP = "^ *[+]? *((\\([0-9- ,;/#*]+\\))|[0-9- ,;/#*]+)+$";
+    
+    /** The default pattern */
+    private final String defaultRegexp;
 
+    /** The compiled default pattern */
+    private Pattern defaultPattern;
+    
     /** Fax parameters possible values */
     private static final String TWO_DIMENSIONAL = "twoDimensional";
     private static final String FINE_RESOLUTION = "fineResolution";
@@ -65,8 +74,8 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
     private static final String B4_WIDTH = "b4Width";
     private static final String UNCOMPRESSED = "uncompressed";
 
-    /** A set which contaons all the possible fax parameters values */
-    private static Set<String> faxParameters = new HashSet<String>();
+    /** A set which contains all the possible fax parameters values */
+    private static Set<String> faxParameters = new HashSet<>();
 
     /** Initialization of the fax parameters set of values */
     static
@@ -79,28 +88,132 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
         faxParameters.add( Strings.toLowerCaseAscii( B4_WIDTH ) );
         faxParameters.add( Strings.toLowerCaseAscii( UNCOMPRESSED ) );
     }
+    
+    /**
+     * A static instance of FacsimileTelephoneNumberSyntaxChecker
+     */
+    public static final FacsimileTelephoneNumberSyntaxChecker INSTANCE = 
+        new FacsimileTelephoneNumberSyntaxChecker( SchemaConstants.FACSIMILE_TELEPHONE_NUMBER_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<FacsimileTelephoneNumberSyntaxChecker>
+    {
+        /** The compiled default pattern */
+        private String defaultRegexp;
+
+        /** The compiled default pattern */
+        private Pattern defaultPattern;
+
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.FACSIMILE_TELEPHONE_NUMBER_SYNTAX );
+            setDefaultRegexp( DEFAULT_REGEXP );
+        }
+
+
+        /**
+         * Create a new instance of FacsimileTelephoneNumberSyntaxChecker
+         * @return A new instance of FacsimileTelephoneNumberSyntaxChecker
+         */
+        @Override
+        public FacsimileTelephoneNumberSyntaxChecker build()
+        {
+            return new FacsimileTelephoneNumberSyntaxChecker( oid, defaultRegexp, defaultPattern );
+        }
+
+
+        /**
+         * Set the default regular expression for the Telephone number
+         * 
+         * @param regexp the default regular expression.
+         */
+        public Builder setDefaultRegexp( String regexp )
+        {
+            defaultRegexp = regexp;
+            
+            try
+            {
+                defaultPattern = Pattern.compile( regexp );
+            }
+            catch ( PatternSyntaxException pse )
+            {
+                // Roll back to the default pattern
+                defaultPattern = Pattern.compile( DEFAULT_REGEXP );
+            }
+
+            return this;
+        }
+    }
 
 
     /**
      * Creates a new instance of TelephoneNumberSyntaxChecker.
      */
-    public FacsimileTelephoneNumberSyntaxChecker()
+    private FacsimileTelephoneNumberSyntaxChecker( String oid )
     {
-        super();
-        setOid( SchemaConstants.FACSIMILE_TELEPHONE_NUMBER_SYNTAX );
+        this( oid, DEFAULT_REGEXP, Pattern.compile( DEFAULT_REGEXP ) );
+    }
+
+
+    /**
+     * Creates a new instance of TelephoneNumberSyntaxChecker.
+     */
+    private FacsimileTelephoneNumberSyntaxChecker( String oid, String defaultRegexp, Pattern defaultPattern )
+    {
+        super( oid );
+
+        this.defaultPattern = defaultPattern;
+        this.defaultRegexp = defaultRegexp;
+    }
+
+
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
+    }
+
+
+    /**
+     * Get the default regexp (either the original one, or the one that has been set)
+     * 
+     * @return The default regexp
+     */
+    public String getRegexp()
+    {
+        if ( defaultRegexp == null )
+        {
+            return DEFAULT_REGEXP;
+        }
+        else
+        {
+            return defaultRegexp;
+        }
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -119,7 +232,11 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
@@ -130,15 +247,18 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
         if ( dollarPos == -1 )
         {
             // We have no fax-parameter : check the Telephone number
-            boolean result = super.isValidSyntax( strValue );
+            boolean result = defaultPattern.matcher( strValue ).matches();
 
-            if ( result )
+            if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( "Syntax valid for '{}'", value );
-            }
-            else
-            {
-                LOG.debug( "Syntax invalid for '{}'", value );
+                if ( result )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+                }
+                else
+                {
+                    LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                }
             }
 
             return result;
@@ -147,20 +267,30 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
         // First check the telephone number if the '$' is not at the first position
         if ( dollarPos > 0 )
         {
-            if ( !super.isValidSyntax( strValue.substring( 0, dollarPos - 1 ) ) )
+            boolean result = defaultPattern.matcher( strValue.substring( 0, dollarPos - 1 ) ).matches();
+
+            if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( "Syntax invalid for '{}'", value );
-                return false;
+                if ( result )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+                }
+                else
+                {
+                    LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                    
+                    return false;
+                }
             }
 
             // Now, try to validate the fax-parameters : we may
             // have more than one, so we will store the seen params
             // in a set to check that we don't have the same param twice
-            Set<String> paramsSeen = new HashSet<String>();
+            Set<String> paramsSeen = new HashSet<>();
 
             while ( dollarPos > 0 )
             {
-                String faxParam = null;
+                String faxParam;
                 int newDollar = strValue.indexOf( '$', dollarPos + 1 );
 
                 if ( newDollar == -1 )
@@ -175,23 +305,25 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
                 if ( faxParam.length() == 0 )
                 {
                     // Not allowed
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                    }
+                    
                     return false;
                 }
 
                 // Relax a little bit the syntax by lowercasing the param
                 faxParam = Strings.toLowerCaseAscii( faxParam );
 
-                if ( !faxParameters.contains( faxParam ) )
+                if ( !faxParameters.contains( faxParam ) || paramsSeen.contains( faxParam ) )
                 {
                     // This parameter is not in the possible set
-                    LOG.debug( "Syntax invalid for '{}'", value );
-                    return false;
-                }
-                else if ( paramsSeen.contains( faxParam ) )
-                {
-                    // We have the same parameters twice...
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                    }
+                    
                     return false;
                 }
                 else
@@ -204,12 +336,20 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
                 dollarPos = newDollar;
             }
 
-            LOG.debug( "Syntax valid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+            }
+            
             return true;
         }
 
         // We must have a valid telephone number !
-        LOG.debug( "Syntax invalid for '{}'", value );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+        }
+        
         return false;
     }
 }

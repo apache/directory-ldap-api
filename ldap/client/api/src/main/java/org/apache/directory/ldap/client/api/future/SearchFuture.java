@@ -20,10 +20,6 @@
 package org.apache.directory.ldap.client.api.future;
 
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
 import org.apache.directory.api.ldap.model.message.Response;
 import org.apache.directory.ldap.client.api.LdapConnection;
 
@@ -48,31 +44,9 @@ public class SearchFuture extends ResponseFuture<Response>
 
 
     /**
-     * Get the SearchResponse, blocking until one is received, or until the
-     * given timeout is reached. It can be either a SearchResultEntry, 
-     * a SearchResultReference or a SearchResultDone, the last of all 
-     * the search responses.
-     * 
-     * Get the ModifyResponse, blocking until one is received, or until the
-     * given timeout is reached.
-     *
-     * @param timeout {@inheritDoc}
-     * @param unit {@inheritDoc}
-     * @return the response, either a SearchResultEntry, a SearchResultReference, or a SearchResultDone
-     * @throws InterruptedException {@inheritDoc}
-     * @throws ExecutionException {@inheritDoc}
-     * @throws TimeoutException {@inheritDoc}
-     */
-    public Response get( long timeout, TimeUnit unit ) throws InterruptedException, ExecutionException,
-        TimeoutException
-    {
-        return super.get( timeout, unit );
-    }
-
-
-    /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

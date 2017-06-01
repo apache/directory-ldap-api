@@ -20,51 +20,95 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
  * A syntax checker which checks to see if an attributeType's type is either: 
- * userApplications
- * directoryOperation
- * distributedOperation
- * dSAOperation
-.*  The case is NOT ignored.
+ * <ul>
+ *   <li>userApplications</li>
+ *   <lidirectoryOperation</li>
+ *   <lidistributedOperation</li>
+ *   <lidSAOperation</li>
+ * </ul>
+.* 
+ * The case is NOT ignored.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class AttributeTypeUsageSyntaxChecker extends SyntaxChecker
+public final class AttributeTypeUsageSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( AttributeTypeUsageSyntaxChecker.class );
+    /**
+     * A static instance of AttributeTypeUsageSyntaxChecker
+     */
+    public static final AttributeTypeUsageSyntaxChecker INSTANCE = 
+        new AttributeTypeUsageSyntaxChecker( SchemaConstants.ATTRIBUTE_TYPE_USAGE_SYNTAX );
+
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<AttributeTypeUsageSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.ATTRIBUTE_TYPE_USAGE_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of AttributeTypeUsageSyntaxChecker
+         * @return A new instance of AttributeTypeUsageSyntaxChecker
+         */
+        @Override
+        public AttributeTypeUsageSyntaxChecker build()
+        {
+            return new AttributeTypeUsageSyntaxChecker( oid );
+        }
+    }
+
+    
+    /**
+     * Creates a new instance of AttributeTypeUsageSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
+     */
+    private AttributeTypeUsageSyntaxChecker( String oid )
+    {
+        super( oid );
+    }
 
 
     /**
-     * 
-     * Creates a new instance of AttributeTypeUsageSyntaxChecker.
-     *
+     * @return An instance of the Builder for this class
      */
-    public AttributeTypeUsageSyntaxChecker()
+    public static Builder builder()
     {
-        super( SchemaConstants.ATTRIBUTE_TYPE_USAGE_SYNTAX );
+        return new Builder();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -81,46 +125,25 @@ public class AttributeTypeUsageSyntaxChecker extends SyntaxChecker
             strValue = value.toString();
         }
 
-        if ( ( strValue.length() < "userApplications".length() )
-            || ( strValue.length() > "userApplications".length() ) )
+        switch ( strValue )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
-            return false;
-        }
-
-        char ch = strValue.charAt( 0 );
-
-        switch ( ch )
-        {
-            case ( 'd' ):
-                if ( "dSAOperation".equals( strValue )
-                    || "directoryOperation".equals( strValue )
-                    || "distributedOperation".equals( strValue ) )
+            case "dSAOperation" :
+            case "directoryOperation" :
+            case "distributedOperation" :
+            case "userApplications" :
+                if ( LOG.isDebugEnabled() )
                 {
-                    LOG.debug( "Syntax valid for '{}'", value );
-                    return true;
+                    LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
                 }
+                
+                return true;
 
-                LOG.debug( "Syntax invalid for '{}'", value );
-                return false;
-
-            case ( 'u' ):
-                boolean comp = "userApplications".equals( strValue );
-
-                if ( comp )
+            default :
+                if ( LOG.isDebugEnabled() )
                 {
-                    LOG.debug( "Syntax valid for '{}'", value );
+                    LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
                 }
-                else
-                {
-                    LOG.debug( "Syntax invalid for '{}'", value );
-
-                }
-
-                return comp;
-
-            default:
-                LOG.debug( "Syntax invalid for '{}'", value );
+                
                 return false;
         }
     }

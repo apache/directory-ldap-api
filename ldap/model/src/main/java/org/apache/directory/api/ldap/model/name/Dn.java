@@ -102,7 +102,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * <li>[2] : dc=a</li>
      * </ul>
      */
-    protected List<Rdn> rdns = new ArrayList<Rdn>( 5 );
+    protected List<Rdn> rdns = new ArrayList<>( 5 );
 
     /** The user provided name */
     private String upName;
@@ -140,6 +140,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         /**
          * {@inheritDoc}
          */
+        @Override
         public boolean hasNext()
         {
             return index >= 0;
@@ -149,6 +150,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         /**
          * {@inheritDoc}
          */
+        @Override
         public Rdn next()
         {
             return index >= 0 ? rdns.get( index-- ) : null;
@@ -158,6 +160,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         /**
          * {@inheritDoc}
          */
+        @Override
         public void remove()
         {
             // Not implemented
@@ -416,13 +419,13 @@ public class Dn implements Iterable<Rdn>, Externalizable
      */
     private String toUpName()
     {
-        if ( rdns.size() == 0 )
+        if ( rdns.isEmpty() )
         {
             upName = "";
         }
         else
         {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             boolean isFirst = true;
 
             for ( Rdn rdn : rdns )
@@ -473,7 +476,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      */
     public String getName()
     {
-        return ( upName == null ? "" : upName );
+        return upName == null ? "" : upName;
     }
 
 
@@ -653,7 +656,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      */
     public boolean isEmpty()
     {
-        return ( rdns.size() == 0 );
+        return rdns.isEmpty();
     }
 
 
@@ -664,7 +667,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      */
     public boolean isRootDse()
     {
-        return ( rdns.size() == 0 );
+        return rdns.isEmpty();
     }
 
 
@@ -679,7 +682,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      */
     public Rdn getRdn( int posn )
     {
-        if ( rdns.size() == 0 )
+        if ( rdns.isEmpty() )
         {
             return null;
         }
@@ -689,9 +692,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             throw new IllegalArgumentException( "Invalid position : " + posn );
         }
 
-        Rdn rdn = rdns.get( posn );
-
-        return rdn;
+        return rdns.get( posn );
     }
 
 
@@ -771,7 +772,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             return this;
         }
 
-        if ( rdns.size() == 0 )
+        if ( rdns.isEmpty() )
         {
             return EMPTY_DN;
         }
@@ -860,7 +861,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             return this;
         }
 
-        if ( rdns.size() == 0 )
+        if ( rdns.isEmpty() )
         {
             return EMPTY_DN;
         }
@@ -901,7 +902,13 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
 
     /**
-     * {@inheritDoc}
+     * Add a suffix to the Dn. For instance, if the current Dn is "ou=people",
+     * and the suffix "dc=example,dc=com", then the resulting Dn will be 
+     * "ou=people,dc=example,dc=com" 
+     * 
+     * @param suffix the suffix to add
+     * @return The resulting Dn with the additional suffix
+     * @throws LdapInvalidDnException If the resulting Dn is not valid 
      */
     public Dn add( Dn suffix ) throws LdapInvalidDnException
     {
@@ -936,7 +943,13 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
 
     /**
-     * {@inheritDoc}
+     * Add a suffix to the Dn. For instance, if the current Dn is "ou=people",
+     * and the suffix "dc=example,dc=com", then the resulting Dn will be 
+     * "ou=people,dc=example,dc=com" 
+     * 
+     * @param comp the suffix to add
+     * @return The resulting Dn with the additional suffix
+     * @throws LdapInvalidDnException If the resulting Dn is not valid 
      */
     public Dn add( String comp ) throws LdapInvalidDnException
     {
@@ -1027,7 +1040,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
     private Dn copy()
     {
         Dn dn = new Dn( schemaManager );
-        dn.rdns = new ArrayList<Rdn>();
+        dn.rdns = new ArrayList<>();
 
         for ( Rdn rdn : rdns )
         {
@@ -1129,7 +1142,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
                         throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX,
                             I18n.err( I18n.ERR_04460_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED, type ) );
                     }
-                    Value<?> atavValue = null;
+                    Value<?> atavValue;
                     Value<?> value = atav.getValue();
                     
                     if ( value instanceof StringValue )
@@ -1152,14 +1165,12 @@ public class Dn implements Iterable<Rdn>, Externalizable
                         atavValue = new BinaryValue( attributeType, atav.getValue().getBytes() );
                     }
                     
-                    Ava newAva = new Ava(
+                    return new Ava(
                         attributeType,
                         atav.getType(),
                         oidNormalizer.getAttributeTypeOid(),
                         atavValue,
                         atav.getName() );
-
-                    return newAva;
                 }
                 catch ( LdapException le )
                 {
@@ -1195,9 +1206,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
     {
         // We have more than one ATAV for this Rdn. We will loop on all
         // ATAVs
-        //Rdn rdnCopy = rdn.clone();
-        //rdn.clear();
-
         if ( rdn.size() < 2 )
         {
             Ava newAtav = atavOidToName( rdn.getAva(), schemaManager );
@@ -1205,8 +1213,8 @@ public class Dn implements Iterable<Rdn>, Externalizable
         }
         else
         {
-            Set<String> sortedOids = new TreeSet<String>();
-            Map<String, Ava> avas = new HashMap<String, Ava>();
+            Set<String> sortedOids = new TreeSet<>();
+            Map<String, Ava> avas = new HashMap<>();
 
             // Sort the OIDs
             for ( Ava val : rdn )
@@ -1285,14 +1293,14 @@ public class Dn implements Iterable<Rdn>, Externalizable
             }
             else
             {
-                if ( rdns.size() == 0 )
+                if ( rdns.isEmpty() )
                 {
                     bytes = null;
                     normName = "";
                 }
                 else
                 {
-                    StringBuffer sb = new StringBuffer();
+                    StringBuilder sb = new StringBuilder();
                     boolean isFirst = true;
 
                     for ( Rdn rdn : rdns )
@@ -1374,6 +1382,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * </pre>
      * 
      */
+    @Override
     public Iterator<Rdn> iterator()
     {
         return new RdnIterator();
@@ -1439,6 +1448,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
     /**
      * {@inheritDoc}
      */
+    @Override
     public void readExternal( ObjectInput in ) throws IOException, ClassNotFoundException
     {
         // Read the UPName
@@ -1460,7 +1470,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         // Read the RDNs. Is it's null, the number will be -1.
         int nbRdns = in.readInt();
 
-        rdns = new ArrayList<Rdn>( nbRdns );
+        rdns = new ArrayList<>( nbRdns );
 
         for ( int i = 0; i < nbRdns; i++ )
         {
@@ -1474,6 +1484,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
     /**
      * {@inheritDoc}
      */
+    @Override
     public void writeExternal( ObjectOutput out ) throws IOException
     {
         if ( upName == null )

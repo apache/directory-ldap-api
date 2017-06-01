@@ -21,46 +21,75 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 
 
 /**
  * A SyntaxChecker which verifies that a value is a certificate pair according to RFC 4523 :
  * 
+ * <pre>
  * "Due to changes made to the definition of a CertificatePair through time,
  *  no LDAP-specific encoding is defined for this syntax.  Values of this
  *  syntax SHOULD be encoded using Distinguished Encoding Rules (DER)
  *  [X.690] and MUST only be transferred using the ;binary transfer
  *  option"
+ *  </pre>
  * 
  * It has been removed in RFC 4517
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class CertificatePairSyntaxChecker extends BinarySyntaxChecker
+public final class CertificatePairSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( CertificatePairSyntaxChecker.class );
-
-
     /**
-     * Creates a new instance of CertificatePairSyntaxChecker.
+     * A static instance of CertificatePairSyntaxChecker
      */
-    public CertificatePairSyntaxChecker()
+    public static final CertificatePairSyntaxChecker INSTANCE = new CertificatePairSyntaxChecker(
+        SchemaConstants.CERTIFICATE_PAIR_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<CertificatePairSyntaxChecker>
     {
-        super();
-        setOid( SchemaConstants.CERTIFICATE_PAIR_SYNTAX );
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.CERTIFICATE_PAIR_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of CertificatePairSyntaxChecker
+         * @return A new instance of CertificatePairSyntaxChecker
+         */
+        @Override
+        public CertificatePairSyntaxChecker build()
+        {
+            return new CertificatePairSyntaxChecker( oid );
+        }
     }
 
-
+    
     /**
-     * {@inheritDoc}
+     * Creates a new instance of CertificatePairSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public boolean isValidSyntax( Object value )
+    private CertificatePairSyntaxChecker( String oid )
     {
-        LOG.debug( "Syntax valid for '{}'", value );
-        return true;
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 }

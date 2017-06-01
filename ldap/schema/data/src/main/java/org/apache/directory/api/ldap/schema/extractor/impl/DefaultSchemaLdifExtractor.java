@@ -22,25 +22,27 @@ package org.apache.directory.api.ldap.schema.extractor.impl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InvalidObjectException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Stack;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.ldif.LdapLdifException;
 import org.apache.directory.api.ldap.model.ldif.LdifEntry;
 import org.apache.directory.api.ldap.model.ldif.LdifReader;
 import org.apache.directory.api.ldap.schema.extractor.SchemaLdifExtractor;
@@ -121,6 +123,7 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
      *
      * @return true if schema folder has already been extracted.
      */
+    @Override
     public boolean isExtracted()
     {
         return extracted;
@@ -133,6 +136,7 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
      * @param overwrite over write extracted structure if true, false otherwise
      * @throws IOException if schema already extracted and on IO errors
      */
+    @Override
     public void extractOrCopy( boolean overwrite ) throws IOException
     {
         if ( !outputDirectory.exists() && !outputDirectory.mkdirs() )
@@ -180,6 +184,7 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
      *
      * @throws IOException if schema already extracted and on IO errors
      */
+    @Override
     public void extractOrCopy() throws IOException
     {
         extractOrCopy( false );
@@ -209,7 +214,8 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
             throw new FileNotFoundException( I18n.err( I18n.ERR_08002, source.getAbsolutePath() ) );
         }
 
-        try ( Writer out = new OutputStreamWriter( new FileOutputStream( destination ), Charset.defaultCharset() );
+        try ( Writer out = new OutputStreamWriter( Files.newOutputStream( Paths.get( destination.getPath() ) ), 
+            Charset.defaultCharset() );
             LdifReader ldifReader = new LdifReader( source ) )
         {
             boolean first = true;
@@ -240,20 +246,23 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
             }
 
             // Add the version at the first line, to avoid a warning
-            String ldifString = "version: 1\n" + ldifEntry.toString();
+            String ldifString;
+            
+            if ( ldifEntry != null )
+            {
+                ldifString = "version: 1\n" + ldifEntry.toString();
+            }
+            else
+            {
+                ldifString = "version: 1\n";
+            }
 
             out.write( ldifString );
             out.flush();
         }
-        catch ( LdapLdifException ne )
+        catch ( LdapException le )
         {
-            String msg = I18n.err( I18n.ERR_08004, source, ne.getLocalizedMessage() );
-            LOG.error( msg );
-            throw new InvalidObjectException( msg );
-        }
-        catch ( LdapException ne )
-        {
-            String msg = I18n.err( I18n.ERR_08004, source, ne.getLocalizedMessage() );
+            String msg = I18n.err( I18n.ERR_08004, source, le.getLocalizedMessage() );
             LOG.error( msg );
             throw new InvalidObjectException( msg );
         }
@@ -267,7 +276,7 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
      * @param fileComponentStack stack containing pushed file components
      * @return the assembled destination file
      */
-    private File assembleDestinationFile( Stack<String> fileComponentStack )
+    private File assembleDestinationFile( Deque<String> fileComponentStack )
     {
         File destinationFile = outputDirectory.getAbsoluteFile();
 
@@ -289,12 +298,12 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
     private File getDestinationFile( File resource )
     {
         File parent = resource.getParentFile();
-        Stack<String> fileComponentStack = new Stack<String>();
+        Deque<String> fileComponentStack = new ArrayDeque<>();
         fileComponentStack.push( resource.getName() );
 
         while ( parent != null )
         {
-            if ( parent.getName().equals( "schema" ) )
+            if ( "schema".equals( parent.getName() ) )
             {
                 // All LDIF files besides the schema.ldif are under the 
                 // schema/schema base path. So we need to add one more 
@@ -331,8 +340,7 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
     public static InputStream getUniqueResourceAsStream( String resourceName, String resourceDescription )
         throws IOException
     {
-        resourceName = BASE_PATH + resourceName;
-        URL result = getUniqueResource( resourceName, resourceDescription );
+        URL result = getUniqueResource( BASE_PATH + resourceName, resourceDescription );
         return result.openStream();
     }
 
@@ -391,7 +399,7 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
                     .getParentFile().getAbsolutePath() ) );
             }
 
-            FileOutputStream out = new FileOutputStream( destination );
+            OutputStream out = Files.newOutputStream( Paths.get( destination.getPath() ) );
             try
             {
                 while ( in.available() > 0 )

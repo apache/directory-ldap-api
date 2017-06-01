@@ -20,11 +20,10 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -42,31 +41,75 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
+public final class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( DsaQualitySyntaxSyntaxChecker.class );
+    /**
+     * A static instance of DsaQualitySyntaxSyntaxChecker
+     */
+    public static final DsaQualitySyntaxSyntaxChecker INSTANCE = 
+        new DsaQualitySyntaxSyntaxChecker( SchemaConstants.DSA_QUALITY_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<DsaQualitySyntaxSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.DSA_QUALITY_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of DsaQualitySyntaxSyntaxChecker
+         * @return A new instance of DsaQualitySyntaxSyntaxChecker
+         */
+        @Override
+        public DsaQualitySyntaxSyntaxChecker build()
+        {
+            return new DsaQualitySyntaxSyntaxChecker( oid );
+        }
+    }
 
-
+    
     /**
      * Creates a new instance of DSAQualitySyntaxSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public DsaQualitySyntaxSyntaxChecker()
+    private DsaQualitySyntaxSyntaxChecker( String oid )
     {
-        super( SchemaConstants.DSA_QUALITY_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -85,18 +128,26 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() < 7 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
-        String remaining = null;
+        String remaining;
 
         switch ( strValue.charAt( 0 ) )
         {
             case 'B':
                 if ( !strValue.startsWith( "BEST-EFFORT" ) )
                 {
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                    }
+                    
                     return false;
                 }
 
@@ -106,7 +157,11 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
             case 'D':
                 if ( !strValue.startsWith( "DEFUNCT" ) )
                 {
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                    }
+                    
                     return false;
                 }
 
@@ -116,7 +171,11 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
             case 'E':
                 if ( !strValue.startsWith( "EXPERIMENTAL" ) )
                 {
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                    }
+                    
                     return false;
                 }
 
@@ -126,7 +185,11 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
             case 'F':
                 if ( !strValue.startsWith( "FULL-SERVICE" ) )
                 {
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                    }
+                    
                     return false;
                 }
 
@@ -136,7 +199,11 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
             case 'P':
                 if ( !strValue.startsWith( "PILOT-SERVICE" ) )
                 {
-                    LOG.debug( "Syntax invalid for '{}'", value );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                    }
+                    
                     return false;
                 }
 
@@ -144,7 +211,11 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
                 break;
 
             default:
-                LOG.debug( "Syntax invalid for '{}'", value );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                }
+                
                 return false;
         }
 
@@ -152,27 +223,38 @@ public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
         // but this is optional
         if ( remaining.length() == 0 )
         {
-            LOG.debug( "Syntax valid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+            }
+            
             return true;
         }
 
         if ( remaining.charAt( 0 ) != '#' )
         {
             // We were expecting a '#'
-            LOG.debug( "Syntax invalid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
         // Check that the description is a PrintableString
         boolean result = Strings.isPrintableString( remaining.substring( 1 ) );
 
-        if ( result )
+        if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Syntax valid for '{}'", value );
-        }
-        else
-        {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            if ( result )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+            }
+            else
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
         }
 
         return result;

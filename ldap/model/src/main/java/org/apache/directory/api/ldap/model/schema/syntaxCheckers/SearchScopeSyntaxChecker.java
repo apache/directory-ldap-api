@@ -20,11 +20,10 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -40,31 +39,75 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class SearchScopeSyntaxChecker extends SyntaxChecker
+public final class SearchScopeSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( SearchScopeSyntaxChecker.class );
+    /**
+     * A static instance of SearchScopeSyntaxChecker
+     */
+    public static final SearchScopeSyntaxChecker INSTANCE = 
+        new SearchScopeSyntaxChecker( SchemaConstants.SEARCH_SCOPE_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<SearchScopeSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.SEARCH_SCOPE_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of SearchScopeSyntaxChecker
+         * @return A new instance of SearchScopeSyntaxChecker
+         */
+        @Override
+        public SearchScopeSyntaxChecker build()
+        {
+            return new SearchScopeSyntaxChecker( oid );
+        }
+    }
 
-
+    
     /**
      * Creates a new instance of SearchScopeSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public SearchScopeSyntaxChecker()
+    private SearchScopeSyntaxChecker( String oid )
     {
-        super( SchemaConstants.SEARCH_SCOPE_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -83,6 +126,6 @@ public class SearchScopeSyntaxChecker extends SyntaxChecker
 
         strValue = Strings.trim( Strings.toLowerCaseAscii( strValue ) );
 
-        return ( "base".equals( strValue ) || "one".equals( strValue ) || "sub".equals( strValue ) );
+        return "base".equals( strValue ) || "one".equals( strValue ) || "sub".equals( strValue );
     }
 }

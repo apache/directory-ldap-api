@@ -42,7 +42,7 @@ class ReusableAntlrTriggerSpecificationParser extends AntlrTriggerSpecificationP
     /**
      * Creates a ReusableAntlrTriggerSpecificationParser instance.
      */
-    public ReusableAntlrTriggerSpecificationParser( TokenStream lexer )
+    ReusableAntlrTriggerSpecificationParser( TokenStream lexer )
     {
         super( lexer );
     }

@@ -198,7 +198,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      */
     private static List<String> getControlsFromSystemProperties() throws Exception
     {
-        List<String> controlsList = new ArrayList<String>();
+        List<String> controlsList = new ArrayList<>();
 
         // Loading controls list from command line properties if it exists
         String controlsString = System.getProperty( CONTROLS_LIST );
@@ -235,7 +235,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      */
     private static List<String> getExtendedOperationsFromSystemProperties() throws Exception
     {
-        List<String> extendedOperationsList = new ArrayList<String>();
+        List<String> extendedOperationsList = new ArrayList<>();
 
         // Loading extended operations from command line properties if it exists
         String defaultExtendedOperationsList = System.getProperty( EXTENDED_OPERATIONS_LIST );
@@ -271,7 +271,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
     private void loadControls( List<String> controlsList ) throws Exception
     {
         // Adding all controls
-        if ( controlsList.size() > 0 )
+        if ( !controlsList.isEmpty() )
         {
             for ( String controlFQCN : controlsList )
             {
@@ -315,7 +315,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
     private void loadExtendedOperations( List<String> extendedOperationsList ) throws Exception
     {
         // Adding all extended operations
-        if ( extendedOperationsList.size() > 0 )
+        if ( !extendedOperationsList.isEmpty() )
         {
             for ( String extendedOperationFQCN : extendedOperationsList )
             {

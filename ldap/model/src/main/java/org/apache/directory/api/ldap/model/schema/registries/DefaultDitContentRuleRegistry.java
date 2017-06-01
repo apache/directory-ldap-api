@@ -44,6 +44,7 @@ public class DefaultDitContentRuleRegistry extends DefaultSchemaObjectRegistry<D
     /**
      * {@inheritDoc}
      */
+    @Override
     public DefaultDitContentRuleRegistry copy()
     {
         DefaultDitContentRuleRegistry copy = new DefaultDitContentRuleRegistry();

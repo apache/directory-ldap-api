@@ -28,6 +28,8 @@ import org.apache.directory.api.ldap.model.message.Response;
 /**
  * Base class for all DSML responses.
  * 
+ * @param <E> The response type
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class AbstractResponseDsml<E extends Response>

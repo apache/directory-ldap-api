@@ -21,46 +21,75 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 
 
 /**
  * A SyntaxChecker which verifies that a value is a certificateList according to RFC 4523 :
  * 
+ * <pre>
  * "Due to changes made to the definition of a CertificateList through time,
  *  no LDAP-specific encoding is defined for this syntax.  Values of this
  *  syntax SHOULD be encoded using Distinguished Encoding Rules (DER)
  *  [X.690] and MUST only be transferred using the ;binary transfer
  *  option"
+ * </pre>
  * 
  * It has been removed in RFC 4517
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class CertificateListSyntaxChecker extends BinarySyntaxChecker
+public final class CertificateListSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( CertificateListSyntaxChecker.class );
-
-
     /**
-     * Creates a new instance of CertificateListSyntaxChecker.
+     * A static instance of CertificateListSyntaxChecker
      */
-    public CertificateListSyntaxChecker()
+    public static final CertificateListSyntaxChecker INSTANCE = new CertificateListSyntaxChecker(
+        SchemaConstants.CERTIFICATE_LIST_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<CertificateListSyntaxChecker>
     {
-        super();
-        setOid( SchemaConstants.CERTIFICATE_LIST_SYNTAX );
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.BOOLEAN_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of CertificateListSyntaxChecker
+         * @return A new instance of CertificateListSyntaxChecker
+         */
+        @Override
+        public CertificateListSyntaxChecker build()
+        {
+            return new CertificateListSyntaxChecker( oid );
+        }
     }
 
-
+    
     /**
-     * {@inheritDoc}
+     * Creates a new instance of CertificateListSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public boolean isValidSyntax( Object value )
+    private CertificateListSyntaxChecker( String oid )
     {
-        LOG.debug( "Syntax valid for '{}'", value );
-        return true;
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 }

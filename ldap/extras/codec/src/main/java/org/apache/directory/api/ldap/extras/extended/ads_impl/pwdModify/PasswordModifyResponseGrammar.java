@@ -60,6 +60,9 @@ public class PasswordModifyResponseGrammar extends AbstractGrammar<PasswordModif
     private static Grammar<PasswordModifyResponseContainer> instance = new PasswordModifyResponseGrammar();
 
 
+    /**
+     * Creates a new PasswordModifyResponseGrammar object.
+     */
     @SuppressWarnings("unchecked")
     public PasswordModifyResponseGrammar()
     {
@@ -127,8 +130,7 @@ public class PasswordModifyResponseGrammar extends AbstractGrammar<PasswordModif
                             genPassword = Strings.EMPTY_BYTES;
                         }
 
-                        ( ( PasswordModifyResponseDecorator ) container.getPwdModifyResponse() )
-                            .setGenPassword( genPassword );
+                        container.getPwdModifyResponse().setGenPassword( genPassword );
 
                         // We may have nothing left
                         container.setGrammarEndAllowed( true );

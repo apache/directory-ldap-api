@@ -57,6 +57,7 @@ public class DefaultNormalizerRegistry extends DefaultSchemaObjectRegistry<Norma
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterSchemaElements( String schemaName ) throws LdapException
     {
         if ( schemaName == null )
@@ -85,6 +86,7 @@ public class DefaultNormalizerRegistry extends DefaultSchemaObjectRegistry<Norma
     /**
      * {@inheritDoc}
      */
+    @Override
     public DefaultNormalizerRegistry copy()
     {
         DefaultNormalizerRegistry copy = new DefaultNormalizerRegistry();
@@ -99,6 +101,7 @@ public class DefaultNormalizerRegistry extends DefaultSchemaObjectRegistry<Norma
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

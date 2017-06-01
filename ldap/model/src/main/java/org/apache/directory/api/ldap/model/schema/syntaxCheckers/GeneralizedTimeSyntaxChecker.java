@@ -22,18 +22,18 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import java.util.regex.Pattern;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
  * A SyntaxChecker which verifies that a value is a generalized time
  * according to RFC 4517.
- * 
+ * <p>
  * From RFC 4517 :
+ * <pre>
  * GeneralizedTime = century year month day hour
  *                          [ minute [ second / leap-second ] ]
  *                          [ fraction ]
@@ -63,16 +63,13 @@ import org.slf4j.LoggerFactory;
  * PLUS    = %x2B ; plus sign ("+")
  * DOT     = %x2E ; period (".")
  * COMMA   = %x2C ; comma (",")
- * 
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class GeneralizedTimeSyntaxChecker extends SyntaxChecker
+public final class GeneralizedTimeSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( GeneralizedTimeSyntaxChecker.class );
-
     /** The GeneralizedDate pattern matching */
     private static final String GENERALIZED_TIME_PATTERN =
         // century + year : 0000 to 9999
@@ -96,27 +93,74 @@ public class GeneralizedTimeSyntaxChecker extends SyntaxChecker
 
     /** The date pattern. The regexp pattern is immutable, only one instance needed. */
     private static final Pattern DATE_PATTERN = Pattern.compile( GENERALIZED_TIME_PATTERN );
+    
+    /**
+     * A static instance of GeneralizedTimeSyntaxChecker
+     */
+    public static final GeneralizedTimeSyntaxChecker INSTANCE = 
+        new GeneralizedTimeSyntaxChecker( SchemaConstants.GENERALIZED_TIME_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<GeneralizedTimeSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.GENERALIZED_TIME_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of GeneralizedTimeSyntaxChecker
+         * @return A new instance of GeneralizedTimeSyntaxChecker
+         */
+        @Override
+        public GeneralizedTimeSyntaxChecker build()
+        {
+            return new GeneralizedTimeSyntaxChecker( oid );
+        }
+    }
 
-
+    
     /**
      * Creates a new instance of GeneralizedTimeSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public GeneralizedTimeSyntaxChecker()
+    private GeneralizedTimeSyntaxChecker( String oid )
     {
-        super( SchemaConstants.GENERALIZED_TIME_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -136,20 +180,27 @@ public class GeneralizedTimeSyntaxChecker extends SyntaxChecker
         // A generalized time must have a minimal length of 11 
         if ( strValue.length() < 11 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
         // Start the date parsing
         boolean result = DATE_PATTERN.matcher( strValue ).find();
 
-        if ( result )
+        if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Syntax valid for '{}'", value );
-        }
-        else
-        {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            if ( result )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+            }
+            else
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
         }
 
         return result;

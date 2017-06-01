@@ -48,7 +48,7 @@ import org.apache.directory.api.util.Strings;
  */
 public class EntryChangeDecorator extends ControlDecorator<EntryChange> implements EntryChange
 {
-
+    /** Default value when no change number is provided */
     public static final int UNDEFINED_CHANGE_NUMBER = -1;
 
     /** A temporary storage for the previous Dn */
@@ -93,7 +93,7 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
      */
     private EntryChange getEntryChange()
     {
-        return ( EntryChange ) getDecorated();
+        return getDecorated();
     }
 
 
@@ -110,6 +110,7 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
      *  
      * @return the control length.
      */
+    @Override
     public int computeLength()
     {
         int changeTypesLength = 1 + 1 + 1;
@@ -142,6 +143,7 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
      * @return A ByteBuffer that contains the encoded PDU
      * @throws EncoderException If anything goes wrong.
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         if ( buffer == null )
@@ -173,6 +175,7 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getValue()
     {
         if ( value == null )
@@ -214,6 +217,7 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
     /**
      * {@inheritDoc}
      */
+    @Override
     public ChangeType getChangeType()
     {
         return getEntryChange().getChangeType();
@@ -223,6 +227,7 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setChangeType( ChangeType changeType )
     {
         getEntryChange().setChangeType( changeType );
@@ -232,6 +237,7 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dn getPreviousDn()
     {
         return getEntryChange().getPreviousDn();
@@ -241,6 +247,7 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setPreviousDn( Dn previousDn )
     {
         getEntryChange().setPreviousDn( previousDn );
@@ -250,6 +257,7 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
     /**
      * {@inheritDoc}
      */
+    @Override
     public long getChangeNumber()
     {
         return getEntryChange().getChangeNumber();
@@ -259,6 +267,7 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setChangeNumber( long changeNumber )
     {
         getEntryChange().setChangeNumber( changeNumber );
@@ -268,6 +277,7 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
     /**
      * {@inheritDoc}
      */
+    @Override
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );

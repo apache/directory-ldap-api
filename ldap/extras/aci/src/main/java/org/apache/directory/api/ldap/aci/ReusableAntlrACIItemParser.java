@@ -41,7 +41,7 @@ class ReusableAntlrACIItemParser extends AntlrACIItemParser
     /**
      * Creates a ReusableAntlrSubtreeSpecificationParser instance.
      */
-    public ReusableAntlrACIItemParser( TokenStream lexer )
+    ReusableAntlrACIItemParser( TokenStream lexer )
     {
         super( lexer );
     }

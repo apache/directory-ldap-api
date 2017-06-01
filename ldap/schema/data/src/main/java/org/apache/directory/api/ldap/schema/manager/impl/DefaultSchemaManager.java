@@ -112,7 +112,7 @@ public class DefaultSchemaManager implements SchemaManager
     private final EntityFactory factory;
 
     /** A Map containing all the schema being dependent from a schema */
-    private Map<String, Set<String>> schemaDependencies = new HashMap<String, Set<String>>();
+    private Map<String, Set<String>> schemaDependencies = new HashMap<>();
     
     /**
      * A map of all available schema names to schema objects. This map is
@@ -131,7 +131,7 @@ public class DefaultSchemaManager implements SchemaManager
     {
         // Default to the the root (one schemaManager for all the entries
         namingContext = Dn.ROOT_DSE;
-        errors = new ArrayList<Throwable>();
+        errors = new ArrayList<>();
         registries = new Registries();
         factory = new SchemaEntityFactory();
         isRelaxed = STRICT;
@@ -175,8 +175,7 @@ public class DefaultSchemaManager implements SchemaManager
             schemaMap.put( schema.getSchemaName(), schema );
         }
         
-        //this.schemaLoader = new JarLdifSchemaLoader();
-        errors = new ArrayList<Throwable>();
+        errors = new ArrayList<>();
         registries = new Registries();
         factory = new SchemaEntityFactory();
         isRelaxed = STRICT;
@@ -198,8 +197,7 @@ public class DefaultSchemaManager implements SchemaManager
             schemaMap.put( schema.getSchemaName(), schema );
         }
         
-        //this.schemaLoader = new JarLdifSchemaLoader();
-        errors = new ArrayList<Throwable>();
+        errors = new ArrayList<>();
         registries = new Registries();
         factory = new SchemaEntityFactory();
         isRelaxed = STRICT;
@@ -222,8 +220,7 @@ public class DefaultSchemaManager implements SchemaManager
             schemaMap.put( schema.getSchemaName(), schema );
         }
         
-        //this.schemaLoader = new JarLdifSchemaLoader();
-        errors = new ArrayList<Throwable>();
+        errors = new ArrayList<>();
         registries = new Registries();
         factory = new SchemaEntityFactory();
         isRelaxed = relaxed;
@@ -242,7 +239,7 @@ public class DefaultSchemaManager implements SchemaManager
         try
         {
             // Relax the controls at first
-            errors = new ArrayList<Throwable>();
+            errors = new ArrayList<>();
 
             // Clone the Registries
             Registries clonedRegistries = registries.clone();
@@ -326,7 +323,7 @@ public class DefaultSchemaManager implements SchemaManager
         Map<String, Set<SchemaObjectWrapper>> schemaObjects = registries.getObjectBySchemaName();
         Set<SchemaObjectWrapper> content = schemaObjects.get( Strings.toLowerCaseAscii( schema.getSchemaName() ) );
 
-        List<SchemaObject> toBeDeleted = new ArrayList<SchemaObject>();
+        List<SchemaObject> toBeDeleted = new ArrayList<>();
 
         if ( content != null )
         {
@@ -350,6 +347,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean disable( Schema... schemas ) throws LdapException
     {
         boolean disabled = false;
@@ -407,6 +405,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean disable( String... schemaNames ) throws LdapException
     {
         Schema[] schemas = toArray( schemaNames );
@@ -418,9 +417,9 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean disabledRelaxed( Schema... schemas )
     {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -428,9 +427,9 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean disabledRelaxed( String... schemas )
     {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -438,9 +437,10 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Schema> getDisabled()
     {
-        List<Schema> disabled = new ArrayList<Schema>();
+        List<Schema> disabled = new ArrayList<>();
 
         for ( Schema schema : registries.getLoadedSchemas().values() )
         {
@@ -457,6 +457,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean enable( Schema... schemas ) throws LdapException
     {
         boolean enabled = false;
@@ -471,7 +472,7 @@ public class DefaultSchemaManager implements SchemaManager
         Registries clonedRegistries = cloneRegistries();
         clonedRegistries.setRelaxed();
 
-        Set<Schema> disabledSchemas = new HashSet<Schema>();
+        Set<Schema> disabledSchemas = new HashSet<>();
 
         for ( Schema schema : schemas )
         {
@@ -539,6 +540,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean enable( String... schemaNames ) throws LdapException
     {
         Schema[] schemas = toArray( schemaNames );
@@ -549,9 +551,9 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean enableRelaxed( Schema... schemas )
     {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -559,9 +561,9 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean enableRelaxed( String... schemas )
     {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -569,9 +571,10 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Schema> getEnabled()
     {
-        List<Schema> enabled = new ArrayList<Schema>();
+        List<Schema> enabled = new ArrayList<>();
 
         for ( Schema schema : registries.getLoadedSchemas().values() )
         {
@@ -588,9 +591,10 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Schema> getAllSchemas()
     {
-        List<Schema> schemas = new ArrayList<Schema>();
+        List<Schema> schemas = new ArrayList<>();
 
         for ( Schema schema : schemaMap.values() )
         {
@@ -616,6 +620,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public Registries getRegistries()
     {
         return registries;
@@ -623,11 +628,12 @@ public class DefaultSchemaManager implements SchemaManager
 
 
     /**
-     * {@inheritDoc}
+     * Currently not implemented.
+     * 
+     * @return Always FALSE
      */
     public boolean isDisabledAccepted()
     {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -635,6 +641,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean load( Schema... schemas ) throws LdapException
     {
         if ( schemas.length == 0 )
@@ -693,7 +700,7 @@ public class DefaultSchemaManager implements SchemaManager
 
                             if ( deps == null )
                             {
-                                deps = new HashSet<String>();
+                                deps = new HashSet<>();
                                 deps.add( schema.getSchemaName() );
                             }
 
@@ -724,6 +731,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean load( String... schemaNames ) throws LdapException
     {
         if ( schemaNames.length == 0 )
@@ -1077,6 +1085,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean loadAllEnabled() throws LdapException
     {
         Schema[] schemas = new Schema[schemaMap.size()];
@@ -1100,6 +1109,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean loadAllEnabledRelaxed() throws LdapException
     {
         Schema[] enabledSchemas = new Schema[schemaMap.size()];
@@ -1120,6 +1130,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean loadDisabled( Schema... schemas ) throws LdapException
     {
         // Work on a cloned and relaxed registries
@@ -1139,7 +1150,7 @@ public class DefaultSchemaManager implements SchemaManager
         clonedRegistries.clear();
 
         // Apply the change to the correct registries if no errors
-        if ( errors.size() == 0 )
+        if ( errors.isEmpty() )
         {
             // No error, we can enable the schema in the real registries
             for ( Schema schema : schemas )
@@ -1164,6 +1175,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean loadDisabled( String... schemaNames ) throws LdapException
     {
         Schema[] schemas = toArray( schemaNames );
@@ -1175,9 +1187,9 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean loadRelaxed( Schema... schemas ) throws LdapException
     {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -1185,6 +1197,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean loadRelaxed( String... schemaNames ) throws LdapException
     {
         Schema[] schemas = toArray( schemaNames );
@@ -1195,6 +1208,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean loadWithDeps( Schema... schemas ) throws LdapException
     {
         boolean loaded = false;
@@ -1251,6 +1265,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean loadWithDeps( String... schemas ) throws LdapException
     {
         return loadWithDeps( toArray( schemas ) );
@@ -1327,6 +1342,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean loadWithDepsRelaxed( Schema... schemas ) throws LdapException
     {
         registries.setRelaxed();
@@ -1350,6 +1366,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean loadWithDepsRelaxed( String... schemas ) throws LdapException
     {
         return loadWithDepsRelaxed( toArray( schemas ) );
@@ -1425,16 +1442,17 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setRegistries( Registries registries )
     {
-        // TODO Auto-generated method stub
-
+        this.registries = registries;
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean unload( Schema... schemas ) throws LdapException
     {
         boolean unloaded = false;
@@ -1505,6 +1523,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean unload( String... schemaNames ) throws LdapException
     {
         Schema[] schemas = toArray( schemaNames );
@@ -1516,6 +1535,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean verify( Schema... schemas ) throws LdapException
     {
         // Work on a cloned registries
@@ -1539,7 +1559,7 @@ public class DefaultSchemaManager implements SchemaManager
                 // Now, check the registries
                 List<Throwable> errorList = clonedRegistries.checkRefInteg();
 
-                if ( errorList.size() != 0 )
+                if ( !errorList.isEmpty() )
                 {
                     // We got an error : exit
                     clonedRegistries.clear();
@@ -1564,6 +1584,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean verify( String... schemas ) throws LdapException
     {
         return verify( toArray( schemas ) );
@@ -1573,6 +1594,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * @return the namingContext
      */
+    @Override
     public Dn getNamingContext()
     {
         return namingContext;
@@ -1584,6 +1606,7 @@ public class DefaultSchemaManager implements SchemaManager
      *
      * @throws LdapException If the initialization fails
      */
+    @Override
     public void initialize() throws LdapException
     {
     }
@@ -1595,6 +1618,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public AttributeTypeRegistry getAttributeTypeRegistry()
     {
         return new ImmutableAttributeTypeRegistry( registries.getAttributeTypeRegistry() );
@@ -1604,6 +1628,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public ComparatorRegistry getComparatorRegistry()
     {
         return new ImmutableComparatorRegistry( registries.getComparatorRegistry() );
@@ -1613,6 +1638,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public DitContentRuleRegistry getDITContentRuleRegistry()
     {
         return new ImmutableDitContentRuleRegistry( registries.getDitContentRuleRegistry() );
@@ -1622,6 +1648,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public DitStructureRuleRegistry getDITStructureRuleRegistry()
     {
         return new ImmutableDitStructureRuleRegistry( registries.getDitStructureRuleRegistry() );
@@ -1631,6 +1658,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public MatchingRuleRegistry getMatchingRuleRegistry()
     {
         return new ImmutableMatchingRuleRegistry( registries.getMatchingRuleRegistry() );
@@ -1640,6 +1668,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public MatchingRuleUseRegistry getMatchingRuleUseRegistry()
     {
         return new ImmutableMatchingRuleUseRegistry( registries.getMatchingRuleUseRegistry() );
@@ -1649,6 +1678,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public NameFormRegistry getNameFormRegistry()
     {
         return new ImmutableNameFormRegistry( registries.getNameFormRegistry() );
@@ -1658,6 +1688,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public NormalizerRegistry getNormalizerRegistry()
     {
         return new ImmutableNormalizerRegistry( registries.getNormalizerRegistry() );
@@ -1667,6 +1698,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public ObjectClassRegistry getObjectClassRegistry()
     {
         return new ImmutableObjectClassRegistry( registries.getObjectClassRegistry() );
@@ -1676,6 +1708,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public LdapSyntaxRegistry getLdapSyntaxRegistry()
     {
         return new ImmutableLdapSyntaxRegistry( registries.getLdapSyntaxRegistry() );
@@ -1685,6 +1718,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public SyntaxCheckerRegistry getSyntaxCheckerRegistry()
     {
         return new ImmutableSyntaxCheckerRegistry( registries.getSyntaxCheckerRegistry() );
@@ -1693,8 +1727,8 @@ public class DefaultSchemaManager implements SchemaManager
 
     /**
      * Get rid of AT's options (everything after the ';'
-     * @param oid
-     * @return
+     * @param oid The AT's OID
+     * @return The AT without its options
      */
     private String stripOptions( String oid )
     {
@@ -1714,6 +1748,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public AttributeType lookupAttributeTypeRegistry( String oid ) throws LdapException
     {
         String oidTrimmed = Strings.toLowerCaseAscii( oid ).trim();
@@ -1725,6 +1760,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public AttributeType getAttributeType( String oid )
     {
         try
@@ -1743,6 +1779,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public LdapComparator<?> lookupComparatorRegistry( String oid ) throws LdapException
     {
         return registries.getComparatorRegistry().lookup( oid );
@@ -1752,6 +1789,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public MatchingRule lookupMatchingRuleRegistry( String oid ) throws LdapException
     {
         return registries.getMatchingRuleRegistry().lookup( Strings.toLowerCaseAscii( oid ).trim() );
@@ -1761,6 +1799,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public Normalizer lookupNormalizerRegistry( String oid ) throws LdapException
     {
         return registries.getNormalizerRegistry().lookup( oid );
@@ -1770,6 +1809,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public ObjectClass lookupObjectClassRegistry( String oid ) throws LdapException
     {
         return registries.getObjectClassRegistry().lookup( Strings.toLowerCaseAscii( oid ).trim() );
@@ -1779,6 +1819,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public LdapSyntax lookupLdapSyntaxRegistry( String oid ) throws LdapException
     {
         return registries.getLdapSyntaxRegistry().lookup( Strings.toLowerCaseAscii( oid ).trim() );
@@ -1788,6 +1829,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public SyntaxChecker lookupSyntaxCheckerRegistry( String oid ) throws LdapException
     {
         return registries.getSyntaxCheckerRegistry().lookup( oid );
@@ -1896,6 +1938,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean add( SchemaObject schemaObject ) throws LdapException
     {
         // First, clear the errors
@@ -2021,6 +2064,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean delete( SchemaObject schemaObject ) throws LdapException
     {
         // First, clear the errors
@@ -2131,6 +2175,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<String, OidNormalizer> getNormalizerMapping()
     {
         return registries.getAttributeTypeRegistry().getNormalizerMapping();
@@ -2140,6 +2185,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings("rawtypes")
     public OidRegistry getGlobalOidRegistry()
     {
@@ -2150,6 +2196,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public Schema getLoadedSchema( String schemaName )
     {
         return schemaMap.get( schemaName );
@@ -2159,6 +2206,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isSchemaLoaded( String schemaName )
     {
         try
@@ -2177,6 +2225,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaObject unregisterAttributeType( String attributeTypeOid ) throws LdapException
     {
         return registries.getAttributeTypeRegistry().unregister( attributeTypeOid );
@@ -2186,6 +2235,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaObject unregisterComparator( String comparatorOid ) throws LdapException
     {
         return registries.getComparatorRegistry().unregister( comparatorOid );
@@ -2195,6 +2245,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaObject unregisterDitControlRule( String ditControlRuleOid ) throws LdapException
     {
         return registries.getDitContentRuleRegistry().unregister( ditControlRuleOid );
@@ -2204,6 +2255,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaObject unregisterDitStructureRule( String ditStructureRuleOid ) throws LdapException
     {
         return registries.getDitStructureRuleRegistry().unregister( ditStructureRuleOid );
@@ -2213,6 +2265,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaObject unregisterLdapSyntax( String ldapSyntaxOid ) throws LdapException
     {
         return registries.getLdapSyntaxRegistry().unregister( ldapSyntaxOid );
@@ -2222,6 +2275,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaObject unregisterMatchingRule( String matchingRuleOid ) throws LdapException
     {
         return registries.getMatchingRuleRegistry().unregister( matchingRuleOid );
@@ -2231,6 +2285,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaObject unregisterMatchingRuleUse( String matchingRuleUseOid ) throws LdapException
     {
         return registries.getMatchingRuleUseRegistry().unregister( matchingRuleUseOid );
@@ -2240,6 +2295,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaObject unregisterNameForm( String nameFormOid ) throws LdapException
     {
         return registries.getNameFormRegistry().unregister( nameFormOid );
@@ -2249,6 +2305,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaObject unregisterNormalizer( String normalizerOid ) throws LdapException
     {
         return registries.getNormalizerRegistry().unregister( normalizerOid );
@@ -2258,6 +2315,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaObject unregisterObjectClass( String objectClassOid ) throws LdapException
     {
         return registries.getObjectClassRegistry().unregister( objectClassOid );
@@ -2267,6 +2325,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaObject unregisterSyntaxChecker( String syntaxCheckerOid ) throws LdapException
     {
         return registries.getSyntaxCheckerRegistry().unregister( syntaxCheckerOid );
@@ -2279,6 +2338,7 @@ public class DefaultSchemaManager implements SchemaManager
      *
      * @return True if SchemaObjects can be added even if they break the consistency
      */
+    @Override
     public boolean isRelaxed()
     {
         return isRelaxed;
@@ -2290,6 +2350,7 @@ public class DefaultSchemaManager implements SchemaManager
      *
      * @return True if SchemaObjects cannot be added if they break the consistency
      */
+    @Override
     public boolean isStrict()
     {
         return !isRelaxed;
@@ -2299,6 +2360,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public Set<String> listDependentSchemaNames( String schemaName )
     {
         return schemaDependencies.get( schemaName );
@@ -2309,6 +2371,7 @@ public class DefaultSchemaManager implements SchemaManager
      * Change the SchemaManager to a relaxed mode, where invalid SchemaObjects
      * can be registered.
      */
+    @Override
     public void setRelaxed()
     {
         isRelaxed = RELAXED;
@@ -2319,6 +2382,7 @@ public class DefaultSchemaManager implements SchemaManager
      * Change the SchemaManager to a strict mode, where invalid SchemaObjects
      * cannot be registered.
      */
+    @Override
     public void setStrict()
     {
         isRelaxed = STRICT;
@@ -2328,6 +2392,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isDisabled( String schemaName )
     {
         Schema schema = registries.getLoadedSchema( schemaName );
@@ -2339,6 +2404,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isDisabled( Schema schema )
     {
         return ( schema != null ) && schema.isDisabled();
@@ -2348,6 +2414,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isEnabled( String schemaName )
     {
         Schema schema = registries.getLoadedSchema( schemaName );
@@ -2359,6 +2426,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isEnabled( Schema schema )
     {
         return ( schema != null ) && schema.isEnabled();

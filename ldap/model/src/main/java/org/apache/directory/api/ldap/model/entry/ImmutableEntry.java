@@ -82,6 +82,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry add( AttributeType attributeType, String... values ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -92,6 +93,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry add( AttributeType attributeType, Value<?>... values ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -112,6 +114,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry add( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -122,6 +125,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry add( String upId, AttributeType attributeType, String... values ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -132,6 +136,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry add( Attribute... attributes ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -152,6 +157,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry add( String upId, String... values ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -162,6 +168,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry add( String upId, Value<?>... values ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -174,6 +181,7 @@ public class ImmutableEntry implements Entry
      * the original object won't affect the cloned object, as a modification
      * on the cloned object has no impact on the original object
      */
+    @Override
     public Entry clone()
     {
         return entry.clone();
@@ -183,6 +191,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry shallowClone()
     {
         return entry.shallowClone();
@@ -192,6 +201,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( Attribute... attributes )
     {
         return entry.contains( attributes );
@@ -201,6 +211,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean containsAttribute( String... attributes )
     {
         return entry.containsAttribute( attributes );
@@ -210,6 +221,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean containsAttribute( AttributeType attributeType )
     {
         return entry.containsAttribute( attributeType );
@@ -228,6 +240,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( AttributeType attributeType, String... values )
     {
         return entry.contains( attributeType, values );
@@ -237,6 +250,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( AttributeType attributeType, Value<?>... values )
     {
         return entry.contains( attributeType, values );
@@ -255,6 +269,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( String upId, String... values )
     {
         return entry.contains( upId, values );
@@ -264,6 +279,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( String upId, Value<?>... values )
     {
         return entry.contains( upId, values );
@@ -273,6 +289,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute get( String alias )
     {
         return entry.get( alias );
@@ -282,6 +299,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute get( AttributeType attributeType )
     {
         return entry.get( attributeType );
@@ -291,6 +309,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Collection<Attribute> getAttributes()
     {
         return entry.getAttributes();
@@ -310,6 +329,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute put( String upId, String... values )
     {
         new Exception().printStackTrace();
@@ -320,6 +340,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute put( String upId, Value<?>... values )
     {
         new Exception().printStackTrace();
@@ -330,6 +351,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Attribute> put( Attribute... attributes ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -350,6 +372,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute put( AttributeType attributeType, String... values ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -360,6 +383,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute put( AttributeType attributeType, Value<?>... values ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -380,6 +404,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute put( String upId, AttributeType attributeType, String... values ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -390,6 +415,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute put( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -400,6 +426,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Attribute> remove( Attribute... attributes ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -420,6 +447,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean remove( AttributeType attributeType, String... values ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -430,6 +458,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean remove( AttributeType attributeType, Value<?>... values ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -451,6 +480,7 @@ public class ImmutableEntry implements Entry
      *
      * @param attributes the AttributeTypes to be removed
      */
+    @Override
     public void removeAttributes( AttributeType... attributes )
     {
         new Exception().printStackTrace();
@@ -461,6 +491,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeAttributes( String... attributes )
     {
         new Exception().printStackTrace();
@@ -517,6 +548,7 @@ public class ImmutableEntry implements Entry
      * @return <code>true</code> if at least a value is removed, <code>false</code>
      * if not all the values have been removed or if the attribute does not exist. 
      */
+    @Override
     public boolean remove( String upId, String... values ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -545,6 +577,7 @@ public class ImmutableEntry implements Entry
      * @return <code>true</code> if at least a value is removed, <code>false</code>
      * if not all the values have been removed or if the attribute does not exist. 
      */
+    @Override
     public boolean remove( String upId, Value<?>... values ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -557,6 +590,7 @@ public class ImmutableEntry implements Entry
      *
      * @return The entry's Dn
      */
+    @Override
     public Dn getDn()
     {
         return entry.getDn();
@@ -566,6 +600,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setDn( Dn dn )
     {
         new Exception().printStackTrace();
@@ -576,6 +611,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setDn( String dn ) throws LdapInvalidDnException
     {
         new Exception().printStackTrace();
@@ -586,6 +622,7 @@ public class ImmutableEntry implements Entry
     /**
      * Remove all the attributes for this entry. The Dn is not reset
      */
+    @Override
     public void clear()
     {
         new Exception().printStackTrace();
@@ -600,6 +637,7 @@ public class ImmutableEntry implements Entry
      *
      * @return an enumeration of all contained attributes
      */
+    @Override
     public Iterator<Attribute> iterator()
     {
         return entry.iterator();
@@ -611,6 +649,7 @@ public class ImmutableEntry implements Entry
      *
      * @return the number of attributes
      */
+    @Override
     public int size()
     {
         return entry.size();
@@ -636,6 +675,7 @@ public class ImmutableEntry implements Entry
      * 
      * {@inheritDoc} 
      */
+    @Override
     public void writeExternal( ObjectOutput out ) throws IOException
     {
         entry.writeExternal( out );
@@ -645,6 +685,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void readExternal( ObjectInput in ) throws IOException, ClassNotFoundException
     {
         new Exception().printStackTrace();
@@ -694,6 +735,7 @@ public class ImmutableEntry implements Entry
      * @see java.lang.Object#hashCode()
      * @return the instance's hash code 
      */
+    @Override
     public int hashCode()
     {
         return entry.hashCode();
@@ -703,6 +745,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasObjectClass( String... objectClasses )
     {
         return entry.hasObjectClass( objectClasses );
@@ -712,6 +755,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasObjectClass( Attribute... objectClasses )
     {
         return entry.hasObjectClass( objectClasses );
@@ -721,6 +765,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isSchemaAware()
     {
         return entry.isSchemaAware();
@@ -730,6 +775,7 @@ public class ImmutableEntry implements Entry
     /**
      * @see Object#equals(Object)
      */
+    @Override
     public boolean equals( Object o )
     {
         return entry.equals( o );
@@ -739,6 +785,7 @@ public class ImmutableEntry implements Entry
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         return entry.toString();
@@ -748,6 +795,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString( String tabs )
     {
         return entry.toString( tabs );

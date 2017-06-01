@@ -41,6 +41,11 @@ public class SchemaBinaryAttributeDetector implements BinaryAttributeDetector
     }
     
     
+    /**
+     * Create an instance of SchemaBinaryAttributeDetector.
+     * 
+     * @param schemaManager The SchemaManager to use
+     */
     public SchemaBinaryAttributeDetector( SchemaManager schemaManager )
     {
         this.schemaManager = schemaManager;
@@ -58,6 +63,7 @@ public class SchemaBinaryAttributeDetector implements BinaryAttributeDetector
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isBinary( String attributeId )
     {
         String attrId = Strings.toLowerCaseAscii( attributeId );
@@ -78,7 +84,7 @@ public class SchemaBinaryAttributeDetector implements BinaryAttributeDetector
             
             LdapSyntax ldapSyntax = attributeType.getSyntax();
             
-            return ( ( ldapSyntax != null ) && !ldapSyntax.isHumanReadable() );
+            return ( ldapSyntax != null ) && !ldapSyntax.isHumanReadable();
         }
 
         return false;

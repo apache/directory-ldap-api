@@ -52,16 +52,20 @@ public enum SortResultCode
     int val;
     String desc;
     
-    private SortResultCode( int val, String desc )
+    SortResultCode( int val, String desc )
     {
         this.val = val;
         this.desc = desc;
     }
 
+    /**
+     * @return The internet value
+     */
     public int getVal()
     {
         return val;
     }
+    
     
     /**
      * returns the enum value representing the given code.

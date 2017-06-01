@@ -22,19 +22,18 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import java.text.ParseException;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.parsers.MatchingRuleDescriptionSchemaParser;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
  * A SyntaxChecker which verifies that a value follows the
- * matching rule descripton syntax according to RFC 4512, par 4.2.3:
+ * matching rule description syntax according to RFC 4512, par 4.2.3:
  * 
- *  <pre>
+ * <pre>
  * MatchingRuleDescription = LPAREN WSP
  *    numericoid                 ; object identifier
  *    [ SP "NAME" SP qdescrs ]   ; short names (descriptors)
@@ -45,42 +44,83 @@ import org.slf4j.LoggerFactory;
  * 
  * extensions = *( SP xstring SP qdstrings )
  * xstring = "X" HYPHEN 1*( ALPHA / HYPHEN / USCORE ) 
- * 
  * </pre>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class MatchingRuleDescriptionSyntaxChecker extends SyntaxChecker
+public final class MatchingRuleDescriptionSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( MatchingRuleDescriptionSyntaxChecker.class );
-
     /** The schema parser used to parse the MatchingRuleDescription Syntax */
-    private MatchingRuleDescriptionSchemaParser schemaParser = new MatchingRuleDescriptionSchemaParser();
-
-
+    private transient MatchingRuleDescriptionSchemaParser schemaParser = new MatchingRuleDescriptionSchemaParser();
+    
     /**
-     * 
+     * A static instance of MatchingRuleDescriptionSyntaxChecker
+     */
+    public static final MatchingRuleDescriptionSyntaxChecker INSTANCE = 
+        new MatchingRuleDescriptionSyntaxChecker( SchemaConstants.MATCHING_RULE_DESCRIPTION_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<MatchingRuleDescriptionSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.MATCHING_RULE_DESCRIPTION_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of MatchingRuleDescriptionSyntaxChecker
+         * @return A new instance of MatchingRuleDescriptionSyntaxChecker
+         */
+        @Override
+        public MatchingRuleDescriptionSyntaxChecker build()
+        {
+            return new MatchingRuleDescriptionSyntaxChecker( oid );
+        }
+    }
+
+    
+    /**
      * Creates a new instance of MatchingRuleDescriptionSchemaParser.
      *
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public MatchingRuleDescriptionSyntaxChecker()
+    private MatchingRuleDescriptionSyntaxChecker( String oid )
     {
-        super( SchemaConstants.MATCHING_RULE_DESCRIPTION_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -100,15 +140,22 @@ public class MatchingRuleDescriptionSyntaxChecker extends SyntaxChecker
         try
         {
             schemaParser.parseMatchingRuleDescription( strValue );
-            LOG.debug( "Syntax valid for '{}'", value );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+            }
 
             return true;
         }
         catch ( ParseException pe )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
     }
-
 }

@@ -52,6 +52,7 @@ public class EntryChangeFactory implements ControlFactory<EntryChange>
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return EntryChange.OID;
@@ -61,6 +62,7 @@ public class EntryChangeFactory implements ControlFactory<EntryChange>
     /**
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<EntryChange> newCodecControl()
     {
         return new EntryChangeDecorator( codec );
@@ -70,6 +72,7 @@ public class EntryChangeFactory implements ControlFactory<EntryChange>
     /**
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<EntryChange> newCodecControl( EntryChange control )
     {
         return new EntryChangeDecorator( codec, control );

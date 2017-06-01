@@ -44,7 +44,7 @@ import java.util.List;
     private SetOfFiltersFilter( FilterOperator operator )
     {
         this.operator = operator;
-        this.filters = new ArrayList<Filter>();
+        this.filters = new ArrayList<>();
     }
 
 

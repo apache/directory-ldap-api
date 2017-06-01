@@ -64,6 +64,7 @@ public class SearchResultReferenceImpl extends AbstractResponse implements Searc
      * 
      * @return the sequence of LdapUrls
      */
+    @Override
     public Referral getReferral()
     {
         return this.referral;
@@ -75,6 +76,7 @@ public class SearchResultReferenceImpl extends AbstractResponse implements Searc
      * 
      * @param referral the sequence of LdapUrls
      */
+    @Override
     public void setReferral( Referral referral )
     {
         this.referral = referral;
@@ -105,6 +107,7 @@ public class SearchResultReferenceImpl extends AbstractResponse implements Searc
      *            the object to compare to this response stub
      * @return true if the objects are equivalent false otherwise
      */
+    @Override
     public boolean equals( Object obj )
     {
         if ( obj == this )
@@ -119,17 +122,17 @@ public class SearchResultReferenceImpl extends AbstractResponse implements Searc
 
         SearchResultReference resp = ( SearchResultReference ) obj;
 
-        if ( this.referral != null && resp.getReferral() == null )
+        if ( referral != null && resp.getReferral() == null )
         {
             return false;
         }
 
-        if ( this.referral == null && resp.getReferral() != null )
+        if ( referral == null && resp.getReferral() != null )
         {
             return false;
         }
 
-        return ( this.referral == null || resp.getReferral() == null || this.referral.equals( resp.getReferral() ) );
+        return referral == null || resp.getReferral() == null || referral.equals( resp.getReferral() );
     }
 
 
@@ -138,6 +141,7 @@ public class SearchResultReferenceImpl extends AbstractResponse implements Searc
      * 
      * @return The Search Result Reference string
      */
+    @Override
     public String toString()
     {
 
@@ -145,7 +149,7 @@ public class SearchResultReferenceImpl extends AbstractResponse implements Searc
 
         sb.append( "    Search Result Reference\n" );
 
-        if ( ( referral == null ) || ( referral.getLdapUrls() == null ) || ( referral.getLdapUrls().size() == 0 ) )
+        if ( ( referral == null ) || ( referral.getLdapUrls() == null ) || referral.getLdapUrls().isEmpty() )
         {
             sb.append( "        No Reference\n" );
         }

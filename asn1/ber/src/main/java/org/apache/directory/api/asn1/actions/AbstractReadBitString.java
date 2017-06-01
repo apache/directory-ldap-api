@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 /**
  * The action used read a BITSTRING from a TLV
  * 
- * @param C The container type
+ * @param <C> The container type
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -70,6 +70,7 @@ public abstract class AbstractReadBitString<C extends Asn1Container> extends Gra
     /**
      * {@inheritDoc}
      */
+    @Override
     public final void action( C container ) throws DecoderException
     {
         TLV tlv = container.getCurrentTLV();

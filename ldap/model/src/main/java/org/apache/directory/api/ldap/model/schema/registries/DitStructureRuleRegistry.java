@@ -50,6 +50,7 @@ public interface DitStructureRuleRegistry extends SchemaObjectRegistry<DitStruct
      *
      * @return an Iterator of descriptions
      */
+    @Override
     Iterator<DitStructureRule> iterator();
 
 
@@ -78,6 +79,7 @@ public interface DitStructureRuleRegistry extends SchemaObjectRegistry<DitStruct
      * @throws LdapException if the DitStructureRule is already registered or
      * the registration operation is not supported
      */
+    @Override
     void register( DitStructureRule ditStructureRule ) throws LdapException;
 
 
@@ -108,6 +110,7 @@ public interface DitStructureRuleRegistry extends SchemaObjectRegistry<DitStruct
      * @param schemaName the name of the schema whose syntaxCheckers will be removed from
      * @throws LdapException if no such SchemaElement exists
      */
+    @Override
     void unregisterSchemaElements( String schemaName ) throws LdapException;
 
 
@@ -118,11 +121,13 @@ public interface DitStructureRuleRegistry extends SchemaObjectRegistry<DitStruct
      * @param newSchemaName The new Schema name
      * @throws org.apache.directory.api.ldap.model.exception.LdapException if the schema can't be renamed
      */
+    @Override
     void renameSchema( String originalSchemaName, String newSchemaName ) throws LdapException;
 
 
     /**
      * Copy the DitStructureRuleRegistry
      */
+    @Override
     DitStructureRuleRegistry copy();
 }

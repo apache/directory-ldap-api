@@ -65,18 +65,21 @@ public class CancelRequestImpl extends AbstractExtendedRequest implements Cancel
     }
 
 
+    @Override
     public int getCancelId()
     {
         return cancelId;
     }
 
 
+    @Override
     public void setCancelId( int cancelId )
     {
         this.cancelId = cancelId;
     }
 
 
+    @Override
     public CancelResponse getResultResponse()
     {
         if ( getResponse() == null )

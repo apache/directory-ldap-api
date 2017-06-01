@@ -52,6 +52,7 @@ public class AdDirSyncFactory implements ControlFactory<AdDirSync>
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return AdDirSync.OID;
@@ -61,6 +62,7 @@ public class AdDirSyncFactory implements ControlFactory<AdDirSync>
     /**
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<AdDirSync> newCodecControl()
     {
         return new AdDirSyncDecorator( codec );
@@ -70,6 +72,7 @@ public class AdDirSyncFactory implements ControlFactory<AdDirSync>
     /**
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<AdDirSync> newCodecControl( AdDirSync control )
     {
         return new AdDirSyncDecorator( codec, control );

@@ -11,7 +11,7 @@ This product uses Apache Ant (http://ant.apache.org/).
 
 This product includes/uses Apache Commons (http://commons.apache.org/).
 
-This product includes/uses Apache Loggin Services (http://logging.apache.org/).
+This product includes/uses Apache Logging Services (http://logging.apache.org/).
 
 This product includes/uses Apache Felix (http://felix.apache.org/).
 
@@ -31,3 +31,5 @@ This product includes/uses software, SLF4J API Module (http://www.slf4j.org),
 developed by QOS.ch  (http://www.qos.ch)
 
 This product includes/uses software, XMLPullParser 3 - xpp3:xpp3:jar:1.1.3.4.O (http://www.extreme.indiana.edu/xgws/xsoap/xpp/mxp1/)
+
+This product includes/uses software, jBCrypt 0.4.1 (http://www.mindrot.org/files/jBCrypt)

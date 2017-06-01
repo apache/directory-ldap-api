@@ -22,8 +22,6 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -32,27 +30,56 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class SupplierOrConsumerSyntaxChecker extends SyntaxChecker
+public final class SupplierOrConsumerSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( SupplierOrConsumerSyntaxChecker.class );
-
-
     /**
-     * Creates a new instance of SupplierOrConsumerSyntaxChecker.
+     * A static instance of SupplierOrConsumerSyntaxChecker
      */
-    public SupplierOrConsumerSyntaxChecker()
+    public static final SupplierOrConsumerSyntaxChecker INSTANCE = 
+        new SupplierOrConsumerSyntaxChecker( SchemaConstants.SUPPLIER_OR_CONSUMER_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<SupplierOrConsumerSyntaxChecker>
     {
-        super( SchemaConstants.SUPPLIER_OR_CONSUMER_SYNTAX );
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.SUPPLIER_OR_CONSUMER_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of SupplierOrConsumerSyntaxChecker
+         * @return A new instance of SupplierOrConsumerSyntaxChecker
+         */
+        @Override
+        public SupplierOrConsumerSyntaxChecker build()
+        {
+            return new SupplierOrConsumerSyntaxChecker( oid );
+        }
     }
 
-
+    
     /**
-     * {@inheritDoc}
+     * Creates a new instance of SupplierOrConsumerSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public boolean isValidSyntax( Object value )
+    private SupplierOrConsumerSyntaxChecker( String oid )
     {
-        LOG.debug( "Syntax valid for '{}'", value );
-        return true;
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 }

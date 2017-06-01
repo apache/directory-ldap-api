@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class MasterAndShadowAccessPointSyntaxCheckerTest
 {
-    MasterAndShadowAccessPointSyntaxChecker checker = new MasterAndShadowAccessPointSyntaxChecker();
+    MasterAndShadowAccessPointSyntaxChecker checker = MasterAndShadowAccessPointSyntaxChecker.INSTANCE;
 
 
     @Test

@@ -135,6 +135,7 @@ public class SortResponseDecorator extends ControlDecorator<SortResponse> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getValue()
     {
         if ( value == null )

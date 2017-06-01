@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class CountrySyntaxCheckerTest
 {
-    CountrySyntaxChecker checker = new CountrySyntaxChecker();
+    CountrySyntaxChecker checker = CountrySyntaxChecker.INSTANCE;
 
 
     @Test

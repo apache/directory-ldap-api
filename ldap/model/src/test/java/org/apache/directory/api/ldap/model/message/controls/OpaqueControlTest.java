@@ -24,7 +24,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.directory.api.ldap.model.message.controls.OpaqueControl;
-import org.apache.directory.api.util.StringConstants;
+import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 
 
@@ -41,7 +41,7 @@ public class OpaqueControlTest
 
         assertFalse( control.hasEncodedValue() );
 
-        control.setEncodedValue( StringConstants.EMPTY_BYTES );
+        control.setEncodedValue( Strings.EMPTY_BYTES );
 
         assertTrue( control.hasEncodedValue() );
     }

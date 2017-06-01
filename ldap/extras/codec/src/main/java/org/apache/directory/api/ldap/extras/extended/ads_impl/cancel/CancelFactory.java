@@ -42,6 +42,11 @@ public class CancelFactory implements ExtendedOperationFactory
     private LdapApiService codec;
 
 
+    /**
+     * Creates a new instance of CancelFactory.
+     *
+     * @param codec The codec for this factory.
+     */
     public CancelFactory( LdapApiService codec )
     {
         this.codec = codec;
@@ -51,6 +56,7 @@ public class CancelFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return CancelRequest.EXTENSION_OID;
@@ -60,6 +66,7 @@ public class CancelFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public CancelResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
         CancelResponseDecorator response = new CancelResponseDecorator( codec, new CancelResponseImpl() );
@@ -72,6 +79,7 @@ public class CancelFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public CancelRequest newRequest( byte[] value )
     {
         CancelRequestDecorator req = new CancelRequestDecorator( codec, new CancelRequestImpl() );
@@ -84,6 +92,7 @@ public class CancelFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public CancelRequestDecorator decorate( ExtendedRequest modelRequest )
     {
         if ( modelRequest instanceof CancelRequestDecorator )
@@ -98,6 +107,7 @@ public class CancelFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public CancelResponseDecorator decorate( ExtendedResponse decoratedMessage )
     {
         if ( decoratedMessage instanceof CancelResponseDecorator )

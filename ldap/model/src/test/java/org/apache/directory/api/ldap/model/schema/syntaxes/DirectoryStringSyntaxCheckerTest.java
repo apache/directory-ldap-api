@@ -41,7 +41,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class DirectoryStringSyntaxCheckerTest
 {
-    DirectoryStringSyntaxChecker checker = new DirectoryStringSyntaxChecker();
+    DirectoryStringSyntaxChecker checker = DirectoryStringSyntaxChecker.INSTANCE;
 
 
     @Test

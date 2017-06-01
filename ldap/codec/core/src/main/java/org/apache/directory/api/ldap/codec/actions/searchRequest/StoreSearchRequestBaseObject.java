@@ -71,7 +71,7 @@ public class StoreSearchRequestBaseObject extends GrammarAction<LdapMessageConta
         TLV tlv = container.getCurrentTLV();
 
         // We have to check that this is a correct Dn
-        Dn baseObject = null;
+        Dn baseObject;
 
         // We have to handle the special case of a 0 length base
         // object,

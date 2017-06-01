@@ -24,7 +24,6 @@ package org.apache.directory.api.dsmlv2.engine;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -192,7 +191,7 @@ public class Dsmlv2Engine
      * @throws XmlPullParserException if an error occurs in the parser
      * @throws FileNotFoundException if the file does not exist
      */
-    public String processDSMLFile( String fileName ) throws XmlPullParserException, FileNotFoundException
+    public String processDSMLFile( String fileName ) throws XmlPullParserException, IOException
     {
         parser = new Dsmlv2Parser( grammar );
         parser.setInputFile( fileName );

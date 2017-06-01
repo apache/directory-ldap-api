@@ -69,7 +69,7 @@ public class StoreErrorMessage extends GrammarAction<LdapMessageContainer<Messag
     {
         // Get the Value and store it in the BindResponse
         TLV tlv = container.getCurrentTLV();
-        String errorMessage = null;
+        String errorMessage;
 
         // We have to handle the special case of a 0 length error
         // message

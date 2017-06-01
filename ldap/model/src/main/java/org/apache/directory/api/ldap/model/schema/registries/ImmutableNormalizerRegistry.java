@@ -55,6 +55,7 @@ public class ImmutableNormalizerRegistry implements NormalizerRegistry
     /**
      *  {@inheritDoc}
      */
+    @Override
     public void register( Normalizer normalizer ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04283 ) );
@@ -64,6 +65,7 @@ public class ImmutableNormalizerRegistry implements NormalizerRegistry
     /**
      *  {@inheritDoc}
      */
+    @Override
     public Normalizer unregister( String numericOid ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04283 ) );
@@ -73,6 +75,7 @@ public class ImmutableNormalizerRegistry implements NormalizerRegistry
     /**
      *  {@inheritDoc}
      */
+    @Override
     public void unregisterSchemaElements( String schemaName ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04283 ) );
@@ -82,6 +85,7 @@ public class ImmutableNormalizerRegistry implements NormalizerRegistry
     /**
      *  {@inheritDoc}
      */
+    @Override
     public ImmutableNormalizerRegistry copy()
     {
         return ( ImmutableNormalizerRegistry ) immutableNormalizerRegistry.copy();
@@ -91,6 +95,7 @@ public class ImmutableNormalizerRegistry implements NormalizerRegistry
     /**
      *  {@inheritDoc}
      */
+    @Override
     public int size()
     {
         return immutableNormalizerRegistry.size();
@@ -100,6 +105,7 @@ public class ImmutableNormalizerRegistry implements NormalizerRegistry
     /**
      *  {@inheritDoc}
      */
+    @Override
     public boolean contains( String oid )
     {
         return immutableNormalizerRegistry.contains( oid );
@@ -109,6 +115,7 @@ public class ImmutableNormalizerRegistry implements NormalizerRegistry
     /**
      *  {@inheritDoc}
      */
+    @Override
     public String getOidByName( String name ) throws LdapException
     {
         return immutableNormalizerRegistry.getOidByName( name );
@@ -118,6 +125,7 @@ public class ImmutableNormalizerRegistry implements NormalizerRegistry
     /**
      *  {@inheritDoc}
      */
+    @Override
     public String getSchemaName( String oid ) throws LdapException
     {
         return immutableNormalizerRegistry.getSchemaName( oid );
@@ -127,6 +135,7 @@ public class ImmutableNormalizerRegistry implements NormalizerRegistry
     /**
      *  {@inheritDoc}
      */
+    @Override
     public SchemaObjectType getType()
     {
         return immutableNormalizerRegistry.getType();
@@ -136,6 +145,7 @@ public class ImmutableNormalizerRegistry implements NormalizerRegistry
     /**
      *  {@inheritDoc}
      */
+    @Override
     public Iterator<Normalizer> iterator()
     {
         return immutableNormalizerRegistry.iterator();
@@ -145,6 +155,7 @@ public class ImmutableNormalizerRegistry implements NormalizerRegistry
     /**
      *  {@inheritDoc}
      */
+    @Override
     public Normalizer lookup( String oid ) throws LdapException
     {
         return immutableNormalizerRegistry.lookup( oid );
@@ -154,6 +165,7 @@ public class ImmutableNormalizerRegistry implements NormalizerRegistry
     /**
      *  {@inheritDoc}
      */
+    @Override
     public Iterator<String> oidsIterator()
     {
         return immutableNormalizerRegistry.oidsIterator();
@@ -163,6 +175,7 @@ public class ImmutableNormalizerRegistry implements NormalizerRegistry
     /**
      *  {@inheritDoc}
      */
+    @Override
     public void renameSchema( String originalSchemaName, String newSchemaName ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04283 ) );
@@ -172,6 +185,7 @@ public class ImmutableNormalizerRegistry implements NormalizerRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Normalizer get( String oid )
     {
         return immutableNormalizerRegistry.get( oid );
@@ -181,6 +195,7 @@ public class ImmutableNormalizerRegistry implements NormalizerRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear() throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04283 ) );
@@ -190,6 +205,7 @@ public class ImmutableNormalizerRegistry implements NormalizerRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Normalizer unregister( Normalizer schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04283 ) );

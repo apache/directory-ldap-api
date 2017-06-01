@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.schema.loader;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -57,6 +58,7 @@ import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
+import org.apache.directory.api.ldap.model.schema.SyntaxChecker.SCBuilder;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
 import org.apache.directory.api.ldap.model.schema.parsers.LdapComparatorDescription;
 import org.apache.directory.api.ldap.model.schema.parsers.NormalizerDescription;
@@ -82,7 +84,7 @@ public class SchemaEntityFactory implements EntityFactory
     private static final Logger LOG = LoggerFactory.getLogger( SchemaEntityFactory.class );
 
     /** The empty string list. */
-    private static final List<String> EMPTY_LIST = new ArrayList<String>();
+    private static final List<String> EMPTY_LIST = new ArrayList<>();
 
     /** The empty string array. */
     private static final String[] EMPTY_ARRAY = new String[]
@@ -99,6 +101,7 @@ public class SchemaEntityFactory implements EntityFactory
     {
         this.classLoader = AccessController.doPrivileged( new PrivilegedAction<AttributeClassLoader>()
         {
+            @Override
             public AttributeClassLoader run() 
             {
                 return new AttributeClassLoader();
@@ -217,6 +220,7 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public Schema getSchema( Entry entry ) throws LdapException
     {
         String name;
@@ -247,12 +251,12 @@ public class SchemaEntityFactory implements EntityFactory
         {
             String value = entry.get( MetaSchemaConstants.M_DISABLED_AT ).getString();
             value = Strings.upperCase( value );
-            isDisabled = value.equals( "TRUE" );
+            isDisabled = "TRUE".equalsIgnoreCase( value );
         }
 
         if ( entry.get( MetaSchemaConstants.M_DEPENDENCIES_AT ) != null )
         {
-            Set<String> depsSet = new HashSet<String>();
+            Set<String> depsSet = new HashSet<>();
             Attribute depsAttr = entry.get( MetaSchemaConstants.M_DEPENDENCIES_AT );
 
             for ( Value<?> value : depsAttr )
@@ -274,8 +278,8 @@ public class SchemaEntityFactory implements EntityFactory
         Attribute byteCode ) throws LdapException
     {
         // Try to class load the syntaxChecker
-        Class<?> clazz = null;
-        SyntaxChecker syntaxChecker = null;
+        Class<?> clazz;
+        SyntaxChecker syntaxChecker;
         String byteCodeStr = StringConstants.EMPTY;
 
         if ( byteCode == null )
@@ -303,6 +307,7 @@ public class SchemaEntityFactory implements EntityFactory
                 LOG.error( "Cannot load the syntax checker class constructor for class {}", className );
                 throw new LdapSchemaException( "Cannot load the syntax checker class " + cnfe.getMessage() );
             }
+            
                 
             byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
         }
@@ -310,12 +315,18 @@ public class SchemaEntityFactory implements EntityFactory
         // Create the syntaxChecker instance
         try
         {
-            syntaxChecker = ( SyntaxChecker ) clazz.newInstance();
+            Method builder = clazz.getMethod( "builder", null );
+            syntaxChecker = ( SyntaxChecker ) ( ( SCBuilder ) builder.invoke( null, null ) ).setOid( oid ).build();
         }
-        catch ( InstantiationException ie )
+        catch ( NoSuchMethodException nsme )
         {
             LOG.error( "Cannot instantiate the syntax checker class constructor for class {}", className );
-            throw new LdapSchemaException( "Cannot instantiate the syntax checker class " + ie.getMessage() );
+            throw new LdapSchemaException( "Cannot instantiate the syntax checker class " + nsme.getMessage() );
+        }
+        catch ( InvocationTargetException ite )
+        {
+            LOG.error( "Cannot instantiate the syntax checker class constructor for class {}", className );
+            throw new LdapSchemaException( "Cannot instantiate the syntax checker class " + ite.getMessage() );
         }
         catch ( IllegalAccessException iae )
         {
@@ -327,9 +338,6 @@ public class SchemaEntityFactory implements EntityFactory
         syntaxChecker.setBytecode( byteCodeStr );
         syntaxChecker.setFqcn( className );
 
-        // Inject the new OID, as the loaded syntaxChecker might have its own
-        syntaxChecker.setOid( oid );
-
         // Inject the SchemaManager for the comparator who needs it
         syntaxChecker.setSchemaManager( schemaManager );
 
@@ -340,6 +348,7 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public SyntaxChecker getSyntaxChecker( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
         String schemaName ) throws LdapException
     {
@@ -394,6 +403,7 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public SyntaxChecker getSyntaxChecker( SchemaManager schemaManager,
         SyntaxCheckerDescription syntaxCheckerDescription, Registries targetRegistries, String schemaName )
         throws LdapException
@@ -437,8 +447,8 @@ public class SchemaEntityFactory implements EntityFactory
         Attribute byteCode ) throws LdapException
     {
         // Try to class load the comparator
-        LdapComparator<?> comparator = null;
-        Class<?> clazz = null;
+        LdapComparator<?> comparator;
+        Class<?> clazz;
         String byteCodeStr = StringConstants.EMPTY;
 
         if ( byteCode == null )
@@ -549,6 +559,7 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public LdapComparator<?> getLdapComparator( SchemaManager schemaManager,
         LdapComparatorDescription comparatorDescription, Registries targetRegistries, String schemaName )
         throws LdapException
@@ -588,6 +599,7 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public LdapComparator<?> getLdapComparator( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
         String schemaName ) throws LdapException
     {
@@ -646,8 +658,8 @@ public class SchemaEntityFactory implements EntityFactory
         Attribute byteCode ) throws LdapException
     {
         // Try to class load the normalizer
-        Class<?> clazz = null;
-        Normalizer normalizer = null;
+        Class<?> clazz;
+        Normalizer normalizer;
         String byteCodeStr = StringConstants.EMPTY;
 
         if ( byteCode == null )
@@ -712,6 +724,7 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public Normalizer getNormalizer( SchemaManager schemaManager, NormalizerDescription normalizerDescription,
         Registries targetRegistries, String schemaName ) throws LdapException
     {
@@ -750,6 +763,7 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public Normalizer getNormalizer( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
         String schemaName ) throws LdapException
     {
@@ -806,6 +820,7 @@ public class SchemaEntityFactory implements EntityFactory
      * @throws LdapInvalidAttributeValueException If the Syntax does not exist
      * @throws LdapUnwillingToPerformException If the schema is not loaded
      */
+    @Override
     public LdapSyntax getSyntax( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
         String schemaName ) throws LdapInvalidAttributeValueException, LdapUnwillingToPerformException
     {
@@ -848,6 +863,7 @@ public class SchemaEntityFactory implements EntityFactory
      * @throws LdapInvalidAttributeValueException If the MatchingRule does not exist
      * @throws LdapUnwillingToPerformException If the schema is not loaded
      */
+    @Override
     public MatchingRule getMatchingRule( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
         String schemaName ) throws LdapUnwillingToPerformException, LdapInvalidAttributeValueException
     {
@@ -905,7 +921,7 @@ public class SchemaEntityFactory implements EntityFactory
             return EMPTY_LIST;
         }
 
-        List<String> strings = new ArrayList<String>( attr.size() );
+        List<String> strings = new ArrayList<>( attr.size() );
 
         for ( Value<?> value : attr )
         {
@@ -919,6 +935,7 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public ObjectClass getObjectClass( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
         String schemaName ) throws LdapException
     {
@@ -994,6 +1011,7 @@ public class SchemaEntityFactory implements EntityFactory
      * @throws LdapInvalidAttributeValueException If the AttributeType does not exist
      * @throws LdapUnwillingToPerformException If the schema is not loaded
      */
+    @Override
     public AttributeType getAttributeType( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
         String schemaName ) throws LdapInvalidAttributeValueException, LdapUnwillingToPerformException
     {
@@ -1083,7 +1101,7 @@ public class SchemaEntityFactory implements EntityFactory
         if ( mCollective != null )
         {
             String val = mCollective.getString();
-            attributeType.setCollective( val.equalsIgnoreCase( "TRUE" ) );
+            attributeType.setCollective( "TRUE".equalsIgnoreCase( val ) );
         }
 
         // isSingleValued
@@ -1092,7 +1110,7 @@ public class SchemaEntityFactory implements EntityFactory
         if ( mSingleValued != null )
         {
             String val = mSingleValued.getString();
-            attributeType.setSingleValued( val.equalsIgnoreCase( "TRUE" ) );
+            attributeType.setSingleValued( "TRUE".equalsIgnoreCase( val ) );
         }
 
         // isReadOnly
@@ -1101,7 +1119,7 @@ public class SchemaEntityFactory implements EntityFactory
         if ( mNoUserModification != null )
         {
             String val = mNoUserModification.getString();
-            attributeType.setUserModifiable( !val.equalsIgnoreCase( "TRUE" ) );
+            attributeType.setUserModifiable( !"TRUE".equalsIgnoreCase( val ) );
         }
 
         // Usage
@@ -1173,9 +1191,8 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         byte[] bytecode = Base64.decode( byteCodeString.toCharArray() );
-        Attribute attr = new DefaultAttribute( MetaSchemaConstants.M_BYTECODE_AT, bytecode );
-
-        return attr;
+        
+        return new DefaultAttribute( MetaSchemaConstants.M_BYTECODE_AT, bytecode );
     }
 
 
@@ -1219,7 +1236,7 @@ public class SchemaEntityFactory implements EntityFactory
         if ( mObsolete != null )
         {
             String val = mObsolete.getString();
-            schemaObject.setObsolete( val.equalsIgnoreCase( "TRUE" ) );
+            schemaObject.setObsolete( "TRUE".equalsIgnoreCase( val ) );
         }
 
         // The description field
@@ -1235,7 +1252,7 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( names != null )
         {
-            List<String> values = new ArrayList<String>();
+            List<String> values = new ArrayList<>();
 
             for ( Value<?> name : names )
             {
@@ -1253,7 +1270,7 @@ public class SchemaEntityFactory implements EntityFactory
         if ( mDisabled != null )
         {
             String val = mDisabled.getString();
-            schemaObject.setEnabled( !val.equalsIgnoreCase( "TRUE" ) );
+            schemaObject.setEnabled( !"TRUE".equalsIgnoreCase( val ) );
         }
         else
         {

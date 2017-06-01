@@ -20,8 +20,6 @@
 package org.apache.directory.api.ldap.codec;
 
 
-import org.apache.directory.api.asn1.ber.Asn1Container;
-import org.apache.directory.api.asn1.ber.grammar.Grammar;
 import org.apache.directory.api.asn1.ber.grammar.States;
 
 
@@ -156,33 +154,11 @@ public enum LdapStatesEnum implements States
     /**
      * Get the grammar name
      *
-     * @param grammar
-     *            The grammar code
      * @return The grammar name
      */
-    public String getGrammarName( int grammar )
+    public String getGrammarName()
     {
         return "LDAP_MESSAGE_GRAMMAR";
-    }
-
-
-    /**
-     * Get the grammar name
-     *
-     * @param grammar
-     *            The grammar class
-     * @return The grammar name
-     */
-    public String getGrammarName( Grammar<Asn1Container> grammar )
-    {
-        if ( grammar instanceof LdapMessageGrammar )
-        {
-            return "LDAP_MESSAGE_GRAMMAR";
-        }
-        else
-        {
-            return "UNKNOWN GRAMMAR";
-        }
     }
 
 
@@ -194,13 +170,14 @@ public enum LdapStatesEnum implements States
      */
     public String getState( int state )
     {
-        return ( ( state == END_STATE.ordinal() ) ? "LDAP_MESSAGE_END_STATE" : name() );
+        return ( state == END_STATE.ordinal() ) ? "LDAP_MESSAGE_END_STATE" : name();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isEndState()
     {
         return this == END_STATE;
@@ -210,6 +187,7 @@ public enum LdapStatesEnum implements States
     /**
      * {@inheritDoc}
      */
+    @Override
     public LdapStatesEnum getStartState()
     {
         return START_STATE;

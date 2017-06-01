@@ -21,41 +21,68 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 
 
 /**
  * A SyntaxChecker which verifies that a value is a SubstringAssertion 
  * according to RFC 4517.
- * 
+ * <p>
  * Implemented as binary right now ...
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class SubstringAssertionSyntaxChecker extends BinarySyntaxChecker
+public final class SubstringAssertionSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( SubstringAssertionSyntaxChecker.class );
-
-
     /**
-     * Creates an instance of SubstringAssertionSyntaxChecker
+     * A static instance of SubstringAssertionSyntaxChecker
      */
-    public SubstringAssertionSyntaxChecker()
+    public static final SubstringAssertionSyntaxChecker INSTANCE = 
+        new SubstringAssertionSyntaxChecker( SchemaConstants.SUBSTRING_ASSERTION_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<SubstringAssertionSyntaxChecker>
     {
-        super();
-        setOid( SchemaConstants.SUBSTRING_ASSERTION_SYNTAX );
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.SUBSTRING_ASSERTION_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of SubstringAssertionSyntaxChecker
+         * @return A new instance of SubstringAssertionSyntaxChecker
+         */
+        @Override
+        public SubstringAssertionSyntaxChecker build()
+        {
+            return new SubstringAssertionSyntaxChecker( oid );
+        }
     }
 
-
+    
     /**
-     * {@inheritDoc}
+     * Creates an instance of SubstringAssertionSyntaxChecker
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public boolean isValidSyntax( Object value )
+    private SubstringAssertionSyntaxChecker( String oid )
     {
-        LOG.debug( "Syntax valid for '{}'", value );
-        return true;
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 }

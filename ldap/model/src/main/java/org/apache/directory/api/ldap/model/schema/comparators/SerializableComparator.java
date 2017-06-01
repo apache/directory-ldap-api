@@ -33,6 +33,8 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
  * A serializable wrapper around a Comparator which uses delayed initialization
  * of the underlying wrapped comparator which is JIT resolved from a static
  * global registry.
+ * 
+ * @param <E> The type of object to compare
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -71,6 +73,7 @@ public class SerializableComparator<E> extends LdapComparator<E> implements Seri
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
+    @Override
     public int compare( E o1, E o2 )
     {
         if ( wrapped == null )
@@ -93,6 +96,7 @@ public class SerializableComparator<E> extends LdapComparator<E> implements Seri
      * @param schemaManager the schemaManager to set
      */
     @SuppressWarnings("unchecked")
+    @Override
     public void setSchemaManager( SchemaManager schemaManager )
     {
         if ( wrapped == null )
@@ -106,7 +110,7 @@ public class SerializableComparator<E> extends LdapComparator<E> implements Seri
             {
                 // Not found : get the default comparator
                 wrapped = ( Comparator<E> )
-                    new ComparableComparator<Comparable<E>>( matchingRuleOid );
+                    new ComparableComparator<>( matchingRuleOid );
             }
         }
 

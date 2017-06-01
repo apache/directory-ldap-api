@@ -69,6 +69,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean getDeleteOldRdn()
     {
         return deleteOldRdn;
@@ -78,6 +79,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnRequest setDeleteOldRdn( boolean deleteOldRdn )
     {
         this.deleteOldRdn = deleteOldRdn;
@@ -89,6 +91,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isMove()
     {
         return newSuperior != null;
@@ -98,6 +101,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dn getName()
     {
         return name;
@@ -107,6 +111,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnRequest setName( Dn name )
     {
         this.name = name;
@@ -118,6 +123,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
     /**
      * {@inheritDoc}
      */
+    @Override
     public Rdn getNewRdn()
     {
         return newRdn;
@@ -127,6 +133,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnRequest setNewRdn( Rdn newRdn )
     {
         this.newRdn = newRdn;
@@ -138,6 +145,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dn getNewSuperior()
     {
         return newSuperior;
@@ -147,6 +155,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnRequest setNewSuperior( Dn newSuperior )
     {
         this.newSuperior = newSuperior;
@@ -158,6 +167,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -169,6 +179,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnRequest addControl( Control control )
     {
         return ( ModifyDnRequest ) super.addControl( control );
@@ -178,6 +189,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnRequest addAllControls( Control[] controls )
     {
         return ( ModifyDnRequest ) super.addAllControls( controls );
@@ -187,6 +199,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyDnRequest removeControl( Control control )
     {
         return ( ModifyDnRequest ) super.removeControl( control );
@@ -203,6 +216,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
      * 
      * @return the message type of the response.
      */
+    @Override
     public MessageTypeEnum getResponseType()
     {
         return MessageTypeEnum.MODIFYDN_RESPONSE;
@@ -214,6 +228,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
      * 
      * @return the result containing response for this request
      */
+    @Override
     public ModifyDnResponse getResultResponse()
     {
         if ( response == null )
@@ -259,6 +274,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
      * @param obj the object to compare with this stub
      * @return true if the obj is equal to this stub, false otherwise
      */
+    @Override
     public boolean equals( Object obj )
     {
         if ( obj == this )
@@ -318,8 +334,8 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
             return false;
         }
 
-        return ( ( newSuperior == null ) || ( req.getNewSuperior() == null ) || newSuperior.equals( req
-            .getNewSuperior() ) );
+        return ( newSuperior == null ) || ( req.getNewSuperior() == null ) || newSuperior.equals( req
+            .getNewSuperior() );
     }
 
 
@@ -328,10 +344,11 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
      * 
      * @return A ModifyDNRequest String
      */
+    @Override
     public String toString()
     {
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( "    ModifyDN Response\n" );
         sb.append( "        Entry : '" ).append( name ).append( "'\n" );

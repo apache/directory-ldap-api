@@ -39,7 +39,14 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Grammar used for decoding a SortRequestControl.
+ * Grammar used for decoding a SortRequestControl. It's defined in https://tools.ietf.org/html/rfc2891
+ * 
+ * <pre>
+ * SortKeyList ::= SEQUENCE OF SEQUENCE {
+ *               attributeType   AttributeDescription,
+ *               orderingRule    [0] MatchingRuleId OPTIONAL,
+ *               reverseOrder    [1] BOOLEAN DEFAULT FALSE }
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -105,8 +112,6 @@ public final class SortRequestGrammar extends AbstractGrammar<SortRequestContain
                 }
                 catch ( BooleanDecoderException bde )
                 {
-                    //String msg = I18n.err( I18n.ERR_04050 );
-                    //LOG.error( msg, e );
                     throw new DecoderException( bde.getMessage(), bde );
                 }
             }

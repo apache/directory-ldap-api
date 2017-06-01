@@ -43,6 +43,11 @@ public class StartTlsFactory implements ExtendedOperationFactory
     private LdapApiService codec;
 
 
+    /**
+     * Creates a new instance of StartTlsFactory.
+     *
+     * @param codec The codec for this factory.
+     */
     public StartTlsFactory( LdapApiService codec )
     {
         this.codec = codec;
@@ -52,6 +57,7 @@ public class StartTlsFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return StartTlsRequest.EXTENSION_OID;
@@ -61,6 +67,7 @@ public class StartTlsFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public StartTlsResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
         StartTlsResponseDecorator response = new StartTlsResponseDecorator( codec,
@@ -73,6 +80,7 @@ public class StartTlsFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public StartTlsRequest newRequest( byte[] value )
     {
         StartTlsRequestDecorator req = new StartTlsRequestDecorator( codec, new StartTlsRequestImpl() );
@@ -89,6 +97,7 @@ public class StartTlsFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public StartTlsRequestDecorator decorate( ExtendedRequest modelRequest )
     {
         if ( modelRequest instanceof StartTlsRequestDecorator )
@@ -103,6 +112,7 @@ public class StartTlsFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
+    @Override
     public StartTlsResponseDecorator decorate( ExtendedResponse decoratedResponse )
     {
         if ( decoratedResponse instanceof StartTlsResponseDecorator )
@@ -124,8 +134,6 @@ public class StartTlsFactory implements ExtendedOperationFactory
         
         startTlsResponse.getLdapResult().setResultCode( response.getLdapResult().getResultCode() );
         startTlsResponse.getLdapResult().setDiagnosticMessage( response.getLdapResult().getDiagnosticMessage() );
-        StartTlsResponseDecorator decorated = new StartTlsResponseDecorator( codec, new StartTlsResponseImpl() );
-
-        return decorated;
+        return new StartTlsResponseDecorator( codec, new StartTlsResponseImpl() );
     }
 }

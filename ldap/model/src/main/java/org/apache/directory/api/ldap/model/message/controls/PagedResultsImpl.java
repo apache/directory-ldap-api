@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.model.message.controls;
 
 
-import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 
 import java.util.Arrays;
@@ -63,7 +62,7 @@ public class PagedResultsImpl extends AbstractControl implements PagedResults
     private int size;
 
     /** The exchanged cookie */
-    private byte[] cookie = StringConstants.EMPTY_BYTES;
+    private byte[] cookie = Strings.EMPTY_BYTES;
 
 
     /**
@@ -75,30 +74,50 @@ public class PagedResultsImpl extends AbstractControl implements PagedResults
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int getSize()
     {
         return size;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setSize( int size )
     {
         this.size = size;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public byte[] getCookie()
     {
         return cookie;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setCookie( byte[] cookie )
     {
         this.cookie = cookie;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int getCookieValue()
     {
         int value = 0;
@@ -172,9 +191,10 @@ public class PagedResultsImpl extends AbstractControl implements PagedResults
     /**
      * Return a String representing this PagedSearchControl.
      */
+    @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( "    Paged Search Control\n" );
         sb.append( "        oid : " ).append( getOid() ).append( '\n' );

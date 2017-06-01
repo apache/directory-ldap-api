@@ -126,7 +126,7 @@ public abstract class ACIItem
      */
     protected static Collection<MicroOperation> toMicroOperations( Collection<GrantAndDenial> grantsAndDenials )
     {
-        Set<MicroOperation> microOps = new HashSet<MicroOperation>();
+        Set<MicroOperation> microOps = new HashSet<>();
 
         for ( GrantAndDenial grantAndDenial : grantsAndDenials )
         {

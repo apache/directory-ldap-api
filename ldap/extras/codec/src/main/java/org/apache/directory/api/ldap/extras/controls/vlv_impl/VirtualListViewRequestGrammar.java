@@ -30,7 +30,24 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * TODO VirtualListViewRequestGrammar.
+ * The VLV grammar. It's an implementation of https://www.ietf.org/archive/id/draft-ietf-ldapext-ldapv3-vlv-09.txt
+ * 
+ * Here is the grammar :
+ * 
+ * <pre>
+ *    VirtualListViewRequest ::= SEQUENCE { 
+ *        beforeCount    INTEGER (0..maxInt), 
+ *        afterCount     INTEGER (0..maxInt), 
+ *        target       CHOICE { 
+ *                       byOffset        [0] SEQUENCE {                           
+ *                            offset          INTEGER (1 .. maxInt), 
+ *                            contentCount    INTEGER (0 .. maxInt) 
+ *                       }, 
+ *                       greaterThanOrEqual [1] AssertionValue 
+ *        }, 
+ *        contextID     OCTET STRING OPTIONAL 
+ *  } 
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -43,6 +60,9 @@ public final class VirtualListViewRequestGrammar extends AbstractGrammar<Virtual
     private static Grammar<?> instance = new VirtualListViewRequestGrammar();
 
 
+    /**
+     * Creates a new VirtualListViewRequestGrammar object.
+     */
     @SuppressWarnings("unchecked")
     private VirtualListViewRequestGrammar()
     {
@@ -121,6 +141,9 @@ public final class VirtualListViewRequestGrammar extends AbstractGrammar<Virtual
     }
 
 
+    /**
+     * @return the singleton instance of the VirtualListViewRequestGrammar
+     */
     public static Grammar<?> getInstance()
     {
         return instance;

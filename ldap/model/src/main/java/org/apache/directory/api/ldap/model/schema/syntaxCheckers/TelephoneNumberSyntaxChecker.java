@@ -20,25 +20,24 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
  * A SyntaxChecker which verifies that a value is a TelephoneNumber according to ITU
  * recommendation E.123 (which is quite vague ...).
- * 
+ * <p>
  * A valid Telephone number respects more or less this syntax :
  * 
+ * <pre>
  * " *[+]? *((\([0-9- ,;/#*]+\))|[0-9- ,;/#*]+)+"
+ * </pre>
  * 
  * If needed, and to allow more syntaxes, a list of regexps has been added
  * which can be initialized to other values
@@ -46,99 +45,141 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class TelephoneNumberSyntaxChecker extends SyntaxChecker
+public final class TelephoneNumberSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( TelephoneNumberSyntaxChecker.class );
-
-    /** Other regexps to extend the initial one */
-    private List<String> regexps;
-
-    /** Other regexp to extend the initial one, compiled */
-    private List<Pattern> compiledREs;
-
     /** The default pattern used to check a TelephoneNumber */
     private static final String DEFAULT_REGEXP = "^ *[+]? *((\\([0-9- ,;/#*]+\\))|[0-9- ,;/#*]+)+$";
+    
+    /** The default pattern */
+    private final String defaultRegexp;
 
     /** The compiled default pattern */
-    private Pattern defaultPattern = Pattern.compile( DEFAULT_REGEXP );
-
-    /** A flag set when only the default regexp should be tested */
-    protected boolean defaultMandatory = false;
-
+    private final Pattern defaultPattern;
 
     /**
-     * Creates a new instance of TelephoneNumberSyntaxChecker.
+     * A static instance of TelephoneNumberSyntaxChecker
      */
-    public TelephoneNumberSyntaxChecker()
-    {
-        super( SchemaConstants.TELEPHONE_NUMBER_SYNTAX );
-    }
-
-
+    public static final TelephoneNumberSyntaxChecker INSTANCE = 
+        new TelephoneNumberSyntaxChecker( SchemaConstants.TELEPHONE_NUMBER_SYNTAX );
+    
     /**
-     * Add a new valid regexp for a Telephone number
-     * @param regexp The new regexp to check
+     * A static Builder for this class
      */
-    public void addRegexp( String regexp )
+    public static final class Builder extends SCBuilder<TelephoneNumberSyntaxChecker>
     {
-        if ( defaultMandatory )
+        /** The default pattern */
+        private String defaultRegexp;
+
+        /** The compiled default pattern */
+        private Pattern defaultPattern;
+
+        /**
+         * The Builder constructor
+         */
+        private Builder()
         {
-            return;
+            super( SchemaConstants.TELEPHONE_NUMBER_SYNTAX );
+            setDefaultRegexp( DEFAULT_REGEXP );
+        }
+        
+        
+        /**
+         * Create a new instance of TelephoneNumberSyntaxChecker
+         * @return A new instance of TelephoneNumberSyntaxChecker
+         */
+        @Override
+        public TelephoneNumberSyntaxChecker build()
+        {
+            return new TelephoneNumberSyntaxChecker( oid, defaultRegexp, defaultPattern );
         }
 
-        try
-        {
-            Pattern compiledRE = Pattern.compile( regexp );
 
-            if ( regexps == null )
+        /**
+         * Set the default regular expression for the Telephone number
+         * 
+         * @param regexp the default regular expression.
+         */
+        public Builder setDefaultRegexp( String regexp )
+        {
+            defaultRegexp = regexp;
+            
+            try
             {
-                regexps = new ArrayList<String>();
-                compiledREs = new ArrayList<Pattern>();
+                defaultPattern = Pattern.compile( regexp );
+            }
+            catch ( PatternSyntaxException pse )
+            {
+                // Roll back to the default pattern
+                defaultPattern = Pattern.compile( DEFAULT_REGEXP );
             }
 
-            regexps.add( regexp );
-            compiledREs.add( compiledRE );
+            return this;
         }
-        catch ( PatternSyntaxException pse )
-        {
-            return;
-        }
+    }
+
+    
+    /**
+     * Creates a new instance of a child of this class, with an OID.
+     * 
+     * @param oid the child's OID
+     */
+    private TelephoneNumberSyntaxChecker( String oid )
+    {
+        this( oid, DEFAULT_REGEXP, Pattern.compile( DEFAULT_REGEXP ) );
+    }
+
+    
+    /**
+     * Creates a new instance of a child of this class, with an OID.
+     * 
+     * @param oid the child's OID
+     * @param defaultRegexp The regexp to use
+     * @param defaultPattern The compiled version of the regexp
+     */
+    private TelephoneNumberSyntaxChecker( String oid, String defaultRegexp, Pattern defaultPattern )
+    {
+        super( oid );
+
+        this.defaultPattern = defaultPattern;
+        this.defaultRegexp = defaultRegexp;
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
     /**
-     * Set the defaut regular expression for the Telephone number
+     * Get the default regexp (either the original one, or the one that has been set)
      * 
-     * @param regexp the default regular expression.
+     * @return The default regexp
      */
-    public void setDefaultRegexp( String regexp )
+    public String getRegexp()
     {
-        try
-        {
-            defaultPattern = Pattern.compile( regexp );
-
-            defaultMandatory = true;
-            regexps = null;
-            compiledREs = null;
-        }
-        catch ( PatternSyntaxException pse )
-        {
-            return;
-        }
+        return defaultRegexp;
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -157,56 +198,35 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
         // We will use a regexp to check the TelephoneNumber.
-        if ( defaultMandatory )
+        boolean result;
+        
+        // Not sure this is 100% necessary...
+        synchronized ( defaultPattern )
         {
-            // We have a unique regexp to check, the default one
-            boolean result = defaultPattern.matcher( strValue ).matches();
+            result = defaultPattern.matcher( strValue ).matches();
+        }
 
+        if ( LOG.isDebugEnabled() )
+        {
             if ( result )
             {
-                LOG.debug( "Syntax valid for '{}'", value );
+                LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
             }
             else
             {
-                LOG.debug( "Syntax invalid for '{}'", value );
-            }
-
-            return result;
-        }
-        else
-        {
-            if ( defaultPattern.matcher( strValue ).matches() )
-            {
-                LOG.debug( "Syntax valid for '{}'", value );
-                return true;
-            }
-            else
-            {
-                if ( compiledREs == null )
-                {
-                    LOG.debug( "Syntax invalid for '{}'", value );
-                    return false;
-                }
-
-                // The default is not enough, let's try
-                // the other regexps
-                for ( Pattern pattern : compiledREs )
-                {
-                    if ( pattern.matcher( strValue ).matches() )
-                    {
-                        LOG.debug( "Syntax valid for '{}'", value );
-                        return true;
-                    }
-                }
-
-                LOG.debug( "Syntax invalid for '{}'", value );
-                return false;
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
             }
         }
+
+        return result;
     }
 }

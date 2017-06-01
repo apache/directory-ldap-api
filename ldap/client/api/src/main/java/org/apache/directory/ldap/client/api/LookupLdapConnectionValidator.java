@@ -40,6 +40,7 @@ public final class LookupLdapConnectionValidator implements LdapConnectionValida
      * @param connection The connection to validate
      * @return True, if the connection is still valid
      */
+    @Override
     public boolean validate( LdapConnection connection )
     {
         try

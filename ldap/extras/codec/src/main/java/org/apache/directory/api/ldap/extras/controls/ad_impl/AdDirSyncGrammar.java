@@ -20,6 +20,8 @@
 package org.apache.directory.api.ldap.extras.controls.ad_impl;
 
 
+import java.util.Set;
+
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.AbstractGrammar;
 import org.apache.directory.api.asn1.ber.grammar.Grammar;
@@ -117,9 +119,9 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
                         {
                             int flagValue = IntegerDecoder.parse( value );
                             
-                            AdDirSyncFlag flag = AdDirSyncFlag.getFlag( flagValue );
+                            Set<AdDirSyncFlag> flags = AdDirSyncFlag.getFlags( flagValue );
                             
-                            if ( flag == null )
+                            if ( flags == null )
                             {
                                 String msg = "Error while decoding the AdDirSync flag, unknown value : " + flagValue;
                                 LOG.error( msg );
@@ -128,10 +130,10 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
                             
                             if ( IS_DEBUG )
                             {
-                                LOG.debug( "flag = {}", flagValue );
+                                LOG.debug( "flags = {}", flags.toString() );
                             }
                             
-                            container.getAdDirSyncControl().setFlag( flag );
+                            container.getAdDirSyncControl().setFlags( flags );
                         }
                         catch ( IntegerDecoderException ide )
                         {

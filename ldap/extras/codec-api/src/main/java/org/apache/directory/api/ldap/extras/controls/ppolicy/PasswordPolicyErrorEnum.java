@@ -22,32 +22,54 @@ package org.apache.directory.api.ldap.extras.controls.ppolicy;
 
 
 /**
- *  constants representing PasswordPolicyErrorS as stated in the <a href="http://tools.ietf.org/html/draft-behera-ldap-password-policy-10">draft</a>
+ *  Constants representing PasswordPolicyErrors as stated in the <a href="http://tools.ietf.org/html/draft-behera-ldap-password-policy-10">draft</a>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public enum PasswordPolicyErrorEnum
 {
+    /** The password has expired */
     PASSWORD_EXPIRED(0),
+    
+    /** The account is locked */
     ACCOUNT_LOCKED(1),
+    
+    /** */
     CHANGE_AFTER_RESET(2),
+    
+    /** the password modification is not allowed */
     PASSWORD_MOD_NOT_ALLOWED(3),
-    MUST_SUPPLY_OLD_PASSWORD(
-        4),
+    
+    /** The ld password must be supplied */
+    MUST_SUPPLY_OLD_PASSWORD(4),
+    
+    /** The password quality is not sufficient */
     INSUFFICIENT_PASSWORD_QUALITY(5),
+    
+    /** The password is too short */
     PASSWORD_TOO_SHORT(6),
+    
+    /** The password has been changed too recently to be used */
     PASSWORD_TOO_YOUNG(7),
+    
+    /** The password is in history */
     PASSWORD_IN_HISTORY(8);
 
     private int value;
 
 
-    private PasswordPolicyErrorEnum( int value )
+    PasswordPolicyErrorEnum( int value )
     {
         this.value = value;
     }
 
 
+    /**
+     * Get the PasswordPolicyErrorEnum gien its numeric value
+     * 
+     * @param val The numeric value to retrieve
+     * @return The associated PasswordPolicyErrorEnum
+     */
     public static PasswordPolicyErrorEnum get( int val )
     {
         switch ( val )
@@ -86,9 +108,11 @@ public enum PasswordPolicyErrorEnum
     }
 
 
+    /**
+     * @return the PasswordPolicyError interned value
+     */
     public int getValue()
     {
         return value;
     }
-
 }

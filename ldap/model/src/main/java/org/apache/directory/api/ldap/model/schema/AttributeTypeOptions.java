@@ -93,7 +93,7 @@ public class AttributeTypeOptions
      */
     public boolean hasOption()
     {
-        return ( options != null ) && ( options.size() != 0 );
+        return ( options != null ) && !options.isEmpty();
     }
 
 
@@ -123,7 +123,7 @@ public class AttributeTypeOptions
     {
         if ( options == null )
         {
-            options = new HashSet<String>();
+            options = new HashSet<>();
         }
 
         options.add( Strings.toLowerCaseAscii( Strings.trim( option ) ) );
@@ -151,6 +151,7 @@ public class AttributeTypeOptions
     /**
      * @see Object#hashCode()
      */
+    @Override
     public int hashCode()
     {
         return attributeType.hashCode();
@@ -160,6 +161,7 @@ public class AttributeTypeOptions
     /**
      * @see Object#equals(Object)
      */
+    @Override
     public boolean equals( Object o )
     {
         // Short circuit
@@ -181,6 +183,7 @@ public class AttributeTypeOptions
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

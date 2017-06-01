@@ -138,7 +138,7 @@ public final class DescriptionUtils
 
             List<String> values = extension.getValue();
 
-            if ( ( values != null ) && ( values.size() != 0 ) )
+            if ( ( values != null ) && !values.isEmpty() )
             {
                 if ( values.size() == 1 )
                 {

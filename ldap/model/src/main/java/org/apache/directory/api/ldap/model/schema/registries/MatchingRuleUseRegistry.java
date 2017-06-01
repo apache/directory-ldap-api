@@ -36,5 +36,6 @@ public interface MatchingRuleUseRegistry extends SchemaObjectRegistry<MatchingRu
     /**
      * Copy the MatchingRuleUseRegistry
      */
+    @Override
     MatchingRuleUseRegistry copy();
 }

@@ -34,6 +34,9 @@ import org.dom4j.QName;
 
 /**
  * DSML Decorator for ExtendedRequest
+ * 
+ * @param <Q> The extended request type
+ * @param <P> The extended response type
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

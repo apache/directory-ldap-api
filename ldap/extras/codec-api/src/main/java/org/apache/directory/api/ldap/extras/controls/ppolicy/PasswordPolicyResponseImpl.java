@@ -41,6 +41,7 @@ public class PasswordPolicyResponseImpl implements PasswordPolicyResponse
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getTimeBeforeExpiration()
     {
         return timeBeforeExpiration;
@@ -50,6 +51,7 @@ public class PasswordPolicyResponseImpl implements PasswordPolicyResponse
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setTimeBeforeExpiration( int timeBeforeExpiration )
     {
         this.timeBeforeExpiration = timeBeforeExpiration;
@@ -59,6 +61,7 @@ public class PasswordPolicyResponseImpl implements PasswordPolicyResponse
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getGraceAuthNRemaining()
     {
         return graceAuthNRemaining;
@@ -68,6 +71,7 @@ public class PasswordPolicyResponseImpl implements PasswordPolicyResponse
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setGraceAuthNRemaining( int graceAuthNRemaining )
     {
         this.graceAuthNRemaining = graceAuthNRemaining;
@@ -77,6 +81,7 @@ public class PasswordPolicyResponseImpl implements PasswordPolicyResponse
     /**
      * {@inheritDoc}
      */
+    @Override
     public PasswordPolicyErrorEnum getPasswordPolicyError()
     {
         return ppolicyError;
@@ -86,6 +91,7 @@ public class PasswordPolicyResponseImpl implements PasswordPolicyResponse
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setPasswordPolicyError( PasswordPolicyErrorEnum ppolicyError )
     {
         this.ppolicyError = ppolicyError;

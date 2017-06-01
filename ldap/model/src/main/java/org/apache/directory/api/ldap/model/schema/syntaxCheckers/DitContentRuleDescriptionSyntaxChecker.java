@@ -22,12 +22,11 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import java.text.ParseException;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.parsers.DitContentRuleDescriptionSchemaParser;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -50,34 +49,77 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class DitContentRuleDescriptionSyntaxChecker extends SyntaxChecker
+public final class DitContentRuleDescriptionSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( DitContentRuleDescriptionSyntaxChecker.class );
-
     /** The schema parser used to parse the DITContentRuleDescription Syntax */
-    private DitContentRuleDescriptionSchemaParser schemaParser = new DitContentRuleDescriptionSchemaParser();
+    private transient DitContentRuleDescriptionSchemaParser schemaParser = new DitContentRuleDescriptionSchemaParser();
+    
+    /**
+     * A static instance of DitContentRuleDescriptionSyntaxChecker
+     */
+    public static final DitContentRuleDescriptionSyntaxChecker INSTANCE = 
+        new DitContentRuleDescriptionSyntaxChecker( SchemaConstants.DIT_CONTENT_RULE_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<DitContentRuleDescriptionSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.DIT_CONTENT_RULE_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of DitContentRuleDescriptionSyntaxChecker
+         * @return A new instance of DitContentRuleDescriptionSyntaxChecker
+         */
+        @Override
+        public DitContentRuleDescriptionSyntaxChecker build()
+        {
+            return new DitContentRuleDescriptionSyntaxChecker( oid );
+        }
+    }
 
-
+    
     /**
      * Creates a new instance of DITContentRuleDescriptionSyntaxChecker.
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public DitContentRuleDescriptionSyntaxChecker()
+    private DitContentRuleDescriptionSyntaxChecker( String oid )
     {
-        super( SchemaConstants.DIT_CONTENT_RULE_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -97,12 +139,21 @@ public class DitContentRuleDescriptionSyntaxChecker extends SyntaxChecker
         try
         {
             schemaParser.parseDITContentRuleDescription( strValue );
-            LOG.debug( "Syntax valid for '{}'", value );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+            }
+            
             return true;
         }
         catch ( ParseException pe )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
     }

@@ -30,16 +30,37 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
  */
 public enum SchemaObjectType
 {
+    /** An AttributeType */
     ATTRIBUTE_TYPE(0),
+    
+    /** A Comparator */
     COMPARATOR(1),
+    
+    /** */
     DIT_CONTENT_RULE(2),
+    
+    /** */
     DIT_STRUCTURE_RULE(3),
+    
+    /** A Syntax */
     LDAP_SYNTAX(4),
+    
+    /** A MatchingRule */
     MATCHING_RULE(5),
+    
+    /** A MatchingRuleUse */
     MATCHING_RULE_USE(6),
+    
+    /** A NameForm */
     NAME_FORM(7),
+    
+    /** A Normalizer */
     NORMALIZER(8),
+    
+    /** An ObjectClass */
     OBJECT_CLASS(9),
+    
+    /** A SyntaxChecker */
     SYNTAX_CHECKER(10);
 
     /** The inner value*/
@@ -49,7 +70,7 @@ public enum SchemaObjectType
     /**
      * A private constructor to associated a number to the type
      */
-    private SchemaObjectType( int value )
+    SchemaObjectType( int value )
     {
         this.value = value;
     }
@@ -71,7 +92,7 @@ public enum SchemaObjectType
      */
     public String getRdn()
     {
-        String schemaObjectPath = null;
+        String schemaObjectPath;
 
         switch ( this )
         {

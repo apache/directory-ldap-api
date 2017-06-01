@@ -112,6 +112,7 @@ public class AndNode extends BranchNode
      * @param buf the buffer to append to.
      * @return The buffer in which the refinement has been appended
      */
+    @Override
     public StringBuilder printRefinementToBuffer( StringBuilder buf )
     {
         buf.append( "and: {" );
@@ -145,9 +146,10 @@ public class AndNode extends BranchNode
      * @see java.lang.Object#toString()
      * @return A string representing the AndNode
      */
+    @Override
     public String toString()
     {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         buf.append( "(&" );
 
         buf.append( super.toString() );
@@ -167,6 +169,7 @@ public class AndNode extends BranchNode
      * @see Object#hashCode()
      * @return the instance's hash code 
      */
+    @Override
     public int hashCode()
     {
         int hash = 37;
@@ -179,6 +182,7 @@ public class AndNode extends BranchNode
     /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals( Object other )
     {
         if ( this == other )

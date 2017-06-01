@@ -55,6 +55,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void register( LdapComparator<?> comparator ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04276 ) );
@@ -64,6 +65,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public LdapComparator<?> unregister( String numericOid ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04276 ) );
@@ -73,6 +75,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterSchemaElements( String schemaName ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04276 ) );
@@ -82,6 +85,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public ImmutableComparatorRegistry copy()
     {
         return ( ImmutableComparatorRegistry ) immutableComparatorRegistry.copy();
@@ -91,6 +95,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public int size()
     {
         return immutableComparatorRegistry.size();
@@ -100,6 +105,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( String oid )
     {
         return immutableComparatorRegistry.contains( oid );
@@ -109,6 +115,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOidByName( String name ) throws LdapException
     {
         return immutableComparatorRegistry.getOidByName( name );
@@ -118,6 +125,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSchemaName( String oid ) throws LdapException
     {
         return immutableComparatorRegistry.getSchemaName( oid );
@@ -127,6 +135,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaObjectType getType()
     {
         return immutableComparatorRegistry.getType();
@@ -136,6 +145,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<LdapComparator<?>> iterator()
     {
         return immutableComparatorRegistry.iterator();
@@ -145,6 +155,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public LdapComparator<?> lookup( String oid ) throws LdapException
     {
         return immutableComparatorRegistry.lookup( oid );
@@ -154,6 +165,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<String> oidsIterator()
     {
         return immutableComparatorRegistry.oidsIterator();
@@ -163,6 +175,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void renameSchema( String originalSchemaName, String newSchemaName ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04276 ) );
@@ -172,6 +185,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public LdapComparator<?> get( String oid )
     {
         return immutableComparatorRegistry.get( oid );
@@ -181,6 +195,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear() throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04276 ) );
@@ -190,6 +205,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public LdapComparator<?> unregister( LdapComparator<?> schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04276 ) );

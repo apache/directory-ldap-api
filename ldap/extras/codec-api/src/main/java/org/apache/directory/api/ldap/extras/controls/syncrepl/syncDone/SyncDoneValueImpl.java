@@ -65,6 +65,7 @@ public class SyncDoneValueImpl extends AbstractControl implements SyncDoneValue
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getCookie()
     {
         return cookie;
@@ -74,6 +75,7 @@ public class SyncDoneValueImpl extends AbstractControl implements SyncDoneValue
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCookie( byte[] cookie )
     {
         this.cookie = cookie;
@@ -83,6 +85,7 @@ public class SyncDoneValueImpl extends AbstractControl implements SyncDoneValue
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isRefreshDeletes()
     {
         return refreshDeletes;
@@ -92,6 +95,7 @@ public class SyncDoneValueImpl extends AbstractControl implements SyncDoneValue
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setRefreshDeletes( boolean refreshDeletes )
     {
         this.refreshDeletes = refreshDeletes;

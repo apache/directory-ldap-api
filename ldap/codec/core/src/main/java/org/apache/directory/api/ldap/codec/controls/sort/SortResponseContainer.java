@@ -67,7 +67,9 @@ public class SortResponseContainer extends AbstractContainer
 
 
     /**
-     * {@inheritDoc} 
+     * Decorate the SortResponse control
+     * 
+     * @param control The Sort Response control to decorate
      */
     public void decorate( SortResponse control )
     {
@@ -103,10 +105,10 @@ public class SortResponseContainer extends AbstractContainer
     /**
      * Clean the container
      */
+    @Override
     public void clean()
     {
         super.clean();
         control = null;
     }
-
 }

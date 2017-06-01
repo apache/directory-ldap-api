@@ -45,12 +45,12 @@ import org.slf4j.LoggerFactory;
  */
 public final class AttributeTypeHelper
 {
+    /** A logger for this class */
+    private static final Logger LOG = LoggerFactory.getLogger( AttributeTypeHelper.class );
+
     private AttributeTypeHelper()
     {
     }
-
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( AttributeTypeHelper.class );
 
     /**
      * Inject the AttributeType into the Registries, updating the references to
@@ -148,7 +148,7 @@ public final class AttributeTypeHelper
      */
     private static boolean buildSuperior( MutableAttributeType attributeType, List<Throwable> errors, Registries registries )
     {
-        MutableAttributeType currentSuperior = null;
+        MutableAttributeType currentSuperior;
         AttributeTypeRegistry attributeTypeRegistry = registries.getAttributeTypeRegistry();
         
         String superiorOid = attributeType.getSuperiorOid();
@@ -217,7 +217,7 @@ public final class AttributeTypeHelper
                 }
 
                 // Check for cycles now
-                Set<String> superiors = new HashSet<String>();
+                Set<String> superiors = new HashSet<>();
                 superiors.add( attributeType.getOid() );
                 AttributeType tmp = currentSuperior;
                 boolean isOk = true;
@@ -329,7 +329,23 @@ public final class AttributeTypeHelper
             // We inherit from the superior's syntax, if any
             if ( attributeType.getSuperior() != null )
             {
-                attributeType.setSyntax( attributeType.getSuperior().getSyntax() );
+                if ( attributeType.getSuperior().getSyntax() != null )
+                {
+                    attributeType.setSyntax( attributeType.getSuperior().getSyntax() );
+                }
+                else
+                {
+                    String msg = I18n.err( I18n.ERR_04306, syntaxOid, attributeType.getName() );
+
+                    LdapSchemaException ldapSchemaException = new LdapSchemaException(
+                        LdapSchemaExceptionCodes.AT_NONEXISTENT_SYNTAX, msg );
+                    ldapSchemaException.setSourceObject( attributeType );
+                    ldapSchemaException.setRelatedId( syntaxOid );
+                    errors.add( ldapSchemaException );
+                    LOG.info( msg );
+                    
+                    return;
+                }
             }
             else
             {

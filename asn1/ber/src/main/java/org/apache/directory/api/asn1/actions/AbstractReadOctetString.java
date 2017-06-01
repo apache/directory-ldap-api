@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 /**
  * The action used to read an OCTET STRING value
  *
- * @param C The container type
+ * @param <C> The container type
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -83,6 +83,7 @@ public abstract class AbstractReadOctetString<C extends Asn1Container> extends G
     /**
      * {@inheritDoc}
      */
+    @Override
     public final void action( C container ) throws DecoderException
     {
         TLV tlv = container.getCurrentTLV();

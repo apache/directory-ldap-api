@@ -40,6 +40,9 @@ public class PasswordException extends Exception
     private PasswordPolicyErrorEnum passwordPolicyError;
 
 
+    /**
+     * Creates a new PasswordException instance
+     */
     public PasswordException()
     {
         super();
@@ -81,23 +84,44 @@ public class PasswordException extends Exception
     }
 
 
+    /**
+     * Sets the wrapped exception
+     * 
+     * @param ldapException The wrapped exception
+     * @return The wrapping exception
+     */
     public PasswordException setLdapException( LdapException ldapException )
     {
         this.ldapException = ldapException;
+        
         return this;
     }
 
 
+    /**
+     * Set the Password Policy error
+     * 
+     * @param passwordPolicyError The Password Policy error
+     * @return The wrapping exception
+     */
     public PasswordException setPasswordPolicyError( PasswordPolicyErrorEnum passwordPolicyError )
     {
         this.passwordPolicyError = passwordPolicyError;
+        
         return this;
     }
 
 
+    /**
+     * Sets the LDAP Result code
+     * 
+     * @param resultCode The LDAP error code
+     * @return The wrapping exception
+     */
     public PasswordException setResultCode( ResultCodeEnum resultCode )
     {
         this.resultCode = resultCode;
+        
         return this;
     }
 }

@@ -310,7 +310,7 @@ public class BerValue
      */
     public static byte[] getBytes( int value )
     {
-        byte[] bytes = null;
+        byte[] bytes;
 
         if ( value >= 0 )
         {
@@ -354,9 +354,6 @@ public class BerValue
             }
             else
             {
-                // We have to compute the complement, and add 1
-                //value = ( ~value ) + 1;
-
                 if ( value >= 0xFFFFFF80 )
                 {
                     bytes = new byte[1];
@@ -455,7 +452,7 @@ public class BerValue
      */
     public static byte[] getBytes( long value )
     {
-        byte[] bytes = null;
+        byte[] bytes;
 
         if ( value >= 0 )
         {
@@ -545,9 +542,6 @@ public class BerValue
             }
             else
             {
-                // We have to compute the complement, and add 1
-                // value = ( ~value ) + 1;
-
                 if ( value >= 0xFFFFFFFFFFFFFF80L )
                 {
                     bytes = new byte[1];

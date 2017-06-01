@@ -47,11 +47,7 @@ public class GracefulShutdownResponseImpl extends ExtendedResponseImpl implement
         switch ( rcode )
         {
             case SUCCESS:
-                break;
-
             case OPERATIONS_ERROR:
-                break;
-
             case INSUFFICIENT_ACCESS_RIGHTS:
                 break;
 
@@ -99,6 +95,7 @@ public class GracefulShutdownResponseImpl extends ExtendedResponseImpl implement
      * 
      * @return the OID of the extended response type.
      */
+    @Override
     public String getResponseName()
     {
         return EXTENSION_OID;
@@ -112,6 +109,7 @@ public class GracefulShutdownResponseImpl extends ExtendedResponseImpl implement
      * @param oid
      *            the OID of the extended response type.
      */
+    @Override
     public void setResponseName( String oid )
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_04168, EXTENSION_OID ) );
@@ -143,6 +141,6 @@ public class GracefulShutdownResponseImpl extends ExtendedResponseImpl implement
             return true;
         }
 
-        return ( obj instanceof GracefulShutdownResponseImpl );
+        return obj instanceof GracefulShutdownResponseImpl;
     }
 }

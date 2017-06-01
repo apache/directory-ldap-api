@@ -22,51 +22,105 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import java.text.ParseException;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.subtree.SubtreeSpecificationChecker;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
  * A SyntaxChecker which verifies that a value is a subtree specification.
- * 
+ * <p>
  * It has been removed in RFC 4517
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class SubtreeSpecificationSyntaxChecker extends SyntaxChecker
+public final class SubtreeSpecificationSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( SubtreeSpecificationSyntaxChecker.class );
-
     /** The associated checker */
-    private SubtreeSpecificationChecker subtreeSpecificationChecker;
-
-
+    private transient SubtreeSpecificationChecker subtreeSpecificationChecker;
+    
+    /**
+     * A static instance of SubtreeSpecificationSyntaxChecker
+     */
+    public static final SubtreeSpecificationSyntaxChecker INSTANCE = 
+        new SubtreeSpecificationSyntaxChecker( SchemaConstants.SUBTREE_SPECIFICATION_SYNTAX, null );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<SubtreeSpecificationSyntaxChecker>
+    {
+        /** The schemaManager */
+        private SchemaManager schemaManager;
+        
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.SUBTREE_SPECIFICATION_SYNTAX );
+        }
+        
+        
+        public Builder setSchemaManager( SchemaManager schemaManager )
+        {
+            this.schemaManager = schemaManager;
+                
+            return this;
+        }
+        
+        
+        /**
+         * Create a new instance of SubtreeSpecificationSyntaxChecker
+         * @return A new instance of SubtreeSpecificationSyntaxChecker
+         */
+        @Override
+        public SubtreeSpecificationSyntaxChecker build()
+        {
+            return new SubtreeSpecificationSyntaxChecker( oid, schemaManager );
+        }
+    }
+    
     /**
      * Creates an instance of SubtreeSpecificationSyntaxChecker
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public SubtreeSpecificationSyntaxChecker()
+    private SubtreeSpecificationSyntaxChecker( String oid, SchemaManager schemaManager )
     {
-        super( SchemaConstants.SUBTREE_SPECIFICATION_SYNTAX );
+        super( oid );
+        subtreeSpecificationChecker = new SubtreeSpecificationChecker( schemaManager );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -85,7 +139,11 @@ public class SubtreeSpecificationSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
@@ -96,22 +154,21 @@ public class SubtreeSpecificationSyntaxChecker extends SyntaxChecker
                 subtreeSpecificationChecker.parse( strValue );
             }
 
-            LOG.debug( "Syntax valid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+            }
+            
             return true;
         }
         catch ( ParseException pe )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setSchemaManager( SchemaManager schemaManager )
-    {
-        subtreeSpecificationChecker = new SubtreeSpecificationChecker( schemaManager );
     }
 }

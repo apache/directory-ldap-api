@@ -26,7 +26,6 @@ import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.BindRequestDecorator;
 import org.apache.directory.api.ldap.model.message.BindRequest;
-import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +72,7 @@ public class StoreSaslCredentials extends GrammarAction<LdapMessageContainer<Bin
         // credentials
         if ( tlv.getLength() == 0 )
         {
-            bindRequestMessage.setCredentials( StringConstants.EMPTY_BYTES );
+            bindRequestMessage.setCredentials( Strings.EMPTY_BYTES );
         }
         else
         {

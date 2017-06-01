@@ -51,12 +51,23 @@ public class VirtualListViewResponseDecorator extends ControlDecorator<VirtualLi
     private static final Asn1Decoder DECODER = new Asn1Decoder();
 
 
+    /**
+     * Create a new SyncRequestValueDecorator instance 
+     * 
+     * @param codec The LDAP API service to use
+     */
     public VirtualListViewResponseDecorator( LdapApiService codec )
     {
         this( codec, new VirtualListViewResponseImpl() );
     }
 
 
+    /**
+     * Create a new SyncRequestValueDecorator instance 
+     * 
+     * @param codec The LDAP API service to use
+     * @param vlvRequest The decorated VLV request
+     */
     public VirtualListViewResponseDecorator( LdapApiService codec, VirtualListViewResponse vlvRequest )
     {
         super( codec, vlvRequest );
@@ -66,6 +77,7 @@ public class VirtualListViewResponseDecorator extends ControlDecorator<VirtualLi
     /**
      * {@inheritDoc}
      */
+    @Override
     public int computeLength()
     {
         vlvSeqLength = 1 + 1 + BerValue.getNbBytes( getTargetPosition() );
@@ -88,6 +100,7 @@ public class VirtualListViewResponseDecorator extends ControlDecorator<VirtualLi
     /**
      * {@inheritDoc}
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         if ( buffer == null )
@@ -115,6 +128,7 @@ public class VirtualListViewResponseDecorator extends ControlDecorator<VirtualLi
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getValue()
     {
         if ( value == null )

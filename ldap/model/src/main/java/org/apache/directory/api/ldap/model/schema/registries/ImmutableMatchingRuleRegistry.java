@@ -55,6 +55,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public ImmutableMatchingRuleRegistry copy()
     {
         return ( ImmutableMatchingRuleRegistry ) immutableMatchingRuleRegistry.copy();
@@ -64,6 +65,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public int size()
     {
         return immutableMatchingRuleRegistry.size();
@@ -73,6 +75,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( String oid )
     {
         return immutableMatchingRuleRegistry.contains( oid );
@@ -82,6 +85,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOidByName( String name ) throws LdapException
     {
         return immutableMatchingRuleRegistry.getOidByName( name );
@@ -91,6 +95,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSchemaName( String oid ) throws LdapException
     {
         return immutableMatchingRuleRegistry.getSchemaName( oid );
@@ -100,6 +105,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public SchemaObjectType getType()
     {
         return immutableMatchingRuleRegistry.getType();
@@ -109,6 +115,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<MatchingRule> iterator()
     {
         return immutableMatchingRuleRegistry.iterator();
@@ -118,6 +125,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public MatchingRule lookup( String oid ) throws LdapException
     {
         return immutableMatchingRuleRegistry.lookup( oid );
@@ -127,6 +135,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<String> oidsIterator()
     {
         return immutableMatchingRuleRegistry.oidsIterator();
@@ -136,6 +145,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void register( MatchingRule schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04280 ) );
@@ -145,6 +155,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void renameSchema( String originalSchemaName, String newSchemaName ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04280 ) );
@@ -154,6 +165,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public MatchingRule unregister( String numericOid ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04280 ) );
@@ -163,6 +175,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterSchemaElements( String schemaName ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04280 ) );
@@ -172,6 +185,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public MatchingRule get( String oid )
     {
         return immutableMatchingRuleRegistry.get( oid );
@@ -181,6 +195,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear() throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04280 ) );
@@ -190,6 +205,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
+    @Override
     public MatchingRule unregister( MatchingRule schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04280 ) );

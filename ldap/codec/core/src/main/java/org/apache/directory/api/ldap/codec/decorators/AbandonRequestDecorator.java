@@ -58,6 +58,7 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getAbandoned()
     {
         return getDecorated().getAbandoned();
@@ -67,6 +68,7 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
     /**
      * {@inheritDoc}
      */
+    @Override
     public AbandonRequest setAbandoned( int requestId )
     {
         getDecorated().setAbandoned( requestId );
@@ -78,6 +80,7 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
     /**
      * {@inheritDoc}
      */
+    @Override
     public AbandonRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -89,6 +92,7 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
     /**
      * {@inheritDoc}
      */
+    @Override
     public AbandonRequest addControl( Control control )
     {
         return ( AbandonRequest ) super.addControl( control );
@@ -98,6 +102,7 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
     /**
      * {@inheritDoc}
      */
+    @Override
     public AbandonRequest addAllControls( Control[] controls )
     {
         return ( AbandonRequest ) super.addAllControls( controls );
@@ -107,6 +112,7 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
     /**
      * {@inheritDoc}
      */
+    @Override
     public AbandonRequest removeControl( Control control )
     {
         return ( AbandonRequest ) super.removeControl( control );
@@ -120,6 +126,7 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
     /**
      * Encode the Abandon protocolOp part
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         try
@@ -154,10 +161,9 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
      * Length(AbandonRequest) = Length(0x50) + 1 + Length(abandoned MessageId)
      * </pre>
      */
+    @Override
     public int computeLength()
     {
-        int length = 1 + 1 + BerValue.getNbBytes( getAbandoned() );
-
-        return length;
+        return 1 + 1 + BerValue.getNbBytes( getAbandoned() );
     }
 }

@@ -22,8 +22,6 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -32,27 +30,56 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class DlSubmitPermissionSyntaxChecker extends SyntaxChecker
+public final class DlSubmitPermissionSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( DlSubmitPermissionSyntaxChecker.class );
-
-
     /**
-     * Creates a new instance of DLSubmitPermissionSyntaxChecker.
+     * A static instance of DlSubmitPermissionSyntaxChecker
      */
-    public DlSubmitPermissionSyntaxChecker()
+    public static final DlSubmitPermissionSyntaxChecker INSTANCE = 
+        new DlSubmitPermissionSyntaxChecker( SchemaConstants.DL_SUBMIT_PERMISSION_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<DlSubmitPermissionSyntaxChecker>
     {
-        super( SchemaConstants.DL_SUBMIT_PERMISSION_SYNTAX );
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.DL_SUBMIT_PERMISSION_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of DlSubmitPermissionSyntaxChecker
+         * @return A new instance of DlSubmitPermissionSyntaxChecker
+         */
+        @Override
+        public DlSubmitPermissionSyntaxChecker build()
+        {
+            return new DlSubmitPermissionSyntaxChecker( oid );
+        }
     }
 
-
+    
     /**
-     * {@inheritDoc}
+     * Creates a new instance of DLSubmitPermissionSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public boolean isValidSyntax( Object value )
+    private DlSubmitPermissionSyntaxChecker( String oid )
     {
-        LOG.debug( "Syntax valid for '{}'", value );
-        return true;
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 }

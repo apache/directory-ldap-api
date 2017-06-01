@@ -28,9 +28,11 @@ import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
  * A class to store all informations about an password.
  *
  * This includes:
- * - the used algorithm
- * - the salt if any
- * - the password itself.
+ * <ul>
+ * <li> the used algorithm</li>
+ * <li> the salt if any</li>
+ * <li> the password itself</li>
+ * </ul>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -41,6 +43,13 @@ public class PasswordDetails
     private final byte[] password;
 
 
+    /**
+     * Creates a new PasswordDetails instance
+     * 
+     * @param algorithm The algorithm to use
+     * @param salt The Salt to use
+     * @param password The password
+     */
     public PasswordDetails( LdapSecurityConstants algorithm, byte[] salt, byte[] password )
     {
         this.algorithm = algorithm;

@@ -139,5 +139,6 @@ public interface AttributeTypeRegistry extends SchemaObjectRegistry<AttributeTyp
      * 
      * @return The copied AttributeTypeRegistry
      */
+    @Override
     AttributeTypeRegistry copy();
 }

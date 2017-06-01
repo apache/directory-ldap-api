@@ -53,6 +53,9 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     /** An instance of this decoder */
     private static final Asn1Decoder DECODER = new Asn1Decoder();
 
+    /** The global length for this control */
+    private int syncInfoValueLength;
+
 
     /**
      * The constructor for this codec. Dont't forget to set the type.
@@ -91,13 +94,11 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
         setType( type );
     }
 
-    /** The global length for this control */
-    private int syncInfoValueLength;
-
-
+    
     /**
      * {@inheritDoc}
      */
+    @Override
     public SynchronizationInfoEnum getType()
     {
         return getDecorated().getType();
@@ -107,6 +108,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setType( SynchronizationInfoEnum type )
     {
         this.getDecorated().setType( type );
@@ -122,6 +124,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getCookie()
     {
         return getDecorated().getCookie();
@@ -131,6 +134,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCookie( byte[] cookie )
     {
         // Copy the bytes
@@ -150,6 +154,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isRefreshDone()
     {
         return getDecorated().isRefreshDone();
@@ -159,6 +164,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setRefreshDone( boolean refreshDone )
     {
         getDecorated().setRefreshDone( refreshDone );
@@ -168,6 +174,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isRefreshDeletes()
     {
         return getDecorated().isRefreshDeletes();
@@ -177,6 +184,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setRefreshDeletes( boolean refreshDeletes )
     {
         getDecorated().setRefreshDeletes( refreshDeletes );
@@ -186,6 +194,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<byte[]> getSyncUUIDs()
     {
         return getDecorated().getSyncUUIDs();
@@ -195,6 +204,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setSyncUUIDs( List<byte[]> syncUUIDs )
     {
         getDecorated().setSyncUUIDs( syncUUIDs );
@@ -204,6 +214,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addSyncUUID( byte[] syncUUID )
     {
         getDecorated().addSyncUUID( syncUUID );
@@ -291,7 +302,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
                 // The syncUUIDs if any
                 syncUUIDsLength = 0;
 
-                if ( getSyncUUIDs().size() != 0 )
+                if ( !getSyncUUIDs().isEmpty() )
                 {
                     for ( byte[] syncUUID : getSyncUUIDs() )
                     {
@@ -410,7 +421,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
                 buffer.put( TLV.getBytes( syncUUIDsLength ) );
 
                 // Loop on the UUIDs if any
-                if ( getSyncUUIDs().size() != 0 )
+                if ( !getSyncUUIDs().isEmpty() )
                 {
                     for ( byte[] syncUUID : getSyncUUIDs() )
                     {
@@ -521,7 +532,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
                         buffer.put( TLV.getBytes( syncUUIDsLength ) );
 
                         // Loop on the UUIDs if any
-                        if ( getSyncUUIDs().size() != 0 )
+                        if ( !getSyncUUIDs().isEmpty() )
                         {
                             for ( byte[] syncUUID : getSyncUUIDs() )
                             {
@@ -550,6 +561,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     /**
      * {@inheritDoc}
      */
+    @Override
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );
@@ -562,6 +574,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         return getDecorated().toString();

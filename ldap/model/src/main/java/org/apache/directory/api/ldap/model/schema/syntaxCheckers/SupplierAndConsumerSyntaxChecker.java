@@ -22,37 +22,64 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
- * A SyntaxChecker which verifies that a value is a supplier and consummer according to RFC 2252.
+ * A SyntaxChecker which verifies that a value is a supplier and consumer according to RFC 2252.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class SupplierAndConsumerSyntaxChecker extends SyntaxChecker
+public final class SupplierAndConsumerSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( SupplierAndConsumerSyntaxChecker.class );
-
-
     /**
-     * Creates an instance of SupplierAndConsumerSyntaxChecker
+     * A static instance of SupplierAndConsumerSyntaxChecker
      */
-    public SupplierAndConsumerSyntaxChecker()
+    public static final SupplierAndConsumerSyntaxChecker INSTANCE = 
+        new SupplierAndConsumerSyntaxChecker( SchemaConstants.SUPPLIER_AND_CONSUMER_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<SupplierAndConsumerSyntaxChecker>
     {
-        super( SchemaConstants.SUPPLIER_AND_CONSUMER_SYNTAX );
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.SUPPLIER_AND_CONSUMER_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of SupplierAndConsumerSyntaxChecker
+         * @return A new instance of SupplierAndConsumerSyntaxChecker
+         */
+        @Override
+        public SupplierAndConsumerSyntaxChecker build()
+        {
+            return new SupplierAndConsumerSyntaxChecker( oid );
+        }
     }
 
-
+    
     /**
-     * {@inheritDoc}
+     * Creates an instance of SupplierAndConsumerSyntaxChecker
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public boolean isValidSyntax( Object value )
+    private SupplierAndConsumerSyntaxChecker( String oid )
     {
-        LOG.debug( "Syntax valid for '{}'", value );
-        return true;
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 }

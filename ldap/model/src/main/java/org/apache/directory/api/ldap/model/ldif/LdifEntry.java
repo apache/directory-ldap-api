@@ -117,8 +117,8 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
     {
         // Default LDIF content
         changeType = ChangeType.None;
-        modificationList = new LinkedList<Modification>();
-        modifications = new HashMap<String, Modification>();
+        modificationList = new LinkedList<>();
+        modifications = new HashMap<>();
         entry = new DefaultEntry( ( Dn ) null );
         entryDn = null;
         controls = null;
@@ -134,8 +134,8 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
     {
         // Default LDIF content
         changeType = ChangeType.None;
-        modificationList = new LinkedList<Modification>();
-        modifications = new HashMap<String, Modification>();
+        modificationList = new LinkedList<>();
+        modifications = new HashMap<>();
         entry = new DefaultEntry( schemaManager, ( Dn ) null );
         entryDn = null;
         controls = null;
@@ -151,8 +151,8 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
     {
         // Default LDIF content
         changeType = ChangeType.None;
-        modificationList = new LinkedList<Modification>();
-        modifications = new HashMap<String, Modification>();
+        modificationList = new LinkedList<>();
+        modifications = new HashMap<>();
         this.entry = entry;
         entryDn = entry.getDn();
         controls = null;
@@ -201,7 +201,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
                 if ( !( ava instanceof String ) )
                 {
                     throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                        I18n.ERR_12085, ( pos + 1 ) ) );
+                        I18n.ERR_12085, pos + 1 ) );
                 }
 
                 String attribute = ( String ) ava;
@@ -231,7 +231,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
                 else
                 {
                     throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                        I18n.ERR_12086, ( pos + 1 ) ) );
+                        I18n.ERR_12086, pos + 1 ) );
                 }
 
                 valueExpected = false;
@@ -285,7 +285,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
 
                 case Modify:
                     modificationList = ldifEntry.getModifications();
-                    modifications = new HashMap<String, Modification>();
+                    modifications = new HashMap<>();
 
                     for ( Modification modification : modificationList )
                     {
@@ -878,7 +878,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
 
             if ( this.controls == null )
             {
-                this.controls = new ConcurrentHashMap<String, LdifControl>();
+                this.controls = new ConcurrentHashMap<>();
             }
 
             if ( control instanceof LdifControl )
@@ -900,6 +900,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
      * @return a clone of the current instance
      * @exception CloneNotSupportedException If there is some problem while cloning the instance
      */
+    @Override
     public LdifEntry clone() throws CloneNotSupportedException
     {
         LdifEntry clone = ( LdifEntry ) super.clone();
@@ -916,12 +917,12 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
 
         if ( modifications != null )
         {
-            for ( Map.Entry<String, Modification> entry : modifications.entrySet() )
+            for ( Map.Entry<String, Modification> mapEntry : modifications.entrySet() )
             {
-                Modification modif = entry.getValue();
+                Modification modif = mapEntry.getValue();
                 Modification modifClone = new DefaultModification( modif.getOperation(),
                     modif.getAttribute().clone() );
-                clone.modifications.put( entry.getKey(), modifClone );
+                clone.modifications.put( mapEntry.getKey(), modifClone );
             }
 
         }
@@ -985,6 +986,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
      *
      * @return an enumeration of all contained attributes
      */
+    @Override
     public Iterator<Attribute> iterator()
     {
         return entry.iterator();
@@ -994,6 +996,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
     /**
      * @return a String representing the Entry, as a LDIF 
      */
+    @Override
     public String toString()
     {
         try
@@ -1012,6 +1015,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
      * 
      * @return the instance's hash code
      */
+    @Override
     public int hashCode()
     {
         int result = 37;
@@ -1102,6 +1106,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals( Object o )
     {
         // Basic equals checks
@@ -1262,16 +1267,16 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
                 return false;
             }
 
-            for ( Map.Entry<String, LdifControl> entry : controls.entrySet() )
+            for ( Map.Entry<String, LdifControl> mapEntry : controls.entrySet() )
             {
-                String controlOid = entry.getKey();
+                String controlOid = mapEntry.getKey();
 
                 if ( !otherControls.containsKey( controlOid ) )
                 {
                     return false;
                 }
 
-                Control thisControl = entry.getValue();
+                Control thisControl = mapEntry.getValue();
                 Control otherControl = otherControls.get( controlOid );
 
                 if ( thisControl == null )
@@ -1306,6 +1311,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
      * @throws IOException If the stream can't be read
      * @throws ClassNotFoundException If the LdifEntry can't be created 
      */
+    @Override
     public void readExternal( ObjectInput in ) throws IOException, ClassNotFoundException
     {
         // Read the changeType
@@ -1378,7 +1384,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
         // We have at least a control
         if ( nbControls > 0 )
         {
-            controls = new ConcurrentHashMap<String, LdifControl>( nbControls );
+            controls = new ConcurrentHashMap<>( nbControls );
 
             for ( int i = 0; i < nbControls; i++ )
             {
@@ -1397,6 +1403,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
      * @param out The stream in which the ChangeLogEvent will be serialized.
      * @throws IOException If the serialization fail
      */
+    @Override
     public void writeExternal( ObjectOutput out ) throws IOException
     {
         // Write the changeType

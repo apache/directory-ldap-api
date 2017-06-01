@@ -80,7 +80,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * A String name to Schema object map for the schemas loaded into this
      * registry. The loaded schemas may be disabled.
      */
-    protected Map<String, Schema> loadedSchemas = new HashMap<String, Schema>();
+    protected Map<String, Schema> loadedSchemas = new HashMap<>();
 
     /** The AttributeType registry */
     protected DefaultAttributeTypeRegistry attributeTypeRegistry;
@@ -127,8 +127,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /** A flag indicating that disabled SchemaObject are accepted */
     private boolean disabledAccepted;
 
-    /** Two flags for RELAXED and STRUCT */
+    /** Two flags for RELAXED and STRICT modes */
+    /** The strict mode */
     public static final boolean STRICT = false;
+    
+    /** The relaxed mode */
     public static final boolean RELAXED = true;
 
     /**
@@ -149,7 +152,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     public Registries()
     {
-        globalOidRegistry = new OidRegistry<SchemaObject>();
+        globalOidRegistry = new OidRegistry<>();
         attributeTypeRegistry = new DefaultAttributeTypeRegistry();
         comparatorRegistry = new DefaultComparatorRegistry();
         ditContentRuleRegistry = new DefaultDitContentRuleRegistry();
@@ -161,9 +164,9 @@ public class Registries implements SchemaLoaderListener, Cloneable
         normalizerRegistry = new DefaultNormalizerRegistry();
         objectClassRegistry = new DefaultObjectClassRegistry();
         syntaxCheckerRegistry = new DefaultSyntaxCheckerRegistry();
-        schemaObjects = new HashMap<String, Set<SchemaObjectWrapper>>();
-        usedBy = new HashMap<SchemaObjectWrapper, Set<SchemaObjectWrapper>>();
-        using = new HashMap<SchemaObjectWrapper, Set<SchemaObjectWrapper>>();
+        schemaObjects = new HashMap<>();
+        usedBy = new HashMap<>();
+        using = new HashMap<>();
 
         isRelaxed = STRICT;
         disabledAccepted = false;
@@ -464,7 +467,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     public List<Throwable> checkRefInteg()
     {
-        ArrayList<Throwable> errors = new ArrayList<Throwable>();
+        ArrayList<Throwable> errors = new ArrayList<>();
 
         // Step 1 :
         // We start with Normalizers, Comparators and SyntaxCheckers
@@ -830,7 +833,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     private void buildObjectClassReferences( List<Throwable> errors )
     {
         // Remember the OC we have already processed
-        Set<String> done = new HashSet<String>();
+        Set<String> done = new HashSet<>();
 
         // The ObjectClass
         for ( ObjectClass objectClass : objectClassRegistry )
@@ -880,7 +883,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     public List<Throwable> buildReferences()
     {
-        List<Throwable> errors = new ArrayList<Throwable>();
+        List<Throwable> errors = new ArrayList<>();
 
         // The Comparator references
         buildComparatorReferences( errors );
@@ -1176,7 +1179,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // This set is used to avoid having more than one error
         // for an AttributeType. It's mandatory when processing
         // a Superior, as it may be broken and referenced more than once.
-        Set<String> processed = new HashSet<String>();
+        Set<String> processed = new HashSet<>();
 
         // Store the AttributeType itself in the processed, to avoid cycle
         processed.add( attributeType.getOid() );
@@ -1220,7 +1223,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // This set is used to avoid having more than one error
         // for an ObjectClass. It's mandatory when processing
         // the Superiors, as they may be broken and referenced more than once.
-        Set<String> processed = new HashSet<String>();
+        Set<String> processed = new HashSet<>();
 
         // Store the ObjectClass itself in the processed, to avoid cycle
         processed.add( objectClass.getOid() );
@@ -1439,6 +1442,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * 
      * {@inheritDoc}
      */
+    @Override
     public void schemaLoaded( Schema schema )
     {
         this.loadedSchemas.put( Strings.toLowerCaseAscii( schema.getSchemaName() ), schema );
@@ -1451,6 +1455,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * 
      * {@inheritDoc}
      */
+    @Override
     public void schemaUnloaded( Schema schema )
     {
         this.loadedSchemas.remove( Strings.toLowerCaseAscii( schema.getSchemaName() ) );
@@ -1528,7 +1533,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     public Set<SchemaObjectWrapper> addSchema( String schemaName )
     {
-        Set<SchemaObjectWrapper> content = new HashSet<SchemaObjectWrapper>();
+        Set<SchemaObjectWrapper> content = new HashSet<>();
         schemaObjects.put( schemaName, content );
 
         return content;
@@ -1543,18 +1548,13 @@ public class Registries implements SchemaLoaderListener, Cloneable
         LOG.debug( "Registering {}:{}", schemaObject.getObjectType(), schemaObject.getOid() );
 
         // Check that the SchemaObject is not already registered
-        // TODO : Check for existing Loadable SchemaObject
-        if ( !( schemaObject instanceof LoadableSchemaObject ) )
+        if ( !( schemaObject instanceof LoadableSchemaObject ) && globalOidRegistry.contains( schemaObject.getOid() ) )
         {
-            if ( globalOidRegistry.contains( schemaObject.getOid() ) )
-            {
-                // TODO : throw an exception here
-                String msg = I18n.err( I18n.ERR_04301, schemaObject.getObjectType(), schemaObject.getOid() );
-                LOG.error( msg );
-                Throwable error = new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
-                errors.add( error );
-                return;
-            }
+            String msg = I18n.err( I18n.ERR_04301, schemaObject.getObjectType(), schemaObject.getOid() );
+            LOG.error( msg );
+            Throwable error = new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
+            errors.add( error );
+            return;
         }
 
         try
@@ -1631,11 +1631,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // Check that the SchemaObject is not already registered
         if ( !( schemaObject instanceof LoadableSchemaObject ) && globalOidRegistry.contains( schemaObject.getOid() ) )
         {
-            // TODO : throw an exception here
             String msg = I18n.err( I18n.ERR_04301, schemaObject.getObjectType(), schemaObject.getOid() );
             LOG.error( msg );
             Throwable error = new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
             errors.add( error );
+            
             return;
         }
 
@@ -1647,7 +1647,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         if ( content == null )
         {
-            content = new HashSet<SchemaObjectWrapper>();
+            content = new HashSet<>();
             schemaObjects.put( Strings.toLowerCaseAscii( schemaName ), content );
         }
 
@@ -1701,11 +1701,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // Check that the SchemaObject is already registered
         if ( !( schemaObject instanceof LoadableSchemaObject ) && !globalOidRegistry.contains( schemaObject.getOid() ) )
         {
-            // TODO : throw an exception here
             String msg = I18n.err( I18n.ERR_04302, schemaObject.getObjectType(), schemaObject.getOid() );
             LOG.error( msg );
             Throwable error = new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
             errors.add( error );
+            
             return;
         }
 
@@ -1761,19 +1761,14 @@ public class Registries implements SchemaLoaderListener, Cloneable
         LOG.debug( "Unregistering {}:{}", schemaObject.getObjectType(), schemaObject.getOid() );
 
         // Check that the SchemaObject is present in the registries
-        // TODO : check for an existing Loadable SchemaObject
-        if ( !( schemaObject instanceof LoadableSchemaObject ) )
+        if ( !( schemaObject instanceof LoadableSchemaObject ) && !globalOidRegistry.contains( schemaObject.getOid() ) )
         {
-            if ( !globalOidRegistry.contains( schemaObject.getOid() ) )
-            {
-                // TODO : throw an exception here
-                String msg = I18n.err( I18n.ERR_04302, schemaObject.getObjectType(), schemaObject.getOid() );
-                LOG.error( msg );
-                throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
-            }
+            String msg = I18n.err( I18n.ERR_04302, schemaObject.getObjectType(), schemaObject.getOid() );
+            LOG.error( msg );
+            throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
         }
 
-        SchemaObject unregistered = null;
+        SchemaObject unregistered;
 
         // First call the specific registry's register method
         switch ( schemaObject.getObjectType() )
@@ -1883,7 +1878,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         Set<SchemaObjectWrapper> set = usedBy.get( wrapper );
 
-        boolean referenced = ( set != null ) && ( set.size() != 0 );
+        boolean referenced = ( set != null ) && !set.isEmpty();
 
         if ( LOG.isDebugEnabled() )
         {
@@ -2044,7 +2039,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         if ( uses == null )
         {
-            uses = new HashSet<SchemaObjectWrapper>();
+            uses = new HashSet<>();
         }
 
         uses.add( new SchemaObjectWrapper( referee ) );
@@ -2099,7 +2094,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         if ( uses == null )
         {
-            uses = new HashSet<SchemaObjectWrapper>();
+            uses = new HashSet<>();
         }
 
         uses.add( new SchemaObjectWrapper( reference ) );
@@ -2133,7 +2128,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         SchemaObjectWrapper wrapper = new SchemaObjectWrapper( reference );
 
-        if ( uses.size() == 0 )
+        if ( uses.isEmpty() )
         {
             using.remove( wrapper );
         }
@@ -2168,7 +2163,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         SchemaObjectWrapper wrapper = new SchemaObjectWrapper( referee );
 
-        if ( uses.size() == 0 )
+        if ( uses.isEmpty() )
         {
             usedBy.remove( wrapper );
         }
@@ -2544,6 +2539,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * - second restore the relation between them
      */
     // False positive
+    @Override
     public Registries clone() throws CloneNotSupportedException
     {
         // First clone the structure
@@ -2607,7 +2603,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         }
 
         // Clone the schema list
-        clone.loadedSchemas = new HashMap<String, Schema>();
+        clone.loadedSchemas = new HashMap<>();
 
         for ( Map.Entry<String, Set<SchemaObjectWrapper>> entry : schemaObjects.entrySet() )
         {
@@ -2617,8 +2613,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         // Clone the Using and usedBy structures
         // They will be empty
-        clone.using = new HashMap<SchemaObjectWrapper, Set<SchemaObjectWrapper>>();
-        clone.usedBy = new HashMap<SchemaObjectWrapper, Set<SchemaObjectWrapper>>();
+        clone.using = new HashMap<>();
+        clone.usedBy = new HashMap<>();
 
         // Last, rebuild the using and usedBy references
         clone.buildReferences();
@@ -2626,13 +2622,13 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // Now, check the registries. We don't care about errors
         clone.checkRefInteg();
 
-        clone.schemaObjects = new HashMap<String, Set<SchemaObjectWrapper>>();
+        clone.schemaObjects = new HashMap<>();
 
         // Last, not least, clone the SchemaObjects Map, and reference all the copied
         // SchemaObjects
         for ( Map.Entry<String, Set<SchemaObjectWrapper>> entry : schemaObjects.entrySet() )
         {
-            Set<SchemaObjectWrapper> objects = new HashSet<SchemaObjectWrapper>();
+            Set<SchemaObjectWrapper> objects = new HashSet<>();
 
             for ( SchemaObjectWrapper schemaObjectWrapper : entry.getValue() )
             {
@@ -2878,6 +2874,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

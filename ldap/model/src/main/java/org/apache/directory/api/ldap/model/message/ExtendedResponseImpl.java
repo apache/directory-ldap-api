@@ -79,9 +79,10 @@ public class ExtendedResponseImpl extends AbstractResultResponse implements Exte
      * 
      * @return the responseName of the extended response
      */
+    @Override
     public String getResponseName()
     {
-        return ( ( responseName == null ) ? "" : responseName );
+        return ( responseName == null ) ? "" : responseName;
     }
 
 
@@ -91,6 +92,7 @@ public class ExtendedResponseImpl extends AbstractResultResponse implements Exte
      * 
      * @param responseName the OID of the extended response type.
      */
+    @Override
     public void setResponseName( String responseName )
     {
         this.responseName = responseName;
@@ -123,6 +125,7 @@ public class ExtendedResponseImpl extends AbstractResultResponse implements Exte
      *            the object to be checked for equality
      * @return true if the obj equals this ExtendedRequest, false otherwise
      */
+    @Override
     public boolean equals( Object obj )
     {
         if ( obj == this )
@@ -167,6 +170,7 @@ public class ExtendedResponseImpl extends AbstractResultResponse implements Exte
      * 
      * @return An ExtendedResponse String
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

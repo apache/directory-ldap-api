@@ -227,6 +227,7 @@ public class DefaultModification implements Modification
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModificationOperation getOperation()
     {
         return operation;
@@ -236,6 +237,7 @@ public class DefaultModification implements Modification
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setOperation( int operation )
     {
         this.operation = ModificationOperation.getOperation( operation );
@@ -245,6 +247,7 @@ public class DefaultModification implements Modification
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setOperation( ModificationOperation operation )
     {
         this.operation = operation;
@@ -254,6 +257,7 @@ public class DefaultModification implements Modification
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute getAttribute()
     {
         return attribute;
@@ -263,6 +267,7 @@ public class DefaultModification implements Modification
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setAttribute( Attribute attribute )
     {
         this.attribute = attribute;
@@ -272,6 +277,7 @@ public class DefaultModification implements Modification
     /**
      * {@inheritDoc}
      */
+    @Override
     public void apply( AttributeType attributeType ) throws LdapInvalidAttributeValueException
     {
         this.attributeType = attributeType;
@@ -284,7 +290,7 @@ public class DefaultModification implements Modification
 
 
     /**
-     * {@inheritDoc}
+     * @return The associated AttributeType
      */
     public AttributeType getAttributeType()
     {
@@ -296,6 +302,7 @@ public class DefaultModification implements Modification
      * @see Object#equals(Object)
      * @return <code>true</code> if both values are equal
      */
+    @Override
     public boolean equals( Object that )
     {
         // Basic equals checks
@@ -331,6 +338,7 @@ public class DefaultModification implements Modification
      * Compute the modification @see Object#hashCode
      * @return the instance's hash code 
      */
+    @Override
     public int hashCode()
     {
         int h = 37;
@@ -345,6 +353,7 @@ public class DefaultModification implements Modification
     /**
      * @see java.io.Externalizable#readExternal(ObjectInput)
      */
+    @Override
     public void readExternal( ObjectInput in ) throws IOException, ClassNotFoundException
     {
         // The operation
@@ -364,6 +373,7 @@ public class DefaultModification implements Modification
     /**
      * @see java.io.Externalizable#writeExternal(ObjectOutput)
      */
+    @Override
     public void writeExternal( ObjectOutput out ) throws IOException
     {
         // The operation
@@ -387,6 +397,7 @@ public class DefaultModification implements Modification
     /**
      * {@inheritDoc}
      */
+    @Override
     public DefaultModification clone()
     {
         try
@@ -406,6 +417,7 @@ public class DefaultModification implements Modification
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

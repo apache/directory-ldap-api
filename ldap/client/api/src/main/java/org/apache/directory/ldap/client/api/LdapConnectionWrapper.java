@@ -65,9 +65,15 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
  */
 public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnection>
 {
+    /** The wrapped connection */
     protected LdapConnection connection;
 
 
+    /**
+     * Creates a new LdapConnectionWrapper instance
+     * 
+     * @param connection The wrapped connection
+     */
     protected LdapConnectionWrapper( LdapConnection connection )
     {
         this.connection = connection;
@@ -77,12 +83,16 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     /**
      * {@inheritDoc}
      */
+    @Override
     public LdapConnection wrapped()
     {
         return connection;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isConnected()
     {
@@ -90,6 +100,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isAuthenticated()
     {
@@ -97,6 +110,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean connect() throws LdapException
     {
@@ -104,6 +120,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void close() throws IOException
     {
@@ -111,6 +130,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void add( Entry entry ) throws LdapException
     {
@@ -118,6 +140,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AddResponse add( AddRequest addRequest ) throws LdapException
     {
@@ -125,6 +150,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void abandon( int messageId )
     {
@@ -132,6 +160,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void abandon( AbandonRequest abandonRequest )
     {
@@ -139,6 +170,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void bind() throws LdapException
     {
@@ -146,6 +180,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void anonymousBind() throws LdapException
     {
@@ -153,6 +190,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void bind( String name ) throws LdapException
     {
@@ -160,6 +200,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void bind( String name, String credentials ) throws LdapException
     {
@@ -167,6 +210,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void bind( Dn name ) throws LdapException
     {
@@ -174,6 +220,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void bind( Dn name, String credentials ) throws LdapException
     {
@@ -181,6 +230,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BindResponse bind( BindRequest bindRequest ) throws LdapException
     {
@@ -188,6 +240,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EntryCursor search( Dn baseDn, String filter, SearchScope scope, String... attributes )
         throws LdapException
@@ -196,6 +251,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EntryCursor search( String baseDn, String filter, SearchScope scope, String... attributes )
         throws LdapException
@@ -204,6 +262,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchCursor search( SearchRequest searchRequest ) throws LdapException
     {
@@ -211,6 +272,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void unBind() throws LdapException
     {
@@ -218,6 +282,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setTimeOut( long timeOut )
     {
@@ -225,6 +292,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void modify( Dn dn, Modification... modifications ) throws LdapException
     {
@@ -232,6 +302,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void modify( String dn, Modification... modifications ) throws LdapException
     {
@@ -239,6 +312,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void modify( Entry entry, ModificationOperation modOp ) throws LdapException
     {
@@ -246,6 +322,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ModifyResponse modify( ModifyRequest modRequest ) throws LdapException
     {
@@ -253,6 +332,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void rename( String entryDn, String newRdn ) throws LdapException
     {
@@ -260,6 +342,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void rename( Dn entryDn, Rdn newRdn ) throws LdapException
     {
@@ -267,6 +352,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void rename( String entryDn, String newRdn, boolean deleteOldRdn ) throws LdapException
     {
@@ -274,6 +362,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void rename( Dn entryDn, Rdn newRdn, boolean deleteOldRdn ) throws LdapException
     {
@@ -281,6 +372,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void move( String entryDn, String newSuperiorDn ) throws LdapException
     {
@@ -288,6 +382,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void move( Dn entryDn, Dn newSuperiorDn ) throws LdapException
     {
@@ -295,6 +392,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void moveAndRename( Dn entryDn, Dn newDn ) throws LdapException
     {
@@ -302,6 +402,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void moveAndRename( String entryDn, String newDn ) throws LdapException
     {
@@ -309,6 +412,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void moveAndRename( Dn entryDn, Dn newDn, boolean deleteOldRdn ) throws LdapException
     {
@@ -316,6 +422,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void moveAndRename( String entryDn, String newDn, boolean deleteOldRdn ) throws LdapException
     {
@@ -323,6 +432,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ModifyDnResponse modifyDn( ModifyDnRequest modDnRequest ) throws LdapException
     {
@@ -330,6 +442,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void delete( String dn ) throws LdapException
     {
@@ -337,6 +452,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void delete( Dn dn ) throws LdapException
     {
@@ -344,6 +462,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteResponse delete( DeleteRequest deleteRequest ) throws LdapException
     {
@@ -351,6 +472,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean compare( String dn, String attributeName, String value ) throws LdapException
     {
@@ -358,6 +482,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean compare( String dn, String attributeName, byte[] value ) throws LdapException
     {
@@ -365,6 +492,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean compare( String dn, String attributeName, Value<?> value ) throws LdapException
     {
@@ -372,6 +502,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean compare( Dn dn, String attributeName, String value ) throws LdapException
     {
@@ -379,6 +512,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean compare( Dn dn, String attributeName, byte[] value ) throws LdapException
     {
@@ -386,6 +522,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean compare( Dn dn, String attributeName, Value<?> value ) throws LdapException
     {
@@ -393,6 +532,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CompareResponse compare( CompareRequest compareRequest ) throws LdapException
     {
@@ -400,6 +542,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExtendedResponse extended( String oid ) throws LdapException
     {
@@ -407,6 +552,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExtendedResponse extended( String oid, byte[] value ) throws LdapException
     {
@@ -414,6 +562,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExtendedResponse extended( Oid oid ) throws LdapException
     {
@@ -421,6 +572,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExtendedResponse extended( Oid oid, byte[] value ) throws LdapException
     {
@@ -428,6 +582,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExtendedResponse extended( ExtendedRequest extendedRequest ) throws LdapException
     {
@@ -435,6 +592,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean exists( String dn ) throws LdapException
     {
@@ -442,6 +602,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean exists( Dn dn ) throws LdapException
     {
@@ -449,6 +612,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Entry getRootDse() throws LdapException
     {
@@ -456,6 +622,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Entry getRootDse( String... attributes ) throws LdapException
     {
@@ -463,6 +632,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Entry lookup( Dn dn ) throws LdapException
     {
@@ -470,6 +642,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Entry lookup( String dn ) throws LdapException
     {
@@ -477,6 +652,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Entry lookup( Dn dn, String... attributes ) throws LdapException
     {
@@ -484,6 +662,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Entry lookup( Dn dn, Control[] controls, String... attributes ) throws LdapException
     {
@@ -491,6 +672,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Entry lookup( String dn, String... attributes ) throws LdapException
     {
@@ -498,6 +682,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Entry lookup( String dn, Control[] controls, String... attributes ) throws LdapException
     {
@@ -505,6 +692,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isControlSupported( String controlOID ) throws LdapException
     {
@@ -512,6 +702,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<String> getSupportedControls() throws LdapException
     {
@@ -519,6 +712,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void loadSchema() throws LdapException
     {
@@ -526,6 +722,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SchemaManager getSchemaManager()
     {
@@ -533,6 +732,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LdapApiService getCodecService()
     {
@@ -540,6 +742,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isRequestCompleted( int messageId )
     {
@@ -547,13 +752,19 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean doesFutureExistFor( int messageId )
     {
-        return connection.doesFutureExistFor( messageId );
+        return connection.isRequestCompleted( messageId );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BinaryAttributeDetector getBinaryAttributeDetector()
     {
@@ -561,6 +772,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setBinaryAttributeDetector( BinaryAttributeDetector binaryAttributeDetecter )
     {
@@ -568,6 +782,9 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setSchemaManager( SchemaManager schemaManager )
     {

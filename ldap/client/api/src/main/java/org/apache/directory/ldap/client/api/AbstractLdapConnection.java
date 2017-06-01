@@ -33,7 +33,6 @@ import org.apache.directory.api.ldap.model.message.BindResponse;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
-import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.slf4j.Logger;
@@ -79,9 +78,10 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public void bind( Dn name ) throws LdapException
     {
-        byte[] credBytes = StringConstants.EMPTY_BYTES;
+        byte[] credBytes = Strings.EMPTY_BYTES;
 
         BindRequest bindRequest = new BindRequestImpl();
         bindRequest.setDn( name );
@@ -96,6 +96,7 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public void bind( String name ) throws LdapException
     {
         LOG.debug( "Bind request : {}", name );
@@ -107,6 +108,7 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public void bind( String name, String credentials ) throws LdapException
     {
         bind( new Dn( schemaManager, name ), credentials );
@@ -116,9 +118,10 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public void bind( Dn name, String credentials ) throws LdapException
     {
-        byte[] credBytes = ( credentials == null ? StringConstants.EMPTY_BYTES : Strings.getBytesUtf8( credentials ) );
+        byte[] credBytes = credentials == null ? Strings.EMPTY_BYTES : Strings.getBytesUtf8( credentials );
 
         BindRequest bindRequest = new BindRequestImpl();
         bindRequest.setDn( name );

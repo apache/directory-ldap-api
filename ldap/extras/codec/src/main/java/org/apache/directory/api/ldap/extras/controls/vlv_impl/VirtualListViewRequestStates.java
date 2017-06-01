@@ -21,7 +21,6 @@
 package org.apache.directory.api.ldap.extras.controls.vlv_impl;
 
 
-import org.apache.directory.api.asn1.ber.grammar.Grammar;
 import org.apache.directory.api.asn1.ber.grammar.States;
 
 
@@ -33,37 +32,56 @@ import org.apache.directory.api.asn1.ber.grammar.States;
  */
 public enum VirtualListViewRequestStates implements States
 {
+    /** Initial state */
     START_STATE,
+    
+    /** VirtualListViewRequest ::= SEQUENCE  transition */
     VLV_SEQUENCE_STATE,
+    
+    /** beforeCount    INTEGER (0..maxInt) transition */
     VLV_BEFORE_COUNT_STATE,
+    
+    /** afterCount     INTEGER (0..maxInt) transition */
     VLV_AFTER_COUNT_STATE,
+    
+    /** byOffset        [0] SEQUENCE transition */
     VLV_TARGET_BY_OFFSET_STATE,
+    
+    /** offset          INTEGER (1 .. maxInt) transition */
     VLV_OFFSET_STATE,
+    
+    /** contentCount    INTEGER (0 .. maxInt) transition */
     VLV_CONTENT_COUNT_STATE,
+    
+    /** contextID     OCTET STRING OPTIONAL transition */
     VLV_CONTEXT_ID_STATE,
+    
+    /** greaterThanOrEqual [1] AssertionValue  transition */
     VLV_ASSERTION_VALUE_STATE,
+    
+    /** Final state */
     END_STATE;
 
-    public String getGrammarName( int grammar )
+    /**
+     * Get the grammar name
+     * 
+     * @return The grammar name
+     */
+    public String getGrammarName()
     {
         return "VLV_REQUEST_GRAMMAR";
     }
 
 
-    public String getGrammarName( Grammar<?> grammar )
-    {
-        if ( grammar instanceof VirtualListViewRequestGrammar )
-        {
-            return "VLV_REQUEST_GRAMMAR";
-        }
-
-        return "UNKNOWN GRAMMAR";
-    }
-
-
+    /**
+     * Get the string representing the state
+     * 
+     * @param state The state number
+     * @return The String representing the state
+     */
     public String getState( int state )
     {
-        return ( ( state == END_STATE.ordinal() ) ? "VLV_REQUEST_END_STATE" : name() );
+        return ( state == END_STATE.ordinal() ) ? "VLV_REQUEST_END_STATE" : name();
     }
 
 

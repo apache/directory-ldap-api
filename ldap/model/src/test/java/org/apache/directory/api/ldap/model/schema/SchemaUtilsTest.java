@@ -125,36 +125,36 @@ public class SchemaUtilsTest
 
     /**
      * Tests rendering operations on qdescrs render method. Both overloaded
-     * operations {@link org.apache.directory.api.ldap.model.schema.SchemaUtils#render(StringBuffer, String[])} and
+     * operations {@link org.apache.directory.api.ldap.model.schema.SchemaUtils#render(StringBuilder, String[])} and
      * {@link org.apache.directory.api.ldap.model.schema.SchemaUtils#render(String[])} are tested here.
      */
     @Test
     public void testRenderQdescrs()
     {
-        assertEquals( "", SchemaUtils.renderQDescrs( new StringBuffer(), ( List<String> ) null ).toString() );
-        assertEquals( "", SchemaUtils.renderQDescrs( new StringBuffer(), Arrays.asList( new String[]
+        assertEquals( "", SchemaUtils.renderQDescrs( new StringBuilder(), ( List<String> ) null ).toString() );
+        assertEquals( "", SchemaUtils.renderQDescrs( new StringBuilder(), Arrays.asList( new String[]
             {} ) ).toString() );
-        assertEquals( "'name1'", SchemaUtils.renderQDescrs( new StringBuffer(), Arrays.asList( new String[]
+        assertEquals( "'name1'", SchemaUtils.renderQDescrs( new StringBuilder(), Arrays.asList( new String[]
             { "name1" } ) ).toString() );
-        assertEquals( "( 'name1' 'name2' )", SchemaUtils.renderQDescrs( new StringBuffer(), Arrays.asList( new String[]
+        assertEquals( "( 'name1' 'name2' )", SchemaUtils.renderQDescrs( new StringBuilder(), Arrays.asList( new String[]
             { "name1", "name2" } ) ).toString() );
         assertEquals( "( 'name1' 'name2' 'name3' )",
-            SchemaUtils.renderQDescrs( new StringBuffer(), Arrays.asList( new String[]
+            SchemaUtils.renderQDescrs( new StringBuilder(), Arrays.asList( new String[]
                 { "name1", "name2", "name3" } ) ).toString() );
 
-        assertEquals( "", SchemaUtils.renderQDescrs( new StringBuffer(), ( List<String> ) null ).toString() );
+        assertEquals( "", SchemaUtils.renderQDescrs( new StringBuilder(), ( List<String> ) null ).toString() );
 
-        assertEquals( "", SchemaUtils.renderQDescrs( new StringBuffer(), Arrays.asList( new String[]
+        assertEquals( "", SchemaUtils.renderQDescrs( new StringBuilder(), Arrays.asList( new String[]
             {} ) ).toString() );
 
-        assertEquals( "'name1'", SchemaUtils.renderQDescrs( new StringBuffer(), Arrays.asList( new String[]
+        assertEquals( "'name1'", SchemaUtils.renderQDescrs( new StringBuilder(), Arrays.asList( new String[]
             { "name1" } ) ).toString() );
 
-        assertEquals( "( 'name1' 'name2' )", SchemaUtils.renderQDescrs( new StringBuffer(), Arrays.asList( new String[]
+        assertEquals( "( 'name1' 'name2' )", SchemaUtils.renderQDescrs( new StringBuilder(), Arrays.asList( new String[]
             { "name1", "name2" } ) ).toString() );
 
         assertEquals( "( 'name1' 'name2' 'name3' )",
-            SchemaUtils.renderQDescrs( new StringBuffer(), Arrays.asList( new String[]
+            SchemaUtils.renderQDescrs( new StringBuilder(), Arrays.asList( new String[]
                 { "name1", "name2", "name3" } ) ).toString() );
     }
     

@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class ProtocolInformationSyntaxCheckerTest
 {
-    ProtocolInformationSyntaxChecker checker = new ProtocolInformationSyntaxChecker();
+    ProtocolInformationSyntaxChecker checker = ProtocolInformationSyntaxChecker.INSTANCE;
 
 
     @Test

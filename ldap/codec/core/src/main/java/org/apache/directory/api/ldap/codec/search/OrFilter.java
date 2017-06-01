@@ -83,6 +83,7 @@ public class OrFilter extends ConnectorFilter
      * 
      * @return The encoded length
      */
+    @Override
     public int computeLength()
     {
         filtersLength = super.computeLength();
@@ -102,6 +103,7 @@ public class OrFilter extends ConnectorFilter
      * @param buffer The buffer where to put the PDU
      * @return The PDU.
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         if ( buffer == null )
@@ -131,10 +133,11 @@ public class OrFilter extends ConnectorFilter
      * 
      * @return The OR filter string
      */
+    @Override
     public String toString()
     {
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( '|' ).append( super.toString() );
 

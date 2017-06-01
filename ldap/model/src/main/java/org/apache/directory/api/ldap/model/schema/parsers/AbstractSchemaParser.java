@@ -38,6 +38,8 @@ import antlr.TokenStreamRecognitionException;
 
 /**
  * Base class of all schema parsers.
+ * 
+ * @param <T> The type of SchemaObject
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -172,26 +174,22 @@ public abstract class AbstractSchemaParser<T extends SchemaObject>
         }
         catch ( RecognitionException re )
         {
-            ParseException parseException = wrapRecognitionException( schemaDescription, re );
-            throw parseException;
+            throw wrapRecognitionException( schemaDescription, re );
         }
         catch ( TokenStreamRecognitionException tsre )
         {
             if ( tsre.recog != null )
             {
-                ParseException parseException = wrapRecognitionException( schemaDescription, tsre.recog );
-                throw parseException;
+                throw wrapRecognitionException( schemaDescription, tsre.recog );
             }
             else
             {
-                ParseException parseException = wrapTokenStreamException( schemaDescription, tsre );
-                throw parseException;
+                throw wrapTokenStreamException( schemaDescription, tsre );
             }
         }
         catch ( TokenStreamException tse )
         {
-            ParseException parseException = wrapTokenStreamException( schemaDescription, tse );
-            throw parseException;
+            throw wrapTokenStreamException( schemaDescription, tse );
         }
     }
 

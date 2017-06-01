@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @param <N> The type of node we store
  */
-public class DnNode<N> implements Cloneable
+public class DnNode<N>
 {
     /** The logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( DnNode.class );
@@ -69,77 +69,6 @@ public class DnNode<N> implements Cloneable
 
     /** Stores the list of all the descendant */
     private Map<Rdn, DnNode<N>> children;
-
-
-    //-------------------------------------------------------------------------
-    // Helper methods
-    //-------------------------------------------------------------------------
-    /**
-     * Check that the Dn is not null
-     */
-    private void checkDn( Dn dn ) throws LdapException
-    {
-        if ( ( dn == null ) || dn.isEmpty() )
-        {
-            String message = "Cannot process an empty Dn";
-            LOG.error( message );
-            throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, message );
-        }
-    }
-
-
-    /**
-     * Create a new DnNode, recursively creating all the intermediate nodes.
-     */
-    private DnNode<N> createNode( Dn dn, N element, int nbRdns ) throws LdapException
-    {
-        checkDn( dn );
-
-        DnNode<N> rootNode = null;
-
-        // No parent : add from the current position
-        for ( Rdn rdn : dn.getRdns() )
-        {
-            if ( nbRdns == 0 )
-            {
-                break;
-            }
-
-            if ( rootNode == null )
-            {
-                // Create the new top node
-                DnNode<N> node = new DnNode<N>( element );
-                node.nodeRdn = rdn;
-                node.nodeDn = dn;
-                node.depth = dn.size() + depth;
-
-                rootNode = node;
-            }
-            else
-            {
-                DnNode<N> node = new DnNode<N>();
-                node.nodeRdn = rdn;
-                node.nodeDn = rootNode.nodeDn.getParent();
-                node.depth = node.nodeDn.size() + depth;
-                rootNode.parent = node;
-                node.children.put( rootNode.nodeRdn, rootNode );
-                rootNode = node;
-            }
-
-            nbRdns--;
-        }
-
-        return rootNode;
-    }
-
-
-    /**
-     * Store the given element into the node
-     */
-    private synchronized void setElement( N element )
-    {
-        this.nodeElement = element;
-    }
 
 
     //-------------------------------------------------------------------------
@@ -201,6 +130,77 @@ public class DnNode<N> implements Cloneable
             // Special cas e: the Dn is empty, this is not allowed
             throw new IllegalArgumentException( le.getMessage(), le );
         }
+    }
+
+
+    //-------------------------------------------------------------------------
+    // Helper methods
+    //-------------------------------------------------------------------------
+    /**
+     * Check that the Dn is not null
+     */
+    private void checkDn( Dn dn ) throws LdapException
+    {
+        if ( ( dn == null ) || dn.isEmpty() )
+        {
+            String message = "Cannot process an empty Dn";
+            LOG.error( message );
+            throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, message );
+        }
+    }
+
+
+    /**
+     * Create a new DnNode, recursively creating all the intermediate nodes.
+     */
+    private DnNode<N> createNode( Dn dn, N element, int nbRdns ) throws LdapException
+    {
+        checkDn( dn );
+
+        DnNode<N> rootNode = null;
+
+        // No parent : add from the current position
+        for ( Rdn rdn : dn.getRdns() )
+        {
+            if ( nbRdns == 0 )
+            {
+                break;
+            }
+
+            if ( rootNode == null )
+            {
+                // Create the new top node
+                DnNode<N> node = new DnNode<>( element );
+                node.nodeRdn = rdn;
+                node.nodeDn = dn;
+                node.depth = dn.size() + depth;
+
+                rootNode = node;
+            }
+            else
+            {
+                DnNode<N> node = new DnNode<>();
+                node.nodeRdn = rdn;
+                node.nodeDn = rootNode.nodeDn.getParent();
+                node.depth = node.nodeDn.size() + depth;
+                rootNode.parent = node;
+                node.children.put( rootNode.nodeRdn, rootNode );
+                rootNode = node;
+            }
+
+            nbRdns--;
+        }
+
+        return rootNode;
+    }
+
+
+    /**
+     * Store the given element into the node
+     */
+    private synchronized void setElement( N element )
+    {
+        this.nodeElement = element;
     }
 
 
@@ -409,7 +409,7 @@ public class DnNode<N> implements Cloneable
      */
     public synchronized List<N> getDescendantElements( Dn dn )
     {
-        List<N> descendants = new ArrayList<N>();
+        List<N> descendants = new ArrayList<>();
 
         DnNode<N> node = getNode( dn );
 
@@ -534,7 +534,7 @@ public class DnNode<N> implements Cloneable
             }
         }
 
-        return ( parentNode != null );
+        return parentNode != null;
     }
 
 
@@ -970,28 +970,6 @@ public class DnNode<N> implements Cloneable
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
-    public synchronized DnNode<N> clone()
-    {
-        DnNode<N> clonedDnNode = new DnNode<N>();
-
-        clonedDnNode.nodeElement = nodeElement;
-        clonedDnNode.depth = depth;
-        clonedDnNode.parent = parent;
-        clonedDnNode.nodeRdn = nodeRdn;
-        clonedDnNode.nodeDn = nodeDn;
-
-        for ( DnNode<N> node : children.values() )
-        {
-            clonedDnNode.children.put( node.getRdn(), node.clone() );
-        }
-
-        return clonedDnNode;
-    }
-
-
     private String toString( String tabs )
     {
         if ( nodeRdn == null )
@@ -1049,6 +1027,7 @@ public class DnNode<N> implements Cloneable
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         return toString( "" );

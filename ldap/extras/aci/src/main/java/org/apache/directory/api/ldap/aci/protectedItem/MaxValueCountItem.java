@@ -43,7 +43,6 @@ public class MaxValueCountItem extends ProtectedItem
     /** The set of elements to protect */
     private final Set<MaxValueCountElem> items;
 
-
     /**
      * Creates a new instance.
      * 
@@ -73,7 +72,22 @@ public class MaxValueCountItem extends ProtectedItem
     public int hashCode()
     {
         int hash = 37;
-        hash = hash * 17 + items.hashCode();
+        
+        if ( items != null )
+        {
+            for ( MaxValueCountElem item : items )
+            {
+                if ( item != null )
+                {
+                    hash = hash * 17 + item.hashCode();
+                }
+                else
+                {
+                    hash = hash * 17 + 37;
+                }
+            }
+        }
+        
         return hash;
     }
 
@@ -89,15 +103,11 @@ public class MaxValueCountItem extends ProtectedItem
             return true;
         }
 
-        if ( o == null )
-        {
-            return false;
-        }
-
         if ( o instanceof MaxValueCountItem )
         {
             MaxValueCountItem that = ( MaxValueCountItem ) o;
-            return this.items.equals( that.items );
+            
+            return items.equals( that.items );
         }
 
         return false;
@@ -116,18 +126,21 @@ public class MaxValueCountItem extends ProtectedItem
 
         boolean isFirst = true;
 
-        for ( MaxValueCountElem item : items )
+        if ( items != null )
         {
-            if ( isFirst )
+            for ( MaxValueCountElem item : items )
             {
-                isFirst = false;
+                if ( isFirst )
+                {
+                    isFirst = false;
+                }
+                else
+                {
+                    buf.append( ", " );
+                }
+    
+                buf.append( item.toString() );
             }
-            else
-            {
-                buf.append( ", " );
-            }
-
-            buf.append( item.toString() );
         }
 
         buf.append( "}" );

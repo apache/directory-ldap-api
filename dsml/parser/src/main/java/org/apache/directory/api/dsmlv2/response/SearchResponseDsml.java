@@ -165,7 +165,7 @@ public class SearchResponseDsml extends AbstractResponseDsml<Response>
             int requestID = getDecorated().getMessageId();
             if ( requestID > 0 )
             {
-                element.addAttribute( "requestID", "" + requestID );
+                element.addAttribute( "requestID", Integer.toString( requestID ) );
             }
         }
 

@@ -42,7 +42,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class NameFormDescriptionSyntaxCheckerTest
 {
-    private NameFormDescriptionSyntaxChecker checker = new NameFormDescriptionSyntaxChecker();
+    private NameFormDescriptionSyntaxChecker checker = NameFormDescriptionSyntaxChecker.INSTANCE;
 
 
     @Test

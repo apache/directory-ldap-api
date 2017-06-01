@@ -111,7 +111,7 @@ public class ExtensibleNode extends LeafNode
     @Override
     public ExprNode clone()
     {
-        ExprNode clone = ( ExprNode ) super.clone();
+        ExprNode clone = super.clone();
 
         // Copy the value
         if ( value != null )
@@ -259,6 +259,7 @@ public class ExtensibleNode extends LeafNode
      * @see java.lang.Object#toString()
      * @return A string representing the AndNode
      */
+    @Override
     public String toString()
     {
         StringBuilder buf = new StringBuilder();

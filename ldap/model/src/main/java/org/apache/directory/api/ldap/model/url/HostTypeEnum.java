@@ -34,8 +34,15 @@ package org.apache.directory.api.ldap.model.url;
  */
 public enum HostTypeEnum
 {
+    /** IP V4 host */
     IPV4,
+    
+    /** IP V6 host */
     IPV6,
+    
+    /** IP V(future) host */
     IPV_FUTURE,
+    
+    /** Regular name host */
     REGULAR_NAME
 }

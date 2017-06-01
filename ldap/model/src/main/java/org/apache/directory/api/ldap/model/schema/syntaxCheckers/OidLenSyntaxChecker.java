@@ -21,19 +21,18 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
 import org.apache.directory.api.asn1.util.Oid;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
  * A SyntaxChecker which verifies that a value is a numeric oid and a length
  * constraint according to RFC 4512.
- * 
+ * <p>
  * From RFC 4512 :
- * 
+ * <pre>
  * noidlen    = numericoid [ LCURLY len RCURLY ]
  * numericoid = number 1*( DOT number )
  * len        = number
@@ -43,38 +42,80 @@ import org.slf4j.LoggerFactory;
  * DOT        = %x2E                           ; period (".")
  * LCURLY  = %x7B                              ; left curly brace "{"
  * RCURLY  = %x7D                              ; right curly brace "}"
- * 
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class OidLenSyntaxChecker extends SyntaxChecker
+public final class OidLenSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( OidLenSyntaxChecker.class );
+    /**
+     * A static instance of OidLenSyntaxChecker
+     */
+    public static final OidLenSyntaxChecker INSTANCE = 
+        new OidLenSyntaxChecker( SchemaConstants.OID_LEN_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<OidLenSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.OID_LEN_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of OidLenSyntaxChecker
+         * @return A new instance of OidLenSyntaxChecker
+         */
+        @Override
+        public OidLenSyntaxChecker build()
+        {
+            return new OidLenSyntaxChecker( oid );
+        }
+    }
 
-
+    
     /**
      * 
      * Creates a new instance of OidLenSyntaxChecker.
      *
      */
-    public OidLenSyntaxChecker()
+    private OidLenSyntaxChecker( String oid )
     {
-        super( SchemaConstants.OID_LEN_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -93,7 +134,11 @@ public class OidLenSyntaxChecker extends SyntaxChecker
 
         if ( strValue.length() == 0 )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
@@ -105,13 +150,16 @@ public class OidLenSyntaxChecker extends SyntaxChecker
             // Not found ... but it may still be a valid OID
             boolean result = Oid.isOid( strValue );
 
-            if ( result )
+            if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( "Syntax valid for '{}'", value );
-            }
-            else
-            {
-                LOG.debug( "Syntax invalid for '{}'", value );
+                if ( result )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+                }
+                else
+                {
+                    LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                }
             }
 
             return result;
@@ -123,17 +171,25 @@ public class OidLenSyntaxChecker extends SyntaxChecker
 
             if ( !Oid.isOid( oid ) )
             {
-                LOG.debug( "Syntax invalid for '{}'", value );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                }
+                
                 return false;
             }
 
             String len = strValue.substring( pos );
 
-            // We must have a lnumber and a '}' at the end
+            // We must have a number and a '}' at the end
             if ( len.charAt( len.length() - 1 ) != '}' )
             {
                 // No final '}'
-                LOG.debug( "Syntax invalid for '{}'", value );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                }
+                
                 return false;
             }
 
@@ -154,7 +210,11 @@ public class OidLenSyntaxChecker extends SyntaxChecker
                         break;
 
                     default:
-                        LOG.debug( "Syntax invalid for '{}'", value );
+                        if ( LOG.isDebugEnabled() )
+                        {
+                            LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                        }
+                        
                         return false;
                 }
             }
@@ -163,11 +223,19 @@ public class OidLenSyntaxChecker extends SyntaxChecker
             {
                 // A number can't start with a '0' unless it's the only
                 // number
-                LOG.debug( "Syntax invalid for '{}'", value );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+                }
+                
                 return false;
             }
 
-            LOG.debug( "Syntax valid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+            }
+            
             return true;
         }
     }

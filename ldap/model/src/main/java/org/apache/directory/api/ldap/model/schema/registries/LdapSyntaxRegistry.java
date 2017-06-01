@@ -34,5 +34,6 @@ public interface LdapSyntaxRegistry extends SchemaObjectRegistry<LdapSyntax>,
     /**
      * Copy the LdapSyntaxRegistry
      */
+    @Override
     LdapSyntaxRegistry copy();
 }

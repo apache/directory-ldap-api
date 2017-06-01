@@ -49,6 +49,7 @@ public class LdapComparatorDescription extends LoadableSchemaObject
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         return "Comparator description : " + getDescription();

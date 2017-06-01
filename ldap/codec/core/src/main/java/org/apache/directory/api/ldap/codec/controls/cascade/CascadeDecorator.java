@@ -53,12 +53,17 @@ public class CascadeDecorator extends ControlDecorator<Cascade> implements Codec
     /**
      * @return the control length.
      */
+    @Override
     public int computeLength()
     {
         return 0;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
         return this;

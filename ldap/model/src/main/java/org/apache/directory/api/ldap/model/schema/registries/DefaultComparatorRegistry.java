@@ -57,6 +57,7 @@ public class DefaultComparatorRegistry extends DefaultSchemaObjectRegistry<LdapC
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterSchemaElements( String schemaName ) throws LdapException
     {
         if ( schemaName == null )
@@ -85,6 +86,7 @@ public class DefaultComparatorRegistry extends DefaultSchemaObjectRegistry<LdapC
     /**
      * {@inheritDoc}
      */
+    @Override
     public DefaultComparatorRegistry copy()
     {
         DefaultComparatorRegistry copy = new DefaultComparatorRegistry();
@@ -99,6 +101,7 @@ public class DefaultComparatorRegistry extends DefaultSchemaObjectRegistry<LdapC
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

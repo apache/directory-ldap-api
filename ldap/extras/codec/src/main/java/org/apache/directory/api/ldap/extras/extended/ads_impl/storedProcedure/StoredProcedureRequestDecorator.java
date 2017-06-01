@@ -61,19 +61,22 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
     /** The list of all parameter lengths */
     private List<Integer> parameterLength;
 
-    /** The list of all parameter type lengths */
-    private List<Integer> paramTypeLength;
 
-    /** The list of all parameter value lengths */
-    private List<Integer> paramValueLength;
-
-
+    /**
+     * Create a new StoredProcedureRequestDecorator instance 
+     * @param codec The LDAP API service to use
+     */
     public StoredProcedureRequestDecorator( LdapApiService codec )
     {
         super( codec, new StoredProcedureRequestImpl() );
     }
 
 
+    /**
+     * Create a new StoredProcedureRequestDecorator instance 
+     * @param codec The LDAP API service to use
+     * @param decoratedRequest The decorated request
+     */
     public StoredProcedureRequestDecorator( LdapApiService codec, StoredProcedureRequest decoratedRequest )
     {
         super( codec, decoratedRequest );
@@ -84,12 +87,20 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
     }
 
 
+    /**
+     * @return The current parameter
+     */
     public StoredProcedureParameter getCurrentParameter()
     {
         return currentParameter;
     }
 
 
+    /**
+     * Sets the current parameter
+     * 
+     * @param currentParameter The current parameter
+     */
     public void setCurrentParameter( StoredProcedureParameter currentParameter )
     {
         this.currentParameter = currentParameter;
@@ -140,15 +151,13 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
         // Compute parameters length value
         if ( getDecorated().getParameters() != null )
         {
-            parameterLength = new LinkedList<Integer>();
-            paramTypeLength = new LinkedList<Integer>();
-            paramValueLength = new LinkedList<Integer>();
+            parameterLength = new LinkedList<>();
 
             for ( StoredProcedureParameter spParam : getDecorated().getParameters() )
             {
-                int localParameterLength = 0;
-                int localParamTypeLength = 0;
-                int localParamValueLength = 0;
+                int localParameterLength;
+                int localParamTypeLength;
+                int localParamValueLength;
 
                 localParamTypeLength = 1 + TLV.getNbBytes( spParam.getType().length ) + spParam.getType().length;
                 localParamValueLength = 1 + TLV.getNbBytes( spParam.getValue().length ) + spParam.getValue().length;
@@ -158,8 +167,6 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
                 parametersLength += 1 + TLV.getNbBytes( localParameterLength ) + localParameterLength;
 
                 parameterLength.add( localParameterLength );
-                paramTypeLength.add( localParamTypeLength );
-                paramValueLength.add( localParamValueLength );
             }
         }
 
@@ -198,7 +205,7 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
             bb.put( TLV.getBytes( parametersLength ) );
 
             // The parameters list
-            if ( ( getDecorated().getParameters() != null ) && ( getDecorated().getParameters().size() != 0 ) )
+            if ( ( getDecorated().getParameters() != null ) && ( !getDecorated().getParameters().isEmpty() ) )
             {
                 int parameterNumber = 0;
 
@@ -215,7 +222,7 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
                     // The parameter value
                     BerValue.encode( bb, spParam.getValue() );
 
-                    // Go to the next parameter;
+                    // Go to the next parameter
                     parameterNumber++;
                 }
             }
@@ -234,16 +241,16 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
      * 
      * @return The StoredProcedure string
      */
+    @Override
     public String toString()
     {
-
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( "    StoredProcedure\n" );
         sb.append( "        Language : '" ).append( getDecorated().getLanguage() ).append( "'\n" );
         sb.append( "        Procedure\n" ).append( getDecorated().getProcedureSpecification() ).append( "'\n" );
 
-        if ( ( getDecorated().getParameters() == null ) || ( getDecorated().getParameters().size() == 0 ) )
+        if ( ( getDecorated().getParameters() == null ) || ( !getDecorated().getParameters().isEmpty() ) )
         {
             sb.append( "        No parameters\n" );
         }
@@ -266,6 +273,7 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
     }
 
 
+    @Override
     public void setProcedure( byte[] procedure )
     {
         getDecorated().setProcedure( procedure );
@@ -275,6 +283,7 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setRequestValue( byte[] payload )
     {
         StoredProcedureDecoder decoder = new StoredProcedureDecoder();
@@ -297,6 +306,7 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getRequestValue()
     {
         if ( requestValue == null )
@@ -319,6 +329,7 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getLanguage()
     {
         return getDecorated().getLanguage();
@@ -328,6 +339,7 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguage( String language )
     {
         getDecorated().setLanguage( language );
@@ -337,6 +349,7 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getProcedureSpecification()
     {
         return getDecorated().getProcedureSpecification();
@@ -346,6 +359,7 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
     /**
      * {@inheritDoc}
      */
+    @Override
     public int size()
     {
         return getDecorated().size();
@@ -355,6 +369,7 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object getParameterType( int index )
     {
         return getDecorated().getParameterType( index );
@@ -365,6 +380,7 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
      * {@inheritDoc}
      */
 
+    @Override
     public Class<?> getJavaParameterType( int index )
     {
         return getDecorated().getJavaParameterType( index );
@@ -375,6 +391,7 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
      * {@inheritDoc}
      */
 
+    @Override
     public Object getParameterValue( int index )
     {
         return getDecorated().getParameterValue( index );
@@ -384,6 +401,7 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object getJavaParameterValue( int index )
     {
         return getDecorated().getJavaParameterValue( index );
@@ -393,6 +411,7 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addParameter( Object type, Object value )
     {
         getDecorated().addParameter( type, value );
@@ -402,6 +421,7 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getProcedure()
     {
         return getDecorated().getProcedure();
@@ -411,6 +431,7 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<StoredProcedureParameter> getParameters()
     {
         return getDecorated().getParameters();
@@ -420,6 +441,7 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addParameter( StoredProcedureParameter parameter )
     {
         getDecorated().addParameter( parameter );

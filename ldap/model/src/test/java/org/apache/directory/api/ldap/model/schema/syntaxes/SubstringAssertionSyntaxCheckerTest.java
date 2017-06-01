@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class SubstringAssertionSyntaxCheckerTest
 {
-    SubstringAssertionSyntaxChecker checker = new SubstringAssertionSyntaxChecker();
+    SubstringAssertionSyntaxChecker checker = SubstringAssertionSyntaxChecker.INSTANCE;
 
 
     @Test

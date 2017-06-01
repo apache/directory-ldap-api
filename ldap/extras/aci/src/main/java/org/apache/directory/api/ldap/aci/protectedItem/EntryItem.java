@@ -36,14 +36,6 @@ import org.apache.directory.api.ldap.aci.ProtectedItem;
 public class EntryItem extends ProtectedItem
 {
     /**
-     * Creates a new instance of EntryItem.
-     */
-    public EntryItem()
-    {
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     @Override

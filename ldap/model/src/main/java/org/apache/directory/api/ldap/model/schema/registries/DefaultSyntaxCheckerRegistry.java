@@ -57,6 +57,7 @@ public class DefaultSyntaxCheckerRegistry extends DefaultSchemaObjectRegistry<Sy
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterSchemaElements( String schemaName ) throws LdapException
     {
         if ( schemaName == null )
@@ -85,6 +86,7 @@ public class DefaultSyntaxCheckerRegistry extends DefaultSchemaObjectRegistry<Sy
     /**
      * {@inheritDoc}
      */
+    @Override
     public DefaultSyntaxCheckerRegistry copy()
     {
         DefaultSyntaxCheckerRegistry copy = new DefaultSyntaxCheckerRegistry();
@@ -99,6 +101,7 @@ public class DefaultSyntaxCheckerRegistry extends DefaultSchemaObjectRegistry<Sy
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

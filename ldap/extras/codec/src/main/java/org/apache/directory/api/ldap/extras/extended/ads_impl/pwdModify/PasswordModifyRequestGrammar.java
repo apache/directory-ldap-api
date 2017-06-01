@@ -62,6 +62,9 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
     private static Grammar<PasswordModifyRequestContainer> instance = new PasswordModifyRequestGrammar();
 
 
+    /**
+     * Creates a new PasswordModifyRequestGrammar object.
+     */
     @SuppressWarnings("unchecked")
     public PasswordModifyRequestGrammar()
     {
@@ -129,8 +132,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
                             userIdentity = Strings.EMPTY_BYTES;
                         }
 
-                        ( ( PasswordModifyRequestDecorator ) container.getPwdModifyRequest() )
-                            .setUserIdentity( userIdentity );
+                        container.getPwdModifyRequest().setUserIdentity( userIdentity );
 
                         // We may have nothing left
                         container.setGrammarEndAllowed( true );
@@ -170,8 +172,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
                             oldPassword = Strings.EMPTY_BYTES;
                         }
 
-                        ( ( PasswordModifyRequestDecorator ) container.getPwdModifyRequest() )
-                            .setOldPassword( oldPassword );
+                        container.getPwdModifyRequest().setOldPassword( oldPassword );
 
                         // We may have nothing left
                         container.setGrammarEndAllowed( true );
@@ -212,8 +213,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
                             newPassword = Strings.EMPTY_BYTES;
                         }
 
-                        ( ( PasswordModifyRequestDecorator ) container.getPwdModifyRequest() )
-                            .setNewPassword( newPassword );
+                        container.getPwdModifyRequest().setNewPassword( newPassword );
 
                         // We may have nothing left
                         container.setGrammarEndAllowed( true );
@@ -253,8 +253,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
                             oldPassword = Strings.EMPTY_BYTES;
                         }
 
-                        ( ( PasswordModifyRequestDecorator ) container.getPwdModifyRequest() )
-                            .setOldPassword( oldPassword );
+                        container.getPwdModifyRequest().setOldPassword( oldPassword );
 
                         // We may have nothing left
                         container.setGrammarEndAllowed( true );
@@ -294,8 +293,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
                             newPassword = Strings.EMPTY_BYTES;
                         }
 
-                        ( ( PasswordModifyRequestDecorator ) container.getPwdModifyRequest() )
-                            .setNewPassword( newPassword );
+                        container.getPwdModifyRequest().setNewPassword( newPassword );
 
                         // We may have nothing left
                         container.setGrammarEndAllowed( true );
@@ -335,8 +333,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
                             newPassword = Strings.EMPTY_BYTES;
                         }
 
-                        ( ( PasswordModifyRequestDecorator ) container.getPwdModifyRequest() )
-                            .setNewPassword( newPassword );
+                        container.getPwdModifyRequest().setNewPassword( newPassword );
 
                         // We may have nothing left
                         container.setGrammarEndAllowed( true );

@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.cancel;
 
 
-import org.apache.directory.api.asn1.ber.grammar.Grammar;
 import org.apache.directory.api.asn1.ber.grammar.States;
 
 
@@ -56,22 +55,9 @@ public enum CancelStatesEnum implements States
     /**
      * Get the grammar name
      * 
-     * @param grammar The grammar code
      * @return The grammar name
      */
-    public String getGrammarName( int grammar )
-    {
-        return "CANCEL_GRAMMAR";
-    }
-
-
-    /**
-     * Get the grammar name
-     * 
-     * @param grammar The grammar class
-     * @return The grammar name
-     */
-    public String getGrammarName( Grammar<CancelContainer> grammar )
+    public String getGrammarName()
     {
         return "CANCEL_GRAMMAR";
     }
@@ -85,13 +71,14 @@ public enum CancelStatesEnum implements States
      */
     public String getState( int state )
     {
-        return ( ( state == END_STATE.ordinal() ) ? "CANCEL_END_STATE" : this.name() );
+        return ( state == END_STATE.ordinal() ) ? "CANCEL_END_STATE" : this.name();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isEndState()
     {
         return this == END_STATE;
@@ -101,6 +88,7 @@ public enum CancelStatesEnum implements States
     /**
      * {@inheritDoc}
      */
+    @Override
     public CancelStatesEnum getStartState()
     {
         return START_STATE;

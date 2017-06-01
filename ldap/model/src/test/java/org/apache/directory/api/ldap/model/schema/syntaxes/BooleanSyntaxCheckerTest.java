@@ -40,12 +40,13 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class BooleanSyntaxCheckerTest
 {
-    BooleanSyntaxChecker checker = new BooleanSyntaxChecker();
+    BooleanSyntaxChecker checker = BooleanSyntaxChecker.INSTANCE;
 
 
     @Test
     public void testNullString()
     {
+        BooleanSyntaxChecker checker = BooleanSyntaxChecker.builder().setOid( "1.2.3.4" ).build();
         assertFalse( checker.isValidSyntax( null ) );
     }
 

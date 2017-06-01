@@ -55,7 +55,7 @@ package org.apache.directory.ldap.client.api.search;
     /**
      * Creates a new instance of FilterOperator.
      */
-    private FilterOperator( String operator )
+    FilterOperator( String operator )
     {
         this.operator = operator;
     }

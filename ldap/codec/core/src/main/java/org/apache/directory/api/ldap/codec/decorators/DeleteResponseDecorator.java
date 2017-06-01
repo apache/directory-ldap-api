@@ -73,6 +73,7 @@ public class DeleteResponseDecorator extends ResponseDecorator<DeleteResponse>
      * Length(DelResponse) = Length(0x6B) + Length(L1) + L1
      * </pre>
      */
+    @Override
     public int computeLength()
     {
         deleteResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
@@ -86,6 +87,7 @@ public class DeleteResponseDecorator extends ResponseDecorator<DeleteResponse>
      * 
      * @param buffer The buffer where to put the PDU
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         try

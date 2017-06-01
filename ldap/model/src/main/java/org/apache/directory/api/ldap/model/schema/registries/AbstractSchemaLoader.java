@@ -60,9 +60,10 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public final Collection<Schema> getAllEnabled()
     {
-        Collection<Schema> enabledSchemas = new ArrayList<Schema>();
+        Collection<Schema> enabledSchemas = new ArrayList<>();
 
         for ( Schema schema : schemaMap.values() )
         {
@@ -79,6 +80,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public final Collection<Schema> getAllSchemas()
     {
         return schemaMap.values();
@@ -88,6 +90,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public Schema getSchema( String schemaName )
     {
         return schemaMap.get( Strings.toLowerCaseAscii( schemaName ) );
@@ -97,6 +100,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addSchema( Schema schema )
     {
         schemaMap.put( schema.getSchemaName(), schema );
@@ -106,6 +110,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeSchema( Schema schema )
     {
         schemaMap.remove( Strings.toLowerCaseAscii( schema.getSchemaName() ) );
@@ -170,12 +175,12 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
         {
             String value = entry.get( MetaSchemaConstants.M_DISABLED_AT ).getString();
             value = Strings.upperCase( value );
-            isDisabled = value.equals( "TRUE" );
+            isDisabled = "TRUE".equals( value );
         }
 
         if ( entry.get( MetaSchemaConstants.M_DEPENDENCIES_AT ) != null )
         {
-            Set<String> depsSet = new HashSet<String>();
+            Set<String> depsSet = new HashSet<>();
             Attribute depsAttr = entry.get( MetaSchemaConstants.M_DEPENDENCIES_AT );
 
             for ( Value<?> value : depsAttr )
@@ -207,11 +212,12 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadAttributeTypes( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
-            return new ArrayList<Entry>();
+            return new ArrayList<>();
         }
 
         return loadAttributeTypes( buildSchemaArray( schemaNames ) );
@@ -221,11 +227,12 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadComparators( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
-            return new ArrayList<Entry>();
+            return new ArrayList<>();
         }
 
         return loadComparators( buildSchemaArray( schemaNames ) );
@@ -235,11 +242,12 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadDitContentRules( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
-            return new ArrayList<Entry>();
+            return new ArrayList<>();
         }
 
         return loadDitContentRules( buildSchemaArray( schemaNames ) );
@@ -249,11 +257,12 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadDitStructureRules( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
-            return new ArrayList<Entry>();
+            return new ArrayList<>();
         }
 
         return loadDitStructureRules( buildSchemaArray( schemaNames ) );
@@ -263,11 +272,12 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadMatchingRules( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
-            return new ArrayList<Entry>();
+            return new ArrayList<>();
         }
 
         return loadMatchingRules( buildSchemaArray( schemaNames ) );
@@ -277,11 +287,12 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadMatchingRuleUses( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
-            return new ArrayList<Entry>();
+            return new ArrayList<>();
         }
 
         return loadMatchingRuleUses( buildSchemaArray( schemaNames ) );
@@ -291,11 +302,12 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadNameForms( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
-            return new ArrayList<Entry>();
+            return new ArrayList<>();
         }
 
         return loadNameForms( buildSchemaArray( schemaNames ) );
@@ -305,11 +317,12 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadNormalizers( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
-            return new ArrayList<Entry>();
+            return new ArrayList<>();
         }
 
         return loadNormalizers( buildSchemaArray( schemaNames ) );
@@ -319,11 +332,12 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadObjectClasses( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
-            return new ArrayList<Entry>();
+            return new ArrayList<>();
         }
 
         return loadObjectClasses( buildSchemaArray( schemaNames ) );
@@ -333,11 +347,12 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadSyntaxes( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
-            return new ArrayList<Entry>();
+            return new ArrayList<>();
         }
 
         return loadSyntaxes( buildSchemaArray( schemaNames ) );
@@ -347,11 +362,12 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadSyntaxCheckers( String... schemaNames ) throws LdapException, IOException
     {
         if ( schemaNames == null )
         {
-            return new ArrayList<Entry>();
+            return new ArrayList<>();
         }
 
         return loadSyntaxCheckers( buildSchemaArray( schemaNames ) );
@@ -361,6 +377,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isRelaxed()
     {
         return relaxed == SchemaManager.RELAXED;
@@ -370,6 +387,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isStrict()
     {
         return relaxed == SchemaManager.STRICT;
@@ -379,6 +397,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setRelaxed( boolean relaxed )
     {
         this.relaxed = relaxed;

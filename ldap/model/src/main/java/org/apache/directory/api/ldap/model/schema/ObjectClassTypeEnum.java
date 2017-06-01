@@ -68,7 +68,7 @@ public enum ObjectClassTypeEnum
      * @param value
      *            the integer value of the enumeration.
      */
-    private ObjectClassTypeEnum( int value )
+    ObjectClassTypeEnum( int value )
     {
         this.value = value;
     }

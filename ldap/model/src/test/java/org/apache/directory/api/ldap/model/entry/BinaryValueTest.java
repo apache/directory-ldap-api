@@ -42,7 +42,6 @@ import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.comparators.ByteArrayComparator;
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.OctetStringSyntaxChecker;
-import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.junit.Before;
 import org.junit.Test;
@@ -83,7 +82,7 @@ public class BinaryValueTest
     public void initAT()
     {
         s = EntryUtils.syntaxFactory( "1.1.1.1", false );
-        s.setSyntaxChecker( new OctetStringSyntaxChecker() );
+        s.setSyntaxChecker( OctetStringSyntaxChecker.INSTANCE );
         mr = EntryUtils.matchingRuleFactory( "1.1.2.1" );
         mr.setSyntax( s );
 
@@ -226,8 +225,8 @@ public class BinaryValueTest
         BinaryValue bv = new BinaryValue( ( byte[] ) null );
         assertEquals( 0, bv.hashCode() );
 
-        bv = new BinaryValue( StringConstants.EMPTY_BYTES );
-        int h = Arrays.hashCode( StringConstants.EMPTY_BYTES );
+        bv = new BinaryValue( Strings.EMPTY_BYTES );
+        int h = Arrays.hashCode( Strings.EMPTY_BYTES );
         assertEquals( h, bv.hashCode() );
 
         h = Arrays.hashCode( BYTES1 );
@@ -252,17 +251,17 @@ public class BinaryValueTest
     @Test
     public void testBinaryValueEmpty() throws LdapException
     {
-        BinaryValue cbv = new BinaryValue( StringConstants.EMPTY_BYTES );
+        BinaryValue cbv = new BinaryValue( Strings.EMPTY_BYTES );
 
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, cbv.getBytes() ) );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, cbv.getValue() ) );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, cbv.getReference() ) );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, cbv.getBytes() ) );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, cbv.getValue() ) );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, cbv.getReference() ) );
         assertFalse( cbv.isSchemaAware() );
         assertTrue( cbv.isValid( BINARY_CHECKER ) );
         assertFalse( cbv.isNull() );
         assertNotNull( cbv.getNormValue() );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, cbv.getNormValue() ) );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, cbv.getNormReference() ) );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, cbv.getNormValue() ) );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, cbv.getNormReference() ) );
     }
 
 
@@ -331,11 +330,11 @@ public class BinaryValueTest
         assertTrue( bv.isSchemaAware() );
         assertEquals( null, bv.getNormValue() );
 
-        bv = new BinaryValue( StringConstants.EMPTY_BYTES );
+        bv = new BinaryValue( Strings.EMPTY_BYTES );
         bv.apply( at );
         assertTrue( bv.isSchemaAware() );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, bv.getBytes() ) );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, bv.getNormValue() ) );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, bv.getBytes() ) );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, bv.getNormValue() ) );
 
         bv = new BinaryValue( BYTES1 );
         bv.apply( at );
@@ -423,9 +422,9 @@ public class BinaryValueTest
 
         assertNull( bv.getValue() );
 
-        bv = new BinaryValue( StringConstants.EMPTY_BYTES );
+        bv = new BinaryValue( Strings.EMPTY_BYTES );
         assertNotNull( bv.getValue() );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, bv.getValue() ) );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, bv.getValue() ) );
 
         bv = new BinaryValue( BYTES1 );
         byte[] copy = bv.getValue();
@@ -476,7 +475,7 @@ public class BinaryValueTest
 
         assertEquals( "null", bv.toString() );
 
-        bv = new BinaryValue( StringConstants.EMPTY_BYTES );
+        bv = new BinaryValue( Strings.EMPTY_BYTES );
         assertEquals( "", bv.toString() );
 
         bv = new BinaryValue( BYTES1 );
@@ -491,9 +490,9 @@ public class BinaryValueTest
 
         assertNull( bv.getReference() );
 
-        bv = new BinaryValue( StringConstants.EMPTY_BYTES );
+        bv = new BinaryValue( Strings.EMPTY_BYTES );
         assertNotNull( bv.getReference() );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, bv.getReference() ) );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, bv.getReference() ) );
 
         bv = new BinaryValue( BYTES1 );
         byte[] reference = bv.getReference();
@@ -513,9 +512,9 @@ public class BinaryValueTest
 
         assertNull( bv.getValue() );
 
-        bv = new BinaryValue( StringConstants.EMPTY_BYTES );
+        bv = new BinaryValue( Strings.EMPTY_BYTES );
         assertNotNull( bv.getValue() );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, bv.getBytes() ) );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, bv.getBytes() ) );
 
         bv = new BinaryValue( BYTES1 );
         byte[] get = bv.getBytes();
@@ -577,7 +576,7 @@ public class BinaryValueTest
 
         assertTrue( bv.isNull() );
 
-        bv = new BinaryValue( StringConstants.EMPTY_BYTES );
+        bv = new BinaryValue( Strings.EMPTY_BYTES );
         assertFalse( bv.isNull() );
 
         bv = new BinaryValue( BYTES1 );
@@ -592,7 +591,7 @@ public class BinaryValueTest
 
         assertTrue( bv.isValid( BINARY_CHECKER ) );
 
-        bv = new BinaryValue( StringConstants.EMPTY_BYTES );
+        bv = new BinaryValue( Strings.EMPTY_BYTES );
         assertTrue( bv.isValid( BINARY_CHECKER ) );
 
         bv = new BinaryValue( BYTES1 );
@@ -612,7 +611,7 @@ public class BinaryValueTest
 
         assertTrue( bv.isValid( BINARY_CHECKER ) );
 
-        bv = new BinaryValue( StringConstants.EMPTY_BYTES );
+        bv = new BinaryValue( Strings.EMPTY_BYTES );
         assertTrue( bv.isValid( BINARY_CHECKER ) );
 
         bv = new BinaryValue( BYTES1 );
@@ -632,10 +631,10 @@ public class BinaryValueTest
         assertTrue( bv.isSchemaAware() );
         assertEquals( null, bv.getNormValue() );
 
-        bv = new BinaryValue( StringConstants.EMPTY_BYTES );
+        bv = new BinaryValue( Strings.EMPTY_BYTES );
         bv.apply( at );
         assertTrue( bv.isSchemaAware() );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, bv.getNormValue() ) );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, bv.getNormValue() ) );
 
         bv = new BinaryValue( BYTES2 );
         bv.apply( at );
@@ -655,9 +654,9 @@ public class BinaryValueTest
         assertTrue( bv.isValid( BINARY_CHECKER ) );
         assertTrue( bv.isNull() );
 
-        bv = new BinaryValue( StringConstants.EMPTY_BYTES );
+        bv = new BinaryValue( Strings.EMPTY_BYTES );
         assertNotNull( bv.getValue() );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, bv.getBytes() ) );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, bv.getBytes() ) );
         assertFalse( bv.isSchemaAware() );
         assertTrue( bv.isValid( BINARY_CHECKER ) );
         assertFalse( bv.isNull() );
@@ -794,7 +793,7 @@ public class BinaryValueTest
     public void testSerializeEmptyValue() throws LdapException, IOException, ClassNotFoundException
     {
         BinaryValue bv = new BinaryValue( ( byte[] ) null );
-        bv = new BinaryValue( StringConstants.EMPTY_BYTES );
+        bv = new BinaryValue( Strings.EMPTY_BYTES );
         bv.isValid( BINARY_CHECKER );
         bv.apply( at );
 
@@ -813,7 +812,7 @@ public class BinaryValueTest
     public void testSerializeEmptyValueNotNormalized() throws LdapException, IOException, ClassNotFoundException
     {
         BinaryValue bv = new BinaryValue( ( byte[] ) null );
-        bv = new BinaryValue( StringConstants.EMPTY_BYTES );
+        bv = new BinaryValue( Strings.EMPTY_BYTES );
         bv.isValid( BINARY_CHECKER );
 
         BinaryValue cbvSer = deserializeValue( null, serializeValue( bv ) );

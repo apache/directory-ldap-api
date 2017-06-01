@@ -54,6 +54,7 @@ public class AbstractRequest extends AbstractMessage implements Request
      * 
      * @return true if any reply is generated, false if no response is generated
      */
+    @Override
     public boolean hasResponse()
     {
         return hasResponse;

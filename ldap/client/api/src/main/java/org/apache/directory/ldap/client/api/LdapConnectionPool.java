@@ -123,13 +123,9 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
             connection = super.borrowObject();
             LOG.trace( "borrowed connection {}", connection );
         }
-        catch ( LdapException e )
+        catch ( LdapException | RuntimeException e )
         {
-            throw ( e );
-        }
-        catch ( RuntimeException e )
-        {
-            throw ( e );
+            throw e;
         }
         catch ( Exception e )
         {
@@ -169,13 +165,9 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
             super.returnObject( connection );
             LOG.trace( "returned connection {}", connection );
         }
-        catch ( LdapException e )
+        catch ( LdapException | RuntimeException e )
         {
-            throw ( e );
-        }
-        catch ( RuntimeException e )
-        {
-            throw ( e );
+            throw e;
         }
         catch ( Exception e )
         {

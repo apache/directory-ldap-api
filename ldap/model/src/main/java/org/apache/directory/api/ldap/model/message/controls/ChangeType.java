@@ -42,12 +42,16 @@ import org.apache.directory.api.i18n.I18n;
  */
 public enum ChangeType
 {
+    /** An ADD */
     ADD(1),
 
+    /** A Delete */
     DELETE(2),
 
+    /** A Modify */
     MODIFY(4),
 
+    /** A MODDN */
     MODDN(8);
 
     private int value;
@@ -59,7 +63,7 @@ public enum ChangeType
      *
      * @param value The value for the ChangeType.
      */
-    private ChangeType( int value )
+    ChangeType( int value )
     {
         this.value = value;
     }
@@ -98,14 +102,18 @@ public enum ChangeType
     {
         switch ( value )
         {
-            case ( 1 ):
+            case 1 :
                 return ADD;
-            case ( 2 ):
+                
+            case 2 :
                 return DELETE;
-            case ( 4 ):
+                
+            case 4 :
                 return MODIFY;
-            case ( 8 ):
+                
+            case 8 :
                 return MODDN;
+                
             default:
                 throw new IllegalArgumentException( I18n.err( I18n.ERR_04055, value ) );
         }

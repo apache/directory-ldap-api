@@ -23,12 +23,14 @@ package org.apache.directory.ldap.client.api;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -115,10 +117,10 @@ import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 public class LdifAnonymizer
 {
     /** The map that stores the anonymized values associated to the original value */
-    private Map<Value<?>, Value<?>> valueMap = new HashMap<Value<?>, Value<?>>();
+    private Map<Value<?>, Value<?>> valueMap = new HashMap<>();
     
     /** The set that contains all the values we already have anonymized */
-    private Set<Value<?>> valueSet = new HashSet<Value<?>>();
+    private Set<Value<?>> valueSet = new HashSet<>();
     
     /** The latest anonymized String value Map */
     private Map<Integer, String> latestStringMap;
@@ -127,10 +129,10 @@ public class LdifAnonymizer
     private Map<Integer, byte[]> latestBytesMap;
     
     /** The map of AttributeType'sOID we want to anonymize. They are all associated with anonymizers */
-    private Map<String, Anonymizer> attributeAnonymizers = new HashMap<String, Anonymizer>();
+    private Map<String, Anonymizer> attributeAnonymizers = new HashMap<>();
     
     /** The list of existing NamingContexts */
-    private Set<Dn> namingContexts = new HashSet<Dn>();
+    private Set<Dn> namingContexts = new HashSet<>();
 
     /** The schemaManager */
     private SchemaManager schemaManager;
@@ -155,6 +157,20 @@ public class LdifAnonymizer
             println( "Missing a SchemaManager !" );
             System.exit( -1 );
         }
+
+        init( null, null, null, null );
+    }
+    
+
+    /**
+     * Creates a default instance of LdifAnonymizer. The list of anonymized attribute
+     * is set to a default value.
+     * 
+     * @param schemaManager The SchemaManager instance we will use
+     */
+    public LdifAnonymizer( SchemaManager schemaManager )
+    {
+        this.schemaManager = schemaManager;
 
         init( null, null, null, null );
     }
@@ -204,20 +220,6 @@ public class LdifAnonymizer
         {
             out.println();
         }
-    }
-    
-
-    /**
-     * Creates a default instance of LdifAnonymizer. The list of anonymized attribute
-     * is set to a default value.
-     * 
-     * @param schemaManager The SchemaManager instance we will use
-     */
-    public LdifAnonymizer( SchemaManager schemaManager )
-    {
-        this.schemaManager = schemaManager;
-
-        init( null, null, null, null );
     }
     
     
@@ -407,7 +409,7 @@ public class LdifAnonymizer
         Value<?> value = ava.getValue();
         AttributeType attributeType = ava.getAttributeType();
         Value<?> anonymizedValue = valueMap.get( value );
-        Ava anonymizedAva = null;
+        Ava anonymizedAva;
         
         if ( anonymizedValue == null )
         {
@@ -508,9 +510,7 @@ public class LdifAnonymizer
             rdnPos--;
         }
         
-        Dn anonymizedDn = new Dn( schemaManager, anonymizedRdns );
-        
-        return anonymizedDn;
+        return new Dn( schemaManager, anonymizedRdns );
     }
 
 
@@ -534,8 +534,8 @@ public class LdifAnonymizer
         
         LdifReader ldifReader = new LdifReader( inputFile, schemaManager );
         int count = 0;
-        List<LdifEntry> errors = new ArrayList<LdifEntry>();
-        List<String> errorTexts = new ArrayList<String>();
+        List<LdifEntry> errors = new ArrayList<>();
+        List<String> errorTexts = new ArrayList<>();
 
         try
         {
@@ -597,60 +597,7 @@ public class LdifAnonymizer
                             writer.write( "\n" );
                         }
                     }
-
                     
-                    /*
-                    Entry entry = ldifEntry.getEntry();
-                    Entry newEntry = new DefaultEntry( schemaManager );
-    
-                    // Process the DN first
-                    Dn entryDn = entry.getDn();
-                    
-                    Dn anonymizedDn = anonymizeDn( entryDn );
-                    
-                    if ( anonymizedDn == null )
-                    {
-                        // Wrong entry base DN
-                        continue;
-                    }
-    
-                    // Now, process the entry
-                    for ( Attribute attribute : entry )
-                    {
-                        AttributeType attributeType = attribute.getAttributeType();
-                        
-                        if ( attributeType.getSyntax().getSyntaxChecker() instanceof DnSyntaxChecker )
-                        {
-                            for ( Value<?> dnValue : attribute )
-                            {
-                                String dnStr = dnValue.getString();
-                                Dn dn = new Dn( schemaManager, dnStr );
-                                Dn newdDn = anonymizeDn( dn );
-                                newEntry.add( attributeType, newdDn.toString() );
-                            }
-                        }
-                        else
-                        {
-                            Anonymizer anonymizer = attributeAnonymizers.get( attribute.getAttributeType().getOid() );
-        
-                            if ( anonymizer == null )
-                            {
-                                newEntry.add( attribute );
-                            }
-                            else
-                            {
-                                Attribute anonymizedAttribute = anonymizer.anonymize( valueMap, attribute );
-        
-                                newEntry.add( anonymizedAttribute );
-                            }
-                        }
-                    }
-
-                    newEntry.setDn( anonymizedDn );
-                    writer.write( LdifUtils.convertToLdif( newEntry ) );
-                    writer.write( "\n" );
-                    */
-
                     System.out.print( '.' );
                     
                     if ( count % 100  == 0 )
@@ -675,7 +622,7 @@ public class LdifAnonymizer
 
             println();
             
-            if ( errors.size() != 0 )
+            if ( !errors.isEmpty() )
             {
                 println( "There are " + errors.size() + " bad entries" );
                 int i = 0;
@@ -693,7 +640,7 @@ public class LdifAnonymizer
         {
             println();
 
-            if ( errors.size() != 0 )
+            if ( !errors.isEmpty() )
             {
                 println( "There are " + errors.size() + " bad entries" );
             }
@@ -1126,20 +1073,23 @@ public class LdifAnonymizer
 
         String ldifString = null;
 
-        try ( BufferedReader br = new BufferedReader( new InputStreamReader( new FileInputStream( args[0] ),
-            Charset.defaultCharset() ) ) )
+        try ( InputStream fis = Files.newInputStream( Paths.get( args[0] ) ) )
         {
-            StringBuilder sb = new StringBuilder();
-            String line = br.readLine();
-
-            while ( line != null )
+    
+            try ( BufferedReader br = new BufferedReader( new InputStreamReader( fis, Charset.defaultCharset() ) ) )
             {
-                sb.append( line );
-                sb.append( System.lineSeparator() );
-                line = br.readLine();
+                StringBuilder sb = new StringBuilder();
+                String line = br.readLine();
+    
+                while ( line != null )
+                {
+                    sb.append( line );
+                    sb.append( System.lineSeparator() );
+                    line = br.readLine();
+                }
+    
+                ldifString = sb.toString();
             }
-
-            ldifString = sb.toString();
         }
 
         String result = anonymizer.anonymize( ldifString );

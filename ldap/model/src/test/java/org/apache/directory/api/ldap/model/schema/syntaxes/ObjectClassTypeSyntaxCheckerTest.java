@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class ObjectClassTypeSyntaxCheckerTest
 {
-    ObjectClassTypeSyntaxChecker checker = new ObjectClassTypeSyntaxChecker();
+    ObjectClassTypeSyntaxChecker checker = ObjectClassTypeSyntaxChecker.INSTANCE;
 
 
     @Test

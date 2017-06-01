@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class DnSyntaxCheckerTest
 {
-    DnSyntaxChecker checker = new DnSyntaxChecker();
+    DnSyntaxChecker checker = DnSyntaxChecker.INSTANCE;
 
 
     @Test

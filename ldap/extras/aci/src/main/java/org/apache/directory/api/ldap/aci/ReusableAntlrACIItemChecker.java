@@ -41,7 +41,7 @@ class ReusableAntlrACIItemChecker extends AntlrACIItemChecker
     /**
      * Creates a ReusableAntlrACIItemChecker instance.
      */
-    public ReusableAntlrACIItemChecker( TokenStream lexer )
+    ReusableAntlrACIItemChecker( TokenStream lexer )
     {
         super( lexer );
     }

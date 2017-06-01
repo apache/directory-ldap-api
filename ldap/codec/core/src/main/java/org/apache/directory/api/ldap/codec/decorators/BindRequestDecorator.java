@@ -76,6 +76,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
@@ -87,6 +88,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest addControl( Control control )
     {
         return ( BindRequest ) super.addControl( control );
@@ -96,6 +98,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest addAllControls( Control[] controls )
     {
         return ( BindRequest ) super.addAllControls( controls );
@@ -105,6 +108,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest removeControl( Control control )
     {
         return ( BindRequest ) super.removeControl( control );
@@ -118,6 +122,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isSimple()
     {
         return getDecorated().isSimple();
@@ -127,6 +132,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean getSimple()
     {
         return getDecorated().getSimple();
@@ -136,6 +142,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setSimple( boolean isSimple )
     {
         getDecorated().setSimple( isSimple );
@@ -147,6 +154,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getCredentials()
     {
         return getDecorated().getCredentials();
@@ -156,6 +164,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setCredentials( String credentials )
     {
         getDecorated().setCredentials( credentials );
@@ -167,6 +176,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setCredentials( byte[] credentials )
     {
         getDecorated().setCredentials( credentials );
@@ -178,6 +188,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getName()
     {
         return getDecorated().getName();
@@ -187,6 +198,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setName( String name )
     {
         getDecorated().setName( name );
@@ -198,6 +210,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dn getDn()
     {
         return getDecorated().getDn();
@@ -207,6 +220,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setDn( Dn dn )
     {
         getDecorated().setDn( dn );
@@ -218,6 +232,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isVersion3()
     {
         return getDecorated().isVersion3();
@@ -227,6 +242,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean getVersion3()
     {
         return getDecorated().getVersion3();
@@ -236,6 +252,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setVersion3( boolean isVersion3 )
     {
         getDecorated().setVersion3( isVersion3 );
@@ -247,6 +264,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSaslMechanism()
     {
         return getDecorated().getSaslMechanism();
@@ -256,6 +274,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public BindRequest setSaslMechanism( String saslMechanism )
     {
         getDecorated().setSaslMechanism( saslMechanism );
@@ -284,6 +303,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
      *      Length(0x04) + Length(L2) + L2 + Length(authentication)
      * </pre>
      */
+    @Override
     public int computeLength()
     {
         // Initialized with version
@@ -365,6 +385,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
      * @param buffer The buffer where to put the PDU
      * @return The PDU.
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         try

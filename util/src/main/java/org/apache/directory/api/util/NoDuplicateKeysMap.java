@@ -42,7 +42,7 @@ public class NoDuplicateKeysMap extends HashMap
      * @see java.util.Map#put(java.lang.Object, java.lang.Object)
      */
     @SuppressWarnings("unchecked")
-    public Object put( Object key, Object value ) throws IllegalArgumentException
+    public Object put( Object key, Object value )
     {
         if ( containsKey( key ) )
         {

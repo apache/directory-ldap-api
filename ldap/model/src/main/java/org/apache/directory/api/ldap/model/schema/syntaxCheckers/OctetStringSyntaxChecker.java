@@ -26,44 +26,68 @@ import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 
 /**
  * A SyntaxChecker which verifies that a value is a Octet String according to RFC 4517.
- * 
+ * <p>
  * From RFC 4517 :
+ * <pre>
  * OctetString = *OCTET
- * 
+ * </pre>
  * From RFC 4512 :
+ * <pre>
  * OCTET   = %x00-FF ; Any octet (8-bit data unit)
- * 
+ * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class OctetStringSyntaxChecker extends SyntaxChecker
+public final class OctetStringSyntaxChecker extends SyntaxChecker
 {
     /**
-     * Creates a new instance of OctetStringSyntaxChecker.
+     * A static instance of OctetStringSyntaxChecker
      */
-    public OctetStringSyntaxChecker()
+    public static final OctetStringSyntaxChecker INSTANCE = 
+        new OctetStringSyntaxChecker( SchemaConstants.OCTET_STRING_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<OctetStringSyntaxChecker>
     {
-        super( SchemaConstants.OCTET_STRING_SYNTAX );
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.OCTET_STRING_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of OctetStringSyntaxChecker
+         * @return A new instance of OctetStringSyntaxChecker
+         */
+        @Override
+        public OctetStringSyntaxChecker build()
+        {
+            return new OctetStringSyntaxChecker( oid );
+        }
     }
 
-
+    
     /**
      * Creates a new instance of OctetStringSyntaxChecker, with a specific OID
      * 
      * @param oid The Syntax's OID 
      */
-    public OctetStringSyntaxChecker( String oid )
+    private OctetStringSyntaxChecker( String oid )
     {
         super( oid );
     }
 
-
+    
     /**
-     * {@inheritDoc}
+     * @return An instance of the Builder for this class
      */
-    public boolean isValidSyntax( Object value )
+    public static Builder builder()
     {
-        // Always true.
-        return true;
+        return new Builder();
     }
 }

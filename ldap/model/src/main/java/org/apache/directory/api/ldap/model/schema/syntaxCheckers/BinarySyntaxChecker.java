@@ -22,8 +22,6 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -32,27 +30,54 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class BinarySyntaxChecker extends SyntaxChecker
+public final class BinarySyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( BinarySyntaxChecker.class );
-
+    /**
+     * A static instance of BinarySyntaxChecker
+     */
+    public static final BinarySyntaxChecker INSTANCE = new BinarySyntaxChecker( SchemaConstants.BINARY_SYNTAX );
 
     /**
-     * Creates a new instance of BinarySyntaxChecker
+     * A static Builder for this class
      */
-    public BinarySyntaxChecker()
+    public static final class Builder extends SCBuilder<BinarySyntaxChecker>
     {
-        super( SchemaConstants.BINARY_SYNTAX );
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.ACCESS_POINT_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of BinarySyntaxChecker
+         * @return A new instance of BinarySyntaxChecker
+         */
+        @Override
+        public BinarySyntaxChecker build()
+        {
+            return new BinarySyntaxChecker( oid );
+        }
+    }
+
+    
+    /**
+     * Creates a new instance of the child class
+     * @param oid The child's OID
+     */
+    private BinarySyntaxChecker( String oid )
+    {
+        super( oid );
     }
 
 
     /**
-     * {@inheritDoc}
+     * @return An instance of the Builder for this class
      */
-    public boolean isValidSyntax( Object value )
+    public static Builder builder()
     {
-        LOG.debug( "Syntax valid for '{}'", value );
-        return true;
+        return new Builder();
     }
 }

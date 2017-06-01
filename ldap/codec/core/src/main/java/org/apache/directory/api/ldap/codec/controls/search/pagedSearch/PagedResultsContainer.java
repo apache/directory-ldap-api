@@ -77,6 +77,11 @@ public class PagedResultsContainer extends AbstractContainer
     }
 
 
+    /**
+     * Decorate the PageResult control
+     * 
+     * @param control The PageResult control instance
+     */
     public void decorate( PagedResults control )
     {
         if ( control instanceof PagedResultsDecorator )
@@ -105,6 +110,7 @@ public class PagedResultsContainer extends AbstractContainer
     /**
      * Clean the container
      */
+    @Override
     public void clean()
     {
         super.clean();

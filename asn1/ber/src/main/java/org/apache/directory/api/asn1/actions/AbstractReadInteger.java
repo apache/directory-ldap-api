@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 /**
  * The action used to read an integer value
  *
- * @param E The container type
+ * @param <E> The container type
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -96,6 +96,7 @@ public abstract class AbstractReadInteger<E extends Asn1Container> extends Gramm
     /**
      * {@inheritDoc}
      */
+    @Override
     public final void action( E container ) throws DecoderException
     {
         TLV tlv = container.getCurrentTLV();

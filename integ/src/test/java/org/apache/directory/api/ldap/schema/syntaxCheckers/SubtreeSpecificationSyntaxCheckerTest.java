@@ -59,7 +59,7 @@ public class SubtreeSpecificationSyntaxCheckerTest
 
         schemaManager.loadAllEnabled();
 
-        checker = new SubtreeSpecificationSyntaxChecker();
+        checker = SubtreeSpecificationSyntaxChecker.INSTANCE;
         checker.setSchemaManager( schemaManager );
     }
 

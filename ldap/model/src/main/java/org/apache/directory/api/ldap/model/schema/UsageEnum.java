@@ -56,7 +56,7 @@ public enum UsageEnum
      * 
      * @param value the integer value of the enumeration.
      */
-    private UsageEnum( int value )
+    UsageEnum( int value )
     {
         this.value = value;
     }
@@ -82,9 +82,7 @@ public enum UsageEnum
     {
         try
         {
-            UsageEnum result = valueOf( usage );
-
-            return result;
+            return valueOf( usage );
         }
         catch ( IllegalArgumentException iae )
         {

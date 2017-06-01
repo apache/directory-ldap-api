@@ -38,7 +38,7 @@ public interface ComponentsMonitor
      * @return this components monitor
      * @throws IllegalArgumentException if the component is already used
      */
-    ComponentsMonitor useComponent( String component ) throws IllegalArgumentException;
+    ComponentsMonitor useComponent( String component );
 
 
     /**

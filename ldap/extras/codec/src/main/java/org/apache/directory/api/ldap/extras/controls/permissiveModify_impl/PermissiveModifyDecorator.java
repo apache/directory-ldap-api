@@ -53,6 +53,7 @@ public class PermissiveModifyDecorator extends ControlDecorator<PermissiveModify
     /**
      * Returns the default control length.
      */
+    @Override
     public int computeLength()
     {
         return 0;

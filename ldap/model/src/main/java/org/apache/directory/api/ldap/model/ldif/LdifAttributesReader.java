@@ -179,7 +179,7 @@ public class LdifAttributesReader extends LdifReader
         String attributeType = lowerLine.substring( 0, colonIndex );
 
         // We should *not* have a Dn twice
-        if ( attributeType.equals( "dn" ) )
+        if ( "dn".equals( attributeType ) )
         {
             LOG.error( I18n.err( I18n.ERR_12002_ENTRY_WITH_TWO_DNS ) );
             throw new LdapLdifException( I18n.err( I18n.ERR_12003_LDIF_ENTRY_WITH_TWO_DNS ) );
@@ -219,7 +219,7 @@ public class LdifAttributesReader extends LdifReader
         AttributeType attributeType = null;
 
         // We should *not* have a Dn twice
-        if ( attributeName.equals( "dn" ) )
+        if ( "dn".equals( attributeName ) )
         {
             LOG.error( I18n.err( I18n.ERR_12002_ENTRY_WITH_TWO_DNS ) );
             throw new LdapLdifException( I18n.err( I18n.ERR_12003_LDIF_ENTRY_WITH_TWO_DNS ) );
@@ -239,7 +239,7 @@ public class LdifAttributesReader extends LdifReader
         Object attributeValue = parseValue( attributeName, line, colonIndex );
 
         // Update the entry
-        Attribute attribute = null;
+        Attribute attribute;
 
         if ( schemaManager == null )
         {
@@ -319,7 +319,7 @@ public class LdifAttributesReader extends LdifReader
      */
     private Entry parseEntry( SchemaManager schemaManager ) throws LdapLdifException
     {
-        if ( ( lines == null ) || ( lines.size() == 0 ) )
+        if ( ( lines == null ) || lines.isEmpty() )
         {
             LOG.debug( "The entry is empty : end of ldif file" );
             return null;
@@ -369,19 +369,21 @@ public class LdifAttributesReader extends LdifReader
     /**
      * Parse a ldif file. The following rules are processed :
      *
+     * <pre>
      * &lt;ldif-file&gt; ::= &lt;ldif-attrval-record&gt; &lt;ldif-attrval-records&gt; |
      * &lt;ldif-change-record&gt; &lt;ldif-change-records&gt; &lt;ldif-attrval-record&gt; ::=
      * &lt;dn-spec&gt; &lt;sep&gt; &lt;attrval-spec&gt; &lt;attrval-specs&gt; &lt;ldif-change-record&gt; ::=
      * &lt;dn-spec&gt; &lt;sep&gt; &lt;controls-e&gt; &lt;changerecord&gt; &lt;dn-spec&gt; ::= "dn:" &lt;fill&gt;
      * &lt;distinguishedName&gt; | "dn::" &lt;fill&gt; &lt;base64-distinguishedName&gt;
      * &lt;changerecord&gt; ::= "changetype:" &lt;fill&gt; &lt;change-op&gt;
+     * </pre>
      *
      * @return The read entry
      * @throws LdapLdifException If the entry can't be read or is invalid
      */
     private Attributes parseAttributes() throws LdapLdifException
     {
-        if ( ( lines == null ) || ( lines.size() == 0 ) )
+        if ( ( lines == null ) || lines.isEmpty() )
         {
             LOG.debug( "The entry is empty : end of ldif file" );
             return null;

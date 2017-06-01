@@ -33,11 +33,38 @@ import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 public class DummySyntaxChecker extends SyntaxChecker
 {
     /**
-     * Creates a new instance of DummySyntaxChecker.
+     * A static Builder for this class
      */
-    public DummySyntaxChecker()
+    public static final class Builder extends SCBuilder<DummySyntaxChecker>
     {
-        super( SchemaConstants.OCTET_STRING_SYNTAX );
+
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.OCTET_STRING_SYNTAX );
+        }
+
+
+        /**
+         * Create a new instance of DummySyntaxChecker
+         * @return A new instance of DummySyntaxChecker
+         */
+        @Override
+        public DummySyntaxChecker build()
+        {
+            return new DummySyntaxChecker( oid );
+        }
+    }
+
+
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
@@ -46,7 +73,7 @@ public class DummySyntaxChecker extends SyntaxChecker
      * 
      * @param oid The Syntax's OID 
      */
-    public DummySyntaxChecker( String oid )
+    private DummySyntaxChecker( String oid )
     {
         super( oid );
     }

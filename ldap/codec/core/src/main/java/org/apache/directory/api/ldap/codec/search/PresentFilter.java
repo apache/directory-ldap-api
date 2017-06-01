@@ -99,6 +99,7 @@ public class PresentFilter extends Filter
      * 
      * @return The encoded length
      */
+    @Override
     public int computeLength()
     {
         attributeDescriptionBytes = Strings.getBytesUtf8( attributeDescription );
@@ -113,6 +114,7 @@ public class PresentFilter extends Filter
      * @param buffer The buffer where to put the PDU
      * @return The PDU.
      */
+    @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
         if ( buffer == null )
@@ -141,10 +143,11 @@ public class PresentFilter extends Filter
      * 
      * @return The Present filter string
      */
+    @Override
     public String toString()
     {
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append( attributeDescription ).append( "=*" );
 

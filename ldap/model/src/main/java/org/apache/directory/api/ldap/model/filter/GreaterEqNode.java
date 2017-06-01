@@ -27,6 +27,8 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
 /**
  * A assertion value node for GreaterOrEqual.
  * 
+ * @param <T> The Value type
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class GreaterEqNode<T> extends SimpleNode<T>
@@ -59,6 +61,7 @@ public class GreaterEqNode<T> extends SimpleNode<T>
      * @see Object#toString()
      * @return A string representing the AndNode
      */
+    @Override
     public String toString()
     {
         StringBuilder buf = new StringBuilder();

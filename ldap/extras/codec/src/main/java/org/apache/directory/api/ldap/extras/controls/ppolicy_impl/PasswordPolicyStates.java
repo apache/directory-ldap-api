@@ -21,7 +21,6 @@
 package org.apache.directory.api.ldap.extras.controls.ppolicy_impl;
 
 
-import org.apache.directory.api.asn1.ber.grammar.Grammar;
 import org.apache.directory.api.asn1.ber.grammar.States;
 
 
@@ -32,49 +31,55 @@ import org.apache.directory.api.asn1.ber.grammar.States;
  */
 public enum PasswordPolicyStates implements States
 {
+    /** Initial state */
     START_STATE,
+    
+    /** PasswordPolicyResponseValue ::= SEQUENCE  transition */
     PPOLICY_SEQ_STATE,
+    
+    /** warning [0] CHOICE transition */
     PPOLICY_WARNING_TAG_STATE,
+    
+    /** timeBeforeExpiration [0] INTEGER (0 .. maxInt) transition */
     PPOLICY_TIME_BEFORE_EXPIRATION_STATE,
+    
+    /** graceAuthNsRemaining [1] INTEGER (0 .. maxInt) } OPTIONAL transition */
     PPOLICY_GRACE_AUTHNS_REMAINING_STATE,
+    
+    /** error   [1] ENUMERATED transition */
     PPOLICY_ERROR_TAG_STATE,
+
+    /** end state */
     END_STATE;
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getGrammarName( Grammar<?> grammar )
-    {
-        if ( grammar instanceof PasswordPolicyGrammar )
-        {
-            return "PASSWORD_POLICY_RESPONSE_CONTROL_GRAMMAR";
-        }
-
-        return "UNKNOWN_GRAMMAR";
-    }
-
 
     /**
-     * {@inheritDoc}
+     * Get the grammar name
+     * 
+     * @return The grammar name
      */
-    public String getGrammarName( int grammar )
+    public String getGrammarName()
     {
         return "PASSWORD_POLICY_RESPONSE_CONTROL_GRAMMAR";
     }
 
 
     /**
-     * {@inheritDoc}
+     * Get the string representing the state
+     * 
+     * @param state The state number
+     * @return The String representing the state
      */
     public String getState( int state )
     {
-        return ( ( state == END_STATE.ordinal() ) ? "PASSWORD_POLICY_RESPONSE_CONTROL_GRAMMAR" : name() );
+        return ( state == END_STATE.ordinal() ) ? "PASSWORD_POLICY_RESPONSE_CONTROL_GRAMMAR" : name();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isEndState()
     {
         return this == END_STATE;
@@ -84,6 +89,7 @@ public enum PasswordPolicyStates implements States
     /**
      * {@inheritDoc}
      */
+    @Override
     public PasswordPolicyStates getStartState()
     {
         return START_STATE;

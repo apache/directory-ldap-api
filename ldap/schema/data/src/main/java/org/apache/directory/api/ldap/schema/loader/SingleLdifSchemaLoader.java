@@ -21,10 +21,11 @@
 package org.apache.directory.api.ldap.schema.loader;
 
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -89,11 +90,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
 
             initializeSchemas( in );
         }
-        catch ( LdapException e )
-        {
-            throw new RuntimeException( e );
-        }
-        catch ( IOException e )
+        catch ( LdapException | IOException e )
         {
             throw new RuntimeException( e );
         }
@@ -114,15 +111,11 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
                 scObjEntryMap.put( s, new HashMap<String, List<Entry>>() );
             }
 
-            InputStream in = new FileInputStream( schemaFile );
+            InputStream in = Files.newInputStream( Paths.get( schemaFile ) );
 
             initializeSchemas( in );
         }
-        catch ( LdapException e )
-        {
-            throw new RuntimeException( e );
-        }
-        catch ( IOException e )
+        catch ( LdapException | IOException e )
         {
             throw new RuntimeException( e );
         }
@@ -147,11 +140,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
 
             initializeSchemas( in );
         }
-        catch ( LdapException e )
-        {
-            throw new RuntimeException( e );
-        }
-        catch ( IOException e )
+        catch ( LdapException | IOException e )
         {
             throw new RuntimeException( e );
         }
@@ -163,28 +152,27 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
      */
     private void initializeSchemas( InputStream in ) throws LdapException, IOException
     {
-        LdifReader ldifReader = new LdifReader( in );
-
-        Schema currentSchema = null;
-
-        while ( ldifReader.hasNext() )
+        try ( LdifReader ldifReader = new LdifReader( in ) )
         {
-            LdifEntry ldifEntry = ldifReader.next();
-            String dn = ldifEntry.getDn().getName();
-            
-            if ( SCHEMA_START_PATTERN.matcher( dn ).matches() )
+            Schema currentSchema = null;
+    
+            while ( ldifReader.hasNext() )
             {
-                Schema schema = getSchema( ldifEntry.getEntry() );
-                schemaMap.put( schema.getSchemaName(), schema );
-                currentSchema = schema;
-            }
-            else
-            {
-                loadSchemaObject( currentSchema.getSchemaName(), ldifEntry );
+                LdifEntry ldifEntry = ldifReader.next();
+                String dn = ldifEntry.getDn().getName();
+                
+                if ( SCHEMA_START_PATTERN.matcher( dn ).matches() )
+                {
+                    Schema schema = getSchema( ldifEntry.getEntry() );
+                    schemaMap.put( schema.getSchemaName(), schema );
+                    currentSchema = schema;
+                }
+                else
+                {
+                    loadSchemaObject( currentSchema.getSchemaName(), ldifEntry );
+                }
             }
         }
-
-        ldifReader.close();
     }
 
 
@@ -352,7 +340,7 @@ class SchemaMarker
     private int end;
 
 
-    public SchemaMarker( int start )
+    SchemaMarker( int start )
     {
         this.start = start;
     }

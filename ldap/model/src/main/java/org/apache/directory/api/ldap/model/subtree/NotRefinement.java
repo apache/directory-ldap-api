@@ -32,6 +32,11 @@ public class NotRefinement implements Refinement
     private Refinement refinement;
 
 
+    /**
+     * Creates a new NotRefinement instance
+     * 
+     * @param refinement The filter 
+     */
     public NotRefinement( Refinement refinement )
     {
         this.refinement = refinement;
@@ -50,6 +55,7 @@ public class NotRefinement implements Refinement
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

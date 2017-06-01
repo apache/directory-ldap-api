@@ -104,7 +104,7 @@ public class AddReferral extends GrammarAction<LdapMessageContainer<MessageDecor
 
         if ( IS_DEBUG )
         {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             boolean isFirst = true;
 
             for ( String url : ldapResult.getReferral().getLdapUrls() )

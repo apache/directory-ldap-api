@@ -52,18 +52,35 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
     private int warningLength = 0;
 
 
+    /**
+     * Creates a new instance of PasswordPolicyDecorator.
+     * 
+     * @param codec The LDAP Service to use
+     */
     public PasswordPolicyDecorator( LdapApiService codec )
     {
         super( codec, new PasswordPolicyImpl() );
     }
 
 
+    /**
+     * Creates a new instance of PasswordPolicyDecorator.
+     * 
+     * @param codec The LDAP Service to use
+     * @param hasResponse The hasResponse flag
+     */
     public PasswordPolicyDecorator( LdapApiService codec, boolean hasResponse )
     {
         super( codec, new PasswordPolicyImpl( hasResponse ) );
     }
 
 
+    /**
+     * Creates a new instance of PasswordPolicyDecorator.
+     * 
+     * @param codec The LDAP Service to use
+     * @param policy The asswordPolicy to use
+     */
     public PasswordPolicyDecorator( LdapApiService codec, PasswordPolicy policy )
     {
         super( codec, policy );
@@ -220,6 +237,7 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
     /**
      * {@inheritDoc}
      */
+    @Override
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
         if ( !hasResponse() )
@@ -238,6 +256,7 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean hasResponse()
     {
         return getDecorated().hasResponse();
@@ -248,6 +267,7 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
      *
      * {@inheritDoc}
      */
+    @Override
     public void setResponse( PasswordPolicyResponse response )
     {
         getDecorated().setResponse( response );
@@ -258,6 +278,7 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
      *
      * {@inheritDoc}
      */
+    @Override
     public PasswordPolicyResponse setResponse( boolean hasResponse )
     {
         return getDecorated().setResponse( hasResponse );
@@ -268,6 +289,7 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
      *
      * {@inheritDoc}
      */
+    @Override
     public PasswordPolicyResponse getResponse()
     {
         return getDecorated().getResponse();

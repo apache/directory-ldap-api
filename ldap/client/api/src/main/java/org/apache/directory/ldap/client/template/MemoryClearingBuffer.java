@@ -224,7 +224,7 @@ public final class MemoryClearingBuffer
 
     /**
      * Returns the <code>byte[]</code> used to create this buffer, or 
-     * {@link #getComputedBytes()} if created with a <code>char[]</code>.
+     * getComputedBytes() if created with a <code>char[]</code>.
      *
      * @return A byte[]
      */
@@ -237,7 +237,7 @@ public final class MemoryClearingBuffer
 
     /**
      * Returns the <code>char[]</code> used to create this buffer, or 
-     * {@link #getComputedChars()} if created with a <code>byte[]</code>.
+     * getComputedChars() if created with a <code>byte[]</code>.
      *
      * @return A byte[]
      */

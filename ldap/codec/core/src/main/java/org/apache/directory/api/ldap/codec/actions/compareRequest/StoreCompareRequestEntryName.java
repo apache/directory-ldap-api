@@ -73,7 +73,7 @@ public class StoreCompareRequestEntryName extends GrammarAction<LdapMessageConta
 
         // Get the Value and store it in the CompareRequest
         TLV tlv = container.getCurrentTLV();
-        Dn entry = null;
+        Dn entry;
 
         // We have to handle the special case of a 0 length matched
         // Dn

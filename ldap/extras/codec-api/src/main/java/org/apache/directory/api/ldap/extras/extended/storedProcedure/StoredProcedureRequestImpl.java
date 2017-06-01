@@ -28,7 +28,6 @@ import org.apache.directory.api.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
-import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.api.util.exception.NotImplementedException;
 
@@ -42,9 +41,9 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
 {
     private String language = "Java";
 
-    private byte[] procedure = StringConstants.EMPTY_BYTES;
+    private byte[] procedure = Strings.EMPTY_BYTES;
 
-    private List<StoredProcedureParameter> parameters = new ArrayList<StoredProcedureParameter>();
+    private List<StoredProcedureParameter> parameters = new ArrayList<>();
 
 
     /**
@@ -91,6 +90,7 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getLanguage()
     {
         return language;
@@ -100,12 +100,14 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguage( String language )
     {
         this.language = language;
     }
 
 
+    @Override
     public byte[] getProcedure()
     {
         if ( procedure == null )
@@ -119,6 +121,7 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
     }
 
 
+    @Override
     public void setProcedure( byte[] procedure )
     {
         if ( procedure != null )
@@ -133,12 +136,14 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
     }
 
 
+    @Override
     public List<StoredProcedureParameter> getParameters()
     {
         return parameters;
     }
 
 
+    @Override
     public void addParameter( StoredProcedureParameter parameter )
     {
         parameters.add( parameter );
@@ -146,7 +151,9 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
 
 
     /**
-     * {@inheritDoc}
+     * Store the procedure's name
+     * 
+     * @param procedure The procedure's name
      */
     public void setProcedure( String procedure )
     {
@@ -157,6 +164,7 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getProcedureSpecification()
     {
         return Strings.utf8ToString( procedure );
@@ -166,6 +174,7 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
     /**
      * {@inheritDoc}
      */
+    @Override
     public int size()
     {
         return parameters.size();
@@ -175,9 +184,10 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object getParameterType( int index )
     {
-        if ( !language.equals( "java" ) )
+        if ( !"java".equals( language ) )
         {
             return parameters.get( index ).getType();
         }
@@ -187,11 +197,14 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
 
 
     /**
-     * {@inheritDoc}
+     * Get the parameter type 
+     * 
+     * @param index The parameter position in the list of parameters
+     * @return The found parameter type
      */
     public Object getParameterTypeString( int index )
     {
-        if ( !language.equals( "java" ) )
+        if ( !"java".equals( language ) )
         {
             Object obj = parameters.get( index ).getType();
             
@@ -208,6 +221,7 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
     /**
      * {@inheritDoc}
      */
+    @Override
     public Class<?> getJavaParameterType( int index )
     {
         throw new NotImplementedException( I18n.err( I18n.ERR_04175 ) );
@@ -217,9 +231,10 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object getParameterValue( int index )
     {
-        if ( !language.equals( "java" ) )
+        if ( !"java".equals( language ) )
         {
             return parameters.get( index ).getValue();
         }
@@ -229,11 +244,14 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
 
 
     /**
-     * {@inheritDoc}
+     * Get a parameter value
+     * 
+     * @param index The position of the parameter in the list of parameters
+     * @return The paremeter's value
      */
     public Object getParameterValueString( int index )
     {
-        if ( !language.equals( "java" ) )
+        if ( !"java".equals( language ) )
         {
             Object obj = parameters.get( index ).getValue();
             
@@ -242,7 +260,7 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
                 String str = Strings.utf8ToString( ( byte[] ) obj );
                 String type = ( String ) getParameterTypeString( index );
 
-                if ( type.equals( "int" ) )
+                if ( "int".equals( type ) )
                 {
                     try
                     {
@@ -268,6 +286,7 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object getJavaParameterValue( int index )
     {
         throw new NotImplementedException( I18n.err( I18n.ERR_04176 ) );
@@ -277,6 +296,7 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addParameter( Object type, Object value )
     {
         /**

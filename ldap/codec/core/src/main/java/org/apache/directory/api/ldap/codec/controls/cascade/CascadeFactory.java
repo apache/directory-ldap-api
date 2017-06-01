@@ -53,6 +53,7 @@ public class CascadeFactory implements ControlFactory<Cascade>
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return Cascade.OID;
@@ -62,6 +63,7 @@ public class CascadeFactory implements ControlFactory<Cascade>
     /**
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<Cascade> newCodecControl()
     {
         return new CascadeDecorator( codec, new CascadeImpl() );
@@ -71,6 +73,7 @@ public class CascadeFactory implements ControlFactory<Cascade>
     /**
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<Cascade> newCodecControl( Cascade control )
     {
         return new CascadeDecorator( codec, control );

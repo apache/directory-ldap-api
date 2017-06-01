@@ -91,6 +91,7 @@ public interface ObjectClassRegistry extends SchemaObjectRegistry<ObjectClass>,
      * @throws LdapException if the ObjectClass is already registered or
      * the registration operation is not supported
      */
+    @Override
     void register( ObjectClass objectClass ) throws LdapException;
 
 
@@ -100,11 +101,13 @@ public interface ObjectClassRegistry extends SchemaObjectRegistry<ObjectClass>,
      * @param numericOid the numeric identifier
      * @throws LdapException if the numeric identifier is invalid
      */
+    @Override
     ObjectClass unregister( String numericOid ) throws LdapException;
 
 
     /**
      * Copy the ObjectClassRegistry
      */
+    @Override
     ObjectClassRegistry copy();
 }

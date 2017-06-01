@@ -626,7 +626,8 @@ public enum I18n
     ERR_04485_COLLECTIVE_NOT_ALLOWED_IN_MAY("ERR_04485_COLLECTIVE_NOT_ALLOWED_IN_MAY"),
     ERR_04486_VALUE_ALREADY_EXISTS("ERR_04486_VALUE_ALREADY_EXISTS"),
     ERR_04487_ATTRIBUTE_IS_SINGLE_VALUED("ERR_04487_ATTRIBUTE_IS_SINGLE_VALUED"),
-
+    ERR_04488_SYNTAX_INVALID("ERR_04488_SYNTAX_INVALID"),
+    
     // ldap-constants
     ERR_05001_UNKNOWN_AUTHENT_LEVEL("ERR_05001_UNKNOWN_AUTHENT_LEVEL"),
 
@@ -773,18 +774,28 @@ public enum I18n
     ERR_12084("ERR_12084"),
     ERR_12085("ERR_12085"),
     ERR_12086("ERR_12086"),
-    ERR_12087("ERR_12087");
+    ERR_12087("ERR_12087"),
 
+    // The messages
+    MSG_04489_SYNTAX_VALID( "MSG_04489_SYNTAX_VALID" );
+    
     /** The error code */
     private String errorCode;
 
+    /** The file containing the errors */
+    private static final ResourceBundle ERR_BUNDLE = ResourceBundle
+        .getBundle( "org/apache/directory/api/i18n/errors", Locale.ROOT );
+
+    /** The file containing the messages */
+    private static final ResourceBundle MSG_BUNDLE = ResourceBundle
+        .getBundle( "org/apache/directory/api/i18n/messages", Locale.ROOT );
 
     /**
      * Creates a new instance of I18n.
      * 
      * @param errorCode the error code
      */
-    private I18n( String errorCode )
+    I18n( String errorCode )
     {
         this.errorCode = errorCode;
     }
@@ -800,14 +811,6 @@ public enum I18n
     {
         return errorCode;
     }
-
-    /** The file containing the errors */
-    private static final ResourceBundle ERR_BUNDLE = ResourceBundle
-        .getBundle( "org/apache/directory/api/i18n/errors" );
-
-    /** The file containing the messages */
-    private static final ResourceBundle MSG_BUNDLE = ResourceBundle
-        .getBundle( "org/apache/directory/api/i18n/messages" );
 
 
     /**
@@ -843,6 +846,43 @@ public enum I18n
                 sb.append( obj );
             }
             return err + " (" + sb.toString() + ")";
+        }
+    }
+
+
+    /**
+     *
+     * Translate a message code with argument(s)
+     *
+     * @param msg The message code
+     * @param args The argument(s)
+     * @return The translated error
+     */
+    public static String msg( I18n msg, Object... args )
+    {
+        try
+        {
+            return msg + " " + format( ERR_BUNDLE.getString( msg.getErrorCode() ), args );
+        }
+        catch ( Exception e )
+        {
+            StringBuilder sb = new StringBuilder();
+            boolean comma = false;
+
+            for ( Object obj : args )
+            {
+                if ( comma )
+                {
+                    sb.append( "," );
+                }
+                else
+                {
+                    comma = true;
+                }
+
+                sb.append( obj );
+            }
+            return msg + " (" + sb.toString() + ")";
         }
     }
 
@@ -891,7 +931,13 @@ public enum I18n
         }
     }
 
-
+    /**
+     * Format a message injecting some parameters in the pattern.
+     * 
+     * @param pattern The message pattern
+     * @param args The arguments to inject in the pattern
+     * @return The resulting messages
+     */
     public static String format( String pattern, Object... args )
     {
         return new MessageFormat( pattern, Locale.ROOT ).format( args );

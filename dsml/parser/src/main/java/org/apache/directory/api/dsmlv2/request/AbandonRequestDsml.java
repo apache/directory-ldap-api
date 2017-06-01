@@ -78,7 +78,7 @@ public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
         // AbandonID
         if ( getDecorated().getAbandoned() != 0 )
         {
-            element.addAttribute( "abandonID", "" + getDecorated().getAbandoned() );
+            element.addAttribute( "abandonID", Integer.toString( getDecorated().getAbandoned() ) );
         }
 
         return element;

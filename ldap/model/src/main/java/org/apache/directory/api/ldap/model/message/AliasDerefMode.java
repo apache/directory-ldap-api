@@ -61,7 +61,7 @@ public enum AliasDerefMode
      * 
      * @param value the integer value of the enumeration.
      */
-    private AliasDerefMode( int value, String jndiValue )
+    AliasDerefMode( int value, String jndiValue )
     {
         this.value = value;
         this.jndiValue = jndiValue;
@@ -97,19 +97,21 @@ public enum AliasDerefMode
         }
         else
         {
-            if ( property.trim().equalsIgnoreCase( "always" ) )
+            String trimmedProperty = property.trim();
+            
+            if ( "always".equalsIgnoreCase( trimmedProperty ) )
             {
                 return DEREF_ALWAYS;
             }
-            else if ( property.trim().equalsIgnoreCase( "never" ) )
+            else if ( "never".equalsIgnoreCase( trimmedProperty ) )
             {
                 return NEVER_DEREF_ALIASES;
             }
-            else if ( property.trim().equalsIgnoreCase( "finding" ) )
+            else if ( "finding".equalsIgnoreCase( trimmedProperty ) )
             {
                 return DEREF_FINDING_BASE_OBJ;
             }
-            else if ( property.trim().equalsIgnoreCase( "searching" ) )
+            else if ( "searching".equalsIgnoreCase( trimmedProperty ) )
             {
                 return DEREF_IN_SEARCHING;
             }
@@ -229,7 +231,7 @@ public enum AliasDerefMode
 
 
     /**
-     * get the AliasDerefMode corresponding to the string value {@link  #jndiValue} passed
+     * get the AliasDerefMode corresponding to the string value jndiValue passed
      *
      * @param val the AliasDerefMode's string value
      * @return the AliasDerefMode whose value is equivalent to the given string value
@@ -263,6 +265,9 @@ public enum AliasDerefMode
     }
 
 
+    /**
+     * @return The JNDI value
+     */
     public String getJndiValue()
     {
         return jndiValue;

@@ -148,12 +148,22 @@ public final class JavaStoredProcUtils
     }
 
 
+    /**
+     * Invoke a Stored Procedure
+     * 
+     * @param ctx The execution context
+     * @param procedureName The procedure to execute
+     * @param arguments The procedure's arguments
+     * @return The execution resut
+     * @throws NamingException If we have had an error whil executing the stored procedure
+     */
     public static Object callStoredProcedure( LdapContext ctx, String procedureName, Object[] arguments )
         throws NamingException
     {
         String language = "Java";
 
         Object responseObject;
+        
         try
         {
             /**
@@ -197,5 +207,4 @@ public final class JavaStoredProcUtils
 
         return responseObject;
     }
-
 }

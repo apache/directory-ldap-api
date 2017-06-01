@@ -49,6 +49,7 @@ public class BooleanNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public Value<?> normalize( Value<?> value ) throws LdapInvalidDnException
     {
         if ( value == null )
@@ -65,6 +66,7 @@ public class BooleanNormalizer extends Normalizer
     /**
      * {@inheritDoc}
      */
+    @Override
     public String normalize( String value ) throws LdapInvalidDnException
     {
         if ( value == null )

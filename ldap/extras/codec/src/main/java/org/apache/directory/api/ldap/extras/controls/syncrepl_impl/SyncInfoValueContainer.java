@@ -92,6 +92,9 @@ public class SyncInfoValueContainer extends AbstractContainer
     }
 
 
+    /**
+     * @return The LDAP API service
+     */
     public LdapApiService getCodecService()
     {
         return codec;
@@ -101,6 +104,7 @@ public class SyncInfoValueContainer extends AbstractContainer
     /**
      * Clean the container
      */
+    @Override
     public void clean()
     {
         super.clean();

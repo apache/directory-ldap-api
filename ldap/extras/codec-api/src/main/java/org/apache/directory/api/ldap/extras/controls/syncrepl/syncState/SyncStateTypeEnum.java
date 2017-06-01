@@ -41,7 +41,20 @@ import org.apache.directory.api.i18n.I18n;
  */
 public enum SyncStateTypeEnum
 {
-    PRESENT(0), ADD(1), MODIFY(2), DELETE(3), MODDN(4);
+    /** The entry is present */
+    PRESENT(0), 
+    
+    /** The entry has been added */
+    ADD(1), 
+    
+    /** The entry has been modified */
+    MODIFY(2), 
+    
+    /** The entry has been deleted */
+    DELETE(3), 
+    
+    /** The entry has been renamed */
+    MODDN(4);
 
     /** the internal value */
     private int value;
@@ -53,7 +66,7 @@ public enum SyncStateTypeEnum
      * 
      * @param value the integer value of the enumeration.
      */
-    private SyncStateTypeEnum( int value )
+    SyncStateTypeEnum( int value )
     {
         this.value = value;
     }

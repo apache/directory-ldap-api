@@ -21,7 +21,6 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure;
 
 
-import org.apache.directory.api.asn1.ber.grammar.Grammar;
 import org.apache.directory.api.asn1.ber.grammar.States;
 
 
@@ -75,21 +74,10 @@ public enum StoredProcedureStatesEnum implements States
 
     /**
      * Get the grammar name
-     * @param grammar The grammar code
+     *
      * @return The grammar name
      */
-    public String getGrammarName( int grammar )
-    {
-        return "STORED_PROCEDURE_GRAMMAR";
-    }
-
-
-    /**
-     * Get the grammar name
-     * @param grammar The grammar class
-     * @return The grammar name
-     */
-    public String getGrammarName( Grammar<StoredProcedureContainer> grammar )
+    public String getGrammarName()
     {
         return "STORED_PROCEDURE_GRAMMAR";
     }
@@ -103,13 +91,14 @@ public enum StoredProcedureStatesEnum implements States
      */
     public String getState( int state )
     {
-        return ( ( state == END_STATE.ordinal() ) ? "STORED_PROCEDURE_END_STATE" : name() );
+        return ( state == END_STATE.ordinal() ) ? "STORED_PROCEDURE_END_STATE" : name();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isEndState()
     {
         return this == END_STATE;
@@ -119,6 +108,7 @@ public enum StoredProcedureStatesEnum implements States
     /**
      * {@inheritDoc}
      */
+    @Override
     public StoredProcedureStatesEnum getStartState()
     {
         return START_STATE;

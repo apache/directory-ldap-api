@@ -22,11 +22,9 @@ package org.apache.directory.ldap.client.api.future;
 
 
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import org.apache.directory.api.ldap.model.message.Response;
 import org.apache.directory.ldap.client.api.LdapConnection;
@@ -64,7 +62,7 @@ public class ResponseFuture<R extends Response> implements Future<Response>
      */
     public ResponseFuture( LdapConnection connection, int messageId )
     {
-        queue = new LinkedBlockingQueue<R>();
+        queue = new LinkedBlockingQueue<>();
         this.messageId = messageId;
         this.connection = connection;
     }
@@ -73,6 +71,7 @@ public class ResponseFuture<R extends Response> implements Future<Response>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean cancel( boolean mayInterruptIfRunning )
     {
         if ( cancelled )
@@ -101,21 +100,20 @@ public class ResponseFuture<R extends Response> implements Future<Response>
      * {@inheritDoc}
      * @throws InterruptedException if the operation has been cancelled by client
      */
-    public R get() throws InterruptedException, ExecutionException
+    @Override
+    public R get() throws InterruptedException
     {
-        R response = null;
-
-        response = queue.take();
-
-        return response;
+        return queue.take();
     }
 
 
     /**
-     * {@inheritDoc}
+     * Set the associated Response in this Future
+     * 
+     * @param response The response to add into the Future
      * @throws InterruptedException if the operation has been cancelled by client
      */
-    public void set( R response ) throws InterruptedException, ExecutionException
+    public void set( R response ) throws InterruptedException
     {
         queue.add( response );
     }
@@ -125,17 +123,17 @@ public class ResponseFuture<R extends Response> implements Future<Response>
      * {@inheritDoc}
      * @throws InterruptedException if the operation has been cancelled by client
      */
-    public R get( long timeout, TimeUnit unit ) throws InterruptedException, ExecutionException, TimeoutException
+    @Override
+    public R get( long timeout, TimeUnit unit ) throws InterruptedException
     {
-        R response = queue.poll( timeout, unit );
-
-        return response;
+        return queue.poll( timeout, unit );
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isCancelled()
     {
         return cancelled;
@@ -147,6 +145,7 @@ public class ResponseFuture<R extends Response> implements Future<Response>
      * 
      * {@inheritDoc}
      */
+    @Override
     public boolean isDone()
     {
         throw new UnsupportedOperationException( "Operation not supported" );
@@ -186,6 +185,7 @@ public class ResponseFuture<R extends Response> implements Future<Response>
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

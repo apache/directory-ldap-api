@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class PostalAddressSyntaxCheckerTest
 {
-    PostalAddressSyntaxChecker checker = new PostalAddressSyntaxChecker();
+    PostalAddressSyntaxChecker checker = PostalAddressSyntaxChecker.INSTANCE;
 
 
     @Test

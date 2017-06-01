@@ -53,6 +53,7 @@ public class ManageDsaITFactory implements ControlFactory<ManageDsaIT>
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return ManageDsaIT.OID;
@@ -62,6 +63,7 @@ public class ManageDsaITFactory implements ControlFactory<ManageDsaIT>
     /**
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<ManageDsaIT> newCodecControl()
     {
         return new ManageDsaITDecorator( codec, new ManageDsaITImpl() );
@@ -71,6 +73,7 @@ public class ManageDsaITFactory implements ControlFactory<ManageDsaIT>
     /**
      * {@inheritDoc}
      */
+    @Override
     public CodecControl<ManageDsaIT> newCodecControl( ManageDsaIT control )
     {
         return new ManageDsaITDecorator( codec, control );

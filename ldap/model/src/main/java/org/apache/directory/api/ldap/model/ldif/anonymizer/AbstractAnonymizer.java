@@ -27,7 +27,9 @@ import java.util.Map;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 
 /**
- * An abstract class implementing the default behavior of an Aninymizer instance
+ * An abstract class implementing the default behavior of an Anonymizer instance
+ * 
+ * @param <K> The type of object being anonymized
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -86,6 +88,7 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setSchemaManager( SchemaManager schemaManager )
     {
         this.schemaManager = schemaManager;
@@ -97,6 +100,7 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
      *
      * @param attributeAnonymizers The list of existing anonymizers
      */
+    @Override
     public void setAnonymizers( Map<String, Anonymizer<K>> attributeAnonymizers )
     {
         this.attributeAnonymizers = attributeAnonymizers;
@@ -106,6 +110,7 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<Integer, String> getLatestStringMap()
     {
         return null;
@@ -113,8 +118,9 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
 
     
     /**
-     * @param latestStringMap The latest String anonymized value map
+     * {@inheritDoc}
      */
+    @Override
     public void setLatestStringMap( Map<Integer, String> latestStringMap )
     {
         // Do nothing
@@ -124,6 +130,7 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<Integer, byte[]> getLatestBytesMap()
     {
         return null;
@@ -131,8 +138,9 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
     
     
     /**
-     * @param latestBytesMap The latest byte[] anonymized value map
+     * {@inheritDoc}
      */
+    @Override
     public void setLatestBytesMap( Map<Integer, byte[]> latestBytesMap )
     {
         // Do nothing

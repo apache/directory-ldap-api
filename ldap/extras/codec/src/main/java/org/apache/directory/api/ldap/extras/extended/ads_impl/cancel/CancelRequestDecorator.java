@@ -53,6 +53,12 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
     private int cancelSequenceLength;
 
 
+    /**
+     * Creates a new instance of CancelRequestDecorator.
+     * 
+     * @param codec The LDAP Service to use
+     * @param decoratedMessage The canceled request
+     */
     public CancelRequestDecorator( LdapApiService codec, CancelRequest decoratedMessage )
     {
         super( codec, decoratedMessage );
@@ -63,6 +69,7 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getCancelId()
     {
         return cancelRequest.getCancelId();
@@ -72,6 +79,7 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCancelId( int cancelId )
     {
         if ( cancelId == cancelRequest.getCancelId() )
@@ -87,6 +95,7 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getRequestValue()
     {
         if ( requestValue == null )

@@ -33,16 +33,14 @@ public final class StringConstants
      * @since 2.0
      */
     public static final String EMPTY = "";
-    /**
-     * The empty byte[]
-     */
-    public static final byte[] EMPTY_BYTES = new byte[]
-        {};
+
     /**
      * The empty String[]
      */
     public static final String[] EMPTY_STRINGS = new String[]
         {};
+    
+    /** A flag used when comparing values */
     public static final int NOT_EQUAL = -1;
 
 

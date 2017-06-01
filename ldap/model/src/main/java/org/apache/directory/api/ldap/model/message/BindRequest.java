@@ -204,23 +204,27 @@ public interface BindRequest extends SingleReplyRequest, AbandonableRequest
     /**
      * {@inheritDoc}
      */
+    @Override
     BindRequest setMessageId( int messageId );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     BindRequest addControl( Control control );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     BindRequest addAllControls( Control[] controls );
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     BindRequest removeControl( Control control );
 }

@@ -21,41 +21,67 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 
 
 /**
  * A SyntaxChecker which verifies that a value is a Fax according to RFC 4517.
- * 
+ * <p>
  * We didn't implemented the check against RFC 804, so the value is considered
  * to contain an OctetString.
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class FaxSyntaxChecker extends BinarySyntaxChecker
+public final class FaxSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( FaxSyntaxChecker.class );
-
-
     /**
-     * Private default constructor to prevent unnecessary instantiation.
+     * A static instance of FaxSyntaxChecker
      */
-    public FaxSyntaxChecker()
+    public static final FaxSyntaxChecker INSTANCE = new FaxSyntaxChecker( SchemaConstants.FAX_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<FaxSyntaxChecker>
     {
-        super();
-        setOid( SchemaConstants.FAX_SYNTAX );
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.FAX_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of FaxSyntaxChecker
+         * @return A new instance of FaxSyntaxChecker
+         */
+        @Override
+        public FaxSyntaxChecker build()
+        {
+            return new FaxSyntaxChecker( oid );
+        }
     }
 
-
+    
     /**
-     * {@inheritDoc}
+     * Private default constructor to prevent unnecessary instantiation.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public boolean isValidSyntax( Object value )
+    private FaxSyntaxChecker( String oid )
     {
-        LOG.debug( "Syntax valid for '{}'", value );
-        return true;
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 }

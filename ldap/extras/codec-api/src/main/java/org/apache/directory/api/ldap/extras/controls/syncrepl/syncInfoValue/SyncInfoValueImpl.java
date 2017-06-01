@@ -76,6 +76,7 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
     /**
      * {@inheritDoc}
      */
+    @Override
     public SynchronizationInfoEnum getType()
     {
         return type;
@@ -85,6 +86,7 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setType( SynchronizationInfoEnum type )
     {
         this.type = type;
@@ -94,6 +96,7 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] getCookie()
     {
         return cookie;
@@ -103,6 +106,7 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCookie( byte[] cookie )
     {
         this.cookie = cookie;
@@ -112,6 +116,7 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isRefreshDone()
     {
         return refreshDone;
@@ -121,6 +126,7 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setRefreshDone( boolean refreshDone )
     {
         this.refreshDone = refreshDone;
@@ -130,6 +136,7 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isRefreshDeletes()
     {
         return refreshDeletes;
@@ -139,6 +146,7 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setRefreshDeletes( boolean refreshDeletes )
     {
         this.refreshDeletes = refreshDeletes;
@@ -148,6 +156,7 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<byte[]> getSyncUUIDs()
     {
         return syncUUIDs;
@@ -157,6 +166,7 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setSyncUUIDs( List<byte[]> syncUUIDs )
     {
         this.syncUUIDs = syncUUIDs;
@@ -166,11 +176,12 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addSyncUUID( byte[] syncUUID )
     {
         if ( syncUUIDs == null )
         {
-            syncUUIDs = new ArrayList<byte[]>();
+            syncUUIDs = new ArrayList<>();
         }
 
         syncUUIDs.add( syncUUID );
@@ -333,7 +344,7 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
                 sb.append( "            refreshDeletes : " ).append( isRefreshDeletes() ).append( '\n' );
                 sb.append( "            syncUUIDS : " );
 
-                if ( getSyncUUIDs().size() != 0 )
+                if ( !getSyncUUIDs().isEmpty() )
                 {
                     boolean isFirst = true;
 

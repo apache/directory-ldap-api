@@ -38,7 +38,9 @@ import org.slf4j.LoggerFactory;
 /**
  * Object identifier registry. It stores the OIDs for AT, OC, MR, LS, MRU, DSR, DCR and NF.
  * An OID is unique, and associated with a SO.
- *
+ * 
+ * @param <T> The type of SchemaObject
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OidRegistry<T extends SchemaObject> implements Iterable<T>
@@ -50,10 +52,10 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
     /** Maps OID to a type of SchemaObject */
-    private Map<String, T> byOid = new HashMap<String, T>();
+    private Map<String, T> byOid = new HashMap<>();
     
     /** A flag indicating that the Registry is relaxed or not */
-    private boolean isRelaxed = Registries.STRICT;;
+    private boolean isRelaxed = Registries.STRICT;
 
 
     /**
@@ -167,6 +169,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
      * 
      * @return all the SchemaObject registered
      */
+    @Override
     public Iterator<T> iterator()
     {
         return byOid.values().iterator();
@@ -310,10 +313,10 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
      */
     public OidRegistry<T> copy()
     {
-        OidRegistry<T> copy = new OidRegistry<T>();
+        OidRegistry<T> copy = new OidRegistry<>();
 
         // Clone the map
-        copy.byOid = new HashMap<String, T>();
+        copy.byOid = new HashMap<>();
 
         return copy;
     }
@@ -328,6 +331,9 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
     }
 
 
+    /**
+     * Empty the byOid map
+     */
     public void clear()
     {
         // remove all the OID
@@ -338,6 +344,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

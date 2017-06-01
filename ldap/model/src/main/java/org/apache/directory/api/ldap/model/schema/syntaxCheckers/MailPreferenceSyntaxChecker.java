@@ -20,11 +20,10 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -38,21 +37,40 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class MailPreferenceSyntaxChecker extends SyntaxChecker
+public final class MailPreferenceSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( MailPreferenceSyntaxChecker.class );
-
-
     /**
-     * Creates a new instance of MailPreferenceSyntaxChecker.
+     * A static instance of MailPreferenceSyntaxChecker
      */
-    public MailPreferenceSyntaxChecker()
+    public static final MailPreferenceSyntaxChecker INSTANCE = 
+        new MailPreferenceSyntaxChecker( SchemaConstants.MAIL_PREFERENCE_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<MailPreferenceSyntaxChecker>
     {
-        super( SchemaConstants.MAIL_PREFERENCE_SYNTAX );
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.MAIL_PREFERENCE_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of MailPreferenceSyntaxChecker
+         * @return A new instance of MailPreferenceSyntaxChecker
+         */
+        @Override
+        public MailPreferenceSyntaxChecker build()
+        {
+            return new MailPreferenceSyntaxChecker( oid );
+        }
     }
 
-
+    
     /**
      * 
      * Creates a new instance of MailPreferenceSyntaxChecker.
@@ -60,22 +78,36 @@ public class MailPreferenceSyntaxChecker extends SyntaxChecker
      * @param oid the oid to associate with this new SyntaxChecker
      *
      */
-    protected MailPreferenceSyntaxChecker( String oid )
+    private MailPreferenceSyntaxChecker( String oid )
     {
         super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -94,20 +126,27 @@ public class MailPreferenceSyntaxChecker extends SyntaxChecker
 
         if ( ( strValue.length() < 8 ) || ( strValue.length() > 18 ) )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
 
-        boolean result = ( ( "NO-LISTS".equals( strValue ) ) || ( "ANY-LIST".equals( strValue ) )
-            || ( "PROFESSIONAL-LISTS".equals( strValue ) ) );
+        boolean result = ( "NO-LISTS".equals( strValue ) ) || ( "ANY-LIST".equals( strValue ) )
+            || ( "PROFESSIONAL-LISTS".equals( strValue ) );
 
-        if ( result )
+        if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Syntax valid for '{}'", value );
-        }
-        else
-        {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            if ( result )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+            }
+            else
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
         }
 
         return result;

@@ -66,6 +66,9 @@ public final class VirtualListViewResponseGrammar extends AbstractGrammar<Virtua
     private static Grammar<?> instance = new VirtualListViewResponseGrammar();
 
 
+    /**
+     * Creates a new VirtualListViewResponseGrammar object.
+     */
     @SuppressWarnings("unchecked")
     private VirtualListViewResponseGrammar()
     {
@@ -113,6 +116,9 @@ public final class VirtualListViewResponseGrammar extends AbstractGrammar<Virtua
     }
 
 
+    /**
+     * @return the singleton instance of the VirtualListViewResponseGrammar
+     */
     public static Grammar<?> getInstance()
     {
         return instance;

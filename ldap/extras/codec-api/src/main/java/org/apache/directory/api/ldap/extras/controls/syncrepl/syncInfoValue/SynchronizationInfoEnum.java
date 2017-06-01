@@ -35,9 +35,16 @@ package org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue;
  */
 public enum SynchronizationInfoEnum
 {
+    /** A new cookie */
     NEW_COOKIE(0),
+    
+    /** The refresh delete phase */
     REFRESH_DELETE(1),
+
+    /** The refresh present phase */
     REFRESH_PRESENT(2),
+    
+    /** The sync ID set */
     SYNC_ID_SET(3);
 
     /** The internal value */
@@ -50,7 +57,7 @@ public enum SynchronizationInfoEnum
      * 
      * @param value the integer value of the enumeration.
      */
-    private SynchronizationInfoEnum( int value )
+    SynchronizationInfoEnum( int value )
     {
         this.value = value;
     }

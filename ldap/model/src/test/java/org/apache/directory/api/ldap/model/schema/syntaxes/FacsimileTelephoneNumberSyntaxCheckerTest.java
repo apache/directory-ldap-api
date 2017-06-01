@@ -27,6 +27,7 @@ import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.FacsimileTelephoneNumberSyntaxChecker;
+import org.apache.directory.api.ldap.model.schema.syntaxCheckers.TelephoneNumberSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -40,7 +41,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class FacsimileTelephoneNumberSyntaxCheckerTest
 {
-    FacsimileTelephoneNumberSyntaxChecker checker = new FacsimileTelephoneNumberSyntaxChecker();
+    FacsimileTelephoneNumberSyntaxChecker checker = FacsimileTelephoneNumberSyntaxChecker.INSTANCE;
 
 
     @Test
@@ -89,14 +90,23 @@ public class FacsimileTelephoneNumberSyntaxCheckerTest
     public void testWithNewMandatoryRegexp()
     {
         // Adding french telephone number regexp
-        checker.setDefaultRegexp( " *0[1-8](( *|[-/.]{1})\\d\\d){4} *" );
-
+        checker = FacsimileTelephoneNumberSyntaxChecker.builder().
+            setDefaultRegexp( " *0[1-8](( *|[-/.]{1})\\d\\d){4} *" ).build();
+        
         assertFalse( checker.isValidSyntax( "+ 123 ( 456 )7891   12345" ) );
         assertTrue( checker.isValidSyntax( " 01 02 03 04 05 " ) );
         assertTrue( checker.isValidSyntax( " 0102 03 04 05 " ) );
         assertTrue( checker.isValidSyntax( " 01 02 03 04  05 " ) );
         assertTrue( checker.isValidSyntax( " 01/02/03/04/05 " ) );
         assertFalse( checker.isValidSyntax( " 01 / 02 .03 04--  05 " ) );
+    }
+
+
+    @Test
+    public void testBuilderSetsDefaultPattern()
+    {
+        checker = FacsimileTelephoneNumberSyntaxChecker.builder().build();
+        assertTrue( checker.isValidSyntax( "1" ) );
     }
 
 

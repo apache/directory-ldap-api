@@ -21,40 +21,67 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 
 
 /**
  * A SyntaxChecker which verifies that a value is a PresentationAddressSyntax.
- * 
+ * <p>
  * This syntax is defined in RFC 1278, but it has not been implemented.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class PresentationAddressSyntaxChecker extends BinarySyntaxChecker
+public final class PresentationAddressSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( PresentationAddressSyntaxChecker.class );
-
-
     /**
-     * Creates an instance of PresentationAddressSyntaxChecker
+     * A static instance of PresentationAddressSyntaxChecker
      */
-    public PresentationAddressSyntaxChecker()
+    public static final PresentationAddressSyntaxChecker INSTANCE = 
+        new PresentationAddressSyntaxChecker( SchemaConstants.PRESENTATION_ADDRESS_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<PresentationAddressSyntaxChecker>
     {
-        super();
-        setOid( SchemaConstants.PRESENTATION_ADDRESS_SYNTAX );
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.PRESENTATION_ADDRESS_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of PresentationAddressSyntaxChecker
+         * @return A new instance of PresentationAddressSyntaxChecker
+         */
+        @Override
+        public PresentationAddressSyntaxChecker build()
+        {
+            return new PresentationAddressSyntaxChecker( oid );
+        }
     }
 
-
+    
     /**
-     * {@inheritDoc}
+     * Creates an instance of PresentationAddressSyntaxChecker
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public boolean isValidSyntax( Object value )
+    private PresentationAddressSyntaxChecker( String oid )
     {
-        LOG.debug( "Syntax valid for '{}'", value );
-        return true;
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 }

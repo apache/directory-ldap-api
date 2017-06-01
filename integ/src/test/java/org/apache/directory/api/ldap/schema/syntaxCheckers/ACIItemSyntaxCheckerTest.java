@@ -54,7 +54,7 @@ public class ACIItemSyntaxCheckerTest
         JarLdifSchemaLoader loader = new JarLdifSchemaLoader();
         SchemaManager schemaManager = new DefaultSchemaManager( loader );
         schemaManager.loadAllEnabled();
-        checker = new org.apache.directory.api.ldap.aci.ACIItemSyntaxChecker();
+        checker = ACIItemSyntaxChecker.INSTANCE;
         checker.setSchemaManager( schemaManager );
     }
 

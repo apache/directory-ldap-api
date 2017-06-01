@@ -28,8 +28,13 @@ package org.apache.directory.api.ldap.extras.controls;
  */
 public enum SyncModifyDnType
 {
+    /** A Move operation */
     MOVE(0),
+    
+    /** A Rename operation */
     RENAME(1),
+    
+    /** A Move and Rename operation */
     MOVE_AND_RENAME(2);
 
     /** Internal value for each tag */
@@ -39,7 +44,7 @@ public enum SyncModifyDnType
     /**
      * Creates the value
      */
-    private SyncModifyDnType( int value )
+    SyncModifyDnType( int value )
     {
         this.value = value;
     }

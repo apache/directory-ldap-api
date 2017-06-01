@@ -41,7 +41,7 @@ class ReusableAntlrSubtreeSpecificationParser extends AntlrSubtreeSpecificationP
     /**
      * Creates a ReusableAntlrSubtreeSpecificationParser instance.
      */
-    public ReusableAntlrSubtreeSpecificationParser( TokenStream lexer )
+    ReusableAntlrSubtreeSpecificationParser( TokenStream lexer )
     {
         super( lexer );
     }

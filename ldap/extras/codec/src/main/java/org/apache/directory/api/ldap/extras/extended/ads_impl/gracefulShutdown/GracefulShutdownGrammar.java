@@ -203,7 +203,7 @@ public final class GracefulShutdownGrammar extends AbstractGrammar<GracefulShutd
                 {
                     public void action( GracefulShutdownContainer container ) throws DecoderException
                     {
-                        GracefulShutdownContainer gracefulShutdownContainer = ( GracefulShutdownContainer ) container;
+                        GracefulShutdownContainer gracefulShutdownContainer = container;
                         BerValue value = gracefulShutdownContainer.getCurrentTLV().getValue();
 
                         try

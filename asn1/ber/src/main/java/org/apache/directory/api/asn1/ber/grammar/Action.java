@@ -28,7 +28,7 @@ import org.apache.directory.api.asn1.ber.Asn1Container;
  * Action interface just contains the method 'action' which must be implemented
  * in all the implementing classes.
  * 
- * @param C The container type
+ * @param <C> The container type
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

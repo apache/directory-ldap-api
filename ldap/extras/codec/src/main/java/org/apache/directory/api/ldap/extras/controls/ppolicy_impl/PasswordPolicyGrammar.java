@@ -125,6 +125,9 @@ public final class PasswordPolicyGrammar extends AbstractGrammar<PasswordPolicyC
     }
 
 
+    /**
+     * @return the singleton instance of the PasswordPolicyGrammar
+     */
     public static Grammar<PasswordPolicyContainer> getInstance()
     {
         return INSTANCE;

@@ -31,6 +31,9 @@ import org.apache.directory.api.ldap.model.name.Dn;
  */
 public abstract class StoredProcedureParameter
 {
+    /**
+     * The generic LdapContext factory
+     */
     public static final class Generic_LDAP_CONTEXT extends StoredProcedureParameter
     {
         private Dn ctxName;
@@ -43,24 +46,41 @@ public abstract class StoredProcedureParameter
         }
 
 
+        /**
+         * Creates a new instance of StoredProcedureParameter
+         * 
+         * @param ctxName The context name
+         * @return A new instance of StoredProcedureParameter
+         */
         public static StoredProcedureParameter instance( Dn ctxName )
         {
             return new Generic_LDAP_CONTEXT( ctxName );
         }
 
 
+        /**
+         * @return The context name
+         */
         public Dn getCtxName()
         {
             return ctxName;
         }
 
 
+        /**
+         * @see Object#toString()
+         */
+        @Override
         public String toString()
         {
             return name + " \"" + ctxName.getName() + "\"";
         }
     }
 
+
+    /**
+     * The generic Operation Principal factory
+     */
     public static final class Generic_OPERATION_PRINCIPAL extends StoredProcedureParameter
     {
         private static Generic_OPERATION_PRINCIPAL instance = new Generic_OPERATION_PRINCIPAL( "$operationPrincipal" );
@@ -72,6 +92,9 @@ public abstract class StoredProcedureParameter
         }
 
 
+        /**
+         * @return The generic Operation Principal instance
+         */
         public static StoredProcedureParameter instance()
         {
             return instance;
@@ -96,6 +119,7 @@ public abstract class StoredProcedureParameter
     }
 
 
+    @Override
     public String toString()
     {
         return name;
@@ -106,6 +130,7 @@ public abstract class StoredProcedureParameter
      * @see java.lang.Object#hashCode()
      * @return the instance's hash code 
      */
+    @Override
     public int hashCode()
     {
         int h = 37;
@@ -119,21 +144,26 @@ public abstract class StoredProcedureParameter
     /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals( Object obj )
     {
         if ( this == obj )
         {
             return true;
         }
+
         if ( obj == null )
         {
             return false;
         }
+        
         if ( getClass() != obj.getClass() )
         {
             return false;
         }
-        final StoredProcedureParameter other = ( StoredProcedureParameter ) obj;
+        
+        StoredProcedureParameter other = ( StoredProcedureParameter ) obj;
+        
         if ( name == null )
         {
             if ( other.name != null )
@@ -145,9 +175,14 @@ public abstract class StoredProcedureParameter
         {
             return false;
         }
+        
         return true;
     }
+    
 
+    /**
+     * The Modify Object factory
+     */
     public static final class Modify_OBJECT extends StoredProcedureParameter
     {
         private static Modify_OBJECT instance = new Modify_OBJECT( "$object" );
@@ -159,12 +194,19 @@ public abstract class StoredProcedureParameter
         }
 
 
+        /**
+         * @return The Modify Object instance
+         */
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
 
+
+    /**
+     * The Modify Modification factory
+     */
     public static final class Modify_MODIFICATION extends StoredProcedureParameter
     {
         private static Modify_MODIFICATION instance = new Modify_MODIFICATION( "$modification" );
@@ -176,12 +218,19 @@ public abstract class StoredProcedureParameter
         }
 
 
+        /**
+         * @return The Modify Modification instance
+         */
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
 
+
+    /**
+     * The Modify Old Entry factory
+     */
     public static final class Modify_OLD_ENTRY extends StoredProcedureParameter
     {
         private static Modify_OLD_ENTRY instance = new Modify_OLD_ENTRY( "$oldEntry" );
@@ -193,12 +242,19 @@ public abstract class StoredProcedureParameter
         }
 
 
+        /**
+         * @return The Modify Old Entry instance
+         */
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
 
+
+    /**
+     * The Modify New Entry factory
+     */
     public static final class Modify_NEW_ENTRY extends StoredProcedureParameter
     {
         private static Modify_NEW_ENTRY instance = new Modify_NEW_ENTRY( "$newEntry" );
@@ -210,12 +266,19 @@ public abstract class StoredProcedureParameter
         }
 
 
+        /**
+         * @return The Modify New Entry instance
+         */
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
 
+
+    /**
+     * The Add Entry factory
+     */
     public static final class Add_ENTRY extends StoredProcedureParameter
     {
         private static Add_ENTRY instance = new Add_ENTRY( "$entry" );
@@ -227,12 +290,19 @@ public abstract class StoredProcedureParameter
         }
 
 
+        /**
+         * @return The Add Entry instance
+         */
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
 
+
+    /**
+     * The Add Attributes factory
+     */
     public static final class Add_ATTRIBUTES extends StoredProcedureParameter
     {
         private static Add_ATTRIBUTES instance = new Add_ATTRIBUTES( "$attributes" );
@@ -244,12 +314,19 @@ public abstract class StoredProcedureParameter
         }
 
 
+        /**
+         * @return The Add Attributes instance
+         */
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
 
+
+    /**
+     * The Delete Name factory
+     */
     public static final class Delete_NAME extends StoredProcedureParameter
     {
         private static Delete_NAME instance = new Delete_NAME( "$name" );
@@ -261,12 +338,19 @@ public abstract class StoredProcedureParameter
         }
 
 
+        /**
+         * @return The Delete Name instance
+         */
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
 
+
+    /**
+     * The Delete Deleted  factory
+     */
     public static final class Delete_DELETED_ENTRY extends StoredProcedureParameter
     {
         private static Delete_DELETED_ENTRY instance = new Delete_DELETED_ENTRY( "$deletedEntry" );
@@ -278,12 +362,19 @@ public abstract class StoredProcedureParameter
         }
 
 
+        /**
+         * @return The Delete Deleted instance
+         */
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
 
+
+    /**
+     * The Modify DN Entry factory
+     */
     public static final class ModifyDN_ENTRY extends StoredProcedureParameter
     {
         private static ModifyDN_ENTRY instance = new ModifyDN_ENTRY( "$entry" );
@@ -295,12 +386,19 @@ public abstract class StoredProcedureParameter
         }
 
 
+        /**
+         * @return The Modify DN Entry instance
+         */
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
 
+
+    /**
+     * The Modify New Rdn factory
+     */
     public static final class ModifyDN_NEW_RDN extends StoredProcedureParameter
     {
         private static ModifyDN_NEW_RDN instance = new ModifyDN_NEW_RDN( "$newrdn" );
@@ -312,12 +410,19 @@ public abstract class StoredProcedureParameter
         }
 
 
+        /**
+         * @return The Modify New Rdn instance
+         */
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
 
+
+    /**
+     * The Modify DN Delete Old RDN factory
+     */
     public static final class ModifyDN_DELETE_OLD_RDN extends StoredProcedureParameter
     {
         private static ModifyDN_DELETE_OLD_RDN instance = new ModifyDN_DELETE_OLD_RDN( "$deleteoldrdn" );
@@ -329,12 +434,19 @@ public abstract class StoredProcedureParameter
         }
 
 
+        /**
+         * @return The Modify DN Delete Old RDN instance
+         */
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
 
+
+    /**
+     * The Modify DN New Superior factory
+     */
     public static final class ModifyDN_NEW_SUPERIOR extends StoredProcedureParameter
     {
         private static ModifyDN_NEW_SUPERIOR instance = new ModifyDN_NEW_SUPERIOR( "$newSuperior" );
@@ -346,12 +458,19 @@ public abstract class StoredProcedureParameter
         }
 
 
+        /**
+         * @return The Modify DN New Superior instance
+         */
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
 
+
+    /**
+     * The Modify DN Old RDN factory
+     */
     public static final class ModifyDN_OLD_RDN extends StoredProcedureParameter
     {
         private static ModifyDN_OLD_RDN instance = new ModifyDN_OLD_RDN( "$oldRDN" );
@@ -363,12 +482,19 @@ public abstract class StoredProcedureParameter
         }
 
 
+        /**
+         * @return The Modify DN Old RDN instance
+         */
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
 
+
+    /**
+     * The Modify DN Old Superior DN factory
+     */
     public static final class ModifyDN_OLD_SUPERIOR_DN extends StoredProcedureParameter
     {
         private static ModifyDN_OLD_SUPERIOR_DN instance = new ModifyDN_OLD_SUPERIOR_DN( "$oldRDN" );
@@ -380,16 +506,18 @@ public abstract class StoredProcedureParameter
         }
 
 
+        /**
+         * @return The Modify DN Old Superior DN instance
+         */
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
 
+
     /**
-     * 
-     *
-     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * The Modify DN New DN factory
      */
     public static final class ModifyDN_NEW_DN extends StoredProcedureParameter
     {
@@ -402,6 +530,9 @@ public abstract class StoredProcedureParameter
         }
 
 
+        /**
+         * @return The Modify DN New DN instance
+         */
         public static StoredProcedureParameter instance()
         {
             return instance;

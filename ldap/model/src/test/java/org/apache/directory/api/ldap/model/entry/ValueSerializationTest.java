@@ -35,7 +35,6 @@ import org.apache.directory.api.ldap.model.schema.comparators.ByteArrayComparato
 import org.apache.directory.api.ldap.model.schema.comparators.StringComparator;
 import org.apache.directory.api.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.OctetStringSyntaxChecker;
-import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -58,10 +57,10 @@ public class ValueSerializationTest
     private static byte[] data = new byte[]
         { 0x01, 0x02, 0x03, 0x04 };
     BinaryValue bv1 = new BinaryValue( data );
-    BinaryValue bv2 = new BinaryValue( StringConstants.EMPTY_BYTES );
+    BinaryValue bv2 = new BinaryValue( Strings.EMPTY_BYTES );
     BinaryValue bv3 = new BinaryValue( ( byte[] ) null );
     BinaryValue bv1n = new BinaryValue( data );
-    BinaryValue bv2n = new BinaryValue( StringConstants.EMPTY_BYTES );
+    BinaryValue bv2n = new BinaryValue( Strings.EMPTY_BYTES );
     BinaryValue bv3n = new BinaryValue( ( byte[] ) null );
     StringValue sv1 = new StringValue( "test" );
     StringValue sv2 = new StringValue( "" );
@@ -87,7 +86,7 @@ public class ValueSerializationTest
     public void initAT()
     {
         sb = new EntryUtils.S( "1.1.1.1", false );
-        sb.setSyntaxChecker( new OctetStringSyntaxChecker() );
+        sb.setSyntaxChecker( OctetStringSyntaxChecker.INSTANCE );
         mrb = new EntryUtils.MR( "1.1.2.1" );
         mrb.setSyntax( sb );
 
@@ -131,7 +130,7 @@ public class ValueSerializationTest
         atb.setSyntax( sb );
 
         ss = new EntryUtils.S( "1.1.1.1", true );
-        ss.setSyntaxChecker( new OctetStringSyntaxChecker() );
+        ss.setSyntaxChecker( OctetStringSyntaxChecker.INSTANCE );
         mrs = new EntryUtils.MR( "1.1.2.1" );
         mrs.setSyntax( ss );
         mrs.setLdapComparator( new StringComparator( "1.1.2.1" ) );

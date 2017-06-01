@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.codec.controls.sort;
 
 
-import org.apache.directory.api.asn1.ber.grammar.Grammar;
 import org.apache.directory.api.asn1.ber.grammar.States;
 
 
@@ -31,42 +30,29 @@ import org.apache.directory.api.asn1.ber.grammar.States;
  */
 public enum SortResponseStates implements States
 {
+    /** Initialstate */ 
     START_STATE,
 
+    /** SortResult ::= SEQUENCE transition */
     SEQUENCE_STATE,
 
+    /** sortResult  ENUMERATED transition */
     RESULT_CODE_STATE,
     
+    /** attributeType [0] AttributeDescription OPTIONAL transition */
     AT_DESC_STATE,
 
+    /** Final state */
     END_STATE;
 
     /**
      * Get the grammar name
      * 
-     * @param grammar The grammar code
      * @return The grammar name
      */
-    public String getGrammarName( int grammar )
+    public String getGrammarName()
     {
         return "SORT_RESPONSE_GRAMMAR";
-    }
-
-
-    /**
-     * Get the grammar name
-     * 
-     * @param grammar The grammar class
-     * @return The grammar name
-     */
-    public String getGrammarName( Grammar<?> grammar )
-    {
-        if ( grammar instanceof SortResponseGrammar )
-        {
-            return "SORT_RESPONSE_GRAMMAR";
-        }
-
-        return "UNKNOWN GRAMMAR";
     }
 
 
@@ -78,14 +64,14 @@ public enum SortResponseStates implements States
      */
     public String getState( int state )
     {
-        return ( ( state == END_STATE.ordinal() ) ? "SORT_REQUEST_END_STATE" : name() );
+        return ( state == END_STATE.ordinal() ) ? "SORT_REQUEST_END_STATE" : name();
     }
 
 
     @Override
     public boolean isEndState()
     {
-        return ( this == END_STATE );
+        return this == END_STATE;
     }
 
 

@@ -21,8 +21,7 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 
 
 /**
@@ -34,28 +33,56 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class EnhancedGuideSyntaxChecker extends BinarySyntaxChecker
+public final class EnhancedGuideSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( EnhancedGuideSyntaxChecker.class );
-
-
     /**
-     * Creates a new instance of EnhancedGuideSyntaxChecker.
+     * A static instance of EnhancedGuideSyntaxChecker
      */
-    public EnhancedGuideSyntaxChecker()
+    public static final EnhancedGuideSyntaxChecker INSTANCE = 
+        new EnhancedGuideSyntaxChecker( SchemaConstants.ENHANCED_GUIDE_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<EnhancedGuideSyntaxChecker>
     {
-        super();
-        setOid( SchemaConstants.ENHANCED_GUIDE_SYNTAX );
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.DIRECTORY_STRING_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of EnhancedGuideSyntaxChecker
+         * @return A new instance of EnhancedGuideSyntaxChecker
+         */
+        @Override
+        public EnhancedGuideSyntaxChecker build()
+        {
+            return new EnhancedGuideSyntaxChecker( oid );
+        }
     }
 
-
+    
     /**
-     * {@inheritDoc}
+     * Creates a new instance of EnhancedGuideSyntaxChecker.
+     * 
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public boolean isValidSyntax( Object value )
+    private EnhancedGuideSyntaxChecker( String oid )
     {
-        LOG.debug( "Syntax valid for '{}'", value );
-        return true;
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 }

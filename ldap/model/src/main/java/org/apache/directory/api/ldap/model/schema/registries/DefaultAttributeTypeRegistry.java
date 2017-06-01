@@ -63,14 +63,15 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
     public DefaultAttributeTypeRegistry()
     {
         super( SchemaObjectType.ATTRIBUTE_TYPE, new OidRegistry<AttributeType>() );
-        oidNormalizerMap = new HashMap<String, OidNormalizer>();
-        oidToDescendantSet = new HashMap<String, Set<AttributeType>>();
+        oidNormalizerMap = new HashMap<>();
+        oidToDescendantSet = new HashMap<>();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<String, OidNormalizer> getNormalizerMapping()
     {
         return Collections.unmodifiableMap( oidNormalizerMap );
@@ -80,6 +81,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasDescendants( String ancestorId ) throws LdapException
     {
         try
@@ -98,6 +100,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasDescendants( AttributeType ancestor ) throws LdapException
     {
         String oid = ancestor.getOid();
@@ -110,6 +113,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
+    @Override
     public Iterator<AttributeType> descendants( String ancestorId ) throws LdapException
     {
         try
@@ -135,6 +139,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
+    @Override
     public Iterator<AttributeType> descendants( AttributeType ancestor ) throws LdapException
     {
         String oid = ancestor.getOid();
@@ -152,6 +157,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerDescendants( AttributeType attributeType, AttributeType ancestor ) throws LdapException
     {
         // add this attribute to descendant list of other attributes in superior chain
@@ -166,7 +172,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
         // Initialize the descendant Set to store the descendants for the attributeType
         if ( descendants == null )
         {
-            descendants = new HashSet<AttributeType>( 1 );
+            descendants = new HashSet<>( 1 );
             oidToDescendantSet.put( ancestor.getOid(), descendants );
         }
 
@@ -178,6 +184,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterDescendants( AttributeType attributeType, AttributeType ancestor ) throws LdapException
     {
         // add this attribute to descendant list of other attributes in superior chain
@@ -193,7 +200,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
         {
             descendants.remove( attributeType );
 
-            if ( descendants.size() == 0 )
+            if ( descendants.isEmpty() )
             {
                 oidToDescendantSet.remove( ancestor.getOid() );
             }
@@ -204,6 +211,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
     /**
      * {@inheritDoc}
      */
+    @Override
     public AttributeType unregister( String numericOid ) throws LdapException
     {
         try
@@ -232,6 +240,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addMappingFor( AttributeType attributeType ) throws LdapException
     {
         MatchingRule equality = attributeType.getEquality();
@@ -262,6 +271,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
     /**
      * Remove the AttributeType normalizer from the OidNormalizer map 
      */
+    @Override
     public void removeMappingFor( AttributeType attributeType ) throws LdapException
     {
         if ( attributeType == null )
@@ -282,6 +292,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
     /**
      * {@inheritDoc}
      */
+    @Override
     public AttributeType lookup( String oid ) throws LdapException
     {
         try
@@ -298,6 +309,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
     /**
      * {@inheritDoc}
      */
+    @Override
     public DefaultAttributeTypeRegistry copy()
     {
         DefaultAttributeTypeRegistry copy = new DefaultAttributeTypeRegistry();
@@ -312,6 +324,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear()
     {
         // First clear the shared elements

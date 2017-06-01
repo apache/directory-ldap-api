@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class DeliveryMethodSyntaxCheckerTest
 {
-    DeliveryMethodSyntaxChecker checker = new DeliveryMethodSyntaxChecker();
+    DeliveryMethodSyntaxChecker checker = DeliveryMethodSyntaxChecker.INSTANCE;
 
 
     @Test

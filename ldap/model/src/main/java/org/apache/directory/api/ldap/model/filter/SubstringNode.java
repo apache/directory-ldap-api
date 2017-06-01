@@ -23,7 +23,6 @@ package org.apache.directory.api.ldap.model.filter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -60,7 +59,7 @@ public class SubstringNode extends LeafNode
     {
         super( attributeType, AssertionType.SUBSTRING );
 
-        anyPattern = new ArrayList<String>( 2 );
+        anyPattern = new ArrayList<>( 2 );
         this.finalPattern = finalPattern;
         this.initialPattern = initialPattern;
     }
@@ -78,7 +77,7 @@ public class SubstringNode extends LeafNode
     {
         super( attribute, AssertionType.SUBSTRING );
 
-        anyPattern = new ArrayList<String>( 2 );
+        anyPattern = new ArrayList<>( 2 );
         this.finalPattern = finalPattern;
         this.initialPattern = initialPattern;
     }
@@ -93,7 +92,7 @@ public class SubstringNode extends LeafNode
     {
         super( attribute, AssertionType.SUBSTRING );
 
-        anyPattern = new ArrayList<String>( 2 );
+        anyPattern = new ArrayList<>( 2 );
         this.finalPattern = null;
         this.initialPattern = null;
     }
@@ -108,7 +107,7 @@ public class SubstringNode extends LeafNode
     {
         super( attributeType, AssertionType.SUBSTRING );
 
-        anyPattern = new ArrayList<String>( 2 );
+        anyPattern = new ArrayList<>( 2 );
         this.finalPattern = null;
         this.initialPattern = null;
     }
@@ -169,9 +168,8 @@ public class SubstringNode extends LeafNode
      *             compiled
      */
     public static Pattern getRegex( String initialPattern, String[] anyPattern, String finalPattern )
-        throws PatternSyntaxException
     {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 
         if ( initialPattern != null )
         {
@@ -205,11 +203,11 @@ public class SubstringNode extends LeafNode
     @Override
     public ExprNode clone()
     {
-        ExprNode clone = ( ExprNode ) super.clone();
+        ExprNode clone = super.clone();
 
         if ( anyPattern != null )
         {
-            ( ( SubstringNode ) clone ).anyPattern = new ArrayList<String>();
+            ( ( SubstringNode ) clone ).anyPattern = new ArrayList<>();
 
             for ( String any : anyPattern )
             {
@@ -303,13 +301,13 @@ public class SubstringNode extends LeafNode
      */
     public final Pattern getRegex( Normalizer normalizer ) throws LdapException
     {
-        if ( ( anyPattern != null ) && ( anyPattern.size() > 0 ) )
+        if ( ( anyPattern != null ) && ( !anyPattern.isEmpty() ) )
         {
             String[] any = new String[anyPattern.size()];
 
             for ( int i = 0; i < any.length; i++ )
             {
-                any[i] = ( String ) normalizer.normalize( anyPattern.get( i ) );
+                any[i] = normalizer.normalize( anyPattern.get( i ) );
 
                 if ( any[i].length() == 0 )
                 {
@@ -321,14 +319,14 @@ public class SubstringNode extends LeafNode
 
             if ( initialPattern != null )
             {
-                initialStr = ( String ) normalizer.normalize( initialPattern );
+                initialStr = normalizer.normalize( initialPattern );
             }
 
             String finalStr = null;
 
             if ( finalPattern != null )
             {
-                finalStr = ( String ) normalizer.normalize( finalPattern );
+                finalStr = normalizer.normalize( finalPattern );
             }
 
             return getRegex( initialStr, any, finalStr );
@@ -338,14 +336,14 @@ public class SubstringNode extends LeafNode
 
         if ( initialPattern != null )
         {
-            initialStr = ( String ) normalizer.normalize( initialPattern );
+            initialStr = normalizer.normalize( initialPattern );
         }
 
         String finalStr = null;
 
         if ( finalPattern != null )
         {
-            finalStr = ( String ) normalizer.normalize( finalPattern );
+            finalStr = normalizer.normalize( finalPattern );
         }
 
         return getRegex( initialStr, null, finalStr );
@@ -433,6 +431,7 @@ public class SubstringNode extends LeafNode
      * @see java.lang.Object#toString()
      * @return A string representing the AndNode
      */
+    @Override
     public String toString()
     {
         StringBuilder buf = new StringBuilder();

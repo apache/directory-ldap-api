@@ -79,7 +79,7 @@ public class AddModifyRequestAttribute extends GrammarAction<LdapMessageContaine
         TLV tlv = container.getCurrentTLV();
 
         // Store the value. It can't be null
-        String type = null;
+        String type;
 
         if ( tlv.getLength() == 0 )
         {

@@ -22,17 +22,16 @@ package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 import java.text.ParseException;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.parsers.LdapSyntaxDescriptionSchemaParser;
 import org.apache.directory.api.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
  * A SyntaxChecker which verifies that a value follows the
- * LDAP syntax descripton syntax according to RFC 4512, par 4.2.2:
+ * LDAP syntax description syntax according to RFC 4512, par 4.2.2:
  * 
  * <pre>
  * SyntaxDescription = LPAREN WSP
@@ -44,36 +43,78 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class LdapSyntaxDescriptionSyntaxChecker extends SyntaxChecker
+public final class LdapSyntaxDescriptionSyntaxChecker extends SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( LdapSyntaxDescriptionSyntaxChecker.class );
-
     /** The schema parser used to parse the LdapSyntax description Syntax */
-    private LdapSyntaxDescriptionSchemaParser schemaParser = new LdapSyntaxDescriptionSchemaParser();
-
-
+    private transient LdapSyntaxDescriptionSchemaParser schemaParser = new LdapSyntaxDescriptionSchemaParser();
+    
     /**
-     * 
+     * A static instance of LdapSyntaxDescriptionSyntaxChecker
+     */
+    public static final LdapSyntaxDescriptionSyntaxChecker INSTANCE = 
+        new LdapSyntaxDescriptionSyntaxChecker( SchemaConstants.LDAP_SYNTAX_DESCRIPTION_SYNTAX );
+    
+    /**
+     * A static Builder for this class
+     */
+    public static final class Builder extends SCBuilder<LdapSyntaxDescriptionSyntaxChecker>
+    {
+        /**
+         * The Builder constructor
+         */
+        private Builder()
+        {
+            super( SchemaConstants.LDAP_SYNTAX_DESCRIPTION_SYNTAX );
+        }
+        
+        
+        /**
+         * Create a new instance of LdapSyntaxDescriptionSyntaxChecker
+         * @return A new instance of LdapSyntaxDescriptionSyntaxChecker
+         */
+        @Override
+        public LdapSyntaxDescriptionSyntaxChecker build()
+        {
+            return new LdapSyntaxDescriptionSyntaxChecker( oid );
+        }
+    }
+
+    
+    /**
      * Creates a new instance of LdapSyntaxDescriptionSyntaxChecker.
      *
+     * @param oid The OID to use for this SyntaxChecker
      */
-    public LdapSyntaxDescriptionSyntaxChecker()
+    private LdapSyntaxDescriptionSyntaxChecker( String oid )
     {
-        super( SchemaConstants.LDAP_SYNTAX_DESCRIPTION_SYNTAX );
+        super( oid );
+    }
+
+    
+    /**
+     * @return An instance of the Builder for this class
+     */
+    public static Builder builder()
+    {
+        return new Builder();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidSyntax( Object value )
     {
-        String strValue = null;
+        String strValue;
 
         if ( value == null )
         {
-            LOG.debug( "Syntax invalid for 'null'" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, "null" ) );
+            }
+            
             return false;
         }
 
@@ -93,13 +134,21 @@ public class LdapSyntaxDescriptionSyntaxChecker extends SyntaxChecker
         try
         {
             schemaParser.parseLdapSyntaxDescription( strValue );
-            LOG.debug( "Syntax valid for '{}'", value );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04489_SYNTAX_VALID, value ) );
+            }
 
             return true;
         }
         catch ( ParseException pe )
         {
-            LOG.debug( "Syntax invalid for '{}'", value );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.err( I18n.ERR_04488_SYNTAX_INVALID, value ) );
+            }
+            
             return false;
         }
     }

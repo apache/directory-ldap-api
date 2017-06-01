@@ -74,7 +74,7 @@ public final class SchemaToLdif
     public static void transform( List<Schema> schemas ) throws ParserException
     {
         // Bypass if no schemas have yet been defined 
-        if ( ( schemas == null ) || ( schemas.size() == 0 ) )
+        if ( ( schemas == null ) || schemas.isEmpty() )
         {
             LOG.warn( "No schemas defined!" );
             return;

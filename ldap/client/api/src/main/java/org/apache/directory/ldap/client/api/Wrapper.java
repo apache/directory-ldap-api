@@ -24,6 +24,8 @@ package org.apache.directory.ldap.client.api;
  * An interface for defining wrapper objects.  An implementation of this class
  * <b>MUST</b> implement <code>T</code> as well
  *
+ * @param <T> The wrapped type
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface Wrapper<T>

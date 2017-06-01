@@ -149,15 +149,15 @@ public class DitContentRule extends AbstractSchemaObject
     {
         super( SchemaObjectType.DIT_CONTENT_RULE, oid );
 
-        mayAttributeTypeOids = new ArrayList<String>();
-        mustAttributeTypeOids = new ArrayList<String>();
-        notAttributeTypeOids = new ArrayList<String>();
-        auxObjectClassOids = new ArrayList<String>();
+        mayAttributeTypeOids = new ArrayList<>();
+        mustAttributeTypeOids = new ArrayList<>();
+        notAttributeTypeOids = new ArrayList<>();
+        auxObjectClassOids = new ArrayList<>();
 
-        mayAttributeTypes = new ArrayList<AttributeType>();
-        mustAttributeTypes = new ArrayList<AttributeType>();
-        notAttributeTypes = new ArrayList<AttributeType>();
-        auxObjectClasses = new ArrayList<ObjectClass>();
+        mayAttributeTypes = new ArrayList<>();
+        mustAttributeTypes = new ArrayList<>();
+        notAttributeTypes = new ArrayList<>();
+        auxObjectClasses = new ArrayList<>();
     }
 
 
@@ -566,6 +566,7 @@ public class DitContentRule extends AbstractSchemaObject
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         return SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( this );
@@ -575,6 +576,7 @@ public class DitContentRule extends AbstractSchemaObject
     /**
      * Copy a DitContentRule
      */
+    @Override
     public DitContentRule copy()
     {
         DitContentRule copy = new DitContentRule( oid );
@@ -583,7 +585,7 @@ public class DitContentRule extends AbstractSchemaObject
         copy.copy( this );
 
         // copy the AUX ObjectClasses OIDs
-        copy.auxObjectClassOids = new ArrayList<String>();
+        copy.auxObjectClassOids = new ArrayList<>();
 
         for ( String oid : auxObjectClassOids )
         {
@@ -591,10 +593,10 @@ public class DitContentRule extends AbstractSchemaObject
         }
 
         // copy the AUX ObjectClasses ( will be empty )
-        copy.auxObjectClasses = new ArrayList<ObjectClass>();
+        copy.auxObjectClasses = new ArrayList<>();
 
         // Clone the MAY AttributeTypes OIDs
-        copy.mayAttributeTypeOids = new ArrayList<String>();
+        copy.mayAttributeTypeOids = new ArrayList<>();
 
         for ( String oid : mayAttributeTypeOids )
         {
@@ -602,10 +604,10 @@ public class DitContentRule extends AbstractSchemaObject
         }
 
         // Clone the MAY AttributeTypes ( will be empty )
-        copy.mayAttributeTypes = new ArrayList<AttributeType>();
+        copy.mayAttributeTypes = new ArrayList<>();
 
         // Clone the MUST AttributeTypes OIDs
-        copy.mustAttributeTypeOids = new ArrayList<String>();
+        copy.mustAttributeTypeOids = new ArrayList<>();
 
         for ( String oid : mustAttributeTypeOids )
         {
@@ -613,10 +615,10 @@ public class DitContentRule extends AbstractSchemaObject
         }
 
         // Clone the MUST AttributeTypes ( will be empty )
-        copy.mustAttributeTypes = new ArrayList<AttributeType>();
+        copy.mustAttributeTypes = new ArrayList<>();
 
         // Clone the NOT AttributeTypes OIDs
-        copy.notAttributeTypeOids = new ArrayList<String>();
+        copy.notAttributeTypeOids = new ArrayList<>();
 
         for ( String oid : notAttributeTypeOids )
         {
@@ -624,7 +626,7 @@ public class DitContentRule extends AbstractSchemaObject
         }
 
         // Clone the NOT AttributeTypes ( will be empty )
-        copy.notAttributeTypes = new ArrayList<AttributeType>();
+        copy.notAttributeTypes = new ArrayList<>();
 
         return copy;
     }
@@ -657,6 +659,7 @@ public class DitContentRule extends AbstractSchemaObject
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear()
     {
         // Clear the common elements

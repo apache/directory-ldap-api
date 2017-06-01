@@ -42,7 +42,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class MatchingRuleUseDescriptionSyntaxCheckerTest
 {
-    private MatchingRuleUseDescriptionSyntaxChecker checker = new MatchingRuleUseDescriptionSyntaxChecker();
+    private MatchingRuleUseDescriptionSyntaxChecker checker = MatchingRuleUseDescriptionSyntaxChecker.INSTANCE;
 
 
     @Test

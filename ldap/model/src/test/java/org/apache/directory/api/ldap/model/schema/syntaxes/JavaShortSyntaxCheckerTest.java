@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class JavaShortSyntaxCheckerTest
 {
-    JavaShortSyntaxChecker checker = new JavaShortSyntaxChecker();
+    JavaShortSyntaxChecker checker = JavaShortSyntaxChecker.INSTANCE;
 
 
     @Test

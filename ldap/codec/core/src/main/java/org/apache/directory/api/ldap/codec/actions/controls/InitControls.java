@@ -35,6 +35,8 @@ import org.slf4j.LoggerFactory;
  * <pre>
  *         ... },
  *     controls       [0] Controls OPTIONAL }
+ *     
+ * Controls ::= SEQUENCE OF control Control
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -64,18 +66,23 @@ public class InitControls extends GrammarAction<LdapMessageContainer<MessageDeco
         TLV tlv = container.getCurrentTLV();
         int expectedLength = tlv.getLength();
 
-        // The Length should be null
-        if ( expectedLength == 0 )
+        // The Length can be null
+        if ( expectedLength != 0 )
         {
-            LOG.error( "The length of controls must not be null" );
-
-            // This will generate a PROTOCOL_ERROR
-            throw new DecoderException( "The length of controls must not be null" );
+            if ( IS_DEBUG )
+            {
+                LOG.debug( "A new list of controls has been initialized" );
+            }
+        }
+        else
+        {
+            if ( IS_DEBUG )
+            {
+                LOG.debug( "An empty list of controls has been initialized" );
+            }
         }
 
-        if ( IS_DEBUG )
-        {
-            LOG.debug( "A new list of controls has been initialized" );
-        }
+        // We can have an END transition
+        container.setGrammarEndAllowed( true );
     }
 }

@@ -40,14 +40,14 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueEx
 public class BinaryAnonymizer extends AbstractAnonymizer<byte[]>
 {
     /** The latest anonymized byte[] value map */
-    protected Map<Integer, byte[]> latestBytesMap = new HashMap<Integer, byte[]>();
+    protected Map<Integer, byte[]> latestBytesMap = new HashMap<>();
 
     /**
      * Creates a new instance of BinaryAnonymizer.
      */
     public BinaryAnonymizer()
     {
-        latestBytesMap = new HashMap<Integer, byte[]>();
+        latestBytesMap = new HashMap<>();
     }
 
     
@@ -60,7 +60,7 @@ public class BinaryAnonymizer extends AbstractAnonymizer<byte[]>
     {
         if ( latestBytesMap == null )
         {
-            this.latestBytesMap = new HashMap<Integer, byte[]>();
+            this.latestBytesMap = new HashMap<>();
         }
         else
         {
@@ -71,6 +71,7 @@ public class BinaryAnonymizer extends AbstractAnonymizer<byte[]>
     /**
      * Anonymize an attribute using pure random values (either chars of bytes, depending on the Attribute type)
      */
+    @Override
     public Attribute anonymize( Map<Value<byte[]>, Value<byte[]>> valueMap, Set<Value<byte[]>> valueSet, Attribute attribute )
     {
         Attribute result = new DefaultAttribute( attribute.getAttributeType() );
@@ -89,7 +90,6 @@ public class BinaryAnonymizer extends AbstractAnonymizer<byte[]>
             }
             catch ( LdapInvalidAttributeValueException e )
             {
-                // TODO Auto-generated catch block
                 throw new RuntimeException( "Error while anonymizing the value" + value );
             }
         }
@@ -101,6 +101,7 @@ public class BinaryAnonymizer extends AbstractAnonymizer<byte[]>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<Integer, byte[]> getLatestBytesMap()
     {
         return latestBytesMap;
@@ -110,7 +111,8 @@ public class BinaryAnonymizer extends AbstractAnonymizer<byte[]>
     /**
      * {@inheritDoc}
      */
-    public void setLatestBytesgMap( Map<Integer, byte[]> latestBytesMap )
+    @Override
+    public void setLatestBytesMap( Map<Integer, byte[]> latestBytesMap )
     {
         this.latestBytesMap = latestBytesMap;
     }

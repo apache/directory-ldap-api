@@ -66,6 +66,7 @@ public class SaslCallbackHandler implements CallbackHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void handle( Callback[] callbacks ) throws IOException, UnsupportedCallbackException
     {
         for ( Callback cb : callbacks )

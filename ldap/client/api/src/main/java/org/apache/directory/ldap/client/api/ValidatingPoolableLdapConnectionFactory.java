@@ -21,7 +21,11 @@
 package org.apache.directory.ldap.client.api;
 
 
+import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.message.BindRequest;
+import org.apache.directory.api.ldap.model.message.ExtendedRequest;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -123,6 +127,7 @@ public class ValidatingPoolableLdapConnectionFactory extends AbstractPoolableLda
      * 
      * @throws LdapException If unable to connect.
      */
+    @Override
     public MonitoringLdapConnection makeObject() throws LdapException
     {
         LOG.debug( "Creating a LDAP connection" );
@@ -138,6 +143,7 @@ public class ValidatingPoolableLdapConnectionFactory extends AbstractPoolableLda
      * 
      * @throws LdapException If unable to reconfigure and rebind.
      */
+    @Override
     public void passivateObject( LdapConnection connection ) throws LdapException
     {
         LOG.debug( "Passivating {}", connection );

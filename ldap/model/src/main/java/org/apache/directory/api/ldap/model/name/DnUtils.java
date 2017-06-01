@@ -27,6 +27,11 @@ package org.apache.directory.api.ldap.model.name;
  */
 public final class DnUtils
 {
+    private DnUtils()
+    {
+    }
+
+
     /**
      * Gets the attributeType of a RDN (the left part of the RDN). The RDN is supposed
      * to contain only one AVA.
@@ -52,10 +57,5 @@ public final class DnUtils
     {
         int index = rdn.indexOf( '=' );
         return rdn.substring( index + 1, rdn.length() );
-    }
-
-
-    private DnUtils()
-    {
     }
 }

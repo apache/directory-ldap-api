@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.codec.controls.search.persistentSearch;
 
 
-import org.apache.directory.api.asn1.ber.grammar.Grammar;
 import org.apache.directory.api.asn1.ber.grammar.States;
 
 
@@ -71,23 +70,6 @@ public enum PersistentSearchStates implements States
 
 
     /**
-     * Get the grammar name
-     * 
-     * @param grammar The grammar class
-     * @return The grammar name
-     */
-    public String getGrammarName( Grammar<?> grammar )
-    {
-        if ( grammar instanceof PersistentSearchGrammar )
-        {
-            return "PSEARCH_GRAMMAR";
-        }
-
-        return "UNKNOWN GRAMMAR";
-    }
-
-
-    /**
      * Get the string representing the state
      * 
      * @param state The state number
@@ -95,13 +77,14 @@ public enum PersistentSearchStates implements States
      */
     public String getState( int state )
     {
-        return ( ( state == END_STATE.ordinal() ) ? "PSEARCH_END_STATE" : name() );
+        return ( state == END_STATE.ordinal() ) ? "PSEARCH_END_STATE" : name();
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isEndState()
     {
         return this == END_STATE;
@@ -111,6 +94,7 @@ public enum PersistentSearchStates implements States
     /**
      * {@inheritDoc}
      */
+    @Override
     public PersistentSearchStates getStartState()
     {
         return START_STATE;

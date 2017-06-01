@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class DlSubmitPermissionSyntaxCheckerTest
 {
-    DlSubmitPermissionSyntaxChecker checker = new DlSubmitPermissionSyntaxChecker();
+    DlSubmitPermissionSyntaxChecker checker = DlSubmitPermissionSyntaxChecker.INSTANCE;
 
 
     @Test

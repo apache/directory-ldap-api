@@ -43,7 +43,6 @@ import org.apache.directory.api.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.comparators.ByteArrayComparator;
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.OctetStringSyntaxChecker;
-import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.junit.Before;
 import org.junit.Test;
@@ -87,7 +86,7 @@ public class BinaryValueAttributeTypeTest
     public void initAT()
     {
         s = EntryUtils.syntaxFactory( "1.1.1.1", false );
-        s.setSyntaxChecker( new OctetStringSyntaxChecker() );
+        s.setSyntaxChecker( OctetStringSyntaxChecker.INSTANCE );
         mr = EntryUtils.matchingRuleFactory( "1.1.2.1" );
         mr.setSyntax( s );
 
@@ -252,9 +251,9 @@ public class BinaryValueAttributeTypeTest
     {
         AttributeType attribute = EntryUtils.getBytesAttributeType();
 
-        BinaryValue value = new BinaryValue( attribute, StringConstants.EMPTY_BYTES );
+        BinaryValue value = new BinaryValue( attribute, Strings.EMPTY_BYTES );
 
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, value.getReference() ) );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, value.getReference() ) );
         assertFalse( value.isNull() );
     }
 
@@ -306,10 +305,10 @@ public class BinaryValueAttributeTypeTest
 
         assertEquals( bv, bv1 );
 
-        bv = new BinaryValue( StringConstants.EMPTY_BYTES );
+        bv = new BinaryValue( Strings.EMPTY_BYTES );
 
         assertNotSame( bv, bv1 );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, bv.getBytes() ) );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, bv.getBytes() ) );
 
         bv = new BinaryValue( BYTES2 );
         bv1 = bv.clone();
@@ -370,8 +369,8 @@ public class BinaryValueAttributeTypeTest
         BinaryValue value = new BinaryValue( attribute, null );
         assertNull( value.getNormValue() );
 
-        value = new BinaryValue( attribute, StringConstants.EMPTY_BYTES );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, value.getNormValue() ) );
+        value = new BinaryValue( attribute, Strings.EMPTY_BYTES );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, value.getNormValue() ) );
 
         value = new BinaryValue( attribute, BYTES2 );
         assertTrue( Arrays.equals( BYTES1, value.getNormValue() ) );
@@ -389,8 +388,8 @@ public class BinaryValueAttributeTypeTest
         BinaryValue value = new BinaryValue( attribute, null );
         assertNull( value.getNormValue() );
 
-        value = new BinaryValue( attribute, StringConstants.EMPTY_BYTES );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, value.getNormValue() ) );
+        value = new BinaryValue( attribute, Strings.EMPTY_BYTES );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, value.getNormValue() ) );
 
         value = new BinaryValue( attribute, BYTES2 );
         assertTrue( Arrays.equals( BYTES1, value.getNormValue() ) );
@@ -408,8 +407,8 @@ public class BinaryValueAttributeTypeTest
         BinaryValue value = new BinaryValue( attribute, null );
         assertNull( value.getNormReference() );
 
-        value = new BinaryValue( attribute, StringConstants.EMPTY_BYTES );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, value.getNormReference() ) );
+        value = new BinaryValue( attribute, Strings.EMPTY_BYTES );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, value.getNormReference() ) );
 
         value = new BinaryValue( attribute, BYTES2 );
         assertTrue( Arrays.equals( BYTES1, value.getNormReference() ) );
@@ -440,7 +439,7 @@ public class BinaryValueAttributeTypeTest
         AttributeType attribute = EntryUtils.getBytesAttributeType();
 
         new BinaryValue( attribute, null );
-        new BinaryValue( attribute, StringConstants.EMPTY_BYTES );
+        new BinaryValue( attribute, Strings.EMPTY_BYTES );
         new BinaryValue( attribute, new byte[]
             { 0x01, 0x02 } );
 
@@ -515,9 +514,9 @@ public class BinaryValueAttributeTypeTest
         bv.apply( at );
         assertEquals( null, bv.getNormValue() );
 
-        bv = new BinaryValue( attribute, StringConstants.EMPTY_BYTES );
+        bv = new BinaryValue( attribute, Strings.EMPTY_BYTES );
         bv.apply( at );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, bv.getNormValue() ) );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, bv.getNormValue() ) );
 
         bv = new BinaryValue( attribute, BYTES2 );
         bv.apply( at );
@@ -639,13 +638,13 @@ public class BinaryValueAttributeTypeTest
     public void testEmptyBinaryValueSerialization() throws LdapException, IOException, ClassNotFoundException
     {
         // First check with a value which will be normalized
-        BinaryValue sbv = new BinaryValue( at, StringConstants.EMPTY_BYTES );
+        BinaryValue sbv = new BinaryValue( at, Strings.EMPTY_BYTES );
 
         sbv.apply( at );
         byte[] normalized = sbv.getNormReference();
 
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, normalized ) );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, sbv.getBytes() ) );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, normalized ) );
+        assertTrue( Arrays.equals( Strings.EMPTY_BYTES, sbv.getBytes() ) );
 
         BinaryValue sbvSer = deserializeValue( serializeValue( sbv ), at );
 
