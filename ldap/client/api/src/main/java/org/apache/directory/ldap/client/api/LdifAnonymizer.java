@@ -358,9 +358,8 @@ public class LdifAnonymizer
      * Remove an attributeType that has to be anonymized
      *
      * @param attributeType the AttributeType that we don't want to be anonymized
-     * @throws LdapException If the attributeType cannot be removed
      */
-    public void removeAnonAttributeType( AttributeType attributeType ) throws LdapException
+    public void removeAnonAttributeType( AttributeType attributeType )
     {
         attributeAnonymizers.remove( attributeType );
     }
