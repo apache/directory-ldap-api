@@ -563,7 +563,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     private void addToFutureMap( int messageId, ResponseFuture<? extends Response> future )
     {
-        LOG.debug( "Adding <" + messageId + ", " + future.getClass().getName() + ">" );
+        LOG.debug( "Adding <{}, {}>", messageId, future.getClass().getName()  );
         futureMap.put( messageId, future );
     }
 
@@ -574,7 +574,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         if ( future != null )
         {
-            LOG.debug( "Removing <" + messageId + ", " + future.getClass().getName() + ">" );
+            LOG.debug( "Removing <{}, {}>", messageId, future.getClass().getName() );
         }
 
         return future;
