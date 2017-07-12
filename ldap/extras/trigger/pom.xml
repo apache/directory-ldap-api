@@ -106,6 +106,7 @@
               antlr.collections.impl;version=${antlr.version},
               org.apache.commons.lang;version=${commons.lang.version},
               org.apache.directory.api.i18n;version=${project.version},
+              org.apache.directory.api.util;version=${project.version},
               org.apache.directory.api.ldap.model.constants;version=${project.version},
               org.apache.directory.api.ldap.model.entry;version=${project.version},
               org.apache.directory.api.ldap.model.message;version=${project.version},
