@@ -29,7 +29,7 @@ import org.apache.directory.api.ldap.model.constants.SupportedSaslMechanisms;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SaslCramMd5Request extends SaslRequest
+public class SaslCramMd5Request extends AbstractSaslRequest
 {
     /**
      * Creates a new instance of SaslCramMd5Request.

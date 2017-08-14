@@ -1464,6 +1464,64 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
 
     /**
+     * Bind to the server using a SaslRequest object.
+     *
+     * @param request The SaslRequest POJO containing all the needed parameters
+     * @return A LdapResponse containing the result
+     * @throws LdapException if some error occurred
+     */
+    public BindResponse bind( SaslRequest request ) throws LdapException
+    {
+        if ( request == null )
+        {
+            String msg = "Cannot process a null request";
+            LOG.debug( msg );
+            throw new IllegalArgumentException( msg );
+        }
+
+        BindFuture bindFuture = bindAsync( request );
+
+
+        // Get the result from the future
+        try
+        {
+            // Read the response, waiting for it if not available immediately
+            // Get the response, blocking
+            BindResponse bindResponse = bindFuture.get( timeout, TimeUnit.MILLISECONDS );
+
+            if ( bindResponse == null )
+            {
+                // We didn't received anything : this is an error
+                LOG.error( "Bind failed : timeout occurred" );
+                throw new LdapException( TIME_OUT_ERROR );
+            }
+
+            if ( bindResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
+            {
+                authenticated.set( true );
+
+                // Everything is fine, return the response
+                LOG.debug( "Bind successful : {}", bindResponse );
+            }
+            else
+            {
+                // We have had an error
+                LOG.debug( "Bind failed : {}", bindResponse );
+            }
+
+            return bindResponse;
+        }
+        catch ( Exception ie )
+        {
+            // Catch all other exceptions
+            LOG.error( NO_RESPONSE_ERROR, ie );
+
+            throw new LdapException( NO_RESPONSE_ERROR, ie );
+        }
+    }
+
+
+    /**
      * Bind to the server using a CramMd5Request object.
      *
      * @param request The CramMd5Request POJO containing all the needed parameters
@@ -4060,8 +4118,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * Process the SASL Bind. It's a dialog with the server, we will send a first BindRequest, receive
      * a response and the, if this response is a challenge, continue by sending a new BindRequest with
      * the requested informations.
+     *
+     * @param saslRequest The SASL request object containing all the needed parameters
+     * @return A {@link BindResponse} containing the result
+     * @throws LdapException if some error occurred
      */
-    private BindFuture bindSasl( SaslRequest saslRequest ) throws LdapException
+    public BindFuture bindSasl( SaslRequest saslRequest ) throws LdapException
     {
         // First switch to anonymous state
         authenticated.set( false );
@@ -4073,8 +4135,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         checkSession();
 
         BindRequest bindRequest = createBindRequest( ( String ) null, null,
-            saslRequest.getSaslMechanism(), saslRequest
-                .getControls() );
+            saslRequest.getSaslMechanism(), saslRequest.getControls() );
 
         // Update the messageId
         int newId = messageId.incrementAndGet();

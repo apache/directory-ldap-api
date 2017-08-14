@@ -236,6 +236,16 @@ public interface LdapConnection extends Closeable
 
 
     /**
+     * SASL Bind to the server using a SASL request object.
+     *
+     * @param saslRequest The SASL request object containing all the needed parameters
+     * @return A {@link BindResponse} containing the result
+     * @throws LdapException if some error occurred
+     */
+    BindResponse bind( SaslRequest saslRequest ) throws LdapException;
+
+
+    /**
      * Do a search, on the base object, using the given filter and scope. The
      * SearchRequest parameters default to
      * <ul>

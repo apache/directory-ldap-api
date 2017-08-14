@@ -31,7 +31,7 @@ import org.apache.directory.api.ldap.model.constants.SupportedSaslMechanisms;
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SaslGssApiRequest extends SaslRequest
+public class SaslGssApiRequest extends AbstractSaslRequest
 {
     /** The KDC host*/
     protected String kdcHost;

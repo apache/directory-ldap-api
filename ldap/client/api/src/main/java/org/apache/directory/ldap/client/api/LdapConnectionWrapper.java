@@ -244,6 +244,16 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
      * {@inheritDoc}
      */
     @Override
+    public BindResponse bind( SaslRequest saslRequest ) throws LdapException
+    {
+        return connection.bind( saslRequest );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public EntryCursor search( Dn baseDn, String filter, SearchScope scope, String... attributes )
         throws LdapException
     {
