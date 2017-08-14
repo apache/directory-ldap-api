@@ -638,6 +638,14 @@ public class QuirkySchemaTest
                 // TODO Auto-generated method stub
                 return false;
             }
+
+
+            @Override
+            public BindResponse bind( SaslRequest saslRequest ) throws LdapException
+            {
+                // TODO Auto-generated method stub
+                return null;
+            }
         };
     }
     
