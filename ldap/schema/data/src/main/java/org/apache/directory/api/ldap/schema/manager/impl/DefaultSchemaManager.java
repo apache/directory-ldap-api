@@ -1322,7 +1322,7 @@ public class DefaultSchemaManager implements SchemaManager
          */
         for ( String depName : deps )
         {
-            if ( registries.isSchemaLoaded( schemaName ) )
+            if ( registries.isSchemaLoaded( depName ) )
             {
                 // The schema is already loaded. Loop on the next schema
                 continue;
