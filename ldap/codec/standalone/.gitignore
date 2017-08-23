@@ -1,0 +1,15 @@
+target
+maven-eclipse.xml
+lib
+.externalToolBuilders
+felix-cache
+.project
+.classpath
+.settings
+eclipse-classes
+*.log
+*.iml
+*.ipr
+bin
+dependency-reduced-pom.xml
+META-INF

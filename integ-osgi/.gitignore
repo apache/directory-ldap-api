@@ -1,0 +1,10 @@
+target
+bin
+.classpath
+.project
+.settings
+*.log
+*.iml
+*.ipr
+META-INF
+
