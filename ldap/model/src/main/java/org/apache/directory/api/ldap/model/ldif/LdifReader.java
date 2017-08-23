@@ -764,7 +764,10 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
                 String result = null;
 
-                result = value.substring( 0, end );
+                if ( end > 0 )
+                {
+                    result = value.substring( 0, end );
+                }
 
                 return result;
             }

@@ -2249,40 +2249,39 @@ public class LdifReaderTest
                 "changetype: delete\n" +
                 "attr1: test";
 
-        LdifReader reader = new LdifReader();
-
-        try
+        try ( LdifReader reader = new LdifReader() )
         {
-            reader.parseLdif( ldif );
-            fail();
+            try
+            {
+                reader.parseLdif( ldif );
+                fail();
+            }
+            catch ( Exception e )
+            {
+            }
+            
+            assertEquals( 1, reader.getLineNumber() );
         }
-        catch ( Exception e )
-        {
-        }
-        
-        assertEquals( 1, reader.getLineNumber() );
-
-        reader.close();
 
         ldif =
             "version:   1\n" +
                 "d n: dc=example,dc=com\n" + // wrong name "d n"
                 "changetype: delete\n" +
                 "attr1: test";
-        reader = new LdifReader();
 
-        try
+        try ( LdifReader reader = new LdifReader() )
         {
-            reader.parseLdif( ldif );
-            fail();
+            try
+            {
+                reader.parseLdif( ldif );
+                fail();
+            }
+            catch ( Exception e )
+            {
+            }
+    
+            assertEquals( 2, reader.getLineNumber() );
         }
-        catch ( Exception e )
-        {
-        }
-
-        assertEquals( 2, reader.getLineNumber() );
-        
-        reader.close();
 
         // wrong changetype
         ldif =
@@ -2290,18 +2289,20 @@ public class LdifReaderTest
                 "dn: dc=example,dc=com\n" +
                 "changetype: delete\n" +
                 "attr1: test";
-        reader = new LdifReader();
-
-        try
-        {
-            reader.parseLdif( ldif );
-            fail();
-        }
-        catch ( Exception e )
-        {
-        }
         
-        assertEquals( 4, reader.getLineNumber() );
+        try ( LdifReader reader = new LdifReader() )
+        {
+            try
+            {
+                reader.parseLdif( ldif );
+                fail();
+            }
+            catch ( Exception e )
+            {
+            }
+            
+            assertEquals( 4, reader.getLineNumber() );
+        }
 
         ldif =
             "version:   1\n" +
@@ -2320,19 +2321,19 @@ public class LdifReaderTest
                 "dependencies:\n" +
                 "envVars:";
         
-        reader = new LdifReader();
-
-        try
+        try ( LdifReader reader = new LdifReader() )
         {
-            reader.parseLdif( ldif );
-            fail( "shouldn't be parsed" );
+            try
+            {
+                reader.parseLdif( ldif );
+                fail( "shouldn't be parsed" );
+            }
+            catch ( Exception e )
+            {
+            }
+    
+            assertEquals( 10, reader.getLineNumber() );
         }
-        catch ( Exception e )
-        {
-        }
-
-        assertEquals( 10, reader.getLineNumber() );
-        reader.close();
     }
 
 
@@ -2349,32 +2350,33 @@ public class LdifReaderTest
                 "dependencies:\n" +
                 "envVars:";
 
-        LdifReader reader = new LdifReader();
-        List<LdifEntry> entries = reader.parseLdif( ldif );
-        reader.close();
-
-        assertNotNull( entries );
-
-        LdifEntry entry = entries.get( 0 );
-        assertTrue( entry.isLdifContent() );
-
-        assertEquals( "", entry.getDn().getName() );
-
-        Attribute attr = entry.get( "cn" );
-        assertTrue( attr.contains( "app1" ) );
-
-        attr = entry.get( "objectclass" );
-        assertTrue( attr.contains( "top" ) );
-        assertTrue( attr.contains( "apApplication" ) );
-
-        attr = entry.get( "displayname" );
-        assertTrue( attr.contains( "app1" ) );
-
-        attr = entry.get( "dependencies" );
-        assertEquals( "", attr.get().getValue() );
-
-        attr = entry.get( "envvars" );
-        assertEquals( "", attr.get().getValue() );
+        try ( LdifReader reader = new LdifReader() )
+        {
+            List<LdifEntry> entries = reader.parseLdif( ldif );
+    
+            assertNotNull( entries );
+    
+            LdifEntry entry = entries.get( 0 );
+            assertTrue( entry.isLdifContent() );
+    
+            assertEquals( "", entry.getDn().getName() );
+    
+            Attribute attr = entry.get( "cn" );
+            assertTrue( attr.contains( "app1" ) );
+    
+            attr = entry.get( "objectclass" );
+            assertTrue( attr.contains( "top" ) );
+            assertTrue( attr.contains( "apApplication" ) );
+    
+            attr = entry.get( "displayname" );
+            assertTrue( attr.contains( "app1" ) );
+    
+            attr = entry.get( "dependencies" );
+            assertEquals( "", attr.get().getValue() );
+    
+            attr = entry.get( "envvars" );
+            assertEquals( "", attr.get().getValue() );
+        }
     }
 
 
@@ -2500,7 +2502,6 @@ public class LdifReaderTest
     }
 
 
-
     @Test
     public void testLdifParserWithReplaceEmptyValue() throws Exception, Exception
     {
@@ -2525,5 +2526,42 @@ public class LdifReaderTest
 
         assertEquals( ldif, entry.toString() );
         reader.close();
+    }
+
+
+    @Test
+    public void testLdifParserWithNullDn() throws Exception, Exception
+    {
+        String ldif1 =
+            "dn: ads-authenticatorid=anonymousauthenticator,ou=authenticators,ads-interceptorId=authenticationInterceptor,ou=interceptors,ads-directoryServiceId=default,ou=config\n" +
+            "ads-authenticatorid: anonymousauthenticator\n" +
+            "objectclass: top\n" +
+            "objectclass: ads-base\n" +
+            "objectClass: ads-authenticator\n" +
+            "objectClass: ads-authenticatorImpl\n" +
+            "ads-authenticatorClass: org.apache.directory.server.core.authn.AnonymousAuthenticator\n" +
+            "ads-baseDn: \n" +
+            "ads-enabled: TRUE";
+
+        String ldif2 =
+            "dn: ads-authenticatorid=anonymousauthenticator,ou=authenticators,ads-interceptorId=authenticationInterceptor,ou=interceptors,ads-directoryServiceId=default,ou=config\n" +
+            "ads-authenticatorid: anonymousauthenticator\n" +
+            "objectclass: top\n" +
+            "objectclass: ads-base\n" +
+            "objectClass: ads-authenticator\n" +
+            "objectClass: ads-authenticatorImpl\n" +
+            "ads-authenticatorClass: org.apache.directory.server.core.authn.AnonymousAuthenticator\n" +
+            "ads-baseDn:\n" +
+            "ads-enabled: TRUE";
+
+        try ( LdifReader reader = new LdifReader() )
+        {
+            List<LdifEntry> entries1 = reader.parseLdif( ldif1 );
+            LdifEntry entry1 = entries1.get( 0 );
+    
+            List<LdifEntry> entries2 = reader.parseLdif( ldif2 );
+            LdifEntry entry2 = entries2.get( 0 );
+            assertEquals( entry1, entry2 );
+        }
     }
 }
