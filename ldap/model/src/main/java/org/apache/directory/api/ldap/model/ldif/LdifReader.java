@@ -992,7 +992,11 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             {
                 if ( at.getSyntax().isHumanReadable() )
                 {
-                    if ( attributeValue instanceof byte[] )
+                    if ( attributeValue == null )
+                    {
+                        attributeValue = "";
+                    }
+                    else if ( attributeValue instanceof byte[] )
                     {
                         attributeValue = Strings.utf8ToString( ( byte[] ) attributeValue );
                     }
