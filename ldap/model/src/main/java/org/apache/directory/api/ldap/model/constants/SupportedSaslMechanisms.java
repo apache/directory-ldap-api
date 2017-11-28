@@ -47,6 +47,9 @@ public final class SupportedSaslMechanisms
     /** Not a SASL JDK supported mechanism */
     public static final String GSS_SPNEGO = "GSS-SPNEGO";
 
+    /** EXTERNAL mechanism */
+    public static final String EXTERNAL = "EXTERNAL";
+
     /**
      *  Ensures no construction of this class, also ensures there is no need for final keyword above
      *  (Implicit super constructor is not visible for default constructor),
