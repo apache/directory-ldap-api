@@ -108,8 +108,6 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      */
     public Value( String upValue )
     {
-        isHR = true;
-        
         this.upValue = upValue;
         
         // We can't normalize the value, we store it as is
@@ -131,8 +129,6 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      */
     public Value( byte[] value )
     {
-        isHR = false;
-        
         if ( value != null )
         {
             bytes = new byte[value.length];
@@ -157,7 +153,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      */
     public Value( AttributeType attributeType, byte[] upValue ) throws LdapInvalidAttributeValueException
     {
-        isHR = false;
+        init( attributeType );
         
         if ( upValue != null )
         {
@@ -168,8 +164,6 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         {
             bytes = null;
         }
-
-        this.attributeType = attributeType;
         
         if ( ( attributeType != null ) && !attributeType.isRelaxed() )
         {
@@ -192,18 +186,10 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
 
         hashCode();
     }
-
-
-    /**
-     * Creates a schema aware binary Value with an initial value. This method is
-     * only to be used by deserializers.
-     *
-     * @param attributeType the schema type associated with this Value
-     * @param value the value to wrap
-     */
-    /* Package protected*/ Value( AttributeType attributeType )
+    
+    
+    private void init( AttributeType attributeType )
     {
-        // The AttributeType must have a Syntax
         if ( attributeType != null )
         {
             if ( attributeType.getSyntax() == null )
@@ -222,8 +208,21 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         {
             LOG.warn( "The attributeType is null" );
         }
-
+        
         this.attributeType = attributeType;
+    }
+
+
+    /**
+     * Creates a schema aware binary Value with an initial value. This method is
+     * only to be used by deserializers.
+     *
+     * @param attributeType the schema type associated with this Value
+     * @param value the value to wrap
+     */
+    /* Package protected*/ Value( AttributeType attributeType )
+    {
+        init( attributeType );
     }
     
     
@@ -237,27 +236,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      */
     public Value( AttributeType attributeType, String upValue ) throws LdapInvalidAttributeValueException
     {
-        // The AttributeType must have a Syntax
-        if ( attributeType != null )
-        {
-            if ( attributeType.getSyntax() == null )
-            {
-                // Some broken LDAP servers do not have proper syntax definitions, default to HR
-                LOG.info( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
-                isHR = true;
-                //throw new IllegalArgumentException( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
-            }
-            else
-            {
-                isHR = attributeType.getSyntax().isHumanReadable();
-            }
-        }
-        else
-        {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04488_NULL_ATTRIBUTE_TYPE ) );
-        }
-
-        this.attributeType = attributeType;
+        init( attributeType );
         this.upValue = upValue;
         
         if ( upValue != null )
@@ -312,27 +291,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      */
     public Value( AttributeType attributeType, String upValue, String normValue ) throws LdapInvalidAttributeValueException
     {
-        // The AttributeType must have a Syntax
-        if ( attributeType != null )
-        {
-            if ( attributeType.getSyntax() == null )
-            {
-                // Some broken LDAP servers do not have proper syntax definitions, default to HR
-                LOG.info( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
-                isHR = true;
-                //throw new IllegalArgumentException( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
-            }
-            else
-            {
-                isHR = attributeType.getSyntax().isHumanReadable();
-            }
-        }
-        else
-        {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04488_NULL_ATTRIBUTE_TYPE ) );
-        }
-
-        this.attributeType = attributeType;
+        init( attributeType );
         this.upValue = upValue;
         
         if ( upValue != null )
@@ -376,27 +335,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      */
     public Value( AttributeType attributeType, Value value ) throws LdapInvalidAttributeValueException
     {
-        // The AttributeType must have a Syntax
-        if ( attributeType != null )
-        {
-            if ( attributeType.getSyntax() == null )
-            {
-                // Some broken LDAP servers do not have proper syntax definitions, default to HR
-                LOG.info( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
-                isHR = true;
-                //throw new IllegalArgumentException( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
-            }
-            else
-            {
-                isHR = attributeType.getSyntax().isHumanReadable();
-            }
-        }
-        else
-        {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04488_NULL_ATTRIBUTE_TYPE ) );
-        }
-        
-        this.attributeType = attributeType;
+        init( attributeType );
         
         if ( isHR )
         {
