@@ -138,6 +138,8 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         {
             bytes = null;
         }
+        
+        isHR = false;
 
         hashCode();
     }
@@ -159,6 +161,11 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         {
             bytes = new byte[upValue.length];
             System.arraycopy( upValue, 0, bytes, 0, upValue.length );
+
+            if ( isHR )
+            {
+                this.upValue = Strings.utf8ToString( upValue );
+            }
         }
         else
         {
