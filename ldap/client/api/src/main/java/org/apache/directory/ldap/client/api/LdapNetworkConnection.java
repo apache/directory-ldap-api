@@ -1522,6 +1522,42 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
 
     /**
+     * Bind to the server using the SASL CRAM-MD5 mechanism.
+     *
+     * @param userName The user name
+     * @param credentials The user credentials
+     * @return  A LdapResponse containing the result
+     * @throws LdapException if some error occurred
+     */
+    public BindResponse bindSaslCramMd5( String userName, String credentials ) throws LdapException
+    {
+        SaslCramMd5Request request = new SaslCramMd5Request();
+        request.setUsername( userName );
+        request.setCredentials( "secret" );
+
+        return bind( request );
+    }
+
+
+    /**
+     * Bind to the server using the SASL DIGEST-MD5 mechanism.
+     *
+     * @param userName The user name
+     * @param credentials The user credentials
+     * @return  A LdapResponse containing the result
+     * @throws LdapException if some error occurred
+     */
+    public BindResponse bindSaslDigestMd5( String userName, String credentials ) throws LdapException
+    {
+        SaslDigestMd5Request request = new SaslDigestMd5Request();
+        request.setUsername( userName );
+        request.setCredentials( "secret" );
+
+        return bind( request );
+    }
+
+
+    /**
      * Bind to the server using a CramMd5Request object.
      *
      * @param request The CramMd5Request POJO containing all the needed parameters
