@@ -34,14 +34,17 @@ import org.apache.directory.api.ldap.codec.controls.search.persistentSearch.Pers
 import org.apache.directory.api.ldap.codec.controls.search.subentries.SubentriesFactory;
 import org.apache.directory.api.ldap.codec.controls.sort.SortRequestFactory;
 import org.apache.directory.api.ldap.codec.controls.sort.SortResponseFactory;
+
 import org.apache.directory.api.ldap.extras.controls.ad.AdShowDeleted;
-import org.apache.directory.api.ldap.extras.controls.ad.AdDirSync;
+import org.apache.directory.api.ldap.extras.controls.ad.AdPolicyHints;
 import org.apache.directory.api.ldap.extras.controls.ad_impl.AdShowDeletedFactory;
+import org.apache.directory.api.ldap.extras.controls.ad_impl.AdPolicyHintsFactory;
+import org.apache.directory.api.ldap.extras.controls.ad.AdDirSync;
+import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncFactory;
 import org.apache.directory.api.ldap.extras.controls.changeNotifications.ChangeNotifications;
 import org.apache.directory.api.ldap.extras.controls.changeNotifications_impl.ChangeNotificationsFactory;
 import org.apache.directory.api.ldap.extras.controls.permissiveModify.PermissiveModify;
 import org.apache.directory.api.ldap.extras.controls.permissiveModify_impl.PermissiveModifyFactory;
-import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncFactory;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
 import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValue;
@@ -100,6 +103,7 @@ public final class CodecFactoryUtil
      */
     public static void loadStockControls( Map<String, ControlFactory<?>> controlFactories, LdapApiService apiService )
     {
+        // Standard controls
         ControlFactory<Cascade> cascadeFactory = new CascadeFactory( apiService );
         controlFactories.put( cascadeFactory.getOid(), cascadeFactory );
         LOG.info( "Registered pre-bundled control factory: {}", cascadeFactory.getOid() );
@@ -127,20 +131,39 @@ public final class CodecFactoryUtil
         ControlFactory<Subentries> subentriesFactory = new SubentriesFactory( apiService );
         controlFactories.put( subentriesFactory.getOid(), subentriesFactory );
         LOG.info( "Registered pre-bundled control factory: {}", subentriesFactory.getOid() );
+        
+        ControlFactory<SortRequest> sortRequestFactory = new SortRequestFactory( apiService );
+        controlFactories.put( sortRequestFactory.getOid(), sortRequestFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", sortRequestFactory.getOid() );
+
+        ControlFactory<SortResponse> sortResponseFactory = new SortResponseFactory( apiService );
+        controlFactories.put( sortResponseFactory.getOid(), sortResponseFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", sortResponseFactory.getOid() );
+
+        // Extra controls
+        ControlFactory<AdDirSync> adDirSyncFactory = new AdDirSyncFactory( apiService );
+        controlFactories.put( adDirSyncFactory.getOid(), adDirSyncFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", adDirSyncFactory.getOid() );
+        
+        ControlFactory<AdShowDeleted> adShowDeletedFactory = new AdShowDeletedFactory( apiService );
+        controlFactories.put( adShowDeletedFactory.getOid(), adShowDeletedFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", adShowDeletedFactory.getOid() );
+        
+        ControlFactory<AdPolicyHints> adPolicyHintsFactory = new AdPolicyHintsFactory( apiService );
+        controlFactories.put( adPolicyHintsFactory.getOid(), adPolicyHintsFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", adPolicyHintsFactory.getOid() );
+
+        ControlFactory<ChangeNotifications> changeNotificationsFactory = new ChangeNotificationsFactory( apiService );
+        controlFactories.put( changeNotificationsFactory.getOid(), changeNotificationsFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", changeNotificationsFactory.getOid() );
+
+        ControlFactory<PermissiveModify> permissiveModifyFactory = new PermissiveModifyFactory( apiService );
+        controlFactories.put( permissiveModifyFactory.getOid(), permissiveModifyFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", permissiveModifyFactory.getOid() );
 
         ControlFactory<PasswordPolicy> passwordPolicyFactory = new PasswordPolicyFactory( apiService );
         controlFactories.put( passwordPolicyFactory.getOid(), passwordPolicyFactory );
         LOG.info( "Registered pre-bundled control factory: {}", passwordPolicyFactory.getOid() );
-
-        ControlFactory<VirtualListViewRequest> virtualListViewRequestFactory = new VirtualListViewRequestFactory(
-            apiService );
-        controlFactories.put( virtualListViewRequestFactory.getOid(), virtualListViewRequestFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", virtualListViewRequestFactory.getOid() );
-
-        ControlFactory<VirtualListViewResponse> virtualListViewResponseFactory = new VirtualListViewResponseFactory(
-            apiService );
-        controlFactories.put( virtualListViewResponseFactory.getOid(), virtualListViewResponseFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", virtualListViewResponseFactory.getOid() );
 
         ControlFactory<SyncDoneValue> syncDoneValueFactory = new SyncDoneValueFactory( apiService );
         controlFactories.put( syncDoneValueFactory.getOid(), syncDoneValueFactory );
@@ -158,29 +181,15 @@ public final class CodecFactoryUtil
         controlFactories.put( syncStateValueFactory.getOid(), syncStateValueFactory );
         LOG.info( "Registered pre-bundled control factory: {}", syncStateValueFactory.getOid() );
 
-        ControlFactory<SortRequest> sortRequestFactory = new SortRequestFactory( apiService );
-        controlFactories.put( sortRequestFactory.getOid(), sortRequestFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", sortRequestFactory.getOid() );
+        ControlFactory<VirtualListViewRequest> virtualListViewRequestFactory = new VirtualListViewRequestFactory(
+            apiService );
+        controlFactories.put( virtualListViewRequestFactory.getOid(), virtualListViewRequestFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", virtualListViewRequestFactory.getOid() );
 
-        ControlFactory<SortResponse> sortResponseFactory = new SortResponseFactory( apiService );
-        controlFactories.put( sortResponseFactory.getOid(), sortResponseFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", sortResponseFactory.getOid() );
-
-        ControlFactory<AdDirSync> adDirSyncFactory = new AdDirSyncFactory( apiService );
-        controlFactories.put( adDirSyncFactory.getOid(), adDirSyncFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", adDirSyncFactory.getOid() );
-        
-        ControlFactory<AdShowDeleted> adDeletedFactory = new AdShowDeletedFactory( apiService );
-        controlFactories.put( adDeletedFactory.getOid(), adDeletedFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", adDeletedFactory.getOid() );
-
-        ControlFactory<PermissiveModify> permissiveModifyFactory = new PermissiveModifyFactory( apiService );
-        controlFactories.put( permissiveModifyFactory.getOid(), permissiveModifyFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", permissiveModifyFactory.getOid() );
-
-        ControlFactory<ChangeNotifications> changeNotificationsFactory = new ChangeNotificationsFactory( apiService );
-        controlFactories.put( changeNotificationsFactory.getOid(), changeNotificationsFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", changeNotificationsFactory.getOid() );
+        ControlFactory<VirtualListViewResponse> virtualListViewResponseFactory = new VirtualListViewResponseFactory(
+            apiService );
+        controlFactories.put( virtualListViewResponseFactory.getOid(), virtualListViewResponseFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", virtualListViewResponseFactory.getOid() );
     }
 
 

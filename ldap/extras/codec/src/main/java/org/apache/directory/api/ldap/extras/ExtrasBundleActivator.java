@@ -23,8 +23,10 @@ package org.apache.directory.api.ldap.extras;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.controls.ad.AdShowDeleted;
+import org.apache.directory.api.ldap.extras.controls.ad.AdPolicyHints;
 import org.apache.directory.api.ldap.extras.controls.ad.AdDirSync;
 import org.apache.directory.api.ldap.extras.controls.ad_impl.AdShowDeletedFactory;
+import org.apache.directory.api.ldap.extras.controls.ad_impl.AdPolicyHintsFactory;
 import org.apache.directory.api.ldap.extras.controls.changeNotifications.ChangeNotifications;
 import org.apache.directory.api.ldap.extras.controls.changeNotifications_impl.ChangeNotificationsFactory;
 import org.apache.directory.api.ldap.extras.controls.permissiveModify.PermissiveModify;
@@ -155,8 +157,10 @@ public class ExtrasBundleActivator implements BundleActivator
         {
             codec.unregisterControl( AdDirSync.OID );
             codec.unregisterControl( AdShowDeleted.OID );
+            codec.unregisterControl( AdPolicyHints.OID );
             codec.unregisterControl( ChangeNotifications.OID );
             codec.unregisterControl( PasswordPolicy.OID );
+            codec.unregisterControl( PermissiveModify.OID );
             codec.unregisterControl( SyncDoneValue.OID );
             codec.unregisterControl( SyncInfoValue.OID );
             codec.unregisterControl( SyncRequestValue.OID );
@@ -191,6 +195,9 @@ public class ExtrasBundleActivator implements BundleActivator
             
             ControlFactory<AdShowDeleted> adDeletedFactory = new AdShowDeletedFactory( codec );
             codec.registerControl( adDeletedFactory );
+            
+            ControlFactory<AdPolicyHints> adPolicyHintsFactory = new AdPolicyHintsFactory( codec );
+            codec.registerControl( adPolicyHintsFactory );
             
             ControlFactory<ChangeNotifications> changeNotificationsFactory = new ChangeNotificationsFactory( codec );
             codec.registerControl( changeNotificationsFactory );

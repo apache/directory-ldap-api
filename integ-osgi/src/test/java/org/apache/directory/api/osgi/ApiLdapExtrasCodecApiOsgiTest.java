@@ -22,13 +22,20 @@ package org.apache.directory.api.osgi;
 
 import org.apache.directory.api.ldap.extras.controls.SynchronizationModeEnum;
 import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncImpl;
+import org.apache.directory.api.ldap.extras.controls.ad.AdShowDeletedImpl;
+import org.apache.directory.api.ldap.extras.controls.ad.AdPolicyHintsImpl;
+
 import org.apache.directory.api.ldap.extras.controls.changeNotifications.ChangeNotificationsImpl;
 import org.apache.directory.api.ldap.extras.controls.permissiveModify.PermissiveModifyImpl;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyImpl;
+import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponseImpl;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValueImpl;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncInfoValueImpl;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncRequestValueImpl;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateValueImpl;
 import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewRequestImpl;
-import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewResponseImpl;
+import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewResponseImpl
+;
 import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyRequestImpl;
 import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyResponseImpl;
 import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequestImpl;
@@ -53,11 +60,16 @@ public class ApiLdapExtrasCodecApiOsgiTest extends ApiOsgiTestBase
     {
         SynchronizationModeEnum.REFRESH_AND_PERSIST.getValue();
         new AdDirSyncImpl().getOid();
+        new AdShowDeletedImpl().getOid();
+        new AdPolicyHintsImpl().getOid();
         new ChangeNotificationsImpl().getOid();
         new PermissiveModifyImpl().getOid();
         new PasswordPolicyImpl().getOid();
+        new PasswordPolicyResponseImpl().getGraceAuthNRemaining();
+        new SyncDoneValueImpl().getOid();
+        new SyncInfoValueImpl().getOid();
+        new SyncRequestValueImpl().getOid();
         new SyncStateValueImpl( true ).getCookie();
-        new SyncInfoValueImpl().getType();
         new VirtualListViewRequestImpl().getOid();
         new VirtualListViewResponseImpl().getOid();
         new PasswordModifyRequestImpl().getUserIdentity();
