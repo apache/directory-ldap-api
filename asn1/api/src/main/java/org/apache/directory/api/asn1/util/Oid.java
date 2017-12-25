@@ -621,7 +621,7 @@ public final class Oid
     {
         char c = oid.charAt( pos );
         
-        if ( c == ';' )
+        if ( c == '.' )
         {
             // The first 2 arcs are single digit, we can collapse them in one byte.
             buffer[0] = ( byte ) ( 80 + buffer[1] );
