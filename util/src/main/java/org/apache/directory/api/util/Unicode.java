@@ -205,7 +205,7 @@ public final class Unicode
                     + ( bytes[pos + 4] & 0x3F )
                 );
             }
-            else if ( ( bytes[pos] & UTF8_FIVE_BYTES_MASK ) == UTF8_FIVE_BYTES )
+            else if ( ( bytes[pos] & UTF8_SIX_BYTES_MASK ) == UTF8_SIX_BYTES )
             {
                 // Six bytes char
                 return ( char ) (
