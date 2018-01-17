@@ -20,9 +20,7 @@
 package org.apache.directory.api.ldap.codec.api;
 
 
-import java.nio.ByteBuffer;
-
-import org.apache.directory.api.asn1.EncoderException;
+import org.apache.directory.api.asn1.Asn1Object;
 
 
 /**
@@ -33,7 +31,7 @@ import org.apache.directory.api.asn1.EncoderException;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface Decorator<E>
+public interface Decorator<E> extends Asn1Object
 {
     /**
      * Gets the object being decorated by this IDecorator.
@@ -41,24 +39,6 @@ public interface Decorator<E>
      * @return The decorated object
      */
     E getDecorated();
-
-
-    /**
-     * Compute the object length, which is the sum of all inner length.
-     * 
-     * @return The object's computed length
-     */
-    int computeLength();
-
-
-    /**
-     * Encode the object to a PDU.
-     * 
-     * @param buffer The buffer where to put the PDU
-     * @return The PDU.
-     * @throws EncoderException if the buffer can't be encoded
-     */
-    ByteBuffer encode( ByteBuffer buffer ) throws EncoderException;
 
 
     /**

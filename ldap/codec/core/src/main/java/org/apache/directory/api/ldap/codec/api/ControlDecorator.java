@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.codec.api;
 
 
-import org.apache.directory.api.asn1.Asn1Object;
 import org.apache.directory.api.ldap.model.message.Control;
 
 
@@ -33,7 +32,7 @@ import org.apache.directory.api.ldap.model.message.Control;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class ControlDecorator<E extends Control> implements CodecControl<E>, Asn1Object
+public abstract class ControlDecorator<E extends Control> implements CodecControl<E>
 {
     /** The decorated Control */
     private E decorated;
@@ -172,20 +171,6 @@ public abstract class ControlDecorator<E extends Control> implements CodecContro
     public void setCritical( boolean criticality )
     {
         decorated.setCritical( criticality );
-    }
-
-
-    // ------------------------------------------------------------------------
-    // CodecControl Methods
-    // ------------------------------------------------------------------------
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int computeLength()
-    {
-        return 0;
     }
 
 

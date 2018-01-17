@@ -23,7 +23,6 @@ package org.apache.directory.api.ldap.codec.api;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.directory.api.asn1.Asn1Object;
 import org.apache.directory.api.ldap.codec.decorators.AbandonRequestDecorator;
 import org.apache.directory.api.ldap.codec.decorators.AddRequestDecorator;
 import org.apache.directory.api.ldap.codec.decorators.AddResponseDecorator;
@@ -76,7 +75,7 @@ import org.apache.directory.api.ldap.model.message.UnbindRequest;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class MessageDecorator<E extends Message> implements Message, Decorator<E>, Asn1Object
+public abstract class MessageDecorator<E extends Message> implements Message, Decorator<E>
 {
     /** The decorated Control */
     private final E decoratedMessage;

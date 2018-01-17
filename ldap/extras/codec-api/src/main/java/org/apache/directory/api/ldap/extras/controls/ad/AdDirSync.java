@@ -36,19 +36,23 @@ import org.apache.directory.api.ldap.model.message.Control;
  *     controlValue            replControlValue
  *     criticality             TRUE
  * }
+ * </pre>
  * 
  * the control value can be one of the two structures :
  * 
+ * <pre>
  * Client side :
  * realReplControlValue ::= SEQUENCE {
  *     flags                 integer
  *     maxBytes              integer
  *     cookie                OCTET STRING
  * }
+ * </pre>
  * 
  * or
  * 
- * server side :
+ * <pre>
+ * Server side :
  * realReplControlValue ::= SEQUENCE {
  *     flag                  integer
  *     maxReturnLength       integer

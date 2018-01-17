@@ -182,10 +182,12 @@ public abstract class AbstractExtendedRequest extends AbstractRequest implements
     public int hashCode()
     {
         int hash = 37;
+        
         if ( oid != null )
         {
             hash = hash * 17 + oid.hashCode();
         }
+        
         hash = hash * 17 + super.hashCode();
 
         return hash;

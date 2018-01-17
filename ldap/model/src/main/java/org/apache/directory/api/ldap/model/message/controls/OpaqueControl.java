@@ -33,7 +33,7 @@ import org.apache.directory.api.util.Strings;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public final class OpaqueControl extends AbstractControl implements Control
+public final class OpaqueControl extends AbstractControl
 {
     /** The opaque encoded value */
     private byte[] value;

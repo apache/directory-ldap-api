@@ -28,11 +28,13 @@ import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
  * 
  * It's grammar is :
  * 
+ * <pre>
  * cancelRequestValue ::= SEQUENCE {
  *        cancelID        MessageID
  *                        -- MessageID is as defined in [RFC2251]
  * }
- *
+ * </pre>
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class CancelRequestImpl extends AbstractExtendedRequest implements CancelRequest
