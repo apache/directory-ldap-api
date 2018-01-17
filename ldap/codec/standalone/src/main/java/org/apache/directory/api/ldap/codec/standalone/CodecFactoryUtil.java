@@ -55,6 +55,8 @@ import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncDoneValue
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncInfoValueFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory;
+import org.apache.directory.api.ldap.extras.controls.transaction.TransactionSpecification;
+import org.apache.directory.api.ldap.extras.controls.transaction.TransactionSpecificationFactory;
 import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewRequest;
 import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewResponse;
 import org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewRequestFactory;
@@ -180,6 +182,10 @@ public final class CodecFactoryUtil
         ControlFactory<SyncStateValue> syncStateValueFactory = new SyncStateValueFactory( apiService );
         controlFactories.put( syncStateValueFactory.getOid(), syncStateValueFactory );
         LOG.info( "Registered pre-bundled control factory: {}", syncStateValueFactory.getOid() );
+
+        ControlFactory<TransactionSpecification> transactionSpecificationFactory = new TransactionSpecificationFactory( apiService );
+        controlFactories.put( transactionSpecificationFactory.getOid(), transactionSpecificationFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", transactionSpecificationFactory.getOid() );
 
         ControlFactory<VirtualListViewRequest> virtualListViewRequestFactory = new VirtualListViewRequestFactory(
             apiService );

@@ -42,6 +42,8 @@ import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncDoneValue
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncInfoValueFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory;
+import org.apache.directory.api.ldap.extras.controls.transaction.TransactionSpecification;
+import org.apache.directory.api.ldap.extras.controls.transaction.TransactionSpecificationFactory;
 import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewRequest;
 import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewResponse;
 import org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewRequestFactory;
@@ -165,6 +167,7 @@ public class ExtrasBundleActivator implements BundleActivator
             codec.unregisterControl( SyncInfoValue.OID );
             codec.unregisterControl( SyncRequestValue.OID );
             codec.unregisterControl( SyncStateValue.OID );
+            codec.unregisterControl( TransactionSpecification.OID );
             codec.unregisterControl( VirtualListViewRequest.OID );
             codec.unregisterControl( VirtualListViewResponse.OID );
         }
@@ -219,6 +222,9 @@ public class ExtrasBundleActivator implements BundleActivator
 
             ControlFactory<SyncStateValue> syncStateValuefactory = new SyncStateValueFactory( codec );
             codec.registerControl( syncStateValuefactory );
+
+            ControlFactory<TransactionSpecification> transactionSpecificationfactory = new TransactionSpecificationFactory( codec );
+            codec.registerControl( transactionSpecificationfactory );
 
             ControlFactory<VirtualListViewRequest> virtualListViewRequestFactory = new VirtualListViewRequestFactory( codec );
             codec.registerControl( virtualListViewRequestFactory );
