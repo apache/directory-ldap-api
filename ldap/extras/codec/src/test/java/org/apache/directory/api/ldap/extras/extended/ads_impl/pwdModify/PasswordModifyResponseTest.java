@@ -84,19 +84,11 @@ public class PasswordModifyResponseTest
         assertEquals( 0x02, ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).computeLengthInternal() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb1 = ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).encodeInternal();
+        ByteBuffer bb1 = ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).encodeInternal();
 
-            String encodedPdu = Strings.dumpBytes( bb1.array() );
+        String encodedPdu = Strings.dumpBytes( bb1.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
     }
 
 
@@ -137,19 +129,11 @@ public class PasswordModifyResponseTest
         assertEquals( 0x04, ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).computeLengthInternal() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb1 = ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).encodeInternal();
+        ByteBuffer bb1 = ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).encodeInternal();
 
-            String encodedPdu = Strings.dumpBytes( bb1.array() );
+        String encodedPdu = Strings.dumpBytes( bb1.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
     }
 
 
@@ -194,18 +178,10 @@ public class PasswordModifyResponseTest
         assertEquals( 0x08, ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).computeLengthInternal() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb1 = ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).encodeInternal();
+        ByteBuffer bb1 = ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).encodeInternal();
 
-            String encodedPdu = Strings.dumpBytes( bb1.array() );
+        String encodedPdu = Strings.dumpBytes( bb1.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
     }
 }

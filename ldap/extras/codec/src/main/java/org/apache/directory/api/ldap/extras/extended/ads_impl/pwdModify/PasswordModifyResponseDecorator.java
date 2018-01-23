@@ -23,7 +23,6 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify;
 import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.DecoderException;
-import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
@@ -103,15 +102,7 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
     {
         if ( responseValue == null )
         {
-            try
-            {
-                responseValue = encodeInternal().array();
-            }
-            catch ( EncoderException e )
-            {
-                LOG.error( I18n.err( I18n.ERR_04167 ), e );
-                throw new RuntimeException( e );
-            }
+            responseValue = encodeInternal().array();
         }
 
         return responseValue;
@@ -176,7 +167,7 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
      * @return A ByteBuffer that contains the encoded PDU
      * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
      */
-    /* no qualifier */ByteBuffer encodeInternal() throws EncoderException
+    /* no qualifier */ByteBuffer encodeInternal()
     {
         // Allocate the bytes buffer.
         ByteBuffer bb = ByteBuffer.allocate( computeLengthInternal() );

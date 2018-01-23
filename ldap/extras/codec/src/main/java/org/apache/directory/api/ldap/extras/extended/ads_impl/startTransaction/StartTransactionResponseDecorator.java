@@ -17,31 +17,35 @@
  *   under the License.
  *
  */
-package org.apache.directory.api.ldap.extras.extended.ads_impl.startTls;
+package org.apache.directory.api.ldap.extras.extended.ads_impl.startTransaction;
 
 
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsResponse;
+import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionResponse;
 import org.apache.directory.api.util.Strings;
 
 
 /**
- * A Decorator for StartTlsResponse extended request.
+ * A Decorator for CancelResponses.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StartTlsResponseDecorator extends ExtendedResponseDecorator<StartTlsResponse> implements StartTlsResponse
+public class StartTransactionResponseDecorator extends ExtendedResponseDecorator<StartTransactionResponse> implements StartTransactionResponse
 {
+    /** The startTransaction response */
+    private StartTransactionResponse startTransactionResponse;
+
     /**
-     * Creates a new instance of StartTlsResponseDecorator.
+     * Creates a new instance of CancelResponseDecorator.
      *
      * @param codec The LDAP service instance
      * @param decoratedMessage The decorated message
      */
-    public StartTlsResponseDecorator( LdapApiService codec, StartTlsResponse decoratedMessage )
+    public StartTransactionResponseDecorator( LdapApiService codec, StartTransactionResponse decoratedMessage )
     {
         super( codec, decoratedMessage );
+        startTransactionResponse = decoratedMessage;
     }
 
 
@@ -49,8 +53,18 @@ public class StartTlsResponseDecorator extends ExtendedResponseDecorator<StartTl
      * {@inheritDoc}
      */
     @Override
-    public byte[] getResponseValue()
+    public void setResponseValue( byte[] responseValue )
     {
-        return Strings.EMPTY_BYTES;
+        this.responseValue = Strings.copy( responseValue );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public byte[] getTransactionId()
+    {
+        return startTransactionResponse.getTransactionId();
     }
 }

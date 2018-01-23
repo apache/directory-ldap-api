@@ -24,7 +24,8 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 
 
 /**
- * The interface for Cancel ExtendedResponses.
+ * The interface for Cancel ExtendedResponse, as defined in RFC 3909. The responseName 
+ * and responseValue are absent.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

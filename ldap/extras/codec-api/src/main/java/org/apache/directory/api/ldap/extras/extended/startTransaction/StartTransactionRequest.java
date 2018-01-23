@@ -17,39 +17,27 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.api.ldap.extras.extended.cancel;
+package org.apache.directory.api.ldap.extras.extended.startTransaction;
 
 
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 
 
 /**
- * The CancelRequest interface, as described in RFC 3909 :
- * 
+ * The TransactionRequest interface. This is for the RFC 5805 Start Transaction Request,
+ * which grammar is :
  * <pre>
- * cancelRequestValue ::= SEQUENCE {
- *        cancelID        MessageID
- *                        -- MessageID is as defined in [RFC2251]
+ * ExtendedRequest ::= [APPLICATION 23] SEQUENCE {
+ *              requestName      [0] LDAPOID,
+ *              requestValue     [1] OCTET STRING OPTIONAL }
  * </pre>
+ * 
+ * where 'requestName' is 1.3.6.1.1.21.1 and requestValue is absent.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface CancelRequest extends ExtendedRequest
+public interface StartTransactionRequest extends ExtendedRequest
 {
-    /** The OID for the Cancel extended operation request. */
-    String EXTENSION_OID = "1.3.6.1.1.8";
-
-
-    /**
-     *  @return The id of the Message to cancel.
-     */
-    int getCancelId();
-
-
-    /**
-     * Sets the message to cancel by id.
-     *
-     * @param cancelId The id of the message to cancel.
-     */
-    void setCancelId( int cancelId );
+    /** The OID for the Transaction extended operation request. */
+    String EXTENSION_OID = "1.3.6.1.1.21.1";
 }

@@ -28,7 +28,6 @@ import static org.junit.Assert.fail;
 import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.DecoderException;
-import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyRequestContainer;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyRequestDecorator;
@@ -86,19 +85,11 @@ public class PasswordModifyRequestTest
         assertEquals( 0x02, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).computeLengthInternal() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
+        ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-            String encodedPdu = Strings.dumpBytes( bb1.array() );
+        String encodedPdu = Strings.dumpBytes( bb1.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
     }
 
 
@@ -141,19 +132,11 @@ public class PasswordModifyRequestTest
         assertEquals( 0x04,  ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).computeLengthInternal() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
+        ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-            String encodedPdu = Strings.dumpBytes( bb1.array() );
+        String encodedPdu = Strings.dumpBytes( bb1.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
     }
 
 
@@ -200,19 +183,11 @@ public class PasswordModifyRequestTest
         assertEquals( 0x08, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).computeLengthInternal() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
+        ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-            String encodedPdu = Strings.dumpBytes( bb1.array() );
+        String encodedPdu = Strings.dumpBytes( bb1.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
     }
 
 
@@ -263,19 +238,11 @@ public class PasswordModifyRequestTest
         assertEquals( 0x0A, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).computeLengthInternal() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
+        ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-            String encodedPdu = Strings.dumpBytes( bb1.array() );
+        String encodedPdu = Strings.dumpBytes( bb1.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
     }
 
 
@@ -330,19 +297,11 @@ public class PasswordModifyRequestTest
         assertEquals( 0x0E, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).computeLengthInternal() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
+        ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-            String encodedPdu = Strings.dumpBytes( bb1.array() );
+        String encodedPdu = Strings.dumpBytes( bb1.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
     }
 
 
@@ -392,19 +351,11 @@ public class PasswordModifyRequestTest
         assertEquals( 0x0A, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).computeLengthInternal() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
+        ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-            String encodedPdu = Strings.dumpBytes( bb1.array() );
+        String encodedPdu = Strings.dumpBytes( bb1.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
     }
 
 
@@ -458,19 +409,11 @@ public class PasswordModifyRequestTest
         assertEquals( 0x0E, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).computeLengthInternal() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
+        ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-            String encodedPdu = Strings.dumpBytes( bb1.array() );
+        String encodedPdu = Strings.dumpBytes( bb1.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
     }
 
 
@@ -528,19 +471,11 @@ public class PasswordModifyRequestTest
         assertEquals( 0x10, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).computeLengthInternal() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
+        ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-            String encodedPdu = Strings.dumpBytes( bb1.array() );
+        String encodedPdu = Strings.dumpBytes( bb1.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
     }
 
 
@@ -602,19 +537,11 @@ public class PasswordModifyRequestTest
         assertEquals( 0x14, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).computeLengthInternal() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
+        ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-            String encodedPdu = Strings.dumpBytes( bb1.array() );
+        String encodedPdu = Strings.dumpBytes( bb1.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
     }
 
 
@@ -657,19 +584,11 @@ public class PasswordModifyRequestTest
         assertEquals( 0x04, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).computeLengthInternal() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
+        ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-            String encodedPdu = Strings.dumpBytes( bb1.array() );
+        String encodedPdu = Strings.dumpBytes( bb1.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
     }
 
 
@@ -716,19 +635,11 @@ public class PasswordModifyRequestTest
         assertEquals( 0x08, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).computeLengthInternal() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
+        ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-            String encodedPdu = Strings.dumpBytes( bb1.array() );
+        String encodedPdu = Strings.dumpBytes( bb1.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
     }
 
 
@@ -779,19 +690,11 @@ public class PasswordModifyRequestTest
         assertEquals( 0x0A, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).computeLengthInternal() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
+        ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-            String encodedPdu = Strings.dumpBytes( bb1.array() );
+        String encodedPdu = Strings.dumpBytes( bb1.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
     }
 
 
@@ -846,18 +749,10 @@ public class PasswordModifyRequestTest
         assertEquals( 0x0E, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).computeLengthInternal() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
+        ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-            String encodedPdu = Strings.dumpBytes( bb1.array() );
+        String encodedPdu = Strings.dumpBytes( bb1.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
     }
 }

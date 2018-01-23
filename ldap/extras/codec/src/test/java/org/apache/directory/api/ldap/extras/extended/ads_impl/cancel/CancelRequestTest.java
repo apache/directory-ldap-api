@@ -43,7 +43,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /*
- * TestCase for a Cancel Extended Operation
+ * TestCase for a Cancel Extended Operation request
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
