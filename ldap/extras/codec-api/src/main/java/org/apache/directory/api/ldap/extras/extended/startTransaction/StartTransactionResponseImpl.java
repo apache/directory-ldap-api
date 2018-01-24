@@ -20,6 +20,8 @@
 package org.apache.directory.api.ldap.extras.extended.startTransaction;
 
 
+import java.util.Arrays;
+
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.message.ExtendedResponseImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
@@ -139,8 +141,6 @@ public class StartTransactionResponseImpl extends ExtendedResponseImpl implement
     public int hashCode()
     {
         int hash = 37;
-        // Seems simple but look at the equals() method ...
-        hash = hash * 17;
         
         if ( transactionId != null )
         {
@@ -167,7 +167,12 @@ public class StartTransactionResponseImpl extends ExtendedResponseImpl implement
             return true;
         }
 
-        return obj instanceof StartTransactionResponseImpl;
+        if ( !( obj instanceof StartTransactionResponseImpl ) )
+        {
+            return false;
+        }
+        
+        return Arrays.equals( transactionId, ( ( StartTransactionResponseImpl ) obj ).transactionId );
     }
     
     

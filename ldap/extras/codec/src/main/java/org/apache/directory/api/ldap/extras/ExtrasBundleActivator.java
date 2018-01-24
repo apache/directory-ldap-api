@@ -54,6 +54,7 @@ import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.startTls.StartTlsFactory;
+import org.apache.directory.api.ldap.extras.extended.ads_impl.startTransaction.StartTransactionFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.whoAmI.WhoAmIFactory;
 import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequest;
@@ -62,6 +63,7 @@ import org.apache.directory.api.ldap.extras.extended.gracefulDisconnect.Graceful
 import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownRequest;
 import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyRequest;
 import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequest;
+import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionRequest;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequest;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIRequest;
 import org.osgi.framework.BundleActivator;
@@ -128,30 +130,32 @@ public class ExtrasBundleActivator implements BundleActivator
             // --------------------------------------------------------------------
             // Register Extended Request Factories
             // --------------------------------------------------------------------
-
             CancelFactory cancelFactory = new CancelFactory( codec );
             codec.registerExtendedRequest( cancelFactory );
 
             CertGenerationFactory certGenerationFactory = new CertGenerationFactory( codec );
             codec.registerExtendedRequest( certGenerationFactory );
 
+            GracefulDisconnectFactory gracefulDisconnectFactory = new GracefulDisconnectFactory( codec );
+            codec.registerExtendedRequest( gracefulDisconnectFactory );
+
             GracefulShutdownFactory gracefulShutdownFactory = new GracefulShutdownFactory( codec );
             codec.registerExtendedRequest( gracefulShutdownFactory );
-
-            StoredProcedureFactory storedProcedureFactory = new StoredProcedureFactory( codec );
-            codec.registerExtendedRequest( storedProcedureFactory );
 
             PasswordModifyFactory passwordModifyFactory = new PasswordModifyFactory( codec );
             codec.registerExtendedRequest( passwordModifyFactory );
 
-            GracefulDisconnectFactory gracefulDisconnectFactory = new GracefulDisconnectFactory( codec );
-            codec.registerExtendedRequest( gracefulDisconnectFactory );
+            StartTlsFactory startTlsFactory = new StartTlsFactory( codec );
+            codec.registerExtendedRequest( startTlsFactory );
+
+            StartTransactionFactory startTransactionFactory = new StartTransactionFactory( codec );
+            codec.registerExtendedRequest( startTransactionFactory );
+
+            StoredProcedureFactory storedProcedureFactory = new StoredProcedureFactory( codec );
+            codec.registerExtendedRequest( storedProcedureFactory );
 
             WhoAmIFactory whoAmIFactory = new WhoAmIFactory( codec );
             codec.registerExtendedRequest( whoAmIFactory );
-
-            StartTlsFactory startTlsFactory = new StartTlsFactory( codec );
-            codec.registerExtendedRequest( startTlsFactory );
         }
 
 
@@ -178,11 +182,12 @@ public class ExtrasBundleActivator implements BundleActivator
             codec.unregisterExtendedRequest( CancelRequest.EXTENSION_OID );
             codec.unregisterExtendedRequest( CertGenerationRequest.EXTENSION_OID );
             codec.unregisterExtendedRequest( GracefulShutdownRequest.EXTENSION_OID );
-            codec.unregisterExtendedRequest( StoredProcedureRequest.EXTENSION_OID );
             codec.unregisterExtendedRequest( GracefulDisconnectResponse.EXTENSION_OID );
             codec.unregisterExtendedRequest( PasswordModifyRequest.EXTENSION_OID );
-            codec.unregisterExtendedRequest( WhoAmIRequest.EXTENSION_OID );
             codec.unregisterExtendedRequest( StartTlsRequest.EXTENSION_OID );
+            codec.unregisterExtendedRequest( StartTransactionRequest.EXTENSION_OID );
+            codec.unregisterExtendedRequest( StoredProcedureRequest.EXTENSION_OID );
+            codec.unregisterExtendedRequest( WhoAmIRequest.EXTENSION_OID );
         }
 
 

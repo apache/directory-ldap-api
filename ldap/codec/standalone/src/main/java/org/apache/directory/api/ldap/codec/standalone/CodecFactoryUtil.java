@@ -67,6 +67,7 @@ import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.startTls.StartTlsFactory;
+import org.apache.directory.api.ldap.extras.extended.ads_impl.startTransaction.StartTransactionFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.whoAmI.WhoAmIFactory;
 import org.apache.directory.api.ldap.model.message.controls.Cascade;
@@ -210,6 +211,7 @@ public final class CodecFactoryUtil
      * <li>passwordModify</li>
      * <li>whoAmI</li>
      * <li>startTls</li>
+     * <li>startTransaction</li>
      * </ul>
      * 
      * @param extendendOperationsFactories The map of extended operation factories
@@ -226,28 +228,32 @@ public final class CodecFactoryUtil
         extendendOperationsFactories.put( certGenerationFactory.getOid(), certGenerationFactory );
         LOG.info( "Registered pre-bundled extended operation factory: {}", certGenerationFactory.getOid() );
 
-        GracefulShutdownFactory gracefulShutdownFactory = new GracefulShutdownFactory( apiService );
-        extendendOperationsFactories.put( gracefulShutdownFactory.getOid(), gracefulShutdownFactory );
-        LOG.info( "Registered pre-bundled extended operation factory: {}", gracefulShutdownFactory.getOid() );
-
-        StoredProcedureFactory storedProcedureFactory = new StoredProcedureFactory( apiService );
-        extendendOperationsFactories.put( storedProcedureFactory.getOid(), storedProcedureFactory );
-        LOG.info( "Registered pre-bundled extended operation factory: {}", storedProcedureFactory.getOid() );
-
         GracefulDisconnectFactory gracefulDisconnectFactory = new GracefulDisconnectFactory( apiService );
         extendendOperationsFactories.put( gracefulDisconnectFactory.getOid(), gracefulDisconnectFactory );
         LOG.info( "Registered pre-bundled extended operation factory: {}", gracefulDisconnectFactory.getOid() );
+
+        GracefulShutdownFactory gracefulShutdownFactory = new GracefulShutdownFactory( apiService );
+        extendendOperationsFactories.put( gracefulShutdownFactory.getOid(), gracefulShutdownFactory );
+        LOG.info( "Registered pre-bundled extended operation factory: {}", gracefulShutdownFactory.getOid() );
 
         PasswordModifyFactory passwordModifyFactory = new PasswordModifyFactory( apiService );
         extendendOperationsFactories.put( passwordModifyFactory.getOid(), passwordModifyFactory );
         LOG.info( "Registered pre-bundled extended operation factory: {}", passwordModifyFactory.getOid() );
 
-        WhoAmIFactory whoAmIFactory = new WhoAmIFactory( apiService );
-        extendendOperationsFactories.put( whoAmIFactory.getOid(), whoAmIFactory );
-        LOG.info( "Registered pre-bundled extended operation factory: {}", whoAmIFactory.getOid() );
-
         StartTlsFactory startTlsFactory = new StartTlsFactory( apiService );
         extendendOperationsFactories.put( startTlsFactory.getOid(), startTlsFactory );
         LOG.info( "Registered pre-bundled extended operation factory: {}", startTlsFactory.getOid() );
+
+        StartTransactionFactory startTransactionFactory = new StartTransactionFactory( apiService );
+        extendendOperationsFactories.put( startTransactionFactory.getOid(), startTransactionFactory );
+        LOG.info( "Registered pre-bundled extended operation factory: {}", startTransactionFactory.getOid() );
+
+        StoredProcedureFactory storedProcedureFactory = new StoredProcedureFactory( apiService );
+        extendendOperationsFactories.put( storedProcedureFactory.getOid(), storedProcedureFactory );
+        LOG.info( "Registered pre-bundled extended operation factory: {}", storedProcedureFactory.getOid() );
+
+        WhoAmIFactory whoAmIFactory = new WhoAmIFactory( apiService );
+        extendendOperationsFactories.put( whoAmIFactory.getOid(), whoAmIFactory );
+        LOG.info( "Registered pre-bundled extended operation factory: {}", whoAmIFactory.getOid() );
     }
 }

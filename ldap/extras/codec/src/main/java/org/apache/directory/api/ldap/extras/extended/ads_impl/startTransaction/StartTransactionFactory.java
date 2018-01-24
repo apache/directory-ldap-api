@@ -25,7 +25,9 @@ import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequest;
 import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionRequest;
+import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionRequestImpl;
 import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionResponse;
+import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionResponseImpl;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 
@@ -68,7 +70,7 @@ public class StartTransactionFactory implements ExtendedOperationFactory
     @Override
     public StartTransactionResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
-        StartTransactionResponseDecorator response = new StartTransactionResponseDecorator( codec, null );
+        StartTransactionResponseDecorator response = new StartTransactionResponseDecorator( codec, new StartTransactionResponseImpl() );
         response.setResponseValue( encodedValue );
 
         return response;
@@ -81,14 +83,7 @@ public class StartTransactionFactory implements ExtendedOperationFactory
     @Override
     public StartTransactionRequest newRequest( byte[] value )
     {
-        /*
-        StartTransactionRequestDecorator req = new StartTransactionResponseDecorator( codec, new StartTransactionResponseImpl() );
-        req.setRequestValue( value );
-
-        return req;
-        */
-        
-        return null;
+        return new StartTransactionRequestDecorator( codec, new StartTransactionRequestImpl() );
     }
 
 

@@ -40,6 +40,8 @@ import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyReq
 import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyResponseImpl;
 import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequestImpl;
 import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsResponseImpl;
+import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionRequestImpl;
+import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionResponseImpl;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIRequestImpl;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIResponseImpl;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -78,6 +80,7 @@ public class ApiLdapExtrasCodecApiOsgiTest extends ApiOsgiTestBase
         new WhoAmIResponseImpl().setDn( new Dn( "uid=admin,ou=system" ) );
         new StartTlsRequestImpl();
         new StartTlsResponseImpl();
+        new StartTransactionRequestImpl();
+        new StartTransactionResponseImpl();
     }
-
 }

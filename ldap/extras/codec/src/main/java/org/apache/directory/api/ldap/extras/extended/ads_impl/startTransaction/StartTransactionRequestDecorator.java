@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.startTransaction;
 
 
-import org.apache.directory.api.asn1.Asn1Object;
 import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionRequest;
@@ -33,7 +32,7 @@ import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTrans
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class StartTransactionRequestDecorator extends ExtendedRequestDecorator<StartTransactionRequest> implements
-    StartTransactionRequest, Asn1Object
+    StartTransactionRequest
 {
     /** The internal startTransaction request */
     private StartTransactionRequest startTransactionRequest;

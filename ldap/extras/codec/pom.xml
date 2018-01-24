@@ -117,6 +117,7 @@
               org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.extended.ads_impl.startTls;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.extras.extended.ads_impl.startTransaction;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.extended.ads_impl.whoAmI;version=${project.version};-noimport:=true
             </Export-Package>
@@ -144,6 +145,7 @@
               org.apache.directory.api.ldap.extras.extended.gracefulShutdown;version=${project.version},
               org.apache.directory.api.ldap.extras.extended.pwdModify;version=${project.version},
               org.apache.directory.api.ldap.extras.extended.startTls;version=${project.version},
+              org.apache.directory.api.ldap.extras.extended.startTransaction;version=${project.version},
               org.apache.directory.api.ldap.extras.extended.storedProcedure;version=${project.version},
               org.apache.directory.api.ldap.extras.extended.whoAmI;version=${project.version},
               org.apache.directory.api.ldap.model.exception;version=${project.version},

@@ -79,6 +79,7 @@
               org.apache.directory.api.ldap.extras.extended.gracefulShutdown;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.extended.pwdModify;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.extended.startTls;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.extras.extended.startTransaction;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.extended.storedProcedure;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.extended.whoAmI;version=${project.version};-noimport:=true
             </Export-Package>
