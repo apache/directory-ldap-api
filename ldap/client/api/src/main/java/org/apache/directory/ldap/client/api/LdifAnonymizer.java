@@ -361,7 +361,7 @@ public class LdifAnonymizer
      */
     public void removeAnonAttributeType( AttributeType attributeType )
     {
-        attributeAnonymizers.remove( attributeType );
+        attributeAnonymizers.remove( attributeType.getOid() );
     }
     
     

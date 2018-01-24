@@ -821,7 +821,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                         LOG.error( "Error while processing the NoD for {}", responseFuture, e );
                     }
 
-                    futureMap.remove( messageId );
+                    futureMap.remove( messageId.get() );
                 }
 
                 futureMap.clear();
