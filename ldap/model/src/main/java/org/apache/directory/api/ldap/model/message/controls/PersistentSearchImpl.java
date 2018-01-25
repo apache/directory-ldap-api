@@ -19,7 +19,6 @@
  */
 package org.apache.directory.api.ldap.model.message.controls;
 
-
 /**
  * A persistence search object
  * 
@@ -151,6 +150,47 @@ public class PersistentSearchImpl extends AbstractControl implements PersistentS
     public void disableNotification( ChangeType changeType )
     {
         changeTypes &= ~changeType.getValue();
+    }
+
+
+    /**
+     * @see Object#hashCode()
+     */
+    @Override
+    public int hashCode()
+    {
+        int h = super.hashCode();
+
+        h = h * 37 + ( changesOnly ? 1 : 0 );
+        h = h * 37 + ( returnECs ? 1 : 0 );
+        h = h * 37 + changeTypes;
+
+        return h;
+    }
+
+
+    /**
+     * @see Object#equals(Object)
+     */
+    @Override
+    public boolean equals( Object other )
+    {
+        if ( this == other )
+        {
+            return true;
+        }
+
+        if ( !( other instanceof PersistentSearch ) )
+        {
+            return false;
+        }
+        
+        PersistentSearch otherControl = ( PersistentSearch ) other;
+
+        return super.equals( other ) 
+            && ( changesOnly == otherControl.isChangesOnly() ) 
+            && ( returnECs == otherControl.isReturnECs() ) 
+            && ( changeTypes == otherControl.getChangeTypes() );
     }
 
 

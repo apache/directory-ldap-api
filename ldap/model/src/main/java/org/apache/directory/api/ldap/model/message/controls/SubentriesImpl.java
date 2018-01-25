@@ -106,14 +106,19 @@ public class SubentriesImpl extends AbstractControl implements Subentries
     @Override
     public boolean equals( Object o )
     {
-        if ( !super.equals( o ) )
+        if ( this == o )
+        {
+            return true;
+        }
+        
+        if ( !( o instanceof Subentries ) )
         {
             return false;
         }
-
+        
         Subentries otherDecorator = ( Subentries ) o;
 
-        return visibility == otherDecorator.isVisible();
+        return super.equals( o ) && visibility == otherDecorator.isVisible();
     }
 
 

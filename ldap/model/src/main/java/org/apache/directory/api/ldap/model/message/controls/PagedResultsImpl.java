@@ -175,16 +175,23 @@ public class PagedResultsImpl extends AbstractControl implements PagedResults
      * @see Object#equals(Object)
      */
     @Override
-    public boolean equals( Object o )
+    public boolean equals( Object other )
     {
-        if ( !super.equals( o ) )
+        if ( this == other )
+        {
+            return true;
+        }
+
+        if ( !( other instanceof PagedResults ) )
         {
             return false;
         }
+        
+        PagedResults otherControl = ( PagedResults ) other;
 
-        PagedResults otherControl = ( PagedResults ) o;
-
-        return ( size == otherControl.getSize() ) && Arrays.equals( cookie, otherControl.getCookie() );
+        return super.equals( other ) 
+            && ( size == otherControl.getSize() ) 
+            && Arrays.equals( cookie, otherControl.getCookie() );
     }
 
 

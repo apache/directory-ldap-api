@@ -176,14 +176,20 @@ public class VirtualListViewResponseImpl extends AbstractControl implements Virt
     @Override
     public boolean equals( Object o )
     {
-        if ( !super.equals( o ) )
+        if ( this == o )
+        {
+            return true;
+        }
+        
+        if ( !( o instanceof VirtualListViewRequest ) )
         {
             return false;
         }
 
-        VirtualListViewResponseImpl otherControl = ( VirtualListViewResponseImpl ) o;
+        VirtualListViewResponse otherControl = ( VirtualListViewResponse ) o;
 
-        return ( targetPosition == otherControl.getTargetPosition() )
+        return super.equals( o )
+            && ( targetPosition == otherControl.getTargetPosition() )
             && ( contentCount == otherControl.getContentCount() )
             && ( virtualListViewResult == otherControl.getVirtualListViewResult() )
             && Arrays.equals( contextId, otherControl.getContextId() );

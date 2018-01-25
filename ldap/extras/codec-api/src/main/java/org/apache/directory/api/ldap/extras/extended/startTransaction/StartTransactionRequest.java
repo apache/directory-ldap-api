@@ -24,7 +24,7 @@ import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 
 
 /**
- * The TransactionRequest interface. This is for the RFC 5805 Start Transaction Request,
+ * The StartTransactionRequest interface. This is for the RFC 5805 Start Transaction Request,
  * which grammar is :
  * <pre>
  * ExtendedRequest ::= [APPLICATION 23] SEQUENCE {
@@ -38,6 +38,6 @@ import org.apache.directory.api.ldap.model.message.ExtendedRequest;
  */
 public interface StartTransactionRequest extends ExtendedRequest
 {
-    /** The OID for the Transaction extended operation request. */
+    /** The OID for the StartTransaction extended operation request. */
     String EXTENSION_OID = "1.3.6.1.1.21.1";
 }

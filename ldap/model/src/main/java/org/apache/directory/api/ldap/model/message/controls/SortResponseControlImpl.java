@@ -87,10 +87,10 @@ public class SortResponseControlImpl extends AbstractControl implements SortResp
     @Override
     public int hashCode()
     {
-        final int prime = 31;
         int hash = super.hashCode();
-        hash = prime * hash + ( ( attributeName == null ) ? 0 : attributeName.hashCode() );
-        hash = prime * hash + ( ( this.result == null ) ? 0 : this.result.hashCode() );
+        
+        hash = 37 * hash + ( ( attributeName == null ) ? 0 : attributeName.hashCode() );
+        hash = 37 * hash + ( ( this.result == null ) ? 0 : this.result.hashCode() );
         
         return hash;
     }
@@ -102,12 +102,22 @@ public class SortResponseControlImpl extends AbstractControl implements SortResp
     @Override
     public boolean equals( Object o )
     {
-        if ( !super.equals( o ) )
+        if ( this == o )
+        {
+            return true;
+        }
+        
+        if ( !( o instanceof SortResponse ) )
         {
             return false;
         }
         
         SortResponse that = ( SortResponse ) o;
+        
+        if ( !super.equals( o ) )
+        {
+            return false;
+        }
         
         if ( result != that.getSortResult() )
         {
@@ -135,5 +145,4 @@ public class SortResponseControlImpl extends AbstractControl implements SortResp
     {
         return "SortResponseControlImpl [result=" + result + ", attributeName=" + attributeName + "]";
     }
-    
 }

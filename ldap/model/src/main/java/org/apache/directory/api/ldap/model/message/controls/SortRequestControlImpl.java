@@ -80,6 +80,71 @@ public class SortRequestControlImpl extends AbstractControl implements SortReque
         sortKeys.add( skey );
     }
 
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode()
+    {
+        int hash = super.hashCode();
+        
+        if ( sortKeys != null )
+        {
+            for ( SortKey sortKey : sortKeys )
+            {
+                hash = hash * 17 + sortKey.hashCode();
+            }
+        }
+        
+        return hash;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o )
+        {
+            return true;
+        }
+        
+        if ( !( o instanceof SortRequest ) )
+        {
+            return false;
+        }
+        
+        SortRequest that = ( SortRequest ) o;
+        
+        if ( !super.equals( o ) )
+        {
+            return false;
+        }
+        
+        if ( sortKeys == null )
+        {
+            return that.getSortKeys() == null;
+        }
+        
+        if ( ( that.getSortKeys() == null ) || ( sortKeys.size() != that.getSortKeys().size() ) )
+        {
+            return false;
+        }
+        
+        for ( SortKey sortKey : that.getSortKeys() )
+        {
+            if ( !sortKeys.contains( sortKey ) )
+            {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+
 
     /**
      * {@inheritDoc}
@@ -87,6 +152,38 @@ public class SortRequestControlImpl extends AbstractControl implements SortReque
     @Override
     public String toString()
     {
-        return "SortRequestControlImpl [sortKeys=" + sortKeys + "]";
+        StringBuilder sb = new StringBuilder();
+
+        sb.append( "    Sort Request Control\n" );
+        sb.append( "        oid : " ).append( getOid() ).append( '\n' );
+        sb.append( "        critical : " ).append( isCritical() ).append( '\n' );
+        
+        if ( sortKeys != null )
+        {
+            sb.append( "        sortKeys : [" );
+            boolean isFirst = true;
+            
+            for ( SortKey sortKey : sortKeys )
+            {
+                if ( isFirst )
+                {
+                    isFirst = false;
+                }
+                else
+                {
+                    sb.append( ", " );
+                }
+                
+                sb.append( sortKey.getAttributeTypeDesc() );
+            }
+            
+            sb.append( "]\n" );
+        }
+        else
+        {
+            sb.append( "        sortKeys : null\n" );
+        }
+        
+        return sb.toString();
     }
 }

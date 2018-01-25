@@ -194,9 +194,8 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
     @Override
     public int hashCode()
     {
-        int h = 37;
+        int h = super.hashCode();
 
-        h = h * 17 + super.hashCode();
         h = h * 17 + type.getValue();
         h = h * 17 + ( refreshDone ? 1 : 0 );
         h = h * 17 + ( refreshDeletes ? 1 : 0 );
@@ -281,7 +280,8 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
             }
         }
 
-        return ( refreshDeletes == otherControl.isRefreshDeletes() )
+        return super.equals( o )
+            && ( refreshDeletes == otherControl.isRefreshDeletes() )
             && ( refreshDone == otherControl.isRefreshDone() )
             && ( type == otherControl.getType() )
             && ( Arrays.equals( cookie, otherControl.getCookie() ) ) 

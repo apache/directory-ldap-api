@@ -126,15 +126,20 @@ public class ProxiedAuthzImpl extends AbstractControl implements ProxiedAuthz
     @Override
     public boolean equals( Object o )
     {
-        if ( !super.equals( o ) )
+        if ( this == o )
+        {
+            return true;
+        }
+
+        if ( !( o instanceof ProxiedAuthz ) )
         {
             return false;
         }
-
+        
         ProxiedAuthz otherControl = ( ProxiedAuthz ) o;
 
-        return ( authzId == otherControl.getAuthzId() )
-            || ( ( authzId != null ) && authzId.equals( otherControl.getAuthzId() ) );
+        return super.equals( o )
+            && ( ( authzId == otherControl.getAuthzId() ) || ( ( authzId != null ) && authzId.equals( otherControl.getAuthzId() ) ) );
     }
 
 

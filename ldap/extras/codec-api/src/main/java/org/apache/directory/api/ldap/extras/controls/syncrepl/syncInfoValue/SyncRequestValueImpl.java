@@ -154,9 +154,8 @@ public class SyncRequestValueImpl extends AbstractControl implements SyncRequest
     @Override
     public int hashCode()
     {
-        int h = 37;
+        int h = super.hashCode();
 
-        h = h * 17 + super.hashCode();
         h = h * 17 + ( isReloadHint ? 1 : 0 );
         h = h * 17 + mode.getValue();
 
@@ -178,9 +177,9 @@ public class SyncRequestValueImpl extends AbstractControl implements SyncRequest
     @Override
     public boolean equals( Object o )
     {
-        if ( !super.equals( o ) )
+        if ( this == o )
         {
-            return false;
+            return true;
         }
 
         if ( !( o instanceof SyncRequestValue ) )
@@ -190,7 +189,8 @@ public class SyncRequestValueImpl extends AbstractControl implements SyncRequest
 
         SyncRequestValue otherControl = ( SyncRequestValue ) o;
 
-        return ( mode == otherControl.getMode() )
+        return super.equals( o )
+            && ( mode == otherControl.getMode() )
             && ( isReloadHint == otherControl.isReloadHint() )
             && ( Arrays.equals( cookie, otherControl.getCookie() ) );
     }

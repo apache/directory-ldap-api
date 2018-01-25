@@ -244,14 +244,20 @@ public class VirtualListViewRequestImpl extends AbstractControl implements Virtu
     @Override
     public boolean equals( Object o )
     {
-        if ( !super.equals( o ) )
+        if ( this == o )
+        {
+            return true;
+        }
+        
+        if ( !( o instanceof VirtualListViewRequest ) )
         {
             return false;
         }
 
-        VirtualListViewRequestImpl otherControl = ( VirtualListViewRequestImpl ) o;
+        VirtualListViewRequest otherControl = ( VirtualListViewRequest ) o;
 
-        return ( beforeCount == otherControl.getBeforeCount() )
+        return super.equals( o )
+            && ( beforeCount == otherControl.getBeforeCount() )
             && ( afterCount == otherControl.getAfterCount() )
             && ( offset == otherControl.getOffset() )
             && ( contentCount == otherControl.getContentCount() )

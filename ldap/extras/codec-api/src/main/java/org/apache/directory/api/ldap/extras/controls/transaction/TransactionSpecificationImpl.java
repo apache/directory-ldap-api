@@ -18,6 +18,8 @@
  */
 package org.apache.directory.api.ldap.extras.controls.transaction;
 
+import java.util.Arrays;
+
 import org.apache.directory.api.ldap.model.message.controls.AbstractControl;
 import org.apache.directory.api.util.Strings;
 
@@ -32,7 +34,6 @@ public class TransactionSpecificationImpl extends AbstractControl implements Tra
 {
     /** The Transaction Specification identifier */
     private byte[] identifier;
-
 
     /**
      * Default constructor
@@ -66,6 +67,49 @@ public class TransactionSpecificationImpl extends AbstractControl implements Tra
             System.arraycopy( identifier, 0, this.identifier, 0, identifier.length );
         }
     }
+
+
+    /**
+     * @see Object#hashCode()
+     */
+    @Override
+    public int hashCode()
+    {
+        int h = super.hashCode();
+
+        if ( identifier != null )
+        {
+            for ( byte b : identifier )
+            {
+                h = h * 17 + b;
+            }
+        }
+
+        return h;
+    }
+
+
+    /**
+     * @see Object#equals(Object)
+     */
+    @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o )
+        {
+            return true;
+        }
+        
+        if ( !( o instanceof TransactionSpecification ) )
+        {
+            return false;
+        }
+
+        TransactionSpecification otherControl = ( TransactionSpecification ) o;
+
+        return super.equals( o )
+            && Arrays.equals( identifier, otherControl.getIdentifier() );
+    }
     
     
     /**
@@ -74,13 +118,21 @@ public class TransactionSpecificationImpl extends AbstractControl implements Tra
     @Override
     public String toString()
     {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append( "    Transaction Spcecification control :\n" );
+        sb.append( "        oid : " ).append( getOid() ).append( '\n' );
+        sb.append( "        critical : " ).append( isCritical() ).append( '\n' );
+        
         if ( identifier != null )
         {
-            return "Transaction specification ID=null";
+            sb.append( "        Transaction ID=null" ).append( '\n' );
         }
         else
         {
-            return "Transaction specification ID=" + Strings.dumpBytes( identifier );
+            sb.append( "        Transaction ID=" ).append( Strings.dumpBytes( identifier ) ).append( '\n' );
         }
+        
+        return sb.toString();
     }
 }

@@ -131,9 +131,8 @@ public class SyncStateValueImpl extends AbstractControl implements SyncStateValu
     @Override
     public int hashCode()
     {
-        int h = 37;
+        int h = super.hashCode();
 
-        h = h * 17 + super.hashCode();
         h = h * 17 + type.getValue();
 
         if ( cookie != null )
@@ -162,11 +161,11 @@ public class SyncStateValueImpl extends AbstractControl implements SyncStateValu
     @Override
     public boolean equals( Object o )
     {
-        if ( !super.equals( o ) )
+        if ( this == o )
         {
-            return false;
+            return true;
         }
-
+        
         if ( !( o instanceof SyncStateValue ) )
         {
             return false;
@@ -174,7 +173,8 @@ public class SyncStateValueImpl extends AbstractControl implements SyncStateValu
 
         SyncStateValue otherControl = ( SyncStateValue ) o;
 
-        return ( type == otherControl.getSyncStateType() )
+        return super.equals( o )
+            && ( type == otherControl.getSyncStateType() )
             && ( Arrays.equals( entryUuid, otherControl.getEntryUUID() ) )
             && ( Arrays.equals( cookie, otherControl.getCookie() ) )
             && ( isCritical() == otherControl.isCritical() );

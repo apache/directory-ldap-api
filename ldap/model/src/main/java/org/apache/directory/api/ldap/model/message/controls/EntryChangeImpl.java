@@ -132,14 +132,21 @@ public class EntryChangeImpl extends AbstractControl implements EntryChange
     @Override
     public boolean equals( Object o )
     {
-        if ( !super.equals( o ) )
+        if ( this == o )
+        {
+            return true;
+        }
+        
+        if ( !( o instanceof EntryChange ) )
         {
             return false;
         }
 
         EntryChange otherControl = ( EntryChange ) o;
 
-        return ( changeNumber == otherControl.getChangeNumber() ) && ( changeType == otherControl.getChangeType() )
+        return super.equals( o ) 
+            && ( changeNumber == otherControl.getChangeNumber() ) 
+            && ( changeType == otherControl.getChangeType() )
             && ( previousDn.equals( otherControl.getPreviousDn() ) );
     }
 

@@ -108,9 +108,8 @@ public class SyncDoneValueImpl extends AbstractControl implements SyncDoneValue
     @Override
     public int hashCode()
     {
-        int h = 37;
+        int h = super.hashCode();
 
-        h = h * 17 + super.hashCode();
         h = h * 17 + ( refreshDeletes ? 1 : 0 );
 
         if ( cookie != null )
@@ -143,7 +142,8 @@ public class SyncDoneValueImpl extends AbstractControl implements SyncDoneValue
 
         SyncDoneValue otherControl = ( SyncDoneValue ) o;
 
-        return ( refreshDeletes == otherControl.isRefreshDeletes() )
+        return super.equals( o )
+            && ( refreshDeletes == otherControl.isRefreshDeletes() )
             && ( Arrays.equals( cookie, otherControl.getCookie() ) )
             && ( isCritical() == otherControl.isCritical() );
     }

@@ -147,9 +147,8 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
     @Override
     public int hashCode()
     {
-        int h = 37;
+        int h = super.hashCode();
 
-        h = h * 17 + super.hashCode();
         h = h * 17 + AdDirSyncFlag.getBitmask( flags );
         h = h * 17 + maxReturnLength;
 
@@ -169,21 +168,22 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
      * @see Object#equals(Object)
      */
     @Override
-    public boolean equals( Object o )
+    public boolean equals( Object other )
     {
-        if ( this == o )
+        if ( this == other )
         {
             return true;
         }
 
-        if ( !( o instanceof AdDirSync ) )
+        if ( !( other instanceof AdDirSync ) )
         {
             return false;
         }
 
-        AdDirSync otherControl = ( AdDirSync ) o;
+        AdDirSync otherControl = ( AdDirSync ) other;
 
-        return ( maxReturnLength == otherControl.getMaxReturnLength() )
+        return super.equals( other ) 
+            && ( maxReturnLength == otherControl.getMaxReturnLength() )
             && ( flags.equals( otherControl.getFlags() ) )
             && ( Arrays.equals( cookie, otherControl.getCookie() ) )
             && ( isCritical() == otherControl.isCritical() );
