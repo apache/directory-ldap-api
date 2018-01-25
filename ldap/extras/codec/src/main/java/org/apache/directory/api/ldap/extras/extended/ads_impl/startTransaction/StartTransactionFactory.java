@@ -33,7 +33,7 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 
 
 /**
- * An {@link ExtendedOperationFactory} for creating cancel extended request response 
+ * An {@link ExtendedOperationFactory} for creating StartTransaction extended request response 
  * pairs.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -44,7 +44,7 @@ public class StartTransactionFactory implements ExtendedOperationFactory
 
 
     /**
-     * Creates a new instance of CancelFactory.
+     * Creates a new instance of StartTransactionFactory.
      *
      * @param codec The codec for this factory.
      */
