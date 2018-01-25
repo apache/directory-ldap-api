@@ -27,7 +27,7 @@ import org.apache.directory.api.util.Strings;
 
 
 /**
- * A Decorator for CancelResponses.
+ * A Decorator for EndTransactionResponses.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -37,7 +37,7 @@ public class StartTransactionResponseDecorator extends ExtendedResponseDecorator
     private StartTransactionResponse startTransactionResponse;
 
     /**
-     * Creates a new instance of CancelResponseDecorator.
+     * Creates a new instance of EndTransactionResponseDecorator.
      *
      * @param codec The LDAP service instance
      * @param decoratedMessage The decorated message
