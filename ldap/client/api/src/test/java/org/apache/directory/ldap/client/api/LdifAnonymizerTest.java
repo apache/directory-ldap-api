@@ -136,7 +136,7 @@ public class LdifAnonymizerTest
         assertEquals( "AAAA", cn.getString() );
 
         Attribute sn = entry.get( "sn" );
-        assertEquals( "AAAA", sn.getString() );
+        assertEquals( "Test", sn.getString() );
         
         // Second entry
         ldifEntry = entries.get( 1 );
@@ -151,7 +151,7 @@ public class LdifAnonymizerTest
         assertEquals( "AAAAAAAA", cn.getString() );
 
         sn = entry.get( "sn" );
-        assertEquals( "AAAAAAAAA", sn.getString() );
+        assertEquals( "lecharnye", sn.getString() );
         
         // Third entry
         ldifEntry = entries.get( 2 );
@@ -166,7 +166,7 @@ public class LdifAnonymizerTest
         assertEquals( "AAAAAAAA", cn.getString() );
 
         sn = entry.get( "sn" );
-        assertEquals( "AAAAAAAAB", sn.getString() );
+        assertEquals( "elecharny", sn.getString() );
 
         Attribute seeAlso = entry.get( "seeAlso" );
         assertEquals( "cn=AAAAAAAA,dc=acme,dc=com", seeAlso.getString() );
