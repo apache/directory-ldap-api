@@ -57,7 +57,7 @@ public interface EndTransactionRequest extends ExtendedRequest
     /**
      * Set the Commit flag for this transaction.
      * 
-     * @param commit <tt>true</tt> if teh transaction should be committed, <tt>false</tt> if
+     * @param commit <tt>true</tt> if the transaction should be committed, <tt>false</tt> if
      * it should be rollbacked.
      */
     void setCommit( boolean commit );
@@ -71,7 +71,7 @@ public interface EndTransactionRequest extends ExtendedRequest
     /**
      * Set the transaction ID to commit or rollback
      * 
-     * @param transactionId The transaction ID we got from teh startTransaction response
+     * @param transactionId The transaction ID we got from the startTransaction response
      */
     void setTransactionId( byte[] transactionId );
 }
