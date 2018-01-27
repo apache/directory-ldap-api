@@ -35,7 +35,7 @@ public class EndTransactionRequestContainer extends AbstractContainer
 
 
     /**
-     * Creates a new EndTransactionContainer object. We will store one
+     * Creates a new EndTransactionRequestContainer object. We will store one
      * grammar, it's enough ...
      */
     public EndTransactionRequestContainer()

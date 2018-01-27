@@ -188,7 +188,7 @@ public class EndTransactionRequestDecorator extends ExtendedRequestDecorator<End
         bb.put( TLV.getBytes( requestLength ) );
         
         // The commit flag, if it's not true
-        if ( ! getCommit() )
+        if ( !getCommit() )
         {
             BerValue.encode( bb, false );
         }

@@ -59,6 +59,8 @@ public class EndTransactionRequestTest
         bb.put( new byte[]
             { 0x30, 0x00, // EndTransactionRequest ::= SEQUENCE {
             } );
+        
+        bb.flip();
 
         EndTransactionRequestContainer container = new EndTransactionRequestContainer();
 
@@ -78,6 +80,8 @@ public class EndTransactionRequestTest
             { 0x30, 0x03,              // EndTransactionRequest ::= SEQUENCE {
                 0x01, 0x01, 0x00       // Commit, TRUE
         } );
+
+        bb.flip();
 
         EndTransactionRequestContainer container = new EndTransactionRequestContainer();
 
