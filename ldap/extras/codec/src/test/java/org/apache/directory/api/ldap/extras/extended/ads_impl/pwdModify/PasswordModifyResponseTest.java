@@ -28,7 +28,6 @@ import static org.junit.Assert.fail;
 import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.DecoderException;
-import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyResponseContainer;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyResponseDecorator;

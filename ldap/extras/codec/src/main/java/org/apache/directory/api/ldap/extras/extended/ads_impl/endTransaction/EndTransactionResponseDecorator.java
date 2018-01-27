@@ -39,6 +39,9 @@ public class EndTransactionResponseDecorator extends ExtendedResponseDecorator<E
     /** The endTransaction response */
     private EndTransactionResponse endTransactionResponse;
 
+    /** stores the length of the request*/
+    private int requestLength = 0;
+
     /**
      * Creates a new instance of EndTransactionResponseDecorator.
      *

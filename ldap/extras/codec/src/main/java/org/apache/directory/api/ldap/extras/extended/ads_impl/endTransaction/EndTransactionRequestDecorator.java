@@ -20,7 +20,13 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction;
 
 
+import java.nio.ByteBuffer;
+
 import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.EncoderException;
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
@@ -42,6 +48,9 @@ public class EndTransactionRequestDecorator extends ExtendedRequestDecorator<End
 
     /** The internal EndTransaction request */
     private EndTransactionRequest endTransactionRequest;
+
+    /** stores the length of the request*/
+    private int requestLength = 0;
 
 
     /**
@@ -134,5 +143,64 @@ public class EndTransactionRequestDecorator extends ExtendedRequestDecorator<End
             LOG.error( I18n.err( I18n.ERR_04165 ), e );
             throw new RuntimeException( e );
         }
+    }
+
+
+    /**
+     * Compute the EndTransactionRequest extended operation length
+     * <pre>
+     * 0x30 L1 
+     *   | 
+     *   +-- 0x01 0x01 commit 
+     *   +-- 0x04 L2 identifier] 
+     * </pre>
+     */
+    /* No qualifier */int computeLengthInternal()
+    {
+        requestLength = 0;
+        
+        if ( !endTransactionRequest.getCommit() )
+        {
+            requestLength = 1 + 1 + 1; // Commit
+        }
+
+        if ( endTransactionRequest.getTransactionId() != null )
+        {
+            int len = endTransactionRequest.getTransactionId().length;
+            requestLength += 1 + TLV.getNbBytes( len ) + len;
+        }
+
+        return 1 + TLV.getNbBytes( requestLength ) + requestLength;
+    }
+
+
+    /**
+     * Encodes the EndTransactionRequest extended operation.
+     * 
+     * @return A ByteBuffer that contains the encoded PDU
+     * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
+     */
+    /* No qualifier */ByteBuffer encodeInternal() throws EncoderException
+    {
+        ByteBuffer bb = ByteBuffer.allocate( computeLengthInternal() );
+
+        bb.put( UniversalTag.SEQUENCE.getValue() );
+        bb.put( TLV.getBytes( requestLength ) );
+        
+        // The commit flag, if it's not true
+        if ( ! getCommit() )
+        {
+            BerValue.encode( bb, false );
+        }
+
+        // The identifier
+        byte[] identifier = endTransactionRequest.getTransactionId();
+
+        if ( identifier != null )
+        {
+            BerValue.encode( bb, identifier  );
+        }
+
+        return bb;
     }
 }
