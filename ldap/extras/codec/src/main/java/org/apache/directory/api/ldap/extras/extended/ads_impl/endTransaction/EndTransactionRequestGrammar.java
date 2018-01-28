@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * This class implements the EndTransactionRequest extended operation's ASN.1 grammer. 
+ * This class implements the EndTransactionRequest extended operation's ASN.1 grammar. 
  * All the actions are declared in this class. As it is a singleton, 
  * these declaration are only done once. The grammar is :
  * 

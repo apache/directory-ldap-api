@@ -43,7 +43,7 @@ public enum EndTransactionRequestStatesEnum implements States
     /** The commit flag */
     COMMIT_STATE,
     
-    /** he identifier state */
+    /** The identifier state */
     IDENTFIER_STATE,
 
     /** Last state */

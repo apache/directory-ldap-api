@@ -140,7 +140,7 @@ public class EndTransactionRequestDecorator extends ExtendedRequestDecorator<End
         }
         catch ( DecoderException e )
         {
-            LOG.error( I18n.err( I18n.ERR_04165 ), e );
+            LOG.error( I18n.err( I18n.ERR_04165_PAYLOAD_DECODING_ERROR ), e );
             throw new RuntimeException( e );
         }
     }

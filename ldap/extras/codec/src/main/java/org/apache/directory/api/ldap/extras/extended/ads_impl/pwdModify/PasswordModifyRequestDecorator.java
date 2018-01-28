@@ -87,7 +87,7 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pas
         }
         catch ( DecoderException e )
         {
-            LOG.error( I18n.err( I18n.ERR_04165 ), e );
+            LOG.error( I18n.err( I18n.ERR_04165_PAYLOAD_DECODING_ERROR ), e );
             throw new RuntimeException( e );
         }
     }
