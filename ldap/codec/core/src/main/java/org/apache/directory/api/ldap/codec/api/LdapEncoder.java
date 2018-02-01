@@ -67,7 +67,7 @@ public class LdapEncoder
     /**
      * Compute the control's encoded length
      */
-    private int computeControlLength( Control control )
+    public static int computeControlLength( Control control )
     {
         // First, compute the control's value length
         int controlValueLength = ( ( CodecControl<?> ) control ).computeLength();
@@ -96,7 +96,7 @@ public class LdapEncoder
     /**
      * Encode a control to a byte[]
      */
-    private ByteBuffer encodeControl( ByteBuffer buffer, Control control ) throws EncoderException
+    public static ByteBuffer encodeControl( ByteBuffer buffer, Control control ) throws EncoderException
     {
         if ( buffer == null )
         {

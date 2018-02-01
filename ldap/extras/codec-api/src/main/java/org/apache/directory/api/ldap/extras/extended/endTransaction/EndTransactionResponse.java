@@ -59,9 +59,16 @@ public interface EndTransactionResponse extends ExtendedResponse
     
     
     /**
-     * @return The Message ID if failire
+     * @return The Message ID if failure
      */
     int getFailedMessageId();
+    
+    
+    /**
+     * @param failedMessageId The messageId that causes the failure
+     */
+    void setFailedMessageId( int failedMessageId );
+    
     
     /**
      * @return the list of <messageId, Controls> processed within the transaction 

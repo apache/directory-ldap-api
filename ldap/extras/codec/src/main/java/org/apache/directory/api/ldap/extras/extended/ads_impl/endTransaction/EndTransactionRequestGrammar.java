@@ -28,7 +28,6 @@ import org.apache.directory.api.asn1.ber.grammar.GrammarTransition;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.BooleanDecoder;
 import org.apache.directory.api.asn1.ber.tlv.BooleanDecoderException;
-import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionRequestImpl;
@@ -36,6 +35,9 @@ import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static org.apache.directory.api.asn1.ber.tlv.UniversalTag.BOOLEAN;
+import static org.apache.directory.api.asn1.ber.tlv.UniversalTag.OCTET_STRING;
+import static org.apache.directory.api.asn1.ber.tlv.UniversalTag.SEQUENCE;
 
 /**
  * This class implements the EndTransactionRequest extended operation's ASN.1 grammar. 
@@ -73,7 +75,7 @@ public class EndTransactionRequestGrammar extends AbstractGrammar<EndTransaction
         setName( EndTransactionRequestGrammar.class.getName() );
 
         // Create the transitions table
-        super.transitions = new GrammarTransition[EndTransactionRequestStatesEnum.LAST_STATE
+        super.transitions = new GrammarTransition[EndTransactionRequestStates.LAST_STATE
             .ordinal()][256];
 
         /**
@@ -84,11 +86,11 @@ public class EndTransactionRequestGrammar extends AbstractGrammar<EndTransaction
          *     
          * Creates the EndTransactionRequest object
          */
-        super.transitions[EndTransactionRequestStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
+        super.transitions[EndTransactionRequestStates.START_STATE.ordinal()][SEQUENCE.getValue()] =
             new GrammarTransition<EndTransactionRequestContainer>(
-                EndTransactionRequestStatesEnum.START_STATE,
-                EndTransactionRequestStatesEnum.SEQUENCE_STATE,
-                UniversalTag.SEQUENCE.getValue(), 
+                EndTransactionRequestStates.START_STATE,
+                EndTransactionRequestStates.SEQUENCE_STATE,
+                SEQUENCE, 
                 new GrammarAction<EndTransactionRequestContainer>( "Init EndTransactionRequest" )
                 {
                     public void action( EndTransactionRequestContainer container )
@@ -108,11 +110,11 @@ public class EndTransactionRequestGrammar extends AbstractGrammar<EndTransaction
          *     
          * Set the commit flag into the EndTransactionRequest instance.
          */
-        super.transitions[EndTransactionRequestStatesEnum.SEQUENCE_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] =
+        super.transitions[EndTransactionRequestStates.SEQUENCE_STATE.ordinal()][BOOLEAN.getValue()] =
             new GrammarTransition<EndTransactionRequestContainer>(
-                EndTransactionRequestStatesEnum.SEQUENCE_STATE,
-                EndTransactionRequestStatesEnum.COMMIT_STATE,
-                UniversalTag.BOOLEAN.getValue(),
+                EndTransactionRequestStates.SEQUENCE_STATE,
+                EndTransactionRequestStates.COMMIT_STATE,
+                BOOLEAN,
                 new GrammarAction<EndTransactionRequestContainer>( "Set EndTransactionRequest commit flag" )
                 {
                     public void action( EndTransactionRequestContainer container ) throws DecoderException
@@ -142,14 +144,14 @@ public class EndTransactionRequestGrammar extends AbstractGrammar<EndTransaction
          *     
          * Set the commit flag into the EndTransactionRequest instance.
          */
-        super.transitions[EndTransactionRequestStatesEnum.SEQUENCE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
+        super.transitions[EndTransactionRequestStates.SEQUENCE_STATE.ordinal()][OCTET_STRING.getValue()] =
             new GrammarTransition<EndTransactionRequestContainer>(
-                EndTransactionRequestStatesEnum.SEQUENCE_STATE,
-                EndTransactionRequestStatesEnum.IDENTFIER_STATE,
-                UniversalTag.OCTET_STRING.getValue(),
+                EndTransactionRequestStates.SEQUENCE_STATE,
+                EndTransactionRequestStates.IDENTFIER_STATE,
+                OCTET_STRING,
                 new GrammarAction<EndTransactionRequestContainer>( "Set EndTransactionRequest identifier" )
                 {
-                    public void action( EndTransactionRequestContainer container ) throws DecoderException
+                    public void action( EndTransactionRequestContainer container )
                     {
                         BerValue value = container.getCurrentTLV().getValue();
 
@@ -181,14 +183,14 @@ public class EndTransactionRequestGrammar extends AbstractGrammar<EndTransaction
          *     
          * Set the identifier into the EndTransactionRequest instance.
          */
-        super.transitions[EndTransactionRequestStatesEnum.COMMIT_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
+        super.transitions[EndTransactionRequestStates.COMMIT_STATE.ordinal()][OCTET_STRING.getValue()] =
             new GrammarTransition<EndTransactionRequestContainer>(
-                EndTransactionRequestStatesEnum.COMMIT_STATE,
-                EndTransactionRequestStatesEnum.IDENTFIER_STATE,
-                UniversalTag.OCTET_STRING.getValue(),
+                EndTransactionRequestStates.COMMIT_STATE,
+                EndTransactionRequestStates.IDENTFIER_STATE,
+                OCTET_STRING,
                 new GrammarAction<EndTransactionRequestContainer>( "Set EndTransactionRequest identifier" )
                 {
-                    public void action( EndTransactionRequestContainer container ) throws DecoderException
+                    public void action( EndTransactionRequestContainer container )
                     {
                         BerValue value = container.getCurrentTLV().getValue();
 

@@ -22,7 +22,7 @@ package org.apache.directory.api.ldap.extras.extended.endTransaction;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.ldap.Control;
+import org.apache.directory.api.ldap.model.message.Control;
 
 /**
  * The interface for End Transaction Extended Response UpdateControl. It's described in RFC 5805 :
@@ -180,7 +180,7 @@ public class UpdateControls
                     sb.append( ", " );
                 }
                 
-                sb.append( control.getID() );
+                sb.append( control.getOid() );
             }
             
             sb.append( ']' );

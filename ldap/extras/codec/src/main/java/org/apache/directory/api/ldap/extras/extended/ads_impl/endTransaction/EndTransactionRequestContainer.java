@@ -42,7 +42,7 @@ public class EndTransactionRequestContainer extends AbstractContainer
     {
         super();
         setGrammar( EndTransactionRequestGrammar.getInstance() );
-        setTransition( EndTransactionRequestStatesEnum.START_STATE );
+        setTransition( EndTransactionRequestStates.START_STATE );
     }
 
 

@@ -17,94 +17,90 @@
  *  under the License.
  *
  */
-package org.apache.directory.api.ldap.codec.actions.controls;
+package org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction.controls.actions;
 
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.ber.tlv.BooleanDecoder;
+import org.apache.directory.api.asn1.ber.tlv.BooleanDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
-import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.api.MessageDecorator;
+import org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction.controls.ControlsContainer;
 import org.apache.directory.api.ldap.model.message.Control;
-import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 /**
- * The action used add a new control. We store its OID.
+ * The action used to set the control criticality flag
  * <pre>
  * Control ::= SEQUENCE {
- *     controlType             LDAPOID,
+ *     ...
+ *     criticality BOOLEAN DEFAULT FALSE,
  *     ...
  * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AddControl extends GrammarAction<LdapMessageContainer<MessageDecorator<? extends Message>>>
+public class StoreControlCriticality extends GrammarAction<ControlsContainer>
 {
     /** The logger */
-    private static final Logger LOG = LoggerFactory.getLogger( AddControl.class );
+    private static final Logger LOG = LoggerFactory.getLogger( StoreControlCriticality.class );
 
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
 
     /**
-     * Instantiates a new AddControl action.
+     * Instantiates a new StoreControlCriticality action.
      */
-    public AddControl()
+    public StoreControlCriticality()
     {
-        super( "Add a new control" );
+        super( "Store the control criticality" );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<MessageDecorator<? extends Message>> container ) throws DecoderException
+    public void action( ControlsContainer container ) throws DecoderException
     {
         TLV tlv = container.getCurrentTLV();
 
-        // Store the type
-        // We have to handle the special case of a 0 length OID
-        if ( tlv.getLength() == 0 )
+        // Get the current control
+        Control control = container.getCurrentControl();
+
+        // Store the criticality
+        // We get the value. If it's a 0, it's a FALSE. If it's
+        // a FF, it's a TRUE. Any other value should be an error,
+        // but we could relax this constraint. So if we have
+        // something
+        // which is not 0, it will be interpreted as TRUE, but we
+        // will generate a warning.
+        BerValue value = tlv.getValue();
+
+        try
         {
-            String msg = I18n.err( I18n.ERR_04097_NULL_CONTROL_OID );
-            LOG.error( msg );
+            control.setCritical( BooleanDecoder.parse( value ) );
+        }
+        catch ( BooleanDecoderException bde )
+        {
+            LOG.error( I18n
+                .err( I18n.ERR_04100_BAD_CONTROL_CRITICALITY, Strings.dumpBytes( value.getData() ), bde.getMessage() ) );
 
             // This will generate a PROTOCOL_ERROR
-            throw new DecoderException( msg );
+            throw new DecoderException( bde.getMessage(), bde );
         }
-
-        byte[] value = tlv.getValue().getData();
-        String oidValue = Strings.asciiBytesToString( value );
-
-        // The OID is encoded as a String, not an Object Id
-        if ( !Oid.isOid( oidValue ) )
-        {
-            String msg = I18n.err( I18n.ERR_04098_INVALID_CONTROL_OID, oidValue );
-            LOG.error( msg );
-
-            // This will generate a PROTOCOL_ERROR
-            throw new DecoderException( msg );
-        }
-
-        Message message = container.getMessage();
-
-        Control control = container.getLdapCodecService().newControl( oidValue );
-
-        message.addControl( control );
 
         // We can have an END transition
         container.setGrammarEndAllowed( true );
 
         if ( IS_DEBUG )
         {
-            LOG.debug( "Control OID : {}", oidValue );
+            LOG.debug( "Control criticality : {}", control.isCritical() );
         }
     }
 }

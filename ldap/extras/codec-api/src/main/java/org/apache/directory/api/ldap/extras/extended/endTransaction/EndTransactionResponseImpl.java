@@ -57,7 +57,7 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 public class EndTransactionResponseImpl extends ExtendedResponseImpl implements EndTransactionResponse
 {
     /** The faulty Message ID, if any */
-    private int failedMessageId;
+    private int failedMessageId = -1;
     
     /** The list of update controls for the message processed in the transaction */
     private List<UpdateControls> updateControls = new ArrayList<>();
@@ -137,6 +137,7 @@ public class EndTransactionResponseImpl extends ExtendedResponseImpl implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setFailedMessageId( int failedMessageId )
     {
         this.failedMessageId = failedMessageId;
@@ -145,6 +146,7 @@ public class EndTransactionResponseImpl extends ExtendedResponseImpl implements 
     /**
      * @return the updateControls
      */
+    @Override
     public List<UpdateControls> getUpdateControls()
     {
         return updateControls;

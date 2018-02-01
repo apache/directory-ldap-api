@@ -17,7 +17,7 @@
  *  under the License.
  *
  */
-package org.apache.directory.api.ldap.codec.actions.controls;
+package org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction.controls.actions;
 
 
 import org.apache.directory.api.asn1.DecoderException;
@@ -25,10 +25,8 @@ import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.api.MessageDecorator;
-import org.apache.directory.api.ldap.model.message.Control;
-import org.apache.directory.api.ldap.model.message.Message;
+import org.apache.directory.api.ldap.codec.api.CodecControl;
+import org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction.controls.ControlsContainer;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +42,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AddControl extends GrammarAction<LdapMessageContainer<MessageDecorator<? extends Message>>>
+public class AddControl extends GrammarAction<ControlsContainer>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( AddControl.class );
@@ -65,7 +63,7 @@ public class AddControl extends GrammarAction<LdapMessageContainer<MessageDecora
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<MessageDecorator<? extends Message>> container ) throws DecoderException
+    public void action( ControlsContainer container ) throws DecoderException
     {
         TLV tlv = container.getCurrentTLV();
 
@@ -93,12 +91,11 @@ public class AddControl extends GrammarAction<LdapMessageContainer<MessageDecora
             throw new DecoderException( msg );
         }
 
-        Message message = container.getMessage();
+        CodecControl<?> control = container.getLdapCodecService().newControl( oidValue );
 
-        Control control = container.getLdapCodecService().newControl( oidValue );
-
-        message.addControl( control );
-
+        container.setCurrentControl( control );
+        container.addControl( control );
+        
         // We can have an END transition
         container.setGrammarEndAllowed( true );
 

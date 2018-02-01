@@ -73,10 +73,8 @@ public class StoreControlCriticality extends GrammarAction<LdapMessageContainer<
         TLV tlv = container.getCurrentTLV();
 
         // Get the current control
-        Control control;
-
         MessageDecorator<? extends Message> message = container.getMessage();
-        control = message.getCurrentControl();
+        Control control = message.getCurrentControl();
 
         // Store the criticality
         // We get the value. If it's a 0, it's a FALSE. If it's
@@ -94,7 +92,7 @@ public class StoreControlCriticality extends GrammarAction<LdapMessageContainer<
         catch ( BooleanDecoderException bde )
         {
             LOG.error( I18n
-                .err( I18n.ERR_04100, Strings.dumpBytes( value.getData() ), bde.getMessage() ) );
+                .err( I18n.ERR_04100_BAD_CONTROL_CRITICALITY, Strings.dumpBytes( value.getData() ), bde.getMessage() ) );
 
             // This will generate a PROTOCOL_ERROR
             throw new DecoderException( bde.getMessage(), bde );
@@ -105,7 +103,7 @@ public class StoreControlCriticality extends GrammarAction<LdapMessageContainer<
 
         if ( IS_DEBUG )
         {
-            LOG.debug( "Control criticality : " + control.isCritical() );
+            LOG.debug( "Control criticality : {}", control.isCritical() );
         }
     }
 }

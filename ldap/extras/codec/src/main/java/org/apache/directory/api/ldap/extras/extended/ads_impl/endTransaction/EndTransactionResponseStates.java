@@ -24,12 +24,12 @@ import org.apache.directory.api.asn1.ber.grammar.States;
 
 
 /**
- * This class store the EndTransactionRequest's grammar constants. It is also used
+ * This class store the EndTransactionResponse's grammar constants. It is also used
  * for debugging purposes.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public enum EndTransactionRequestStatesEnum implements States
+public enum EndTransactionResponseStates implements States
 {
     /** The END_STATE */
     END_STATE,
@@ -38,13 +38,22 @@ public enum EndTransactionRequestStatesEnum implements States
     START_STATE,
     
     /** The initial SEQUENCE */
-    SEQUENCE_STATE,
+    END_TRANSACTION_SEQUENCE_STATE,
     
-    /** The commit flag */
-    COMMIT_STATE,
+    /** The failed message ID */
+    FAILED_MESSAGE_ID_STATE,
     
-    /** The identifier state */
-    IDENTFIER_STATE,
+    /** The update controls SEQ */
+    UPDATE_CONTROLS_SEQ_STATE,
+    
+    /** The update control SEQ */
+    UPDATE_CONTROL_SEQ_STATE,
+    
+    /** THe control's message ID state */
+    CONTROL_MESSAGE_ID_STATE,
+    
+    /** The control's state */
+    CONTROLS_STATE,
 
     /** Last state */
     LAST_STATE;
@@ -57,7 +66,7 @@ public enum EndTransactionRequestStatesEnum implements States
      */
     public String getGrammarName()
     {
-        return "END_TRANSACTION_REQUEST_GRAMMER";
+        return "END_TRANSACTION_RESPONSE_GRAMMER";
     }
 
 
@@ -69,7 +78,7 @@ public enum EndTransactionRequestStatesEnum implements States
      */
     public String getState( int state )
     {
-        return ( state == END_STATE.ordinal() ) ? "END_TRANSACTION_REQUEST_GRAMMER" : name();
+        return ( state == END_STATE.ordinal() ) ? "END_TRANSACTION_RESPONSE_GRAMMER" : name();
     }
 
 
@@ -87,7 +96,7 @@ public enum EndTransactionRequestStatesEnum implements States
      * {@inheritDoc}
      */
     @Override
-    public EndTransactionRequestStatesEnum getStartState()
+    public EndTransactionResponseStates getStartState()
     {
         return START_STATE;
     }
