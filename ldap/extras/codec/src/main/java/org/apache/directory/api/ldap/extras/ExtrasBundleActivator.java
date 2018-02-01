@@ -50,6 +50,7 @@ import org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewReq
 import org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewResponseFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.cancel.CancelFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration.CertGenerationFactory;
+import org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction.EndTransactionFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyFactory;
@@ -59,6 +60,7 @@ import org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure.St
 import org.apache.directory.api.ldap.extras.extended.ads_impl.whoAmI.WhoAmIFactory;
 import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequest;
 import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationRequest;
+import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionRequest;
 import org.apache.directory.api.ldap.extras.extended.gracefulDisconnect.GracefulDisconnectResponse;
 import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownRequest;
 import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyRequest;
@@ -136,6 +138,9 @@ public class ExtrasBundleActivator implements BundleActivator
             CertGenerationFactory certGenerationFactory = new CertGenerationFactory( codec );
             codec.registerExtendedRequest( certGenerationFactory );
 
+            EndTransactionFactory endTransactionFactory = new EndTransactionFactory( codec );
+            codec.registerExtendedRequest( endTransactionFactory );
+
             GracefulDisconnectFactory gracefulDisconnectFactory = new GracefulDisconnectFactory( codec );
             codec.registerExtendedRequest( gracefulDisconnectFactory );
 
@@ -181,6 +186,7 @@ public class ExtrasBundleActivator implements BundleActivator
         {
             codec.unregisterExtendedRequest( CancelRequest.EXTENSION_OID );
             codec.unregisterExtendedRequest( CertGenerationRequest.EXTENSION_OID );
+            codec.unregisterExtendedRequest( EndTransactionRequest.EXTENSION_OID );
             codec.unregisterExtendedRequest( GracefulShutdownRequest.EXTENSION_OID );
             codec.unregisterExtendedRequest( GracefulDisconnectResponse.EXTENSION_OID );
             codec.unregisterExtendedRequest( PasswordModifyRequest.EXTENSION_OID );

@@ -72,6 +72,7 @@ public class StandaloneLdapCodecServiceTest
                 StandaloneLdapApiService.EXTENDED_OPERATIONS_LIST,
                 "org.apache.directory.api.ldap.extras.extended.ads_impl.cancel.CancelFactory,"
                     + "org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration.CertGenerationFactory,"
+                    + "org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction.EndTransactionFactory,"
                     + "org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectFactory,"
                     + "org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownFactory,"
                     + "org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyFactory,"

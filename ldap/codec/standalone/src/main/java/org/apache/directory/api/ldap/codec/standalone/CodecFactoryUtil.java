@@ -63,6 +63,7 @@ import org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewReq
 import org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewResponseFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.cancel.CancelFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration.CertGenerationFactory;
+import org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction.EndTransactionFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyFactory;
@@ -227,6 +228,10 @@ public final class CodecFactoryUtil
         CertGenerationFactory certGenerationFactory = new CertGenerationFactory( apiService );
         extendendOperationsFactories.put( certGenerationFactory.getOid(), certGenerationFactory );
         LOG.info( "Registered pre-bundled extended operation factory: {}", certGenerationFactory.getOid() );
+
+        EndTransactionFactory endTransactionFactory = new EndTransactionFactory( apiService );
+        extendendOperationsFactories.put( endTransactionFactory.getOid(), endTransactionFactory );
+        LOG.info( "Registered pre-bundled extended operation factory: {}", endTransactionFactory.getOid() );
 
         GracefulDisconnectFactory gracefulDisconnectFactory = new GracefulDisconnectFactory( apiService );
         extendendOperationsFactories.put( gracefulDisconnectFactory.getOid(), gracefulDisconnectFactory );
