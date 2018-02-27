@@ -141,10 +141,8 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
      * @param saslMechanism The SASL mechanism to use
      * @param controls The controls to send
      * @return The created BindRequest
-     * @throws LdapException If the creation failed
      */
     protected BindRequest createBindRequest( String name, byte[] credentials, String saslMechanism, Control... controls )
-        throws LdapException
     {
         // Set the new messageId
         BindRequest bindRequest = new BindRequestImpl();
