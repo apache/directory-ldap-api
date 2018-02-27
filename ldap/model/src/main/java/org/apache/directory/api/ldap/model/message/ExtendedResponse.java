@@ -28,10 +28,6 @@ package org.apache.directory.api.ldap.model.message;
  */
 public interface ExtendedResponse extends ResultResponse
 {
-    /** Extended response message type enumeration value */
-    MessageTypeEnum TYPE = MessageTypeEnum.EXTENDED_RESPONSE;
-
-
     /**
      * Gets the OID uniquely identifying this extended response (a.k.a. its
      * name).

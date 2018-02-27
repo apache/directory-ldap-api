@@ -40,6 +40,8 @@ public class IntermediateResponseImpl extends AbstractResultResponse implements 
     /** Response Value for the intermediate response */
     protected byte[] responseValue;
 
+    /** Intermediate response message type enumeration value */
+    private static final MessageTypeEnum TYPE = MessageTypeEnum.INTERMEDIATE_RESPONSE;
 
     /**
      * Creates a new IntermediateResponseImpl instance

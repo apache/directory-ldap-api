@@ -1623,83 +1623,50 @@ public enum ResultCodeEnum
                 return set.iterator().next();
 
             case ADD_REQUEST:
-                candidates = intersection( set, ADD_CODES );
-                break;
-
             case ADD_RESPONSE:
                 candidates = intersection( set, ADD_CODES );
                 break;
 
             case BIND_REQUEST:
-                candidates = intersection( set, BIND_CODES );
-                break;
-
             case BIND_RESPONSE:
                 candidates = intersection( set, BIND_CODES );
                 break;
 
             case COMPARE_REQUEST:
-                candidates = intersection( set, COMPARE_CODES );
-                break;
-
             case COMPARE_RESPONSE:
                 candidates = intersection( set, COMPARE_CODES );
                 break;
 
             case DEL_REQUEST:
-                candidates = intersection( set, DELETE_CODES );
-                break;
-
             case DEL_RESPONSE:
                 candidates = intersection( set, DELETE_CODES );
                 break;
 
             case EXTENDED_REQUEST:
-                candidates = intersection( set, EXTENDED_CODES );
-                break;
-
             case EXTENDED_RESPONSE:
                 candidates = intersection( set, EXTENDED_CODES );
                 break;
 
             case MODIFYDN_REQUEST:
-                candidates = intersection( set, MODIFYDN_CODES );
-                break;
-
             case MODIFYDN_RESPONSE:
                 candidates = intersection( set, MODIFYDN_CODES );
                 break;
 
             case MODIFY_REQUEST:
-                candidates = intersection( set, MODIFY_CODES );
-                break;
-
             case MODIFY_RESPONSE:
                 candidates = intersection( set, MODIFY_CODES );
                 break;
 
             case SEARCH_REQUEST:
-                candidates = intersection( set, SEARCH_CODES );
-                break;
-
             case SEARCH_RESULT_DONE:
-                candidates = intersection( set, SEARCH_CODES );
-                break;
-
             case SEARCH_RESULT_ENTRY:
-                candidates = intersection( set, SEARCH_CODES );
-                break;
-
             case SEARCH_RESULT_REFERENCE:
+            case INTERMEDIATE_RESPONSE:
                 candidates = intersection( set, SEARCH_CODES );
                 break;
 
             case UNBIND_REQUEST:
                 return set.iterator().next();
-
-            case INTERMEDIATE_RESPONSE:
-                candidates = intersection( set, SEARCH_CODES );
-                break;
 
             default:
                 throw new IllegalArgumentException( "Unexpected MessageTypeEnum " + type );

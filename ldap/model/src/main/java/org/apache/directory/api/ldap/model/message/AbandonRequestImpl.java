@@ -33,6 +33,9 @@ public class AbandonRequestImpl extends AbstractRequest implements AbandonReques
     /** Sequence identifier of the outstanding request message to abandon */
     private int abandonId;
 
+    /** Ldap abandon request type code */
+    private static final MessageTypeEnum TYPE = MessageTypeEnum.ABANDON_REQUEST;
+
 
     /**
      * Creates an AbandonRequest implementation for an outstanding request.

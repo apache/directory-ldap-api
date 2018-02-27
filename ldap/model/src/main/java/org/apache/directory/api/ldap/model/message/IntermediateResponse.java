@@ -29,10 +29,6 @@ package org.apache.directory.api.ldap.model.message;
  */
 public interface IntermediateResponse extends Response
 {
-    /** Intermediate response message type enumeration value */
-    MessageTypeEnum TYPE = MessageTypeEnum.INTERMEDIATE_RESPONSE;
-
-
     /**
      * Gets the response name
      * 

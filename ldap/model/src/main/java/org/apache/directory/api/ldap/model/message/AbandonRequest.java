@@ -28,10 +28,6 @@ package org.apache.directory.api.ldap.model.message;
  */
 public interface AbandonRequest extends Request
 {
-    /** Ldap abandon request type code */
-    MessageTypeEnum TYPE = MessageTypeEnum.ABANDON_REQUEST;
-
-
     /**
      * Gets the id of the request operation to terminate.
      * 
