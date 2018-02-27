@@ -31,7 +31,7 @@ import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyImpl;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponseImpl;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValueImpl;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncInfoValueImpl;
-import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncRequestValueImpl;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncRequest.SyncRequestValueImpl;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateValueImpl;
 import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewRequestImpl;
 import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewResponseImpl

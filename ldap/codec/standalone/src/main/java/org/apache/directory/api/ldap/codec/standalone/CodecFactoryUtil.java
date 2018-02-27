@@ -49,7 +49,7 @@ import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
 import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValue;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncInfoValue;
-import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncRequestValue;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncRequest.SyncRequestValue;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateValue;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncDoneValueFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncInfoValueFactory;

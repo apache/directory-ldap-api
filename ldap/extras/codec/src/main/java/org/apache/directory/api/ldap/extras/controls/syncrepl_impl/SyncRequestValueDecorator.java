@@ -33,8 +33,8 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ControlDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.controls.SynchronizationModeEnum;
-import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncRequestValue;
-import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncRequestValueImpl;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncRequest.SyncRequestValue;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncRequest.SyncRequestValueImpl;
 import org.apache.directory.api.util.Strings;
 
 

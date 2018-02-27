@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue;
+package org.apache.directory.api.ldap.extras.controls.syncrepl.syncRequest;
 
 
 import org.apache.directory.api.ldap.extras.controls.SynchronizationModeEnum;
