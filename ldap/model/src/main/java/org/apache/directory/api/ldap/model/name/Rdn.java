@@ -1410,8 +1410,6 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                                     bytes[pos++] = '#';
                                     break;
                                 }
-                            case '=':
-                                throw new IllegalArgumentException( I18n.err( I18n.ERR_04215 ) );
 
                             case ' ':
                                 if ( ( i == 0 ) || ( i == chars.length - 1 ) )

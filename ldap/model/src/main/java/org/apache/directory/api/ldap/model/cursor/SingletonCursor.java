@@ -105,7 +105,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
     @Override
     public void before( E element ) throws LdapException, CursorException
     {
-        checkNotClosed( "before()" );
+        checkNotClosed();
 
         if ( comparator == null )
         {
@@ -131,7 +131,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
     @Override
 public void after( E element ) throws LdapException, CursorException
     {
-        checkNotClosed( "after()" );
+        checkNotClosed();
 
         if ( comparator == null )
         {
@@ -157,7 +157,7 @@ public void after( E element ) throws LdapException, CursorException
     @Override
     public void beforeFirst() throws LdapException, CursorException
     {
-        checkNotClosed( "beforeFirst" );
+        checkNotClosed();
         beforeFirst = true;
         afterLast = false;
         onSingleton = false;
@@ -170,7 +170,7 @@ public void after( E element ) throws LdapException, CursorException
     @Override
     public void afterLast() throws LdapException, CursorException
     {
-        checkNotClosed( "afterLast" );
+        checkNotClosed();
         beforeFirst = false;
         afterLast = true;
         onSingleton = false;
@@ -183,7 +183,7 @@ public void after( E element ) throws LdapException, CursorException
     @Override
     public boolean first() throws LdapException, CursorException
     {
-        checkNotClosed( "first" );
+        checkNotClosed();
         beforeFirst = false;
         onSingleton = true;
         afterLast = false;
@@ -198,7 +198,7 @@ public void after( E element ) throws LdapException, CursorException
     @Override
     public boolean last() throws LdapException, CursorException
     {
-        checkNotClosed( "last" );
+        checkNotClosed();
         beforeFirst = false;
         onSingleton = true;
         afterLast = false;
@@ -253,7 +253,7 @@ public void after( E element ) throws LdapException, CursorException
     @Override
     public boolean previous() throws LdapException, CursorException
     {
-        checkNotClosed( "previous" );
+        checkNotClosed();
 
         if ( beforeFirst )
         {
@@ -284,7 +284,7 @@ public void after( E element ) throws LdapException, CursorException
     @Override
     public boolean next() throws LdapException, CursorException
     {
-        checkNotClosed( "next" );
+        checkNotClosed();
 
         if ( beforeFirst )
         {
@@ -315,7 +315,7 @@ public void after( E element ) throws LdapException, CursorException
     @Override
     public E get() throws CursorException
     {
-        checkNotClosed( "get" );
+        checkNotClosed();
 
         if ( onSingleton )
         {

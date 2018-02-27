@@ -674,9 +674,9 @@ public class DnParserTest
 
     
     @Test
-    public void testSameAttributeInDn() throws LdapInvalidDnException
+    public void testEqualInRdn() throws LdapInvalidDnException
     {
-        //Dn dn = new Dn( "l=eu + l=de + l=Berlin + l=Brandenburger Tor,dc=example,dc=org" );
+        Dn dn = new Dn( "uid=nghZwwtHgxgyvVbTQCYyeY\\+O4cc=,dc=example,dc=com" );
     }
     
     

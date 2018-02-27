@@ -764,6 +764,15 @@ public class RdnTest
 
 
     @Test
+    public void testUnescapeValueStringWithEqualInTheMiddle()
+    {
+        String res = ( String ) Rdn.unescapeValue( "a=b" );
+
+        assertEquals( "a=b", res );
+    }
+
+
+    @Test
     public void testEscapeValueString()
     {
         String res = Rdn.escapeValue( Strings.getBytesUtf8( "azerty" ) );

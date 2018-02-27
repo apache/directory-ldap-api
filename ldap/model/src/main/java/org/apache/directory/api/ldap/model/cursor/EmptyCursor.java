@@ -70,7 +70,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     @Override
     public void before( E element ) throws LdapException, CursorException
     {
-        checkNotClosed( "before()" );
+        checkNotClosed();
     }
 
 
@@ -80,7 +80,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     @Override
     public void after( E element ) throws LdapException, CursorException
     {
-        checkNotClosed( "after()" );
+        checkNotClosed();
     }
 
 
@@ -90,7 +90,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     @Override
     public void beforeFirst() throws LdapException, CursorException
     {
-        checkNotClosed( "beforeFirst()" );
+        checkNotClosed();
     }
 
 
@@ -100,7 +100,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     @Override
     public void afterLast() throws LdapException, CursorException
     {
-        checkNotClosed( "afterLast()" );
+        checkNotClosed();
     }
 
 
@@ -110,7 +110,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     @Override
     public boolean first() throws LdapException, CursorException
     {
-        checkNotClosed( "first()" );
+        checkNotClosed();
         return false;
     }
 
@@ -121,7 +121,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     @Override
     public boolean last() throws LdapException, CursorException
     {
-        checkNotClosed( "last()" );
+        checkNotClosed();
         return false;
     }
 
@@ -132,7 +132,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     @Override
     public boolean previous() throws LdapException, CursorException
     {
-        checkNotClosed( "previous()" );
+        checkNotClosed();
         return false;
     }
 
@@ -143,7 +143,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     @Override
     public boolean next() throws LdapException, CursorException
     {
-        checkNotClosed( "next()" );
+        checkNotClosed();
         return false;
     }
 
@@ -154,7 +154,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     @Override
     public E get() throws CursorException
     {
-        checkNotClosed( "get()" );
+        checkNotClosed();
         throw new InvalidCursorPositionException( I18n.err( I18n.ERR_02004_EMPTY_CURSOR ) );
     }
 

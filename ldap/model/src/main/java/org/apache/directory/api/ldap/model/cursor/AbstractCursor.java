@@ -55,10 +55,9 @@ public abstract class AbstractCursor<E> implements Cursor<E>
     /**
      * Check that the cursor is not closed before executing an operation.
      * 
-     * @param operation The operation we try to execute
      * @throws CursorClosedException If there is a problem during the check
      */
-    public final void checkNotClosed( String operation ) throws CursorClosedException
+    public final void checkNotClosed() throws CursorClosedException
     {
         monitor.checkNotClosed();
     }

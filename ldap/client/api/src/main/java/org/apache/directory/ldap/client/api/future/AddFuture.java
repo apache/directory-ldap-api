@@ -29,7 +29,7 @@ import org.apache.directory.ldap.client.api.LdapConnection;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AddFuture extends ResponseFuture<AddResponse>
+public class AddFuture extends UniqueResponseFuture<AddResponse>
 {
     /**
      * Creates a new instance of AddFuture.

@@ -19,7 +19,6 @@
  */
 package org.apache.directory.ldap.client.api.future;
 
-
 import org.apache.directory.api.ldap.model.message.ModifyDnResponse;
 import org.apache.directory.ldap.client.api.LdapConnection;
 
@@ -29,7 +28,7 @@ import org.apache.directory.ldap.client.api.LdapConnection;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ModifyDnFuture extends ResponseFuture<ModifyDnResponse>
+public class ModifyDnFuture extends UniqueResponseFuture<ModifyDnResponse>
 {
     /**
      * Creates a new instance of ModifyDnFuture.

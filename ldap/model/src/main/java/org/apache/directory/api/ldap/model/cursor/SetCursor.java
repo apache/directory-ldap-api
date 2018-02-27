@@ -141,7 +141,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     @Override
     public void before( E element ) throws LdapException, CursorException
     {
-        checkNotClosed( "before()" );
+        checkNotClosed();
 
         if ( comparator == null )
         {
@@ -175,7 +175,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     @Override
     public void after( E element ) throws LdapException, CursorException
     {
-        checkNotClosed( "after()" );
+        checkNotClosed();
 
         if ( comparator == null )
         {
@@ -209,7 +209,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     @Override
     public void beforeFirst() throws LdapException, CursorException
     {
-        checkNotClosed( "beforeFirst()" );
+        checkNotClosed();
         this.index = -1;
     }
 
@@ -220,7 +220,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     @Override
     public void afterLast() throws LdapException, CursorException
     {
-        checkNotClosed( "afterLast()" );
+        checkNotClosed();
         this.index = set.length;
     }
 
@@ -231,7 +231,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     @Override
     public boolean first() throws LdapException, CursorException
     {
-        checkNotClosed( "first()" );
+        checkNotClosed();
 
         if ( set.length > 0 )
         {
@@ -250,7 +250,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     @Override
     public boolean last() throws LdapException, CursorException
     {
-        checkNotClosed( "last()" );
+        checkNotClosed();
 
         if ( set.length > 0 )
         {
@@ -309,7 +309,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     @Override
     public boolean previous() throws LdapException, CursorException
     {
-        checkNotClosed( "previous()" );
+        checkNotClosed();
 
         // if parked at -1 we cannot go backwards
         if ( index == -1 )
@@ -348,7 +348,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     @Override
     public boolean next() throws LdapException, CursorException
     {
-        checkNotClosed( "next()" );
+        checkNotClosed();
 
         // if parked at -1 we advance to the start index and return true
         if ( ( set.length > 0 ) && ( index == -1 ) )
@@ -389,7 +389,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     @Override
     public E get() throws CursorException
     {
-        checkNotClosed( "get()" );
+        checkNotClosed();
 
         if ( ( index < 0 ) || ( index >= set.length ) )
         {
