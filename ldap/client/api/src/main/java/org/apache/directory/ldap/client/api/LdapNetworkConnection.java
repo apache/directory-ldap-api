@@ -54,6 +54,7 @@ import javax.security.sasl.SaslClient;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Oid;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.BinaryAttributeDetector;
 import org.apache.directory.api.ldap.codec.api.DefaultConfigurableBinaryAttributeDetector;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
@@ -237,11 +238,14 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /** The exception stored in the session if we've got one */
     private static final String EXCEPTION_KEY = "sessionException";
 
+    /** The krb5 configuration property */
+    private static final String KRB5_CONF = "java.security.krb5.conf";
+    
     // ~~~~~~~~~~~~~~~~~ common error messages ~~~~~~~~~~~~~~~~~~~~~~~~~~
     static final String TIME_OUT_ERROR = "TimeOut occurred";
 
     static final String NO_RESPONSE_ERROR = "The response queue has been emptied, no response was found.";
-
+    
    //------------------------- The constructors --------------------------//
     /**
      * Create a new instance of a LdapConnection on localhost,
@@ -563,7 +567,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     private void addToFutureMap( int messageId, ResponseFuture<? extends Response> future )
     {
-        LOG.debug( "Adding <{}, {}>", messageId, future.getClass().getName()  );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_03207_ADDING, messageId, future.getClass().getName() ) );
+        }
+        
         futureMap.put( messageId, future );
     }
 
@@ -572,9 +580,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         ResponseFuture<? extends Response> future = futureMap.remove( messageId );
 
-        if ( future != null )
+        if ( ( future != null ) && LOG.isDebugEnabled() )
         {
-            LOG.debug( "Removing <{}, {}>", messageId, future.getClass().getName() );
+            LOG.debug( I18n.msg( I18n.MSG_03227_REMOVING, messageId, future.getClass().getName() ) );
         }
 
         return future;
@@ -586,9 +594,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         ResponseFuture<? extends Response> future = futureMap.get( messageId );
 
         // future can be null if there was a abandon operation on that messageId
-        if ( future != null )
+        if ( ( future != null ) && LOG.isDebugEnabled() )
         {
-            LOG.debug( "Getting <" + messageId + ", " + future.getClass().getName() + ">" );
+            LOG.debug( I18n.msg( I18n.MSG_03220_GETTING, messageId, future.getClass().getName() ) );
         }
 
         return future;
@@ -654,8 +662,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         timeout = config.getTimeout();
         long maxRetry = System.currentTimeMillis() + timeout;
         ConnectFuture connectionFuture = null;
+        boolean interrupted = false;
         
-        while ( maxRetry > System.currentTimeMillis() )
+        while ( maxRetry > System.currentTimeMillis() && !interrupted )
         {
             connectionFuture = connector.connect( address );
 
@@ -670,9 +679,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             {
                 connector.dispose();
                 connector = null;
-                LOG.debug( "Interrupted while waiting for connection to establish with server {}:{}",
+                LOG.debug( I18n.msg( I18n.MSG_03221_INTERRUPTED_WAITING_FOR_CONNECTION, 
                     config.getLdapHost(),
-                    config.getLdapPort(), e );
+                    config.getLdapPort() ), e );
+                interrupted = true;
+                
                 throw new LdapOtherException( e.getMessage(), e );
             }
             finally
@@ -690,12 +701,16 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                         {
                             // No need to wait
                             // We know that there was a permanent error such as "connection refused".
-                            LOG.debug( "------>> Connection error: {}", connectionFuture.getException().getMessage() );
-                            
-                            // We can quit the loop
+                            if ( LOG.isDebugEnabled() )
+                            {
+                                LOG.debug( I18n.msg( I18n.MSG_03245_CONNECTION_ERROR, connectionFuture.getException().getMessage() ) );
+                            }
                         }
 
-                        LOG.debug( "------>>   Cannot get the connection... Retrying" );
+                        if ( LOG.isDebugEnabled() )
+                        {
+                            LOG.debug( I18n.msg( I18n.MSG_03244_CONNECTION_RETRYING ) );
+                        }
 
                         // Wait 500 ms and retry
                         try
@@ -705,15 +720,13 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                         catch ( InterruptedException e )
                         {
                             connector = null;
-                            LOG.debug( "Interrupted while waiting for connection to establish with server {}:{}",
+                            LOG.debug( I18n.msg( I18n.MSG_03221_INTERRUPTED_WAITING_FOR_CONNECTION, 
                                 config.getLdapHost(),
-                                config.getLdapPort(), e );
+                                config.getLdapPort() ), e );
+                            interrupted = true;
+                            
                             throw new LdapOtherException( e.getMessage(), e );
                         }
-                    }
-                    else
-                    {
-                        break;
                     }
                 }
             }
@@ -773,11 +786,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             public void operationComplete( IoFuture future )
             {
                 // Process all the waiting operations and cancel them
-                LOG.debug( "received a NoD, closing everything" );
+                LOG.debug( I18n.msg( I18n.MSG_03238_NOD_RECEIVED ) );
 
                 for ( ResponseFuture<?> responseFuture : futureMap.values() )
                 {
-                    LOG.debug( "closing {}", responseFuture );
+                    LOG.debug( I18n.msg( I18n.MSG_03235_CLOSING, responseFuture ) );
 
                     responseFuture.cancel();
 
@@ -818,7 +831,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     }
                     catch ( InterruptedException e )
                     {
-                        LOG.error( "Error while processing the NoD for {}", responseFuture, e );
+                        LOG.error( I18n.err( I18n.ERR_03202_ERROR_PROCESSING_NOD, responseFuture ), e );
                     }
 
                     futureMap.remove( messageId.get() );
@@ -978,19 +991,29 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             if ( addResponse == null )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "Add failed : timeout occurred" );
+                if ( LOG.isErrorEnabled() )
+                {
+                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Add" ) );
+                }
+                
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
             if ( addResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
             {
                 // Everything is fine, return the response
-                LOG.debug( "Add successful : {}", addResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03209_ADD_SUCCESSFUL, addResponse ) );
+                }
             }
             else
             {
                 // We have had an error
-                LOG.debug( "Add failed : {}", addResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03208_ADD_FAILED, addResponse ) );
+                }
             }
 
             return addResponse;
@@ -1094,7 +1117,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     private void abandonInternal( AbandonRequest abandonRequest )
     {
-        LOG.debug( "Sending request \n{}", abandonRequest );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_03205_SENDING_REQUEST, abandonRequest ) );
+        }
 
         int newId = messageId.incrementAndGet();
         abandonRequest.setMessageId( newId );
@@ -1112,7 +1138,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         // this is a sync operation send cancel signal to the corresponding ResponseFuture
         if ( rf != null )
         {
-            LOG.debug( "sending cancel signal to future" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_03242_SENDING_CANCEL ) );
+            }
+            
             rf.cancel( true );
         }
         else
@@ -1132,7 +1162,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     @Override
     public void bind() throws LdapException
     {
-        LOG.debug( "Bind request" );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg(  I18n.MSG_03213_BIND ) );
+        }
 
         // Create the BindRequest
         BindRequest bindRequest = createBindRequest( config.getName(), Strings.getBytesUtf8( config.getCredentials() ) );
@@ -1149,7 +1182,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     @Override
     public void anonymousBind() throws LdapException
     {
-        LOG.debug( "Anonymous Bind request" );
+        if ( LOG.isDebugEnabled() )
+        { 
+            LOG.debug( I18n.msg( I18n.MSG_03210_ANONYMOUS_BIND ) );
+        }
 
         // Create the BindRequest
         BindRequest bindRequest = createBindRequest( StringConstants.EMPTY, Strings.EMPTY_BYTES );
@@ -1166,7 +1202,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     @Override
     public BindFuture bindAsync() throws LdapException
     {
-        LOG.debug( "Asynchronous Bind request" );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_03212_ASYNC_BIND ) );
+        }
 
         // Create the BindRequest
         BindRequest bindRequest = createBindRequest( config.getName(), Strings.getBytesUtf8( config.getCredentials() ) );
@@ -1181,7 +1220,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     @Override
     public BindFuture anonymousBindAsync() throws LdapException
     {
-        LOG.debug( "Anonymous asynchronous Bind request" );
+        if ( LOG.isDebugEnabled() )
+        { 
+            LOG.debug( I18n.msg( I18n.MSG_03211_ANONYMOUS_ASYNC_BIND ) );
+        }
 
         // Create the BindRequest
         BindRequest bindRequest = createBindRequest( StringConstants.EMPTY, Strings.EMPTY_BYTES );
@@ -1200,7 +1242,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     public BindFuture bindAsync( String name ) throws LdapException
     {
-        LOG.debug( "Bind request : {}", name );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_03203_BIND_REQUEST, name ) );
+        }
 
         // Create the BindRequest
         BindRequest bindRequest = createBindRequest( name, Strings.EMPTY_BYTES );
@@ -1215,13 +1260,20 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     @Override
     public BindFuture bindAsync( String name, String credentials ) throws LdapException
     {
-        LOG.debug( "Bind request : {}", name );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_03203_BIND_REQUEST, name ) );
+        }
 
         // The password must not be empty or null
         if ( Strings.isEmpty( credentials ) && Strings.isNotEmpty( name ) )
         {
-            LOG.debug( "The password is missing" );
-            throw new LdapAuthenticationException( "The password is missing" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_03206_MISSING_PASSWORD ) );
+            }
+            
+            throw new LdapAuthenticationException( I18n.msg( I18n.MSG_03206_MISSING_PASSWORD ) );
         }
 
         // Create the BindRequest
@@ -1241,7 +1293,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     public BindFuture bindAsync( Dn name ) throws LdapException
     {
-        LOG.debug( "Bind request : {}", name );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_03203_BIND_REQUEST, name ) );
+        }
 
         // Create the BindRequest
         BindRequest bindRequest = createBindRequest( name, Strings.EMPTY_BYTES );
@@ -1256,13 +1311,20 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     @Override
     public BindFuture bindAsync( Dn name, String credentials ) throws LdapException
     {
-        LOG.debug( "Bind request : {}", name );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_03203_BIND_REQUEST, name ) );
+        }
 
         // The password must not be empty or null
         if ( Strings.isEmpty( credentials ) && ( !Dn.EMPTY_DN.equals( name ) ) )
         {
-            LOG.debug( "The password is missing" );
-            throw new LdapAuthenticationException( "The password is missing" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_03206_MISSING_PASSWORD ) );
+            }
+            
+            throw new LdapAuthenticationException( I18n.msg( I18n.MSG_03206_MISSING_PASSWORD ) );
         }
 
         // Create the BindRequest
@@ -1297,7 +1359,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             if ( bindResponse == null )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "Bind failed : timeout occurred" );
+                if ( LOG.isErrorEnabled() )
+                { 
+                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Bind" ) );
+                }
+                
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
@@ -1306,12 +1372,18 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 authenticated.set( true );
 
                 // Everything is fine, return the response
-                LOG.debug( "Bind successful : {}", bindResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03202_BIND_SUCCESSFUL, bindResponse ) );
+                }
             }
             else
             {
                 // We have had an error
-                LOG.debug( "Bind failed : {}", bindResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03201_BIND_FAIL, bindResponse ) );
+                }
             }
 
             return bindResponse;
@@ -1375,7 +1447,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         int newId = messageId.incrementAndGet();
         bindRequest.setMessageId( newId );
 
-        LOG.debug( "Sending request \n{}", bindRequest );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_03205_SENDING_REQUEST, bindRequest ) );
+        }
 
         // Create a future for this Bind operation
         BindFuture bindFuture = new BindFuture( this, newId );
@@ -1414,7 +1489,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     public BindResponse bindSaslPlain( String authzid, String authcid, String credentials ) throws LdapException
     {
-        LOG.debug( "SASL PLAIN Bind request" );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_03228_SASL_PLAIN_BIND ) );
+        }
 
         // Create the BindRequest
         SaslPlainRequest saslRequest = new SaslPlainRequest();
@@ -1434,7 +1512,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             if ( bindResponse == null )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "Bind failed : timeout occurred" );
+                if ( LOG.isErrorEnabled() )
+                { 
+                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Bind" ) );
+                }
+                
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
@@ -1443,12 +1525,18 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 authenticated.set( true );
 
                 // Everything is fine, return the response
-                LOG.debug( "Bind successful : {}", bindResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03202_BIND_SUCCESSFUL, bindResponse ) );
+                }
             }
             else
             {
                 // We have had an error
-                LOG.debug( "Bind failed : {}", bindResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03201_BIND_FAIL, bindResponse ) );
+                }
             }
 
             return bindResponse;
@@ -1474,7 +1562,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( request == null )
         {
-            String msg = "Cannot process a null request";
+            String msg = I18n.msg( I18n.MSG_03204_NULL_REQUEST );
             LOG.debug( msg );
             throw new IllegalArgumentException( msg );
         }
@@ -1492,7 +1580,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             if ( bindResponse == null )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "Bind failed : timeout occurred" );
+                if ( LOG.isErrorEnabled() )
+                { 
+                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Bind" ) );
+                }
+                
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
@@ -1501,12 +1593,18 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 authenticated.set( true );
 
                 // Everything is fine, return the response
-                LOG.debug( "Bind successful : {}", bindResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03202_BIND_SUCCESSFUL, bindResponse ) );
+                }
             }
             else
             {
                 // We have had an error
-                LOG.debug( "Bind failed : {}", bindResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03201_BIND_FAIL, bindResponse ) );
+                }
             }
 
             return bindResponse;
@@ -1568,7 +1666,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( request == null )
         {
-            String msg = "Cannot process a null request";
+            String msg = I18n.msg( I18n.MSG_03204_NULL_REQUEST );
             LOG.debug( msg );
             throw new IllegalArgumentException( msg );
         }
@@ -1585,7 +1683,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             if ( bindResponse == null )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "Bind failed : timeout occurred" );
+                if ( LOG.isErrorEnabled() )
+                { 
+                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Bind" ) );
+                }
+                
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
@@ -1594,12 +1696,18 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 authenticated.set( true );
 
                 // Everything is fine, return the response
-                LOG.debug( "Bind successful : {}", bindResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03202_BIND_SUCCESSFUL, bindResponse ) );
+                }
             }
             else
             {
                 // We have had an error
-                LOG.debug( "Bind failed : {}", bindResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03201_BIND_FAIL, bindResponse ) );
+                }
             }
 
             return bindResponse;
@@ -1639,7 +1747,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( request == null )
         {
-            String msg = "Cannot process a null request";
+            String msg = I18n.msg( I18n.MSG_03204_NULL_REQUEST );
             LOG.debug( msg );
             throw new IllegalArgumentException( msg );
         }
@@ -1656,7 +1764,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             if ( bindResponse == null )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "Bind failed : timeout occurred" );
+                if ( LOG.isErrorEnabled() )
+                { 
+                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Bind" ) );
+                }
+                
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
@@ -1665,12 +1777,18 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 authenticated.set( true );
 
                 // Everything is fine, return the response
-                LOG.debug( "Bind successful : {}", bindResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03202_BIND_SUCCESSFUL, bindResponse ) );
+                }
             }
             else
             {
                 // We have had an error
-                LOG.debug( "Bind failed : {}", bindResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03201_BIND_FAIL, bindResponse ) );
+                }
             }
 
             return bindResponse;
@@ -1696,7 +1814,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( request == null )
         {
-            String msg = "Cannot process a null request";
+            String msg = I18n.msg( I18n.MSG_03204_NULL_REQUEST );
             LOG.debug( msg );
             throw new IllegalArgumentException( msg );
         }
@@ -1713,7 +1831,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             if ( bindResponse == null )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "Bind failed : timeout occurred" );
+                if ( LOG.isErrorEnabled() )
+                { 
+                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Bind" ) );
+                }
+                
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
@@ -1722,12 +1844,18 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 authenticated.set( true );
 
                 // Everything is fine, return the response
-                LOG.debug( "Bind successful : {}", bindResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03202_BIND_SUCCESSFUL, bindResponse ) );
+                }
             }
             else
             {
                 // We have had an error
-                LOG.debug( "Bind failed : {}", bindResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03201_BIND_FAIL, bindResponse ) );
+                }
             }
 
             return bindResponse;
@@ -1753,7 +1881,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( request == null )
         {
-            String msg = "Cannot process a null request";
+            String msg = I18n.msg( I18n.MSG_03204_NULL_REQUEST );
             LOG.debug( msg );
             throw new IllegalArgumentException( msg );
         }
@@ -1770,7 +1898,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             if ( bindResponse == null )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "Bind failed : timeout occurred" );
+                if ( LOG.isErrorEnabled() )
+                { 
+                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Bind" ) );
+                }
+                
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
@@ -1779,12 +1911,18 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 authenticated.set( true );
 
                 // Everything is fine, return the response
-                LOG.debug( "Bind successful : {}", bindResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03202_BIND_SUCCESSFUL, bindResponse ) );
+                }
             }
             else
             {
                 // We have had an error
-                LOG.debug( "Bind failed : {}", bindResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03201_BIND_FAIL, bindResponse ) );
+                }
             }
 
             return bindResponse;
@@ -1813,7 +1951,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( request.getKrb5ConfFilePath() != null )
         {
             // Using the krb5.conf file provided by the user
-            System.setProperty( "java.security.krb5.conf", request.getKrb5ConfFilePath() );
+            System.setProperty( KRB5_CONF, request.getKrb5ConfFilePath() );
         }
         else if ( ( request.getRealmName() != null ) && ( request.getKdcHost() != null )
             && ( request.getKdcPort() != 0 ) )
@@ -1823,7 +1961,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 // Using a custom krb5.conf we create from the settings provided by the user
                 String krb5ConfPath = createKrb5ConfFile( request.getRealmName(), request.getKdcHost(),
                     request.getKdcPort() );
-                System.setProperty( "java.security.krb5.conf", krb5ConfPath );
+                System.setProperty( KRB5_CONF, krb5ConfPath );
             }
             catch ( IOException ioe )
             {
@@ -1833,7 +1971,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         else
         {
             // Using the system Kerberos configuration
-            System.clearProperty( "java.security.krb5.conf" );
+            System.clearProperty( KRB5_CONF );
         }
 
         // Login Module configuration
@@ -1881,7 +2019,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( baseDn == null )
         {
-            LOG.debug( "received a null dn for a search" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_03239_NULL_DN_SEARCH ) );
+            }
+            
             throw new IllegalArgumentException( "The base Dn cannot be null" );
         }
 
@@ -1977,7 +2119,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             searchRequest.addControl( new ManageDsaITImpl() );
         }
 
-        LOG.debug( "Sending request \n{}", searchRequest );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_03205_SENDING_REQUEST, searchRequest ) );
+        }
 
         SearchFuture searchFuture = new SearchFuture( this, searchRequest.getMessageId() );
         addToFutureMap( searchRequest.getMessageId(), searchFuture );
@@ -2038,7 +2183,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         UnbindRequest unbindRequest = new UnbindRequestImpl();
         unbindRequest.setMessageId( newId );
 
-        LOG.debug( "Sending Unbind request \n{}", unbindRequest );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_03233_SENDING_UNBIND, unbindRequest ) );
+        }
 
         // Send the request to the server
         // Use this for logging instead: WriteFuture unbindFuture = ldapSession.write( unbindRequest )
@@ -2074,7 +2222,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         messageId.set( 0 );
 
         // And get out
-        LOG.debug( "Unbind successful" );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_03234_UNBINDSUCCESSFUL ) );
+        }
     }
 
 
@@ -2170,7 +2321,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         // Feed the response and store it into the session
         Message response = ( Message ) message;
-        LOG.debug( "-------> {} Message received <-------", response );
+
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_03243_MESSAGE_RECEIVED, response ) );
+        }
+        
         int messageId = response.getMessageId();
 
         // this check is necessary to prevent adding an abandoned operation's
@@ -2207,12 +2363,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     if ( addResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
                     {
                         // Everything is fine, return the response
-                        LOG.debug( "Add successful : {}", addResponse );
+                        LOG.debug( I18n.msg( I18n.MSG_03209_ADD_SUCCESSFUL, addResponse ) );
                     }
                     else
                     {
                         // We have had an error
-                        LOG.debug( "Add failed : {}", addResponse );
+                        LOG.debug( I18n.msg( I18n.MSG_03208_ADD_FAILED, addResponse ) );
                     }
                 }
 
@@ -2236,12 +2392,18 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     authenticated.set( true );
 
                     // Everything is fine, return the response
-                    LOG.debug( "Bind successful : {}", bindResponse );
+                    if ( LOG.isDebugEnabled() )
+                    { 
+                        LOG.debug( I18n.msg( I18n.MSG_03202_BIND_SUCCESSFUL, bindResponse ) );
+                    }
                 }
                 else
                 {
                     // We have had an error
-                    LOG.debug( "Bind failed : {}", bindResponse );
+                    if ( LOG.isDebugEnabled() )
+                    { 
+                        LOG.debug( I18n.msg( I18n.MSG_03201_BIND_FAIL, bindResponse ) );
+                    }
                 }
 
                 // Store the response into the future
@@ -2264,12 +2426,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     if ( compareResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
                     {
                         // Everything is fine, return the response
-                        LOG.debug( "Compare successful : {}", compareResponse );
+                        LOG.debug( I18n.msg( I18n.MSG_03215_COMPARE_SUCCESSFUL, compareResponse ) );
                     }
                     else
                     {
                         // We have had an error
-                        LOG.debug( "Compare failed : {}", compareResponse );
+                        LOG.debug( I18n.msg( I18n.MSG_03214_COMPARE_FAILED, compareResponse ) );
                     }
                 }
 
@@ -2292,12 +2454,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     if ( deleteResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
                     {
                         // Everything is fine, return the response
-                        LOG.debug( "Delete successful : {}", deleteResponse );
+                        LOG.debug( I18n.msg( I18n.MSG_03217_DELETE_SUCCESSFUL, deleteResponse ) );
                     }
                     else
                     {
                         // We have had an error
-                        LOG.debug( "Delete failed : {}", deleteResponse );
+                        LOG.debug( I18n.msg( I18n.MSG_03216_DELETE_FAILED, deleteResponse ) );
                     }
                 }
 
@@ -2321,12 +2483,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     if ( extendedResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
                     {
                         // Everything is fine, return the response
-                        LOG.debug( "Extended successful : {}", extendedResponse );
+                        LOG.debug( I18n.msg( I18n.MSG_03219_EXTENDED_SUCCESSFUL, extendedResponse ) );
                     }
                     else
                     {
                         // We have had an error
-                        LOG.debug( "Extended failed : {}", extendedResponse );
+                        LOG.debug( I18n.msg( I18n.MSG_03218_EXTENDED_FAILED, extendedResponse ) );
                     }
                 }
 
@@ -2376,12 +2538,18 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     if ( modifyResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
                     {
                         // Everything is fine, return the response
-                        LOG.debug( "ModifyFuture successful : {}", modifyResponse );
+                        if ( LOG.isDebugEnabled() )
+                        { 
+                            LOG.debug( I18n.msg( I18n.MSG_03224_MODIFY_SUCCESSFUL, modifyResponse ) );
+                        }
                     }
                     else
                     {
                         // We have had an error
-                        LOG.debug( "ModifyFuture failed : {}", modifyResponse );
+                        if ( LOG.isDebugEnabled() )
+                        { 
+                            LOG.debug( I18n.msg( I18n.MSG_03223_MODIFY_FAILED, modifyResponse ) );
+                        }
                     }
                 }
 
@@ -2404,12 +2572,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     if ( modifyDnResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
                     {
                         // Everything is fine, return the response
-                        LOG.debug( "ModifyDN successful : {}", modifyDnResponse );
+                        LOG.debug( I18n.msg( I18n.MSG_03226_MODIFYDN_SUCCESSFUL, modifyDnResponse ) );
                     }
                     else
                     {
                         // We have had an error
-                        LOG.debug( "ModifyDN failed : {}", modifyDnResponse );
+                        LOG.debug( I18n.msg( I18n.MSG_03225_MODIFYDN_FAILED, modifyDnResponse ) );
                     }
                 }
 
@@ -2432,12 +2600,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     if ( searchResultDone.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
                     {
                         // Everything is fine, return the response
-                        LOG.debug( "Search successful : {}", searchResultDone );
+                        LOG.debug( I18n.msg( I18n.MSG_03232_SEARCH_SUCCESSFUL, searchResultDone ) );
                     }
                     else
                     {
                         // We have had an error
-                        LOG.debug( "Search failed : {}", searchResultDone );
+                        LOG.debug( I18n.msg( I18n.MSG_03230_SEARCH_FAILED, searchResultDone ) );
                     }
                 }
 
@@ -2462,7 +2630,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
                 if ( LOG.isDebugEnabled() )
                 {
-                    LOG.debug( "Search entry found : {}", searchResultEntry );
+                    LOG.debug( I18n.msg( I18n.MSG_03229_SEARCH_ENTRY_FOUND, searchResultEntry ) );
                 }
 
                 // Store the response into the future
@@ -2478,7 +2646,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
                 if ( LOG.isDebugEnabled() )
                 {
-                    LOG.debug( "Search reference found : {}", searchResultReference );
+                    LOG.debug( I18n.msg( I18n.MSG_03231_SEARCH_REFERENCE_FOUND, searchResultReference ) );
                 }
 
                 // Store the response into the future
@@ -2500,7 +2668,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( entry == null )
         {
-            LOG.debug( "received a null entry for modification" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_03241_NULL_ENTRY_MODIFY ) );
+            }
+            
             throw new IllegalArgumentException( "Entry to be modified cannot be null" );
         }
 
@@ -2528,7 +2700,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( dn == null )
         {
-            LOG.debug( "received a null dn for modification" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_03240_NULL_DN_MODIFY ) );
+            }
+            
             throw new IllegalArgumentException( "The Dn to be modified cannot be null" );
         }
 
@@ -2588,14 +2764,21 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             if ( modifyResponse == null )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "Modify failed : timeout occurred" );
+                if ( LOG.isErrorEnabled() )
+                {
+                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Modify" ) );
+                }
+                
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
             if ( modifyResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
             {
                 // Everything is fine, return the response
-                LOG.debug( "Modify successful : {}", modifyResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03224_MODIFY_SUCCESSFUL, modifyResponse ) );
+                }
             }
             else
             {
@@ -2606,7 +2789,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 }
 
                 // We have had an error
-                LOG.debug( "Modify failed : {}", modifyResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03223_MODIFY_FAILED, modifyResponse ) );
+                }
             }
 
             return modifyResponse;
@@ -2919,19 +3105,29 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             if ( modifyDnResponse == null )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "ModifyDN failed : timeout occurred" );
+                if ( LOG.isErrorEnabled() )
+                {
+                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "ModifyDn" ) );
+                }
+                
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
             if ( modifyDnResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
             {
                 // Everything is fine, return the response
-                LOG.debug( "ModifyDN successful : {}", modifyDnResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03226_MODIFYDN_SUCCESSFUL, modifyDnResponse ) );
+                }
             }
             else
             {
                 // We have had an error
-                LOG.debug( "Modify failed : {}", modifyDnResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03225_MODIFYDN_FAILED, modifyDnResponse ) );
+                }
             }
 
             return modifyDnResponse;
@@ -3115,19 +3311,29 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             if ( delResponse == null )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "Delete failed : timeout occurred" );
+                if ( LOG.isErrorEnabled() )
+                {
+                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Delete" ) );
+                }
+                
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
             if ( delResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
             {
                 // Everything is fine, return the response
-                LOG.debug( "Delete successful : {}", delResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03217_DELETE_SUCCESSFUL, delResponse ) );
+                }
             }
             else
             {
                 // We have had an error
-                LOG.debug( "Delete failed : {}", delResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03216_DELETE_FAILED, delResponse ) );
+                }
             }
 
             return delResponse;
@@ -3302,19 +3508,29 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             if ( compareResponse == null )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "Compare failed : timeout occurred" );
+                if ( LOG.isErrorEnabled() )
+                {
+                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Compare" ) );
+                }
+                
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
             if ( compareResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
             {
                 // Everything is fine, return the response
-                LOG.debug( "Compare successful : {}", compareResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03215_COMPARE_SUCCESSFUL, compareResponse ) );
+                }
             }
             else
             {
                 // We have had an error
-                LOG.debug( "Compare failed : {}", compareResponse );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03214_COMPARE_FAILED, compareResponse ) );
+                }
             }
 
             return compareResponse;
@@ -3452,19 +3668,29 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             if ( response == null )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "Extended failed : timeout occurred" );
+                if ( LOG.isErrorEnabled() )
+                {
+                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Extended" ) );
+                }
+                
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
             if ( response.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
             {
                 // Everything is fine, return the response
-                LOG.debug( "Extended successful : {}", response );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03219_EXTENDED_SUCCESSFUL, response ) );
+                }
             }
             else
             {
                 // We have had an error
-                LOG.debug( "Extended failed : {}", response );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03218_EXTENDED_FAILED, response ) );
+                }
             }
 
             // Get back the response. It's still an opaque response
@@ -3631,33 +3857,27 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 searchRequest.addAllControls( controls );
             }
 
-            Cursor<Response> cursor = search( searchRequest );
-
-            // Read the response
-            if ( cursor.next() )
+            try ( Cursor<Response> cursor = search( searchRequest ) )
             {
-                // cursor will always hold SearchResultEntry objects cause there is no ManageDsaITControl passed with search request
-                entry = ( ( SearchResultEntry ) cursor.get() ).getEntry();
+                // Read the response
+                if ( cursor.next() )
+                {
+                    // cursor will always hold SearchResultEntry objects cause there is no ManageDsaITControl passed with search request
+                    entry = ( ( SearchResultEntry ) cursor.get() ).getEntry();
+                }
+    
+                // Pass through the SaerchResultDone, or stop
+                // if we have other responses
+                cursor.next();
             }
-
-            // Pass through the SaerchResultDone, or stop
-            // if we have other responses
-            cursor.next();
-
-            // And close the cursor
-            try
-            { 
-                cursor.close();
-            }
-            catch ( IOException ioe )
-            {
-                throw new LdapException( ioe.getMessage(), ioe );
-            }
-
         }
         catch ( CursorException e )
         {
-            throw new LdapException( e );
+            throw new LdapException( e.getMessage(), e );
+        }
+        catch ( IOException ioe )
+        {
+            throw new LdapException( ioe.getMessage(), ioe );
         }
 
         return entry;
@@ -3772,8 +3992,13 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             if ( !tmp.getErrors().isEmpty() && loader.isStrict() )
             {
-                String msg = "there are errors while loading the schema";
-                LOG.error( msg + " {}", tmp.getErrors() );
+                String msg = I18n.err( I18n.ERR_03204_ERROR_LOADING_SCHEMA );
+                
+                if ( LOG.isErrorEnabled() )
+                {
+                    LOG.error( "{} {}", msg, Strings.listToString( tmp.getErrors() ) );
+                }
+                
                 throw new LdapException( msg );
             }
 
@@ -3791,7 +4016,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         }
         catch ( Exception e )
         {
-            LOG.error( "failed to load the schema", e );
+            LOG.error( I18n.err( I18n.ERR_03205_FAIL_LOAD_SCHEMA ), e );
             throw new LdapException( e );
         }
     }
@@ -3841,7 +4066,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         }
         catch ( Exception e )
         {
-            LOG.error( "failed to load the schema from file {}", schemaFile.getAbsolutePath() );
+            LOG.error( I18n.err( I18n.ERR_03206_FAIL_LOAD_SCHEMA_FILE, schemaFile.getAbsolutePath() ) );
             throw new LdapException( e );
         }
     }
@@ -3921,7 +4146,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 }
                 catch ( Exception e )
                 {
-                    LOG.error( "Failed to close open cursor", e );
+                    LOG.error( I18n.err( I18n.ERR_03201_CURSOR_CLOSE_FAIL ), e );
                 }
             }
         }
@@ -4083,7 +4308,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         if ( conCloseListeners != null )
         {
-            LOG.debug( "notifying the registered ConnectionClosedEventListeners.." );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_03237_NOTIFYING_CLOSE_LISTENERS ) );
+            }
 
             for ( ConnectionClosedEventListener listener : conCloseListeners )
             {
@@ -4115,9 +4343,14 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             checkSession();
 
             IoFilter sslFilter = ldapSession.getFilterChain().get( SSL_FILTER_KEY );
+
             if ( sslFilter != null )
             {
-                LOG.debug( "LDAP session already using startTLS" );
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_03222_LDAP_ALREADY_USING_START_TLS ) );
+                }
+                
                 return;
             }
 
@@ -4234,7 +4467,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         int newId = messageId.incrementAndGet();
         bindRequest.setMessageId( newId );
 
-        LOG.debug( "Sending request \n{}", bindRequest );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_03205_SENDING_REQUEST, bindRequest ) );
+        }
 
         // Create a future for this Bind operation
         BindFuture bindFuture = new BindFuture( this, newId );
@@ -4304,7 +4540,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 if ( bindResponse == null )
                 {
                     // We didn't received anything : this is an error
-                    LOG.error( "bind failed : timeout occurred" );
+                    if ( LOG.isErrorEnabled() )
+                    { 
+                        LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Bind" ) );
+                    }
+                    
                     throw new LdapException( TIME_OUT_ERROR );
                 }
 
@@ -4329,7 +4569,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 if ( bindResponse == null )
                 {
                     // We didn't received anything : this is an error
-                    LOG.error( "bind failed : timeout occurred" );
+                    if ( LOG.isErrorEnabled() )
+                    {
+                        LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Bind" ) );
+                    }
+                    
                     throw new LdapException( TIME_OUT_ERROR );
                 }
 
@@ -4363,7 +4607,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     if ( bindResponse == null )
                     {
                         // We didn't received anything : this is an error
-                        LOG.error( "bind failed : timeout occurred" );
+                        if ( LOG.isErrorEnabled() )
+                        {
+                            LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Bind" ) );
+                        }
+                        
                         throw new LdapException( TIME_OUT_ERROR );
                     }
 
@@ -4411,7 +4659,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             if ( !ldapSession.isConnected() )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "Message failed : something wrong has occurred" );
+                if ( LOG.isErrorEnabled() )
+                {
+                    LOG.error( I18n.err( I18n.ERR_03207_SOMETHING_WRONG_HAPPENED ) );
+                }
 
                 Exception exception = ( Exception ) ldapSession.removeAttribute( EXCEPTION_KEY );
 
@@ -4433,7 +4684,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             localTimeout -= 100;
         }
 
-        LOG.error( "TimeOut has occurred" );
+        if ( LOG.isErrorEnabled() )
+        {
+            LOG.error( I18n.err( I18n.ERR_03208_TIMEOUT ) );
+        }
+        
         throw new LdapException( TIME_OUT_ERROR );
     }
 
@@ -4492,7 +4747,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         String krb5ConfPath = krb5Conf.getAbsolutePath();
 
-        LOG.debug( "krb 5 config file created at {}", krb5ConfPath );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_03236_KRB5_FILE_CREATED, krb5ConfPath ) );
+        }
 
         return krb5ConfPath;
     }
