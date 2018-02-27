@@ -20,8 +20,6 @@
 package org.apache.directory.ldap.client.api.future;
 
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.directory.api.ldap.model.message.Response;
 import org.apache.directory.ldap.client.api.LdapConnection;
@@ -35,9 +33,6 @@ import org.apache.directory.ldap.client.api.LdapConnection;
  */
 public abstract class UniqueResponseFuture<R extends Response> implements ResponseFuture<R>
 {
-    /** A lock for the response */
-    private final Lock lock = new ReentrantLock();
-    
     /** The response */
     private R response;
 
@@ -52,6 +47,9 @@ public abstract class UniqueResponseFuture<R extends Response> implements Respon
 
     /** The connection used by the request */
     protected LdapConnection connection;
+    
+    /** A flag set to TRUE when the response has been received */
+    private volatile boolean done = false;
 
     /**
      * Creates a new instance of UniqueResponseFuture.
@@ -71,9 +69,12 @@ public abstract class UniqueResponseFuture<R extends Response> implements Respon
      * @throws InterruptedException if the operation has been cancelled by client
      */
     @Override
-    public R get() throws InterruptedException
+    public synchronized R get() throws InterruptedException
     {
-        lock.wait();
+        while ( !done && !cancelled )
+        {
+            wait();
+        }
         
         return response;
     }
@@ -84,11 +85,9 @@ public abstract class UniqueResponseFuture<R extends Response> implements Respon
      * @throws InterruptedException if the operation has been cancelled by client
      */
     @Override
-    public R get( long timeout, TimeUnit unit ) throws InterruptedException
+    public synchronized R get( long timeout, TimeUnit unit ) throws InterruptedException
     {
-        long nanos = unit.toNanos( timeout );
-        
-        lock.wait( nanos / 1_000_000, ( int ) nanos );
+        wait( unit.toMillis( timeout ) );
         
         return response;
     }
@@ -100,18 +99,13 @@ public abstract class UniqueResponseFuture<R extends Response> implements Respon
      * @param response The response to add into the Future
      * @throws InterruptedException if the operation has been cancelled by client
      */
-    public void set( R response ) throws InterruptedException
+    public synchronized void set( R response ) throws InterruptedException
     {
-        try 
-        {
-            lock.lock();
-            this.response = response;
-            lock.notify();
-        }
-        finally
-        {
-            lock.unlock();
-        }
+        this.response = response;
+        
+        done = response != null;
+        
+        notifyAll();
     }
 
 
@@ -167,7 +161,7 @@ public abstract class UniqueResponseFuture<R extends Response> implements Respon
     @Override
     public boolean isDone()
     {
-        throw new UnsupportedOperationException( "Operation not supported" );
+        return done;
     }
 
 
