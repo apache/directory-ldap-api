@@ -255,7 +255,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     @Override
     public void after( Response element ) throws LdapException, CursorException
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13102_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "after( Response element )" ) ) );
     }
 
@@ -267,7 +267,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     @Override
     public void afterLast() throws LdapException, CursorException
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13102_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "afterLast()" ) ) );
     }
 
@@ -279,7 +279,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     @Override
     public void before( Response element ) throws LdapException, CursorException
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13102_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "before( Response element )" ) ) );
     }
 
@@ -291,7 +291,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     @Override
     public void beforeFirst() throws LdapException, CursorException
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13102_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "beforeFirst()" ) ) );
     }
 
@@ -303,7 +303,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     @Override
     public boolean first() throws LdapException, CursorException
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13102_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "first()" ) ) );
     }
 
@@ -315,7 +315,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     @Override
     public boolean last() throws LdapException, CursorException
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13102_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "last()" ) ) );
     }
 
@@ -327,7 +327,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     @Override
     public boolean previous() throws LdapException, CursorException
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13102_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "previous()" ) ) );
     }
 

@@ -17,24 +17,24 @@
  *   under the License.
  *
  */
-package org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue;
+package org.apache.directory.api.ldap.extras.intermediate.syncrepl;
 
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.directory.api.ldap.model.message.controls.AbstractControl;
+import org.apache.directory.api.ldap.model.message.IntermediateResponseImpl;
 import org.apache.directory.api.util.Strings;
 
 
 /**
- * A simple {@link SyncInfoValue} implementation to store control properties.
+ * A simple {@link SyncInfoValue} implementation to store response properties.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
+public class SyncInfoValueImpl extends IntermediateResponseImpl implements SyncInfoValue
 {
     /** The kind of syncInfoValue we are dealing with */
     private SynchronizationInfoEnum type;
@@ -58,38 +58,6 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
     public SyncInfoValueImpl()
     {
         super( OID );
-    }
-
-
-    /**
-     *
-     * Creates a new instance of SyncInfoValueImpl.
-     *
-     * @param isCritical The critical flag
-     */
-    public SyncInfoValueImpl( boolean isCritical )
-    {
-        super( OID, isCritical );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public SynchronizationInfoEnum getType()
-    {
-        return type;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setType( SynchronizationInfoEnum type )
-    {
-        this.type = type;
     }
 
 
@@ -242,11 +210,11 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
             return false;
         }
 
-        SyncInfoValue otherControl = ( SyncInfoValue ) o;
+        SyncInfoValue otherResponse = ( SyncInfoValue ) o;
 
         if ( syncUUIDs != null )
         {
-            if ( otherControl.getSyncUUIDs() == null )
+            if ( otherResponse.getSyncUUIDs() == null )
             {
                 return false;
             }
@@ -257,7 +225,7 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
             {
                 boolean found = false;
 
-                for ( byte[] otherSyncUuid : otherControl.getSyncUUIDs() )
+                for ( byte[] otherSyncUuid : otherResponse.getSyncUUIDs() )
                 {
                     if ( Arrays.equals( syncUuid, otherSyncUuid ) )
                     {
@@ -274,18 +242,16 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
         }
         else
         {
-            if ( otherControl.getSyncUUIDs() != null )
+            if ( otherResponse.getSyncUUIDs() != null )
             {
                 return false;
             }
         }
 
         return super.equals( o )
-            && ( refreshDeletes == otherControl.isRefreshDeletes() )
-            && ( refreshDone == otherControl.isRefreshDone() )
-            && ( type == otherControl.getType() )
-            && ( Arrays.equals( cookie, otherControl.getCookie() ) ) 
-            && ( isCritical() == otherControl.isCritical() );
+            && ( refreshDeletes == otherResponse.isRefreshDeletes() )
+            && ( refreshDone == otherResponse.isRefreshDone() )
+            && ( Arrays.equals( cookie, otherResponse.getCookie() ) );
     }
 
 
@@ -297,11 +263,9 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
     {
         StringBuilder sb = new StringBuilder();
 
-        sb.append( "    SyncInfoValue control :\n" );
-        sb.append( "        oid : " ).append( getOid() ).append( '\n' );
-        sb.append( "        critical : " ).append( isCritical() ).append( '\n' );
+        sb.append( "    SyncInfoValue :\n" );
 
-        switch ( getType() )
+        switch ( type )
         {
             case NEW_COOKIE:
                 sb.append( "        newCookie : '" ).
@@ -376,5 +340,19 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
         }
 
         return sb.toString();
+    }
+
+
+    @Override
+    public SynchronizationInfoEnum getSyncInfoValueType()
+    {
+        return type;
+    }
+
+
+    @Override
+    public void setSyncInfoValueType( SynchronizationInfoEnum type )
+    {
+        this.type = type;
     }
 }

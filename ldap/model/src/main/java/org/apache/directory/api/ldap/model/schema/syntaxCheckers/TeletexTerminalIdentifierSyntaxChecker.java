@@ -107,7 +107,7 @@ public final class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
         {
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
+                LOG.debug( I18n.err( I18n.ERR_13210_SYNTAX_INVALID, "null" ) );
             }
             
             return false;
@@ -130,7 +130,7 @@ public final class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
         {
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                LOG.debug( I18n.err( I18n.ERR_13210_SYNTAX_INVALID, value ) );
             }
             
             return false;
@@ -146,7 +146,7 @@ public final class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
             // It should not be null
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                LOG.debug( I18n.err( I18n.ERR_13210_SYNTAX_INVALID, value ) );
             }
             
             return false;
@@ -157,7 +157,7 @@ public final class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
             // It's not a valid PrintableString 
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                LOG.debug( I18n.err( I18n.ERR_13210_SYNTAX_INVALID, value ) );
             }
             
             return false;
@@ -181,7 +181,7 @@ public final class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
         {
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                LOG.debug( I18n.err( I18n.ERR_13210_SYNTAX_INVALID, value ) );
             }
             
             return false;
@@ -196,7 +196,7 @@ public final class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
                 // we must have a ':' separator
                 if ( LOG.isDebugEnabled() )
                 {
-                    LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                    LOG.debug( I18n.err( I18n.ERR_13210_SYNTAX_INVALID, value ) );
                 }
                 
                 return false;
@@ -214,7 +214,7 @@ public final class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
                 {
                     if ( LOG.isDebugEnabled() )
                     {
-                        LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                        LOG.debug( I18n.err( I18n.ERR_13210_SYNTAX_INVALID, value ) );
                     }
                     
                     return false;
@@ -230,7 +230,7 @@ public final class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
                             // '$' is not accepted
                             if ( LOG.isDebugEnabled() )
                             {
-                                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                                LOG.debug( I18n.err( I18n.ERR_13210_SYNTAX_INVALID, value ) );
                             }
                             
                             return false;
@@ -241,7 +241,7 @@ public final class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
                                 // two following \ are not accepted
                                 if ( LOG.isDebugEnabled() )
                                 {
-                                    LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                                    LOG.debug( I18n.err( I18n.ERR_13210_SYNTAX_INVALID, value ) );
                                 }
                                 
                                 return false;
@@ -285,7 +285,7 @@ public final class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
             {
                 if ( LOG.isDebugEnabled() )
                 {
-                    LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                    LOG.debug( I18n.err( I18n.ERR_13210_SYNTAX_INVALID, value ) );
                 }
                 
                 return false;

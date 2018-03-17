@@ -112,7 +112,7 @@ public final class DateUtils
     {
         if ( intervalDate == null )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04359 ), 0 );
+            throw new ParseException( I18n.err( I18n.ERR_17043_GENERALIZED_TIME_NULL ), 0 );
         }
     
         long offset = 11644473600000L; // offset milliseconds from Jan 1, 1601 to Jan 1, 1970

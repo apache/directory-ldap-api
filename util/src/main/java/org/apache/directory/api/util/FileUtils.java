@@ -35,6 +35,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
 
+import org.apache.directory.api.i18n.I18n;
+
 
 /**
  * This code comes from Apache commons.io library.
@@ -100,8 +102,7 @@ public final class FileUtils
 
         if ( !directory.delete() )
         {
-            String message = "Unable to delete directory " + directory + ".";
-            throw new IOException( message );
+            throw new IOException( I18n.err( I18n.ERR_17004_UNABLE_DELETE_DIR, directory ) );
         }
     }
 
@@ -127,7 +128,7 @@ public final class FileUtils
     {
         if ( file == null )
         {
-            throw new NullPointerException( "File must not be null" );
+            throw new NullPointerException( I18n.err( I18n.ERR_17005_FILE_MUST_NOT_BE_NULL ) );
         }
 
         if ( SYSTEM_SEPARATOR == WINDOWS_SEPARATOR )
@@ -161,14 +162,12 @@ public final class FileUtils
     {
         if ( !directory.exists() )
         {
-            String message = directory + " does not exist";
-            throw new IllegalArgumentException( message );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_17006_DOES_NOT_EXIST, directory ) );
         }
 
         if ( !directory.isDirectory() )
         {
-            String message = directory + " is not a directory";
-            throw new IllegalArgumentException( message );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_17007_IS_NOT_DIRECTORY, directory ) );
         }
 
         File[] files = directory.listFiles();
@@ -176,8 +175,7 @@ public final class FileUtils
         if ( files == null )
         {
             // null if security restricted
-            String message = "Failed to list contents of " + directory;
-            throw new IOException( message );
+            throw new IOException( I18n.err( I18n.ERR_17008_FAIL_LIST_DIR, directory ) );
         }
 
         IOException exception = null;
@@ -230,12 +228,10 @@ public final class FileUtils
             {
                 if ( !filePresent )
                 {
-                    String message = "File does not exist: " + file;
-                    throw new FileNotFoundException( message );
+                    throw new FileNotFoundException( I18n.err( I18n.ERR_17009_FILE_DOES_NOT_EXIST, file ) );
                 }
 
-                String message = "Unable to delete file: " + file;
-                throw new IOException( message );
+                throw new IOException( I18n.err( I18n.ERR_17010_UNABLE_DELETE_FILE, file ) );
             }
         }
     }
@@ -346,17 +342,17 @@ public final class FileUtils
         {
             if ( file.isDirectory() )
             {
-                throw new IOException( "File '" + file + "' exists but is a directory" );
+                throw new IOException( I18n.err( I18n.ERR_17011_FILE_IS_DIR, file ) );
             }
 
             if ( !file.canRead() )
             {
-                throw new IOException( "File '" + file + "' cannot be read" );
+                throw new IOException( I18n.err( I18n.ERR_17012_CANNOT_READ_FILE, file ) );
             }
         }
         else
         {
-            throw new FileNotFoundException( "File '" + file + "' does not exist" );
+            throw new FileNotFoundException( I18n.err( I18n.ERR_17013_FILE_DOES_NOT_EXIST, file ) );
         }
 
         return Files.newInputStream( Paths.get( file.getPath() ) );
@@ -452,12 +448,12 @@ public final class FileUtils
         {
             if ( file.isDirectory() )
             {
-                throw new IOException( "File '" + file + "' exists but is a directory" );
+                throw new IOException( I18n.err( I18n.ERR_17011_FILE_IS_DIR, file ) );
             }
 
             if ( !file.canWrite() )
             {
-                throw new IOException( "File '" + file + "' cannot be written to" );
+                throw new IOException( I18n.err( I18n.ERR_17014_CANNOT_WRITE_FILE, file ) );
             }
         }
         else
@@ -466,7 +462,7 @@ public final class FileUtils
 
             if ( ( parent != null ) && ( !parent.mkdirs() && !parent.isDirectory() ) )
             {
-                throw new IOException( "Directory '" + parent + "' could not be created" );
+                throw new IOException( I18n.err( I18n.ERR_17015_CANNOT_CREATE_DIR, parent ) );
             }
         }
 
@@ -594,39 +590,39 @@ public final class FileUtils
     {
         if ( srcFile == null )
         {
-            throw new NullPointerException( "Source must not be null" );
+            throw new NullPointerException( I18n.err( I18n.ERR_17016_SOURCE_MUST_NOT_BE_NULL ) );
         }
 
         if ( destFile == null )
         {
-            throw new NullPointerException( "Destination must not be null" );
+            throw new NullPointerException( I18n.err( I18n.ERR_17017_DEST_MUST_NOT_BE_NULL ) );
         }
 
         if ( !srcFile.exists() )
         {
-            throw new FileNotFoundException( "Source '" + srcFile + "' does not exist" );
+            throw new FileNotFoundException( I18n.err( I18n.ERR_17018_SRC_DOES_NOT_EXIST, srcFile ) );
         }
 
         if ( srcFile.isDirectory() )
         {
-            throw new IOException( "Source '" + srcFile + "' exists but is a directory" );
+            throw new IOException( I18n.err( I18n.ERR_17019_SRC_IS_DIR, srcFile ) );
         }
 
         if ( srcFile.getCanonicalPath().equals( destFile.getCanonicalPath() ) )
         {
-            throw new IOException( "Source '" + srcFile + "' and destination '" + destFile + "' are the same" );
+            throw new IOException( I18n.err( I18n.ERR_17020_SRC_AND_DEST_SAME, srcFile, destFile ) );
         }
 
         File parentFile = destFile.getParentFile();
 
         if ( ( parentFile != null ) && ( !parentFile.mkdirs() && !parentFile.isDirectory() ) )
         {
-            throw new IOException( "Destination '" + parentFile + "' directory cannot be created" );
+            throw new IOException( I18n.err( I18n.ERR_17021_CANNOT_CREATE_DEST_DIR, parentFile ) );
         }
 
         if ( destFile.exists() && !destFile.canWrite() )
         {
-            throw new IOException( "Destination '" + destFile + "' exists but is read-only" );
+            throw new IOException( I18n.err( I18n.ERR_17022_DEST_READONLY, destFile ) );
         }
 
         doCopyFile( srcFile, destFile, preserveFileDate );
@@ -652,7 +648,7 @@ public final class FileUtils
     {
         if ( destFile.exists() && destFile.isDirectory() )
         {
-            throw new IOException( "Destination '" + destFile + "' exists but is a directory" );
+            throw new IOException( I18n.err( I18n.ERR_17023_DEST_IS_DIR, destFile ) );
         }
 
         FileInputStream fis = null;
@@ -694,8 +690,7 @@ public final class FileUtils
 
         if ( srcLen != dstLen )
         {
-            throw new IOException( "Failed to copy full contents from '"
-                + srcFile + "' to '" + destFile + "' Expected length: " + srcLen + " Actual: " + dstLen );
+            throw new IOException( I18n.err( I18n.ERR_17024_FAILED_COPY_CONTENT, srcFile, destFile, srcLen, dstLen ) );
         }
 
         if ( preserveFileDate )

@@ -33,6 +33,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.api.i18n.I18n;
+
 
 /**
  * This code comes from Apache commons.io library.
@@ -494,7 +496,7 @@ public final class IOUtils
     {
         if ( size < 0 )
         {
-            throw new IllegalArgumentException( "Size must be equal or greater than zero: " + size );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_17070_SIZE_POSITIVE, size ) );
         }
 
         if ( size == 0 )
@@ -514,7 +516,7 @@ public final class IOUtils
 
         if ( offset != size )
         {
-            throw new IOException( "Unexpected readed size. current: " + offset + ", excepted: " + size );
+            throw new IOException( I18n.err( I18n.ERR_17071_UNEXPECTED_SIZE, offset, size ) );
         }
 
         return data;
@@ -542,7 +544,7 @@ public final class IOUtils
 
       if ( size > Integer.MAX_VALUE ) 
       {
-          throw new IllegalArgumentException( "Size cannot be greater than Integer max value: " + size );
+          throw new IllegalArgumentException( I18n.err( I18n.ERR_17072_INTEGER_OVERFLOW, size ) );
       }
 
       return toByteArray( input, ( int ) size );

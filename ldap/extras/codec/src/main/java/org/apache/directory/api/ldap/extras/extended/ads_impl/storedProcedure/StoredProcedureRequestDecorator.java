@@ -30,7 +30,7 @@ import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
+import org.apache.directory.api.ldap.codec.decorators.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureParameter;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequest;

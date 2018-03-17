@@ -634,7 +634,7 @@ public class BerValue
     {
         if ( buffer == null )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00003_CANNOT_PUT_PDU_IN_NULL_BUFFER ) );
+            throw new EncoderException( I18n.err( I18n.ERR_01300_CANNOT_PUT_PDU_IN_NULL_BUFFER ) );
         }
 
         try
@@ -652,7 +652,7 @@ public class BerValue
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
+            throw new EncoderException( I18n.err( I18n.ERR_01301_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
         }
     }
 
@@ -669,7 +669,7 @@ public class BerValue
     {
         if ( buffer == null )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00003_CANNOT_PUT_PDU_IN_NULL_BUFFER ) );
+            throw new EncoderException( I18n.err( I18n.ERR_01300_CANNOT_PUT_PDU_IN_NULL_BUFFER ) );
         }
 
         try
@@ -686,7 +686,7 @@ public class BerValue
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
+            throw new EncoderException( I18n.err( I18n.ERR_01301_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
         }
     }
 
@@ -703,7 +703,7 @@ public class BerValue
     {
         if ( buffer == null )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00003_CANNOT_PUT_PDU_IN_NULL_BUFFER ) );
+            throw new EncoderException( I18n.err( I18n.ERR_01300_CANNOT_PUT_PDU_IN_NULL_BUFFER ) );
         }
 
         try
@@ -722,7 +722,7 @@ public class BerValue
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
+            throw new EncoderException( I18n.err( I18n.ERR_01301_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
         }
     }
 
@@ -739,7 +739,7 @@ public class BerValue
     {
         if ( buffer == null )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00003_CANNOT_PUT_PDU_IN_NULL_BUFFER ) );
+            throw new EncoderException( I18n.err( I18n.ERR_01300_CANNOT_PUT_PDU_IN_NULL_BUFFER ) );
         }
 
         try
@@ -754,7 +754,7 @@ public class BerValue
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
+            throw new EncoderException( I18n.err( I18n.ERR_01301_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
         }
     }
 
@@ -771,7 +771,7 @@ public class BerValue
     {
         if ( buffer == null )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00003_CANNOT_PUT_PDU_IN_NULL_BUFFER ) );
+            throw new EncoderException( I18n.err( I18n.ERR_01300_CANNOT_PUT_PDU_IN_NULL_BUFFER ) );
         }
 
         try
@@ -782,7 +782,7 @@ public class BerValue
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
+            throw new EncoderException( I18n.err( I18n.ERR_01301_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
         }
     }
 
@@ -799,7 +799,7 @@ public class BerValue
     {
         if ( buffer == null )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00003_CANNOT_PUT_PDU_IN_NULL_BUFFER ) );
+            throw new EncoderException( I18n.err( I18n.ERR_01300_CANNOT_PUT_PDU_IN_NULL_BUFFER ) );
         }
 
         try
@@ -810,7 +810,7 @@ public class BerValue
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
+            throw new EncoderException( I18n.err( I18n.ERR_01301_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
         }
     }
 
@@ -828,7 +828,7 @@ public class BerValue
     {
         if ( buffer == null )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00003_CANNOT_PUT_PDU_IN_NULL_BUFFER ) );
+            throw new EncoderException( I18n.err( I18n.ERR_01300_CANNOT_PUT_PDU_IN_NULL_BUFFER ) );
         }
 
         try
@@ -839,7 +839,7 @@ public class BerValue
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
+            throw new EncoderException( I18n.err( I18n.ERR_01301_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
         }
     }
 
@@ -856,7 +856,7 @@ public class BerValue
     {
         if ( buffer == null )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00003_CANNOT_PUT_PDU_IN_NULL_BUFFER ) );
+            throw new EncoderException( I18n.err( I18n.ERR_01300_CANNOT_PUT_PDU_IN_NULL_BUFFER ) );
         }
 
         try
@@ -867,7 +867,7 @@ public class BerValue
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
+            throw new EncoderException( I18n.err( I18n.ERR_01301_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
         }
     }
 
@@ -884,7 +884,7 @@ public class BerValue
     {
         if ( buffer == null )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00003_CANNOT_PUT_PDU_IN_NULL_BUFFER ) );
+            throw new EncoderException( I18n.err( I18n.ERR_01300_CANNOT_PUT_PDU_IN_NULL_BUFFER ) );
         }
 
         try
@@ -900,7 +900,7 @@ public class BerValue
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
+            throw new EncoderException( I18n.err( I18n.ERR_01301_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
         }
     }
 

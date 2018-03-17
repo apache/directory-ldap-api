@@ -17,11 +17,11 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.api.ldap.extras.controls.syncrepl_impl;
+package org.apache.directory.api.ldap.extras.intermediate.syncrepl;
 
 
 /**
- * An enumeration to store the tags used to encode and decode the syncInfoValue control.
+ * An enumeration to store the tags used to encode and decode the syncInfoValue response.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

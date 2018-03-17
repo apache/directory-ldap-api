@@ -104,10 +104,12 @@ public abstract class AbstractReadInteger<E extends Asn1Container> extends Gramm
         // The Length should not be null
         if ( tlv.getLength() == 0 )
         {
-            LOG.error( I18n.err( I18n.ERR_04066 ) );
+            String msg = I18n.err( I18n.ERR_01101_NULL_LENGTH );
+            
+            LOG.error( msg );
 
             // This will generate a PROTOCOL_ERROR
-            throw new DecoderException( I18n.err( I18n.ERR_04067 ) );
+            throw new DecoderException( msg );
         }
 
         BerValue value = tlv.getValue();
@@ -118,14 +120,14 @@ public abstract class AbstractReadInteger<E extends Asn1Container> extends Gramm
 
             if ( IS_DEBUG )
             {
-                LOG.debug( "read integer value : {}", number );
+                LOG.debug( I18n.msg( I18n.MSG_01100_INTEGER_VALUE, number ) );
             }
 
             setIntegerValue( number, container );
         }
         catch ( IntegerDecoderException ide )
         {
-            LOG.error( I18n.err( I18n.ERR_04070, Strings.dumpBytes( value.getData() ), ide
+            LOG.error( I18n.err( I18n.ERR_01102_INVALID_INTEGER, Strings.dumpBytes( value.getData() ), ide
                 .getLocalizedMessage() ) );
 
             // This will generate a PROTOCOL_ERROR

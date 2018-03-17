@@ -109,7 +109,7 @@ public class SchemaParser
     {
         if ( ( schemaObject == null ) || ( schemaObject.trim().equals( Strings.EMPTY_STRING ) ) )
         {
-            throw new ParseException( I18n.err( I18n.ERR_06001_EMPTY_OR_NULL_SCHEMA_OBJECT ), 0 );
+            throw new ParseException( I18n.err( I18n.ERR_15002_EMPTY_OR_NULL_SCHEMA_OBJECT ), 0 );
         }
 
         schemaIn = new ByteArrayInputStream( Strings.getBytesUtf8( schemaObject ) );
@@ -143,13 +143,13 @@ public class SchemaParser
         }
         catch ( RecognitionException re )
         {
-            String msg = I18n.err( I18n.ERR_06002_PARSER_FAILURE, schemaName, ExceptionUtils.getFullStackTrace( re ) );
+            String msg = I18n.err( I18n.ERR_15003_PARSER_FAILURE, schemaName, ExceptionUtils.getFullStackTrace( re ) );
             init();
             throw new ParseException( msg, re.getColumn() );
         }
         catch ( TokenStreamException tse )
         {
-            String msg = I18n.err( I18n.ERR_06002_PARSER_FAILURE, schemaName, ExceptionUtils.getFullStackTrace( tse ) );
+            String msg = I18n.err( I18n.ERR_15003_PARSER_FAILURE, schemaName, ExceptionUtils.getFullStackTrace( tse ) );
             init();
             throw new ParseException( msg, 0 );
         }

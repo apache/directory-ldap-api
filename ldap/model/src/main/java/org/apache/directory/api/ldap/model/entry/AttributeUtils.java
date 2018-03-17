@@ -180,7 +180,7 @@ public final class AttributeUtils
             if ( !Chars.isAlphaDigitMinus( str, pos.start ) )
             {
                 // We must have at least one keychar
-                throw new ParseException( I18n.err( I18n.ERR_04343 ), pos.start );
+                throw new ParseException( I18n.err( I18n.ERR_13201_EMPTY_OPTION_NOT_ALLOWED ), pos.start );
             }
 
             pos.start++;
@@ -212,7 +212,7 @@ public final class AttributeUtils
             if ( !Chars.isAlphaDigitMinus( bytes, pos.start ) )
             {
                 // We must have at least one keychar
-                throw new ParseException( I18n.err( I18n.ERR_04343 ), pos.start );
+                throw new ParseException( I18n.err( I18n.ERR_13201_EMPTY_OPTION_NOT_ALLOWED ), pos.start );
             }
 
             pos.start++;
@@ -342,7 +342,7 @@ public final class AttributeUtils
 
         if ( !parseNumber( str, pos ) )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04345 ), pos.start );
+            throw new ParseException( I18n.err( I18n.ERR_13202_INVALID_OID_MISSING_NUMBER ), pos.start );
         }
 
         while ( true )
@@ -357,7 +357,7 @@ public final class AttributeUtils
 
             if ( !parseNumber( str, pos ) )
             {
-                throw new ParseException( I18n.err( I18n.ERR_04345 ), pos.start );
+                throw new ParseException( I18n.err( I18n.ERR_13202_INVALID_OID_MISSING_NUMBER ), pos.start );
             }
         }
     }
@@ -390,7 +390,7 @@ public final class AttributeUtils
 
         if ( !parseNumber( bytes, pos ) )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04345 ), pos.start );
+            throw new ParseException( I18n.err( I18n.ERR_13202_INVALID_OID_MISSING_NUMBER ), pos.start );
         }
 
         while ( true )
@@ -405,7 +405,7 @@ public final class AttributeUtils
 
             if ( !parseNumber( bytes, pos ) )
             {
-                throw new ParseException( I18n.err( I18n.ERR_04345 ), pos.start );
+                throw new ParseException( I18n.err( I18n.ERR_13202_INVALID_OID_MISSING_NUMBER ), pos.start );
             }
         }
     }

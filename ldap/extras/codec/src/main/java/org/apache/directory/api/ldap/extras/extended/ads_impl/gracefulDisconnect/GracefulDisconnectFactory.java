@@ -22,7 +22,7 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnec
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
+import org.apache.directory.api.ldap.codec.decorators.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.gracefulDisconnect.GracefulDisconnectResponse;
 import org.apache.directory.api.ldap.extras.extended.gracefulDisconnect.GracefulDisconnectResponseImpl;

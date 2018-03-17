@@ -1030,7 +1030,7 @@ public class LdapUrl
     {
         if ( data == null )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04411 ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_17028_PARAMETER_CANT_BE_NULL ) );
         }
 
         return Strings.getBytesUtf8( data );

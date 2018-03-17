@@ -33,6 +33,7 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.apache.directory.api.i18n.I18n;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,7 +85,7 @@ public final class ResourceMap
 
         if ( schemaResourceLoc.trim().length() > 0 )
         {
-            LOG.debug( "loading from the user provider schema resource {}", schemaResourceLoc );
+            LOG.debug( I18n.msg( I18n.MSG_16008_LOADING_FROM_USER_SCHEMA, schemaResourceLoc ) );
 
             File file = new File( schemaResourceLoc );
 
@@ -94,7 +95,7 @@ public final class ResourceMap
             }
             else
             {
-                LOG.error( "unable to load schema from the given resource value {}", schemaResourceLoc );
+                LOG.error( I18n.err( I18n.ERR_16043_CANOT_LOAD_SCHEMA, schemaResourceLoc ) );
             }
         }
         else
@@ -114,7 +115,7 @@ public final class ResourceMap
         if ( !file.exists() )
         {
             // this may happen if the class path contains an element that doesn't exist
-            LOG.debug( "element {} does not exist", element );
+            LOG.debug( I18n.msg( I18n.MSG_16009_ELEMENT_DOES_NOT_EXIST, element ) );
 
             return;
         }
@@ -195,7 +196,7 @@ public final class ResourceMap
                     }
                     catch ( IOException e )
                     {
-                        LOG.error( "Cannot load file {} : {}", file.getAbsolutePath(), e.getMessage() );
+                        LOG.error( I18n.err( I18n.ERR_16044_CANNOT_LOAD_FILE, file.getAbsolutePath(), e.getMessage() ) );
     
                         // Continue...
                     }
@@ -239,14 +240,14 @@ public final class ResourceMap
                 }
                 catch ( IOException ioe )
                 {
-                    LOG.debug( "Cannot load resource {} : {}", index, ioe.getMessage() );
+                    LOG.error( I18n.err( I18n.ERR_16047_CANNOT_LOAD_RESOURCE, index, ioe.getMessage() ) );
                     // Continue...
                 }
             }
         }
         catch ( IOException e )
         {
-            LOG.debug( "Error while loading  resuce from class loaded : {}", e.getMessage() );
+            LOG.error( I18n.err( I18n.ERR_16045_ERROR_LOADING_RESOURCE, e.getMessage() ) );
             throw new Error( e );
         }
     }

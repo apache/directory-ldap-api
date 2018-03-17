@@ -25,9 +25,13 @@ import java.util.Iterator;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Container;
+import org.apache.directory.api.ldap.codec.decorators.ExtendedRequestDecorator;
+import org.apache.directory.api.ldap.codec.decorators.ExtendedResponseDecorator;
+import org.apache.directory.api.ldap.codec.decorators.IntermediateResponseDecorator;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
+import org.apache.directory.api.ldap.model.message.IntermediateResponse;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
 
 
@@ -162,6 +166,48 @@ public interface LdapApiService
      * @return true if registered, false if not
      */
     boolean isExtendedOperationRegistered( String oid );
+    
+    
+    // ------------------------------------------------------------------------
+    // Intermediate Response Methods
+    // ------------------------------------------------------------------------
+    
+    /**
+     * Returns an Iterator over the OID Strings of registered intermediate 
+     * responses.
+     *
+     * @return The registered Intermediate response OID Strings
+     */
+    Iterator<String> registeredIntermediateResponses();
+
+
+    /**
+     * Registers an {@link IntermediateResponseFactory} for generating intermediate response
+     * 
+     * @param factory The intermediate response factory
+     * @return The displaced factory if one existed for the oid
+     */
+    IntermediateResponseFactory registerIntermediateResponse( IntermediateResponseFactory factory );
+
+
+    /**
+     * Unregisters an {@link IntermediateResponseFactory} for generating intermediate 
+     * response
+     * 
+     * @param oid The intermediate response oid
+     * @return The displaced factory if one existed for the oid
+     */
+    IntermediateResponseFactory unregisterIntermediateResponse( String oid );
+
+
+    /**
+     * Checks to see if an intermediate response is registered.
+     *
+     * @param oid The object identifier for the intermediate response
+     * @return true if registered, false if not
+     */
+    boolean isIntermediateResponseRegistered( String oid );
+
 
 
     // ------------------------------------------------------------------------
@@ -267,6 +313,22 @@ public interface LdapApiService
 
 
     /**
+     * Create an instance of a IntermediateResponse, knowing its OID. Inject the payload
+     * into it.
+     * 
+     * @param responseName The intermediateRespose OID
+     * @param messageId The original message ID
+     * @param serializedResponse The serialized response payload
+     * @param <I> The intermediate response type
+     * @return The intermediateResponse instance
+     * 
+     * @throws DecoderException If the payload is incorrect
+     */
+    <I extends IntermediateResponse> I newIntermediateResponse( String responseName, int messageId, byte[] serializedResponse )
+        throws DecoderException;
+
+
+    /**
      * Decorates an extended request message, ie encapsulate it into a class that do the encoding/decoding
      *
      * @param decoratedMessage The extended request to decorate
@@ -282,4 +344,13 @@ public interface LdapApiService
      * @return The decorated extended response
      */
     ExtendedResponseDecorator<?> decorate( ExtendedResponse decoratedMessage );
+
+
+    /**
+     * Decorates an intermediate response message, ie encapsulate it into a class that do the encoding/decoding
+     *
+     * @param decoratedMessage The intermediate response to decorate
+     * @return The decorated intermediate response
+     */
+    IntermediateResponseDecorator<?> decorate( IntermediateResponse decoratedMessage );
 }

@@ -265,9 +265,9 @@ public class LdapMessageTest extends AbstractCodecServiceTest
                     default:
                         String res = de.getMessage();
 
-                        if ( res.startsWith( "ERR_00001_BAD_TRANSITION_FROM_STATE" )
+                        if ( res.startsWith( "ERR_01200_BAD_TRANSITION_FROM_STATE" )
                             || res.startsWith( "Universal tag " )
-                            || res.startsWith( "ERR_00010_TRUNCATED_PDU Truncated PDU" ) )
+                            || res.startsWith( "ERR_01005_TRUNCATED_PDU Truncated PDU" ) )
                         {
                             assertTrue( true );
                         }

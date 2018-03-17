@@ -210,7 +210,7 @@ public final class Base64
         // if there is STILL something wrong we just have to throw up now!
         if ( index != out.length )
         {
-            throw new Error( I18n.err( I18n.ERR_04348, index, out.length ) );
+            throw new Error( I18n.err( I18n.ERR_17027_WRONG_DATA_LENGTH, index, out.length ) );
         }
 
         return out;

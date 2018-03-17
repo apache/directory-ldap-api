@@ -20,6 +20,7 @@
 package org.apache.directory.api.util;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -92,7 +93,7 @@ public final class MethodUtils
         }
         catch ( Exception e )
         {
-            LOG.info( "Could not find accessible exact match for candidateMethod {}", candidateMethodName, e );
+            LOG.info( I18n.msg( I18n.MSG_17009_NO_EXACT_MATCH, candidateMethodName, e ) );
         }
 
         /**

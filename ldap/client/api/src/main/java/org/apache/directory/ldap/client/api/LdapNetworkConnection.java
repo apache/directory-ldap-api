@@ -728,6 +728,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                             throw new LdapOtherException( e.getMessage(), e );
                         }
                     }
+                    else
+                    {
+                        break;
+                    }
                 }
             }
         }

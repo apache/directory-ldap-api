@@ -120,7 +120,7 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( mOid == null )
         {
-            String msg = I18n.err( I18n.ERR_10005, objectType, MetaSchemaConstants.M_OID_AT );
+            String msg = I18n.err( I18n.ERR_16011_NULL_ATTRIBUTE, objectType, MetaSchemaConstants.M_OID_AT );
             LOG.warn( msg );
             throw new IllegalArgumentException( msg );
         }
@@ -129,7 +129,7 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( strict && !Oid.isOid( oid ) )
         {
-            String msg = I18n.err( I18n.ERR_10006, oid );
+            String msg = I18n.err( I18n.ERR_16012_INVALID_COMPARATOR_OID, oid );
             LOG.warn( msg );
             throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, msg );
         }
@@ -149,14 +149,14 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( oid == null )
         {
-            String msg = I18n.err( I18n.ERR_10005, objectType, MetaSchemaConstants.M_OID_AT );
+            String msg = I18n.err( I18n.ERR_16011_NULL_ATTRIBUTE, objectType, MetaSchemaConstants.M_OID_AT );
             LOG.warn( msg );
             throw new IllegalArgumentException( msg );
         }
 
         if ( !Oid.isOid( oid ) )
         {
-            String msg = I18n.err( I18n.ERR_10006, oid );
+            String msg = I18n.err( I18n.ERR_16012_INVALID_COMPARATOR_OID, oid );
             LOG.warn( msg );
             throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, msg );
         }
@@ -172,7 +172,7 @@ public class SchemaEntityFactory implements EntityFactory
     {
         if ( entry == null )
         {
-            String msg = I18n.err( I18n.ERR_10007, schemaEntity );
+            String msg = I18n.err( I18n.ERR_16013_NULL_ENTRY, schemaEntity );
             LOG.warn( msg );
             throw new IllegalArgumentException( msg );
         }
@@ -186,7 +186,7 @@ public class SchemaEntityFactory implements EntityFactory
     {
         if ( description == null )
         {
-            String msg = I18n.err( I18n.ERR_10008, schemaEntity );
+            String msg = I18n.err( I18n.ERR_16014_NULL_SCHEMA_DESC, schemaEntity );
             LOG.warn( msg );
             throw new IllegalArgumentException( msg );
         }
@@ -208,7 +208,7 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( schema == null )
         {
-            String msg = I18n.err( I18n.ERR_10009, schemaName );
+            String msg = I18n.err( I18n.ERR_16015_NON_EXISTENT_SCHEMA, schemaName );
             LOG.error( msg );
         }
 
@@ -229,19 +229,19 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( entry == null )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_10010 ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_16016_NULL_ENTRY ) );
         }
 
         if ( entry.get( SchemaConstants.CN_AT ) == null )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_10011 ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_16017_INVALID_CN_AT ) );
         }
 
         name = entry.get( SchemaConstants.CN_AT ).getString();
 
         if ( entry.get( SchemaConstants.CREATORS_NAME_AT ) == null )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_10012, SchemaConstants.CREATORS_NAME_AT ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_16018_INVALID_AT, SchemaConstants.CREATORS_NAME_AT ) );
         }
 
         owner = entry.get( SchemaConstants.CREATORS_NAME_AT ).getString();
@@ -289,8 +289,8 @@ public class SchemaEntityFactory implements EntityFactory
             }
             catch ( ClassNotFoundException cnfe )
             {
-                LOG.error( "Cannot find the syntax checker class constructor for class {}", className );
-                throw new LdapSchemaException( "Cannot find the syntax checker class " + cnfe.getMessage() );
+                LOG.error( I18n.err( I18n.ERR_16048_CANNOT_FIND_SC_CTOR, className ) );
+                throw new LdapSchemaException( I18n.err( I18n.ERR_16049_CANNOT_FIND_SC_CLASS, cnfe.getMessage() ) );
             }
         }
         else
@@ -303,8 +303,8 @@ public class SchemaEntityFactory implements EntityFactory
             }
             catch ( ClassNotFoundException cnfe )
             {
-                LOG.error( "Cannot load the syntax checker class constructor for class {}", className );
-                throw new LdapSchemaException( "Cannot load the syntax checker class " + cnfe.getMessage() );
+                LOG.error( I18n.err( I18n.ERR_16050_CANNOT_LOAD_SC_CTOR, className ) );
+                throw new LdapSchemaException( I18n.err( I18n.ERR_16051_CANNOT_LOAD_SC_CLASS, cnfe.getMessage() ) );
             }
             
             byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
@@ -318,18 +318,13 @@ public class SchemaEntityFactory implements EntityFactory
         }
         catch ( NoSuchMethodException nsme )
         {
-            LOG.error( "Cannot instantiate the syntax checker class constructor for class {}", className );
-            throw new LdapSchemaException( "Cannot instantiate the syntax checker class " + nsme.getMessage() );
+            LOG.error( I18n.err( I18n.ERR_16052_CANNOT_INST_SC_CTOR, className ) );
+            throw new LdapSchemaException( I18n.err( I18n.ERR_16053_CANNOT_INST_SC_CLASS, nsme.getMessage() ) );
         }
-        catch ( InvocationTargetException ite )
+        catch ( InvocationTargetException | IllegalAccessException e )
         {
-            LOG.error( "Cannot instantiate the syntax checker class constructor for class {}", className );
-            throw new LdapSchemaException( "Cannot instantiate the syntax checker class " + ite.getMessage() );
-        }
-        catch ( IllegalAccessException iae )
-        {
-            LOG.error( "Cannot access the syntax checker class constructor for class {}", className );
-            throw new LdapSchemaException( "Cannot access the syntax checker class constructor " + iae.getMessage() );
+            LOG.error( I18n.err( I18n.ERR_16054_CANNOT_ACCESS_SC_CTOR, className ) );
+            throw new LdapSchemaException( I18n.err( I18n.ERR_16055_CANNOT_ACCESS_SC_CLASS, e.getMessage() ) );
         }
 
         // Update the common fields
@@ -359,7 +354,7 @@ public class SchemaEntityFactory implements EntityFactory
         if ( !schemaManager.isSchemaLoaded( schemaName ) )
         {
             // The schema is not loaded. We can't create the requested Normalizer
-            String msg = I18n.err( I18n.ERR_10013, entry.getDn().getName(), schemaName );
+            String msg = I18n.err( I18n.ERR_16019_CANNOT_ADD_SC, entry.getDn().getName(), schemaName );
             LOG.warn( msg );
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
         }
@@ -369,7 +364,7 @@ public class SchemaEntityFactory implements EntityFactory
         if ( schema == null )
         {
             // The schema is disabled. We still have to update the backend
-            String msg = I18n.err( I18n.ERR_10014, entry.getDn().getName(), schemaName );
+            String msg = I18n.err( I18n.ERR_16020_CANNOT_ADD_SC_IN_REGISTRY, entry.getDn().getName(), schemaName );
             LOG.info( msg );
             schema = schemaManager.getLoadedSchema( schemaName );
         }
@@ -417,7 +412,7 @@ public class SchemaEntityFactory implements EntityFactory
         if ( schema == null )
         {
             // The schema is not loaded. We can't create the requested SyntaxChecker
-            String msg = I18n.err( I18n.ERR_10013, syntaxCheckerDescription.getName(), schemaName );
+            String msg = I18n.err( I18n.ERR_16019_CANNOT_ADD_SC, syntaxCheckerDescription.getName(), schemaName );
             LOG.warn( msg );
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
         }
@@ -457,8 +452,8 @@ public class SchemaEntityFactory implements EntityFactory
             }
             catch ( ClassNotFoundException cnfe )
             {
-                LOG.error( "Cannot find the comparator class constructor for class {}", className );
-                throw new LdapSchemaException( "Cannot find the comparator class " + cnfe.getMessage() );
+                LOG.error( I18n.err( I18n.ERR_16056_CANNOT_FIND_CMP_CTOR, className ) );
+                throw new LdapSchemaException( I18n.err( I18n.ERR_16057_CANNOT_FIND_CMP_CLASS, cnfe.getMessage() ) );
             }
         }
         else
@@ -471,8 +466,8 @@ public class SchemaEntityFactory implements EntityFactory
             }
             catch ( ClassNotFoundException cnfe )
             {
-                LOG.error( "Cannot load the comparator class constructor for class {}", className );
-                throw new LdapSchemaException( "Cannot load the comparator class " + cnfe.getMessage() );
+                LOG.error( I18n.err( I18n.ERR_16058_CANNOT_LOAD_CMP_CTOR, className ) );
+                throw new LdapSchemaException( I18n.err( I18n.ERR_16059_CANNOT_LOAD_CMP_CLASS, cnfe.getMessage() ) );
             }
 
             byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
@@ -492,18 +487,18 @@ public class SchemaEntityFactory implements EntityFactory
             }
             catch ( InvocationTargetException ite )
             {
-                LOG.error( "Cannot invoke the comparator class constructor for class {}", className );
-                throw new LdapSchemaException( "Cannot invoke the comparator class " + ite.getMessage() );
+                LOG.error( I18n.err( I18n.ERR_16060_CANNOT_INVOKE_CMP_CTOR, className ) );
+                throw new LdapSchemaException( I18n.err( I18n.ERR_16061_CANNOT_INVOKE_CMP_CLASS, ite.getMessage() ) );
             }
             catch ( InstantiationException ie )
             {
-                LOG.error( "Cannot instanciate the comparator class constructor for class {}", className );
-                throw new LdapSchemaException( "Cannot instanciate the comparator class " + ie.getMessage() );
+                LOG.error( I18n.err( I18n.ERR_16062_CANNOT_INST_CMP_CTOR_CLASS, className ) );
+                throw new LdapSchemaException( I18n.err( I18n.ERR_16063_CANNOT_INST_CMP_CLASS, ie.getMessage() ) );
             }
             catch ( IllegalAccessException ie )
             {
-                LOG.error( "Cannot access the comparator class constructor for class {}", className );
-                throw new LdapSchemaException( "Cannot access the comparator class " + ie.getMessage() );
+                LOG.error( I18n.err( I18n.ERR_16064_CANNOT_ACCESS_CMP_CTOR, className ) );
+                throw new LdapSchemaException( I18n.err( I18n.ERR_16065_CANNOT_ACCESS_CMP_CLASS, ie.getMessage() ) );
             }
         }
         catch ( NoSuchMethodException nsme )
@@ -517,8 +512,8 @@ public class SchemaEntityFactory implements EntityFactory
             }
             catch ( NoSuchMethodException nsme2 )
             {
-                LOG.error( "Cannot find the comparator class constructor method for class {}", className );
-                throw new LdapSchemaException( "Cannot find the comparator class constructor method" + nsme2.getMessage() );
+                LOG.error( I18n.err( I18n.ERR_16066_CANNOT_FIND_CMP_CTOR_METH_CLASS, className ) );
+                throw new LdapSchemaException( I18n.err( I18n.ERR_16067_CANNOT_FIND_CMP_CTOR_METH, nsme2.getMessage() ) );
             }
             
             try
@@ -527,18 +522,18 @@ public class SchemaEntityFactory implements EntityFactory
             }
             catch ( InstantiationException ie )
             {
-                LOG.error( "Cannot instantiate the comparator class constructor for class {}", className );
-                throw new LdapSchemaException( "Cannot instantiate the comparator class " + ie.getMessage() );
+                LOG.error( I18n.err( I18n.ERR_16062_CANNOT_INST_CMP_CTOR_CLASS, className ) );
+                throw new LdapSchemaException( I18n.err( I18n.ERR_16063_CANNOT_INST_CMP_CLASS, ie.getMessage() ) );
             }
             catch ( IllegalAccessException iae )
             {
-                LOG.error( "Cannot access the comparator class constructor for class {}", className );
-                throw new LdapSchemaException( "Cannot access the comparator class constructor " + iae.getMessage() );
+                LOG.error( I18n.err( I18n.ERR_16064_CANNOT_ACCESS_CMP_CTOR, className ) );
+                throw new LdapSchemaException( I18n.err( I18n.ERR_16065_CANNOT_ACCESS_CMP_CLASS, iae.getMessage() ) );
             }
 
             if ( !comparator.getOid().equals( oid ) )
             {
-                String msg = I18n.err( I18n.ERR_10015, oid, comparator.getOid() );
+                String msg = I18n.err( I18n.ERR_16021_DIFFERENT_COMPARATOR_OID, oid, comparator.getOid() );
                 throw new LdapInvalidAttributeValueException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg, nsme );
             }
         }
@@ -573,7 +568,7 @@ public class SchemaEntityFactory implements EntityFactory
         if ( schema == null )
         {
             // The schema is not loaded. We can't create the requested Comparator
-            String msg = I18n.err( I18n.ERR_10016, comparatorDescription.getName(), schemaName );
+            String msg = I18n.err( I18n.ERR_16022_CANNOT_ADD_CMP, comparatorDescription.getName(), schemaName );
             LOG.warn( msg );
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
         }
@@ -610,7 +605,7 @@ public class SchemaEntityFactory implements EntityFactory
         if ( !schemaManager.isSchemaLoaded( schemaName ) )
         {
             // The schema is not loaded. We can't create the requested Comparator
-            String msg = I18n.err( I18n.ERR_10016, entry.getDn().getName(), schemaName );
+            String msg = I18n.err( I18n.ERR_16022_CANNOT_ADD_CMP, entry.getDn().getName(), schemaName );
             LOG.warn( msg );
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
         }
@@ -620,7 +615,7 @@ public class SchemaEntityFactory implements EntityFactory
         if ( schema == null )
         {
             // The schema is disabled. We still have to update the backend
-            String msg = I18n.err( I18n.ERR_10017, entry.getDn().getName(), schemaName );
+            String msg = I18n.err( I18n.ERR_16023_CANNOT_ADD_CMP_IN_REGISTRY, entry.getDn().getName(), schemaName );
             LOG.info( msg );
             schema = schemaManager.getLoadedSchema( schemaName );
         }
@@ -668,8 +663,8 @@ public class SchemaEntityFactory implements EntityFactory
             }
             catch ( ClassNotFoundException cnfe )
             {
-                LOG.error( "Cannot find the normalizer class constructor for class {}", className );
-                throw new LdapSchemaException( "Cannot find the normalizer class " + cnfe.getMessage() );
+                LOG.error( I18n.err( I18n.ERR_16068_CANNOT_FIND_NORM_CTOR, className ) );
+                throw new LdapSchemaException( I18n.err( I18n.ERR_16069_CANNOT_FIND_NORM_CLASS, cnfe.getMessage() ) );
             }
         }
         else
@@ -682,8 +677,8 @@ public class SchemaEntityFactory implements EntityFactory
             }
             catch ( ClassNotFoundException cnfe )
             {
-                LOG.error( "Cannot load the normalizer class constructor for class {}", className );
-                throw new LdapSchemaException( "Cannot load the normalizer class " + cnfe.getMessage() );
+                LOG.error( I18n.err( I18n.ERR_16070_CANNOT_LOAD_NORM_CTOR, className ) );
+                throw new LdapSchemaException( I18n.err( I18n.ERR_16071_CANNOT_LOAD_NORM_CLASS, cnfe.getMessage() ) );
             }
 
             byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
@@ -696,13 +691,13 @@ public class SchemaEntityFactory implements EntityFactory
         }
         catch ( InstantiationException ie )
         {
-            LOG.error( "Cannot instantiate the normalizer class constructor for class {}", className );
-            throw new LdapSchemaException( "Cannot instantiate the normalizer class " + ie.getMessage() );
+            LOG.error( I18n.err( I18n.ERR_16072_CANNOT_INST_NORM_CTOR_CLASS, className ) );
+            throw new LdapSchemaException( I18n.err( I18n.ERR_16073_CANNOT_INST_NORM_CLASS, ie.getMessage() ) );
         }
         catch ( IllegalAccessException iae )
         {
-            LOG.error( "Cannot access the normalizer class constructor for class {}", className );
-            throw new LdapSchemaException( "Cannot access the normalizer class constructor " + iae.getMessage() );
+            LOG.error( I18n.err( I18n.ERR_16074_CANNOT_ACCESS_NORM_CTOR_CLASS, className ) );
+            throw new LdapSchemaException( I18n.err( I18n.ERR_16075_CANNOT_ACCESS_NORM_CTOR, iae.getMessage() ) );
         }
 
         // Update the common fields
@@ -737,7 +732,7 @@ public class SchemaEntityFactory implements EntityFactory
         if ( schema == null )
         {
             // The schema is not loaded. We can't create the requested Normalizer
-            String msg = I18n.err( I18n.ERR_10018, normalizerDescription.getName(), schemaName );
+            String msg = I18n.err( I18n.ERR_16024_CANNOT_ADD_NORMALIZER, normalizerDescription.getName(), schemaName );
             LOG.warn( msg );
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
         }
@@ -774,7 +769,7 @@ public class SchemaEntityFactory implements EntityFactory
         if ( !schemaManager.isSchemaLoaded( schemaName ) )
         {
             // The schema is not loaded. We can't create the requested Normalizer
-            String msg = I18n.err( I18n.ERR_10018, entry.getDn().getName(), schemaName );
+            String msg = I18n.err( I18n.ERR_16024_CANNOT_ADD_NORMALIZER, entry.getDn().getName(), schemaName );
             LOG.warn( msg );
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
         }
@@ -784,7 +779,7 @@ public class SchemaEntityFactory implements EntityFactory
         if ( schema == null )
         {
             // The schema is disabled. We still have to update the backend
-            String msg = I18n.err( I18n.ERR_10019, entry.getDn().getName(), schemaName );
+            String msg = I18n.err( I18n.ERR_16025_CANNOT_ADD_NORMALIZER_IN_REGISTRY, entry.getDn().getName(), schemaName );
             LOG.info( msg );
             schema = schemaManager.getLoadedSchema( schemaName );
         }
@@ -831,7 +826,7 @@ public class SchemaEntityFactory implements EntityFactory
         if ( !schemaManager.isSchemaLoaded( schemaName ) )
         {
             // The schema is not loaded. We can't create the requested Syntax
-            String msg = I18n.err( I18n.ERR_10020, entry.getDn().getName(), schemaName );
+            String msg = I18n.err( I18n.ERR_16026_CANNOT_ADD_SYNTAX, entry.getDn().getName(), schemaName );
             LOG.warn( msg );
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
         }
@@ -841,7 +836,7 @@ public class SchemaEntityFactory implements EntityFactory
         if ( schema == null )
         {
             // The schema is disabled. We still have to update the backend
-            String msg = I18n.err( I18n.ERR_10021, entry.getDn().getName(), schemaName );
+            String msg = I18n.err( I18n.ERR_16027_CANNOT_ADD_SYNTAX_IN_REGISTRY, entry.getDn().getName(), schemaName );
             LOG.info( msg );
             schema = schemaManager.getLoadedSchema( schemaName );
         }
@@ -874,7 +869,7 @@ public class SchemaEntityFactory implements EntityFactory
         if ( !schemaManager.isSchemaLoaded( schemaName ) )
         {
             // The schema is not loaded. We can't create the requested MatchingRule
-            String msg = I18n.err( I18n.ERR_10022, entry.getDn().getName(), schemaName );
+            String msg = I18n.err( I18n.ERR_16028_CANNOT_ADD_MR, entry.getDn().getName(), schemaName );
             LOG.warn( msg );
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
         }
@@ -884,7 +879,7 @@ public class SchemaEntityFactory implements EntityFactory
         if ( schema == null )
         {
             // The schema is disabled. We still have to update the backend
-            String msg = I18n.err( I18n.ERR_10023, entry.getDn().getName(), schemaName );
+            String msg = I18n.err( I18n.ERR_16029_CANNOT_ADD_MR_IN_REGISTRY, entry.getDn().getName(), schemaName );
             LOG.info( msg );
             schema = schemaManager.getLoadedSchema( schemaName );
         }
@@ -946,7 +941,7 @@ public class SchemaEntityFactory implements EntityFactory
         if ( !schemaManager.isSchemaLoaded( schemaName ) )
         {
             // The schema is not loaded. We can't create the requested ObjectClass
-            String msg = I18n.err( I18n.ERR_10024, entry.getDn().getName(), schemaName );
+            String msg = I18n.err( I18n.ERR_16030_CANNOT_ADD_OC, entry.getDn().getName(), schemaName );
             LOG.warn( msg );
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
         }
@@ -956,7 +951,7 @@ public class SchemaEntityFactory implements EntityFactory
         if ( schema == null )
         {
             // The schema is disabled. We still have to update the backend
-            String msg = I18n.err( I18n.ERR_10025, entry.getDn().getName(), schemaName );
+            String msg = I18n.err( I18n.ERR_16031_CANNOT_ADD_OC_IN_REGISTRY, entry.getDn().getName(), schemaName );
             LOG.info( msg );
             schema = schemaManager.getLoadedSchema( schemaName );
         }
@@ -1022,7 +1017,7 @@ public class SchemaEntityFactory implements EntityFactory
         if ( !schemaManager.isSchemaLoaded( schemaName ) )
         {
             // The schema is not loaded, this is an error
-            String msg = I18n.err( I18n.ERR_10026, entry.getDn().getName(), schemaName );
+            String msg = I18n.err( I18n.ERR_16032_CANNOT_ADD_AT, entry.getDn().getName(), schemaName );
             LOG.warn( msg );
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
         }
@@ -1032,7 +1027,7 @@ public class SchemaEntityFactory implements EntityFactory
         if ( schema == null )
         {
             // The schema is disabled. We still have to update the backend
-            String msg = I18n.err( I18n.ERR_10027, entry.getDn().getName(), schemaName );
+            String msg = I18n.err( I18n.ERR_16033_CANNOT_ADD_AT_IN_REGISTRY, entry.getDn().getName(), schemaName );
             LOG.info( msg );
             schema = schemaManager.getLoadedSchema( schemaName );
         }
@@ -1146,7 +1141,7 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( mFqcn == null )
         {
-            String msg = I18n.err( I18n.ERR_10028, objectType, MetaSchemaConstants.M_FQCN_AT );
+            String msg = I18n.err( I18n.ERR_16034_ENTRY_WITHOUT_VALID_AT, objectType, MetaSchemaConstants.M_FQCN_AT );
             LOG.warn( msg );
             throw new IllegalArgumentException( msg );
         }
@@ -1165,7 +1160,7 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( mFqcn == null )
         {
-            String msg = I18n.err( I18n.ERR_10028, objectType, MetaSchemaConstants.M_FQCN_AT );
+            String msg = I18n.err( I18n.ERR_16034_ENTRY_WITHOUT_VALID_AT, objectType, MetaSchemaConstants.M_FQCN_AT );
             LOG.warn( msg );
             throw new IllegalArgumentException( msg );
         }
@@ -1183,7 +1178,7 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( byteCodeString == null )
         {
-            String msg = I18n.err( I18n.ERR_10028, objectType, MetaSchemaConstants.M_BYTECODE_AT );
+            String msg = I18n.err( I18n.ERR_16034_ENTRY_WITHOUT_VALID_AT, objectType, MetaSchemaConstants.M_BYTECODE_AT );
             LOG.warn( msg );
             throw new IllegalArgumentException( msg );
         }
@@ -1291,8 +1286,7 @@ public class SchemaEntityFactory implements EntityFactory
 
             if ( !schema.getSchemaName().equalsIgnoreCase( schemaName ) )
             {
-                LOG.warn( "Schema (" + schema.getSchemaName() + ") and X-SCHEMA ("
-                    + schemaName + ") are different : " + entry );
+                LOG.warn( I18n.msg( I18n.MSG_16011_SCHEMA_XSCHEMA_DIFF, schema.getSchemaName(), schemaName, entry ) );
             }
 
             schemaObject.addExtension( MetaSchemaConstants.X_SCHEMA_AT, schemaName );

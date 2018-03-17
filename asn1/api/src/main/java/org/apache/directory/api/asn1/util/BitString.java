@@ -58,7 +58,7 @@ public class BitString
         if ( length <= 0 )
         {
             // This is not allowed
-            throw new IndexOutOfBoundsException( I18n.err( I18n.ERR_00029_NULL_OR_NEG_LENGTH_NOT_ALLOWED ) );
+            throw new IndexOutOfBoundsException( I18n.err( I18n.ERR_00000_NULL_OR_NEG_LENGTH_NOT_ALLOWED ) );
         }
 
         nbBits = length;
@@ -163,7 +163,7 @@ public class BitString
     {
         if ( ( pos < 0 ) || ( pos > nbBits ) )
         {
-            throw new IndexOutOfBoundsException( I18n.err( I18n.ERR_00030_BIT_NUMBER_OUT_OF_BOUND ) );
+            throw new IndexOutOfBoundsException( I18n.err( I18n.ERR_00001_BIT_NUMBER_OUT_OF_BOUND ) );
         }
 
         int posBytes = pos >>> 3;
@@ -186,7 +186,7 @@ public class BitString
     {
         if ( ( pos < 0 ) || ( pos > nbBits ) )
         {
-            throw new IndexOutOfBoundsException( I18n.err( I18n.ERR_00030_BIT_NUMBER_OUT_OF_BOUND ) );
+            throw new IndexOutOfBoundsException( I18n.err( I18n.ERR_00001_BIT_NUMBER_OUT_OF_BOUND ) );
         }
 
         int posBytes = pos >>> 3;
@@ -220,7 +220,7 @@ public class BitString
     {
         if ( pos > nbBits )
         {
-            throw new IndexOutOfBoundsException( I18n.err( I18n.ERR_00031_CANNOT_FIND_BIT, pos, nbBits ) );
+            throw new IndexOutOfBoundsException( I18n.err( I18n.ERR_00002_CANNOT_FIND_BIT, pos, nbBits ) );
         }
 
         int posBytes = pos >>> 3;

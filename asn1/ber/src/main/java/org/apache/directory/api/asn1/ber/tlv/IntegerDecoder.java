@@ -61,7 +61,7 @@ public final class IntegerDecoder
         }
         else
         {
-            throw new IntegerDecoderException( I18n.err( I18n.ERR_00038_VALUE_NOT_IN_RANGE, min, max ) );
+            throw new IntegerDecoderException( I18n.err( I18n.ERR_01306_VALUE_NOT_IN_RANGE, min, max ) );
         }
     }
 
@@ -110,7 +110,7 @@ public final class IntegerDecoder
 
         if ( Strings.isEmpty( bytes ) )
         {
-            throw new IntegerDecoderException( I18n.err( I18n.ERR_00036_0_BYTES_LONG_INTEGER ) );
+            throw new IntegerDecoderException( I18n.err( I18n.ERR_01304_0_BYTES_LONG_INTEGER ) );
         }
 
         boolean positive = true;
@@ -122,7 +122,7 @@ public final class IntegerDecoder
                 {
                     if ( ( bytes[1] & ( byte ) 0x80 ) != ( byte ) 0x80 )
                     {
-                        throw new IntegerDecoderException( I18n.err( I18n.ERR_00036_0_BYTES_LONG_INTEGER ) );
+                        throw new IntegerDecoderException( I18n.err( I18n.ERR_01304_0_BYTES_LONG_INTEGER ) );
                     }
 
                     result = bytes[1] & 0x00FF;
@@ -132,7 +132,7 @@ public final class IntegerDecoder
                 }
                 else
                 {
-                    throw new IntegerDecoderException( I18n.err( I18n.ERR_00036_0_BYTES_LONG_INTEGER ) );
+                    throw new IntegerDecoderException( I18n.err( I18n.ERR_01304_0_BYTES_LONG_INTEGER ) );
                 }
 
                 break;
@@ -210,7 +210,7 @@ public final class IntegerDecoder
                 break;
 
             default:
-                throw new IntegerDecoderException( I18n.err( I18n.ERR_00037_ABOVE_4_BYTES_INTEGER ) );
+                throw new IntegerDecoderException( I18n.err( I18n.ERR_01305_ABOVE_4_BYTES_INTEGER ) );
         }
 
         if ( !positive )

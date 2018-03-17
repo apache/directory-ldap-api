@@ -68,7 +68,7 @@ public class AttributeClassLoader extends ClassLoader
         if ( attribute.isHumanReadable() )
         {
             throw new LdapInvalidAttributeValueException( ResultCodeEnum.CONSTRAINT_VIOLATION,
-                I18n.err( I18n.ERR_10001 ) );
+                I18n.err( I18n.ERR_16007_BINARY_REQUIRED ) );
         }
 
         this.attribute = attribute;
@@ -145,7 +145,7 @@ public class AttributeClassLoader extends ClassLoader
 
         if ( value.isHumanReadable() )
         {
-            throw new ClassNotFoundException( I18n.err( I18n.ERR_10002 ) );
+            throw new ClassNotFoundException( I18n.err( I18n.ERR_16008_AT_ACCESS_FAILURE ) );
         }
 
         classBytes = value.getBytes();

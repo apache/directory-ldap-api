@@ -188,7 +188,7 @@ public final class Oid
     {
         if ( ( oidBytes == null ) || ( oidBytes.length < 1 ) )
         {
-            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, Arrays.toString( oidBytes ) ) );
+            throw new DecoderException( I18n.err( I18n.ERR_00003_INVALID_OID, Arrays.toString( oidBytes ) ) );
         }
 
         StringBuilder builder = new StringBuilder();
@@ -337,7 +337,7 @@ public final class Oid
     
                             if ( ( one < 0 ) || ( one > 2 ) || ( two < 0 ) || ( ( one < 2 ) && ( two > 39 ) ) )
                             {
-                                throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID,
+                                throw new DecoderException( I18n.err( I18n.ERR_00003_INVALID_OID,
                                     Arrays.toString( oidBytes ) ) );
                             }
     
@@ -388,7 +388,7 @@ public final class Oid
                 
             default :
                 // This is an error
-                throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "Should start with 0, 1 or 2" ) );
+                throw new DecoderException( I18n.err( I18n.ERR_00003_INVALID_OID, "Should start with 0, 1 or 2" ) );
         }
     }
     
@@ -404,7 +404,7 @@ public final class Oid
         if ( oid.charAt( pos ) != '.' )
         {
             // Expecting a Dot here
-            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "a '.' is expected" ) );
+            throw new DecoderException( I18n.err( I18n.ERR_00003_INVALID_OID, "a '.' is expected" ) );
         }
         
         return OidFSAState.STATE_B;
@@ -447,7 +447,7 @@ public final class Oid
                 
             default :
                 // Expecting a digit here
-                throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "a digit is expected" ) );
+                throw new DecoderException( I18n.err( I18n.ERR_00003_INVALID_OID, "a digit is expected" ) );
         }
     }
     
@@ -486,7 +486,7 @@ public final class Oid
                 
             default :
                 // Expecting a digit here
-                throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "a digit is expected" ) );
+                throw new DecoderException( I18n.err( I18n.ERR_00003_INVALID_OID, "a digit is expected" ) );
         }
     }
     
@@ -505,7 +505,7 @@ public final class Oid
         if ( c != '.' )
         {
             // Expecting a '.' here
-            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "a dot is expected" ) );
+            throw new DecoderException( I18n.err( I18n.ERR_00003_INVALID_OID, "a dot is expected" ) );
         }
         
         // Store the first byte into it
@@ -527,7 +527,7 @@ public final class Oid
         if ( oid.charAt( pos ) != '.' )
         {
             // Expecting a Dot here
-            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "a '.' is expected" ) );
+            throw new DecoderException( I18n.err( I18n.ERR_00003_INVALID_OID, "a '.' is expected" ) );
         }
         
         return OidFSAState.STATE_G;
@@ -566,7 +566,7 @@ public final class Oid
 
             default :
                 // Expecting a digit here
-                throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "a digit is expected" ) );
+                throw new DecoderException( I18n.err( I18n.ERR_00003_INVALID_OID, "a digit is expected" ) );
         }
     }
     
@@ -606,7 +606,7 @@ public final class Oid
                 
             default :
                 // Expecting a digit here
-                throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "a digit is expected" ) );
+                throw new DecoderException( I18n.err( I18n.ERR_00003_INVALID_OID, "a digit is expected" ) );
         }
     }
     
@@ -630,7 +630,7 @@ public final class Oid
         else
         {
             // Expecting a digit here
-            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "a digit is expected" ) );
+            throw new DecoderException( I18n.err( I18n.ERR_00003_INVALID_OID, "a digit is expected" ) );
         }
     }
     
@@ -667,7 +667,7 @@ public final class Oid
                 
             default :
                 // Expecting a digit here
-                throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "a digit is expected" ) );
+                throw new DecoderException( I18n.err( I18n.ERR_00003_INVALID_OID, "a digit is expected" ) );
         }
     }
     
@@ -703,7 +703,7 @@ public final class Oid
                 
             default :
                 // Expecting a digit here
-                throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "a digit is expected" ) );
+                throw new DecoderException( I18n.err( I18n.ERR_00003_INVALID_OID, "a digit is expected" ) );
         }
     }
     
@@ -741,7 +741,7 @@ public final class Oid
                 
             default :
                 // Expecting a digit here
-                throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "a digit or a dot is expected" ) );
+                throw new DecoderException( I18n.err( I18n.ERR_00003_INVALID_OID, "a digit or a dot is expected" ) );
         }
     }
 
@@ -763,7 +763,7 @@ public final class Oid
         else
         {
             // Expecting a '.' here
-            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "a '.' is expected" ) );
+            throw new DecoderException( I18n.err( I18n.ERR_00003_INVALID_OID, "a '.' is expected" ) );
         }
     }
 
@@ -1060,7 +1060,7 @@ public final class Oid
     {
         if ( ( oidString == null ) || oidString.isEmpty() )
         {
-            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "empty" ) );
+            throw new DecoderException( I18n.err( I18n.ERR_00003_INVALID_OID, "empty" ) );
         }
 
         // Create a buffer that is wide enough to contain all the values
@@ -1283,7 +1283,7 @@ public final class Oid
                 
             default :
                 // This should never happen...
-                throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "Wrong OID" ) );
+                throw new DecoderException( I18n.err( I18n.ERR_00003_INVALID_OID, "Wrong OID" ) );
         }
     }
 

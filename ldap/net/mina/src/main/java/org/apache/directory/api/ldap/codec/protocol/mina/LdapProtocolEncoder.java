@@ -22,7 +22,7 @@ package org.apache.directory.api.ldap.codec.protocol.mina;
 
 import java.nio.ByteBuffer;
 
-
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
@@ -88,7 +88,7 @@ public class LdapProtocolEncoder implements ProtocolEncoder
             byte[] dumpBuffer = new byte[buffer.limit()];
             buffer.get( dumpBuffer );
             buffer.flip();
-            CODEC_LOG.debug( "Encoded message \n " + message + "\n : " + Strings.dumpBytes( dumpBuffer ) );
+            CODEC_LOG.debug( I18n.msg( I18n.MSG_14003_ENCODED_LDAP_MESSAGE, message, Strings.dumpBytes( dumpBuffer ) ) );
         }
 
         out.write( ioBuffer );

@@ -20,7 +20,7 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.whoAmI;
 
 
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
+import org.apache.directory.api.ldap.codec.decorators.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIRequest;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIResponse;

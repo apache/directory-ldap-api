@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
+import org.apache.directory.api.ldap.codec.api.IntermediateResponseFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.controls.cascade.CascadeFactory;
 import org.apache.directory.api.ldap.codec.controls.manageDsaIT.ManageDsaITFactory;
@@ -48,11 +49,9 @@ import org.apache.directory.api.ldap.extras.controls.permissiveModify_impl.Permi
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
 import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValue;
-import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncInfoValue;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncRequest.SyncRequestValue;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateValue;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncDoneValueFactory;
-import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncInfoValueFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory;
 import org.apache.directory.api.ldap.extras.controls.transaction.TransactionSpecification;
@@ -71,6 +70,7 @@ import org.apache.directory.api.ldap.extras.extended.ads_impl.startTls.StartTlsF
 import org.apache.directory.api.ldap.extras.extended.ads_impl.startTransaction.StartTransactionFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.whoAmI.WhoAmIFactory;
+import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValueFactory;
 import org.apache.directory.api.ldap.model.message.controls.Cascade;
 import org.apache.directory.api.ldap.model.message.controls.EntryChange;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
@@ -173,10 +173,6 @@ public final class CodecFactoryUtil
         controlFactories.put( syncDoneValueFactory.getOid(), syncDoneValueFactory );
         LOG.info( "Registered pre-bundled control factory: {}", syncDoneValueFactory.getOid() );
 
-        ControlFactory<SyncInfoValue> syncInfoValueFactory = new SyncInfoValueFactory( apiService );
-        controlFactories.put( syncInfoValueFactory.getOid(), syncInfoValueFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", syncInfoValueFactory.getOid() );
-
         ControlFactory<SyncRequestValue> syncRequestValueFactory = new SyncRequestValueFactory( apiService );
         controlFactories.put( syncRequestValueFactory.getOid(), syncRequestValueFactory );
         LOG.info( "Registered pre-bundled control factory: {}", syncRequestValueFactory.getOid() );
@@ -260,5 +256,23 @@ public final class CodecFactoryUtil
         WhoAmIFactory whoAmIFactory = new WhoAmIFactory( apiService );
         extendendOperationsFactories.put( whoAmIFactory.getOid(), whoAmIFactory );
         LOG.info( "Registered pre-bundled extended operation factory: {}", whoAmIFactory.getOid() );
+    }
+
+
+    /**
+     * Load the standard intermediate responses :
+     * <ul>
+     * <li>syncInfovalue</li>
+     * </ul>
+     * 
+     * @param extendendOperationsFactories The map of extended operation factories
+     * @param apiService The LdapApiService to use
+     */
+    public static void loadStockIntermediateResponses(
+        Map<String, IntermediateResponseFactory> intermediateResponseFactories, LdapApiService apiService )
+    {
+        SyncInfoValueFactory syncInfoValueFactory = new SyncInfoValueFactory( apiService );
+        intermediateResponseFactories.put( syncInfoValueFactory.getOid(), syncInfoValueFactory );
+        LOG.info( "Registered pre-bundled intermediate response factory: {}", syncInfoValueFactory.getOid() );
     }
 }

@@ -17,7 +17,7 @@
  *  under the License.
  *
  */
-package org.apache.directory.api.ldap.extras.controls.syncrepl_impl;
+package org.apache.directory.api.ldap.extras.intermediate.syncrepl;
 
 
 import java.nio.ByteBuffer;
@@ -32,11 +32,8 @@ import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.ControlDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncInfoValue;
-import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncInfoValueImpl;
-import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SynchronizationInfoEnum;
+import org.apache.directory.api.ldap.codec.decorators.IntermediateResponseDecorator;
 import org.apache.directory.api.util.Strings;
 
 
@@ -45,7 +42,7 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> implements SyncInfoValue
+public class SyncInfoValueDecorator extends IntermediateResponseDecorator<SyncInfoValue> implements SyncInfoValue
 {
     /** The syncUUIDs cumulative length */
     private int syncUUIDsLength;
@@ -53,10 +50,15 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     /** An instance of this decoder */
     private static final Asn1Decoder DECODER = new Asn1Decoder();
 
-    /** The global length for this control */
+    /** The global length for this response */
     private int syncInfoValueLength;
 
+    /** The encoded value length */
+    protected int valueLength;
 
+    /** The encoded value. */
+    protected byte[] value;
+    
     /**
      * The constructor for this codec. Dont't forget to set the type.
      * 
@@ -72,11 +74,11 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
      * The constructor for this codec. Dont't forget to set the type.
      * 
      * @param codec The LDAP Service to use
-     * @param control The SyncInfoValue to decorate
+     * @param syncInfoValue The SyncInfoValue to decorate
      */
-    public SyncInfoValueDecorator( LdapApiService codec, SyncInfoValue control )
+    public SyncInfoValueDecorator( LdapApiService codec, SyncInfoValue syncInfoValue )
     {
-        super( codec, control );
+        super( codec, syncInfoValue );
     }
 
 
@@ -90,8 +92,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     public SyncInfoValueDecorator( LdapApiService codec, SynchronizationInfoEnum type )
     {
         this( codec );
-
-        setType( type );
+        getDecorated().setSyncInfoValueType( type );
     }
 
 
@@ -99,9 +100,9 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
      * {@inheritDoc}
      */
     @Override
-    public SynchronizationInfoEnum getType()
+    public SynchronizationInfoEnum getSyncInfoValueType()
     {
-        return getDecorated().getType();
+        return getDecorated().getSyncInfoValueType();
     }
 
 
@@ -109,12 +110,12 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
      * {@inheritDoc}
      */
     @Override
-    public void setType( SynchronizationInfoEnum type )
+    public void setSyncInfoValueType( SynchronizationInfoEnum syncInfoValueType )
     {
-        this.getDecorated().setType( type );
+        this.getDecorated().setSyncInfoValueType( syncInfoValueType );
 
         // Initialize the arrayList if needed
-        if ( ( type == SynchronizationInfoEnum.SYNC_ID_SET ) && ( getDecorated().getSyncUUIDs() == null ) )
+        if ( ( syncInfoValueType == SynchronizationInfoEnum.SYNC_ID_SET ) && ( getDecorated().getSyncUUIDs() == null ) )
         {
             getDecorated().setSyncUUIDs( new ArrayList<byte[]>() );
         }
@@ -252,7 +253,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
         // The mode length
         syncInfoValueLength = 0;
 
-        switch ( getType() )
+        switch ( getDecorated().getSyncInfoValueType() )
         {
             case NEW_COOKIE:
                 if ( getCookie() != null )
@@ -266,7 +267,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
 
                 valueLength = syncInfoValueLength;
 
-                // Call the super class to compute the global control length
+                // Call the super class to compute the global response length
                 return valueLength;
 
             case REFRESH_DELETE:
@@ -284,7 +285,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
 
                 valueLength = 1 + TLV.getNbBytes( syncInfoValueLength ) + syncInfoValueLength;
 
-                // Call the super class to compute the global control length
+                // Call the super class to compute the global response length
                 return valueLength;
 
             case SYNC_ID_SET:
@@ -315,7 +316,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
                 syncInfoValueLength += 1 + TLV.getNbBytes( syncUUIDsLength ) + syncUUIDsLength;
                 valueLength = 1 + TLV.getNbBytes( syncInfoValueLength ) + syncInfoValueLength;
 
-                // Call the super class to compute the global control length
+                // Call the super class to compute the global response length
                 return valueLength;
 
             default:
@@ -327,7 +328,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
 
 
     /**
-     * Encode the SyncInfoValue control
+     * Encode the SyncInfoValue response
      *
      * @param buffer The encoded sink
      * @return A ByteBuffer that contains the encoded PDU
@@ -341,7 +342,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
             throw new EncoderException( I18n.err( I18n.ERR_04023 ) );
         }
 
-        switch ( getType() )
+        switch ( getDecorated().getSyncInfoValueType() )
         {
             case NEW_COOKIE:
                 // The first case : newCookie
@@ -442,7 +443,6 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     /**
      * {@inheritDoc}
      */
-    @Override
     public byte[] getValue()
     {
         if ( value == null )
@@ -452,7 +452,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
                 computeLength();
                 ByteBuffer buffer = ByteBuffer.allocate( valueLength );
 
-                switch ( getType() )
+                switch ( getDecorated().getSyncInfoValueType() )
                 {
                     case NEW_COOKIE:
                         // The first case : newCookie
@@ -561,12 +561,12 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     /**
      * {@inheritDoc}
      */
-    @Override
-    public Asn1Object decode( byte[] controlBytes ) throws DecoderException
+    public Asn1Object decode( byte[] responseBytes ) throws DecoderException
     {
-        ByteBuffer bb = ByteBuffer.wrap( controlBytes );
+        ByteBuffer bb = ByteBuffer.wrap( responseBytes );
         SyncInfoValueContainer container = new SyncInfoValueContainer( getCodecService(), this );
         DECODER.decode( bb, container );
+        
         return this;
     }
 

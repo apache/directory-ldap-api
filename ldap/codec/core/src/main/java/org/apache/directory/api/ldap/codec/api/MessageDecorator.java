@@ -77,7 +77,7 @@ import org.apache.directory.api.ldap.model.message.UnbindRequest;
  */
 public abstract class MessageDecorator<E extends Message> implements Message, Decorator<E>
 {
-    /** The decorated Control */
+    /** The decorated Message */
     private final E decoratedMessage;
 
     /** Map of message controls using OID Strings for keys and Control values */

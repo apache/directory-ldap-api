@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.codec.api;
 
 
 import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.ldap.codec.decorators.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 

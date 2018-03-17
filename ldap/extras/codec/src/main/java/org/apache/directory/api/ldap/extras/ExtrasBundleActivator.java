@@ -35,11 +35,9 @@ import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncFactory;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
 import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValue;
-import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncInfoValue;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncRequest.SyncRequestValue;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateValue;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncDoneValueFactory;
-import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncInfoValueFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory;
 import org.apache.directory.api.ldap.extras.controls.transaction.TransactionSpecification;
@@ -173,7 +171,6 @@ public class ExtrasBundleActivator implements BundleActivator
             codec.unregisterControl( PasswordPolicy.OID );
             codec.unregisterControl( PermissiveModify.OID );
             codec.unregisterControl( SyncDoneValue.OID );
-            codec.unregisterControl( SyncInfoValue.OID );
             codec.unregisterControl( SyncRequestValue.OID );
             codec.unregisterControl( SyncStateValue.OID );
             codec.unregisterControl( TransactionSpecification.OID );
@@ -224,9 +221,6 @@ public class ExtrasBundleActivator implements BundleActivator
 
             ControlFactory<SyncDoneValue> syncDoneValuefactory = new SyncDoneValueFactory( codec );
             codec.registerControl( syncDoneValuefactory );
-
-            ControlFactory<SyncInfoValue> syncInfoValueFactory = new SyncInfoValueFactory( codec );
-            codec.registerControl( syncInfoValueFactory );
 
             ControlFactory<SyncRequestValue> syncRequestValueFactory = new SyncRequestValueFactory( codec );
             codec.registerControl( syncRequestValueFactory );

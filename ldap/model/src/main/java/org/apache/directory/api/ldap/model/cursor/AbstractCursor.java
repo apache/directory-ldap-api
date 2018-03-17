@@ -45,7 +45,7 @@ public abstract class AbstractCursor<E> implements Cursor<E>
     {
         if ( monitor == null )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_02001_MONITOR ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13101_MONITOR ) );
         }
 
         this.monitor = monitor;
@@ -109,7 +109,7 @@ public abstract class AbstractCursor<E> implements Cursor<E>
     @Override
     public boolean isAfterLast()
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13102_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "isAfterLast()" ) ) );
     }
 
@@ -120,7 +120,7 @@ public abstract class AbstractCursor<E> implements Cursor<E>
     @Override
     public boolean isBeforeFirst()
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13102_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "isBeforeFirst()" ) ) );
     }
 
@@ -131,7 +131,7 @@ public abstract class AbstractCursor<E> implements Cursor<E>
     @Override
     public boolean isFirst()
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13102_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "isFirst()" ) ) );
     }
 
@@ -142,7 +142,7 @@ public abstract class AbstractCursor<E> implements Cursor<E>
     @Override
     public boolean isLast()
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13102_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "isLast()" ) ) );
     }
 

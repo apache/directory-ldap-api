@@ -106,7 +106,7 @@ public final class AttributeTypeUsageSyntaxChecker extends SyntaxChecker
         {
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, "null" ) );
+                LOG.debug( I18n.err( I18n.ERR_13210_SYNTAX_INVALID, "null" ) );
             }
             
             return false;
@@ -141,7 +141,7 @@ public final class AttributeTypeUsageSyntaxChecker extends SyntaxChecker
             default :
                 if ( LOG.isDebugEnabled() )
                 {
-                    LOG.debug( I18n.err( I18n.ERR_04489_SYNTAX_INVALID, value ) );
+                    LOG.debug( I18n.err( I18n.ERR_13210_SYNTAX_INVALID, value ) );
                 }
                 
                 return false;

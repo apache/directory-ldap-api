@@ -105,7 +105,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
             if ( IS_DEBUG )
             {
                 byte tag = container.getCurrentTLV().getTag();
-                LOG.debug( "Tag {} has been decoded", Asn1StringUtils.dumpByte( tag ) );
+                LOG.debug( I18n.msg( I18n.MSG_01000_TAG_DECODED, Asn1StringUtils.dumpByte( tag ) ) );
             }
 
             return MORE;
@@ -142,7 +142,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
 
         if ( IS_DEBUG )
         {
-            LOG.debug( "TLV Tree : {}", sb.toString() );
+            LOG.debug( I18n.msg( I18n.MSG_01001_TLV_TREE, sb.toString() ) );
         }
     }
 
@@ -214,7 +214,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
 
                 if ( expectedLength > 4 )
                 {
-                    String msg = I18n.err( I18n.ERR_00005_LENGTH_OVERFLOW );
+                    String msg = I18n.err( I18n.ERR_01000_LENGTH_OVERFLOW );
                     LOG.error( msg );
                     throw new DecoderException( msg );
                 }
@@ -226,7 +226,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
             }
             else
             {
-                String msg = I18n.err( I18n.ERR_00006_LENGTH_EXTENSION_RESERVED );
+                String msg = I18n.err( I18n.ERR_01001_LENGTH_EXTENSION_RESERVED );
                 LOG.error( msg );
                 throw new DecoderException( msg );
             }
@@ -263,7 +263,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
 
                 if ( IS_DEBUG )
                 {
-                    LOG.debug( "  current byte : {}", Asn1StringUtils.dumpByte( octet ) );
+                    LOG.debug( I18n.msg( I18n.MSG_01002_CURRENT_BYTE, Asn1StringUtils.dumpByte( octet ) ) );
                 }
 
                 tlv.incLengthBytesRead();
@@ -344,7 +344,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
 
         if ( tlv == null )
         {
-            String msg = I18n.err( I18n.ERR_00007_TLV_NULL );
+            String msg = I18n.err( I18n.ERR_01002_TLV_NULL );
             LOG.error( msg );
             throw new DecoderException( msg );
         }
@@ -358,7 +358,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
 
         if ( IS_DEBUG )
         {
-            LOG.debug( "Parent length : {}", getParentLength( parentTLV ) );
+            LOG.debug( I18n.msg( I18n.MSG_01003_PARENT_LENGTH, getParentLength( parentTLV ) ) );
         }
 
         if ( parentTLV == null )
@@ -370,7 +370,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
 
             if ( IS_DEBUG )
             {
-                LOG.debug( "Root TLV[{}]", Integer.valueOf( length ) );
+                LOG.debug( I18n.msg( I18n.MSG_01004_ROOT_TLV, Integer.valueOf( length ) ) );
             }
         }
         else
@@ -384,8 +384,14 @@ public class Asn1Decoder implements TLVBerDecoderMBean
             {
                 // The expected length is lower than the Value length of the
                 // current TLV. This is an error...
-                LOG.debug( "tlv[{}, {}]", Integer.valueOf( expectedLength ), Integer.valueOf( currentLength ) );
-                throw new DecoderException( I18n.err( I18n.ERR_00008_VALUE_LENGTH_ABOVE_EXPECTED_LENGTH, Integer
+                if ( IS_DEBUG )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_01005_TLV, 
+                                Integer.valueOf( expectedLength ), 
+                                Integer.valueOf( currentLength ) ) );
+                }
+                
+                throw new DecoderException( I18n.err( I18n.ERR_01003_VALUE_LENGTH_ABOVE_EXPECTED_LENGTH, Integer
                     .valueOf( currentLength ), Integer.valueOf( expectedLength ) ) );
             }
 
@@ -478,7 +484,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
 
         if ( IS_DEBUG )
         {
-            LOG.debug( "Length {} has been decoded", Integer.valueOf( length ) );
+            LOG.debug( I18n.msg( I18n.MSG_01006_LENGTH_DECODED, Integer.valueOf( length ) ) );
         }
 
         if ( length == 0 )
@@ -617,8 +623,8 @@ public class Asn1Decoder implements TLVBerDecoderMBean
                 }
                 else
                 {
-                    LOG.error( I18n.err( I18n.ERR_00009_MORE_TLV_EXPECTED ) );
-                    throw new DecoderException( I18n.err( I18n.ERR_00010_TRUNCATED_PDU ) );
+                    LOG.error( I18n.err( I18n.ERR_01004_MORE_TLV_EXPECTED ) );
+                    throw new DecoderException( I18n.err( I18n.ERR_01005_TRUNCATED_PDU ) );
                 }
             }
         }
@@ -662,7 +668,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
 
         if ( container.getDecodedBytes() > container.getMaxPDUSize() )
         {
-            String message = I18n.err( I18n.ERR_00042_PDU_SIZE_TOO_LONG, container.getDecodedBytes(), container
+            String message = I18n.err( I18n.ERR_01007_PDU_SIZE_TOO_LONG, container.getDecodedBytes(), container
                 .getMaxPDUSize() );
             LOG.error( message );
             throw new DecoderException( message );
@@ -670,26 +676,26 @@ public class Asn1Decoder implements TLVBerDecoderMBean
 
         if ( IS_DEBUG )
         {
-            LOG.debug( ">>>==========================================" );
-            LOG.debug( "--> Decoding a PDU" );
-            LOG.debug( ">>>------------------------------------------" );
+            LOG.debug( I18n.msg( I18n.MSG_01007_LINE_SEPARATOR1 ) );
+            LOG.debug( I18n.msg( I18n.MSG_01011_DECODING_PDU ) );
+            LOG.debug( I18n.msg( I18n.MSG_01008_LINE_SEPARATOR2 ) );
         }
 
         while ( hasRemaining )
         {
             if ( IS_DEBUG )
             {
-                LOG.debug( "--- State = {} ---", container.getState() );
+                LOG.debug( I18n.msg( I18n.MSG_01012_STATE, container.getState() ) );
 
                 if ( stream.hasRemaining() )
                 {
                     byte octet = stream.get( stream.position() );
 
-                    LOG.debug( "  current byte : {}", Asn1StringUtils.dumpByte( octet ) );
+                    LOG.debug( I18n.msg( I18n.MSG_01013_CURRENT_BYTE, Asn1StringUtils.dumpByte( octet ) ) );
                 }
                 else
                 {
-                    LOG.debug( "  no more byte to decode in the stream" );
+                    LOG.debug( I18n.msg( I18n.MSG_01014_NO_MORE_BYTE ) );
                 }
             }
 
@@ -743,7 +749,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
                     // more bytes in the buffer, but the PDU has been decoded.
                     if ( LOG.isDebugEnabled() )
                     {
-                        LOG.debug( I18n.err( I18n.ERR_00043_REMAINING_BYTES_FOR_DECODED_PDU ) );
+                        LOG.debug( I18n.err( I18n.ERR_01008_REMAINING_BYTES_FOR_DECODED_PDU ) );
                     }
 
                     hasRemaining = false;
@@ -757,32 +763,32 @@ public class Asn1Decoder implements TLVBerDecoderMBean
 
         if ( IS_DEBUG )
         {
-            LOG.debug( "<<<------------------------------------------" );
+            LOG.debug( I18n.msg( I18n.MSG_01009_LINE_SEPARATOR3 ) );
 
             if ( container.getState() == TLVStateEnum.PDU_DECODED )
             {
                 if ( container.getCurrentTLV() != null )
                 {
-                    LOG.debug( "<-- Stop decoding : {}", container.getCurrentTLV().toString() );
+                    LOG.debug( I18n.msg( I18n.MSG_01015_STOP_DECODING, container.getCurrentTLV().toString() ) );
                 }
                 else
                 {
-                    LOG.debug( "<-- Stop decoding : null current TLV" );
+                    LOG.debug( I18n.msg( I18n.MSG_01016_STOP_DECODING_NULL_TLV ) );
                 }
             }
             else
             {
                 if ( container.getCurrentTLV() != null )
                 {
-                    LOG.debug( "<-- End decoding : {}", container.getCurrentTLV().toString() );
+                    LOG.debug( I18n.msg( I18n.MSG_01017_END_DECODING, container.getCurrentTLV().toString() ) );
                 }
                 else
                 {
-                    LOG.debug( "<-- End decoding : null current TLV" );
+                    LOG.debug( I18n.msg( I18n.MSG_01018_END_DECODING_NULL_TLV ) );
                 }
             }
 
-            LOG.debug( "<<<==========================================" );
+            LOG.debug( I18n.msg( I18n.MSG_01010_LINE_SEPARATOR4 ) );
         }
     }
 
@@ -846,7 +852,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
     {
         if ( ( this.indefiniteLengthAllowed ) && ( maxLengthLength > 126 ) )
         {
-            throw new DecoderException( I18n.err( I18n.ERR_00011_LENGTH_TOO_LONG_FOR_DEFINITE_FORM ) );
+            throw new DecoderException( I18n.err( I18n.ERR_01006_LENGTH_TOO_LONG_FOR_DEFINITE_FORM ) );
         }
 
         this.maxLengthLength = maxLengthLength;

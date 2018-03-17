@@ -218,7 +218,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     {
         if ( generalizedTime == null )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04359 ), 0 );
+            throw new ParseException( I18n.err( I18n.ERR_17043_GENERALIZED_TIME_NULL ), 0 );
         }
 
         this.upGeneralizedTime = generalizedTime;
@@ -234,7 +234,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
         if ( upGeneralizedTime.length() < 11 )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04360 ), 10 );
+            throw new ParseException( I18n.err( I18n.ERR_17044_BAD_GENERALIZED_TIME ), 10 );
         }
 
         // pos 10: 
@@ -251,7 +251,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
             if ( upGeneralizedTime.length() < 13 )
             {
-                throw new ParseException( I18n.err( I18n.ERR_04361 ), 12 );
+                throw new ParseException( I18n.err( I18n.ERR_17045_BAD_GENERALIZED_TIME ), 12 );
             }
 
             // pos 12: 
@@ -268,7 +268,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
                 if ( upGeneralizedTime.length() < 15 )
                 {
-                    throw new ParseException( I18n.err( I18n.ERR_04362 ), 14 );
+                    throw new ParseException( I18n.err( I18n.ERR_17046_BAD_GENERALIZED_TIME ), 14 );
                 }
 
                 // pos 14: 
@@ -295,7 +295,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
                 }
                 else
                 {
-                    throw new ParseException( I18n.err( I18n.ERR_04363 ), 14 );
+                    throw new ParseException( I18n.err( I18n.ERR_17047_TIME_TOO_SHORT ), 14 );
                 }
             }
             else if ( ( c == '.' ) || ( c == ',' ) )
@@ -315,7 +315,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
             }
             else
             {
-                throw new ParseException( I18n.err( I18n.ERR_04364 ), 12 );
+                throw new ParseException( I18n.err( I18n.ERR_17048_TIME_TOO_SHORT ), 12 );
             }
         }
         else if ( ( c == '.' ) || ( c == ',' ) )
@@ -335,7 +335,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
         else
         {
-            throw new ParseException( I18n.err( I18n.ERR_04365 ), 10 );
+            throw new ParseException( I18n.err( I18n.ERR_17049_INVALID_GENERALIZED_TIME ), 10 );
         }
 
         // this calculates and verifies the calendar
@@ -346,7 +346,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
         catch ( IllegalArgumentException iae )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04366 ), 0 );
+            throw new ParseException( I18n.err( I18n.ERR_17050_INVALID_DATE_TIME ), 0 );
         }
 
         calendar.setLenient( true );
@@ -357,7 +357,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     {
         if ( newCalendar == null )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04358 ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_17051_CALENDAR_NULL ) );
         }
 
         this.calendar = newCalendar;
@@ -373,7 +373,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     {
         if ( upGeneralizedTime.length() < pos + 1 )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04367 ), pos );
+            throw new ParseException( I18n.err( I18n.ERR_17052_TIME_TOO_SHOR_NO_TZ ), pos );
         }
 
         char c = upGeneralizedTime.charAt( pos );
@@ -385,7 +385,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
             if ( upGeneralizedTime.length() > pos + 1 )
             {
-                throw new ParseException( I18n.err( I18n.ERR_04368 ), pos + 1 );
+                throw new ParseException( I18n.err( I18n.ERR_17053_MISSING_TZ ), pos + 1 );
             }
         }
         else if ( ( c == '+' ) || ( c == '-' ) )
@@ -410,12 +410,12 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
             }
             else
             {
-                throw new ParseException( I18n.err( I18n.ERR_04369 ), pos );
+                throw new ParseException( I18n.err( I18n.ERR_17054_TZ_MUST_BE_2_OR_4_DIGITS ), pos );
             }
 
             if ( upGeneralizedTime.length() > pos + 1 + digits.length() )
             {
-                throw new ParseException( I18n.err( I18n.ERR_04370 ), pos + 1 + digits.length() );
+                throw new ParseException( I18n.err( I18n.ERR_17053_MISSING_TZ ), pos + 1 + digits.length() );
             }
         }
     }
@@ -482,7 +482,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         // minimum one digit
         if ( fraction.length() == 0 )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04371 ), startIndex );
+            throw new ParseException( I18n.err( I18n.ERR_17055_MISSING_FRACTION ), startIndex );
         }
 
         return fraction;
@@ -514,7 +514,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         // read minute
         if ( upGeneralizedTime.length() < 14 )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04372 ), 12 );
+            throw new ParseException( I18n.err( I18n.ERR_17056_TIME_TOO_SHORT_NO_SECOND ), 12 );
         }
         try
         {
@@ -523,7 +523,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
         catch ( NumberFormatException e )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04373 ), 12 );
+            throw new ParseException( I18n.err( I18n.ERR_17057_SECOND_NOT_NUM ), 12 );
         }
     }
 
@@ -533,7 +533,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         // read minute
         if ( upGeneralizedTime.length() < 12 )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04374 ), 10 );
+            throw new ParseException( I18n.err( I18n.ERR_17058_MISSING_MINUTE ), 10 );
         }
         try
         {
@@ -542,7 +542,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
         catch ( NumberFormatException e )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04375 ), 10 );
+            throw new ParseException( I18n.err( I18n.ERR_17059_MIN_NOT_NUM ), 10 );
         }
     }
 
@@ -551,7 +551,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     {
         if ( upGeneralizedTime.length() < 10 )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04376 ), 8 );
+            throw new ParseException( I18n.err( I18n.ERR_17060_TIME_TO_SHORT_MISSING_HOUR ), 8 );
         }
         try
         {
@@ -560,7 +560,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
         catch ( NumberFormatException e )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04377 ), 8 );
+            throw new ParseException( I18n.err( I18n.ERR_17061_HOUR_NOT_NUM ), 8 );
         }
     }
 
@@ -569,7 +569,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     {
         if ( upGeneralizedTime.length() < 8 )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04378 ), 6 );
+            throw new ParseException( I18n.err( I18n.ERR_17062_TIME_TO_SHORT_MISSING_DAY ), 6 );
         }
         try
         {
@@ -578,7 +578,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
         catch ( NumberFormatException e )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04379 ), 6 );
+            throw new ParseException( I18n.err( I18n.ERR_17063_DAY_NOT_NUM ), 6 );
         }
     }
 
@@ -587,7 +587,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     {
         if ( upGeneralizedTime.length() < 6 )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04380 ), 4 );
+            throw new ParseException( I18n.err( I18n.ERR_17064_TIME_TO_SHORT_MISSING_MONTH ), 4 );
         }
         try
         {
@@ -596,7 +596,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
         catch ( NumberFormatException e )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04381 ), 4 );
+            throw new ParseException( I18n.err( I18n.ERR_17065_MONTH_NOT_NUM ), 4 );
         }
     }
 
@@ -605,7 +605,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     {
         if ( upGeneralizedTime.length() < 4 )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04382 ), 0 );
+            throw new ParseException( I18n.err( I18n.ERR_17066_TIME_TO_SHORT_MISSING_YEAR ), 0 );
         }
         try
         {
@@ -614,7 +614,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
         catch ( NumberFormatException e )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04383 ), 0 );
+            throw new ParseException( I18n.err( I18n.ERR_17067_YEAR_NOT_NUM ), 0 );
         }
     }
 
@@ -875,7 +875,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
                 break;
 
             default:
-                throw new IllegalArgumentException( "Unexpected format " + format );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_17069_UNEXPECTED_FORMAT, format ) );
         }
 
         if ( ( timeZoneFormat == TimeZoneFormat.Z ) && clonedCalendar.getTimeZone().hasSameRules( GMT ) )

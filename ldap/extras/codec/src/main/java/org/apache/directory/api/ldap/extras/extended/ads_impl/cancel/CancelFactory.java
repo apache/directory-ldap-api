@@ -39,8 +39,8 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
  */
 public class CancelFactory implements ExtendedOperationFactory
 {
+    /** The Codec service */
     private LdapApiService codec;
-
 
     /**
      * Creates a new instance of CancelFactory.

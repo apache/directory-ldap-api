@@ -38,7 +38,7 @@ public class ApiI18nOsgiTest extends ApiOsgiTestBase
     @Override
     protected void useBundleClasses() throws Exception
     {
-        I18n errorCode = I18n.ERR_00001_BAD_TRANSITION_FROM_STATE;
+        I18n errorCode = I18n.ERR_01200_BAD_TRANSITION_FROM_STATE;
         assertNotNull( errorCode );
         assertNotNull( errorCode.getErrorCode() );
         assertNotNull( I18n.err( errorCode ) );

@@ -81,7 +81,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
     {
         if ( IS_DEBUG )
         {
-            LOG_CURSOR.debug( "Creating SingletonCursor {}", this );
+            LOG_CURSOR.debug( I18n.msg( I18n.MSG_13106_CREATING_SINGLE_CURSOR, this ) );
         }
 
         this.singleton = singleton;
@@ -109,7 +109,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
 
         if ( comparator == null )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_02010_NO_COMPARATOR_CANT_MOVE_BEFORE ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13110_NO_COMPARATOR_CANT_MOVE_BEFORE ) );
         }
 
         int comparison = comparator.compare( singleton, element );
@@ -135,7 +135,7 @@ public void after( E element ) throws LdapException, CursorException
 
         if ( comparator == null )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_02011_NO_COMPARATOR_CANT_MOVE_AFTER ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13111_NO_COMPARATOR_CANT_MOVE_AFTER ) );
         }
 
         int comparison = comparator.compare( singleton, element );
@@ -324,11 +324,11 @@ public void after( E element ) throws LdapException, CursorException
 
         if ( beforeFirst )
         {
-            throw new InvalidCursorPositionException( I18n.err( I18n.ERR_02012_CANNOT_ACCESS_IF_BEFORE_FIRST ) );
+            throw new InvalidCursorPositionException( I18n.err( I18n.ERR_13112_CANNOT_ACCESS_IF_BEFORE_FIRST ) );
         }
         else
         {
-            throw new InvalidCursorPositionException( I18n.err( I18n.ERR_02013_CANNOT_ACCESS_IF_AFTER_LAST ) );
+            throw new InvalidCursorPositionException( I18n.err( I18n.ERR_13113_CANNOT_ACCESS_IF_AFTER_LAST ) );
         }
     }
 
@@ -341,7 +341,7 @@ public void after( E element ) throws LdapException, CursorException
     {
         if ( IS_DEBUG )
         {
-            LOG_CURSOR.debug( "Closing SingletonCursor {}", this );
+            LOG_CURSOR.debug( I18n.msg( I18n.MSG_13102_CLOSING_SINGLETON_CURSOR, this ) );
         }
 
         super.close();
@@ -356,7 +356,7 @@ public void after( E element ) throws LdapException, CursorException
     {
         if ( IS_DEBUG )
         {
-            LOG_CURSOR.debug( "Closing SingletonCursor {}", this );
+            LOG_CURSOR.debug( I18n.msg( I18n.MSG_13102_CLOSING_SINGLETON_CURSOR, this ) );
         }
 
         super.close( cause );

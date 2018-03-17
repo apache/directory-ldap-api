@@ -30,7 +30,6 @@ import org.apache.directory.api.ldap.extras.controls.permissiveModify.Permissive
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyImpl;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponseImpl;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValueImpl;
-import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncInfoValueImpl;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncRequest.SyncRequestValueImpl;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateValueImpl;
 import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewRequestImpl;
@@ -44,6 +43,7 @@ import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTrans
 import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionResponseImpl;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIRequestImpl;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIResponseImpl;
+import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValueImpl;
 import org.apache.directory.api.ldap.model.name.Dn;
 
 
@@ -69,7 +69,6 @@ public class ApiLdapExtrasCodecApiOsgiTest extends ApiOsgiTestBase
         new PasswordPolicyImpl().getOid();
         new PasswordPolicyResponseImpl().getGraceAuthNRemaining();
         new SyncDoneValueImpl().getOid();
-        new SyncInfoValueImpl().getOid();
         new SyncRequestValueImpl().getOid();
         new SyncStateValueImpl( true ).getCookie();
         new VirtualListViewRequestImpl().getOid();

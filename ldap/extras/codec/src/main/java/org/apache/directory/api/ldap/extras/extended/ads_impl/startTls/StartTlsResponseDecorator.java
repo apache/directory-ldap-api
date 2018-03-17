@@ -20,7 +20,7 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.startTls;
 
 
-import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
+import org.apache.directory.api.ldap.codec.decorators.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsResponse;
 import org.apache.directory.api.util.Strings;

@@ -88,31 +88,31 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
      */
     public DefaultSchemaLdifExtractor( File outputDirectory )
     {
-        LOG.debug( "BASE_PATH set to {}, outputDirectory set to {}", BASE_PATH, outputDirectory );
+        LOG.debug( I18n.msg( I18n.MSG_16000_BASE_PATH, BASE_PATH, outputDirectory ) );
         this.outputDirectory = outputDirectory;
         File schemaDirectory = new File( outputDirectory, SCHEMA_SUBDIR );
 
         if ( !outputDirectory.exists() )
         {
-            LOG.debug( "Creating output directory: {}", outputDirectory );
+            LOG.debug( I18n.msg( I18n.MSG_16001_CREATING_DIR, outputDirectory ) );
             if ( !outputDirectory.mkdir() )
             {
-                LOG.error( "Failed to create outputDirectory: {}", outputDirectory );
+                LOG.error( I18n.err( I18n.ERR_16042_OUTPUT_DIR_CREATION_FAIL, outputDirectory ) );
             }
         }
         else
         {
-            LOG.debug( "Output directory exists: no need to create." );
+            LOG.debug( I18n.msg( I18n.MSG_16002_DIR_EXISTS ) );
         }
 
         if ( !schemaDirectory.exists() )
         {
-            LOG.info( "Schema directory '{}' does NOT exist: extracted state set to false.", schemaDirectory );
+            LOG.info( I18n.msg( I18n.MSG_16004_SCHEMA_DIR_ABSENT, schemaDirectory ) );
             extracted = false;
         }
         else
         {
-            LOG.info( "Schema directory '{}' does exist: extracted state set to true.", schemaDirectory );
+            LOG.info( I18n.msg( I18n.MSG_16005_SCHEMA_DIR_PRESENT, schemaDirectory ) );
             extracted = true;
         }
     }
@@ -141,7 +141,7 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
     {
         if ( !outputDirectory.exists() && !outputDirectory.mkdirs() )
         {
-            throw new IOException( I18n.err( I18n.ERR_09001_DIRECTORY_CREATION_FAILED, outputDirectory
+            throw new IOException( I18n.err( I18n.ERR_16006_DIRECTORY_CREATION_FAILED, outputDirectory
                 .getAbsolutePath() ) );
         }
 
@@ -151,13 +151,13 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
         {
             if ( !schemaDirectory.mkdirs() )
             {
-                throw new IOException( I18n.err( I18n.ERR_09001_DIRECTORY_CREATION_FAILED, schemaDirectory
+                throw new IOException( I18n.err( I18n.ERR_16006_DIRECTORY_CREATION_FAILED, schemaDirectory
                     .getAbsolutePath() ) );
             }
         }
         else if ( !overwrite )
         {
-            throw new IOException( I18n.err( I18n.ERR_08001, schemaDirectory.getAbsolutePath() ) );
+            throw new IOException( I18n.err( I18n.ERR_16000_CANNOT_OVEWRITE_SCHEMA, schemaDirectory.getAbsolutePath() ) );
         }
 
         Map<String, Boolean> list = ResourceMap.getResources( EXTRACT_PATTERN );
@@ -201,17 +201,17 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
      */
     private void copyFile( File source, File destination ) throws IOException
     {
-        LOG.debug( "copyFile(): source = {}, destination = {}", source, destination );
+        LOG.debug( I18n.msg( I18n.MSG_16003_COPYFILE, source, destination ) );
 
         if ( !destination.getParentFile().exists() && !destination.getParentFile().mkdirs() )
         {
-            throw new IOException( I18n.err( I18n.ERR_09001_DIRECTORY_CREATION_FAILED, destination.getParentFile()
+            throw new IOException( I18n.err( I18n.ERR_16006_DIRECTORY_CREATION_FAILED, destination.getParentFile()
                 .getAbsolutePath() ) );
         }
 
         if ( !source.getParentFile().exists() )
         {
-            throw new FileNotFoundException( I18n.err( I18n.ERR_08002, source.getAbsolutePath() ) );
+            throw new FileNotFoundException( I18n.err( I18n.ERR_16001_CANNOT_COPY_NON_EXISTENT, source.getAbsolutePath() ) );
         }
 
         try ( Writer out = new OutputStreamWriter( Files.newOutputStream( Paths.get( destination.getPath() ) ), 
@@ -239,7 +239,7 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
                 else
                 {
                     // throw an exception : we should not have more than one entry per schema ldif file
-                    String msg = I18n.err( I18n.ERR_08003, source );
+                    String msg = I18n.err( I18n.ERR_16002_MORE_THAN_ONE_ENTRY, source );
                     LOG.error( msg );
                     throw new InvalidObjectException( msg );
                 }
@@ -262,7 +262,7 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
         }
         catch ( LdapException le )
         {
-            String msg = I18n.err( I18n.ERR_08004, source, le.getLocalizedMessage() );
+            String msg = I18n.err( I18n.ERR_16003_ERROR_PARSING_LDIF, source, le.getLocalizedMessage() );
             LOG.error( msg );
             throw new InvalidObjectException( msg );
         }
@@ -317,13 +317,13 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
 
             if ( parent.equals( parent.getParentFile() ) || parent.getParentFile() == null )
             {
-                throw new IllegalStateException( I18n.err( I18n.ERR_08005 ) );
+                throw new IllegalStateException( I18n.err( I18n.ERR_16004_ROOT_WITHOUT_SCHEMA ) );
             }
 
             parent = parent.getParentFile();
         }
 
-        throw new IllegalStateException( I18n.err( I18n.ERR_08006 ) );
+        throw new IllegalStateException( I18n.err( I18n.ERR_16005_PARENT_NULL ) );
     }
 
 
@@ -395,7 +395,7 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
 
             if ( !destination.getParentFile().exists() && !destination.getParentFile().mkdirs() )
             {
-                throw new IOException( I18n.err( I18n.ERR_09001_DIRECTORY_CREATION_FAILED, destination
+                throw new IOException( I18n.err( I18n.ERR_16006_DIRECTORY_CREATION_FAILED, destination
                     .getParentFile().getAbsolutePath() ) );
             }
 

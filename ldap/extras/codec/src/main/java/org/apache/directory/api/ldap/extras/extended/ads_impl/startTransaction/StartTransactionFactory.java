@@ -70,7 +70,8 @@ public class StartTransactionFactory implements ExtendedOperationFactory
     @Override
     public StartTransactionResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
-        StartTransactionResponseDecorator response = new StartTransactionResponseDecorator( codec, new StartTransactionResponseImpl() );
+        StartTransactionResponseDecorator response = 
+            new StartTransactionResponseDecorator( codec, new StartTransactionResponseImpl() );
         response.setResponseValue( encodedValue );
 
         return response;

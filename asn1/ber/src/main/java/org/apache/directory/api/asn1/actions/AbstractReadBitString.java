@@ -78,10 +78,12 @@ public abstract class AbstractReadBitString<C extends Asn1Container> extends Gra
         // The Length should not be null, and should be 5
         if ( tlv.getLength() != 5 )
         {
-            LOG.error( I18n.err( I18n.ERR_04066 ) );
+            String msg = I18n.err( I18n.ERR_01100_INCORRECT_LENGTH, 5, tlv.getLength() );
+            
+            LOG.error( msg );
 
             // This will generate a PROTOCOL_ERROR
-            throw new DecoderException( I18n.err( I18n.ERR_04067 ) );
+            throw new DecoderException( msg );
         }
 
         byte[] data = tlv.getValue().getData();
@@ -89,7 +91,7 @@ public abstract class AbstractReadBitString<C extends Asn1Container> extends Gra
 
         if ( IS_DEBUG )
         {
-            LOG.debug( "BITSTRING value : {}", Strings.dumpBytes( data ) );
+            LOG.debug( I18n.msg( I18n.MSG_01101_BITSTRING_VALUE, Strings.dumpBytes( data ) ) );
         }
     }
 }

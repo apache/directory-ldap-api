@@ -17,12 +17,12 @@
  *  under the License.
  *
  */
-package org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue;
+package org.apache.directory.api.ldap.extras.intermediate.syncrepl;
 
 
 import java.util.List;
 
-import org.apache.directory.api.ldap.model.message.Control;
+import org.apache.directory.api.ldap.model.message.IntermediateResponse;
 
 
 /**
@@ -55,24 +55,24 @@ import org.apache.directory.api.ldap.model.message.Control;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface SyncInfoValue extends Control
+public interface SyncInfoValue extends IntermediateResponse
 {
-    /** This control OID */
+    /** This intermediate response OID */
     String OID = "1.3.6.1.4.1.4203.1.9.1.4";
 
 
     /**
-     * Get the control type.
+     * Get the value type.
      *
      * @return the type : one of newCookie, refreshDelete, refreshPresent or syncIdSet
      */
-    SynchronizationInfoEnum getType();
+    SynchronizationInfoEnum getSyncInfoValueType();
 
 
     /**
      * @param type the synchronization type to set
      */
-    void setType( SynchronizationInfoEnum type );
+    void setSyncInfoValueType( SynchronizationInfoEnum type );
 
 
     /**

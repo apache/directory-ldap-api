@@ -42,7 +42,6 @@ public class CancelRequestImpl extends AbstractExtendedRequest implements Cancel
     /** The cancelId of the request to be canceled */
     private int cancelId;
 
-
     /**
      * Creates a new instance of CancelRequest.
      *

@@ -158,7 +158,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     {
         if ( attributeType == null )
         {
-            String message = I18n.err( I18n.ERR_04460_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED );
+            String message = I18n.err( I18n.ERR_13203_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED );
             LOG.error( message );
             throw new IllegalArgumentException( message );
         }
@@ -234,7 +234,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     {
         if ( attributeType == null )
         {
-            String message = I18n.err( I18n.ERR_04460_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED );
+            String message = I18n.err( I18n.ERR_13203_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED );
             LOG.error( message );
             throw new IllegalArgumentException( message );
         }
@@ -269,7 +269,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     {
         if ( attributeType == null )
         {
-            String message = I18n.err( I18n.ERR_04460_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED );
+            String message = I18n.err( I18n.ERR_13203_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED );
             LOG.error( message );
             throw new IllegalArgumentException( message );
         }
@@ -368,7 +368,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     {
         if ( attributeType == null )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04460_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13203_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED ) );
         }
 
         apply( attributeType );
@@ -843,7 +843,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                         }
                         else
                         {
-                            String message = I18n.err( I18n.ERR_04452 );
+                            String message = I18n.err( I18n.ERR_13211_BYTE_VALUE_EXPECTED );
                             LOG.error( message );
                         }
                     }
@@ -870,7 +870,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                         }
                         else
                         {
-                            String message = I18n.err( I18n.ERR_04452 );
+                            String message = I18n.err( I18n.ERR_13211_BYTE_VALUE_EXPECTED );
                             LOG.error( message );
                         }
                     }
@@ -1050,7 +1050,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                     if ( value == null )
                     {
                         // The value can't be normalized : we don't add it.
-                        LOG.error( I18n.err( I18n.ERR_04449, val ) );
+                        LOG.error( I18n.err( I18n.ERR_13200_VALUE_CANT_BE_NORMALIZED, val ) );
                         continue;
                     }
 
@@ -1061,7 +1061,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                     }
                     else
                     {
-                        LOG.warn( I18n.err( I18n.ERR_04486_VALUE_ALREADY_EXISTS, val, upId ) );
+                        LOG.warn( I18n.err( I18n.ERR_13207_VALUE_ALREADY_EXISTS, val, upId ) );
                     }
                 }
             }
@@ -1091,7 +1091,7 @@ public class DefaultAttribute implements Attribute, Cloneable
         {
             if ( attributeType.isSingleValued() && ( values.size() + valArray.length > 1 ) )
             {
-                LOG.error( I18n.err( I18n.ERR_04487_ATTRIBUTE_IS_SINGLE_VALUED, attributeType.getName() ) );
+                LOG.error( I18n.err( I18n.ERR_13208_ATTRIBUTE_IS_SINGLE_VALUED, attributeType.getName() ) );
                 return 0;
             }
 
@@ -1104,7 +1104,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                     if ( value == null )
                     {
                         // The value can't be normalized : we don't add it.
-                        LOG.error( I18n.err( I18n.ERR_04449, val ) );
+                        LOG.error( I18n.err( I18n.ERR_13200_VALUE_CANT_BE_NORMALIZED, val ) );
                         continue;
                     }
 
@@ -1115,7 +1115,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                     }
                     else
                     {
-                        LOG.warn( I18n.err( I18n.ERR_04486_VALUE_ALREADY_EXISTS, val, upId ) );
+                        LOG.warn( I18n.err( I18n.ERR_13207_VALUE_ALREADY_EXISTS, val, upId ) );
                     }
                 }
             }
@@ -1187,7 +1187,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                 }
                 else
                 {
-                    LOG.warn( I18n.err( I18n.ERR_04486_VALUE_ALREADY_EXISTS, Strings.dumpBytes( val ), upId ) );
+                    LOG.warn( I18n.err( I18n.ERR_13207_VALUE_ALREADY_EXISTS, Strings.dumpBytes( val ), upId ) );
                 }
             }
         }

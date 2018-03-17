@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
+import org.apache.directory.api.i18n.I18n;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,11 +73,11 @@ public final class OsgiUtils
 
             if ( exports == null )
             {
-                LOG.debug( "No export found for candidate: {}", candidate );
+                LOG.debug( I18n.msg( I18n.MSG_17000_NO_EXPORT_FOUND, candidate ) );
                 continue;
             }
 
-            LOG.debug( "Processing exports for candidate: {}\n\n{}\n", candidate, exports );
+            LOG.debug( I18n.msg( I18n.MSG_17001_PROCESSING_EXPORTS, candidate, exports ) );
             splitIntoPackages( exports, pkgs );
         }
 
@@ -117,7 +118,7 @@ public final class OsgiUtils
                 inProps = true;
 
                 pkgs.add( pkg.toString() );
-                LOG.debug( "Added package: {}", pkg.toString() );
+                LOG.debug( I18n.msg( I18n.MSG_17002_ADDED_PACKAGE, pkg.toString() ) );
                 pkg.setLength( 0 );
 
                 index += 8;
@@ -136,8 +137,8 @@ public final class OsgiUtils
             }
             else
             {
-                LOG.error( "Unexpected parser condition throwing IllegalStateException." );
-                throw new IllegalStateException( "Should never get here!" );
+                LOG.error( I18n.err( I18n.ERR_17000_UNEXPECTED_PARSER_CONDITION ) );
+                throw new IllegalStateException( I18n.err( I18n.ERR_17068_SHOULD_NOT_GET_HERE ) );
             }
         }
 
@@ -166,16 +167,16 @@ public final class OsgiUtils
                 if ( filter != null && filter.accept( candidate ) )
                 {
                     candidates.add( candidate );
-                    LOG.info( "Accepted candidate with filter: {}", candidate.toString() );
+                    LOG.info( I18n.msg( I18n.MSG_17003_ACCEPTED_CANDIDATE_WITH_FILTER, candidate.toString() ) );
                 }
                 else if ( filter == null && candidate.getName().endsWith( ".jar" ) )
                 {
                     candidates.add( candidate );
-                    LOG.info( "Accepted candidate without filter: {}", candidate.toString() );
+                    LOG.info( I18n.msg( I18n.MSG_17004_ACCEPTED_CANDIDATE_NO_FILTER, candidate.toString() ) );
                 }
                 else
                 {
-                    LOG.info( "Rejecting candidate: {}", candidate.toString() );
+                    LOG.info( I18n.msg( I18n.MSG_17005_REJECTING_CANDIDATE, candidate.toString() ) );
                 }
             }
         }
@@ -215,8 +216,9 @@ public final class OsgiUtils
         }
         catch ( IOException e )
         {
-            LOG.error( "Failed to open jar file or manifest.", e );
-            throw new RuntimeException( "Failed to open jar file or manifest.", e );
+            String msg = I18n.err( I18n.ERR_17001_FAILED_OPEN_JAR_MANIFEST );
+            LOG.error( msg, e );
+            throw new RuntimeException( msg, e );
         }
     }
 }

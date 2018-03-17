@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.ldif.LdifEntry;
@@ -79,7 +80,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
         {
             URL resource = getClass().getClassLoader().getResource( "schema-all.ldif" );
 
-            LOG.debug( "URL of the all schema ldif file {}", resource );
+            LOG.debug( I18n.msg( I18n.MSG_16012_URL_SCHEMA_ALL_LDIF, resource ) );
 
             for ( String s : schemaObjectTypeRdns )
             {
@@ -171,7 +172,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
                 {
                     if ( currentSchema == null )
                     {
-                        throw new LdapException( "the first entry in the LDIF file is not a schema definition" );
+                        throw new LdapException( I18n.err( I18n.ERR_16076_NOT_A_SCHEMA_DEFINITION ) );
                     }
                     
                     loadSchemaObject( currentSchema.getSchemaName(), ldifEntry );

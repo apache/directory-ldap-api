@@ -17,14 +17,14 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.api.ldap.extras.controls.syncrepl_impl;
+package org.apache.directory.api.ldap.extras.intermediate.syncrepl;
 
 
 import org.apache.directory.api.asn1.ber.grammar.States;
 
 
 /**
- * This class store the SyncInfoValueControl's grammar constants. It is also used for
+ * This class store the SyncInfoValue's grammar constants. It is also used for
  * debugging purposes.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -38,7 +38,7 @@ public enum SyncInfoValueStatesEnum implements States
     END_STATE,
 
     // =========================================================================
-    // SyncRequestValue control grammar states
+    // SyncRequestValue grammar states
     // =========================================================================
     /** Initial state */
     START_STATE,

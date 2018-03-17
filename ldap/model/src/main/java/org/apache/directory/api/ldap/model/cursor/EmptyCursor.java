@@ -49,7 +49,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     {
         if ( IS_DEBUG )
         {
-            LOG_CURSOR.debug( "Creating EmptyCursor : {}", this );
+            LOG_CURSOR.debug( I18n.msg( I18n.MSG_13103_CREATING_EMPTY_CURSOR, this ) );
         }
     }
 
@@ -155,7 +155,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     public E get() throws CursorException
     {
         checkNotClosed();
-        throw new InvalidCursorPositionException( I18n.err( I18n.ERR_02004_EMPTY_CURSOR ) );
+        throw new InvalidCursorPositionException( I18n.err( I18n.ERR_13104_EMPTY_CURSOR ) );
     }
 
 
@@ -167,7 +167,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     {
         if ( IS_DEBUG )
         {
-            LOG_CURSOR.debug( "Closing EmptyCursor {}", this );
+            LOG_CURSOR.debug( I18n.msg( I18n.MSG_13100_CLOSING_EMPTY_CURSOR, this ) );
         }
 
         super.close();
@@ -182,7 +182,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     {
         if ( IS_DEBUG )
         {
-            LOG_CURSOR.debug( "Closing EmptyCursor {}", this );
+            LOG_CURSOR.debug( I18n.msg( I18n.MSG_13100_CLOSING_EMPTY_CURSOR, this ) );
         }
 
         super.close( cause );

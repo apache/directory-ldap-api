@@ -92,7 +92,7 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
 
         if ( !baseDirectory.exists() )
         {
-            String msg = "Provided baseDirectory '" + baseDirectory.getAbsolutePath() + "' does not exist.";
+            String msg = I18n.err( I18n.ERR_16046_BASE_DIR_DOES_NOT_EXIST, baseDirectory.getAbsolutePath() );
             LOG.error( msg );
             throw new IllegalArgumentException( msg );
         }
@@ -101,14 +101,14 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
 
         if ( !schemaLdif.exists() )
         {
-            String msg = I18n.err( I18n.ERR_10004, schemaLdif.getAbsolutePath() );
+            String msg = I18n.err( I18n.ERR_16010_NO_SHEMA_FILE, schemaLdif.getAbsolutePath() );
             LOG.error( msg );
             throw new FileNotFoundException( msg );
         }
 
         if ( IS_DEBUG )
         {
-            LOG.debug( "Using '{}' as the base schema load directory.", baseDirectory );
+            LOG.debug( I18n.msg( I18n.MSG_16010_USING_BASE_SCHEMA_DIR, baseDirectory ) );
         }
 
         initializeSchemas();
@@ -125,7 +125,7 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
     {
         if ( IS_DEBUG )
         {
-            LOG.debug( "Initializing schema" );
+            LOG.debug( I18n.msg( I18n.MSG_16006_INITIALIZING_SCHEMA ) );
         }
 
         File schemaDirectory = new File( baseDirectory, SchemaConstants.OU_SCHEMA );
@@ -153,12 +153,12 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
 
                     if ( IS_DEBUG )
                     {
-                        LOG.debug( "Schema Initialized ... \n{}", schema );
+                        LOG.debug( I18n.msg( I18n.MSG_16007_SCHEMA_INITIALIZED, schema ) );
                     }
                 }
                 catch ( LdapException e )
                 {
-                    LOG.error( I18n.err( I18n.ERR_10003, ldifFile ), e );
+                    LOG.error( I18n.err( I18n.ERR_16009_LDIF_LOAD_FAIL, ldifFile ), e );
                     throw e;
                 }
             }

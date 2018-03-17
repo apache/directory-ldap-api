@@ -2196,11 +2196,11 @@ public final class Strings
             && isHex( uuid.charAt( 33 ) ) && isHex( uuid.charAt( 34 ) ) && isHex( uuid.charAt( 35 ) ) )
         {
             // There is not that much more we can check.
-            LOG.debug( "Syntax valid for '{}'", uuid );
+            LOG.debug( I18n.msg( I18n.MSG_17007_SYNTAX_VALID, uuid ) );
             return true;
         }
 
-        LOG.debug( "Syntax invalid for '{}'", uuid );
+        LOG.debug( I18n.msg( I18n.MSG_17008_SYNTAX_INVALID, uuid ) );
         return false;
     }
 
@@ -2310,12 +2310,12 @@ public final class Strings
     {
         if ( data == null )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04411 ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_17028_PARAMETER_CANT_BE_NULL ) );
         }
 
         if ( ( charset == null ) || ( charset.length() == 0 ) )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04412 ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_17029_CHARSET_CANT_BE_NULL ) );
         }
 
         try
@@ -2375,12 +2375,12 @@ public final class Strings
                 
                 if ( res > Integer.MAX_VALUE )
                 {
-                    throw new NumberFormatException( "Integer " + value + " is too big" );
+                    throw new NumberFormatException( I18n.err( I18n.ERR_17002_INTEGER_TOO_BIG, value ) );
                 }
             }
             else
             {
-                throw new NumberFormatException( "Integer " + value + " is not valid" );
+                throw new NumberFormatException( I18n.err( I18n.ERR_17003_INTEGER_INVALID, value ) );
             }
         }
         
@@ -2399,8 +2399,8 @@ public final class Strings
     {
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "comparing OctetString objects '{}' with '{}'",
-                Strings.dumpBytes( b1 ), Strings.dumpBytes( b2 ) );
+            LOG.debug( I18n.msg( I18n.MSG_17006_COMPARING_OBJECTSTRING,
+                Strings.dumpBytes( b1 ), Strings.dumpBytes( b2 ) ) );
         }
 
         // -------------------------------------------------------------------

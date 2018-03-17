@@ -27,6 +27,7 @@ import java.util.List;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.ber.tlv.TLVStateEnum;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapDecoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.MessageDecorator;
@@ -121,7 +122,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
             {
                 if ( IS_DEBUG )
                 {
-                    CODEC_LOG.debug( "Decoding the PDU : " );
+                    CODEC_LOG.debug( I18n.msg( I18n.MSG_14000_DECODING_PDU ) );
 
                     int size = buffer.limit();
                     int position = buffer.position();
@@ -133,7 +134,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
 
                     if ( array.length == 0 )
                     {
-                        CODEC_LOG.debug( "NULL buffer, what the HELL ???" );
+                        CODEC_LOG.debug( I18n.msg( I18n.MSG_14001_NULL_BUFFER ) );
                     }
                     else
                     {
@@ -147,7 +148,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
                 {
                     if ( IS_DEBUG )
                     {
-                        CODEC_LOG.debug( "Decoded LdapMessage : " + messageContainer.getMessage() );
+                        CODEC_LOG.debug( I18n.msg( I18n.MSG_14002_DECODED_LDAP_MESSAGE, messageContainer.getMessage() ) );
                     }
 
                     Message message = messageContainer.getMessage();

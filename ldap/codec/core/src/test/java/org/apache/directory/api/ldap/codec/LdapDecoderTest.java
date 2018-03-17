@@ -619,7 +619,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         catch ( DecoderException de )
         {
             assertEquals(
-                "ERR_00008_VALUE_LENGTH_ABOVE_EXPECTED_LENGTH The current Value length 48 is above the expected length 47",
+                "ERR_01003_VALUE_LENGTH_ABOVE_EXPECTED_LENGTH The current Value length 48 is above the expected length 47",
                 de.getMessage() );
             return;
         }
@@ -710,7 +710,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         }
         catch ( DecoderException de )
         {
-            assertEquals( "ERR_00001_BAD_TRANSITION_FROM_STATE Bad transition from state MESSAGE_ID_STATE, tag 0x2E",
+            assertEquals( "ERR_01200_BAD_TRANSITION_FROM_STATE Bad transition from state MESSAGE_ID_STATE, tag 0x2E",
                 de.getMessage() );
             return;
         }
@@ -802,7 +802,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         }
         catch ( DecoderException de )
         {
-            assertEquals( "ERR_00001_BAD_TRANSITION_FROM_STATE Bad transition from state MESSAGE_ID_STATE, tag 0x2D",
+            assertEquals( "ERR_01200_BAD_TRANSITION_FROM_STATE Bad transition from state MESSAGE_ID_STATE, tag 0x2D",
                 de.getMessage() );
             return;
         }

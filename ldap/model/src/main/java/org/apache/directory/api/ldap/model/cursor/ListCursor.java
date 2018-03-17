@@ -84,24 +84,24 @@ public class ListCursor<E> extends AbstractCursor<E>
 
         if ( ( start < 0 ) || ( start > list.size() ) )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_02005_START_INDEX_OUT_OF_RANGE, start ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13105_START_INDEX_OUT_OF_RANGE, start ) );
         }
 
         if ( ( end < 0 ) || ( end > list.size() ) )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_02006_END_INDEX_OUT_OF_RANGE, end ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13106_END_INDEX_OUT_OF_RANGE, end ) );
         }
 
         // check list is not empty list since the empty list is the only situation
         // where we allow for start to equal the end: in other cases it makes no sense
         if ( !list.isEmpty() && ( start >= end ) )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_02007_START_INDEX_ABOVE_END_INDEX, start, end ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13107_START_INDEX_ABOVE_END_INDEX, start, end ) );
         }
 
         if ( IS_DEBUG )
         {
-            LOG_CURSOR.debug( "Creating ListCursor {}", this );
+            LOG_CURSOR.debug( I18n.msg( I18n.MSG_13104_CREATING_LIST_CURSOR, this ) );
         }
 
         this.comparator = comparator;
@@ -275,7 +275,7 @@ public class ListCursor<E> extends AbstractCursor<E>
             }
         }
 
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_02008_LIST_MAY_BE_SORTED ) );
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13108_LIST_MAY_BE_SORTED ) );
     }
 
 
@@ -309,7 +309,7 @@ public class ListCursor<E> extends AbstractCursor<E>
             }
         }
 
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_02008_LIST_MAY_BE_SORTED ) );
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13108_LIST_MAY_BE_SORTED ) );
     }
 
 
@@ -503,7 +503,7 @@ public class ListCursor<E> extends AbstractCursor<E>
 
         if ( ( index < start ) || ( index >= end ) )
         {
-            throw new CursorException( I18n.err( I18n.ERR_02009_CURSOR_NOT_POSITIONED ) );
+            throw new CursorException( I18n.err( I18n.ERR_13109_CURSOR_NOT_POSITIONED ) );
         }
 
         return list.get( index );
@@ -518,7 +518,7 @@ public class ListCursor<E> extends AbstractCursor<E>
     {
         if ( IS_DEBUG )
         {
-            LOG_CURSOR.debug( "Closing ListCursor {}", this );
+            LOG_CURSOR.debug( I18n.msg( I18n.MSG_13101_CLOSING_LIST_CURSOR, this ) );
         }
 
         super.close();
@@ -533,7 +533,7 @@ public class ListCursor<E> extends AbstractCursor<E>
     {
         if ( IS_DEBUG )
         {
-            LOG_CURSOR.debug( "Closing ListCursor {}", this );
+            LOG_CURSOR.debug( I18n.msg( I18n.MSG_13101_CLOSING_LIST_CURSOR, this ) );
         }
 
         super.close( cause );

@@ -22,8 +22,8 @@ package org.apache.directory.api.ldap.codec.actions.request.extended;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
+import org.apache.directory.api.ldap.codec.decorators.ExtendedRequestDecorator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

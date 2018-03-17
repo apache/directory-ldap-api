@@ -46,7 +46,7 @@ import org.apache.directory.api.util.Strings;
  */
 public class EndTransactionRequestImpl extends AbstractExtendedRequest implements EndTransactionRequest
 {
-    /** The transaction ID received from teh StartTransactionResponse */
+    /** The transaction ID received from the StartTransactionResponse */
     private byte[] transactionId;
     
     /** A flag telling of we should commit or rollback the transaction */

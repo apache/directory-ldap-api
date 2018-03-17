@@ -17,29 +17,29 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.api.ldap.extras.controls.syncrepl_impl;
+package org.apache.directory.api.ldap.extras.intermediate.syncrepl;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncInfoValue;
 
 
 /**
- * A container for the SyncInfoValue control
+ * A container for the SyncInfoValue message
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class SyncInfoValueContainer extends AbstractContainer
 {
-    /** SyncInfoValueControl */
-    private SyncInfoValue control;
+    /** SyncInfoValue */
+    private SyncInfoValue syncInfoValue;
 
+    /** The LDAP Service instance */
     private LdapApiService codec;
 
 
     /**
-     * Creates a new SyncInfoValueControlContainer object. We will store one grammar,
+     * Creates a new SyncInfoValueContainer object. We will store one grammar,
      * it's enough ...
      * 
      * @param codec The LDAP Service to use
@@ -48,47 +48,47 @@ public class SyncInfoValueContainer extends AbstractContainer
     {
         super();
         this.codec = codec;
-        this.control = new SyncInfoValueDecorator( codec );
+        this.syncInfoValue = new SyncInfoValueDecorator( codec );
         setGrammar( SyncInfoValueGrammar.getInstance() );
         setTransition( SyncInfoValueStatesEnum.START_STATE );
     }
 
 
     /**
-     * Creates a new SyncInfoValueControlContainer object. We will store one grammar,
+     * Creates a new SyncInfoValueContainer object. We will store one grammar,
      * it's enough ...
      * 
      * @param codec The LDAP Service to use
-     * @param control The control to decorate
+     * @param syncInfoValue The syncInfoValue to decorate
      */
-    public SyncInfoValueContainer( LdapApiService codec, SyncInfoValue control )
+    public SyncInfoValueContainer( LdapApiService codec, SyncInfoValue syncInfoValue )
     {
         super();
         this.codec = codec;
-        this.control = control;
+        this.syncInfoValue = syncInfoValue;
         setGrammar( SyncInfoValueGrammar.getInstance() );
         setTransition( SyncInfoValueStatesEnum.START_STATE );
     }
 
 
     /**
-     * @return Returns the syncInfoValue control.
+     * @return Returns the syncInfoValue instance.
      */
-    public SyncInfoValue getSyncInfoValueControl()
+    public SyncInfoValue getSyncInfoValue()
     {
-        return control;
+        return syncInfoValue;
     }
 
 
     /**
-     * Set a SyncInfoValueControl Object into the container. It will be completed by
+     * Set a SyncInfoValue Object into the container. It will be completed by
      * the ldapDecoder.
      * 
-     * @param control the SyncInfoValueControlCodec to set.
+     * @param syncInfoValue the SyncInfoValueCodec to set.
      */
-    public void setSyncInfoValueControl( SyncInfoValue control )
+    public void setSyncInfoValue( SyncInfoValue syncInfoValue )
     {
-        this.control = control;
+        this.syncInfoValue = syncInfoValue;
     }
 
 
@@ -108,6 +108,6 @@ public class SyncInfoValueContainer extends AbstractContainer
     public void clean()
     {
         super.clean();
-        control = null;
+        syncInfoValue = null;
     }
 }

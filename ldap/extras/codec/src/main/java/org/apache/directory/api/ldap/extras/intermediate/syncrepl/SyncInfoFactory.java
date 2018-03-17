@@ -17,38 +17,31 @@
  *   under the License.
  *
  */
-package org.apache.directory.api.ldap.extras.controls.syncrepl_impl;
+package org.apache.directory.api.ldap.extras.intermediate.syncrepl;
 
-
-import org.apache.directory.api.ldap.codec.api.CodecControl;
-import org.apache.directory.api.ldap.codec.api.ControlFactory;
+import org.apache.directory.api.ldap.codec.api.IntermediateResponseFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncInfoValue;
-
+import org.apache.directory.api.ldap.model.message.IntermediateResponse;
 
 /**
- * A {@link ControlFactory} which creates {@link SyncInfoValue} controls.
- *
+ * A factory to create a SyncInfoValue intermediate response
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
  */
-public class SyncInfoValueFactory implements ControlFactory<SyncInfoValue>
+public class SyncInfoFactory implements IntermediateResponseFactory
 {
-
+    /** The Codec service */
     private LdapApiService codec;
 
-
     /**
-     * Creates a new instance of SyncInfoValueFactory.
-     *
-     * @param codec The codec for this factory.
+     * 
      */
-    public SyncInfoValueFactory( LdapApiService codec )
+    public SyncInfoFactory( LdapApiService codec )
     {
         this.codec = codec;
     }
-
-
+    
+    
     /**
      * {@inheritDoc}
      */
@@ -63,9 +56,12 @@ public class SyncInfoValueFactory implements ControlFactory<SyncInfoValue>
      * {@inheritDoc}
      */
     @Override
-    public CodecControl<SyncInfoValue> newCodecControl()
+    public IntermediateResponse newResponse(  byte[] encodedValue  )
     {
-        return new SyncInfoValueDecorator( codec );
+        SyncInfoValueDecorator response = new SyncInfoValueDecorator( codec, new SyncInfoValueImpl() );
+        response.setResponseValue( encodedValue );
+
+        return response;
     }
 
 
@@ -73,8 +69,13 @@ public class SyncInfoValueFactory implements ControlFactory<SyncInfoValue>
      * {@inheritDoc}
      */
     @Override
-    public CodecControl<SyncInfoValue> newCodecControl( SyncInfoValue control )
+    public SyncInfoValueDecorator decorate( IntermediateResponse decoratedMessage )
     {
-        return new SyncInfoValueDecorator( codec, control );
+        if ( decoratedMessage instanceof SyncInfoValueDecorator )
+        {
+            return ( SyncInfoValueDecorator ) decoratedMessage;
+        }
+
+        return new SyncInfoValueDecorator( codec, ( SyncInfoValue ) null );
     }
 }

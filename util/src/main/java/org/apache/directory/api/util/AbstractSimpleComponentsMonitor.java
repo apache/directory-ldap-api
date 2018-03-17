@@ -61,7 +61,7 @@ public abstract class AbstractSimpleComponentsMonitor implements ComponentsMonit
     {
         if ( !components.remove( component ) )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04336, component ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_17026_UNREGISTRED_COMPONENT, component ) );
         }
 
         return this;

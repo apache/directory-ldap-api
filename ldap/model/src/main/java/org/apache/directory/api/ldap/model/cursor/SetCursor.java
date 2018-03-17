@@ -79,7 +79,7 @@ public class SetCursor<E> extends AbstractCursor<E>
 
         if ( IS_DEBUG )
         {
-            LOG_CURSOR.debug( "Creating SetCursor {}", this );
+            LOG_CURSOR.debug( I18n.msg( I18n.MSG_13105_CREATING_SET_CURSOR, this ) );
         }
 
         this.comparator = comparator;
@@ -165,7 +165,7 @@ public class SetCursor<E> extends AbstractCursor<E>
             }
         }
 
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_02008_LIST_MAY_BE_SORTED ) );
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13108_LIST_MAY_BE_SORTED ) );
     }
 
 
@@ -199,7 +199,7 @@ public class SetCursor<E> extends AbstractCursor<E>
             }
         }
 
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_02008_LIST_MAY_BE_SORTED ) );
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13108_LIST_MAY_BE_SORTED ) );
     }
 
 
@@ -393,7 +393,7 @@ public class SetCursor<E> extends AbstractCursor<E>
 
         if ( ( index < 0 ) || ( index >= set.length ) )
         {
-            throw new CursorException( I18n.err( I18n.ERR_02009_CURSOR_NOT_POSITIONED ) );
+            throw new CursorException( I18n.err( I18n.ERR_13109_CURSOR_NOT_POSITIONED ) );
         }
 
         return set[index];
@@ -408,7 +408,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     {
         if ( IS_DEBUG )
         {
-            LOG_CURSOR.debug( "Closing ListCursor {}", this );
+            LOG_CURSOR.debug( I18n.msg( I18n.MSG_13102_CLOSING_SET_CURSOR, this ) );
         }
 
         super.close();
@@ -423,7 +423,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     {
         if ( IS_DEBUG )
         {
-            LOG_CURSOR.debug( "Closing ListCursor {}", this );
+            LOG_CURSOR.debug( I18n.msg( I18n.MSG_13102_CLOSING_SET_CURSOR, this ) );
         }
 
         super.close( cause );

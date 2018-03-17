@@ -61,7 +61,7 @@ public class ExpansibleByteBuffer
     {
         if ( initialSize <= 0 )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04354 ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_17042_INITIAL_SIZE_ABOVE_ZERO ) );
         }
 
         this.initialSize = initialSize;

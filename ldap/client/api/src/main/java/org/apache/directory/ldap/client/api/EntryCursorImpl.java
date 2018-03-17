@@ -241,7 +241,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     @Override
     public void after( Entry element ) throws LdapException, CursorException
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13102_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "after( Response element )" ) ) );
     }
 
@@ -253,7 +253,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     @Override
     public void afterLast() throws LdapException, CursorException
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13102_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "afterLast()" ) ) );
     }
 
@@ -265,7 +265,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     @Override
     public void before( Entry element ) throws LdapException, CursorException
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13102_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "before( Response element )" ) ) );
     }
 
@@ -277,7 +277,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     @Override
     public void beforeFirst() throws LdapException, CursorException
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13102_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "beforeFirst()" ) ) );
     }
 
@@ -289,7 +289,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     @Override
     public boolean first() throws LdapException, CursorException
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13102_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "first()" ) ) );
     }
 
@@ -301,7 +301,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     @Override
     public boolean last() throws LdapException, CursorException
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13102_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "last()" ) ) );
     }
 
@@ -313,7 +313,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     @Override
     public boolean previous() throws LdapException, CursorException
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13102_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "previous()" ) ) );
     }
 

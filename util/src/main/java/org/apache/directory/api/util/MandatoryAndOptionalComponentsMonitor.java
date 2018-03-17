@@ -60,7 +60,8 @@ public class MandatoryAndOptionalComponentsMonitor implements ComponentsMonitor
             {
                 if ( mandatoryComponents[i].equals( optionalComponents[j] ) )
                 {
-                    throw new IllegalArgumentException( I18n.err( I18n.ERR_04415, mandatoryComponents[i] ) );
+                    throw new IllegalArgumentException( I18n.err( I18n.ERR_17035_DUPLICATED_COMMON_ELEMENT, 
+                        mandatoryComponents[i] ) );
                 }
             }
         }
@@ -88,7 +89,7 @@ public class MandatoryAndOptionalComponentsMonitor implements ComponentsMonitor
             }
             catch ( IllegalArgumentException e2 )
             {
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_04416, component ), e1 );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_17036_UNREGISTRED_COMPONENT, component ), e1 );
             }
         }
 

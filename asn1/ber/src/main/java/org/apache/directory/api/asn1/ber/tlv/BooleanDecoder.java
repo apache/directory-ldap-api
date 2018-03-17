@@ -54,17 +54,17 @@ public final class BooleanDecoder
 
         if ( Strings.isEmpty( bytes ) )
         {
-            throw new BooleanDecoderException( I18n.err( I18n.ERR_00034_0_BYTES_LONG_BOOLEAN ) );
+            throw new BooleanDecoderException( I18n.err( I18n.ERR_01302_0_BYTES_LONG_BOOLEAN ) );
         }
 
         if ( bytes.length != 1 )
         {
-            throw new BooleanDecoderException( I18n.err( I18n.ERR_00035_N_BYTES_LONG_BOOLEAN ) );
+            throw new BooleanDecoderException( I18n.err( I18n.ERR_01303_N_BYTES_LONG_BOOLEAN ) );
         }
 
         if ( ( bytes[0] != 0 ) && ( bytes[0] != ( byte ) 0xFF ) )
         {
-            LOG.warn( "A boolean must be encoded with a 0x00 or a 0xFF value" );
+            LOG.warn( I18n.msg( I18n.MSG_01300_BOOLEAN_0X00_0XFF ) );
         }
 
         return bytes[0] != 0;

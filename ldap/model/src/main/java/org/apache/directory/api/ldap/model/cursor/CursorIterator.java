@@ -86,7 +86,7 @@ public class CursorIterator<E> implements Iterator<E>
         }
         catch ( Exception e )
         {
-            throw new RuntimeException( I18n.err( I18n.ERR_02002_FAILURE_ON_UNDERLYING_CURSOR ), e );
+            throw new RuntimeException( I18n.err( I18n.ERR_13100_FAILURE_ON_UNDERLYING_CURSOR ), e );
         }
     }
 
@@ -97,6 +97,6 @@ public class CursorIterator<E> implements Iterator<E>
     @Override
     public void remove()
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_02003_REMOVAL_NOT_SUPPORTED ) );
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13103_REMOVAL_NOT_SUPPORTED ) );
     }
 }

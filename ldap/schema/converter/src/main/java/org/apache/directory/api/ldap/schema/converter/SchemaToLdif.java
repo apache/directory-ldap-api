@@ -76,7 +76,7 @@ public final class SchemaToLdif
         // Bypass if no schemas have yet been defined 
         if ( ( schemas == null ) || schemas.isEmpty() )
         {
-            LOG.warn( "No schemas defined!" );
+            LOG.warn( I18n.msg( I18n.MSG_15000_NO_SCHEMA_DEFINED ) );
             return;
         }
 
@@ -88,7 +88,7 @@ public final class SchemaToLdif
         {
             if ( schema.getName() == null )
             {
-                String msg = I18n.err( I18n.ERR_06003_NO_NAME, i );
+                String msg = I18n.err( I18n.ERR_15000_SCHEMA_ELEMENT_NAME_REQUIRED, i );
                 LOG.error( msg );
                 throw new ParserException( msg );
             }
@@ -100,12 +100,12 @@ public final class SchemaToLdif
         {
             try
             {
-                LOG.info( "Generating {} schema.", schema.getName() );
+                LOG.info( I18n.msg( I18n.MSG_15001_GENERATING_SCHEMA, schema.getName() ) );
                 generate( schema );
             }
             catch ( Exception e )
             {
-                throw new ParserException( I18n.err( I18n.ERR_06004_CANNOT_GENERATE_SOURCES, schema.getName(),
+                throw new ParserException( I18n.err( I18n.ERR_15004_CANNOT_GENERATE_SOURCES, schema.getName(),
                     e.getMessage() ) );
             }
         }
@@ -123,8 +123,8 @@ public final class SchemaToLdif
     {
         if ( schema == null )
         {
-            LOG.error( I18n.err( I18n.ERR_06005_NULL_SCHEMA ) );
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_06006_NO_PROPERTY ) );
+            LOG.error( I18n.err( I18n.ERR_15001_NULL_SCHEMA ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_15005_NO_PROPERTY ) );
         }
 
         InputStream in = schema.getInput();

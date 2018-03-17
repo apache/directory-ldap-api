@@ -50,6 +50,6 @@ public class InvalidCharacterException extends IOException
     @Override
     public String getMessage()
     {
-        return I18n.err( I18n.ERR_04335, Integer.toHexString( input ) );
+        return I18n.err( I18n.ERR_17025_INVALID_CHAR, Integer.toHexString( input ) );
     }
 }

@@ -100,8 +100,8 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer =
-            new LdapMessageContainer<IntermediateResponseDecorator>( codec );
+        LdapMessageContainer<IntermediateResponseDecorator<?>> ldapMessageContainer =
+            new LdapMessageContainer<IntermediateResponseDecorator<?>>( codec );
 
         // Decode the IntermediateResponse PDU
         try
@@ -218,8 +218,8 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer =
-            new LdapMessageContainer<IntermediateResponseDecorator>( codec );
+        LdapMessageContainer<IntermediateResponseDecorator<?>> ldapMessageContainer =
+            new LdapMessageContainer<IntermediateResponseDecorator<?>>( codec );
 
         // Decode the IntermediateResponse PDU
         try
@@ -341,8 +341,8 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer =
-            new LdapMessageContainer<IntermediateResponseDecorator>( codec );
+        LdapMessageContainer<IntermediateResponseDecorator<?>> ldapMessageContainer =
+            new LdapMessageContainer<IntermediateResponseDecorator<?>>( codec );
 
         // Decode the IntermediateResponse PDU
         try
@@ -416,8 +416,8 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer =
-            new LdapMessageContainer<IntermediateResponseDecorator>( codec );
+        LdapMessageContainer<IntermediateResponseDecorator<?>> ldapMessageContainer =
+            new LdapMessageContainer<IntermediateResponseDecorator<?>>( codec );
 
         // Decode a IntermediateResponse PDU
         try
@@ -456,8 +456,8 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer =
-            new LdapMessageContainer<IntermediateResponseDecorator>( codec );
+        LdapMessageContainer<IntermediateResponseDecorator<?>> ldapMessageContainer =
+            new LdapMessageContainer<IntermediateResponseDecorator<?>>( codec );
 
         // Decode a IntermediateResponse PDU
         try
@@ -510,8 +510,8 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer =
-            new LdapMessageContainer<IntermediateResponseDecorator>( codec );
+        LdapMessageContainer<IntermediateResponseDecorator<?>> ldapMessageContainer =
+            new LdapMessageContainer<IntermediateResponseDecorator<?>>( codec );
 
         // Decode a IntermediateResponse PDU
         try
@@ -565,8 +565,8 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer =
-            new LdapMessageContainer<IntermediateResponseDecorator>( codec );
+        LdapMessageContainer<IntermediateResponseDecorator<?>> ldapMessageContainer =
+            new LdapMessageContainer<IntermediateResponseDecorator<?>>( codec );
 
         // Decode the IntermediateResponse PDU
         try
@@ -647,8 +647,8 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer =
-            new LdapMessageContainer<IntermediateResponseDecorator>( codec );
+        LdapMessageContainer<IntermediateResponseDecorator<?>> ldapMessageContainer =
+            new LdapMessageContainer<IntermediateResponseDecorator<?>>( codec );
 
         // Decode the IntermediateResponse PDU
         try
@@ -719,8 +719,8 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer =
-            new LdapMessageContainer<IntermediateResponseDecorator>( codec );
+        LdapMessageContainer<IntermediateResponseDecorator<?>> ldapMessageContainer =
+            new LdapMessageContainer<IntermediateResponseDecorator<?>>( codec );
 
         // Decode the IntermediateResponse PDU
         try
@@ -799,8 +799,8 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer =
-            new LdapMessageContainer<IntermediateResponseDecorator>( codec );
+        LdapMessageContainer<IntermediateResponseDecorator<?>> ldapMessageContainer =
+            new LdapMessageContainer<IntermediateResponseDecorator<?>>( codec );
 
         // Decode the IntermediateResponse PDU
         try

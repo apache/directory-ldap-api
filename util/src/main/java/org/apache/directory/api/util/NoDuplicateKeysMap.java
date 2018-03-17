@@ -51,7 +51,7 @@ public class NoDuplicateKeysMap extends HashMap
     {
         if ( containsKey( key ) )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04422 ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_17034_ADDING_DUP_KEYS_NOT_ALLOWED ) );
         }
         else
         {

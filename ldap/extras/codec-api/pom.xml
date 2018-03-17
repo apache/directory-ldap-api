@@ -70,7 +70,6 @@
               org.apache.directory.api.ldap.extras.controls.permissiveModify;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.controls.ppolicy;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone;version=${project.version};-noimport:=true,
-              org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.controls.syncrepl.syncRequest;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.controls.syncrepl.syncState;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.controls.vlv;version=${project.version};-noimport:=true,
@@ -83,7 +82,8 @@
               org.apache.directory.api.ldap.extras.extended.startTls;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.extended.startTransaction;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.extended.storedProcedure;version=${project.version};-noimport:=true,
-              org.apache.directory.api.ldap.extras.extended.whoAmI;version=${project.version};-noimport:=true
+              org.apache.directory.api.ldap.extras.extended.whoAmI;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.extras.intermediate.syncrepl;version=${project.version};-noimport:=true
             </Export-Package>
             <Import-Package>
               org.apache.directory.api.asn1.ber.tlv;version=${project.version},

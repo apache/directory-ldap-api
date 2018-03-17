@@ -37,11 +37,36 @@ public class IntermediateResponseImpl extends AbstractResultResponse implements 
     /** ResponseName for the intermediate response */
     protected String responseName;
 
+    /** Intermediate response message type enumeration value */
+    private static final MessageTypeEnum TYPE = MessageTypeEnum.INTERMEDIATE_RESPONSE;
+
     /** Response Value for the intermediate response */
     protected byte[] responseValue;
 
-    /** Intermediate response message type enumeration value */
-    private static final MessageTypeEnum TYPE = MessageTypeEnum.INTERMEDIATE_RESPONSE;
+    /**
+     * Creates an IntermediateResponseImpl instance
+     * 
+     * @param responseName the IntermediateResponse's name
+     */
+    public IntermediateResponseImpl( String responseName )
+    {
+        super( -1, TYPE );
+        this.responseName = responseName;
+    }
+
+
+    /**
+     * Creates an IntermediateResponseImpl instance
+     * 
+     * @param id the session unique message id
+     * @param responseName the IntermediateResponse's name
+     */
+    public IntermediateResponseImpl( int id, String responseName )
+    {
+        super( id, TYPE );
+        this.responseName = responseName;
+    }
+
 
     /**
      * Creates a new IntermediateResponseImpl instance

@@ -27,6 +27,8 @@ import org.apache.directory.api.ldap.codec.standalone.StandaloneLdapApiService;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequest;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequestImpl;
+import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValue;
+import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValueImpl;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.util.Strings;
 import org.junit.BeforeClass;
@@ -61,7 +63,6 @@ public class StandaloneLdapCodecServiceTest
             + "org.apache.directory.api.ldap.extras.controls.permissiveModify_impl.PermissiveModifyFactory,"
             + "org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory,"
             + "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncDoneValueFactory,"
-            + "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncInfoValueFactory,"
             + "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory,"
             + "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory,"
             + "org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewRequestFactory,"
@@ -81,6 +82,12 @@ public class StandaloneLdapCodecServiceTest
                     + "org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureFactory,"
                     + "org.apache.directory.api.ldap.extras.extended.ads_impl.whoAmI.WhoAmIFactory"
                     );
+        
+        System
+        .setProperty(
+            StandaloneLdapApiService.INTERMEDIATE_RESPONSES_LIST,
+                "org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValueFactory" );
+
     }
 
 
@@ -115,6 +122,25 @@ public class StandaloneLdapCodecServiceTest
         assertNotNull( codec );
 
         StoredProcedureRequest decorator = ( StoredProcedureRequest ) codec.decorate( req );
+        assertNotNull( decorator );
+    }
+
+
+    /**
+     * Test an intermediate response.
+     */
+    @Test
+    public void testLoadingIntermediateResponse() throws Exception
+    {
+        LdapApiService codec = LdapApiServiceFactory.getSingleton();
+        SyncInfoValue syncInfoValue = new SyncInfoValueImpl();
+        syncInfoValue.setCookie( Strings.getBytesUtf8( "test" ) );
+
+        assertNotNull( syncInfoValue );
+        assertNotNull( codec );
+
+        Object o = codec.decorate( syncInfoValue );
+        SyncInfoValue decorator = ( SyncInfoValue ) codec.decorate( syncInfoValue );
         assertNotNull( decorator );
     }
 }

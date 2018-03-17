@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitIntermediateResponse extends GrammarAction<LdapMessageContainer<IntermediateResponseDecorator>>
+public class InitIntermediateResponse extends GrammarAction<LdapMessageContainer<IntermediateResponseDecorator<?>>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitIntermediateResponse.class );
@@ -55,7 +55,7 @@ public class InitIntermediateResponse extends GrammarAction<LdapMessageContainer
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<IntermediateResponseDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainer<IntermediateResponseDecorator<?>> container ) throws DecoderException
     {
         // Now, we can allocate the IntermediateResponse Object
         IntermediateResponseDecorator intermediateResponse =

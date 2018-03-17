@@ -135,14 +135,14 @@ public final class Hex
     {
         if ( str == null || str.length() == 0 )
         {
-            throw new InvalidNameException( I18n.err( I18n.ERR_04431 ) );
+            throw new InvalidNameException( I18n.err( I18n.ERR_17037_MUST_START_WITH_SHARP ) );
         }
 
         char[] chars = str.toCharArray();
 
         if ( chars[0] != '#' )
         {
-            throw new InvalidNameException( I18n.err( I18n.ERR_04432, str ) );
+            throw new InvalidNameException( I18n.err( I18n.ERR_17038_MUST_START_WITH_ESC_SHARP, str ) );
         }
 
         // the bytes representing the encoded string of hex
@@ -171,14 +171,14 @@ public final class Hex
     {
         if ( str == null )
         {
-            throw new InvalidNameException( I18n.err( I18n.ERR_04433 ) );
+            throw new InvalidNameException( I18n.err( I18n.ERR_17039_NON_NULL_EXPECTED_STRING ) );
         }
 
         int length = str.length();
 
         if ( length == 0 )
         {
-            throw new InvalidNameException( I18n.err( I18n.ERR_04434 ) );
+            throw new InvalidNameException( I18n.err( I18n.ERR_17040_EXPECTED_NON_EMPTY_STRING ) );
         }
 
         // create buffer and add everything before start of scan
@@ -204,7 +204,7 @@ public final class Hex
             }
             else
             {
-                throw new InvalidNameException( I18n.err( I18n.ERR_04435 ) );
+                throw new InvalidNameException( I18n.err( I18n.ERR_17041_VALID_ESC_CHARS_EXPECTED ) );
             }
         }
 

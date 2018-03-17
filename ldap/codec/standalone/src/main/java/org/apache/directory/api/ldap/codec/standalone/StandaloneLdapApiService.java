@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
+import org.apache.directory.api.ldap.codec.api.IntermediateResponseFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
 import org.apache.directory.api.util.Strings;
@@ -66,6 +67,9 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
 
     /** The list of extended operations to load at startup */
     public static final String EXTENDED_OPERATIONS_LIST = "apacheds.extendedOperations";
+
+    /** The list of Intermediate responses to load at startup */
+    public static final String INTERMEDIATE_RESPONSES_LIST = "apacheds.intermediateResponses";
 
     /** The (old) list of default controls to load at startup */
     private static final String OLD_DEFAULT_CONTROLS_LIST = "default.controls";
@@ -142,7 +146,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      */
     public StandaloneLdapApiService() throws Exception
     {
-        this( getControlsFromSystemProperties(), getExtendedOperationsFromSystemProperties() );
+        this( getControlsFromSystemProperties(), getExtendedOperationsFromSystemProperties(), getIntermediateResponsesFromSystemProperties() );
     }
 
 
@@ -153,17 +157,22 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      * @param extendedOperations The list of extended operations to store
      * @throws Exception If we had an issue with one of the two lists
      */
-    public StandaloneLdapApiService( List<String> controls, List<String> extendedOperations ) throws Exception
+    public StandaloneLdapApiService( List<String> controls, List<String> extendedOperations, List<String> intermediateResponses ) throws Exception
     {
         CodecFactoryUtil.loadStockControls( getControlFactories(), this );
 
-        CodecFactoryUtil.loadStockExtendedOperations( getExtendedOperationsFactories(), this );
+        CodecFactoryUtil.loadStockExtendedOperations( getExtendedOperationFactories(), this );
+
+        CodecFactoryUtil.loadStockIntermediateResponses( getIntermediateResponseFactories(), this );
 
         // Load the controls
         loadControls( controls );
 
         // Load the extended operations
         loadExtendedOperations( extendedOperations );
+
+        // Load the extended operations
+        loadIntermediateResponse( intermediateResponses );
 
         if ( getProtocolCodecFactory() == null )
         {
@@ -174,6 +183,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
                     Class.forName( DEFAULT_PROTOCOL_CODEC_FACTORY );
                 Constructor<? extends ProtocolCodecFactory> constructor =
                     clazz.getConstructor( LdapApiService.class );
+                
                 if ( constructor != null )
                 {
                     setProtocolCodecFactory( constructor.newInstance( this ) );
@@ -250,11 +260,11 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
         else
         {
             // Loading old extra extended operations list from command line properties if it exists
-            String oldDefaultControlsString = System.getProperty( OLD_EXTRA_EXTENDED_OPERATION_LIST );
+            String oldDefaultExtendedOperationsString = System.getProperty( OLD_EXTRA_EXTENDED_OPERATION_LIST );
 
-            if ( !Strings.isEmpty( oldDefaultControlsString ) )
+            if ( !Strings.isEmpty( oldDefaultExtendedOperationsString ) )
             {
-                for ( String extendedOperation : oldDefaultControlsString.split( "," ) )
+                for ( String extendedOperation : oldDefaultExtendedOperationsString.split( "," ) )
                 {
                     extendedOperationsList.add( extendedOperation );
                 }
@@ -262,6 +272,30 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
         }
 
         return extendedOperationsList;
+    }
+
+
+    /**
+     * Parses the system properties to obtain the intermediate responses.
+     * Such intermediate responses are stored in the <b>apacheds.intermediateResponses</b>
+     * and <b>default.intermediateResponses.requests</b> system properties.
+     */
+    private static List<String> getIntermediateResponsesFromSystemProperties() throws Exception
+    {
+        List<String> intermediateResponsesList = new ArrayList<>();
+
+        // Loading extended operations from command line properties if it exists
+        String defaultIntermediateResponsesList = System.getProperty( INTERMEDIATE_RESPONSES_LIST );
+
+        if ( !Strings.isEmpty( defaultIntermediateResponsesList ) )
+        {
+            for ( String intermediateResponse : defaultIntermediateResponsesList.split( "," ) )
+            {
+                intermediateResponsesList.add( intermediateResponse );
+            }
+        }
+
+        return intermediateResponsesList;
     }
 
 
@@ -301,8 +335,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
             .forName( controlFQCN.trim() );
         Constructor<?> constructor = clazz.getConstructor( types );
 
-        ControlFactory<?> factory = ( ControlFactory<?> ) constructor.newInstance( new Object[]
-            { this } );
+        ControlFactory<?> factory = ( ControlFactory<?> ) constructor.newInstance( this );
         getControlFactories().put( factory.getOid(), factory );
 
         LOG.info( "Registered control factory: {}", factory.getOid() );
@@ -330,7 +363,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      */
     private void loadExtendedOperation( String extendedOperationFQCN ) throws Exception
     {
-        if ( getExtendedOperationsFactories().containsKey( extendedOperationFQCN ) )
+        if ( getExtendedOperationFactories().containsKey( extendedOperationFQCN ) )
         {
             LOG.debug( "Factory for extended operation {} was already loaded", extendedOperationFQCN );
             return;
@@ -349,8 +382,53 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
         ExtendedOperationFactory factory = ( ExtendedOperationFactory ) constructor
             .newInstance( new Object[]
                 { this } );
-        getExtendedOperationsFactories().put( factory.getOid(), factory );
+        getExtendedOperationFactories().put( factory.getOid(), factory );
 
         LOG.info( "Registered pre-bundled extended operation factory: {}", factory.getOid() );
+    }
+
+
+    /**
+     * Loads a list of intermediate responses from their FQCN
+     */
+    private void loadIntermediateResponse( List<String> intermediateResponsesList ) throws Exception
+    {
+        // Adding all extended operations
+        if ( !intermediateResponsesList.isEmpty() )
+        {
+            for ( String intermediateResponseFQCN : intermediateResponsesList )
+            {
+                loadIntermediateResponse( intermediateResponseFQCN );
+            }
+        }
+    }
+
+
+    /**
+     * Loads an intermediate responses from its FQCN
+     */
+    private void loadIntermediateResponse( String intermediateResponseFQCN ) throws Exception
+    {
+        if ( getIntermediateResponseFactories().containsKey( intermediateResponseFQCN ) )
+        {
+            LOG.debug( "Factory for Intermediate Response {} was already loaded", intermediateResponseFQCN );
+            return;
+        }
+
+        Class<?>[] types = new Class<?>[]
+            { LdapApiService.class };
+
+        // note, trimming whitespace doesn't hurt as it is a class name and
+        // helps DI containers that use xml config as xml ignores whitespace
+        @SuppressWarnings("unchecked")
+        Class<? extends IntermediateResponseFactory> clazz = ( Class<? extends IntermediateResponseFactory> ) Class
+            .forName( intermediateResponseFQCN.trim() );
+        Constructor<?> constructor = clazz.getConstructor( types );
+
+        IntermediateResponseFactory factory = ( IntermediateResponseFactory ) constructor
+            .newInstance( this );
+        getIntermediateResponseFactories().put( factory.getOid(), factory );
+
+        LOG.info( "Registered pre-bundled Intermediate Response factory: {}", factory.getOid() );
     }
 }

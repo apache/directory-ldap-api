@@ -112,7 +112,7 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
     {
         if ( IS_DEBUG )
         {
-            LOG.debug( "Initializing schema" );
+            LOG.debug( I18n.msg( I18n.MSG_16006_INITIALIZING_SCHEMA ) );
         }
 
         Pattern pat = Pattern.compile( "schema" + SEPARATOR_PATTERN + "ou=schema"
@@ -135,12 +135,12 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
 
                     if ( IS_DEBUG )
                     {
-                        LOG.debug( "Schema Initialized ... \n{}", schema );
+                        LOG.debug( I18n.msg( I18n.MSG_16007_SCHEMA_INITIALIZED, schema ) );
                     }
                 }
                 catch ( LdapException le )
                 {
-                    LOG.error( I18n.err( I18n.ERR_10003, file ), le );
+                    LOG.error( I18n.err( I18n.ERR_16009_LDIF_LOAD_FAIL, file ), le );
                     throw le;
                 }
                 finally

@@ -28,7 +28,6 @@ import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
-import org.apache.directory.api.ldap.codec.api.MessageDecorator;
 import org.apache.directory.api.ldap.model.message.IntermediateResponse;
 import org.apache.directory.api.util.Strings;
 
@@ -38,7 +37,7 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class IntermediateResponseDecorator extends MessageDecorator<IntermediateResponse>
+public class IntermediateResponseDecorator<I extends IntermediateResponse> extends ResponseDecorator<I>
     implements IntermediateResponse
 {
     /** The response name as a byte[] */
@@ -57,7 +56,7 @@ public class IntermediateResponseDecorator extends MessageDecorator<Intermediate
      * @param codec The LDAP service instance
      * @param decoratedMessage the decorated IntermediateResponse
      */
-    public IntermediateResponseDecorator( LdapApiService codec, IntermediateResponse decoratedMessage )
+    public IntermediateResponseDecorator( LdapApiService codec, I decoratedMessage )
     {
         super( codec, decoratedMessage );
     }

@@ -118,7 +118,7 @@ public abstract class AbstractGrammar<C extends Asn1Container> implements Gramma
 
         if ( transition == null )
         {
-            String errorMessage = I18n.err( I18n.ERR_00001_BAD_TRANSITION_FROM_STATE, currentState,
+            String errorMessage = I18n.err( I18n.ERR_01200_BAD_TRANSITION_FROM_STATE, currentState,
                 Asn1StringUtils.dumpByte( tagByte ) );
 
             LOG.error( errorMessage );

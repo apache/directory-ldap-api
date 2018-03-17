@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.api.ldap.extras.controls.syncrepl_impl;
+package org.apache.directory.api.ldap.extras.intermediate.syncrepl;
 
 
 import org.apache.directory.api.asn1.DecoderException;
@@ -30,15 +30,13 @@ import org.apache.directory.api.asn1.ber.tlv.BooleanDecoder;
 import org.apache.directory.api.asn1.ber.tlv.BooleanDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncInfoValue;
-import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SynchronizationInfoEnum;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 /**
- * This class implements the SyncInfoValueControl. All the actions are declared in
+ * This class implements the SyncInfoValue response. All the actions are declared in
  * this class. As it is a singleton, these declaration are only done once.
  * 
  * The decoded grammar is the following :
@@ -70,12 +68,12 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
     /** Speedup for logs */
     static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
-    /** The instance of grammar. SyncInfoValueControlGrammar is a singleton */
+    /** The instance of grammar. SyncInfoValueGrammar is a singleton */
     private static Grammar<SyncInfoValueContainer> instance = new SyncInfoValueGrammar();
 
 
     /**
-     * Creates a new SyncInfoValueControlGrammar object.
+     * Creates a new SyncInfoValueGrammar object.
      */
     @SuppressWarnings("unchecked")
     private SyncInfoValueGrammar()
@@ -98,12 +96,13 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
             new GrammarTransition<SyncInfoValueContainer>( SyncInfoValueStatesEnum.START_STATE,
                 SyncInfoValueStatesEnum.NEW_COOKIE_STATE,
                 SyncInfoValueTags.NEW_COOKIE_TAG.getValue(),
-                new GrammarAction<SyncInfoValueContainer>( "NewCookie choice for SyncInfoValueControl" )
+                new GrammarAction<SyncInfoValueContainer>( "NewCookie choice for SyncInfoValue response" )
                 {
                     public void action( SyncInfoValueContainer container )
                     {
-                        SyncInfoValue control = container.getSyncInfoValueControl();
-                        control.setType( SynchronizationInfoEnum.NEW_COOKIE );
+                        SyncInfoValue syncInfoValue = container.getSyncInfoValue();
+                        syncInfoValue.setSyncInfoValueType( SynchronizationInfoEnum
+                            .NEW_COOKIE );
 
                         BerValue value = container.getCurrentTLV().getValue();
 
@@ -111,15 +110,15 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
 
                         if ( IS_DEBUG )
                         {
-                            LOG.debug( "newcookie = " + Strings.dumpBytes( newCookie ) );
+                            LOG.debug( "newcookie = {}", Strings.dumpBytes( newCookie ) );
                         }
 
-                        control.setCookie( newCookie );
+                        syncInfoValue.setCookie( newCookie );
 
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
 
-                        container.setSyncInfoValueControl( control );
+                        container.setSyncInfoValue( syncInfoValue );
                     }
                 } );
 
@@ -137,14 +136,14 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
             new GrammarTransition<SyncInfoValueContainer>( SyncInfoValueStatesEnum.START_STATE,
                 SyncInfoValueStatesEnum.REFRESH_DELETE_STATE,
                 SyncInfoValueTags.REFRESH_DELETE_TAG.getValue(),
-                new GrammarAction<SyncInfoValueContainer>( "RefreshDelete choice for SyncInfoValueControl" )
+                new GrammarAction<SyncInfoValueContainer>( "RefreshDelete choice for SyncInfoValue response" )
                 {
                     public void action( SyncInfoValueContainer container )
                     {
-                        SyncInfoValue control = container.getSyncInfoValueControl();
-                        control.setType( SynchronizationInfoEnum.REFRESH_DELETE );
+                        SyncInfoValue syncInfoValue = container.getSyncInfoValue();
+                        syncInfoValue.setSyncInfoValueType( SynchronizationInfoEnum.REFRESH_DELETE );
 
-                        container.setSyncInfoValueControl( control );
+                        container.setSyncInfoValue( syncInfoValue );
 
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
@@ -167,7 +166,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                 {
                     public void action( SyncInfoValueContainer container )
                     {
-                        SyncInfoValue control = container.getSyncInfoValueControl();
+                        SyncInfoValue syncInfoValue = container.getSyncInfoValue();
 
                         BerValue value = container.getCurrentTLV().getValue();
 
@@ -175,11 +174,11 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
 
                         if ( IS_DEBUG )
                         {
-                            LOG.debug( "cookie = " + Strings.dumpBytes( cookie ) );
+                            LOG.debug( "cookie = {}", Strings.dumpBytes( cookie ) );
                         }
 
-                        container.getSyncInfoValueControl().setCookie( cookie );
-                        container.setSyncInfoValueControl( control );
+                        container.getSyncInfoValue().setCookie( cookie );
+                        container.setSyncInfoValue( syncInfoValue );
 
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
@@ -204,7 +203,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                 {
                     public void action( SyncInfoValueContainer container ) throws DecoderException
                     {
-                        SyncInfoValue control = container.getSyncInfoValueControl();
+                        SyncInfoValue syncInfoValue = container.getSyncInfoValue();
 
                         BerValue value = container.getCurrentTLV().getValue();
 
@@ -217,9 +216,9 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                                 LOG.debug( "refreshDone = {}", refreshDone );
                             }
 
-                            control.setRefreshDone( refreshDone );
+                            syncInfoValue.setRefreshDone( refreshDone );
 
-                            container.setSyncInfoValueControl( control );
+                            container.setSyncInfoValue( syncInfoValue );
 
                             // the END transition for grammar
                             container.setGrammarEndAllowed( true );
@@ -253,7 +252,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                 {
                     public void action( SyncInfoValueContainer container ) throws DecoderException
                     {
-                        SyncInfoValue control = container.getSyncInfoValueControl();
+                        SyncInfoValue syncInfoValue = container.getSyncInfoValue();
 
                         BerValue value = container.getCurrentTLV().getValue();
 
@@ -266,9 +265,9 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                                 LOG.debug( "refreshDone = {}", refreshDone );
                             }
 
-                            control.setRefreshDone( refreshDone );
+                            syncInfoValue.setRefreshDone( refreshDone );
 
-                            container.setSyncInfoValueControl( control );
+                            container.setSyncInfoValue( syncInfoValue );
 
                             // the END transition for grammar
                             container.setGrammarEndAllowed( true );
@@ -299,14 +298,14 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
             new GrammarTransition<SyncInfoValueContainer>( SyncInfoValueStatesEnum.START_STATE,
                 SyncInfoValueStatesEnum.REFRESH_PRESENT_STATE,
                 SyncInfoValueTags.REFRESH_PRESENT_TAG.getValue(),
-                new GrammarAction<SyncInfoValueContainer>( "RefreshDelete choice for SyncInfoValueControl" )
+                new GrammarAction<SyncInfoValueContainer>( "RefreshDelete choice for SyncInfoValue response" )
                 {
                     public void action( SyncInfoValueContainer container )
                     {
-                        SyncInfoValue control = container.getSyncInfoValueControl();
-                        control.setType( SynchronizationInfoEnum.REFRESH_PRESENT );
+                        SyncInfoValue syncInfoValue = container.getSyncInfoValue();
+                        syncInfoValue.setSyncInfoValueType( SynchronizationInfoEnum.REFRESH_PRESENT );
 
-                        container.setSyncInfoValueControl( control );
+                        container.setSyncInfoValue( syncInfoValue );
 
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
@@ -329,7 +328,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                 {
                     public void action( SyncInfoValueContainer container )
                     {
-                        SyncInfoValue control = container.getSyncInfoValueControl();
+                        SyncInfoValue syncInfoValue = container.getSyncInfoValue();
 
                         BerValue value = container.getCurrentTLV().getValue();
 
@@ -337,11 +336,11 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
 
                         if ( IS_DEBUG )
                         {
-                            LOG.debug( "cookie = " + Strings.dumpBytes( cookie ) );
+                            LOG.debug( "cookie = {}", Strings.dumpBytes( cookie ) );
                         }
 
-                        container.getSyncInfoValueControl().setCookie( cookie );
-                        container.setSyncInfoValueControl( control );
+                        container.getSyncInfoValue().setCookie( cookie );
+                        container.setSyncInfoValue( syncInfoValue );
 
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
@@ -366,7 +365,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                 {
                     public void action( SyncInfoValueContainer container ) throws DecoderException
                     {
-                        SyncInfoValue control = container.getSyncInfoValueControl();
+                        SyncInfoValue syncInfoValue = container.getSyncInfoValue();
 
                         BerValue value = container.getCurrentTLV().getValue();
 
@@ -379,9 +378,9 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                                 LOG.debug( "refreshDone = {}", refreshDone );
                             }
 
-                            control.setRefreshDone( refreshDone );
+                            syncInfoValue.setRefreshDone( refreshDone );
 
-                            container.setSyncInfoValueControl( control );
+                            container.setSyncInfoValue( syncInfoValue );
 
                             // the END transition for grammar
                             container.setGrammarEndAllowed( true );
@@ -415,7 +414,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                 {
                     public void action( SyncInfoValueContainer container ) throws DecoderException
                     {
-                        SyncInfoValue control = container.getSyncInfoValueControl();
+                        SyncInfoValue syncInfoValue = container.getSyncInfoValue();
 
                         BerValue value = container.getCurrentTLV().getValue();
 
@@ -428,9 +427,9 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                                 LOG.debug( "refreshDone = {}", refreshDone );
                             }
 
-                            control.setRefreshDone( refreshDone );
+                            syncInfoValue.setRefreshDone( refreshDone );
 
-                            container.setSyncInfoValueControl( control );
+                            container.setSyncInfoValue( syncInfoValue );
 
                             // the END transition for grammar
                             container.setGrammarEndAllowed( true );
@@ -460,14 +459,14 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
             new GrammarTransition<SyncInfoValueContainer>( SyncInfoValueStatesEnum.START_STATE,
                 SyncInfoValueStatesEnum.SYNC_ID_SET_STATE,
                 SyncInfoValueTags.SYNC_ID_SET_TAG.getValue(),
-                new GrammarAction<SyncInfoValueContainer>( "SyncIdSet choice for SyncInfoValueControl" )
+                new GrammarAction<SyncInfoValueContainer>( "SyncIdSet choice for SyncInfoValue response" )
                 {
                     public void action( SyncInfoValueContainer container )
                     {
-                        SyncInfoValue control = container.getSyncInfoValueControl();
-                        control.setType( SynchronizationInfoEnum.SYNC_ID_SET );
+                        SyncInfoValue syncInfoValue = container.getSyncInfoValue();
+                        syncInfoValue.setSyncInfoValueType( SynchronizationInfoEnum.SYNC_ID_SET );
 
-                        container.setSyncInfoValueControl( control );
+                        container.setSyncInfoValue( syncInfoValue );
                     }
                 } );
 
@@ -487,7 +486,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                 {
                     public void action( SyncInfoValueContainer container )
                     {
-                        SyncInfoValue control = container.getSyncInfoValueControl();
+                        SyncInfoValue syncInfoValue = container.getSyncInfoValue();
 
                         BerValue value = container.getCurrentTLV().getValue();
 
@@ -495,11 +494,11 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
 
                         if ( IS_DEBUG )
                         {
-                            LOG.debug( "cookie = " + Strings.dumpBytes( cookie ) );
+                            LOG.debug( "cookie = {}", Strings.dumpBytes( cookie ) );
                         }
 
-                        container.getSyncInfoValueControl().setCookie( cookie );
-                        container.setSyncInfoValueControl( control );
+                        container.getSyncInfoValue().setCookie( cookie );
+                        container.setSyncInfoValue( syncInfoValue );
                     }
                 } );
 
@@ -520,7 +519,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                 {
                     public void action( SyncInfoValueContainer container ) throws DecoderException
                     {
-                        SyncInfoValue control = container.getSyncInfoValueControl();
+                        SyncInfoValue syncInfoValue = container.getSyncInfoValue();
 
                         BerValue value = container.getCurrentTLV().getValue();
 
@@ -533,9 +532,9 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                                 LOG.debug( "refreshDeletes = {}", refreshDeletes );
                             }
 
-                            control.setRefreshDeletes( refreshDeletes );
+                            syncInfoValue.setRefreshDeletes( refreshDeletes );
 
-                            container.setSyncInfoValueControl( control );
+                            container.setSyncInfoValue( syncInfoValue );
                         }
                         catch ( BooleanDecoderException be )
                         {
@@ -563,7 +562,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                 {
                     public void action( SyncInfoValueContainer container ) throws DecoderException
                     {
-                        SyncInfoValue control = container.getSyncInfoValueControl();
+                        SyncInfoValue syncInfoValue = container.getSyncInfoValue();
 
                         BerValue value = container.getCurrentTLV().getValue();
 
@@ -576,9 +575,9 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                                 LOG.debug( "refreshDeletes = {}", refreshDeletes );
                             }
 
-                            control.setRefreshDeletes( refreshDeletes );
+                            syncInfoValue.setRefreshDeletes( refreshDeletes );
 
-                            container.setSyncInfoValueControl( control );
+                            container.setSyncInfoValue( syncInfoValue );
                         }
                         catch ( BooleanDecoderException be )
                         {
@@ -674,7 +673,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                 {
                     public void action( SyncInfoValueContainer container ) throws DecoderException
                     {
-                        SyncInfoValue control = container.getSyncInfoValueControl();
+                        SyncInfoValue syncInfoValue = container.getSyncInfoValue();
 
                         BerValue value = container.getCurrentTLV().getValue();
 
@@ -690,11 +689,11 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
 
                         if ( IS_DEBUG )
                         {
-                            LOG.debug( "UUID = " + Strings.dumpBytes( uuid ) );
+                            LOG.debug( "UUID = {}", Strings.dumpBytes( uuid ) );
                         }
 
                         // Store the UUID in the UUIDs list
-                        control.addSyncUUID( uuid );
+                        syncInfoValue.addSyncUUID( uuid );
 
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
@@ -719,7 +718,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                 {
                     public void action( SyncInfoValueContainer container ) throws DecoderException
                     {
-                        SyncInfoValue control = container.getSyncInfoValueControl();
+                        SyncInfoValue syncInfoValue = container.getSyncInfoValue();
 
                         BerValue value = container.getCurrentTLV().getValue();
 
@@ -735,11 +734,11 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
 
                         if ( IS_DEBUG )
                         {
-                            LOG.debug( "UUID = " + Strings.dumpBytes( uuid ) );
+                            LOG.debug( "UUID = {}", Strings.dumpBytes( uuid ) );
                         }
 
                         // Store the UUID in the UUIDs list
-                        control.getSyncUUIDs().add( uuid );
+                        syncInfoValue.getSyncUUIDs().add( uuid );
 
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );

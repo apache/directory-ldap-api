@@ -250,7 +250,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
         {
             if ( ( oid == null ) || oid.isEmpty() )
             {
-                throw new LdapException( I18n.err( I18n.ERR_00033_INVALID_OID, "" ) );
+                throw new LdapException( I18n.err( I18n.ERR_00003_INVALID_OID, "" ) );
             }
         }
 

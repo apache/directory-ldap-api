@@ -590,7 +590,7 @@ public final class DefaultEntry implements Entry
     {
         if ( Strings.isEmpty( Strings.trim( upId ) ) )
         {
-            String message = I18n.err( I18n.ERR_04457_NULL_ATTRIBUTE_ID );
+            String message = I18n.err( I18n.ERR_13204_NULL_ATTRIBUTE_ID );
             LOG.error( message );
             throw new IllegalArgumentException( message );
         }
@@ -609,7 +609,7 @@ public final class DefaultEntry implements Entry
     {
         if ( attributeType == null )
         {
-            String message = I18n.err( I18n.ERR_04460_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED );
+            String message = I18n.err( I18n.ERR_13203_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED );
             LOG.error( message );
             throw new IllegalArgumentException( message );
         }
@@ -657,7 +657,7 @@ public final class DefaultEntry implements Entry
     {
         if ( attributeType == null )
         {
-            String message = I18n.err( I18n.ERR_04460_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED );
+            String message = I18n.err( I18n.ERR_13203_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED );
             LOG.error( message );
             throw new IllegalArgumentException( message );
         }
@@ -690,7 +690,7 @@ public final class DefaultEntry implements Entry
     {
         if ( attributeType == null )
         {
-            String message = I18n.err( I18n.ERR_04460_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED );
+            String message = I18n.err( I18n.ERR_13203_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED );
             LOG.error( message );
             throw new IllegalArgumentException( message );
         }
@@ -758,7 +758,7 @@ public final class DefaultEntry implements Entry
     {
         if ( attributeType == null )
         {
-            String message = I18n.err( I18n.ERR_04460_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED );
+            String message = I18n.err( I18n.ERR_13203_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED );
             LOG.error( message );
             throw new IllegalArgumentException( message );
         }
@@ -791,7 +791,7 @@ public final class DefaultEntry implements Entry
     {
         if ( attributeType == null )
         {
-            String message = I18n.err( I18n.ERR_04460_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED );
+            String message = I18n.err( I18n.ERR_13203_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED );
             LOG.error( message );
             throw new IllegalArgumentException( message );
         }
@@ -885,7 +885,7 @@ public final class DefaultEntry implements Entry
     {
         if ( Strings.isEmpty( upId ) )
         {
-            String message = I18n.err( I18n.ERR_04457_NULL_ATTRIBUTE_ID );
+            String message = I18n.err( I18n.ERR_13204_NULL_ATTRIBUTE_ID );
             LOG.error( message );
             throw new IllegalArgumentException( message );
         }
@@ -930,7 +930,7 @@ public final class DefaultEntry implements Entry
     {
         if ( Strings.isEmpty( upId ) )
         {
-            String message = I18n.err( I18n.ERR_04457_NULL_ATTRIBUTE_ID );
+            String message = I18n.err( I18n.ERR_13204_NULL_ATTRIBUTE_ID );
             LOG.error( message );
             throw new IllegalArgumentException( message );
         }
@@ -975,7 +975,7 @@ public final class DefaultEntry implements Entry
     {
         if ( Strings.isEmpty( upId ) )
         {
-            String message = I18n.err( I18n.ERR_04457_NULL_ATTRIBUTE_ID );
+            String message = I18n.err( I18n.ERR_13204_NULL_ATTRIBUTE_ID );
             LOG.error( message );
             throw new IllegalArgumentException( message );
         }
@@ -1428,7 +1428,7 @@ public final class DefaultEntry implements Entry
     {
         if ( Strings.isEmpty( upId ) )
         {
-            String message = I18n.err( I18n.ERR_04457_NULL_ATTRIBUTE_ID );
+            String message = I18n.err( I18n.ERR_13204_NULL_ATTRIBUTE_ID );
             LOG.error( message );
             throw new IllegalArgumentException( message );
         }
@@ -1452,7 +1452,7 @@ public final class DefaultEntry implements Entry
             }
             catch ( LdapException ne )
             {
-                String message = I18n.err( I18n.ERR_04464, upId, ne.getLocalizedMessage() );
+                String message = I18n.err( I18n.ERR_13212_ERROR_ADDING_VALUE, upId, ne.getLocalizedMessage() );
                 LOG.error( message );
                 throw new IllegalArgumentException( message, ne );
             }
@@ -1468,7 +1468,7 @@ public final class DefaultEntry implements Entry
     {
         if ( Strings.isEmpty( upId ) )
         {
-            String message = I18n.err( I18n.ERR_04457_NULL_ATTRIBUTE_ID );
+            String message = I18n.err( I18n.ERR_13204_NULL_ATTRIBUTE_ID );
             LOG.error( message );
             throw new IllegalArgumentException( message );
         }
@@ -1492,7 +1492,7 @@ public final class DefaultEntry implements Entry
             }
             catch ( LdapException ne )
             {
-                String message = I18n.err( I18n.ERR_04464, upId, ne.getLocalizedMessage() );
+                String message = I18n.err( I18n.ERR_13212_ERROR_ADDING_VALUE, upId, ne.getLocalizedMessage() );
                 LOG.error( message );
                 throw new IllegalArgumentException( message, ne );
             }
@@ -1508,7 +1508,7 @@ public final class DefaultEntry implements Entry
     {
         if ( Strings.isEmpty( upId ) )
         {
-            String message = I18n.err( I18n.ERR_04457_NULL_ATTRIBUTE_ID );
+            String message = I18n.err( I18n.ERR_13204_NULL_ATTRIBUTE_ID );
             LOG.error( message );
             throw new IllegalArgumentException( message );
         }
@@ -1532,7 +1532,7 @@ public final class DefaultEntry implements Entry
             }
             catch ( LdapException ne )
             {
-                String message = I18n.err( I18n.ERR_04464, upId, ne.getLocalizedMessage() );
+                String message = I18n.err( I18n.ERR_13212_ERROR_ADDING_VALUE, upId, ne.getLocalizedMessage() );
                 LOG.error( message );
                 throw new IllegalArgumentException( message, ne );
             }
@@ -1791,7 +1791,7 @@ public final class DefaultEntry implements Entry
 
                 if ( attributeType == null )
                 {
-                    String message = I18n.err( I18n.ERR_04460_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED );
+                    String message = I18n.err( I18n.ERR_13203_ATTRIBUTE_TYPE_NULL_NOT_ALLOWED );
                     LOG.error( message );
                     throw new IllegalArgumentException( message );
                 }
@@ -1845,7 +1845,7 @@ public final class DefaultEntry implements Entry
         }
         catch ( IllegalArgumentException iae )
         {
-            LOG.error( I18n.err( I18n.ERR_04465, attributeType ) );
+            LOG.error( I18n.err( I18n.ERR_13205_CANNOT_REMOVE_VAL_MISSING_ATTR, attributeType ) );
             return false;
         }
     }
@@ -1889,7 +1889,7 @@ public final class DefaultEntry implements Entry
         }
         catch ( IllegalArgumentException iae )
         {
-            LOG.error( I18n.err( I18n.ERR_04465, attributeType ) );
+            LOG.error( I18n.err( I18n.ERR_13205_CANNOT_REMOVE_VAL_MISSING_ATTR, attributeType ) );
             return false;
         }
     }
@@ -1933,7 +1933,7 @@ public final class DefaultEntry implements Entry
         }
         catch ( IllegalArgumentException iae )
         {
-            LOG.error( I18n.err( I18n.ERR_04465, attributeType ) );
+            LOG.error( I18n.err( I18n.ERR_13205_CANNOT_REMOVE_VAL_MISSING_ATTR, attributeType ) );
             return false;
         }
     }
@@ -2050,7 +2050,7 @@ public final class DefaultEntry implements Entry
     {
         if ( Strings.isEmpty( upId ) )
         {
-            String message = I18n.err( I18n.ERR_04457_NULL_ATTRIBUTE_ID );
+            String message = I18n.err( I18n.ERR_13204_NULL_ATTRIBUTE_ID );
             LOG.info( message );
             return false;
         }
@@ -2092,12 +2092,12 @@ public final class DefaultEntry implements Entry
             }
             catch ( LdapException ne )
             {
-                LOG.error( I18n.err( I18n.ERR_04465, upId ) );
+                LOG.error( I18n.err( I18n.ERR_13205_CANNOT_REMOVE_VAL_MISSING_ATTR, upId ) );
                 return false;
             }
             catch ( IllegalArgumentException iae )
             {
-                LOG.error( I18n.err( I18n.ERR_04466, upId ) );
+                LOG.error( I18n.err( I18n.ERR_13206_CANNOT_REMOVE_VAL_BAD_ATTR, upId ) );
                 return false;
             }
         }
@@ -2131,7 +2131,7 @@ public final class DefaultEntry implements Entry
     {
         if ( Strings.isEmpty( upId ) )
         {
-            String message = I18n.err( I18n.ERR_04457_NULL_ATTRIBUTE_ID );
+            String message = I18n.err( I18n.ERR_13204_NULL_ATTRIBUTE_ID );
             LOG.info( message );
             return false;
         }
@@ -2173,12 +2173,12 @@ public final class DefaultEntry implements Entry
             }
             catch ( LdapException ne )
             {
-                LOG.error( I18n.err( I18n.ERR_04465, upId ) );
+                LOG.error( I18n.err( I18n.ERR_13205_CANNOT_REMOVE_VAL_MISSING_ATTR, upId ) );
                 return false;
             }
             catch ( IllegalArgumentException iae )
             {
-                LOG.error( I18n.err( I18n.ERR_04466, upId ) );
+                LOG.error( I18n.err( I18n.ERR_13206_CANNOT_REMOVE_VAL_BAD_ATTR, upId ) );
                 return false;
             }
         }
@@ -2211,7 +2211,7 @@ public final class DefaultEntry implements Entry
     {
         if ( Strings.isEmpty( upId ) )
         {
-            String message = I18n.err( I18n.ERR_04457_NULL_ATTRIBUTE_ID );
+            String message = I18n.err( I18n.ERR_13204_NULL_ATTRIBUTE_ID );
             LOG.info( message );
             return false;
         }
@@ -2253,12 +2253,12 @@ public final class DefaultEntry implements Entry
             }
             catch ( LdapException ne )
             {
-                LOG.error( I18n.err( I18n.ERR_04465, upId ) );
+                LOG.error( I18n.err( I18n.ERR_13205_CANNOT_REMOVE_VAL_MISSING_ATTR, upId ) );
                 return false;
             }
             catch ( IllegalArgumentException iae )
             {
-                LOG.error( I18n.err( I18n.ERR_04466, upId ) );
+                LOG.error( I18n.err( I18n.ERR_13206_CANNOT_REMOVE_VAL_BAD_ATTR, upId ) );
                 return false;
             }
         }

@@ -27,7 +27,7 @@ package org.apache.directory.api.ldap.model.message;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface IntermediateResponse extends Response
+public interface IntermediateResponse extends ResultResponse
 {
     /**
      * Gets the response name

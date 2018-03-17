@@ -62,10 +62,12 @@ public class CheckNotNullLength<C extends Asn1Container> extends GrammarAction<C
         // The Length should not be null
         if ( tlv.getLength() == 0 )
         {
-            LOG.error( I18n.err( I18n.ERR_04066 ) );
+            String msg = I18n.err( I18n.ERR_01101_NULL_LENGTH );
+            
+            LOG.error( msg );
 
             // This will generate a PROTOCOL_ERROR
-            throw new DecoderException( I18n.err( I18n.ERR_04067 ) );
+            throw new DecoderException( msg );
         }
     }
 }
