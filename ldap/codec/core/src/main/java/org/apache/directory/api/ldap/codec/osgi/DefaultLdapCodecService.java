@@ -94,7 +94,7 @@ public class DefaultLdapCodecService implements LdapApiService
     /** The map of registered {@link org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory}'s by request OID */
     private Map<String, ExtendedOperationFactory> extendedOperationFactories = new HashMap<>();
 
-    /** The map of registered {@link org.apache.directory.api.ldap.codec.api.EIntermediateResponseFactory}'s by request OID */
+    /** The map of registered {@link org.apache.directory.api.ldap.codec.api.IntermediateResponseFactory}'s by request OID */
     private Map<String, IntermediateResponseFactory> intermediateResponseFactories = new HashMap<>();
 
     /** The registered ProtocolCodecFactory */

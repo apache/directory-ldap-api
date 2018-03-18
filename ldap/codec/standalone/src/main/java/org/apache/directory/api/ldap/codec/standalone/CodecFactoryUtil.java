@@ -265,7 +265,7 @@ public final class CodecFactoryUtil
      * <li>syncInfovalue</li>
      * </ul>
      * 
-     * @param extendendOperationsFactories The map of extended operation factories
+     * @param intermediateResponseFactories The map of intermediate response factories
      * @param apiService The LdapApiService to use
      */
     public static void loadStockIntermediateResponses(

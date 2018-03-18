@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * The default {@link org.apache.directory.api.ldap.codec.api.LdapApiService} implementation.
- * It loads the Controls and ExtendedOperations as defined in the following system parameters :
+ * It loads the Controls, ExtendedOperations and IntermediateResponses as defined in the following system parameters :
  * <ul>
  *   <li>Controls :
  *     <ul>
@@ -48,8 +48,12 @@ import org.slf4j.LoggerFactory;
  *   <li>ExtendedOperations :
  *     <ul>
  *       <li>apacheds.extendedOperations</li>
- *       <li>default.extendedOperation.responses</li>
  *       <li>extra.extendedOperations</li>
+ *     </ul>
+ *   </li>
+ *   <li>IntermediateResponses :
+ *     <ul>
+ *       <li>apacheds.intermediateResponses</li>
  *     </ul>
  *   </li>
  * </ul>
