@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<checkstyle version="6.8.1">
-<file name="/Users/elecharny/apacheds/value/shared/first-benchmark/src/main/java/org/apache/directory/MyBenchmark.java">
-<error line="0" severity="error" message="Got an exception - expecting EOF, found &apos;}&apos;" source="com.puppycrawl.tools.checkstyle.TreeWalker"/>
-</file>
-<file name="/Users/elecharny/apacheds/value/shared/first-benchmark/src/main/resources/log4j.properties">
-</file>
-</checkstyle>
