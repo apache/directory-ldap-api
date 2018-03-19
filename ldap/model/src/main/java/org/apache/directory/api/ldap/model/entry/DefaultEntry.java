@@ -329,7 +329,7 @@ public final class DefaultEntry implements Entry
             catch ( LdapException ne )
             {
                 // Just log a warning
-                LOG.warn( "The attribute '" + attribute.getId() + "' cannot be stored" );
+                LOG.warn( I18n.msg( I18n.MSG_13200_CANT_STORE_ATTRIBUTE, attribute.getId() ) );
                 throw ne;
             }
         }
@@ -353,7 +353,7 @@ public final class DefaultEntry implements Entry
                 if ( !( element instanceof String ) )
                 {
                     throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                        I18n.ERR_12085, pos + 1 ) );
+                        I18n.ERR_13233_ATTRIBUTE_ID_MUST_BE_A_STRING, pos + 1 ) );
                 }
 
                 String attribute = ( String ) element;
@@ -383,7 +383,7 @@ public final class DefaultEntry implements Entry
                 else
                 {
                     throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                        I18n.ERR_12086, pos + 1 ) );
+                        I18n.ERR_13234_ATTRIBUTE_VAL_STRING_OR_BYTE, pos + 1 ) );
                 }
 
                 valueExpected = false;
@@ -402,7 +402,7 @@ public final class DefaultEntry implements Entry
         }
         catch ( IOException e )
         {
-            throw new LdapLdifException( "Cannot read an entry" );
+            throw new LdapLdifException( I18n.err( I18n.ERR_13248_CANNOT_READ_ENTRY ) );
         }
     }
 
@@ -417,7 +417,7 @@ public final class DefaultEntry implements Entry
         // If empty, throw an error
         if ( Strings.isEmpty( id ) )
         {
-            String message = I18n.err( I18n.ERR_04133 );
+            String message = I18n.err( I18n.ERR_13216_AT_ID_NULL );
             LOG.error( message );
             throw new IllegalArgumentException( message );
         }
@@ -439,7 +439,7 @@ public final class DefaultEntry implements Entry
         {
             if ( Strings.isEmpty( normUpId ) )
             {
-                String message = I18n.err( I18n.ERR_04458 );
+                String message = I18n.err( I18n.ERR_13226_CANNOT_ADD_ATTRIBUTE_NO_ID );
                 LOG.error( message );
                 throw new IllegalArgumentException( message );
             }
@@ -516,7 +516,7 @@ public final class DefaultEntry implements Entry
             }
             catch ( LdapException ne )
             {
-                LOG.warn( "The Dn '{}' cannot be normalized", dn );
+                LOG.warn( I18n.msg( I18n.MSG_13201_DN_CANT_BE_NORMALIZED, dn ) );
                 
                 return dn;
             }
@@ -616,7 +616,7 @@ public final class DefaultEntry implements Entry
 
         if ( ( values == null ) || ( values.length == 0 ) )
         {
-            String message = I18n.err( I18n.ERR_04478_NO_VALUE_NOT_ALLOWED );
+            String message = I18n.err( I18n.ERR_13232_NO_VALUE_NOT_ALLOWED );
             LOG.error( message );
             throw new IllegalArgumentException( message );
         }
@@ -624,7 +624,7 @@ public final class DefaultEntry implements Entry
         // ObjectClass with binary values are not allowed
         if ( attributeType.equals( objectClassAttributeType ) )
         {
-            String message = I18n.err( I18n.ERR_04461 );
+            String message = I18n.err( I18n.ERR_13227_NON_STRING_VALUE_NOT_ALLOWED );
             LOG.error( message );
             throw new UnsupportedOperationException( message );
         }
@@ -723,7 +723,7 @@ public final class DefaultEntry implements Entry
         // ObjectClass with binary values are not allowed
         if ( attributeType.equals( objectClassAttributeType ) )
         {
-            String message = I18n.err( I18n.ERR_04461 );
+            String message = I18n.err( I18n.ERR_13227_NON_STRING_VALUE_NOT_ALLOWED );
             LOG.error( message );
             throw new UnsupportedOperationException( message );
         }
@@ -1388,7 +1388,7 @@ public final class DefaultEntry implements Entry
         }
         catch ( IllegalArgumentException iea )
         {
-            LOG.error( I18n.err( I18n.ERR_04134, alias ) );
+            LOG.error( I18n.err( I18n.ERR_13217_FAILED_LOOKUP_AT, alias ) );
             return null;
         }
     }
@@ -1572,7 +1572,7 @@ public final class DefaultEntry implements Entry
             {
                 if ( attribute == null )
                 {
-                    String message = I18n.err( I18n.ERR_04462 );
+                    String message = I18n.err( I18n.ERR_13228_AT_LIST_NULL_ELEMENTS );
                     LOG.error( message );
                     throw new IllegalArgumentException( message );
                 }
@@ -1639,7 +1639,7 @@ public final class DefaultEntry implements Entry
             }
             catch ( Exception e )
             {
-                String message = I18n.err( I18n.ERR_04477_NO_VALID_AT_FOR_THIS_ID );
+                String message = I18n.err( I18n.ERR_13231_NO_VALID_AT_FOR_THIS_ID );
                 LOG.error( message );
                 throw new IllegalArgumentException( message, e );
             }
@@ -1652,7 +1652,7 @@ public final class DefaultEntry implements Entry
 
                 if ( !tempAT.equals( attributeType ) )
                 {
-                    String message = I18n.err( I18n.ERR_04463, upId, attributeType );
+                    String message = I18n.err( I18n.ERR_13229_ID_INCOMPATIBLE_WITH_AT, upId, attributeType );
                     LOG.error( message );
                     throw new IllegalArgumentException( message );
                 }
@@ -1665,7 +1665,7 @@ public final class DefaultEntry implements Entry
 
         if ( attributeType.equals( objectClassAttributeType ) )
         {
-            String message = I18n.err( I18n.ERR_04461 );
+            String message = I18n.err( I18n.ERR_13227_NON_STRING_VALUE_NOT_ALLOWED );
             LOG.error( message );
             throw new UnsupportedOperationException( message );
         }
@@ -1690,7 +1690,7 @@ public final class DefaultEntry implements Entry
             }
             catch ( Exception e )
             {
-                String message = I18n.err( I18n.ERR_04477_NO_VALID_AT_FOR_THIS_ID );
+                String message = I18n.err( I18n.ERR_13231_NO_VALID_AT_FOR_THIS_ID );
                 LOG.error( message );
                 throw new IllegalArgumentException( message, e );
             }
@@ -1703,7 +1703,7 @@ public final class DefaultEntry implements Entry
 
                 if ( !tempAT.equals( attributeType ) )
                 {
-                    String message = I18n.err( I18n.ERR_04463, upId, attributeType );
+                    String message = I18n.err( I18n.ERR_13229_ID_INCOMPATIBLE_WITH_AT, upId, attributeType );
                     LOG.error( message );
                     throw new IllegalArgumentException( message );
                 }
@@ -1734,7 +1734,7 @@ public final class DefaultEntry implements Entry
             }
             catch ( Exception e )
             {
-                String message = I18n.err( I18n.ERR_04477_NO_VALID_AT_FOR_THIS_ID );
+                String message = I18n.err( I18n.ERR_13231_NO_VALID_AT_FOR_THIS_ID );
                 LOG.error( message );
                 throw new IllegalArgumentException( message, e );
             }
@@ -1747,7 +1747,7 @@ public final class DefaultEntry implements Entry
 
                 if ( !tempAT.equals( attributeType ) )
                 {
-                    String message = I18n.err( I18n.ERR_04463, upId, attributeType );
+                    String message = I18n.err( I18n.ERR_13229_ID_INCOMPATIBLE_WITH_AT, upId, attributeType );
                     LOG.error( message );
                     throw new IllegalArgumentException( message );
                 }
@@ -1996,7 +1996,7 @@ public final class DefaultEntry implements Entry
                 }
                 else
                 {
-                    String message = I18n.err( I18n.ERR_04137, attribute );
+                    String message = I18n.err( I18n.ERR_13218_AT_DOES_NOT_EXIST, attribute );
                     LOG.warn( message );
                     continue;
                 }
@@ -2014,8 +2014,7 @@ public final class DefaultEntry implements Entry
                 }
                 catch ( LdapException ne )
                 {
-                    String message = "The attribute '" + attribute + "' does not exist in the entry";
-                    LOG.warn( message );
+                    LOG.warn( I18n.msg( I18n.MSG_13203_MISSING_ATTRIBUTE_IN_ENTRY, attribute ) );
                     continue;
                 }
 

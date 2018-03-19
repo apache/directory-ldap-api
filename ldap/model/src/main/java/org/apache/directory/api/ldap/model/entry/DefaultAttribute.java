@@ -493,7 +493,7 @@ public class DefaultAttribute implements Attribute, Cloneable
             return value.getBytes();
         }
 
-        String message = I18n.err( I18n.ERR_04130 );
+        String message = I18n.err( I18n.ERR_13214_VALUE_EXPECT_BYTES );
         LOG.error( message );
         throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
     }
@@ -512,7 +512,7 @@ public class DefaultAttribute implements Attribute, Cloneable
             return value.getValue();
         }
 
-        String message = I18n.err( I18n.ERR_04131 );
+        String message = I18n.err( I18n.ERR_13215_VALUE_EXPECT_STRING );
         LOG.error( message );
         throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
     }
@@ -597,7 +597,7 @@ public class DefaultAttribute implements Attribute, Cloneable
 
         if ( Strings.isEmpty( trimmed ) && ( attributeType == null ) )
         {
-            throw new IllegalArgumentException( "Cannot set a null ID with a null AttributeType" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13235_NULL_ID_WITH_NULL_AT_NOT_ALLOWED ) );
         }
 
         String newId = Strings.toLowerCaseAscii( trimmed );
@@ -618,7 +618,7 @@ public class DefaultAttribute implements Attribute, Cloneable
 
         if ( Strings.isEmpty( trimmed ) && ( attributeType == null ) )
         {
-            throw new IllegalArgumentException( "Cannot set a null ID with a null AttributeType" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13235_NULL_ID_WITH_NULL_AT_NOT_ALLOWED ) );
         }
 
         String newId = Strings.toLowerCase( trimmed );
@@ -684,8 +684,7 @@ public class DefaultAttribute implements Attribute, Cloneable
             return;
         }
 
-        throw new IllegalArgumentException( "ID '" + id + "' and AttributeType '" + attributeType.getName()
-            + "' are not compatible " );
+        throw new IllegalArgumentException( I18n.err( I18n.ERR_13244_ID_AT_NOT_COMPATIBLE, id, attributeType.getName() ) );
     }
 
 
@@ -817,7 +816,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                     }
                     else
                     {
-                        String message = I18n.err( I18n.ERR_04451 );
+                        String message = I18n.err( I18n.ERR_13213_VALUE_MUST_BE_A_STRING );
                         LOG.error( message );
                     }
                 }
@@ -1194,7 +1193,7 @@ public class DefaultAttribute implements Attribute, Cloneable
         else
         {
             // We can't add Binary values into a String Attribute
-            LOG.info( I18n.err( I18n.ERR_04451 ) );
+            LOG.info( I18n.err( I18n.ERR_13213_VALUE_MUST_BE_A_STRING ) );
             return 0;
         }
 
@@ -1781,7 +1780,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     {
         if ( attributeType == null )
         {
-            throw new IllegalArgumentException( "The AttributeType parameter should not be null" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13245_AT_PARAMETER_NULL ) );
         }
 
         this.attributeType = attributeType;

@@ -220,7 +220,7 @@ public class DefaultModification implements Modification
         catch ( LdapException ne )
         {
             // The attributeType is incorrect. Log, but do nothing otherwise.
-            LOG.error( I18n.err( I18n.ERR_04472, modAttribute.getId() ) );
+            LOG.error( I18n.err( I18n.ERR_13230_INCORRECT_ATTRIBUTE, modAttribute.getId() ) );
         }
     }
 

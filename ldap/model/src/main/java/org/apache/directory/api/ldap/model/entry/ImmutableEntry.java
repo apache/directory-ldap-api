@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -75,7 +76,7 @@ public class ImmutableEntry implements Entry
     public Entry add( AttributeType attributeType, byte[]... values ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13236_ENTRY_IMMUTABLE_CANT_ADD_ATTRIBUTE, entry.getDn() ) );
     }
 
 
@@ -86,7 +87,7 @@ public class ImmutableEntry implements Entry
     public Entry add( AttributeType attributeType, String... values ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13236_ENTRY_IMMUTABLE_CANT_ADD_ATTRIBUTE, entry.getDn() ) );
     }
 
 
@@ -97,7 +98,7 @@ public class ImmutableEntry implements Entry
     public Entry add( AttributeType attributeType, Value... values ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13236_ENTRY_IMMUTABLE_CANT_ADD_ATTRIBUTE, entry.getDn() ) );
     }
 
 
@@ -107,7 +108,7 @@ public class ImmutableEntry implements Entry
     public Entry add( String upId, AttributeType attributeType, byte[]... values ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13236_ENTRY_IMMUTABLE_CANT_ADD_ATTRIBUTE, entry.getDn() ) );
     }
 
 
@@ -118,7 +119,7 @@ public class ImmutableEntry implements Entry
     public Entry add( String upId, AttributeType attributeType, Value... values ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13236_ENTRY_IMMUTABLE_CANT_ADD_ATTRIBUTE, entry.getDn() ) );
     }
 
 
@@ -129,7 +130,7 @@ public class ImmutableEntry implements Entry
     public Entry add( String upId, AttributeType attributeType, String... values ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13236_ENTRY_IMMUTABLE_CANT_ADD_ATTRIBUTE, entry.getDn() ) );
     }
 
 
@@ -140,7 +141,7 @@ public class ImmutableEntry implements Entry
     public Entry add( Attribute... attributes ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13236_ENTRY_IMMUTABLE_CANT_ADD_ATTRIBUTE, entry.getDn() ) );
     }
 
 
@@ -150,7 +151,7 @@ public class ImmutableEntry implements Entry
     public Entry add( String upId, byte[]... values ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13236_ENTRY_IMMUTABLE_CANT_ADD_ATTRIBUTE, entry.getDn() ) );
     }
 
 
@@ -161,7 +162,7 @@ public class ImmutableEntry implements Entry
     public Entry add( String upId, String... values ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13236_ENTRY_IMMUTABLE_CANT_ADD_ATTRIBUTE, entry.getDn() ) );
     }
 
 
@@ -172,7 +173,7 @@ public class ImmutableEntry implements Entry
 public Entry add( String upId, Value... values ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13236_ENTRY_IMMUTABLE_CANT_ADD_ATTRIBUTE, entry.getDn() ) );
     }
 
 
@@ -322,7 +323,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public Attribute put( String upId, byte[]... values )
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot put a value : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13237_ENTRY_IMMUTABLE_CANT_PUT_VALUE, entry.getDn() ) );
     }
 
 
@@ -333,7 +334,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public Attribute put( String upId, String... values )
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot put a value : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13237_ENTRY_IMMUTABLE_CANT_PUT_VALUE, entry.getDn() ) );
     }
 
 
@@ -344,7 +345,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public Attribute put( String upId, Value... values )
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot put a value : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13237_ENTRY_IMMUTABLE_CANT_PUT_VALUE, entry.getDn() ) );
     }
 
 
@@ -355,7 +356,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public List<Attribute> put( Attribute... attributes ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot put a value : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13237_ENTRY_IMMUTABLE_CANT_PUT_VALUE, entry.getDn() ) );
     }
 
 
@@ -365,7 +366,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public Attribute put( AttributeType attributeType, byte[]... values ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot put a value : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13237_ENTRY_IMMUTABLE_CANT_PUT_VALUE, entry.getDn() ) );
     }
 
 
@@ -376,7 +377,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public Attribute put( AttributeType attributeType, String... values ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot put a value : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13237_ENTRY_IMMUTABLE_CANT_PUT_VALUE, entry.getDn() ) );
     }
 
 
@@ -387,7 +388,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public Attribute put( AttributeType attributeType, Value... values ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot put a value : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13237_ENTRY_IMMUTABLE_CANT_PUT_VALUE, entry.getDn() ) );
     }
 
 
@@ -397,7 +398,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public Attribute put( String upId, AttributeType attributeType, byte[]... values ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot put a value : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13237_ENTRY_IMMUTABLE_CANT_PUT_VALUE, entry.getDn() ) );
     }
 
 
@@ -408,7 +409,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public Attribute put( String upId, AttributeType attributeType, String... values ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot put a value : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13237_ENTRY_IMMUTABLE_CANT_PUT_VALUE, entry.getDn() ) );
     }
 
 
@@ -419,7 +420,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public Attribute put( String upId, AttributeType attributeType, Value... values ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot put a value : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13237_ENTRY_IMMUTABLE_CANT_PUT_VALUE, entry.getDn() ) );
     }
 
 
@@ -430,7 +431,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public List<Attribute> remove( Attribute... attributes ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot remove a value : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13238_ENTRY_IMMUTABLE_CANT_REMOVE_VALUE, entry.getDn() ) );
     }
 
 
@@ -440,7 +441,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public boolean remove( AttributeType attributeType, byte[]... values ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot remove a value : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13238_ENTRY_IMMUTABLE_CANT_REMOVE_VALUE, entry.getDn() ) );
     }
 
 
@@ -451,7 +452,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public boolean remove( AttributeType attributeType, String... values ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot remove a value : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13238_ENTRY_IMMUTABLE_CANT_REMOVE_VALUE, entry.getDn() ) );
     }
 
 
@@ -462,7 +463,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public boolean remove( AttributeType attributeType, Value... values ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot remove a value : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13238_ENTRY_IMMUTABLE_CANT_REMOVE_VALUE, entry.getDn() ) );
     }
 
 
@@ -484,7 +485,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public void removeAttributes( AttributeType... attributes )
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot remove a value : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13238_ENTRY_IMMUTABLE_CANT_REMOVE_VALUE, entry.getDn() ) );
     }
 
 
@@ -495,7 +496,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public void removeAttributes( String... attributes )
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot remove a value : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13238_ENTRY_IMMUTABLE_CANT_REMOVE_VALUE, entry.getDn() ) );
     }
 
 
@@ -523,7 +524,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public boolean remove( String upId, byte[]... values ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot remove a value : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13238_ENTRY_IMMUTABLE_CANT_REMOVE_VALUE, entry.getDn() ) );
     }
 
 
@@ -552,7 +553,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public boolean remove( String upId, String... values ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot remove a value : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13238_ENTRY_IMMUTABLE_CANT_REMOVE_VALUE, entry.getDn() ) );
     }
 
 
@@ -581,7 +582,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public boolean remove( String upId, Value... values ) throws LdapException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot remove a value : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13238_ENTRY_IMMUTABLE_CANT_REMOVE_VALUE, entry.getDn() ) );
     }
 
 
@@ -604,7 +605,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public void setDn( Dn dn )
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot rename the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13239_ENTRY_IMMUTABLE_CANT_RENAME_ENTRY, entry.getDn() ) );
     }
 
 
@@ -615,7 +616,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public void setDn( String dn ) throws LdapInvalidDnException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot rename the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13239_ENTRY_IMMUTABLE_CANT_RENAME_ENTRY, entry.getDn() ) );
     }
 
 
@@ -626,7 +627,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public void clear()
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot clear the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13240_ENTRY_IMMUTABLE_CANT_CLEAR_ENTRY, entry.getDn() ) );
     }
 
 
@@ -689,7 +690,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public void readExternal( ObjectInput in ) throws IOException, ClassNotFoundException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot read the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13241_ENTRY_IMMUTABLE_CANT_READ_ENTRY, entry.getDn() ) );
     }
 
 
@@ -710,7 +711,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public void serialize( ObjectOutput out ) throws IOException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot serialize the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13242_ENTRY_IMMUTABLE_CANT_SERIALIZE, entry.getDn() ) );
     }
 
 
@@ -724,7 +725,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     public void deserialize( ObjectInput in ) throws IOException, ClassNotFoundException
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot deserialize the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( I18n.err( I18n.ERR_13243_ENTRY_IMMUTABLE_CANT_DESERIALIZE, entry.getDn() ) );
     }
 
 

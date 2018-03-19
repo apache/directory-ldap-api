@@ -1021,7 +1021,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         {
             // Ok, no normalizer, this is an error
             Throwable error = new LdapSchemaViolationException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                I18n.ERR_04295_NO_NORMALIZER, matchingRule.getOid() ) );
+                I18n.ERR_13220_NO_NORMALIZER, matchingRule.getOid() ) );
             errors.add( error );
         }
 

@@ -181,13 +181,14 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
             {
                 if ( !syntaxChecker.isValidSyntax( bytes ) )
                 {
-                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, "Invalid upValue per syntax" );
+                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, 
+                        I18n.err( I18n.ERR_13246_INVALID_VALUE_PER_SYNTAX ) );
                 }
             }
             else
             {
                 // We should always have a SyntaxChecker
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_04139_NULL_SYNTAX_CHECKER, normValue ) );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13219_NULL_SYNTAX_CHECKER, normValue ) );
             }
         }
 
@@ -202,9 +203,9 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
             if ( attributeType.getSyntax() == null )
             {
                 // Some broken LDAP servers do not have proper syntax definitions, default to HR
-                LOG.info( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
+                LOG.info( I18n.err( I18n.ERR_13225_NO_SYNTAX ) );
                 isHR = true;
-                //throw new IllegalArgumentException( I18n.err( I18n.ERR_04445_NO_SYNTAX ) );
+                //throw new IllegalArgumentException( I18n.err( I18n.ERR_13225_NO_SYNTAX ) );
             }
             else
             {
@@ -213,7 +214,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         }
         else
         {
-            LOG.warn( "The attributeType is null" );
+            LOG.warn( I18n.msg( I18n.MSG_13202_AT_IS_NULL ) );
         }
         
         this.attributeType = attributeType;
@@ -262,7 +263,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         catch ( LdapException le )
         {
             LOG.error( le.getMessage() );
-            throw new IllegalArgumentException( "Invalid upValue, it can't be normalized" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13247_INVALID_VALUE_CANT_NORMALIZE ) );
         }
         
         if ( !attributeType.isRelaxed() )
@@ -272,13 +273,14 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
             {
                 if ( !attributeType.getSyntax().getSyntaxChecker().isValidSyntax( upValue ) )
                 {
-                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, "Invalid upValue per syntax" );
+                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, 
+                        I18n.err( I18n.ERR_13246_INVALID_VALUE_PER_SYNTAX ) );
                 }
             }
             else
             {
                 // We should always have a SyntaxChecker
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_04139_NULL_SYNTAX_CHECKER, normValue ) );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13219_NULL_SYNTAX_CHECKER, normValue ) );
             }
         }
         
@@ -319,13 +321,14 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
             {
                 if ( !attributeType.getSyntax().getSyntaxChecker().isValidSyntax( upValue ) )
                 {
-                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, "Invalid upValue per syntax" );
+                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, 
+                        I18n.err( I18n.ERR_13246_INVALID_VALUE_PER_SYNTAX ) );
                 }
             }
             else
             {
                 // We should always have a SyntaxChecker
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_04139_NULL_SYNTAX_CHECKER, normValue ) );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13219_NULL_SYNTAX_CHECKER, normValue ) );
             }
         }
         
@@ -356,7 +359,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         catch ( LdapException le )
         {
             LOG.error( le.getMessage() );
-            throw new IllegalArgumentException( "Invalid upValue, it can't be normalized" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13247_INVALID_VALUE_CANT_NORMALIZE ) );
         }
         
         // Check the normValue
@@ -370,7 +373,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
             else
             {
                 // We should always have a SyntaxChecker
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_04139_NULL_SYNTAX_CHECKER, normValue ) );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13219_NULL_SYNTAX_CHECKER, normValue ) );
             }
         }
             
@@ -549,7 +552,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         
         if ( normalizer == null )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04295_NO_NORMALIZER ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13220_NO_NORMALIZER ) );
         }
 
         // Now, normalize the upValue
@@ -614,7 +617,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
     {
         if ( syntaxChecker == null )
         {
-            String message = I18n.err( I18n.ERR_04139_NULL_SYNTAX_CHECKER, toString() );
+            String message = I18n.err( I18n.ERR_13219_NULL_SYNTAX_CHECKER, toString() );
             LOG.error( message );
             throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
         }
@@ -1003,7 +1006,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
     {
         if ( !isHR )
         {
-            String msg = I18n.err( I18n.ERR_04443, this, other );
+            String msg = I18n.err( I18n.ERR_13224_FAILED_TO_COMPARE_NORM_VALUES, this, other );
             LOG.error( msg );
             throw new IllegalStateException( msg );
         }
@@ -1064,7 +1067,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
     {
         if ( isHR )
         {
-            String msg = I18n.err( I18n.ERR_04443, this, other );
+            String msg = I18n.err( I18n.ERR_13224_FAILED_TO_COMPARE_NORM_VALUES, this, other );
             LOG.error( msg );
             throw new IllegalStateException( msg );
         }
@@ -1107,7 +1110,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         // The two values must have the same type
         if ( isHR != other.isHR )
         {
-            String msg = I18n.err( I18n.ERR_04443, this, other );
+            String msg = I18n.err( I18n.ERR_13224_FAILED_TO_COMPARE_NORM_VALUES, this, other );
             LOG.error( msg );
             throw new IllegalStateException( msg );
         }
@@ -1326,7 +1329,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
                 if ( ldapComparator == null )
                 {
                     // This is an error !
-                    LOG.error( "No comparator for the {} attributeType", other.attributeType );
+                    LOG.error( I18n.err( I18n.ERR_13249_NO_COMPARATOR_FOR_AT, other.attributeType ) );
                     
                     return false;
                 }

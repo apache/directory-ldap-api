@@ -710,7 +710,7 @@ public final class LdifUtils
                 if ( !( ava instanceof String ) )
                 {
                     throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                        I18n.ERR_12085, pos + 1 ) );
+                        I18n.ERR_13233_ATTRIBUTE_ID_MUST_BE_A_STRING, pos + 1 ) );
                 }
 
                 String attribute = ( String ) ava;
@@ -740,7 +740,7 @@ public final class LdifUtils
                 else
                 {
                     throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                        I18n.ERR_12086, pos + 1 ) );
+                        I18n.ERR_13234_ATTRIBUTE_VAL_STRING_OR_BYTE, pos + 1 ) );
                 }
 
                 valueExpected = false;
@@ -750,7 +750,7 @@ public final class LdifUtils
         if ( valueExpected )
         {
             throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n
-                .err( I18n.ERR_12087 ) );
+                .err( I18n.ERR_13234_ATTRIBUTE_VAL_STRING_OR_BYTE ) );
         }
 
         try ( LdifAttributesReader reader = new LdifAttributesReader() ) 

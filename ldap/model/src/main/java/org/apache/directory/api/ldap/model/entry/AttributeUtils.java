@@ -335,7 +335,7 @@ public final class AttributeUtils
         // We must have at least one '.' number
         if ( !Strings.isCharASCII( str, pos.start, '.' ) )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04344 ), pos.start );
+            throw new ParseException( I18n.err( I18n.ERR_13221_INVALID_OID_MISSING_DOT ), pos.start );
         }
 
         pos.start++;
@@ -383,7 +383,7 @@ public final class AttributeUtils
         // We must have at least one '.' number
         if ( !Strings.isCharASCII( bytes, pos.start, '.' ) )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04344 ), pos.start );
+            throw new ParseException( I18n.err( I18n.ERR_13221_INVALID_OID_MISSING_DOT ), pos.start );
         }
 
         pos.start++;
@@ -440,7 +440,7 @@ public final class AttributeUtils
 
         if ( c == '\0' )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04346 ), pos.start );
+            throw new ParseException( I18n.err( I18n.ERR_13222_EMPTY_ATTRIBUTE ), pos.start );
         }
 
         int start = pos.start;
@@ -481,7 +481,7 @@ public final class AttributeUtils
         }
         else
         {
-            throw new ParseException( I18n.err( I18n.ERR_04347 ), pos.start );
+            throw new ParseException( I18n.err( I18n.ERR_13223_BAD_CHAR_IN_ATTRIBUTE ), pos.start );
         }
     }
 
@@ -517,7 +517,7 @@ public final class AttributeUtils
 
         if ( b == '\0' )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04346 ), pos.start );
+            throw new ParseException( I18n.err( I18n.ERR_13222_EMPTY_ATTRIBUTE ), pos.start );
         }
 
         int start = pos.start;
@@ -553,7 +553,7 @@ public final class AttributeUtils
         }
         else
         {
-            throw new ParseException( I18n.err( I18n.ERR_04347 ), pos.start );
+            throw new ParseException( I18n.err( I18n.ERR_13223_BAD_CHAR_IN_ATTRIBUTE ), pos.start );
         }
     }
 
