@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.Value;
@@ -89,7 +90,7 @@ public class BinaryAnonymizer extends AbstractAnonymizer<byte[]>
             }
             catch ( LdapInvalidAttributeValueException e )
             {
-                throw new RuntimeException( "Error while anonymizing the value" + value );
+                throw new RuntimeException( I18n.err( I18n.ERR_13436_ERROR_ANONYMIZING_VALUE, value ) );
             }
         }
 

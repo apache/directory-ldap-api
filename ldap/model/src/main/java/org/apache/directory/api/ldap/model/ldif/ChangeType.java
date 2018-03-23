@@ -121,7 +121,7 @@ public enum ChangeType
                 return Delete;
 
             default:
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_12001_UNKNOWN_CHANGE_TYPE, val ) );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13438_UNKNOWN_CHANGE_TYPE, val ) );
         }
     }
 }

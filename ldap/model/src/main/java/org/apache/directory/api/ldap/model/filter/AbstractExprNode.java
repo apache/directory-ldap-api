@@ -209,7 +209,7 @@ public abstract class AbstractExprNode implements ExprNode
     @Override
     public StringBuilder printRefinementToBuffer( StringBuilder buf )
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_04144 ) );
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13303_SCOPENODE_IN_REFINEMENT ) );
     }
 
 

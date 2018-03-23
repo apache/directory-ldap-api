@@ -250,7 +250,7 @@ public abstract class SimpleNode<T> extends LeafNode
         {
             if ( !attributeType.getOid().equals( SchemaConstants.OBJECT_CLASS_AT_OID ) )
             {
-                throw new UnsupportedOperationException( I18n.err( I18n.ERR_04162, attribute ) );
+                throw new UnsupportedOperationException( I18n.err( I18n.ERR_13318_INVALID_ATTR_IN_REFINEMENT, attribute ) );
             }
         }
         else
@@ -259,7 +259,7 @@ public abstract class SimpleNode<T> extends LeafNode
                 || !( SchemaConstants.OBJECT_CLASS_AT.equalsIgnoreCase( attribute )
                 || SchemaConstants.OBJECT_CLASS_AT_OID.equalsIgnoreCase( attribute ) ) )
             {
-                throw new UnsupportedOperationException( I18n.err( I18n.ERR_04162, attribute ) );
+                throw new UnsupportedOperationException( I18n.err( I18n.ERR_13318_INVALID_ATTR_IN_REFINEMENT, attribute ) );
             }
         }
 

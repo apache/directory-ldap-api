@@ -238,7 +238,7 @@ public final class LdifRevertor
         // Special case if we don't have any reverse modifications
         if ( reverseModifications.isEmpty() )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_12073, forwardModifications ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13465_CANT_DEDUCE_REVERSE_FOR_MOD, forwardModifications ) );
         }
 
         // Now, push the reversed list into the entry
@@ -271,17 +271,17 @@ public final class LdifRevertor
 
         if ( newSuperiorDn == null )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_12074 ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13466_NEW_SUPERIOR_DN_NULL ) );
         }
 
         if ( modifiedDn == null )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_12075 ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13467_NULL_MODIFIED_DN ) );
         }
 
         if ( modifiedDn.size() == 0 )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_12076 ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13468_DONT_MOVE_ROOTDSE ) );
         }
 
         currentParent = modifiedDn;
@@ -449,17 +449,17 @@ public final class LdifRevertor
 
         if ( newRdn == null )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_12077 ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13469_NULL_READ_DN ) );
         }
 
         if ( parentDn == null )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_12078 ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13467_NULL_MODIFIED_DN ) );
         }
 
         if ( parentDn.size() == 0 )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_12079 ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13470_DONT_RENAME_ROOTDSE ) );
         }
 
         parentDn = entry.getDn();

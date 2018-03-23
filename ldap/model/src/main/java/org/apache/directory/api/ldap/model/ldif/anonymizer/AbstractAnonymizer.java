@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 
 /**
@@ -207,7 +208,9 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
             if ( overflow )
             {
                 // We have exhausted all the possible values...
-                throw new RuntimeException( "Cannot compute a new value for " + anonymizedValue );
+                String msg = I18n.err( I18n.ERR_13435_CANNOT_COMPUTE_NEW_VALUE, anonymizedValue );
+                
+                throw new RuntimeException( msg );
             }
             
             getLatestStringMap().put( length, anonymizedValue );
@@ -261,7 +264,9 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
             if ( overflow )
             {
                 // We have exhausted all the possible values...
-                throw new RuntimeException( "Cannot compute a new value for " + latestBytes );
+                String msg = I18n.err( I18n.ERR_13435_CANNOT_COMPUTE_NEW_VALUE, latestBytes );
+                
+                throw new RuntimeException( msg );
             }
             
             return latestBytes;

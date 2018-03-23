@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.filter;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
@@ -48,7 +49,7 @@ public class GreaterEqNode<T> extends SimpleNode<T>
         // Check if the AttributeType has an Ordering MR
         if ( ( attributeType != null ) && ( attributeType.getOrdering() == null ) )
         {
-            throw new LdapSchemaException( "There is no ORDERING matchingRule for AttributeType " + attributeType.getName() );
+            throw new LdapSchemaException( I18n.err( I18n.ERR_13301_NO_ORDERING_MR_FOR_AT, attributeType.getName() ) );
         }
     }
 
@@ -67,7 +68,7 @@ public class GreaterEqNode<T> extends SimpleNode<T>
         // Check if the AttributeType has an Ordering MR
         if ( ( attributeType != null ) && ( attributeType.getOrdering() == null ) )
         {
-            throw new LdapSchemaException( "There is no ORDERING matchingRule for AttributeType " + attributeType.getName() );
+            throw new LdapSchemaException( I18n.err( I18n.ERR_13301_NO_ORDERING_MR_FOR_AT, attributeType.getName() ) );
         }
     }
 
@@ -86,7 +87,7 @@ public class GreaterEqNode<T> extends SimpleNode<T>
         // Check if the AttributeType has an Ordering MR
         if ( ( attributeType != null ) && ( attributeType.getOrdering() == null ) )
         {
-            throw new LdapSchemaException( "There is no ORDERING matchingRule for AttributeType " + attributeType.getName() );
+            throw new LdapSchemaException( I18n.err( I18n.ERR_13301_NO_ORDERING_MR_FOR_AT, attributeType.getName() ) );
         }
     }
 
