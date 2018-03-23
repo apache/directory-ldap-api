@@ -137,7 +137,7 @@ public final class NoticeOfDisconnect extends ExtendedResponseImpl
                 break;
 
             default:
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_04166, ResultCodeEnum.UNAVAILABLE,
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13503_RESULT_CODE_SHOULD_BE_IN, ResultCodeEnum.UNAVAILABLE,
                     ResultCodeEnum.PROTOCOL_ERROR, ResultCodeEnum.STRONG_AUTH_REQUIRED ) );
         }
 
@@ -169,7 +169,7 @@ public final class NoticeOfDisconnect extends ExtendedResponseImpl
      */
     public void setResponse( byte[] value )
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_04173 ) );
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13505_HARDCODED_ZERO_LENGTH_RESPONSE ) );
     }
 
 
@@ -190,13 +190,12 @@ public final class NoticeOfDisconnect extends ExtendedResponseImpl
      * Sets the OID uniquely identifying this extended response (a.k.a. its
      * name).
      * 
-     * @param oid
-     *            the OID of the extended response type.
+     * @param oid the OID of the extended response type.
      */
     @Override
     public void setResponseName( String oid )
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_04168, EXTENSION_OID ) );
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13504_FIX_OID, EXTENSION_OID ) );
     }
 
 

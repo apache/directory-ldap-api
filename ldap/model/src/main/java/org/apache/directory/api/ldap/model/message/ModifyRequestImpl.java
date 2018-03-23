@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.DefaultModification;
@@ -487,8 +488,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
                         break;
 
                     default:
-                        throw new IllegalArgumentException( "Unexpected ModificationOperation "
-                            + modification.getOperation() );
+                        throw new IllegalArgumentException( I18n.err( I18n.ERR_13515_UNEXPECTED_MOD_OP, modification.getOperation() ) );
                 }
 
                 sb.append( "                Modification\n" );

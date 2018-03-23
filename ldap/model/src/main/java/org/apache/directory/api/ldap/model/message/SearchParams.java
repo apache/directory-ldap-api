@@ -25,6 +25,7 @@ import java.util.Set;
 
 import javax.naming.directory.SearchControls;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.AttributeTypeOptions;
@@ -213,7 +214,7 @@ public class SearchParams
             }
             catch ( LdapException ne )
             {
-                LOG.warn( "Requested attribute {} does not exist in the schema, it will be ignored", returnAttribute );
+                LOG.warn( I18n.msg( I18n.MSG_13500_ATTRIBUTE_NOT_IN_SCHEMA, returnAttribute ) );
                 // Unknown attributes should be silently ignored, as RFC 2251 states
             }
         }

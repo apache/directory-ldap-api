@@ -115,7 +115,7 @@ public enum SearchScope
                 return SUBTREE;
 
             default:
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_04160, scope ) );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13501_UNKNOWN_JNDI_SCOPE, scope ) );
         }
     }
 
@@ -142,7 +142,7 @@ public enum SearchScope
         }
         else
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04161, scope ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13502_UNKNOWN_LDAP_URL_SCOPE, scope ) );
         }
     }
 
@@ -170,7 +170,7 @@ public enum SearchScope
         }
         else
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04161, scope ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13502_UNKNOWN_LDAP_URL_SCOPE, scope ) );
         }
     }
 

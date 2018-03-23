@@ -181,8 +181,8 @@ public class LdifAttributesReader extends LdifReader
         // We should *not* have a Dn twice
         if ( "dn".equals( attributeType ) )
         {
-            LOG.error( I18n.err( I18n.ERR_12002_ENTRY_WITH_TWO_DNS ) );
-            throw new LdapLdifException( I18n.err( I18n.ERR_12003_LDIF_ENTRY_WITH_TWO_DNS ) );
+            LOG.error( I18n.err( I18n.ERR_13400_ENTRY_WITH_TWO_DNS ) );
+            throw new LdapLdifException( I18n.err( I18n.ERR_13439_LDIF_ENTRY_WITH_TWO_DNS ) );
         }
 
         Object attributeValue = parseValue( attributeType, line, colonIndex );
@@ -221,8 +221,8 @@ public class LdifAttributesReader extends LdifReader
         // We should *not* have a Dn twice
         if ( "dn".equals( attributeName ) )
         {
-            LOG.error( I18n.err( I18n.ERR_12002_ENTRY_WITH_TWO_DNS ) );
-            throw new LdapLdifException( I18n.err( I18n.ERR_12003_LDIF_ENTRY_WITH_TWO_DNS ) );
+            LOG.error( I18n.err( I18n.ERR_13400_ENTRY_WITH_TWO_DNS ) );
+            throw new LdapLdifException( I18n.err( I18n.ERR_13439_LDIF_ENTRY_WITH_TWO_DNS ) );
         }
 
         if ( schemaManager != null )
@@ -231,8 +231,9 @@ public class LdifAttributesReader extends LdifReader
 
             if ( attributeType == null )
             {
-                LOG.error( "" );
-                throw new LdapLdifException( "" );
+                String msg = I18n.err( I18n.ERR_13475_UNKNOWN_ATTRIBUTETYPE,  attributeName );
+                LOG.error( msg );
+                throw new LdapLdifException( msg );
             }
         }
 
@@ -278,7 +279,7 @@ public class LdifAttributesReader extends LdifReader
                 }
                 catch ( LdapException le )
                 {
-                    throw new LdapLdifException( I18n.err( I18n.ERR_12057_BAD_ATTRIBUTE ), le );
+                    throw new LdapLdifException( I18n.err( I18n.ERR_13460_BAD_ATTRIBUTE ), le );
                 }
             }
         }
@@ -321,7 +322,8 @@ public class LdifAttributesReader extends LdifReader
     {
         if ( ( lines == null ) || lines.isEmpty() )
         {
-            LOG.debug( "The entry is empty : end of ldif file" );
+            LOG.debug( I18n.msg( I18n.MSG_13408_END_OF_LDIF ) );
+            
             return null;
         }
 
@@ -340,13 +342,13 @@ public class LdifAttributesReader extends LdifReader
             // 3) The first line after the Dn is anything else
             if ( lowerLine.startsWith( "control:" ) )
             {
-                LOG.error( I18n.err( I18n.ERR_12004_CHANGE_NOT_ALLOWED ) );
-                throw new LdapLdifException( I18n.err( I18n.ERR_12005_NO_CHANGE ) );
+                LOG.error( I18n.err( I18n.ERR_13401_CHANGE_NOT_ALLOWED ) );
+                throw new LdapLdifException( I18n.err( I18n.ERR_13440_NO_CHANGE ) );
             }
             else if ( lowerLine.startsWith( "changetype:" ) )
             {
-                LOG.error( I18n.err( I18n.ERR_12004_CHANGE_NOT_ALLOWED ) );
-                throw new LdapLdifException( I18n.err( I18n.ERR_12005_NO_CHANGE ) );
+                LOG.error( I18n.err( I18n.ERR_13401_CHANGE_NOT_ALLOWED ) );
+                throw new LdapLdifException( I18n.err( I18n.ERR_13440_NO_CHANGE ) );
             }
             else if ( line.indexOf( ':' ) > 0 )
             {
@@ -355,12 +357,12 @@ public class LdifAttributesReader extends LdifReader
             else
             {
                 // Invalid attribute Value
-                LOG.error( I18n.err( I18n.ERR_12006_EXPECTING_ATTRIBUTE_TYPE ) );
-                throw new LdapLdifException( I18n.err( I18n.ERR_12007_BAD_ATTRIBUTE ) );
+                LOG.error( I18n.err( I18n.ERR_13402_EXPECTING_ATTRIBUTE_TYPE ) );
+                throw new LdapLdifException( I18n.err( I18n.ERR_13441_BAD_ATTRIBUTE ) );
             }
         }
 
-        LOG.debug( "Read an attributes : {}", entry );
+        LOG.debug( I18n.msg( I18n.MSG_13405_READ_ATTR, entry ) );
 
         return entry;
     }
@@ -385,7 +387,8 @@ public class LdifAttributesReader extends LdifReader
     {
         if ( ( lines == null ) || lines.isEmpty() )
         {
-            LOG.debug( "The entry is empty : end of ldif file" );
+            LOG.debug( I18n.msg( I18n.MSG_13408_END_OF_LDIF ) );
+
             return null;
         }
 
@@ -404,13 +407,13 @@ public class LdifAttributesReader extends LdifReader
             // 3) The first line after the Dn is anything else
             if ( lowerLine.startsWith( "control:" ) )
             {
-                LOG.error( I18n.err( I18n.ERR_12004_CHANGE_NOT_ALLOWED ) );
-                throw new LdapLdifException( I18n.err( I18n.ERR_12005_NO_CHANGE ) );
+                LOG.error( I18n.err( I18n.ERR_13401_CHANGE_NOT_ALLOWED ) );
+                throw new LdapLdifException( I18n.err( I18n.ERR_13440_NO_CHANGE ) );
             }
             else if ( lowerLine.startsWith( "changetype:" ) )
             {
-                LOG.error( I18n.err( I18n.ERR_12004_CHANGE_NOT_ALLOWED ) );
-                throw new LdapLdifException( I18n.err( I18n.ERR_12005_NO_CHANGE ) );
+                LOG.error( I18n.err( I18n.ERR_13401_CHANGE_NOT_ALLOWED ) );
+                throw new LdapLdifException( I18n.err( I18n.ERR_13440_NO_CHANGE ) );
             }
             else if ( line.indexOf( ':' ) > 0 )
             {
@@ -419,12 +422,12 @@ public class LdifAttributesReader extends LdifReader
             else
             {
                 // Invalid attribute Value
-                LOG.error( I18n.err( I18n.ERR_12006_EXPECTING_ATTRIBUTE_TYPE ) );
-                throw new LdapLdifException( I18n.err( I18n.ERR_12007_BAD_ATTRIBUTE ) );
+                LOG.error( I18n.err( I18n.ERR_13402_EXPECTING_ATTRIBUTE_TYPE ) );
+                throw new LdapLdifException( I18n.err( I18n.ERR_13441_BAD_ATTRIBUTE ) );
             }
         }
 
-        LOG.debug( "Read an attributes : {}", attributes );
+        LOG.debug( I18n.msg( I18n.MSG_13405_READ_ATTR, attributes ) );
 
         return attributes;
     }
@@ -442,7 +445,7 @@ public class LdifAttributesReader extends LdifReader
         lines = new ArrayList<String>();
         position = 0;
 
-        LOG.debug( "Starts parsing ldif buffer" );
+        LOG.debug( I18n.msg( I18n.MSG_13407_STARTS_PARSING_LDIF ) );
 
         if ( Strings.isEmpty( ldif ) )
         {
@@ -462,11 +465,11 @@ public class LdifAttributesReader extends LdifReader
             {
                 if ( attributes == null )
                 {
-                    LOG.debug( "Parsed no entry." );
+                    LOG.debug( I18n.msg( I18n.MSG_13401_PARSED_NO_ENTRY ) );
                 }
                 else
                 {
-                    LOG.debug( "Parsed one entry." );
+                    LOG.debug( I18n.msg( I18n.MSG_13402_PARSED_ONE_ENTRY ) );
                 }
             }
 
@@ -474,8 +477,8 @@ public class LdifAttributesReader extends LdifReader
         }
         catch ( LdapLdifException ne )
         {
-            LOG.error( I18n.err( I18n.ERR_12008_CANNOT_PARSE_LDIF_BUFFER, ne.getLocalizedMessage() ) );
-            throw new LdapLdifException( I18n.err( I18n.ERR_12009_ERROR_PARSING_LDIF_BUFFER ), ne );
+            LOG.error( I18n.err( I18n.ERR_13403_CANNOT_PARSE_LDIF_BUFFER, ne.getLocalizedMessage() ) );
+            throw new LdapLdifException( I18n.err( I18n.ERR_13442_ERROR_PARSING_LDIF_BUFFER ), ne );
         }
         finally
         {
@@ -485,7 +488,7 @@ public class LdifAttributesReader extends LdifReader
             }
             catch ( IOException ioe )
             {
-                throw new LdapLdifException( I18n.err( I18n.ERR_12024_CANNOT_CLOSE_FILE ), ioe );
+                throw new LdapLdifException( I18n.err( I18n.ERR_13450_CANNOT_CLOSE_FILE ), ioe );
             }
         }
     }
@@ -503,7 +506,7 @@ public class LdifAttributesReader extends LdifReader
         lines = new ArrayList<String>();
         position = 0;
 
-        LOG.debug( "Starts parsing ldif buffer" );
+        LOG.debug( I18n.msg( I18n.MSG_13407_STARTS_PARSING_LDIF ) );
 
         if ( Strings.isEmpty( ldif ) )
         {
@@ -523,21 +526,20 @@ public class LdifAttributesReader extends LdifReader
             {
                 if ( entry == null )
                 {
-                    LOG.debug( "Parsed no entry." );
+                    LOG.debug( I18n.msg( I18n.MSG_13401_PARSED_NO_ENTRY ) );
                 }
                 else
                 {
-                    LOG.debug( "Parsed one entry." );
+                    LOG.debug( I18n.msg( I18n.MSG_13402_PARSED_ONE_ENTRY ) );
                 }
-
             }
 
             return entry;
         }
         catch ( LdapLdifException ne )
         {
-            LOG.error( I18n.err( I18n.ERR_12008_CANNOT_PARSE_LDIF_BUFFER, ne.getLocalizedMessage() ) );
-            throw new LdapLdifException( I18n.err( I18n.ERR_12009_ERROR_PARSING_LDIF_BUFFER ), ne );
+            LOG.error( I18n.err( I18n.ERR_13403_CANNOT_PARSE_LDIF_BUFFER, ne.getLocalizedMessage() ) );
+            throw new LdapLdifException( I18n.err( I18n.ERR_13442_ERROR_PARSING_LDIF_BUFFER ), ne );
         }
         finally
         {
@@ -547,7 +549,7 @@ public class LdifAttributesReader extends LdifReader
             }
             catch ( IOException ioe )
             {
-                throw new LdapLdifException( I18n.err( I18n.ERR_12024_CANNOT_CLOSE_FILE ), ioe );
+                throw new LdapLdifException( I18n.err( I18n.ERR_13450_CANNOT_CLOSE_FILE ), ioe );
             }
         }
     }
@@ -566,7 +568,7 @@ public class LdifAttributesReader extends LdifReader
         lines = new ArrayList<String>();
         position = 0;
 
-        LOG.debug( "Starts parsing ldif buffer" );
+        LOG.debug( I18n.msg( I18n.MSG_13407_STARTS_PARSING_LDIF ) );
 
         if ( Strings.isEmpty( ldif ) )
         {
@@ -586,11 +588,11 @@ public class LdifAttributesReader extends LdifReader
             {
                 if ( entry == null )
                 {
-                    LOG.debug( "Parsed no entry." );
+                    LOG.debug( I18n.msg( I18n.MSG_13401_PARSED_NO_ENTRY ) );
                 }
                 else
                 {
-                    LOG.debug( "Parsed one entry." );
+                    LOG.debug( I18n.msg( I18n.MSG_13402_PARSED_ONE_ENTRY ) );
                 }
 
             }
@@ -599,8 +601,8 @@ public class LdifAttributesReader extends LdifReader
         }
         catch ( LdapLdifException ne )
         {
-            LOG.error( I18n.err( I18n.ERR_12008_CANNOT_PARSE_LDIF_BUFFER, ne.getLocalizedMessage() ) );
-            throw new LdapLdifException( I18n.err( I18n.ERR_12009_ERROR_PARSING_LDIF_BUFFER ), ne );
+            LOG.error( I18n.err( I18n.ERR_13403_CANNOT_PARSE_LDIF_BUFFER, ne.getLocalizedMessage() ) );
+            throw new LdapLdifException( I18n.err( I18n.ERR_13442_ERROR_PARSING_LDIF_BUFFER ), ne );
         }
         finally
         {
@@ -610,7 +612,7 @@ public class LdifAttributesReader extends LdifReader
             }
             catch ( IOException ioe )
             {
-                throw new LdapLdifException( I18n.err( I18n.ERR_12024_CANNOT_CLOSE_FILE ), ioe );
+                throw new LdapLdifException( I18n.err( I18n.ERR_13450_CANNOT_CLOSE_FILE ), ioe );
             }
         }
     }

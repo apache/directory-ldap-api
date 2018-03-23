@@ -66,7 +66,7 @@ public final class CompareNoDResponse extends CompareResponseImpl
                 break;
 
             default:
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_04166, ResultCodeEnum.UNAVAILABLE,
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13503_RESULT_CODE_SHOULD_BE_IN, ResultCodeEnum.UNAVAILABLE,
                     ResultCodeEnum.PROTOCOL_ERROR, ResultCodeEnum.STRONG_AUTH_REQUIRED ) );
         }
 

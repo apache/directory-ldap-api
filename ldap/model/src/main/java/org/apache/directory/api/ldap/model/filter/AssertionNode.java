@@ -112,7 +112,7 @@ public abstract class AssertionNode extends AbstractExprNode
     @Override
     public StringBuilder printRefinementToBuffer( StringBuilder buf )
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_04145 ) );
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13304_ASSERTIONNODE_IN_REFINEMENT ) );
     }
 
 

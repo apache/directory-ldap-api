@@ -25,6 +25,7 @@ import java.text.MessageFormat;
 import java.util.Locale;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -34,9 +35,6 @@ import org.apache.directory.api.i18n.I18n;
  */
 public final class FilterEncoder
 {
-    private static final String[] EMPTY = new String[0];
-
-
     private FilterEncoder()
     {
     }
@@ -57,18 +55,17 @@ public final class FilterEncoder
     {
         if ( values == null )
         {
-            values = EMPTY;
+            values = Strings.EMPTY_STRING_ARRAY;
         }
 
         MessageFormat mf = new MessageFormat( filterTemplate, Locale.ROOT );
 
         // check element count and argument count
         Format[] formats = mf.getFormatsByArgumentIndex();
+        
         if ( formats.length != values.length )
         {
-            // TODO: I18n
-            String msg = "Filter template {0} has {1} placeholders but {2} arguments provided.";
-            throw new IllegalArgumentException( I18n.format( msg, filterTemplate, formats.length, values.length ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13300_BAD_PLACE_HOLDERS_NUMBER, filterTemplate, formats.length, values.length ) );
         }
 
         // encode arguments

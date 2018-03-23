@@ -352,7 +352,7 @@ public BindRequest setName( String name )
     @Override
     public void abandon()
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_04185 ) );
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13506_CANNOT_ABANDON_OPERATION ) );
     }
 
 

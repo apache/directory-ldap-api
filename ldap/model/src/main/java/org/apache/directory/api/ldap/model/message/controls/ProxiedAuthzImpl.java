@@ -19,6 +19,7 @@
 package org.apache.directory.api.ldap.model.message.controls;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 
@@ -77,7 +78,7 @@ public class ProxiedAuthzImpl extends AbstractControl implements ProxiedAuthz
         // We should have a valid authzId
         if ( authzId == null )
         {
-            throw new RuntimeException( "Invalid proxied authz value : cannot be null" );
+            throw new RuntimeException( I18n.err( I18n.ERR_13511_INVALID_PROXIED_AUTHZ_NULL ) );
         }
 
         if ( !Strings.isEmpty( authzId ) )
@@ -90,12 +91,12 @@ public class ProxiedAuthzImpl extends AbstractControl implements ProxiedAuthz
 
                 if ( !Dn.isValid( dn ) )
                 {
-                    throw new RuntimeException( "Invalid proxied authz value : the DN is not valid" );
+                    throw new RuntimeException( I18n.err( I18n.ERR_13512_INVALID_PROXIED_AUTHZ_BAD_DN ) );
                 }
             }
             else if ( !lowercaseAuthzId.startsWith( "u:" ) )
             {
-                throw new RuntimeException( "Invalid proxied authz value : should start with 'dn:' or 'u:'" );
+                throw new RuntimeException( I18n.err( I18n.ERR_13513_INVALID_PROXIED_AUTHZ_NO_DN_OR_U ) );
             }
         }
 

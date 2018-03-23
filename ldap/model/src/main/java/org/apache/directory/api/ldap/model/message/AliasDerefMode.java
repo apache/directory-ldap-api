@@ -117,7 +117,7 @@ public enum AliasDerefMode
             }
             else
             {
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_04186, property,
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13507_UNRECOGNIZED_JNDI_PROPERTY_VALUE, property,
                     JndiPropertyConstants.JNDI_LDAP_DAP_DEREF_ALIASES ) );
             }
         }
@@ -154,23 +154,7 @@ public enum AliasDerefMode
      */
     public boolean isDerefInSearching()
     {
-        switch ( this )
-        {
-            case DEREF_ALWAYS:
-                return true;
-
-            case DEREF_FINDING_BASE_OBJ:
-                return false;
-
-            case DEREF_IN_SEARCHING:
-                return true;
-
-            case NEVER_DEREF_ALIASES:
-                return false;
-
-            default:
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_04187 ) );
-        }
+        return ( this == AliasDerefMode.DEREF_ALWAYS ) || ( this == AliasDerefMode.DEREF_IN_SEARCHING );
     }
 
 
@@ -225,7 +209,7 @@ public enum AliasDerefMode
                 return DEREF_ALWAYS;
 
             default:
-                throw new IllegalArgumentException( "Unknown derefmode " + val );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13510_UNKNOWN_DEREF_MODE, val ) );
         }
     }
 
@@ -261,7 +245,7 @@ public enum AliasDerefMode
             }
         }
 
-        throw new IllegalArgumentException( "Unknown derefmode " + val );
+        throw new IllegalArgumentException( I18n.err( I18n.ERR_13510_UNKNOWN_DEREF_MODE, val ) );
     }
 
 

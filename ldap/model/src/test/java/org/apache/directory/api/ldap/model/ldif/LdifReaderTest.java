@@ -1258,7 +1258,8 @@ public class LdifReaderTest
         }
         catch ( Exception ne )
         {
-            assertTrue( I18n.err( I18n.ERR_12070 ), ne.getMessage().startsWith( I18n.ERR_12070.getErrorCode() ) );
+            assertTrue( I18n.err( I18n.ERR_13442_ERROR_PARSING_LDIF_BUFFER ), 
+                ne.getMessage().startsWith( I18n.ERR_13442_ERROR_PARSING_LDIF_BUFFER.getErrorCode() ) );
         }
     }
 

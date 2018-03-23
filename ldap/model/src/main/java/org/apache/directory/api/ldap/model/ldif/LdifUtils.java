@@ -425,7 +425,7 @@ public final class LdifUtils
             case Add:
                 if ( entry.getEntry() == null )
                 {
-                    throw new LdapException( I18n.err( I18n.ERR_12082 ) );
+                    throw new LdapException( I18n.err( I18n.ERR_13472_ENTRY_WITH_NO_ATTRIBUTE ) );
                 }
 
                 // Now, iterate through all the attributes
@@ -439,7 +439,7 @@ public final class LdifUtils
             case Delete:
                 if ( entry.getEntry() != null )
                 {
-                    throw new LdapException( I18n.err( I18n.ERR_12081 ) );
+                    throw new LdapException( I18n.err( I18n.ERR_13471_DELETED_ENTRY_WITH_ATTRIBUTES ) );
                 }
 
                 break;
@@ -448,7 +448,7 @@ public final class LdifUtils
             case ModRdn:
                 if ( entry.getEntry() != null )
                 {
-                    throw new LdapException( I18n.err( I18n.ERR_12083 ) );
+                    throw new LdapException( I18n.err( I18n.ERR_13473_MODDN_WITH_ATTRIBUTES ) );
                 }
 
                 // Stores the new Rdn
@@ -508,8 +508,7 @@ public final class LdifUtils
                             break;
 
                         default:
-                            throw new IllegalArgumentException( "Unexpected ModificationOperation: "
-                                + modification.getOperation() );
+                            throw new IllegalArgumentException( I18n.err( I18n.ERR_13434_UNEXPECTED_MOD_OPERATION, modification.getOperation() ) );
                     }
 
                     sb.append( modification.getAttribute().getUpId() );
@@ -522,7 +521,7 @@ public final class LdifUtils
                 break;
 
             default:
-                throw new IllegalArgumentException( "Unexpected ChangeType: " + entry.getChangeType() );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13431_UNEXPECTED_CHANGETYPE, entry.getChangeType() ) );
         }
 
         sb.append( '\n' );
@@ -639,7 +638,7 @@ public final class LdifUtils
 
         if ( nbChars < 2 )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_12084 ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13474_LINE_LENGTH_TOO_SHORT ) );
         }
 
         // We will first compute the new size of the LDIF result

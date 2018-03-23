@@ -115,7 +115,7 @@ public enum ChangeType
                 return MODDN;
                 
             default:
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_04055, value ) );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13500_UNDEFINED_CHANGETYPE, value ) );
         }
     }
 }

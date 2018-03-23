@@ -102,7 +102,7 @@ public class GracefulDisconnectResponseImpl extends ExtendedResponseImpl impleme
     @Override
     public void setResponseName( String oid )
     {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_04168, EXTENSION_OID ) );
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13504_FIX_OID, EXTENSION_OID ) );
     }
 
 

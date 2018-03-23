@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.Value;
@@ -182,7 +183,7 @@ public class IntegerAnonymizer extends AbstractAnonymizer<String>
             // Corner case : we can't have a value starting with '0' unless its length is 1
             if ( ( length > 1 ) && ( latest[0] == '0' ) )
             {
-                throw new RuntimeException( "Overflow for " + valStr );
+                throw new RuntimeException( I18n.err( I18n.ERR_13437_OVERFLOW, valStr ) );
             }
             
             String anonymizedValue = new String( latest );
@@ -190,7 +191,9 @@ public class IntegerAnonymizer extends AbstractAnonymizer<String>
             if ( overflow )
             {
                 // We have exhausted all the possible values...
-                throw new RuntimeException( "Cannot compute a new value for " + anonymizedValue );
+                String msg = I18n.err( I18n.ERR_13435_CANNOT_COMPUTE_NEW_VALUE, anonymizedValue );
+                
+                throw new RuntimeException( msg );
             }
             
             latestIntegerMap.put( length, anonymizedValue );

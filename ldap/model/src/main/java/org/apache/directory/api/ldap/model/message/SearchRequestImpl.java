@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapProtocolErrorException;
 import org.apache.directory.api.ldap.model.filter.BranchNormalizedVisitor;
@@ -180,8 +181,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
         }
         catch ( ParseException pe )
         {
-            String msg = "The filter " + filter + " is invalid.";
-            throw new LdapProtocolErrorException( msg, pe );
+            throw new LdapProtocolErrorException( I18n.err( I18n.ERR_13508_INVALID_FILTER, filter ), pe );
         }
 
         return this;
@@ -539,7 +539,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
                 break;
 
             default:
-                throw new IllegalArgumentException( "Unexpected scope " + scope );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13509_UNEXPECTED_SCOPE, scope ) );
         }
 
         sb.append( '\n' );

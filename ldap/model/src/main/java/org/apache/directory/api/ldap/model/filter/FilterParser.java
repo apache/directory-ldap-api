@@ -122,7 +122,7 @@ public final class FilterParser
     {
         if ( Strings.isEmpty( filter ) )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04158 ), 0 );
+            throw new ParseException( I18n.err( I18n.ERR_13316_EMPTY_FILTER ), 0 );
         }
 
         /** Convert the filter to an array of bytes, as this is what we expect */
@@ -231,13 +231,13 @@ public final class FilterParser
                     }
                     else
                     {
-                        throw new ParseException( I18n.err( I18n.ERR_04146 ), pos.start );
+                        throw new ParseException( I18n.err( I18n.ERR_13305_ASSERTION_VALUE_EXPECTED ), pos.start );
                     }
                 }
             }
             else
             {
-                throw new ParseException( I18n.err( I18n.ERR_04147 ), pos.start );
+                throw new ParseException( I18n.err( I18n.ERR_13306_MR_OR_ASSERTION_VALUE_EXPECTED ), pos.start );
             }
         }
         else
@@ -268,7 +268,7 @@ public final class FilterParser
                 {
                     if ( oidRequested )
                     {
-                        throw new ParseException( I18n.err( I18n.ERR_04148_MATCHING_RULE_EXPECTED ), pos.start );
+                        throw new ParseException( I18n.err( I18n.ERR_13307_MATCHING_RULE_EXPECTED ), pos.start );
                     }
 
                     pos.start++;
@@ -295,13 +295,13 @@ public final class FilterParser
                     }
                     else
                     {
-                        throw new ParseException( I18n.err( I18n.ERR_04146 ), pos.start );
+                        throw new ParseException( I18n.err( I18n.ERR_13305_ASSERTION_VALUE_EXPECTED ), pos.start );
                     }
                 }
             }
             else
             {
-                throw new ParseException( I18n.err( I18n.ERR_04147 ), pos.start );
+                throw new ParseException( I18n.err( I18n.ERR_13306_MR_OR_ASSERTION_VALUE_EXPECTED ), pos.start );
             }
         }
     }
@@ -377,7 +377,7 @@ public final class FilterParser
                 }
                 else
                 {
-                    throw new ParseException( I18n.err( I18n.ERR_04149 ), pos.start );
+                    throw new ParseException( I18n.err( I18n.ERR_13308_NOT_A_VALID_ESCAPED_VALUE ), pos.start );
                 }
 
                 // second hex
@@ -388,7 +388,7 @@ public final class FilterParser
                 }
                 else
                 {
-                    throw new ParseException( I18n.err( I18n.ERR_04149 ), pos.start );
+                    throw new ParseException( I18n.err( I18n.ERR_13308_NOT_A_VALID_ESCAPED_VALUE ), pos.start );
                 }
             }
             else
@@ -526,7 +526,7 @@ public final class FilterParser
                 }
                 else
                 {
-                    throw new ParseException( I18n.err( I18n.ERR_04149 ), pos.start );
+                    throw new ParseException( I18n.err( I18n.ERR_13308_NOT_A_VALID_ESCAPED_VALUE ), pos.start );
                 }
 
                 // second hex
@@ -537,7 +537,7 @@ public final class FilterParser
                 }
                 else
                 {
-                    throw new ParseException( I18n.err( I18n.ERR_04149 ), pos.start );
+                    throw new ParseException( I18n.err( I18n.ERR_13308_NOT_A_VALID_ESCAPED_VALUE ), pos.start );
                 }
             }
             else
@@ -651,7 +651,7 @@ public final class FilterParser
             else
             {
                 // This is an error
-                throw new ParseException( I18n.err( I18n.ERR_04150 ), pos.start );
+                throw new ParseException( I18n.err( I18n.ERR_13309_BAD_SUBSTRING ), pos.start );
             }
         }
     }
@@ -774,7 +774,7 @@ public final class FilterParser
                         
                     default :
                         // This is an error
-                        throw new ParseException( I18n.err( I18n.ERR_04150 ), pos.start );
+                        throw new ParseException( I18n.err( I18n.ERR_13309_BAD_SUBSTRING ), pos.start );
                 }
         }
     }
@@ -803,7 +803,7 @@ public final class FilterParser
 
         if ( b == '\0' )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04151 ), pos.start );
+            throw new ParseException( I18n.err( I18n.ERR_13310_BAD_CHAR ), pos.start );
         }
 
         if ( b == ':' )
@@ -837,7 +837,7 @@ public final class FilterParser
                     // Check that we have a '='
                     if ( !Strings.isCharASCII( filterBytes, pos.start, '=' ) )
                     {
-                        throw new ParseException( I18n.err( I18n.ERR_04152 ), pos.start );
+                        throw new ParseException( I18n.err( I18n.ERR_13311_EXPECTING_EQUAL ), pos.start );
                     }
 
                     pos.start++;
@@ -870,7 +870,7 @@ public final class FilterParser
                     // Check that we have a '='
                     if ( !Strings.isCharASCII( filterBytes, pos.start, '=' ) )
                     {
-                        throw new ParseException( I18n.err( I18n.ERR_04152 ), pos.start );
+                        throw new ParseException( I18n.err( I18n.ERR_13311_EXPECTING_EQUAL ), pos.start );
                     }
 
                     pos.start++;
@@ -903,7 +903,7 @@ public final class FilterParser
                     // Check that we have a '='
                     if ( !Strings.isCharASCII( filterBytes, pos.start, '=' ) )
                     {
-                        throw new ParseException( I18n.err( I18n.ERR_04152 ), pos.start );
+                        throw new ParseException( I18n.err( I18n.ERR_13311_EXPECTING_EQUAL ), pos.start );
                     }
 
                     pos.start++;
@@ -937,7 +937,7 @@ public final class FilterParser
 
                 default:
                     // This is an error
-                    throw new ParseException( I18n.err( I18n.ERR_04153 ), pos.start );
+                    throw new ParseException( I18n.err( I18n.ERR_13312_ITEM_EXPECTED ), pos.start );
             }
         }
     }
@@ -1027,7 +1027,7 @@ public final class FilterParser
 
         if ( pos.start == pos.length )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04154 ), pos.start );
+            throw new ParseException( I18n.err( I18n.ERR_13313_EMPTY_FILTERCOMP ), pos.start );
         }
 
         byte b = Strings.byteAt( filterBytes, pos.start );
@@ -1095,7 +1095,7 @@ public final class FilterParser
             // No more node, get out
             if ( ( pos.start == 0 ) && ( pos.length != 0 ) )
             {
-                throw new ParseException( I18n.err( I18n.ERR_04155 ), 0 );
+                throw new ParseException( I18n.err( I18n.ERR_13314_FILTER_MISSING_OPEN_PAR ), 0 );
             }
             else
             {
@@ -1122,7 +1122,7 @@ public final class FilterParser
         // Check that we have a right ')'
         if ( !Strings.isCharASCII( filterBytes, pos.start, ')' ) )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04157 ), pos.start );
+            throw new ParseException( I18n.err( I18n.ERR_13315_FILTER_MISSING_CLOSE_PAR ), pos.start );
         }
 
         pos.start++;

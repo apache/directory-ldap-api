@@ -90,7 +90,7 @@ public class NotNode extends BranchNode
         }
         else
         {
-            throw new IllegalStateException( I18n.err( I18n.ERR_04159 ) );
+            throw new IllegalStateException( I18n.err( I18n.ERR_13317_NO_MORE_THAN_ONE_ELEM_IN_NOT ) );
         }
     }
 
@@ -109,7 +109,7 @@ public class NotNode extends BranchNode
         }
         else
         {
-            throw new IllegalStateException( I18n.err( I18n.ERR_04159 ) );
+            throw new IllegalStateException( I18n.err( I18n.ERR_13317_NO_MORE_THAN_ONE_ELEM_IN_NOT ) );
         }
     }
 
@@ -124,7 +124,7 @@ public class NotNode extends BranchNode
     {
         if ( ( childList != null ) && ( childList.size() > 1 ) )
         {
-            throw new IllegalStateException( I18n.err( I18n.ERR_04159 ) );
+            throw new IllegalStateException( I18n.err( I18n.ERR_13317_NO_MORE_THAN_ONE_ELEM_IN_NOT ) );
         }
 
         children = childList;

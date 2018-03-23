@@ -29,6 +29,7 @@ import javax.naming.LimitExceededException;
 import javax.naming.PartialResultException;
 import javax.naming.SizeLimitExceededException;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapAdminLimitExceededException;
 import org.apache.directory.api.ldap.model.exception.LdapAffectMultipleDsaException;
 import org.apache.directory.api.ldap.model.exception.LdapAliasDereferencingException;
@@ -1669,7 +1670,7 @@ public enum ResultCodeEnum
                 return set.iterator().next();
 
             default:
-                throw new IllegalArgumentException( "Unexpected MessageTypeEnum " + type );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13516_UNEXPECTED_MESSAGE_TYPE, type ) );
         }
 
         // we don't want any codes that do not have anything to do w/ errors

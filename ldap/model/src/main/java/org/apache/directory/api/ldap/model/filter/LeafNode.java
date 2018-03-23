@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.filter;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.util.Strings;
 
@@ -55,7 +56,7 @@ public abstract class LeafNode extends AbstractExprNode
         }
         else
         {
-            throw new NullPointerException( "Cannot create a Node with a null Attribute" );
+            throw new NullPointerException( I18n.err( I18n.ERR_13302_CANNOT_CREATE_NODE_NULL_ATTR ) );
         }
     }
 

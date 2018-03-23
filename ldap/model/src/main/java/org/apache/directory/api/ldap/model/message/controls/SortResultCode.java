@@ -19,6 +19,8 @@
  */
 package org.apache.directory.api.ldap.model.message.controls;
 
+import org.apache.directory.api.i18n.I18n;
+
 /**
  * Enumeration of the result codes of a SortResult defined in <a href="http://tools.ietf.org/html/rfc2891">RFC 2891</a>
  * for server side sort control.
@@ -112,7 +114,7 @@ public enum SortResultCode
                 return OTHER;
 
             default:
-                throw new IllegalArgumentException( "Unknown sort response result code " + code );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13514_UNKNOWN_SORT_RESPONSE_RESULT, code ) );
         }
     }
 }

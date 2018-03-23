@@ -72,7 +72,7 @@ public class StartTransactionResponseImpl extends ExtendedResponseImpl implement
                 break;
 
             default:
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_04166, ResultCodeEnum.SUCCESS,
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13503_RESULT_CODE_SHOULD_BE_IN, ResultCodeEnum.SUCCESS,
                     ResultCodeEnum.OPERATIONS_ERROR, ResultCodeEnum.INSUFFICIENT_ACCESS_RIGHTS ) );
         }
 

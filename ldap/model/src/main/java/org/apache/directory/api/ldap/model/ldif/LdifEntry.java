@@ -294,7 +294,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
                     break;
 
                 default:
-                    throw new IllegalArgumentException( "Unexpected ChangeType: " + changeType );
+                    throw new IllegalArgumentException( I18n.err( I18n.ERR_13431_UNEXPECTED_CHANGETYPE, changeType ) );
             }
         }
     }
@@ -865,7 +865,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
     {
         if ( controls == null )
         {
-            throw new IllegalArgumentException( "The added control must not be null" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13432_NULL_ADDED_CONTROL ) );
         }
 
         for ( Control control : controls )
@@ -1375,7 +1375,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
                 break;
 
             default:
-                throw new IllegalArgumentException( "Unexpected ChangeType: " + changeType );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13431_UNEXPECTED_CHANGETYPE, changeType ) );
         }
 
         int nbControls = in.readInt();
@@ -1466,7 +1466,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
                 break;
 
             default:
-                throw new IllegalArgumentException( "Unexpected ChangeType: " + changeType );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13431_UNEXPECTED_CHANGETYPE, changeType ) );
         }
 
         // The controls
