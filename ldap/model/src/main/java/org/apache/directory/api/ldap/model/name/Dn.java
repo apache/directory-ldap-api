@@ -294,7 +294,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         if ( !isFirst && valueExpected )
         {
-            throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04202 ) );
+            throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_13611_VALUE_MISSING_ON_RDN ) );
         }
 
         // Stores the representations of a Dn : internal (as a string and as a
@@ -352,7 +352,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
     {
         if ( ( dn == null ) || ( rdn == null ) )
         {
-            throw new IllegalArgumentException( "Either the dn or the rdn is null" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13622_DN_OR_RDN_NULL ) );
         }
 
         for ( Rdn rdnParent : dn )
@@ -696,7 +696,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         if ( ( posn < 0 ) || ( posn >= rdns.size() ) )
         {
-            throw new IllegalArgumentException( "Invalid position : " + posn );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13623_INVALID_POSITION, posn ) );
         }
 
         return rdns.get( posn );
@@ -789,7 +789,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         if ( length > rdns.size() )
         {
-            String message = I18n.err( I18n.ERR_04206, length, rdns.size() );
+            String message = I18n.err( I18n.ERR_13612_POSITION_NOT_IN_RANGE, length, rdns.size() );
             LOG.error( message );
             throw new ArrayIndexOutOfBoundsException( message );
         }
@@ -877,7 +877,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         if ( length > rdns.size() )
         {
-            String message = I18n.err( I18n.ERR_04206, length, rdns.size() );
+            String message = I18n.err( I18n.ERR_13612_POSITION_NOT_IN_RANGE, length, rdns.size() );
             LOG.error( message );
             throw new ArrayIndexOutOfBoundsException( message );
         }
@@ -1247,7 +1247,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
     {
         if ( upName == null )
         {
-            String message = "Cannot serialize a NULL Dn";
+            String message = I18n.err( I18n.ERR_13624_CANNOT_SERIALIZE_NULL_DN );
             LOG.error( message );
             throw new IOException( message );
         }

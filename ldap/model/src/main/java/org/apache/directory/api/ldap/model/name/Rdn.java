@@ -232,7 +232,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
             if ( upName.length() < rdn.length() )
             {
-                throw new LdapInvalidDnException( "Invalid RDN" );
+                throw new LdapInvalidDnException( I18n.err( I18n.ERR_13625_INVALID_RDN ) );
             }
 
             upName = rdn;
@@ -718,8 +718,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 // Check that the first AVA is not for the same attribute
                 if ( ava.equals( addedAva ) )
                 {
-                    throw new LdapInvalidDnException( "Invalid RDN: the " + normalizedType
-                        + " is already present in the RDN" );
+                    throw new LdapInvalidDnException( I18n.err( I18n.ERR_13626_INVALID_RDN_DUPLICATE_AVA, normalizedType ) );
                 }
 
                 // First, create the List and the hashMap
@@ -1014,7 +1013,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
         }
         catch ( CloneNotSupportedException cnse )
         {
-            throw new Error( "Assertion failure", cnse );
+            throw new Error( I18n.err( I18n.ERR_13621_ASSERTION_FAILURE ), cnse );
         }
     }
 
@@ -1313,7 +1312,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
             if ( ( chars.length % 2 ) != 1 )
             {
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_04213 ) );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13613_VALUE_NOT_IN_HEX_FORM_ODD_NUMBER ) );
             }
 
             // HexString form
@@ -1328,7 +1327,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 }
                 else
                 {
-                    throw new IllegalArgumentException( I18n.err( I18n.ERR_04214 ) );
+                    throw new IllegalArgumentException( I18n.err( I18n.ERR_13614_VALUE_NOT_IN_HEX_FORM ) );
                 }
             }
 
@@ -1414,7 +1413,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                             case ' ':
                                 if ( ( i == 0 ) || ( i == chars.length - 1 ) )
                                 {
-                                    throw new IllegalArgumentException( I18n.err( I18n.ERR_04215 ) );
+                                    throw new IllegalArgumentException( I18n.err( I18n.ERR_13615_UNESCAPED_CHARS_NOT_ALLOWED ) );
                                 }
                                 else
                                 {

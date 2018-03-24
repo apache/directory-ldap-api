@@ -228,7 +228,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             }
             catch ( LdapException le )
             {
-                String message = I18n.err( I18n.ERR_04188 );
+                String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
                 LOG.error( message );
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
             }
@@ -239,7 +239,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             }
             catch ( LdapInvalidAttributeValueException liave )
             {
-                String message = I18n.err( I18n.ERR_04188 );
+                String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
                 LOG.error( message );
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, liave );
             }
@@ -277,7 +277,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             }
             catch ( LdapException le )
             {
-                String message = I18n.err( I18n.ERR_04188 );
+                String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
                 LOG.error( message );
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
             }
@@ -288,7 +288,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             }
             catch ( LdapInvalidAttributeValueException liave )
             {
-                String message = I18n.err( I18n.ERR_04188 );
+                String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
                 LOG.error( message );
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, liave );
             }
@@ -343,7 +343,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             }
             catch ( LdapException le )
             {
-                String message = I18n.err( I18n.ERR_04188 );
+                String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
                 LOG.error( message );
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
             }
@@ -354,7 +354,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             }
             catch ( LdapInvalidAttributeValueException liave )
             {
-                String message = I18n.err( I18n.ERR_04188 );
+                String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
                 LOG.error( message );
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, liave );
             }
@@ -391,7 +391,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             }
             catch ( LdapException le )
             {
-                String message = I18n.err( I18n.ERR_04188 );
+                String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
                 LOG.error( message );
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
             }
@@ -402,7 +402,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             }
             catch ( LdapInvalidAttributeValueException liave )
             {
-                String message = I18n.err( I18n.ERR_04188 );
+                String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
                 LOG.error( message );
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, liave );
             }
@@ -471,7 +471,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         {
             if ( Strings.isEmpty( normTypeTrimmed ) )
             {
-                String message = I18n.err( I18n.ERR_04188 );
+                String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
                 LOG.error( message );
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message );
             }
@@ -604,7 +604,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         {
             if ( Strings.isEmpty( normTypeTrimmed ) )
             {
-                String message = I18n.err( I18n.ERR_04188 );
+                String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
                 LOG.error( message );
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message );
             }
@@ -666,7 +666,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
                 }
                 else
                 {
-                    String message = I18n.err( I18n.ERR_04188 );
+                    String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
                     LOG.error( message );
                     throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
                 }
@@ -688,7 +688,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             }
             catch ( LdapException le )
             {
-                String message = I18n.err( I18n.ERR_04188 );
+                String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
                 LOG.error( message );
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
             }
@@ -1450,7 +1450,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         }
         catch ( CloneNotSupportedException cnse )
         {
-            throw new Error( "Assertion failure", cnse );
+            throw new Error( I18n.err( I18n.ERR_13621_ASSERTION_FAILURE ), cnse );
         }
     }
 
@@ -1560,7 +1560,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
                     }
                     catch ( LdapException le )
                     {
-                        LOG.error( "Cannot normalize the value", le.getMessage() );
+                        LOG.error( I18n.err( I18n.ERR_13620_CANNOT_NORMALIZE_VALUE ), le.getMessage() );
                         return false;
                     }
                 }
@@ -1600,23 +1600,23 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             || Strings.isEmpty( normType )
             || ( value.isNull() ) )
         {
-            String message = "Cannot serialize an wrong ATAV, ";
+            String message;
 
             if ( Strings.isEmpty( upName ) )
             {
-                message += "the upName should not be null or empty";
+                message = I18n.err( I18n.ERR_13616_CANNOT_SERIALIZE_AVA_UPNAME_NULL );
             }
             else if ( Strings.isEmpty( upType ) )
             {
-                message += "the upType should not be null or empty";
+                message = I18n.err( I18n.ERR_13617_CANNOT_SERIALIZE_AVA_UPTYPE_NULL );
             }
             else if ( Strings.isEmpty( normType ) )
             {
-                message += "the normType should not be null or empty";
+                message = I18n.err( I18n.ERR_13618_CANNOT_SERIALIZE_AVA_NORMTYPE_NULL );
             }
-            else if ( value.isNull() )
+            else
             {
-                message += "the value should not be null";
+                message = I18n.err( I18n.ERR_13619_CANNOT_SERIALIZE_AVA_VALUE_NULL );
             }
 
             LOG.error( message );
@@ -1833,23 +1833,23 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             || Strings.isEmpty( normType )
             || ( value.isNull() ) )
         {
-            String message = "Cannot serialize a wrong ATAV, ";
+            String message;
 
             if ( Strings.isEmpty( upName ) )
             {
-                message += "the upName should not be null or empty";
+                message = I18n.err( I18n.ERR_13616_CANNOT_SERIALIZE_AVA_UPNAME_NULL );
             }
             else if ( Strings.isEmpty( upType ) )
             {
-                message += "the upType should not be null or empty";
+                message = I18n.err( I18n.ERR_13617_CANNOT_SERIALIZE_AVA_UPTYPE_NULL );
             }
             else if ( Strings.isEmpty( normType ) )
             {
-                message += "the normType should not be null or empty";
+                message = I18n.err( I18n.ERR_13618_CANNOT_SERIALIZE_AVA_NORMTYPE_NULL );
             }
-            else if ( value.isNull() )
+            else
             {
-                message += "the value should not be null";
+                message = I18n.err( I18n.ERR_13619_CANNOT_SERIALIZE_AVA_VALUE_NULL );
             }
 
             LOG.error( message );

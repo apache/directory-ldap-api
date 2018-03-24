@@ -129,7 +129,7 @@ import org.apache.directory.api.util.Strings;
                     break;
 
                 default:
-                    throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04192, c,
+                    throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_13601_EXPECTED_COMMA_SEMI_COLON, c,
                         pos.start ) );
             }
         }
@@ -150,12 +150,12 @@ import org.apache.directory.api.util.Strings;
     {
         if ( Strings.isEmpty( name ) )
         {
-            throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04193 ) );
+            throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_13602_RDN_EMPTY ) );
         }
 
         if ( rdn == null )
         {
-            throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04194 ) );
+            throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_13603_NULL_RDN ) );
         }
 
         Position pos = new Position();
@@ -340,7 +340,7 @@ import org.apache.directory.api.util.Strings;
 
             default:
                 // error
-                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04195, c,
+                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_13604_START_AT_EXPECTED, c,
                     pos.start ) );
         }
     }
@@ -444,7 +444,7 @@ import org.apache.directory.api.util.Strings;
 
                 default:
                     // error
-                    throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04196, c,
+                    throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_13605_START_AT_DESCR_EXPECTED, c,
                         pos.start ) );
             }
         }
@@ -491,7 +491,7 @@ import org.apache.directory.api.util.Strings;
 
                         default:
                             throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err(
-                                I18n.ERR_04197, c, pos.start ) );
+                                I18n.ERR_13606_EXPECTED_NUMERICOID, c, pos.start ) );
                     }
 
                     break;
@@ -538,7 +538,7 @@ import org.apache.directory.api.util.Strings;
 
                             default:
                                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err(
-                                    I18n.ERR_04197, c, pos.start ) );
+                                    I18n.ERR_13606_EXPECTED_NUMERICOID, c, pos.start ) );
                         }
                     }
 
@@ -554,11 +554,11 @@ import org.apache.directory.api.util.Strings;
                     }
                     else
                     {
-                        throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04198 ) );
+                        throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_13607_DOT_MISSING_IN_OID ) );
                     }
 
                 default:
-                    throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04199, c,
+                    throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_13608_START_AT_NUMERICOID_EXPECTED, c,
                         pos.start ) );
             }
         }
@@ -579,7 +579,7 @@ import org.apache.directory.api.util.Strings;
 
         if ( c != '=' )
         {
-            throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04200, c, pos.start ) );
+            throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_13609_EQUAL_EXPECTED, c, pos.start ) );
         }
     }
 
@@ -650,7 +650,7 @@ import org.apache.directory.api.util.Strings;
     {
         if ( !hasMoreChars( pos ) )
         {
-            throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04201, pos.start ) );
+            throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_13610_NO_MORE_CHAR_AVAILABLE, pos.start ) );
         }
 
         char c = name[pos.start];
