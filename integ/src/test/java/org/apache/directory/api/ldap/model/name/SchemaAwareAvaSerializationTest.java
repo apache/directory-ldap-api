@@ -203,7 +203,7 @@ public class SchemaAwareAvaSerializationTest
         catch ( IOException ioe )
         {
             String message = ioe.getMessage();
-            assertEquals( "Cannot serialize a wrong ATAV, the value should not be null", message );
+            assertEquals( "ERR_13619_CANNOT_SERIALIZE_AVA_VALUE_NULL Cannot serialize a wrong ATAV, the value should not be null", message );
         }
     }
 
@@ -222,7 +222,7 @@ public class SchemaAwareAvaSerializationTest
         catch ( IOException ioe )
         {
             String message = ioe.getMessage();
-            assertEquals( "Cannot serialize an wrong ATAV, the value should not be null", message );
+            assertEquals( "ERR_13619_CANNOT_SERIALIZE_AVA_VALUE_NULL Cannot serialize a wrong ATAV, the value should not be null", message );
         }
     }
 
