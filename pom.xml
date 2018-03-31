@@ -608,9 +608,9 @@
   </dependencyManagement>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/shared/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/shared/trunk</developerConnection>
-    <url>http://svn.apache.org/viewvc/directory/shared/tags/1.0.0-RC2</url>
+    <connection>scm:git:https://gitbox.apache.org/repos/asf/directory-ldap-api.git</connection>
+    <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/directory-ldap-api.git</developerConnection>
+    <url>https://gitbox.apache.org/repos/asf?p=directory-ldap-api.git;a=shortlog;h=refs/remotes/tags/${project.scm.tag}</url>
   </scm>
 
   <reporting>
