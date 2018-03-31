@@ -4399,7 +4399,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             
             sslContext.init( config.getKeyManagers(), trustManagers, config.getSecureRandom() );
 
-            SslFilter sslFilter = new SslFilter( sslContext, true );
+            SslFilter sslFilter = new SslFilter( sslContext );
             sslFilter.setUseClientMode( true );
 
             // Configure the enabled cipher lists
@@ -4433,6 +4433,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             // for StartTLS
             {
                 ldapSession.getFilterChain().addFirst( SSL_FILTER_KEY, sslFilter );
+                
+                while ( !ldapSession.isSecured() )
+                {
+                    //Do nothing, but sleep 
+                    Thread.sleep( 10 );
+                }
             }
         }
         catch ( Exception e )
