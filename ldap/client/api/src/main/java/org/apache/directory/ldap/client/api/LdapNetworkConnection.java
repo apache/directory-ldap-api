@@ -152,6 +152,7 @@ import org.apache.directory.ldap.client.api.future.BindFuture;
 import org.apache.directory.ldap.client.api.future.CompareFuture;
 import org.apache.directory.ldap.client.api.future.DeleteFuture;
 import org.apache.directory.ldap.client.api.future.ExtendedFuture;
+import org.apache.directory.ldap.client.api.future.HandshakeFuture;
 import org.apache.directory.ldap.client.api.future.ModifyDnFuture;
 import org.apache.directory.ldap.client.api.future.ModifyFuture;
 import org.apache.directory.ldap.client.api.future.ResponseFuture;
@@ -2324,6 +2325,25 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     public void messageReceived( IoSession session, Object message ) throws Exception
     {
         // Feed the response and store it into the session
+        if ( message instanceof SslFilter.SslFilterMessage )
+        {
+            // This is a SSL message telling if the session has been secured or not
+            HandshakeFuture handshakeFuture = ( HandshakeFuture ) ldapSession.getAttribute( "HANDSHAKE_FUTURE" );
+
+            if ( message == SslFilter.SESSION_SECURED )
+            {
+                // SECURED
+                handshakeFuture.secured();
+            }
+            else
+            {
+                // UNSECURED
+                handshakeFuture.cancel();
+            }
+
+            ldapSession.removeAttribute( "HANDSHAKE_FUTURE" );
+            return;
+        }
         Message response = ( Message ) message;
 
         if ( LOG.isDebugEnabled() )
@@ -4432,12 +4452,17 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             else
             // for StartTLS
             {
+                HandshakeFuture handshakeFuture = new HandshakeFuture();
+                
+                ldapSession.setAttribute( SslFilter.USE_NOTIFICATION, Boolean.TRUE );
+                ldapSession.setAttribute( "HANDSHAKE_FUTURE", handshakeFuture );
                 ldapSession.getFilterChain().addFirst( SSL_FILTER_KEY, sslFilter );
                 
-                while ( !ldapSession.isSecured() )
+                boolean isSecured = handshakeFuture.get( timeout, TimeUnit.MILLISECONDS );
+                
+                if ( !isSecured )
                 {
-                    //Do nothing, but sleep 
-                    Thread.sleep( 10 );
+                    throw new LdapOperationException( ResultCodeEnum.OTHER, I18n.err( I18n.ERR_4100_TLS_HANDSHAKE_ERROR ) );
                 }
             }
         }
