@@ -88,7 +88,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
         }
         else
         {
-            String msg = I18n.err( I18n.ERR_04286, oid );
+            String msg = I18n.err( I18n.ERR_13741_OID_NOT_FOUND_IN_REGISTRY, oid );
             LOG.error( msg );
             throw new LdapException( msg );
         }
@@ -112,7 +112,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
         }
         else
         {
-            String msg = I18n.err( I18n.ERR_04287, oid );
+            String msg = I18n.err( I18n.ERR_13742_NO_SCHEMA_OBJECT_WITH_OID, oid );
             LOG.error( msg );
             throw new LdapException( msg );
         }
@@ -137,7 +137,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
 
         if ( null == schemaObject )
         {
-            String msg = I18n.err( I18n.ERR_04288, oid );
+            String msg = I18n.err( I18n.ERR_13741_OID_NOT_FOUND_IN_REGISTRY, oid );
             LOG.error( msg );
             throw new LdapException( msg );
         }
@@ -228,7 +228,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
     {
         if ( schemaObject == null )
         {
-            String message = I18n.err( I18n.ERR_04289 );
+            String message = I18n.err( I18n.ERR_13743_CANNOT_REGISTER_NULL_SCHEMA_OBJECT );
 
             LOG.debug( message );
             throw new LdapException( message );
@@ -240,7 +240,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
         {
             if ( !Oid.isOid( oid ) )
             {
-                String message = I18n.err( I18n.ERR_04290 );
+                String message = I18n.err( I18n.ERR_13744_SCHEMA_OBJECT_HAS_NO_VALID_OID );
 
                 LOG.debug( message );
                 throw new LdapException( message );
@@ -259,7 +259,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
          */
         if ( byOid.containsKey( oid ) )
         {
-            String message = I18n.err( I18n.ERR_04291, oid );
+            String message = I18n.err( I18n.ERR_13745_SCHEMA_OBJECT_WITH_OID_ALREADY_EXIST, oid );
             LOG.info( message );
             return;
         }

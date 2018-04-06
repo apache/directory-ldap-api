@@ -80,7 +80,7 @@ public class GeneralizedTimeNormalizer extends Normalizer
         if ( value == null )
         {
             throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                I18n.ERR_04224, value ) );
+                I18n.ERR_13724_INVALID_VALUE, value ) );
         }
         
         // Special case : the PPolicy "0000010000Z", for permanently locked accounts
@@ -98,7 +98,7 @@ public class GeneralizedTimeNormalizer extends Normalizer
         catch ( ParseException pe )
         {
             throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                I18n.ERR_04224, value ), pe );
+                I18n.ERR_13724_INVALID_VALUE, value ), pe );
         }
     }
 }

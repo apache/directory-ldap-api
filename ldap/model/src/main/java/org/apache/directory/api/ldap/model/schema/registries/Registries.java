@@ -701,13 +701,14 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     break;
 
                 default:
-                    throw new IllegalArgumentException( "Unexpected SchemaObjectType: " + schemaObject.getObjectType() );
+                    throw new IllegalArgumentException( 
+                        I18n.err( I18n.ERR_13718_UNEXPECTED_SCHEMA_OBJECT_TYPE, schemaObject.getObjectType() ) );
             }
         }
         catch ( LdapException ne )
         {
             // Not allowed.
-            String msg = I18n.err( I18n.ERR_04292, schemaObject.getName(), ne.getLocalizedMessage() );
+            String msg = I18n.err( I18n.ERR_13746_CANNOT_BUILD_REFERENCES, schemaObject.getName(), ne.getLocalizedMessage() );
 
             Throwable error = new LdapProtocolErrorException( msg, ne );
             errors.add( error );
@@ -767,13 +768,14 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     break;
 
                 default:
-                    throw new IllegalArgumentException( "Unexpected SchemaObjectType: " + schemaObject.getObjectType() );
+                    throw new IllegalArgumentException( 
+                        I18n.err( I18n.ERR_13718_UNEXPECTED_SCHEMA_OBJECT_TYPE, schemaObject.getObjectType() ) );
             }
         }
         catch ( LdapException ne )
         {
             // Not allowed.
-            String msg = I18n.err( I18n.ERR_04293, schemaObject.getName(), ne.getLocalizedMessage() );
+            String msg = I18n.err( I18n.ERR_13747_CANNOT_REMOVE_REFERENCES, schemaObject.getName(), ne.getLocalizedMessage() );
 
             Throwable error = new LdapSchemaViolationException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, msg, ne );
             errors.add( error );
@@ -999,7 +1001,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             {
                 // This MR's syntax has not been loaded into the Registries.
                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                    LdapSchemaExceptionCodes.OID_ALREADY_REGISTERED, I18n.err( I18n.ERR_04294, matchingRule.getOid() ),
+                    LdapSchemaExceptionCodes.OID_ALREADY_REGISTERED, I18n.err( I18n.ERR_13748_MATCHING_RULE_NO_SYNTAX, matchingRule.getOid() ),
                     ne );
                 ldapSchemaException.setSourceObject( matchingRule );
                 errors.add( ldapSchemaException );
@@ -1009,7 +1011,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         {
             // This is an error.
             LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                LdapSchemaExceptionCodes.OID_ALREADY_REGISTERED, I18n.err( I18n.ERR_04294, matchingRule.getOid() ) );
+                LdapSchemaExceptionCodes.OID_ALREADY_REGISTERED, I18n.err( I18n.ERR_13748_MATCHING_RULE_NO_SYNTAX, matchingRule.getOid() ) );
             ldapSchemaException.setSourceObject( matchingRule );
             errors.add( ldapSchemaException );
         }
@@ -1076,8 +1078,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 else
                 {
                     // Not allowed : we have a cyle
-                    Throwable error = new LdapSchemaViolationException( ResultCodeEnum.OTHER, I18n.err( I18n.ERR_04297,
-                        attributeType.getOid() ) );
+                    Throwable error = new LdapSchemaViolationException( ResultCodeEnum.OTHER, 
+                        I18n.err( I18n.ERR_13749_AT_WITH_CYCLE, attributeType.getOid() ) );
                     errors.add( error );
                     return;
                 }
@@ -1550,7 +1552,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // Check that the SchemaObject is not already registered
         if ( !( schemaObject instanceof LoadableSchemaObject ) && globalOidRegistry.contains( schemaObject.getOid() ) )
         {
-            String msg = I18n.err( I18n.ERR_04301, schemaObject.getObjectType(), schemaObject.getOid() );
+            String msg = I18n.err( I18n.ERR_13750_REGISTERING_FAILED_ALREADY_PRESENT, schemaObject.getObjectType(), schemaObject.getOid() );
             LOG.error( msg );
             Throwable error = new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
             errors.add( error );
@@ -1607,7 +1609,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     break;
 
                 default:
-                    throw new IllegalArgumentException( "Unexpected SchemaObjectType: " + schemaObject.getObjectType() );
+                    throw new IllegalArgumentException( 
+                        I18n.err( I18n.ERR_13718_UNEXPECTED_SCHEMA_OBJECT_TYPE, schemaObject.getObjectType() ) );
             }
         }
         catch ( Exception e )
@@ -1631,7 +1634,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // Check that the SchemaObject is not already registered
         if ( !( schemaObject instanceof LoadableSchemaObject ) && globalOidRegistry.contains( schemaObject.getOid() ) )
         {
-            String msg = I18n.err( I18n.ERR_04301, schemaObject.getObjectType(), schemaObject.getOid() );
+            String msg = I18n.err( I18n.ERR_13750_REGISTERING_FAILED_ALREADY_PRESENT, schemaObject.getObjectType(), schemaObject.getOid() );
             LOG.error( msg );
             Throwable error = new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
             errors.add( error );
@@ -1700,7 +1703,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // Check that the SchemaObject is already registered
         if ( !( schemaObject instanceof LoadableSchemaObject ) && !globalOidRegistry.contains( schemaObject.getOid() ) )
         {
-            String msg = I18n.err( I18n.ERR_04302, schemaObject.getObjectType(), schemaObject.getOid() );
+            String msg = I18n.err( I18n.ERR_13751_UNREGISTERING_FAILED_NOT_PRESENT, schemaObject.getObjectType(), schemaObject.getOid() );
             LOG.error( msg );
             Throwable error = new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
             errors.add( error );
@@ -1761,7 +1764,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // Check that the SchemaObject is present in the registries
         if ( !( schemaObject instanceof LoadableSchemaObject ) && !globalOidRegistry.contains( schemaObject.getOid() ) )
         {
-            String msg = I18n.err( I18n.ERR_04302, schemaObject.getObjectType(), schemaObject.getOid() );
+            String msg = I18n.err( I18n.ERR_13751_UNREGISTERING_FAILED_NOT_PRESENT, schemaObject.getObjectType(), schemaObject.getOid() );
             LOG.error( msg );
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
         }
@@ -1816,7 +1819,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 break;
 
             default:
-                throw new IllegalArgumentException( "Unexpected SchemaObjectType: " + schemaObject.getObjectType() );
+                throw new IllegalArgumentException( 
+                    I18n.err( I18n.ERR_13718_UNEXPECTED_SCHEMA_OBJECT_TYPE, schemaObject.getObjectType() ) );
         }
 
         return unregistered;

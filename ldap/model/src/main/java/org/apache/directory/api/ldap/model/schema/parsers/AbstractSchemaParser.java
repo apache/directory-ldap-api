@@ -156,7 +156,7 @@ public abstract class AbstractSchemaParser<T extends SchemaObject>
         if ( schemaDescription == null )
         {
             LOG.error( I18n.err( errorCodeOnNull ) );
-            throw new ParseException( "Null", 0 );
+            throw new ParseException( I18n.err( I18n.ERR_13714_NULL ), 0 );
         }
 
         // reset and initialize the parser / lexer pair

@@ -117,7 +117,7 @@ public String getSchemaName( int ruleId ) throws LdapException
     @Override
     public void unregister( int ruleId ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04278 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13704_CANNOT_MODIFY_DITSR_REGISTRY_COPY ) );
     }
 
 
@@ -127,7 +127,7 @@ public String getSchemaName( int ruleId ) throws LdapException
     @Override
     public void unregisterSchemaElements( String schemaName ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04278 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13704_CANNOT_MODIFY_DITSR_REGISTRY_COPY ) );
     }
 
 
@@ -137,7 +137,7 @@ public String getSchemaName( int ruleId ) throws LdapException
     @Override
     public void renameSchema( String originalSchemaName, String newSchemaName ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04278 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13704_CANNOT_MODIFY_DITSR_REGISTRY_COPY ) );
     }
 
 
@@ -227,7 +227,7 @@ public String getSchemaName( int ruleId ) throws LdapException
     @Override
     public DitStructureRule unregister( String numericOid ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04278 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13704_CANNOT_MODIFY_DITSR_REGISTRY_COPY ) );
     }
 
 
@@ -247,7 +247,7 @@ public String getSchemaName( int ruleId ) throws LdapException
     @Override
     public void clear() throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04278 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13704_CANNOT_MODIFY_DITSR_REGISTRY_COPY ) );
     }
 
 
@@ -257,6 +257,6 @@ public String getSchemaName( int ruleId ) throws LdapException
     @Override
     public DitStructureRule unregister( DitStructureRule schemaObject ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04278 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13704_CANNOT_MODIFY_DITSR_REGISTRY_COPY ) );
     }
 }

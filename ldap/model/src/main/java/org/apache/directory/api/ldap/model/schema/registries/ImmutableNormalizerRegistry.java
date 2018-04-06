@@ -58,7 +58,7 @@ public class ImmutableNormalizerRegistry implements NormalizerRegistry
     @Override
     public void register( Normalizer normalizer ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04283 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13709_CANNOT_MODIFY_NORM_REGISTRY_COPY ) );
     }
 
 
@@ -68,7 +68,7 @@ public class ImmutableNormalizerRegistry implements NormalizerRegistry
     @Override
     public Normalizer unregister( String numericOid ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04283 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13709_CANNOT_MODIFY_NORM_REGISTRY_COPY ) );
     }
 
 
@@ -78,7 +78,7 @@ public class ImmutableNormalizerRegistry implements NormalizerRegistry
     @Override
     public void unregisterSchemaElements( String schemaName ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04283 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13709_CANNOT_MODIFY_NORM_REGISTRY_COPY ) );
     }
 
 
@@ -178,7 +178,7 @@ public class ImmutableNormalizerRegistry implements NormalizerRegistry
     @Override
     public void renameSchema( String originalSchemaName, String newSchemaName ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04283 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13709_CANNOT_MODIFY_NORM_REGISTRY_COPY ) );
     }
 
 
@@ -198,7 +198,7 @@ public class ImmutableNormalizerRegistry implements NormalizerRegistry
     @Override
     public void clear() throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04283 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13709_CANNOT_MODIFY_NORM_REGISTRY_COPY ) );
     }
 
 
@@ -208,6 +208,6 @@ public class ImmutableNormalizerRegistry implements NormalizerRegistry
     @Override
     public Normalizer unregister( Normalizer schemaObject ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04283 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13709_CANNOT_MODIFY_NORM_REGISTRY_COPY ) );
     }
 }

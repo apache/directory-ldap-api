@@ -174,7 +174,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         this.oid = oid;
@@ -233,7 +233,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -275,7 +275,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( names == null )
@@ -308,7 +308,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( names == null )
@@ -353,7 +353,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -385,7 +385,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -457,7 +457,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         this.isReadOnly = readOnly;
@@ -489,7 +489,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -554,7 +554,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -581,7 +581,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -601,7 +601,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly && ( extensions != null ) )
@@ -671,7 +671,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )

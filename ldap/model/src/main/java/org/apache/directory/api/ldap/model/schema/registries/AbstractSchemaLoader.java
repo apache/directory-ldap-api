@@ -128,7 +128,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     {
         if ( entry == null )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04261 ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13727_ENTRY_CANNOT_BE_NULL ) );
         }
 
         Attribute objectClasses = entry.get( SchemaConstants.OBJECT_CLASS_AT );
@@ -155,7 +155,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
 
         if ( entry.get( SchemaConstants.CN_AT ) == null )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04262 ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13728_ENTRY_INVALID_CN ) );
         }
 
         name = entry.get( SchemaConstants.CN_AT ).getString();

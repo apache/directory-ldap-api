@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.model.schema.registries;
 
 import java.util.Map;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
 import org.apache.directory.api.ldap.model.schema.SchemaObjectType;
@@ -76,7 +77,7 @@ public class DefaultSyntaxCheckerRegistry extends DefaultSchemaObjectRegistry<Sy
 
                 if ( DEBUG )
                 {
-                    LOG.debug( "Removed {} with oid {} from the registry", removed, oid );
+                    LOG.debug( I18n.msg( I18n.MSG_13702_REMOVED_FROM_REGISTRY, removed, oid ) );
                 }
             }
         }

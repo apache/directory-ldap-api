@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.comparators;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
@@ -92,7 +93,7 @@ public class NormalizingComparator extends LdapComparator<String>
         }
         catch ( LdapException e )
         {
-            LOG.warn( "Failed to normalize: " + o1, e );
+            LOG.warn( I18n.msg( I18n.MSG_13700_FAILED_TO_NORMALIZE, o1 ), e );
             n1 = o1;
         }
 
@@ -102,7 +103,7 @@ public class NormalizingComparator extends LdapComparator<String>
         }
         catch ( LdapException e )
         {
-            LOG.warn( "Failed to normalize: " + o2, e );
+            LOG.warn( I18n.msg( I18n.MSG_13700_FAILED_TO_NORMALIZE, o2 ), e );
             n2 = o2;
         }
 

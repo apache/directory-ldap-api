@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.normalizers;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
@@ -94,7 +95,7 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
                     break;
 
                 default:
-                    throw new IllegalStateException( "escaped can never have such a value: " + value );
+                    throw new IllegalStateException( I18n.err( I18n.ERR_13713_ESCAPED_WRONG_VALUE, value ) );
             }
         }
 

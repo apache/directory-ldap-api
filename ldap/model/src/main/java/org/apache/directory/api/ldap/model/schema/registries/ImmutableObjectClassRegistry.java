@@ -79,7 +79,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     @Override
     public void registerDescendants( ObjectClass objectClass, List<ObjectClass> ancestors ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04284 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13710_CANNOT_MODIFY_OC_REGISTRY_COPY ) );
     }
 
 
@@ -89,7 +89,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     @Override
     public void unregisterDescendants( ObjectClass attributeType, List<ObjectClass> ancestors ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04284 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13710_CANNOT_MODIFY_OC_REGISTRY_COPY ) );
     }
 
 
@@ -99,7 +99,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     @Override
     public void register( ObjectClass objectClass ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04284 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13710_CANNOT_MODIFY_OC_REGISTRY_COPY ) );
     }
 
 
@@ -109,7 +109,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     @Override
     public ObjectClass unregister( String numericOid ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04284 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13710_CANNOT_MODIFY_OC_REGISTRY_COPY ) );
     }
 
 
@@ -209,7 +209,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     @Override
     public void renameSchema( String originalSchemaName, String newSchemaName ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04284 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13710_CANNOT_MODIFY_OC_REGISTRY_COPY ) );
     }
 
 
@@ -219,7 +219,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     @Override
     public void unregisterSchemaElements( String schemaName ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04284 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13710_CANNOT_MODIFY_OC_REGISTRY_COPY ) );
     }
 
 
@@ -239,7 +239,7 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     @Override
     public void clear() throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04284 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13710_CANNOT_MODIFY_OC_REGISTRY_COPY ) );
     }
 
 
@@ -249,6 +249,6 @@ public class ImmutableObjectClassRegistry implements ObjectClassRegistry, Clonea
     @Override
     public ObjectClass unregister( ObjectClass schemaObject ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04284 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13710_CANNOT_MODIFY_OC_REGISTRY_COPY ) );
     }
 }

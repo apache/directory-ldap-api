@@ -104,7 +104,7 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
             return ditStructureRule.getSchemaName();
         }
 
-        String msg = I18n.err( I18n.ERR_04263, ruleId );
+        String msg = I18n.err( I18n.ERR_13729_RULE_ID_NOT_FOUND, ruleId );
         LOG.warn( msg );
         throw new LdapException( msg );
     }
@@ -120,7 +120,7 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
 
         if ( byRuleId.containsKey( ruleId ) )
         {
-            String msg = I18n.err( I18n.ERR_04264, ruleId );
+            String msg = I18n.err( I18n.ERR_13730_DIT_STRUCTURE_RULE_ALREADY_REGISTRED, ruleId );
             LOG.warn( msg );
             throw new LdapException( msg );
         }
@@ -144,7 +144,7 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
 
         if ( ditStructureRule == null )
         {
-            String msg = I18n.err( I18n.ERR_04265, ruleId );
+            String msg = I18n.err( I18n.ERR_13731_DIT_STRUCTURE_RULE_DOES_NOT_EXIST, ruleId );
             LOG.debug( msg );
             throw new LdapException( msg );
         }

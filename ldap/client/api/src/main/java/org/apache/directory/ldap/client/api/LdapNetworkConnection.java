@@ -2342,8 +2342,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             }
 
             ldapSession.removeAttribute( "HANDSHAKE_FUTURE" );
+            
             return;
         }
+        
         Message response = ( Message ) message;
 
         if ( LOG.isDebugEnabled() )

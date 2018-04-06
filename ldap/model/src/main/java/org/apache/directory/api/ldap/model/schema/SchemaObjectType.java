@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 
 
@@ -141,7 +142,7 @@ public enum SchemaObjectType
                 break;
 
             default:
-                throw new IllegalArgumentException( "Unexpected SchemaObjectType " + this );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13718_UNEXPECTED_SCHEMA_OBJECT_TYPE, this ) );
         }
 
         return schemaObjectPath;

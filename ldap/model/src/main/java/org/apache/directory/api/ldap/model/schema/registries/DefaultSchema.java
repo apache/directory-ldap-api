@@ -110,7 +110,7 @@ public class DefaultSchema implements Schema
     {
         if ( name == null )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04266 ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13732_NAME_CANNOT_BE_NULL ) );
         }
 
         this.name = name;

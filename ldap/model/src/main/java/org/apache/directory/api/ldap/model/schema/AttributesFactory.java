@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.model.schema;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
@@ -86,7 +87,7 @@ public class AttributesFactory
             return convert( ( NameForm ) obj, schema, schemaManager );
         }
 
-        throw new IllegalArgumentException( "nknown SchemaObject type: " + obj.getClass() );
+        throw new IllegalArgumentException( I18n.err( I18n.ERR_13712_UNKNOWN_SCHEMA_OBJECT_TYPE, obj.getClass() ) );
     }
 
 
@@ -193,6 +194,7 @@ public class AttributesFactory
         entry.put( MetaSchemaConstants.M_FQCN_AT, normalizer.getClass().getName() );
         entry.put( SchemaConstants.CREATORS_NAME_AT, schema.getOwner() );
         entry.put( SchemaConstants.CREATE_TIMESTAMP_AT, DateUtils.getGeneralizedTime() );
+        
         return entry;
     }
 
@@ -206,8 +208,7 @@ public class AttributesFactory
      * @param schemaManager The SchemaManager
      * @return An Entry defining a LdapComparator
      */
-    public Entry convert( String oid, LdapComparator<? super Object> comparator, Schema schema,
-        SchemaManager schemaManager )
+    public Entry convert( String oid, LdapComparator<? super Object> comparator, Schema schema, SchemaManager schemaManager )
     {
         Entry entry = new DefaultEntry( schemaManager );
 
@@ -216,6 +217,7 @@ public class AttributesFactory
         entry.put( MetaSchemaConstants.M_FQCN_AT, comparator.getClass().getName() );
         entry.put( SchemaConstants.CREATORS_NAME_AT, schema.getOwner() );
         entry.put( SchemaConstants.CREATE_TIMESTAMP_AT, DateUtils.getGeneralizedTime() );
+        
         return entry;
     }
 
@@ -239,6 +241,7 @@ public class AttributesFactory
         entry.put( SchemaConstants.CREATORS_NAME_AT, schema.getOwner() );
         entry.put( SchemaConstants.CREATE_TIMESTAMP_AT, DateUtils.getGeneralizedTime() );
         injectCommon( matchingRule, entry, schemaManager );
+        
         return entry;
     }
 
@@ -258,6 +261,7 @@ public class AttributesFactory
         entry.put( SchemaConstants.OBJECT_CLASS_AT, SchemaConstants.TOP_OC, "" );
         entry.put( SchemaConstants.CREATORS_NAME_AT, schema.getOwner() );
         entry.put( SchemaConstants.CREATE_TIMESTAMP_AT, DateUtils.getGeneralizedTime() );
+        
         return entry;
     }
 
@@ -277,6 +281,7 @@ public class AttributesFactory
         entry.put( SchemaConstants.OBJECT_CLASS_AT, SchemaConstants.TOP_OC, "" );
         entry.put( SchemaConstants.CREATORS_NAME_AT, schema.getOwner() );
         entry.put( SchemaConstants.CREATE_TIMESTAMP_AT, DateUtils.getGeneralizedTime() );
+        
         return entry;
     }
 
@@ -296,6 +301,7 @@ public class AttributesFactory
         entry.put( SchemaConstants.OBJECT_CLASS_AT, SchemaConstants.TOP_OC, "" );
         entry.put( SchemaConstants.CREATORS_NAME_AT, schema.getOwner() );
         entry.put( SchemaConstants.CREATE_TIMESTAMP_AT, DateUtils.getGeneralizedTime() );
+        
         return entry;
     }
 
@@ -316,6 +322,7 @@ public class AttributesFactory
         entry.put( SchemaConstants.OBJECT_CLASS_AT, SchemaConstants.TOP_OC, "" );
         entry.put( SchemaConstants.CREATORS_NAME_AT, schema.getOwner() );
         entry.put( SchemaConstants.CREATE_TIMESTAMP_AT, DateUtils.getGeneralizedTime() );
+        
         return entry;
     }
 
@@ -340,8 +347,7 @@ public class AttributesFactory
      * @return The converted AttributeType 
      * @throws LdapException If the conversion failed
      */
-    public Entry convert( AttributeType attributeType, Schema schema, SchemaManager schemaManager )
-        throws LdapException
+    public Entry convert( AttributeType attributeType, Schema schema, SchemaManager schemaManager ) throws LdapException
     {
         Entry entry = new DefaultEntry( schemaManager );
 

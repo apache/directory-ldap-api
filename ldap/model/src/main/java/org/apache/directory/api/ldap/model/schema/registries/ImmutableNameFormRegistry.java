@@ -148,7 +148,7 @@ public class ImmutableNameFormRegistry implements NameFormRegistry
     @Override
     public void register( NameForm schemaObject ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04282 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13708_CANNOT_MODIFY_NF_REGISTRY_COPY ) );
     }
 
 
@@ -158,7 +158,7 @@ public class ImmutableNameFormRegistry implements NameFormRegistry
     @Override
     public void renameSchema( String originalSchemaName, String newSchemaName ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04282 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13708_CANNOT_MODIFY_NF_REGISTRY_COPY ) );
     }
 
 
@@ -168,7 +168,7 @@ public class ImmutableNameFormRegistry implements NameFormRegistry
     @Override
     public NameForm unregister( String numericOid ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04282 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13708_CANNOT_MODIFY_NF_REGISTRY_COPY ) );
     }
 
 
@@ -178,7 +178,7 @@ public class ImmutableNameFormRegistry implements NameFormRegistry
     @Override
     public void unregisterSchemaElements( String schemaName ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04282 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13708_CANNOT_MODIFY_NF_REGISTRY_COPY ) );
     }
 
 
@@ -198,7 +198,7 @@ public class ImmutableNameFormRegistry implements NameFormRegistry
     @Override
     public void clear() throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04282 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13708_CANNOT_MODIFY_NF_REGISTRY_COPY ) );
     }
 
 
@@ -208,6 +208,6 @@ public class ImmutableNameFormRegistry implements NameFormRegistry
     @Override
     public NameForm unregister( NameForm schemaObject ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04282 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13708_CANNOT_MODIFY_NF_REGISTRY_COPY ) );
     }
 }

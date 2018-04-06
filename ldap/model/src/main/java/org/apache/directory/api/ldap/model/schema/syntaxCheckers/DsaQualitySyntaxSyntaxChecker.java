@@ -225,7 +225,7 @@ public final class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
         {
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
+                LOG.debug( I18n.msg( I18n.MSG_13701_SYNTAX_VALID, value ) );
             }
             
             return true;
@@ -249,7 +249,7 @@ public final class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
         {
             if ( result )
             {
-                LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
+                LOG.debug( I18n.msg( I18n.MSG_13701_SYNTAX_VALID, value ) );
             }
             else
             {

@@ -164,7 +164,7 @@ public class NameForm extends AbstractSchemaObject
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -183,7 +183,7 @@ public class NameForm extends AbstractSchemaObject
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -229,7 +229,7 @@ public class NameForm extends AbstractSchemaObject
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -248,7 +248,7 @@ public class NameForm extends AbstractSchemaObject
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -275,7 +275,7 @@ public class NameForm extends AbstractSchemaObject
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -294,7 +294,7 @@ public class NameForm extends AbstractSchemaObject
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly && !mustAttributeTypeOids.contains( attributeType.getOid() ) )
@@ -340,7 +340,7 @@ public class NameForm extends AbstractSchemaObject
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -359,7 +359,7 @@ public class NameForm extends AbstractSchemaObject
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -386,7 +386,7 @@ public class NameForm extends AbstractSchemaObject
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -405,7 +405,7 @@ public class NameForm extends AbstractSchemaObject
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly && !mayAttributeTypeOids.contains( attributeType.getOid() ) )

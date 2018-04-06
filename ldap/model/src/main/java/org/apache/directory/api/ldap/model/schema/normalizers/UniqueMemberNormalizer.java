@@ -98,7 +98,8 @@ public class UniqueMemberNormalizer extends Normalizer
             }
             else
             {
-                throw new IllegalStateException( I18n.err( I18n.ERR_04226, value.getClass() ) );
+                throw new IllegalStateException( 
+                    I18n.err( I18n.ERR_13725_CANNOT_HANDLE_NAME_AND_OPTIONAL_UID_NORM, value.getClass() ) );
             }
         }
         else

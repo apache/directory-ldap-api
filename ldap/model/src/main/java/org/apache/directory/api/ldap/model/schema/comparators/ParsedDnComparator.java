@@ -120,7 +120,7 @@ public class ParsedDnComparator extends LdapComparator<Object>
         }
         else
         {
-            throw new IllegalStateException( I18n.err( I18n.ERR_04218, obj == null ? null : obj.getClass() ) );
+            throw new IllegalStateException( I18n.err( I18n.ERR_13720_CANNOT_HANDLE_DN_COMPARISONS, obj == null ? null : obj.getClass() ) );
         }
 
         return dn;

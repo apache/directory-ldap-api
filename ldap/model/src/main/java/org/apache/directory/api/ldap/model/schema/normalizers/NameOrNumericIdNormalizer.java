@@ -96,7 +96,7 @@ public class NameOrNumericIdNormalizer extends Normalizer
         }
 
         // if all else fails
-        throw new LdapOtherException( I18n.err( I18n.ERR_04226, value ) );
+        throw new LdapOtherException( I18n.err( I18n.ERR_13725_CANNOT_HANDLE_NAME_AND_OPTIONAL_UID_NORM, value ) );
     }
 
 

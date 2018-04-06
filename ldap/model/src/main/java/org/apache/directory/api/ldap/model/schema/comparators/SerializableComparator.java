@@ -80,7 +80,7 @@ public class SerializableComparator<E> extends LdapComparator<E> implements Seri
             }
             catch ( LdapException le )
             {
-                throw new RuntimeException( I18n.err( I18n.ERR_04221, matchingRuleOid ), le );
+                throw new RuntimeException( I18n.err( I18n.ERR_13723_MATCHING_RULE_NOT_FOUND, matchingRuleOid ), le );
             }
         }
 

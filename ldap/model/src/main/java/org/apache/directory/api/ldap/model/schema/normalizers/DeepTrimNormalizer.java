@@ -130,7 +130,7 @@ public class DeepTrimNormalizer extends Normalizer implements PreparedNormalizer
         catch ( IOException ioe )
         {
             throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                I18n.ERR_04224, value ), ioe );
+                I18n.ERR_13724_INVALID_VALUE, value ), ioe );
         }
     }
 }

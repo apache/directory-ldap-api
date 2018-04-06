@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.comparators;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.apache.directory.api.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
@@ -66,7 +67,7 @@ public class DeepTrimToLowerComparator extends LdapComparator<String>
         }
         catch ( LdapException e )
         {
-            LOG.warn( "Failed to normalize: " + value, e );
+            LOG.warn( I18n.msg( I18n.MSG_13700_FAILED_TO_NORMALIZE, value ), e );
             normalizedValue = value;
         }
 

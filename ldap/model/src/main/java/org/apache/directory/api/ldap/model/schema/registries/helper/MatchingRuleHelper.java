@@ -108,7 +108,7 @@ public final class MatchingRuleHelper
                 catch ( LdapException ne )
                 {
                     // The Syntax is a mandatory element, it must exist.
-                    String msg = I18n.err( I18n.ERR_04317 );
+                    String msg = I18n.err( I18n.ERR_13765_MR_MUST_REFER_EXISTING_SYNTAX );
 
                     LdapSchemaException ldapSchemaException = new LdapSchemaException(
                         LdapSchemaExceptionCodes.MR_NONEXISTENT_SYNTAX, msg, ne );

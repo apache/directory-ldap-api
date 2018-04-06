@@ -148,7 +148,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     {
         if ( !Oid.isOid( oid ) )
         {
-            String msg = I18n.err( I18n.ERR_04267 );
+            String msg = I18n.err( I18n.ERR_13733_ARG_NOT_NUMERIC_OID );
             LOG.warn( msg );
             throw new LdapException( msg );
         }
@@ -160,7 +160,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
             return schemaObject.getSchemaName();
         }
 
-        String msg = I18n.err( I18n.ERR_04268_OID_NOT_FOUND, oid );
+        String msg = I18n.err( I18n.ERR_13734_OID_NOT_FOUND, oid );
         LOG.warn( msg );
         throw new LdapException( msg );
     }
@@ -229,7 +229,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
 
             if ( schemaObject == null )
             {
-                String msg = I18n.err( I18n.ERR_04269, schemaObjectType.name(), oid );
+                String msg = I18n.err( I18n.ERR_13735_ELEMENT_FOR_OID_DOES_NOT_EXIST, schemaObjectType.name(), oid );
                 LOG.debug( msg );
                 throw new LdapException( msg );
             }
@@ -254,7 +254,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
 
         if ( byName.containsKey( oid ) )
         {
-            String msg = I18n.err( I18n.ERR_04270, schemaObjectType.name(), oid );
+            String msg = I18n.err( I18n.ERR_13736_ELEMENT_FOR_OID_ALREADY_REGISTERED, schemaObjectType.name(), oid );
             LOG.warn( msg );
             LdapSchemaException ldapSchemaException = new LdapSchemaException(
                 LdapSchemaExceptionCodes.OID_ALREADY_REGISTERED, msg );
@@ -274,7 +274,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
 
             if ( byName.containsKey( lowerName ) )
             {
-                String msg = I18n.err( I18n.ERR_04271, schemaObjectType.name(), name );
+                String msg = I18n.err( I18n.ERR_13737_ELEMENT_WITH_NAME_ALREADY_REGISTERED, schemaObjectType.name(), name );
                 LOG.warn( msg );
                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
                     LdapSchemaExceptionCodes.NAME_ALREADY_REGISTERED, msg );
@@ -305,7 +305,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     {
         if ( !Oid.isOid( numericOid ) )
         {
-            String msg = I18n.err( I18n.ERR_04272, numericOid );
+            String msg = I18n.err( I18n.ERR_13738_OID_NOT_A_NUMERIC_OID, numericOid );
             LOG.error( msg );
             throw new LdapException( msg );
         }
@@ -322,7 +322,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
 
         if ( DEBUG )
         {
-            LOG.debug( "Removed {} with oid {} from the registry", schemaObject, numericOid );
+            LOG.debug( I18n.msg( I18n.MSG_13702_REMOVED_FROM_REGISTRY, schemaObject, numericOid ) );
         }
 
         return schemaObject;
@@ -339,7 +339,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
 
         if ( !byName.containsKey( oid ) )
         {
-            String msg = I18n.err( I18n.ERR_04273, schemaObjectType.name(), oid );
+            String msg = I18n.err( I18n.ERR_13739_ELEMENT_WITH_OID_NOT_REGISTERED, schemaObjectType.name(), oid );
             LOG.warn( msg );
             throw new LdapException( msg );
         }
@@ -385,7 +385,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
 
                 if ( DEBUG )
                 {
-                    LOG.debug( "Removed {} with oid {} from the registry", removed, oid );
+                    LOG.debug( I18n.msg( I18n.MSG_13702_REMOVED_FROM_REGISTRY, removed, oid ) );
                 }
             }
         }
@@ -410,7 +410,7 @@ public String getOidByName( String name ) throws LdapException
             // ok this name is not for a schema object in the registry
             if ( schemaObject == null )
             {
-                throw new LdapException( I18n.err( I18n.ERR_04274, name ) );
+                throw new LdapException( I18n.err( I18n.ERR_13740_CANNOT_FIND_OID_FROM_NAME, name ) );
             }
         }
 

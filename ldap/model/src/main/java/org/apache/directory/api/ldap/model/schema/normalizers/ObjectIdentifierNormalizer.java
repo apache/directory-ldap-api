@@ -102,7 +102,7 @@ public class ObjectIdentifierNormalizer extends Normalizer
                         if ( !Character.isLetter( c ) )
                         {
                             throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                                I18n.ERR_04224, value ) );
+                                I18n.ERR_13724_INVALID_VALUE, value ) );
                         }
                     }
                     else
@@ -110,7 +110,7 @@ public class ObjectIdentifierNormalizer extends Normalizer
                         if ( !( Character.isDigit( c ) || Character.isLetter( c ) || ( c == '-'  ) || ( c == '_' ) ) )
                             {
                             throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                                I18n.ERR_04224, value ) );
+                                I18n.ERR_13724_INVALID_VALUE, value ) );
                             }
                     }
                 }

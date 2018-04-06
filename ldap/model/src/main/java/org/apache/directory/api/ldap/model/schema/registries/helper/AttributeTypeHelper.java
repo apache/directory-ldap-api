@@ -163,7 +163,7 @@ public final class AttributeTypeHelper
             catch ( Exception e )
             {
                 // Not allowed.
-                String msg = I18n.err( I18n.ERR_04303, superiorOid, attributeType.getName() );
+                String msg = I18n.err( I18n.ERR_13752_CANNOT_FIND_SUPERIOR, superiorOid, attributeType.getName() );
 
                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
                     LdapSchemaExceptionCodes.AT_NONEXISTENT_SUPERIOR, msg, e );
@@ -181,7 +181,7 @@ public final class AttributeTypeHelper
                 // a special case : if the superior is collective, this is an error
                 if ( currentSuperior.isCollective() )
                 {
-                    String msg = I18n.err( I18n.ERR_04482_CANNOT_SUBTYPE_COLLECTIVE,
+                    String msg = I18n.err( I18n.ERR_13776_CANNOT_SUBTYPE_COLLECTIVE,
                         currentSuperior, attributeType.getName() );
 
                     LdapSchemaException ldapSchemaException = new LdapSchemaException(
@@ -228,7 +228,7 @@ public final class AttributeTypeHelper
                     {
                         // There is a cycle : bad bad bad !
                         // Not allowed.
-                        String msg = I18n.err( I18n.ERR_04304, attributeType.getName() );
+                        String msg = I18n.err( I18n.ERR_13753_CYCLE_DETECTED, attributeType.getName() );
 
                         LdapSchemaException ldapSchemaException = new LdapSchemaException(
                             LdapSchemaExceptionCodes.AT_CYCLE_TYPE_HIERARCHY, msg );
@@ -253,7 +253,7 @@ public final class AttributeTypeHelper
             else
             {
                 // Not allowed.
-                String msg = I18n.err( I18n.ERR_04305, superiorOid, attributeType.getName() );
+                String msg = I18n.err( I18n.ERR_13752_CANNOT_FIND_SUPERIOR, superiorOid, attributeType.getName() );
 
                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
                     LdapSchemaExceptionCodes.AT_NONEXISTENT_SUPERIOR, msg );
@@ -292,7 +292,7 @@ public final class AttributeTypeHelper
             catch ( LdapException ne )
             {
                 // Not allowed.
-                String msg = I18n.err( I18n.ERR_04306, syntaxOid, attributeType.getName() );
+                String msg = I18n.err( I18n.ERR_13754_CANNOT_FIND_SYNTAX, syntaxOid, attributeType.getName() );
 
                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
                     LdapSchemaExceptionCodes.AT_NONEXISTENT_SYNTAX, msg, ne );
@@ -312,7 +312,7 @@ public final class AttributeTypeHelper
             else
             {
                 // Not allowed.
-                String msg = I18n.err( I18n.ERR_04306, syntaxOid, attributeType.getName() );
+                String msg = I18n.err( I18n.ERR_13754_CANNOT_FIND_SYNTAX, syntaxOid, attributeType.getName() );
 
                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
                     LdapSchemaExceptionCodes.AT_NONEXISTENT_SYNTAX, msg );
@@ -335,7 +335,7 @@ public final class AttributeTypeHelper
                 }
                 else
                 {
-                    String msg = I18n.err( I18n.ERR_04306, syntaxOid, attributeType.getName() );
+                    String msg = I18n.err( I18n.ERR_13754_CANNOT_FIND_SYNTAX, syntaxOid, attributeType.getName() );
 
                     LdapSchemaException ldapSchemaException = new LdapSchemaException(
                         LdapSchemaExceptionCodes.AT_NONEXISTENT_SYNTAX, msg );
@@ -350,7 +350,7 @@ public final class AttributeTypeHelper
             else
             {
                 // Not allowed.
-                String msg = I18n.err( I18n.ERR_04307, attributeType.getName() );
+                String msg = I18n.err( I18n.ERR_13755_AT_MUST_HAVE_A_SYNTAX_OID, attributeType.getName() );
 
                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
                     LdapSchemaExceptionCodes.AT_SYNTAX_OR_SUPERIOR_REQUIRED, msg );
@@ -383,7 +383,7 @@ public final class AttributeTypeHelper
             catch ( LdapException ne )
             {
                 // Not allowed.
-                String msg = I18n.err( I18n.ERR_04308, equalityOid, attributeType.getName() );
+                String msg = I18n.err( I18n.ERR_13756_CANNOT_FIND_EQUALITY_MR_OBJECT, equalityOid, attributeType.getName() );
 
                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
                     LdapSchemaExceptionCodes.AT_NONEXISTENT_EQUALITY_MATCHING_RULE, msg, ne );
@@ -405,7 +405,7 @@ public final class AttributeTypeHelper
             else
             {
                 // Not allowed.
-                String msg = I18n.err( I18n.ERR_04309, equalityOid, attributeType.getName() );
+                String msg = I18n.err( I18n.ERR_13757_CANNOT_FIND_EQUALITY_MR_INSTANCE, equalityOid, attributeType.getName() );
 
                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
                     LdapSchemaExceptionCodes.AT_NONEXISTENT_EQUALITY_MATCHING_RULE, msg );
@@ -447,7 +447,7 @@ public final class AttributeTypeHelper
             catch ( LdapException ne )
             {
                 // Not allowed.
-                String msg = I18n.err( I18n.ERR_04312, substringOid, attributeType.getName() );
+                String msg = I18n.err( I18n.ERR_13760_CANNOT_FIND_SUBSTR_MR_OBJECT, substringOid, attributeType.getName() );
 
                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
                     LdapSchemaExceptionCodes.AT_NONEXISTENT_SUBSTRING_MATCHING_RULE, msg, ne );
@@ -466,7 +466,7 @@ public final class AttributeTypeHelper
             else
             {
                 // Not allowed.
-                String msg = I18n.err( I18n.ERR_04313, substringOid, attributeType.getName() );
+                String msg = I18n.err( I18n.ERR_13761_CANNOT_FIND_SUBSTR_MR_INSTANCE, substringOid, attributeType.getName() );
 
                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
                     LdapSchemaExceptionCodes.AT_NONEXISTENT_SUBSTRING_MATCHING_RULE, msg );
@@ -513,7 +513,7 @@ public final class AttributeTypeHelper
             catch ( LdapException ne )
             {
                 // Not allowed.
-                String msg = I18n.err( I18n.ERR_04310, orderingOid, attributeType.getName() );
+                String msg = I18n.err( I18n.ERR_13758_CANNOT_FIND_ORDERING_MR_OBJECT, orderingOid, attributeType.getName() );
 
                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
                     LdapSchemaExceptionCodes.AT_NONEXISTENT_ORDERING_MATCHING_RULE, msg, ne );
@@ -532,7 +532,7 @@ public final class AttributeTypeHelper
             else
             {
                 // Not allowed.
-                String msg = I18n.err( I18n.ERR_04311, orderingOid, attributeType.getName() );
+                String msg = I18n.err( I18n.ERR_13759_CANNOT_FIND_ORDERING_MR_INSTANCE, orderingOid, attributeType.getName() );
 
                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
                     LdapSchemaExceptionCodes.AT_NONEXISTENT_ORDERING_MATCHING_RULE, msg );
@@ -566,7 +566,7 @@ public final class AttributeTypeHelper
         if ( ( superior != null ) && ( attributeType.getUsage() != superior.getUsage() ) )
         {
             // This is an error
-            String msg = I18n.err( I18n.ERR_04314, attributeType.getName() );
+            String msg = I18n.err( I18n.ERR_13762_AT_MUST_HAVE_SUPERIOR_USAGE, attributeType.getName() );
 
             LdapSchemaException ldapSchemaException = new LdapSchemaException(
                 LdapSchemaExceptionCodes.AT_MUST_HAVE_SAME_USAGE_THAN_SUPERIOR, msg );
@@ -581,7 +581,7 @@ public final class AttributeTypeHelper
         if ( !attributeType.isUserModifiable() && ( attributeType.getUsage() == UsageEnum.USER_APPLICATIONS ) )
         {
             // Cannot have a not user modifiable AT which is not an operational AT
-            String msg = I18n.err( I18n.ERR_04315, attributeType.getName() );
+            String msg = I18n.err( I18n.ERR_13763_AT_MUST_BE_USER_MODIFIABLE, attributeType.getName() );
 
             LdapSchemaException ldapSchemaException = new LdapSchemaException(
                 LdapSchemaExceptionCodes.AT_USER_APPLICATIONS_USAGE_MUST_BE_USER_MODIFIABLE, msg );
@@ -608,7 +608,7 @@ public final class AttributeTypeHelper
         if ( attributeType.isCollective() && ( attributeType.getUsage() != UsageEnum.USER_APPLICATIONS ) )
         {
             // An AttributeType which is collective must be a USER attributeType
-            String msg = I18n.err( I18n.ERR_04316, attributeType.getName() );
+            String msg = I18n.err( I18n.ERR_13764_AT_COLLECTIVE_SHOULD_BE_USER_APP, attributeType.getName() );
 
             LdapSchemaException ldapSchemaException = new LdapSchemaException(
                 LdapSchemaExceptionCodes.AT_COLLECTIVE_MUST_HAVE_USER_APPLICATIONS_USAGE, msg );
@@ -620,7 +620,7 @@ public final class AttributeTypeHelper
         if ( attributeType.isCollective() && attributeType.isSingleValued() )
         {
             // A collective attribute must be multi-valued
-            String msg = I18n.err( I18n.ERR_04483_COLLECTIVE_NOT_MULTI_VALUED, attributeType.getName() );
+            String msg = I18n.err( I18n.ERR_13777_COLLECTIVE_NOT_MULTI_VALUED, attributeType.getName() );
 
             LdapSchemaException ldapSchemaException = new LdapSchemaException(
                 LdapSchemaExceptionCodes.AT_COLLECTIVE_CANNOT_BE_SINGLE_VALUED, msg );

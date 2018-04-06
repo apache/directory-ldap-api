@@ -153,7 +153,7 @@ public class MutableAttributeType extends AttributeType
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -172,7 +172,7 @@ public class MutableAttributeType extends AttributeType
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -191,7 +191,7 @@ public class MutableAttributeType extends AttributeType
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         this.isCollective = collective;
@@ -207,7 +207,7 @@ public class MutableAttributeType extends AttributeType
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -233,7 +233,7 @@ public class MutableAttributeType extends AttributeType
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -259,7 +259,7 @@ public class MutableAttributeType extends AttributeType
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         this.usage = newUsage;
@@ -276,7 +276,7 @@ public class MutableAttributeType extends AttributeType
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -295,7 +295,7 @@ public class MutableAttributeType extends AttributeType
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -314,7 +314,7 @@ public class MutableAttributeType extends AttributeType
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -334,7 +334,7 @@ public class MutableAttributeType extends AttributeType
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -353,7 +353,7 @@ public class MutableAttributeType extends AttributeType
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         this.superior = newSuperior;
@@ -370,7 +370,7 @@ public class MutableAttributeType extends AttributeType
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -389,7 +389,7 @@ public class MutableAttributeType extends AttributeType
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -409,7 +409,7 @@ public class MutableAttributeType extends AttributeType
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         this.syntax = newSyntax;
@@ -426,7 +426,7 @@ public class MutableAttributeType extends AttributeType
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -445,7 +445,7 @@ public class MutableAttributeType extends AttributeType
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -465,7 +465,7 @@ public class MutableAttributeType extends AttributeType
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         this.equality = newEquality;
@@ -482,7 +482,7 @@ public class MutableAttributeType extends AttributeType
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -501,7 +501,7 @@ public class MutableAttributeType extends AttributeType
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -521,7 +521,7 @@ public class MutableAttributeType extends AttributeType
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         this.ordering = newOrdering;
@@ -538,7 +538,7 @@ public class MutableAttributeType extends AttributeType
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -557,7 +557,7 @@ public class MutableAttributeType extends AttributeType
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -577,7 +577,7 @@ public class MutableAttributeType extends AttributeType
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         this.substring = newSubstring;

@@ -61,12 +61,12 @@ public class LongComparator extends LdapComparator<Long> implements Serializable
 
         if ( obj1 == null )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04219_ARGUMENT1_NULL ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13721_ARGUMENT1_NULL ) );
         }
 
         if ( obj2 == null )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04220_ARGUMENT2_NULL ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13722_ARGUMENT2_NULL ) );
         }
 
         return obj1.compareTo( obj2 );

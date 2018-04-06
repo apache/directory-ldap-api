@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.util.Strings;
 
 
@@ -210,7 +211,7 @@ public final class SchemaObjectSorter
                     }
                 }
             }
-            throw new IllegalStateException( "Loop detected: " + numericOid2schemaObject.values() );
+            throw new IllegalStateException( I18n.err( I18n.ERR_13719_LOOP_DETECTED, numericOid2schemaObject.values() ) );
         }
 
 
@@ -228,7 +229,7 @@ public final class SchemaObjectSorter
                 return schemaObjectIterator;
             }
 
-            throw new IllegalStateException( "Loop detected: " + numericOid2schemaObject.values() );
+            throw new IllegalStateException( I18n.err( I18n.ERR_13719_LOOP_DETECTED, numericOid2schemaObject.values() ) );
         }
 
 

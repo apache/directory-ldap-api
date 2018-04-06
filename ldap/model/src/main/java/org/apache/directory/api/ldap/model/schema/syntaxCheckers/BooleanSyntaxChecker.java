@@ -138,7 +138,7 @@ public final class BooleanSyntaxChecker extends SyntaxChecker
         {
             if ( valid )
             {
-                LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, strValue ) );
+                LOG.debug( I18n.msg( I18n.MSG_13701_SYNTAX_VALID, strValue ) );
             }
             else
             {

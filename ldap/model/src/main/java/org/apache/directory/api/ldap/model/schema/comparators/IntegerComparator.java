@@ -139,7 +139,7 @@ public class IntegerComparator extends LdapComparator<Object> implements Seriali
         }
         catch ( LdapException le )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, backendValue ), le );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13724_INVALID_VALUE, backendValue ), le );
         }
         try
         {
@@ -147,7 +147,7 @@ public class IntegerComparator extends LdapComparator<Object> implements Seriali
         }
         catch ( LdapException le )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, assertValue ), le );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13724_INVALID_VALUE, assertValue ), le );
         }
 
         BigInteger b1 = new BigInteger( backendValue );

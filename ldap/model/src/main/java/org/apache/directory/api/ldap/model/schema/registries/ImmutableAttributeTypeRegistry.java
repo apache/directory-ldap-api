@@ -111,7 +111,7 @@ public boolean hasDescendants( String ancestorId ) throws LdapException
     @Override
     public void register( AttributeType attributeType ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04275 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13701_CANNOT_MODIFY_AT_REGISTRY_COPY ) );
     }
 
 
@@ -121,7 +121,7 @@ public boolean hasDescendants( String ancestorId ) throws LdapException
     @Override
     public void registerDescendants( AttributeType attributeType, AttributeType ancestor ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04275 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13701_CANNOT_MODIFY_AT_REGISTRY_COPY ) );
     }
 
 
@@ -131,7 +131,7 @@ public boolean hasDescendants( String ancestorId ) throws LdapException
     @Override
     public void unregisterDescendants( AttributeType attributeType, AttributeType ancestor ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04275 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13701_CANNOT_MODIFY_AT_REGISTRY_COPY ) );
     }
 
 
@@ -142,7 +142,7 @@ public boolean hasDescendants( String ancestorId ) throws LdapException
     public AttributeType unregister( String numericOid ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION,
-            "Cannot modify the AttributeTypeRegistry copy" );
+            I18n.err( I18n.ERR_13701_CANNOT_MODIFY_AT_REGISTRY_COPY ) );
     }
 
 
@@ -152,7 +152,8 @@ public boolean hasDescendants( String ancestorId ) throws LdapException
     @Override
     public void addMappingFor( AttributeType attributeType ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04275 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, 
+            I18n.err( I18n.ERR_13701_CANNOT_MODIFY_AT_REGISTRY_COPY ) );
     }
 
 
@@ -162,7 +163,7 @@ public boolean hasDescendants( String ancestorId ) throws LdapException
     @Override
     public void removeMappingFor( AttributeType attributeType ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04275 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13701_CANNOT_MODIFY_AT_REGISTRY_COPY ) );
     }
 
 
@@ -289,7 +290,7 @@ public boolean hasDescendants( String ancestorId ) throws LdapException
     @Override
     public void unregisterSchemaElements( String schemaName ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04275 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13701_CANNOT_MODIFY_AT_REGISTRY_COPY ) );
     }
 
 
@@ -309,7 +310,7 @@ public boolean hasDescendants( String ancestorId ) throws LdapException
     @Override
     public void clear() throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04275 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13701_CANNOT_MODIFY_AT_REGISTRY_COPY ) );
     }
 
 
@@ -319,6 +320,6 @@ public boolean hasDescendants( String ancestorId ) throws LdapException
     @Override
     public AttributeType unregister( AttributeType schemaObject ) throws LdapException
     {
-        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04275 ) );
+        throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_13701_CANNOT_MODIFY_AT_REGISTRY_COPY ) );
     }
 }

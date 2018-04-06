@@ -130,7 +130,8 @@ public final class ObjectClassHelper
                             if ( superior.getType() != ObjectClassTypeEnum.ABSTRACT )
                             {
                                 // An ABSTRACT OC can only inherit from ABSTRACT OCs
-                                String msg = I18n.err( I18n.ERR_04318, objectClass.getOid(), superior.getObjectType(), superior );
+                                String msg = I18n.err( I18n.ERR_13766_ABSTRACT_OC_CANNOT_INHERIT_FROM_OC, 
+                                    objectClass.getOid(), superior.getObjectType(), superior );
 
                                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
                                     LdapSchemaExceptionCodes.OC_ABSTRACT_MUST_INHERIT_FROM_ABSTRACT_OC, msg );
@@ -147,7 +148,7 @@ public final class ObjectClassHelper
                             if ( superior.getType() == ObjectClassTypeEnum.STRUCTURAL )
                             {
                                 // An AUXILIARY OC cannot inherit from STRUCTURAL OCs
-                                String msg = I18n.err( I18n.ERR_04319, objectClass.getOid(), superior );
+                                String msg = I18n.err( I18n.ERR_13767_AUX_OC_CANNOT_INHERIT_FROM_STRUCT_OC, objectClass.getOid(), superior );
 
                                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
                                     LdapSchemaExceptionCodes.OC_AUXILIARY_CANNOT_INHERIT_FROM_STRUCTURAL_OC, msg );
@@ -164,7 +165,7 @@ public final class ObjectClassHelper
                             if ( superior.getType() == ObjectClassTypeEnum.AUXILIARY )
                             {
                                 // A STRUCTURAL OC cannot inherit from AUXILIARY OCs
-                                String msg = I18n.err( I18n.ERR_04320, objectClass.getOid(), superior );
+                                String msg = I18n.err( I18n.ERR_13768_STRUCT_OC_CANNOT_INHERIT_FROM_AUX_OC, objectClass.getOid(), superior );
 
                                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
                                     LdapSchemaExceptionCodes.OC_STRUCTURAL_CANNOT_INHERIT_FROM_AUXILIARY_OC, msg );
@@ -178,8 +179,8 @@ public final class ObjectClassHelper
                             break;
 
                         default:
-                            throw new IllegalArgumentException( "Unexpected ObjectClassTypeEnum: "
-                                + objectClass.getType() );
+                            throw new IllegalArgumentException( I18n.err( I18n.ERR_13717_UNEXPECTED_OBJECT_CLASS_TYPE_ENUM, 
+                                objectClass.getType() ) );
                     }
 
                     objectClass.getSuperiors().add( superior );
@@ -187,7 +188,8 @@ public final class ObjectClassHelper
                 catch ( LdapException ne )
                 {
                     // Cannot find the OC
-                    String msg = I18n.err( I18n.ERR_04321, objectClass.getOid(), superiorName );
+                    String msg = I18n.err( I18n.ERR_13769_CANNOT_REGISTER_SUPERIOR_MISSING, 
+                        objectClass.getOid(), superiorName );
 
                     LdapSchemaException ldapSchemaException = new LdapSchemaException(
                         LdapSchemaExceptionCodes.OC_NONEXISTENT_SUPERIOR, msg, ne );
@@ -224,7 +226,7 @@ public final class ObjectClassHelper
                     if ( attributeType.isCollective() )
                     {
                         // Collective Attributes are not allowed in MAY or MUST
-                        String msg = I18n.err( I18n.ERR_04484_COLLECTIVE_NOT_ALLOWED_IN_MUST, mustAttributeTypeName,
+                        String msg = I18n.err( I18n.ERR_13778_COLLECTIVE_NOT_ALLOWED_IN_MUST, mustAttributeTypeName,
                             objectClass.getOid() );
 
                         LdapSchemaException ldapSchemaException = new LdapSchemaException(
@@ -240,7 +242,8 @@ public final class ObjectClassHelper
                     if ( objectClass.getMustAttributeTypes().contains( attributeType ) )
                     {
                         // Already registered : this is an error
-                        String msg = I18n.err( I18n.ERR_04324, objectClass.getOid(), mustAttributeTypeName );
+                        String msg = I18n.err( I18n.ERR_13772_CANNOT_REGISTER_DUPLICATE_AT_IN_MUST, 
+                            objectClass.getOid(), mustAttributeTypeName );
 
                         LdapSchemaException ldapSchemaException = new LdapSchemaException(
                             LdapSchemaExceptionCodes.OC_DUPLICATE_AT_IN_MUST, msg );
@@ -256,7 +259,8 @@ public final class ObjectClassHelper
                     if ( objectClass.getMayAttributeTypes().contains( attributeType ) )
                     {
                         // Already registered : this is an error
-                        String msg = I18n.err( I18n.ERR_04325, objectClass.getOid(), mustAttributeTypeName );
+                        String msg = I18n.err( I18n.ERR_13773_CANNOT_REGISTER_DUPLICATE_AT_IN_MAY_AND_MUST, 
+                            objectClass.getOid(), mustAttributeTypeName );
 
                         LdapSchemaException ldapSchemaException = new LdapSchemaException(
                             LdapSchemaExceptionCodes.OC_DUPLICATE_AT_IN_MAY_AND_MUST,
@@ -274,7 +278,8 @@ public final class ObjectClassHelper
                 catch ( LdapException ne )
                 {
                     // Cannot find the AT
-                    String msg = I18n.err( I18n.ERR_04326, objectClass.getOid(), mustAttributeTypeName );
+                    String msg = I18n.err( I18n.ERR_13774_CANNOT_REGISTER_AT_IN_MUST_DOES_NOT_EXIST, 
+                        objectClass.getOid(), mustAttributeTypeName );
 
                     LdapSchemaException ldapSchemaException = new LdapSchemaException(
                         LdapSchemaExceptionCodes.OC_NONEXISTENT_MUST_AT, msg, ne );
@@ -311,7 +316,7 @@ public final class ObjectClassHelper
                     if ( attributeType.isCollective() )
                     {
                         // Collective Attributes are not allowed in MAY or MUST
-                        String msg = I18n.err( I18n.ERR_04485_COLLECTIVE_NOT_ALLOWED_IN_MAY, mayAttributeTypeName, objectClass.getOid() );
+                        String msg = I18n.err( I18n.ERR_13779_COLLECTIVE_NOT_ALLOWED_IN_MAY, mayAttributeTypeName, objectClass.getOid() );
 
                         LdapSchemaException ldapSchemaException = new LdapSchemaException(
                             LdapSchemaExceptionCodes.OC_COLLECTIVE_NOT_ALLOWED_IN_MAY, msg );
@@ -326,7 +331,8 @@ public final class ObjectClassHelper
                     if ( objectClass.getMayAttributeTypes().contains( attributeType ) )
                     {
                         // Already registered : this is an error
-                        String msg = I18n.err( I18n.ERR_04322, objectClass.getOid(), mayAttributeTypeName );
+                        String msg = I18n.err( 
+                            I18n.ERR_13770_CANNOT_REGISTER_DUPLICATE_AT_IN_MAY, objectClass.getOid(), mayAttributeTypeName );
 
                         LdapSchemaException ldapSchemaException = new LdapSchemaException(
                             LdapSchemaExceptionCodes.OC_DUPLICATE_AT_IN_MAY, msg );
@@ -343,7 +349,7 @@ public final class ObjectClassHelper
                 catch ( LdapException ne )
                 {
                     // Cannot find the AT
-                    String msg = I18n.err( I18n.ERR_04323, objectClass.getOid(), mayAttributeTypeName );
+                    String msg = I18n.err( I18n.ERR_13771_CANNOT_REGISTER_AT_IN_MAY_DOES_NOT_EXIST, objectClass.getOid(), mayAttributeTypeName );
 
                     LdapSchemaException ldapSchemaException = new LdapSchemaException(
                         LdapSchemaExceptionCodes.OC_NONEXISTENT_MAY_AT, msg, ne );

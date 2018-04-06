@@ -98,7 +98,7 @@ public class MutableMatchingRule extends MatchingRule
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -117,7 +117,7 @@ public class MutableMatchingRule extends MatchingRule
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -137,7 +137,7 @@ public class MutableMatchingRule extends MatchingRule
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         this.ldapSyntax = ldapSyntax;
@@ -155,7 +155,7 @@ public class MutableMatchingRule extends MatchingRule
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -175,7 +175,7 @@ public class MutableMatchingRule extends MatchingRule
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         this.ldapComparator = ( LdapComparator<? super Object> ) ldapComparator;
@@ -191,7 +191,7 @@ public class MutableMatchingRule extends MatchingRule
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         if ( !isReadOnly )
@@ -210,7 +210,7 @@ public class MutableMatchingRule extends MatchingRule
     {
         if ( locked )
         {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
         this.normalizer = normalizer;

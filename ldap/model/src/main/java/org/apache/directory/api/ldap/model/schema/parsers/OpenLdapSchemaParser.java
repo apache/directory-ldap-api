@@ -89,7 +89,7 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser<SchemaObject>
     @Override
     protected SchemaObject doParse() throws RecognitionException, TokenStreamException
     {
-        throw new UnsupportedOperationException( "OpenLdapSchemaParser is not a normal schema parser" );
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13715_OPENLDAP_PARSER_NON_STANDARD ) );
     }
 
 
@@ -199,12 +199,14 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser<SchemaObject>
         {
             // resolve OID
             String[] nameAndSuffix = oid.split( ":" );
+            
             if ( objectIdentifierMacros.containsKey( nameAndSuffix[0] ) )
             {
                 OpenLdapObjectIdentifierMacro macro = objectIdentifierMacros.get( nameAndSuffix[0] );
                 return macro.getResolvedOid() + "." + nameAndSuffix[1];
             }
         }
+        
         return oid;
     }
 
@@ -222,6 +224,7 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser<SchemaObject>
         {
             // resolve OID
             String[] nameAndSuffix = rawOidOrNameSuffix.split( ":" );
+            
             if ( objectIdentifierMacros.containsKey( nameAndSuffix[0] ) )
             {
                 OpenLdapObjectIdentifierMacro parentMacro = objectIdentifierMacros.get( nameAndSuffix[0] );
@@ -230,7 +233,7 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser<SchemaObject>
             }
             else
             {
-                throw new ParseException( I18n.err( I18n.ERR_04257, nameAndSuffix[0] ), 0 );
+                throw new ParseException( I18n.err( I18n.ERR_13726_NO_OBJECT_IDENTIFIER_MACRO, nameAndSuffix[0] ), 0 );
             }
 
         }
@@ -263,7 +266,7 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser<SchemaObject>
     {
         if ( ( schemaObject == null ) || Strings.isEmpty( schemaObject.trim() ) )
         {
-            throw new ParseException( I18n.err( I18n.ERR_04258 ), 0 );
+            throw new ParseException( I18n.err( I18n.ERR_13716_NULL_OR_EMPTY_STRING_SCHEMA_OBJECT ), 0 );
         }
 
         // reset and initialize the parser / lexer pair
@@ -280,6 +283,7 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser<SchemaObject>
                 }
             }
         }
+        
         return null;
     }
 
@@ -295,14 +299,12 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser<SchemaObject>
         }
         catch ( RecognitionException re )
         {
-            String msg = "Parser failure on:\n\t" + subject;
-            msg += "\nAntlr exception trace:\n" + ExceptionUtils.getFullStackTrace( re );
+            String msg = I18n.err( I18n.ERR_15003_PARSER_FAILURE, subject, ExceptionUtils.getFullStackTrace( re ) );
             throw new ParseException( msg, re.getColumn() );
         }
         catch ( TokenStreamException tse )
         {
-            String msg = "Parser failure on:\n\t" + subject;
-            msg += "\nAntlr exception trace:\n" + ExceptionUtils.getFullStackTrace( tse );
+            String msg = I18n.err( I18n.ERR_15003_PARSER_FAILURE, subject, ExceptionUtils.getFullStackTrace( tse ) );
             throw new ParseException( msg, 0 );
         }
     }
@@ -363,5 +365,4 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser<SchemaObject>
     {
         this.isResolveObjectIdentifierMacros = resolveObjectIdentifierMacros;
     }
-
 }

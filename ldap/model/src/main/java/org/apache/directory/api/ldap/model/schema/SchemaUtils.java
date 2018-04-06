@@ -119,7 +119,7 @@ public final class SchemaUtils
                     break;
 
                 default:
-                    throw new IllegalStateException( I18n.err( I18n.ERR_04328, mod.getOperation() ) );
+                    throw new IllegalStateException( I18n.err( I18n.ERR_13775_UNDEFINED_MODIFICATION_TYPE, mod.getOperation() ) );
             }
         }
 

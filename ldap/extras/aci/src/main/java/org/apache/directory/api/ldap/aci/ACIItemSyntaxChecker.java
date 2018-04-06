@@ -155,7 +155,7 @@ public final class ACIItemSyntaxChecker extends SyntaxChecker
 
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( I18n.msg( I18n.MSG_04490_SYNTAX_VALID, value ) );
+                LOG.debug( I18n.msg( I18n.MSG_13701_SYNTAX_VALID, value ) );
             }
             
             return true;
