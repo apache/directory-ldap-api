@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.model.schema.comparators;
 
 import java.io.Serializable;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +59,7 @@ public class StringComparator extends LdapComparator<String> implements Serializ
      */
     public int compare( String s1, String s2 )
     {
-        LOG.debug( "comparing String objects '{}' with '{}'", s1, s2 );
+        LOG.debug( I18n.msg( I18n.MSG_13749_COMPARING_STRING, s1, s2 ) );
 
         if ( s1 == s2 )
         {

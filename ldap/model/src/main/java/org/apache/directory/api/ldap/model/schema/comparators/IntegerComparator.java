@@ -84,7 +84,7 @@ public class IntegerComparator extends LdapComparator<Object> implements Seriali
      */
     private int compare( Long backendValue, Long assertValue )
     {
-        LOG.debug( "comparing Integer objects '{}' with '{}'", backendValue, assertValue );
+        LOG.debug( I18n.msg( I18n.MSG_13746_COMPARING_INTEGER, backendValue, assertValue ) );
 
         // First, shortcut the process by comparing
         // references. If they are equals, then o1 and o2
@@ -111,7 +111,7 @@ public class IntegerComparator extends LdapComparator<Object> implements Seriali
      */
     private int compare( String backendValue, String assertValue )
     {
-        LOG.debug( "comparing Integer objects '{}' with '{}'", backendValue, assertValue );
+        LOG.debug( I18n.msg( I18n.MSG_13746_COMPARING_INTEGER, backendValue, assertValue ) );
 
         // First, shortcut the process by comparing
         // references. If they are equals, then o1 and o2

@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.comparators;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +58,7 @@ public class ObjectIdentifierComparator extends LdapComparator<Object>
     @Override
     public int compare( Object o1, Object o2 )
     {
-        LOG.debug( "comparing ObjectIdentifier objects '{}' with '{}'", o1, o2 );
+        LOG.debug( I18n.msg( I18n.MSG_13747_COMPARING_OBJECT_IDENTIFIER, o1, o2 ) );
 
         // -------------------------------------------------------------------
         // Handle some basis cases

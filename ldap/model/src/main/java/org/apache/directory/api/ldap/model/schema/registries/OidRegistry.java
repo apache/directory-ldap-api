@@ -146,7 +146,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
 
         if ( IS_DEBUG )
         {
-            LOG.debug( "looked up names '{}' for OID '{}'", ArrayUtils.toString( names ), oid );
+            LOG.debug( I18n.msg( I18n.MSG_13756_LOOKED_UP_NAME, ArrayUtils.toString( names ), oid ) );
         }
 
         return names;
@@ -269,7 +269,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
 
             if ( IS_DEBUG )
             {
-                LOG.debug( "registed SchemaObject '" + schemaObject + "' with OID: " + oid );
+                LOG.debug( I18n.msg( I18n.MSG_13742_REGISTERED_SCHEMA_OBJECT, schemaObject, oid ) );
             }
         }
     }
@@ -301,7 +301,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
 
         if ( IS_DEBUG )
         {
-            LOG.debug( "Unregisted SchemaObject '{}' with OID: {}", removed, oid );
+            LOG.debug( I18n.msg( I18n.MSG_13736_UNREGISTERED_SCHEMA_OBJECT, removed, oid ) );
         }
     }
 

@@ -151,7 +151,7 @@ public abstract class AbstractSchemaParser<T extends SchemaObject>
      */
     public synchronized T parse( String schemaDescription ) throws ParseException
     {
-        LOG.debug( "Parsing a {} : {}", schemaObjectType.getClass().getSimpleName(), schemaDescription );
+        LOG.debug( I18n.msg( I18n.MSG_13718_PARSING_A, schemaObjectType.getClass().getSimpleName(), schemaDescription ) );
 
         if ( schemaDescription == null )
         {

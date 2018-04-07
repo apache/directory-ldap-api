@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.model.schema.comparators;
 
 import java.util.UUID;
 
+import org.apache.directory.api.i18n.I18n;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +65,7 @@ public class UuidComparator extends SerializableComparator<String>
     {
         if ( IS_DEBUG )
         {
-            LOG.debug( "comparing UUID objects '{}' with '{}'", uuid1, uuid2 );
+            LOG.debug( I18n.msg( I18n.MSG_13751_COMPARING_UUID, uuid1, uuid2 ) );
         }
 
         // -------------------------------------------------------------------
@@ -91,7 +92,7 @@ public class UuidComparator extends SerializableComparator<String>
     {
         if ( IS_DEBUG )
         {
-            LOG.debug( "comparing UUID objects '{}' with '{}'", uuid1, uuid2 );
+            LOG.debug( I18n.msg( I18n.MSG_13751_COMPARING_UUID, uuid1, uuid2 ) );
         }
 
         // -------------------------------------------------------------------

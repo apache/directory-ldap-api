@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.model.schema.comparators;
 
 
 import org.apache.directory.api.asn1.util.Oid;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.apache.directory.api.util.Chars;
 import org.apache.directory.api.util.Strings;
@@ -97,7 +98,7 @@ public class ObjectIdentifierFirstComponentComparator extends LdapComparator<Str
      */
     public int compare( String s1, String s2 )
     {
-        LOG.debug( "comparing ObjectIdentifierFirstComponent objects '{}' with '{}'", s1, s2 );
+        LOG.debug( I18n.msg( I18n.MSG_13748_COMPARING_OBJECT_IDENTIFIER_FIRST_COMPONENT, s1, s2 ) );
 
         // -------------------------------------------------------------------
         // Handle some basis cases

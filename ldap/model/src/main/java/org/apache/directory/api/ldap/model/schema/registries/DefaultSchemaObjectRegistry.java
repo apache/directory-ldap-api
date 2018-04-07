@@ -182,7 +182,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
 
                 if ( DEBUG )
                 {
-                    LOG.debug( "Renamed {} schemaName to {}", schemaObject, newSchemaName );
+                    LOG.debug( I18n.msg( I18n.MSG_13722_RENAMED_SCHEMA_NAME_TO, schemaObject, newSchemaName ) );
                 }
             }
         }
@@ -237,7 +237,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
 
         if ( DEBUG )
         {
-            LOG.debug( "Found {} with oid: {}", schemaObject, oid );
+            LOG.debug( I18n.msg( I18n.MSG_13723_FOUND_WITH_OID, schemaObject, oid ) );
         }
 
         return schemaObject;
@@ -256,7 +256,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
         {
             String msg = I18n.err( I18n.ERR_13736_ELEMENT_FOR_OID_ALREADY_REGISTERED, schemaObjectType.name(), oid );
             LOG.warn( msg );
-            LdapSchemaException ldapSchemaException = new LdapSchemaException(
+            LdapSchemaException ldapSchemaException = new LdapSchemaException( 
                 LdapSchemaExceptionCodes.OID_ALREADY_REGISTERED, msg );
             ldapSchemaException.setSourceObject( schemaObject );
             throw ldapSchemaException;
@@ -292,7 +292,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "registered " + schemaObject.getName() + " for OID {}", oid );
+            LOG.debug( I18n.msg( I18n.MSG_13731_REGISTRED_FOR_OID, schemaObject.getName(), oid ) );
         }
     }
 

@@ -129,7 +129,7 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "registered {} for OID {}", ditStructureRule, ruleId );
+            LOG.debug( I18n.msg( I18n.MSG_13731_REGISTRED_FOR_OID, ditStructureRule, ruleId ) );
         }
     }
 
@@ -151,7 +151,7 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
 
         if ( DEBUG )
         {
-            LOG.debug( "Found {} with ruleId: {}", ditStructureRule, ruleId );
+            LOG.debug( I18n.msg( I18n.MSG_13724_FOUND_WITH_RULE_ID, ditStructureRule, ruleId ) );
         }
 
         return ditStructureRule;
@@ -168,7 +168,7 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
 
         if ( DEBUG )
         {
-            LOG.debug( "Removed {} with ruleId {} from the registry", ditStructureRule, ruleId );
+            LOG.debug( I18n.msg( I18n.MSG_13721_REMOVED_WITH_RULE_ID, ditStructureRule, ruleId ) );
         }
     }
 
@@ -195,7 +195,7 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
 
                 if ( DEBUG )
                 {
-                    LOG.debug( "Removed {} with ruleId {} from the registry", removed, ruleId );
+                    LOG.debug( I18n.msg( I18n.MSG_13721_REMOVED_WITH_RULE_ID, removed, ruleId ) );
                 }
             }
         }
@@ -218,7 +218,7 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
 
                 if ( DEBUG )
                 {
-                    LOG.debug( "Renamed {} schemaName to {}", ditStructureRule, newSchemaName );
+                    LOG.debug( I18n.msg( I18n.MSG_13722_RENAMED_SCHEMA_NAME_TO, ditStructureRule, newSchemaName ) );
                 }
             }
         }

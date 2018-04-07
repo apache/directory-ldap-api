@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.comparators;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +67,7 @@ public class ComparableComparator<T> extends LdapComparator<Comparable<T>>
     @SuppressWarnings("unchecked")
     public int compare( Comparable<T> o1, Comparable<T> o2 )
     {
-        LOG.debug( "comparing objects '{}' with '{}'", o1, o2 );
+        LOG.debug( I18n.msg( I18n.MSG_13755_COMPARING_OBJECTS, o1, o2 ) );
 
         if ( o1 == null )
         {

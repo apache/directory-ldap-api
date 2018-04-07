@@ -1547,7 +1547,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     private void register( List<Throwable> errors, SchemaObject schemaObject ) throws LdapException
     {
-        LOG.debug( "Registering {}:{}", schemaObject.getObjectType(), schemaObject.getOid() );
+        LOG.debug( I18n.msg( I18n.MSG_13720_REGISTRING, schemaObject.getObjectType(), schemaObject.getOid() ) );
 
         // Check that the SchemaObject is not already registered
         if ( !( schemaObject instanceof LoadableSchemaObject ) && globalOidRegistry.contains( schemaObject.getOid() ) )
@@ -1629,7 +1629,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     public void associateWithSchema( List<Throwable> errors, SchemaObject schemaObject )
     {
-        LOG.debug( "Registering {}:{}", schemaObject.getObjectType(), schemaObject.getOid() );
+        LOG.debug( I18n.msg( I18n.MSG_13720_REGISTRING, schemaObject.getObjectType(), schemaObject.getOid() ) );
 
         // Check that the SchemaObject is not already registered
         if ( !( schemaObject instanceof LoadableSchemaObject ) && globalOidRegistry.contains( schemaObject.getOid() ) )
@@ -1659,8 +1659,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
         {
             // Already present !
             // What should we do ?
-            LOG.info( "Registering of {}:{} failed, is already present in the Registries",
-                schemaObject.getObjectType(), schemaObject.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_13719_REGISTRING_FAILED_ALREADY_PRESENT,
+                schemaObject.getObjectType(), schemaObject.getOid() ) );
         }
         else
         {
@@ -1682,7 +1682,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 }
             }
 
-            LOG.debug( "registered {} for OID {}", schemaObject.getName(), schemaObject.getOid() );
+            LOG.debug( I18n.msg( I18n.MSG_13731_REGISTRED_FOR_OID, schemaObject.getName(), schemaObject.getOid() ) );
         }
     }
 
@@ -1698,7 +1698,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
     public void dissociateFromSchema( List<Throwable> errors, SchemaObject schemaObject ) throws LdapException
     {
-        LOG.debug( "Unregistering {}:{}", schemaObject.getObjectType(), schemaObject.getOid() );
+        LOG.debug( I18n.msg( I18n.MSG_13741_UNREGISTRING, schemaObject.getObjectType(), schemaObject.getOid() ) );
 
         // Check that the SchemaObject is already registered
         if ( !( schemaObject instanceof LoadableSchemaObject ) && !globalOidRegistry.contains( schemaObject.getOid() ) )
@@ -1723,8 +1723,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
         {
             // Not present !
             // What should we do ?
-            LOG.info( "Unregistering of {}:{} failed, is not present in the Registries", schemaObject.getObjectType(),
-                schemaObject.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_13739_UNREGISTERED_FAILED_NOT_PRESENT, schemaObject.getObjectType(),
+                schemaObject.getOid() ) );
         }
         else
         {
@@ -1746,7 +1746,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 }
             }
 
-            LOG.debug( "Unregistered {} for OID {}", schemaObject.getName(), schemaObject.getOid() );
+            LOG.debug( I18n.msg( I18n.MSG_13737_UNREGISTERED_FOR_OID, schemaObject.getName(), schemaObject.getOid() ) );
         }
     }
 
@@ -1759,7 +1759,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     private SchemaObject unregister( List<Throwable> errors, SchemaObject schemaObject ) throws LdapException
     {
-        LOG.debug( "Unregistering {}:{}", schemaObject.getObjectType(), schemaObject.getOid() );
+        LOG.debug( I18n.msg( I18n.MSG_13741_UNREGISTRING, schemaObject.getObjectType(), schemaObject.getOid() ) );
 
         // Check that the SchemaObject is present in the registries
         if ( !( schemaObject instanceof LoadableSchemaObject ) && !globalOidRegistry.contains( schemaObject.getOid() ) )
@@ -1855,13 +1855,13 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     globalOidRegistry.unregister( schemaObject.getOid() );
                 }
 
-                LOG.debug( "Unregistered {}:{}", schemaObject.getObjectType(), schemaObject.getOid() );
+                LOG.debug( I18n.msg( I18n.MSG_13738_UNREGISTERED, schemaObject.getObjectType(), schemaObject.getOid() ) );
             }
             else
             {
                 // Not present !!
                 // What should we do ?
-                LOG.debug( "Unregistering of {}:{} failed, not found in Registries", schemaObject.getObjectType(),
+                LOG.debug( I18n.msg( I18n.MSG_13740_UNREGISTERED_FAILED_NOT_FOUND, schemaObject.getObjectType() ),
                     schemaObject.getOid() );
             }
         }
@@ -1886,11 +1886,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
         {
             if ( referenced )
             {
-                LOG.debug( "The {}:{} is referenced", schemaObject.getObjectType(), schemaObject.getOid() );
+                LOG.debug( I18n.msg( I18n.MSG_13735_REFERENCED, schemaObject.getObjectType(), schemaObject.getOid() ) );
             }
             else
             {
-                LOG.debug( "The {}:{} is not referenced", schemaObject.getObjectType(), schemaObject.getOid() );
+                LOG.debug( I18n.msg( I18n.MSG_13734_NOT_REFERENCED, schemaObject.getObjectType(), schemaObject.getOid() ) );
             }
         }
 
@@ -2218,8 +2218,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // Check the references : Syntax -> SyntaxChecker
         if ( !using.containsKey( referenceWrapper ) )
         {
-            LOG.debug( "The Syntax {}:{} does not reference any " + message, reference.getObjectType(), reference
-                .getOid() );
+            LOG.debug( 
+                I18n.msg( I18n.MSG_13730_SYN_DOES_NOT_REFERENCE, reference.getObjectType(), reference.getOid(), message ) );
 
             return false;
         }
@@ -2228,7 +2228,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         if ( !usings.contains( refereeWrapper ) )
         {
-            LOG.debug( "The {}:{} does not reference any " + message, reference.getObjectType(), reference.getOid() );
+            LOG.debug( I18n.msg( I18n.MSG_13732_NOT_REFERENCE_ANY, reference.getObjectType(), reference.getOid(), message ) );
 
             return false;
         }
@@ -2236,7 +2236,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // Check the referees : SyntaxChecker -> Syntax
         if ( !usedBy.containsKey( refereeWrapper ) )
         {
-            LOG.debug( "The {}:{} is not referenced by any " + message, referee.getObjectType(), referee.getOid() );
+            LOG.debug( I18n.msg( I18n.MSG_13733_NOT_REFERENCED_BY_ANY, referee.getObjectType(), referee.getOid(), message ) );
 
             return false;
         }
@@ -2245,7 +2245,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         if ( !used.contains( referenceWrapper ) )
         {
-            LOG.debug( "The {}:{} is not referenced by any " + message, referee.getObjectType(), referee.getOid() );
+            LOG.debug( I18n.msg( I18n.MSG_13733_NOT_REFERENCED_BY_ANY, referee.getObjectType(), referee.getOid(), message ) );
 
             return false;
         }
@@ -2262,22 +2262,22 @@ public class Registries implements SchemaLoaderListener, Cloneable
     public boolean check()
     {
         // Check the Syntaxes : check for a SyntaxChecker
-        LOG.debug( "Checking Syntaxes" );
+        LOG.debug( I18n.msg( I18n.MSG_13717_CHECKING_SYNTAXES ) );
 
         for ( LdapSyntax syntax : ldapSyntaxRegistry )
         {
             // Check that each Syntax has a SyntaxChecker
             if ( syntax.getSyntaxChecker() == null )
             {
-                LOG.debug( "The Syntax {} has no SyntaxChecker", syntax );
+                LOG.debug( I18n.msg( I18n.MSG_13729_SYN_WITH_NO_SYNTAX_CHECKER, syntax ) );
 
                 return false;
             }
 
             if ( !syntaxCheckerRegistry.contains( syntax.getSyntaxChecker().getOid() ) )
             {
-                LOG.debug( "Cannot find the SyntaxChecker {} for the Syntax {}", syntax.getSyntaxChecker().getOid(),
-                    syntax );
+                LOG.debug( I18n.msg( I18n.MSG_13713_CANT_FIND_SC_FOR_SYN, syntax.getSyntaxChecker().getOid(),
+                    syntax ) );
 
                 return false;
             }
@@ -2290,14 +2290,14 @@ public class Registries implements SchemaLoaderListener, Cloneable
         }
 
         // Check the MatchingRules : check for a Normalizer, a Comparator and a Syntax
-        LOG.debug( "Checking MatchingRules..." );
+        LOG.debug( I18n.msg( I18n.MSG_13715_CHECKING_MATCHING_RULES ) );
 
         for ( MatchingRule matchingRule : matchingRuleRegistry )
         {
             // Check that each MatchingRule has a Normalizer
             if ( matchingRule.getNormalizer() == null )
             {
-                LOG.debug( "The MatchingRule {} has no Normalizer", matchingRule );
+                LOG.debug( I18n.msg( I18n.MSG_13727_MR_WITH_NO_NORMALIZER, matchingRule ) );
 
                 return false;
             }
@@ -2305,8 +2305,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
             // Check that each MatchingRule has a Normalizer
             if ( !normalizerRegistry.contains( matchingRule.getNormalizer().getOid() ) )
             {
-                LOG.debug( "Cannot find the Normalizer {} for the MatchingRule {}", matchingRule.getNormalizer()
-                    .getOid(), matchingRule );
+                LOG.debug( I18n.msg( I18n.MSG_13709_CANT_FIND_NORM_FOR_MR, matchingRule.getNormalizer()
+                    .getOid(), matchingRule ) );
 
                 return false;
             }
@@ -2314,15 +2314,15 @@ public class Registries implements SchemaLoaderListener, Cloneable
             // Check that each MatchingRule has a Comparator
             if ( matchingRule.getLdapComparator() == null )
             {
-                LOG.debug( "The MatchingRule {} has no Comparator", matchingRule );
+                LOG.debug( I18n.msg( I18n.MSG_13726_MR_WITH_NO_COMPARATOR, matchingRule ) );
 
                 return false;
             }
 
             if ( !comparatorRegistry.contains( matchingRule.getLdapComparator().getOid() ) )
             {
-                LOG.debug( "Cannot find the Comparator {} for the MatchingRule {}", matchingRule.getLdapComparator()
-                    .getOid(), matchingRule );
+                LOG.debug( I18n.msg( I18n.MSG_13707_CANT_FIND_AT_FOR_MR, matchingRule.getLdapComparator().getOid(), 
+                    matchingRule ) );
 
                 return false;
             }
@@ -2330,15 +2330,15 @@ public class Registries implements SchemaLoaderListener, Cloneable
             // Check that each MatchingRule has a Syntax
             if ( matchingRule.getSyntax() == null )
             {
-                LOG.debug( "The MatchingRule {} has no Syntax", matchingRule );
+                LOG.debug( I18n.msg( I18n.MSG_13728_MR_WITH_NO_SYNTAX, matchingRule ) );
 
                 return false;
             }
 
             if ( !ldapSyntaxRegistry.contains( matchingRule.getSyntax().getOid() ) )
             {
-                LOG.debug( "Cannot find the Syntax {} for the MatchingRule {}", matchingRule.getSyntax().getOid(),
-                    matchingRule );
+                LOG.debug( I18n.msg( I18n.MSG_13712_CANT_FIND_SYN_FOR_MR, matchingRule.getSyntax().getOid(),
+                    matchingRule ) );
 
                 return false;
             }
@@ -2363,7 +2363,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         }
 
         // Check the ObjectClasses : check for MAY, MUST, SUPERIORS
-        LOG.debug( "Checking ObjectClasses..." );
+        LOG.debug( I18n.msg( I18n.MSG_13716_CHECKING_OBJECT_CLASSES ) );
 
         for ( ObjectClass objectClass : objectClassRegistry )
         {
@@ -2374,7 +2374,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 {
                     if ( !attributeTypeRegistry.contains( may.getOid() ) )
                     {
-                        LOG.debug( "Cannot find the AttributeType {} for the ObjectClass {} MAY", may, objectClass );
+                        LOG.debug( I18n.msg( I18n.MSG_13705_CANT_FIND_AT_IN_MAY, may, objectClass ) );
 
                         return false;
                     }
@@ -2394,7 +2394,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 {
                     if ( !attributeTypeRegistry.contains( must.getOid() ) )
                     {
-                        LOG.debug( "Cannot find the AttributeType {} for the ObjectClass {} MUST", must, objectClass );
+                        LOG.debug( I18n.msg( I18n.MSG_13706_CANT_FIND_AT_IN_MUST, must, objectClass ) );
 
                         return false;
                     }
@@ -2414,8 +2414,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 {
                     if ( !objectClassRegistry.contains( objectClass.getOid() ) )
                     {
-                        LOG.debug( "Cannot find the ObjectClass {} for the ObjectClass {} SUPERIORS", superior,
-                            objectClass );
+                        LOG.debug( I18n.msg( I18n.MSG_13710_CANT_FIND_OC_WITH_SUPERIOR, superior, objectClass ) );
 
                         return false;
                     }
@@ -2430,22 +2429,22 @@ public class Registries implements SchemaLoaderListener, Cloneable
         }
 
         // Check the AttributeTypes : check for MatchingRules, Syntaxes
-        LOG.debug( "Checking AttributeTypes..." );
+        LOG.debug( I18n.msg( I18n.MSG_13714_CHECKING_ATTRIBUTE_TYPES ) );
 
         for ( AttributeType attributeType : attributeTypeRegistry )
         {
             // Check that each AttributeType has a SYNTAX
             if ( attributeType.getSyntax() == null )
             {
-                LOG.debug( "The AttributeType {} has no Syntax", attributeType );
+                LOG.debug( I18n.msg( I18n.MSG_13725_AT_WITH_NO_SYNTAX, attributeType ) );
 
                 return false;
             }
 
             if ( !ldapSyntaxRegistry.contains( attributeType.getSyntax().getOid() ) )
             {
-                LOG.debug( "Cannot find the Syntax {} for the AttributeType {}", attributeType.getSyntax().getOid(),
-                    attributeType );
+                LOG.debug( I18n.msg( I18n.MSG_13711_CANT_FIND_SYN_FOR_AT, attributeType.getSyntax().getOid(),
+                    attributeType ) );
 
                 return false;
             }
@@ -2461,8 +2460,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
             {
                 if ( !matchingRuleRegistry.contains( attributeType.getEquality().getOid() ) )
                 {
-                    LOG.debug( "Cannot find the MatchingRule {} for the AttributeType {}", attributeType.getEquality()
-                        .getOid(), attributeType );
+                    LOG.debug( I18n.msg( I18n.MSG_13708_CANT_FIND_MR_FOR_AT, attributeType.getEquality()
+                        .getOid(), attributeType ) );
 
                     return false;
                 }
@@ -2479,8 +2478,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
             {
                 if ( !matchingRuleRegistry.contains( attributeType.getOrdering().getOid() ) )
                 {
-                    LOG.debug( "Cannot find the MatchingRule {} for the AttributeType {}", attributeType.getOrdering()
-                        .getOid(), attributeType );
+                    LOG.debug( I18n.msg( I18n.MSG_13708_CANT_FIND_MR_FOR_AT, attributeType.getOrdering()
+                        .getOid(), attributeType ) );
 
                     return false;
                 }
@@ -2497,8 +2496,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
             {
                 if ( !matchingRuleRegistry.contains( attributeType.getSubstring().getOid() ) )
                 {
-                    LOG.debug( "Cannot find the MatchingRule {} for the AttributeType {}", attributeType.getSubstring()
-                        .getOid(), attributeType );
+                    LOG.debug( I18n.msg( I18n.MSG_13708_CANT_FIND_MR_FOR_AT, attributeType.getSubstring()
+                        .getOid(), attributeType ) );
 
                     return false;
                 }
@@ -2517,8 +2516,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
                 if ( !attributeTypeRegistry.contains( superior.getOid() ) )
                 {
-                    LOG.debug( "Cannot find the AttributeType {} for the AttributeType {} SUPERIOR", superior,
-                        attributeType );
+                    LOG.debug( I18n.msg( I18n.MSG_13704_CANT_FIND_AT_WITH_SUPERIOR, superior, attributeType ) );
 
                     return false;
                 }

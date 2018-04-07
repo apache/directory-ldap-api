@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.comparators;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.slf4j.Logger;
@@ -64,7 +65,7 @@ public class CsnComparator extends LdapComparator<Object>
     @Override
     public int compare( Object csnObj1, Object csnObj2 )
     {
-        LOG.debug( "comparing CSN objects '{}' with '{}'", csnObj1, csnObj2 );
+        LOG.debug( I18n.msg( I18n.MSG_13745_COMPARING_CSN, csnObj1, csnObj2 ) );
 
         if ( csnObj1 == csnObj2 )
         {

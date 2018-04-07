@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.comparators;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -70,7 +71,7 @@ public class WordComparator extends LdapComparator<String>
      */
     public int compare( String value, String assertion )
     {
-        LOG.debug( "comparing String objects '{}' with '{}'", value, assertion );
+        LOG.debug( I18n.msg( I18n.MSG_13749_COMPARING_STRING, value, assertion ) );
 
         if ( value == assertion )
         {

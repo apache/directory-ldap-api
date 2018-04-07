@@ -60,7 +60,7 @@ public class GeneralizedTimeComparator extends LdapComparator<String>
      */
     public int compare( String backendValue, String assertValue )
     {
-        LOG.debug( "comparing generalizedTimeOrdering objects '{}' with '{}'", backendValue, assertValue );
+        LOG.debug( I18n.msg( I18n.MSG_13753_COMPARING_GENERALIZED_TIME_ORDERING, backendValue, assertValue ) );
 
         // First, shortcut the process by comparing
         // references. If they are equals, then o1 and o2

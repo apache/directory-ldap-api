@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.comparators;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +57,7 @@ public class BooleanComparator extends LdapComparator<String>
      */
     public int compare( String b1, String b2 )
     {
-        LOG.debug( "comparing boolean objects '{}' with '{}'", b1, b2 );
+        LOG.debug( I18n.msg( I18n.MSG_13752_COMPARING_BOOLEAN, b1, b2 ) );
 
         // First, shortcut the process by comparing
         // references. If they are equals, then o1 and o2

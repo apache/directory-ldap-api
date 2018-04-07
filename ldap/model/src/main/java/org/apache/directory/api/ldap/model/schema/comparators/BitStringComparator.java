@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.comparators;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +57,7 @@ public class BitStringComparator extends LdapComparator<String>
      */
     public int compare( String bs1, String bs2 )
     {
-        LOG.debug( "comparing BitString objects '{}' with '{}'", bs1, bs2 );
+        LOG.debug( I18n.msg( I18n.MSG_13743_COMPARING_BITSTRING, bs1, bs2 ) );
 
         // First, shortcut the process by comparing
         // references. If they are equals, then bs1 and bs2

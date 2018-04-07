@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapNoSuchAttributeException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
@@ -249,8 +250,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
 
         if ( equality == null )
         {
-            LOG.debug( "Attribute {} does not have an EQUALITY MatchingRule : using NoopNormalizer", attributeType
-                .getName() );
+            LOG.debug( I18n.msg( I18n.MSG_13703_AT_WITHOUT_EQ_MR, attributeType.getName() ) );
             oidNormalizer = new OidNormalizer( oid, new NoOpNormalizer( attributeType.getOid() ) );
         }
         else

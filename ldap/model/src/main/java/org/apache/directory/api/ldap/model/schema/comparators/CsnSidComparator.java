@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.schema.comparators;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +59,7 @@ public class CsnSidComparator extends LdapComparator<String>
      */
     public int compare( String sidStr1, String sidStr2 )
     {
-        LOG.debug( "comparing CSN SID objects '{}' with '{}'", sidStr1, sidStr2 );
+        LOG.debug( I18n.msg( I18n.MSG_13744_COMPARING_CSN_SID, sidStr1, sidStr2 ) );
 
         // -------------------------------------------------------------------
         // Handle some basis cases
