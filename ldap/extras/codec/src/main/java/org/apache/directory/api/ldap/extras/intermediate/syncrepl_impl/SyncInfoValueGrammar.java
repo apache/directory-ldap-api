@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.api.ldap.extras.intermediate.syncrepl;
+package org.apache.directory.api.ldap.extras.intermediate.syncrepl_impl;
 
 
 import org.apache.directory.api.asn1.DecoderException;
@@ -30,6 +30,8 @@ import org.apache.directory.api.asn1.ber.tlv.BooleanDecoder;
 import org.apache.directory.api.asn1.ber.tlv.BooleanDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValue;
+import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SynchronizationInfoEnum;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

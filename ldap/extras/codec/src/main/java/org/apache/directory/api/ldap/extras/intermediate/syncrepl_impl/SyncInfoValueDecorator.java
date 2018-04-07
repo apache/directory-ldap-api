@@ -17,7 +17,7 @@
  *  under the License.
  *
  */
-package org.apache.directory.api.ldap.extras.intermediate.syncrepl;
+package org.apache.directory.api.ldap.extras.intermediate.syncrepl_impl;
 
 
 import java.nio.ByteBuffer;
@@ -34,6 +34,9 @@ import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.decorators.IntermediateResponseDecorator;
+import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValue;
+import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValueImpl;
+import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SynchronizationInfoEnum;
 import org.apache.directory.api.util.Strings;
 
 

@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.api.ldap.extras.intermediate.syncrepl;
+package org.apache.directory.api.ldap.extras.intermediate.syncrepl_impl;
 
 
 /**

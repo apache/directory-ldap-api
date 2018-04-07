@@ -179,6 +179,7 @@
               org.apache.directory.api.ldap.model.schema.registries;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.model.schema.registries.helper;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.model.schema.syntaxCheckers;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.model.schema.syntaxes;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.model.subtree;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.model.url;version=${project.version};-noimport:=true
             </Export-Package>

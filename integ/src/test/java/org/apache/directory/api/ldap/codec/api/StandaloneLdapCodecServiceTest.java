@@ -65,6 +65,7 @@ public class StandaloneLdapCodecServiceTest
             + "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncDoneValueFactory,"
             + "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory,"
             + "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory,"
+            + "org.apache.directory.api.ldap.extras.controls.transaction_impl.TransactionSpecificationFactory,"
             + "org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewRequestFactory,"
             + "org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewResponseFactory" );
 
@@ -86,7 +87,7 @@ public class StandaloneLdapCodecServiceTest
         System
         .setProperty(
             StandaloneLdapApiService.INTERMEDIATE_RESPONSES_LIST,
-                "org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValueFactory" );
+                "org.apache.directory.api.ldap.extras.intermediate.syncrepl_impl.SyncInfoValueFactory" );
 
     }
 

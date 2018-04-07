@@ -17,35 +17,42 @@
  *   under the License.
  *
  */
-package org.apache.directory.api.ldap.extras.intermediate.syncrepl;
+package org.apache.directory.api.ldap.extras.intermediate.syncrepl_impl;
+
 
 import org.apache.directory.api.ldap.codec.api.IntermediateResponseFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValue;
+import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValueImpl;
 import org.apache.directory.api.ldap.model.message.IntermediateResponse;
 
+
 /**
- * A factory to create a SyncInfoValue intermediate response
- * 
+ * A {@link IntermediateResponselFactory} which creates {@link SyncInfoValue} instances.
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
-public class SyncInfoFactory implements IntermediateResponseFactory
+public class SyncInfoValueFactory implements IntermediateResponseFactory
 {
-    /** The Codec service */
+    /** The LDAP Service instance */ 
     private LdapApiService codec;
 
+
     /**
-     * 
+     * Creates a new instance of SyncInfoValueFactory.
+     *
+     * @param codec The codec for this factory.
      */
-    public SyncInfoFactory( LdapApiService codec )
+    public SyncInfoValueFactory( LdapApiService codec )
     {
         this.codec = codec;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
-    @Override
     public String getOid()
     {
         return SyncInfoValue.OID;
@@ -55,8 +62,26 @@ public class SyncInfoFactory implements IntermediateResponseFactory
     /**
      * {@inheritDoc}
      */
+    public SyncInfoValue newDecorator()
+    {
+        return new SyncInfoValueDecorator( codec );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public SyncInfoValue newDecorator( SyncInfoValue syncInfoValue )
+    {
+        return new SyncInfoValueDecorator( codec, syncInfoValue );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public IntermediateResponse newResponse(  byte[] encodedValue  )
+    public SyncInfoValue newResponse( byte[] encodedValue )
     {
         SyncInfoValueDecorator response = new SyncInfoValueDecorator( codec, new SyncInfoValueImpl() );
         response.setResponseValue( encodedValue );
@@ -76,6 +101,6 @@ public class SyncInfoFactory implements IntermediateResponseFactory
             return ( SyncInfoValueDecorator ) decoratedMessage;
         }
 
-        return new SyncInfoValueDecorator( codec, ( SyncInfoValue ) null );
+        return new SyncInfoValueDecorator( codec, ( SyncInfoValue ) decoratedMessage );
     }
 }

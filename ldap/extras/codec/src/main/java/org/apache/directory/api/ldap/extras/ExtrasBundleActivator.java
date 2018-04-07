@@ -41,7 +41,7 @@ import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncDoneValue
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory;
 import org.apache.directory.api.ldap.extras.controls.transaction.TransactionSpecification;
-import org.apache.directory.api.ldap.extras.controls.transaction.TransactionSpecificationFactory;
+import org.apache.directory.api.ldap.extras.controls.transaction_impl.TransactionSpecificationFactory;
 import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewRequest;
 import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewResponse;
 import org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewRequestFactory;

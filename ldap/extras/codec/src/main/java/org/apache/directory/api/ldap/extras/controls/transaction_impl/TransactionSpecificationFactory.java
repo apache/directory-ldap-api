@@ -17,12 +17,14 @@
  *   under the License.
  *
  */
-package org.apache.directory.api.ldap.extras.controls.transaction;
+package org.apache.directory.api.ldap.extras.controls.transaction_impl;
 
 
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.extras.controls.transaction.TransactionSpecification;
+import org.apache.directory.api.ldap.extras.controls.transaction.TransactionSpecificationImpl;
 
 
 /**

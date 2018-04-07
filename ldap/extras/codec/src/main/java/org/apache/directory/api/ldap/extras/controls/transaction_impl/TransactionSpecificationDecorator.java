@@ -17,7 +17,7 @@
  *   under the License.
  *
  */
-package org.apache.directory.api.ldap.extras.controls.transaction;
+package org.apache.directory.api.ldap.extras.controls.transaction_impl;
 
 import java.nio.ByteBuffer;
 
@@ -26,6 +26,7 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.ldap.codec.api.ControlDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.extras.controls.transaction.TransactionSpecification;
 
 /**
  * TransactionSpecification decorator.
