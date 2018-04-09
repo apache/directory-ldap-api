@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.model.url;
 
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -217,7 +218,7 @@ public class LdapUrl
             pos = Strings.areEquals( chars, 0, LDAPS_SCHEME );
             if ( pos == StringConstants.NOT_EQUAL )
             {
-                throw new LdapURLEncodingException( I18n.err( I18n.ERR_04398 ) );
+                throw new LdapURLEncodingException( I18n.err( I18n.ERR_13030_LDAP_URL_MUST_START_WITH_LDAP ) );
             }
         }
         scheme = new String( chars, 0, pos );
@@ -226,7 +227,7 @@ public class LdapUrl
         pos = parseHostPort( chars, pos );
         if ( pos == -1 )
         {
-            throw new LdapURLEncodingException( I18n.err( I18n.ERR_04399 ) );
+            throw new LdapURLEncodingException( I18n.err( I18n.ERR_13031_INVALID_HOST_PORT ) );
         }
 
         if ( pos == chars.length )
@@ -237,7 +238,7 @@ public class LdapUrl
         // An optional '/'
         if ( !Chars.isCharASCII( chars, pos, '/' ) )
         {
-            throw new LdapURLEncodingException( I18n.err( I18n.ERR_04400, pos, chars[pos] ) );
+            throw new LdapURLEncodingException( I18n.err( I18n.ERR_13032_SLASH_EXPECTED, pos, chars[pos] ) );
         }
 
         pos++;
@@ -251,7 +252,7 @@ public class LdapUrl
         pos = parseDN( chars, pos );
         if ( pos == -1 )
         {
-            throw new LdapURLEncodingException( I18n.err( I18n.ERR_04401 ) );
+            throw new LdapURLEncodingException( I18n.err( I18n.ERR_13033_INVALID_DN ) );
         }
 
         if ( pos == chars.length )
@@ -262,7 +263,7 @@ public class LdapUrl
         // Optionals attributes
         if ( !Chars.isCharASCII( chars, pos, '?' ) )
         {
-            throw new LdapURLEncodingException( I18n.err( I18n.ERR_04402, pos, chars[pos] ) );
+            throw new LdapURLEncodingException( I18n.err( I18n.ERR_13034_QUESTION_MARK_EXPECTED, pos, chars[pos] ) );
         }
 
         pos++;
@@ -270,7 +271,7 @@ public class LdapUrl
         pos = parseAttributes( chars, pos );
         if ( pos == -1 )
         {
-            throw new LdapURLEncodingException( I18n.err( I18n.ERR_04403 ) );
+            throw new LdapURLEncodingException( I18n.err( I18n.ERR_13035_INVALID_ATTRIBUTES ) );
         }
 
         if ( pos == chars.length )
@@ -281,7 +282,7 @@ public class LdapUrl
         // Optional scope
         if ( !Chars.isCharASCII( chars, pos, '?' ) )
         {
-            throw new LdapURLEncodingException( I18n.err( I18n.ERR_04402, pos, chars[pos] ) );
+            throw new LdapURLEncodingException( I18n.err( I18n.ERR_13034_QUESTION_MARK_EXPECTED, pos, chars[pos] ) );
         }
 
         pos++;
@@ -289,7 +290,7 @@ public class LdapUrl
         pos = parseScope( chars, pos );
         if ( pos == -1 )
         {
-            throw new LdapURLEncodingException( I18n.err( I18n.ERR_04404 ) );
+            throw new LdapURLEncodingException( I18n.err( I18n.ERR_13036_INVALID_SCOPE ) );
         }
 
         if ( pos == chars.length )
@@ -300,7 +301,7 @@ public class LdapUrl
         // Optional filter
         if ( !Chars.isCharASCII( chars, pos, '?' ) )
         {
-            throw new LdapURLEncodingException( I18n.err( I18n.ERR_04402, pos, chars[pos] ) );
+            throw new LdapURLEncodingException( I18n.err( I18n.ERR_13034_QUESTION_MARK_EXPECTED, pos, chars[pos] ) );
         }
 
         pos++;
@@ -313,7 +314,7 @@ public class LdapUrl
         pos = parseFilter( chars, pos );
         if ( pos == -1 )
         {
-            throw new LdapURLEncodingException( I18n.err( I18n.ERR_04405 ) );
+            throw new LdapURLEncodingException( I18n.err( I18n.ERR_13037_INVALID_FILTER ) );
         }
 
         if ( pos == chars.length )
@@ -324,7 +325,7 @@ public class LdapUrl
         // Optional extensions
         if ( !Chars.isCharASCII( chars, pos, '?' ) )
         {
-            throw new LdapURLEncodingException( I18n.err( I18n.ERR_04402, pos, chars[pos] ) );
+            throw new LdapURLEncodingException( I18n.err( I18n.ERR_13034_QUESTION_MARK_EXPECTED, pos, chars[pos] ) );
         }
 
         pos++;
@@ -332,7 +333,7 @@ public class LdapUrl
         pos = parseExtensions( chars, pos );
         if ( pos == -1 )
         {
-            throw new LdapURLEncodingException( I18n.err( I18n.ERR_04406 ) );
+            throw new LdapURLEncodingException( I18n.err( I18n.ERR_13038_INVALID_EXTENSIONS ) );
         }
 
         if ( pos == chars.length )
@@ -341,7 +342,7 @@ public class LdapUrl
         }
         else
         {
-            throw new LdapURLEncodingException( I18n.err( I18n.ERR_04407 ) );
+            throw new LdapURLEncodingException( I18n.err( I18n.ERR_13039_INVALID_CHAR_AT_LDAP_URL_END ) );
         }
     }
 
@@ -1068,14 +1069,14 @@ public class LdapUrl
 
                     if ( ( u == -1 ) || ( l == -1 ) )
                     {
-                        throw new UrlDecoderException( I18n.err( I18n.ERR_04414 ) );
+                        throw new UrlDecoderException( I18n.err( I18n.ERR_13040_INVALID_URL_ENCODING ) );
                     }
 
                     buffer.write( ( char ) ( ( u << 4 ) + l ) );
                 }
                 catch ( ArrayIndexOutOfBoundsException aioobe )
                 {
-                    throw new UrlDecoderException( I18n.err( I18n.ERR_04414 ), aioobe );
+                    throw new UrlDecoderException( I18n.err( I18n.ERR_13040_INVALID_URL_ENCODING ), aioobe );
                 }
             }
             else
@@ -1101,7 +1102,7 @@ public class LdapUrl
         try
         {
             byte[] rawdata = decodeUrl( getAsciiBytes( escaped ) );
-            return Strings.getString( rawdata, "UTF-8" );
+            return Strings.getString( rawdata, StandardCharsets.UTF_8 );
         }
         catch ( UrlDecoderException e )
         {
@@ -1162,7 +1163,7 @@ public class LdapUrl
 
         if ( !matcher.matches() )
         {
-            throw new LdapURLEncodingException( "Attribute " + attribute + " is invalid" );
+            throw new LdapURLEncodingException( I18n.err( I18n.ERR_13011_ATTRIBUTE_INVALID, attribute ) );
         }
     }
 
@@ -1740,7 +1741,7 @@ public class LdapUrl
                     break;
 
                 default:
-                    throw new IllegalArgumentException( "Unexpected HostTypeEnum " + hostType );
+                    throw new IllegalArgumentException( I18n.err( I18n.ERR_13012_UNEXPECTED_HOST_TYPE_ENUM, hostType ) );
             }
         }
 

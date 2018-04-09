@@ -129,7 +129,7 @@ public enum AuthenticationLevel
                 return UNAUTHENT;
 
             default:
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_05001_UNKNOWN_AUTHENT_LEVEL, val ) );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13013_UNKNOWN_AUTHENT_LEVEL, val ) );
         }
     }
 }

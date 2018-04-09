@@ -90,7 +90,7 @@ public class StoreMatchingRuleDnAttributes extends GrammarAction<LdapMessageCont
         catch ( BooleanDecoderException bde )
         {
             LOG.error( I18n
-                .err( I18n.ERR_04110, Strings.dumpBytes( value.getData() ), bde.getMessage() ) );
+                .err( I18n.ERR_13014_DN_ATTR_FLAG_INVALID, Strings.dumpBytes( value.getData() ), bde.getMessage() ) );
 
             throw new DecoderException( bde.getMessage(), bde );
         }

@@ -126,14 +126,14 @@ public class Csn implements Comparable<Csn>
         
         if ( Strings.isEmpty( value ) )
         {
-            String message = I18n.err( I18n.ERR_04114 );
+            String message = I18n.err( I18n.ERR_13015_NULL_OR_EMPTY_CSN );
             LOG.error( message );
             throw new InvalidCSNException( message );
         }
 
         if ( value.length() != 40 )
         {
-            String message = I18n.err( I18n.ERR_04115 );
+            String message = I18n.err( I18n.ERR_13016_INCORRECT_CSN_LENGTH );
             LOG.error( message );
             throw new InvalidCSNException( message );
         }
@@ -143,7 +143,7 @@ public class Csn implements Comparable<Csn>
 
         if ( sepTS < 0 )
         {
-            String message = I18n.err( I18n.ERR_04116 );
+            String message = I18n.err( I18n.ERR_13017_CANT_FIND_SHARP_IN_CSN );
             LOG.error( message );
             throw new InvalidCSNException( message );
         }
@@ -152,7 +152,7 @@ public class Csn implements Comparable<Csn>
 
         if ( timestampStr.length() != 22 )
         {
-            String message = I18n.err( I18n.ERR_04117 );
+            String message = I18n.err( I18n.ERR_13018_TIMESTAMP_NOT_LONG_ENOUGH );
             LOG.error( message );
             throw new InvalidCSNException( message );
         }
@@ -170,7 +170,7 @@ public class Csn implements Comparable<Csn>
             }
             catch ( ParseException pe )
             {
-                String message = I18n.err( I18n.ERR_04118, timestampStr );
+                String message = I18n.err( I18n.ERR_13019_CANNOT_PARSE_TIMESTAMP, timestampStr );
                 LOG.error( message );
                 throw new InvalidCSNException( message, pe );
             }
@@ -185,7 +185,7 @@ public class Csn implements Comparable<Csn>
         }
         catch ( NumberFormatException nfe )
         {
-            String message = I18n.err( I18n.ERR_04119 );
+            String message = I18n.err( I18n.ERR_13020_INVALID_MICROSECOND );
             LOG.error( message );
             throw new InvalidCSNException( message, nfe );
         }
@@ -198,7 +198,7 @@ public class Csn implements Comparable<Csn>
 
         if ( sepCC < 0 )
         {
-            String message = I18n.err( I18n.ERR_04110, value );
+            String message = I18n.err( I18n.ERR_13014_DN_ATTR_FLAG_INVALID, value );
             LOG.error( message );
             throw new InvalidCSNException( message );
         }
@@ -211,7 +211,7 @@ public class Csn implements Comparable<Csn>
         }
         catch ( NumberFormatException nfe )
         {
-            String message = I18n.err( I18n.ERR_04121, changeCountStr );
+            String message = I18n.err( I18n.ERR_13021_INVALID_CHANGE_COUNT, changeCountStr );
             LOG.error( message );
             throw new InvalidCSNException( message, nfe );
         }
@@ -221,7 +221,7 @@ public class Csn implements Comparable<Csn>
 
         if ( sepRI < 0 )
         {
-            String message = I18n.err( I18n.ERR_04122, value );
+            String message = I18n.err( I18n.ERR_13022_MISSING_SHARP_IN_CSN, value );
             LOG.error( message );
             throw new InvalidCSNException( message );
         }
@@ -230,7 +230,7 @@ public class Csn implements Comparable<Csn>
 
         if ( Strings.isEmpty( replicaIdStr ) )
         {
-            String message = I18n.err( I18n.ERR_04123 );
+            String message = I18n.err( I18n.ERR_13023_REPLICA_ID_NULL );
             LOG.error( message );
             throw new InvalidCSNException( message );
         }
@@ -241,7 +241,7 @@ public class Csn implements Comparable<Csn>
         }
         catch ( NumberFormatException nfe )
         {
-            String message = I18n.err( I18n.ERR_04124, replicaIdStr );
+            String message = I18n.err( I18n.ERR_13024_INVALID_REPLICA_ID, replicaIdStr );
             LOG.error( message );
             throw new InvalidCSNException( message, nfe );
         }
@@ -249,7 +249,7 @@ public class Csn implements Comparable<Csn>
         // Get the modification number
         if ( sepCC == value.length() )
         {
-            String message = I18n.err( I18n.ERR_04125 );
+            String message = I18n.err( I18n.ERR_13025_NO_OPERATION_NUMBER );
             LOG.error( message );
             throw new InvalidCSNException( message );
         }
@@ -262,7 +262,7 @@ public class Csn implements Comparable<Csn>
         }
         catch ( NumberFormatException nfe )
         {
-            String message = I18n.err( I18n.ERR_04126, operationNumberStr );
+            String message = I18n.err( I18n.ERR_13026_INVALID_OPERATION_NUMBER, operationNumberStr );
             LOG.error( message );
             throw new InvalidCSNException( message, nfe );
         }

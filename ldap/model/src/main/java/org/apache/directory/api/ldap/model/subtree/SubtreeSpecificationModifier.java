@@ -130,7 +130,7 @@ public class SubtreeSpecificationModifier
     {
         if ( minBaseDistance < 0 )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04330 ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13029_NEGATIVE_MINIMUM_BASE ) );
         }
 
         this.minBaseDistance = minBaseDistance;

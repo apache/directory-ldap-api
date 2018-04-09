@@ -33,6 +33,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
 import org.apache.commons.codec.digest.Crypt;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
 import org.apache.directory.api.util.Base64;
 import org.apache.directory.api.util.DateUtils;
@@ -545,7 +546,7 @@ public final class PasswordUtil
 
             default:
                 // unknown method
-                throw new IllegalArgumentException( "Unknown hash algorithm " + algorithm );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13010_UNKNOWN_HASH_ALGO, algorithm ) );
         }
     }
 

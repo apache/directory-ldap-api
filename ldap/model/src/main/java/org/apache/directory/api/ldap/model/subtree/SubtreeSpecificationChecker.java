@@ -105,7 +105,7 @@ public class SubtreeSpecificationChecker
         }
         catch ( TokenStreamException | RecognitionException e )
         {
-            String msg = I18n.err( I18n.ERR_04329, spec, e.getLocalizedMessage() );
+            String msg = I18n.err( I18n.ERR_13028_SUBTREE_SPEC_PARSER_FAILURE, spec, e.getLocalizedMessage() );
             throw new ParseException( msg, 0 );
         }
     }

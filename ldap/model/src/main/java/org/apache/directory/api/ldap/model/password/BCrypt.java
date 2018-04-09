@@ -15,8 +15,10 @@
 package org.apache.directory.api.ldap.model.password;
 
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+
+import org.apache.directory.api.i18n.I18n;
 
 
 /**
@@ -412,7 +414,7 @@ public class BCrypt
 
         if ( len <= 0 || len > d.length )
         {
-            throw new IllegalArgumentException( "Invalid len" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13000_INVALID_LENGTH ) );
         }
 
         while ( off < len )
@@ -489,7 +491,7 @@ public class BCrypt
 
         if ( maxolen <= 0 )
         {
-            throw new IllegalArgumentException( "Invalid maxolen" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13001_INVALID_MAXOLEN ) );
         }
 
         while ( off < slen - 1 && olen < maxolen )
@@ -711,14 +713,14 @@ public class BCrypt
 
         if ( logRounds < 4 || logRounds > 30 )
         {
-            throw new IllegalArgumentException( "Bad number of rounds" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13002_BAD_NUMBERS_OF_ROUNDS ) );
         }
         
         rounds = 1 << logRounds;
         
         if ( salt.length != BCRYPT_SALT_LEN )
         {
-            throw new IllegalArgumentException( "Bad salt length" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13003_BAD_SALT_LENGTH ) );
         }
 
         initKey();
@@ -773,7 +775,7 @@ public class BCrypt
 
         if ( salt.charAt( 0 ) != '$' || salt.charAt( 1 ) != '2' )
         {
-            throw new IllegalArgumentException( "Invalid salt version" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13004_INVALID_SALT_VERSION ) );
         }
         
         if ( salt.charAt( 2 ) == '$' )
@@ -787,7 +789,7 @@ public class BCrypt
             
             if ( minor != 'a' || salt.charAt( 3 ) != '$' )
             {
-                throw new IllegalArgumentException( "Invalid salt revision" );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13005_INVALID_SALT_REVISION ) );
             }
             
             off = 4;
@@ -796,21 +798,14 @@ public class BCrypt
         // Extract number of rounds
         if ( salt.charAt( off + 2 ) > '$' )
         {
-            throw new IllegalArgumentException( "Missing salt rounds" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13006_MISSING_SALT_ROUNDS ) );
         }
         
         rounds = Integer.parseInt( salt.substring( off, off + 2 ) );
 
         realSalt = salt.substring( off + 3, off + 25 );
         
-        try
-        {
-            passwordb = ( password + ( minor >= 'a' ? "\000" : "" ) ).getBytes( "UTF-8" );
-        }
-        catch ( UnsupportedEncodingException uee )
-        {
-            throw new AssertionError( "UTF-8 is not supported" );
-        }
+        passwordb = ( password + ( minor >= 'a' ? "\000" : "" ) ).getBytes( StandardCharsets.UTF_8 );
 
         saltb = decodeBase64( realSalt, BCRYPT_SALT_LEN );
 
@@ -833,7 +828,7 @@ public class BCrypt
         
         if ( rounds > 30 )
         {
-            throw new IllegalArgumentException( "rounds exceeds maximum (30)" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13008_ROUNDS_EXCEEDED_MAXIMUM ) );
         }
         
         rs.append( Integer.toString( rounds ) );
@@ -869,7 +864,7 @@ public class BCrypt
         
         if ( logRounds > 30 )
         {
-            throw new IllegalArgumentException( "log_rounds exceeds maximum (30)" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13009_LOG_ROUNDS_EXCEEDED_MAXIMUM ) );
         }
         rs.append( Integer.toString( logRounds ) );
         rs.append( "$" );
@@ -916,16 +911,9 @@ public class BCrypt
         byte[] hashedBytes;
         byte[] tryBytes;
         
-        try
-        {
-            String tryPw = hashPw( plaintext, hashed );
-            hashedBytes = hashed.getBytes( "UTF-8" );
-            tryBytes = tryPw.getBytes( "UTF-8" );
-        }
-        catch ( UnsupportedEncodingException uee )
-        {
-            return false;
-        }
+        String tryPw = hashPw( plaintext, hashed );
+        hashedBytes = hashed.getBytes( StandardCharsets.UTF_8 );
+        tryBytes = tryPw.getBytes( StandardCharsets.UTF_8 );
         
         if ( hashedBytes.length != tryBytes.length )
         {
