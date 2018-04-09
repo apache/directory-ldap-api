@@ -57,7 +57,10 @@ public class BooleanComparator extends LdapComparator<String>
      */
     public int compare( String b1, String b2 )
     {
-        LOG.debug( I18n.msg( I18n.MSG_13752_COMPARING_BOOLEAN, b1, b2 ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13752_COMPARING_BOOLEAN, b1, b2 ) );
+        }
 
         // First, shortcut the process by comparing
         // references. If they are equals, then o1 and o2

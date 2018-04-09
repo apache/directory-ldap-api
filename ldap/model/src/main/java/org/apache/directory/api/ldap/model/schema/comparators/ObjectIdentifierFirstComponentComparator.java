@@ -98,7 +98,10 @@ public class ObjectIdentifierFirstComponentComparator extends LdapComparator<Str
      */
     public int compare( String s1, String s2 )
     {
-        LOG.debug( I18n.msg( I18n.MSG_13748_COMPARING_OBJECT_IDENTIFIER_FIRST_COMPONENT, s1, s2 ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13748_COMPARING_OBJECT_IDENTIFIER_FIRST_COMPONENT, s1, s2 ) );
+        }
 
         // -------------------------------------------------------------------
         // Handle some basis cases

@@ -82,7 +82,10 @@ public class TelephoneNumberComparator extends LdapComparator<String>
      */
     public int compare( String telephoneNumber1, String telephoneNumber2 )
     {
-        LOG.debug( I18n.msg( I18n.MSG_13750_COMPARING_TELEPHONE_NUMBER, telephoneNumber1, telephoneNumber2 ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13750_COMPARING_TELEPHONE_NUMBER, telephoneNumber1, telephoneNumber2 ) );
+        }
 
         // -------------------------------------------------------------------
         // Handle some basis cases

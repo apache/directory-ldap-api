@@ -60,7 +60,10 @@ public class NumericStringComparator extends LdapComparator<String>
      */
     public int compare( String backendValue, String assertValue )
     {
-        LOG.debug( I18n.msg( I18n.MSG_13754_COMPARING_NUMERIC_STRING_ORDERING, backendValue, assertValue ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13754_COMPARING_NUMERIC_STRING_ORDERING, backendValue, assertValue ) );
+        }
 
         // First, shortcut the process by comparing
         // references. If they are equals, then o1 and o2

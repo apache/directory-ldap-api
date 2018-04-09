@@ -65,7 +65,10 @@ public class CsnComparator extends LdapComparator<Object>
     @Override
     public int compare( Object csnObj1, Object csnObj2 )
     {
-        LOG.debug( I18n.msg( I18n.MSG_13745_COMPARING_CSN, csnObj1, csnObj2 ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13745_COMPARING_CSN, csnObj1, csnObj2 ) );
+        }
 
         if ( csnObj1 == csnObj2 )
         {

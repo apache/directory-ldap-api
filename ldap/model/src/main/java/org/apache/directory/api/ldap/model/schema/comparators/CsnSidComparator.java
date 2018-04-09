@@ -59,7 +59,10 @@ public class CsnSidComparator extends LdapComparator<String>
      */
     public int compare( String sidStr1, String sidStr2 )
     {
-        LOG.debug( I18n.msg( I18n.MSG_13744_COMPARING_CSN_SID, sidStr1, sidStr2 ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13744_COMPARING_CSN_SID, sidStr1, sidStr2 ) );
+        }
 
         // -------------------------------------------------------------------
         // Handle some basis cases

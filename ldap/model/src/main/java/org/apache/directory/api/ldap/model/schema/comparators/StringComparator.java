@@ -59,7 +59,10 @@ public class StringComparator extends LdapComparator<String> implements Serializ
      */
     public int compare( String s1, String s2 )
     {
-        LOG.debug( I18n.msg( I18n.MSG_13749_COMPARING_STRING, s1, s2 ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13749_COMPARING_STRING, s1, s2 ) );
+        }
 
         if ( s1 == s2 )
         {

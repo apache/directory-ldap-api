@@ -67,7 +67,10 @@ public class ComparableComparator<T> extends LdapComparator<Comparable<T>>
     @SuppressWarnings("unchecked")
     public int compare( Comparable<T> o1, Comparable<T> o2 )
     {
-        LOG.debug( I18n.msg( I18n.MSG_13755_COMPARING_OBJECTS, o1, o2 ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13755_COMPARING_OBJECTS, o1, o2 ) );
+        }
 
         if ( o1 == null )
         {

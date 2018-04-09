@@ -71,7 +71,10 @@ public class WordComparator extends LdapComparator<String>
      */
     public int compare( String value, String assertion )
     {
-        LOG.debug( I18n.msg( I18n.MSG_13749_COMPARING_STRING, value, assertion ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13749_COMPARING_STRING, value, assertion ) );
+        }
 
         if ( value == assertion )
         {

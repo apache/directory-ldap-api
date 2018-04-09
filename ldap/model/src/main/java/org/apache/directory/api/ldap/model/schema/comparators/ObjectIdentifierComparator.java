@@ -58,7 +58,10 @@ public class ObjectIdentifierComparator extends LdapComparator<Object>
     @Override
     public int compare( Object o1, Object o2 )
     {
-        LOG.debug( I18n.msg( I18n.MSG_13747_COMPARING_OBJECT_IDENTIFIER, o1, o2 ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13747_COMPARING_OBJECT_IDENTIFIER, o1, o2 ) );
+        }
 
         // -------------------------------------------------------------------
         // Handle some basis cases
