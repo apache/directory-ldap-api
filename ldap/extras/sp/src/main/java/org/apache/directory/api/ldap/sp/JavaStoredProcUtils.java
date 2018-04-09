@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
@@ -179,7 +180,7 @@ public final class JavaStoredProcUtils
             {
                 byte[] type;
                 byte[] value;
-                type = arguments[i].getClass().getName().getBytes( "UTF-8" );
+                type = arguments[i].getClass().getName().getBytes( StandardCharsets.UTF_8 );
                 value = SerializationUtils.serialize( ( Serializable ) arguments[i] );
                 req.addParameter( type, value );
             }

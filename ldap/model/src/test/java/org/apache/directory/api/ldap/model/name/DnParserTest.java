@@ -25,6 +25,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.nio.charset.StandardCharsets;
+
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -523,7 +525,7 @@ public class DnParserTest
     {
         String cn = new String( new byte[]
             { 'c', 'n', '=', 0x4A, ( byte ) 0xC3, ( byte ) 0xA9, 0x72, ( byte ) 0xC3, ( byte ) 0xB4, 0x6D, 0x65 },
-            "UTF-8" );
+            StandardCharsets.UTF_8 );
 
         String result = new Dn( cn ).toString();
 
@@ -537,7 +539,7 @@ public class DnParserTest
         String cn = new String( new byte[]
             { 'c', 'n', '=', ( byte ) 0xC3, ( byte ) 0x84, ( byte ) 0xC3, ( byte ) 0x96, ( byte ) 0xC3, ( byte ) 0x9C,
                 ( byte ) 0xC3, ( byte ) 0x9F, ( byte ) 0xC3, ( byte ) 0xA4, ( byte ) 0xC3, ( byte ) 0xB6,
-                ( byte ) 0xC3, ( byte ) 0xBC }, "UTF-8" );
+                ( byte ) 0xC3, ( byte ) 0xBC }, StandardCharsets.UTF_8 );
 
         String result = new Dn( cn ).toString();
 
@@ -552,7 +554,7 @@ public class DnParserTest
             { 'c', 'n', '=', ( byte ) 0xC4, ( byte ) 0xB0, ( byte ) 0xC4, ( byte ) 0xB1, ( byte ) 0xC5, ( byte ) 0x9E,
                 ( byte ) 0xC5, ( byte ) 0x9F, ( byte ) 0xC3, ( byte ) 0x96, ( byte ) 0xC3, ( byte ) 0xB6,
                 ( byte ) 0xC3, ( byte ) 0x9C, ( byte ) 0xC3, ( byte ) 0xBC, ( byte ) 0xC4, ( byte ) 0x9E,
-                ( byte ) 0xC4, ( byte ) 0x9F }, "UTF-8" );
+                ( byte ) 0xC4, ( byte ) 0x9F }, StandardCharsets.UTF_8 );
 
         String result = new Dn( cn ).toString();
 
@@ -564,7 +566,7 @@ public class DnParserTest
     public void testAUmlautPlusBytes() throws Exception
     {
         String cn = new String( new byte[]
-            { 'c', 'n', '=', ( byte ) 0xC3, ( byte ) 0x84, '\\', '2', 'B' }, "UTF-8" );
+            { 'c', 'n', '=', ( byte ) 0xC3, ( byte ) 0x84, '\\', '2', 'B' }, StandardCharsets.UTF_8 );
 
         Dn dn = new Dn( cn );
 
@@ -577,7 +579,7 @@ public class DnParserTest
     public void testAUmlautPlusChar() throws Exception
     {
         String cn = new String( new byte[]
-            { 'c', 'n', '=', ( byte ) 0xC3, ( byte ) 0xA4, '\\', '+' }, "UTF-8" );
+            { 'c', 'n', '=', ( byte ) 0xC3, ( byte ) 0xA4, '\\', '+' }, StandardCharsets.UTF_8 );
 
         Dn dn = new Dn( cn );
 

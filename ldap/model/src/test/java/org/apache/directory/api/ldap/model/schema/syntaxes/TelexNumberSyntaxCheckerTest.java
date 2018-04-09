@@ -23,6 +23,8 @@ package org.apache.directory.api.ldap.model.schema.syntaxes;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.nio.charset.StandardCharsets;
+
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
@@ -67,7 +69,7 @@ public class TelexNumberSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "$test$test" ) );
         assertFalse( checker.isValidSyntax( "test$test$test$test" ) );
         assertFalse( checker.isValidSyntax( new String( new byte[]
-            { 't', 'e', 's', 't', '$', 0x00, 0x7F, ( byte ) 0x80, '$', 't', 'e', 's', 't' }, "UTF-8" ) ) );
+            { 't', 'e', 's', 't', '$', 0x00, 0x7F, ( byte ) 0x80, '$', 't', 'e', 's', 't' }, StandardCharsets.UTF_8 ) ) );
     }
 
 

@@ -22,7 +22,7 @@ package org.apache.directory.ldap.client.template;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 
@@ -36,7 +36,6 @@ import java.util.Arrays;
  */
 public final class MemoryClearingBuffer
 {
-    private static final Charset UTF8 = Charset.forName( "UTF-8" );
     private byte[] computedBytes;
     private char[] computedChars;
     private byte[] originalBytes;
@@ -182,7 +181,7 @@ public final class MemoryClearingBuffer
     {
         if ( computedBytes == null )
         {
-            ByteBuffer byteBuffer = UTF8.encode(
+            ByteBuffer byteBuffer = StandardCharsets.UTF_8.encode(
                 CharBuffer.wrap( precomputedChars, 0, precomputedChars.length ) );
             computedBytes = new byte[byteBuffer.remaining()];
             byteBuffer.get( computedBytes );
@@ -207,7 +206,7 @@ public final class MemoryClearingBuffer
     {
         if ( computedChars == null )
         {
-            CharBuffer charBuffer = UTF8.decode(
+            CharBuffer charBuffer = StandardCharsets.UTF_8.decode(
                 ByteBuffer.wrap( originalBytes, 0, originalBytes.length ) );
             computedChars = new char[charBuffer.remaining()];
             charBuffer.get( computedChars );

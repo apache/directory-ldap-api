@@ -2335,11 +2335,55 @@ public final class Strings
      * default system encoding is used.
      *
      * @param data the byte array to be encoded
+     * @param offset the index of the first byte to encode
+     * @param length the number of bytes to encode
+     * @param charset the desired character encoding
+     * @return The result of the conversion.
+     * @since 3.0
+     */
+    public static String getString( final byte[] data, int offset, int length, Charset charset )
+    {
+        if ( data == null )
+        {
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_17028_PARAMETER_CANT_BE_NULL ) );
+        }
+
+        if ( charset == null )
+        {
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_17029_CHARSET_CANT_BE_NULL ) );
+        }
+
+        return new String( data, offset, length, charset );
+    }
+
+
+    /**
+     * From commons-httpclients. Converts the byte array of HTTP content
+     * characters to a string. If the specified charset is not supported,
+     * default system encoding is used.
+     *
+     * @param data the byte array to be encoded
      * @param charset the desired character encoding
      * @return The result of the conversion.
      * @since 3.0
      */
     public static String getString( final byte[] data, String charset )
+    {
+        return getString( data, 0, data.length, charset );
+    }
+
+
+    /**
+     * From commons-httpclients. Converts the byte array of HTTP content
+     * characters to a string. If the specified charset is not supported,
+     * default system encoding is used.
+     *
+     * @param data the byte array to be encoded
+     * @param charset the desired character encoding
+     * @return The result of the conversion.
+     * @since 3.0
+     */
+    public static String getString( final byte[] data, Charset charset )
     {
         return getString( data, 0, data.length, charset );
     }

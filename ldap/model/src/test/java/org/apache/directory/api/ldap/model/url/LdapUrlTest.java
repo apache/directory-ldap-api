@@ -27,6 +27,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -1562,7 +1563,7 @@ public class LdapUrlTest
             new byte[]
                 { ( byte ) 0xC3, ( byte ) 0x84, ( byte ) 0xC3, ( byte ) 0x96, ( byte ) 0xC3, ( byte ) 0x9C,
                     ( byte ) 0xC3, ( byte ) 0x9F, ( byte ) 0xC3, ( byte ) 0xA4, ( byte ) 0xC3, ( byte ) 0xB6,
-                    ( byte ) 0xC3, ( byte ) 0xBC }, "UTF-8" );
+                    ( byte ) 0xC3, ( byte ) 0xBC }, StandardCharsets.UTF_8 );
 
         LdapUrl url1 = new LdapUrl();
         url1.setHost( "localhost" );
