@@ -38,6 +38,7 @@ import javax.naming.directory.InvalidAttributeValueException;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.util.Strings;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -1528,5 +1529,16 @@ public class AttributeTest
         assertEquals( 1, dcaSer.size() );
         assertTrue( dcaSer.contains( password ) );
         assertFalse( dcaSer.isHumanReadable() );
+    }
+    
+    
+    /**
+     * test that we properly throw an exception, and not a NPE, when no AttributeType is provided.
+     */
+    @Test( expected=IllegalArgumentException.class )
+    public void testNullAT() throws LdapInvalidAttributeValueException
+    {
+        AttributeType attributeType = new AttributeType("mail");
+        Value stringValue = new Value(attributeType, "test@test.com");
     }
 }

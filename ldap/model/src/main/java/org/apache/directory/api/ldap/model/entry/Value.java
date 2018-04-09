@@ -32,6 +32,7 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueEx
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
+import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
@@ -269,7 +270,9 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         if ( !attributeType.isRelaxed() )
         {
             // Check the value
-            if ( attributeType.getSyntax().getSyntaxChecker() != null )
+            LdapSyntax syntax = attributeType.getSyntax();
+            
+            if ( ( syntax != null ) && ( syntax.getSyntaxChecker() != null ) ) 
             {
                 if ( !attributeType.getSyntax().getSyntaxChecker().isValidSyntax( upValue ) )
                 {
