@@ -36,10 +36,6 @@ public class PPolicyInit extends GrammarAction<PasswordPolicyContainer>
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( PPolicyInit.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new PPolicyInit action.
      */
@@ -57,7 +53,7 @@ public class PPolicyInit extends GrammarAction<PasswordPolicyContainer>
         // As all the values are optional or defaulted, we can end here
         container.setGrammarEndAllowed( true );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "PasswordPolicyResponseControlContainer initialized" );
         }

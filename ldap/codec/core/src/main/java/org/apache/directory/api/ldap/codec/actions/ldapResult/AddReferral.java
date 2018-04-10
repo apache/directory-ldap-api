@@ -51,9 +51,6 @@ public class AddReferral extends GrammarAction<LdapMessageContainer<MessageDecor
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( AddReferral.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
 
     /**
      * Instantiates a new referral action.
@@ -97,12 +94,16 @@ public class AddReferral extends GrammarAction<LdapMessageContainer<MessageDecor
             }
             else
             {
-                LOG.warn( "The Referral error message is not allowed when havind an error code no equals to REFERRAL" );
+                if ( LOG.isWarnEnabled() )
+                {
+                    LOG.warn( "The Referral error message is not allowed when havind an error code no equals to REFERRAL" );
+                }
+                
                 referral.addLdapUrl( LdapUrl.EMPTY_URL.toString() );
             }
         }
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             StringBuilder sb = new StringBuilder();
             boolean isFirst = true;
@@ -121,7 +122,10 @@ public class AddReferral extends GrammarAction<LdapMessageContainer<MessageDecor
                 sb.append( url );
             }
 
-            LOG.debug( "The referral error message is set to " + sb.toString() );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( "The referral error message is set to " + sb.toString() );
+             }
         }
 
         // We can have an END transition

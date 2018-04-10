@@ -48,9 +48,6 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
     /** static class logger */
     private static final Logger LOG = LoggerFactory.getLogger( OidRegistry.class );
 
-    /** Speedup for DEBUG mode */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** Maps OID to a type of SchemaObject */
     private Map<String, T> byOid = new HashMap<>();
     
@@ -144,7 +141,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
 
         List<String> names = schemaObject.getNames();
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( I18n.msg( I18n.MSG_13756_LOOKED_UP_NAME, ArrayUtils.toString( names ), oid ) );
         }
@@ -230,7 +227,11 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
         {
             String message = I18n.err( I18n.ERR_13743_CANNOT_REGISTER_NULL_SCHEMA_OBJECT );
 
-            LOG.debug( message );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( message );
+            }
+            
             throw new LdapException( message );
         }
 
@@ -242,7 +243,11 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
             {
                 String message = I18n.err( I18n.ERR_13744_SCHEMA_OBJECT_HAS_NO_VALID_OID );
 
-                LOG.debug( message );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( message );
+                }
+                
                 throw new LdapException( message );
             }
         }
@@ -259,15 +264,18 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
          */
         if ( byOid.containsKey( oid ) )
         {
-            String message = I18n.err( I18n.ERR_13745_SCHEMA_OBJECT_WITH_OID_ALREADY_EXIST, oid );
-            LOG.info( message );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.err( I18n.ERR_13745_SCHEMA_OBJECT_WITH_OID_ALREADY_EXIST, oid ) );
+            }
+
             return;
         }
         else
         {
             byOid.put( oid, schemaObject );
 
-            if ( IS_DEBUG )
+            if ( LOG.isDebugEnabled() )
             {
                 LOG.debug( I18n.msg( I18n.MSG_13742_REGISTERED_SCHEMA_OBJECT, schemaObject, oid ) );
             }
@@ -299,7 +307,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
         // Removes the <OID, names> from the byOID map
         SchemaObject removed = byOid.remove( oid );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( I18n.msg( I18n.MSG_13736_UNREGISTERED_SCHEMA_OBJECT, removed, oid ) );
         }

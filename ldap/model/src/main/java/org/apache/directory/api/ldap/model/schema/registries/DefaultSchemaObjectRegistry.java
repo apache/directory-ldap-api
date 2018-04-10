@@ -50,9 +50,6 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     /** static class logger */
     private static final Logger LOG = LoggerFactory.getLogger( DefaultSchemaObjectRegistry.class );
 
-    /** A speedup for debug */
-    private static final boolean DEBUG = LOG.isDebugEnabled();
-
     /** a map of SchemaObject looked up by name */
     protected Map<String, T> byName;
 
@@ -149,7 +146,12 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
         if ( !Oid.isOid( oid ) )
         {
             String msg = I18n.err( I18n.ERR_13733_ARG_NOT_NUMERIC_OID );
-            LOG.warn( msg );
+            
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( msg );
+            }
+            
             throw new LdapException( msg );
         }
 
@@ -161,7 +163,12 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
         }
 
         String msg = I18n.err( I18n.ERR_13734_OID_NOT_FOUND, oid );
-        LOG.warn( msg );
+        
+        if ( LOG.isWarnEnabled() )
+        {
+            LOG.warn( msg );
+        }
+        
         throw new LdapException( msg );
     }
 
@@ -180,7 +187,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
             {
                 schemaObject.setSchemaName( newSchemaName );
 
-                if ( DEBUG )
+                if ( LOG.isDebugEnabled() )
                 {
                     LOG.debug( I18n.msg( I18n.MSG_13722_RENAMED_SCHEMA_NAME_TO, schemaObject, newSchemaName ) );
                 }
@@ -230,12 +237,17 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
             if ( schemaObject == null )
             {
                 String msg = I18n.err( I18n.ERR_13735_ELEMENT_FOR_OID_DOES_NOT_EXIST, schemaObjectType.name(), oid );
-                LOG.debug( msg );
+
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( msg );
+                }
+                
                 throw new LdapException( msg );
             }
         }
 
-        if ( DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( I18n.msg( I18n.MSG_13723_FOUND_WITH_OID, schemaObject, oid ) );
         }
@@ -255,7 +267,12 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
         if ( byName.containsKey( oid ) )
         {
             String msg = I18n.err( I18n.ERR_13736_ELEMENT_FOR_OID_ALREADY_REGISTERED, schemaObjectType.name(), oid );
-            LOG.warn( msg );
+            
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( msg );
+            }
+            
             LdapSchemaException ldapSchemaException = new LdapSchemaException( 
                 LdapSchemaExceptionCodes.OID_ALREADY_REGISTERED, msg );
             ldapSchemaException.setSourceObject( schemaObject );
@@ -275,7 +292,12 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
             if ( byName.containsKey( lowerName ) )
             {
                 String msg = I18n.err( I18n.ERR_13737_ELEMENT_WITH_NAME_ALREADY_REGISTERED, schemaObjectType.name(), name );
-                LOG.warn( msg );
+                
+                if ( LOG.isWarnEnabled() )
+                {
+                    LOG.warn( msg );
+                }
+                
                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
                     LdapSchemaExceptionCodes.NAME_ALREADY_REGISTERED, msg );
                 ldapSchemaException.setSourceObject( schemaObject );
@@ -320,7 +342,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
         // And remove the SchemaObject from the oidRegistry
         oidRegistry.unregister( numericOid );
 
-        if ( DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( I18n.msg( I18n.MSG_13702_REMOVED_FROM_REGISTRY, schemaObject, numericOid ) );
         }
@@ -340,7 +362,12 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
         if ( !byName.containsKey( oid ) )
         {
             String msg = I18n.err( I18n.ERR_13739_ELEMENT_WITH_OID_NOT_REGISTERED, schemaObjectType.name(), oid );
-            LOG.warn( msg );
+            
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( msg );
+            }
+            
             throw new LdapException( msg );
         }
 
@@ -383,7 +410,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
                 String oid = schemaObject.getOid();
                 SchemaObject removed = unregister( oid );
 
-                if ( DEBUG )
+                if ( LOG.isDebugEnabled() )
                 {
                     LOG.debug( I18n.msg( I18n.MSG_13702_REMOVED_FROM_REGISTRY, removed, oid ) );
                 }

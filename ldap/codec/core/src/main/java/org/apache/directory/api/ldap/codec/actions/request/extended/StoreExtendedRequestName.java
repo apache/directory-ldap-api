@@ -48,10 +48,6 @@ public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreExtendedRequestName.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -119,7 +115,7 @@ public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer
         // We can have an END transition
         container.setGrammarEndAllowed( true );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "OID read : {}", req.getRequestName() );
         }

@@ -47,9 +47,6 @@ public class LdapProtocolEncoder implements ProtocolEncoder
     /** logger for reporting errors that might not be handled properly upstream */
     private static final Logger CODEC_LOG = LoggerFactory.getLogger( Loggers.CODEC_LOG.getName() );
 
-    /** A speedup for logger */
-    private static final boolean IS_DEBUG = CODEC_LOG.isDebugEnabled();
-
     /** The stateful encoder */
     private LdapEncoder encoder;
 
@@ -83,7 +80,7 @@ public class LdapProtocolEncoder implements ProtocolEncoder
 
         IoBuffer ioBuffer = IoBuffer.wrap( buffer );
 
-        if ( IS_DEBUG )
+        if ( CODEC_LOG.isDebugEnabled() )
         {
             byte[] dumpBuffer = new byte[buffer.limit()];
             buffer.get( dumpBuffer );

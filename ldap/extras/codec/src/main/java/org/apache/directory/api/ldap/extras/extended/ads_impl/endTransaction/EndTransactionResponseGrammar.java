@@ -67,9 +67,6 @@ public class EndTransactionResponseGrammar extends AbstractGrammar<EndTransactio
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger( EndTransactionResponseGrammar.class );
 
-    /** Speedup for logs */
-    static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** The instance of grammar. EndTransactionResponseGrammar is a singleton */
     private static Grammar<EndTransactionResponseContainer> instance = new EndTransactionResponseGrammar();
 

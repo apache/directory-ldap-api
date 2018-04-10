@@ -42,10 +42,6 @@ public class InitAndFilter extends GrammarAction<LdapMessageContainer<SearchRequ
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitAndFilter.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new init AND filter action.
      */
@@ -77,7 +73,7 @@ public class InitAndFilter extends GrammarAction<LdapMessageContainer<SearchRequ
         // Set the filter
         searchRequestDecorator.addCurrentFilter( andFilter );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Initialize AND filter" );
         }

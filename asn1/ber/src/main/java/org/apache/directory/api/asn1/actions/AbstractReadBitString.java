@@ -42,9 +42,6 @@ public abstract class AbstractReadBitString<C extends Asn1Container> extends Gra
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( AbstractReadBitString.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
 
     /**
      * Instantiates a new AbstractReadByteArray action.
@@ -89,7 +86,7 @@ public abstract class AbstractReadBitString<C extends Asn1Container> extends Gra
         byte[] data = tlv.getValue().getData();
         setBitString( data, container );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( I18n.msg( I18n.MSG_01101_BITSTRING_VALUE, Strings.dumpBytes( data ) ) );
         }

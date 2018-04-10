@@ -63,6 +63,9 @@ public class InitIntermediateResponse extends GrammarAction<LdapMessageContainer
                 new IntermediateResponseImpl( container.getMessageId() ) );
         container.setMessage( intermediateResponse );
 
-        LOG.debug( "Intermediate Response" );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Intermediate Response" );
+        }
     }
 }

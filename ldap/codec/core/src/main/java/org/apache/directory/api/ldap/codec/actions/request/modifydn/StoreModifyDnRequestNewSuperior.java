@@ -51,10 +51,6 @@ public class StoreModifyDnRequestNewSuperior extends GrammarAction<LdapMessageCo
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreModifyDnRequestNewSuperior.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -88,7 +84,10 @@ public class StoreModifyDnRequestNewSuperior extends GrammarAction<LdapMessageCo
             }
             else
             {
-                LOG.warn( "The new superior is null, so we will change the entry" );
+                if ( LOG.isWarnEnabled() )
+                {
+                    LOG.warn( "The new superior is null, so we will change the entry" );
+                }
             }
 
             modifyDnRequest.setNewSuperior( newSuperior );
@@ -119,7 +118,7 @@ public class StoreModifyDnRequestNewSuperior extends GrammarAction<LdapMessageCo
         // We can have an END transition
         container.setGrammarEndAllowed( true );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "New superior Dn {}", newSuperior );
         }

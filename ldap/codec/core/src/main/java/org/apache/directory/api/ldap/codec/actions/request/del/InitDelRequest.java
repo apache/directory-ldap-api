@@ -53,10 +53,6 @@ public class InitDelRequest extends GrammarAction<LdapMessageContainer<DeleteReq
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitDelRequest.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -117,7 +113,7 @@ public class InitDelRequest extends GrammarAction<LdapMessageContainer<DeleteReq
         // We can have an END transition
         container.setGrammarEndAllowed( true );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Deleting Dn {}", entry );
         }

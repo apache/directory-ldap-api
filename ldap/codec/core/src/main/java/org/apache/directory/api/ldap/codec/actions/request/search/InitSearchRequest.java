@@ -69,6 +69,9 @@ public class InitSearchRequest extends GrammarAction<LdapMessageContainer<Search
         searchRequest.setTlvId( tlv.getId() );
         container.setMessage( searchRequest );
 
-        LOG.debug( "Search Request" );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Search Request" );
+        }
     }
 }

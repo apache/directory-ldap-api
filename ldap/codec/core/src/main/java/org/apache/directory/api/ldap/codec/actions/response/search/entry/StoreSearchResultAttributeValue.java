@@ -46,10 +46,6 @@ public class StoreSearchResultAttributeValue extends GrammarAction<LdapMessageCo
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreSearchResultAttributeValue.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new search result attribute value action.
      */
@@ -77,7 +73,10 @@ public class StoreSearchResultAttributeValue extends GrammarAction<LdapMessageCo
             {
                 searchResultEntry.addAttributeValue( "" );
 
-                LOG.debug( "The attribute value is null" );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( "The attribute value is null" );
+                }
             }
             else
             {
@@ -85,7 +84,7 @@ public class StoreSearchResultAttributeValue extends GrammarAction<LdapMessageCo
                 {
                     value = tlv.getValue().getData();
 
-                    if ( IS_DEBUG )
+                    if ( LOG.isDebugEnabled() )
                     {
                         LOG.debug( "Attribute value {}", Strings.dumpBytes( ( byte[] ) value ) );
                     }
@@ -94,7 +93,10 @@ public class StoreSearchResultAttributeValue extends GrammarAction<LdapMessageCo
                 {
                     value = Strings.utf8ToString( tlv.getValue().getData() );
 
-                    LOG.debug( "Attribute value {}", value );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( "Attribute value {}", value );
+                    }
                 }
 
                 searchResultEntry.addAttributeValue( value );

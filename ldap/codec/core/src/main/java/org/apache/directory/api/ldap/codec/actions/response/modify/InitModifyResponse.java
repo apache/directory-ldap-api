@@ -61,6 +61,9 @@ public class InitModifyResponse extends GrammarAction<LdapMessageContainer<Modif
             container.getLdapCodecService(), new ModifyResponseImpl( container.getMessageId() ) );
         container.setMessage( modifyResponse );
 
-        LOG.debug( "Modify response" );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Modify response" );
+        }
     }
 }

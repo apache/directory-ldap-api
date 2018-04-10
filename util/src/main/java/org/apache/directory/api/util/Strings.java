@@ -2196,11 +2196,19 @@ public final class Strings
             && isHex( uuid.charAt( 33 ) ) && isHex( uuid.charAt( 34 ) ) && isHex( uuid.charAt( 35 ) ) )
         {
             // There is not that much more we can check.
-            LOG.debug( I18n.msg( I18n.MSG_17007_SYNTAX_VALID, uuid ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_17007_SYNTAX_VALID, uuid ) );
+            }
+            
             return true;
         }
 
-        LOG.debug( I18n.msg( I18n.MSG_17008_SYNTAX_INVALID, uuid ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_17008_SYNTAX_INVALID, uuid ) );
+        }
+        
         return false;
     }
 

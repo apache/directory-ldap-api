@@ -59,9 +59,6 @@ public class EndTransactionRequestGrammar extends AbstractGrammar<EndTransaction
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger( EndTransactionRequestGrammar.class );
 
-    /** Speedup for logs */
-    static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** The instance of grammar. EndTransactionRequestGrammar is a singleton */
     private static Grammar<EndTransactionRequestContainer> instance = new EndTransactionRequestGrammar();
 
@@ -157,7 +154,7 @@ public class EndTransactionRequestGrammar extends AbstractGrammar<EndTransaction
 
                         byte[] identifier = value.getData();
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled() )
                         {
                             LOG.debug( "Identifier = {}", Strings.dumpBytes( identifier ) );
                         }
@@ -196,7 +193,7 @@ public class EndTransactionRequestGrammar extends AbstractGrammar<EndTransaction
 
                         byte[] identifier = value.getData();
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled() )
                         {
                             LOG.debug( "Identifier = {}", Strings.dumpBytes( identifier ) );
                         }

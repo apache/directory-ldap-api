@@ -152,9 +152,6 @@ public final class LdapMessageGrammar extends
     /** The logger */
     static final Logger LOG = LoggerFactory.getLogger( LdapMessageGrammar.class );
 
-    /** A speedup for logger */
-    static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** The instance of grammar. LdapMessageGrammar is a singleton */
     private static Grammar<LdapMessageContainer<MessageDecorator<? extends Message>>> instance =
         new LdapMessageGrammar();

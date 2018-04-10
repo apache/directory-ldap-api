@@ -42,10 +42,6 @@ public class DefaultComparatorRegistry extends DefaultSchemaObjectRegistry<LdapC
     /** static class logger */
     private static final Logger LOG = LoggerFactory.getLogger( DefaultComparatorRegistry.class );
 
-    /** A speedup for debug */
-    private static final boolean DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Creates a new default ComparatorRegistry instance.
      */
@@ -75,7 +71,7 @@ public class DefaultComparatorRegistry extends DefaultSchemaObjectRegistry<LdapC
                 String oid = comparator.getOid();
                 SchemaObject removed = unregister( oid );
 
-                if ( DEBUG )
+                if ( LOG.isDebugEnabled() )
                 {
                     LOG.debug( I18n.msg( I18n.MSG_13702_REMOVED_FROM_REGISTRY, removed, oid ) );
                 }

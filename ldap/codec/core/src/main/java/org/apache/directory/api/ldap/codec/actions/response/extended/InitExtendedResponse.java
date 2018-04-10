@@ -62,6 +62,9 @@ public class InitExtendedResponse extends GrammarAction<LdapMessageContainer<Ext
             container.getLdapCodecService(), new ExtendedResponseImpl( container.getMessageId() ) );
         container.setMessage( extendedResponse );
 
-        LOG.debug( "Extended Response" );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Extended Response" );
+        }
     }
 }

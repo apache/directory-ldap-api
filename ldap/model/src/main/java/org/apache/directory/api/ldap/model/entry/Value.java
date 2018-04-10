@@ -204,7 +204,11 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
             if ( attributeType.getSyntax() == null )
             {
                 // Some broken LDAP servers do not have proper syntax definitions, default to HR
-                LOG.info( I18n.err( I18n.ERR_13225_NO_SYNTAX ) );
+                if ( LOG.isInfoEnabled() )
+                {
+                    LOG.info( I18n.err( I18n.ERR_13225_NO_SYNTAX ) );
+                }
+                
                 isHR = true;
                 //throw new IllegalArgumentException( I18n.err( I18n.ERR_13225_NO_SYNTAX ) );
             }
@@ -215,7 +219,10 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         }
         else
         {
-            LOG.warn( I18n.msg( I18n.MSG_13202_AT_IS_NULL ) );
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( I18n.msg( I18n.MSG_13202_AT_IS_NULL ) );
+            }
         }
         
         this.attributeType = attributeType;

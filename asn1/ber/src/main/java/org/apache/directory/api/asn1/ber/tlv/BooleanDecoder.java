@@ -64,7 +64,10 @@ public final class BooleanDecoder
 
         if ( ( bytes[0] != 0 ) && ( bytes[0] != ( byte ) 0xFF ) )
         {
-            LOG.warn( I18n.msg( I18n.MSG_01300_BOOLEAN_0X00_0XFF ) );
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( I18n.msg( I18n.MSG_01300_BOOLEAN_0X00_0XFF ) );
+            }
         }
 
         return bytes[0] != 0;

@@ -40,10 +40,6 @@ public class InitExtensibleMatchFilter extends GrammarAction<LdapMessageContaine
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitExtensibleMatchFilter.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new init extensible match filter action.
      */
@@ -66,7 +62,7 @@ public class InitExtensibleMatchFilter extends GrammarAction<LdapMessageContaine
         searchRequestDecorator.addCurrentFilter( extensibleMatchFilter );
         searchRequestDecorator.setTerminalFilter( extensibleMatchFilter );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Initialize Extensible Match filter" );
         }

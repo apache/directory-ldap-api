@@ -317,7 +317,11 @@ public final class ParserUtils
         }
         catch ( TransformerConfigurationException e1 )
         {
-            LOG.warn( "Failed to create the XSLT transformer", e1 );
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( "Failed to create the XSLT transformer", e1 );
+            }
+            
             // return original document
             return document;
         }

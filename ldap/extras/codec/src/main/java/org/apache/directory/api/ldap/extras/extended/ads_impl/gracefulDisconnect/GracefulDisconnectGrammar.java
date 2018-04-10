@@ -64,9 +64,6 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
     /** The logger */
     static final Logger LOG = LoggerFactory.getLogger( GracefulDisconnectGrammar.class );
 
-    /** Speedup for logs */
-    static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** The instance of grammar. GracefulDisconnectnGrammar is a singleton */
     private static GracefulDisconnectGrammar instance = new GracefulDisconnectGrammar();
 
@@ -84,7 +81,7 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
                 {
                     int delay = IntegerDecoder.parse( value, 0, 86400 );
 
-                    if ( IS_DEBUG )
+                    if ( LOG.isDebugEnabled() )
                     {
                         LOG.debug( "Delay = " + delay );
                     }
@@ -126,7 +123,7 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
                     container.getGracefulDisconnectResponse().addReplicatedContexts( url );
                     container.setGrammarEndAllowed( true );
 
-                    if ( IS_DEBUG )
+                    if ( LOG.isDebugEnabled() )
                     {
                         LOG.debug( "Stores a referral : {}", ldapUrl );
                     }
@@ -154,7 +151,7 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
                 {
                     int timeOffline = IntegerDecoder.parse( value, 0, 720 );
 
-                    if ( IS_DEBUG )
+                    if ( LOG.isDebugEnabled() )
                     {
                         LOG.debug( "Time Offline = " + timeOffline );
                     }

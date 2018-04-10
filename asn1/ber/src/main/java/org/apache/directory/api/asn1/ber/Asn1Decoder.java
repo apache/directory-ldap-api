@@ -45,9 +45,6 @@ public class Asn1Decoder implements TLVBerDecoderMBean
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( Asn1Decoder.class );
 
-    /** A speedup for logger */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** This flag is used to indicate that there are more bytes in the stream */
     private static final boolean MORE = true;
 
@@ -102,7 +99,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
             // Switch to the next state, which is the Length decoding
             container.setState( TLVStateEnum.LENGTH_STATE_START );
 
-            if ( IS_DEBUG )
+            if ( LOG.isDebugEnabled() )
             {
                 byte tag = container.getCurrentTLV().getTag();
                 LOG.debug( I18n.msg( I18n.MSG_01000_TAG_DECODED, Asn1StringUtils.dumpByte( tag ) ) );
@@ -140,7 +137,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
             current = current.getParent();
         }
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( I18n.msg( I18n.MSG_01001_TLV_TREE, sb.toString() ) );
         }
@@ -261,7 +258,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
             {
                 byte octet = stream.get();
 
-                if ( IS_DEBUG )
+                if ( LOG.isDebugEnabled() )
                 {
                     LOG.debug( I18n.msg( I18n.MSG_01002_CURRENT_BYTE, Asn1StringUtils.dumpByte( octet ) ) );
                 }
@@ -356,7 +353,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
         // exceeded by the current TLV.
         TLV parentTLV = container.getParentTLV();
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( I18n.msg( I18n.MSG_01003_PARENT_LENGTH, getParentLength( parentTLV ) ) );
         }
@@ -368,7 +365,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
             tlv.setExpectedLength( length );
             container.setParentTLV( tlv );
 
-            if ( IS_DEBUG )
+            if ( LOG.isDebugEnabled() )
             {
                 LOG.debug( I18n.msg( I18n.MSG_01004_ROOT_TLV, Integer.valueOf( length ) ) );
             }
@@ -384,7 +381,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
             {
                 // The expected length is lower than the Value length of the
                 // current TLV. This is an error...
-                if ( IS_DEBUG )
+                if ( LOG.isDebugEnabled() )
                 {
                     LOG.debug( I18n.msg( I18n.MSG_01005_TLV, 
                                 Integer.valueOf( expectedLength ), 
@@ -482,7 +479,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
 
         }
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( I18n.msg( I18n.MSG_01006_LENGTH_DECODED, Integer.valueOf( length ) ) );
         }
@@ -598,7 +595,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
     @SuppressWarnings("unchecked")
     private boolean treatTLVDoneState( ByteBuffer stream, Asn1Container container ) throws DecoderException
     {
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             dumpTLVTree( container );
         }
@@ -674,7 +671,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
             throw new DecoderException( message );
         }
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( I18n.msg( I18n.MSG_01007_LINE_SEPARATOR1 ) );
             LOG.debug( I18n.msg( I18n.MSG_01011_DECODING_PDU ) );
@@ -683,7 +680,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
 
         while ( hasRemaining )
         {
-            if ( IS_DEBUG )
+            if ( LOG.isDebugEnabled() )
             {
                 LOG.debug( I18n.msg( I18n.MSG_01012_STATE, container.getState() ) );
 
@@ -761,7 +758,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
             }
         }
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( I18n.msg( I18n.MSG_01009_LINE_SEPARATOR3 ) );
 

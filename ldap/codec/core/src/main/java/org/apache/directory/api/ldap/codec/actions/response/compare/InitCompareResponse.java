@@ -74,6 +74,9 @@ public class InitCompareResponse extends GrammarAction<LdapMessageContainer<Comp
             throw new DecoderException( msg );
         }
 
-        LOG.debug( "Compare response " );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Compare response " );
+        }
     }
 }

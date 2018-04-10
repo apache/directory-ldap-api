@@ -46,10 +46,6 @@ public class InitControls extends GrammarAction<LdapMessageContainer<MessageDeco
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitControls.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new controls init action.
      */
@@ -70,14 +66,14 @@ public class InitControls extends GrammarAction<LdapMessageContainer<MessageDeco
         // The Length can be null
         if ( expectedLength != 0 )
         {
-            if ( IS_DEBUG )
+            if ( LOG.isDebugEnabled() )
             {
                 LOG.debug( "A new list of controls has been initialized" );
             }
         }
         else
         {
-            if ( IS_DEBUG )
+            if ( LOG.isDebugEnabled() )
             {
                 LOG.debug( "An empty list of controls has been initialized" );
             }

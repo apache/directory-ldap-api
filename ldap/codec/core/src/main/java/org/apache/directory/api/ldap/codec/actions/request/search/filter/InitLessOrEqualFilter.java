@@ -41,10 +41,6 @@ public class InitLessOrEqualFilter extends GrammarAction<LdapMessageContainer<Se
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitLessOrEqualFilter.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new init less or equal filter action.
      */
@@ -71,7 +67,7 @@ public class InitLessOrEqualFilter extends GrammarAction<LdapMessageContainer<Se
         // fulfilled
         searchRequestDecorator.setTerminalFilter( filter );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Initialize Less Or Equal filter" );
         }

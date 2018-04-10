@@ -49,10 +49,6 @@ public class StoreVersion extends GrammarAction<LdapMessageContainer<BindRequest
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreVersion.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -79,7 +75,7 @@ public class StoreVersion extends GrammarAction<LdapMessageContainer<BindRequest
         {
             int version = IntegerDecoder.parse( value, 1, 127 );
 
-            if ( IS_DEBUG )
+            if ( LOG.isDebugEnabled() )
             {
                 LOG.debug( "Ldap version ", Integer.valueOf( version ) );
             }

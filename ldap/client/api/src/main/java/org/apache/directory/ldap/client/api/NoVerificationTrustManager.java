@@ -51,7 +51,10 @@ public class NoVerificationTrustManager extends X509ExtendedTrustManager
     public void checkClientTrusted( X509Certificate[] x509Certificates, String authType, Socket socket )
         throws CertificateException 
     {
-        LOG.debug( "checkClientTrusted {}", x509Certificates[0] );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "checkClientTrusted {}", x509Certificates[0] );
+        }
     }
 
     
@@ -62,14 +65,20 @@ public class NoVerificationTrustManager extends X509ExtendedTrustManager
     public void checkClientTrusted( X509Certificate[] x509Certificates, String authType, SSLEngine engine )
         throws CertificateException 
     {
-        LOG.debug( "checkClientTrusted {}", x509Certificates[0] );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "checkClientTrusted {}", x509Certificates[0] );
+        }
     }
     
     
     public void checkServerTrusted( X509Certificate[] x509Certificates, String authType, Socket socket )
         throws CertificateException 
     {
-        LOG.debug( "checkServerTrusted {}", x509Certificates[0] );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "checkServerTrusted {}", x509Certificates[0] );
+        }
     }
 
     /**
@@ -79,7 +88,10 @@ public class NoVerificationTrustManager extends X509ExtendedTrustManager
     public void checkServerTrusted( X509Certificate[] x509Certificates, String authType, SSLEngine engine )
         throws CertificateException 
     {
-        LOG.debug( "checkServerTrusted {}", x509Certificates[0] );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "checkServerTrusted {}", x509Certificates[0] );
+        }
     }
 
 
@@ -89,7 +101,10 @@ public class NoVerificationTrustManager extends X509ExtendedTrustManager
     @Override
     public void checkClientTrusted( X509Certificate[] x509Certificates, String s ) throws CertificateException
     {
-        LOG.debug( "checkClientTrusted {}", x509Certificates[0] );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "checkClientTrusted {}", x509Certificates[0] );
+        }
     }
 
 
@@ -99,7 +114,10 @@ public class NoVerificationTrustManager extends X509ExtendedTrustManager
     @Override
     public void checkServerTrusted( X509Certificate[] x509Certificates, String s ) throws CertificateException
     {
-        LOG.debug( "checkServerTrusted {}", x509Certificates[0] );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "checkServerTrusted {}", x509Certificates[0] );
+        }
     }
 
 

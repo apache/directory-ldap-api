@@ -61,8 +61,6 @@ public final class VirtualListViewResponseGrammar extends AbstractGrammar<Virtua
 {
     static final Logger LOG = LoggerFactory.getLogger( VirtualListViewResponseGrammar.class );
 
-    static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     private static Grammar<?> instance = new VirtualListViewResponseGrammar();
 
 

@@ -53,10 +53,6 @@ public class StoreCompareRequestAttributeDesc extends GrammarAction<LdapMessageC
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreCompareRequestAttributeDesc.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -92,7 +88,7 @@ public class StoreCompareRequestAttributeDesc extends GrammarAction<LdapMessageC
         String type = Strings.utf8ToString( tlv.getValue().getData() );
         compareRequest.setAttributeId( type );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Comparing attribute description {}", compareRequest.getAttributeId() );
         }

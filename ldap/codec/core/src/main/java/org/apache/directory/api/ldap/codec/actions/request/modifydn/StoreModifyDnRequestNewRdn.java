@@ -55,10 +55,6 @@ public class StoreModifyDnRequestNewRdn extends GrammarAction<LdapMessageContain
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreModifyDnRequestNewRdn.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -115,7 +111,7 @@ public class StoreModifyDnRequestNewRdn extends GrammarAction<LdapMessageContain
             modifyDnRequest.setNewRdn( newRdn );
         }
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Modifying with new Rdn {}", newRdn );
         }

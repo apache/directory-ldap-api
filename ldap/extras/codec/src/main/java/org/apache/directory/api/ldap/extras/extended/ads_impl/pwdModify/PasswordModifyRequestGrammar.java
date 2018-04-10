@@ -55,9 +55,6 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger( PasswordModifyRequestGrammar.class );
 
-    /** Speedup for logs */
-    static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** The instance of grammar. PasswdModifyRequestGrammar is a singleton */
     private static Grammar<PasswordModifyRequestContainer> instance = new PasswordModifyRequestGrammar();
 
@@ -122,7 +119,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
 
                         byte[] userIdentity = value.getData();
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled() )
                         {
                             LOG.debug( "UserIdentity = " + Strings.dumpBytes( userIdentity ) );
                         }
@@ -162,7 +159,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
 
                         byte[] oldPassword = value.getData();
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled() )
                         {
                             LOG.debug( "oldPassword = " + Strings.dumpBytes( oldPassword ) );
                         }
@@ -203,7 +200,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
 
                         byte[] newPassword = value.getData();
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled() )
                         {
                             LOG.debug( "newPassword = " + Strings.dumpBytes( newPassword ) );
                         }
@@ -243,7 +240,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
 
                         byte[] oldPassword = value.getData();
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled() )
                         {
                             LOG.debug( "OldPassword = " + Strings.dumpBytes( oldPassword ) );
                         }
@@ -283,7 +280,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
 
                         byte[] newPassword = value.getData();
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled() )
                         {
                             LOG.debug( "NewPassword = " + Strings.dumpBytes( newPassword ) );
                         }
@@ -323,7 +320,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
 
                         byte[] newPassword = value.getData();
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled() )
                         {
                             LOG.debug( "NewPassword = " + Strings.dumpBytes( newPassword ) );
                         }

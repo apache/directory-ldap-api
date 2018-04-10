@@ -40,10 +40,6 @@ public class StoreModifyRequestAttributeValue extends GrammarAction<LdapMessageC
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreModifyRequestAttributeValue.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new modify attribute value action.
      */
@@ -93,7 +89,7 @@ public class StoreModifyRequestAttributeValue extends GrammarAction<LdapMessageC
         // We can have an END transition
         container.setGrammarEndAllowed( true );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Value modified : {}", value );
         }

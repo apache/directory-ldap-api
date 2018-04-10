@@ -1060,7 +1060,10 @@ public class DefaultAttribute implements Attribute, Cloneable
                     }
                     else
                     {
-                        LOG.warn( I18n.err( I18n.ERR_13207_VALUE_ALREADY_EXISTS, val, upId ) );
+                        if ( LOG.isWarnEnabled() )
+                        {
+                            LOG.warn( I18n.err( I18n.ERR_13207_VALUE_ALREADY_EXISTS, val, upId ) );
+                        }
                     }
                 }
             }
@@ -1114,7 +1117,10 @@ public class DefaultAttribute implements Attribute, Cloneable
                     }
                     else
                     {
-                        LOG.warn( I18n.err( I18n.ERR_13207_VALUE_ALREADY_EXISTS, val, upId ) );
+                        if ( LOG.isWarnEnabled() )
+                        {
+                            LOG.warn( I18n.err( I18n.ERR_13207_VALUE_ALREADY_EXISTS, val, upId ) );
+                        }
                     }
                 }
             }
@@ -1186,14 +1192,21 @@ public class DefaultAttribute implements Attribute, Cloneable
                 }
                 else
                 {
-                    LOG.warn( I18n.err( I18n.ERR_13207_VALUE_ALREADY_EXISTS, Strings.dumpBytes( val ), upId ) );
+                    if ( LOG.isWarnEnabled() )
+                    {
+                        LOG.warn( I18n.err( I18n.ERR_13207_VALUE_ALREADY_EXISTS, Strings.dumpBytes( val ), upId ) );
+                    }
                 }
             }
         }
         else
         {
             // We can't add Binary values into a String Attribute
-            LOG.info( I18n.err( I18n.ERR_13213_VALUE_MUST_BE_A_STRING ) );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.err( I18n.ERR_13213_VALUE_MUST_BE_A_STRING ) );
+            }
+            
             return 0;
         }
 

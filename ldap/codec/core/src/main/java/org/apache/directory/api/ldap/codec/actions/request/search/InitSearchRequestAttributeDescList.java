@@ -48,10 +48,6 @@ public class InitSearchRequestAttributeDescList extends GrammarAction<LdapMessag
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitSearchRequestAttributeDescList.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new init attribute desc list action.
      */
@@ -82,7 +78,7 @@ public class InitSearchRequestAttributeDescList extends GrammarAction<LdapMessag
         // We can have an END transition
         container.setGrammarEndAllowed( true );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Initialize AttributeDesc list" );
         }

@@ -43,10 +43,6 @@ public class InitAttributeDescFilter extends GrammarAction<LdapMessageContainer<
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitAttributeDescFilter.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new init attribute desc filter action.
      */
@@ -83,7 +79,7 @@ public class InitAttributeDescFilter extends GrammarAction<LdapMessageContainer<
             terminalFilter.setAssertion( assertion );
         }
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Initialize AttributeDesc filter" );
         }

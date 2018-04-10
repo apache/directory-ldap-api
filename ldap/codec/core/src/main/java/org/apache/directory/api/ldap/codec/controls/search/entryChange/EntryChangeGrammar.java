@@ -51,9 +51,6 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
     /** The logger */
     static final Logger LOG = LoggerFactory.getLogger( EntryChangeGrammar.class );
 
-    /** Speedup for logs */
-    static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** The instance of grammar. EntryChangeGrammar is a singleton */
     private static Grammar<?> instance = new EntryChangeGrammar();
 
@@ -111,7 +108,7 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
                                 case MODIFY:
                                     ChangeType changeType = ChangeType.getChangeType( change );
 
-                                    if ( IS_DEBUG )
+                                    if ( LOG.isDebugEnabled() )
                                     {
                                         LOG.debug( "changeType = " + changeType );
                                     }
@@ -181,7 +178,7 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
                                 throw new DecoderException( I18n.err( I18n.ERR_04048 ), ine );
                             }
 
-                            if ( IS_DEBUG )
+                            if ( LOG.isDebugEnabled() )
                             {
                                 LOG.debug( "previousDN = " + previousDn );
                             }
@@ -206,7 +203,7 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
                 {
                     long changeNumber = LongDecoder.parse( value );
 
-                    if ( IS_DEBUG )
+                    if ( LOG.isDebugEnabled() )
                     {
                         LOG.debug( "changeNumber = " + changeNumber );
                     }

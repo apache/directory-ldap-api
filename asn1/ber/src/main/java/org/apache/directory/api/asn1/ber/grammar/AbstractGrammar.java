@@ -41,9 +41,6 @@ public abstract class AbstractGrammar<C extends Asn1Container> implements Gramma
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( AbstractGrammar.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /**
      * Table of transitions. It's a two dimension array, the first dimension
      * indices the states, the second dimension indices the Tag value, so it is
@@ -128,7 +125,7 @@ public abstract class AbstractGrammar<C extends Asn1Container> implements Gramma
             throw new DecoderException( errorMessage );
         }
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( transition.toString() );
         }

@@ -110,90 +110,174 @@ public final class CodecFactoryUtil
         // Standard controls
         ControlFactory<Cascade> cascadeFactory = new CascadeFactory( apiService );
         controlFactories.put( cascadeFactory.getOid(), cascadeFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", cascadeFactory.getOid() );
+
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", cascadeFactory.getOid() );
+        }
 
         ControlFactory<EntryChange> entryChangeFactory = new EntryChangeFactory( apiService );
         controlFactories.put( entryChangeFactory.getOid(), entryChangeFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", entryChangeFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", entryChangeFactory.getOid() );
+        }
 
         ControlFactory<ManageDsaIT> manageDsaITFactory = new ManageDsaITFactory( apiService );
         controlFactories.put( manageDsaITFactory.getOid(), manageDsaITFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", manageDsaITFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", manageDsaITFactory.getOid() );
+        }
 
         ControlFactory<ProxiedAuthz> proxiedAuthzFactory = new ProxiedAuthzFactory( apiService );
         controlFactories.put( proxiedAuthzFactory.getOid(), proxiedAuthzFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", proxiedAuthzFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", proxiedAuthzFactory.getOid() );
+        }
 
         ControlFactory<PagedResults> pagedResultsFactory = new PagedResultsFactory( apiService );
         controlFactories.put( pagedResultsFactory.getOid(), pagedResultsFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", pagedResultsFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", pagedResultsFactory.getOid() );
+        }
 
         ControlFactory<PersistentSearch> persistentSearchFactory = new PersistentSearchFactory( apiService );
         controlFactories.put( persistentSearchFactory.getOid(), persistentSearchFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", persistentSearchFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", persistentSearchFactory.getOid() );
+        }
 
         ControlFactory<Subentries> subentriesFactory = new SubentriesFactory( apiService );
         controlFactories.put( subentriesFactory.getOid(), subentriesFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", subentriesFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", subentriesFactory.getOid() );
+        }
         
         ControlFactory<SortRequest> sortRequestFactory = new SortRequestFactory( apiService );
         controlFactories.put( sortRequestFactory.getOid(), sortRequestFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", sortRequestFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", sortRequestFactory.getOid() );
+        }
 
         ControlFactory<SortResponse> sortResponseFactory = new SortResponseFactory( apiService );
         controlFactories.put( sortResponseFactory.getOid(), sortResponseFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", sortResponseFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", sortResponseFactory.getOid() );
+        }
 
         // Extra controls
         ControlFactory<AdDirSync> adDirSyncFactory = new AdDirSyncFactory( apiService );
         controlFactories.put( adDirSyncFactory.getOid(), adDirSyncFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", adDirSyncFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", adDirSyncFactory.getOid() );
+        }
         
         ControlFactory<AdShowDeleted> adShowDeletedFactory = new AdShowDeletedFactory( apiService );
         controlFactories.put( adShowDeletedFactory.getOid(), adShowDeletedFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", adShowDeletedFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", adShowDeletedFactory.getOid() );
+        }
         
         ControlFactory<AdPolicyHints> adPolicyHintsFactory = new AdPolicyHintsFactory( apiService );
         controlFactories.put( adPolicyHintsFactory.getOid(), adPolicyHintsFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", adPolicyHintsFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", adPolicyHintsFactory.getOid() );
+        }
 
         ControlFactory<ChangeNotifications> changeNotificationsFactory = new ChangeNotificationsFactory( apiService );
         controlFactories.put( changeNotificationsFactory.getOid(), changeNotificationsFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", changeNotificationsFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", changeNotificationsFactory.getOid() );
+        }
 
         ControlFactory<PermissiveModify> permissiveModifyFactory = new PermissiveModifyFactory( apiService );
         controlFactories.put( permissiveModifyFactory.getOid(), permissiveModifyFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", permissiveModifyFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", permissiveModifyFactory.getOid() );
+        }
 
         ControlFactory<PasswordPolicy> passwordPolicyFactory = new PasswordPolicyFactory( apiService );
         controlFactories.put( passwordPolicyFactory.getOid(), passwordPolicyFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", passwordPolicyFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", passwordPolicyFactory.getOid() );
+        }
 
         ControlFactory<SyncDoneValue> syncDoneValueFactory = new SyncDoneValueFactory( apiService );
         controlFactories.put( syncDoneValueFactory.getOid(), syncDoneValueFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", syncDoneValueFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", syncDoneValueFactory.getOid() );
+        } 
 
         ControlFactory<SyncRequestValue> syncRequestValueFactory = new SyncRequestValueFactory( apiService );
         controlFactories.put( syncRequestValueFactory.getOid(), syncRequestValueFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", syncRequestValueFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", syncRequestValueFactory.getOid() );
+        }
 
         ControlFactory<SyncStateValue> syncStateValueFactory = new SyncStateValueFactory( apiService );
         controlFactories.put( syncStateValueFactory.getOid(), syncStateValueFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", syncStateValueFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", syncStateValueFactory.getOid() );
+        }
 
         ControlFactory<TransactionSpecification> transactionSpecificationFactory = new TransactionSpecificationFactory( apiService );
         controlFactories.put( transactionSpecificationFactory.getOid(), transactionSpecificationFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", transactionSpecificationFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", transactionSpecificationFactory.getOid() );
+        }
 
         ControlFactory<VirtualListViewRequest> virtualListViewRequestFactory = new VirtualListViewRequestFactory(
             apiService );
         controlFactories.put( virtualListViewRequestFactory.getOid(), virtualListViewRequestFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", virtualListViewRequestFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", virtualListViewRequestFactory.getOid() );
+        }
 
         ControlFactory<VirtualListViewResponse> virtualListViewResponseFactory = new VirtualListViewResponseFactory(
             apiService );
         controlFactories.put( virtualListViewResponseFactory.getOid(), virtualListViewResponseFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", virtualListViewResponseFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", virtualListViewResponseFactory.getOid() );
+        }
     }
 
 
@@ -219,43 +303,83 @@ public final class CodecFactoryUtil
     {
         CancelFactory cancelFactory = new CancelFactory( apiService );
         extendendOperationsFactories.put( cancelFactory.getOid(), cancelFactory );
-        LOG.info( "Registered pre-bundled extended operation factory: {}", cancelFactory.getOid() );
+
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled extended operation factory: {}", cancelFactory.getOid() );
+        }
 
         CertGenerationFactory certGenerationFactory = new CertGenerationFactory( apiService );
         extendendOperationsFactories.put( certGenerationFactory.getOid(), certGenerationFactory );
-        LOG.info( "Registered pre-bundled extended operation factory: {}", certGenerationFactory.getOid() );
+
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled extended operation factory: {}", certGenerationFactory.getOid() );
+        }
 
         EndTransactionFactory endTransactionFactory = new EndTransactionFactory( apiService );
         extendendOperationsFactories.put( endTransactionFactory.getOid(), endTransactionFactory );
-        LOG.info( "Registered pre-bundled extended operation factory: {}", endTransactionFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled extended operation factory: {}", endTransactionFactory.getOid() );
+        }
 
         GracefulDisconnectFactory gracefulDisconnectFactory = new GracefulDisconnectFactory( apiService );
         extendendOperationsFactories.put( gracefulDisconnectFactory.getOid(), gracefulDisconnectFactory );
-        LOG.info( "Registered pre-bundled extended operation factory: {}", gracefulDisconnectFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled extended operation factory: {}", gracefulDisconnectFactory.getOid() );
+        }
 
         GracefulShutdownFactory gracefulShutdownFactory = new GracefulShutdownFactory( apiService );
         extendendOperationsFactories.put( gracefulShutdownFactory.getOid(), gracefulShutdownFactory );
-        LOG.info( "Registered pre-bundled extended operation factory: {}", gracefulShutdownFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled extended operation factory: {}", gracefulShutdownFactory.getOid() );
+        }
 
         PasswordModifyFactory passwordModifyFactory = new PasswordModifyFactory( apiService );
         extendendOperationsFactories.put( passwordModifyFactory.getOid(), passwordModifyFactory );
-        LOG.info( "Registered pre-bundled extended operation factory: {}", passwordModifyFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled extended operation factory: {}", passwordModifyFactory.getOid() );
+        }
 
         StartTlsFactory startTlsFactory = new StartTlsFactory( apiService );
         extendendOperationsFactories.put( startTlsFactory.getOid(), startTlsFactory );
-        LOG.info( "Registered pre-bundled extended operation factory: {}", startTlsFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled extended operation factory: {}", startTlsFactory.getOid() );
+        }
 
         StartTransactionFactory startTransactionFactory = new StartTransactionFactory( apiService );
         extendendOperationsFactories.put( startTransactionFactory.getOid(), startTransactionFactory );
-        LOG.info( "Registered pre-bundled extended operation factory: {}", startTransactionFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled extended operation factory: {}", startTransactionFactory.getOid() );
+        }
 
         StoredProcedureFactory storedProcedureFactory = new StoredProcedureFactory( apiService );
         extendendOperationsFactories.put( storedProcedureFactory.getOid(), storedProcedureFactory );
-        LOG.info( "Registered pre-bundled extended operation factory: {}", storedProcedureFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled extended operation factory: {}", storedProcedureFactory.getOid() );
+        }
 
         WhoAmIFactory whoAmIFactory = new WhoAmIFactory( apiService );
         extendendOperationsFactories.put( whoAmIFactory.getOid(), whoAmIFactory );
-        LOG.info( "Registered pre-bundled extended operation factory: {}", whoAmIFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled extended operation factory: {}", whoAmIFactory.getOid() );
+        }
     }
 
 
@@ -273,6 +397,10 @@ public final class CodecFactoryUtil
     {
         SyncInfoValueFactory syncInfoValueFactory = new SyncInfoValueFactory( apiService );
         intermediateResponseFactories.put( syncInfoValueFactory.getOid(), syncInfoValueFactory );
-        LOG.info( "Registered pre-bundled intermediate response factory: {}", syncInfoValueFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled intermediate response factory: {}", syncInfoValueFactory.getOid() );
+        }
     }
 }

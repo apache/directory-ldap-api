@@ -54,10 +54,18 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PoolableO
     @Override
     public void activateObject( LdapConnection connection ) throws LdapException
     {
-        LOG.debug( "Activating {}", connection );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Activating {}", connection );
+        }
+        
         if ( !connection.isConnected() || !connection.isAuthenticated() )
         {
-            LOG.debug( "rebind due to connection dropped on {}", connection );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( "rebind due to connection dropped on {}", connection );
+            }
+            
             connectionFactory.bindConnection( connection );
         }
     }
@@ -72,7 +80,10 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PoolableO
     @Override
     public void destroyObject( LdapConnection connection ) throws LdapException
     {
-        LOG.debug( "Destroying {}", connection );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Destroying {}", connection );
+        }
 
         try
         {
@@ -83,7 +94,11 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PoolableO
         catch ( LdapException e )
         {
             LOG.error( "unable to unbind connection: {}", e.getMessage() );
-            LOG.debug( "unable to unbind connection:", e );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( "unable to unbind connection:", e );
+            }
         }
     }
 
@@ -109,7 +124,11 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PoolableO
     @Override
     public LdapConnection makeObject() throws LdapException
     {
-        LOG.debug( "Creating a LDAP connection" );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Creating a LDAP connection" );
+        }
+        
         return connectionFactory.newLdapConnection();
     }
 
@@ -142,7 +161,10 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PoolableO
     @Override
     public void passivateObject( LdapConnection connection ) throws LdapException
     {
-        LOG.debug( "Passivating {}", connection );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Passivating {}", connection );
+        }
     }
   
     
@@ -174,7 +196,11 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PoolableO
     @Override
     public boolean validateObject( LdapConnection connection )
     {
-        LOG.debug( "Validating {}", connection );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Validating {}", connection );
+        }
+        
         return validator.validate( connection );
     }
 }

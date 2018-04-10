@@ -88,13 +88,21 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
      */
     public DefaultSchemaLdifExtractor( File outputDirectory )
     {
-        LOG.debug( I18n.msg( I18n.MSG_16000_BASE_PATH, BASE_PATH, outputDirectory ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_16000_BASE_PATH, BASE_PATH, outputDirectory ) );
+        }
+        
         this.outputDirectory = outputDirectory;
         File schemaDirectory = new File( outputDirectory, SCHEMA_SUBDIR );
 
         if ( !outputDirectory.exists() )
         {
-            LOG.debug( I18n.msg( I18n.MSG_16001_CREATING_DIR, outputDirectory ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_16001_CREATING_DIR, outputDirectory ) );
+            }
+            
             if ( !outputDirectory.mkdir() )
             {
                 LOG.error( I18n.err( I18n.ERR_16042_OUTPUT_DIR_CREATION_FAIL, outputDirectory ) );
@@ -102,17 +110,28 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
         }
         else
         {
-            LOG.debug( I18n.msg( I18n.MSG_16002_DIR_EXISTS ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_16002_DIR_EXISTS ) );
+            }
         }
 
         if ( !schemaDirectory.exists() )
         {
-            LOG.info( I18n.msg( I18n.MSG_16004_SCHEMA_DIR_ABSENT, schemaDirectory ) );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.msg( I18n.MSG_16004_SCHEMA_DIR_ABSENT, schemaDirectory ) );
+            }
+            
             extracted = false;
         }
         else
         {
-            LOG.info( I18n.msg( I18n.MSG_16005_SCHEMA_DIR_PRESENT, schemaDirectory ) );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.msg( I18n.MSG_16005_SCHEMA_DIR_PRESENT, schemaDirectory ) );
+            }
+            
             extracted = true;
         }
     }
@@ -201,7 +220,10 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
      */
     private void copyFile( File source, File destination ) throws IOException
     {
-        LOG.debug( I18n.msg( I18n.MSG_16003_COPYFILE, source, destination ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_16003_COPYFILE, source, destination ) );
+        }
 
         if ( !destination.getParentFile().exists() && !destination.getParentFile().mkdirs() )
         {

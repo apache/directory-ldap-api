@@ -60,9 +60,6 @@ public final class SyncStateValueGrammar extends AbstractGrammar<SyncStateValueC
     /** The logger */
     static final Logger LOG = LoggerFactory.getLogger( SyncStateValueGrammar.class );
 
-    /** Speedup for logs */
-    static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** The instance of grammar. SyncStateValueControlGrammar is a singleton */
     private static Grammar<SyncStateValueContainer> instance = new SyncStateValueGrammar();
 
@@ -120,7 +117,7 @@ public final class SyncStateValueGrammar extends AbstractGrammar<SyncStateValueC
 
                         SyncStateTypeEnum syncStateTypeEnum = SyncStateTypeEnum.getSyncStateType( syncStateType );
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled() )
                         {
                             LOG.debug( "SyncStateType = {}", syncStateTypeEnum );
                         }
@@ -159,7 +156,7 @@ public final class SyncStateValueGrammar extends AbstractGrammar<SyncStateValueC
 
                     byte[] entryUUID = value.getData();
 
-                    if ( IS_DEBUG )
+                    if ( LOG.isDebugEnabled() )
                     {
                         LOG.debug( "entryUUID = {}", Strings.dumpBytes( entryUUID ) );
                     }
@@ -191,7 +188,7 @@ public final class SyncStateValueGrammar extends AbstractGrammar<SyncStateValueC
 
                     byte[] cookie = value.getData();
 
-                    if ( IS_DEBUG )
+                    if ( LOG.isDebugEnabled() )
                     {
                         LOG.debug( "cookie = {}", cookie );
                     }

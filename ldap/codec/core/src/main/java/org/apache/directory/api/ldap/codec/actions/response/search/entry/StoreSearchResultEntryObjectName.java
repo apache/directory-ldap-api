@@ -48,10 +48,6 @@ public class StoreSearchResultEntryObjectName extends GrammarAction<LdapMessageC
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreSearchResultEntryObjectName.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -98,7 +94,7 @@ public class StoreSearchResultEntryObjectName extends GrammarAction<LdapMessageC
             searchResultEntry.setObjectName( objectName );
         }
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Search Result Entry Dn found : {}", searchResultEntry.getObjectName() );
         }

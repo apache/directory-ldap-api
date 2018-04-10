@@ -64,6 +64,9 @@ public class InitModifyDnRequest extends GrammarAction<LdapMessageContainer<Modi
             container.getLdapCodecService(), internalModifyDnRequest );
         container.setMessage( modifyDnRequest );
 
-        LOG.debug( "ModifyDn request" );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "ModifyDn request" );
+        }
     }
 }

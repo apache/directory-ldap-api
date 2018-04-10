@@ -66,6 +66,9 @@ public class InitCompareRequest extends GrammarAction<LdapMessageContainer<Compa
             container.getLdapCodecService(), internalCompareRequest );
         container.setMessage( compareRequest );
 
-        LOG.debug( "Compare Request" );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Compare Request" );
+        }
     }
 }

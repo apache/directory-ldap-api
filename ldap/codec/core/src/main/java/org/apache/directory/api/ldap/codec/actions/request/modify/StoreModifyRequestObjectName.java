@@ -50,10 +50,6 @@ public class StoreModifyRequestObjectName extends GrammarAction<LdapMessageConta
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreModifyRequestObjectName.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -103,7 +99,7 @@ public class StoreModifyRequestObjectName extends GrammarAction<LdapMessageConta
             modifyRequest.setName( object );
         }
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Modification of Dn {}", modifyRequest.getName() );
         }

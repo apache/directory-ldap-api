@@ -54,9 +54,6 @@ public class LdapProtocolDecoder implements ProtocolDecoder
     /** The logger */
     private static final Logger CODEC_LOG = LoggerFactory.getLogger( Loggers.CODEC_LOG.getName() );
 
-    /** A speedup for logger */
-    private static final boolean IS_DEBUG = CODEC_LOG.isDebugEnabled();
-
     /** The ASN 1 decoder instance */
     private Asn1Decoder asn1Decoder;
 
@@ -120,7 +117,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
         {
             try
             {
-                if ( IS_DEBUG )
+                if ( CODEC_LOG.isDebugEnabled() )
                 {
                     CODEC_LOG.debug( I18n.msg( I18n.MSG_14000_DECODING_PDU ) );
 
@@ -146,7 +143,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
 
                 if ( messageContainer.getState() == TLVStateEnum.PDU_DECODED )
                 {
-                    if ( IS_DEBUG )
+                    if ( CODEC_LOG.isDebugEnabled() )
                     {
                         CODEC_LOG.debug( I18n.msg( I18n.MSG_14002_DECODED_LDAP_MESSAGE, messageContainer.getMessage() ) );
                     }

@@ -44,10 +44,6 @@ public class StoreSaslMechanism extends GrammarAction<LdapMessageContainer<BindR
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreSaslMechanism.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -79,7 +75,7 @@ public class StoreSaslMechanism extends GrammarAction<LdapMessageContainer<BindR
         // We can have an END transition
         container.setGrammarEndAllowed( true );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "The mechanism is : {}", bindRequestMessage.getSaslMechanism() );
         }

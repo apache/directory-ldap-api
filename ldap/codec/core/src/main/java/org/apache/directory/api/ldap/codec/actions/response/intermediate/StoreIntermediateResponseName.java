@@ -46,10 +46,6 @@ public class StoreIntermediateResponseName extends GrammarAction<LdapMessageCont
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreIntermediateResponseName.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new response name action.
      */
@@ -105,7 +101,7 @@ public class StoreIntermediateResponseName extends GrammarAction<LdapMessageCont
         // We can have an END transition
         container.setGrammarEndAllowed( true );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "OID read : {}", intermediateResponse.getResponseName() );
         }

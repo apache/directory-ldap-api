@@ -66,9 +66,6 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
     /** static class logger */
     private static final Logger LOG = LoggerFactory.getLogger( JarLdifSchemaLoader.class );
 
-    /** Speedup for DEBUG mode */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** a map of all the resources in this jar */
     private static final Map<String, Boolean> RESOURCE_MAP = ResourceMap.getResources( Pattern
         .compile( "schema" + SEPARATOR_PATTERN + "ou=schema.*" ) );
@@ -110,7 +107,7 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
      */
     private void initializeSchemas() throws IOException, LdapException
     {
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( I18n.msg( I18n.MSG_16006_INITIALIZING_SCHEMA ) );
         }
@@ -133,7 +130,7 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
                     Schema schema = getSchema( entry.getEntry() );
                     schemaMap.put( schema.getSchemaName(), schema );
 
-                    if ( IS_DEBUG )
+                    if ( LOG.isDebugEnabled() )
                     {
                         LOG.debug( I18n.msg( I18n.MSG_16007_SCHEMA_INITIALIZED, schema ) );
                     }

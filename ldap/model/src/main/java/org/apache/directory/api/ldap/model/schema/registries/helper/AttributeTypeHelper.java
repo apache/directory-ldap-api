@@ -170,7 +170,11 @@ public final class AttributeTypeHelper
                 ldapSchemaException.setSourceObject( attributeType );
                 ldapSchemaException.setRelatedId( superiorOid );
                 errors.add( ldapSchemaException );
-                LOG.info( msg );
+
+                if ( LOG.isInfoEnabled() )
+                {
+                    LOG.info( msg );
+                }
 
                 // Get out now
                 return false;
@@ -188,7 +192,11 @@ public final class AttributeTypeHelper
                         LdapSchemaExceptionCodes.AT_CANNOT_SUBTYPE_COLLECTIVE_AT, msg );
                     ldapSchemaException.setSourceObject( attributeType );
                     errors.add( ldapSchemaException );
-                    LOG.info( msg );
+
+                    if ( LOG.isInfoEnabled() )
+                    {
+                        LOG.info( msg );
+                    }
                     
                     return false;
                 }
@@ -211,7 +219,11 @@ public final class AttributeTypeHelper
                 catch ( LdapException ne )
                 {
                     errors.add( ne );
-                    LOG.info( ne.getMessage() );
+
+                    if ( LOG.isInfoEnabled() )
+                    {
+                        LOG.info( ne.getMessage() );
+                    }
                     
                     return false;
                 }
@@ -234,7 +246,12 @@ public final class AttributeTypeHelper
                             LdapSchemaExceptionCodes.AT_CYCLE_TYPE_HIERARCHY, msg );
                         ldapSchemaException.setSourceObject( attributeType );
                         errors.add( ldapSchemaException );
-                        LOG.info( msg );
+
+                        if ( LOG.isInfoEnabled() )
+                        {
+                            LOG.info( msg );
+                        }
+
                         isOk = false;
 
                         break;
@@ -260,7 +277,11 @@ public final class AttributeTypeHelper
                 ldapSchemaException.setSourceObject( attributeType );
                 ldapSchemaException.setRelatedId( superiorOid );
                 errors.add( ldapSchemaException );
-                LOG.info( msg );
+
+                if ( LOG.isInfoEnabled() )
+                {
+                    LOG.info( msg );
+                }
 
                 // Get out now
                 return false;
@@ -299,7 +320,11 @@ public final class AttributeTypeHelper
                 ldapSchemaException.setSourceObject( attributeType );
                 ldapSchemaException.setRelatedId( syntaxOid );
                 errors.add( ldapSchemaException );
-                LOG.info( msg );
+
+                if ( LOG.isInfoEnabled() )
+                {
+                    LOG.info( msg );
+                }
                 
                 return;
             }
@@ -319,7 +344,11 @@ public final class AttributeTypeHelper
                 ldapSchemaException.setSourceObject( attributeType );
                 ldapSchemaException.setRelatedId( syntaxOid );
                 errors.add( ldapSchemaException );
-                LOG.info( msg );
+
+                if ( LOG.isInfoEnabled() )
+                {
+                    LOG.info( msg );
+                }
                 
                 return;
             }
@@ -342,7 +371,11 @@ public final class AttributeTypeHelper
                     ldapSchemaException.setSourceObject( attributeType );
                     ldapSchemaException.setRelatedId( syntaxOid );
                     errors.add( ldapSchemaException );
-                    LOG.info( msg );
+
+                    if ( LOG.isInfoEnabled() )
+                    {
+                        LOG.info( msg );
+                    }
                     
                     return;
                 }
@@ -356,7 +389,11 @@ public final class AttributeTypeHelper
                     LdapSchemaExceptionCodes.AT_SYNTAX_OR_SUPERIOR_REQUIRED, msg );
                 ldapSchemaException.setSourceObject( attributeType );
                 errors.add( ldapSchemaException );
-                LOG.info( msg );
+
+                if ( LOG.isInfoEnabled() )
+                {
+                    LOG.info( msg );
+                }
                 
                 return;
             }
@@ -390,7 +427,11 @@ public final class AttributeTypeHelper
                 ldapSchemaException.setSourceObject( attributeType );
                 ldapSchemaException.setRelatedId( equalityOid );
                 errors.add( ldapSchemaException );
-                LOG.info( msg );
+
+                if ( LOG.isInfoEnabled() )
+                {
+                    LOG.info( msg );
+                }
                 
                 return;
             }
@@ -412,7 +453,11 @@ public final class AttributeTypeHelper
                 ldapSchemaException.setSourceObject( attributeType );
                 ldapSchemaException.setRelatedId( equalityOid );
                 errors.add( ldapSchemaException );
-                LOG.info( msg );
+
+                if ( LOG.isInfoEnabled() )
+                {
+                    LOG.info( msg );
+                }
             }
         }
         else
@@ -454,7 +499,11 @@ public final class AttributeTypeHelper
                 ldapSchemaException.setSourceObject( attributeType );
                 ldapSchemaException.setRelatedId( substringOid );
                 errors.add( ldapSchemaException );
-                LOG.info( msg );
+
+                if ( LOG.isInfoEnabled() )
+                {
+                    LOG.info( msg );
+                }
                 
                 return;
             }
@@ -473,7 +522,11 @@ public final class AttributeTypeHelper
                 ldapSchemaException.setSourceObject( attributeType );
                 ldapSchemaException.setRelatedId( substringOid );
                 errors.add( ldapSchemaException );
-                LOG.info( msg );
+
+                if ( LOG.isInfoEnabled() )
+                {
+                    LOG.info( msg );
+                }
                 
                 return;
             }
@@ -520,7 +573,11 @@ public final class AttributeTypeHelper
                 ldapSchemaException.setSourceObject( attributeType );
                 ldapSchemaException.setRelatedId( orderingOid );
                 errors.add( ldapSchemaException );
-                LOG.info( msg );
+
+                if ( LOG.isInfoEnabled() )
+                {
+                    LOG.info( msg );
+                }
                 
                 return;
             }
@@ -539,7 +596,11 @@ public final class AttributeTypeHelper
                 ldapSchemaException.setSourceObject( attributeType );
                 ldapSchemaException.setRelatedId( orderingOid );
                 errors.add( ldapSchemaException );
-                LOG.info( msg );
+
+                if ( LOG.isInfoEnabled() )
+                {
+                    LOG.info( msg );
+                }
             }
         }
         else
@@ -572,7 +633,11 @@ public final class AttributeTypeHelper
                 LdapSchemaExceptionCodes.AT_MUST_HAVE_SAME_USAGE_THAN_SUPERIOR, msg );
             ldapSchemaException.setSourceObject( attributeType );
             errors.add( ldapSchemaException );
-            LOG.info( msg );
+
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( msg );
+            }
             
             return;
         }
@@ -587,7 +652,11 @@ public final class AttributeTypeHelper
                 LdapSchemaExceptionCodes.AT_USER_APPLICATIONS_USAGE_MUST_BE_USER_MODIFIABLE, msg );
             ldapSchemaException.setSourceObject( attributeType );
             errors.add( ldapSchemaException );
-            LOG.info( msg );
+
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( msg );
+            }
         }
     }
 
@@ -614,7 +683,11 @@ public final class AttributeTypeHelper
                 LdapSchemaExceptionCodes.AT_COLLECTIVE_MUST_HAVE_USER_APPLICATIONS_USAGE, msg );
             ldapSchemaException.setSourceObject( attributeType );
             errors.add( ldapSchemaException );
-            LOG.info( msg );
+
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( msg );
+            }
         }
 
         if ( attributeType.isCollective() && attributeType.isSingleValued() )
@@ -626,7 +699,11 @@ public final class AttributeTypeHelper
                 LdapSchemaExceptionCodes.AT_COLLECTIVE_CANNOT_BE_SINGLE_VALUED, msg );
             ldapSchemaException.setSourceObject( attributeType );
             errors.add( ldapSchemaException );
-            LOG.info( msg );
+
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( msg );
+            }
         }
     }
     

@@ -41,10 +41,6 @@ public class InitGreaterOrEqualFilter extends GrammarAction<LdapMessageContainer
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitGreaterOrEqualFilter.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new init greater or equal filter action.
      */
@@ -71,7 +67,7 @@ public class InitGreaterOrEqualFilter extends GrammarAction<LdapMessageContainer
         // fulfilled
         searchRequestDecorator.setTerminalFilter( filter );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Initialize Greater Or Equal filter" );
         }

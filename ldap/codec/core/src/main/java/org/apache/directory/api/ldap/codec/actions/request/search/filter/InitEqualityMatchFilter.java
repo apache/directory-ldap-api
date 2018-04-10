@@ -41,10 +41,6 @@ public class InitEqualityMatchFilter extends GrammarAction<LdapMessageContainer<
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitEqualityMatchFilter.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new init equality match filter action.
      */
@@ -71,7 +67,7 @@ public class InitEqualityMatchFilter extends GrammarAction<LdapMessageContainer<
         // fulfilled
         searchRequestDecorator.setTerminalFilter( filter );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Initialize Equality Match filter" );
         }

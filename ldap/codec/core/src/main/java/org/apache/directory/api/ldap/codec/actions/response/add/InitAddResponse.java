@@ -76,6 +76,9 @@ public class InitAddResponse extends GrammarAction<LdapMessageContainer<AddRespo
             throw new DecoderException( msg );
         }
 
-        LOG.debug( "Add Response" );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Add Response" );
+        }
     }
 }

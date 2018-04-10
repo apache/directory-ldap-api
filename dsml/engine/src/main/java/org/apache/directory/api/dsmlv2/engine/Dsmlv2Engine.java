@@ -304,7 +304,10 @@ public class Dsmlv2Engine
         }
         catch ( Exception e )
         {
-            LOG.warn( "Failed to bind", e );
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( "Failed to bind", e );
+            }
 
             // Unable to connect to server
             // We create a new ErrorResponse and return the XML response.
@@ -395,7 +398,10 @@ public class Dsmlv2Engine
         }
         catch ( XmlPullParserException e )
         {
-            LOG.warn( "Failed while getting next request", e );
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( "Failed while getting next request", e );
+            }
 
             int reqId = 0;
 
@@ -450,7 +456,10 @@ public class Dsmlv2Engine
             }
             catch ( Exception e )
             {
-                LOG.warn( "Failed to process request", e );
+                if ( LOG.isWarnEnabled() )
+                {
+                    LOG.warn( "Failed to process request", e );
+                }
 
                 // We create a new ErrorResponse and return the XML response.
                 ErrorResponse errorResponse = new ErrorResponse( request.getDecorated().getMessageId(),
@@ -813,7 +822,10 @@ public class Dsmlv2Engine
 
         if ( bindResponse.getLdapResult().getResultCode() != ResultCodeEnum.SUCCESS )
         {
-            LOG.warn( "Error : {}", bindResponse.getLdapResult().getDiagnosticMessage() );
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( "Error : {}", bindResponse.getLdapResult().getDiagnosticMessage() );
+            }
         }
     }
 }

@@ -59,9 +59,6 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
     /** the logger */
     private static final Logger LOG = LoggerFactory.getLogger( AdDirSyncGrammar.class );
 
-    /** speedup for logger */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** AdDirSyncControlGrammar singleton instance */
     private static final AdDirSyncGrammar INSTANCE = new AdDirSyncGrammar();
 
@@ -127,7 +124,7 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
                                 throw new DecoderException( msg );
                             }
                             
-                            if ( IS_DEBUG )
+                            if ( LOG.isDebugEnabled() )
                             {
                                 LOG.debug( "flags = {}", flags.toString() );
                             }
@@ -166,7 +163,7 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
                         {
                             int maxReturnLength = IntegerDecoder.parse( value );
                             
-                            if ( IS_DEBUG )
+                            if ( LOG.isDebugEnabled() )
                             {
                                 LOG.debug( "maxReturnLength = {}", maxReturnLength );
                             }
@@ -202,7 +199,7 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
 
                         byte[] cookie = value.getData();
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled() )
                         {
                             LOG.debug( "cookie = {}", Strings.dumpBytes( cookie ) );
                         }

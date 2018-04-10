@@ -53,9 +53,6 @@ public final class PagedResultsGrammar extends AbstractGrammar<PagedResultsConta
     /** The logger */
     static final Logger LOG = LoggerFactory.getLogger( PagedResultsGrammar.class );
 
-    /** Speedup for logs */
-    static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** The instance of grammar. PagedSearchControlGrammar is a singleton */
     private static Grammar<?> instance = new PagedResultsGrammar();
 
@@ -114,7 +111,7 @@ public final class PagedResultsGrammar extends AbstractGrammar<PagedResultsConta
                                 size = Integer.MAX_VALUE;
                             }
 
-                            if ( IS_DEBUG )
+                            if ( LOG.isDebugEnabled() )
                             {
                                 LOG.debug( "size = " + size );
                             }

@@ -49,10 +49,6 @@ public class StoreAny extends GrammarAction<LdapMessageContainer<SearchRequestDe
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreAny.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new store any action.
      */
@@ -88,7 +84,7 @@ public class StoreAny extends GrammarAction<LdapMessageContainer<SearchRequestDe
         // not terminal.
         decorator.unstackFilters( container );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Stored a any substring : {}", any );
         }

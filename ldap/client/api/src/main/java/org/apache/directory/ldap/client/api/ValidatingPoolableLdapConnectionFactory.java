@@ -111,7 +111,11 @@ public class ValidatingPoolableLdapConnectionFactory extends AbstractPoolableLda
     @Override
     public void activateObject( LdapConnection connection ) throws LdapException
     {
-        LOG.debug( "Activating {}", connection );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Activating {}", connection );
+        }
+        
         super.activateObject( connection );
 
         // clear the monitors
@@ -130,7 +134,11 @@ public class ValidatingPoolableLdapConnectionFactory extends AbstractPoolableLda
     @Override
     public MonitoringLdapConnection makeObject() throws LdapException
     {
-        LOG.debug( "Creating a LDAP connection" );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Creating a LDAP connection" );
+        }
+        
         return new MonitoringLdapConnection( connectionFactory.newLdapConnection() );
     }
 
@@ -146,17 +154,28 @@ public class ValidatingPoolableLdapConnectionFactory extends AbstractPoolableLda
     @Override
     public void passivateObject( LdapConnection connection ) throws LdapException
     {
-        LOG.debug( "Passivating {}", connection );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Passivating {}", connection );
+        }
 
         if ( !connection.isConnected() || !connection.isAuthenticated()
             || ( ( MonitoringLdapConnection ) connection ).bindCalled() )
         {
-            LOG.debug( "rebind due to bind on connection {}", connection );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( "rebind due to bind on connection {}", connection );
+            }
+            
             connectionFactory.bindConnection( connection );
         }
         if ( ( ( MonitoringLdapConnection ) connection ).startTlsCalled() )
         {
-            LOG.debug( "unbind/rebind due to startTls on {}", connection );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( "unbind/rebind due to startTls on {}", connection );
+            }
+            
             // unbind to clear the tls
             connection.unBind();
             connectionFactory.bindConnection( connection );

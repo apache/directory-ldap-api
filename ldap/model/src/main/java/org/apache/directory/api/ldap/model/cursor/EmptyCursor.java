@@ -39,15 +39,12 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     /** A dedicated log for cursors */
     private static final Logger LOG_CURSOR = LoggerFactory.getLogger( Loggers.CURSOR_LOG.getName() );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG_CURSOR.isDebugEnabled();
-
     /**
      * Creates a new EmptyCursor instance
      */
     public EmptyCursor()
     {
-        if ( IS_DEBUG )
+        if ( LOG_CURSOR.isDebugEnabled() )
         {
             LOG_CURSOR.debug( I18n.msg( I18n.MSG_13103_CREATING_EMPTY_CURSOR, this ) );
         }
@@ -165,7 +162,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     @Override
     public void close() throws IOException
     {
-        if ( IS_DEBUG )
+        if ( LOG_CURSOR.isDebugEnabled() )
         {
             LOG_CURSOR.debug( I18n.msg( I18n.MSG_13100_CLOSING_EMPTY_CURSOR, this ) );
         }
@@ -180,7 +177,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     @Override
     public void close( Exception cause ) throws IOException
     {
-        if ( IS_DEBUG )
+        if ( LOG_CURSOR.isDebugEnabled() )
         {
             LOG_CURSOR.debug( I18n.msg( I18n.MSG_13100_CLOSING_EMPTY_CURSOR, this ) );
         }

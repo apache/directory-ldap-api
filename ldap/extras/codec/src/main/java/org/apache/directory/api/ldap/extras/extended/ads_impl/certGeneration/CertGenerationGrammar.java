@@ -60,9 +60,6 @@ public class CertGenerationGrammar extends AbstractGrammar<CertGenerationContain
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger( CertGenerationGrammar.class );
 
-    /** Speedup for logs */
-    static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** The instance of grammar. CertGenerationObjectGrammar is a singleton */
     private static Grammar<CertGenerationContainer> instance = new CertGenerationGrammar();
 
@@ -122,7 +119,7 @@ public class CertGenerationGrammar extends AbstractGrammar<CertGenerationContain
 
                         String targetDN = Strings.utf8ToString( value.getData() );
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled() )
                         {
                             LOG.debug( "Target Dn = " + targetDN );
                         }
@@ -168,7 +165,7 @@ public class CertGenerationGrammar extends AbstractGrammar<CertGenerationContain
 
                         String issuerDN = Strings.utf8ToString( value.getData() );
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled() )
                         {
                             LOG.debug( "Issuer Dn = " + issuerDN );
                         }
@@ -208,7 +205,7 @@ public class CertGenerationGrammar extends AbstractGrammar<CertGenerationContain
 
                         String subjectDN = Strings.utf8ToString( value.getData() );
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled() )
                         {
                             LOG.debug( "subject Dn = " + subjectDN );
                         }
@@ -254,7 +251,7 @@ public class CertGenerationGrammar extends AbstractGrammar<CertGenerationContain
 
                         String keyAlgorithm = Strings.utf8ToString( value.getData() );
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled() )
                         {
                             LOG.debug( "key algorithm = " + keyAlgorithm );
                         }

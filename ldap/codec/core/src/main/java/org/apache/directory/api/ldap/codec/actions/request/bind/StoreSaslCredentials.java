@@ -45,10 +45,6 @@ public class StoreSaslCredentials extends GrammarAction<LdapMessageContainer<Bin
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreSaslCredentials.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -82,7 +78,7 @@ public class StoreSaslCredentials extends GrammarAction<LdapMessageContainer<Bin
         // We can have an END transition
         container.setGrammarEndAllowed( true );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "The credentials are : {}", Strings.dumpBytes( bindRequestMessage
                 .getCredentials() ) );

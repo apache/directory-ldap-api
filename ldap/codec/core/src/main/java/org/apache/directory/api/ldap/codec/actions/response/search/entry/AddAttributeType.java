@@ -50,10 +50,6 @@ public class AddAttributeType extends GrammarAction<LdapMessageContainer<SearchR
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( AddAttributeType.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -96,7 +92,7 @@ public class AddAttributeType extends GrammarAction<LdapMessageContainer<SearchR
             }
         }
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             String type = Strings.utf8ToString( tlv.getValue().getData() );
             LOG.debug( "Attribute type : {}", type );

@@ -50,10 +50,6 @@ public class StoreControlCriticality extends GrammarAction<ControlsContainer>
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreControlCriticality.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new StoreControlCriticality action.
      */
@@ -98,7 +94,7 @@ public class StoreControlCriticality extends GrammarAction<ControlsContainer>
         // We can have an END transition
         container.setGrammarEndAllowed( true );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Control criticality : {}", control.isCritical() );
         }

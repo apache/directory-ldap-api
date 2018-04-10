@@ -581,7 +581,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         ResponseFuture<? extends Response> future = futureMap.remove( messageId );
 
-        if ( ( future != null ) && LOG.isDebugEnabled() )
+        if ( LOG.isDebugEnabled() && ( future != null ) )
         {
             LOG.debug( I18n.msg( I18n.MSG_03227_REMOVING, messageId, future.getClass().getName() ) );
         }
@@ -595,7 +595,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         ResponseFuture<? extends Response> future = futureMap.get( messageId );
 
         // future can be null if there was a abandon operation on that messageId
-        if ( ( future != null ) && LOG.isDebugEnabled() )
+        if ( LOG.isDebugEnabled() && ( future != null ) )
         {
             LOG.debug( I18n.msg( I18n.MSG_03220_GETTING, messageId, future.getClass().getName() ) );
         }
@@ -680,9 +680,14 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             {
                 connector.dispose();
                 connector = null;
-                LOG.debug( I18n.msg( I18n.MSG_03221_INTERRUPTED_WAITING_FOR_CONNECTION, 
-                    config.getLdapHost(),
-                    config.getLdapPort() ), e );
+
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_03221_INTERRUPTED_WAITING_FOR_CONNECTION, 
+                        config.getLdapHost(),
+                        config.getLdapPort() ), e );
+                }
+                
                 interrupted = true;
                 
                 throw new LdapOtherException( e.getMessage(), e );
@@ -697,19 +702,16 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     {
                         Throwable connectionException = connectionFuture.getException();
 
-                        if ( ( connectionException instanceof ConnectException )
-                            || ( connectionException instanceof UnresolvedAddressException ) )
-                        {
-                            // No need to wait
-                            // We know that there was a permanent error such as "connection refused".
-                            if ( LOG.isDebugEnabled() )
-                            {
-                                LOG.debug( I18n.msg( I18n.MSG_03245_CONNECTION_ERROR, connectionFuture.getException().getMessage() ) );
-                            }
-                        }
-
                         if ( LOG.isDebugEnabled() )
                         {
+                            if ( ( connectionException instanceof ConnectException )
+                                || ( connectionException instanceof UnresolvedAddressException ) )
+                            {
+                                // No need to wait
+                                // We know that there was a permanent error such as "connection refused".
+                                LOG.debug( I18n.msg( I18n.MSG_03245_CONNECTION_ERROR, connectionFuture.getException().getMessage() ) );
+                            }
+
                             LOG.debug( I18n.msg( I18n.MSG_03244_CONNECTION_RETRYING ) );
                         }
 
@@ -721,9 +723,14 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                         catch ( InterruptedException e )
                         {
                             connector = null;
-                            LOG.debug( I18n.msg( I18n.MSG_03221_INTERRUPTED_WAITING_FOR_CONNECTION, 
-                                config.getLdapHost(),
-                                config.getLdapPort() ), e );
+
+                            if ( LOG.isDebugEnabled() )
+                            {
+                                LOG.debug( I18n.msg( I18n.MSG_03221_INTERRUPTED_WAITING_FOR_CONNECTION, 
+                                    config.getLdapHost(),
+                                    config.getLdapPort() ), e );
+                            }
+                            
                             interrupted = true;
                             
                             throw new LdapOtherException( e.getMessage(), e );
@@ -791,11 +798,17 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             public void operationComplete( IoFuture future )
             {
                 // Process all the waiting operations and cancel them
-                LOG.debug( I18n.msg( I18n.MSG_03238_NOD_RECEIVED ) );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_03238_NOD_RECEIVED ) );
+                }
 
                 for ( ResponseFuture<?> responseFuture : futureMap.values() )
                 {
-                    LOG.debug( I18n.msg( I18n.MSG_03235_CLOSING, responseFuture ) );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( I18n.msg( I18n.MSG_03235_CLOSING, responseFuture ) );
+                    }
 
                     responseFuture.cancel();
 
@@ -931,7 +944,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( entry == null )
         {
             String msg = "Cannot add an empty entry";
-            LOG.debug( msg );
+            
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -953,7 +971,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( entry == null )
         {
             String msg = "Cannot add null entry";
-            LOG.debug( msg );
+            
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -973,14 +996,24 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( addRequest == null )
         {
             String msg = "Cannot process a null addRequest";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
         if ( addRequest.getEntry() == null )
         {
             String msg = "Cannot add a null entry";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -1048,14 +1081,24 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( addRequest == null )
         {
             String msg = "Cannot process a null addRequest";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
         if ( addRequest.getEntry() == null )
         {
             String msg = "Cannot add a null entry";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -1089,7 +1132,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( messageId < 0 )
         {
             String msg = "Cannot abandon a negative message ID";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -1109,7 +1157,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( abandonRequest == null )
         {
             String msg = "Cannot process a null abandonRequest";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -1348,7 +1401,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( bindRequest == null )
         {
             String msg = "Cannot process a null bindRequest";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -1429,7 +1487,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( bindRequest == null )
         {
             String msg = "Cannot process a null bindRequest";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -1568,7 +1631,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( request == null )
         {
             String msg = I18n.msg( I18n.MSG_03204_NULL_REQUEST );
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -1672,7 +1740,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( request == null )
         {
             String msg = I18n.msg( I18n.MSG_03204_NULL_REQUEST );
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -1753,7 +1826,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( request == null )
         {
             String msg = I18n.msg( I18n.MSG_03204_NULL_REQUEST );
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -1820,7 +1898,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( request == null )
         {
             String msg = I18n.msg( I18n.MSG_03204_NULL_REQUEST );
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -1887,7 +1970,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( request == null )
         {
             String msg = I18n.msg( I18n.MSG_03204_NULL_REQUEST );
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -2098,14 +2186,24 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( searchRequest == null )
         {
             String msg = "Cannot process a null searchRequest";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
         if ( searchRequest.getBase() == null )
         {
             String msg = "Cannot process a searchRequest which base DN is null";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -2156,7 +2254,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( searchRequest == null )
         {
             String msg = "Cannot process a null searchRequest";
-            LOG.debug( msg );
+            
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -2273,7 +2376,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     @Override
     public void exceptionCaught( IoSession session, Throwable cause ) throws Exception
     {
-        LOG.warn( cause.getMessage(), cause );
+        if ( LOG.isWarnEnabled() )
+        {
+            LOG.warn( cause.getMessage(), cause );
+        }
+            
         session.setAttribute( EXCEPTION_KEY, cause );
 
         if ( cause instanceof ProtocolEncoderException )
@@ -2363,7 +2470,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         if ( ( responseFuture == null ) && !isNoD )
         {
-            LOG.info( "There is no future associated with the messageId {}, ignoring the message", messageId );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( "There is no future associated with the messageId {}, ignoring the message", messageId );
+            }
+            
             return;
         }
 
@@ -2737,7 +2848,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( ( modifications == null ) || ( modifications.length == 0 ) )
         {
             String msg = "Cannot process a ModifyRequest without any modification";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -2774,7 +2890,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( modRequest == null )
         {
             String msg = "Cannot process a null modifyRequest";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -2848,14 +2969,24 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( modRequest == null )
         {
             String msg = "Cannot process a null modifyRequest";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
         if ( modRequest.getName() == null )
         {
             String msg = "Cannot process a modifyRequest which DN is null";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -2907,14 +3038,24 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( entryDn == null )
         {
             String msg = "Cannot process a rename of a null Dn";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
         if ( newRdn == null )
         {
             String msg = "Cannot process a rename with a null Rdn";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -2939,14 +3080,24 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( entryDn == null )
         {
             String msg = "Cannot process a rename of a null Dn";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
         if ( newRdn == null )
         {
             String msg = "Cannot process a rename with a null Rdn";
-            LOG.debug( msg );
+            
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -2970,14 +3121,24 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( entryDn == null )
         {
             String msg = "Cannot process a move of a null Dn";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
         if ( newSuperiorDn == null )
         {
             String msg = "Cannot process a move to a null newSuperior";
-            LOG.debug( msg );
+            
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -3002,14 +3163,24 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( entryDn == null )
         {
             String msg = "Cannot process a move of a null Dn";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
         if ( newSuperiorDn == null )
         {
             String msg = "Cannot process a move to a null newSuperior";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -3115,7 +3286,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( modDnRequest == null )
         {
             String msg = "Cannot process a null modDnRequest";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -3183,21 +3359,36 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( modDnRequest == null )
         {
             String msg = "Cannot process a null modDnRequest";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
         if ( modDnRequest.getName() == null )
         {
             String msg = "Cannot process a modifyRequest which DN is null";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
         if ( ( modDnRequest.getNewSuperior() == null ) && ( modDnRequest.getNewRdn() == null ) )
         {
             String msg = "Cannot process a modifyRequest which new superior and new Rdn are null";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -3321,7 +3512,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( deleteRequest == null )
         {
             String msg = "Cannot process a null deleteRequest";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -3389,14 +3585,24 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( deleteRequest == null )
         {
             String msg = "Cannot process a null deleteRequest";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
         if ( deleteRequest.getName() == null )
         {
             String msg = "Cannot process a deleteRequest which DN is null";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -3518,7 +3724,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( compareRequest == null )
         {
             String msg = "Cannot process a null compareRequest";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -3586,14 +3797,24 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( compareRequest == null )
         {
             String msg = "Cannot process a null compareRequest";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
         if ( compareRequest.getName() == null )
         {
             String msg = "Cannot process a compareRequest which DN is null";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -3677,7 +3898,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( extendedRequest == null )
         {
             String msg = "Cannot process a null extendedRequest";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -3753,7 +3979,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( extendedRequest == null )
         {
             String msg = "Cannot process a null extendedRequest";
-            LOG.debug( msg );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -4088,7 +4319,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 registries.getObjectClassRegistry().register( oc );
             }
 
-            LOG.info( "successfully loaded the schema from file {}", schemaFile.getAbsolutePath() );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( "successfully loaded the schema from file {}", schemaFile.getAbsolutePath() );
+            }
         }
         catch ( Exception e )
         {

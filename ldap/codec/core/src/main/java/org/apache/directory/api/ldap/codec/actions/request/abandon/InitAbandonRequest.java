@@ -49,9 +49,6 @@ public class InitAbandonRequest extends GrammarAction<LdapMessageContainer<Aband
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitAbandonRequest.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
 
     /**
      * Instantiates a new action.
@@ -95,11 +92,9 @@ public class InitAbandonRequest extends GrammarAction<LdapMessageContainer<Aband
 
             abandonRequest.setAbandoned( abandonnedMessageId );
 
-            if ( IS_DEBUG )
+            if ( LOG.isDebugEnabled() )
             {
-                LOG
-                    .debug( "AbandonMessage Id has been decoded : {}", Integer
-                        .valueOf( abandonnedMessageId ) );
+                LOG.debug( "AbandonMessage Id has been decoded : {}", Integer.valueOf( abandonnedMessageId ) );
             }
 
             container.setGrammarEndAllowed( true );

@@ -46,10 +46,6 @@ public class AddAttributeValue extends GrammarAction<LdapMessageContainer<AddReq
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( AddAttributeValue.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new value action.
      */
@@ -83,7 +79,7 @@ public class AddAttributeValue extends GrammarAction<LdapMessageContainer<AddReq
                 {
                     value = tlv.getValue().getData();
 
-                    if ( IS_DEBUG )
+                    if ( LOG.isDebugEnabled() )
                     {
                         LOG.debug( "Adding value {}", Strings.dumpBytes( ( byte[] ) value ) );
                     }
@@ -94,7 +90,7 @@ public class AddAttributeValue extends GrammarAction<LdapMessageContainer<AddReq
                 {
                     value = Strings.utf8ToString( tlv.getValue().getData() );
 
-                    if ( IS_DEBUG )
+                    if ( LOG.isDebugEnabled() )
                     {
                         LOG.debug( "Adding value {}" + value );
                     }

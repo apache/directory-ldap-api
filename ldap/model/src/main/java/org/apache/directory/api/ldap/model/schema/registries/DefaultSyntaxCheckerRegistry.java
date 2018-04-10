@@ -42,9 +42,6 @@ public class DefaultSyntaxCheckerRegistry extends DefaultSchemaObjectRegistry<Sy
     /** static class logger */
     private static final Logger LOG = LoggerFactory.getLogger( DefaultSyntaxCheckerRegistry.class );
 
-    /** A speedup for debug */
-    private static final boolean DEBUG = LOG.isDebugEnabled();
-
 
     /**
      * Creates a new default SyntaxCheckerRegistry instance.
@@ -75,7 +72,7 @@ public class DefaultSyntaxCheckerRegistry extends DefaultSchemaObjectRegistry<Sy
                 String oid = syntaxChecker.getOid();
                 SchemaObject removed = unregister( oid );
 
-                if ( DEBUG )
+                if ( LOG.isDebugEnabled() )
                 {
                     LOG.debug( I18n.msg( I18n.MSG_13702_REMOVED_FROM_REGISTRY, removed, oid ) );
                 }

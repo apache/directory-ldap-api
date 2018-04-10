@@ -49,10 +49,6 @@ public class StoreSearchRequestSizeLimit extends GrammarAction<LdapMessageContai
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreSearchRequestSizeLimit.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -89,7 +85,7 @@ public class StoreSearchRequestSizeLimit extends GrammarAction<LdapMessageContai
 
         searchRequest.setSizeLimit( sizeLimit );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "The sizeLimit value is set to {} objects", Long.valueOf( sizeLimit ) );
         }

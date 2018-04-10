@@ -51,10 +51,6 @@ public class StoreSimpleAuth extends GrammarAction<LdapMessageContainer<BindRequ
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreSimpleAuth.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -88,7 +84,7 @@ public class StoreSimpleAuth extends GrammarAction<LdapMessageContainer<BindRequ
         // We can have an END transition
         container.setGrammarEndAllowed( true );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "The simple authentication is : {}", Strings.dumpBytes( bindRequestMessage
                 .getCredentials() ) );

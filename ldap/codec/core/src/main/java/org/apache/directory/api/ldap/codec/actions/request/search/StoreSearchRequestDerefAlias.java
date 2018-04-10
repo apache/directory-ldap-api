@@ -55,10 +55,6 @@ public class StoreSearchRequestDerefAlias extends GrammarAction<LdapMessageConta
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreSearchRequestDerefAlias.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -95,7 +91,7 @@ public class StoreSearchRequestDerefAlias extends GrammarAction<LdapMessageConta
 
         searchRequest.setDerefAliases( AliasDerefMode.getDerefMode( derefAliases ) );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             switch ( derefAliases )
             {

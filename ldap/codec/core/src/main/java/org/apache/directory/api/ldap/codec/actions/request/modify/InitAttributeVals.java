@@ -66,7 +66,7 @@ public class InitAttributeVals extends GrammarAction<LdapMessageContainer<Modify
         TLV tlv = container.getCurrentTLV();
 
         // If the length is null, we store an empty value
-        if ( tlv.getLength() == 0 )
+        if ( LOG.isDebugEnabled() && ( tlv.getLength() == 0 ) )
         {
             LOG.debug( "No vals for this attribute" );
         }
@@ -74,6 +74,9 @@ public class InitAttributeVals extends GrammarAction<LdapMessageContainer<Modify
         // We can have an END transition
         container.setGrammarEndAllowed( true );
 
-        LOG.debug( "Some vals are to be decoded" );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Some vals are to be decoded" );
+        }
     }
 }

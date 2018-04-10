@@ -62,9 +62,6 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
     /** The logger */
     static final Logger LOG = LoggerFactory.getLogger( SyncRequestValueGrammar.class );
 
-    /** Speedup for logs */
-    static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** The instance of grammar. SyncRequestValueControlGrammar is a singleton */
     private static Grammar<SyncRequestValueContainer> instance = new SyncRequestValueGrammar();
 
@@ -127,7 +124,7 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
 
                             SynchronizationModeEnum modeEnum = SynchronizationModeEnum.getSyncMode( mode );
 
-                            if ( IS_DEBUG )
+                            if ( LOG.isDebugEnabled() )
                             {
                                 LOG.debug( "Mode = " + modeEnum );
                             }
@@ -166,7 +163,7 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
 
                         byte[] cookie = value.getData();
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled() )
                         {
                             LOG.debug( "cookie = " + Strings.dumpBytes( cookie ) );
                         }
@@ -200,7 +197,7 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
                         {
                             boolean reloadHint = BooleanDecoder.parse( value );
 
-                            if ( IS_DEBUG )
+                            if ( LOG.isDebugEnabled() )
                             {
                                 LOG.debug( "reloadHint = " + reloadHint );
                             }
@@ -241,7 +238,7 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
                         {
                             boolean reloadHint = BooleanDecoder.parse( value );
 
-                            if ( IS_DEBUG )
+                            if ( LOG.isDebugEnabled() )
                             {
                                 LOG.debug( "reloadHint = " + reloadHint );
                             }

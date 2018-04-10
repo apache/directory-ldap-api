@@ -42,9 +42,6 @@ public final class SortResponseGrammar extends AbstractGrammar<SortResponseConta
     /** The logger */
     static final Logger LOG = LoggerFactory.getLogger( SortRequestGrammar.class );
 
-    /** Speedup for logs */
-    static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** The instance of grammar. SortResponseGrammar is a singleton */
     private static Grammar<SortResponseContainer> instance = new SortResponseGrammar();
 
@@ -79,7 +76,8 @@ public final class SortResponseGrammar extends AbstractGrammar<SortResponseConta
                         BerValue value = container.getCurrentTLV().getValue();
 
                         String atType = Strings.utf8ToString( value.getData() );
-                        if ( IS_DEBUG )
+
+                        if ( LOG.isDebugEnabled() )
                         {
                             LOG.debug( "AttributeType = " + atType );
                         }

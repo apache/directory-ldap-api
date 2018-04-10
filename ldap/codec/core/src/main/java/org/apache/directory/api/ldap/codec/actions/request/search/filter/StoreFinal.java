@@ -49,10 +49,6 @@ public class StoreFinal extends GrammarAction<LdapMessageContainer<SearchRequest
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreFinal.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new store final action.
      */
@@ -88,7 +84,7 @@ public class StoreFinal extends GrammarAction<LdapMessageContainer<SearchRequest
         // not terminal.
         searchRequest.unstackFilters( container );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Stored a any substring : {}", finalValue );
         }

@@ -106,6 +106,9 @@ public class StoreAddRequestEntryName extends GrammarAction<LdapMessageContainer
             addRequest.setEntryDn( entryDn );
         }
 
-        LOG.debug( "Adding an entry with Dn : {}", addRequest.getEntry() );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Adding an entry with Dn : {}", addRequest.getEntry() );
+        }
     }
 }

@@ -56,9 +56,6 @@ public final class CancelGrammar extends AbstractGrammar<CancelContainer>
     /** The logger */
     static final Logger LOG = LoggerFactory.getLogger( CancelGrammar.class );
 
-    /** Speedup for logs */
-    static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** The instance of grammar. CancelGrammar is a singleton */
     private static Grammar<CancelContainer> instance = new CancelGrammar();
 
@@ -120,7 +117,7 @@ public final class CancelGrammar extends AbstractGrammar<CancelContainer>
                         {
                             int cancelId = IntegerDecoder.parse( value, 0, Integer.MAX_VALUE );
 
-                            if ( IS_DEBUG )
+                            if ( LOG.isDebugEnabled() )
                             {
                                 LOG.debug( "CancelId = " + cancelId );
                             }

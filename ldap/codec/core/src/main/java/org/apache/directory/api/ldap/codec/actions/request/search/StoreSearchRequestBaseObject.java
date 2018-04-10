@@ -104,6 +104,9 @@ public class StoreSearchRequestBaseObject extends GrammarAction<LdapMessageConta
 
         searchRequest.setBase( baseObject );
 
-        LOG.debug( "Searching with root Dn : {}", baseObject );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Searching with root Dn : {}", baseObject );
+        }
     }
 }

@@ -41,10 +41,6 @@ public class InitApproxMatchFilter extends GrammarAction<LdapMessageContainer<Se
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitApproxMatchFilter.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new init approx match filter action.
      */
@@ -71,7 +67,7 @@ public class InitApproxMatchFilter extends GrammarAction<LdapMessageContainer<Se
         // fulfilled
         searchRequestDecorator.setTerminalFilter( filter );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Initialize Approx Match filter" );
         }

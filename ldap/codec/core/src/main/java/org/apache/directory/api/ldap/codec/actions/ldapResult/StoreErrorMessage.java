@@ -49,10 +49,6 @@ public class StoreErrorMessage extends GrammarAction<LdapMessageContainer<Messag
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreErrorMessage.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new error message action.
      */
@@ -89,7 +85,7 @@ public class StoreErrorMessage extends GrammarAction<LdapMessageContainer<Messag
         // We can have an END transition
         container.setGrammarEndAllowed( true );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "The error message is : " + errorMessage );
         }

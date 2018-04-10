@@ -93,7 +93,11 @@ public class NormalizingComparator extends LdapComparator<String>
         }
         catch ( LdapException e )
         {
-            LOG.warn( I18n.msg( I18n.MSG_13700_FAILED_TO_NORMALIZE, o1 ), e );
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( I18n.msg( I18n.MSG_13700_FAILED_TO_NORMALIZE, o1 ), e );
+            }
+            
             n1 = o1;
         }
 
@@ -103,7 +107,11 @@ public class NormalizingComparator extends LdapComparator<String>
         }
         catch ( LdapException e )
         {
-            LOG.warn( I18n.msg( I18n.MSG_13700_FAILED_TO_NORMALIZE, o2 ), e );
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( I18n.msg( I18n.MSG_13700_FAILED_TO_NORMALIZE, o2 ), e );
+            }
+            
             n2 = o2;
         }
 

@@ -117,39 +117,75 @@ public class DefaultLdapCodecService implements LdapApiService
     {
         ControlFactory<Cascade> cascadeFactory = new CascadeFactory( this );
         controlFactories.put( cascadeFactory.getOid(), cascadeFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", cascadeFactory.getOid() );
+
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", cascadeFactory.getOid() );
+        }
 
         ControlFactory<EntryChange> entryChangeFactory = new EntryChangeFactory( this );
         controlFactories.put( entryChangeFactory.getOid(), entryChangeFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", entryChangeFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", entryChangeFactory.getOid() );
+        }
 
         ControlFactory<ManageDsaIT> manageDsaItFactory = new ManageDsaITFactory( this );
         controlFactories.put( manageDsaItFactory.getOid(), manageDsaItFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", manageDsaItFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", manageDsaItFactory.getOid() );
+        }
 
         ControlFactory<ProxiedAuthz> proxiedAuthzFactory = new ProxiedAuthzFactory( this );
         controlFactories.put( proxiedAuthzFactory.getOid(), proxiedAuthzFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", proxiedAuthzFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", proxiedAuthzFactory.getOid() );
+        }
 
         ControlFactory<PagedResults> pageResultsFactory = new PagedResultsFactory( this );
         controlFactories.put( pageResultsFactory.getOid(), pageResultsFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", pageResultsFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", pageResultsFactory.getOid() );
+        }
 
         ControlFactory<PersistentSearch> persistentSearchFactory = new PersistentSearchFactory( this );
         controlFactories.put( persistentSearchFactory.getOid(), persistentSearchFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", persistentSearchFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", persistentSearchFactory.getOid() );
+        }
 
         ControlFactory<Subentries> subentriesFactory = new SubentriesFactory( this );
         controlFactories.put( subentriesFactory.getOid(), subentriesFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", subentriesFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", subentriesFactory.getOid() );
+        }
 
         ControlFactory<SortRequest> sortRequestFactory = new SortRequestFactory( this );
         controlFactories.put( sortRequestFactory.getOid(), sortRequestFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", sortRequestFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", sortRequestFactory.getOid() );
+        }
 
         ControlFactory<SortResponse> sortResponseFactory = new SortResponseFactory( this );
         controlFactories.put( sortResponseFactory.getOid(), sortResponseFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", sortResponseFactory.getOid() );
+        
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled control factory: {}", sortResponseFactory.getOid() );
+        }
     }
 
 

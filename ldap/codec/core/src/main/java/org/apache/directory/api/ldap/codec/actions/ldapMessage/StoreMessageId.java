@@ -56,9 +56,6 @@ public class StoreMessageId extends GrammarAction<LdapMessageContainer<MessageDe
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreMessageId.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
 
     /**
      * Instantiates a new action.
@@ -95,7 +92,7 @@ public class StoreMessageId extends GrammarAction<LdapMessageContainer<MessageDe
 
             container.setMessageId( messageId );
 
-            if ( IS_DEBUG )
+            if ( LOG.isDebugEnabled() )
             {
                 LOG.debug( "Ldap Message Id has been decoded : " + messageId );
             }

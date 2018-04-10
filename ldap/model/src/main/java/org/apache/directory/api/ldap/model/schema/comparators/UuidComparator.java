@@ -39,8 +39,7 @@ public class UuidComparator extends SerializableComparator<String>
 
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( UuidComparator.class );
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
+    
     /** A static instance of the UuidComparator */
     public static final UuidComparator INSTANCE = new UuidComparator( "1.3.6.1.1.16.4" );
 
@@ -63,7 +62,7 @@ public class UuidComparator extends SerializableComparator<String>
     @Override
     public int compare( String uuid1, String uuid2 )
     {
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( I18n.msg( I18n.MSG_13751_COMPARING_UUID, uuid1, uuid2 ) );
         }
@@ -90,7 +89,7 @@ public class UuidComparator extends SerializableComparator<String>
      */
     public int compare( UUID uuid1, UUID uuid2 )
     {
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( I18n.msg( I18n.MSG_13751_COMPARING_UUID, uuid1, uuid2 ) );
         }

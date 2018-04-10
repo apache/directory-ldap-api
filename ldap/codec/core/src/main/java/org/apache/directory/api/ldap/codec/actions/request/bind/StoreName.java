@@ -46,10 +46,6 @@ public class StoreName extends GrammarAction<LdapMessageContainer<BindRequestDec
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreName.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -81,7 +77,7 @@ public class StoreName extends GrammarAction<LdapMessageContainer<BindRequestDec
             bindRequestMessage.setName( nameStr );
         }
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( " The Bind name is {}", bindRequestMessage.getName() );
         }

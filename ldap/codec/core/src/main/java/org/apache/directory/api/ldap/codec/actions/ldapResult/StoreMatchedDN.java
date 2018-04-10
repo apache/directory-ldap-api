@@ -53,10 +53,6 @@ public class StoreMatchedDN extends GrammarAction<LdapMessageContainer<MessageDe
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreMatchedDN.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new matched dn action.
      */
@@ -118,15 +114,18 @@ public class StoreMatchedDN extends GrammarAction<LdapMessageContainer<MessageDe
                     break;
 
                 default:
-                    LOG.warn( "The matched Dn should not be set when the result code is not one of NoSuchObject,"
-                        + " AliasProblem, InvalidDNSyntax or AliasDreferencingProblem" );
+                    if ( LOG.isWarnEnabled() )
+                    {
+                        LOG.warn( "The matched Dn should not be set when the result code is not one of NoSuchObject,"
+                            + " AliasProblem, InvalidDNSyntax or AliasDreferencingProblem" );
+                    }
 
                     matchedDn = Dn.EMPTY_DN;
                     break;
             }
         }
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "The matchedDn is " + matchedDn );
         }

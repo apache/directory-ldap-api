@@ -56,10 +56,6 @@ public class InitSaslBind extends GrammarAction<LdapMessageContainer<BindRequest
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitSaslBind.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -91,7 +87,7 @@ public class InitSaslBind extends GrammarAction<LdapMessageContainer<BindRequest
 
         bindRequestMessage.setSimple( false );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "The SaslCredential has been created" );
         }

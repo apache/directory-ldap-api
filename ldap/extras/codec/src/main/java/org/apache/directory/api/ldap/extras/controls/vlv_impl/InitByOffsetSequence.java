@@ -36,10 +36,6 @@ public class InitByOffsetSequence extends GrammarAction<VirtualListViewRequestCo
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitByOffsetSequence.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new ByOffsetSequence action.
      */
@@ -54,7 +50,7 @@ public class InitByOffsetSequence extends GrammarAction<VirtualListViewRequestCo
      */
     public void action( VirtualListViewRequestContainer container ) throws DecoderException
     {
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "VirtualListViewRequestContainer initialized" );
         }

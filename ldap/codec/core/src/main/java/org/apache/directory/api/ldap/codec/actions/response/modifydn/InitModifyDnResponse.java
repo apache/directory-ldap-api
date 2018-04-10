@@ -60,6 +60,9 @@ public class InitModifyDnResponse extends GrammarAction<LdapMessageContainer<Mod
             container.getLdapCodecService(), new ModifyDnResponseImpl( container.getMessageId() ) );
         container.setMessage( modifyDnResponse );
 
-        LOG.debug( "Modify Dn response " );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Modify Dn response " );
+        }
     }
 }

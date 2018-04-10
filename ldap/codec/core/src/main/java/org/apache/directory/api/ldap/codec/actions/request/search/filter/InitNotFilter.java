@@ -42,10 +42,6 @@ public class InitNotFilter extends GrammarAction<LdapMessageContainer<SearchRequ
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitNotFilter.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new init NOT filter action.
      */
@@ -77,7 +73,7 @@ public class InitNotFilter extends GrammarAction<LdapMessageContainer<SearchRequ
         // Set the filter
         searchRequestDecorator.addCurrentFilter( notFilter );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Initialize NOT filter" );
         }

@@ -69,7 +69,11 @@ public class DefaultLdapConnectionFactory implements LdapConnectionFactory
         catch ( LdapException e )
         {
             LOG.error( "unable to bind connection: {}", e.getMessage() );
-            LOG.debug( "unable to bind connection:", e );
+            
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( "unable to bind connection:", e );
+            }
 
             try
             {
@@ -78,7 +82,11 @@ public class DefaultLdapConnectionFactory implements LdapConnectionFactory
             catch ( IOException ioe )
             {
                 LOG.error( "unable to close failed bind connection: {}", e.getMessage(), ioe );
-                LOG.debug( "unable to close failed bind connection:", e );
+
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( "unable to close failed bind connection:", e );
+                }
             }
 
             throw e;

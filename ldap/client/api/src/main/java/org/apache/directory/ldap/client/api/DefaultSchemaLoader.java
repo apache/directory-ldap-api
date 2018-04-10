@@ -264,7 +264,10 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
      */
     private void loadSchemas() throws LdapException
     {
-        LOG.debug( "initializing schemas" );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "initializing schemas" );
+        }
 
         // Load all the elements from the SubschemaSubentry
         Entry subschemaSubentry = connection.lookup( subschemaSubentryDn,

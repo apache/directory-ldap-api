@@ -47,10 +47,6 @@ public class StoreControlValue extends GrammarAction<ControlsContainer>
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreControlValue.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new StoreControlValue action.
      */
@@ -86,7 +82,7 @@ public class StoreControlValue extends GrammarAction<ControlsContainer>
         // We can have an END transition
         container.setGrammarEndAllowed( true );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Control value : {}", Strings.dumpBytes( control.getValue() ) );
         }

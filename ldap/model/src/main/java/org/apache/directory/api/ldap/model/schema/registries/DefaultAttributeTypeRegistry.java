@@ -250,7 +250,11 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
 
         if ( equality == null )
         {
-            LOG.debug( I18n.msg( I18n.MSG_13703_AT_WITHOUT_EQ_MR, attributeType.getName() ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_13703_AT_WITHOUT_EQ_MR, attributeType.getName() ) );
+            }
+            
             oidNormalizer = new OidNormalizer( oid, new NoOpNormalizer( attributeType.getOid() ) );
         }
         else

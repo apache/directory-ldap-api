@@ -78,7 +78,10 @@ public final class MethodUtils
                 buf.append( argClass.getName() );
             }
 
-            LOG.debug( buf.toString() );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( buf.toString() );
+            }
         }
 
         try
@@ -93,7 +96,10 @@ public final class MethodUtils
         }
         catch ( Exception e )
         {
-            LOG.info( I18n.msg( I18n.MSG_17009_NO_EXACT_MATCH, candidateMethodName, e ) );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.msg( I18n.MSG_17009_NO_EXACT_MATCH, candidateMethodName, e ) );
+            }
         }
 
         /**

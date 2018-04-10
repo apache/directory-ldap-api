@@ -73,11 +73,19 @@ public final class OsgiUtils
 
             if ( exports == null )
             {
-                LOG.debug( I18n.msg( I18n.MSG_17000_NO_EXPORT_FOUND, candidate ) );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_17000_NO_EXPORT_FOUND, candidate ) );
+                }
+                
                 continue;
             }
 
-            LOG.debug( I18n.msg( I18n.MSG_17001_PROCESSING_EXPORTS, candidate, exports ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_17001_PROCESSING_EXPORTS, candidate, exports ) );
+            }
+            
             splitIntoPackages( exports, pkgs );
         }
 
@@ -118,7 +126,12 @@ public final class OsgiUtils
                 inProps = true;
 
                 pkgs.add( pkg.toString() );
-                LOG.debug( I18n.msg( I18n.MSG_17002_ADDED_PACKAGE, pkg.toString() ) );
+
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_17002_ADDED_PACKAGE, pkg.toString() ) );
+                }
+                
                 pkg.setLength( 0 );
 
                 index += 8;
@@ -167,16 +180,27 @@ public final class OsgiUtils
                 if ( filter != null && filter.accept( candidate ) )
                 {
                     candidates.add( candidate );
-                    LOG.info( I18n.msg( I18n.MSG_17003_ACCEPTED_CANDIDATE_WITH_FILTER, candidate.toString() ) );
+
+                    if ( LOG.isInfoEnabled() )
+                    {
+                        LOG.info( I18n.msg( I18n.MSG_17003_ACCEPTED_CANDIDATE_WITH_FILTER, candidate.toString() ) );
+                    }
                 }
                 else if ( filter == null && candidate.getName().endsWith( ".jar" ) )
                 {
                     candidates.add( candidate );
-                    LOG.info( I18n.msg( I18n.MSG_17004_ACCEPTED_CANDIDATE_NO_FILTER, candidate.toString() ) );
+                    
+                    if ( LOG.isInfoEnabled() )
+                    {
+                        LOG.info( I18n.msg( I18n.MSG_17004_ACCEPTED_CANDIDATE_NO_FILTER, candidate.toString() ) );
+                    }
                 }
                 else
                 {
-                    LOG.info( I18n.msg( I18n.MSG_17005_REJECTING_CANDIDATE, candidate.toString() ) );
+                    if ( LOG.isInfoEnabled() )
+                    {
+                        LOG.info( I18n.msg( I18n.MSG_17005_REJECTING_CANDIDATE, candidate.toString() ) );
+                    }
                 }
             }
         }

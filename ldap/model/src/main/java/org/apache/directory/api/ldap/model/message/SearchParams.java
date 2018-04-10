@@ -214,7 +214,11 @@ public class SearchParams
             }
             catch ( LdapException ne )
             {
-                LOG.warn( I18n.msg( I18n.MSG_13500_ATTRIBUTE_NOT_IN_SCHEMA, returnAttribute ) );
+                if ( LOG.isWarnEnabled() )
+                {
+                    LOG.warn( I18n.msg( I18n.MSG_13500_ATTRIBUTE_NOT_IN_SCHEMA, returnAttribute ) );
+                }
+                
                 // Unknown attributes should be silently ignored, as RFC 2251 states
             }
         }

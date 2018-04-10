@@ -121,7 +121,11 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
         try
         {
             connection = super.borrowObject();
-            LOG.trace( "borrowed connection {}", connection );
+            
+            if ( LOG.isTraceEnabled() )
+            {
+                LOG.trace( "borrowed connection {}", connection );
+            }
         }
         catch ( LdapException | RuntimeException e )
         {
@@ -163,7 +167,11 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
         try
         {
             super.returnObject( connection );
-            LOG.trace( "returned connection {}", connection );
+
+            if ( LOG.isTraceEnabled() )
+            {
+                LOG.trace( "returned connection {}", connection );
+            }
         }
         catch ( LdapException e )
         {

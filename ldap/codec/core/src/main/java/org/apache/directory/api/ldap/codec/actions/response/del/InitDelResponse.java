@@ -61,6 +61,9 @@ public class InitDelResponse extends GrammarAction<LdapMessageContainer<DeleteRe
             container.getLdapCodecService(), new DeleteResponseImpl( container.getMessageId() ) );
         container.setMessage( delResponse );
 
-        LOG.debug( "Del response " );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Del response " );
+        }
     }
 }

@@ -55,10 +55,6 @@ public class AddModifyRequestAttribute extends GrammarAction<LdapMessageContaine
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( AddModifyRequestAttribute.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -96,7 +92,7 @@ public class AddModifyRequestAttribute extends GrammarAction<LdapMessageContaine
             modifyRequestDecorator.addAttributeTypeAndValues( type );
         }
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Modifying type : {}", type );
         }

@@ -121,7 +121,12 @@ public class SchemaEntityFactory implements EntityFactory
         if ( mOid == null )
         {
             String msg = I18n.err( I18n.ERR_16011_NULL_ATTRIBUTE, objectType, MetaSchemaConstants.M_OID_AT );
-            LOG.warn( msg );
+            
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -130,7 +135,12 @@ public class SchemaEntityFactory implements EntityFactory
         if ( strict && !Oid.isOid( oid ) )
         {
             String msg = I18n.err( I18n.ERR_16012_INVALID_COMPARATOR_OID, oid );
-            LOG.warn( msg );
+            
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( msg );
+            }
+            
             throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, msg );
         }
 
@@ -150,14 +160,24 @@ public class SchemaEntityFactory implements EntityFactory
         if ( oid == null )
         {
             String msg = I18n.err( I18n.ERR_16011_NULL_ATTRIBUTE, objectType, MetaSchemaConstants.M_OID_AT );
-            LOG.warn( msg );
+            
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
         if ( !Oid.isOid( oid ) )
         {
             String msg = I18n.err( I18n.ERR_16012_INVALID_COMPARATOR_OID, oid );
-            LOG.warn( msg );
+            
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( msg );
+            }
+            
             throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, msg );
         }
 
@@ -173,7 +193,12 @@ public class SchemaEntityFactory implements EntityFactory
         if ( entry == null )
         {
             String msg = I18n.err( I18n.ERR_16013_NULL_ENTRY, schemaEntity );
-            LOG.warn( msg );
+            
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
     }
@@ -187,7 +212,12 @@ public class SchemaEntityFactory implements EntityFactory
         if ( description == null )
         {
             String msg = I18n.err( I18n.ERR_16014_NULL_SCHEMA_DESC, schemaEntity );
-            LOG.warn( msg );
+            
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
     }
@@ -355,7 +385,12 @@ public class SchemaEntityFactory implements EntityFactory
         {
             // The schema is not loaded. We can't create the requested Normalizer
             String msg = I18n.err( I18n.ERR_16019_CANNOT_ADD_SC, entry.getDn().getName(), schemaName );
-            LOG.warn( msg );
+            
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( msg );
+            }
+            
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
         }
 
@@ -364,8 +399,11 @@ public class SchemaEntityFactory implements EntityFactory
         if ( schema == null )
         {
             // The schema is disabled. We still have to update the backend
-            String msg = I18n.err( I18n.ERR_16020_CANNOT_ADD_SC_IN_REGISTRY, entry.getDn().getName(), schemaName );
-            LOG.info( msg );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.err( I18n.ERR_16020_CANNOT_ADD_SC_IN_REGISTRY, entry.getDn().getName(), schemaName ) );
+            }
+            
             schema = schemaManager.getLoadedSchema( schemaName );
         }
 
@@ -413,7 +451,12 @@ public class SchemaEntityFactory implements EntityFactory
         {
             // The schema is not loaded. We can't create the requested SyntaxChecker
             String msg = I18n.err( I18n.ERR_16019_CANNOT_ADD_SC, syntaxCheckerDescription.getName(), schemaName );
-            LOG.warn( msg );
+            
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( msg );
+            }
+            
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
         }
 
@@ -569,7 +612,12 @@ public class SchemaEntityFactory implements EntityFactory
         {
             // The schema is not loaded. We can't create the requested Comparator
             String msg = I18n.err( I18n.ERR_16022_CANNOT_ADD_CMP, comparatorDescription.getName(), schemaName );
-            LOG.warn( msg );
+            
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( msg );
+            }
+            
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
         }
 
@@ -606,7 +654,12 @@ public class SchemaEntityFactory implements EntityFactory
         {
             // The schema is not loaded. We can't create the requested Comparator
             String msg = I18n.err( I18n.ERR_16022_CANNOT_ADD_CMP, entry.getDn().getName(), schemaName );
-            LOG.warn( msg );
+            
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( msg );
+            }
+            
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
         }
 
@@ -615,8 +668,11 @@ public class SchemaEntityFactory implements EntityFactory
         if ( schema == null )
         {
             // The schema is disabled. We still have to update the backend
-            String msg = I18n.err( I18n.ERR_16023_CANNOT_ADD_CMP_IN_REGISTRY, entry.getDn().getName(), schemaName );
-            LOG.info( msg );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.err( I18n.ERR_16023_CANNOT_ADD_CMP_IN_REGISTRY, entry.getDn().getName(), schemaName ) );
+            }
+            
             schema = schemaManager.getLoadedSchema( schemaName );
         }
 
@@ -733,7 +789,12 @@ public class SchemaEntityFactory implements EntityFactory
         {
             // The schema is not loaded. We can't create the requested Normalizer
             String msg = I18n.err( I18n.ERR_16024_CANNOT_ADD_NORMALIZER, normalizerDescription.getName(), schemaName );
-            LOG.warn( msg );
+            
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( msg );
+            }
+            
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
         }
 
@@ -770,7 +831,12 @@ public class SchemaEntityFactory implements EntityFactory
         {
             // The schema is not loaded. We can't create the requested Normalizer
             String msg = I18n.err( I18n.ERR_16024_CANNOT_ADD_NORMALIZER, entry.getDn().getName(), schemaName );
-            LOG.warn( msg );
+            
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( msg );
+            }
+            
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
         }
 
@@ -779,8 +845,11 @@ public class SchemaEntityFactory implements EntityFactory
         if ( schema == null )
         {
             // The schema is disabled. We still have to update the backend
-            String msg = I18n.err( I18n.ERR_16025_CANNOT_ADD_NORMALIZER_IN_REGISTRY, entry.getDn().getName(), schemaName );
-            LOG.info( msg );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.err( I18n.ERR_16025_CANNOT_ADD_NORMALIZER_IN_REGISTRY, entry.getDn().getName(), schemaName ) );
+            }
+            
             schema = schemaManager.getLoadedSchema( schemaName );
         }
 
@@ -827,7 +896,12 @@ public class SchemaEntityFactory implements EntityFactory
         {
             // The schema is not loaded. We can't create the requested Syntax
             String msg = I18n.err( I18n.ERR_16026_CANNOT_ADD_SYNTAX, entry.getDn().getName(), schemaName );
-            LOG.warn( msg );
+            
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( msg );
+            }
+            
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
         }
 
@@ -836,8 +910,11 @@ public class SchemaEntityFactory implements EntityFactory
         if ( schema == null )
         {
             // The schema is disabled. We still have to update the backend
-            String msg = I18n.err( I18n.ERR_16027_CANNOT_ADD_SYNTAX_IN_REGISTRY, entry.getDn().getName(), schemaName );
-            LOG.info( msg );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.err( I18n.ERR_16027_CANNOT_ADD_SYNTAX_IN_REGISTRY, entry.getDn().getName(), schemaName ) );
+            }
+            
             schema = schemaManager.getLoadedSchema( schemaName );
         }
 
@@ -870,7 +947,12 @@ public class SchemaEntityFactory implements EntityFactory
         {
             // The schema is not loaded. We can't create the requested MatchingRule
             String msg = I18n.err( I18n.ERR_16028_CANNOT_ADD_MR, entry.getDn().getName(), schemaName );
-            LOG.warn( msg );
+            
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( msg );
+            }
+            
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
         }
 
@@ -879,8 +961,11 @@ public class SchemaEntityFactory implements EntityFactory
         if ( schema == null )
         {
             // The schema is disabled. We still have to update the backend
-            String msg = I18n.err( I18n.ERR_16029_CANNOT_ADD_MR_IN_REGISTRY, entry.getDn().getName(), schemaName );
-            LOG.info( msg );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.err( I18n.ERR_16029_CANNOT_ADD_MR_IN_REGISTRY, entry.getDn().getName(), schemaName ) );
+            }
+            
             schema = schemaManager.getLoadedSchema( schemaName );
         }
 
@@ -942,7 +1027,12 @@ public class SchemaEntityFactory implements EntityFactory
         {
             // The schema is not loaded. We can't create the requested ObjectClass
             String msg = I18n.err( I18n.ERR_16030_CANNOT_ADD_OC, entry.getDn().getName(), schemaName );
-            LOG.warn( msg );
+            
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( msg );
+            }
+            
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
         }
 
@@ -951,8 +1041,11 @@ public class SchemaEntityFactory implements EntityFactory
         if ( schema == null )
         {
             // The schema is disabled. We still have to update the backend
-            String msg = I18n.err( I18n.ERR_16031_CANNOT_ADD_OC_IN_REGISTRY, entry.getDn().getName(), schemaName );
-            LOG.info( msg );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.err( I18n.ERR_16031_CANNOT_ADD_OC_IN_REGISTRY, entry.getDn().getName(), schemaName ) );
+            }
+            
             schema = schemaManager.getLoadedSchema( schemaName );
         }
 
@@ -1018,7 +1111,12 @@ public class SchemaEntityFactory implements EntityFactory
         {
             // The schema is not loaded, this is an error
             String msg = I18n.err( I18n.ERR_16032_CANNOT_ADD_AT, entry.getDn().getName(), schemaName );
-            LOG.warn( msg );
+            
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( msg );
+            }
+            
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
         }
 
@@ -1027,8 +1125,11 @@ public class SchemaEntityFactory implements EntityFactory
         if ( schema == null )
         {
             // The schema is disabled. We still have to update the backend
-            String msg = I18n.err( I18n.ERR_16033_CANNOT_ADD_AT_IN_REGISTRY, entry.getDn().getName(), schemaName );
-            LOG.info( msg );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.err( I18n.ERR_16033_CANNOT_ADD_AT_IN_REGISTRY, entry.getDn().getName(), schemaName ) );
+            }
+            
             schema = schemaManager.getLoadedSchema( schemaName );
         }
 
@@ -1142,7 +1243,12 @@ public class SchemaEntityFactory implements EntityFactory
         if ( mFqcn == null )
         {
             String msg = I18n.err( I18n.ERR_16034_ENTRY_WITHOUT_VALID_AT, objectType, MetaSchemaConstants.M_FQCN_AT );
-            LOG.warn( msg );
+            
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -1161,7 +1267,12 @@ public class SchemaEntityFactory implements EntityFactory
         if ( mFqcn == null )
         {
             String msg = I18n.err( I18n.ERR_16034_ENTRY_WITHOUT_VALID_AT, objectType, MetaSchemaConstants.M_FQCN_AT );
-            LOG.warn( msg );
+            
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -1179,7 +1290,12 @@ public class SchemaEntityFactory implements EntityFactory
         if ( byteCodeString == null )
         {
             String msg = I18n.err( I18n.ERR_16034_ENTRY_WITHOUT_VALID_AT, objectType, MetaSchemaConstants.M_BYTECODE_AT );
-            LOG.warn( msg );
+            
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( msg );
+            }
+            
             throw new IllegalArgumentException( msg );
         }
 
@@ -1286,7 +1402,11 @@ public class SchemaEntityFactory implements EntityFactory
 
             if ( !schema.getSchemaName().equalsIgnoreCase( schemaName ) )
             {
-                LOG.warn( I18n.msg( I18n.MSG_16011_SCHEMA_XSCHEMA_DIFF, schema.getSchemaName(), schemaName, entry ) );
+                
+                if ( LOG.isWarnEnabled() )
+                {
+                    LOG.warn( I18n.msg( I18n.MSG_16011_SCHEMA_XSCHEMA_DIFF, schema.getSchemaName(), schemaName, entry ) );
+                }
             }
 
             schemaObject.addExtension( MetaSchemaConstants.X_SCHEMA_AT, schemaName );

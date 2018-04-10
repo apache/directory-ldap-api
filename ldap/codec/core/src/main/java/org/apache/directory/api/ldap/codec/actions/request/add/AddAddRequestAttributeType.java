@@ -49,10 +49,6 @@ public class AddAddRequestAttributeType extends GrammarAction<LdapMessageContain
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( AddAddRequestAttributeType.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -99,7 +95,7 @@ public class AddAddRequestAttributeType extends GrammarAction<LdapMessageContain
                 addRequest.getEntry().getDn(), ne );
         }
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Adding type {}", type );
         }

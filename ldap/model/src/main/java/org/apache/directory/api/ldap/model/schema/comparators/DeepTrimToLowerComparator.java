@@ -67,7 +67,11 @@ public class DeepTrimToLowerComparator extends LdapComparator<String>
         }
         catch ( LdapException e )
         {
-            LOG.warn( I18n.msg( I18n.MSG_13700_FAILED_TO_NORMALIZE, value ), e );
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( I18n.msg( I18n.MSG_13700_FAILED_TO_NORMALIZE, value ), e );
+            }
+            
             normalizedValue = value;
         }
 

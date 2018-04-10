@@ -52,10 +52,6 @@ public class StoreResultCode extends GrammarAction<LdapMessageContainer<MessageD
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreResultCode.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new result code action.
      */
@@ -90,7 +86,7 @@ public class StoreResultCode extends GrammarAction<LdapMessageContainer<MessageD
             throw new DecoderException( ide.getMessage(), ide );
         }
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "The result code is set to " + resultCode );
         }

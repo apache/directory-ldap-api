@@ -329,7 +329,11 @@ public final class DefaultEntry implements Entry
             catch ( LdapException ne )
             {
                 // Just log a warning
-                LOG.warn( I18n.msg( I18n.MSG_13200_CANT_STORE_ATTRIBUTE, attribute.getId() ) );
+                if ( LOG.isWarnEnabled() )
+                {
+                    LOG.warn( I18n.msg( I18n.MSG_13200_CANT_STORE_ATTRIBUTE, attribute.getId() ) );
+                }
+                
                 throw ne;
             }
         }
@@ -516,7 +520,10 @@ public final class DefaultEntry implements Entry
             }
             catch ( LdapException ne )
             {
-                LOG.warn( I18n.msg( I18n.MSG_13201_DN_CANT_BE_NORMALIZED, dn ) );
+                if ( LOG.isWarnEnabled() )
+                {
+                    LOG.warn( I18n.msg( I18n.MSG_13201_DN_CANT_BE_NORMALIZED, dn ) );
+                }
                 
                 return dn;
             }
@@ -1996,8 +2003,11 @@ public final class DefaultEntry implements Entry
                 }
                 else
                 {
-                    String message = I18n.err( I18n.ERR_13218_AT_DOES_NOT_EXIST, attribute );
-                    LOG.warn( message );
+                    if ( LOG.isWarnEnabled() )
+                    {
+                        LOG.warn( I18n.err( I18n.ERR_13218_AT_DOES_NOT_EXIST, attribute ) );
+                    }
+                    
                     continue;
                 }
             }
@@ -2014,7 +2024,11 @@ public final class DefaultEntry implements Entry
                 }
                 catch ( LdapException ne )
                 {
-                    LOG.warn( I18n.msg( I18n.MSG_13203_MISSING_ATTRIBUTE_IN_ENTRY, attribute ) );
+                    if ( LOG.isWarnEnabled() )
+                    {
+                        LOG.warn( I18n.msg( I18n.MSG_13203_MISSING_ATTRIBUTE_IN_ENTRY, attribute ) );
+                    }
+                    
                     continue;
                 }
 
@@ -2049,8 +2063,11 @@ public final class DefaultEntry implements Entry
     {
         if ( Strings.isEmpty( upId ) )
         {
-            String message = I18n.err( I18n.ERR_13204_NULL_ATTRIBUTE_ID );
-            LOG.info( message );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.err( I18n.ERR_13204_NULL_ATTRIBUTE_ID ) );
+            }
+            
             return false;
         }
 
@@ -2130,8 +2147,11 @@ public final class DefaultEntry implements Entry
     {
         if ( Strings.isEmpty( upId ) )
         {
-            String message = I18n.err( I18n.ERR_13204_NULL_ATTRIBUTE_ID );
-            LOG.info( message );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.err( I18n.ERR_13204_NULL_ATTRIBUTE_ID ) );
+            }
+            
             return false;
         }
 
@@ -2210,8 +2230,11 @@ public final class DefaultEntry implements Entry
     {
         if ( Strings.isEmpty( upId ) )
         {
-            String message = I18n.err( I18n.ERR_13204_NULL_ATTRIBUTE_ID );
-            LOG.info( message );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.err( I18n.ERR_13204_NULL_ATTRIBUTE_ID ) );
+            }
+            
             return false;
         }
 

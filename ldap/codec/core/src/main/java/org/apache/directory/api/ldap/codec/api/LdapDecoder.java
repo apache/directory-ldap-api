@@ -42,9 +42,6 @@ public class LdapDecoder
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( LdapDecoder.class );
 
-    /** A speedup for logger */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** The ASN 1 decoder instance */
     private Asn1Decoder asn1Decoder;
 
@@ -102,7 +99,7 @@ public class LdapDecoder
 
         if ( container.getState() == TLVStateEnum.PDU_DECODED )
         {
-            if ( IS_DEBUG )
+            if ( LOG.isDebugEnabled() )
             {
                 LOG.debug( "Decoded LdapMessage : " + container );
             }

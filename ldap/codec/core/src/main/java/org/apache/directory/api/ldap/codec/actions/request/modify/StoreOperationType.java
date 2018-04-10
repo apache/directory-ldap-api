@@ -50,10 +50,6 @@ public class StoreOperationType extends GrammarAction<LdapMessageContainer<Modif
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreOperationType.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -91,7 +87,7 @@ public class StoreOperationType extends GrammarAction<LdapMessageContainer<Modif
         // Store the current operation.
         modifyRequestDecorator.setCurrentOperation( operation );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             switch ( operation )
             {

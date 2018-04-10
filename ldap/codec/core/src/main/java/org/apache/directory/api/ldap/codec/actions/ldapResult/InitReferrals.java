@@ -49,10 +49,6 @@ public class InitReferrals extends GrammarAction<LdapMessageContainer<MessageDec
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitReferrals.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new init referrals action.
      */
@@ -85,7 +81,7 @@ public class InitReferrals extends GrammarAction<LdapMessageContainer<MessageDec
         Referral referral = new ReferralImpl();
         ldapResult.setReferral( referral );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Initialising a referrals list" );
         }

@@ -80,7 +80,10 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
         {
             URL resource = getClass().getClassLoader().getResource( "schema-all.ldif" );
 
-            LOG.debug( I18n.msg( I18n.MSG_16012_URL_SCHEMA_ALL_LDIF, resource ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_16012_URL_SCHEMA_ALL_LDIF, resource ) );
+            }
 
             for ( String s : schemaObjectTypeRdns )
             {

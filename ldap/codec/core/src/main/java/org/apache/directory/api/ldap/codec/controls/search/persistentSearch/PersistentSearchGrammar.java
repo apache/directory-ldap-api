@@ -62,9 +62,6 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
     /** The logger */
     static final Logger LOG = LoggerFactory.getLogger( PersistentSearchGrammar.class );
 
-    /** Speedup for logs */
-    static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** The instance of grammar. PSearchControlGrammar is a singleton */
     private static Grammar<?> instance = new PersistentSearchGrammar();
 
@@ -117,7 +114,7 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
                                 PersistentSearch.CHANGE_TYPES_MIN,
                                 PersistentSearch.CHANGE_TYPES_MAX );
 
-                            if ( IS_DEBUG )
+                            if ( LOG.isDebugEnabled() )
                             {
                                 LOG.debug( "changeTypes = " + changeTypes );
                             }
@@ -155,7 +152,7 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
                         {
                             boolean changesOnly = BooleanDecoder.parse( value );
 
-                            if ( IS_DEBUG )
+                            if ( LOG.isDebugEnabled() )
                             {
                                 LOG.debug( "changesOnly = " + changesOnly );
                             }
@@ -193,7 +190,7 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
                         {
                             boolean returnECs = BooleanDecoder.parse( value );
 
-                            if ( IS_DEBUG )
+                            if ( LOG.isDebugEnabled() )
                             {
                                 LOG.debug( "returnECs = " + returnECs );
                             }

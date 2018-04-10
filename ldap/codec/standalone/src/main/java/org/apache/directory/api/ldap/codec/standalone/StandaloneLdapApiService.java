@@ -326,7 +326,11 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
     {
         if ( getControlFactories().containsKey( controlFQCN ) )
         {
-            LOG.debug( "Factory for control {} was already loaded", controlFQCN );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( "Factory for control {} was already loaded", controlFQCN );
+            }
+            
             return;
         }
 
@@ -342,7 +346,10 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
         ControlFactory<?> factory = ( ControlFactory<?> ) constructor.newInstance( this );
         getControlFactories().put( factory.getOid(), factory );
 
-        LOG.info( "Registered control factory: {}", factory.getOid() );
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered control factory: {}", factory.getOid() );
+        }
     }
 
 
@@ -369,7 +376,11 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
     {
         if ( getExtendedOperationFactories().containsKey( extendedOperationFQCN ) )
         {
-            LOG.debug( "Factory for extended operation {} was already loaded", extendedOperationFQCN );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( "Factory for extended operation {} was already loaded", extendedOperationFQCN );
+            }
+            
             return;
         }
 
@@ -388,7 +399,10 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
                 { this } );
         getExtendedOperationFactories().put( factory.getOid(), factory );
 
-        LOG.info( "Registered pre-bundled extended operation factory: {}", factory.getOid() );
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled extended operation factory: {}", factory.getOid() );
+        }
     }
 
 
@@ -415,7 +429,11 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
     {
         if ( getIntermediateResponseFactories().containsKey( intermediateResponseFQCN ) )
         {
-            LOG.debug( "Factory for Intermediate Response {} was already loaded", intermediateResponseFQCN );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( "Factory for Intermediate Response {} was already loaded", intermediateResponseFQCN );
+            }
+            
             return;
         }
 
@@ -433,6 +451,9 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
             .newInstance( this );
         getIntermediateResponseFactories().put( factory.getOid(), factory );
 
-        LOG.info( "Registered pre-bundled Intermediate Response factory: {}", factory.getOid() );
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Registered pre-bundled Intermediate Response factory: {}", factory.getOid() );
+        }
     }
 }

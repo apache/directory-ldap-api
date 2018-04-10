@@ -68,6 +68,9 @@ public class InitExtendedRequest extends GrammarAction<LdapMessageContainer<Exte
          * OID before we can delegate instantiation to the LdapCodecService.
          */
 
-        LOG.debug( "Extended request being processed ..." );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Extended request being processed ..." );
+        }
     }
 }

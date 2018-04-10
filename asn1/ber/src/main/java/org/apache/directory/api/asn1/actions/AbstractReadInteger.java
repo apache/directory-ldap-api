@@ -45,9 +45,6 @@ public abstract class AbstractReadInteger<E extends Asn1Container> extends Gramm
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( AbstractReadInteger.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** the acceptable minimum value for the expected value to be parsed */
     private int minValue = 0;
 
@@ -118,7 +115,7 @@ public abstract class AbstractReadInteger<E extends Asn1Container> extends Gramm
         {
             int number = IntegerDecoder.parse( value, minValue, maxValue );
 
-            if ( IS_DEBUG )
+            if ( LOG.isDebugEnabled() )
             {
                 LOG.debug( I18n.msg( I18n.MSG_01100_INTEGER_VALUE, number ) );
             }

@@ -46,9 +46,6 @@ public class ControlsGrammar extends AbstractGrammar<ControlsContainer>
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger( ControlsGrammar.class );
 
-    /** Speedup for logs */
-    static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** The instance of grammar. ControlsGrammar is a singleton */
     private static Grammar<ControlsContainer> instance = new ControlsGrammar();
 

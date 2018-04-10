@@ -137,7 +137,11 @@ public final class ObjectClassHelper
                                     LdapSchemaExceptionCodes.OC_ABSTRACT_MUST_INHERIT_FROM_ABSTRACT_OC, msg );
                                 ldapSchemaException.setSourceObject( objectClass );
                                 errors.add( ldapSchemaException );
-                                LOG.info( msg );
+
+                                if ( LOG.isInfoEnabled() )
+                                {
+                                    LOG.info( msg );
+                                }
 
                                 continue;
                             }
@@ -154,7 +158,11 @@ public final class ObjectClassHelper
                                     LdapSchemaExceptionCodes.OC_AUXILIARY_CANNOT_INHERIT_FROM_STRUCTURAL_OC, msg );
                                 ldapSchemaException.setSourceObject( objectClass );
                                 errors.add( ldapSchemaException );
-                                LOG.info( msg );
+
+                                if ( LOG.isInfoEnabled() )
+                                {
+                                    LOG.info( msg );
+                                }
 
                                 continue;
                             }
@@ -171,7 +179,11 @@ public final class ObjectClassHelper
                                     LdapSchemaExceptionCodes.OC_STRUCTURAL_CANNOT_INHERIT_FROM_AUXILIARY_OC, msg );
                                 ldapSchemaException.setSourceObject( objectClass );
                                 errors.add( ldapSchemaException );
-                                LOG.info( msg );
+
+                                if ( LOG.isInfoEnabled() )
+                                {
+                                    LOG.info( msg );
+                                }
 
                                 continue;
                             }
@@ -196,7 +208,11 @@ public final class ObjectClassHelper
                     ldapSchemaException.setSourceObject( objectClass );
                     ldapSchemaException.setRelatedId( superiorName );
                     errors.add( ldapSchemaException );
-                    LOG.info( msg );
+
+                    if ( LOG.isInfoEnabled() )
+                    {
+                        LOG.info( msg );
+                    }
 
                     return;
                 }
@@ -234,7 +250,11 @@ public final class ObjectClassHelper
                         ldapSchemaException.setSourceObject( objectClass );
                         ldapSchemaException.setRelatedId( mustAttributeTypeName );
                         errors.add( ldapSchemaException );
-                        LOG.info( msg );
+
+                        if ( LOG.isInfoEnabled() )
+                        {
+                            LOG.info( msg );
+                        }
 
                         continue;
                     }
@@ -250,7 +270,11 @@ public final class ObjectClassHelper
                         ldapSchemaException.setSourceObject( objectClass );
                         ldapSchemaException.setRelatedId( mustAttributeTypeName );
                         errors.add( ldapSchemaException );
-                        LOG.info( msg );
+
+                        if ( LOG.isInfoEnabled() )
+                        {
+                            LOG.info( msg );
+                        }
 
                         continue;
                     }
@@ -268,7 +292,11 @@ public final class ObjectClassHelper
                         ldapSchemaException.setSourceObject( objectClass );
                         ldapSchemaException.setRelatedId( mustAttributeTypeName );
                         errors.add( ldapSchemaException );
-                        LOG.info( msg );
+
+                        if ( LOG.isInfoEnabled() )
+                        {
+                            LOG.info( msg );
+                        }
 
                         continue;
                     }
@@ -286,7 +314,11 @@ public final class ObjectClassHelper
                     ldapSchemaException.setSourceObject( objectClass );
                     ldapSchemaException.setRelatedId( mustAttributeTypeName );
                     errors.add( ldapSchemaException );
-                    LOG.info( msg );
+
+                    if ( LOG.isInfoEnabled() )
+                    {
+                        LOG.info( msg );
+                    }
 
                     continue;
                 }
@@ -323,7 +355,11 @@ public final class ObjectClassHelper
                         ldapSchemaException.setSourceObject( objectClass );
                         ldapSchemaException.setRelatedId( mayAttributeTypeName );
                         errors.add( ldapSchemaException );
-                        LOG.info( msg );
+
+                        if ( LOG.isInfoEnabled() )
+                        {
+                            LOG.info( msg );
+                        }
 
                         continue;
                     }
@@ -339,7 +375,11 @@ public final class ObjectClassHelper
                         ldapSchemaException.setSourceObject( objectClass );
                         ldapSchemaException.setRelatedId( mayAttributeTypeName );
                         errors.add( ldapSchemaException );
-                        LOG.info( msg );
+
+                        if ( LOG.isInfoEnabled() )
+                        {
+                            LOG.info( msg );
+                        }
 
                         continue;
                     }
@@ -356,7 +396,11 @@ public final class ObjectClassHelper
                     ldapSchemaException.setSourceObject( objectClass );
                     ldapSchemaException.setRelatedId( mayAttributeTypeName );
                     errors.add( ldapSchemaException );
-                    LOG.info( msg );
+
+                    if ( LOG.isInfoEnabled() )
+                    {
+                        LOG.info( msg );
+                    }
 
                     continue;
                 }

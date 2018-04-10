@@ -86,7 +86,10 @@ public final class ResourceMap
 
         if ( schemaResourceLoc.trim().length() > 0 )
         {
-            LOG.debug( I18n.msg( I18n.MSG_16008_LOADING_FROM_USER_SCHEMA, schemaResourceLoc ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_16008_LOADING_FROM_USER_SCHEMA, schemaResourceLoc ) );
+            }
 
             File file = new File( schemaResourceLoc );
 
@@ -116,7 +119,10 @@ public final class ResourceMap
         if ( !file.exists() )
         {
             // this may happen if the class path contains an element that doesn't exist
-            LOG.debug( I18n.msg( I18n.MSG_16009_ELEMENT_DOES_NOT_EXIST, element ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_16009_ELEMENT_DOES_NOT_EXIST, element ) );
+            }
 
             return;
         }

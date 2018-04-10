@@ -52,9 +52,6 @@ public class WhoAmIResponseGrammar extends AbstractGrammar<WhoAmIResponseContain
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger( WhoAmIResponseGrammar.class );
 
-    /** Speedup for logs */
-    static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** The instance of grammar. WhoAmIResponseGrammar is a singleton */
     private static Grammar<WhoAmIResponseContainer> instance = new WhoAmIResponseGrammar();
 

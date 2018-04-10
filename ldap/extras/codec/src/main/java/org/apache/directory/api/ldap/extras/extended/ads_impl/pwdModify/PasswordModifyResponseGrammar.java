@@ -53,9 +53,6 @@ public class PasswordModifyResponseGrammar extends AbstractGrammar<PasswordModif
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger( PasswordModifyResponseGrammar.class );
 
-    /** Speedup for logs */
-    static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** The instance of grammar. PasswdModifyResponseGrammar is a singleton */
     private static Grammar<PasswordModifyResponseContainer> instance = new PasswordModifyResponseGrammar();
 
@@ -120,7 +117,7 @@ public class PasswordModifyResponseGrammar extends AbstractGrammar<PasswordModif
 
                         byte[] genPassword = value.getData();
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled() )
                         {
                             LOG.debug( "GenPassword = " + Strings.dumpBytes( genPassword ) );
                         }

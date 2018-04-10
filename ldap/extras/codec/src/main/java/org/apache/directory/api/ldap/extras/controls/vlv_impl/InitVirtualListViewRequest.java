@@ -36,10 +36,6 @@ public class InitVirtualListViewRequest extends GrammarAction<VirtualListViewReq
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitVirtualListViewRequest.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new VirtualListViewRequest action.
      */
@@ -54,7 +50,7 @@ public class InitVirtualListViewRequest extends GrammarAction<VirtualListViewReq
      */
     public void action( VirtualListViewRequestContainer container ) throws DecoderException
     {
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "VirtualListViewRequestContainer initialized" );
         }

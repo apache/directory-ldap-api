@@ -42,10 +42,6 @@ public class InitAssertionValueFilter extends GrammarAction<LdapMessageContainer
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitAssertionValueFilter.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new init assertion value filter action.
      */
@@ -84,7 +80,7 @@ public class InitAssertionValueFilter extends GrammarAction<LdapMessageContainer
         // not terminal.
         searchRequestDecorator.unstackFilters( container );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Initialize Assertion Value filter" );
         }

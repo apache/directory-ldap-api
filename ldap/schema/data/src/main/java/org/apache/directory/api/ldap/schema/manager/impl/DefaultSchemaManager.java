@@ -750,7 +750,11 @@ public class DefaultSchemaManager implements SchemaManager
     {
         if ( schema == null )
         {
-            LOG.info( I18n.msg( I18n.MSG_16013_SCHEMA_IS_NULL ) );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.msg( I18n.MSG_16013_SCHEMA_IS_NULL ) );
+            }
+            
             return false;
         }
 
@@ -764,7 +768,10 @@ public class DefaultSchemaManager implements SchemaManager
         {
             if ( registries.isDisabledAccepted() )
             {
-                LOG.info( I18n.msg( I18n.MSG_16014_LOADING_DISABLED_SCHEMA, schema.getSchemaName(), schema ) );
+                if ( LOG.isInfoEnabled() )
+                {
+                    LOG.info( I18n.msg( I18n.MSG_16014_LOADING_DISABLED_SCHEMA, schema.getSchemaName(), schema ) );
+                }
 
                 registries.schemaLoaded( schema );
                 addSchemaObjects( schema, registries );
@@ -776,7 +783,10 @@ public class DefaultSchemaManager implements SchemaManager
         }
         else
         {
-            LOG.info( I18n.msg( I18n.MSG_16015_LOADING_ENABLED_SCHEMA, schema.getSchemaName(), schema ) );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.msg( I18n.MSG_16015_LOADING_ENABLED_SCHEMA, schema.getSchemaName(), schema ) );
+            }
 
             // Check that the dependencies, if any, are correct
             if ( schema.getDependencies() != null )
@@ -789,7 +799,12 @@ public class DefaultSchemaManager implements SchemaManager
                     {
                         // The dependency has not been loaded.
                         String msg = I18n.err( I18n.ERR_16035_CANNOT_LOAD_SCHEMA, schema.getSchemaName() );
-                        LOG.info( msg );
+                        
+                        if ( LOG.isInfoEnabled() )
+                        {
+                            LOG.info( msg );
+                        }
+                        
                         Throwable error = new LdapProtocolErrorException( msg );
                         errors.add( error );
 
@@ -828,7 +843,11 @@ public class DefaultSchemaManager implements SchemaManager
     {
         if ( schema == null )
         {
-            LOG.info( I18n.msg( I18n.MSG_16013_SCHEMA_IS_NULL )  );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.msg( I18n.MSG_16013_SCHEMA_IS_NULL )  );
+            }
+            
             return false;
         }
 
@@ -840,7 +859,10 @@ public class DefaultSchemaManager implements SchemaManager
 
         if ( schema.isEnabled() )
         {
-            LOG.info( I18n.msg( I18n.MSG_16016_UNLOADING_SCHEMA, schema.getSchemaName(), schema ) );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.msg( I18n.MSG_16016_UNLOADING_SCHEMA, schema.getSchemaName(), schema ) );
+            }
 
             deleteSchemaObjects( schema, registries );
             registries.schemaUnloaded( schema );
@@ -1282,13 +1304,21 @@ public class DefaultSchemaManager implements SchemaManager
     {
         if ( schema == null )
         {
-            LOG.info( I18n.msg( I18n.MSG_16013_SCHEMA_IS_NULL )  );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.msg( I18n.MSG_16013_SCHEMA_IS_NULL )  );
+            }
+            
             return;
         }
 
         if ( schema.isDisabled() && !registries.isDisabledAccepted() )
         {
-            LOG.info( I18n.msg( I18n.MSG_16017_UNACCEPTED_DISABLED_SCHEMA ) );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.msg( I18n.MSG_16017_UNACCEPTED_DISABLED_SCHEMA ) );
+            }
+            
             return;
         }
 
@@ -1296,7 +1326,11 @@ public class DefaultSchemaManager implements SchemaManager
 
         if ( registries.isSchemaLoaded( schemaName ) )
         {
-            LOG.info( I18n.msg( I18n.MSG_16018_SCHEMA_ALREADY_LOADED, schema.getSchemaName() ) );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.msg( I18n.MSG_16018_SCHEMA_ALREADY_LOADED, schema.getSchemaName() ) );
+            }
+            
             return;
         }
 
@@ -1382,13 +1416,21 @@ public class DefaultSchemaManager implements SchemaManager
     {
         if ( schema == null )
         {
-            LOG.info( I18n.msg( I18n.MSG_16013_SCHEMA_IS_NULL )  );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.msg( I18n.MSG_16013_SCHEMA_IS_NULL )  );
+            }
+            
             return;
         }
 
         if ( schema.isDisabled() && !registries.isDisabledAccepted() )
         {
-            LOG.info( I18n.msg( I18n.MSG_16017_UNACCEPTED_DISABLED_SCHEMA ) );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.msg( I18n.MSG_16017_UNACCEPTED_DISABLED_SCHEMA ) );
+            }
+            
             return;
         }
 
@@ -1396,7 +1438,11 @@ public class DefaultSchemaManager implements SchemaManager
 
         if ( registries.isSchemaLoaded( schemaName ) )
         {
-            LOG.info( I18n.msg( I18n.MSG_16018_SCHEMA_ALREADY_LOADED, schema.getSchemaName() ) );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.msg( I18n.MSG_16018_SCHEMA_ALREADY_LOADED, schema.getSchemaName() ) );
+            }
+            
             return;
         }
 
@@ -1996,7 +2042,12 @@ public class DefaultSchemaManager implements SchemaManager
             {
                 // The SchemaObject must be associated with an existing schema
                 String msg = I18n.err( I18n.ERR_16038_NOT_ASSOCIATED_TO_A_SCHEMA, copy.getOid() );
-                LOG.info( msg );
+                
+                if ( LOG.isInfoEnabled() )
+                {
+                    LOG.info( msg );
+                }
+                
                 Throwable error = new LdapProtocolErrorException( msg );
                 errors.add( error );
                 return false;
@@ -2031,15 +2082,21 @@ public class DefaultSchemaManager implements SchemaManager
                     // Apply the addition to the real registries
                     registries.add( errors, copy, true );
 
-                    LOG.debug( I18n.msg( I18n.MSG_16019_ENABLED_SCHEMA_ADDED, copy.getName(), schemaName ) );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( I18n.msg( I18n.MSG_16019_ENABLED_SCHEMA_ADDED, copy.getName(), schemaName ) );
+                    }
 
                     return true;
                 }
                 else
                 {
                     // We have some error : reject the addition and get out
-                    LOG.info( I18n.msg( I18n.MSG_16020_CANNOT_LOAD_SCHEMAOBJECT, 
-                        copy.getOid(), Strings.listToString( errors ) ) );
+                    if ( LOG.isInfoEnabled() )
+                    {
+                        LOG.info( I18n.msg( I18n.MSG_16020_CANNOT_LOAD_SCHEMAOBJECT, 
+                            copy.getOid(), Strings.listToString( errors ) ) );
+                    }
 
                     return false;
                 }
@@ -2050,7 +2107,11 @@ public class DefaultSchemaManager implements SchemaManager
                 // schema
                 registries.associateWithSchema( errors, copy );
 
-                LOG.debug( I18n.msg( I18n.MSG_16021_ADDED_INTO_DISABLED_SCHEMA, copy.getName(), schemaName ) );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_16021_ADDED_INTO_DISABLED_SCHEMA, copy.getName(), schemaName ) );
+                }
+                
                 return errors.isEmpty();
             }
         }
@@ -2111,7 +2172,12 @@ public class DefaultSchemaManager implements SchemaManager
             {
                 // The SchemaObject must be associated with an existing schema
                 String msg = I18n.err( I18n.ERR_16041_CANNOT_DELETE_SCHEMA_OBJECT, schemaObject.getOid() );
-                LOG.info( msg );
+
+                if ( LOG.isInfoEnabled() )
+                {
+                    LOG.info( msg );
+                }
+                
                 Throwable error = new LdapProtocolErrorException( msg );
                 errors.add( error );
                 return false;
@@ -2143,15 +2209,21 @@ public class DefaultSchemaManager implements SchemaManager
                     // Apply the deletion to the real registries
                     registries.delete( errors, toDelete );
 
-                    LOG.debug( I18n.msg( I18n.MSG_16022_REMOVED_FROM_ENABLED_SCHEMA, toDelete.getName(), schemaName ) );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( I18n.msg( I18n.MSG_16022_REMOVED_FROM_ENABLED_SCHEMA, toDelete.getName(), schemaName ) );
+                    }
 
                     return true;
                 }
                 else
                 {
                     // We have some error : reject the deletion and get out
-                    LOG.info( I18n.msg( I18n.MSG_16023_CANNOT_DELETE_SCHEMAOBJECT, 
-                        schemaObject.getOid(), Strings.listToString( errors ) ) );
+                    if ( LOG.isInfoEnabled() )
+                    {
+                        LOG.info( I18n.msg( I18n.MSG_16023_CANNOT_DELETE_SCHEMAOBJECT, 
+                            schemaObject.getOid(), Strings.listToString( errors ) ) );
+                    }
 
                     return false;
                 }
@@ -2162,7 +2234,10 @@ public class DefaultSchemaManager implements SchemaManager
                 // schema
                 registries.associateWithSchema( errors, schemaObject );
 
-                LOG.debug( I18n.msg( I18n.MSG_16024_REMOVED_FROM_DISABLED_SCHEMA, schemaObject.getName(), schemaName ) );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_16024_REMOVED_FROM_DISABLED_SCHEMA, schemaObject.getName(), schemaName ) );
+                }
                 
                 return errors.isEmpty();
             }

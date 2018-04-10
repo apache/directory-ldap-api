@@ -50,10 +50,6 @@ public class StoreMatchValue extends GrammarAction<LdapMessageContainer<SearchRe
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreMatchValue.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new store match value action.
      */
@@ -81,7 +77,7 @@ public class StoreMatchValue extends GrammarAction<LdapMessageContainer<SearchRe
         // unstack the filters if needed
         decorator.unstackFilters( container );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Stored a match value : {}", value );
         }

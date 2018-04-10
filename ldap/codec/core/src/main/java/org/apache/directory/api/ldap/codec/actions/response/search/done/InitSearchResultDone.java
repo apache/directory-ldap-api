@@ -61,6 +61,9 @@ public class InitSearchResultDone extends GrammarAction<LdapMessageContainer<Sea
             container.getLdapCodecService(), new SearchResultDoneImpl( container.getMessageId() ) );
         container.setMessage( searchResultDone );
 
-        LOG.debug( "Search Result Done found" );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Search Result Done found" );
+        }
     }
 }

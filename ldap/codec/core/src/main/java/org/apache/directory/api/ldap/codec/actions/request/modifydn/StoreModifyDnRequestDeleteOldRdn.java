@@ -50,10 +50,6 @@ public class StoreModifyDnRequestDeleteOldRdn extends GrammarAction<LdapMessageC
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreModifyDnRequestDeleteOldRdn.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -96,7 +92,7 @@ public class StoreModifyDnRequestDeleteOldRdn extends GrammarAction<LdapMessageC
         // We can have an END transition
         container.setGrammarEndAllowed( true );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             if ( modifyDnRequest.getDeleteOldRdn() )
             {

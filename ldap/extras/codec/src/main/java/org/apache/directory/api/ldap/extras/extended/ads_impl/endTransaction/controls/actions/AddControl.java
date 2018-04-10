@@ -47,10 +47,6 @@ public class AddControl extends GrammarAction<ControlsContainer>
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( AddControl.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new AddControl action.
      */
@@ -99,7 +95,7 @@ public class AddControl extends GrammarAction<ControlsContainer>
         // We can have an END transition
         container.setGrammarEndAllowed( true );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Control OID : {}", oidValue );
         }

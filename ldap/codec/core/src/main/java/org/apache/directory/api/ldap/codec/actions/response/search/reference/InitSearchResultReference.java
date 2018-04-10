@@ -62,6 +62,9 @@ public class InitSearchResultReference extends GrammarAction<LdapMessageContaine
             container.getLdapCodecService(), new SearchResultReferenceImpl( container.getMessageId() ) );
         container.setMessage( searchResultReference );
 
-        LOG.debug( "SearchResultReference response " );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "SearchResultReference response " );
+        }
     }
 }

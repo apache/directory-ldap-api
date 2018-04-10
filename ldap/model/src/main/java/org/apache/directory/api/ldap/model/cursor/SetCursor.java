@@ -43,9 +43,6 @@ public class SetCursor<E> extends AbstractCursor<E>
     /** A dedicated log for cursors */
     private static final Logger LOG_CURSOR = LoggerFactory.getLogger( Loggers.CURSOR_LOG.getName() );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG_CURSOR.isDebugEnabled();
-
     /** The inner Set */
     private final E[] set;
 
@@ -77,7 +74,7 @@ public class SetCursor<E> extends AbstractCursor<E>
             set = Collections.EMPTY_SET;
         }
 
-        if ( IS_DEBUG )
+        if ( LOG_CURSOR.isDebugEnabled() )
         {
             LOG_CURSOR.debug( I18n.msg( I18n.MSG_13105_CREATING_SET_CURSOR, this ) );
         }
@@ -406,7 +403,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     @Override
     public void close() throws IOException
     {
-        if ( IS_DEBUG )
+        if ( LOG_CURSOR.isDebugEnabled() )
         {
             LOG_CURSOR.debug( I18n.msg( I18n.MSG_13102_CLOSING_SET_CURSOR, this ) );
         }
@@ -421,7 +418,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     @Override
     public void close( Exception cause ) throws IOException
     {
-        if ( IS_DEBUG )
+        if ( LOG_CURSOR.isDebugEnabled() )
         {
             LOG_CURSOR.debug( I18n.msg( I18n.MSG_13102_CLOSING_SET_CURSOR, this ) );
         }

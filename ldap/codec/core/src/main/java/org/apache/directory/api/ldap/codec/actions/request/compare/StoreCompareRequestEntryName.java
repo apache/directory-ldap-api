@@ -51,10 +51,6 @@ public class StoreCompareRequestEntryName extends GrammarAction<LdapMessageConta
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreCompareRequestEntryName.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -105,7 +101,7 @@ public class StoreCompareRequestEntryName extends GrammarAction<LdapMessageConta
             compareRequest.setName( entry );
         }
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Comparing Dn {}", entry );
         }

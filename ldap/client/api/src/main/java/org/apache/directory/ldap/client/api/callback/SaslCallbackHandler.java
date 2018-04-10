@@ -76,14 +76,23 @@ public class SaslCallbackHandler implements CallbackHandler
                 NameCallback ncb = ( NameCallback ) cb;
 
                 String name = saslReq.getUsername();
-                LOG.debug( "sending name {} in the NameCallback", name );
+                
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( "sending name {} in the NameCallback", name );
+                }
+                
                 ncb.setName( name );
             }
             else if ( cb instanceof PasswordCallback )
             {
                 PasswordCallback pcb = ( PasswordCallback ) cb;
 
-                LOG.debug( "sending credentials in the PasswordCallback" );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( "sending credentials in the PasswordCallback" );
+                }
+                
                 pcb.setPassword( Strings.utf8ToString( saslReq.getCredentials() ).toCharArray() );
             }
             else if ( cb instanceof RealmCallback )
@@ -92,14 +101,22 @@ public class SaslCallbackHandler implements CallbackHandler
 
                 if ( saslReq.getRealmName() != null )
                 {
-                    LOG.debug( "sending the user specified realm value {} in the RealmCallback", saslReq.getRealmName() );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( "sending the user specified realm value {} in the RealmCallback", saslReq.getRealmName() );
+                    }
+                    
                     rcb.setText( saslReq.getRealmName() );
                 }
                 else
                 {
-                    LOG.debug(
-                        "No user specified relam value, sending the default realm value {} in the RealmCallback",
-                        rcb.getDefaultText() );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug(
+                            "No user specified relam value, sending the default realm value {} in the RealmCallback",
+                            rcb.getDefaultText() );
+                    }
+                    
                     rcb.setText( rcb.getDefaultText() );
                 }
             }
@@ -117,7 +134,11 @@ public class SaslCallbackHandler implements CallbackHandler
                     {
                         foundRealmName = true;
 
-                        LOG.debug( "sending the user specified realm value {} in the RealmChoiceCallback", realmName );
+                        if ( LOG.isDebugEnabled() )
+                        {
+                            LOG.debug( "sending the user specified realm value {} in the RealmChoiceCallback", realmName );
+                        }
+                        
                         rccb.setSelectedIndex( i );
                         break;
                     }

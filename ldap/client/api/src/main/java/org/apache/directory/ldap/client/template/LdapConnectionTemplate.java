@@ -86,7 +86,11 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
      */
     public LdapConnectionTemplate( LdapConnectionPool connectionPool )
     {
-        LOG.debug( "creating new connection template from connectionPool" );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "creating new connection template from connectionPool" );
+        }
+        
         this.connectionPool = connectionPool;
         this.passwordPolicyRequestControl = new PasswordPolicyDecorator(
             connectionPool.getLdapApiService() );

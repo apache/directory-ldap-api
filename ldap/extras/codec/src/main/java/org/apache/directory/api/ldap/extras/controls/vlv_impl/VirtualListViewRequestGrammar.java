@@ -38,8 +38,6 @@ public final class VirtualListViewRequestGrammar extends AbstractGrammar<Virtual
 {
     static final Logger LOG = LoggerFactory.getLogger( VirtualListViewRequestGrammar.class );
 
-    static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     private static Grammar<?> instance = new VirtualListViewRequestGrammar();
 
 

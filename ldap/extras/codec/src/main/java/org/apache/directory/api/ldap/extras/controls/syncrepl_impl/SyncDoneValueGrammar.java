@@ -56,9 +56,6 @@ public final class SyncDoneValueGrammar extends AbstractGrammar<SyncDoneValueCon
     /** the logger */
     private static final Logger LOG = LoggerFactory.getLogger( SyncDoneValueGrammar.class );
 
-    /** speedup for logger */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** SyncDoneValueControlGrammar singleton instance */
     private static final SyncDoneValueGrammar INSTANCE = new SyncDoneValueGrammar();
 
@@ -113,7 +110,7 @@ public final class SyncDoneValueGrammar extends AbstractGrammar<SyncDoneValueCon
 
                         byte[] cookie = value.getData();
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled() )
                         {
                             LOG.debug( "cookie = {}", Strings.dumpBytes( cookie ) );
                         }
@@ -135,7 +132,7 @@ public final class SyncDoneValueGrammar extends AbstractGrammar<SyncDoneValueCon
                     {
                         boolean refreshDeletes = BooleanDecoder.parse( value );
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled() )
                         {
                             LOG.debug( "refreshDeletes = {}", refreshDeletes );
                         }

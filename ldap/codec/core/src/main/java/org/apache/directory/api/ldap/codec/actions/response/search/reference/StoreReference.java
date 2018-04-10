@@ -49,10 +49,6 @@ public class StoreReference extends GrammarAction<LdapMessageContainer<SearchRes
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreReference.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new store reference action.
      */
@@ -104,7 +100,7 @@ public class StoreReference extends GrammarAction<LdapMessageContainer<SearchRes
             }
         }
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Search reference URL found : {}", url );
         }

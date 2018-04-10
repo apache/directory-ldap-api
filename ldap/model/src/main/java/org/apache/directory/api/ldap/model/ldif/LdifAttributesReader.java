@@ -322,7 +322,10 @@ public class LdifAttributesReader extends LdifReader
     {
         if ( ( lines == null ) || lines.isEmpty() )
         {
-            LOG.debug( I18n.msg( I18n.MSG_13408_END_OF_LDIF ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_13408_END_OF_LDIF ) );
+            }
             
             return null;
         }
@@ -362,7 +365,10 @@ public class LdifAttributesReader extends LdifReader
             }
         }
 
-        LOG.debug( I18n.msg( I18n.MSG_13405_READ_ATTR, entry ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13405_READ_ATTR, entry ) );
+        }
 
         return entry;
     }
@@ -387,7 +393,10 @@ public class LdifAttributesReader extends LdifReader
     {
         if ( ( lines == null ) || lines.isEmpty() )
         {
-            LOG.debug( I18n.msg( I18n.MSG_13408_END_OF_LDIF ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_13408_END_OF_LDIF ) );
+            }
 
             return null;
         }
@@ -427,7 +436,10 @@ public class LdifAttributesReader extends LdifReader
             }
         }
 
-        LOG.debug( I18n.msg( I18n.MSG_13405_READ_ATTR, attributes ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13405_READ_ATTR, attributes ) );
+        }
 
         return attributes;
     }
@@ -445,7 +457,10 @@ public class LdifAttributesReader extends LdifReader
         lines = new ArrayList<String>();
         position = 0;
 
-        LOG.debug( I18n.msg( I18n.MSG_13407_STARTS_PARSING_LDIF ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13407_STARTS_PARSING_LDIF ) );
+        }
 
         if ( Strings.isEmpty( ldif ) )
         {
@@ -506,7 +521,10 @@ public class LdifAttributesReader extends LdifReader
         lines = new ArrayList<String>();
         position = 0;
 
-        LOG.debug( I18n.msg( I18n.MSG_13407_STARTS_PARSING_LDIF ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13407_STARTS_PARSING_LDIF ) );
+        }
 
         if ( Strings.isEmpty( ldif ) )
         {
@@ -568,7 +586,10 @@ public class LdifAttributesReader extends LdifReader
         lines = new ArrayList<String>();
         position = 0;
 
-        LOG.debug( I18n.msg( I18n.MSG_13407_STARTS_PARSING_LDIF ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13407_STARTS_PARSING_LDIF ) );
+        }
 
         if ( Strings.isEmpty( ldif ) )
         {

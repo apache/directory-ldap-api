@@ -53,10 +53,6 @@ public class StoreMatchingRuleDnAttributes extends GrammarAction<LdapMessageCont
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreMatchingRuleDnAttributes.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new StoreMatchingRuleDnAttributes.
      */
@@ -95,7 +91,7 @@ public class StoreMatchingRuleDnAttributes extends GrammarAction<LdapMessageCont
             throw new DecoderException( bde.getMessage(), bde );
         }
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Dn Attributes : {}", Boolean.valueOf( extensibleMatchFilter.isDnAttributes() ) );
         }

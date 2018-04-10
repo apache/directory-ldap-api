@@ -44,10 +44,6 @@ public class StoreExtendedResponseValue extends GrammarAction<LdapMessageContain
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreExtendedResponseValue.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new response action.
      */
@@ -82,7 +78,7 @@ public class StoreExtendedResponseValue extends GrammarAction<LdapMessageContain
         // We can have an END transition
         container.setGrammarEndAllowed( true );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Extended value : {}", extendedResponse.getResponseValue() );
         }

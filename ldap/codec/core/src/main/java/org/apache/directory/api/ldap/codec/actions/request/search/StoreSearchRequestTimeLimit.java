@@ -49,10 +49,6 @@ public class StoreSearchRequestTimeLimit extends GrammarAction<LdapMessageContai
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreSearchRequestTimeLimit.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -90,7 +86,7 @@ public class StoreSearchRequestTimeLimit extends GrammarAction<LdapMessageContai
 
         searchRequest.setTimeLimit( timeLimit );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "The timeLimit value is set to {} seconds", Integer.valueOf( timeLimit ) );
         }

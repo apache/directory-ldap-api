@@ -115,7 +115,11 @@ public final class MatchingRuleHelper
                     ldapSchemaException.setSourceObject( matchingRule );
                     ldapSchemaException.setRelatedId( matchingRule.getSyntaxOid() );
                     errors.add( ldapSchemaException );
-                    LOG.info( msg );
+
+                    if ( LOG.isInfoEnabled() )
+                    {
+                        LOG.info( msg );
+                    }
                 }
 
                 /**

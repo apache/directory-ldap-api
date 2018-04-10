@@ -59,9 +59,6 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
     /** static class logger */
     private static final Logger LOG = LoggerFactory.getLogger( LdifSchemaLoader.class );
 
-    /** Speedup for DEBUG mode */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** directory containing the schema LDIF file for ou=schema */
     private final File baseDirectory;
 
@@ -106,7 +103,7 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
             throw new FileNotFoundException( msg );
         }
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( I18n.msg( I18n.MSG_16010_USING_BASE_SCHEMA_DIR, baseDirectory ) );
         }
@@ -123,7 +120,7 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
      */
     private void initializeSchemas() throws LdapException, IOException
     {
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( I18n.msg( I18n.MSG_16006_INITIALIZING_SCHEMA ) );
         }
@@ -151,7 +148,7 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
 
                     schemaMap.put( schema.getSchemaName(), schema );
 
-                    if ( IS_DEBUG )
+                    if ( LOG.isDebugEnabled() )
                     {
                         LOG.debug( I18n.msg( I18n.MSG_16007_SCHEMA_INITIALIZED, schema ) );
                     }

@@ -67,9 +67,6 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
     /** The logger */
     static final Logger LOG = LoggerFactory.getLogger( SyncInfoValueGrammar.class );
 
-    /** Speedup for logs */
-    static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** The instance of grammar. SyncInfoValueGrammar is a singleton */
     private static Grammar<SyncInfoValueContainer> instance = new SyncInfoValueGrammar();
 
@@ -110,7 +107,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
 
                         byte[] newCookie = value.getData();
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled()
+ )
                         {
                             LOG.debug( "newcookie = {}", Strings.dumpBytes( newCookie ) );
                         }
@@ -174,7 +172,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
 
                         byte[] cookie = value.getData();
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled()
+ )
                         {
                             LOG.debug( "cookie = {}", Strings.dumpBytes( cookie ) );
                         }
@@ -213,7 +212,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         {
                             boolean refreshDone = BooleanDecoder.parse( value );
 
-                            if ( IS_DEBUG )
+                            if ( LOG.isDebugEnabled()
+ )
                             {
                                 LOG.debug( "refreshDone = {}", refreshDone );
                             }
@@ -262,7 +262,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         {
                             boolean refreshDone = BooleanDecoder.parse( value );
 
-                            if ( IS_DEBUG )
+                            if ( LOG.isDebugEnabled()
+ )
                             {
                                 LOG.debug( "refreshDone = {}", refreshDone );
                             }
@@ -336,7 +337,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
 
                         byte[] cookie = value.getData();
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled()
+ )
                         {
                             LOG.debug( "cookie = {}", Strings.dumpBytes( cookie ) );
                         }
@@ -375,7 +377,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         {
                             boolean refreshDone = BooleanDecoder.parse( value );
 
-                            if ( IS_DEBUG )
+                            if ( LOG.isDebugEnabled()
+ )
                             {
                                 LOG.debug( "refreshDone = {}", refreshDone );
                             }
@@ -424,7 +427,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         {
                             boolean refreshDone = BooleanDecoder.parse( value );
 
-                            if ( IS_DEBUG )
+                            if ( LOG.isDebugEnabled()
+ )
                             {
                                 LOG.debug( "refreshDone = {}", refreshDone );
                             }
@@ -494,7 +498,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
 
                         byte[] cookie = value.getData();
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled()
+ )
                         {
                             LOG.debug( "cookie = {}", Strings.dumpBytes( cookie ) );
                         }
@@ -529,7 +534,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         {
                             boolean refreshDeletes = BooleanDecoder.parse( value );
 
-                            if ( IS_DEBUG )
+                            if ( LOG.isDebugEnabled()
+ )
                             {
                                 LOG.debug( "refreshDeletes = {}", refreshDeletes );
                             }
@@ -572,7 +578,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         {
                             boolean refreshDeletes = BooleanDecoder.parse( value );
 
-                            if ( IS_DEBUG )
+                            if ( LOG.isDebugEnabled()
+ )
                             {
                                 LOG.debug( "refreshDeletes = {}", refreshDeletes );
                             }
@@ -689,7 +696,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                             throw new DecoderException( msg );
                         }
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled()
+ )
                         {
                             LOG.debug( "UUID = {}", Strings.dumpBytes( uuid ) );
                         }
@@ -734,7 +742,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                             throw new DecoderException( msg );
                         }
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled()
+ )
                         {
                             LOG.debug( "UUID = {}", Strings.dumpBytes( uuid ) );
                         }

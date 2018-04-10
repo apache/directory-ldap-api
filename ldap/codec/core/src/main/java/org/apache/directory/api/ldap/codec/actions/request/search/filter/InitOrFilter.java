@@ -42,10 +42,6 @@ public class InitOrFilter extends GrammarAction<LdapMessageContainer<SearchReque
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitOrFilter.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new init OR filter action.
      */
@@ -77,7 +73,7 @@ public class InitOrFilter extends GrammarAction<LdapMessageContainer<SearchReque
         // Set the filter
         searchRequestDecorator.addCurrentFilter( orFilter );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Initialize OR filter" );
         }

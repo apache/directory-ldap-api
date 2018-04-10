@@ -44,9 +44,6 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
     /** static class logger */
     private static final Logger LOG = LoggerFactory.getLogger( DefaultDitStructureRuleRegistry.class );
 
-    /** A speedup for debug */
-    private static final boolean DEBUG = LOG.isDebugEnabled();
-
     /** a map of DitStructureRule looked up by RuleId */
     protected Map<Integer, DitStructureRule> byRuleId;
 
@@ -105,7 +102,12 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
         }
 
         String msg = I18n.err( I18n.ERR_13729_RULE_ID_NOT_FOUND, ruleId );
-        LOG.warn( msg );
+
+        if ( LOG.isWarnEnabled() )
+        {
+            LOG.warn( msg );
+        }
+        
         throw new LdapException( msg );
     }
 
@@ -121,7 +123,12 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
         if ( byRuleId.containsKey( ruleId ) )
         {
             String msg = I18n.err( I18n.ERR_13730_DIT_STRUCTURE_RULE_ALREADY_REGISTRED, ruleId );
-            LOG.warn( msg );
+            
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( msg );
+            }
+            
             throw new LdapException( msg );
         }
 
@@ -145,11 +152,16 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
         if ( ditStructureRule == null )
         {
             String msg = I18n.err( I18n.ERR_13731_DIT_STRUCTURE_RULE_DOES_NOT_EXIST, ruleId );
-            LOG.debug( msg );
+            
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
             throw new LdapException( msg );
         }
 
-        if ( DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( I18n.msg( I18n.MSG_13724_FOUND_WITH_RULE_ID, ditStructureRule, ruleId ) );
         }
@@ -166,7 +178,7 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
     {
         DitStructureRule ditStructureRule = byRuleId.remove( ruleId );
 
-        if ( DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( I18n.msg( I18n.MSG_13721_REMOVED_WITH_RULE_ID, ditStructureRule, ruleId ) );
         }
@@ -193,7 +205,7 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
                 int ruleId = ditStructureRule.getRuleId();
                 SchemaObject removed = byRuleId.remove( ruleId );
 
-                if ( DEBUG )
+                if ( LOG.isDebugEnabled() )
                 {
                     LOG.debug( I18n.msg( I18n.MSG_13721_REMOVED_WITH_RULE_ID, removed, ruleId ) );
                 }
@@ -216,7 +228,7 @@ public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry
             {
                 ditStructureRule.setSchemaName( newSchemaName );
 
-                if ( DEBUG )
+                if ( LOG.isDebugEnabled() )
                 {
                     LOG.debug( I18n.msg( I18n.MSG_13722_RENAMED_SCHEMA_NAME_TO, ditStructureRule, newSchemaName ) );
                 }

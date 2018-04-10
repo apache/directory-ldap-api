@@ -50,10 +50,6 @@ public class StoreSearchRequestTypesOnly extends GrammarAction<LdapMessageContai
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreSearchRequestTypesOnly.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -92,7 +88,7 @@ public class StoreSearchRequestTypesOnly extends GrammarAction<LdapMessageContai
             throw new DecoderException( bde.getMessage(), bde );
         }
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "The search will return {}", searchRequest.getTypesOnly() ? "only attributs type"
                 : "attributes types and values" );

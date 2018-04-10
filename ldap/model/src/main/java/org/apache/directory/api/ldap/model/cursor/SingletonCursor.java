@@ -40,9 +40,6 @@ public class SingletonCursor<E> extends AbstractCursor<E>
     /** A dedicated log for cursors */
     private static final Logger LOG_CURSOR = LoggerFactory.getLogger( Loggers.CURSOR_LOG.getName() );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG_CURSOR.isDebugEnabled();
-
     /** A flag to tell if the cursor is set before the first element */
     private boolean beforeFirst = true;
 
@@ -79,7 +76,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
      */
     public SingletonCursor( E singleton, Comparator<E> comparator )
     {
-        if ( IS_DEBUG )
+        if ( LOG_CURSOR.isDebugEnabled() )
         {
             LOG_CURSOR.debug( I18n.msg( I18n.MSG_13106_CREATING_SINGLE_CURSOR, this ) );
         }
@@ -339,7 +336,7 @@ public void after( E element ) throws LdapException, CursorException
     @Override
     public void close() throws IOException
     {
-        if ( IS_DEBUG )
+        if ( LOG_CURSOR.isDebugEnabled() )
         {
             LOG_CURSOR.debug( I18n.msg( I18n.MSG_13102_CLOSING_SINGLETON_CURSOR, this ) );
         }
@@ -354,7 +351,7 @@ public void after( E element ) throws LdapException, CursorException
     @Override
     public void close( Exception cause ) throws IOException
     {
-        if ( IS_DEBUG )
+        if ( LOG_CURSOR.isDebugEnabled() )
         {
             LOG_CURSOR.debug( I18n.msg( I18n.MSG_13102_CLOSING_SINGLETON_CURSOR, this ) );
         }

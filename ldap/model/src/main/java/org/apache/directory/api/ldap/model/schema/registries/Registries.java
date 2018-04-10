@@ -712,7 +712,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
             Throwable error = new LdapProtocolErrorException( msg, ne );
             errors.add( error );
-            LOG.info( msg );
+
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( msg );
+            }
         }
     }
 
@@ -779,7 +783,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
             Throwable error = new LdapSchemaViolationException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, msg, ne );
             errors.add( error );
-            LOG.info( msg );
+
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( msg );
+            }
         }
     }
 
@@ -1547,7 +1555,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     private void register( List<Throwable> errors, SchemaObject schemaObject ) throws LdapException
     {
-        LOG.debug( I18n.msg( I18n.MSG_13720_REGISTRING, schemaObject.getObjectType(), schemaObject.getOid() ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13720_REGISTRING, schemaObject.getObjectType(), schemaObject.getOid() ) );
+        }
 
         // Check that the SchemaObject is not already registered
         if ( !( schemaObject instanceof LoadableSchemaObject ) && globalOidRegistry.contains( schemaObject.getOid() ) )
@@ -1629,7 +1640,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     public void associateWithSchema( List<Throwable> errors, SchemaObject schemaObject )
     {
-        LOG.debug( I18n.msg( I18n.MSG_13720_REGISTRING, schemaObject.getObjectType(), schemaObject.getOid() ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13720_REGISTRING, schemaObject.getObjectType(), schemaObject.getOid() ) );
+        }
 
         // Check that the SchemaObject is not already registered
         if ( !( schemaObject instanceof LoadableSchemaObject ) && globalOidRegistry.contains( schemaObject.getOid() ) )
@@ -1659,8 +1673,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
         {
             // Already present !
             // What should we do ?
-            LOG.info( I18n.msg( I18n.MSG_13719_REGISTRING_FAILED_ALREADY_PRESENT,
-                schemaObject.getObjectType(), schemaObject.getOid() ) );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.msg( I18n.MSG_13719_REGISTRING_FAILED_ALREADY_PRESENT,
+                    schemaObject.getObjectType(), schemaObject.getOid() ) );
+            }
         }
         else
         {
@@ -1682,7 +1699,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 }
             }
 
-            LOG.debug( I18n.msg( I18n.MSG_13731_REGISTRED_FOR_OID, schemaObject.getName(), schemaObject.getOid() ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_13731_REGISTRED_FOR_OID, schemaObject.getName(), schemaObject.getOid() ) );
+            }
         }
     }
 
@@ -1698,7 +1718,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
     public void dissociateFromSchema( List<Throwable> errors, SchemaObject schemaObject ) throws LdapException
     {
-        LOG.debug( I18n.msg( I18n.MSG_13741_UNREGISTRING, schemaObject.getObjectType(), schemaObject.getOid() ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13741_UNREGISTRING, schemaObject.getObjectType(), schemaObject.getOid() ) );
+        }
 
         // Check that the SchemaObject is already registered
         if ( !( schemaObject instanceof LoadableSchemaObject ) && !globalOidRegistry.contains( schemaObject.getOid() ) )
@@ -1723,8 +1746,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
         {
             // Not present !
             // What should we do ?
-            LOG.info( I18n.msg( I18n.MSG_13739_UNREGISTERED_FAILED_NOT_PRESENT, schemaObject.getObjectType(),
-                schemaObject.getOid() ) );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.msg( I18n.MSG_13739_UNREGISTERED_FAILED_NOT_PRESENT, schemaObject.getObjectType(),
+                    schemaObject.getOid() ) );
+            }
         }
         else
         {
@@ -1746,7 +1772,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 }
             }
 
-            LOG.debug( I18n.msg( I18n.MSG_13737_UNREGISTERED_FOR_OID, schemaObject.getName(), schemaObject.getOid() ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_13737_UNREGISTERED_FOR_OID, schemaObject.getName(), schemaObject.getOid() ) );
+            }
         }
     }
 
@@ -1759,7 +1788,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     private SchemaObject unregister( List<Throwable> errors, SchemaObject schemaObject ) throws LdapException
     {
-        LOG.debug( I18n.msg( I18n.MSG_13741_UNREGISTRING, schemaObject.getObjectType(), schemaObject.getOid() ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13741_UNREGISTRING, schemaObject.getObjectType(), schemaObject.getOid() ) );
+        }
 
         // Check that the SchemaObject is present in the registries
         if ( !( schemaObject instanceof LoadableSchemaObject ) && !globalOidRegistry.contains( schemaObject.getOid() ) )
@@ -1855,14 +1887,20 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     globalOidRegistry.unregister( schemaObject.getOid() );
                 }
 
-                LOG.debug( I18n.msg( I18n.MSG_13738_UNREGISTERED, schemaObject.getObjectType(), schemaObject.getOid() ) );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_13738_UNREGISTERED, schemaObject.getObjectType(), schemaObject.getOid() ) );
+                }
             }
             else
             {
                 // Not present !!
                 // What should we do ?
-                LOG.debug( I18n.msg( I18n.MSG_13740_UNREGISTERED_FAILED_NOT_FOUND, schemaObject.getObjectType() ),
-                    schemaObject.getOid() );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_13740_UNREGISTERED_FAILED_NOT_FOUND, schemaObject.getObjectType() ),
+                        schemaObject.getOid() );
+                }
             }
         }
     }
@@ -2218,8 +2256,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // Check the references : Syntax -> SyntaxChecker
         if ( !using.containsKey( referenceWrapper ) )
         {
-            LOG.debug( 
-                I18n.msg( I18n.MSG_13730_SYN_DOES_NOT_REFERENCE, reference.getObjectType(), reference.getOid(), message ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( 
+                    I18n.msg( I18n.MSG_13730_SYN_DOES_NOT_REFERENCE, reference.getObjectType(), reference.getOid(), message ) );
+            }
 
             return false;
         }
@@ -2228,7 +2269,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         if ( !usings.contains( refereeWrapper ) )
         {
-            LOG.debug( I18n.msg( I18n.MSG_13732_NOT_REFERENCE_ANY, reference.getObjectType(), reference.getOid(), message ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_13732_NOT_REFERENCE_ANY, reference.getObjectType(), reference.getOid(), message ) );
+            }
 
             return false;
         }
@@ -2236,7 +2280,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // Check the referees : SyntaxChecker -> Syntax
         if ( !usedBy.containsKey( refereeWrapper ) )
         {
-            LOG.debug( I18n.msg( I18n.MSG_13733_NOT_REFERENCED_BY_ANY, referee.getObjectType(), referee.getOid(), message ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_13733_NOT_REFERENCED_BY_ANY, referee.getObjectType(), referee.getOid(), message ) );
+            }
 
             return false;
         }
@@ -2245,7 +2292,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         if ( !used.contains( referenceWrapper ) )
         {
-            LOG.debug( I18n.msg( I18n.MSG_13733_NOT_REFERENCED_BY_ANY, referee.getObjectType(), referee.getOid(), message ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_13733_NOT_REFERENCED_BY_ANY, referee.getObjectType(), referee.getOid(), message ) );
+            }
 
             return false;
         }
@@ -2262,22 +2312,31 @@ public class Registries implements SchemaLoaderListener, Cloneable
     public boolean check()
     {
         // Check the Syntaxes : check for a SyntaxChecker
-        LOG.debug( I18n.msg( I18n.MSG_13717_CHECKING_SYNTAXES ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13717_CHECKING_SYNTAXES ) );
+        }
 
         for ( LdapSyntax syntax : ldapSyntaxRegistry )
         {
             // Check that each Syntax has a SyntaxChecker
             if ( syntax.getSyntaxChecker() == null )
             {
-                LOG.debug( I18n.msg( I18n.MSG_13729_SYN_WITH_NO_SYNTAX_CHECKER, syntax ) );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_13729_SYN_WITH_NO_SYNTAX_CHECKER, syntax ) );
+                }
 
                 return false;
             }
 
             if ( !syntaxCheckerRegistry.contains( syntax.getSyntaxChecker().getOid() ) )
             {
-                LOG.debug( I18n.msg( I18n.MSG_13713_CANT_FIND_SC_FOR_SYN, syntax.getSyntaxChecker().getOid(),
-                    syntax ) );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_13713_CANT_FIND_SC_FOR_SYN, syntax.getSyntaxChecker().getOid(),
+                        syntax ) );
+                }
 
                 return false;
             }
@@ -2290,14 +2349,20 @@ public class Registries implements SchemaLoaderListener, Cloneable
         }
 
         // Check the MatchingRules : check for a Normalizer, a Comparator and a Syntax
-        LOG.debug( I18n.msg( I18n.MSG_13715_CHECKING_MATCHING_RULES ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13715_CHECKING_MATCHING_RULES ) );
+        }
 
         for ( MatchingRule matchingRule : matchingRuleRegistry )
         {
             // Check that each MatchingRule has a Normalizer
             if ( matchingRule.getNormalizer() == null )
             {
-                LOG.debug( I18n.msg( I18n.MSG_13727_MR_WITH_NO_NORMALIZER, matchingRule ) );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_13727_MR_WITH_NO_NORMALIZER, matchingRule ) );
+                }
 
                 return false;
             }
@@ -2305,8 +2370,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
             // Check that each MatchingRule has a Normalizer
             if ( !normalizerRegistry.contains( matchingRule.getNormalizer().getOid() ) )
             {
-                LOG.debug( I18n.msg( I18n.MSG_13709_CANT_FIND_NORM_FOR_MR, matchingRule.getNormalizer()
-                    .getOid(), matchingRule ) );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_13709_CANT_FIND_NORM_FOR_MR, matchingRule.getNormalizer()
+                        .getOid(), matchingRule ) );
+                }
 
                 return false;
             }
@@ -2314,15 +2382,21 @@ public class Registries implements SchemaLoaderListener, Cloneable
             // Check that each MatchingRule has a Comparator
             if ( matchingRule.getLdapComparator() == null )
             {
-                LOG.debug( I18n.msg( I18n.MSG_13726_MR_WITH_NO_COMPARATOR, matchingRule ) );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_13726_MR_WITH_NO_COMPARATOR, matchingRule ) );
+                }
 
                 return false;
             }
 
             if ( !comparatorRegistry.contains( matchingRule.getLdapComparator().getOid() ) )
             {
-                LOG.debug( I18n.msg( I18n.MSG_13707_CANT_FIND_AT_FOR_MR, matchingRule.getLdapComparator().getOid(), 
-                    matchingRule ) );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_13707_CANT_FIND_AT_FOR_MR, matchingRule.getLdapComparator().getOid(), 
+                        matchingRule ) );
+                } 
 
                 return false;
             }
@@ -2330,16 +2404,22 @@ public class Registries implements SchemaLoaderListener, Cloneable
             // Check that each MatchingRule has a Syntax
             if ( matchingRule.getSyntax() == null )
             {
-                LOG.debug( I18n.msg( I18n.MSG_13728_MR_WITH_NO_SYNTAX, matchingRule ) );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_13728_MR_WITH_NO_SYNTAX, matchingRule ) );
+                }
 
                 return false;
             }
 
             if ( !ldapSyntaxRegistry.contains( matchingRule.getSyntax().getOid() ) )
             {
-                LOG.debug( I18n.msg( I18n.MSG_13712_CANT_FIND_SYN_FOR_MR, matchingRule.getSyntax().getOid(),
-                    matchingRule ) );
-
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_13712_CANT_FIND_SYN_FOR_MR, matchingRule.getSyntax().getOid(),
+                        matchingRule ) );
+                }
+                    
                 return false;
             }
 
@@ -2363,7 +2443,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
         }
 
         // Check the ObjectClasses : check for MAY, MUST, SUPERIORS
-        LOG.debug( I18n.msg( I18n.MSG_13716_CHECKING_OBJECT_CLASSES ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13716_CHECKING_OBJECT_CLASSES ) );
+        }
 
         for ( ObjectClass objectClass : objectClassRegistry )
         {
@@ -2374,7 +2457,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 {
                     if ( !attributeTypeRegistry.contains( may.getOid() ) )
                     {
-                        LOG.debug( I18n.msg( I18n.MSG_13705_CANT_FIND_AT_IN_MAY, may, objectClass ) );
+                        if ( LOG.isDebugEnabled() )
+                        {
+                            LOG.debug( I18n.msg( I18n.MSG_13705_CANT_FIND_AT_IN_MAY, may, objectClass ) );
+                        }
 
                         return false;
                     }
@@ -2394,7 +2480,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 {
                     if ( !attributeTypeRegistry.contains( must.getOid() ) )
                     {
-                        LOG.debug( I18n.msg( I18n.MSG_13706_CANT_FIND_AT_IN_MUST, must, objectClass ) );
+                        if ( LOG.isDebugEnabled() )
+                        {
+                            LOG.debug( I18n.msg( I18n.MSG_13706_CANT_FIND_AT_IN_MUST, must, objectClass ) );
+                        }
 
                         return false;
                     }
@@ -2414,7 +2503,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 {
                     if ( !objectClassRegistry.contains( objectClass.getOid() ) )
                     {
-                        LOG.debug( I18n.msg( I18n.MSG_13710_CANT_FIND_OC_WITH_SUPERIOR, superior, objectClass ) );
+                        if ( LOG.isDebugEnabled() )
+                        {
+                            LOG.debug( I18n.msg( I18n.MSG_13710_CANT_FIND_OC_WITH_SUPERIOR, superior, objectClass ) );
+                        }
 
                         return false;
                     }
@@ -2429,22 +2521,31 @@ public class Registries implements SchemaLoaderListener, Cloneable
         }
 
         // Check the AttributeTypes : check for MatchingRules, Syntaxes
-        LOG.debug( I18n.msg( I18n.MSG_13714_CHECKING_ATTRIBUTE_TYPES ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13714_CHECKING_ATTRIBUTE_TYPES ) );
+        }
 
         for ( AttributeType attributeType : attributeTypeRegistry )
         {
             // Check that each AttributeType has a SYNTAX
             if ( attributeType.getSyntax() == null )
             {
-                LOG.debug( I18n.msg( I18n.MSG_13725_AT_WITH_NO_SYNTAX, attributeType ) );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_13725_AT_WITH_NO_SYNTAX, attributeType ) );
+                }
 
                 return false;
             }
 
             if ( !ldapSyntaxRegistry.contains( attributeType.getSyntax().getOid() ) )
             {
-                LOG.debug( I18n.msg( I18n.MSG_13711_CANT_FIND_SYN_FOR_AT, attributeType.getSyntax().getOid(),
-                    attributeType ) );
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_13711_CANT_FIND_SYN_FOR_AT, attributeType.getSyntax().getOid(),
+                        attributeType ) );
+                }
 
                 return false;
             }
@@ -2460,8 +2561,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
             {
                 if ( !matchingRuleRegistry.contains( attributeType.getEquality().getOid() ) )
                 {
-                    LOG.debug( I18n.msg( I18n.MSG_13708_CANT_FIND_MR_FOR_AT, attributeType.getEquality()
-                        .getOid(), attributeType ) );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( I18n.msg( I18n.MSG_13708_CANT_FIND_MR_FOR_AT, attributeType.getEquality()
+                            .getOid(), attributeType ) );
+                    }
 
                     return false;
                 }
@@ -2478,8 +2582,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
             {
                 if ( !matchingRuleRegistry.contains( attributeType.getOrdering().getOid() ) )
                 {
-                    LOG.debug( I18n.msg( I18n.MSG_13708_CANT_FIND_MR_FOR_AT, attributeType.getOrdering()
-                        .getOid(), attributeType ) );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( I18n.msg( I18n.MSG_13708_CANT_FIND_MR_FOR_AT, attributeType.getOrdering()
+                            .getOid(), attributeType ) );
+                    }
 
                     return false;
                 }
@@ -2496,8 +2603,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
             {
                 if ( !matchingRuleRegistry.contains( attributeType.getSubstring().getOid() ) )
                 {
-                    LOG.debug( I18n.msg( I18n.MSG_13708_CANT_FIND_MR_FOR_AT, attributeType.getSubstring()
-                        .getOid(), attributeType ) );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( I18n.msg( I18n.MSG_13708_CANT_FIND_MR_FOR_AT, attributeType.getSubstring()
+                            .getOid(), attributeType ) );
+                    }
 
                     return false;
                 }
@@ -2516,7 +2626,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
                 if ( !attributeTypeRegistry.contains( superior.getOid() ) )
                 {
-                    LOG.debug( I18n.msg( I18n.MSG_13704_CANT_FIND_AT_WITH_SUPERIOR, superior, attributeType ) );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( I18n.msg( I18n.MSG_13704_CANT_FIND_AT_WITH_SUPERIOR, superior, attributeType ) );
+                    }
 
                     return false;
                 }

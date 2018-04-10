@@ -99,7 +99,10 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
     @Override
     public void bind( String name ) throws LdapException
     {
-        LOG.debug( "Bind request : {}", name );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "Bind request : {}", name );
+        }
 
         bind( new Dn( schemaManager, name ), null );
     }

@@ -76,7 +76,11 @@ public final class SchemaToLdif
         // Bypass if no schemas have yet been defined 
         if ( ( schemas == null ) || schemas.isEmpty() )
         {
-            LOG.warn( I18n.msg( I18n.MSG_15000_NO_SCHEMA_DEFINED ) );
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( I18n.msg( I18n.MSG_15000_NO_SCHEMA_DEFINED ) );
+            }
+            
             return;
         }
 
@@ -100,7 +104,11 @@ public final class SchemaToLdif
         {
             try
             {
-                LOG.info( I18n.msg( I18n.MSG_15001_GENERATING_SCHEMA, schema.getName() ) );
+                if ( LOG.isInfoEnabled() )
+                {
+                    LOG.info( I18n.msg( I18n.MSG_15001_GENERATING_SCHEMA, schema.getName() ) );
+                }
+                
                 generate( schema );
             }
             catch ( Exception e )

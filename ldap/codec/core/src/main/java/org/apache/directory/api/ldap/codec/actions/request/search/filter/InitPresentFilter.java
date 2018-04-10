@@ -42,10 +42,6 @@ public class InitPresentFilter extends GrammarAction<LdapMessageContainer<Search
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitPresentFilter.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new init present filter action.
      */
@@ -88,7 +84,7 @@ public class InitPresentFilter extends GrammarAction<LdapMessageContainer<Search
         // not terminal.
         searchRequestDecorator.unstackFilters( container );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Initialize Present filter" );
         }

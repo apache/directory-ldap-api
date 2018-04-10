@@ -42,10 +42,6 @@ public class InitSubstringsFilter extends GrammarAction<LdapMessageContainer<Sea
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitSubstringsFilter.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new init substrings filter action.
      */
@@ -79,7 +75,7 @@ public class InitSubstringsFilter extends GrammarAction<LdapMessageContainer<Sea
         searchRequestDecorator.addCurrentFilter( substringFilter );
         searchRequestDecorator.setTerminalFilter( substringFilter );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Initialize Substrings filter" );
         }

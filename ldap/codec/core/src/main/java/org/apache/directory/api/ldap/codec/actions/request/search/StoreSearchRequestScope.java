@@ -54,10 +54,6 @@ public class StoreSearchRequestScope extends GrammarAction<LdapMessageContainer<
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreSearchRequestScope.class );
 
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-
     /**
      * Instantiates a new action.
      */
@@ -94,7 +90,7 @@ public class StoreSearchRequestScope extends GrammarAction<LdapMessageContainer<
 
         searchRequest.setScope( SearchScope.getSearchScope( scope ) );
 
-        if ( IS_DEBUG )
+        if ( LOG.isDebugEnabled() )
         {
             switch ( scope )
             {

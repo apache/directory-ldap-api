@@ -1410,7 +1410,10 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     {
         if ( ( lines == null ) || lines.isEmpty() )
         {
-            LOG.debug( I18n.msg( I18n.MSG_13408_END_OF_LDIF ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_13408_END_OF_LDIF ) );
+            }
 
             return null;
         }
@@ -1569,12 +1572,19 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
         if ( type == LDIF_ENTRY )
         {
-            LOG.debug( I18n.msg( I18n.MSG_13406_READ_ENTRY, entry ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_13406_READ_ENTRY, entry ) );
+            }
         }
         else if ( type == CHANGE )
         {
             entry.setChangeType( operation );
-            LOG.debug( I18n.msg( I18n.MSG_13404_READ_MODIF, entry ) );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_13404_READ_MODIF, entry ) );
+            }
         }
         else
         {
@@ -1601,7 +1611,11 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
         if ( lines.isEmpty() )
         {
-            LOG.warn( I18n.msg( I18n.MSG_13414_LDIF_FILE_EMPTY ) );
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( I18n.msg( I18n.MSG_13414_LDIF_FILE_EMPTY ) );
+            }
+            
             return ver;
         }
 
@@ -1637,7 +1651,10 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                 throw new LdapLdifException( I18n.err( I18n.ERR_13462_LDIF_PARSING_ERROR ), nfe );
             }
 
-            LOG.debug( I18n.msg( I18n.MSG_13400_LDIF_VERSION, versionNumber ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_13400_LDIF_VERSION, versionNumber ) );
+            }
 
             // We have found the version, just discard the line from the list
             lines.remove( 0 );
@@ -1655,7 +1672,10 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         }
         else
         {
-            LOG.info( I18n.msg( I18n.MSG_13413_NO_VERSION_ASSUMING_1 ) );
+            if ( LOG.isInfoEnabled() )
+            {
+                LOG.info( I18n.msg( I18n.MSG_13413_NO_VERSION_ASSUMING_1 ) );
+            }
         }
 
         return ver;
@@ -1846,7 +1866,10 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      */
     public List<LdifEntry> parseLdif( String ldif ) throws LdapLdifException
     {
-        LOG.debug( I18n.msg( I18n.MSG_13407_STARTS_PARSING_LDIF ) );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_13407_STARTS_PARSING_LDIF ) );
+        }
 
         if ( Strings.isEmpty( ldif ) )
         {
@@ -1892,7 +1915,10 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     {
         try
         {
-            LOG.debug( I18n.msg( I18n.MSG_13411_NEXT_CALLED ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_13411_NEXT_CALLED ) );
+            }
 
             LdifEntry entry = prefetched;
             readLines();
@@ -1911,7 +1937,10 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                 throw new NoSuchElementException( le.getMessage() );
             }
 
-            LOG.debug( I18n.msg( I18n.MSG_13412_NEXT_RETURNING_LDIF, entry ) );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_13412_NEXT_RETURNING_LDIF, entry ) );
+            }
 
             return entry;
         }
@@ -1964,13 +1993,16 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      */
     public boolean hasNext()
     {
-        if ( prefetched != null )
+        if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( I18n.msg( I18n.MSG_13410_HAS_NEXT_TRUE ) );
-        }
-        else
-        {
-            LOG.debug( I18n.msg( I18n.MSG_13409_HAS_NEXT_FALSE ) );
+            if ( prefetched != null )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_13410_HAS_NEXT_TRUE ) );
+            }
+            else
+            {
+                LOG.debug( I18n.msg( I18n.MSG_13409_HAS_NEXT_FALSE ) );
+            }
         }
 
         return hasNextInternal();

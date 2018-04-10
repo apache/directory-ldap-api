@@ -48,9 +48,6 @@ public final class SortRequestGrammar extends AbstractGrammar<SortRequestContain
     /** The logger */
     static final Logger LOG = LoggerFactory.getLogger( SortRequestGrammar.class );
 
-    /** Speedup for logs */
-    static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     /** The instance of grammar. SortRequestGrammar is a singleton */
     private static Grammar<SortRequestContainer> instance = new SortRequestGrammar();
 
@@ -69,7 +66,8 @@ public final class SortRequestGrammar extends AbstractGrammar<SortRequestContain
                 BerValue value = container.getCurrentTLV().getValue();
 
                 String atDesc = Strings.utf8ToString( value.getData() );
-                if ( IS_DEBUG )
+                
+                if ( LOG.isDebugEnabled() )
                 {
                     LOG.debug( "AttributeTypeDesc = " + atDesc );
                 }
@@ -94,7 +92,7 @@ public final class SortRequestGrammar extends AbstractGrammar<SortRequestContain
                 {
                     boolean reverseOrder = BooleanDecoder.parse( value );
 
-                    if ( IS_DEBUG )
+                    if ( LOG.isDebugEnabled() )
                     {
                         LOG.debug( "ReverseOrder = " + reverseOrder );
                     }
@@ -144,7 +142,7 @@ public final class SortRequestGrammar extends AbstractGrammar<SortRequestContain
 
                         String matchingRuleOid = Strings.utf8ToString( value.getData() );
 
-                        if ( IS_DEBUG )
+                        if ( LOG.isDebugEnabled() )
                         {
                             LOG.debug( "MatchingRuleOid = " + matchingRuleOid );
                         }

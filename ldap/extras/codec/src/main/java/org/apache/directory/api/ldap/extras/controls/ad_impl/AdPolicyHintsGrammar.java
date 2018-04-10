@@ -37,8 +37,6 @@ public final class AdPolicyHintsGrammar extends AbstractGrammar<AdPolicyHintsCon
 {
     static final Logger LOG = LoggerFactory.getLogger( AdPolicyHintsGrammar.class );
 
-    static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
     private static Grammar<?> instance = new AdPolicyHintsGrammar();
 
 
