@@ -609,7 +609,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
+            throw new EncoderException( I18n.err( I18n.ERR_08212_PDU_BUFFER_TOO_SMALL ), boe );
         }
 
         return buffer;

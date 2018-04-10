@@ -119,7 +119,7 @@ public final class CancelGrammar extends AbstractGrammar<CancelContainer>
 
                             if ( LOG.isDebugEnabled() )
                             {
-                                LOG.debug( "CancelId = " + cancelId );
+                                LOG.debug( I18n.msg( I18n.MSG_08200_CANCEL_ID, cancelId ) );
                             }
 
                             cancelContainer.getCancel().setCancelId( cancelId );
@@ -127,7 +127,7 @@ public final class CancelGrammar extends AbstractGrammar<CancelContainer>
                         }
                         catch ( IntegerDecoderException ide )
                         {
-                            String msg = I18n.err( I18n.ERR_04031, Strings.dumpBytes( value.getData() ) );
+                            String msg = I18n.err( I18n.ERR_08200_CANCELID_DECODING_FAILED, Strings.dumpBytes( value.getData() ) );
                             LOG.error( msg );
                             throw new DecoderException( msg, ide );
                         }

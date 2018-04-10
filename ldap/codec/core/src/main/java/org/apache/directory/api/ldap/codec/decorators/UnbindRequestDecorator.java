@@ -128,7 +128,7 @@ public class UnbindRequestDecorator extends RequestDecorator<UnbindRequest> impl
         }
         catch ( BufferOverflowException boe )
         {
-            String msg = I18n.err( I18n.ERR_04005 );
+            String msg = I18n.err( I18n.ERR_08212_PDU_BUFFER_TOO_SMALL );
             throw new EncoderException( msg, boe );
         }
 

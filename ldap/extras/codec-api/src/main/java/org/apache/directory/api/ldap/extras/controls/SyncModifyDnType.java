@@ -20,6 +20,7 @@
 
 package org.apache.directory.api.ldap.extras.controls;
 
+import org.apache.directory.api.i18n.I18n;
 
 /**
  * The type of MODDN modification. One of MOVE, RENAME or MOVE_AND_RENAME
@@ -78,7 +79,7 @@ public enum SyncModifyDnType
                 return MOVE_AND_RENAME;
 
             default:
-                throw new IllegalArgumentException( "unknown modify dn operantion type " + value );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_9101_UNKNOWN_MODIFY_DN_OP_TYPE, value ) );
         }
     }
 }

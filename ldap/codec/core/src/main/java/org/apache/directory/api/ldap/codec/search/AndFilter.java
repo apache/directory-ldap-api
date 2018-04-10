@@ -109,7 +109,7 @@ public class AndFilter extends ConnectorFilter
     {
         if ( buffer == null )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04023 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_08000_CANNOT_PUT_A_PDU_IN_NULL_BUFFER ) );
         }
 
         try
@@ -120,7 +120,7 @@ public class AndFilter extends ConnectorFilter
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
+            throw new EncoderException( I18n.err( I18n.ERR_08212_PDU_BUFFER_TOO_SMALL ), boe );
         }
 
         super.encode( buffer );

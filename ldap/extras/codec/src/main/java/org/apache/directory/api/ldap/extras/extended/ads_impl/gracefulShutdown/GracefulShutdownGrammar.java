@@ -123,7 +123,7 @@ public final class GracefulShutdownGrammar extends AbstractGrammar<GracefulShutd
 
                             if ( LOG.isDebugEnabled() )
                             {
-                                LOG.debug( "Time Offline = " + timeOffline );
+                                LOG.debug( I18n.msg( I18n.MSG_08216_TIME_OFFLINE, timeOffline ) );
                             }
 
                             container.getGracefulShutdownRequest().setTimeOffline( timeOffline );
@@ -131,7 +131,7 @@ public final class GracefulShutdownGrammar extends AbstractGrammar<GracefulShutd
                         }
                         catch ( IntegerDecoderException ide )
                         {
-                            String msg = I18n.err( I18n.ERR_04037, Strings.dumpBytes( value.getData() ) );
+                            String msg = I18n.err( I18n.ERR_08206_TIME_OFFLINE_DECODING_FAILED, Strings.dumpBytes( value.getData() ) );
                             LOG.error( msg );
                             throw new DecoderException( msg, ide );
                         }
@@ -165,7 +165,7 @@ public final class GracefulShutdownGrammar extends AbstractGrammar<GracefulShutd
 
                             if ( LOG.isDebugEnabled() )
                             {
-                                LOG.debug( "Delay = " + delay );
+                                LOG.debug( I18n.msg( I18n.MSG_08204_DELAY, delay ) );
                             }
 
                             container.getGracefulShutdownRequest().setDelay( delay );
@@ -173,7 +173,7 @@ public final class GracefulShutdownGrammar extends AbstractGrammar<GracefulShutd
                         }
                         catch ( IntegerDecoderException ide )
                         {
-                            String msg = I18n.err( I18n.ERR_04036, Strings.dumpBytes( value.getData() ) );
+                            String msg = I18n.err( I18n.ERR_08205_CANNOT_DECODE_DELAY, Strings.dumpBytes( value.getData() ) );
                             LOG.error( msg );
                             throw new DecoderException( msg, ide );
                         }
@@ -209,7 +209,7 @@ public final class GracefulShutdownGrammar extends AbstractGrammar<GracefulShutd
 
                             if ( LOG.isDebugEnabled() )
                             {
-                                LOG.debug( "Delay = " + delay );
+                                LOG.debug( I18n.msg( I18n.MSG_08204_DELAY, delay ) );
                             }
 
                             gracefulShutdownContainer.getGracefulShutdownRequest().setDelay( delay );
@@ -217,7 +217,7 @@ public final class GracefulShutdownGrammar extends AbstractGrammar<GracefulShutd
                         }
                         catch ( IntegerDecoderException ide )
                         {
-                            String msg = I18n.err( I18n.ERR_04036, Strings.dumpBytes( value.getData() ) );
+                            String msg = I18n.err( I18n.ERR_08205_CANNOT_DECODE_DELAY, Strings.dumpBytes( value.getData() ) );
                             LOG.error( msg );
                             throw new DecoderException( msg, ide );
                         }

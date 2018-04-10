@@ -62,7 +62,7 @@ public class CheckLengthNotNull extends GrammarAction<LdapMessageContainer<Messa
         // The Length should be null
         if ( expectedLength == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04096_NULL_CONTROL_LENGTH );
+            String msg = I18n.err( I18n.ERR_08213_NULL_CONTROL_LENGTH );
             LOG.error( msg );
 
             // This will generate a PROTOCOL_ERROR

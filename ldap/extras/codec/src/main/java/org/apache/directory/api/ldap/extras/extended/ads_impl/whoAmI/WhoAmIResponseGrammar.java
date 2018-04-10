@@ -26,6 +26,7 @@ import org.apache.directory.api.asn1.ber.grammar.Grammar;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.grammar.GrammarTransition;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIResponseImpl;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
@@ -98,7 +99,7 @@ public class WhoAmIResponseGrammar extends AbstractGrammar<WhoAmIResponseContain
                                     // Error
                                 case 1:
                                     // Error
-                                    String msg = "authzId too short. Must starts with either u: or dn:";
+                                    String msg = I18n.err( I18n.ERR_08226_AUTHZID_TOO_SHORT_MISSING_U_OR_DN );
                                     LOG.error( msg );
                                     throw new DecoderException( msg );
 
@@ -110,7 +111,7 @@ public class WhoAmIResponseGrammar extends AbstractGrammar<WhoAmIResponseContain
                                     }
                                     else
                                     {
-                                        msg = "authzId Must starts with either u: or dn:, it starts with " + Strings.utf8ToString( data );
+                                        msg = I18n.err( I18n.ERR_08227_AUTHZID_MUST_START_WITH_U_OR_DN, Strings.utf8ToString( data ) );
                                         LOG.error( msg );
                                         throw new DecoderException( msg );
                                     }
@@ -128,7 +129,7 @@ public class WhoAmIResponseGrammar extends AbstractGrammar<WhoAmIResponseContain
                                             }
                                             else
                                             {
-                                                msg = "authzId Must starts with either u: or dn:, it starts with " + Strings.utf8ToString( data );
+                                                msg = I18n.err( I18n.ERR_08227_AUTHZID_MUST_START_WITH_U_OR_DN, Strings.utf8ToString( data ) );
                                                 LOG.error( msg );
                                                 throw new DecoderException( msg );
                                             }
@@ -154,14 +155,14 @@ public class WhoAmIResponseGrammar extends AbstractGrammar<WhoAmIResponseContain
                                                 }
                                                 else
                                                 {
-                                                    msg = "authzId Must starts with either u: or dn:, it starts with " + Strings.utf8ToString( data );
+                                                    msg = I18n.err( I18n.ERR_08227_AUTHZID_MUST_START_WITH_U_OR_DN, Strings.utf8ToString( data ) );
                                                     LOG.error( msg );
                                                     throw new DecoderException( msg );
                                                 }
                                             }
                                             else
                                             {
-                                                msg = "authzId Must starts with either u: or dn:, it starts with " + Strings.utf8ToString( data );
+                                                msg = I18n.err( I18n.ERR_08227_AUTHZID_MUST_START_WITH_U_OR_DN, Strings.utf8ToString( data ) );
                                                 LOG.error( msg );
                                                 throw new DecoderException( msg );
                                             }
@@ -169,7 +170,7 @@ public class WhoAmIResponseGrammar extends AbstractGrammar<WhoAmIResponseContain
                                             break;
 
                                         default :
-                                            msg = "authzId Must starts with either u: or dn:, it starts with " + Strings.utf8ToString( data );
+                                            msg = I18n.err( I18n.ERR_08227_AUTHZID_MUST_START_WITH_U_OR_DN, Strings.utf8ToString( data ) );
                                             LOG.error( msg );
                                             throw new DecoderException( msg );
                                     }

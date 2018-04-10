@@ -258,7 +258,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     {
         if ( buffer == null )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04023 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_08000_CANNOT_PUT_A_PDU_IN_NULL_BUFFER ) );
         }
 
         if ( decoratedLdapResult.isDefaultSuccess() )
@@ -276,7 +276,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
+            throw new EncoderException( I18n.err( I18n.ERR_08212_PDU_BUFFER_TOO_SMALL ), boe );
         }
 
         // The matchedDN

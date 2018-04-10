@@ -42,10 +42,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class StoredProcedureGrammar extends AbstractGrammar<StoredProcedureContainer>
 {
-    //~ Static fields/initializers -----------------------------------------------------------------
-
     /** The logger */
-    //private static final Logger log = LoggerFactory.getLogger( StoredProcedureGrammar.class );
     static final Logger LOG = LoggerFactory.getLogger( StoredProcedureGrammar.class );
 
     /** The instance of grammar. StoredProcedureGrammar is a singleton. */
@@ -103,7 +100,7 @@ public final class StoredProcedureGrammar extends AbstractGrammar<StoredProcedur
                         if ( tlv.getLength() == 0 )
                         {
                             // We can't have a void language !
-                            String msg = I18n.err( I18n.ERR_04038 );
+                            String msg = I18n.err( I18n.ERR_08207_SP_LANGUAGE_NULL );
                             LOG.error( msg );
                             throw new DecoderException( msg );
                         }
@@ -114,7 +111,7 @@ public final class StoredProcedureGrammar extends AbstractGrammar<StoredProcedur
 
                             if ( LOG.isDebugEnabled() )
                             {
-                                LOG.debug( "SP language found: " + language );
+                                LOG.debug( I18n.msg( I18n.MSG_08213_SP_LANGUAGE_FOUND, language ) );
                             }
 
                             storedProcedure.setLanguage( language );
@@ -141,7 +138,7 @@ public final class StoredProcedureGrammar extends AbstractGrammar<StoredProcedur
                         if ( tlv.getLength() == 0 )
                         {
                             // We can't have a void procedure !
-                            String msg = I18n.err( I18n.ERR_04039 );
+                            String msg = I18n.err( I18n.ERR_08208_NULL_PROCEDURE );
                             LOG.error( msg );
                             throw new DecoderException( msg );
                         }
@@ -154,7 +151,7 @@ public final class StoredProcedureGrammar extends AbstractGrammar<StoredProcedur
 
                         if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "Procedure found : " + storedProcedure.getProcedureSpecification() );
+                            LOG.debug( I18n.msg( I18n.MSG_08212_PROCEDURE_FOUND, storedProcedure.getProcedureSpecification() ) );
                         }
                     }
                 } );
@@ -204,7 +201,7 @@ public final class StoredProcedureGrammar extends AbstractGrammar<StoredProcedur
                         if ( tlv.getLength() == 0 )
                         {
                             // We can't have a void parameter type !
-                            String msg = I18n.err( I18n.ERR_04040 );
+                            String msg = I18n.err( I18n.ERR_08209_NULL_PARAMETER_TYPE );
                             LOG.error( msg );
                             throw new DecoderException( msg );
                         }
@@ -221,7 +218,7 @@ public final class StoredProcedureGrammar extends AbstractGrammar<StoredProcedur
 
                             if ( LOG.isDebugEnabled() )
                             {
-                                LOG.debug( "Parameter type found : " + Strings.dumpBytes( parameterType ) );
+                                LOG.debug( I18n.msg( I18n.MSG_08210_PARAMETER_TYPE_FOUND, Strings.dumpBytes( parameterType ) ) );
                             }
 
                         }
@@ -251,7 +248,7 @@ public final class StoredProcedureGrammar extends AbstractGrammar<StoredProcedur
                         if ( tlv.getLength() == 0 )
                         {
                             // We can't have a void parameter value !
-                            String msg = I18n.err( I18n.ERR_04041 );
+                            String msg = I18n.err( I18n.ERR_08210_NULL_PARAMETER_VALUE );
                             LOG.error( msg );
                             throw new DecoderException( msg );
                         }
@@ -269,12 +266,12 @@ public final class StoredProcedureGrammar extends AbstractGrammar<StoredProcedur
 
                                 if ( LOG.isDebugEnabled() )
                                 {
-                                    LOG.debug( "Parameter value found : " + Strings.dumpBytes( parameterValue ) );
+                                    LOG.debug( I18n.msg( I18n.MSG_08211_PARAMETER_VALUE_FOUND, Strings.dumpBytes( parameterValue ) ) );
                                 }
                             }
                             else
                             {
-                                String msg = I18n.err( I18n.ERR_04042 );
+                                String msg = I18n.err( I18n.ERR_08211_EMPTY_PARAMETER_VALUE );
                                 LOG.error( msg );
                                 throw new DecoderException( msg );
                             }

@@ -110,7 +110,7 @@ public enum SyncStateTypeEnum
             return MODDN;
         }
 
-        throw new IllegalArgumentException( I18n.err( I18n.ERR_04163, value ) );
+        throw new IllegalArgumentException( I18n.err( I18n.ERR_9103_UNKNOWN_SYNC_STATE_TYPE, value ) );
     }
 
 }

@@ -126,12 +126,14 @@ public class TriggerSpecificationParser
         }
         catch ( TokenStreamException e )
         {
-            String msg = I18n.err( I18n.ERR_04333, spec, e.getLocalizedMessage() );
+            String msg = I18n.err( I18n.ERR_11002_TRIGGER_SPECIFICATION_PARSER_FAILURE, spec, e.getLocalizedMessage() );
+            
             throw new ParseException( msg, 0 );
         }
         catch ( RecognitionException e )
         {
-            String msg = I18n.err( I18n.ERR_04333, spec, e.getLocalizedMessage() );
+            String msg = I18n.err( I18n.ERR_11002_TRIGGER_SPECIFICATION_PARSER_FAILURE, spec, e.getLocalizedMessage() );
+            
             throw new ParseException( msg, e.getColumn() );
         }
 

@@ -83,7 +83,7 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
 
                     if ( LOG.isDebugEnabled() )
                     {
-                        LOG.debug( "Delay = " + delay );
+                        LOG.debug( I18n.msg( I18n.MSG_08204_DELAY, delay ) );
                     }
 
                     container.getGracefulDisconnectResponse().setDelay( delay );
@@ -91,7 +91,7 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
                 }
                 catch ( IntegerDecoderException ide )
                 {
-                    String msg = I18n.err( I18n.ERR_04036, Strings.dumpBytes( value.getData() ) );
+                    String msg = I18n.err( I18n.ERR_08205_CANNOT_DECODE_DELAY, Strings.dumpBytes( value.getData() ) );
                     LOG.error( msg );
                     throw new DecoderException( msg, ide );
                 }
@@ -112,7 +112,7 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
                 {
                     if ( Strings.isEmpty( value.getData() ) )
                     {
-                        String msg = "failed to decode a null URL";
+                        String msg = I18n.err( I18n.ERR_08224_NULL_URL_DECODING_FAILURE );
                         LOG.error( msg );
                         throw new DecoderException( msg );
                     }
@@ -125,12 +125,12 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
 
                     if ( LOG.isDebugEnabled() )
                     {
-                        LOG.debug( "Stores a referral : {}", ldapUrl );
+                        LOG.debug( I18n.msg( I18n.MSG_08214_STORES_A_REFERRAL, ldapUrl ) );
                     }
                 }
                 catch ( LdapURLEncodingException luee )
                 {
-                    String msg = "failed to decode the URL '" + Strings.dumpBytes( value.getData() ) + "'";
+                    String msg = I18n.err( I18n.ERR_08225_URL_DECODING_FAILURE, Strings.dumpBytes( value.getData() ) );
                     LOG.error( msg );
                     throw new DecoderException( msg, luee );
                 }
@@ -153,7 +153,7 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
 
                     if ( LOG.isDebugEnabled() )
                     {
-                        LOG.debug( "Time Offline = " + timeOffline );
+                        LOG.debug( I18n.msg( I18n.MSG_08216_TIME_OFFLINE, timeOffline ) );
                     }
 
                     container.getGracefulDisconnectResponse().setTimeOffline( timeOffline );
@@ -161,7 +161,7 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
                 }
                 catch ( IntegerDecoderException ide )
                 {
-                    String msg = I18n.err( I18n.ERR_04037, Strings.dumpBytes( value.getData() ) );
+                    String msg = I18n.err( I18n.ERR_08206_TIME_OFFLINE_DECODING_FAILED, Strings.dumpBytes( value.getData() ) );
                     LOG.error( msg );
                     throw new DecoderException( msg, ide );
                 }

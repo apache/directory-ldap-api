@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.message.IntermediateResponseImpl;
 import org.apache.directory.api.util.Strings;
 
@@ -336,7 +337,7 @@ public class SyncInfoValueImpl extends IntermediateResponseImpl implements SyncI
                 break;
 
             default:
-                throw new IllegalArgumentException( "Unexpected SynchronizationInfo: " + getType() );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_9300_UNEXPECTED_SYNCINFO, getType() ) );
         }
 
         return sb.toString();

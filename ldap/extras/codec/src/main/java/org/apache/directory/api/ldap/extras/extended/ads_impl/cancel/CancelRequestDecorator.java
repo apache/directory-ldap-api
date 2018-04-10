@@ -106,7 +106,7 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
             }
             catch ( EncoderException e )
             {
-                LOG.error( I18n.err( I18n.ERR_04164 ), e );
+                LOG.error( I18n.err( I18n.ERR_08216_GRACEFUL_SHUTDOWN_PAYLOAD_ENCODING_FAILED ), e );
                 throw new RuntimeException( e );
             }
         }
@@ -144,7 +144,7 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
         }
         catch ( DecoderException e )
         {
-            LOG.error( I18n.err( I18n.ERR_04165_PAYLOAD_DECODING_ERROR ), e );
+            LOG.error( I18n.err( I18n.ERR_08217_PAYLOAD_DECODING_ERROR ), e );
             throw new RuntimeException( e );
         }
     }

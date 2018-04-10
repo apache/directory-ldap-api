@@ -274,7 +274,7 @@ public class DefaultSchemaManager implements SchemaManager
             else
             {
                 throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, I18n.err(
-                    I18n.ERR_11001, schemaName ) );
+                    I18n.ERR_16078_CANNOT_LOAD_UNKNOWN_SCHEMA, schemaName ) );
             }
         }
 
@@ -1965,7 +1965,7 @@ public class DefaultSchemaManager implements SchemaManager
             {
                 // We have an invalid SchemaObject, no need to go any further
                 Throwable error = new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, I18n.err(
-                    I18n.ERR_11007, schemaObject.getOid() ) );
+                    I18n.ERR_16079_INVALID_SCHEMA_OBJECT_CANNOT_BE_LOADED, schemaObject.getOid() ) );
                 errors.add( error );
             }
         }

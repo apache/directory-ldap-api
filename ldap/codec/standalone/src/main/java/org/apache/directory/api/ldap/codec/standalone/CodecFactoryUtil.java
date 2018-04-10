@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.codec.standalone;
 
 import java.util.Map;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.IntermediateResponseFactory;
@@ -113,7 +114,7 @@ public final class CodecFactoryUtil
 
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", cascadeFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, cascadeFactory.getOid() ) );
         }
 
         ControlFactory<EntryChange> entryChangeFactory = new EntryChangeFactory( apiService );
@@ -121,7 +122,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", entryChangeFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, entryChangeFactory.getOid() ) );
         }
 
         ControlFactory<ManageDsaIT> manageDsaITFactory = new ManageDsaITFactory( apiService );
@@ -129,7 +130,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", manageDsaITFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, manageDsaITFactory.getOid() ) );
         }
 
         ControlFactory<ProxiedAuthz> proxiedAuthzFactory = new ProxiedAuthzFactory( apiService );
@@ -137,7 +138,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", proxiedAuthzFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, proxiedAuthzFactory.getOid() ) );
         }
 
         ControlFactory<PagedResults> pagedResultsFactory = new PagedResultsFactory( apiService );
@@ -145,7 +146,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", pagedResultsFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, pagedResultsFactory.getOid() ) );
         }
 
         ControlFactory<PersistentSearch> persistentSearchFactory = new PersistentSearchFactory( apiService );
@@ -153,7 +154,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", persistentSearchFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, persistentSearchFactory.getOid() ) );
         }
 
         ControlFactory<Subentries> subentriesFactory = new SubentriesFactory( apiService );
@@ -161,7 +162,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", subentriesFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, subentriesFactory.getOid() ) );
         }
         
         ControlFactory<SortRequest> sortRequestFactory = new SortRequestFactory( apiService );
@@ -169,7 +170,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", sortRequestFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, sortRequestFactory.getOid() ) );
         }
 
         ControlFactory<SortResponse> sortResponseFactory = new SortResponseFactory( apiService );
@@ -177,7 +178,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", sortResponseFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, sortResponseFactory.getOid() ) );
         }
 
         // Extra controls
@@ -186,7 +187,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", adDirSyncFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, adDirSyncFactory.getOid() ) );
         }
         
         ControlFactory<AdShowDeleted> adShowDeletedFactory = new AdShowDeletedFactory( apiService );
@@ -194,7 +195,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", adShowDeletedFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, adShowDeletedFactory.getOid() ) );
         }
         
         ControlFactory<AdPolicyHints> adPolicyHintsFactory = new AdPolicyHintsFactory( apiService );
@@ -202,7 +203,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", adPolicyHintsFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, adPolicyHintsFactory.getOid() ) );
         }
 
         ControlFactory<ChangeNotifications> changeNotificationsFactory = new ChangeNotificationsFactory( apiService );
@@ -210,7 +211,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", changeNotificationsFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, changeNotificationsFactory.getOid() ) );
         }
 
         ControlFactory<PermissiveModify> permissiveModifyFactory = new PermissiveModifyFactory( apiService );
@@ -218,7 +219,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", permissiveModifyFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, permissiveModifyFactory.getOid() ) );
         }
 
         ControlFactory<PasswordPolicy> passwordPolicyFactory = new PasswordPolicyFactory( apiService );
@@ -226,7 +227,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", passwordPolicyFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, passwordPolicyFactory.getOid() ) );
         }
 
         ControlFactory<SyncDoneValue> syncDoneValueFactory = new SyncDoneValueFactory( apiService );
@@ -234,7 +235,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", syncDoneValueFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, syncDoneValueFactory.getOid() ) );
         } 
 
         ControlFactory<SyncRequestValue> syncRequestValueFactory = new SyncRequestValueFactory( apiService );
@@ -242,7 +243,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", syncRequestValueFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, syncRequestValueFactory.getOid() ) );
         }
 
         ControlFactory<SyncStateValue> syncStateValueFactory = new SyncStateValueFactory( apiService );
@@ -250,7 +251,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", syncStateValueFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, syncStateValueFactory.getOid() ) );
         }
 
         ControlFactory<TransactionSpecification> transactionSpecificationFactory = new TransactionSpecificationFactory( apiService );
@@ -258,7 +259,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", transactionSpecificationFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, transactionSpecificationFactory.getOid() ) );
         }
 
         ControlFactory<VirtualListViewRequest> virtualListViewRequestFactory = new VirtualListViewRequestFactory(
@@ -267,7 +268,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", virtualListViewRequestFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, virtualListViewRequestFactory.getOid() ) );
         }
 
         ControlFactory<VirtualListViewResponse> virtualListViewResponseFactory = new VirtualListViewResponseFactory(
@@ -276,7 +277,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", virtualListViewResponseFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, virtualListViewResponseFactory.getOid() ) );
         }
     }
 
@@ -306,7 +307,7 @@ public final class CodecFactoryUtil
 
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled extended operation factory: {}", cancelFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06001_REGISTERED_EXTENDED_OP_FACTORY, cancelFactory.getOid() ) );
         }
 
         CertGenerationFactory certGenerationFactory = new CertGenerationFactory( apiService );
@@ -314,7 +315,7 @@ public final class CodecFactoryUtil
 
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled extended operation factory: {}", certGenerationFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06001_REGISTERED_EXTENDED_OP_FACTORY, certGenerationFactory.getOid() ) );
         }
 
         EndTransactionFactory endTransactionFactory = new EndTransactionFactory( apiService );
@@ -322,7 +323,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled extended operation factory: {}", endTransactionFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06001_REGISTERED_EXTENDED_OP_FACTORY, endTransactionFactory.getOid() ) );
         }
 
         GracefulDisconnectFactory gracefulDisconnectFactory = new GracefulDisconnectFactory( apiService );
@@ -330,7 +331,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled extended operation factory: {}", gracefulDisconnectFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06001_REGISTERED_EXTENDED_OP_FACTORY, gracefulDisconnectFactory.getOid() ) );
         }
 
         GracefulShutdownFactory gracefulShutdownFactory = new GracefulShutdownFactory( apiService );
@@ -338,7 +339,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled extended operation factory: {}", gracefulShutdownFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06001_REGISTERED_EXTENDED_OP_FACTORY, gracefulShutdownFactory.getOid() ) );
         }
 
         PasswordModifyFactory passwordModifyFactory = new PasswordModifyFactory( apiService );
@@ -346,7 +347,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled extended operation factory: {}", passwordModifyFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06001_REGISTERED_EXTENDED_OP_FACTORY, passwordModifyFactory.getOid() ) );
         }
 
         StartTlsFactory startTlsFactory = new StartTlsFactory( apiService );
@@ -354,7 +355,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled extended operation factory: {}", startTlsFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06001_REGISTERED_EXTENDED_OP_FACTORY, startTlsFactory.getOid() ) );
         }
 
         StartTransactionFactory startTransactionFactory = new StartTransactionFactory( apiService );
@@ -362,7 +363,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled extended operation factory: {}", startTransactionFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06001_REGISTERED_EXTENDED_OP_FACTORY, startTransactionFactory.getOid() ) );
         }
 
         StoredProcedureFactory storedProcedureFactory = new StoredProcedureFactory( apiService );
@@ -370,7 +371,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled extended operation factory: {}", storedProcedureFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06001_REGISTERED_EXTENDED_OP_FACTORY, storedProcedureFactory.getOid() ) );
         }
 
         WhoAmIFactory whoAmIFactory = new WhoAmIFactory( apiService );
@@ -378,7 +379,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled extended operation factory: {}", whoAmIFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06001_REGISTERED_EXTENDED_OP_FACTORY, whoAmIFactory.getOid() ) );
         }
     }
 
@@ -400,7 +401,7 @@ public final class CodecFactoryUtil
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled intermediate response factory: {}", syncInfoValueFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06002_REGISTERED_INTERMEDIATE_FACTORY, syncInfoValueFactory.getOid() ) );
         }
     }
 }

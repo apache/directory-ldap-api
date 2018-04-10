@@ -55,12 +55,12 @@ public class TriggerSpecification
         
         if ( ( ldapOperation == null ) || ( actionTime == null ) || ( spSpecs == null ) )
         {
-            throw new NullArgumentException( I18n.err( I18n.ERR_04331 ) );
+            throw new NullArgumentException( I18n.err( I18n.ERR_11000_TRIGGER_SPECIFICATION_INIT_WITH_NULL ) );
         }
         
         if ( spSpecs.isEmpty() )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04332 ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_11001_TRIGGER_SPECIFICATION_INIT_WITH_EPTY_SPEC_LIST ) );
         }
         
         this.ldapOperation = ldapOperation;
@@ -173,6 +173,7 @@ public class TriggerSpecification
             h = h * 17 + ( ( name == null ) ? 0 : name.hashCode() );
             h = h * 17 + ( ( options == null ) ? 0 : options.hashCode() );
             h = h * 17 + ( ( parameters == null ) ? 0 : parameters.hashCode() );
+            
             return h;
         }
 
@@ -187,15 +188,19 @@ public class TriggerSpecification
             {
                 return true;
             }
+            
             if ( obj == null )
             {
                 return false;
             }
+            
             if ( getClass() != obj.getClass() )
             {
                 return false;
             }
-            final SPSpec other = ( SPSpec ) obj;
+            
+            SPSpec other = ( SPSpec ) obj;
+            
             if ( name == null )
             {
                 if ( other.name != null )
@@ -207,6 +212,7 @@ public class TriggerSpecification
             {
                 return false;
             }
+            
             if ( options == null )
             {
                 if ( other.options != null )
@@ -218,6 +224,7 @@ public class TriggerSpecification
             {
                 return false;
             }
+            
             if ( parameters == null )
             {
                 if ( other.parameters != null )
@@ -229,9 +236,8 @@ public class TriggerSpecification
             {
                 return false;
             }
+            
             return true;
         }
-
     }
-
 }

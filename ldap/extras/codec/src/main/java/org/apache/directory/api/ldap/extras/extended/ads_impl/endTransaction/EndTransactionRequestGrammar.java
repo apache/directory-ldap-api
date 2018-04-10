@@ -125,7 +125,7 @@ public class EndTransactionRequestGrammar extends AbstractGrammar<EndTransaction
                         catch ( BooleanDecoderException bde )
                         {
                             LOG.error( I18n
-                                .err( I18n.ERR_04490_BAD_END_TRANSACTION_COMMIT, Strings.dumpBytes( value.getData() ), bde.getMessage() ) );
+                                .err( I18n.ERR_08221_BAD_END_TRANSACTION_COMMIT, Strings.dumpBytes( value.getData() ), bde.getMessage() ) );
 
                             // This will generate a PROTOCOL_ERROR
                             throw new DecoderException( bde.getMessage(), bde );
@@ -156,7 +156,7 @@ public class EndTransactionRequestGrammar extends AbstractGrammar<EndTransaction
 
                         if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "Identifier = {}", Strings.dumpBytes( identifier ) );
+                            LOG.debug( I18n.msg( I18n.MSG_08206_IDENTIFIER, Strings.dumpBytes( identifier ) ) );
                         }
 
                         if ( identifier == null )
@@ -195,7 +195,7 @@ public class EndTransactionRequestGrammar extends AbstractGrammar<EndTransaction
 
                         if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "Identifier = {}", Strings.dumpBytes( identifier ) );
+                            LOG.debug( I18n.msg( I18n.MSG_08206_IDENTIFIER, Strings.dumpBytes( identifier ) ) );
                         }
 
                         if ( identifier == null )

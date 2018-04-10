@@ -119,7 +119,7 @@ public final class SyncStateValueGrammar extends AbstractGrammar<SyncStateValueC
 
                         if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "SyncStateType = {}", syncStateTypeEnum );
+                            LOG.debug( I18n.msg( I18n.MSG_08105_SYNC_STATE_TYPE, syncStateTypeEnum ) );
                         }
 
                         container.getSyncStateValueControl().setSyncStateType( syncStateTypeEnum );
@@ -129,7 +129,7 @@ public final class SyncStateValueGrammar extends AbstractGrammar<SyncStateValueC
                     }
                     catch ( IntegerDecoderException ide )
                     {
-                        String msg = I18n.err( I18n.ERR_04030 );
+                        String msg = I18n.err( I18n.ERR_08102_SYNC_STATE_VALUE_MODE_DECODING_FAILED );
                         LOG.error( msg, ide );
                         throw new DecoderException( msg, ide );
                     }
@@ -158,7 +158,7 @@ public final class SyncStateValueGrammar extends AbstractGrammar<SyncStateValueC
 
                     if ( LOG.isDebugEnabled() )
                     {
-                        LOG.debug( "entryUUID = {}", Strings.dumpBytes( entryUUID ) );
+                        LOG.debug( I18n.msg( I18n.MSG_08106_ENTRY_UUID, Strings.dumpBytes( entryUUID ) ) );
                     }
 
                     container.getSyncStateValueControl().setEntryUUID( entryUUID );
@@ -190,7 +190,7 @@ public final class SyncStateValueGrammar extends AbstractGrammar<SyncStateValueC
 
                     if ( LOG.isDebugEnabled() )
                     {
-                        LOG.debug( "cookie = {}", cookie );
+                        LOG.debug( I18n.msg( I18n.MSG_08000_COOKIE, Strings.dumpBytes( cookie ) ) );
                     }
 
                     container.getSyncStateValueControl().setCookie( cookie );

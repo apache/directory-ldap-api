@@ -27,6 +27,7 @@ import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.grammar.GrammarTransition;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyRequestImpl;
 import org.apache.directory.api.util.Strings;
@@ -121,7 +122,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
 
                         if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "UserIdentity = " + Strings.dumpBytes( userIdentity ) );
+                            LOG.debug( I18n.msg( I18n.MSG_08217_USER_IDENTITY, Strings.dumpBytes( userIdentity ) ) );
                         }
 
                         if ( userIdentity == null )
@@ -161,7 +162,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
 
                         if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "oldPassword = " + Strings.dumpBytes( oldPassword ) );
+                            LOG.debug( I18n.msg( I18n.MSG_08209_OLD_PASSWORD ) );
                         }
 
                         if ( oldPassword == null )
@@ -202,7 +203,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
 
                         if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "newPassword = " + Strings.dumpBytes( newPassword ) );
+                            LOG.debug( I18n.msg( I18n.MSG_08208_NEW_PASSWORD ) );
                         }
 
                         if ( newPassword == null )
@@ -242,7 +243,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
 
                         if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "OldPassword = " + Strings.dumpBytes( oldPassword ) );
+                            LOG.debug( I18n.msg( I18n.MSG_08209_OLD_PASSWORD ) );
                         }
 
                         if ( oldPassword == null )
@@ -282,7 +283,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
 
                         if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "NewPassword = " + Strings.dumpBytes( newPassword ) );
+                            LOG.debug( I18n.msg( I18n.MSG_08208_NEW_PASSWORD ) );
                         }
 
                         if ( newPassword == null )
@@ -322,7 +323,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
 
                         if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "NewPassword = " + Strings.dumpBytes( newPassword ) );
+                            LOG.debug( I18n.msg( I18n.MSG_08208_NEW_PASSWORD ) );
                         }
 
                         if ( newPassword == null )

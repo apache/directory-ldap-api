@@ -20,6 +20,7 @@
 
 package org.apache.directory.api.ldap.extras.controls.vlv;
 
+import org.apache.directory.api.i18n.I18n;
 
 /**
  * Enumeration of the result codes of a Virtual List View response control as specified in draft-ietf-ldapext-ldapv3-vlv-09.
@@ -144,7 +145,7 @@ public enum VirtualListViewResultCode
                 return OTHER;
 
             default:
-                throw new IllegalArgumentException( "Unknown VLV response result code " + code );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_9102_UNKNOWN_VLV_RESPONSE, code ) );
         }
     }
 }

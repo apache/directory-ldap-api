@@ -126,7 +126,7 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
 
                             if ( LOG.isDebugEnabled() )
                             {
-                                LOG.debug( "Mode = " + modeEnum );
+                                LOG.debug( I18n.msg( I18n.MSG_08100_MODE, modeEnum ) );
                             }
 
                             container.getSyncRequestValueControl().setMode( modeEnum );
@@ -136,7 +136,7 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
                         }
                         catch ( IntegerDecoderException ide )
                         {
-                            String msg = I18n.err( I18n.ERR_04028 );
+                            String msg = I18n.err( I18n.ERR_08100_SYNC_REQUEST_VALUE_MODE_DECODING_FAILED );
                             LOG.error( msg, ide );
                             throw new DecoderException( msg, ide );
                         }
@@ -165,7 +165,7 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
 
                         if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "cookie = " + Strings.dumpBytes( cookie ) );
+                            LOG.debug( I18n.msg( I18n.MSG_08000_COOKIE, Strings.dumpBytes( cookie ) ) );
                         }
 
                         container.getSyncRequestValueControl().setCookie( cookie );
@@ -199,7 +199,7 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
 
                             if ( LOG.isDebugEnabled() )
                             {
-                                LOG.debug( "reloadHint = " + reloadHint );
+                                LOG.debug( I18n.msg( I18n.MSG_08104_RELOAD_HINT, reloadHint ) );
                             }
 
                             container.getSyncRequestValueControl().setReloadHint( reloadHint );
@@ -209,7 +209,7 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
                         }
                         catch ( BooleanDecoderException bde )
                         {
-                            String msg = I18n.err( I18n.ERR_04029 );
+                            String msg = I18n.err( I18n.ERR_08101_RELOAD_HINT_DECODING_FAILED );
                             LOG.error( msg, bde );
                             throw new DecoderException( msg, bde );
                         }
@@ -240,7 +240,7 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
 
                             if ( LOG.isDebugEnabled() )
                             {
-                                LOG.debug( "reloadHint = " + reloadHint );
+                                LOG.debug( I18n.msg( I18n.MSG_08104_RELOAD_HINT, reloadHint ) );
                             }
 
                             container.getSyncRequestValueControl().setReloadHint( reloadHint );
@@ -250,7 +250,7 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
                         }
                         catch ( BooleanDecoderException bde )
                         {
-                            String msg = I18n.err( I18n.ERR_04029 );
+                            String msg = I18n.err( I18n.ERR_08101_RELOAD_HINT_DECODING_FAILED );
                             LOG.error( msg, bde );
                             throw new DecoderException( msg, bde );
                         }

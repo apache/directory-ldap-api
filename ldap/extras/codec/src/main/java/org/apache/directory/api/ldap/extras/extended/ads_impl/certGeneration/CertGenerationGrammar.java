@@ -121,14 +121,14 @@ public class CertGenerationGrammar extends AbstractGrammar<CertGenerationContain
 
                         if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "Target Dn = " + targetDN );
+                            LOG.debug( I18n.msg( I18n.MSG_08215_TARGET_DN, targetDN ) );
                         }
 
                         if ( ( targetDN != null ) && ( targetDN.trim().length() > 0 ) )
                         {
                             if ( !Dn.isValid( targetDN ) )
                             {
-                                String msg = I18n.err( I18n.ERR_04032, targetDN );
+                                String msg = I18n.err( I18n.ERR_08201_INVALID_TARGET_DN, targetDN );
                                 LOG.error( msg );
                                 throw new DecoderException( msg );
                             }
@@ -137,7 +137,7 @@ public class CertGenerationGrammar extends AbstractGrammar<CertGenerationContain
                         }
                         else
                         {
-                            String msg = I18n.err( I18n.ERR_04033, Strings.dumpBytes( value.getData() ) );
+                            String msg = I18n.err( I18n.ERR_08202_NULL_TARGET_DN_DECODING_FAILED, Strings.dumpBytes( value.getData() ) );
                             LOG.error( msg );
                             throw new DecoderException( msg );
                         }
@@ -167,14 +167,14 @@ public class CertGenerationGrammar extends AbstractGrammar<CertGenerationContain
 
                         if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "Issuer Dn = " + issuerDN );
+                            LOG.debug( I18n.msg( I18n.MSG_08207_ISSUER_DN, issuerDN ) );
                         }
 
                         if ( ( issuerDN != null ) && ( issuerDN.trim().length() > 0 ) )
                         {
                             if ( !Dn.isValid( issuerDN ) )
                             {
-                                String msg = I18n.err( I18n.ERR_04034, issuerDN );
+                                String msg = I18n.err( I18n.ERR_08203_INVALID_ISSUER_DN, issuerDN );
                                 LOG.error( msg );
                                 throw new DecoderException( msg );
                             }
@@ -207,14 +207,14 @@ public class CertGenerationGrammar extends AbstractGrammar<CertGenerationContain
 
                         if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "subject Dn = " + subjectDN );
+                            LOG.debug( I18n.msg( I18n.MSG_08219_SUBJECT_DN, subjectDN ) );
                         }
 
                         if ( ( subjectDN != null ) && ( subjectDN.trim().length() > 0 ) )
                         {
                             if ( !Dn.isValid( subjectDN ) )
                             {
-                                String msg = I18n.err( I18n.ERR_04035, subjectDN );
+                                String msg = I18n.err( I18n.ERR_08204_INVALID_SUBJECT_DN, subjectDN );
                                 LOG.error( msg );
                                 throw new DecoderException( msg );
                             }
@@ -223,7 +223,7 @@ public class CertGenerationGrammar extends AbstractGrammar<CertGenerationContain
                         }
                         else
                         {
-                            String msg = I18n.err( I18n.ERR_04033, Strings.dumpBytes( value.getData() ) );
+                            String msg = I18n.err( I18n.ERR_08202_NULL_TARGET_DN_DECODING_FAILED, Strings.dumpBytes( value.getData() ) );
                             LOG.error( msg );
                             throw new DecoderException( msg );
                         }
@@ -253,7 +253,7 @@ public class CertGenerationGrammar extends AbstractGrammar<CertGenerationContain
 
                         if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "key algorithm = " + keyAlgorithm );
+                            LOG.debug( I18n.msg( I18n.MSG_08218_KEY_ALGORITHM, keyAlgorithm ) );
                         }
 
                         if ( keyAlgorithm != null && ( keyAlgorithm.trim().length() > 0 ) )

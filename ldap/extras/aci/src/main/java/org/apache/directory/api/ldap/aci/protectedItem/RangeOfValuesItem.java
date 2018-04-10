@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.aci.protectedItem;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.aci.ProtectedItem;
 import org.apache.directory.api.ldap.model.filter.ExprNode;
 
@@ -44,7 +45,7 @@ public class RangeOfValuesItem extends ProtectedItem
     {
         if ( filter == null )
         {
-            throw new IllegalArgumentException( "filter" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_07000_FILTER ) );
         }
 
         this.filter = filter;

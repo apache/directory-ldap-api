@@ -397,7 +397,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
+            throw new EncoderException( I18n.err( I18n.ERR_08212_PDU_BUFFER_TOO_SMALL ), boe );
         }
 
         // The version (LDAP V3 only)
@@ -443,7 +443,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
             }
             catch ( BufferOverflowException boe )
             {
-                String msg = I18n.err( I18n.ERR_04005 );
+                String msg = I18n.err( I18n.ERR_08212_PDU_BUFFER_TOO_SMALL );
                 throw new EncoderException( msg, boe );
             }
         }
@@ -467,7 +467,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
             }
             catch ( BufferOverflowException boe )
             {
-                String msg = I18n.err( I18n.ERR_04005 );
+                String msg = I18n.err( I18n.ERR_08212_PDU_BUFFER_TOO_SMALL );
                 throw new EncoderException( msg, boe );
             }
         }

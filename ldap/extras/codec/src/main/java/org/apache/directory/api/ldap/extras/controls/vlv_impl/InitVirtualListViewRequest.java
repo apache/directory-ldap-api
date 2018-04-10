@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.extras.controls.vlv_impl;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
+import org.apache.directory.api.i18n.I18n;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,7 +53,7 @@ public class InitVirtualListViewRequest extends GrammarAction<VirtualListViewReq
     {
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "VirtualListViewRequestContainer initialized" );
+            LOG.debug( I18n.msg( I18n.MSG_08107_VLV_REQUEST_CONTAINER_INITIALIZED ) );
         }
     }
 }

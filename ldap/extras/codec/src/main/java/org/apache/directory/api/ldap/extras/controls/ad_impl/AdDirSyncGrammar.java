@@ -30,6 +30,7 @@ import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncFlag;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -119,21 +120,21 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
                             
                             if ( flags == null )
                             {
-                                String msg = "Error while decoding the AdDirSync flag, unknown value : " + flagValue;
+                                String msg = I18n.err( I18n.ERR_08104_AD_DIR_SYNC_FLAG_DECODING_FAILURE, flagValue );
                                 LOG.error( msg );
                                 throw new DecoderException( msg );
                             }
                             
                             if ( LOG.isDebugEnabled() )
                             {
-                                LOG.debug( "flags = {}", flags.toString() );
+                                LOG.debug( I18n.msg( I18n.MSG_08101_FLAGS, flags.toString() ) );
                             }
                             
                             container.getAdDirSyncControl().setFlags( flags );
                         }
                         catch ( IntegerDecoderException ide )
                         {
-                            String msg = "Error while decoding the AdDirSync flag : " + ide.getMessage();
+                            String msg = I18n.err( I18n.ERR_08105_AD_DIR_SYNC_FLAG_DECODING_ERROR, ide.getMessage() );
                             LOG.error( msg, ide );
                             throw new DecoderException( msg, ide );
                         }
@@ -165,14 +166,14 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
                             
                             if ( LOG.isDebugEnabled() )
                             {
-                                LOG.debug( "maxReturnLength = {}", maxReturnLength );
+                                LOG.debug( I18n.msg( I18n.MSG_08102_MAX_RETURN_LENGTH, maxReturnLength ) );
                             }
                             
                             container.getAdDirSyncControl().setMaxReturnLength( maxReturnLength );
                         }
                         catch ( IntegerDecoderException ide )
                         {
-                            String msg = "Error while decoding the AdDirSync maxReturnLength : " + ide.getMessage();
+                            String msg = I18n.err( I18n.ERR_08106_AD_DIR_SYNC_MAX_RETURN_LENGTH_DECODING_ERROR, ide.getMessage() );
                             LOG.error( msg, ide );
                             throw new DecoderException( msg, ide );
                         }
@@ -201,7 +202,7 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
 
                         if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "cookie = {}", Strings.dumpBytes( cookie ) );
+                            LOG.debug( I18n.msg( I18n.MSG_08000_COOKIE, Strings.dumpBytes( cookie ) ) );
                         }
 
                         container.getAdDirSyncControl().setCookie( cookie );

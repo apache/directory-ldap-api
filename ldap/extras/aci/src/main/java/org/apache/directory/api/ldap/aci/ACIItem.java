@@ -58,17 +58,17 @@ public abstract class ACIItem
     {
         if ( identificationTag == null )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04001_NULL_IDENTIFICATION_TAG ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_07001_NULL_IDENTIFICATION_TAG ) );
         }
 
         if ( ( precedence < 0 ) || ( precedence > 255 ) )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04002_BAD_PRECENDENCE, precedence ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_07002_BAD_PRECENDENCE, precedence ) );
         }
 
         if ( authenticationLevel == null )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04003_NULL_AUTHENTICATION_LEVEL ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_07003_NULL_AUTHENTICATION_LEVEL ) );
         }
 
         this.identificationTag = identificationTag;

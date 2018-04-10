@@ -24,6 +24,7 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.MessageDecorator;
@@ -90,7 +91,7 @@ public class StoreControlValue extends GrammarAction<LdapMessageContainer<Messag
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Control value : " + Strings.dumpBytes( control.getValue() ) );
+            LOG.debug( I18n.msg( I18n.MSG_08203_CONTROL_VALUE, Strings.dumpBytes( control.getValue() ) ) );
         }
     }
 }

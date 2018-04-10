@@ -236,7 +236,7 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
     @Override
     public Class<?> getJavaParameterType( int index )
     {
-        throw new NotImplementedException( I18n.err( I18n.ERR_04175 ) );
+        throw new NotImplementedException( I18n.err( I18n.ERR_9104_CLASS_LOADING_OF_PROC_TYPE_NOT_IMPLEMENTED ) );
     }
 
 
@@ -280,8 +280,8 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
                     }
                     catch ( IntegerDecoderException e )
                     {
-                        throw new RuntimeException( "Failed to decode INTEGER: "
-                            + Strings.dumpBytes( ( byte[] ) obj ), e );
+                        throw new RuntimeException( I18n.err( I18n.ERR_9200_INTERGER_DECODING_FAILURE,
+                            Strings.dumpBytes( ( byte[] ) obj ) ), e );
                     }
                 }
                 else
@@ -301,7 +301,7 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
     @Override
     public Object getJavaParameterValue( int index )
     {
-        throw new NotImplementedException( I18n.err( I18n.ERR_04176 ) );
+        throw new NotImplementedException( I18n.err( I18n.ERR_9105_CONVERSION_VALUE_TO_JAVA_NOT_IMPLEMENTED ) );
     }
 
 

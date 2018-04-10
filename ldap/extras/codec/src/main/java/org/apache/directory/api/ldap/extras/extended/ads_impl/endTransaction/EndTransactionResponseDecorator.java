@@ -107,7 +107,7 @@ public class EndTransactionResponseDecorator extends ExtendedResponseDecorator<E
         }
         catch ( DecoderException e )
         {
-            LOG.error( I18n.err( I18n.ERR_04165_PAYLOAD_DECODING_ERROR ), e );
+            LOG.error( I18n.err( I18n.ERR_08217_PAYLOAD_DECODING_ERROR ), e );
             throw new RuntimeException( e );
         }
     }

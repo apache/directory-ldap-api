@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction.co
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction.controls.ControlsContainer;
 import org.apache.directory.api.util.Strings;
@@ -84,7 +85,7 @@ public class StoreControlValue extends GrammarAction<ControlsContainer>
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Control value : {}", Strings.dumpBytes( control.getValue() ) );
+            LOG.debug( I18n.msg( I18n.MSG_08203_CONTROL_VALUE, Strings.dumpBytes( control.getValue() ) ) );
         }
     }
 }

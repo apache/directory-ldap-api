@@ -20,6 +20,7 @@
 
 package org.apache.directory.api.ldap.extras.controls.ppolicy;
 
+import org.apache.directory.api.i18n.I18n;
 
 /**
  *  constants representing PasswordPolicyErrorS as stated in the <a href="http://tools.ietf.org/html/draft-behera-ldap-password-policy-10">draft</a>
@@ -103,7 +104,7 @@ public enum PasswordPolicyErrorEnum
 
             default:
 
-                throw new IllegalArgumentException( "unknown password policy error value " + val );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_9100_UNKNOWN_PASSWORD_POLICY_ERROR, val ) );
         }
     }
 

@@ -162,7 +162,7 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
 
         if ( buffer == null )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04023 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_08000_CANNOT_PUT_A_PDU_IN_NULL_BUFFER ) );
         }
 
         // Encode the Sequence tag

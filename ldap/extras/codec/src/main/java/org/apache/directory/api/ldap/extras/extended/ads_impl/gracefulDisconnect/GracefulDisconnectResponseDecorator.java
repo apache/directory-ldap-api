@@ -93,7 +93,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
             }
             catch ( EncoderException e )
             {
-                LOG.error( I18n.err( I18n.ERR_04164 ), e );
+                LOG.error( I18n.err( I18n.ERR_08216_GRACEFUL_SHUTDOWN_PAYLOAD_ENCODING_FAILED ), e );
                 throw new RuntimeException( e );
             }
         }
@@ -127,7 +127,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
         }
         catch ( DecoderException e )
         {
-            LOG.error( I18n.err( I18n.ERR_04172 ), e );
+            LOG.error( I18n.err( I18n.ERR_08219_RESPONSE_DECODING_FAILED ), e );
         }
     }
 

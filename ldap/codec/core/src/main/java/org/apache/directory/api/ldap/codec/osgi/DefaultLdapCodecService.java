@@ -32,6 +32,7 @@ import javax.naming.ldap.BasicControl;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Container;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.BasicControlDecorator;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
@@ -120,7 +121,7 @@ public class DefaultLdapCodecService implements LdapApiService
 
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", cascadeFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, cascadeFactory.getOid() ) );
         }
 
         ControlFactory<EntryChange> entryChangeFactory = new EntryChangeFactory( this );
@@ -128,7 +129,7 @@ public class DefaultLdapCodecService implements LdapApiService
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", entryChangeFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, entryChangeFactory.getOid() ) );
         }
 
         ControlFactory<ManageDsaIT> manageDsaItFactory = new ManageDsaITFactory( this );
@@ -136,7 +137,7 @@ public class DefaultLdapCodecService implements LdapApiService
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", manageDsaItFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, manageDsaItFactory.getOid() ) );
         }
 
         ControlFactory<ProxiedAuthz> proxiedAuthzFactory = new ProxiedAuthzFactory( this );
@@ -144,7 +145,7 @@ public class DefaultLdapCodecService implements LdapApiService
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", proxiedAuthzFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, proxiedAuthzFactory.getOid() ) );
         }
 
         ControlFactory<PagedResults> pageResultsFactory = new PagedResultsFactory( this );
@@ -152,7 +153,7 @@ public class DefaultLdapCodecService implements LdapApiService
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", pageResultsFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, pageResultsFactory.getOid() ) );
         }
 
         ControlFactory<PersistentSearch> persistentSearchFactory = new PersistentSearchFactory( this );
@@ -160,7 +161,7 @@ public class DefaultLdapCodecService implements LdapApiService
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", persistentSearchFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, persistentSearchFactory.getOid() ) );
         }
 
         ControlFactory<Subentries> subentriesFactory = new SubentriesFactory( this );
@@ -168,7 +169,7 @@ public class DefaultLdapCodecService implements LdapApiService
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", subentriesFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, subentriesFactory.getOid() ) );
         }
 
         ControlFactory<SortRequest> sortRequestFactory = new SortRequestFactory( this );
@@ -176,7 +177,7 @@ public class DefaultLdapCodecService implements LdapApiService
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", sortRequestFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, sortRequestFactory.getOid() ) );
         }
 
         ControlFactory<SortResponse> sortResponseFactory = new SortResponseFactory( this );
@@ -184,7 +185,7 @@ public class DefaultLdapCodecService implements LdapApiService
         
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled control factory: {}", sortResponseFactory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, sortResponseFactory.getOid() ) );
         }
     }
 

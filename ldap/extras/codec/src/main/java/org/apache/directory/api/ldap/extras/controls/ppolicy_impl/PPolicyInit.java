@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.extras.controls.ppolicy_impl;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
+import org.apache.directory.api.i18n.I18n;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,7 +56,7 @@ public class PPolicyInit extends GrammarAction<PasswordPolicyContainer>
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "PasswordPolicyResponseControlContainer initialized" );
+            LOG.debug( I18n.msg( I18n.MSG_08103_PP_RESPONSE_CONTROL_CONTAINER_INITIALIZED ) );
         }
     }
 }

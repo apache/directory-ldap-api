@@ -130,13 +130,13 @@ public class ACIItemParser
         catch ( TokenStreamException e )
         {
             throw new ParseException( I18n
-                .err( I18n.ERR_04004_PARSER_FAILURE_ACI_ITEM, spec, e.getLocalizedMessage() ), 0 );
+                .err( I18n.ERR_07004_PARSER_FAILURE_ACI_ITEM, spec, e.getLocalizedMessage() ), 0 );
         }
         catch ( RecognitionException e )
         {
             throw new ParseException(
                 I18n
-                    .err( I18n.ERR_04004_PARSER_FAILURE_ACI_ITEM, spec, e.getLocalizedMessage(), e.getLine(),
+                    .err( I18n.ERR_07004_PARSER_FAILURE_ACI_ITEM, spec, e.getLocalizedMessage(), e.getLine(),
                         e.getColumn() ), e.getColumn() );
         }
 

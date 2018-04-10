@@ -80,9 +80,10 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
     public StoredProcedureRequestDecorator( LdapApiService codec, StoredProcedureRequest decoratedRequest )
     {
         super( codec, decoratedRequest );
+        
         if ( decoratedRequest == null )
         {
-            throw new NullPointerException( "decorated stored procedulre request is null" );
+            throw new NullPointerException( I18n.err( I18n.ERR_08228_DECORATED_SP_NULL ) );
         }
     }
 
@@ -229,7 +230,7 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
+            throw new EncoderException( I18n.err( I18n.ERR_08212_PDU_BUFFER_TOO_SMALL ), boe );
         }
 
         return bb;
@@ -300,7 +301,7 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
         }
         catch ( Exception e )
         {
-            LOG.error( I18n.err( I18n.ERR_04165_PAYLOAD_DECODING_ERROR ), e );
+            LOG.error( I18n.err( I18n.ERR_08217_PAYLOAD_DECODING_ERROR ), e );
             throw new RuntimeException( e );
         }
     }
@@ -320,7 +321,7 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
             }
             catch ( EncoderException e )
             {
-                LOG.error( I18n.err( I18n.ERR_04174 ), e );
+                LOG.error( I18n.err( I18n.ERR_08220_SP_PAYLOAD_ENCODING_FAILED ), e );
                 throw new RuntimeException( e );
             }
         }

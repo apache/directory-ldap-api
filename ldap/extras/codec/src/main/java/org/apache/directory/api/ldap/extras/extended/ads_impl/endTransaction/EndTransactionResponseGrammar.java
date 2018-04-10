@@ -143,7 +143,7 @@ public class EndTransactionResponseGrammar extends AbstractGrammar<EndTransactio
                         catch ( IntegerDecoderException ide )
                         {
                             LOG.error( I18n
-                                .err( I18n.ERR_04490_BAD_END_TRANSACTION_COMMIT, Strings.dumpBytes( value.getData() ), ide.getMessage() ) );
+                                .err( I18n.ERR_08221_BAD_END_TRANSACTION_COMMIT, Strings.dumpBytes( value.getData() ), ide.getMessage() ) );
 
                             // This will generate a PROTOCOL_ERROR
                             throw new DecoderException( ide.getMessage(), ide );
@@ -226,7 +226,7 @@ public class EndTransactionResponseGrammar extends AbstractGrammar<EndTransactio
                         catch ( IntegerDecoderException ide )
                         {
                             LOG.error( I18n
-                                .err( I18n.ERR_04491_BAD_END_TRANSACTION_MESSAGE_ID, Strings.dumpBytes( value.getData() ), 
+                                .err( I18n.ERR_08222_BAD_END_TRANSACTION_MESSAGE_ID, Strings.dumpBytes( value.getData() ), 
                                     ide.getMessage() ) );
 
                             // This will generate a PROTOCOL_ERROR
@@ -275,7 +275,7 @@ public class EndTransactionResponseGrammar extends AbstractGrammar<EndTransactio
                         {
                             // Add an error
                             LOG.error( I18n
-                                .err( I18n.ERR_04099_INVALID_CONTROL_LIST, Strings.dumpBytes( value.getData() ), 
+                                .err( I18n.ERR_08223_INVALID_CONTROL_LIST, Strings.dumpBytes( value.getData() ), 
                                     de.getMessage() ) );
 
                             // This will generate a PROTOCOL_ERROR

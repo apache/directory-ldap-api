@@ -24,6 +24,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.IntermediateResponseFactory;
@@ -199,7 +200,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
             }
             catch ( Exception cause )
             {
-                throw new RuntimeException( "Failed to load default codec factory.", cause );
+                throw new RuntimeException( I18n.err( I18n.ERR_06000_FAILED_TO_LOAD_DEFAULT_CODEC_FACTORY ), cause );
             }
         }
     }
@@ -328,7 +329,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
         {
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( "Factory for control {} was already loaded", controlFQCN );
+                LOG.debug( I18n.msg( I18n.MSG_06003_CONTROL_FACTORY_ALREADY_LOADED, controlFQCN ) );
             }
             
             return;
@@ -348,7 +349,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
 
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered control factory: {}", factory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06004_REGISTERED_CONTROL_FACTORY, factory.getOid() ) );
         }
     }
 
@@ -378,7 +379,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
         {
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( "Factory for extended operation {} was already loaded", extendedOperationFQCN );
+                LOG.debug( I18n.msg( I18n.MSG_06005_EXTENDED_OP_FACTORY_ALREADY_LOADED, extendedOperationFQCN ) );
             }
             
             return;
@@ -401,7 +402,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
 
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled extended operation factory: {}", factory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06001_REGISTERED_EXTENDED_OP_FACTORY, factory.getOid() ) );
         }
     }
 
@@ -431,7 +432,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
         {
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( "Factory for Intermediate Response {} was already loaded", intermediateResponseFQCN );
+                LOG.debug( I18n.msg( I18n.MSG_06006_INTERMEDIATE_FACTORY_ALREADY_LOADED, intermediateResponseFQCN ) );
             }
             
             return;

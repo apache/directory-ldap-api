@@ -82,7 +82,7 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
         }
         catch ( DecoderException e )
         {
-            LOG.error( I18n.err( I18n.ERR_04165_PAYLOAD_DECODING_ERROR ), e );
+            LOG.error( I18n.err( I18n.ERR_08217_PAYLOAD_DECODING_ERROR ), e );
             throw new RuntimeException( e );
         }
     }
@@ -102,7 +102,7 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
             }
             catch ( EncoderException e )
             {
-                LOG.error( I18n.err( I18n.ERR_04167 ), e );
+                LOG.error( I18n.err( I18n.ERR_08218_CERT_GENERATE_PAYLOAD_ENCODING_FAILED ), e );
                 throw new RuntimeException( e );
             }
         }

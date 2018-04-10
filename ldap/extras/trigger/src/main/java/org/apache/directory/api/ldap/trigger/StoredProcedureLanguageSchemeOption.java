@@ -58,16 +58,6 @@ public class StoredProcedureLanguageSchemeOption implements StoredProcedureOptio
      * {@inheritDoc}
      */
     @Override
-    public String toString()
-    {
-        return "language " + "\"" + language + "\"";
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public int hashCode()
     {
         int h = 37;
@@ -88,15 +78,19 @@ public class StoredProcedureLanguageSchemeOption implements StoredProcedureOptio
         {
             return true;
         }
+        
         if ( obj == null )
         {
             return false;
         }
+        
         if ( getClass() != obj.getClass() )
         {
             return false;
         }
-        final StoredProcedureLanguageSchemeOption other = ( StoredProcedureLanguageSchemeOption ) obj;
+        
+        StoredProcedureLanguageSchemeOption other = ( StoredProcedureLanguageSchemeOption ) obj;
+     
         if ( language == null )
         {
             if ( other.language != null )
@@ -108,7 +102,17 @@ public class StoredProcedureLanguageSchemeOption implements StoredProcedureOptio
         {
             return false;
         }
+        
         return true;
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString()
+    {
+        return "language " + "\"" + language + "\"";
+    }
 }

@@ -107,10 +107,9 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
 
                         byte[] newCookie = value.getData();
 
-                        if ( LOG.isDebugEnabled()
- )
+                        if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "newcookie = {}", Strings.dumpBytes( newCookie ) );
+                            LOG.debug( I18n.msg( I18n.MSG_08300_NEW_COOKIE, Strings.dumpBytes( newCookie ) ) );
                         }
 
                         syncInfoValue.setCookie( newCookie );
@@ -172,10 +171,9 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
 
                         byte[] cookie = value.getData();
 
-                        if ( LOG.isDebugEnabled()
- )
+                        if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "cookie = {}", Strings.dumpBytes( cookie ) );
+                            LOG.debug( I18n.msg( I18n.MSG_08000_COOKIE, Strings.dumpBytes( cookie ) ) );
                         }
 
                         container.getSyncInfoValue().setCookie( cookie );
@@ -212,10 +210,9 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         {
                             boolean refreshDone = BooleanDecoder.parse( value );
 
-                            if ( LOG.isDebugEnabled()
- )
+                            if ( LOG.isDebugEnabled() )
                             {
-                                LOG.debug( "refreshDone = {}", refreshDone );
+                                LOG.debug( I18n.msg( I18n.MSG_08301_REFRESH_DONE, refreshDone ) );
                             }
 
                             syncInfoValue.setRefreshDone( refreshDone );
@@ -227,7 +224,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         }
                         catch ( BooleanDecoderException be )
                         {
-                            String msg = I18n.err( I18n.ERR_04025 );
+                            String msg = I18n.err( I18n.ERR_08300_REFRESH_DONE_DECODING_FAILED );
                             LOG.error( msg, be );
                             throw new DecoderException( msg, be );
                         }
@@ -262,10 +259,9 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         {
                             boolean refreshDone = BooleanDecoder.parse( value );
 
-                            if ( LOG.isDebugEnabled()
- )
+                            if ( LOG.isDebugEnabled() )
                             {
-                                LOG.debug( "refreshDone = {}", refreshDone );
+                                LOG.debug( I18n.msg( I18n.MSG_08301_REFRESH_DONE, refreshDone ) );
                             }
 
                             syncInfoValue.setRefreshDone( refreshDone );
@@ -277,7 +273,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         }
                         catch ( BooleanDecoderException be )
                         {
-                            String msg = I18n.err( I18n.ERR_04025 );
+                            String msg = I18n.err( I18n.ERR_08300_REFRESH_DONE_DECODING_FAILED );
                             LOG.error( msg, be );
                             throw new DecoderException( msg, be );
                         }
@@ -337,10 +333,9 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
 
                         byte[] cookie = value.getData();
 
-                        if ( LOG.isDebugEnabled()
- )
+                        if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "cookie = {}", Strings.dumpBytes( cookie ) );
+                            LOG.debug( I18n.msg( I18n.MSG_08000_COOKIE, Strings.dumpBytes( cookie ) ) );
                         }
 
                         container.getSyncInfoValue().setCookie( cookie );
@@ -377,10 +372,9 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         {
                             boolean refreshDone = BooleanDecoder.parse( value );
 
-                            if ( LOG.isDebugEnabled()
- )
+                            if ( LOG.isDebugEnabled() )
                             {
-                                LOG.debug( "refreshDone = {}", refreshDone );
+                                LOG.debug( I18n.msg( I18n.MSG_08301_REFRESH_DONE, refreshDone ) );
                             }
 
                             syncInfoValue.setRefreshDone( refreshDone );
@@ -392,7 +386,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         }
                         catch ( BooleanDecoderException be )
                         {
-                            String msg = I18n.err( I18n.ERR_04025 );
+                            String msg = I18n.err( I18n.ERR_08300_REFRESH_DONE_DECODING_FAILED );
                             LOG.error( msg, be );
                             throw new DecoderException( msg, be );
                         }
@@ -427,10 +421,9 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         {
                             boolean refreshDone = BooleanDecoder.parse( value );
 
-                            if ( LOG.isDebugEnabled()
- )
+                            if ( LOG.isDebugEnabled() )
                             {
-                                LOG.debug( "refreshDone = {}", refreshDone );
+                                LOG.debug( I18n.msg( I18n.MSG_08301_REFRESH_DONE, refreshDone ) );
                             }
 
                             syncInfoValue.setRefreshDone( refreshDone );
@@ -442,7 +435,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         }
                         catch ( BooleanDecoderException be )
                         {
-                            String msg = I18n.err( I18n.ERR_04025 );
+                            String msg = I18n.err( I18n.ERR_08300_REFRESH_DONE_DECODING_FAILED );
                             LOG.error( msg, be );
                             throw new DecoderException( msg, be );
                         }
@@ -498,10 +491,9 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
 
                         byte[] cookie = value.getData();
 
-                        if ( LOG.isDebugEnabled()
- )
+                        if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "cookie = {}", Strings.dumpBytes( cookie ) );
+                            LOG.debug( I18n.msg( I18n.MSG_08000_COOKIE, Strings.dumpBytes( cookie ) ) );
                         }
 
                         container.getSyncInfoValue().setCookie( cookie );
@@ -534,10 +526,9 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         {
                             boolean refreshDeletes = BooleanDecoder.parse( value );
 
-                            if ( LOG.isDebugEnabled()
- )
+                            if ( LOG.isDebugEnabled() )
                             {
-                                LOG.debug( "refreshDeletes = {}", refreshDeletes );
+                                LOG.debug( I18n.msg( I18n.MSG_08001_REFRESH_DELETES, refreshDeletes ) );
                             }
 
                             syncInfoValue.setRefreshDeletes( refreshDeletes );
@@ -546,7 +537,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         }
                         catch ( BooleanDecoderException be )
                         {
-                            String msg = I18n.err( I18n.ERR_04026 );
+                            String msg = I18n.err( I18n.ERR_08301_REFRESH_DELETES_DECODING_FAILED );
                             LOG.error( msg, be );
                             throw new DecoderException( msg, be );
                         }
@@ -578,10 +569,9 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         {
                             boolean refreshDeletes = BooleanDecoder.parse( value );
 
-                            if ( LOG.isDebugEnabled()
- )
+                            if ( LOG.isDebugEnabled() )
                             {
-                                LOG.debug( "refreshDeletes = {}", refreshDeletes );
+                                LOG.debug( I18n.msg( I18n.MSG_08001_REFRESH_DELETES, refreshDeletes ) );
                             }
 
                             syncInfoValue.setRefreshDeletes( refreshDeletes );
@@ -590,7 +580,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         }
                         catch ( BooleanDecoderException be )
                         {
-                            String msg = I18n.err( I18n.ERR_04024 );
+                            String msg = I18n.err( I18n.ERR_08001_CANNOT_DECODE_REFRESH_DELETES );
                             LOG.error( msg, be );
                             throw new DecoderException( msg, be );
                         }
@@ -691,15 +681,14 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         // UUID must be exactly 16 bytes long
                         if ( ( uuid == null ) || ( uuid.length != 16 ) )
                         {
-                            String msg = I18n.err( I18n.ERR_04027 );
+                            String msg = I18n.err( I18n.ERR_08302_BAD_UUID_VALUE_INCORRECT_LENGTH );
                             LOG.error( msg );
                             throw new DecoderException( msg );
                         }
 
-                        if ( LOG.isDebugEnabled()
- )
+                        if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "UUID = {}", Strings.dumpBytes( uuid ) );
+                            LOG.debug( I18n.msg( I18n.MSG_08302_UUID, Strings.dumpBytes( uuid ) ) );
                         }
 
                         // Store the UUID in the UUIDs list
@@ -737,15 +726,14 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         // UUID must be exactly 16 bytes long
                         if ( ( uuid == null ) || ( uuid.length != 16 ) )
                         {
-                            String msg = I18n.err( I18n.ERR_04027 );
+                            String msg = I18n.err( I18n.ERR_08302_BAD_UUID_VALUE_INCORRECT_LENGTH );
                             LOG.error( msg );
                             throw new DecoderException( msg );
                         }
 
-                        if ( LOG.isDebugEnabled()
- )
+                        if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "UUID = {}", Strings.dumpBytes( uuid ) );
+                            LOG.debug( I18n.msg( I18n.MSG_08302_UUID, Strings.dumpBytes( uuid ) ) );
                         }
 
                         // Store the UUID in the UUIDs list

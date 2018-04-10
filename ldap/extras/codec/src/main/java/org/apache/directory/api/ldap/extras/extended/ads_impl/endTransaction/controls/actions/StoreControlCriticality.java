@@ -85,7 +85,7 @@ public class StoreControlCriticality extends GrammarAction<ControlsContainer>
         catch ( BooleanDecoderException bde )
         {
             LOG.error( I18n
-                .err( I18n.ERR_04100_BAD_CONTROL_CRITICALITY, Strings.dumpBytes( value.getData() ), bde.getMessage() ) );
+                .err( I18n.ERR_08103_BAD_CONTROL_CRITICALITY, Strings.dumpBytes( value.getData() ), bde.getMessage() ) );
 
             // This will generate a PROTOCOL_ERROR
             throw new DecoderException( bde.getMessage(), bde );
@@ -96,7 +96,7 @@ public class StoreControlCriticality extends GrammarAction<ControlsContainer>
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Control criticality : {}", control.isCritical() );
+            LOG.debug( I18n.msg( I18n.MSG_08202_CONTROL_CRITICALITY, control.isCritical() ) );
         }
     }
 }

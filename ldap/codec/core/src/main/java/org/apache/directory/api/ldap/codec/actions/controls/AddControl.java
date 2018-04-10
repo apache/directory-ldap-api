@@ -69,7 +69,7 @@ public class AddControl extends GrammarAction<LdapMessageContainer<MessageDecora
         // We have to handle the special case of a 0 length OID
         if ( tlv.getLength() == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04097_NULL_CONTROL_OID );
+            String msg = I18n.err( I18n.ERR_08214_NULL_OID );
             LOG.error( msg );
 
             // This will generate a PROTOCOL_ERROR
@@ -82,7 +82,7 @@ public class AddControl extends GrammarAction<LdapMessageContainer<MessageDecora
         // The OID is encoded as a String, not an Object Id
         if ( !Oid.isOid( oidValue ) )
         {
-            String msg = I18n.err( I18n.ERR_04098_INVALID_CONTROL_OID, oidValue );
+            String msg = I18n.err( I18n.ERR_08215_INVALID_CONTROL_OID, oidValue );
             LOG.error( msg );
 
             // This will generate a PROTOCOL_ERROR
@@ -100,7 +100,7 @@ public class AddControl extends GrammarAction<LdapMessageContainer<MessageDecora
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Control OID : {}", oidValue );
+            LOG.debug( I18n.msg( I18n.MSG_08201_CONTROL_OID, oidValue ) );
         }
     }
 }

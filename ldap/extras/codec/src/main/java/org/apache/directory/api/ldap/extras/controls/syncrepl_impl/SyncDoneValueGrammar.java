@@ -112,7 +112,7 @@ public final class SyncDoneValueGrammar extends AbstractGrammar<SyncDoneValueCon
 
                         if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "cookie = {}", Strings.dumpBytes( cookie ) );
+                            LOG.debug( I18n.msg( I18n.MSG_08000_COOKIE, Strings.dumpBytes( cookie ) ) );
                         }
 
                         container.getSyncDoneValueControl().setCookie( cookie );
@@ -134,7 +134,7 @@ public final class SyncDoneValueGrammar extends AbstractGrammar<SyncDoneValueCon
 
                         if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "refreshDeletes = {}", refreshDeletes );
+                            LOG.debug( I18n.msg( I18n.MSG_08001_REFRESH_DELETES, refreshDeletes ) );
                         }
 
                         container.getSyncDoneValueControl().setRefreshDeletes( refreshDeletes );
@@ -144,7 +144,7 @@ public final class SyncDoneValueGrammar extends AbstractGrammar<SyncDoneValueCon
                     }
                     catch ( BooleanDecoderException be )
                     {
-                        String msg = I18n.err( I18n.ERR_04024 );
+                        String msg = I18n.err( I18n.ERR_08001_CANNOT_DECODE_REFRESH_DELETES );
                         LOG.error( msg, be );
                         throw new DecoderException( msg, be );
                     }
