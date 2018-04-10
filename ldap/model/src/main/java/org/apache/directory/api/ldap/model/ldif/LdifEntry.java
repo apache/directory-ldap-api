@@ -240,7 +240,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
         if ( valueExpected )
         {
             throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n
-                .err( I18n.ERR_12087 ) );
+                .err( I18n.ERR_13250_VALUE_MISSING_AT_THE_END ) );
         }
 
         // Now, parse the Ldif and convert it to a LdifEntry
