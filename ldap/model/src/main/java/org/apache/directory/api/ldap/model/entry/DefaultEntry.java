@@ -397,7 +397,7 @@ public final class DefaultEntry implements Entry
         if ( valueExpected )
         {
             throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n
-                .err( I18n.ERR_12087 ) );
+                .err( I18n.ERR_13250_VALUE_MISSING_AT_THE_END ) );
         }
 
         try ( LdifAttributesReader reader = new LdifAttributesReader() )

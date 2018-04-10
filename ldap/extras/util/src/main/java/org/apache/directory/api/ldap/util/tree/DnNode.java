@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.exception.LdapUnwillingToPerformException;
@@ -143,7 +144,7 @@ public class DnNode<N>
     {
         if ( ( dn == null ) || dn.isEmpty() )
         {
-            String message = "Cannot process an empty Dn";
+            String message = I18n.err( I18n.ERR_12000_CANNOT_PROCESS_EMPTY_DN );
             LOG.error( message );
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, message );
         }
@@ -586,14 +587,14 @@ public class DnNode<N>
                 // That means the added Dn is already present. Check if it already has an element
                 if ( parentNode.hasElement() )
                 {
-                    String message = "Cannot add a node to a node already having an element";
+                    String message = I18n.err( I18n.ERR_12001_CANNOT_ADD_NODE_CHILD_EXISTS );
                     LOG.error( message );
                     throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, message );
                 }
                 // We may try to add twice the same Dn, without any element
                 else if ( element == null )
                 {
-                    String message = "Cannot add a node with no element if it already exists";
+                    String message = I18n.err( I18n.ERR_12002_CANNOT_ADD_NODE_ALREADY_EXISTS );
                     LOG.error( message );
                     throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, message );
                 }
