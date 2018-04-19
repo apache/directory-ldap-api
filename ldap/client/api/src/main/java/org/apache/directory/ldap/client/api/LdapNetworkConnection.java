@@ -40,7 +40,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -4061,6 +4063,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     { "TLSv1", "TLSv1.1", "TLSv1.2" } );
             }
 
+            HandshakeFuture handshakeFuture = new HandshakeFuture();
+            ldapSession.setAttribute( SslFilter.USE_NOTIFICATION, Boolean.TRUE );
+            ldapSession.setAttribute( "HANDSHAKE_FUTURE", handshakeFuture );
+
             // for LDAPS
             if ( ( ldapSession == null ) || !connected.get() )
             {
@@ -4069,18 +4075,14 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             else
             // for StartTLS
             {
-                HandshakeFuture handshakeFuture = new HandshakeFuture();
-                
-                ldapSession.setAttribute( SslFilter.USE_NOTIFICATION, Boolean.TRUE );
-                ldapSession.setAttribute( "HANDSHAKE_FUTURE", handshakeFuture );
                 ldapSession.getFilterChain().addFirst( SSL_FILTER_KEY, sslFilter );
+            }
 
-                boolean isSecured = handshakeFuture.get( timeout, TimeUnit.MILLISECONDS );
-                
-                if ( !isSecured )
-                {
-                    throw new LdapOperationException( ResultCodeEnum.OTHER, I18n.err( I18n.ERR_4100_TLS_HANDSHAKE_ERROR ) );
-                }
+            boolean isSecured = handshakeFuture.get( timeout, TimeUnit.MILLISECONDS );
+            
+            if ( !isSecured )
+            {
+                throw new LdapOperationException( ResultCodeEnum.OTHER, I18n.err( I18n.ERR_4100_TLS_HANDSHAKE_ERROR ) );
             }
         }
         catch ( Exception e )
@@ -4278,7 +4280,21 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         // throw immediately
         if ( config.isUseSsl() && !ldapSession.isSecured() )
         {
-            throw new InvalidConnectionException( "Attempting to send over an insecure connection" );
+            HandshakeFuture handshakeFuture =  ( HandshakeFuture ) ldapSession.getAttribute( "HANDSHAKE_FUTURE" );
+            
+            try
+            {
+                boolean isSecured = handshakeFuture.get( timeout, TimeUnit.MILLISECONDS );
+                
+                if ( !isSecured )
+                {
+                    throw new LdapOperationException( ResultCodeEnum.OTHER, I18n.err( I18n.ERR_4100_TLS_HANDSHAKE_ERROR ) );
+                }
+            } 
+            catch ( TimeoutException | ExecutionException | InterruptedException e )
+            {
+                throw new InvalidConnectionException( e.getMessage(), e );
+            }
         }
 
         // Send the request to the server
