@@ -2027,7 +2027,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( message instanceof SslFilter.SslFilterMessage )
         {
             // This is a SSL message telling if the session has been secured or not
-            HandshakeFuture handshakeFuture = ( HandshakeFuture ) ldapSession.getAttribute( "HANDSHAKE_FUTURE" );
+            HandshakeFuture handshakeFuture = ( HandshakeFuture ) session.getAttribute( "HANDSHAKE_FUTURE" );
 
             if ( message == SslFilter.SESSION_SECURED )
             {
@@ -2040,7 +2040,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 handshakeFuture.cancel();
             }
 
-            ldapSession.removeAttribute( "HANDSHAKE_FUTURE" );
+            session.removeAttribute( "HANDSHAKE_FUTURE" );
+            
             return;
         }
 
@@ -4070,11 +4071,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             // for StartTLS
             {
                 HandshakeFuture handshakeFuture = new HandshakeFuture();
-                
+
                 ldapSession.setAttribute( SslFilter.USE_NOTIFICATION, Boolean.TRUE );
                 ldapSession.setAttribute( "HANDSHAKE_FUTURE", handshakeFuture );
                 ldapSession.getFilterChain().addFirst( SSL_FILTER_KEY, sslFilter );
-
                 boolean isSecured = handshakeFuture.get( timeout, TimeUnit.MILLISECONDS );
                 
                 if ( !isSecured )
@@ -4276,11 +4276,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         // If we are meant to be using a secure connection but the ssl filter isn' in the filter chain then
         // throw immediately
-        if ( config.isUseSsl() && !ldapSession.isSecured() )
+        if ( config.isUseSsl() && !ldapSession.getFilterChain().contains( "sslFilter" ) )
         {
             throw new InvalidConnectionException( "Attempting to send over an insecure connection" );
         }
-
+        
         // Send the request to the server
         WriteFuture writeFuture = ldapSession.write( request );
 
