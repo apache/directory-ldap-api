@@ -52,16 +52,16 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class OpenLdapSchemaParserTest
+public class FastOpenLdapSchemaParserTest
 {
-    private OpenLdapSchemaParser parser;
+    private FastOpenLdapSchemaParser parser;
 
 
     @Before
     public void setUp() throws Exception
     {
-        parser = new OpenLdapSchemaParser();
-        parser.setParserMonitor( new ConsoleParserMonitor() );
+        parser = new FastOpenLdapSchemaParser();
+        // parser.setParserMonitor( new ConsoleParserMonitor() );
     }
 
 
@@ -330,6 +330,7 @@ public class OpenLdapSchemaParserTest
     public void testParseOpenLdapCoreSchema() throws Exception
     {
         InputStream input = getClass().getResourceAsStream( "core.schema" );
+        parser.setQuirksMode( true );
         parser.parse( input );
 
         List<MutableAttributeType> attributeTypes = parser.getAttributeTypes();
@@ -460,9 +461,9 @@ public class OpenLdapSchemaParserTest
 
 
     @Test
-    public void testLdifParsePerf() throws Exception
+    public void testFastLdifParsePerf() throws Exception
     {
-        OpenLdapSchemaParser parser = new OpenLdapSchemaParser();
+        FastOpenLdapSchemaParser parser = new FastOpenLdapSchemaParser();
         parser.setQuirksMode( true );
         long t0 = System.currentTimeMillis();
 

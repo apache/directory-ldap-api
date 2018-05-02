@@ -55,6 +55,7 @@
     <suppress files="org.apache.directory.api.ldap.model.entry.DefaultAttribute" checks="FileLength" />
     <suppress files="org.apache.directory.api.ldap.model.entry.DefaultEntry" checks="FileLength" />
     <suppress files="org.apache.directory.api.ldap.model.ldif.LdifReader" checks="FileLength" />
+    <suppress files="org.apache.directory.api.ldap.model.schema.parsers.FastOpenLdapSchemaParser" checks="FileLength" />
 
     <!-- Setter return super type, which is not recognized by Checkstyle -->
     <suppress files="org.apache.directory.api.ldap.model.message" checks="HiddenField" />
