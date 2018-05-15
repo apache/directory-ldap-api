@@ -25,9 +25,6 @@ import java.text.ParseException;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
-
 
 /**
  * A parser for RFC 4512 LDAP syntx descriptions.
@@ -60,18 +57,14 @@ public class LdapSyntaxDescriptionSchemaParser extends AbstractSchemaParser<Ldap
      * @return the parsed LdapSyntax bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public LdapSyntax parseLdapSyntaxDescription( String ldapSyntaxDescription ) throws ParseException
+    public LdapSyntax parse( String ldapSyntaxDescription ) throws ParseException
     {
-        return super.parse( ldapSyntaxDescription );
-    }
+        LdapSyntax ldapSyntax = fastParser.parseLdapSyntax( ldapSyntaxDescription );
+        ldapSyntax.setSpecification( ldapSyntaxDescription );
 
+        // Update the schemaName
+        updateSchemaName( ldapSyntax );
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected LdapSyntax doParse() throws RecognitionException, TokenStreamException
-    {
-        return parser.ldapSyntaxDescription();
+        return ldapSyntax;
     }
 }

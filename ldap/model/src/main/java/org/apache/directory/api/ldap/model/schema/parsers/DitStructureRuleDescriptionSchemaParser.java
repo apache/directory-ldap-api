@@ -25,9 +25,6 @@ import java.text.ParseException;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.DitStructureRule;
 
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
-
 
 /**
  * A parser for RFC 4512 DIT structure rule descriptions.
@@ -68,20 +65,14 @@ public class DitStructureRuleDescriptionSchemaParser extends AbstractSchemaParse
      * @return the parsed DITStructureRuleDescription bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public DitStructureRule parseDITStructureRuleDescription( String ditStructureRuleDescription )
-        throws ParseException
+    public DitStructureRule parse( String ditStructureRuleDescription ) throws ParseException
     {
-        return super.parse( ditStructureRuleDescription );
+        DitStructureRule ditStructureRule = fastParser.parseDitStructureRule( ditStructureRuleDescription );
+        ditStructureRule.setSpecification( ditStructureRuleDescription );
 
-    }
+        // Update the schemaName
+        updateSchemaName( ditStructureRule );
 
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected DitStructureRule doParse() throws RecognitionException, TokenStreamException
-    {
-        return parser.ditStructureRuleDescription();
+        return ditStructureRule;
     }
 }

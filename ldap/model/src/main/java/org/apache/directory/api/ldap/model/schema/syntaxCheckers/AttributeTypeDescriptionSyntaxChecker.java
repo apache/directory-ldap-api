@@ -160,7 +160,7 @@ public final class AttributeTypeDescriptionSyntaxChecker extends SyntaxChecker
 
         try
         {
-            schemaParser.parseAttributeTypeDescription( strValue );
+            schemaParser.parse( strValue );
             
             if ( LOG.isDebugEnabled() )
             {

@@ -77,9 +77,16 @@ public class MatchingRuleDescriptionSchemaParserTest
 
 
     @Test
-    public void testNames() throws ParseException
+    public void testNamesRelaxed() throws ParseException
     {
-        SchemaParserTestUtils.testNames( parser, "1.1", "SYNTAX 1.1" );
+        SchemaParserTestUtils.testNamesRelaxed( parser, "1.1", "SYNTAX 1.1" );
+    }
+
+
+    @Test
+    public void testNamesStrict() throws ParseException
+    {
+        SchemaParserTestUtils.testNamesStrict( parser, "1.1", "SYNTAX 1.1" );
     }
 
 
@@ -98,36 +105,44 @@ public class MatchingRuleDescriptionSchemaParserTest
 
 
     @Test
-    public void testSyntax() throws ParseException, NamingException
+    public void testSyntaxStrict() throws ParseException, NamingException
     {
         String value = null;
         MatchingRule matchingRule = null;
 
         // simple
         value = "( 1.1 SYNTAX 0.1.2.3.4.5.6.7.8.9 )";
-        matchingRule = parser.parseMatchingRuleDescription( value );
+        matchingRule = parser.parse( value );
         assertEquals( "0.1.2.3.4.5.6.7.8.9", matchingRule.getSyntaxOid() );
 
         // simple
-        value = "(1.1 SYNTAX 123.456.789.0)";
-        matchingRule = parser.parseMatchingRuleDescription( value );
-        assertEquals( "123.456.789.0", matchingRule.getSyntaxOid() );
+        value = "(1.1 SYNTAX 1.2.456.789.0)";
+        matchingRule = parser.parse( value );
+        assertEquals( "1.2.456.789.0", matchingRule.getSyntaxOid() );
 
         // simple with spaces
         value = "( 1.1    SYNTAX    0.1.2.3.4.5.6.7.8.9    )";
-        matchingRule = parser.parseMatchingRuleDescription( value );
+        matchingRule = parser.parse( value );
         assertEquals( "0.1.2.3.4.5.6.7.8.9", matchingRule.getSyntaxOid() );
 
         // quoted value in parentheses
         value = "( 1.1    SYNTAX ('0.1.2.3.4.5.6.7.8.9')    )";
-        matchingRule = parser.parseMatchingRuleDescription( value );
-        assertEquals( "0.1.2.3.4.5.6.7.8.9", matchingRule.getSyntaxOid() );
+        
+        try
+        {
+            matchingRule = parser.parse( value );
+            fail( "Exception expected, parentheses not allowed" );
+        }
+        catch ( ParseException pe )
+        {
+            assertTrue( true );
+        }
 
         // SYNTAX must only appear once
         value = "( 1.1 SYNTAX 2.2 SYNTAX 3.3 )";
         try
         {
-            matchingRule = parser.parseMatchingRuleDescription( value );
+            matchingRule = parser.parse( value );
             fail( "Exception expected, SYNTAX appears twice" );
         }
         catch ( ParseException pe )
@@ -135,31 +150,76 @@ public class MatchingRuleDescriptionSchemaParserTest
             assertTrue( true );
         }
 
-        if ( !parser.isQuirksMode() )
+        // non-numeric not allowed
+        value = "( test )";
+        try
         {
-            // non-numeric not allowed
-            value = "( test )";
-            try
-            {
-                parser.parse( value );
-                fail( "Exception expected, SYNTAX is require" );
-            }
-            catch ( ParseException pe )
-            {
-                // expected
-            }
+            parser.parse( value );
+            fail( "Exception expected, SYNTAX is require" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
 
-            // SYNTAX is required
-            value = "( 1.1 )";
-            try
-            {
-                matchingRule = parser.parseMatchingRuleDescription( value );
-                fail( "Exception expected, SYNTAX is required" );
-            }
-            catch ( ParseException pe )
-            {
-                // expected
-            }
+        // SYNTAX is required
+        value = "( 1.1 )";
+        try
+        {
+            matchingRule = parser.parse( value );
+            fail( "Exception expected, SYNTAX is required" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
+    }
+
+
+    @Test
+    public void testSyntaxRelaxed() throws ParseException, NamingException
+    {
+        String value = null;
+        MatchingRule matchingRule = null;
+
+        // simple
+        value = "( 1.1 SYNTAX 0.1.2.3.4.5.6.7.8.9 )";
+        matchingRule = parser.parse( value );
+        assertEquals( "0.1.2.3.4.5.6.7.8.9", matchingRule.getSyntaxOid() );
+
+        // simple
+        value = "(1.1 SYNTAX 1.2.456.789.0)";
+        matchingRule = parser.parse( value );
+        assertEquals( "1.2.456.789.0", matchingRule.getSyntaxOid() );
+
+        // simple with spaces
+        value = "( 1.1    SYNTAX    0.1.2.3.4.5.6.7.8.9    )";
+        matchingRule = parser.parse( value );
+        assertEquals( "0.1.2.3.4.5.6.7.8.9", matchingRule.getSyntaxOid() );
+
+        // quoted value in parentheses
+        value = "( 1.1    SYNTAX ('0.1.2.3.4.5.6.7.8.9')    )";
+        
+        try
+        {
+            matchingRule = parser.parse( value );
+            fail( "Exception expected, parentheses not allowed" );
+        }
+        catch ( ParseException pe )
+        {
+            assertTrue( true );
+        }
+
+        // SYNTAX must only appear once
+        value = "( 1.1 SYNTAX 2.2 SYNTAX 3.3 )";
+        try
+        {
+            matchingRule = parser.parse( value );
+            fail( "Exception expected, SYNTAX appears twice" );
+        }
+        catch ( ParseException pe )
+        {
+            assertTrue( true );
         }
     }
 
@@ -178,7 +238,7 @@ public class MatchingRuleDescriptionSchemaParserTest
         MatchingRule matchingRule = null;
 
         value = "( 1.2.3.4.5.6.7.8.9.0 NAME ( 'abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789' 'test' ) DESC 'Descripton \u00E4\u00F6\u00FC\u00DF \u90E8\u9577' OBSOLETE SYNTAX 0.1.2.3.4.5.6.7.8.9 X-TEST-a ('test1-1' 'test1-2') X-TEST-b ('test2-1' 'test2-2') )";
-        matchingRule = parser.parseMatchingRuleDescription( value );
+        matchingRule = parser.parse( value );
 
         assertEquals( "1.2.3.4.5.6.7.8.9.0", matchingRule.getOid() );
         assertEquals( 2, matchingRule.getNames().size() );
@@ -228,7 +288,7 @@ public class MatchingRuleDescriptionSchemaParserTest
         MatchingRule matchingRule = null;
 
         value = "( 1.2.3.4.5.6.7.8.9.0 SYNTAX 1.1 )";
-        matchingRule = parser.parseMatchingRuleDescription( value );
+        matchingRule = parser.parse( value );
         assertNotNull( matchingRule.getSyntaxOid() );
 
         if ( !parser.isQuirksMode() )
@@ -236,7 +296,7 @@ public class MatchingRuleDescriptionSchemaParserTest
             value = "( 1.2.3.4.5.6.7.8.9.0 )";
             try
             {
-                parser.parseMatchingRuleDescription( value );
+                parser.parse( value );
                 fail( "Exception expected, SYNTAX is required" );
             }
             catch ( ParseException pe )
@@ -255,7 +315,7 @@ public class MatchingRuleDescriptionSchemaParserTest
     public void testRfc1() throws ParseException, NamingException
     {
         String value = "( 2.5.13.5 NAME 'caseExactMatch' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )";
-        MatchingRule matchingRule = parser.parseMatchingRuleDescription( value );
+        MatchingRule matchingRule = parser.parse( value );
 
         assertEquals( "2.5.13.5", matchingRule.getOid() );
         assertEquals( 1, matchingRule.getNames().size() );
@@ -271,7 +331,7 @@ public class MatchingRuleDescriptionSchemaParserTest
     public void testSun1() throws ParseException, NamingException
     {
         String value = "( 2.5.13.5 NAME 'caseExactMatch' DESC 'Case Exact Matching on Directory String [defined in X.520]' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )";
-        MatchingRule matchingRule = parser.parseMatchingRuleDescription( value );
+        MatchingRule matchingRule = parser.parse( value );
 
         assertEquals( "2.5.13.5", matchingRule.getOid() );
         assertEquals( 1, matchingRule.getNames().size() );
@@ -295,7 +355,7 @@ public class MatchingRuleDescriptionSchemaParserTest
         {
             try
             {
-                parser.parseMatchingRuleDescription( value );
+                parser.parse( value );
                 fail( "Exception expected, invalid NAME value 'caseExactSubstringMatch-2.16.840.1.113730.3.3.2.11.3' (contains DOTs)" );
             }
             catch ( ParseException pe )
@@ -305,7 +365,7 @@ public class MatchingRuleDescriptionSchemaParserTest
         }
         else
         {
-            MatchingRule matchingRule = parser.parseMatchingRuleDescription( value );
+            MatchingRule matchingRule = parser.parse( value );
             assertEquals( "1.3.6.1.4.1.42.2.27.9.4.34.3.6", matchingRule.getOid() );
             assertEquals( 1, matchingRule.getNames().size() );
             assertEquals( "caseExactSubstringMatch-2.16.840.1.113730.3.3.2.11.3", matchingRule.getNames().get( 0 ) );
@@ -347,10 +407,10 @@ public class MatchingRuleDescriptionSchemaParserTest
 
             // ensure all other test pass in quirks mode
             testNumericOid();
-            testNames();
+            testNamesRelaxed();
             testDescription();
             testObsolete();
-            testSyntax();
+            testSyntaxRelaxed();
             testExtensions();
             testFull();
             testUniqueElements();

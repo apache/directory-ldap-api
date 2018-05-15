@@ -29,7 +29,6 @@ import java.util.Map;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import javax.naming.NameParser;
 import org.apache.directory.api.ldap.model.entry.Value;
-import org.apache.directory.api.ldap.model.schema.parsers.ParserMonitor;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.util.ExpansibleByteBuffer;
@@ -137,19 +136,8 @@ options    {
 }
 
 {
-    private ParserMonitor monitor = null;
-    
-    public void setParserMonitor( ParserMonitor monitor )
-    {
-        this.monitor = monitor;
-    }
-    
     private void matchedProduction( String msg )
     {
-        if ( null != monitor )
-        {
-            monitor.matchedProduction( msg );
-        }
     }
 
     /**

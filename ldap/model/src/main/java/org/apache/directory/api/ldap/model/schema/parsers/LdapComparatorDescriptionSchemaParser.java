@@ -24,9 +24,6 @@ import java.text.ParseException;
 
 import org.apache.directory.api.i18n.I18n;
 
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
-
 
 /**
  * A parser for ApacheDS comparator descriptions.
@@ -69,19 +66,15 @@ public class LdapComparatorDescriptionSchemaParser extends AbstractSchemaParser<
      * @return the parsed ComparatorDescription bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public LdapComparatorDescription parseComparatorDescription( String comparatorDescription ) throws ParseException
+    public LdapComparatorDescription parse( String comparatorDescription ) throws ParseException
     {
-        return super.parse( comparatorDescription );
+        LdapComparatorDescription comparator = fastParser.parseLdapComparator( comparatorDescription );
+        comparator.setSpecification( comparatorDescription );
+
+        
+        // Update the schemaName
+        updateSchemaName( comparator );
+
+        return comparator;
     }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected LdapComparatorDescription doParse() throws RecognitionException, TokenStreamException
-    {
-        return parser.ldapComparator();
-    }
-
 }

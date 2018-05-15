@@ -25,9 +25,6 @@ import java.text.ParseException;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
 
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
-
 
 /**
  * A parser for RFC 4512 matching rule descriptions.
@@ -65,19 +62,14 @@ public class MatchingRuleDescriptionSchemaParser extends AbstractSchemaParser<Ma
      * @return the parsed MatchingRuleDescription bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public MatchingRule parseMatchingRuleDescription( String matchingRuleDescription ) throws ParseException
+    public MatchingRule parse( String matchingRuleDescription ) throws ParseException
     {
-        return super.parse( matchingRuleDescription );
+        MatchingRule matchingRule = fastParser.parseMatchingRule( matchingRuleDescription );
+        matchingRule.setSpecification( matchingRuleDescription );
+
+        // Update the schemaName
+        updateSchemaName( matchingRule );
+
+        return matchingRule;
     }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected MatchingRule doParse() throws RecognitionException, TokenStreamException
-    {
-        return parser.matchingRuleDescription();
-    }
-
 }

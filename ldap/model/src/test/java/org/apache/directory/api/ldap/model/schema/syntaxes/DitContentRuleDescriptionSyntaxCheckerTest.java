@@ -63,7 +63,7 @@ public class DitContentRuleDescriptionSyntaxCheckerTest
             .isValidSyntax( "( 2.5.6.4 NAME 'organization' DESC 'content rule for organization' OBSOLETE AUX ( pilotOrganization $  2.5.6.5 ) MUST ( objectClass $ o ) MAY ( l $ st ) NOT ( 1.2.3.4.5.6.7.8.9.0 $ ou ) )" ) );
 
         assertTrue( checker.isValidSyntax( "(2.5.6.4)" ) );
-        assertTrue( checker.isValidSyntax( "(2.5.6.4 NAME organization)" ) );
+        assertTrue( checker.isValidSyntax( "(2.5.6.4 NAME 'organization')" ) );
         assertTrue( checker
             .isValidSyntax( "(   2.5.6.4     NAME   'organization'   DESC   'content rule for organization' OBSOLETE AUX ( pilotOrganization $  2.5.6.5 ) MUST ( objectClass $ o )     MAY    (    l   $   st   ) NOT (1.2.3.4.5.6.7.8.9.0 $ ou))" ) );
 

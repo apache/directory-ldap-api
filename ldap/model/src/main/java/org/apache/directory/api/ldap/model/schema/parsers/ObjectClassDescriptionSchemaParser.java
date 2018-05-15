@@ -25,9 +25,6 @@ import java.text.ParseException;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
-
 
 /**
  * A parser for RFC 4512 object class descriptons
@@ -71,19 +68,14 @@ public class ObjectClassDescriptionSchemaParser extends AbstractSchemaParser<Obj
      * @return the parsed ObjectClassDescription bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public ObjectClass parseObjectClassDescription( String objectClassDescription ) throws ParseException
+    public ObjectClass parse( String objectClassDescription ) throws ParseException
     {
-        return super.parse( objectClassDescription );
+        ObjectClass objectClass = fastParser.parseObjectClass( objectClassDescription );
+        objectClass.setSpecification( objectClassDescription );
+
+        // Update the schemaName
+        updateSchemaName( objectClass );
+
+        return objectClass;
     }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected ObjectClass doParse() throws RecognitionException, TokenStreamException
-    {
-        return parser.objectClassDescription();
-    }
-
 }

@@ -136,7 +136,7 @@ public final class MatchingRuleUseDescriptionSyntaxChecker extends SyntaxChecker
 
         try
         {
-            schemaParser.parseMatchingRuleUseDescription( strValue );
+            schemaParser.parse( strValue );
 
             if ( LOG.isDebugEnabled() )
             {

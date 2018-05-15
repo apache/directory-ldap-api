@@ -30,12 +30,12 @@ import java.util.Collections;
 import org.apache.directory.api.ldap.model.schema.parsers.AttributeTypeDescriptionSchemaParser;
 import org.apache.directory.api.ldap.model.schema.parsers.DitContentRuleDescriptionSchemaParser;
 import org.apache.directory.api.ldap.model.schema.parsers.DitStructureRuleDescriptionSchemaParser;
+import org.apache.directory.api.ldap.model.schema.parsers.OpenLdapSchemaParser;
 import org.apache.directory.api.ldap.model.schema.parsers.LdapSyntaxDescriptionSchemaParser;
 import org.apache.directory.api.ldap.model.schema.parsers.MatchingRuleDescriptionSchemaParser;
 import org.apache.directory.api.ldap.model.schema.parsers.MatchingRuleUseDescriptionSchemaParser;
 import org.apache.directory.api.ldap.model.schema.parsers.NameFormDescriptionSchemaParser;
 import org.apache.directory.api.ldap.model.schema.parsers.ObjectClassDescriptionSchemaParser;
-import org.apache.directory.api.ldap.model.schema.parsers.OpenLdapSchemaParser;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -111,7 +111,7 @@ public class SchemaObjectRendererTest
         matchingRuleUse.setNames( "name0" );
         matchingRuleUse.setDescription( "description with 'quotes'" );
         matchingRuleUse.setObsolete( true );
-        matchingRuleUse.setApplicableAttributeOids( Arrays.asList( "2.3.4.5", "3.4.5.6" ) );
+        matchingRuleUse.setApplicableAttributeOids( Arrays.asList( "2.3.4.5", "1.3.4.5.6" ) );
         matchingRuleUse.setSchemaName( "dummy" );
 
         ldapSyntax = new LdapSyntax( "1.2.3.4" );
@@ -420,7 +420,7 @@ public class SchemaObjectRendererTest
     public void testOpenLdapSchemaRendererMatchingRuleUse()
     {
         String actual = SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( matchingRuleUse );
-        String expected = "matchingruleuse ( 1.2.3.4 NAME 'name0'\n\tDESC 'description with \\27quotes\\27'\n\tOBSOLETE\n\tAPPLIES ( 2.3.4.5 $ 3.4.5.6 ) )";
+        String expected = "matchingruleuse ( 1.2.3.4 NAME 'name0'\n\tDESC 'description with \\27quotes\\27'\n\tOBSOLETE\n\tAPPLIES ( 2.3.4.5 $ 1.3.4.5.6 ) )";
         assertEquals( expected, actual );
     }
 
@@ -429,7 +429,7 @@ public class SchemaObjectRendererTest
     public void testSubschemSubentryRendererMatchingRuleUse()
     {
         String actual = SchemaObjectRenderer.SUBSCHEMA_SUBENTRY_RENDERER.render( matchingRuleUse );
-        String expected = "( 1.2.3.4 NAME 'name0' DESC 'description with \\27quotes\\27' OBSOLETE APPLIES ( 2.3.4.5 $ 3.4.5.6 ) X-SCHEMA 'dummy' )";
+        String expected = "( 1.2.3.4 NAME 'name0' DESC 'description with \\27quotes\\27' OBSOLETE APPLIES ( 2.3.4.5 $ 1.3.4.5.6 ) X-SCHEMA 'dummy' )";
         assertEquals( expected, actual );
     }
 

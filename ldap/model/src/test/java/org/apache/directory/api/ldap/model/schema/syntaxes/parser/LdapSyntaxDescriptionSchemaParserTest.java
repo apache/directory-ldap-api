@@ -76,18 +76,6 @@ public class LdapSyntaxDescriptionSchemaParserTest
 
 
     /**
-     * Tests NAMES
-     * 
-     * @throws ParseException
-     */
-    @Test
-    public void testNames() throws ParseException
-    {
-        SchemaParserTestUtils.testNames( parser, "1.1", "" );
-    }
-
-
-    /**
      * Tests DESC
      * 
      * @throws ParseException
@@ -123,7 +111,7 @@ public class LdapSyntaxDescriptionSchemaParserTest
         LdapSyntax ldapSyntax = null;
 
         value = "( 1.2.3.4.5.6.7.8.9.0 DESC 'Descripton \u00E4\u00F6\u00FC\u00DF \u90E8\u9577' X-TEST-a ('test1-1' 'test1-2') X-TEST-b ('test2-1' 'test2-2') )";
-        ldapSyntax = parser.parseLdapSyntaxDescription( value );
+        ldapSyntax = parser.parse( value );
 
         assertEquals( "1.2.3.4.5.6.7.8.9.0", ldapSyntax.getOid() );
         assertEquals( "Descripton \u00E4\u00F6\u00FC\u00DF \u90E8\u9577", ldapSyntax.getDescription() );
@@ -162,7 +150,7 @@ public class LdapSyntaxDescriptionSchemaParserTest
     public void testRfcBinary() throws ParseException
     {
         String value = "( 1.3.6.1.4.1.1466.115.121.1.5 DESC 'Binary' X-NOT-HUMAN-READABLE 'TRUE' )";
-        LdapSyntax ldapSyntax = parser.parseLdapSyntaxDescription( value );
+        LdapSyntax ldapSyntax = parser.parse( value );
 
         assertEquals( "1.3.6.1.4.1.1466.115.121.1.5", ldapSyntax.getOid() );
         assertEquals( "Binary", ldapSyntax.getDescription() );
@@ -181,7 +169,7 @@ public class LdapSyntaxDescriptionSchemaParserTest
     public void testSyntaxWithExtensions() throws ParseException
     {
         String substrate = "( 1.3.6.1.4.1.18060.0.4.0.2.10000 DESC 'bogus description' X-SCHEMA 'blah' X-NOT-HUMAN-READABLE 'false' )";
-        LdapSyntax ldapSyntax = parser.parseLdapSyntaxDescription( substrate );
+        LdapSyntax ldapSyntax = parser.parse( substrate );
         assertEquals( "1.3.6.1.4.1.18060.0.4.0.2.10000", ldapSyntax.getOid() );
         assertEquals( "bogus description", ldapSyntax.getDescription() );
         assertNotNull( ldapSyntax.getExtension( "X-NOT-HUMAN-READABLE" ) );
@@ -219,7 +207,6 @@ public class LdapSyntaxDescriptionSchemaParserTest
 
             // ensure all other test pass in quirks mode
             testNumericOid();
-            testNames();
             testDescription();
             testExtensions();
             testFull();

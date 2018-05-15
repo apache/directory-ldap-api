@@ -25,9 +25,6 @@ import java.text.ParseException;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
-
 
 /**
  * A parser for RFC 4512 attribute type descriptions.
@@ -36,7 +33,6 @@ import antlr.TokenStreamException;
  */
 public class AttributeTypeDescriptionSchemaParser extends AbstractSchemaParser<AttributeType>
 {
-
     /**
      * Creates a schema parser instance.
      */
@@ -80,19 +76,14 @@ public class AttributeTypeDescriptionSchemaParser extends AbstractSchemaParser<A
      * @return the parsed AttributeTypeDescription bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public AttributeType parseAttributeTypeDescription( String attributeTypeDescription ) throws ParseException
+    public AttributeType parse( String attributeTypeDescription ) throws ParseException
     {
-        return super.parse( attributeTypeDescription );
+        AttributeType attributeType = fastParser.parseAttributeType( attributeTypeDescription );
+        attributeType.setSpecification( attributeTypeDescription );
+
+        // Update the schemaName
+        updateSchemaName( attributeType );
+
+        return attributeType;
     }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected AttributeType doParse() throws RecognitionException, TokenStreamException
-    {
-        return parser.attributeTypeDescription();
-    }
-
 }

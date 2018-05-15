@@ -138,7 +138,7 @@ public final class NameFormDescriptionSyntaxChecker extends SyntaxChecker
 
         try
         {
-            schemaParser.parseNameFormDescription( strValue );
+            schemaParser.parse( strValue );
             
             return true;
         }

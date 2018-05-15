@@ -144,7 +144,7 @@ public final class ObjectClassDescriptionSyntaxChecker extends SyntaxChecker
 
         try
         {
-            schemaParser.parseObjectClassDescription( strValue );
+            schemaParser.parse( strValue );
 
             if ( LOG.isDebugEnabled() )
             {

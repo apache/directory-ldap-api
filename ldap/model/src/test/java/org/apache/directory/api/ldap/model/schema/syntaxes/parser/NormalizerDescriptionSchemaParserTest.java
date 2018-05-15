@@ -85,7 +85,7 @@ public class NormalizerDescriptionSchemaParserTest
 
         // FQCN simple p
         value = "( 1.1 FQCN org.apache.directory.SimpleNormalizer )";
-        nd = parser.parseNormalizerDescription( value );
+        nd = parser.parse( value );
         assertNotNull( nd.getFqcn() );
         assertEquals( "org.apache.directory.SimpleNormalizer", nd.getFqcn() );
     }
@@ -99,7 +99,7 @@ public class NormalizerDescriptionSchemaParserTest
 
         // FQCN simple p
         value = "( 1.1 FQCN org.apache.directory.SimpleNormalizer BYTECODE ABCDEFGHIJKLMNOPQRSTUVWXYZ+/abcdefghijklmnopqrstuvwxyz0123456789==== )";
-        nd = parser.parseNormalizerDescription( value );
+        nd = parser.parse( value );
         assertNotNull( nd.getBytecode() );
         assertEquals( "ABCDEFGHIJKLMNOPQRSTUVWXYZ+/abcdefghijklmnopqrstuvwxyz0123456789====", nd.getBytecode() );
     }

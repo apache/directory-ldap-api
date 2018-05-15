@@ -24,9 +24,6 @@ import java.text.ParseException;
 
 import org.apache.directory.api.i18n.I18n;
 
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
-
 
 /**
  * A parser for ApacheDS syntax checker descriptions.
@@ -69,20 +66,14 @@ public class SyntaxCheckerDescriptionSchemaParser extends AbstractSchemaParser<S
      * @return the parsed SyntaxCheckerDescription bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public SyntaxCheckerDescription parseSyntaxCheckerDescription( String syntaxCheckerDescription )
-        throws ParseException
+    public SyntaxCheckerDescription parse( String syntaxCheckerDescription ) throws ParseException
     {
-        return super.parse( syntaxCheckerDescription );
+        SyntaxCheckerDescription syntaxChecker = fastParser.parseSyntaxChecker( syntaxCheckerDescription );
+        syntaxChecker.setSpecification( syntaxCheckerDescription );
+
+        // Update the schemaName
+        updateSchemaName( syntaxChecker );
+
+        return syntaxChecker;
     }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected SyntaxCheckerDescription doParse() throws RecognitionException, TokenStreamException
-    {
-        return parser.syntaxCheckerDescription();
-    }
-
 }

@@ -25,9 +25,6 @@ import java.text.ParseException;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.NameForm;
 
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
-
 
 /**
  * A parser for RFC 4512 name form descriptions
@@ -65,19 +62,14 @@ public class NameFormDescriptionSchemaParser extends AbstractSchemaParser<NameFo
      * @return the parsed NameForm bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public NameForm parseNameFormDescription( String nameFormDescription ) throws ParseException
+    public NameForm parse( String nameFormDescription ) throws ParseException
     {
-        return super.parse( nameFormDescription );
+        NameForm nameForm = fastParser.parseNameForm( nameFormDescription );
+        nameForm.setSpecification( nameFormDescription );
+
+        // Update the schemaName
+        updateSchemaName( nameForm );
+
+        return nameForm;
     }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected NameForm doParse() throws RecognitionException, TokenStreamException
-    {
-        return parser.nameFormDescription();
-    }
-
 }

@@ -24,6 +24,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.text.ParseException;
@@ -32,6 +33,7 @@ import java.util.List;
 
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
 import org.apache.directory.api.ldap.model.schema.parsers.AbstractSchemaParser;
+import org.apache.directory.api.ldap.model.schema.syntaxCheckers.OpenLdapObjectIdentifierMacro;
 
 
 /**
@@ -82,9 +84,9 @@ public class SchemaParserTestUtils
         assertEquals( "0.1.2.3.4.5.6.7.8.9", asd.getOid() );
 
         // simple
-        value = "( 123.4567.890 " + required + ")";
+        value = "( 1.2.4567.890 " + required + ")";
         asd = parser.parse( value );
-        assertEquals( "123.4567.890", asd.getOid() );
+        assertEquals( "1.2.4567.890", asd.getOid() );
 
         // simple with multiple spaces
         value = "(          0.1.2.3.4.5.6.7.8.9         " + required + " )";
@@ -103,48 +105,67 @@ public class SchemaParserTestUtils
 
         // quoted OID
         value = "( '0.1.2.3.4.5.6.7.8.9' " + required + " )";
-        asd = parser.parse( value );
-        assertEquals( "0.1.2.3.4.5.6.7.8.9", asd.getOid() );
+        
+        try
+        {
+            asd = parser.parse( value );
+            fail( "Exception expected, OID should not be quoted" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
 
         // quoted OID in parentheses
         value = "( ('0.1.2.3.4.5.6.7.8.9') " + required + " )";
-        asd = parser.parse( value );
-        assertEquals( "0.1.2.3.4.5.6.7.8.9", asd.getOid() );
+        
+        try
+        {
+            asd = parser.parse( value );
+            fail( "Exception expected, OID should not be quoted" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
 
         // too short
-        value = "( 1 " + required + " )";
-        try
+        if ( !parser.isQuirksMode() )
         {
-            parser.parse( value );
-            fail( "Exception expected, invalid NUMERICOID 1" );
-        }
-        catch ( ParseException pe )
-        {
-            // expected
-        }
+            value = "( 1 " + required + " )";
+            try
+            {
+                parser.parse( value );
+                fail( "Exception expected, invalid NUMERICOID 1" );
+            }
+            catch ( ParseException pe )
+            {
+                // expected
+            }
 
-        // dot only
-        value = "( . " + required + " )";
-        try
-        {
-            parser.parse( value );
-            fail( "Exception expected, invalid NUMERICOID ." );
-        }
-        catch ( ParseException pe )
-        {
-            // expected
-        }
-
-        // ends with dot
-        value = "( 1.1. " + required + " )";
-        try
-        {
-            parser.parse( value );
-            fail( "Exception expected, invalid NUMERICOID 1.1." );
-        }
-        catch ( ParseException pe )
-        {
-            // expected
+            // dot only
+            value = "( . " + required + " )";
+            try
+            {
+                parser.parse( value );
+                fail( "Exception expected, invalid NUMERICOID ." );
+            }
+            catch ( ParseException pe )
+            {
+                // expected
+            }
+            
+            // ends with dot
+            value = "( 1.1. " + required + " )";
+            try
+            {
+                parser.parse( value );
+                fail( "Exception expected, invalid NUMERICOID 1.1." );
+            }
+            catch ( ParseException pe )
+            {
+                // expected
+            }
         }
 
         // multiple not allowed
@@ -158,21 +179,26 @@ public class SchemaParserTestUtils
         {
             // excpected
         }
+        
+        // A descr
+        if ( parser.isQuirksMode() )
+        {
+            value = "( test " + required + ")";
+            asd = parser.parse( value );
+            assertEquals( "test", asd.getOid() );
+    
+            // With macro
+            OpenLdapObjectIdentifierMacro macro = new OpenLdapObjectIdentifierMacro();
+            macro.setName( "macro" );
+            macro.setRawOidOrNameSuffix( "0.1" );
+            parser.getObjectIdentifiers().put( "macro", macro );
+            value = "( macro:2.3.4 " + required + ")";
+            asd = parser.parse( value );
+            assertEquals( "0.1.2.3.4", asd.getOid() );
+        }
 
         if ( !parser.isQuirksMode() )
         {
-            // non-numeric not allowed
-            value = "( test " + required + " )";
-            try
-            {
-                parser.parse( value );
-                fail( "Exception expected, invalid NUMERICOID test" );
-            }
-            catch ( ParseException pe )
-            {
-                // expected
-            }
-
             // leading 0 not allowed
             value = "( 01.1 " + required + " )";
             try
@@ -196,7 +222,6 @@ public class SchemaParserTestUtils
             {
                 // excpected
             }
-
         }
     }
 
@@ -206,10 +231,41 @@ public class SchemaParserTestUtils
      * 
      * @throws ParseException
      */
-    public static void testNames( AbstractSchemaParser parser, String oid, String required ) throws ParseException
+    public static void testNamesStrict( AbstractSchemaParser parser, String oid, String required ) throws ParseException
     {
         String value = null;
         SchemaObject asd = null;
+
+        // No name
+        value = "( " + oid + " " + required + " )";
+        asd = parser.parse( value );
+        assertEquals( 0, asd.getNames().size() );
+
+        // A name, no value
+        value = "( " + oid + " " + required + " NAME )";
+        
+        try
+        { 
+            asd = parser.parse( value );
+            fail( "Exception expected, value expected after NAME" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
+        
+        // A name, no space
+        value = "( " + oid + " " + required + " NAME'test' )";
+        
+        try
+        { 
+            asd = parser.parse( value );
+            fail( "Exception expected, value expected after NAME" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
 
         // alpha
         value = "( " + oid + " " + required + " NAME 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' )";
@@ -230,11 +286,44 @@ public class SchemaParserTestUtils
         assertEquals( 1, asd.getNames().size() );
         assertEquals( "a-z-0-9", asd.getNames().get( 0 ) );
 
+        // Bad value
+        value = "(" + oid + " " + required + " NAME 'abc_de')";
+        
+        try
+        {   
+            asd = parser.parse( value );
+            fail( "Exception expected, invalid chars in name" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
+
+        // Bad NAME
+        value = "(" + oid + " " + required + " NAMEE 'abcde')";
+        
+        try
+        {   
+            asd = parser.parse( value );
+            fail( "Exception expected, bad NAME" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
+
         // with parentheses, without space
         value = "(" + oid + " " + required + " NAME('a-z-0-9'))";
-        asd = parser.parse( value );
-        assertEquals( 1, asd.getNames().size() );
-        assertEquals( "a-z-0-9", asd.getNames().get( 0 ) );
+        
+        try
+        {   
+            asd = parser.parse( value );
+            fail( "Exception expected, spaces expected after NAME" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
 
         // multi with space
         value = " ( " + oid + " " + required + " NAME ( 'test1' 'test2' ) ) ";
@@ -245,11 +334,16 @@ public class SchemaParserTestUtils
 
         // multi without space
         value = "(" + oid + " " + required + " NAME('test1''test2''test3'))";
-        asd = parser.parse( value );
-        assertEquals( 3, asd.getNames().size() );
-        assertEquals( "test1", asd.getNames().get( 0 ) );
-        assertEquals( "test2", asd.getNames().get( 1 ) );
-        assertEquals( "test3", asd.getNames().get( 2 ) );
+        
+        try
+        {
+            asd = parser.parse( value );
+            fail( "Exception expected, space expected after NAME" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
 
         // multi with many spaces
         value = "(          " + oid + " " + required
@@ -277,16 +371,29 @@ public class SchemaParserTestUtils
 
         // unquoted NAME value
         value = "( " + oid + " " + required + " NAME test )";
-        asd = parser.parse( value );
-        assertEquals( 1, asd.getNames().size() );
-        assertEquals( "test", asd.getNames().get( 0 ) );
+        
+        try
+        { 
+            asd = parser.parse( value );
+            fail( "Exception expected, quoted values expected" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
 
         // multi unquoted NAME values
         value = " ( " + oid + " " + required + " NAME (test1 test2) ) ";
-        asd = parser.parse( value );
-        assertEquals( 2, asd.getNames().size() );
-        assertEquals( "test1", asd.getNames().get( 0 ) );
-        assertEquals( "test2", asd.getNames().get( 1 ) );
+        
+        try
+        {
+            asd = parser.parse( value );
+            fail( "Exception expected, quoted values expected" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
 
         // NAM unknown
         value = "( " + oid + " " + required + " NAM 'test' )";
@@ -300,55 +407,249 @@ public class SchemaParserTestUtils
             // expected
         }
 
-        if ( !parser.isQuirksMode() )
+        // start with number
+        value = "( " + oid + " " + required + " NAME '1test' )";
+        try
         {
+            parser.parse( value );
+            fail( "Exception expected, invalid NAME 1test (starts with number)" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
+
+        // start with hypen
+        value = "( " + oid + " " + required + " NAME '-test' )";
+        try
+        {
+            parser.parse( value );
+            fail( "Exception expected, invalid NAME -test (starts with hypen)" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
+
+        // invalid character
+        value = "( " + oid + " " + required + " NAME 'te_st' )";
+        try
+        {
+            parser.parse( value );
+            fail( "Exception expected, invalid NAME te_st (contains invalid character)" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
+
+        // one valid, one invalid
+        value = "( " + oid + " " + required + " NAME ( 'test' 'te_st' ) )";
+        try
+        {
+            parser.parse( value );
+            fail( "Exception expected, invalid NAME te_st (contains invalid character)" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
+    }
+
+
+    /**
+     * Tests NAME and its values in relaxed mode
+     * 
+     * @throws ParseException
+     */
+    public static void testNamesRelaxed( AbstractSchemaParser parser, String oid, String required ) throws ParseException
+    {
+        String value = null;
+        SchemaObject asd = null;
+        boolean isRelaxed = parser.isQuirksMode();
+        parser.setQuirksMode( true );
+
+        try
+        { 
+            // No name
+            value = "( " + oid + " " + required + " )";
+            asd = parser.parse( value );
+            assertEquals( 0, asd.getNames().size() );
+    
+            // A name, no value
+            value = "( " + oid + " " + required + " NAME )";
+            
+            try
+            { 
+                asd = parser.parse( value );
+                fail( "Exception expected, value expected after NAME" );
+            }
+            catch ( ParseException pe )
+            {
+                // expected
+            }
+            
+            // A name, no space
+            value = "( " + oid + " " + required + " NAME'test' )";
+            
+            try
+            { 
+                asd = parser.parse( value );
+                fail( "Exception expected, value expected after NAME" );
+            }
+            catch ( ParseException pe )
+            {
+                // expected
+            }
+    
+            // alpha
+            value = "( " + oid + " " + required + " NAME 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' )";
+            asd = parser.parse( value );
+            assertEquals( 1, asd.getNames().size() );
+            assertEquals( "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", asd.getNames().get( 0 ) );
+    
+            // alpha-num-hypen
+            value = "( " + oid + " " + required
+                + " NAME 'abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789' )";
+            asd = parser.parse( value );
+            assertEquals( 1, asd.getNames().size() );
+            assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", asd.getNames().get( 0 ) );
+    
+            // with parentheses
+            value = "( " + oid + " " + required + " NAME ( 'a-z-0-9' ) )";
+            asd = parser.parse( value );
+            assertEquals( 1, asd.getNames().size() );
+            assertEquals( "a-z-0-9", asd.getNames().get( 0 ) );
+    
+            // With extended chars
+            value = "(" + oid + " " + required + " NAME 'abc_de')";
+            asd = parser.parse( value );
+            assertEquals( 1, asd.getNames().size() );
+            assertEquals( "abc_de", asd.getNames().get( 0 ) );
+    
+            // Bad NAME
+            value = "(" + oid + " " + required + " NAMEE 'abcde')";
+            
+            try
+            {   
+                asd = parser.parse( value );
+                fail( "Exception expected, bad NAME" );
+            }
+            catch ( ParseException pe )
+            {
+                // expected
+            }
+    
+            // with parentheses, without space
+            value = "(" + oid + " " + required + " NAME('a-z-0-9'))";
+            
+            try
+            {   
+                asd = parser.parse( value );
+                fail( "Exception expected, spaces expected after NAME" );
+            }
+            catch ( ParseException pe )
+            {
+                // expected
+            }
+    
+            // multi with space
+            value = " ( " + oid + " " + required + " NAME ( 'test1' 'test2' ) ) ";
+            asd = parser.parse( value );
+            assertEquals( 2, asd.getNames().size() );
+            assertEquals( "test1", asd.getNames().get( 0 ) );
+            assertEquals( "test2", asd.getNames().get( 1 ) );
+    
+            // multi without space
+            value = "(" + oid + " " + required + " NAME('test1''test2''test3'))";
+            
+            try
+            {
+                asd = parser.parse( value );
+                fail( "Exception expected, space expected after NAME" );
+            }
+            catch ( ParseException pe )
+            {
+                // expected
+            }
+    
+            // multi with many spaces
+            value = "(          " + oid + " " + required
+                + "          NAME          (          'test1'          'test2'          'test3'          )          )";
+            asd = parser.parse( value );
+            assertEquals( 3, asd.getNames().size() );
+            assertEquals( "test1", asd.getNames().get( 0 ) );
+            assertEquals( "test2", asd.getNames().get( 1 ) );
+            assertEquals( "test3", asd.getNames().get( 2 ) );
+    
+            // multi with tabs, newline, comment, etc.
+            value = "(\r\n" + oid + "\r" + required
+                + "\nNAME\t(\t\t\t'test1'\t\n\t'test2'\t\r\t'test3'\t\r\n\t)\n#comment\n)";
+            asd = parser.parse( value );
+            assertEquals( 3, asd.getNames().size() );
+            assertEquals( "test1", asd.getNames().get( 0 ) );
+            assertEquals( "test2", asd.getNames().get( 1 ) );
+            assertEquals( "test3", asd.getNames().get( 2 ) );
+    
+            // lowercase NAME
+            value = "( " + oid + " " + required + " name 'test' )";
+            asd = parser.parse( value );
+            assertEquals( 1, asd.getNames().size() );
+            assertEquals( "test", asd.getNames().get( 0 ) );
+    
+            // unquoted NAME value
+            value = "( " + oid + " " + required + " NAME test )";
+            asd = parser.parse( value );
+            assertEquals( 1, asd.getNames().size() );
+            assertEquals( "test", asd.getNames().get( 0 ) );
+    
+            // multi unquoted NAME values
+            value = " ( " + oid + " " + required + " NAME (test1 test2) ) ";
+            asd = parser.parse( value );
+            assertEquals( 2, asd.getNames().size() );
+            assertEquals( "test1", asd.getNames().get( 0 ) );
+            assertEquals( "test2", asd.getNames().get( 1 ) );
+    
+            // NAM unknown
+            value = "( " + oid + " " + required + " NAM 'test' )";
+            try
+            {
+                parser.parse( value );
+                fail( "Exception expected, invalid token NAM" );
+            }
+            catch ( ParseException pe )
+            {
+                // expected
+            }
+    
             // start with number
             value = "( " + oid + " " + required + " NAME '1test' )";
-            try
-            {
-                parser.parse( value );
-                fail( "Exception expected, invalid NAME 1test (starts with number)" );
-            }
-            catch ( ParseException pe )
-            {
-                // expected
-            }
-
+            asd = parser.parse( value );
+            assertEquals( 1, asd.getNames().size() );
+            assertEquals( "1test", asd.getNames().get( 0 ) );
+    
             // start with hypen
             value = "( " + oid + " " + required + " NAME '-test' )";
-            try
-            {
-                parser.parse( value );
-                fail( "Exception expected, invalid NAME -test (starts with hypen)" );
-            }
-            catch ( ParseException pe )
-            {
-                // expected
-            }
-
+            asd = parser.parse( value );
+            assertEquals( 1, asd.getNames().size() );
+            assertEquals( "-test", asd.getNames().get( 0 ) );
+    
             // invalid character
             value = "( " + oid + " " + required + " NAME 'te_st' )";
-            try
-            {
-                parser.parse( value );
-                fail( "Exception expected, invalid NAME te_st (contains invalid character)" );
-            }
-            catch ( ParseException pe )
-            {
-                // expected
-            }
-
+            asd = parser.parse( value );
+            assertEquals( 1, asd.getNames().size() );
+            assertEquals( "te_st", asd.getNames().get( 0 ) );
+    
             // one valid, one invalid
             value = "( " + oid + " " + required + " NAME ( 'test' 'te_st' ) )";
-            try
-            {
-                parser.parse( value );
-                fail( "Exception expected, invalid NAME te_st (contains invalid character)" );
-            }
-            catch ( ParseException pe )
-            {
-                // expected
-            }
+            asd = parser.parse( value );
+            assertEquals( 2, asd.getNames().size() );
+            assertEquals( "test", asd.getNames().get( 0 ) );
+            assertEquals( "te_st", asd.getNames().get( 1 ) );
+        }
+        finally 
+        {
+            parser.setQuirksMode( isRelaxed );
         }
     }
 
@@ -365,24 +666,40 @@ public class SchemaParserTestUtils
         SchemaObject asd = null;
 
         // simple
-        value = "(" + oid + " " + required + " DESC 'Descripton')";
+        value = "(" + oid + " " + required + " DESC 'Description')";
         asd = parser.parse( value );
-        assertEquals( "Descripton", asd.getDescription() );
+        assertEquals( "Description", asd.getDescription() );
 
         // simple with tabs, newline, comment, etc.
-        value = "(" + oid + "\n" + required + "\tDESC#comment\n\n\r\n\r\t'Descripton')";
+        value = "(" + oid + "\n" + required + "\tDESC#comment\n\n\r\n\r\t'Description')";
         asd = parser.parse( value );
-        assertEquals( "Descripton", asd.getDescription() );
+        assertEquals( "Description", asd.getDescription() );
 
         // simple w/o space
-        value = "(" + oid + " " + required + " DESC'Descripton')";
-        asd = parser.parse( value );
-        assertEquals( "Descripton", asd.getDescription() );
+        value = "(" + oid + " " + required + " DESC'Description')";
+        
+        try
+        {
+            asd = parser.parse( value );
+            fail( "Exception expected, DESC should have space" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
 
         // simple parentheses and quotes
         value = "(" + oid + " " + required + " DESC ('Descripton') )";
-        asd = parser.parse( value );
-        assertEquals( "Descripton", asd.getDescription() );
+        
+        try
+        {
+            asd = parser.parse( value );
+            fail( "Exception expected, DESC should not have parentheses" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
 
         // unicode
         value = "( " + oid + " " + required + " DESC 'Descripton \u00E4\u00F6\u00FC\u00DF \u90E8\u9577' )";
@@ -476,16 +793,16 @@ public class SchemaParserTestUtils
 
         // multiple extensions, no spaces
         value = "(" + oid + " " + required + " X-TEST-a('test1-1''test1-2')X-TEST-b('test2-1''test2-2'))";
-        asd = parser.parse( value );
-        assertEquals( 2, asd.getExtensions().size() );
-        assertNotNull( asd.getExtension( "X-TEST-a" ) );
-        assertEquals( 2, asd.getExtension( "X-TEST-a" ).size() );
-        assertEquals( "test1-1", asd.getExtension( "X-TEST-a" ).get( 0 ) );
-        assertEquals( "test1-2", asd.getExtension( "X-TEST-a" ).get( 1 ) );
-        assertNotNull( asd.getExtension( "X-TEST-b" ) );
-        assertEquals( 2, asd.getExtension( "X-TEST-b" ).size() );
-        assertEquals( "test2-1", asd.getExtension( "X-TEST-b" ).get( 0 ) );
-        assertEquals( "test2-2", asd.getExtension( "X-TEST-b" ).get( 1 ) );
+        
+        try
+        {
+            asd = parser.parse( value );
+            fail( "Exception expected, EXTENSION should have spaces" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
 
         // multiple extensions, tabs, newline, comments
         value = "(" + oid + "\n#comment\n" + required
@@ -543,12 +860,12 @@ public class SchemaParserTestUtils
         assertFalse( asd.isObsolete() );
 
         // not obsolete
-        value = "( " + oid + " " + required + " NAME 'test' DESC 'Descripton' )";
+        value = "( " + oid + " " + required + " NAME 'test' DESC 'Description' )";
         asd = parser.parse( value );
         assertFalse( asd.isObsolete() );
 
         // obsolete
-        value = "(" + oid + " " + required + " NAME 'test' DESC 'Descripton' OBSOLETE)";
+        value = "(" + oid + " " + required + " NAME 'test' DESC 'Description' OBSOLETE)";
         asd = parser.parse( value );
         assertTrue( asd.isObsolete() );
 
@@ -585,7 +902,6 @@ public class SchemaParserTestUtils
         {
             assertTrue( true );
         }
-
     }
 
 

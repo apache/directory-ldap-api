@@ -45,7 +45,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class DitContentRuleDescriptionSchemaParserTest
+public class DitContentRuleDescriptionSchemaParserRelaxedTest
 {
     /** the parser instance */
     private DitContentRuleDescriptionSchemaParser parser;
@@ -55,6 +55,7 @@ public class DitContentRuleDescriptionSchemaParserTest
     public void setUp() throws Exception
     {
         parser = new DitContentRuleDescriptionSchemaParser();
+        parser.setQuirksMode( true );
     }
 
 
@@ -85,7 +86,7 @@ public class DitContentRuleDescriptionSchemaParserTest
     @Test
     public void testNames() throws ParseException
     {
-        SchemaParserTestUtils.testNamesStrict( parser, "1.1", "" );
+        SchemaParserTestUtils.testNamesRelaxed( parser, "1.1", "" );
     }
 
 
@@ -198,29 +199,15 @@ public class DitContentRuleDescriptionSchemaParserTest
 
         // no quote allowed
         value = "( 1.1 AUX 'top' )";
-
-        try
-        {  
-            ditContentRule = parser.parse( value );
-            fail( "Exception expected, no quote allowed" );
-        }
-        catch ( ParseException pe )
-        {
-            // expected
-        }
+        ditContentRule = parser.parse( value );
+        assertEquals( 1, ditContentRule.getAuxObjectClassOids().size() );
+        assertEquals( "top", ditContentRule.getAuxObjectClassOids().get( 0 ) );
 
         // quoted value
         value = "( 1.1 AUX '1.2.3.4' )";
-
-        try
-        {  
-            ditContentRule = parser.parse( value );
-            fail( "Exception expected, no quote allowed" );
-        }
-        catch ( ParseException pe )
-        {
-            // expected
-        }
+        ditContentRule = parser.parse( value );
+        assertEquals( 1, ditContentRule.getAuxObjectClassOids().size() );
+        assertEquals( "1.2.3.4", ditContentRule.getAuxObjectClassOids().get( 0 ) );
 
         // no $ separator
         value = "( 1.1 AUX ( top1 top2 ) )";
@@ -247,18 +234,6 @@ public class DitContentRuleDescriptionSchemaParserTest
         {
             ditContentRule = parser.parse( value );
             fail( "Exception expected, no AUX value" );
-        }
-        catch ( ParseException pe )
-        {
-            // expected
-        }
-
-        // invalid start
-        value = "( 1.1 AUX ( top1 $ -top2 ) )";
-        try
-        {
-            ditContentRule = parser.parse( value );
-            fail( "Exception expected, invalid AUX '-top' (starts with hypen)" );
         }
         catch ( ParseException pe )
         {
@@ -310,18 +285,6 @@ public class DitContentRuleDescriptionSchemaParserTest
         {
             // expected
         }
-
-        // invalid value
-        value = "( 1.1 MUST ( c_n ) )";
-        try
-        {
-            ditContentRule = parser.parse( value );
-            fail( "Exception expected, invalid value c_n" );
-        }
-        catch ( ParseException pe )
-        {
-            // expected
-        }
     }
 
 
@@ -356,18 +319,6 @@ public class DitContentRuleDescriptionSchemaParserTest
         assertEquals( "sn", ditContentRule.getMayAttributeTypeOids().get( 1 ) );
         assertEquals( "1.22.33.44.55", ditContentRule.getMayAttributeTypeOids().get( 2 ) );
         assertEquals( "objectClass", ditContentRule.getMayAttributeTypeOids().get( 3 ) );
-
-        // invalid value
-        value = "( 1.1 MAY ( c_n ) )";
-        try
-        {
-            ditContentRule = parser.parse( value );
-            fail( "Exception expected, invalid value c_n" );
-        }
-        catch ( ParseException pe )
-        {
-            // expected
-        }
     }
 
 
@@ -402,18 +353,6 @@ public class DitContentRuleDescriptionSchemaParserTest
         assertEquals( "sn", ditContentRule.getNotAttributeTypeOids().get( 1 ) );
         assertEquals( "1.22.33.44.55", ditContentRule.getNotAttributeTypeOids().get( 2 ) );
         assertEquals( "objectClass", ditContentRule.getNotAttributeTypeOids().get( 3 ) );
-
-        // invalid value
-        value = "( 1.1 NOT ( c_n ) )";
-        try
-        {
-            ditContentRule = parser.parse( value );
-            fail( "Exception expected, invalid value c_n" );
-        }
-        catch ( ParseException pe )
-        {
-            // expected
-        }
     }
 
 
@@ -511,5 +450,38 @@ public class DitContentRuleDescriptionSchemaParserTest
                 "( 2.5.6.4 DESC 'content rule for organization' NOT ( x121Address $ telexNumber ) )",
                 "( 1.2.3.4.5.6.7.8.9.0 NAME ( 'abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789' 'test' ) DESC 'Descripton \u00E4\u00F6\u00FC\u00DF \u90E8\u9577' OBSOLETE AUX ( 2.3.4.5.6.7.8.9.0.1 $ abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789 ) MUST ( 2.3.4.5.6.7.8.9.0.1.2 $ abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789 ) MAY ( 2.3.4.5.6.7.8.9.0.1.2.3 $ abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789 ) NOT ( 2.3.4.5.6.7.8.9.0.1.2.3.4 $ abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789 ) X-TEST-a ('test1-1' 'test1-2') X-TEST-b ('test2-1' 'test2-2') )" };
         SchemaParserTestUtils.testMultiThreaded( parser, testValues );
+
+    }
+
+
+    /**
+     * Tests quirks mode.
+     */
+    @Test
+    public void testQuirksMode() throws ParseException
+    {
+        SchemaParserTestUtils.testQuirksMode( parser, "" );
+
+        parser.setQuirksMode( true );
+
+        try
+        {
+            // ensure all other test pass in quirks mode
+            testNumericOid();
+            testDescription();
+            testObsolete();
+            testAux();
+            testMust();
+            testMay();
+            testNot();
+            testExtensions();
+            testFull();
+            testUniqueElements();
+            testMultiThreaded();
+        }
+        finally
+        {
+            parser.setQuirksMode( false );
+        }
     }
 }

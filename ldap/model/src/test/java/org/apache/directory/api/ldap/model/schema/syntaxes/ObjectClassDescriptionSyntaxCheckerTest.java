@@ -49,7 +49,7 @@ public class ObjectClassDescriptionSyntaxCheckerTest
     public void testValid()
     {
         assertTrue( checker.isValidSyntax( "( 2.5.6.6 )" ) );
-        assertTrue( checker.isValidSyntax( "( 2.5.6.6 NAME person )" ) );
+        assertFalse( checker.isValidSyntax( "( 2.5.6.6 NAME person )" ) );
         assertTrue( checker.isValidSyntax( "( 2.5.6.6 NAME 'person' )" ) );
         assertTrue( checker.isValidSyntax( "( 2.5.6.6 NAME 'person' DESC 'RFC2256: a person' )" ) );
         assertTrue( checker.isValidSyntax( "( 2.5.6.6 NAME 'person' DESC 'RFC2256: a person' SUP top )" ) );

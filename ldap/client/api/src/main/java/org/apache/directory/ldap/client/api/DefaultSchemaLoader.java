@@ -343,7 +343,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
             try
             {
-                AttributeType attributeType = AT_DESCR_SCHEMA_PARSER.parseAttributeTypeDescription( desc );
+                AttributeType attributeType = AT_DESCR_SCHEMA_PARSER.parse( desc );
 
                 updateSchemas( attributeType );
             }
@@ -368,7 +368,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
             try
             {
-                LdapComparatorDescription comparator = C_DESCR_SCHEMA_PARSER.parseComparatorDescription( desc );
+                LdapComparatorDescription comparator = C_DESCR_SCHEMA_PARSER.parse( desc );
 
                 updateSchemas( comparator );
             }
@@ -393,7 +393,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
             try
             {
-                DitContentRule ditContentRule = DCR_DESCR_SCHEMA_PARSER.parseDITContentRuleDescription( desc );
+                DitContentRule ditContentRule = DCR_DESCR_SCHEMA_PARSER.parse( desc );
 
                 updateSchemas( ditContentRule );
             }
@@ -418,7 +418,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
             try
             {
-                DitStructureRule ditStructureRule = DSR_DESCR_SCHEMA_PARSER.parseDITStructureRuleDescription( desc );
+                DitStructureRule ditStructureRule = DSR_DESCR_SCHEMA_PARSER.parse( desc );
 
                 updateSchemas( ditStructureRule );
             }
@@ -443,7 +443,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
             try
             {
-                LdapSyntax ldapSyntax = LS_DESCR_SCHEMA_PARSER.parseLdapSyntaxDescription( desc );
+                LdapSyntax ldapSyntax = LS_DESCR_SCHEMA_PARSER.parse( desc );
 
                 updateSchemas( ldapSyntax );
             }
@@ -468,7 +468,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
             try
             {
-                MatchingRule matchingRule = MR_DESCR_SCHEMA_PARSER.parseMatchingRuleDescription( desc );
+                MatchingRule matchingRule = MR_DESCR_SCHEMA_PARSER.parse( desc );
 
                 updateSchemas( matchingRule );
             }
@@ -493,7 +493,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
             try
             {
-                MatchingRuleUse matchingRuleUse = MRU_DESCR_SCHEMA_PARSER.parseMatchingRuleUseDescription( desc );
+                MatchingRuleUse matchingRuleUse = MRU_DESCR_SCHEMA_PARSER.parse( desc );
 
                 updateSchemas( matchingRuleUse );
             }
@@ -518,7 +518,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
             try
             {
-                NameForm nameForm = NF_DESCR_SCHEMA_PARSER.parseNameFormDescription( desc );
+                NameForm nameForm = NF_DESCR_SCHEMA_PARSER.parse( desc );
 
                 updateSchemas( nameForm );
             }
@@ -543,7 +543,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
             try
             {
-                NormalizerDescription normalizer = N_DESCR_SCHEMA_PARSER.parseNormalizerDescription( desc );
+                NormalizerDescription normalizer = N_DESCR_SCHEMA_PARSER.parse( desc );
 
                 updateSchemas( normalizer );
             }
@@ -568,7 +568,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
             try
             {
-                ObjectClass objectClass = OC_DESCR_SCHEMA_PARSER.parseObjectClassDescription( desc );
+                ObjectClass objectClass = OC_DESCR_SCHEMA_PARSER.parse( desc );
 
                 updateSchemas( objectClass );
             }
@@ -593,7 +593,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
             try
             {
-                SyntaxCheckerDescription syntaxChecker = SC_DESCR_SCHEMA_PARSER.parseSyntaxCheckerDescription( desc );
+                SyntaxCheckerDescription syntaxChecker = SC_DESCR_SCHEMA_PARSER.parse( desc );
 
                 updateSchemas( syntaxChecker );
             }

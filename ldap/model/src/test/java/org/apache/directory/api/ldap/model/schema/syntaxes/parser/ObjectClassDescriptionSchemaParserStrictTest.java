@@ -49,7 +49,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class ObjectClassDescriptionSchemaParserTest
+public class ObjectClassDescriptionSchemaParserStrictTest
 {
     /** the parser instance */
     private ObjectClassDescriptionSchemaParser parser;
@@ -89,7 +89,7 @@ public class ObjectClassDescriptionSchemaParserTest
     @Test
     public void testNames() throws ParseException
     {
-        SchemaParserTestUtils.testNames( parser, "1.1", "" );
+        SchemaParserTestUtils.testNamesStrict( parser, "1.1", "" );
     }
 
 
@@ -130,50 +130,50 @@ public class ObjectClassDescriptionSchemaParserTest
 
         // no SUP
         value = "( 1.1 )";
-        objectClass = parser.parseObjectClassDescription( value );
+        objectClass = parser.parse( value );
         assertEquals( 0, objectClass.getSuperiorOids().size() );
 
         // SUP simple numericoid
         value = "( 1.1 SUP 1.2.3 )";
-        objectClass = parser.parseObjectClassDescription( value );
+        objectClass = parser.parse( value );
         assertEquals( 1, objectClass.getSuperiorOids().size() );
         assertEquals( "1.2.3", objectClass.getSuperiorOids().get( 0 ) );
 
         // SUP simple descr
         value = "( 1.1 SUP top )";
-        objectClass = parser.parseObjectClassDescription( value );
+        objectClass = parser.parse( value );
         assertEquals( 1, objectClass.getSuperiorOids().size() );
         assertEquals( "top", objectClass.getSuperiorOids().get( 0 ) );
 
         // SUP single numericoid
         value = "( 1.1 SUP ( 1.2.3.4.5 ) )";
-        objectClass = parser.parseObjectClassDescription( value );
+        objectClass = parser.parse( value );
         assertEquals( 1, objectClass.getSuperiorOids().size() );
         assertEquals( "1.2.3.4.5", objectClass.getSuperiorOids().get( 0 ) );
 
         // SUP single descr
         value = "( 1.1 SUP ( A-Z-0-9 ) )";
-        objectClass = parser.parseObjectClassDescription( value );
+        objectClass = parser.parse( value );
         assertEquals( 1, objectClass.getSuperiorOids().size() );
         assertEquals( "A-Z-0-9", objectClass.getSuperiorOids().get( 0 ) );
 
         // SUP multi numericoid
         value = "( 1.1 SUP ( 1.2.3 $ 1.2.3.4.5 ) )";
-        objectClass = parser.parseObjectClassDescription( value );
+        objectClass = parser.parse( value );
         assertEquals( 2, objectClass.getSuperiorOids().size() );
         assertEquals( "1.2.3", objectClass.getSuperiorOids().get( 0 ) );
         assertEquals( "1.2.3.4.5", objectClass.getSuperiorOids().get( 1 ) );
 
         // SUP multi descr
         value = "( 1.1 SUP ( top1 $ top2 ) )";
-        objectClass = parser.parseObjectClassDescription( value );
+        objectClass = parser.parse( value );
         assertEquals( 2, objectClass.getSuperiorOids().size() );
         assertEquals( "top1", objectClass.getSuperiorOids().get( 0 ) );
         assertEquals( "top2", objectClass.getSuperiorOids().get( 1 ) );
 
         // SUP multi mixed, tabs
         value = "\t(\t1.1\tSUP\t(\ttop1\t$\t1.2.3.4\t$\ttop2\t)\t)\t";
-        objectClass = parser.parseObjectClassDescription( value );
+        objectClass = parser.parse( value );
         assertEquals( 3, objectClass.getSuperiorOids().size() );
         assertEquals( "top1", objectClass.getSuperiorOids().get( 0 ) );
         assertEquals( "1.2.3.4", objectClass.getSuperiorOids().get( 1 ) );
@@ -181,15 +181,20 @@ public class ObjectClassDescriptionSchemaParserTest
 
         // SUP multi mixed, no space
         value = "(1.1 SUP(TOP-1$1.2.3.4$TOP-2))";
-        objectClass = parser.parseObjectClassDescription( value );
-        assertEquals( 3, objectClass.getSuperiorOids().size() );
-        assertEquals( "TOP-1", objectClass.getSuperiorOids().get( 0 ) );
-        assertEquals( "1.2.3.4", objectClass.getSuperiorOids().get( 1 ) );
-        assertEquals( "TOP-2", objectClass.getSuperiorOids().get( 2 ) );
+        
+        try
+        {
+            objectClass = parser.parse( value );
+            fail( "Exception expected, space expected" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
 
         // SUP multi mixed many spaces
         value = "(          1.1          SUP          (          top1          $          1.2.3.4$top2          )          )";
-        objectClass = parser.parseObjectClassDescription( value );
+        objectClass = parser.parse( value );
         assertEquals( 3, objectClass.getSuperiorOids().size() );
         assertEquals( "top1", objectClass.getSuperiorOids().get( 0 ) );
         assertEquals( "1.2.3.4", objectClass.getSuperiorOids().get( 1 ) );
@@ -197,19 +202,33 @@ public class ObjectClassDescriptionSchemaParserTest
 
         // quoted value
         value = "( 1.1 SUP 'top' )";
-        objectClass = parser.parseObjectClassDescription( value );
-        assertEquals( 1, objectClass.getSuperiorOids().size() );
-        assertEquals( "top", objectClass.getSuperiorOids().get( 0 ) );
+        
+        try
+        { 
+            objectClass = parser.parse( value );
+            fail( "Exception expected, quote are not allowed" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
 
         // quoted value
         value = "( 1.1 SUP '1.2.3.4' )";
-        objectClass = parser.parseObjectClassDescription( value );
-        assertEquals( 1, objectClass.getSuperiorOids().size() );
-        assertEquals( "1.2.3.4", objectClass.getSuperiorOids().get( 0 ) );
+        
+        try
+        { 
+            objectClass = parser.parse( value );
+            fail( "Exception expected, quote are not allowed" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
 
         // no $ separator
         value = "( 1.1 SUP ( top1 top2 ) )";
-        objectClass = parser.parseObjectClassDescription( value );
+        objectClass = parser.parse( value );
         assertEquals( 2, objectClass.getSuperiorOids().size() );
         assertEquals( "top1", objectClass.getSuperiorOids().get( 0 ) );
         assertEquals( "top2", objectClass.getSuperiorOids().get( 1 ) );
@@ -218,7 +237,7 @@ public class ObjectClassDescriptionSchemaParserTest
         value = "( 1.1 SUP 1.2.3.4.A )";
         try
         {
-            objectClass = parser.parseObjectClassDescription( value );
+            objectClass = parser.parse( value );
             fail( "Exception expected, invalid SUP '1.2.3.4.A' (invalid character)" );
         }
         catch ( ParseException pe )
@@ -230,7 +249,7 @@ public class ObjectClassDescriptionSchemaParserTest
         value = "( 1.1 SUP )";
         try
         {
-            objectClass = parser.parseObjectClassDescription( value );
+            objectClass = parser.parse( value );
             fail( "Exception expected, no SUP value" );
         }
         catch ( ParseException pe )
@@ -238,19 +257,16 @@ public class ObjectClassDescriptionSchemaParserTest
             // expected
         }
 
-        if ( !parser.isQuirksMode() )
+        // invalid start
+        value = "( 1.1 SUP ( top1 $ -top2 ) )";
+        try
         {
-            // invalid start
-            value = "( 1.1 SUP ( top1 $ -top2 ) )";
-            try
-            {
-                objectClass = parser.parseObjectClassDescription( value );
-                fail( "Exception expected, invalid SUP '-top' (starts with hypen)" );
-            }
-            catch ( ParseException pe )
-            {
-                // expected
-            }
+            objectClass = parser.parse( value );
+            fail( "Exception expected, invalid SUP '-top' (starts with hypen)" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
         }
     }
 
@@ -268,34 +284,34 @@ public class ObjectClassDescriptionSchemaParserTest
 
         // DEFAULT is STRUCTURAL
         value = "( 1.1 )";
-        objectClass = parser.parseObjectClassDescription( value );
+        objectClass = parser.parse( value );
         assertEquals( ObjectClassTypeEnum.STRUCTURAL, objectClass.getType() );
 
         // ABSTRACT
         value = "( 1.1 ABSTRACT )";
-        objectClass = parser.parseObjectClassDescription( value );
+        objectClass = parser.parse( value );
         assertEquals( ObjectClassTypeEnum.ABSTRACT, objectClass.getType() );
 
         // AUXILIARY, tab
         value = "\t(\t1.1\tAUXILIARY\t)\t";
-        objectClass = parser.parseObjectClassDescription( value );
+        objectClass = parser.parse( value );
         assertEquals( ObjectClassTypeEnum.AUXILIARY, objectClass.getType() );
 
         // STRUCTURAL, no space
         value = "(1.1 STRUCTURAL)";
-        objectClass = parser.parseObjectClassDescription( value );
+        objectClass = parser.parse( value );
         assertEquals( ObjectClassTypeEnum.STRUCTURAL, objectClass.getType() );
 
         // STRUCTURAL, case-insensitive
         value = "(1.1 sTrUcTuRaL )";
-        objectClass = parser.parseObjectClassDescription( value );
+        objectClass = parser.parse( value );
         assertEquals( ObjectClassTypeEnum.STRUCTURAL, objectClass.getType() );
 
         // invalid
         value = "( 1.1 FOO )";
         try
         {
-            objectClass = parser.parseObjectClassDescription( value );
+            objectClass = parser.parse( value );
             fail( "Exception expected, invalid KIND value" );
         }
         catch ( ParseException pe )
@@ -319,38 +335,38 @@ public class ObjectClassDescriptionSchemaParserTest
 
         // no MUST
         value = "( 1.1 )";
-        objectClass = parser.parseObjectClassDescription( value );
+        objectClass = parser.parse( value );
         assertEquals( 0, objectClass.getMustAttributeTypeOids().size() );
 
         // MUST simple numericoid
         value = "( 1.1 MUST 1.2.3 )";
-        objectClass = parser.parseObjectClassDescription( value );
+        objectClass = parser.parse( value );
         assertEquals( 1, objectClass.getMustAttributeTypeOids().size() );
         assertEquals( "1.2.3", objectClass.getMustAttributeTypeOids().get( 0 ) );
 
         // MUST multiple
-        value = "(1.1 MUST(cn$sn\r$11.22.33.44.55         $  objectClass   ))";
-        objectClass = parser.parseObjectClassDescription( value );
+        value = "(1.1 MUST (cn$sn\r$1.22.33.44.55         $  objectClass   ))";
+        objectClass = parser.parse( value );
         assertEquals( 4, objectClass.getMustAttributeTypeOids().size() );
         assertEquals( "cn", objectClass.getMustAttributeTypeOids().get( 0 ) );
         assertEquals( "sn", objectClass.getMustAttributeTypeOids().get( 1 ) );
-        assertEquals( "11.22.33.44.55", objectClass.getMustAttributeTypeOids().get( 2 ) );
+        assertEquals( "1.22.33.44.55", objectClass.getMustAttributeTypeOids().get( 2 ) );
         assertEquals( "objectClass", objectClass.getMustAttributeTypeOids().get( 3 ) );
 
         // MUST multiple, no $ separator
-        value = "(1.1 MUST(cn sn\t'11.22.33.44.55'\n'objectClass'))";
-        objectClass = parser.parseObjectClassDescription( value );
+        value = "(1.1 MUST (cn sn\t1.22.33.44.55\nobjectClass))";
+        objectClass = parser.parse( value );
         assertEquals( 4, objectClass.getMustAttributeTypeOids().size() );
         assertEquals( "cn", objectClass.getMustAttributeTypeOids().get( 0 ) );
         assertEquals( "sn", objectClass.getMustAttributeTypeOids().get( 1 ) );
-        assertEquals( "11.22.33.44.55", objectClass.getMustAttributeTypeOids().get( 2 ) );
+        assertEquals( "1.22.33.44.55", objectClass.getMustAttributeTypeOids().get( 2 ) );
         assertEquals( "objectClass", objectClass.getMustAttributeTypeOids().get( 3 ) );
 
         // no MUST values
         value = "( 1.1 MUST )";
         try
         {
-            objectClass = parser.parseObjectClassDescription( value );
+            objectClass = parser.parse( value );
             fail( "Exception expected, no MUST value" );
         }
         catch ( ParseException pe )
@@ -358,19 +374,16 @@ public class ObjectClassDescriptionSchemaParserTest
             // expected
         }
 
-        if ( !parser.isQuirksMode() )
+        // invalid value
+        value = "( 1.1 MUST ( c_n ) )";
+        try
         {
-            // invalid value
-            value = "( 1.1 MUST ( c_n ) )";
-            try
-            {
-                objectClass = parser.parseObjectClassDescription( value );
-                fail( "Exception expected, invalid value c_n" );
-            }
-            catch ( ParseException pe )
-            {
-                // expected
-            }
+            objectClass = parser.parse( value );
+            fail( "Exception expected, invalid value c_n" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
         }
     }
 
@@ -389,46 +402,47 @@ public class ObjectClassDescriptionSchemaParserTest
 
         // no MAY
         value = "( 1.1 )";
-        objectClass = parser.parseObjectClassDescription( value );
+        objectClass = parser.parse( value );
         assertEquals( 0, objectClass.getMayAttributeTypeOids().size() );
 
         // MAY simple numericoid
         value = "( 1.1 MAY 1.2.3 )";
-        objectClass = parser.parseObjectClassDescription( value );
+        objectClass = parser.parse( value );
         assertEquals( 1, objectClass.getMayAttributeTypeOids().size() );
         assertEquals( "1.2.3", objectClass.getMayAttributeTypeOids().get( 0 ) );
 
         // MAY multiple
         value = "(1.1 MAY(cn$sn       $11.22.33.44.55\n$  objectClass   ))";
-        objectClass = parser.parseObjectClassDescription( value );
-        assertEquals( 4, objectClass.getMayAttributeTypeOids().size() );
-        assertEquals( "cn", objectClass.getMayAttributeTypeOids().get( 0 ) );
-        assertEquals( "sn", objectClass.getMayAttributeTypeOids().get( 1 ) );
-        assertEquals( "11.22.33.44.55", objectClass.getMayAttributeTypeOids().get( 2 ) );
-        assertEquals( "objectClass", objectClass.getMayAttributeTypeOids().get( 3 ) );
+
+        try
+        {
+            objectClass = parser.parse( value );
+            fail( "Exception expected, space expected" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
 
         // MAY multiple, no $ separator, quoted
-        value = "(1.1 MAY('cn' sn\t'11.22.33.44.55'\nobjectClass))";
-        objectClass = parser.parseObjectClassDescription( value );
+        value = "(1.1 MAY (cn sn\t1.22.33.44.55\nobjectClass))";
+        objectClass = parser.parse( value );
         assertEquals( 4, objectClass.getMayAttributeTypeOids().size() );
         assertEquals( "cn", objectClass.getMayAttributeTypeOids().get( 0 ) );
         assertEquals( "sn", objectClass.getMayAttributeTypeOids().get( 1 ) );
-        assertEquals( "11.22.33.44.55", objectClass.getMayAttributeTypeOids().get( 2 ) );
+        assertEquals( "1.22.33.44.55", objectClass.getMayAttributeTypeOids().get( 2 ) );
         assertEquals( "objectClass", objectClass.getMayAttributeTypeOids().get( 3 ) );
 
-        if ( !parser.isQuirksMode() )
+        // invalid value
+        value = "( 1.1 MAY ( c_n ) )";
+        try
         {
-            // invalid value
-            value = "( 1.1 MAY ( c_n ) )";
-            try
-            {
-                objectClass = parser.parseObjectClassDescription( value );
-                fail( "Exception expected, invalid value c_n" );
-            }
-            catch ( ParseException pe )
-            {
-                // expected
-            }
+            objectClass = parser.parse( value );
+            fail( "Exception expected, invalid value c_n" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
         }
     }
 
@@ -457,8 +471,8 @@ public class ObjectClassDescriptionSchemaParserTest
         String value = null;
         ObjectClass objectClass = null;
 
-        value = "( 1.2.3.4.5.6.7.8.9.0 NAME ( 'abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789' 'test' ) DESC 'Descripton \u00E4\u00F6\u00FC\u00DF \u90E8\u9577' OBSOLETE SUP ( 2.3.4.5.6.7.8.9.0.1 $ abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789 ) STRUCTURAL MUST ( 3.4.5.6.7.8.9.0.1.2 $ abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789 ) MAY ( 4.5.6.7.8.9.0.1.2.3 $ abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789 ) X-TEST-a ('test1-1' 'test1-2') X-TEST-b ('test2-1' 'test2-2') )";
-        objectClass = parser.parseObjectClassDescription( value );
+        value = "( 1.2.3.4.5.6.7.8.9.0 NAME ( 'abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789' 'test' ) DESC 'Descripton \u00E4\u00F6\u00FC\u00DF \u90E8\u9577' OBSOLETE SUP ( 2.3.4.5.6.7.8.9.0.1 $ abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789 ) STRUCTURAL MUST ( 2.3.4.5.6.7.8.9.0.1.2 $ abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789 ) MAY ( 2.3.4.5.6.7.8.9.0.1.2.3 $ abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789 ) X-TEST-a ('test1-1' 'test1-2') X-TEST-b ('test2-1' 'test2-2') )";
+        objectClass = parser.parse( value );
 
         assertEquals( "1.2.3.4.5.6.7.8.9.0", objectClass.getOid() );
         assertEquals( 2, objectClass.getNames().size() );
@@ -473,12 +487,12 @@ public class ObjectClassDescriptionSchemaParserTest
             .getSuperiorOids().get( 1 ) );
         assertEquals( ObjectClassTypeEnum.STRUCTURAL, objectClass.getType() );
         assertEquals( 2, objectClass.getMustAttributeTypeOids().size() );
-        assertEquals( "3.4.5.6.7.8.9.0.1.2", objectClass.getMustAttributeTypeOids().get( 0 ) );
+        assertEquals( "2.3.4.5.6.7.8.9.0.1.2", objectClass.getMustAttributeTypeOids().get( 0 ) );
         assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", objectClass
             .getMustAttributeTypeOids()
             .get( 1 ) );
         assertEquals( 2, objectClass.getMayAttributeTypeOids().size() );
-        assertEquals( "4.5.6.7.8.9.0.1.2.3", objectClass.getMayAttributeTypeOids().get( 0 ) );
+        assertEquals( "2.3.4.5.6.7.8.9.0.1.2.3", objectClass.getMayAttributeTypeOids().get( 0 ) );
         assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", objectClass
             .getMayAttributeTypeOids()
             .get( 1 ) );
@@ -506,7 +520,7 @@ public class ObjectClassDescriptionSchemaParserTest
             { "( 1.1 NAME 'test1' NAME 'test2' )", "( 1.1 DESC 'test1' DESC 'test2' )", "( 1.1 OBSOLETE OBSOLETE )",
                 "( 1.1 SUP test1 SUP test2 )", "( 1.1 STRUCTURAL STRUCTURAL )", "( 1.1 ABSTRACT ABSTRACT )",
                 "( 1.1 AUXILIARY AUXILIARY )", "( 1.1 STRUCTURAL AUXILIARY AUXILIARY )",
-                "( 1.1 MUST test1 MUST test2 )", "( 1.1 MAY test1 MAY test2 )", "( 1.1 X-TEST 'test1' X-TEST 'test2' )" };
+                "( 1.1 MUST test1 MUST test2 )", "( 1.1 MAY test1 MAY test2 )", "( 1.1 X-TEST1 'test1' X-TEST2 'test2' )" };
         SchemaParserTestUtils.testUnique( parser, testValues );
     }
 
@@ -520,7 +534,7 @@ public class ObjectClassDescriptionSchemaParserTest
     public void testIgnoreElementOrder() throws ParseException, NamingException
     {
         String value = "( 2.5.6.6 STRUCTURAL MAY ( userPassword $ telephoneNumber $ seeAlso $ description ) SUP top DESC 'RFC2256: a person' MUST ( sn $ cn ) NAME 'person' )";
-        ObjectClass objectClass = parser.parseObjectClassDescription( value );
+        ObjectClass objectClass = parser.parse( value );
 
         assertEquals( "2.5.6.6", objectClass.getOid() );
         assertEquals( 1, objectClass.getNames().size() );
@@ -550,7 +564,7 @@ public class ObjectClassDescriptionSchemaParserTest
     public void testRfcTop() throws ParseException, NamingException
     {
         String value = "( 2.5.6.0 NAME 'top' DESC 'top of the superclass chain' ABSTRACT MUST objectClass )";
-        ObjectClass objectClass = parser.parseObjectClassDescription( value );
+        ObjectClass objectClass = parser.parse( value );
 
         assertEquals( "2.5.6.0", objectClass.getOid() );
         assertEquals( 1, objectClass.getNames().size() );
@@ -569,7 +583,7 @@ public class ObjectClassDescriptionSchemaParserTest
     public void testRfcPerson() throws ParseException, NamingException
     {
         String value = "( 2.5.6.6 NAME 'person' DESC 'RFC2256: a person' SUP top STRUCTURAL MUST ( sn $ cn ) MAY ( userPassword $ telephoneNumber $ seeAlso $ description ) )";
-        ObjectClass objectClass = parser.parseObjectClassDescription( value );
+        ObjectClass objectClass = parser.parse( value );
 
         assertEquals( "2.5.6.6", objectClass.getOid() );
         assertEquals( 1, objectClass.getNames().size() );
@@ -594,7 +608,7 @@ public class ObjectClassDescriptionSchemaParserTest
     public void testRfcSimpleSecurityObject() throws ParseException, NamingException
     {
         String value = "( 0.9.2342.19200300.100.4.19 NAME 'simpleSecurityObject' DESC 'RFC1274: simple security object' SUP top AUXILIARY MUST userPassword )";
-        ObjectClass objectClass = parser.parseObjectClassDescription( value );
+        ObjectClass objectClass = parser.parse( value );
 
         assertEquals( "0.9.2342.19200300.100.4.19", objectClass.getOid() );
         assertEquals( 1, objectClass.getNames().size() );
@@ -614,7 +628,7 @@ public class ObjectClassDescriptionSchemaParserTest
     public void testSunAlias() throws ParseException, NamingException
     {
         String value = "( 2.5.6.1 NAME 'alias' DESC 'Standard LDAP objectclass' SUP top ABSTRACT MUST aliasedObjectName X-ORIGIN 'RFC 2256' )";
-        ObjectClass objectClass = parser.parseObjectClassDescription( value );
+        ObjectClass objectClass = parser.parse( value );
 
         assertEquals( "2.5.6.1", objectClass.getOid() );
         assertEquals( 1, objectClass.getNames().size() );
@@ -638,7 +652,7 @@ public class ObjectClassDescriptionSchemaParserTest
     public void testNovellDcObject() throws ParseException, NamingException
     {
         String value = "( 1.3.6.1.4.1.1466.344 NAME 'dcObject' AUXILIARY MUST dc X-NDS_NAMING 'dc' X-NDS_NOT_CONTAINER '1' X-NDS_NONREMOVABLE '1' )";
-        ObjectClass objectClass = parser.parseObjectClassDescription( value );
+        ObjectClass objectClass = parser.parse( value );
 
         assertEquals( "1.3.6.1.4.1.1466.344", objectClass.getOid() );
         assertEquals( 1, objectClass.getNames().size() );
@@ -667,7 +681,7 @@ public class ObjectClassDescriptionSchemaParserTest
     public void testNovellList() throws ParseException, NamingException
     {
         String value = "( 2.16.840.1.113719.1.1.6.1.30 NAME 'List' SUP Top STRUCTURAL MUST cn MAY ( description $ l $ member $ ou $ o $ eMailAddress $ mailboxLocation $ mailboxID $ owner $ seeAlso $ fullName ) X-NDS_NAMING 'cn' X-NDS_CONTAINMENT ( 'Organization' 'organizationalUnit' 'domain' ) X-NDS_NOT_CONTAINER '1' X-NDS_NONREMOVABLE '1' X-NDS_ACL_TEMPLATES '2#entry#[Root Template]#member' )";
-        ObjectClass objectClass = parser.parseObjectClassDescription( value );
+        ObjectClass objectClass = parser.parse( value );
 
         assertEquals( "2.16.840.1.113719.1.1.6.1.30", objectClass.getOid() );
         assertEquals( 1, objectClass.getNames().size() );
@@ -714,7 +728,7 @@ public class ObjectClassDescriptionSchemaParserTest
     public void testMicrosoftAds2000Locality() throws ParseException, NamingException
     {
         String value = "( 2.5.6.3 NAME 'locality' SUP top STRUCTURAL MUST (l ) MAY (st $ street $ searchGuide $ seeAlso ) )";
-        ObjectClass objectClass = parser.parseObjectClassDescription( value );
+        ObjectClass objectClass = parser.parse( value );
 
         assertEquals( "2.5.6.3", objectClass.getOid() );
         assertEquals( 1, objectClass.getNames().size() );
@@ -738,7 +752,7 @@ public class ObjectClassDescriptionSchemaParserTest
     public void testMicrosoftAds2003Msieee() throws ParseException, NamingException
     {
         String value = "( 1.2.840.113556.1.5.240 NAME 'msieee80211-Policy' SUP top STRUCTURAL MAY (msieee80211-Data $ msieee80211-DataType $ msieee80211-ID ) )";
-        ObjectClass objectClass = parser.parseObjectClassDescription( value );
+        ObjectClass objectClass = parser.parse( value );
 
         assertEquals( "1.2.840.113556.1.5.240", objectClass.getOid() );
         assertEquals( 1, objectClass.getNames().size() );
@@ -760,7 +774,7 @@ public class ObjectClassDescriptionSchemaParserTest
     public void testSiemensDirxX500Subschema() throws ParseException, NamingException
     {
         String value = "( 2.5.20.1 NAME 'x500subSchema' AUXILIARY MAY (dITStructureRules $ nameForms $ dITContentRules $ x500objectClasses $ x500attributeTypes $ matchingRules $ matchingRuleUse) )";
-        ObjectClass objectClass = parser.parseObjectClassDescription( value );
+        ObjectClass objectClass = parser.parse( value );
 
         assertEquals( "2.5.20.1", objectClass.getOid() );
         assertEquals( 1, objectClass.getNames().size() );
@@ -790,81 +804,4 @@ public class ObjectClassDescriptionSchemaParserTest
                 "( 2.16.840.1.113719.1.1.6.1.30 NAME 'List' SUP Top STRUCTURAL MUST cn MAY ( description $ l $ member $ ou $ o $ eMailAddress $ mailboxLocation $ mailboxID $ owner $ seeAlso $ fullName ) X-NDS_NAMING 'cn' X-NDS_CONTAINMENT ( 'Organization' 'organizationalUnit' 'domain' ) X-NDS_NOT_CONTAINER '1' X-NDS_NONREMOVABLE '1' X-NDS_ACL_TEMPLATES '2#entry#[Root Template]#member' )" };
         SchemaParserTestUtils.testMultiThreaded( parser, testValues );
     }
-
-
-    /**
-     * Tests quirks mode.
-     */
-    @Test
-    public void testQuirksMode() throws ParseException, NamingException
-    {
-        SchemaParserTestUtils.testQuirksMode( parser, "" );
-
-        try
-        {
-            String value = null;
-            ObjectClass objectClass = null;
-
-            parser.setQuirksMode( true );
-
-            // ensure all other test pass in quirks mode
-            testNumericOid();
-            testNames();
-            testDescription();
-            testObsolete();
-            testSuperior();
-            testKind();
-            testMust();
-            testMay();
-            testExtensions();
-            testFull();
-            testUniqueElements();
-            testIgnoreElementOrder();
-            testRfcTop();
-            testRfcSimpleSecurityObject();
-            testSunAlias();
-            testNovellDcObject();
-            testNovellList();
-            testMicrosoftAds2000Locality();
-            testMicrosoftAds2003Msieee();
-            testSiemensDirxX500Subschema();
-            testMultiThreaded();
-
-            // NAME with special chars
-            value = "( 1.2.3 NAME 't-e_s.t;' )";
-            objectClass = parser.parseObjectClassDescription( value );
-            assertEquals( 1, objectClass.getNames().size() );
-            assertEquals( "t-e_s.t;", objectClass.getNames().get( 0 ) );
-
-            // SUP with underscore
-            value = "( 1.1 SUP te_st )";
-            objectClass = parser.parseObjectClassDescription( value );
-            assertEquals( 1, objectClass.getSuperiorOids().size() );
-            assertEquals( "te_st", objectClass.getSuperiorOids().get( 0 ) );
-
-            // MAY with underscore
-            value = "( 1.1 MAY te_st )";
-            objectClass = parser.parseObjectClassDescription( value );
-            assertEquals( 1, objectClass.getMayAttributeTypeOids().size() );
-            assertEquals( "te_st", objectClass.getMayAttributeTypeOids().get( 0 ) );
-
-            // MUST with underscore
-            value = "( 1.1 MUST te_st )";
-            objectClass = parser.parseObjectClassDescription( value );
-            assertEquals( 1, objectClass.getMustAttributeTypeOids().size() );
-            assertEquals( "te_st", objectClass.getMustAttributeTypeOids().get( 0 ) );
-
-            // Netscape object class 
-            value = "( nsAdminGroup-oid NAME 'nsAdminGroup' DESC 'Netscape defined objectclass' SUP top STRUCTURAL MUST cn MAY ( nsAdminGroupName $ description $ nsConfigRoot $ nsAdminSIEDN ) X-ORIGIN 'Netscape' )";
-            objectClass = parser.parseObjectClassDescription( value );
-            assertEquals( "nsAdminGroup-oid", objectClass.getOid() );
-            assertEquals( 1, objectClass.getNames().size() );
-            assertEquals( "nsAdminGroup", objectClass.getNames().get( 0 ) );
-        }
-        finally
-        {
-            parser.setQuirksMode( false );
-        }
-    }
-
 }

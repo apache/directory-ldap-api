@@ -75,9 +75,16 @@ public class MatchingRuleUseDescriptionSchemaParserTest
 
 
     @Test
-    public void testNames() throws ParseException
+    public void testNamesRelaxed() throws ParseException
     {
-        SchemaParserTestUtils.testNames( parser, "1.1", "APPLIES 1.1" );
+        SchemaParserTestUtils.testNamesRelaxed( parser, "1.1", "APPLIES 1.1" );
+    }
+
+
+    @Test
+    public void testNamesStrict() throws ParseException
+    {
+        SchemaParserTestUtils.testNamesStrict( parser, "1.1", "APPLIES 1.1" );
     }
 
 
@@ -104,47 +111,47 @@ public class MatchingRuleUseDescriptionSchemaParserTest
 
         // APPLIES simple numericoid
         value = "( 1.1 APPLIES 1.2.3.4.5.6.7.8.9.0 )";
-        matchingRuleUse = parser.parseMatchingRuleUseDescription( value );
+        matchingRuleUse = parser.parse( value );
         assertEquals( 1, matchingRuleUse.getApplicableAttributeOids().size() );
         assertEquals( "1.2.3.4.5.6.7.8.9.0", matchingRuleUse.getApplicableAttributeOids().get( 0 ) );
 
         // SUP simple descr
         value = "( 1.1 APPLIES abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789 )";
-        matchingRuleUse = parser.parseMatchingRuleUseDescription( value );
+        matchingRuleUse = parser.parse( value );
         assertEquals( 1, matchingRuleUse.getApplicableAttributeOids().size() );
         assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", matchingRuleUse
             .getApplicableAttributeOids().get( 0 ) );
 
         // APPLIES single numericoid
-        value = "( 1.1 APPLIES ( 123.4567.890 ) )";
-        matchingRuleUse = parser.parseMatchingRuleUseDescription( value );
+        value = "( 1.1 APPLIES ( 1.2.3.4567.890 ) )";
+        matchingRuleUse = parser.parse( value );
         assertEquals( 1, matchingRuleUse.getApplicableAttributeOids().size() );
-        assertEquals( "123.4567.890", matchingRuleUse.getApplicableAttributeOids().get( 0 ) );
+        assertEquals( "1.2.3.4567.890", matchingRuleUse.getApplicableAttributeOids().get( 0 ) );
 
         // APPLIES single descr
-        value = "(1.1 APPLIES(a-z-A-Z-0-9))";
-        matchingRuleUse = parser.parseMatchingRuleUseDescription( value );
+        value = "(1.1 APPLIES (a-z-A-Z-0-9))";
+        matchingRuleUse = parser.parse( value );
         assertEquals( 1, matchingRuleUse.getApplicableAttributeOids().size() );
         assertEquals( "a-z-A-Z-0-9", matchingRuleUse.getApplicableAttributeOids().get( 0 ) );
 
         // APPLIES multi numericoid
-        value = "( 1.1 APPLIES ( 1.2.3 $ 4.5.6 $ 7.8.90 ) )";
-        matchingRuleUse = parser.parseMatchingRuleUseDescription( value );
+        value = "( 1.1 APPLIES ( 1.2.3 $ 1.2.4.5.6 $ 1.2.7.8.90 ) )";
+        matchingRuleUse = parser.parse( value );
         assertEquals( 3, matchingRuleUse.getApplicableAttributeOids().size() );
         assertEquals( "1.2.3", matchingRuleUse.getApplicableAttributeOids().get( 0 ) );
-        assertEquals( "4.5.6", matchingRuleUse.getApplicableAttributeOids().get( 1 ) );
-        assertEquals( "7.8.90", matchingRuleUse.getApplicableAttributeOids().get( 2 ) );
+        assertEquals( "1.2.4.5.6", matchingRuleUse.getApplicableAttributeOids().get( 1 ) );
+        assertEquals( "1.2.7.8.90", matchingRuleUse.getApplicableAttributeOids().get( 2 ) );
 
         // APPLIES multi descr
         value = "( 1.1 APPLIES ( test1 $ test2 ) )";
-        matchingRuleUse = parser.parseMatchingRuleUseDescription( value );
+        matchingRuleUse = parser.parse( value );
         assertEquals( 2, matchingRuleUse.getApplicableAttributeOids().size() );
         assertEquals( "test1", matchingRuleUse.getApplicableAttributeOids().get( 0 ) );
         assertEquals( "test2", matchingRuleUse.getApplicableAttributeOids().get( 1 ) );
 
         // APPLIES multi mixed, tabs
         value = "\t(\t1.1\tAPPLIES\t(\ttest1\t$\t1.2.3.4\t$\ttest2\t)\t)\t";
-        matchingRuleUse = parser.parseMatchingRuleUseDescription( value );
+        matchingRuleUse = parser.parse( value );
         assertEquals( 3, matchingRuleUse.getApplicableAttributeOids().size() );
         assertEquals( "test1", matchingRuleUse.getApplicableAttributeOids().get( 0 ) );
         assertEquals( "1.2.3.4", matchingRuleUse.getApplicableAttributeOids().get( 1 ) );
@@ -152,35 +159,70 @@ public class MatchingRuleUseDescriptionSchemaParserTest
 
         // APPLIES multi mixed no space
         value = "(1.1 APPLIES(TEST-1$1.2.3.4$TEST-2))";
-        matchingRuleUse = parser.parseMatchingRuleUseDescription( value );
-        assertEquals( 3, matchingRuleUse.getApplicableAttributeOids().size() );
-        assertEquals( "TEST-1", matchingRuleUse.getApplicableAttributeOids().get( 0 ) );
-        assertEquals( "1.2.3.4", matchingRuleUse.getApplicableAttributeOids().get( 1 ) );
-        assertEquals( "TEST-2", matchingRuleUse.getApplicableAttributeOids().get( 2 ) );
+        
+        try 
+        {
+            matchingRuleUse = parser.parse( value );
+            fail( "Exception expected, SPACES expected" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected
+        }
 
         // APPLIES multi mixed many spaces
         value = "(          1.1          APPLIES          (          test1          $          1.2.3.4$test2          )          )";
-        matchingRuleUse = parser.parseMatchingRuleUseDescription( value );
+        matchingRuleUse = parser.parse( value );
         assertEquals( 3, matchingRuleUse.getApplicableAttributeOids().size() );
         assertEquals( "test1", matchingRuleUse.getApplicableAttributeOids().get( 0 ) );
         assertEquals( "1.2.3.4", matchingRuleUse.getApplicableAttributeOids().get( 1 ) );
         assertEquals( "test2", matchingRuleUse.getApplicableAttributeOids().get( 2 ) );
 
         // quoted value
-        value = "( 1.1 APPLIES 'test' )";
-        matchingRuleUse = parser.parseMatchingRuleUseDescription( value );
-        assertEquals( 1, matchingRuleUse.getApplicableAttributeOids().size() );
-        assertEquals( "test", matchingRuleUse.getApplicableAttributeOids().get( 0 ) );
-
-        // quoted value
-        value = "( 1.1 APPLIES '1.2.3.4' )";
-        matchingRuleUse = parser.parseMatchingRuleUseDescription( value );
-        assertEquals( 1, matchingRuleUse.getApplicableAttributeOids().size() );
-        assertEquals( "1.2.3.4", matchingRuleUse.getApplicableAttributeOids().get( 0 ) );
+        if ( parser.isQuirksMode() )
+        {
+            value = "( 1.1 APPLIES 'test' )";
+            matchingRuleUse = parser.parse( value );
+            assertEquals( 1, matchingRuleUse.getApplicableAttributeOids().size() );
+            assertEquals( "test", matchingRuleUse.getApplicableAttributeOids().get( 0 ) );
+    
+            // quoted value
+            value = "( 1.1 APPLIES '1.2.3.4' )";
+            matchingRuleUse = parser.parse( value );
+            assertEquals( 1, matchingRuleUse.getApplicableAttributeOids().size() );
+            assertEquals( "1.2.3.4", matchingRuleUse.getApplicableAttributeOids().get( 0 ) );
+        }
+        else
+        {
+            value = "( 1.1 APPLIES 'test' )";
+            
+            try
+            {
+                matchingRuleUse = parser.parse( value );
+                fail( "Exception expected, quote not allowed in APPLIES" );
+            }
+            catch ( ParseException pe )
+            {
+                // expected
+            }
+    
+            // quoted value
+            value = "( 1.1 APPLIES '1.2.3.4' )";
+            
+            try
+            {
+                matchingRuleUse = parser.parse( value );
+                fail( "Exception expected, quote not allowed in APPLIES" );
+            }
+            catch ( ParseException pe )
+            {
+                // expected
+            }
+        }
 
         // no $ separator
         value = "( 1.1 APPLIES ( test1 test2 ) )";
-        matchingRuleUse = parser.parseMatchingRuleUseDescription( value );
+        matchingRuleUse = parser.parse( value );
         assertEquals( 2, matchingRuleUse.getApplicableAttributeOids().size() );
         assertEquals( "test1", matchingRuleUse.getApplicableAttributeOids().get( 0 ) );
         assertEquals( "test2", matchingRuleUse.getApplicableAttributeOids().get( 1 ) );
@@ -189,7 +231,7 @@ public class MatchingRuleUseDescriptionSchemaParserTest
         value = "( 1.1 APPLIES 1.2.3.4.A )";
         try
         {
-            matchingRuleUse = parser.parseMatchingRuleUseDescription( value );
+            matchingRuleUse = parser.parse( value );
             fail( "Exception expected, invalid APPLIES '1.2.3.4.A' (invalid character)" );
         }
         catch ( ParseException pe )
@@ -201,7 +243,7 @@ public class MatchingRuleUseDescriptionSchemaParserTest
         value = "( 1.1 APPLIES )";
         try
         {
-            matchingRuleUse = parser.parseMatchingRuleUseDescription( value );
+            matchingRuleUse = parser.parse( value );
             fail( "Exception expected, no APPLIES value" );
         }
         catch ( ParseException pe )
@@ -213,7 +255,7 @@ public class MatchingRuleUseDescriptionSchemaParserTest
         value = "( 1.1 APPLIES test1 APPLIES test2 )";
         try
         {
-            matchingRuleUse = parser.parseMatchingRuleUseDescription( value );
+            matchingRuleUse = parser.parse( value );
             fail( "Exception expected, APPLIES appears twice" );
         }
         catch ( ParseException pe )
@@ -227,7 +269,7 @@ public class MatchingRuleUseDescriptionSchemaParserTest
             value = "( 1.1 )";
             try
             {
-                matchingRuleUse = parser.parseMatchingRuleUseDescription( value );
+                matchingRuleUse = parser.parse( value );
                 fail( "Exception expected, APPLIES is required" );
             }
             catch ( ParseException pe )
@@ -239,7 +281,7 @@ public class MatchingRuleUseDescriptionSchemaParserTest
             value = "( 1.1 APPLIES ( test1 $ -test2 ) )";
             try
             {
-                matchingRuleUse = parser.parseMatchingRuleUseDescription( value );
+                matchingRuleUse = parser.parse( value );
                 fail( "Exception expected, invalid APPLIES '-test' (starts with hypen)" );
             }
             catch ( ParseException pe )
@@ -264,7 +306,7 @@ public class MatchingRuleUseDescriptionSchemaParserTest
         MatchingRuleUse matchingRuleUse = null;
 
         value = "( 1.2.3.4.5.6.7.8.9.0 NAME ( 'abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789' 'test' ) DESC 'Descripton \u00E4\u00F6\u00FC\u00DF \u90E8\u9577' OBSOLETE APPLIES ( 0.1.2.3.4.5.6.7.8.9 $ abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789 ) X-TEST-a ('test1-1' 'test1-2') X-TEST-b ('test2-1' 'test2-2') )";
-        matchingRuleUse = parser.parseMatchingRuleUseDescription( value );
+        matchingRuleUse = parser.parse( value );
 
         assertEquals( "1.2.3.4.5.6.7.8.9.0", matchingRuleUse.getOid() );
         assertEquals( 2, matchingRuleUse.getNames().size() );
@@ -317,7 +359,7 @@ public class MatchingRuleUseDescriptionSchemaParserTest
         MatchingRuleUse matchingRuleUse = null;
 
         value = "( 1.2.3.4.5.6.7.8.9.0 APPLIES a )";
-        matchingRuleUse = parser.parseMatchingRuleUseDescription( value );
+        matchingRuleUse = parser.parse( value );
         assertEquals( 1, matchingRuleUse.getApplicableAttributeOids().size() );
 
         if ( !parser.isQuirksMode() )
@@ -325,7 +367,7 @@ public class MatchingRuleUseDescriptionSchemaParserTest
             value = "( 1.2.3.4.5.6.7.8.9.0 )";
             try
             {
-                parser.parseMatchingRuleUseDescription( value );
+                parser.parse( value );
                 fail( "Exception expected, APPLIES is required" );
             }
             catch ( ParseException pe )
@@ -344,7 +386,7 @@ public class MatchingRuleUseDescriptionSchemaParserTest
     public void testOpenldap1() throws ParseException
     {
         String value = "( 2.5.13.17 NAME 'octetStringMatch' APPLIES ( javaSerializedData $ userPassword ) )";
-        MatchingRuleUse matchingRuleUse = parser.parseMatchingRuleUseDescription( value );
+        MatchingRuleUse matchingRuleUse = parser.parse( value );
 
         assertEquals( "2.5.13.17", matchingRuleUse.getOid() );
         assertEquals( 1, matchingRuleUse.getNames().size() );
@@ -388,7 +430,7 @@ public class MatchingRuleUseDescriptionSchemaParserTest
 
             // ensure all other test pass in quirks mode
             testNumericOid();
-            testNames();
+            testNamesRelaxed();
             testDescription();
             testObsolete();
             testApplies();

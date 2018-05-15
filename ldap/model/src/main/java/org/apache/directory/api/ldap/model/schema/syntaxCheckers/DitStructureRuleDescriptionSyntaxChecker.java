@@ -141,7 +141,7 @@ public final class DitStructureRuleDescriptionSyntaxChecker extends SyntaxChecke
 
         try
         {
-            schemaParser.parseDITStructureRuleDescription( strValue );
+            schemaParser.parse( strValue );
 
             if ( LOG.isDebugEnabled() )
             {

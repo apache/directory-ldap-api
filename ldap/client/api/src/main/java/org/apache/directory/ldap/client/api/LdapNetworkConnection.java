@@ -4313,7 +4313,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 registries.getAttributeTypeRegistry().register( atType );
             }
 
-            for ( ObjectClass oc : olsp.getObjectClassTypes() )
+            for ( ObjectClass oc : olsp.getObjectClasses() )
             {
                 registries.buildReference( errors, oc );
                 registries.getObjectClassRegistry().register( oc );

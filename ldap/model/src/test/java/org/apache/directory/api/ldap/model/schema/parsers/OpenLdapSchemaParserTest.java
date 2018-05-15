@@ -25,7 +25,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +60,7 @@ public class OpenLdapSchemaParserTest
     public void setUp() throws Exception
     {
         parser = new OpenLdapSchemaParser();
-        parser.setParserMonitor( new ConsoleParserMonitor() );
+        parser.setQuirksMode( true );
     }
 
 
@@ -219,7 +218,7 @@ public class OpenLdapSchemaParserTest
             + "        MUST ( sn $ cn )\n"
             + "        MAY ( userPassword $ telephoneNumber $ seeAlso $ description ) )";
         parser.parse( objectClassData );
-        List<ObjectClass> objectClassesList = parser.getObjectClassTypes();
+        List<ObjectClass> objectClassesList = parser.getObjectClasses();
         Map<String, ObjectClass> objectClasses = mapObjectClasses( objectClassesList );
         ObjectClass objectClass = objectClasses.get( "2.5.6.6" );
 
@@ -247,7 +246,7 @@ public class OpenLdapSchemaParserTest
             + "        MAY ( userPassword $ telephoneNumber $ seeAlso $ description ) \n"
             + "        X-extension 'test' X-otherExtension ( 'test1' 'test2' ) )";
         parser.parse( objectClassData );
-        List<ObjectClass> objectClassesList = parser.getObjectClassTypes();
+        List<ObjectClass> objectClassesList = parser.getObjectClasses();
         Map<String, ObjectClass> objectClasses = mapObjectClasses( objectClassesList );
         ObjectClass objectClass = objectClasses.get( "2.5.6.6" );
 
@@ -293,7 +292,7 @@ public class OpenLdapSchemaParserTest
             + "\t\tpagerTelephoneNumber $ organizationalStatus $\n"
             + "\t\tmailPreferenceOption $ personalSignature )\n" + "\t)";
         parser.parse( objectClassData );
-        List<ObjectClass> objectClassesList = parser.getObjectClassTypes();
+        List<ObjectClass> objectClassesList = parser.getObjectClasses();
         Map<String, ObjectClass> objectClasses = mapObjectClasses( objectClassesList );
         ObjectClass objectClass = objectClasses.get( "0.9.2342.19200300.100.4.4" );
 
@@ -333,7 +332,7 @@ public class OpenLdapSchemaParserTest
         parser.parse( input );
 
         List<MutableAttributeType> attributeTypes = parser.getAttributeTypes();
-        List<ObjectClass> objectClassTypes = parser.getObjectClassTypes();
+        List<ObjectClass> objectClassTypes = parser.getObjectClasses();
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros = parser.getObjectIdentifierMacros();
 
         assertEquals( 52, attributeTypes.size() );
@@ -349,7 +348,7 @@ public class OpenLdapSchemaParserTest
         parser.parse( input );
 
         List<MutableAttributeType> attributeTypes = parser.getAttributeTypes();
-        List<ObjectClass> objectClassTypes = parser.getObjectClassTypes();
+        List<ObjectClass> objectClassTypes = parser.getObjectClasses();
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros = parser.getObjectIdentifierMacros();
 
         assertEquals( 9, attributeTypes.size() );
@@ -365,7 +364,7 @@ public class OpenLdapSchemaParserTest
         parser.parse( input );
 
         List<MutableAttributeType> attributeTypes = parser.getAttributeTypes();
-        List<ObjectClass> objectClassTypes = parser.getObjectClassTypes();
+        List<ObjectClass> objectClassTypes = parser.getObjectClasses();
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros = parser.getObjectIdentifierMacros();
 
         assertEquals( 13, attributeTypes.size() );
@@ -382,10 +381,11 @@ public class OpenLdapSchemaParserTest
     public void testOpenLdapObjectIdentifiereMacros() throws Exception
     {
         InputStream input = getClass().getResourceAsStream( "dyngroup.schema" );
+        parser.setQuirksMode( true );
         parser.parse( input );
 
         List<MutableAttributeType> attributeTypes = parser.getAttributeTypes();
-        List<ObjectClass> objectClassTypes = parser.getObjectClassTypes();
+        List<ObjectClass> objectClassTypes = parser.getObjectClasses();
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros = parser.getObjectIdentifierMacros();
 
         assertEquals( 2, attributeTypes.size() );

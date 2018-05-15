@@ -63,7 +63,7 @@ public class AttributeTypeDescriptionSyntaxCheckerTest
             .isValidSyntax( "( 2.5.4.3 NAME ( 'cn' 'commonName' ) DESC 'RFC2256: common name(s) for which the entity is known by'  SUP name EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )" ) );
         assertTrue( checker
             .isValidSyntax( "( 2.5.4.3 NAME ( 'cn' 'commonName' ) DESC 'RFC2256: common name(s) for which the entity is known by'  SUP name EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE userApplications )" ) );
-        assertTrue( checker.isValidSyntax( "( 2.5.4.3 NAME cn SUP name )" ) );
+        assertTrue( checker.isValidSyntax( "( 2.5.4.3 NAME 'cn' SUP name )" ) );
         assertTrue( checker.isValidSyntax( "( 2.5.4.3 name ( 'cn' 'commonName' )  sup name )" ) );
 
         // spaces

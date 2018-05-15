@@ -25,7 +25,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -54,13 +53,13 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class FastOpenLdapSchemaParserTest
 {
-    private FastOpenLdapSchemaParser parser;
+    private OpenLdapSchemaParser parser;
 
 
     @Before
     public void setUp() throws Exception
     {
-        parser = new FastOpenLdapSchemaParser();
+        parser = new OpenLdapSchemaParser();
         // parser.setParserMonitor( new ConsoleParserMonitor() );
     }
 
@@ -219,7 +218,7 @@ public class FastOpenLdapSchemaParserTest
             + "        MUST ( sn $ cn )\n"
             + "        MAY ( userPassword $ telephoneNumber $ seeAlso $ description ) )";
         parser.parse( objectClassData );
-        List<ObjectClass> objectClassesList = parser.getObjectClassTypes();
+        List<ObjectClass> objectClassesList = parser.getObjectClasses();
         Map<String, ObjectClass> objectClasses = mapObjectClasses( objectClassesList );
         ObjectClass objectClass = objectClasses.get( "2.5.6.6" );
 
@@ -247,7 +246,7 @@ public class FastOpenLdapSchemaParserTest
             + "        MAY ( userPassword $ telephoneNumber $ seeAlso $ description ) \n"
             + "        X-extension 'test' X-otherExtension ( 'test1' 'test2' ) )";
         parser.parse( objectClassData );
-        List<ObjectClass> objectClassesList = parser.getObjectClassTypes();
+        List<ObjectClass> objectClassesList = parser.getObjectClasses();
         Map<String, ObjectClass> objectClasses = mapObjectClasses( objectClassesList );
         ObjectClass objectClass = objectClasses.get( "2.5.6.6" );
 
@@ -293,7 +292,7 @@ public class FastOpenLdapSchemaParserTest
             + "\t\tpagerTelephoneNumber $ organizationalStatus $\n"
             + "\t\tmailPreferenceOption $ personalSignature )\n" + "\t)";
         parser.parse( objectClassData );
-        List<ObjectClass> objectClassesList = parser.getObjectClassTypes();
+        List<ObjectClass> objectClassesList = parser.getObjectClasses();
         Map<String, ObjectClass> objectClasses = mapObjectClasses( objectClassesList );
         ObjectClass objectClass = objectClasses.get( "0.9.2342.19200300.100.4.4" );
 
@@ -334,7 +333,7 @@ public class FastOpenLdapSchemaParserTest
         parser.parse( input );
 
         List<MutableAttributeType> attributeTypes = parser.getAttributeTypes();
-        List<ObjectClass> objectClassTypes = parser.getObjectClassTypes();
+        List<ObjectClass> objectClassTypes = parser.getObjectClasses();
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros = parser.getObjectIdentifierMacros();
 
         assertEquals( 52, attributeTypes.size() );
@@ -350,7 +349,7 @@ public class FastOpenLdapSchemaParserTest
         parser.parse( input );
 
         List<MutableAttributeType> attributeTypes = parser.getAttributeTypes();
-        List<ObjectClass> objectClassTypes = parser.getObjectClassTypes();
+        List<ObjectClass> objectClassTypes = parser.getObjectClasses();
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros = parser.getObjectIdentifierMacros();
 
         assertEquals( 9, attributeTypes.size() );
@@ -366,7 +365,7 @@ public class FastOpenLdapSchemaParserTest
         parser.parse( input );
 
         List<MutableAttributeType> attributeTypes = parser.getAttributeTypes();
-        List<ObjectClass> objectClassTypes = parser.getObjectClassTypes();
+        List<ObjectClass> objectClassTypes = parser.getObjectClasses();
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros = parser.getObjectIdentifierMacros();
 
         assertEquals( 13, attributeTypes.size() );
@@ -382,11 +381,12 @@ public class FastOpenLdapSchemaParserTest
     @Test
     public void testOpenLdapObjectIdentifiereMacros() throws Exception
     {
+        parser.setQuirksMode( true );
         InputStream input = getClass().getResourceAsStream( "dyngroup.schema" );
         parser.parse( input );
 
         List<MutableAttributeType> attributeTypes = parser.getAttributeTypes();
-        List<ObjectClass> objectClassTypes = parser.getObjectClassTypes();
+        List<ObjectClass> objectClassTypes = parser.getObjectClasses();
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros = parser.getObjectIdentifierMacros();
 
         assertEquals( 2, attributeTypes.size() );
@@ -463,7 +463,7 @@ public class FastOpenLdapSchemaParserTest
     @Test
     public void testFastLdifParsePerf() throws Exception
     {
-        FastOpenLdapSchemaParser parser = new FastOpenLdapSchemaParser();
+        OpenLdapSchemaParser parser = new OpenLdapSchemaParser();
         parser.setQuirksMode( true );
         long t0 = System.currentTimeMillis();
 

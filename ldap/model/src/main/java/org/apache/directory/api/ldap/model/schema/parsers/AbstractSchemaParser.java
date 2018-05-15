@@ -20,20 +20,17 @@
 package org.apache.directory.api.ldap.model.schema.parsers;
 
 
-import java.io.StringReader;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
+import org.apache.directory.api.ldap.model.schema.syntaxCheckers.OpenLdapObjectIdentifierMacro;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
-import antlr.TokenStreamRecognitionException;
 
 
 /**
@@ -48,27 +45,11 @@ public abstract class AbstractSchemaParser<T extends SchemaObject>
     /** The LoggerFactory used by this class */
     protected static final Logger LOG = LoggerFactory.getLogger( AbstractSchemaParser.class );
 
-    /** the monitor to use for this parser */
-    protected ParserMonitor monitor = new ParserMonitorAdapter();
-
-    /** the antlr generated parser being wrapped */
-    protected ReusableAntlrSchemaParser parser;
-
-    /** the antlr generated lexer being wrapped */
-    protected ReusableAntlrSchemaLexer lexer;
-
-    /** the schema object sub-type */
-    private Class<T> schemaObjectType;
+    /** The fast schemaObject parser */
+    protected OpenLdapSchemaParser fastParser;
 
     /** error code used when schema descritpion is null */
     private I18n errorCodeOnNull;
-
-    /** error code used on parse error when position is known */
-    private I18n errorCodeOnParseExceptionWithPosition;
-
-    /** error code used on parse error when position is unknown */
-    private I18n errorCodeOnParseException;
-
 
     /**
      * Instantiates a new abstract schema parser.
@@ -82,39 +63,10 @@ public abstract class AbstractSchemaParser<T extends SchemaObject>
         I18n errorCodeOnParseExceptionWithPosition,
         I18n errorCodeOnParseException )
     {
-        this.schemaObjectType = schemaObjectType;
         this.errorCodeOnNull = errorCodeOnNull;
-        this.errorCodeOnParseExceptionWithPosition = errorCodeOnParseExceptionWithPosition;
-        this.errorCodeOnParseException = errorCodeOnParseException;
-        lexer = new ReusableAntlrSchemaLexer( new StringReader( "" ) );
-        parser = new ReusableAntlrSchemaParser( lexer );
+        fastParser = new OpenLdapSchemaParser();
     }
 
-
-    /**
-     * Initializes the plumbing by creating a pipe and coupling the parser/lexer
-     * pair with it. param spec the specification to be parsed
-     *
-     * @param spec the spec
-     */
-    protected void reset( String spec )
-    {
-        StringReader in = new StringReader( spec );
-        lexer.prepareNextInput( in );
-        parser.resetState();
-    }
-
-
-    /**
-     * Sets the parser monitor.
-     * 
-     * @param parserMonitor the new parser monitor
-     */
-    public void setParserMonitor( ParserMonitor parserMonitor )
-    {
-        this.monitor = parserMonitor;
-        parser.setParserMonitor( parserMonitor );
-    }
 
 
     /**
@@ -127,7 +79,7 @@ public abstract class AbstractSchemaParser<T extends SchemaObject>
      */
     public void setQuirksMode( boolean enabled )
     {
-        parser.setQuirksMode( enabled );
+        fastParser.setQuirksMode( enabled );
     }
 
 
@@ -138,7 +90,7 @@ public abstract class AbstractSchemaParser<T extends SchemaObject>
      */
     public boolean isQuirksMode()
     {
-        return parser.isQuirksMode();
+        return fastParser.isQuirksMode();
     }
 
 
@@ -149,83 +101,7 @@ public abstract class AbstractSchemaParser<T extends SchemaObject>
      * @return A SchemaObject instance
      * @throws ParseException If the parsing failed
      */
-    public synchronized T parse( String schemaDescription ) throws ParseException
-    {
-        if ( LOG.isDebugEnabled() )
-        {
-            LOG.debug( I18n.msg( I18n.MSG_13718_PARSING_A, schemaObjectType.getClass().getSimpleName(), schemaDescription ) );
-        }
-
-        if ( schemaDescription == null )
-        {
-            LOG.error( I18n.err( errorCodeOnNull ) );
-            throw new ParseException( I18n.err( I18n.ERR_13714_NULL ), 0 );
-        }
-
-        // reset and initialize the parser / lexer pair
-        reset( schemaDescription );
-
-        try
-        {
-            T schemaObject = doParse();
-            schemaObject.setSpecification( schemaDescription );
-
-            // Update the schemaName
-            updateSchemaName( schemaObject );
-
-            return schemaObject;
-        }
-        catch ( RecognitionException re )
-        {
-            throw wrapRecognitionException( schemaDescription, re );
-        }
-        catch ( TokenStreamRecognitionException tsre )
-        {
-            if ( tsre.recog != null )
-            {
-                throw wrapRecognitionException( schemaDescription, tsre.recog );
-            }
-            else
-            {
-                throw wrapTokenStreamException( schemaDescription, tsre );
-            }
-        }
-        catch ( TokenStreamException tse )
-        {
-            throw wrapTokenStreamException( schemaDescription, tse );
-        }
-    }
-
-
-    private ParseException wrapRecognitionException( String schemaDescription, RecognitionException re )
-    {
-        String msg = I18n.err( errorCodeOnParseExceptionWithPosition, schemaDescription, re.getMessage(),
-            re.getColumn() );
-        LOG.error( msg );
-        ParseException parseException = new ParseException( msg, re.getColumn() );
-        parseException.initCause( re );
-        return parseException;
-    }
-
-
-    private ParseException wrapTokenStreamException( String schemaDescription, TokenStreamException tse )
-    {
-        String msg = I18n.err( errorCodeOnParseException, schemaDescription, tse.getMessage() );
-        LOG.error( msg );
-        ParseException parseException = new ParseException( msg, 0 );
-        parseException.initCause( tse );
-        return parseException;
-    }
-
-
-    /**
-     * Parse a SchemaObject description and returns back an instance of SchemaObject.
-     * 
-     * @return A SchemaObject instance
-     * @throws RecognitionException the native antlr exception
-     * @throws TokenStreamException the native antlr exception
-     */
-    protected abstract T doParse() throws RecognitionException, TokenStreamException;
+    public abstract T parse( String schemaDescription ) throws ParseException;
 
 
     /**
@@ -234,7 +110,7 @@ public abstract class AbstractSchemaParser<T extends SchemaObject>
      *
      * @param schemaObject the schema object where the name should be updated
      */
-    private void updateSchemaName( SchemaObject schemaObject )
+    protected void updateSchemaName( SchemaObject schemaObject )
     {
         // Update the Schema if we have the X-SCHEMA extension
         List<String> schemaExtension = schemaObject.getExtension( MetaSchemaConstants.X_SCHEMA_AT );
@@ -256,5 +132,16 @@ public abstract class AbstractSchemaParser<T extends SchemaObject>
         {
             schemaObject.setSchemaName( MetaSchemaConstants.SCHEMA_OTHER );
         }
+    }
+    
+    
+    /**
+     * Get the defined macros.
+     * 
+     * @return The map of defined macros
+     */
+    public Map<String, OpenLdapObjectIdentifierMacro> getObjectIdentifiers()
+    {
+        return fastParser.getObjectIdentifierMacros();
     }
 }

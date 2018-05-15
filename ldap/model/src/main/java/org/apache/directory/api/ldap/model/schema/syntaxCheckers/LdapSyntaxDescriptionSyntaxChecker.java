@@ -132,7 +132,7 @@ public final class LdapSyntaxDescriptionSyntaxChecker extends SyntaxChecker
 
         try
         {
-            schemaParser.parseLdapSyntaxDescription( strValue );
+            schemaParser.parse( strValue );
 
             if ( LOG.isDebugEnabled() )
             {

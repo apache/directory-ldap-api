@@ -24,9 +24,6 @@ import java.text.ParseException;
 
 import org.apache.directory.api.i18n.I18n;
 
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
-
 
 /**
  * A parser for ApacheDS normalizer descriptions.
@@ -69,19 +66,14 @@ public class NormalizerDescriptionSchemaParser extends AbstractSchemaParser<Norm
      * @return the parsed NormalizerDescription bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public NormalizerDescription parseNormalizerDescription( String normalizerDescription ) throws ParseException
+    public NormalizerDescription parse( String normalizerDescription ) throws ParseException
     {
-        return super.parse( normalizerDescription );
+        NormalizerDescription normalizer = fastParser.parseNormalizer( normalizerDescription );
+        normalizer.setSpecification( normalizerDescription );
+
+        // Update the schemaName
+        updateSchemaName( normalizer );
+
+        return normalizer;
     }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected NormalizerDescription doParse() throws RecognitionException, TokenStreamException
-    {
-        return parser.normalizerDescription();
-    }
-
 }

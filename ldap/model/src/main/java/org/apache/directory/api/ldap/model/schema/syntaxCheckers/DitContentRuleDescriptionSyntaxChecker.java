@@ -138,7 +138,7 @@ public final class DitContentRuleDescriptionSyntaxChecker extends SyntaxChecker
 
         try
         {
-            schemaParser.parseDITContentRuleDescription( strValue );
+            schemaParser.parse( strValue );
 
             if ( LOG.isDebugEnabled() )
             {
