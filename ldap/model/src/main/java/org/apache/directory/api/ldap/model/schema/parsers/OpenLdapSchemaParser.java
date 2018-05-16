@@ -713,7 +713,7 @@ public class OpenLdapSchemaParser
      * @param schemaIn a stream of schema objects
      * @throws Exception 
      */
-    public void parse( InputStream schemaIn ) throws Exception
+    public void parse( InputStream schemaIn ) throws ParseException, LdapSchemaException, IOException
     {
         try ( InputStreamReader in = new InputStreamReader( schemaIn, Charset.defaultCharset() ) )
         {
