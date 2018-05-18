@@ -503,7 +503,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
             poolableFactory.setValidator( validator );
 
             pool = new LdapConnectionPool( poolableFactory );
-            pool.setMaxActive( 1 );
+            pool.setMaxTotal( 1 );
             pool.setTestOnBorrow( true );
             pool.setTestOnReturn( true );
         }

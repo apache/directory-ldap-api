@@ -49,7 +49,7 @@
     <commons.codec.version>1.11</commons.codec.version>
     <commons.collections.version>3.2.2</commons.collections.version>
     <commons.lang.version>2.6</commons.lang.version>
-    <commons.pool.version>1.6</commons.pool.version>
+    <commons.pool.version>2.5.0</commons.pool.version>
     <dom4j.version>1.6.1</dom4j.version>
     <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
     <forbiddenapis.version>2.2</forbiddenapis.version>
@@ -484,8 +484,8 @@
       </dependency>
 
       <dependency>
-        <groupId>commons-pool</groupId>
-        <artifactId>commons-pool</artifactId>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-pool2</artifactId>
         <version>${commons.pool.version}</version>
       </dependency>
 

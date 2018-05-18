@@ -21,8 +21,9 @@
 package org.apache.directory.ldap.client.api;
 
 
-import org.apache.commons.pool.PoolableObjectFactory;
-import org.apache.commons.pool.impl.GenericObjectPool;
+import org.apache.commons.pool2.PooledObjectFactory;
+import org.apache.commons.pool2.impl.GenericObjectPool;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.slf4j.Logger;
@@ -41,7 +42,7 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
 {
     private static final Logger LOG = LoggerFactory.getLogger( LdapConnectionPool.class );
 
-    private PoolableObjectFactory<LdapConnection> factory;
+    private PooledObjectFactory<LdapConnection> factory;
 
 
     /**
@@ -67,7 +68,7 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
      * @param poolConfig The pool configuration
      */
     public LdapConnectionPool( LdapConnectionConfig connectionConfig,
-        LdapApiService apiService, long timeout, Config poolConfig )
+        LdapApiService apiService, long timeout, GenericObjectPoolConfig poolConfig )
     {
         this( newPoolableConnectionFactory( connectionConfig, apiService, timeout ), poolConfig );
     }
@@ -78,7 +79,7 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
      *
      * @param factory The LDAP connection factory
      */
-    public LdapConnectionPool( PoolableObjectFactory<LdapConnection> factory )
+    public LdapConnectionPool( PooledObjectFactory<LdapConnection> factory )
     {
         this( factory, null );
     }
@@ -90,9 +91,9 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
      * @param factory The LDAP connection factory
      * @param poolConfig The pool configuration
      */
-    public LdapConnectionPool( PoolableObjectFactory<LdapConnection> factory, Config poolConfig )
+    public LdapConnectionPool( PooledObjectFactory<LdapConnection> factory, GenericObjectPoolConfig poolConfig )
     {
-        super( factory, poolConfig == null ? new Config() : poolConfig );
+        super( factory, poolConfig == null ? new GenericObjectPoolConfig() : poolConfig );
         this.factory = factory;
     }
 
@@ -172,10 +173,6 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
             {
                 LOG.trace( "returned connection {}", connection );
             }
-        }
-        catch ( LdapException e )
-        {
-            throw e;
         }
         catch ( Exception e )
         {

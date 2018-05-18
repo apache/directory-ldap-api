@@ -20,8 +20,8 @@
 package org.apache.directory.api.osgi;
 
 
-import org.apache.commons.pool.PoolableObjectFactory;
-import org.apache.commons.pool.impl.GenericObjectPool.Config;
+import org.apache.commons.pool2.PooledObjectFactory;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.apache.directory.ldap.client.api.DefaultPoolableLdapConnectionFactory;
 import org.apache.directory.ldap.client.api.Krb5LoginConfiguration;
 import org.apache.directory.ldap.client.api.LdapConnection;
@@ -56,9 +56,9 @@ public class ApiLdapClientApiOsgiTest extends ApiOsgiTestBase
         FilterBuilder.and( FilterBuilder.not( FilterBuilder.contains( "cn", "a", "b" ) ) ).toString();
 
         // Test for DIRAPI-239
-        PoolableObjectFactory<LdapConnection> factory = new DefaultPoolableLdapConnectionFactory(
+        PooledObjectFactory<LdapConnection> factory = new DefaultPoolableLdapConnectionFactory(
             new LdapConnectionConfig() );
-        Config config = new Config();
+        GenericObjectPoolConfig config = new GenericObjectPoolConfig();
         LdapConnectionPool ldapConnectionPool = new LdapConnectionPool( factory, config );
         ldapConnectionPool.getLdapApiService();
         ldapConnectionPool.getTestOnBorrow();

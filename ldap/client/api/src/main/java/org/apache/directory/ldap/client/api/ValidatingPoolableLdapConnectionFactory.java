@@ -21,6 +21,8 @@
 package org.apache.directory.ldap.client.api;
 
 
+import org.apache.commons.pool2.PooledObject;
+import org.apache.commons.pool2.impl.DefaultPooledObject;
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.BindRequest;
@@ -109,14 +111,16 @@ public class ValidatingPoolableLdapConnectionFactory extends AbstractPoolableLda
      * There is nothing to do to activate a connection.
      */
     @Override
-    public void activateObject( LdapConnection connection ) throws LdapException
+    public void activateObject( PooledObject<LdapConnection> pooledObject ) throws LdapException
     {
+        LdapConnection connection = pooledObject.getObject();
+        
         if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Activating {}", connection );
         }
         
-        super.activateObject( connection );
+        super.activateObject( pooledObject );
 
         // clear the monitors
         ( ( MonitoringLdapConnection ) connection ).resetMonitors();
@@ -132,14 +136,14 @@ public class ValidatingPoolableLdapConnectionFactory extends AbstractPoolableLda
      * @throws LdapException If unable to connect.
      */
     @Override
-    public MonitoringLdapConnection makeObject() throws LdapException
+    public PooledObject<LdapConnection> makeObject() throws LdapException
     {
         if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Creating a LDAP connection" );
         }
         
-        return new MonitoringLdapConnection( connectionFactory.newLdapConnection() );
+        return new DefaultPooledObject<LdapConnection>( new MonitoringLdapConnection( connectionFactory.newLdapConnection() ) );
     }
 
 
@@ -152,8 +156,10 @@ public class ValidatingPoolableLdapConnectionFactory extends AbstractPoolableLda
      * @throws LdapException If unable to reconfigure and rebind.
      */
     @Override
-    public void passivateObject( LdapConnection connection ) throws LdapException
+    public void passivateObject( PooledObject<LdapConnection> pooledObject ) throws LdapException
     {
+        LdapConnection connection = pooledObject.getObject();
+
         if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Passivating {}", connection );
@@ -169,6 +175,7 @@ public class ValidatingPoolableLdapConnectionFactory extends AbstractPoolableLda
             
             connectionFactory.bindConnection( connection );
         }
+        
         if ( ( ( MonitoringLdapConnection ) connection ).startTlsCalled() )
         {
             if ( LOG.isDebugEnabled() )

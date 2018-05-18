@@ -23,7 +23,9 @@ package org.apache.directory.ldap.client.api;
 
 import java.lang.reflect.Constructor;
 
-import org.apache.commons.pool.PoolableObjectFactory;
+import org.apache.commons.pool2.PooledObject;
+import org.apache.commons.pool2.PooledObjectFactory;
+import org.apache.commons.pool2.impl.DefaultPooledObject;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.slf4j.Logger;
@@ -35,7 +37,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractPoolableLdapConnectionFactory implements PoolableObjectFactory<LdapConnection>
+public abstract class AbstractPoolableLdapConnectionFactory implements PooledObjectFactory<LdapConnection>
 {
     /** This class logger */
     private static final Logger LOG = LoggerFactory.getLogger( AbstractPoolableLdapConnectionFactory.class );
@@ -52,21 +54,21 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PoolableO
      * There is nothing to do to activate a connection.
      */
     @Override
-    public void activateObject( LdapConnection connection ) throws LdapException
+    public void activateObject( PooledObject<LdapConnection> connection ) throws LdapException
     {
         if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Activating {}", connection );
         }
         
-        if ( !connection.isConnected() || !connection.isAuthenticated() )
+        if ( !connection.getObject().isConnected() || !connection.getObject().isAuthenticated() )
         {
             if ( LOG.isDebugEnabled() )
             {
                 LOG.debug( "rebind due to connection dropped on {}", connection );
             }
             
-            connectionFactory.bindConnection( connection );
+            connectionFactory.bindConnection( connection.getObject() );
         }
     }
 
@@ -78,7 +80,7 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PoolableO
      * of teh underlying protocol.
      */
     @Override
-    public void destroyObject( LdapConnection connection ) throws LdapException
+    public void destroyObject( PooledObject<LdapConnection> connection ) throws LdapException
     {
         if ( LOG.isDebugEnabled() )
         {
@@ -89,7 +91,7 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PoolableO
         {
             // https://tools.ietf.org/html/rfc2251#section-4.3
             // unbind closes the connection so no need to close
-            connection.unBind();
+            connection.getObject().unBind();
         }
         catch ( LdapException e )
         {
@@ -122,14 +124,14 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PoolableO
      * @throws LdapException If unable to connect.
      */
     @Override
-    public LdapConnection makeObject() throws LdapException
+    public PooledObject<LdapConnection> makeObject() throws LdapException
     {
         if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Creating a LDAP connection" );
         }
         
-        return connectionFactory.newLdapConnection();
+        return new DefaultPooledObject<>( connectionFactory.newLdapConnection() );
     }
 
 
@@ -159,7 +161,7 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PoolableO
      * @throws LdapException If unable to reconfigure and rebind.
      */
     @Override
-    public void passivateObject( LdapConnection connection ) throws LdapException
+    public void passivateObject( PooledObject<LdapConnection> connection ) throws LdapException
     {
         if ( LOG.isDebugEnabled() )
         {
@@ -194,13 +196,13 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PoolableO
      * Validating a connection is done by checking the connection status.
      */
     @Override
-    public boolean validateObject( LdapConnection connection )
+    public boolean validateObject( PooledObject<LdapConnection> connection )
     {
         if ( LOG.isDebugEnabled() )
         {
             LOG.debug( "Validating {}", connection );
         }
         
-        return validator.validate( connection );
+        return validator.validate( connection.getObject() );
     }
 }
