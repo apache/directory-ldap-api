@@ -1382,30 +1382,15 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
                         return stringComparator.compare( normValue, other.normValue ) == 0;
                     }
                     
-                    Normalizer normalizer = other.attributeType.getEquality().getNormalizer();
-
-                    if ( normalizer == null )
-                    {
-                        if ( comparator == null )
-                        {
-                            return normValue.equals( other.normValue );
-                        }
-                        else
-                        {
-                            return comparator.compare( normValue, other.normValue ) == 0;
-                        }
-                    }
                     
-                    String thisNormValue = normalizer.normalize( normValue );
-                        
                     // Compare normalized values
                     if ( comparator == null )
                     {
-                        return thisNormValue.equals( other.normValue );
+                        return normValue.equals( other.normValue );
                     }
                     else
                     {
-                        return comparator.compare( thisNormValue, other.normValue ) == 0;
+                        return comparator.compare( normValue, other.normValue ) == 0;
                     }
                 }
                 catch ( LdapException ne )
