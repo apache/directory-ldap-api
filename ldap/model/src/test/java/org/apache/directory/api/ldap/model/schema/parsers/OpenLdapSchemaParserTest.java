@@ -456,4 +456,25 @@ public class OpenLdapSchemaParserTest
         assertEquals( "1.3.6.1.4.1.1466.115.121.1.15", attributeType.getSyntaxOid() );
         assertTrue( attributeType.isSingleValued() );
     }
+
+
+    @Test
+    public void testFastLdifParsePerf() throws Exception
+    {
+        OpenLdapSchemaParser parser = new OpenLdapSchemaParser();
+        parser.setQuirksMode( true );
+        long t0 = System.currentTimeMillis();
+
+        for ( int i = 0; i < 10_000; i++ )
+        {
+            try ( InputStream input = getClass().getResourceAsStream( "core.schema" ) )
+            {
+                parser.parse( input );
+                parser.clear();
+            }
+        }
+        long t1 = System.currentTimeMillis();
+        
+        System.out.println( t1 - t0 );
+    }
 }
