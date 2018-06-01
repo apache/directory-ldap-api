@@ -4290,13 +4290,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     private void writeRequest( Request request ) throws LdapException
     {
-        // If we are meant to be using a secure connection but the ssl filter isn' in the filter chain then
-        // throw immediately
-        /*if ( config.isUseSsl() && !ldapSession.isSecured() )
-        {
-            throw new InvalidConnectionException( "Attempting to send over an insecure connection" );
-        }*/
-        
         // Send the request to the server
         WriteFuture writeFuture = ldapSession.write( request );
 
