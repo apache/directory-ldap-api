@@ -165,8 +165,10 @@ import org.apache.mina.core.future.IoFutureListener;
 import org.apache.mina.core.future.WriteFuture;
 import org.apache.mina.core.service.IoConnector;
 import org.apache.mina.core.session.IoSession;
+import org.apache.mina.filter.FilterEvent;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.codec.ProtocolEncoderException;
+import org.apache.mina.filter.ssl.SslEvent;
 import org.apache.mina.filter.ssl.SslFilter;
 import org.apache.mina.transport.socket.SocketSessionConfig;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
@@ -241,6 +243,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     /** The krb5 configuration property */
     private static final String KRB5_CONF = "java.security.krb5.conf";
+    
+    /** A future used to block any action until the handhake is completed */
+    private HandshakeFuture handshakeFuture;
     
     // ~~~~~~~~~~~~~~~~~ common error messages ~~~~~~~~~~~~~~~~~~~~~~~~~~
     static final String TIME_OUT_ERROR = "TimeOut occurred";
@@ -668,6 +673,26 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         while ( maxRetry > System.currentTimeMillis() && !interrupted )
         {
             connectionFuture = connector.connect( address );
+            
+            if ( config.isUseSsl() )
+            {
+                try
+                {
+                    boolean isSecured = handshakeFuture.get( timeout, TimeUnit.MILLISECONDS );
+                
+                    if ( !isSecured )
+                    {
+                        throw new LdapOperationException( ResultCodeEnum.OTHER, I18n.err( I18n.ERR_4100_TLS_HANDSHAKE_ERROR ) );
+                    }
+                }
+                catch ( Exception e )
+                {
+                    String msg = "Failed to initialize the SSL context";
+                    LOG.error( msg, e );
+                    throw new LdapException( msg, e );
+                }
+            }
+    
 
             boolean result = false;
 
@@ -861,7 +886,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         // Get back the session
         ldapSession = connectionFuture.getSession();
-        connected.set( true );
 
         // Store the container into the session if we don't have one
         @SuppressWarnings("unchecked")
@@ -2432,27 +2456,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     public void messageReceived( IoSession session, Object message ) throws Exception
     {
         // Feed the response and store it into the session
-        if ( message instanceof SslFilter.SslFilterMessage )
-        {
-            // This is a SSL message telling if the session has been secured or not
-            HandshakeFuture handshakeFuture = ( HandshakeFuture ) ldapSession.getAttribute( "HANDSHAKE_FUTURE" );
-
-            if ( message == SslFilter.SESSION_SECURED )
-            {
-                // SECURED
-                handshakeFuture.secured();
-            }
-            else
-            {
-                // UNSECURED
-                handshakeFuture.cancel();
-            }
-
-            ldapSession.removeAttribute( "HANDSHAKE_FUTURE" );
-            
-            return;
-        }
-        
         Message response = ( Message ) message;
 
         if ( LOG.isDebugEnabled() )
@@ -4529,6 +4532,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 codec, config.getBinaryAttributeDetector() );
 
         session.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR, ldapMessageContainer );
+        connected.set( true );
     }
 
 
@@ -4680,7 +4684,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     { "TLSv1", "TLSv1.1", "TLSv1.2" } );
             }
 
-            // for LDAPS
+            // for LDAPS/TLS
+            handshakeFuture = new HandshakeFuture();
+            
             if ( ( ldapSession == null ) || !connected.get() )
             {
                 connector.getFilterChain().addFirst( SSL_FILTER_KEY, sslFilter );
@@ -4688,12 +4694,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             else
             // for StartTLS
             {
-                HandshakeFuture handshakeFuture = new HandshakeFuture();
-                
-                ldapSession.setAttribute( SslFilter.USE_NOTIFICATION, Boolean.TRUE );
-                ldapSession.setAttribute( "HANDSHAKE_FUTURE", handshakeFuture );
-                ldapSession.getFilterChain().addFirst( SSL_FILTER_KEY, sslFilter );
-                
                 boolean isSecured = handshakeFuture.get( timeout, TimeUnit.MILLISECONDS );
                 
                 if ( !isSecured )
@@ -4911,13 +4911,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     private void writeRequest( Request request ) throws LdapException
     {
-        // If we are meant to be using a secure connection but the ssl filter isn' in the filter chain then
-        // throw immediately
-        if ( config.isUseSsl() && !ldapSession.getFilterChain().contains( "sslFilter" ) )
-        {
-            throw new InvalidConnectionException( "Attempting to send over an insecure connection" );
-        }
-
         // Send the request to the server
         WriteFuture writeFuture = ldapSession.write( request );
 
@@ -5089,5 +5082,19 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     public void setConnectionConfig( SocketSessionConfig connectionConfig )
     {
         this.connectionConfig = connectionConfig;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void event( IoSession session, FilterEvent event ) throws Exception 
+    {
+        // Check if it's a SSLevent 
+        if ( ( event instanceof SslEvent ) && ( ( SslEvent ) event == SslEvent.SECURED ) )
+        {
+            handshakeFuture.secured();
+        }
     }
 }
