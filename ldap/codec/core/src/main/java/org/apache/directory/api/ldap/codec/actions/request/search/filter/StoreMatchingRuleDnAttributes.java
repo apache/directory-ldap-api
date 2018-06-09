@@ -93,7 +93,7 @@ public class StoreMatchingRuleDnAttributes extends GrammarAction<LdapMessageCont
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Dn Attributes : {}", Boolean.valueOf( extensibleMatchFilter.isDnAttributes() ) );
+            LOG.debug( I18n.msg( I18n.MSG_05155_DN_ATTRIBUTES, Boolean.valueOf( extensibleMatchFilter.isDnAttributes() ) ) );
         }
 
         // unstack the filters if needed

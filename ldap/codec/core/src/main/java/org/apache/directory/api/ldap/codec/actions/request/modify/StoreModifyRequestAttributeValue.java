@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.codec.actions.request.modify;
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.ModifyRequestDecorator;
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -52,6 +53,7 @@ public class StoreModifyRequestAttributeValue extends GrammarAction<LdapMessageC
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<ModifyRequestDecorator> container )
     {
         ModifyRequestDecorator modifyRequestDecorator = container.getMessage();
@@ -91,7 +93,7 @@ public class StoreModifyRequestAttributeValue extends GrammarAction<LdapMessageC
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Value modified : {}", value );
+            LOG.debug( I18n.msg( I18n.MSG_05131_VALUE_MODIFIED, value ) );
         }
     }
 }

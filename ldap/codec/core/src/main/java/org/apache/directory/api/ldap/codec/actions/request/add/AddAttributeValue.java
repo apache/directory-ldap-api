@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.codec.actions.request.add;
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.AddRequestDecorator;
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -58,6 +59,7 @@ public class AddAttributeValue extends GrammarAction<LdapMessageContainer<AddReq
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<AddRequestDecorator> container )
     {
         AddRequestDecorator addRequest = container.getMessage();
@@ -81,7 +83,7 @@ public class AddAttributeValue extends GrammarAction<LdapMessageContainer<AddReq
 
                     if ( LOG.isDebugEnabled() )
                     {
-                        LOG.debug( "Adding value {}", Strings.dumpBytes( ( byte[] ) value ) );
+                        LOG.debug( I18n.msg( I18n.MSG_05112_ADDING_VALUE, Strings.dumpBytes( ( byte[] ) value ) ) );
                     }
 
                     addRequest.addAttributeValue( ( byte[] ) value );
@@ -92,7 +94,7 @@ public class AddAttributeValue extends GrammarAction<LdapMessageContainer<AddReq
 
                     if ( LOG.isDebugEnabled() )
                     {
-                        LOG.debug( "Adding value {}" + value );
+                        LOG.debug( I18n.msg( I18n.MSG_05112_ADDING_VALUE, value ) );
                     }
 
                     addRequest.addAttributeValue( ( String ) value );

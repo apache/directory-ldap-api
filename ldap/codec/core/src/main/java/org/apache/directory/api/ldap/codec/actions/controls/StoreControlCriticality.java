@@ -64,6 +64,7 @@ public class StoreControlCriticality extends GrammarAction<LdapMessageContainer<
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<MessageDecorator<? extends Message>> container ) throws DecoderException
     {
         TLV tlv = container.getCurrentTLV();

@@ -60,6 +60,7 @@ public class InitLdapMessage extends GrammarAction<LdapMessageContainer<MessageD
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<MessageDecorator<? extends Message>> container ) throws DecoderException
     {
         TLV tlv = container.getCurrentTLV();
@@ -67,10 +68,10 @@ public class InitLdapMessage extends GrammarAction<LdapMessageContainer<MessageD
         // The Length should not be null
         if ( tlv.getLength() == 0 )
         {
-            LOG.error( I18n.err( I18n.ERR_04066 ) );
+            LOG.error( I18n.err( I18n.ERR_05142_ZERO_LENGTH_MESSAGE ) );
 
             // This will generate a PROTOCOL_ERROR
-            throw new DecoderException( I18n.err( I18n.ERR_04067 ) );
+            throw new DecoderException( I18n.err( I18n.ERR_05143_EMPTY_MESSAGE ) );
         }
     }
 }

@@ -65,6 +65,7 @@ public class StoreMatchedDN extends GrammarAction<LdapMessageContainer<MessageDe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<MessageDecorator<? extends Message>> container ) throws DecoderException
     {
         // Get the Value and store it in the BindResponse
@@ -104,11 +105,11 @@ public class StoreMatchedDN extends GrammarAction<LdapMessageContainer<MessageDe
                     catch ( LdapInvalidDnException ine )
                     {
                         // This is for the client side. We will never decode LdapResult on the server
-                        String msg = I18n.err( I18n.ERR_04013, dnStr, Strings.dumpBytes( dnBytes ), ine
+                        String msg = I18n.err( I18n.ERR_05106_INCORRECT_DN_GIVEN_INVALID, dnStr, Strings.dumpBytes( dnBytes ), ine
                             .getLocalizedMessage() );
                         LOG.error( msg );
 
-                        throw new DecoderException( I18n.err( I18n.ERR_04014, ine.getLocalizedMessage() ), ine );
+                        throw new DecoderException( I18n.err( I18n.ERR_05107_INCORRECT_DN_GIVEN, ine.getLocalizedMessage() ), ine );
                     }
 
                     break;
@@ -116,8 +117,7 @@ public class StoreMatchedDN extends GrammarAction<LdapMessageContainer<MessageDe
                 default:
                     if ( LOG.isWarnEnabled() )
                     {
-                        LOG.warn( "The matched Dn should not be set when the result code is not one of NoSuchObject,"
-                            + " AliasProblem, InvalidDNSyntax or AliasDreferencingProblem" );
+                        LOG.warn( I18n.msg( I18n.MSG_05107_NO_SUCH_OBJECT_MATCHED_DN_NOT_SET ) );
                     }
 
                     matchedDn = Dn.EMPTY_DN;
@@ -127,7 +127,7 @@ public class StoreMatchedDN extends GrammarAction<LdapMessageContainer<MessageDe
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "The matchedDn is " + matchedDn );
+            LOG.debug( I18n.msg( I18n.MSG_05108_MATCHED_DN_IS, matchedDn ) );
         }
 
         ldapResult.setMatchedDn( matchedDn );

@@ -20,9 +20,9 @@
 package org.apache.directory.api.ldap.codec.actions.ldapResult;
 
 
-import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.MessageDecorator;
 import org.apache.directory.api.ldap.model.message.LdapResult;
@@ -61,7 +61,8 @@ public class StoreErrorMessage extends GrammarAction<LdapMessageContainer<Messag
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<MessageDecorator<? extends Message>> container ) throws DecoderException
+    @Override
+    public void action( LdapMessageContainer<MessageDecorator<? extends Message>> container )
     {
         // Get the Value and store it in the BindResponse
         TLV tlv = container.getCurrentTLV();
@@ -87,7 +88,7 @@ public class StoreErrorMessage extends GrammarAction<LdapMessageContainer<Messag
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "The error message is : " + errorMessage );
+            LOG.debug( I18n.msg( I18n.MSG_05106_ERROR_MESSAGE_IS, errorMessage ) );
         }
     }
 }

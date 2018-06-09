@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.codec.actions.request.modifydn;
 
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.ModifyDnRequestDecorator;
 import org.apache.directory.api.ldap.model.message.ModifyDnRequest;
@@ -55,6 +56,7 @@ public class InitModifyDnRequest extends GrammarAction<LdapMessageContainer<Modi
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<ModifyDnRequestDecorator> container )
     {
         // Now, we can allocate the ModifyDNRequest Object
@@ -66,7 +68,7 @@ public class InitModifyDnRequest extends GrammarAction<LdapMessageContainer<Modi
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "ModifyDn request" );
+            LOG.debug( I18n.msg( I18n.MSG_05134_MODIFY_DN_REQUEST ) );
         }
     }
 }

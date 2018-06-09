@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.codec.actions.response.del;
 
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.DeleteResponseDecorator;
 import org.apache.directory.api.ldap.model.message.DeleteResponseImpl;
@@ -63,7 +64,7 @@ public class InitDelResponse extends GrammarAction<LdapMessageContainer<DeleteRe
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Del response " );
+            LOG.debug( I18n.msg( I18n.MSG_05170_DEL_RESPONSE ) );
         }
     }
 }

@@ -20,9 +20,9 @@
 package org.apache.directory.api.ldap.codec.actions.request.search.filter;
 
 
-import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
 import org.apache.directory.api.ldap.codec.search.ExtensibleMatchFilter;
@@ -62,7 +62,7 @@ public class StoreMatchValue extends GrammarAction<LdapMessageContainer<SearchRe
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<SearchRequestDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainer<SearchRequestDecorator> container )
     {
         SearchRequestDecorator decorator = container.getMessage();
 
@@ -79,7 +79,7 @@ public class StoreMatchValue extends GrammarAction<LdapMessageContainer<SearchRe
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Stored a match value : {}", value );
+            LOG.debug( I18n.msg( I18n.MSG_05156_STORED_MATCH_VALUE, value ) );
         }
     }
 }

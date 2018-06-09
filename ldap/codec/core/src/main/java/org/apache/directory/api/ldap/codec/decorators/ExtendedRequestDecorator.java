@@ -215,7 +215,7 @@ public ExtendedRequest addControl( Control control )
             // The requestName, if any
             if ( requestNameBytes == null )
             {
-                throw new EncoderException( I18n.err( I18n.ERR_04043 ) );
+                throw new EncoderException( I18n.err( I18n.ERR_05000_NULL_REQUEST_NAME ) );
             }
 
             buffer.put( ( byte ) LdapCodecConstants.EXTENDED_REQUEST_NAME_TAG );

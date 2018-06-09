@@ -65,6 +65,7 @@ public class InitDelRequest extends GrammarAction<LdapMessageContainer<DeleteReq
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<DeleteRequestDecorator> container ) throws DecoderException
     {
         // Create the DeleteRequest LdapMessage instance and store it in the container
@@ -85,7 +86,7 @@ public class InitDelRequest extends GrammarAction<LdapMessageContainer<DeleteReq
         if ( tlv.getLength() == 0 )
         {
             // This will generate a PROTOCOL_ERROR
-            throw new DecoderException( I18n.err( I18n.ERR_04073 ) );
+            throw new DecoderException( I18n.err( I18n.ERR_05119_NULL_ENTRY ) );
         }
         else
         {
@@ -98,7 +99,7 @@ public class InitDelRequest extends GrammarAction<LdapMessageContainer<DeleteReq
             }
             catch ( LdapInvalidDnException ine )
             {
-                String msg = I18n.err( I18n.ERR_04074, dnStr, Strings.dumpBytes( dnBytes ), ine
+                String msg = I18n.err( I18n.ERR_05120_INVALID_DELETE_DN, dnStr, Strings.dumpBytes( dnBytes ), ine
                     .getLocalizedMessage() );
                 LOG.error( msg );
 
@@ -115,7 +116,7 @@ public class InitDelRequest extends GrammarAction<LdapMessageContainer<DeleteReq
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Deleting Dn {}", entry );
+            LOG.debug( I18n.msg( I18n.MSG_05124_DELETING_DN, entry ) );
         }
     }
 }

@@ -20,9 +20,9 @@
 package org.apache.directory.api.ldap.codec.actions.response.intermediate;
 
 
-import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.IntermediateResponseDecorator;
 import org.apache.directory.api.ldap.model.message.IntermediateResponse;
@@ -58,7 +58,7 @@ public class StoreIntermediateResponseValue extends GrammarAction<LdapMessageCon
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<IntermediateResponseDecorator<?>> container ) throws DecoderException
+    public void action( LdapMessageContainer<IntermediateResponseDecorator<?>> container )
     {
         // We can get the IntermediateResponse Object
         IntermediateResponse intermediateResponse = container.getMessage();
@@ -82,7 +82,7 @@ public class StoreIntermediateResponseValue extends GrammarAction<LdapMessageCon
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Value read : {}", Strings.dumpBytes( intermediateResponse.getResponseValue() ) );
+            LOG.debug( I18n.msg( I18n.MSG_05175_VALUE_READ, Strings.dumpBytes( intermediateResponse.getResponseValue() ) ) );
         }
     }
 }

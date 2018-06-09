@@ -83,15 +83,14 @@ public class StoreSearchRequestTypesOnly extends GrammarAction<LdapMessageContai
         catch ( BooleanDecoderException bde )
         {
             LOG.error( I18n
-                .err( I18n.ERR_04105, Strings.dumpBytes( value.getData() ), bde.getMessage() ) );
+                .err( I18n.ERR_05155_FLAG_TYPE_INVALID, Strings.dumpBytes( value.getData() ), bde.getMessage() ) );
 
             throw new DecoderException( bde.getMessage(), bde );
         }
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "The search will return {}", searchRequest.getTypesOnly() ? "only attributs type"
-                : "attributes types and values" );
+            LOG.debug( I18n.msg( I18n.MSG_05165_SEARCH_RETURN_TYPE_ONLY ) );
         }
     }
 }

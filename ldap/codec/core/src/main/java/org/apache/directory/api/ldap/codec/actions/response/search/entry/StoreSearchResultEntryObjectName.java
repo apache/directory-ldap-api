@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.codec.actions.response.search.entry;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.SearchResultEntryDecorator;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
@@ -85,9 +86,8 @@ public class StoreSearchResultEntryObjectName extends GrammarAction<LdapMessageC
             catch ( LdapInvalidDnException ine )
             {
                 // This is for the client side. We will never decode LdapResult on the server
-                String msg = "The Dn " + Strings.dumpBytes( dnBytes ) + "is invalid : "
-                    + ine.getMessage();
-                LOG.error( "{} : {}", msg, ine.getMessage() );
+                String msg = I18n.err( I18n.ERR_05157_INVALID_DN, Strings.dumpBytes( dnBytes ), ine.getMessage() );
+                LOG.error( I18n.err( I18n.ERR_05114_ERROR_MESSAGE, msg, ine.getMessage() ) );
                 throw new DecoderException( msg, ine );
             }
 
@@ -96,7 +96,7 @@ public class StoreSearchResultEntryObjectName extends GrammarAction<LdapMessageC
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Search Result Entry Dn found : {}", searchResultEntry.getObjectName() );
+            LOG.debug( I18n.msg( I18n.MSG_05182_SEARCH_RESULT_ENTRY_DN, searchResultEntry.getObjectName() ) );
         }
     }
 }

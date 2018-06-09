@@ -20,9 +20,9 @@
 package org.apache.directory.api.ldap.codec.actions.request.extended;
 
 
-import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.ExtendedRequestDecorator;
 import org.apache.directory.api.util.Strings;
@@ -56,7 +56,8 @@ public class StoreExtendedRequestValue extends GrammarAction<LdapMessageContaine
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<ExtendedRequestDecorator<?>> container ) throws DecoderException
+    @Override
+    public void action( LdapMessageContainer<ExtendedRequestDecorator<?>> container )
     {
         // We can allocate the ExtendedRequest Object
         ExtendedRequestDecorator<?> extendedRequest = container.getMessage();
@@ -80,7 +81,7 @@ public class StoreExtendedRequestValue extends GrammarAction<LdapMessageContaine
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Extended value : {}", extendedRequest.getRequestValue() );
+            LOG.debug( I18n.msg( I18n.MSG_05127_EXTENDED_VALUE, extendedRequest.getRequestValue() ) );
         }
     }
 }

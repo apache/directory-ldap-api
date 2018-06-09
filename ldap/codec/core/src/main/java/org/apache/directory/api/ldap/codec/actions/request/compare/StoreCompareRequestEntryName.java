@@ -63,6 +63,7 @@ public class StoreCompareRequestEntryName extends GrammarAction<LdapMessageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<CompareRequestDecorator> container ) throws DecoderException
     {
         CompareRequest compareRequest = container.getMessage();
@@ -76,7 +77,7 @@ public class StoreCompareRequestEntryName extends GrammarAction<LdapMessageConta
         if ( tlv.getLength() == 0 )
         {
             // This will generate a PROTOCOL_ERROR
-            throw new DecoderException( I18n.err( I18n.ERR_04089 ) );
+            throw new DecoderException( I18n.err( I18n.ERR_05119_NULL_ENTRY ) );
         }
         else
         {
@@ -89,9 +90,8 @@ public class StoreCompareRequestEntryName extends GrammarAction<LdapMessageConta
             }
             catch ( LdapInvalidDnException ine )
             {
-                String msg = "Invalid Dn given : " + dnStr + " (" + Strings.dumpBytes( dnBytes )
-                    + ") is invalid";
-                LOG.error( "{} : {}", msg, ine.getMessage() );
+                String msg = I18n.err( I18n.ERR_05113_INVALID_DN, dnStr, Strings.dumpBytes( dnBytes ) );
+                LOG.error( I18n.err( I18n.ERR_05114_ERROR_MESSAGE, msg, ine.getMessage() ) );
 
                 CompareResponseImpl response = new CompareResponseImpl( compareRequest.getMessageId() );
                 throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_DN_SYNTAX,
@@ -103,7 +103,7 @@ public class StoreCompareRequestEntryName extends GrammarAction<LdapMessageConta
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Comparing Dn {}", entry );
+            LOG.debug( I18n.msg( I18n.MSG_05123_COMPARING_DN, entry ) );
         }
     }
 }

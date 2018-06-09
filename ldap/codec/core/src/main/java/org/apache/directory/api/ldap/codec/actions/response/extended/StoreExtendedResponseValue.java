@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.codec.actions.response.extended;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.ExtendedResponseDecorator;
 import org.apache.directory.api.util.Strings;
@@ -80,7 +81,7 @@ public class StoreExtendedResponseValue extends GrammarAction<LdapMessageContain
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Extended value : {}", extendedResponse.getResponseValue() );
+            LOG.debug( I18n.msg( I18n.MSG_05173_EXTENDED_VALUE, extendedResponse.getResponseValue() ) );
         }
     }
 }

@@ -78,7 +78,7 @@ public class StoreSearchRequestSizeLimit extends GrammarAction<LdapMessageContai
         }
         catch ( LongDecoderException lde )
         {
-            String msg = I18n.err( I18n.ERR_04103, value.toString() );
+            String msg = I18n.err( I18n.ERR_05151_BAD_SIZE_LIMIT, value.toString() );
             LOG.error( msg );
             throw new DecoderException( msg, lde );
         }
@@ -87,7 +87,7 @@ public class StoreSearchRequestSizeLimit extends GrammarAction<LdapMessageContai
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "The sizeLimit value is set to {} objects", Long.valueOf( sizeLimit ) );
+            LOG.debug( I18n.msg( I18n.MSG_05163_SIZE_LIMIT_SET_TO, Long.valueOf( sizeLimit ) ) );
         }
     }
 }

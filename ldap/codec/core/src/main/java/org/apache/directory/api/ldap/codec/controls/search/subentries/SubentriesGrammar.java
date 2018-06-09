@@ -88,7 +88,7 @@ public final class SubentriesGrammar extends AbstractGrammar<SubentriesContainer
                         }
                         catch ( BooleanDecoderException bde )
                         {
-                            LOG.error( I18n.err( I18n.ERR_04054, Strings.dumpBytes( value.getData() ), bde.getMessage() ) );
+                            LOG.error( I18n.err( I18n.ERR_05310_INVALID_VISIBILITY_FLAG, Strings.dumpBytes( value.getData() ), bde.getMessage() ) );
 
                             // This will generate a PROTOCOL_ERROR
                             throw new DecoderException( bde.getMessage() );

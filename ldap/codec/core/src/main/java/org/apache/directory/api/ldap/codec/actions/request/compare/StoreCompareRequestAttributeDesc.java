@@ -65,6 +65,7 @@ public class StoreCompareRequestAttributeDesc extends GrammarAction<LdapMessageC
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<CompareRequestDecorator> container ) throws DecoderException
     {
         // Get the CompareRequest Object
@@ -77,7 +78,7 @@ public class StoreCompareRequestAttributeDesc extends GrammarAction<LdapMessageC
         // Dn
         if ( tlv.getLength() == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04093 );
+            String msg = I18n.err( I18n.ERR_05118_NULL_ATTRIBUTE_DESC );
             LOG.error( msg );
             CompareResponseImpl response = new CompareResponseImpl( compareRequest.getMessageId() );
 
@@ -90,7 +91,7 @@ public class StoreCompareRequestAttributeDesc extends GrammarAction<LdapMessageC
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Comparing attribute description {}", compareRequest.getAttributeId() );
+            LOG.debug( I18n.msg( I18n.MSG_05122_COMPARING_ATTRIBUTE_DESCRIPTION, compareRequest.getAttributeId() ) );
         }
     }
 }

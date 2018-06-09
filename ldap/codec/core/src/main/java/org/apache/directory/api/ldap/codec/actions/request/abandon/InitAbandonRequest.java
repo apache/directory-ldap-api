@@ -62,6 +62,7 @@ public class InitAbandonRequest extends GrammarAction<LdapMessageContainer<Aband
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<AbandonRequestDecorator> container ) throws DecoderException
     {
         // Create the AbandonRequest LdapMessage instance and store it in the container
@@ -79,7 +80,7 @@ public class InitAbandonRequest extends GrammarAction<LdapMessageContainer<Aband
 
         if ( ( value == null ) || ( value.getData() == null ) )
         {
-            String msg = I18n.err( I18n.ERR_04075 );
+            String msg = I18n.err( I18n.ERR_05109_ABANDON_REQ_MSG_ID_NULL );
             LOG.error( msg );
 
             // This will generate a PROTOCOL_ERROR
@@ -94,7 +95,7 @@ public class InitAbandonRequest extends GrammarAction<LdapMessageContainer<Aband
 
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( "AbandonMessage Id has been decoded : {}", Integer.valueOf( abandonnedMessageId ) );
+                LOG.debug( I18n.msg( I18n.MSG_05110_ABANDON_MSG_ID_DECODED, Integer.valueOf( abandonnedMessageId ) ) );
             }
 
             container.setGrammarEndAllowed( true );
@@ -104,7 +105,7 @@ public class InitAbandonRequest extends GrammarAction<LdapMessageContainer<Aband
         catch ( IntegerDecoderException ide )
         {
             LOG.error( I18n
-                .err( I18n.ERR_04076, Strings.dumpBytes( value.getData() ), ide.getMessage() ) );
+                .err( I18n.ERR_05110_INVALID_ABANDON_REQ_MSG_ID, Strings.dumpBytes( value.getData() ), ide.getMessage() ) );
 
             // This will generate a PROTOCOL_ERROR
             throw new DecoderException( ide.getMessage(), ide );

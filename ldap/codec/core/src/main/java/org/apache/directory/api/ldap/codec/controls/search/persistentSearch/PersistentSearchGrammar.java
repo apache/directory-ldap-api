@@ -123,7 +123,7 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
                         }
                         catch ( IntegerDecoderException ide )
                         {
-                            String msg = I18n.err( I18n.ERR_04051 );
+                            String msg = I18n.err( I18n.ERR_05307_CHANGE_TYPES_DECODING_ERROR );
                             LOG.error( msg, ide );
                             throw new DecoderException( msg, ide );
                         }
@@ -161,7 +161,7 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
                         }
                         catch ( BooleanDecoderException bde )
                         {
-                            String msg = I18n.err( I18n.ERR_04052 );
+                            String msg = I18n.err( I18n.ERR_05308_CHANGE_ONLY_DECODING_ERROR );
                             LOG.error( msg, bde );
                             throw new DecoderException( msg, bde );
                         }
@@ -202,7 +202,7 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
                         }
                         catch ( BooleanDecoderException bde )
                         {
-                            String msg = I18n.err( I18n.ERR_04053 );
+                            String msg = I18n.err( I18n.ERR_05309_RETURN_ECS_DECODING_ERROR );
                             LOG.error( msg, bde );
                             throw new DecoderException( msg, bde );
                         }

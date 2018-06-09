@@ -42,7 +42,7 @@ public class NotFilter extends ConnectorFilter
     {
         if ( filterSet != null )
         {
-            throw new DecoderException( I18n.err( I18n.ERR_04057 ) );
+            throw new DecoderException( I18n.err( I18n.ERR_05501_MORE_THAN_ONE_FILTER_FOR_NOT_FILTER ) );
         }
 
         super.addFilter( filter );
@@ -70,7 +70,7 @@ public class NotFilter extends ConnectorFilter
     {
         if ( filterSet != null )
         {
-            throw new DecoderException( I18n.err( I18n.ERR_04057 ) );
+            throw new DecoderException( I18n.err( I18n.ERR_05501_MORE_THAN_ONE_FILTER_FOR_NOT_FILTER ) );
         }
 
         super.addFilter( notFilter );

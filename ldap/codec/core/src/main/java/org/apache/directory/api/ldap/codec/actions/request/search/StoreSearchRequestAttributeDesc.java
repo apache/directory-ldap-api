@@ -20,9 +20,9 @@
 package org.apache.directory.api.ldap.codec.actions.request.search;
 
 
-import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
 import org.apache.directory.api.util.Strings;
@@ -59,7 +59,7 @@ public class StoreSearchRequestAttributeDesc extends GrammarAction<LdapMessageCo
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<SearchRequestDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainer<SearchRequestDecorator> container )
     {
         SearchRequestDecorator searchRequestDecorator = container.getMessage();
         TLV tlv = container.getCurrentTLV();
@@ -81,7 +81,7 @@ public class StoreSearchRequestAttributeDesc extends GrammarAction<LdapMessageCo
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Decoded Attribute Description : {}", attributeDescription );
+            LOG.debug( I18n.msg( I18n.MSG_05159_DECODED_ATT_DESC, attributeDescription ) );
         }
     }
 }

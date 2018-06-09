@@ -58,6 +58,7 @@ public class InitAddRequest extends GrammarAction<LdapMessageContainer<AddReques
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<AddRequestDecorator> container ) throws DecoderException
     {
         // Now, we can allocate the AddRequest Object
@@ -73,7 +74,7 @@ public class InitAddRequest extends GrammarAction<LdapMessageContainer<AddReques
 
         if ( tlv.getLength() == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04084 );
+            String msg = I18n.err( I18n.ERR_05145_NULL_ADD_REQUEST );
             LOG.error( msg );
 
             // Will generate a PROTOCOL_ERROR

@@ -75,7 +75,7 @@ public class StoreExtendedResponseName extends GrammarAction<LdapMessageContaine
         // OID
         if ( tlv.getLength() == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04017 );
+            String msg = I18n.err( I18n.ERR_05122_NULL_NAME );
             LOG.error( msg );
             throw new DecoderException( msg );
         }
@@ -97,7 +97,7 @@ public class StoreExtendedResponseName extends GrammarAction<LdapMessageContaine
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "OID read : {}", extendedResponse.getResponseName() );
+            LOG.debug( I18n.msg( I18n.MSG_05172_OID_READ, extendedResponse.getResponseName() ) );
         }
     }
 }

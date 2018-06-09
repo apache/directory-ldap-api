@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.codec.actions;
 
 
-import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.MessageDecorator;
@@ -46,7 +45,7 @@ public class AllowGrammarEnd extends GrammarAction<LdapMessageContainer<MessageD
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<MessageDecorator<? extends Message>> container ) throws DecoderException
+    public void action( LdapMessageContainer<MessageDecorator<? extends Message>> container )
     {
         container.setGrammarEndAllowed( true );
     }

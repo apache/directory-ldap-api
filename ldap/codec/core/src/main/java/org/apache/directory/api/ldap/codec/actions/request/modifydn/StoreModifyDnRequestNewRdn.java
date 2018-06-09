@@ -67,6 +67,7 @@ public class StoreModifyDnRequestNewRdn extends GrammarAction<LdapMessageContain
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<ModifyDnRequestDecorator> container ) throws DecoderException
     {
         ModifyDnRequest modifyDnRequest = container.getMessage();
@@ -80,7 +81,7 @@ public class StoreModifyDnRequestNewRdn extends GrammarAction<LdapMessageContain
 
         if ( tlv.getLength() == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04090 );
+            String msg = I18n.err( I18n.ERR_05126_RDN_MUST_NOT_BE_NULL );
             LOG.error( msg );
 
             ModifyDnResponseImpl response = new ModifyDnResponseImpl( modifyDnRequest.getMessageId() );
@@ -99,9 +100,8 @@ public class StoreModifyDnRequestNewRdn extends GrammarAction<LdapMessageContain
             }
             catch ( LdapInvalidDnException ine )
             {
-                String msg = "Invalid new Rdn given : " + dnStr + " (" + Strings.dumpBytes( dnBytes )
-                    + ") is invalid";
-                LOG.error( "{} : {}", msg, ine.getMessage() );
+                String msg = I18n.err( I18n.ERR_05127_INVALID_NEW_RDN, dnStr, Strings.dumpBytes( dnBytes ) );
+                LOG.error( I18n.err( I18n.ERR_05114_ERROR_MESSAGE, msg, ine.getMessage() ) );
 
                 ModifyDnResponseImpl response = new ModifyDnResponseImpl( modifyDnRequest.getMessageId() );
                 throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_DN_SYNTAX,
@@ -113,7 +113,7 @@ public class StoreModifyDnRequestNewRdn extends GrammarAction<LdapMessageContain
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Modifying with new Rdn {}", newRdn );
+            LOG.debug( I18n.msg( I18n.MSG_05138_MODIFYING_WITH_NEW_RDN, newRdn ) );
         }
     }
 }

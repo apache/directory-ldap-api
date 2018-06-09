@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.codec.actions.response.search.reference;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.SearchResultReferenceDecorator;
 import org.apache.directory.api.ldap.model.message.SearchResultReferenceImpl;
@@ -64,7 +65,7 @@ public class InitSearchResultReference extends GrammarAction<LdapMessageContaine
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "SearchResultReference response " );
+            LOG.debug( I18n.msg( I18n.MSG_05183_SEARCH_RESULT_REFERENCE_RESPONSE ) );
         }
     }
 }

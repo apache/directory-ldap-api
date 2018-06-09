@@ -693,7 +693,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 }
             }
     
-
             boolean result = false;
 
             // Wait until it's established

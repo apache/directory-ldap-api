@@ -120,7 +120,7 @@ public final class PagedResultsGrammar extends AbstractGrammar<PagedResultsConta
                         }
                         catch ( IntegerDecoderException ide )
                         {
-                            String msg = I18n.err( I18n.ERR_04050 );
+                            String msg = I18n.err( I18n.ERR_05306_PAGED_SEARCH_SIZE_DECODING_ERROR );
                             LOG.error( msg, ide );
                             throw new DecoderException( msg, ide );
                         }

@@ -20,8 +20,8 @@
 package org.apache.directory.api.ldap.codec.actions.response.intermediate;
 
 
-import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.IntermediateResponseDecorator;
 import org.apache.directory.api.ldap.model.message.IntermediateResponseImpl;
@@ -55,7 +55,7 @@ public class InitIntermediateResponse extends GrammarAction<LdapMessageContainer
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<IntermediateResponseDecorator<?>> container ) throws DecoderException
+    public void action( LdapMessageContainer<IntermediateResponseDecorator<?>> container )
     {
         // Now, we can allocate the IntermediateResponse Object
         IntermediateResponseDecorator intermediateResponse =
@@ -65,7 +65,7 @@ public class InitIntermediateResponse extends GrammarAction<LdapMessageContainer
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Intermediate Response" );
+            LOG.debug( I18n.msg( I18n.MSG_05174_INTERMEDIATE_RESPONSE ) );
         }
     }
 }

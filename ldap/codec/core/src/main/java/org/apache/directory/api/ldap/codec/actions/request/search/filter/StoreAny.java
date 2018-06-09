@@ -72,7 +72,7 @@ public class StoreAny extends GrammarAction<LdapMessageContainer<SearchRequestDe
 
         if ( tlv.getLength() == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04019 );
+            String msg = I18n.err( I18n.ERR_05139_EMPTY_SUBSTRING_ANY_FILTER_PDU );
             LOG.error( msg );
             throw new DecoderException( msg );
         }
@@ -86,7 +86,7 @@ public class StoreAny extends GrammarAction<LdapMessageContainer<SearchRequestDe
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Stored a any substring : {}", any );
+            LOG.debug( I18n.msg( I18n.MSG_05153_STORED_ANY_SUBSTRING, any ) );
         }
     }
 }

@@ -70,7 +70,7 @@ public class StoreIntermediateResponseName extends GrammarAction<LdapMessageCont
         // OID.
         if ( tlv.getLength() == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04095 );
+            String msg = I18n.err( I18n.ERR_05122_NULL_NAME );
             LOG.error( msg );
             // This will generate a PROTOCOL_ERROR
             throw new DecoderException( msg );
@@ -88,10 +88,9 @@ public class StoreIntermediateResponseName extends GrammarAction<LdapMessageCont
             }
             else
             {
-                String msg = "The Intermediate Response name is not a valid OID : "
-                    + Strings.utf8ToString( responseNameBytes ) + " ("
-                    + Strings.dumpBytes( responseNameBytes ) + ") is invalid";
-                LOG.error( "{} : {}", msg, oidStr );
+                String msg = I18n.err( I18n.ERR_05133_INTERMEDIATE_RESPONSE_INVALID_OID, Strings.utf8ToString( responseNameBytes ), 
+                    Strings.dumpBytes( responseNameBytes ) );
+                LOG.error( I18n.err( I18n.ERR_05114_ERROR_MESSAGE, msg, oidStr ) );
 
                 // Rethrow the exception, we will get a PROTOCOL_ERROR
                 throw new DecoderException( msg );
@@ -103,7 +102,7 @@ public class StoreIntermediateResponseName extends GrammarAction<LdapMessageCont
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "OID read : {}", intermediateResponse.getResponseName() );
+            LOG.debug( I18n.msg( I18n.MSG_05172_OID_READ, intermediateResponse.getResponseName() ) );
         }
     }
 }

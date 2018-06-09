@@ -64,6 +64,7 @@ public class AddReferral extends GrammarAction<LdapMessageContainer<MessageDecor
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<MessageDecorator<? extends Message>> container ) throws DecoderException
     {
         TLV tlv = container.getCurrentTLV();
@@ -88,15 +89,15 @@ public class AddReferral extends GrammarAction<LdapMessageContainer<MessageDecor
                 catch ( LdapURLEncodingException luee )
                 {
                     String badUrl = Strings.utf8ToString( tlv.getValue().getData() );
-                    LOG.error( I18n.err( I18n.ERR_04015, badUrl, luee.getMessage() ) );
-                    throw new DecoderException( I18n.err( I18n.ERR_04016, luee.getMessage() ), luee );
+                    LOG.error( I18n.err( I18n.ERR_05103_INVALID_URL, badUrl, luee.getMessage() ) );
+                    throw new DecoderException( I18n.err( I18n.ERR_05104_INVALID_URL, luee.getMessage() ), luee );
                 }
             }
             else
             {
                 if ( LOG.isWarnEnabled() )
                 {
-                    LOG.warn( "The Referral error message is not allowed when havind an error code no equals to REFERRAL" );
+                    LOG.warn( I18n.msg( I18n.MSG_05103_REFERRAL_ERROR_MESSAGE_NOT_ALLOWED ) );
                 }
                 
                 referral.addLdapUrl( LdapUrl.EMPTY_URL.toString() );
@@ -124,7 +125,7 @@ public class AddReferral extends GrammarAction<LdapMessageContainer<MessageDecor
 
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( "The referral error message is set to " + sb.toString() );
+                LOG.debug( I18n.msg( I18n.MSG_05104_REFERRAL_ERROR_MESSAGE_SET_TO, sb.toString() ) );
              }
         }
 

@@ -79,7 +79,7 @@ public class StoreSearchRequestTimeLimit extends GrammarAction<LdapMessageContai
         }
         catch ( IntegerDecoderException ide )
         {
-            String msg = I18n.err( I18n.ERR_04104, value.toString() );
+            String msg = I18n.err( I18n.ERR_05152_BAD_TIME_LIMIT, value.toString() );
             LOG.error( msg );
             throw new DecoderException( msg, ide );
         }
@@ -88,7 +88,7 @@ public class StoreSearchRequestTimeLimit extends GrammarAction<LdapMessageContai
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "The timeLimit value is set to {} seconds", Integer.valueOf( timeLimit ) );
+            LOG.debug( I18n.msg( I18n.MSG_05164_TIME_LIMIT_SET_TO, Integer.valueOf( timeLimit ) ) );
         }
     }
 }

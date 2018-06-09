@@ -58,6 +58,7 @@ public class InitBindRequest extends GrammarAction<LdapMessageContainer<BindRequ
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<BindRequestDecorator> container ) throws DecoderException
     {
         // Create the BindRequest LdapMessage instance and store it in the container
@@ -72,7 +73,7 @@ public class InitBindRequest extends GrammarAction<LdapMessageContainer<BindRequ
 
         if ( tlv.getLength() == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04077 );
+            String msg = I18n.err( I18n.ERR_05144_NULL_BIND_REQUEST );
             LOG.error( msg );
 
             // This will generate a PROTOCOL_ERROR

@@ -61,6 +61,7 @@ public class InitReferrals extends GrammarAction<LdapMessageContainer<MessageDec
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<MessageDecorator<? extends Message>> container ) throws DecoderException
     {
         TLV tlv = container.getCurrentTLV();
@@ -68,7 +69,7 @@ public class InitReferrals extends GrammarAction<LdapMessageContainer<MessageDec
         // If we hae a Referrals sequence, then it should not be empty
         if ( tlv.getLength() == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04011 );
+            String msg = I18n.err( I18n.ERR_05105_REFERRAL_MUST_NOT_BE_NULL );
             LOG.error( msg );
 
             // This will generate a PROTOCOL_ERROR
@@ -83,7 +84,7 @@ public class InitReferrals extends GrammarAction<LdapMessageContainer<MessageDec
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Initialising a referrals list" );
+            LOG.debug( I18n.msg( I18n.MSG_05105_INITIALISNG_REFERRAL_LIST ) );
         }
     }
 }

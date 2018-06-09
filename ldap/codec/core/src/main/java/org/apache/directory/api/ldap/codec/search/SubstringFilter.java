@@ -311,7 +311,7 @@ public class SubstringFilter extends Filter
             if ( ( initialSubstrings == null ) && ( ( anySubstrings == null ) || anySubstrings.isEmpty() )
                 && ( finalSubstrings == null ) )
             {
-                throw new EncoderException( I18n.err( I18n.ERR_04058 ) );
+                throw new EncoderException( I18n.err( I18n.ERR_05502_NULL_INITIAL_ANY_OR_FINAL_SUBSTRING ) );
             }
 
             // The initial substring

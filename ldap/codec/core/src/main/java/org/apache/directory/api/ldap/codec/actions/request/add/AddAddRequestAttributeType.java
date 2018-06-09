@@ -61,6 +61,7 @@ public class AddAddRequestAttributeType extends GrammarAction<LdapMessageContain
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<AddRequestDecorator> container ) throws DecoderException
     {
         AddRequestDecorator addRequest = container.getMessage();
@@ -70,7 +71,7 @@ public class AddAddRequestAttributeType extends GrammarAction<LdapMessageContain
         // Store the type. It can't be null.
         if ( tlv.getLength() == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04086 );
+            String msg = I18n.err( I18n.ERR_05111_NULL_OR_EMPTY_TYPE_NOT_ALLOWED );
             LOG.error( msg );
 
             AddResponseImpl response = new AddResponseImpl( addRequest.getMessageId() );
@@ -87,7 +88,7 @@ public class AddAddRequestAttributeType extends GrammarAction<LdapMessageContain
         }
         catch ( LdapException ne )
         {
-            String msg = I18n.err( I18n.ERR_04087 );
+            String msg = I18n.err( I18n.ERR_05112_ERROR_WITH_ATTRIBUTE_TYPE );
             LOG.error( msg );
 
             AddResponseImpl response = new AddResponseImpl( addRequest.getMessageId() );
@@ -97,7 +98,7 @@ public class AddAddRequestAttributeType extends GrammarAction<LdapMessageContain
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Adding type {}", type );
+            LOG.debug( I18n.msg( I18n.MSG_05111_ADDING_TYPE, type ) );
         }
     }
 }

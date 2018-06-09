@@ -60,7 +60,7 @@ public class InitOrFilter extends GrammarAction<LdapMessageContainer<SearchReque
 
         if ( tlv.getLength() == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04010 );
+            String msg = I18n.err( I18n.ERR_05137_EMPTY_OR_FILTER_PDU );
             LOG.error( msg );
             throw new DecoderException( msg );
         }
@@ -75,7 +75,7 @@ public class InitOrFilter extends GrammarAction<LdapMessageContainer<SearchReque
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Initialize OR filter" );
+            LOG.debug( I18n.msg( I18n.MSG_05150_INITIALIZE_OR_FILTER ) );
         }
     }
 }

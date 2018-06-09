@@ -69,6 +69,7 @@ public class StoreMessageId extends GrammarAction<LdapMessageContainer<MessageDe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<MessageDecorator<? extends Message>> container ) throws DecoderException
     {
         // The current TLV should be a integer
@@ -78,10 +79,10 @@ public class StoreMessageId extends GrammarAction<LdapMessageContainer<MessageDe
         // The Length should not be null
         if ( tlv.getLength() == 0 )
         {
-            LOG.error( I18n.err( I18n.ERR_04068 ) );
+            LOG.error( I18n.err( I18n.ERR_05100_ZERO_LENGTH_MESSAGE_ID_NOT_ALLOWED ) );
 
             // This will generate a PROTOCOL_ERROR
-            throw new DecoderException( I18n.err( I18n.ERR_04069 ) );
+            throw new DecoderException( I18n.err( I18n.ERR_05101_NULL_MESSAGE_ID_NOT_ALLOWED ) );
         }
 
         BerValue value = tlv.getValue();
@@ -94,12 +95,12 @@ public class StoreMessageId extends GrammarAction<LdapMessageContainer<MessageDe
 
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( "Ldap Message Id has been decoded : " + messageId );
+                LOG.debug( I18n.msg( I18n.MSG_05102_LDAP_MESSAGE_ID_DECODED, messageId ) );
             }
         }
         catch ( IntegerDecoderException ide )
         {
-            LOG.error( I18n.err( I18n.ERR_04070, Strings.dumpBytes( value.getData() ), ide
+            LOG.error( I18n.err( I18n.ERR_05102_INVALID_MESSAGE_ID, Strings.dumpBytes( value.getData() ), ide
                 .getLocalizedMessage() ) );
 
             // This will generate a PROTOCOL_ERROR

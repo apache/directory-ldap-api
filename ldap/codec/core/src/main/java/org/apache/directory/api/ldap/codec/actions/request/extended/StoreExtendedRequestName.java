@@ -60,6 +60,7 @@ public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<ExtendedRequestDecorator<?>> container ) throws DecoderException
     {
         ExtendedRequest req;
@@ -71,7 +72,7 @@ public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer
         // OID
         if ( tlv.getLength() == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04095 );
+            String msg = I18n.err( I18n.ERR_05122_NULL_NAME );
             LOG.error( msg );
             // This will generate a PROTOCOL_ERROR
             throw new DecoderException( msg );
@@ -87,9 +88,8 @@ public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer
                 if ( !Oid.isOid( requestName ) )
                 {
 
-                    String msg = "The Request name is not a valid OID : "
-                        + Strings.utf8ToString( requestNameBytes ) + " ("
-                        + Strings.dumpBytes( requestNameBytes ) + ") is invalid";
+                    String msg = I18n.err( I18n.ERR_05121_INVALID_REQUEST_NAME_OID,
+                        Strings.utf8ToString( requestNameBytes ), Strings.dumpBytes( requestNameBytes ) );
                     LOG.error( msg );
 
                     // throw an exception, we will get a PROTOCOL_ERROR
@@ -102,10 +102,9 @@ public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer
             }
             catch ( DecoderException de )
             {
-                String msg = "The Request name is not a valid OID : "
-                    + Strings.utf8ToString( requestNameBytes ) + " ("
-                    + Strings.dumpBytes( requestNameBytes ) + ") is invalid";
-                LOG.error( "{} : {}", msg, de.getMessage() );
+                String msg = I18n.err( I18n.ERR_05121_INVALID_REQUEST_NAME_OID,
+                    Strings.utf8ToString( requestNameBytes ), Strings.dumpBytes( requestNameBytes ) );
+                LOG.error( I18n.err( I18n.ERR_05114_ERROR_MESSAGE, msg, de.getMessage() ) );
 
                 // Rethrow the exception, we will get a PROTOCOL_ERROR
                 throw de;
@@ -117,7 +116,7 @@ public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "OID read : {}", req.getRequestName() );
+            LOG.debug( I18n.msg( I18n.MSG_05126_OID_READ, req.getRequestName() ) );
         }
     }
 }

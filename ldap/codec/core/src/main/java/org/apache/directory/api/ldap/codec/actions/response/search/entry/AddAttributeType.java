@@ -72,7 +72,7 @@ public class AddAttributeType extends GrammarAction<LdapMessageContainer<SearchR
         if ( tlv.getLength() == 0 )
         {
             // The type can't be null
-            String msg = I18n.err( I18n.ERR_04081 );
+            String msg = I18n.err( I18n.ERR_05147_NULL_ATTRIBUTE_TYPE );
             LOG.error( msg );
             throw new DecoderException( msg );
         }
@@ -86,8 +86,8 @@ public class AddAttributeType extends GrammarAction<LdapMessageContainer<SearchR
             {
                 String type = Strings.utf8ToString( tlv.getValue().getData() );
                 // This is for the client side. We will never decode LdapResult on the server
-                String msg = "The Attribute type " + type + "is invalid : " + ine.getMessage();
-                LOG.error( "{} : {}", msg, ine.getMessage() );
+                String msg = I18n.err( I18n.ERR_05156_INVALID_ATTRIBUTE_TYPE, type, ine.getMessage() );
+                LOG.error( I18n.err( I18n.ERR_05114_ERROR_MESSAGE, msg, ine.getMessage() ) );
                 throw new DecoderException( msg, ine );
             }
         }
@@ -95,7 +95,7 @@ public class AddAttributeType extends GrammarAction<LdapMessageContainer<SearchR
         if ( LOG.isDebugEnabled() )
         {
             String type = Strings.utf8ToString( tlv.getValue().getData() );
-            LOG.debug( "Attribute type : {}", type );
+            LOG.debug( I18n.msg( I18n.MSG_05179_ATTRIBUTE_TYPE, type ) );
         }
     }
 }
