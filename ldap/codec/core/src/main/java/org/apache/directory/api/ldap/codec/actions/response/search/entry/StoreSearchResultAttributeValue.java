@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.codec.actions.response.search.entry;
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.SearchResultEntryDecorator;
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -75,7 +76,7 @@ public class StoreSearchResultAttributeValue extends GrammarAction<LdapMessageCo
 
                 if ( LOG.isDebugEnabled() )
                 {
-                    LOG.debug( "The attribute value is null" );
+                    LOG.debug( I18n.msg( I18n.MSG_05180_NULL_ATTRIBUTE_VALUE ) );
                 }
             }
             else
@@ -86,7 +87,7 @@ public class StoreSearchResultAttributeValue extends GrammarAction<LdapMessageCo
 
                     if ( LOG.isDebugEnabled() )
                     {
-                        LOG.debug( "Attribute value {}", Strings.dumpBytes( ( byte[] ) value ) );
+                        LOG.debug( I18n.msg( I18n.MSG_05181_ATTRIBUTE_VALUE, Strings.dumpBytes( ( byte[] ) value ) ) );
                     }
                 }
                 else
@@ -95,7 +96,7 @@ public class StoreSearchResultAttributeValue extends GrammarAction<LdapMessageCo
 
                     if ( LOG.isDebugEnabled() )
                     {
-                        LOG.debug( "Attribute value {}", value );
+                        LOG.debug( I18n.msg( I18n.MSG_05181_ATTRIBUTE_VALUE, value ) );
                     }
                 }
 

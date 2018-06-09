@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.codec.actions.request.search;
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
@@ -71,7 +72,7 @@ public class InitSearchRequest extends GrammarAction<LdapMessageContainer<Search
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Search Request" );
+            LOG.debug( I18n.msg( I18n.MSG_05157_SEARCH_REQUEST ) );
         }
     }
 }

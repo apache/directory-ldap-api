@@ -60,7 +60,7 @@ public class InitAndFilter extends GrammarAction<LdapMessageContainer<SearchRequ
 
         if ( tlv.getLength() == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04006 );
+            String msg = I18n.err( I18n.ERR_05134_EMPTY_AND_FILTER_PDU );
             LOG.error( msg );
             throw new DecoderException( msg );
         }
@@ -75,7 +75,7 @@ public class InitAndFilter extends GrammarAction<LdapMessageContainer<SearchRequ
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Initialize AND filter" );
+            LOG.debug( I18n.msg( I18n.MSG_05141_INITIALIZE_AND_FILTER ) );
         }
     }
 }

@@ -63,6 +63,7 @@ public class StoreAddRequestEntryName extends GrammarAction<LdapMessageContainer
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<AddRequestDecorator> container ) throws DecoderException
     {
         AddRequestDecorator addRequest = container.getMessage();
@@ -72,7 +73,7 @@ public class StoreAddRequestEntryName extends GrammarAction<LdapMessageContainer
         // Store the entry. It can't be null
         if ( tlv.getLength() == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04085 );
+            String msg = I18n.err( I18n.ERR_05115_EMTPY_ENTRY_DN_GIVEN );
             LOG.error( msg );
 
             AddResponseImpl response = new AddResponseImpl( addRequest.getMessageId() );
@@ -94,9 +95,8 @@ public class StoreAddRequestEntryName extends GrammarAction<LdapMessageContainer
             }
             catch ( LdapInvalidDnException ine )
             {
-                String msg = "Invalid Dn given : " + dnStr + " (" + Strings.dumpBytes( dnBytes )
-                    + ") is invalid";
-                LOG.error( "{} : {}", msg, ine.getMessage() );
+                String msg = I18n.err( I18n.ERR_05113_INVALID_DN, dnStr, Strings.dumpBytes( dnBytes ) );
+                LOG.error( I18n.err( I18n.ERR_05114_ERROR_MESSAGE, msg, ine.getMessage() ) );
 
                 AddResponseImpl response = new AddResponseImpl( addRequest.getMessageId() );
                 throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_DN_SYNTAX,
@@ -108,7 +108,7 @@ public class StoreAddRequestEntryName extends GrammarAction<LdapMessageContainer
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Adding an entry with Dn : {}", addRequest.getEntry() );
+            LOG.debug( I18n.msg( I18n.MSG_05113_ADDING_ENTRY_WITH_DN, addRequest.getEntry() ) );
         }
     }
 }

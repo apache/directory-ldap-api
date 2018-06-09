@@ -72,7 +72,7 @@ public class StoreFinal extends GrammarAction<LdapMessageContainer<SearchRequest
 
         if ( tlv.getLength() == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04020 );
+            String msg = I18n.err( I18n.ERR_05140_EMPTY_SUBSTRING_FINAL_FILTER_PDU );
             LOG.error( msg );
             throw new DecoderException( msg );
         }
@@ -86,7 +86,7 @@ public class StoreFinal extends GrammarAction<LdapMessageContainer<SearchRequest
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Stored a any substring : {}", finalValue );
+            LOG.debug( I18n.msg( I18n.MSG_05154_STORED_FINAL_SUBSTRING, finalValue ) );
         }
     }
 }

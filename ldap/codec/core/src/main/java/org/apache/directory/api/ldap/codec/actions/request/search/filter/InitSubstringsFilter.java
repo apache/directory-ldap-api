@@ -64,7 +64,7 @@ public class InitSubstringsFilter extends GrammarAction<LdapMessageContainer<Sea
 
         if ( expectedLength == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04012 );
+            String msg = I18n.err( I18n.ERR_05138_EMPTY_SUBSTRING_FILTER_PDU );
             LOG.error( msg );
             throw new DecoderException( msg );
         }
@@ -77,7 +77,7 @@ public class InitSubstringsFilter extends GrammarAction<LdapMessageContainer<Sea
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Initialize Substrings filter" );
+            LOG.debug( I18n.msg( I18n.MSG_05152_INITIALIZE_SUBSTRING_FILTER ) );
         }
     }
 }

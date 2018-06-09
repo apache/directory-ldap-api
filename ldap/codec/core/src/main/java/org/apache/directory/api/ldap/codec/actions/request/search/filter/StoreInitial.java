@@ -73,7 +73,7 @@ public class StoreInitial extends GrammarAction<LdapMessageContainer<SearchReque
 
         if ( tlv.getLength() == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04108 );
+            String msg = I18n.err( I18n.ERR_05154_EMPTY_SUBSTRING_INITIAL_FILTER_PDU );
             LOG.error( msg );
             throw new DecoderException( msg );
         }

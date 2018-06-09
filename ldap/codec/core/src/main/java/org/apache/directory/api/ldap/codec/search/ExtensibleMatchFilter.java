@@ -276,7 +276,7 @@ public class ExtensibleMatchFilter extends Filter
 
             if ( ( matchingRule == null ) && ( type == null ) )
             {
-                throw new EncoderException( I18n.err( I18n.ERR_04056 ) );
+                throw new EncoderException( I18n.err( I18n.ERR_05500_NULL_MATCHING_RULE_AND_TYPE ) );
             }
 
             // The matching rule

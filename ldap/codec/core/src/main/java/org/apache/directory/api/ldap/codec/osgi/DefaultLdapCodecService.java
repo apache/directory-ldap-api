@@ -322,7 +322,7 @@ public class DefaultLdapCodecService implements LdapApiService
     {
         if ( control == null )
         {
-            throw new NullPointerException( "Control argument was null." );
+            throw new NullPointerException( I18n.err( I18n.ERR_05400_CONTROL_ARGUMENT_WAS_NULL ) );
         }
 
         // protect agains being multiply decorated
@@ -423,7 +423,7 @@ public class DefaultLdapCodecService implements LdapApiService
     @Override
     public javax.naming.ldap.ExtendedResponse toJndi( final ExtendedResponse modelResponse ) throws EncoderException
     {
-        throw new NotImplementedException( "Figure out how to transform" );
+        throw new NotImplementedException( I18n.err( I18n.ERR_05401_FIGURE_OUT_HOW_TO_TRANSFORM ) );
     }
 
 
@@ -433,7 +433,7 @@ public class DefaultLdapCodecService implements LdapApiService
     @Override
     public ExtendedResponse fromJndi( javax.naming.ldap.ExtendedResponse jndiResponse ) throws DecoderException
     {
-        throw new NotImplementedException( "Figure out how to transform" );
+        throw new NotImplementedException( I18n.err( I18n.ERR_05401_FIGURE_OUT_HOW_TO_TRANSFORM ) );
     }
 
 
@@ -522,8 +522,8 @@ public class DefaultLdapCodecService implements LdapApiService
                 }
                 catch ( DecoderException de )
                 {
-                    NamingException ne = new NamingException( "Unable to decode encoded response value: "
-                        + Strings.dumpBytes( berValue ) );
+                    NamingException ne = new NamingException( I18n.err( I18n.ERR_05402_UNABLE_TO_ENCODE_RESPONSE_VALUE,
+                        Strings.dumpBytes( berValue ) ) );
                     ne.setRootCause( de );
                     throw ne;
                 }

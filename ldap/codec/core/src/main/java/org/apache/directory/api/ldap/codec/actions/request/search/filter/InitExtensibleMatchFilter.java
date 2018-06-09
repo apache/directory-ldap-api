@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.codec.actions.request.search.filter;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
 import org.apache.directory.api.ldap.codec.search.ExtensibleMatchFilter;
@@ -64,7 +65,7 @@ public class InitExtensibleMatchFilter extends GrammarAction<LdapMessageContaine
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Initialize Extensible Match filter" );
+            LOG.debug( I18n.msg( I18n.MSG_05146_INITIALIZE_EXT_FILTER ) );
         }
     }
 }

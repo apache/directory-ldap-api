@@ -83,7 +83,7 @@ public class StoreSearchRequestScope extends GrammarAction<LdapMessageContainer<
         }
         catch ( IntegerDecoderException ide )
         {
-            String msg = I18n.err( I18n.ERR_04101, value.toString() );
+            String msg = I18n.err( I18n.ERR_05149_BAD_SCOPE, value.toString() );
             LOG.error( msg );
             throw new DecoderException( msg, ide );
         }
@@ -95,19 +95,19 @@ public class StoreSearchRequestScope extends GrammarAction<LdapMessageContainer<
             switch ( scope )
             {
                 case LdapCodecConstants.SCOPE_BASE_OBJECT:
-                    LOG.debug( "Searching within BASE_OBJECT scope " );
+                    LOG.debug( I18n.msg( I18n.MSG_05162_SEARCHING_WITH_SCOPE, "BASE_OBJECT" ) );
                     break;
 
                 case LdapCodecConstants.SCOPE_SINGLE_LEVEL:
-                    LOG.debug( "Searching within SINGLE_LEVEL scope " );
+                    LOG.debug( I18n.msg( I18n.MSG_05162_SEARCHING_WITH_SCOPE, "SINGLE_LEVEL" ) );
                     break;
 
                 case LdapCodecConstants.SCOPE_WHOLE_SUBTREE:
-                    LOG.debug( "Searching within WHOLE_SUBTREE scope " );
+                    LOG.debug( I18n.msg( I18n.MSG_05162_SEARCHING_WITH_SCOPE, "WHOLE_SUBTREE" ) );
                     break;
 
                 default:
-                    LOG.debug( "Searching within UNKNOWN scope " );
+                    LOG.debug( I18n.msg( I18n.MSG_05162_SEARCHING_WITH_SCOPE, "UNKNOWN" ) );
             }
         }
     }

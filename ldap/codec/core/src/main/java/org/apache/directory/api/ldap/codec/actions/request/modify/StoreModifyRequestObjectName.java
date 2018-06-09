@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.codec.actions.request.modify;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
 import org.apache.directory.api.ldap.codec.decorators.ModifyRequestDecorator;
@@ -62,6 +63,7 @@ public class StoreModifyRequestObjectName extends GrammarAction<LdapMessageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<ModifyRequestDecorator> container ) throws DecoderException
     {
         ModifyRequestDecorator modifyRequestDecorator = container.getMessage();
@@ -87,9 +89,8 @@ public class StoreModifyRequestObjectName extends GrammarAction<LdapMessageConta
             }
             catch ( LdapInvalidDnException ine )
             {
-                String msg = "Invalid Dn given : " + dnStr + " (" + Strings.dumpBytes( dnBytes )
-                    + ") is invalid";
-                LOG.error( "{} : {}", msg, ine.getMessage() );
+                String msg = I18n.err( I18n.ERR_05113_INVALID_DN, dnStr, Strings.dumpBytes( dnBytes ) );
+                LOG.error( I18n.err( I18n.ERR_05114_ERROR_MESSAGE, msg, ine.getMessage() ) );
 
                 ModifyResponseImpl response = new ModifyResponseImpl( modifyRequest.getMessageId() );
                 throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_DN_SYNTAX,
@@ -101,7 +102,7 @@ public class StoreModifyRequestObjectName extends GrammarAction<LdapMessageConta
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Modification of Dn {}", modifyRequest.getName() );
+            LOG.debug( I18n.msg( I18n.MSG_05132_DN_MODIFICATION, modifyRequest.getName() ) );
         }
     }
 }

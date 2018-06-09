@@ -69,14 +69,14 @@ public class InitCompareResponse extends GrammarAction<LdapMessageContainer<Comp
 
         if ( tlv.getLength() == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04094 );
+            String msg = I18n.err( I18n.ERR_05148_NULL_COMPARE_REQUEST );
             LOG.error( msg );
             throw new DecoderException( msg );
         }
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Compare response " );
+            LOG.debug( I18n.msg( I18n.MSG_05169_COMPARE_RESPONSE ) );
         }
     }
 }

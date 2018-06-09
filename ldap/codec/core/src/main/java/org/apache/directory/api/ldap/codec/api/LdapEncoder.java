@@ -57,7 +57,7 @@ public class LdapEncoder
     {
         if ( codec == null )
         {
-            throw new NullPointerException( "codec argument cannot be null" );
+            throw new NullPointerException( I18n.err( I18n.ERR_05203_CODEC_ARGS_CANNOT_BE_NULL ) );
         }
 
         this.codec = codec;

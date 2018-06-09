@@ -64,6 +64,7 @@ public class StoreResultCode extends GrammarAction<LdapMessageContainer<MessageD
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<MessageDecorator<? extends Message>> container ) throws DecoderException
     {
         // The current TLV should be a integer
@@ -81,14 +82,14 @@ public class StoreResultCode extends GrammarAction<LdapMessageContainer<MessageD
         }
         catch ( IntegerDecoderException ide )
         {
-            LOG.error( I18n.err( I18n.ERR_04018, Strings.dumpBytes( value.getData() ), ide.getMessage() ) );
+            LOG.error( I18n.err( I18n.ERR_05108_INVALID_RESULT_CODE, Strings.dumpBytes( value.getData() ), ide.getMessage() ) );
 
             throw new DecoderException( ide.getMessage(), ide );
         }
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "The result code is set to " + resultCode );
+            LOG.debug( I18n.msg( I18n.MSG_05109_RESULT_CODE_IS, resultCode ) );
         }
 
         ResultResponse response = ( ResultResponse ) container.getMessage();

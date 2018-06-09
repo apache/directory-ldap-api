@@ -20,9 +20,9 @@
 package org.apache.directory.api.ldap.codec.actions.request.bind;
 
 
-import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.BindRequestDecorator;
 import org.apache.directory.api.ldap.model.message.BindRequest;
@@ -57,7 +57,8 @@ public class StoreSaslCredentials extends GrammarAction<LdapMessageContainer<Bin
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<BindRequestDecorator> container ) throws DecoderException
+    @Override
+    public void action( LdapMessageContainer<BindRequestDecorator> container )
     {
         BindRequest bindRequestMessage = container.getMessage();
 
@@ -80,8 +81,7 @@ public class StoreSaslCredentials extends GrammarAction<LdapMessageContainer<Bin
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "The credentials are : {}", Strings.dumpBytes( bindRequestMessage
-                .getCredentials() ) );
+            LOG.debug( I18n.msg( I18n.MSG_05117_SASL_CREDENTIALS_DECODED ) );
         }
     }
 }

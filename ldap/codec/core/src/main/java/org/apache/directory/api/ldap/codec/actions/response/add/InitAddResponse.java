@@ -71,14 +71,14 @@ public class InitAddResponse extends GrammarAction<LdapMessageContainer<AddRespo
 
         if ( expectedLength == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04088 );
+            String msg = I18n.err( I18n.ERR_05146_NULL_ADD_RESPONSE );
             LOG.error( msg );
             throw new DecoderException( msg );
         }
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Add Response" );
+            LOG.debug( I18n.msg( I18n.MSG_05167_ADD_RESPONSE ) );
         }
     }
 }

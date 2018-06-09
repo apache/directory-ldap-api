@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.codec.actions.request.search;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
 import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
@@ -88,9 +89,8 @@ public class StoreSearchRequestBaseObject extends GrammarAction<LdapMessageConta
             }
             catch ( LdapInvalidDnException ine )
             {
-                String msg = "Invalid root Dn given : " + dnStr + " (" + Strings.dumpBytes( dnBytes )
-                    + ") is invalid";
-                LOG.error( "{} : {}", msg, ine.getMessage() );
+                String msg = I18n.err( I18n.ERR_05132_INVALID_ROOT_DN, dnStr, Strings.dumpBytes( dnBytes ) );
+                LOG.error( I18n.err( I18n.ERR_05114_ERROR_MESSAGE, msg, ine.getMessage() ) );
 
                 SearchResultDoneImpl response = new SearchResultDoneImpl( searchRequest.getMessageId() );
                 throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_DN_SYNTAX,
@@ -106,7 +106,7 @@ public class StoreSearchRequestBaseObject extends GrammarAction<LdapMessageConta
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Searching with root Dn : {}", baseObject );
+            LOG.debug( I18n.msg( I18n.MSG_05160_SEARCHING_WITH_ROOT_DN, baseObject ) );
         }
     }
 }

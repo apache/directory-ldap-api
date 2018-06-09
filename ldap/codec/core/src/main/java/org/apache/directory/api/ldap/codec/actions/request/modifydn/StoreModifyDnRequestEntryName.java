@@ -63,6 +63,7 @@ public class StoreModifyDnRequestEntryName extends GrammarAction<LdapMessageCont
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<ModifyDnRequestDecorator> container ) throws DecoderException
     {
         ModifyDnRequest modifyDnRequest = container.getMessage();
@@ -77,7 +78,7 @@ public class StoreModifyDnRequestEntryName extends GrammarAction<LdapMessageCont
         if ( tlv.getLength() == 0 )
         {
             // This will generate a PROTOCOL_ERROR
-            throw new DecoderException( I18n.err( I18n.ERR_04089 ) );
+            throw new DecoderException( I18n.err( I18n.ERR_05119_NULL_ENTRY ) );
         }
         else
         {
@@ -90,9 +91,8 @@ public class StoreModifyDnRequestEntryName extends GrammarAction<LdapMessageCont
             }
             catch ( LdapInvalidDnException ine )
             {
-                String msg = "Invalid Dn given : " + dnStr + " (" + Strings.dumpBytes( dnBytes )
-                    + ") is invalid";
-                LOG.error( "{} : {}", msg, ine.getMessage() );
+                String msg = I18n.err( I18n.ERR_05113_INVALID_DN, dnStr, Strings.dumpBytes( dnBytes ) );
+                LOG.error( I18n.err( I18n.ERR_05114_ERROR_MESSAGE, msg, ine.getMessage() ) );
 
                 ModifyDnResponseImpl response = new ModifyDnResponseImpl( modifyDnRequest.getMessageId() );
                 throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_DN_SYNTAX,
@@ -104,7 +104,7 @@ public class StoreModifyDnRequestEntryName extends GrammarAction<LdapMessageCont
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Modifying Dn {}", entry );
+            LOG.debug( I18n.msg( I18n.MSG_05137_MODIFYING_DN, entry ) );
         }
     }
 }

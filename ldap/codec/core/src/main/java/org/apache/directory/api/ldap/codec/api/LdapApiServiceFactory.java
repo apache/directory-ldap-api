@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.codec.api;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,7 +75,7 @@ public final class LdapApiServiceFactory
     {
         if ( !isInitialized() )
         {
-            String msg = "Not initialized yet!";
+            String msg = I18n.err( I18n.ERR_05200_NOT_INITIALIZED_YET );
             LOG.error( msg );
             throw new IllegalStateException( msg );
         }
@@ -114,10 +115,9 @@ public final class LdapApiServiceFactory
 
         if ( LdapApiServiceFactory.ldapCodecService != null )
         {
-            StringBuilder sb = new StringBuilder( "The LdapCodecService is already set to an instance of " );
-            sb.append( LdapApiServiceFactory.class.getName() );
-            LOG.error( sb.toString() );
-            throw new IllegalStateException( sb.toString() );
+            String msg = I18n.err( I18n.ERR_05201_INSTANCE_ALREADY_SET, LdapApiServiceFactory.class.getName() );
+            LOG.error( msg );
+            throw new IllegalStateException( msg );
         }
 
         /*
@@ -136,7 +136,7 @@ public final class LdapApiServiceFactory
             }
             catch ( Exception e )
             {
-                LOG.error( "Failed to instantiate a viable instance, instantiating new instance of ", e );
+                LOG.error( I18n.err( I18n.ERR_05202_FAILED_TO_INSTANCIATE, e.getMessage() ) );
             }
         }
         else

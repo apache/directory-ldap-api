@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.codec.actions.response.search.done;
 
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.SearchResultDoneDecorator;
 import org.apache.directory.api.ldap.model.message.SearchResultDoneImpl;
@@ -63,7 +64,7 @@ public class InitSearchResultDone extends GrammarAction<LdapMessageContainer<Sea
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Search Result Done found" );
+            LOG.debug( I18n.msg( I18n.MSG_05178_SEARCH_RESULT_DONE ) );
         }
     }
 }

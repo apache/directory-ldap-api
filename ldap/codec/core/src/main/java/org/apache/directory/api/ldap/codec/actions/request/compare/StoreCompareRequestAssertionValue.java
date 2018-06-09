@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.codec.actions.request.compare;
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.CompareRequestDecorator;
 import org.apache.directory.api.ldap.model.message.CompareRequest;
@@ -62,6 +63,7 @@ public class StoreCompareRequestAssertionValue extends GrammarAction<LdapMessage
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<CompareRequestDecorator> container )
     {
         // Get the CompareRequest Object
@@ -83,8 +85,8 @@ public class StoreCompareRequestAssertionValue extends GrammarAction<LdapMessage
 
                 if ( LOG.isDebugEnabled() )
                 {
-                    LOG.debug( "Comparing attribute value {}", Strings.dumpBytes( compareRequest
-                        .getAssertionValue().getBytes() ) );
+                    LOG.debug( I18n.msg( I18n.MSG_05121_COMPARING_ATTRIBUTE_VALUE, 
+                        Strings.dumpBytes( compareRequest.getAssertionValue().getBytes() ) ) );
                 }
             }
             else
@@ -93,7 +95,7 @@ public class StoreCompareRequestAssertionValue extends GrammarAction<LdapMessage
 
                 if ( LOG.isDebugEnabled() )
                 {
-                    LOG.debug( "Comparing attribute value {}", compareRequest.getAssertionValue() );
+                    LOG.debug( I18n.msg( I18n.MSG_05121_COMPARING_ATTRIBUTE_VALUE, compareRequest.getAssertionValue() ) );
                 }
             }
         }

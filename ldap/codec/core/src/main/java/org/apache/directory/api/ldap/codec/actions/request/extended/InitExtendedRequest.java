@@ -20,8 +20,8 @@
 package org.apache.directory.api.ldap.codec.actions.request.extended;
 
 
-import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.ExtendedRequestDecorator;
 import org.slf4j.Logger;
@@ -54,7 +54,8 @@ public class InitExtendedRequest extends GrammarAction<LdapMessageContainer<Exte
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<ExtendedRequestDecorator<?>> container ) throws DecoderException
+    @Override
+    public void action( LdapMessageContainer<ExtendedRequestDecorator<?>> container )
     {
         /*
          * It is the responsibility of the LdapCodecService to instantiate new
@@ -70,7 +71,7 @@ public class InitExtendedRequest extends GrammarAction<LdapMessageContainer<Exte
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Extended request being processed ..." );
+            LOG.debug( I18n.msg( I18n.MSG_05125_EXTENDED_REQUEST_PROCESSED ) );
         }
     }
 }

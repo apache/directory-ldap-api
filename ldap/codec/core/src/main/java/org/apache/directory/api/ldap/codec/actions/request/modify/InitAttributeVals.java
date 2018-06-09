@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.codec.actions.request.modify;
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.ModifyRequestDecorator;
 import org.slf4j.Logger;
@@ -61,6 +62,7 @@ public class InitAttributeVals extends GrammarAction<LdapMessageContainer<Modify
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<ModifyRequestDecorator> container )
     {
         TLV tlv = container.getCurrentTLV();
@@ -68,7 +70,7 @@ public class InitAttributeVals extends GrammarAction<LdapMessageContainer<Modify
         // If the length is null, we store an empty value
         if ( LOG.isDebugEnabled() && ( tlv.getLength() == 0 ) )
         {
-            LOG.debug( "No vals for this attribute" );
+            LOG.debug( I18n.msg( I18n.MSG_05129_NO_VALS_FOR_ATTRIBUTE ) );
         }
 
         // We can have an END transition
@@ -76,7 +78,7 @@ public class InitAttributeVals extends GrammarAction<LdapMessageContainer<Modify
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Some vals are to be decoded" );
+            LOG.debug( I18n.msg( I18n.MSG_05130_SOME_VALS_NEED_DECODING ) );
         }
     }
 }

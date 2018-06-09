@@ -75,7 +75,7 @@ public class StoreSubstringFilterType extends GrammarAction<LdapMessageContainer
 
         if ( tlv.getLength() == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04106 );
+            String msg = I18n.err( I18n.ERR_05153_NULL_ATTRIBUTE_DESCRIPTION );
             LOG.error( msg );
             throw new DecoderException( msg );
         }

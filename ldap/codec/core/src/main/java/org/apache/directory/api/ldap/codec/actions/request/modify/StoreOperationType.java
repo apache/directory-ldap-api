@@ -62,6 +62,7 @@ public class StoreOperationType extends GrammarAction<LdapMessageContainer<Modif
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<ModifyRequestDecorator> container ) throws DecoderException
     {
         ModifyRequestDecorator modifyRequestDecorator = container.getMessage();
@@ -77,7 +78,7 @@ public class StoreOperationType extends GrammarAction<LdapMessageContainer<Modif
         }
         catch ( IntegerDecoderException ide )
         {
-            String msg = I18n.err( I18n.ERR_04082, Strings.dumpBytes( tlv.getValue().getData() ) );
+            String msg = I18n.err( I18n.ERR_05124_INVALID_OPERATION, Strings.dumpBytes( tlv.getValue().getData() ) );
             LOG.error( msg );
 
             // This will generate a PROTOCOL_ERROR
@@ -92,19 +93,19 @@ public class StoreOperationType extends GrammarAction<LdapMessageContainer<Modif
             switch ( operation )
             {
                 case LdapCodecConstants.OPERATION_ADD:
-                    LOG.debug( "Modification operation : ADD" );
+                    LOG.debug( I18n.msg( I18n.MSG_05133_MODIFY_OPERATION, "ADD" ) );
                     break;
 
                 case LdapCodecConstants.OPERATION_DELETE:
-                    LOG.debug( "Modification operation : DELETE" );
+                    LOG.debug( I18n.msg( I18n.MSG_05133_MODIFY_OPERATION, "DELETE" ) );
                     break;
 
                 case LdapCodecConstants.OPERATION_REPLACE:
-                    LOG.debug( "Modification operation : REPLACE" );
+                    LOG.debug( I18n.msg( I18n.MSG_05133_MODIFY_OPERATION, "REPLACE" ) );
                     break;
 
                 default:
-                    LOG.debug( "Modification operation : UNKNOWN" );
+                    LOG.debug( I18n.msg( I18n.MSG_05133_MODIFY_OPERATION, "UNKNOWN" ) );
             }
         }
     }

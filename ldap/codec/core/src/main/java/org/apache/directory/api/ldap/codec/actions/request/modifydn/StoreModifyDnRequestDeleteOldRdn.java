@@ -62,6 +62,7 @@ public class StoreModifyDnRequestDeleteOldRdn extends GrammarAction<LdapMessageC
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<ModifyDnRequestDecorator> container ) throws DecoderException
     {
         ModifyDnRequest modifyDnRequest = container.getMessage();
@@ -83,7 +84,7 @@ public class StoreModifyDnRequestDeleteOldRdn extends GrammarAction<LdapMessageC
         catch ( BooleanDecoderException bde )
         {
             LOG.error( I18n
-                .err( I18n.ERR_04091, Strings.dumpBytes( value.getData() ), bde.getMessage() ) );
+                .err( I18n.ERR_05125_INVALID_OLD_RDN, Strings.dumpBytes( value.getData() ), bde.getMessage() ) );
 
             // This will generate a PROTOCOL_ERROR
             throw new DecoderException( bde.getMessage(), bde );
@@ -96,11 +97,11 @@ public class StoreModifyDnRequestDeleteOldRdn extends GrammarAction<LdapMessageC
         {
             if ( modifyDnRequest.getDeleteOldRdn() )
             {
-                LOG.debug( " Old Rdn attributes will be deleted" );
+                LOG.debug( I18n.msg( I18n.MSG_05135_OID_RDN_ATT_WILL_BE_DELETED ) );
             }
             else
             {
-                LOG.debug( " Old Rdn attributes will be retained" );
+                LOG.debug( I18n.msg( I18n.MSG_05136_OID_RDN_ATT_WILL_BE_RETAINED ) );
             }
         }
     }

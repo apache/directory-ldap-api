@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.codec.actions.request.compare;
 
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.CompareRequestDecorator;
 import org.apache.directory.api.ldap.model.message.CompareRequest;
@@ -57,6 +58,7 @@ public class InitCompareRequest extends GrammarAction<LdapMessageContainer<Compa
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<CompareRequestDecorator> container )
     {
         // Now, we can allocate the CompareRequest Object
@@ -68,7 +70,7 @@ public class InitCompareRequest extends GrammarAction<LdapMessageContainer<Compa
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Compare Request" );
+            LOG.debug( I18n.msg( I18n.MSG_05120_COMPARE_REQUEST ) );
         }
     }
 }

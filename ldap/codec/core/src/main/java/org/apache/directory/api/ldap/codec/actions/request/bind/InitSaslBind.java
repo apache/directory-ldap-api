@@ -68,6 +68,7 @@ public class InitSaslBind extends GrammarAction<LdapMessageContainer<BindRequest
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<BindRequestDecorator> container ) throws DecoderException
     {
         BindRequest bindRequestMessage = container.getMessage();
@@ -76,7 +77,7 @@ public class InitSaslBind extends GrammarAction<LdapMessageContainer<BindRequest
         // We will check that the sasl is not null
         if ( tlv.getLength() == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04079 );
+            String msg = I18n.err( I18n.ERR_05116_SASL_CREDS_CANT_BE_NULL );
             LOG.error( msg );
 
             BindResponseImpl response = new BindResponseImpl( bindRequestMessage.getMessageId() );
@@ -89,7 +90,7 @@ public class InitSaslBind extends GrammarAction<LdapMessageContainer<BindRequest
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "The SaslCredential has been created" );
+            LOG.debug( I18n.msg( I18n.MSG_05115_SASL_CREDS_CREATED ) );
         }
     }
 }

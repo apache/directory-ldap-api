@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.codec.actions.request.search.filter;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
@@ -69,7 +70,7 @@ public class InitLessOrEqualFilter extends GrammarAction<LdapMessageContainer<Se
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Initialize Less Or Equal filter" );
+            LOG.debug( I18n.msg( I18n.MSG_05148_INITIALIZE_LEQ_FILTER ) );
         }
     }
 }

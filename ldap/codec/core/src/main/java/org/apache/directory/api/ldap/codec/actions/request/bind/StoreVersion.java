@@ -61,6 +61,7 @@ public class StoreVersion extends GrammarAction<LdapMessageContainer<BindRequest
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<BindRequestDecorator> container ) throws DecoderException
     {
         BindRequest bindRequestMessage = container.getMessage();
@@ -77,7 +78,7 @@ public class StoreVersion extends GrammarAction<LdapMessageContainer<BindRequest
 
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( "Ldap version ", Integer.valueOf( version ) );
+                LOG.debug( I18n.msg( I18n.MSG_05114_LDAP_VERSION, Integer.valueOf( version ) ) );
             }
 
             bindRequestMessage.setVersion3( version == 3 );
@@ -85,7 +86,7 @@ public class StoreVersion extends GrammarAction<LdapMessageContainer<BindRequest
         catch ( IntegerDecoderException ide )
         {
             LOG.error( I18n
-                .err( I18n.ERR_04078, Strings.dumpBytes( value.getData() ), ide.getMessage() ) );
+                .err( I18n.ERR_05117_INVALID_VERSION, Strings.dumpBytes( value.getData() ), ide.getMessage() ) );
 
             // This will generate a PROTOCOL_ERROR
             throw new DecoderException( ide.getMessage(), ide );

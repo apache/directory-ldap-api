@@ -60,7 +60,7 @@ public class InitNotFilter extends GrammarAction<LdapMessageContainer<SearchRequ
 
         if ( tlv.getLength() == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04009 );
+            String msg = I18n.err( I18n.ERR_05136_EMPTY_NOT_FILTER_PDU );
             LOG.error( msg );
             throw new DecoderException( msg );
         }
@@ -75,7 +75,7 @@ public class InitNotFilter extends GrammarAction<LdapMessageContainer<SearchRequ
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Initialize NOT filter" );
+            LOG.debug( I18n.msg( I18n.MSG_05149_INITIALIZE_NOT_FILTER ) );
         }
     }
 }

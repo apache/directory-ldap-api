@@ -63,7 +63,7 @@ public class StoreTypeMatchingRule extends GrammarAction<LdapMessageContainer<Se
 
         if ( tlv.getLength() == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04022 );
+            String msg = I18n.err( I18n.ERR_05141_NULL_MATCHING_RULE_ASSERTION_TYPE );
             LOG.error( msg );
             throw new DecoderException( msg );
         }
@@ -77,7 +77,7 @@ public class StoreTypeMatchingRule extends GrammarAction<LdapMessageContainer<Se
 
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( "Stored a type matching rule : {}", type );
+                LOG.debug( I18n.msg( I18n.MSG_05166_STORED_TYPE_MATCHING_RULE, type ) );
             }
         }
     }

@@ -92,7 +92,7 @@ public class LdapDecoder
         }
         catch ( Exception e )
         {
-            String message = I18n.err( I18n.ERR_04060, e.getLocalizedMessage() );
+            String message = I18n.err( I18n.ERR_05204_LDAP_DECODER_FAILURE, e.getLocalizedMessage() );
             LOG.error( message );
             throw new DecoderException( message, e );
         }
@@ -101,15 +101,15 @@ public class LdapDecoder
         {
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( "Decoded LdapMessage : " + container );
+                LOG.debug( I18n.msg( I18n.MSG_5200_DECODED_LDAP_MESSAGE, container ) );
             }
 
             return container.getMessage();
         }
         else
         {
-            LOG.error( I18n.err( I18n.ERR_04062 ) );
-            throw new DecoderException( I18n.err( I18n.ERR_04063 ) );
+            LOG.error( I18n.err( I18n.ERR_05205_PDU_DOES_NOT_CONTAIN_ENOUGH_DATA ) );
+            throw new DecoderException( I18n.err( I18n.ERR_05206_INPUT_STREAM_TOO_SHORT_PDU ) );
         }
     }
 }

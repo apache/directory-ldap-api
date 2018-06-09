@@ -63,6 +63,7 @@ public class StoreModifyDnRequestNewSuperior extends GrammarAction<LdapMessageCo
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<ModifyDnRequestDecorator> container ) throws DecoderException
     {
         ModifyDnRequest modifyDnRequest = container.getMessage();
@@ -80,13 +81,13 @@ public class StoreModifyDnRequestNewSuperior extends GrammarAction<LdapMessageCo
             if ( modifyDnRequest.getDeleteOldRdn() )
             {
                 // This will generate a PROTOCOL_ERROR
-                throw new DecoderException( I18n.err( I18n.ERR_04092 ) );
+                throw new DecoderException( I18n.err( I18n.ERR_05128_NULL_SUPERIOR ) );
             }
             else
             {
                 if ( LOG.isWarnEnabled() )
                 {
-                    LOG.warn( "The new superior is null, so we will change the entry" );
+                    LOG.warn( I18n.msg( I18n.MSG_05139_NULL_NEW_SUPERIOR ) );
                 }
             }
 
@@ -103,9 +104,8 @@ public class StoreModifyDnRequestNewSuperior extends GrammarAction<LdapMessageCo
             }
             catch ( LdapInvalidDnException ine )
             {
-                String msg = "Invalid new superior Dn given : " + dnStr + " ("
-                    + Strings.dumpBytes( dnBytes ) + ") is invalid";
-                LOG.error( "{} : {}", msg, ine.getMessage() );
+                String msg = I18n.err( I18n.ERR_05129_INVALID_NEW_SUPERIOR, dnStr, Strings.dumpBytes( dnBytes ) );
+                LOG.error( I18n.err( I18n.ERR_05114_ERROR_MESSAGE, msg, ine.getMessage() ) );
 
                 ModifyDnResponseImpl response = new ModifyDnResponseImpl( modifyDnRequest.getMessageId() );
                 throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_DN_SYNTAX,
@@ -120,7 +120,7 @@ public class StoreModifyDnRequestNewSuperior extends GrammarAction<LdapMessageCo
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "New superior Dn {}", newSuperior );
+            LOG.debug( I18n.msg( I18n.MSG_05140_NEW_SUPERIOR_DN, newSuperior ) );
         }
     }
 }

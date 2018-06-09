@@ -117,7 +117,7 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
                                     break;
 
                                 default:
-                                    String msg = I18n.err( I18n.ERR_04044 );
+                                    String msg = I18n.err( I18n.ERR_05300_CANT_DECODE_CHANGE_TYPE );
                                     LOG.error( msg );
                                     throw new DecoderException( msg );
                             }
@@ -127,7 +127,7 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
                         }
                         catch ( IntegerDecoderException ide )
                         {
-                            String msg = I18n.err( I18n.ERR_04044 );
+                            String msg = I18n.err( I18n.ERR_05300_CANT_DECODE_CHANGE_TYPE );
                             LOG.error( msg, ide );
                             throw new DecoderException( msg, ide );
                         }
@@ -160,8 +160,8 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
 
                         if ( changeType != ChangeType.MODDN )
                         {
-                            LOG.error( I18n.err( I18n.ERR_04045 ) );
-                            throw new DecoderException( I18n.err( I18n.ERR_04046 ) );
+                            LOG.error( I18n.err( I18n.ERR_05301_INVALID_PREVIOUS_DN ) );
+                            throw new DecoderException( I18n.err( I18n.ERR_05302_PREVIOUS_DN_NOT_ALLOWED ) );
                         }
                         else
                         {
@@ -174,8 +174,8 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
                             }
                             catch ( LdapInvalidDnException ine )
                             {
-                                LOG.error( I18n.err( I18n.ERR_04047, Strings.dumpBytes( value.getData() ) ) );
-                                throw new DecoderException( I18n.err( I18n.ERR_04048 ), ine );
+                                LOG.error( I18n.err( I18n.ERR_05303_BAD_PREVIOUS_DN, Strings.dumpBytes( value.getData() ) ) );
+                                throw new DecoderException( I18n.err( I18n.ERR_05304_FAILED_TO_DECODE_PREVIOUS_DN ), ine );
                             }
 
                             if ( LOG.isDebugEnabled() )
@@ -215,7 +215,7 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
                 }
                 catch ( LongDecoderException lde )
                 {
-                    String msg = I18n.err( I18n.ERR_04049 );
+                    String msg = I18n.err( I18n.ERR_05305_CHANGE_NUMBER_DECODING_ERROR );
                     LOG.error( msg, lde );
                     throw new DecoderException( msg, lde );
                 }

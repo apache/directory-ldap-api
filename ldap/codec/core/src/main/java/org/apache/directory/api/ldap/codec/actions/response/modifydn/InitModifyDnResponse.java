@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.codec.actions.response.modifydn;
 
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.ModifyDnResponseDecorator;
 import org.apache.directory.api.ldap.model.message.ModifyDnResponseImpl;
@@ -62,7 +63,7 @@ public class InitModifyDnResponse extends GrammarAction<LdapMessageContainer<Mod
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Modify Dn response " );
+            LOG.debug( I18n.msg( I18n.MSG_05177_MODIFY_DN_RESPONSE ) );
         }
     }
 }

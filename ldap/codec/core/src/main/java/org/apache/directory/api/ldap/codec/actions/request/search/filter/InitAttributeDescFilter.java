@@ -65,7 +65,7 @@ public class InitAttributeDescFilter extends GrammarAction<LdapMessageContainer<
 
         if ( tlv.getLength() == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04007 );
+            String msg = I18n.err( I18n.ERR_05135_EMPTY_ATTRIBUTE_DESCRIPTION );
             LOG.error( msg );
             throw new DecoderException( msg );
         }
@@ -81,7 +81,7 @@ public class InitAttributeDescFilter extends GrammarAction<LdapMessageContainer<
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Initialize AttributeDesc filter" );
+            LOG.debug( I18n.msg( I18n.MSG_05143_INITIALIZE_ATT_DESC_FILTER ) );
         }
     }
 }

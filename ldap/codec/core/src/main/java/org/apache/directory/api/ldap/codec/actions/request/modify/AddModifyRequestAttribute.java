@@ -67,6 +67,7 @@ public class AddModifyRequestAttribute extends GrammarAction<LdapMessageContaine
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( LdapMessageContainer<ModifyRequestDecorator> container ) throws DecoderException
     {
         ModifyRequestDecorator modifyRequestDecorator = container.getMessage();
@@ -79,7 +80,7 @@ public class AddModifyRequestAttribute extends GrammarAction<LdapMessageContaine
 
         if ( tlv.getLength() == 0 )
         {
-            String msg = I18n.err( I18n.ERR_04083 );
+            String msg = I18n.err( I18n.ERR_05123_TYPE_CANT_BE_NULL );
             LOG.error( msg );
 
             ModifyResponseImpl response = new ModifyResponseImpl( modifyRequest.getMessageId() );
@@ -94,7 +95,7 @@ public class AddModifyRequestAttribute extends GrammarAction<LdapMessageContaine
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Modifying type : {}", type );
+            LOG.debug( I18n.msg( I18n.MSG_05128_MODIFYING_TYPE, type ) );
         }
     }
 }

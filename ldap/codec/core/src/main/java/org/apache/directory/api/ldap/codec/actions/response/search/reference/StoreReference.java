@@ -95,14 +95,14 @@ public class StoreReference extends GrammarAction<LdapMessageContainer<SearchRes
             }
             catch ( LdapURLEncodingException luee )
             {
-                LOG.error( I18n.err( I18n.ERR_04021, urlStr, luee.getMessage() ) );
-                throw new DecoderException( I18n.err( I18n.ERR_04016, luee.getMessage() ), luee );
+                LOG.error( I18n.err( I18n.ERR_05103_INVALID_URL, urlStr, luee.getMessage() ) );
+                throw new DecoderException( I18n.err( I18n.ERR_05104_INVALID_URL, luee.getMessage() ), luee );
             }
         }
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Search reference URL found : {}", url );
+            LOG.debug( I18n.msg( I18n.MSG_05184_SEARCH_REFERENCE_URL, url ) );
         }
 
         // We can have an END transition

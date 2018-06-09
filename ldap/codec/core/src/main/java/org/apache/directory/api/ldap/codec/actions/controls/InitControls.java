@@ -20,9 +20,9 @@
 package org.apache.directory.api.ldap.codec.actions.controls;
 
 
-import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.MessageDecorator;
 import org.apache.directory.api.ldap.model.message.Message;
@@ -58,7 +58,8 @@ public class InitControls extends GrammarAction<LdapMessageContainer<MessageDeco
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<MessageDecorator<? extends Message>> container ) throws DecoderException
+    @Override
+    public void action( LdapMessageContainer<MessageDecorator<? extends Message>> container )
     {
         TLV tlv = container.getCurrentTLV();
         int expectedLength = tlv.getLength();
@@ -68,14 +69,14 @@ public class InitControls extends GrammarAction<LdapMessageContainer<MessageDeco
         {
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( "A new list of controls has been initialized" );
+                LOG.debug( I18n.msg( I18n.MSG_05100_NEW_LIST_CONTROLS_INITIALIZED ) );
             }
         }
         else
         {
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( "An empty list of controls has been initialized" );
+                LOG.debug( I18n.msg( I18n.MSG_05101_NEW_EMPTY_CONTROLS_INITIALIZED ) );
             }
         }
 

@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.codec.actions.response.bind;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.BindResponseDecorator;
 import org.apache.directory.api.ldap.model.message.BindResponse;
@@ -83,7 +84,7 @@ public class StoreServerSASLCreds extends GrammarAction<LdapMessageContainer<Bin
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "The SASL credentials value is : {}", Strings.dumpBytes( serverSaslCreds ) );
+            LOG.debug( I18n.msg( I18n.MSG_05168_SASL_CREDENTIALS_VALUE_STORED ) );
         }
     }
 }

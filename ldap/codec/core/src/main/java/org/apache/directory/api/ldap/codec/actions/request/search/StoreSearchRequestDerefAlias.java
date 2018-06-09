@@ -84,7 +84,7 @@ public class StoreSearchRequestDerefAlias extends GrammarAction<LdapMessageConta
         }
         catch ( IntegerDecoderException ide )
         {
-            String msg = I18n.err( I18n.ERR_04102, value.toString() );
+            String msg = I18n.err( I18n.ERR_05150_BAD_DEREF_ALIAS, value.toString() );
             LOG.error( msg );
             throw new DecoderException( msg, ide );
         }
@@ -96,23 +96,23 @@ public class StoreSearchRequestDerefAlias extends GrammarAction<LdapMessageConta
             switch ( derefAliases )
             {
                 case LdapCodecConstants.NEVER_DEREF_ALIASES:
-                    LOG.debug( "Handling object strategy : NEVER_DEREF_ALIASES" );
+                    LOG.debug( I18n.msg( I18n.MSG_05161_HANDLING_OBJECT_STRATEGY, "NEVER_DEREF_ALIASES" ) );
                     break;
 
                 case LdapCodecConstants.DEREF_IN_SEARCHING:
-                    LOG.debug( "Handling object strategy : DEREF_IN_SEARCHING" );
+                    LOG.debug( I18n.msg( I18n.MSG_05161_HANDLING_OBJECT_STRATEGY, "DEREF_IN_SEARCHING" ) );
                     break;
 
                 case LdapCodecConstants.DEREF_FINDING_BASE_OBJ:
-                    LOG.debug( "Handling object strategy : DEREF_FINDING_BASE_OBJ" );
+                    LOG.debug( I18n.msg( I18n.MSG_05161_HANDLING_OBJECT_STRATEGY, "DEREF_FINDING_BASE_OBJ" ) );
                     break;
 
                 case LdapCodecConstants.DEREF_ALWAYS:
-                    LOG.debug( "Handling object strategy : DEREF_ALWAYS" );
+                    LOG.debug( I18n.msg( I18n.MSG_05161_HANDLING_OBJECT_STRATEGY, "DEREF_ALWAYS" ) );
                     break;
 
                 default:
-                    LOG.debug( "Handling object strategy : UNKNOWN" );
+                    LOG.debug( I18n.msg( I18n.MSG_05161_HANDLING_OBJECT_STRATEGY, "UNKNOWN" ) );
             }
         }
     }

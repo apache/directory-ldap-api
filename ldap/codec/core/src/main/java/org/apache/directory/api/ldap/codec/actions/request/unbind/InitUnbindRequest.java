@@ -73,10 +73,10 @@ public class InitUnbindRequest extends GrammarAction<LdapMessageContainer<Unbind
         // The Length should be null
         if ( expectedLength != 0 )
         {
-            LOG.error( I18n.err( I18n.ERR_04071, Integer.valueOf( expectedLength ) ) );
+            LOG.error( I18n.err( I18n.ERR_05130_NON_NULL_UNBIND_LENGTH, Integer.valueOf( expectedLength ) ) );
 
             // This will generate a PROTOCOL_ERROR
-            throw new DecoderException( I18n.err( I18n.ERR_04072 ) );
+            throw new DecoderException( I18n.err( I18n.ERR_05131_UNBIND_REQUEST_LENGTH_MUST_BE_NULL ) );
         }
 
         // We can quit now
