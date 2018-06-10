@@ -32,6 +32,7 @@ import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.BooleanDecoder;
 import org.apache.directory.api.asn1.ber.tlv.BooleanDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.message.controls.SortKey;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -69,7 +70,7 @@ public final class SortRequestGrammar extends AbstractGrammar<SortRequestContain
                 
                 if ( LOG.isDebugEnabled() )
                 {
-                    LOG.debug( "AttributeTypeDesc = " + atDesc );
+                    LOG.debug( I18n.msg( I18n.MSG_05307_ATTRIBUTE_TYPE_DESC, atDesc ) );
                 }
 
                 SortKey sk = new SortKey( atDesc );
@@ -94,7 +95,7 @@ public final class SortRequestGrammar extends AbstractGrammar<SortRequestContain
 
                     if ( LOG.isDebugEnabled() )
                     {
-                        LOG.debug( "ReverseOrder = " + reverseOrder );
+                        LOG.debug( I18n.msg( I18n.MSG_05308_REVERSE_ORDER, reverseOrder ) );
                     }
 
                     container.getCurrentKey().setReverseOrder( reverseOrder );
@@ -142,7 +143,7 @@ public final class SortRequestGrammar extends AbstractGrammar<SortRequestContain
 
                         if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "MatchingRuleOid = " + matchingRuleOid );
+                            LOG.debug( I18n.msg( I18n.MSG_05309_MATCHING_RULE_OID, matchingRuleOid ) );
                         }
 
                         container.getCurrentKey().setMatchingRuleId( matchingRuleOid );

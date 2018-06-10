@@ -113,7 +113,7 @@ public final class PagedResultsGrammar extends AbstractGrammar<PagedResultsConta
 
                             if ( LOG.isDebugEnabled() )
                             {
-                                LOG.debug( "size = " + size );
+                                LOG.debug( I18n.msg( I18n.MSG_05303_SIZE, size ) );
                             }
 
                             container.getDecorator().setSize( size );

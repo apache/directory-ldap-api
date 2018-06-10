@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.codec;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.util.Strings;
@@ -69,10 +70,6 @@ public class AttributeValueAssertion
             else if ( object instanceof Value )
             {
                 return ( ( Value ) object ).getValue();
-            }
-            else if ( object instanceof Value )
-            {
-                return Strings.dumpBytes( ( ( Value ) object ).getBytes() );
             }
             else
             {
@@ -160,7 +157,7 @@ public class AttributeValueAssertion
                 break;
 
             default:
-                throw new IllegalArgumentException( "Unexpected filter type: " + filterType );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_05503_UNEXPECTED_FILTER_TYPE, filterType ) );
         }
 
         sb.append( dumpObject( assertion ) );

@@ -116,7 +116,7 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
 
                             if ( LOG.isDebugEnabled() )
                             {
-                                LOG.debug( "changeTypes = " + changeTypes );
+                                LOG.debug( I18n.msg( I18n.MSG_05304_CHANGE_TYPES, changeTypes ) );
                             }
 
                             container.getPersistentSearchDecorator().setChangeTypes( changeTypes );
@@ -154,7 +154,7 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
 
                             if ( LOG.isDebugEnabled() )
                             {
-                                LOG.debug( "changesOnly = " + changesOnly );
+                                LOG.debug( I18n.msg( I18n.MSG_05305_CHANGES_ONLY, changesOnly ) );
                             }
 
                             container.getPersistentSearchDecorator().setChangesOnly( changesOnly );
@@ -192,7 +192,7 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
 
                             if ( LOG.isDebugEnabled() )
                             {
-                                LOG.debug( "returnECs = " + returnECs );
+                                LOG.debug( I18n.msg( I18n.MSG_05306_RETURN_ECS, returnECs ) );
                             }
 
                             container.getPersistentSearchDecorator().setReturnECs( returnECs );

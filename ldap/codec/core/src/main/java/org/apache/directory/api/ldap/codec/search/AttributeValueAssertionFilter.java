@@ -211,7 +211,7 @@ public class AttributeValueAssertionFilter extends Filter
                     break;
 
                 default:
-                    throw new IllegalArgumentException( "Unexpected filter type: " + filterType );
+                    throw new IllegalArgumentException( I18n.err( I18n.ERR_05503_UNEXPECTED_FILTER_TYPE, filterType ) );
             }
 
             buffer.put( TLV.getBytes( avaLength ) );

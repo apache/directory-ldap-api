@@ -4868,11 +4868,11 @@ public final class LdapMessageGrammar extends
 
                     if ( tlv.getLength() == 0 )
                     {
-                        String msg = I18n.err( I18n.ERR_04109 );
+                        String msg = I18n.err( I18n.ERR_05001_EMPTY_MATCHING_RULE );
                         LOG.error( msg );
 
                         // It will generate a PROTOCOL_ERROR
-                        throw new DecoderException( I18n.err( I18n.ERR_04109 ) );
+                        throw new DecoderException( msg );
                     }
                     else
                     {

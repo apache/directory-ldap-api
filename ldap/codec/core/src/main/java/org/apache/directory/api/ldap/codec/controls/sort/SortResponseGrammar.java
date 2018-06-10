@@ -27,6 +27,7 @@ import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.grammar.GrammarTransition;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,7 +80,7 @@ public final class SortResponseGrammar extends AbstractGrammar<SortResponseConta
 
                         if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "AttributeType = " + atType );
+                            LOG.debug( I18n.msg( I18n.MSG_05310_ATTRIBUTE_TYPE, atType ) );
                         }
                         
                         container.getControl().setAttributeName( atType );

@@ -292,7 +292,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
 
         if ( entry == null )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04481_ENTRY_NULL_VALUE ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_05002_ENTRY_NULL_VALUE ) );
         }
 
         dnBytes = Strings.getBytesUtf8( entry.getDn().getName() );
@@ -450,7 +450,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( "The PDU buffer size is too small !", boe );
+            throw new EncoderException( I18n.err( I18n.ERR_08212_PDU_BUFFER_TOO_SMALL, boe.getMessage() ) );
         }
     }
 }

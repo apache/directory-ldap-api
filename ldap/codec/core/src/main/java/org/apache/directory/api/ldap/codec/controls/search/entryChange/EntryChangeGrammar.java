@@ -110,7 +110,7 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
 
                                     if ( LOG.isDebugEnabled() )
                                     {
-                                        LOG.debug( "changeType = " + changeType );
+                                        LOG.debug( I18n.msg( I18n.MSG_05300_CHANGE_TYPE, changeType ) );
                                     }
 
                                     container.getEntryChangeDecorator().setChangeType( changeType );
@@ -180,7 +180,7 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
 
                             if ( LOG.isDebugEnabled() )
                             {
-                                LOG.debug( "previousDN = " + previousDn );
+                                LOG.debug( I18n.msg( I18n.MSG_05301_PREVIOUS_DN, previousDn ) );
                             }
 
                             container.getEntryChangeDecorator().setPreviousDn( previousDn );
@@ -205,7 +205,7 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
 
                     if ( LOG.isDebugEnabled() )
                     {
-                        LOG.debug( "changeNumber = " + changeNumber );
+                        LOG.debug( I18n.msg( I18n.MSG_05302_CHANGE_NUMBER, changeNumber ) );
                     }
 
                     container.getEntryChangeDecorator().setChangeNumber( changeNumber );
