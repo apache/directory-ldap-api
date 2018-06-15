@@ -38,7 +38,7 @@ public class SyntaxCheckerDescriptionSchemaParser extends AbstractSchemaParser<S
      */
     public SyntaxCheckerDescriptionSchemaParser()
     {
-        super( SyntaxCheckerDescription.class, I18n.ERR_13716_NULL_OR_EMPTY_STRING_SCHEMA_OBJECT, I18n.ERR_04259, I18n.ERR_04260 );
+        super( SyntaxCheckerDescription.class, I18n.ERR_13410_CANNOT_PARSE_NULL_SC, I18n.ERR_13411_SC_PARSING_FAILURE, I18n.ERR_13412_SC_PARSING_FAILURE );
     }
 
 

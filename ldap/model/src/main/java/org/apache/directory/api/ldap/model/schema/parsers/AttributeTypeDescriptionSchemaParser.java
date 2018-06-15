@@ -38,8 +38,8 @@ public class AttributeTypeDescriptionSchemaParser extends AbstractSchemaParser<A
      */
     public AttributeTypeDescriptionSchemaParser()
     {
-        super( AttributeType.class, I18n.ERR_04227, I18n.ERR_04228, I18n.ERR_04229 );
-
+        super( AttributeType.class, I18n.ERR_13830_CANNOT_PARSE_NULL_ATTR_TYPE, I18n.ERR_13831_ATTRIBUTE_TYPE_PARSING_FAILURE, 
+            I18n.ERR_13832_ATTRIBUTE_TYPE_DESC_PARSE_FAILURE );
     }
 
 

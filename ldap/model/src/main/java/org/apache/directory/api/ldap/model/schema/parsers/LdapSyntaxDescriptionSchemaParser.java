@@ -39,7 +39,7 @@ public class LdapSyntaxDescriptionSchemaParser extends AbstractSchemaParser<Ldap
      */
     public LdapSyntaxDescriptionSchemaParser()
     {
-        super( LdapSyntax.class, I18n.ERR_04239, I18n.ERR_04240, I18n.ERR_04241 );
+        super( LdapSyntax.class, I18n.ERR_13392_CANNOT_PARSE_NULL_SYNTAX, I18n.ERR_13393_SYNTAX_PARSING_FAILURE, I18n.ERR_13394_SYNTAX_DESC_PARSING_FAILURE );
     }
 
 

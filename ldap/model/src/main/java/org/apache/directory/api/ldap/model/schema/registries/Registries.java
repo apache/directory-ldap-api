@@ -1042,7 +1042,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         {
             // Ok, no comparator, this is an error
             Throwable error = new LdapSchemaViolationException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                I18n.ERR_04296, matchingRule.getOid() ) );
+                I18n.ERR_13413_MR_DOES_NOT_HAVE_A_COMP, matchingRule.getOid() ) );
             errors.add( error );
         }
     }
@@ -1119,7 +1119,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 // This is an error. if the AT does not have a Syntax,
                 // then it must have a superior, which syntax is get from.
                 Throwable error = new LdapSchemaViolationException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                    I18n.ERR_04298, attributeType.getOid() ) );
+                    I18n.ERR_13414_AT_DOES_NOT_HAVE_A_SUPERIOR_NOR_SYNTAX, attributeType.getOid() ) );
                 errors.add( error );
             }
         }

@@ -23,6 +23,8 @@ package org.apache.directory.ldap.client.api.search;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.api.i18n.I18n;
+
 
 /**
  * An implementation of the Filter interface for the AND and OR Filters
@@ -124,7 +126,7 @@ import java.util.List;
     {
         if ( filters.isEmpty() )
         {
-            throw new IllegalStateException( "at least one filter required" );
+            throw new IllegalStateException( I18n.err( I18n.ERR_04166_ONE_FILTER_REQUIRED ) );
         }
 
         builder.append( "(" ).append( operator.operator() );

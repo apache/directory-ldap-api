@@ -38,7 +38,7 @@ public class NormalizerDescriptionSchemaParser extends AbstractSchemaParser<Norm
      */
     public NormalizerDescriptionSchemaParser()
     {
-        super( NormalizerDescription.class, I18n.ERR_04251, I18n.ERR_04252, I18n.ERR_04253 );
+        super( NormalizerDescription.class, I18n.ERR_13404_CANNOT_PARSE_NULL_NORM, I18n.ERR_13405_NORM_PARSING_FAILURE, I18n.ERR_13406_NORM_DESC_PARSING_FAILURE );
     }
 
 

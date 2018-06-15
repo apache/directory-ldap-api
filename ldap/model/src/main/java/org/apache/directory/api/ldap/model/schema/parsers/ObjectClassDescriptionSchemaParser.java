@@ -39,7 +39,7 @@ public class ObjectClassDescriptionSchemaParser extends AbstractSchemaParser<Obj
      */
     public ObjectClassDescriptionSchemaParser()
     {
-        super( ObjectClass.class, I18n.ERR_04254, I18n.ERR_04255, I18n.ERR_04256 );
+        super( ObjectClass.class, I18n.ERR_13407_CANNOT_PARSE_NULL_OC, I18n.ERR_13408_OC_PARSING_FAILURE, I18n.ERR_13409_OC_DESC_PARSING_FAILURE );
     }
 
 

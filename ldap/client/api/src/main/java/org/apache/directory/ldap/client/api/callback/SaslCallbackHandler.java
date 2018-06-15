@@ -147,8 +147,7 @@ public class SaslCallbackHandler implements CallbackHandler
                 if ( !foundRealmName )
                 {
                     throw new IOException(
-                        I18n.format(
-                            "Cannot match ''java.naming.security.sasl.realm'' property value ''{0}'' with choices ''{1}'' in RealmChoiceCallback.",
+                        I18n.err( I18n.ERR_04171_CANNOT_PARSE_MATCHED_DN,
                             saslReq.getRealmName(), getRealmNamesAsString( realmNames ) ) );
                 }
             }

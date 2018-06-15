@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
@@ -129,7 +130,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     {
         if ( connection == null )
         {
-            throw new InvalidConnectionException( "Cannot connect on the server, the connection is null" );
+            throw new InvalidConnectionException( I18n.err( I18n.ERR_04104_NULL_CONNECTION_CANNOT_CONNECT ) );
         }
 
         this.connection = connection;
@@ -222,7 +223,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     {
         if ( !connection.isAuthenticated() )
         {
-            throw new IllegalArgumentException( "connection is not authenticated" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04105_CONNECTION_NOT_AUTHENTICATED ) );
         }
 
         this.connection = connection;

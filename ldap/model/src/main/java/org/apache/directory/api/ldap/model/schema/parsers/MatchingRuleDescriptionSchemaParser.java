@@ -38,7 +38,7 @@ public class MatchingRuleDescriptionSchemaParser extends AbstractSchemaParser<Ma
      */
     public MatchingRuleDescriptionSchemaParser()
     {
-        super( MatchingRule.class, I18n.ERR_04242, I18n.ERR_04243, I18n.ERR_04244 );
+        super( MatchingRule.class, I18n.ERR_13395_CANNOT_PARSE_NULL_MR, I18n.ERR_13396_MR_PARSING_FAILURE, I18n.ERR_13397_MR_DESC_PARSING_FAILURE );
     }
 
 

@@ -22,6 +22,7 @@ package org.apache.directory.ldap.client.api;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Oid;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequest;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.BindRequest;
@@ -48,7 +49,7 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
         }
         catch ( DecoderException de )
         {
-            throw new IllegalStateException( "StartTlsRequest.EXTENSION_OID is not a valid oid... This cant happen", de );
+            throw new IllegalStateException( I18n.err( I18n.ERR_04161_START_TLS_EXT_NOT_VALID_OID ), de );
         }
     }
 
