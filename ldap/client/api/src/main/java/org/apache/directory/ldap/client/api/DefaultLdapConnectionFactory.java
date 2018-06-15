@@ -22,6 +22,7 @@ package org.apache.directory.ldap.client.api;
 
 import java.io.IOException;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.slf4j.Logger;
@@ -68,7 +69,7 @@ public class DefaultLdapConnectionFactory implements LdapConnectionFactory
         }
         catch ( LdapException e )
         {
-            LOG.error( "unable to bind connection: {}", e.getMessage() );
+            LOG.error( I18n.err( I18n.ERR_04102_UNABLE_TO_BIND_CONNECTION, e.getMessage() ) );
             
             if ( LOG.isDebugEnabled() )
             {
@@ -81,7 +82,7 @@ public class DefaultLdapConnectionFactory implements LdapConnectionFactory
             }
             catch ( IOException ioe )
             {
-                LOG.error( "unable to close failed bind connection: {}", e.getMessage(), ioe );
+                LOG.error( I18n.err( I18n.ERR_04103_UNABLE_TO_CLOSE_FAILED_CONNECTION, e.getMessage() ), ioe );
 
                 if ( LOG.isDebugEnabled() )
                 {

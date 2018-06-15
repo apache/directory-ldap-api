@@ -26,6 +26,7 @@ import java.lang.reflect.Constructor;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.PooledObjectFactory;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.slf4j.Logger;
@@ -95,7 +96,7 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PooledObj
         }
         catch ( LdapException e )
         {
-            LOG.error( "unable to unbind connection: {}", e.getMessage() );
+            LOG.error( I18n.err( I18n.ERR_04100_UNABLE_TO_UNBIND, e.getMessage() ) );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -147,7 +148,7 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PooledObj
         }
         catch ( Exception e )
         {
-            throw new IllegalArgumentException( "unable to create LdapConnectionFactory" + e.getMessage(), e );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04101_CANNOT_CREATE_LDAP_CONNECTION_FACTORY, e.getMessage(), e ) );
         }
     }
 

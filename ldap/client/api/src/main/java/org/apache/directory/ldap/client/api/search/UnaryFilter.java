@@ -19,6 +19,7 @@
  */
 package org.apache.directory.ldap.client.api.search;
 
+import org.apache.directory.api.i18n.I18n;
 
 /**
  * Creates a NOT filter
@@ -73,7 +74,7 @@ package org.apache.directory.ldap.client.api.search;
     {
         if ( filter == null )
         {
-            throw new IllegalStateException( "filter not set" );
+            throw new IllegalStateException( I18n.err( I18n.ERR_04167_FILTER_NOT_SET ) );
         }
 
         builder.append( "(" ).append( FilterOperator.NOT.operator() );

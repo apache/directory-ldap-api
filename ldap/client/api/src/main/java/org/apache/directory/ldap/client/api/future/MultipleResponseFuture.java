@@ -24,6 +24,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.message.Response;
 import org.apache.directory.ldap.client.api.LdapConnection;
 
@@ -146,7 +147,7 @@ public abstract class MultipleResponseFuture<R extends Response> implements Resp
     @Override
     public boolean isDone()
     {
-        throw new UnsupportedOperationException( "Operation not supported" );
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_04106_OPERATION_NOT_SUPPORTED ) );
     }
 
 

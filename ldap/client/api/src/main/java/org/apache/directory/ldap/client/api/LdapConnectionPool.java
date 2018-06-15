@@ -24,6 +24,7 @@ package org.apache.directory.ldap.client.api;
 import org.apache.commons.pool2.PooledObjectFactory;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.slf4j.Logger;
@@ -137,7 +138,7 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
             // wrap in runtime, but this should NEVER happen per published 
             // contract as it only throws what the makeObject throws and our 
             // PoolableLdapConnectionFactory only throws LdapException
-            LOG.error( "An unexpected exception was thrown: ", e );
+            LOG.error( I18n.err( I18n.ERR_04107_UNEXPECTED_THROWN_EXCEPTION, e.getMessage() ), e );
             throw new RuntimeException( e );
         }
 
@@ -179,7 +180,7 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
             // wrap in runtime, but this should NEVER happen as it only throws 
             // what the passivateObject throws and our 
             // PoolableLdapConnectionFactory only throws LdapException
-            LOG.error( "An unexpected exception was thrown: ", e );
+            LOG.error( I18n.err( I18n.ERR_04107_UNEXPECTED_THROWN_EXCEPTION, e.getMessage() ), e );
             throw new RuntimeException( e );
         }
     }

@@ -25,6 +25,8 @@ import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
+import org.apache.directory.api.i18n.I18n;
+
 
 /**
  * A buffer for storing sensitive information like passwords.  It provides 
@@ -52,7 +54,7 @@ public final class MemoryClearingBuffer
         {
             if ( this.originalChars == null )
             {
-                throw new UnsupportedOperationException( "trim and lowerCase only applicable to char[]" );
+                throw new UnsupportedOperationException( I18n.err( I18n.ERR_04168_TRIM_LOWERCASE_FOR_CHAR_ARRAY ) );
             }
 
             char[] working = Arrays.copyOf( originalChars, originalChars.length );

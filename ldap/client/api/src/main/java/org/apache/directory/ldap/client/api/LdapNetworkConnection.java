@@ -248,9 +248,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     private HandshakeFuture handshakeFuture;
     
     // ~~~~~~~~~~~~~~~~~ common error messages ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    static final String TIME_OUT_ERROR = "TimeOut occurred";
+    static final String TIME_OUT_ERROR = I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED );
 
-    static final String NO_RESPONSE_ERROR = "The response queue has been emptied, no response was found.";
+    static final String NO_RESPONSE_ERROR = I18n.err( I18n.ERR_04169_RESPONSE_QUEUE_EMPTIED );
     
    //------------------------- The constructors --------------------------//
     /**
@@ -561,12 +561,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( ldapSession == null )
         {
-            throw new InvalidConnectionException( "Cannot connect on the server, the connection is null" );
+            throw new InvalidConnectionException( I18n.err( I18n.ERR_04104_NULL_CONNECTION_CANNOT_CONNECT ) );
         }
 
         if ( !connected.get() )
         {
-            throw new InvalidConnectionException( "Cannot connect on the server, the connection is invalid" );
+            throw new InvalidConnectionException( I18n.err( I18n.ERR_04108_INVALID_CONNECTION ) );
         }
     }
 
@@ -682,12 +682,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 
                     if ( !isSecured )
                     {
-                        throw new LdapOperationException( ResultCodeEnum.OTHER, I18n.err( I18n.ERR_4100_TLS_HANDSHAKE_ERROR ) );
+                        throw new LdapOperationException( ResultCodeEnum.OTHER, I18n.err( I18n.ERR_04120_TLS_HANDSHAKE_ERROR ) );
                     }
                 }
                 catch ( Exception e )
                 {
-                    String msg = "Failed to initialize the SSL context";
+                    String msg = I18n.err( I18n.ERR_04122_SSL_CONTEXT_INIT_FAILURE );
                     LOG.error( msg, e );
                     throw new LdapException( msg, e );
                 }
@@ -771,7 +771,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( connectionFuture == null )
         {
             connector.dispose();
-            throw new InvalidConnectionException( "Cannot connect" );
+            throw new InvalidConnectionException( I18n.err( I18n.ERR_04109_CANNOT_CONNECT ) );
         }
 
         boolean isConnected = connectionFuture.isConnected();
@@ -792,21 +792,15 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             if ( e != null )
             {
-                StringBuilder message = new StringBuilder( "Cannot connect to the server: " );
-
                 // Special case for UnresolvedAddressException
                 // (most of the time no message is associated with this exception)
                 if ( ( e instanceof UnresolvedAddressException ) && ( e.getMessage() == null ) )
                 {
-                    message.append( "Hostname '" );
-                    message.append( config.getLdapHost() );
-                    message.append( "' could not be resolved." );
-                    throw new InvalidConnectionException( message.toString(), e );
+                    throw new InvalidConnectionException( I18n.err( I18n.ERR_04121_CANNOT_RESOLVE_HOSTNAME, config.getLdapHost() ), e );
                 }
 
                 // Default case
-                message.append( e.getMessage() );
-                throw new InvalidConnectionException( message.toString(), e );
+                throw new InvalidConnectionException( I18n.err( I18n.ERR_04110_CANNOT_CONNECT_TO_SERVER, e.getMessage() ), e );
             }
 
             return false;
@@ -873,7 +867,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     }
                     catch ( InterruptedException e )
                     {
-                        LOG.error( I18n.err( I18n.ERR_03202_ERROR_PROCESSING_NOD, responseFuture ), e );
+                        LOG.error( I18n.err( I18n.ERR_04113_ERROR_PROCESSING_NOD, responseFuture ), e );
                     }
 
                     futureMap.remove( messageId.get() );
@@ -966,7 +960,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( entry == null )
         {
-            String msg = "Cannot add an empty entry";
+            String msg = I18n.err( I18n.ERR_04123_CANNOT_ADD_EMPTY_ENTRY );
             
             if ( LOG.isDebugEnabled() )
             {
@@ -1018,7 +1012,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( addRequest == null )
         {
-            String msg = "Cannot process a null addRequest";
+            String msg = I18n.err( I18n.ERR_04124_CANNOT_PROCESS_NULL_ADD_REQUEST );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -1030,7 +1024,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         if ( addRequest.getEntry() == null )
         {
-            String msg = "Cannot add a null entry";
+            String msg = I18n.err( I18n.ERR_04125_CANNOT_ADD_NULL_ENTRY );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -1054,7 +1048,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 // We didn't received anything : this is an error
                 if ( LOG.isErrorEnabled() )
                 {
-                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Add" ) );
+                    LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Add" ) );
                 }
                 
                 throw new LdapException( TIME_OUT_ERROR );
@@ -1115,7 +1109,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         if ( addRequest.getEntry() == null )
         {
-            String msg = "Cannot add a null entry";
+            String msg = I18n.err( I18n.ERR_04125_CANNOT_ADD_NULL_ENTRY );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -1154,7 +1148,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( messageId < 0 )
         {
-            String msg = "Cannot abandon a negative message ID";
+            String msg = I18n.err( I18n.ERR_04126_CANNOT_ABANDON_NEG_MSG_ID );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -1179,7 +1173,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( abandonRequest == null )
         {
-            String msg = "Cannot process a null abandonRequest";
+            String msg = I18n.err( I18n.ERR_04127_CANNOT_PROCESS_NULL_ABANDON_REQ );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -1423,7 +1417,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( bindRequest == null )
         {
-            String msg = "Cannot process a null bindRequest";
+            String msg = I18n.err( I18n.ERR_04128_CANNOT_PROCESS_NULL_BIND_REQ );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -1447,7 +1441,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 // We didn't received anything : this is an error
                 if ( LOG.isErrorEnabled() )
                 { 
-                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Bind" ) );
+                    LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Bind" ) );
                 }
                 
                 throw new LdapException( TIME_OUT_ERROR );
@@ -1509,7 +1503,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( bindRequest == null )
         {
-            String msg = "Cannot process a null bindRequest";
+            String msg = I18n.err( I18n.ERR_04128_CANNOT_PROCESS_NULL_BIND_REQ );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -1605,7 +1599,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 // We didn't received anything : this is an error
                 if ( LOG.isErrorEnabled() )
                 { 
-                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Bind" ) );
+                    LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Bind" ) );
                 }
                 
                 throw new LdapException( TIME_OUT_ERROR );
@@ -1678,7 +1672,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 // We didn't received anything : this is an error
                 if ( LOG.isErrorEnabled() )
                 { 
-                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Bind" ) );
+                    LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Bind" ) );
                 }
                 
                 throw new LdapException( TIME_OUT_ERROR );
@@ -1786,7 +1780,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 // We didn't received anything : this is an error
                 if ( LOG.isErrorEnabled() )
                 { 
-                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Bind" ) );
+                    LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Bind" ) );
                 }
                 
                 throw new LdapException( TIME_OUT_ERROR );
@@ -1872,7 +1866,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 // We didn't received anything : this is an error
                 if ( LOG.isErrorEnabled() )
                 { 
-                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Bind" ) );
+                    LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Bind" ) );
                 }
                 
                 throw new LdapException( TIME_OUT_ERROR );
@@ -1944,7 +1938,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 // We didn't received anything : this is an error
                 if ( LOG.isErrorEnabled() )
                 { 
-                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Bind" ) );
+                    LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Bind" ) );
                 }
                 
                 throw new LdapException( TIME_OUT_ERROR );
@@ -2016,7 +2010,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 // We didn't received anything : this is an error
                 if ( LOG.isErrorEnabled() )
                 { 
-                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Bind" ) );
+                    LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Bind" ) );
                 }
                 
                 throw new LdapException( TIME_OUT_ERROR );
@@ -2140,7 +2134,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 LOG.debug( I18n.msg( I18n.MSG_03239_NULL_DN_SEARCH ) );
             }
             
-            throw new IllegalArgumentException( "The base Dn cannot be null" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04129_NULL_BASE_DN ) );
         }
 
         // Create a new SearchRequest object
@@ -2208,7 +2202,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( searchRequest == null )
         {
-            String msg = "Cannot process a null searchRequest";
+            String msg = I18n.err( I18n.ERR_04130_CANNOT_PROCESS_NULL_SEARCH_REQ );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -2220,7 +2214,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         if ( searchRequest.getBase() == null )
         {
-            String msg = "Cannot process a searchRequest which base DN is null";
+            String msg = I18n.err( I18n.ERR_04131_CANNOT_PROCESS_SEARCH_NULL_DN );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -2276,7 +2270,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( searchRequest == null )
         {
-            String msg = "Cannot process a null searchRequest";
+            String msg = I18n.err( I18n.ERR_04130_CANNOT_PROCESS_NULL_SEARCH_REQ );
             
             if ( LOG.isDebugEnabled() )
             {
@@ -2794,7 +2788,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 break;
 
             default:
-                throw new IllegalStateException( "Unexpected response type " + response.getType() );
+                throw new IllegalStateException( I18n.err( I18n.ERR_04132_UNEXPECTED_RESPONSE_TYPE, response.getType() ) );
         }
     }
 
@@ -2812,7 +2806,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 LOG.debug( I18n.msg( I18n.MSG_03241_NULL_ENTRY_MODIFY ) );
             }
             
-            throw new IllegalArgumentException( "Entry to be modified cannot be null" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04133_NULL_MODIFIED_ENTRY ) );
         }
 
         ModifyRequest modReq = new ModifyRequestImpl();
@@ -2844,12 +2838,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 LOG.debug( I18n.msg( I18n.MSG_03240_NULL_DN_MODIFY ) );
             }
             
-            throw new IllegalArgumentException( "The Dn to be modified cannot be null" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04134_NULL_MODIFIED_DN ) );
         }
 
         if ( ( modifications == null ) || ( modifications.length == 0 ) )
         {
-            String msg = "Cannot process a ModifyRequest without any modification";
+            String msg = I18n.err( I18n.ERR_04135_CANNOT_PROCESS_NO_MODIFICATION_MOD );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -2891,7 +2885,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( modRequest == null )
         {
-            String msg = "Cannot process a null modifyRequest";
+            String msg = I18n.err( I18n.ERR_04136_CANNOT_PROCESS_NULL_MOD_REQ );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -2915,7 +2909,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 // We didn't received anything : this is an error
                 if ( LOG.isErrorEnabled() )
                 {
-                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Modify" ) );
+                    LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Modify" ) );
                 }
                 
                 throw new LdapException( TIME_OUT_ERROR );
@@ -2970,7 +2964,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( modRequest == null )
         {
-            String msg = "Cannot process a null modifyRequest";
+            String msg = I18n.err( I18n.ERR_04136_CANNOT_PROCESS_NULL_MOD_REQ );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -2982,7 +2976,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         if ( modRequest.getName() == null )
         {
-            String msg = "Cannot process a modifyRequest which DN is null";
+            String msg = I18n.err( I18n.ERR_04137_CANNOT_PROCESS_MOD_NULL_DN );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -3039,7 +3033,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( entryDn == null )
         {
-            String msg = "Cannot process a rename of a null Dn";
+            String msg = I18n.err( I18n.ERR_04138_CANNOT_PROCESS_RENAME_NULL_DN );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -3051,7 +3045,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         if ( newRdn == null )
         {
-            String msg = "Cannot process a rename with a null Rdn";
+            String msg = I18n.err( I18n.ERR_04139_CANNOT_PROCESS_RENAME_NULL_RDN );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -3081,7 +3075,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( entryDn == null )
         {
-            String msg = "Cannot process a rename of a null Dn";
+            String msg = I18n.err( I18n.ERR_04138_CANNOT_PROCESS_RENAME_NULL_DN );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -3093,7 +3087,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         if ( newRdn == null )
         {
-            String msg = "Cannot process a rename with a null Rdn";
+            String msg = I18n.err( I18n.ERR_04139_CANNOT_PROCESS_RENAME_NULL_RDN );
             
             if ( LOG.isDebugEnabled() )
             {
@@ -3122,7 +3116,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( entryDn == null )
         {
-            String msg = "Cannot process a move of a null Dn";
+            String msg = I18n.err( I18n.ERR_04140_CANNOT_PROCESS_MOVE_NULL_DN );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -3134,7 +3128,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         if ( newSuperiorDn == null )
         {
-            String msg = "Cannot process a move to a null newSuperior";
+            String msg = I18n.err( I18n.ERR_04141_CANNOT_PROCESS_MOVE_NULL_SUPERIOR );
             
             if ( LOG.isDebugEnabled() )
             {
@@ -3164,7 +3158,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( entryDn == null )
         {
-            String msg = "Cannot process a move of a null Dn";
+            String msg = I18n.err( I18n.ERR_04140_CANNOT_PROCESS_MOVE_NULL_DN );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -3176,7 +3170,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         if ( newSuperiorDn == null )
         {
-            String msg = "Cannot process a move to a null newSuperior";
+            String msg = I18n.err( I18n.ERR_04141_CANNOT_PROCESS_MOVE_NULL_SUPERIOR );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -3227,22 +3221,22 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         // Check the parameters first
         if ( entryDn == null )
         {
-            throw new IllegalArgumentException( "The entry Dn must not be null" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04142_NULL_ENTRY_DN ) );
         }
 
         if ( entryDn.isRootDse() )
         {
-            throw new IllegalArgumentException( "The RootDSE cannot be moved" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04143_CANNOT_MOVE_ROOT_DSE ) );
         }
 
         if ( newDn == null )
         {
-            throw new IllegalArgumentException( "The new Dn must not be null" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04144_NULL_NEW_DN ) );
         }
 
         if ( newDn.isRootDse() )
         {
-            throw new IllegalArgumentException( "The RootDSE cannot be the target" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04145_ROOT_DSE_CANNOT_BE_TARGET ) );
         }
 
         // Create the request
@@ -3287,7 +3281,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( modDnRequest == null )
         {
-            String msg = "Cannot process a null modDnRequest";
+            String msg = I18n.err( I18n.ERR_04145_ROOT_DSE_CANNOT_BE_TARGET );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -3311,7 +3305,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 // We didn't received anything : this is an error
                 if ( LOG.isErrorEnabled() )
                 {
-                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "ModifyDn" ) );
+                    LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "ModifyDn" ) );
                 }
                 
                 throw new LdapException( TIME_OUT_ERROR );
@@ -3360,7 +3354,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( modDnRequest == null )
         {
-            String msg = "Cannot process a null modDnRequest";
+            String msg = I18n.err( I18n.ERR_04145_ROOT_DSE_CANNOT_BE_TARGET );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -3372,7 +3366,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         if ( modDnRequest.getName() == null )
         {
-            String msg = "Cannot process a modifyRequest which DN is null";
+            String msg = I18n.err( I18n.ERR_04137_CANNOT_PROCESS_MOD_NULL_DN );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -3384,7 +3378,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         if ( ( modDnRequest.getNewSuperior() == null ) && ( modDnRequest.getNewRdn() == null ) )
         {
-            String msg = "Cannot process a modifyRequest which new superior and new Rdn are null";
+            String msg = I18n.err( I18n.ERR_04147_CANNOT_PROCESS_MOD_NULL_DN_SUP );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -3459,8 +3453,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         }
         else
         {
-            String msg = "The subtreeDelete control (1.2.840.113556.1.4.805) is not supported by the server\n"
-                + " The deletion has been aborted";
+            String msg = I18n.err( I18n.ERR_04148_SUBTREE_CONTROL_NOT_SUPPORTED );
             LOG.error( msg );
             throw new LdapException( msg );
         }
@@ -3491,8 +3484,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             }
             else
             {
-                String msg = "The subtreeDelete control (1.2.840.113556.1.4.805) is not supported by the server\n"
-                    + " The deletion has been aborted";
+                String msg = I18n.err( I18n.ERR_04148_SUBTREE_CONTROL_NOT_SUPPORTED );
                 LOG.error( msg );
                 throw new LdapException( msg );
             }
@@ -3513,7 +3505,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( deleteRequest == null )
         {
-            String msg = "Cannot process a null deleteRequest";
+            String msg = I18n.err( I18n.ERR_04149_CANNOT_PROCESS_NULL_DEL_REQ );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -3537,7 +3529,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 // We didn't received anything : this is an error
                 if ( LOG.isErrorEnabled() )
                 {
-                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Delete" ) );
+                    LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Delete" ) );
                 }
                 
                 throw new LdapException( TIME_OUT_ERROR );
@@ -3586,7 +3578,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( deleteRequest == null )
         {
-            String msg = "Cannot process a null deleteRequest";
+            String msg = I18n.err( I18n.ERR_04149_CANNOT_PROCESS_NULL_DEL_REQ );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -3598,7 +3590,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         if ( deleteRequest.getName() == null )
         {
-            String msg = "Cannot process a deleteRequest which DN is null";
+            String msg = I18n.err( I18n.ERR_04150_CANNOT_PROCESS_NULL_DEL_NULL_DN );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -3725,7 +3717,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( compareRequest == null )
         {
-            String msg = "Cannot process a null compareRequest";
+            String msg = I18n.err( I18n.ERR_04151_CANNOT_PROCESS_NULL_COMP_REQ );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -3749,7 +3741,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 // We didn't received anything : this is an error
                 if ( LOG.isErrorEnabled() )
                 {
-                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Compare" ) );
+                    LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Compare" ) );
                 }
                 
                 throw new LdapException( TIME_OUT_ERROR );
@@ -3798,7 +3790,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( compareRequest == null )
         {
-            String msg = "Cannot process a null compareRequest";
+            String msg = I18n.err( I18n.ERR_04151_CANNOT_PROCESS_NULL_COMP_REQ );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -3810,7 +3802,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         if ( compareRequest.getName() == null )
         {
-            String msg = "Cannot process a compareRequest which DN is null";
+            String msg = I18n.err( I18n.ERR_04152_CANNOT_PROCESS_NULL_DN_COMP_REQ );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -3862,7 +3854,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         }
         catch ( DecoderException e )
         {
-            String msg = "Failed to decode the OID " + oid;
+            String msg = I18n.err( I18n.ERR_04153_OID_DECODING_FAILURE, oid );
             LOG.error( msg );
             throw new LdapException( msg, e );
         }
@@ -3899,7 +3891,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( extendedRequest == null )
         {
-            String msg = "Cannot process a null extendedRequest";
+            String msg = I18n.err( I18n.ERR_04154_CANNOT_PROCESS_NULL_EXT_REQ );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -3924,7 +3916,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 // We didn't received anything : this is an error
                 if ( LOG.isErrorEnabled() )
                 {
-                    LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Extended" ) );
+                    LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Extended" ) );
                 }
                 
                 throw new LdapException( TIME_OUT_ERROR );
@@ -3980,7 +3972,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( extendedRequest == null )
         {
-            String msg = "Cannot process a null extendedRequest";
+            String msg = I18n.err( I18n.ERR_04154_CANNOT_PROCESS_NULL_EXT_REQ );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -4251,11 +4243,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             if ( !tmp.getErrors().isEmpty() && loader.isStrict() )
             {
-                String msg = I18n.err( I18n.ERR_03204_ERROR_LOADING_SCHEMA );
+                String msg = I18n.err( I18n.ERR_04115_ERROR_LOADING_SCHEMA );
                 
                 if ( LOG.isErrorEnabled() )
                 {
-                    LOG.error( "{} {}", msg, Strings.listToString( tmp.getErrors() ) );
+                    LOG.error( I18n.err( I18n.ERR_05114_ERROR_MESSAGE, msg, Strings.listToString( tmp.getErrors() ) ) );
                 }
                 
                 throw new LdapException( msg );
@@ -4275,7 +4267,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         }
         catch ( Exception e )
         {
-            LOG.error( I18n.err( I18n.ERR_03205_FAIL_LOAD_SCHEMA ), e );
+            LOG.error( I18n.err( I18n.ERR_04116_FAIL_LOAD_SCHEMA ), e );
             throw new LdapException( e );
         }
     }
@@ -4299,7 +4291,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             
             if ( schemaManager == null )
             {
-                throw new LdapException( "Cannot load the schema" );
+                throw new LdapException( I18n.err( I18n.ERR_04116_FAIL_LOAD_SCHEMA ) );
             }
 
             OpenLdapSchemaParser olsp = new OpenLdapSchemaParser();
@@ -4328,7 +4320,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         }
         catch ( Exception e )
         {
-            LOG.error( I18n.err( I18n.ERR_03206_FAIL_LOAD_SCHEMA_FILE, schemaFile.getAbsolutePath() ) );
+            LOG.error( I18n.err( I18n.ERR_04117_FAIL_LOAD_SCHEMA_FILE, schemaFile.getAbsolutePath() ) );
             throw new LdapException( e );
         }
     }
@@ -4389,12 +4381,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             }
             else
             {
-                throw new LdapException( "Search for root DSE returned no entry" );
+                throw new LdapException( I18n.err( I18n.ERR_04155_ROOT_DSE_SEARCH_FAILED ) );
             }
         }
         catch ( Exception e )
         {
-            String msg = "Failed to fetch the RootDSE";
+            String msg = I18n.err( I18n.ERR_04156_FAILED_FETCHING_ROOT_DSE );
             LOG.error( msg );
             throw new LdapException( msg, e );
         }
@@ -4408,7 +4400,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 }
                 catch ( Exception e )
                 {
-                    LOG.error( I18n.err( I18n.ERR_03201_CURSOR_CLOSE_FAIL ), e );
+                    LOG.error( I18n.err( I18n.ERR_04114_CURSOR_CLOSE_FAIL ), e );
                 }
             }
         }
@@ -4597,7 +4589,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             if ( config.isUseSsl() )
             {
-                throw new LdapException( "Cannot use TLS when the useSsl flag is set true in the configuration" );
+                throw new LdapException( I18n.err( I18n.ERR_04157_CANNOT_USE_TLS_WITH_SSL_FLAG ) );
             }
 
             // try to connect, if we aren't already connected.
@@ -4697,13 +4689,13 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 
                 if ( !isSecured )
                 {
-                    throw new LdapOperationException( ResultCodeEnum.OTHER, I18n.err( I18n.ERR_4100_TLS_HANDSHAKE_ERROR ) );
+                    throw new LdapOperationException( ResultCodeEnum.OTHER, I18n.err( I18n.ERR_04120_TLS_HANDSHAKE_ERROR ) );
                 }
             }
         }
         catch ( Exception e )
         {
-            String msg = "Failed to initialize the SSL context";
+            String msg = I18n.err( I18n.ERR_04122_SSL_CONTEXT_INIT_FAILURE );
             LOG.error( msg, e );
             throw new LdapException( msg, e );
         }
@@ -4789,7 +4781,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             // for the requested mechanism. We then produce an Exception
             if ( sc == null )
             {
-                String message = "Cannot find a SASL factory for the " + bindRequest.getSaslMechanism() + " mechanism";
+                String message = I18n.err( I18n.ERR_04158_CANNOT_FIND_SASL_FACTORY_FOR_MECH, bindRequest.getSaslMechanism() );
                 LOG.error( message );
                 throw new LdapException( message );
             }
@@ -4812,7 +4804,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     // We didn't received anything : this is an error
                     if ( LOG.isErrorEnabled() )
                     { 
-                        LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Bind" ) );
+                        LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Bind" ) );
                     }
                     
                     throw new LdapException( TIME_OUT_ERROR );
@@ -4841,7 +4833,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     // We didn't received anything : this is an error
                     if ( LOG.isErrorEnabled() )
                     {
-                        LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Bind" ) );
+                        LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Bind" ) );
                     }
                     
                     throw new LdapException( TIME_OUT_ERROR );
@@ -4859,7 +4851,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 {
                     if ( response != null )
                     {
-                        throw new LdapException( "protocol error" );
+                        throw new LdapException( I18n.err( I18n.ERR_04159_PROTOCOL_ERROR ) );
                     }
                 }
                 else
@@ -4879,7 +4871,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                         // We didn't received anything : this is an error
                         if ( LOG.isErrorEnabled() )
                         {
-                            LOG.error( I18n.err( I18n.ERR_03203_OP_FAILED_TIMEOUT, "Bind" ) );
+                            LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Bind" ) );
                         }
                         
                         throw new LdapException( TIME_OUT_ERROR );
@@ -4931,7 +4923,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 // We didn't received anything : this is an error
                 if ( LOG.isErrorEnabled() )
                 {
-                    LOG.error( I18n.err( I18n.ERR_03207_SOMETHING_WRONG_HAPPENED ) );
+                    LOG.error( I18n.err( I18n.ERR_04118_SOMETHING_WRONG_HAPPENED ) );
                 }
 
                 Exception exception = ( Exception ) ldapSession.removeAttribute( EXCEPTION_KEY );
@@ -4948,7 +4940,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     }
                 }
 
-                throw new InvalidConnectionException( "Error while sending some message : the session has been closed" );
+                throw new InvalidConnectionException( I18n.err( I18n.ERR_04160_SESSION_HAS_BEEN_CLOSED ) );
             }
 
             localTimeout -= 100;
@@ -4956,7 +4948,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         if ( LOG.isErrorEnabled() )
         {
-            LOG.error( I18n.err( I18n.ERR_03208_TIMEOUT ) );
+            LOG.error( I18n.err( I18n.ERR_04119_TIMEOUT ) );
         }
         
         throw new LdapException( TIME_OUT_ERROR );

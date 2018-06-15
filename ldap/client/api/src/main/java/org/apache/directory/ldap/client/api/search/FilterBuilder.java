@@ -19,6 +19,7 @@
  */
 package org.apache.directory.ldap.client.api.search;
 
+import org.apache.directory.api.i18n.I18n;
 
 /**
  * A builder for constructing well formed search filters according to
@@ -346,7 +347,7 @@ public class FilterBuilder
     {
         if ( ( parts == null ) || ( parts.length == 0 ) )
         {
-            throw new IllegalArgumentException( "An 'initial' part is needed" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04162_INITIAL_PART_NEEDED ) );
         }
 
         return new FilterBuilder( SubstringFilter.startsWith( attribute, parts ) );
@@ -379,7 +380,7 @@ public class FilterBuilder
     {
         if ( ( parts == null ) || ( parts.length == 0 ) )
         {
-            throw new IllegalArgumentException( "At a 'final' part is needed" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04163_FINAL_PART_NEEDED ) );
         }
 
         return new FilterBuilder( SubstringFilter.endsWith( attribute, parts ) );
@@ -412,7 +413,7 @@ public class FilterBuilder
     {
         if ( ( parts == null ) || ( parts.length == 0 ) )
         {
-            throw new IllegalArgumentException( "At least one 'any' part is needed" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04164_ANY_PART_NEEDED ) );
         }
 
         return new FilterBuilder( SubstringFilter.contains( attribute, parts ) );
@@ -455,7 +456,7 @@ public class FilterBuilder
     {
         if ( ( parts == null ) || ( parts.length == 0 ) )
         {
-            throw new IllegalArgumentException( "At least one if 'initial', 'any' or 'final' part is needed" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04165_INITIAL_ANY_FINAL_PART_NEEDED ) );
         }
 
         return new FilterBuilder( SubstringFilter.substring( attribute, parts ) );
