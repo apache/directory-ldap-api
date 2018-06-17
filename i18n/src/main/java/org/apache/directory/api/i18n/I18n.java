@@ -147,8 +147,6 @@ public enum I18n
     
     // api-ldap-client-api   4000-4999
     // api-ldap-client-api <>            4000-4100
-    // None
-    
     // api-ldap-client-api api           4100-4200
     ERR_04100_UNABLE_TO_UNBIND( "ERR_04100_UNABLE_TO_UNBIND" ),
     ERR_04101_CANNOT_CREATE_LDAP_CONNECTION_FACTORY( "ERR_04101_CANNOT_CREATE_LDAP_CONNECTION_FACTORY" ),
@@ -843,8 +841,6 @@ public enum I18n
     ERR_13413_MR_DOES_NOT_HAVE_A_COMP( "ERR_13413_MR_DOES_NOT_HAVE_A_COMP" ),
     ERR_13414_AT_DOES_NOT_HAVE_A_SUPERIOR_NOR_SYNTAX( "ERR_13414_AT_DOES_NOT_HAVE_A_SUPERIOR_NOR_SYNTAX" ),
 
-
-    
     // api-ldap-net-mina 14000 - 14999
 
     // api-ldap-schema-converter    15000 - 15999
