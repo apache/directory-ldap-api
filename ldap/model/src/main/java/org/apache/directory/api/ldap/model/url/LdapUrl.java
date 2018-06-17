@@ -174,7 +174,7 @@ public class LdapUrl
     {
         if ( string == null )
         {
-            throw new LdapURLEncodingException( I18n.err( I18n.ERR_04408 ) );
+            throw new LdapURLEncodingException( I18n.err( I18n.ERR_13041_INVALID_LDAP_URL_EMPTY_STRING ) );
         }
 
         bytes = Strings.getBytesUtf8( string );

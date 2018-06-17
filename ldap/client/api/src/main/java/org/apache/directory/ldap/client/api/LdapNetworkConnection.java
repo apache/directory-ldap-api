@@ -2651,8 +2651,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 else
                 {
                     // currently we only support IR for search and extended operations
-                    throw new UnsupportedOperationException( "Unknown ResponseFuture type "
-                        + responseFuture.getClass().getName() );
+                    throw new UnsupportedOperationException( I18n.err( I18n.ERR_04111_UNKNOWN_RESPONSE_FUTURE_TYPE, 
+                        responseFuture.getClass().getName() ) );
                 }
 
                 intermediateResponse.setResponseName( ( ( IntermediateResponse ) response ).getResponseName() );
