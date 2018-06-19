@@ -24,6 +24,7 @@ import static org.apache.directory.api.ldap.model.message.ResultCodeEnum.process
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -101,7 +102,7 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
     {
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Bind request : {}", name );
+            LOG.debug( I18n.msg( I18n.MSG_04145_BIND_REQUEST, name ) );
         }
 
         bind( new Dn( schemaManager, name ), null );

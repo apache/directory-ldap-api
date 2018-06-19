@@ -59,14 +59,14 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PooledObj
     {
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Activating {}", connection );
+            LOG.debug( I18n.msg( I18n.MSG_04146_ACTIVATING, connection ) );
         }
         
         if ( !connection.getObject().isConnected() || !connection.getObject().isAuthenticated() )
         {
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( "rebind due to connection dropped on {}", connection );
+                LOG.debug( I18n.msg( I18n.MSG_04147_REBIND_CONNECTION_DROPPED, connection ) );
             }
             
             connectionFactory.bindConnection( connection.getObject() );
@@ -85,7 +85,7 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PooledObj
     {
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Destroying {}", connection );
+            LOG.debug( I18n.msg( I18n.MSG_04148_DESTROYING, connection ) );
         }
 
         try
@@ -100,7 +100,7 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PooledObj
 
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( "unable to unbind connection:", e );
+                LOG.debug( I18n.msg( I18n.MSG_04149_UNABLE_TO_UNBIND, e.getMessage() ) );
             }
         }
     }
@@ -129,7 +129,7 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PooledObj
     {
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Creating a LDAP connection" );
+            LOG.debug( I18n.msg( I18n.MSG_04150_CREATING_LDAP_CONNECTION ) );
         }
         
         return new DefaultPooledObject<>( connectionFactory.newLdapConnection() );
@@ -166,7 +166,7 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PooledObj
     {
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Passivating {}", connection );
+            LOG.debug( I18n.msg( I18n.MSG_04151_PASSIVATING, connection ) );
         }
     }
   
@@ -201,7 +201,7 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PooledObj
     {
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Validating {}", connection );
+            LOG.debug( I18n.msg( I18n.MSG_04152_VALIDATING, connection ) );
         }
         
         return validator.validate( connection.getObject() );

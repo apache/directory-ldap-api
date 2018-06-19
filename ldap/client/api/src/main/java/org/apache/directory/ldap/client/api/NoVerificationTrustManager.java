@@ -29,6 +29,7 @@ import javax.net.ssl.SSLEngine;
 import javax.net.ssl.X509ExtendedTrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import org.apache.directory.api.i18n.I18n;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +54,7 @@ public class NoVerificationTrustManager extends X509ExtendedTrustManager
     {
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "checkClientTrusted {}", x509Certificates[0] );
+            LOG.debug( I18n.msg( I18n.MSG_04168_CHECK_CLIENT_TRUSTED, x509Certificates[0] ) );
         }
     }
 
@@ -67,7 +68,7 @@ public class NoVerificationTrustManager extends X509ExtendedTrustManager
     {
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "checkClientTrusted {}", x509Certificates[0] );
+            LOG.debug( I18n.msg( I18n.MSG_04168_CHECK_CLIENT_TRUSTED, x509Certificates[0] ) );
         }
     }
     
@@ -77,7 +78,7 @@ public class NoVerificationTrustManager extends X509ExtendedTrustManager
     {
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "checkServerTrusted {}", x509Certificates[0] );
+            LOG.debug( I18n.msg( I18n.MSG_04169_CHECK_SERVER_TRUSTED, x509Certificates[0] ) );
         }
     }
 
@@ -90,7 +91,7 @@ public class NoVerificationTrustManager extends X509ExtendedTrustManager
     {
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "checkServerTrusted {}", x509Certificates[0] );
+            LOG.debug( I18n.msg( I18n.MSG_04169_CHECK_SERVER_TRUSTED, x509Certificates[0] ) );
         }
     }
 
@@ -103,7 +104,7 @@ public class NoVerificationTrustManager extends X509ExtendedTrustManager
     {
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "checkClientTrusted {}", x509Certificates[0] );
+            LOG.debug( I18n.msg( I18n.MSG_04168_CHECK_CLIENT_TRUSTED, x509Certificates[0] ) );
         }
     }
 
@@ -116,7 +117,7 @@ public class NoVerificationTrustManager extends X509ExtendedTrustManager
     {
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "checkServerTrusted {}", x509Certificates[0] );
+            LOG.debug( I18n.msg( I18n.MSG_04169_CHECK_SERVER_TRUSTED, x509Certificates[0] ) );
         }
     }
 

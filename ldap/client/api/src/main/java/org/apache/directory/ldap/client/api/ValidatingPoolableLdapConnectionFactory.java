@@ -24,6 +24,7 @@ package org.apache.directory.ldap.client.api;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
 import org.apache.directory.api.asn1.util.Oid;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.BindRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
@@ -117,7 +118,7 @@ public class ValidatingPoolableLdapConnectionFactory extends AbstractPoolableLda
         
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Activating {}", connection );
+            LOG.debug( I18n.msg( I18n.MSG_04146_ACTIVATING, connection ) );
         }
         
         super.activateObject( pooledObject );
@@ -140,7 +141,7 @@ public class ValidatingPoolableLdapConnectionFactory extends AbstractPoolableLda
     {
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Creating a LDAP connection" );
+            LOG.debug( I18n.msg( I18n.MSG_04150_CREATING_LDAP_CONNECTION ) );
         }
         
         return new DefaultPooledObject<LdapConnection>( new MonitoringLdapConnection( connectionFactory.newLdapConnection() ) );
@@ -162,7 +163,7 @@ public class ValidatingPoolableLdapConnectionFactory extends AbstractPoolableLda
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "Passivating {}", connection );
+            LOG.debug( I18n.msg( I18n.MSG_04151_PASSIVATING, connection ) );
         }
 
         if ( !connection.isConnected() || !connection.isAuthenticated()
@@ -170,7 +171,7 @@ public class ValidatingPoolableLdapConnectionFactory extends AbstractPoolableLda
         {
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( "rebind due to bind on connection {}", connection );
+                LOG.debug( I18n.msg( I18n.MSG_04172_REBIND_BIND_CONNECTION, connection ) );
             }
             
             connectionFactory.bindConnection( connection );
@@ -180,7 +181,7 @@ public class ValidatingPoolableLdapConnectionFactory extends AbstractPoolableLda
         {
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( "unbind/rebind due to startTls on {}", connection );
+                LOG.debug( I18n.msg( I18n.MSG_04173_UNBIND_START_TLS, connection ) );
             }
             
             // unbind to clear the tls

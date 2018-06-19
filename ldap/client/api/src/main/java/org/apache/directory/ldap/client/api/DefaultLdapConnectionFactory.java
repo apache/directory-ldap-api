@@ -73,7 +73,7 @@ public class DefaultLdapConnectionFactory implements LdapConnectionFactory
             
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( "unable to bind connection:", e );
+                LOG.debug( I18n.msg( I18n.MSG_04158_UNABLE_TO_BIND, e.getMessage() ) );
             }
 
             try
@@ -86,7 +86,7 @@ public class DefaultLdapConnectionFactory implements LdapConnectionFactory
 
                 if ( LOG.isDebugEnabled() )
                 {
-                    LOG.debug( "unable to close failed bind connection:", e );
+                    LOG.debug( I18n.msg( I18n.MSG_04159_UNABLE_TO_CLOSE_CONNECTION, e.getMessage() ) );
                 }
             }
 

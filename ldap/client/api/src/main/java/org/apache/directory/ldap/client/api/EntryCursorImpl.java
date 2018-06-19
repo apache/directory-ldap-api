@@ -73,7 +73,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     {
         if ( LOG_CURSOR.isDebugEnabled() )
         {
-            LOG_CURSOR.debug( "Creating EntryCursorImpl {}", this );
+            LOG_CURSOR.debug( I18n.msg( I18n.MSG_04161_CREATING_ENTRY_CURSOR, this ) );
         }
 
         this.searchCursor = searchCursor;
@@ -207,7 +207,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     {
         if ( LOG_CURSOR.isDebugEnabled() )
         {
-            LOG_CURSOR.debug( "Closing EntryCursorImpl {}", this );
+            LOG_CURSOR.debug( I18n.msg( I18n.MSG_04162_CLOSING_ENTRY_CURSOR, this ) );
         }
 
         searchCursor.close();
@@ -222,7 +222,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     {
         if ( LOG_CURSOR.isDebugEnabled() )
         {
-            LOG_CURSOR.debug( "Closing EntryCursorImpl {}", this );
+            LOG_CURSOR.debug( I18n.msg( I18n.MSG_04162_CLOSING_ENTRY_CURSOR, this ) );
         }
 
         searchCursor.close( cause );

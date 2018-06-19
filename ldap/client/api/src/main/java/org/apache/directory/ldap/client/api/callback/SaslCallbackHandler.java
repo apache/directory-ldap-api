@@ -79,7 +79,7 @@ public class SaslCallbackHandler implements CallbackHandler
                 
                 if ( LOG.isDebugEnabled() )
                 {
-                    LOG.debug( "sending name {} in the NameCallback", name );
+                    LOG.debug( I18n.msg( I18n.MSG_04153_SENDING_NAME_IN_CALLBACK, name ) );
                 }
                 
                 ncb.setName( name );
@@ -90,7 +90,7 @@ public class SaslCallbackHandler implements CallbackHandler
 
                 if ( LOG.isDebugEnabled() )
                 {
-                    LOG.debug( "sending credentials in the PasswordCallback" );
+                    LOG.debug( I18n.msg( I18n.MSG_04154_SENDING_CREDS_IN_CALLBACK ) );
                 }
                 
                 pcb.setPassword( Strings.utf8ToString( saslReq.getCredentials() ).toCharArray() );
@@ -103,7 +103,7 @@ public class SaslCallbackHandler implements CallbackHandler
                 {
                     if ( LOG.isDebugEnabled() )
                     {
-                        LOG.debug( "sending the user specified realm value {} in the RealmCallback", saslReq.getRealmName() );
+                        LOG.debug( I18n.msg( I18n.MSG_04155_SENDING_USER_REALM_IN_CALLBACK, saslReq.getRealmName() ) );
                     }
                     
                     rcb.setText( saslReq.getRealmName() );
@@ -112,9 +112,7 @@ public class SaslCallbackHandler implements CallbackHandler
                 {
                     if ( LOG.isDebugEnabled() )
                     {
-                        LOG.debug(
-                            "No user specified relam value, sending the default realm value {} in the RealmCallback",
-                            rcb.getDefaultText() );
+                        LOG.debug( I18n.msg( I18n.MSG_04156_SENDING_DEFAULT_REALM_IN_CALLBACK, rcb.getDefaultText() ) );
                     }
                     
                     rcb.setText( rcb.getDefaultText() );
@@ -136,7 +134,7 @@ public class SaslCallbackHandler implements CallbackHandler
 
                         if ( LOG.isDebugEnabled() )
                         {
-                            LOG.debug( "sending the user specified realm value {} in the RealmChoiceCallback", realmName );
+                            LOG.debug( I18n.msg( I18n.MSG_04157_SENDING_USER_REALM_IN_CALLBACK, realmName ) );
                         }
                         
                         rccb.setSelectedIndex( i );

@@ -267,7 +267,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     {
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "initializing schemas" );
+            LOG.debug( I18n.msg( I18n.MSG_04160_INITIALIZING_SCHEMAS ) );
         }
 
         // Load all the elements from the SubschemaSubentry

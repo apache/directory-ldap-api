@@ -23,6 +23,7 @@ package org.apache.directory.ldap.client.template;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyDecorator;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
@@ -88,7 +89,7 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     {
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( "creating new connection template from connectionPool" );
+            LOG.debug( I18n.msg( I18n.MSG_04174_CREATING_NEW_CONNECTION_TEMPLATE ) );
         }
         
         this.connectionPool = connectionPool;

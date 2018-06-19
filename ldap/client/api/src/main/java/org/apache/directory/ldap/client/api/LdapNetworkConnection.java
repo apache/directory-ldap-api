@@ -1223,10 +1223,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         else
         {
             // this shouldn't happen
-            LOG
-                .warn(
-                    "There is no future associated with operation message ID {}, the operation has been completed.",
-                    abandonId );
+            LOG.warn( I18n.msg( I18n.MSG_04165_NO_FUTURE_ASSOCIATED_TO_MSG_ID_COMPLETED, abandonId ) );
         }
     }
 
@@ -2468,7 +2465,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             if ( LOG.isInfoEnabled() )
             {
-                LOG.info( "There is no future associated with the messageId {}, ignoring the message", messageId );
+                LOG.info( I18n.msg( I18n.MSG_04166_NO_FUTURE_ASSOCIATED_TO_MSG_ID_IGNORING, messageId ) );
             }
             
             return;
@@ -4315,7 +4312,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             if ( LOG.isInfoEnabled() )
             {
-                LOG.info( "successfully loaded the schema from file {}", schemaFile.getAbsolutePath() );
+                LOG.info( I18n.msg( I18n.MSG_04167_SCHEMA_LOADED_SUCCESSFULLY, schemaFile.getAbsolutePath() ) );
             }
         }
         catch ( Exception e )

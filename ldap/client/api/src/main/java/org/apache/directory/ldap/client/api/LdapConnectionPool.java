@@ -126,7 +126,7 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
             
             if ( LOG.isTraceEnabled() )
             {
-                LOG.trace( "borrowed connection {}", connection );
+                LOG.trace( I18n.msg( I18n.MSG_04163_BORROWED_CONNECTION, connection ) );
             }
         }
         catch ( LdapException | RuntimeException e )
@@ -172,7 +172,7 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
 
             if ( LOG.isTraceEnabled() )
             {
-                LOG.trace( "returned connection {}", connection );
+                LOG.trace( I18n.msg( I18n.MSG_04164_RETURNED_CONNECTION, connection ) );
             }
         }
         catch ( Exception e )
