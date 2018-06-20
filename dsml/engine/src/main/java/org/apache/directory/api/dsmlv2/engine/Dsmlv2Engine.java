@@ -264,7 +264,7 @@ public class Dsmlv2Engine
         }
         catch ( IOException e )
         {
-            LOG.error( "Failed to process the DSML", e );
+            LOG.error( I18n.err( I18n.ERR_02000_FAILED_PROCESSING_DSML ), e );
         }
 
         return null;
@@ -306,7 +306,7 @@ public class Dsmlv2Engine
         {
             if ( LOG.isWarnEnabled() )
             {
-                LOG.warn( "Failed to bind", e );
+                LOG.warn( I18n.msg( I18n.MSG_02002_FAILED_TO_BIND ), e );
             }
 
             // Unable to connect to server
@@ -341,7 +341,7 @@ public class Dsmlv2Engine
         {
             // We create a new ErrorResponse and return the XML response.
             ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.MALFORMED_REQUEST, I18n.err(
-                I18n.ERR_03001, e.getLocalizedMessage(), e.getLineNumber(), e.getColumnNumber() ) );
+                I18n.ERR_02003_LINE_COLUMN, e.getLocalizedMessage(), e.getLineNumber(), e.getColumnNumber() ) );
 
             batchResponse.addResponse( errorResponse );
 
@@ -400,14 +400,14 @@ public class Dsmlv2Engine
         {
             if ( LOG.isWarnEnabled() )
             {
-                LOG.warn( "Failed while getting next request", e );
+                LOG.warn( I18n.msg( I18n.MSG_02000_FAILED_GETTING_NEXT_REQUEST ), e );
             }
 
             int reqId = 0;
 
             // We create a new ErrorResponse and return the XML response.
             ErrorResponse errorResponse = new ErrorResponse( reqId, ErrorResponseType.MALFORMED_REQUEST, I18n.err(
-                I18n.ERR_03001, e.getLocalizedMessage(), e.getLineNumber(), e.getColumnNumber() ) );
+                I18n.ERR_02003_LINE_COLUMN, e.getLocalizedMessage(), e.getLineNumber(), e.getColumnNumber() ) );
 
             batchResponse.addResponse( errorResponse );
 
@@ -436,7 +436,7 @@ public class Dsmlv2Engine
             {
                 // Then we have to send an errorResponse
                 ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.MALFORMED_REQUEST, I18n
-                    .err( I18n.ERR_03002 ) );
+                    .err( I18n.ERR_02004_MISSING_REQUEST_ID ) );
 
                 if ( respWriter != null )
                 {
@@ -458,13 +458,13 @@ public class Dsmlv2Engine
             {
                 if ( LOG.isWarnEnabled() )
                 {
-                    LOG.warn( "Failed to process request", e );
+                    LOG.warn( I18n.msg( I18n.MSG_02001_FAILED_PROCESSING_REQUEST ), e );
                 }
 
                 // We create a new ErrorResponse and return the XML response.
                 ErrorResponse errorResponse = new ErrorResponse( request.getDecorated().getMessageId(),
                     ErrorResponseType.GATEWAY_INTERNAL_ERROR, I18n.err(
-                        I18n.ERR_03003, e.getMessage() ) );
+                        I18n.ERR_02005_INTERNAL_ERROR, e.getMessage() ) );
 
                 if ( respWriter != null )
                 {
@@ -493,7 +493,7 @@ public class Dsmlv2Engine
             {
                 // We create a new ErrorResponse and return the XML response.
                 ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.MALFORMED_REQUEST, I18n.err(
-                    I18n.ERR_03001, e.getLocalizedMessage(), e.getLineNumber(), e.getColumnNumber() ) );
+                    I18n.ERR_02003_LINE_COLUMN, e.getLocalizedMessage(), e.getLineNumber(), e.getColumnNumber() ) );
 
                 if ( respWriter != null )
                 {
@@ -744,7 +744,7 @@ public class Dsmlv2Engine
                 break;
 
             default:
-                throw new IllegalStateException( "Unexpected request tpye " + request.getDecorated().getType() );
+                throw new IllegalStateException( I18n.err( I18n.ERR_02001_UNEXPECTED_REQUEST_TYPE, request.getDecorated().getType() ) );
         }
 
         if ( ( !continueOnError ) && ( resultCode != null ) && ( resultCode != ResultCodeEnum.SUCCESS )
@@ -799,7 +799,7 @@ public class Dsmlv2Engine
      * @throws DecoderException If we had an issue while decoding the request
      * @throws IOException If we had an issue while transmitting the request or re ceiving the response
      */
-    protected void bind( int messageId ) throws LdapException, EncoderException, DecoderException, IOException
+    protected void bind( int messageId ) throws LdapException, IOException
     {
         if ( ( connection != null ) && connection.isAuthenticated() )
         {
@@ -808,7 +808,7 @@ public class Dsmlv2Engine
 
         if ( connection == null )
         {
-            throw new IOException( I18n.err( I18n.ERR_03101_MISSING_CONNECTION_TO ) );
+            throw new IOException( I18n.err( I18n.ERR_02002_MISSING_CONNECTION_TO_BIND ) );
         }
 
         BindRequest bindRequest = new BindRequestImpl();
@@ -824,7 +824,7 @@ public class Dsmlv2Engine
         {
             if ( LOG.isWarnEnabled() )
             {
-                LOG.warn( "Error : {}", bindResponse.getLdapResult().getDiagnosticMessage() );
+                LOG.warn( I18n.msg( I18n.MSG_02003_ERROR, bindResponse.getLdapResult().getDiagnosticMessage() ) );
             }
         }
     }
