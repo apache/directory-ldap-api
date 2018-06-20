@@ -164,7 +164,7 @@ public abstract class AbstractGrammar implements Grammar
         }
         else
         {
-            throw new XmlPullParserException( I18n.err( I18n.ERR_03036, new Tag( tagName, tagType ) ), xpp, null );
+            throw new XmlPullParserException( I18n.err( I18n.ERR_03036_MISSING_TAG, new Tag( tagName, tagType ) ), xpp, null );
         }
     }
 }

@@ -169,7 +169,7 @@ public class Dsmlv2ResponseParser
             }
             catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03037, ioe.getLocalizedMessage() ), xpp, ioe );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03019_IO_EXCEPTION_OCCURED, ioe.getLocalizedMessage() ), xpp, ioe );
             }
         }
         while ( container.getState() != Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP );
@@ -202,7 +202,7 @@ public class Dsmlv2ResponseParser
         }
         else
         {
-            throw new XmlPullParserException( I18n.err( I18n.ERR_03036, new Tag( tagName, tagType ) ), xpp, null );
+            throw new XmlPullParserException( I18n.err( I18n.ERR_03036_MISSING_TAG, new Tag( tagName, tagType ) ), xpp, null );
         }
     }
 
@@ -243,7 +243,7 @@ public class Dsmlv2ResponseParser
                 }
                 catch ( IOException ioe )
                 {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03037, ioe.getLocalizedMessage() ), xpp, ioe );
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03019_IO_EXCEPTION_OCCURED, ioe.getLocalizedMessage() ), xpp, ioe );
                 }
                 eventType = xpp.getEventType();
             }
@@ -276,7 +276,7 @@ public class Dsmlv2ResponseParser
             }
             catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03037, ioe.getLocalizedMessage() ), xpp, ioe );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03019_IO_EXCEPTION_OCCURED, ioe.getLocalizedMessage() ), xpp, ioe );
             }
         }
         while ( container.getState() != Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP );

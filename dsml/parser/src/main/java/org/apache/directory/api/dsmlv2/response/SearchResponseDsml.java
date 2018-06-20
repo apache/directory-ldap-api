@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.api.dsmlv2.DsmlDecorator;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.Response;
@@ -100,7 +101,7 @@ public class SearchResponseDsml extends AbstractResponseDsml<Response>
         }
         else
         {
-            throw new IllegalArgumentException( "Unidentified search resp type" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_03045_UNIDENTIFIED_RESPONSE_TYPE ) );
         }
 
         return responses.add( response );
@@ -136,7 +137,7 @@ public class SearchResponseDsml extends AbstractResponseDsml<Response>
         }
         else
         {
-            throw new IllegalArgumentException( "Unidentified search resp type" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_03045_UNIDENTIFIED_RESPONSE_TYPE ) );
         }
 
         return responses.remove( response );

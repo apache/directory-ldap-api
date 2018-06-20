@@ -208,14 +208,14 @@ public final class ParserUtils
 
             if ( requestID < 0 )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03038, requestID ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03016_BELOW_0_REQUEST_ID, requestID ), xpp, null );
             }
 
             return requestID;
         }
         catch ( NumberFormatException nfe )
         {
-            throw new XmlPullParserException( I18n.err( I18n.ERR_03039 ), xpp, nfe );
+            throw new XmlPullParserException( I18n.err( I18n.ERR_03012_REQUEST_ID_NOT_INTEGER ), xpp, nfe );
         }
     }
 
@@ -291,7 +291,7 @@ public final class ParserUtils
 
         if ( batchRequest == null )
         {
-            throw new XmlPullParserException( I18n.err( I18n.ERR_03040 ), container.getParser(), null );
+            throw new XmlPullParserException( I18n.err( I18n.ERR_03003_UNABLE_TO_FIND_BATCH_REQUEST ), container.getParser(), null );
         }
 
         return ( batchRequest.getProcessing() == Processing.PARALLEL ) && ( batchRequest.getResponseOrder() == ResponseOrder.UNORDERED );
@@ -319,7 +319,7 @@ public final class ParserUtils
         {
             if ( LOG.isWarnEnabled() )
             {
-                LOG.warn( "Failed to create the XSLT transformer", e1 );
+                LOG.warn( I18n.msg( I18n.MSG_3000_FAILED_TO_CREATE_XSLT_TRANSFORMER ), e1 );
             }
             
             // return original document

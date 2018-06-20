@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.dsmlv2.ParserUtils;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.entry.Value;
@@ -281,7 +282,7 @@ public class SearchRequestDsml
                             break;
 
                         default:
-                            throw new IllegalStateException( "Unexpected filter type " + filterType );
+                            throw new IllegalStateException( I18n.err( I18n.ERR_03042_UNEXPECTED_FILTER_TYPE, filterType ) );
                     }
 
                 }
@@ -408,7 +409,7 @@ public class SearchRequestDsml
                 break;
 
             default:
-                throw new IllegalStateException( "Unexpected deref alias mode " + derefAliases );
+                throw new IllegalStateException( I18n.err( I18n.ERR_03043_UNEXPECTED_DEREF_ALIAS, derefAliases ) );
         }
 
         // SizeLimit

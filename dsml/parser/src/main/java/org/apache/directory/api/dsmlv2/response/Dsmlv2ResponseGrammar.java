@@ -556,12 +556,12 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 }
                 else
                 {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03004 ), xpp, null );
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03004_UNKNOWN_TYPE ), xpp, null );
                 }
             }
             else
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03005 ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03005_REQUIRE_ATTRIBUTE_TYPE ), xpp, null );
             }
         }
     };
@@ -780,12 +780,12 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 }
                 catch ( NumberFormatException nfe )
                 {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03009 ), xpp, nfe );
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03009_RESULT_CODE_NOT_INTEGER ), xpp, nfe );
                 }
             }
             else
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03010 ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03010_CODE_ATTRIBUTE_REQUIRED ), xpp, null );
             }
 
             // descr
@@ -793,7 +793,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
             if ( ( attributeValue != null ) && !DSMLV2_DESCR_TAGS.contains( attributeValue ) )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03011, attributeValue ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03011_DESCR_DOESNT_MATCH_VALUES, attributeValue ), xpp, null );
             }
         }
     };
@@ -839,7 +839,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             }
             catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008_UNEXPECTED_ERROR, ioe.getMessage() ), xpp, ioe );
             }
         }
     };
@@ -900,7 +900,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             }
             catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008_UNEXPECTED_ERROR, ioe.getMessage() ), xpp, ioe );
             }
         }
     };
@@ -1105,12 +1105,12 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 }
                 catch ( LdapException le )
                 {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, le );
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03002_NAME_ATTRIBUTE_REQUIRED ), xpp, le );
                 }
             }
             else
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03002_NAME_ATTRIBUTE_REQUIRED ), xpp, null );
             }
         }
     };
@@ -1159,7 +1159,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             }
             catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008_UNEXPECTED_ERROR, ioe.getMessage() ), xpp, ioe );
             }
         }
     };
@@ -1195,7 +1195,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             }
             catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008_UNEXPECTED_ERROR, ioe.getMessage() ), xpp, ioe );
             }
             catch ( LdapURLEncodingException luee )
             {
@@ -1247,7 +1247,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             }
             catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008_UNEXPECTED_ERROR, ioe.getMessage() ), xpp, ioe );
             }
             catch ( DecoderException de )
             {
@@ -1291,7 +1291,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             }
             catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008_UNEXPECTED_ERROR, ioe.getMessage() ), xpp, ioe );
             }
         }
     };
@@ -2084,7 +2084,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         }
         catch ( IOException ioe )
         {
-            throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
+            throw new XmlPullParserException( I18n.err( I18n.ERR_03008_UNEXPECTED_ERROR, ioe.getMessage() ), xpp, ioe );
         }
     }
     
@@ -2111,7 +2111,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         {
             if ( !Oid.isOid( attributeValue ) )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03006 ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03006_INCORRECT_TYPE_ATTRIBUTE_VALUE ), xpp, null );
             }
 
             control = container.getLdapCodecService().newControl( new OpaqueControl( attributeValue ) );
@@ -2119,7 +2119,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         }
         else
         {
-            throw new XmlPullParserException( I18n.err( I18n.ERR_03005 ), xpp, null );
+            throw new XmlPullParserException( I18n.err( I18n.ERR_03005_REQUIRE_ATTRIBUTE_TYPE ), xpp, null );
         }
         
         // CRITICALITY
@@ -2137,7 +2137,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             }
             else
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03007 ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03007_INCORRECT_CRITICALITY_VALUE ), xpp, null );
             }
         }
     }

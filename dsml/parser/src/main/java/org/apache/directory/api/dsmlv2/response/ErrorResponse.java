@@ -21,6 +21,7 @@ package org.apache.directory.api.dsmlv2.response;
 
 
 import org.apache.directory.api.dsmlv2.DsmlDecorator;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.AbstractResponse;
 import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
@@ -281,9 +282,7 @@ public class ErrorResponse extends AbstractResponse implements Response, DsmlDec
      */
     public LdapApiService getCodecService()
     {
-        throw new IllegalArgumentException( "This should not be a decorator "
-            + "but seems it was made into one. We need to do something about"
-            + "this if this exception is being raise." );
+        throw new IllegalArgumentException( I18n.err( I18n.ERR_03044_SHOULD_NOT_BE_A_DECORATOR ) );
     }
 
 

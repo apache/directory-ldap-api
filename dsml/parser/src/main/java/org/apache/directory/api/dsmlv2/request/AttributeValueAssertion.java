@@ -20,6 +20,7 @@
 package org.apache.directory.api.dsmlv2.request;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.util.Strings;
@@ -185,7 +186,7 @@ public class AttributeValueAssertion
                 break;
 
             default:
-                throw new IllegalStateException( "Unexpected filter type " + filterType );
+                throw new IllegalStateException( I18n.err( I18n.ERR_03037_UNEXPECTED_FILTER_TYPE, filterType ) );
         }
 
         sb.append( dumpObject( assertionValue ) );
