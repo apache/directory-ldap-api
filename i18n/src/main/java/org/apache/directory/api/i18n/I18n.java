@@ -39,7 +39,6 @@ public enum I18n
     ERR_00000_NULL_OR_NEG_LENGTH_NOT_ALLOWED( "ERR_00000_NULL_OR_NEG_LENGTH_NOT_ALLOWED" ),
     ERR_00001_BIT_NUMBER_OUT_OF_BOUND( "ERR_00001_BIT_NUMBER_OUT_OF_BOUND" ),
     ERR_00002_CANNOT_FIND_BIT( "ERR_00002_CANNOT_FIND_BIT" ),
-    //ERR_00032_NULL_OID( "ERR_00032_NULL_OID" ),
     ERR_00003_INVALID_OID( "ERR_00003_INVALID_OID" ),
 
     // api-asn1-ber                     1000 -  1999
@@ -75,7 +74,7 @@ public enum I18n
     ERR_01306_VALUE_NOT_IN_RANGE( "ERR_01306_VALUE_NOT_IN_RANGE" ),
     ERR_01307_0_BYTES_LONG_LONG( "ERR_01307_0_BYTES_LONG_LONG" ),
 
-    // api-ldap-dsml                    2000-2900
+    // api-dsml-engine                  2000-2999
     ERR_02000_FAILED_PROCESSING_DSML( "ERR_02000_FAILED_PROCESSING_DSML" ),
     ERR_02001_UNEXPECTED_REQUEST_TYPE( "ERR_02001_UNEXPECTED_REQUEST_TYPE" ),
     ERR_02002_MISSING_CONNECTION_TO_BIND( "ERR_02002_MISSING_CONNECTION_TO_BIND" ),
@@ -83,7 +82,7 @@ public enum I18n
     ERR_02004_MISSING_REQUEST_ID( "ERR_02004_MISSING_REQUEST_ID" ),
     ERR_02005_INTERNAL_ERROR( "ERR_02005_INTERNAL_ERROR" ),
     
-    // dsml-parser
+    // api-dsml-parser                  3000-3999
     ERR_03000_REQUEST_ID_REQUIRED( "ERR_03000_REQUEST_ID_REQUIRED" ),
     ERR_03001_DN_ATTRIBUTE_REQUIRED( "ERR_03001_DN_ATTRIBUTE_REQUIRED" ),
     ERR_03002_NAME_ATTRIBUTE_REQUIRED( "ERR_03002_NAME_ATTRIBUTE_REQUIRED" ),
@@ -131,10 +130,9 @@ public enum I18n
     ERR_03044_SHOULD_NOT_BE_A_DECORATOR( "ERR_03044_SHOULD_NOT_BE_A_DECORATOR" ),
     ERR_03045_UNIDENTIFIED_RESPONSE_TYPE( "ERR_03045_UNIDENTIFIED_RESPONSE_TYPE" ),
 
-
-    // api-ldap-client-api   4000-4999
-    // api-ldap-client-api <>            4000-4100
-    // api-ldap-client-api api           4100-4200
+    // api-ldap-client-api              4000-4999
+    //     <>                               4000-4100
+    //     api                              4100-4200
     ERR_04100_UNABLE_TO_UNBIND( "ERR_04100_UNABLE_TO_UNBIND" ),
     ERR_04101_CANNOT_CREATE_LDAP_CONNECTION_FACTORY( "ERR_04101_CANNOT_CREATE_LDAP_CONNECTION_FACTORY" ),
     ERR_04102_UNABLE_TO_BIND_CONNECTION( "ERR_04102_UNABLE_TO_BIND_CONNECTION" ),
@@ -208,16 +206,16 @@ public enum I18n
     ERR_04170_TIMEOUT_OCCURED( "ERR_04170_TIMEOUT_OCCURED" ),
     ERR_04171_CANNOT_PARSE_MATCHED_DN( "ERR_04171_CANNOT_PARSE_MATCHED_DN" ),
 
-    // api-ldap-client-api template      4200-4300
+    //     template                     4200-4300
     // None
     
-    // api-ldap-codec-core   5000-5999
-    // api-ldap-codec-core <>        5000-5099
+    // api-ldap-codec-core          5000-5999
+    //     <>                           5000-5099
     ERR_05000_NULL_REQUEST_NAME( "ERR_05000_NULL_REQUEST_NAME" ),
     ERR_05001_EMPTY_MATCHING_RULE( "ERR_05001_EMPTY_MATCHING_RULE" ),
     ERR_05002_ENTRY_NULL_VALUE( "ERR_05002_ENTRY_NULL_VALUE" ),
 
-    // api-ldap-codec-core actions   5100-5199
+    //     actions                      5100-5199
     ERR_05100_ZERO_LENGTH_MESSAGE_ID_NOT_ALLOWED( "ERR_05100_ZERO_LENGTH_MESSAGE_ID_NOT_ALLOWED" ),
     ERR_05101_NULL_MESSAGE_ID_NOT_ALLOWED( "ERR_05101_NULL_MESSAGE_ID_NOT_ALLOWED" ),
     ERR_05102_INVALID_MESSAGE_ID( "ERR_05102_INVALID_MESSAGE_ID" ),
@@ -277,7 +275,7 @@ public enum I18n
     ERR_05156_INVALID_ATTRIBUTE_TYPE( "ERR_05156_INVALID_ATTRIBUTE_TYPE" ),
     ERR_05157_INVALID_DN( "ERR_05157_INVALID_DN" ),
 
-    // api-ldap-codec-core api       5200-5299
+    //     api                          5200-5299
     ERR_05200_NOT_INITIALIZED_YET( "ERR_05200_NOT_INITIALIZED_YET" ),
     ERR_05201_INSTANCE_ALREADY_SET( "ERR_05201_INSTANCE_ALREADY_SET" ),
     ERR_05202_FAILED_TO_INSTANCIATE( "ERR_05202_FAILED_TO_INSTANCIATE" ),
@@ -286,7 +284,7 @@ public enum I18n
     ERR_05205_PDU_DOES_NOT_CONTAIN_ENOUGH_DATA( "ERR_05205_PDU_DOES_NOT_CONTAIN_ENOUGH_DATA" ),
     ERR_05206_INPUT_STREAM_TOO_SHORT_PDU( "ERR_05206_INPUT_STREAM_TOO_SHORT_PDU" ),
 
-    // api-ldap-codec-core controls  5300-5399
+    //     controls                     5300-5399
     ERR_05300_CANT_DECODE_CHANGE_TYPE( "ERR_05300_CANT_DECODE_CHANGE_TYPE" ),
     ERR_05301_INVALID_PREVIOUS_DN( "ERR_05301_INVALID_PREVIOUS_DN" ),
     ERR_05302_PREVIOUS_DN_NOT_ALLOWED( "ERR_05302_PREVIOUS_DN_NOT_ALLOWED" ),
@@ -299,33 +297,33 @@ public enum I18n
     ERR_05309_RETURN_ECS_DECODING_ERROR( "ERR_05309_RETURN_ECS_DECODING_ERROR" ),
     ERR_05310_INVALID_VISIBILITY_FLAG( "ERR_05310_INVALID_VISIBILITY_FLAG" ),
     
-    // api-ldap-codec-core osgi      5400-5499
+    //     osgi                         5400-5499
     ERR_05400_CONTROL_ARGUMENT_WAS_NULL( "ERR_05400_CONTROL_ARGUMENT_WAS_NULL" ),
     ERR_05401_FIGURE_OUT_HOW_TO_TRANSFORM( "ERR_05401_FIGURE_OUT_HOW_TO_TRANSFORM" ),
     ERR_05402_UNABLE_TO_ENCODE_RESPONSE_VALUE( "ERR_05402_UNABLE_TO_ENCODE_RESPONSE_VALUE" ),
     
-    // api-ldap-codec-core search    5500-5599
+    //     search                       5500-5599
     ERR_05500_NULL_MATCHING_RULE_AND_TYPE( "ERR_05500_NULL_MATCHING_RULE_AND_TYPE" ),
     ERR_05501_MORE_THAN_ONE_FILTER_FOR_NOT_FILTER( "ERR_05501_MORE_THAN_ONE_FILTER_FOR_NOT_FILTER" ),
     ERR_05502_NULL_INITIAL_ANY_OR_FINAL_SUBSTRING( "ERR_05502_NULL_INITIAL_ANY_OR_FINAL_SUBSTRING" ),
     ERR_05503_UNEXPECTED_FILTER_TYPE( "ERR_05503_UNEXPECTED_FILTER_TYPE" ),
 
-    // api-ldap-codec-standalone 6000-6999
+    // api-ldap-codec-standalone        6000-6999
     ERR_06000_FAILED_TO_LOAD_DEFAULT_CODEC_FACTORY( "ERR_06000_FAILED_TO_LOAD_DEFAULT_CODEC_FACTORY" ),
     
-    // api-ldap-extras-aci   7000-7999
+    // api-ldap-extras-aci              7000-7999
     ERR_07000_FILTER( "ERR_07000_FILTER" ),
     ERR_07001_NULL_IDENTIFICATION_TAG( "ERR_07001_NULL_IDENTIFICATION_TAG" ),
     ERR_07002_BAD_PRECENDENCE( "ERR_07002_BAD_PRECENDENCE" ),
     ERR_07003_NULL_AUTHENTICATION_LEVEL( "ERR_07003_NULL_AUTHENTICATION_LEVEL" ),
     ERR_07004_PARSER_FAILURE_ACI_ITEM( "ERR_07004_PARSER_FAILURE_ACI_ITEM" ),
 
-    // api-ldap-extras-codec 8000-8999
-    // api-ldap-extras-codec <>           8000-8099
+    // api-ldap-extras-codec            8000-8999
+    //     <>                               8000-8099
     ERR_08000_CANNOT_PUT_A_PDU_IN_NULL_BUFFER( "ERR_08000_CANNOT_PUT_A_PDU_IN_NULL_BUFFER" ),
     ERR_08001_CANNOT_DECODE_REFRESH_DELETES( "ERR_08001_CANNOT_DECODE_REFRESH_DELETES" ),
 
-    // api-ldap-extras-codec controls     8100-8199
+    //     controls                         8100-8199
     ERR_08100_SYNC_REQUEST_VALUE_MODE_DECODING_FAILED( "ERR_08100_SYNC_REQUEST_VALUE_MODE_DECODING_FAILED" ),
     ERR_08101_RELOAD_HINT_DECODING_FAILED( "ERR_08101_RELOAD_HINT_DECODING_FAILED" ),
     ERR_08102_SYNC_STATE_VALUE_MODE_DECODING_FAILED( "ERR_08102_SYNC_STATE_VALUE_MODE_DECODING_FAILED" ),
@@ -334,8 +332,7 @@ public enum I18n
     ERR_08105_AD_DIR_SYNC_FLAG_DECODING_ERROR( "ERR_08105_AD_DIR_SYNC_FLAG_DECODING_ERROR" ), 
     ERR_08106_AD_DIR_SYNC_MAX_RETURN_LENGTH_DECODING_ERROR( "ERR_08106_AD_DIR_SYNC_MAX_RETURN_LENGTH_DECODING_ERROR" ), 
 
-
-    // api-ldap-extras-codec extended     8200-8399
+    //     extended                         8200-8399
     ERR_08200_CANCELID_DECODING_FAILED( "ERR_08200_CANCELID_DECODING_FAILED" ),
     ERR_08201_INVALID_TARGET_DN( "ERR_08201_INVALID_TARGET_DN" ),
     ERR_08202_NULL_TARGET_DN_DECODING_FAILED( "ERR_08202_NULL_TARGET_DN_DECODING_FAILED" ),
@@ -367,16 +364,14 @@ public enum I18n
     ERR_08228_DECORATED_SP_NULL( "ERR_08228_DECORATED_SP_NULL" ),
     ERR_08229_UNEXPECTED_SYNC_INFO( "ERR_08229_UNEXPECTED_SYNC_INFO" ),
 
-
-
-    // api-ldap-extras-codec intermediate 8300-8399
+    //     intermediate                     8300-8399
     ERR_08300_REFRESH_DONE_DECODING_FAILED( "ERR_08300_REFRESH_DONE_DECODING_FAILED" ),
     ERR_08301_REFRESH_DELETES_DECODING_FAILED( "ERR_08301_REFRESH_DELETES_DECODING_FAILED" ),
     ERR_08302_BAD_UUID_VALUE_INCORRECT_LENGTH( "ERR_08302_BAD_UUID_VALUE_INCORRECT_LENGTH" ),
 
-    // api-ldap-extras-codec-api 9000-9999
-    // api-ldap-extras-codec-api <>           9000 -  9099
-    // api-ldap-extras-codec-api controls     9100 -  9199
+    // api-ldap-extras-codec-api        9000-9999
+    //      <>                              9000 -  9099
+    //     controls                         9100 -  9199
     ERR_9100_UNKNOWN_PASSWORD_POLICY_ERROR( "ERR_9100_UNKNOWN_PASSWORD_POLICY_ERROR" ),
     ERR_9101_UNKNOWN_MODIFY_DN_OP_TYPE( "ERR_9101_UNKNOWN_MODIFY_DN_OP_TYPE" ),
     ERR_9102_UNKNOWN_VLV_RESPONSE( "ERR_9102_UNKNOWN_VLV_RESPONSE" ),
@@ -384,25 +379,26 @@ public enum I18n
     ERR_9104_CLASS_LOADING_OF_PROC_TYPE_NOT_IMPLEMENTED( "ERR_9104_CLASS_LOADING_OF_PROC_TYPE_NOT_IMPLEMENTED" ),
     ERR_9105_CONVERSION_VALUE_TO_JAVA_NOT_IMPLEMENTED( "ERR_9105_CONVERSION_VALUE_TO_JAVA_NOT_IMPLEMENTED" ),
 
-    // api-ldap-extras-codec-api extended     9200 -  9299
+    //     extended                         9200 -  9299
     ERR_9200_INTERGER_DECODING_FAILURE( "ERR_9200_INTERGER_DECODING_FAILURE" ),
 
-    // api-ldap-extras-codec-api intermediate 9300 -  9399
+    //     intermediate                     9300 -  9399
     ERR_9300_UNEXPECTED_SYNCINFO( "ERR_9300_UNEXPECTED_SYNCINFO" ),
 
-    // api-ldap-extras-sp 10000-10999 
+    // api-ldap-extras-sp               10000-10999 
+    // None
 
-    // api-ldap-extras-trigger 11000-11999 
+    // api-ldap-extras-trigger          11000-11999 
     ERR_11000_TRIGGER_SPECIFICATION_INIT_WITH_NULL( "ERR_11000_TRIGGER_SPECIFICATION_INIT_WITH_NULL" ),
     ERR_11001_TRIGGER_SPECIFICATION_INIT_WITH_EPTY_SPEC_LIST( "ERR_11001_TRIGGER_SPECIFICATION_INIT_WITH_EPTY_SPEC_LIST" ),
     ERR_11002_TRIGGER_SPECIFICATION_PARSER_FAILURE( "ERR_11002_TRIGGER_SPECIFICATION_PARSER_FAILURE" ),
 
-    // api-ldap-extra-utils 12000-12999
+    // api-ldap-extra-utils             12000-12999
     ERR_12000_CANNOT_PROCESS_EMPTY_DN( "ERR_12000_CANNOT_PROCESS_EMPTY_DN" ),
     ERR_12001_CANNOT_ADD_NODE_CHILD_EXISTS( "ERR_12001_CANNOT_ADD_NODE_CHILD_EXISTS" ),
     ERR_12002_CANNOT_ADD_NODE_ALREADY_EXISTS( "ERR_12002_CANNOT_ADD_NODE_ALREADY_EXISTS" ),
     
-    // api-ldap-model <> 13000 - 13999
+    // api-ldap-model                   13000 - 13999
     ERR_13000_INVALID_LENGTH( "ERR_13000_INVALID_LENGTH" ),
     ERR_13001_INVALID_MAXOLEN( "ERR_13001_INVALID_MAXOLEN" ),
     ERR_13002_BAD_NUMBERS_OF_ROUNDS( "ERR_13002_BAD_NUMBERS_OF_ROUNDS" ),
@@ -445,7 +441,7 @@ public enum I18n
     ERR_13040_INVALID_URL_ENCODING( "ERR_13040_INVALID_URL_ENCODING" ),
     ERR_13041_INVALID_LDAP_URL_EMPTY_STRING( "ERR_13041_INVALID_LDAP_URL_EMPTY_STRING" ),
 
-    // api-ldap-model cursor 13100 - 13199
+    //     cursor                           13100 - 13199
     ERR_13100_FAILURE_ON_UNDERLYING_CURSOR( "ERR_13100_FAILURE_ON_UNDERLYING_CURSOR" ),
     ERR_13101_MONITOR( "ERR_13101_MONITOR" ),
     ERR_13102_UNSUPPORTED_OPERATION( "ERR_13102_UNSUPPORTED_OPERATION" ),
@@ -461,7 +457,7 @@ public enum I18n
     ERR_13112_CANNOT_ACCESS_IF_BEFORE_FIRST( "ERR_13112_CANNOT_ACCESS_IF_BEFORE_FIRST" ),
     ERR_13113_CANNOT_ACCESS_IF_AFTER_LAST( "ERR_13113_CANNOT_ACCESS_IF_AFTER_LAST" ),
     
-    // api-ldap-model entry 13200 - 13299
+    //     entry                            13200 - 13299
     ERR_13200_VALUE_CANT_BE_NORMALIZED( "ERR_13200_VALUE_CANT_BE_NORMALIZED" ),
     ERR_13201_EMPTY_OPTION_NOT_ALLOWED( "ERR_13201_EMPTY_OPTION_NOT_ALLOWED" ),
     ERR_13202_INVALID_OID_MISSING_NUMBER( "ERR_13202_INVALID_OID_MISSING_NUMBER" ),
@@ -514,7 +510,7 @@ public enum I18n
     ERR_13249_NO_COMPARATOR_FOR_AT( "ERR_13249_NO_COMPARATOR_FOR_AT" ),
     ERR_13250_VALUE_MISSING_AT_THE_END( "ERR_13250_VALUE_MISSING_AT_THE_END" ),
     
-    // api-ldap-model filter 13300 - 13399
+    //     filter                           13300 - 13399
     ERR_13300_BAD_PLACE_HOLDERS_NUMBER( "ERR_13300_BAD_PLACE_HOLDERS_NUMBER" ),
     ERR_13301_NO_ORDERING_MR_FOR_AT( "ERR_13301_NO_ORDERING_MR_FOR_AT" ),
     ERR_13302_CANNOT_CREATE_NODE_NULL_ATTR( "ERR_13302_CANNOT_CREATE_NODE_NULL_ATTR" ),
@@ -535,7 +531,7 @@ public enum I18n
     ERR_13317_NO_MORE_THAN_ONE_ELEM_IN_NOT( "ERR_13317_NO_MORE_THAN_ONE_ELEM_IN_NOT" ),
     ERR_13318_INVALID_ATTR_IN_REFINEMENT( "ERR_13318_INVALID_ATTR_IN_REFINEMENT" ),
 
-    // api-ldap-model ldif 13400 - 13499
+    //     ldif                         13400 - 13499
     ERR_13400_ENTRY_WITH_TWO_DNS( "ERR_13400_ENTRY_WITH_TWO_DNS" ),
     ERR_13401_CHANGE_NOT_ALLOWED( "ERR_13401_CHANGE_NOT_ALLOWED" ),
     ERR_13402_EXPECTING_ATTRIBUTE_TYPE( "ERR_13402_EXPECTING_ATTRIBUTE_TYPE" ),
@@ -613,7 +609,7 @@ public enum I18n
     ERR_13474_LINE_LENGTH_TOO_SHORT( "ERR_13474_LINE_LENGTH_TOO_SHORT" ),
     ERR_13475_UNKNOWN_ATTRIBUTETYPE( "ERR_13475_UNKNOWN_ATTRIBUTETYPE" ),
     
-    // api-ldap-model message 13500 - 13599
+    //     message                          13500 - 13599
     ERR_13500_UNDEFINED_CHANGETYPE( "ERR_13500_UNDEFINED_CHANGETYPE" ),
     ERR_13501_UNKNOWN_JNDI_SCOPE( "ERR_13501_UNKNOWN_JNDI_SCOPE" ),
     ERR_13502_UNKNOWN_LDAP_URL_SCOPE( "ERR_13502_UNKNOWN_LDAP_URL_SCOPE" ),
@@ -632,7 +628,7 @@ public enum I18n
     ERR_13515_UNEXPECTED_MOD_OP( "ERR_13515_UNEXPECTED_MOD_OP" ),
     ERR_13516_UNEXPECTED_MESSAGE_TYPE( "ERR_13516_UNEXPECTED_MESSAGE_TYPE" ),
 
-    // api-ldap-model name 13600 - 13699
+    //     name                             13600 - 13699
     ERR_13600_TYPE_IS_NULL_OR_EMPTY( "ERR_13600_TYPE_IS_NULL_OR_EMPTY" ),
     ERR_13601_EXPECTED_COMMA_SEMI_COLON( "ERR_13601_EXPECTED_COMMA_SEMI_COLON" ),
     ERR_13602_RDN_EMPTY( "ERR_13602_RDN_EMPTY" ),
@@ -661,7 +657,7 @@ public enum I18n
     ERR_13625_INVALID_RDN( "ERR_13625_INVALID_RDN" ),
     ERR_13626_INVALID_RDN_DUPLICATE_AVA( "ERR_13626_INVALID_RDN_DUPLICATE_AVA" ),
 
-    // api-ldap-model schema 13700 - 13899
+    //     schema                           13700 - 13899
     ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT( "ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT" ),
     ERR_13701_CANNOT_MODIFY_AT_REGISTRY_COPY( "ERR_13701_CANNOT_MODIFY_AT_REGISTRY_COPY" ),
     ERR_13702_CANNOT_MODIFY_CMP_REGISTRY_COPY( "ERR_13702_CANNOT_MODIFY_CMP_REGISTRY_COPY" ),
@@ -828,9 +824,10 @@ public enum I18n
     ERR_13413_MR_DOES_NOT_HAVE_A_COMP( "ERR_13413_MR_DOES_NOT_HAVE_A_COMP" ),
     ERR_13414_AT_DOES_NOT_HAVE_A_SUPERIOR_NOR_SYNTAX( "ERR_13414_AT_DOES_NOT_HAVE_A_SUPERIOR_NOR_SYNTAX" ),
 
-    // api-ldap-net-mina 14000 - 14999
+    // api-ldap-net-mina                14000 - 14999
+    // none
 
-    // api-ldap-schema-converter    15000 - 15999
+    // api-ldap-schema-converter        15000 - 15999
     ERR_15000_SCHEMA_ELEMENT_NAME_REQUIRED( "ERR_15000_SCHEMA_ELEMENT_NAME_REQUIRED" ),
     ERR_15001_NULL_SCHEMA( "ERR_15001_NULL_SCHEMA" ),
     ERR_15002_EMPTY_OR_NULL_SCHEMA_OBJECT( "ERR_15002_EMPTY_OR_NULL_SCHEMA_OBJECT" ),
@@ -838,8 +835,7 @@ public enum I18n
     ERR_15004_CANNOT_GENERATE_SOURCES( "ERR_15004_CANNOT_GENERATE_SOURCES" ),
     ERR_15005_NO_PROPERTY( "ERR_15005_NO_PROPERTY" ),
 
-
-    // api-ldap-schema-data    16000 - 16999
+    // api-ldap-schema-data             16000 - 16999
     ERR_16000_CANNOT_OVEWRITE_SCHEMA( "ERR_16000_CANNOT_OVEWRITE_SCHEMA" ),
     ERR_16001_CANNOT_COPY_NON_EXISTENT( "ERR_16001_CANNOT_COPY_NON_EXISTENT" ),
     ERR_16002_MORE_THAN_ONE_ENTRY( "ERR_16002_MORE_THAN_ONE_ENTRY" ),
@@ -921,7 +917,7 @@ public enum I18n
     ERR_16078_CANNOT_LOAD_UNKNOWN_SCHEMA( "ERR_16078_CANNOT_LOAD_UNKNOWN_SCHEMA" ),
     ERR_16079_INVALID_SCHEMA_OBJECT_CANNOT_BE_LOADED( "ERR_16079_INVALID_SCHEMA_OBJECT_CANNOT_BE_LOADED" ),
 
-    // api-utils    17000 - 17999
+    // api-utils                        17000 - 17999
     ERR_17000_UNEXPECTED_PARSER_CONDITION( "ERR_17000_UNEXPECTED_PARSER_CONDITION" ),
     ERR_17001_FAILED_OPEN_JAR_MANIFEST( "ERR_17001_FAILED_OPEN_JAR_MANIFEST" ),
     ERR_17002_INTEGER_TOO_BIG( "ERR_17002_INTEGER_TOO_BIG" ),
@@ -997,10 +993,11 @@ public enum I18n
     ERR_17072_INTEGER_OVERFLOW( "ERR_17072_INTEGER_OVERFLOW" ),
 
     // The messages
-    // asn1 api     0-999
+    // asn1 api                         0-999
+    // none
     
-    // asn1 ber     1000-1999
-    //    <>        1000-1099
+    // asn1 ber                         1000-1999
+    //     <>                           1000-1099
     MSG_01000_TAG_DECODED( "MSG_01000_TAG_DECODED" ),
     MSG_01001_TLV_TREE( "MSG_01001_TLV_TREE" ),
     MSG_01002_CURRENT_BYTE( "MSG_01002_CURRENT_BYTE" ),
@@ -1021,27 +1018,28 @@ public enum I18n
     MSG_01017_END_DECODING( "MSG_01017_END_DECODING" ),
     MSG_01018_END_DECODING_NULL_TLV( "MSG_01018_END_DECODING_NULL_TLV" ),
     
-    //    actions   1100-1199
+    //     actions                          1100-1199
     MSG_01100_INTEGER_VALUE( "MSG_01100_INTEGER_VALUE" ),
     MSG_01101_BITSTRING_VALUE( "MSG_01101_BITSTRING_VALUE" ),
     
-    //    grammar   1200-1299
+    //     grammar                          1200-1299
+    // None
     
-    //    tlv       1300-1399
+    //     tlv                              1300-1399
     MSG_01300_BOOLEAN_0X00_0XFF( "MSG_01300_BOOLEAN_0X00_0XFF" ),
 
-    // api-dsml-engine      2000-2999
+    // api-dsml-engine                  2000-2999
     MSG_02000_FAILED_GETTING_NEXT_REQUEST( "MSG_02000_FAILED_GETTING_NEXT_REQUEST" ),
     MSG_02001_FAILED_PROCESSING_REQUEST( "MSG_02001_FAILED_PROCESSING_REQUEST" ),
     MSG_02002_FAILED_TO_BIND( "MSG_02002_FAILED_TO_BIND" ),
     MSG_02003_ERROR( "MSG_02003_ERROR" ),
     
-    // api-dsml-parser      3000-3999
+    // api-dsml-parser                  3000-3999
     MSG_3000_FAILED_TO_CREATE_XSLT_TRANSFORMER( "MSG_3000_FAILED_TO_CREATE_XSLT_TRANSFORMER" ),
 
-    // api-ldap-client-api   4000-4999
-    // api-ldap-client-api <>            4000-4100
-    // api-ldap-client-api api           4100-4200
+    // api-ldap-client-api              4000-4999
+    //     <>                               4000-4100
+    //     api                              4100-4200
     MSG_04100_BIND_FAIL( "MSG_04100_BIND_FAIL" ),
     MSG_04101_BIND_SUCCESSFUL( "MSG_04101_BIND_SUCCESSFUL" ),
     MSG_04102_BIND_REQUEST( "MSG_04102_BIND_REQUEST" ),
@@ -1117,11 +1115,10 @@ public enum I18n
     MSG_04172_REBIND_BIND_CONNECTION( "MSG_04172_REBIND_BIND_CONNECTION" ),
     MSG_04173_UNBIND_START_TLS( "MSG_04173_UNBIND_START_TLS" ),
     MSG_04174_CREATING_NEW_CONNECTION_TEMPLATE( "MSG_04174_CREATING_NEW_CONNECTION_TEMPLATE" ),
-
     
-    // api-ldap-codec-core   5000-5999
-    // api-ldap-codec-core <>        5000-5099
-    // api-ldap-codec-core actions   5100-5199
+    // api-ldap-codec-core              5000-5999
+    //     <>                               5000-5099
+    //     actions                          5100-5199
     MSG_05100_NEW_LIST_CONTROLS_INITIALIZED( "MSG_05100_NEW_LIST_CONTROLS_INITIALIZED" ),
     MSG_05101_NEW_EMPTY_CONTROLS_INITIALIZED( "MSG_05101_NEW_EMPTY_CONTROLS_INITIALIZED" ),
     MSG_05102_LDAP_MESSAGE_ID_DECODED( "MSG_05102_LDAP_MESSAGE_ID_DECODED" ),
@@ -1208,10 +1205,10 @@ public enum I18n
     MSG_05183_SEARCH_RESULT_REFERENCE_RESPONSE( "MSG_05183_SEARCH_RESULT_REFERENCE_RESPONSE" ),
     MSG_05184_SEARCH_REFERENCE_URL( "MSG_05184_SEARCH_REFERENCE_URL" ),
 
-    // api-ldap-codec-core api       5200-5299
+    //     api                              5200-5299
     MSG_5200_DECODED_LDAP_MESSAGE( "MSG_5200_DECODED_LDAP_MESSAGE" ),
     
-    // api-ldap-codec-core controls  5300-5399
+    //     controls                         5300-5399
     MSG_05300_CHANGE_TYPE( "MSG_05300_CHANGE_TYPE" ),
     MSG_05301_PREVIOUS_DN( "MSG_05301_PREVIOUS_DN" ),
     MSG_05302_CHANGE_NUMBER( "MSG_05302_CHANGE_NUMBER" ),
@@ -1224,13 +1221,13 @@ public enum I18n
     MSG_05309_MATCHING_RULE_OID( "MSG_05309_MATCHING_RULE_OID" ),
     MSG_05310_ATTRIBUTE_TYPE( "MSG_05310_ATTRIBUTE_TYPE" ),
 
-    // api-ldap-codec-core osgi      5400-5499
+    //     osgi                             5400-5499
     // none
     
-    // api-ldap-codec-core search    5500-5599
+    //     search                           5500-5599
     // none
     
-    // api-ldap-codec-standalone 6000-6999
+    // api-ldap-codec-standalone        6000-6999
     MSG_06000_REGISTERED_CONTROL_FACTORY( "MSG_06000_REGISTERED_CONTROL_FACTORY" ),
     MSG_06001_REGISTERED_EXTENDED_OP_FACTORY( "MSG_06001_REGISTERED_EXTENDED_OP_FACTORY" ),
     MSG_06002_REGISTERED_INTERMEDIATE_FACTORY( "MSG_06002_REGISTERED_INTERMEDIATE_FACTORY" ),
@@ -1239,14 +1236,15 @@ public enum I18n
     MSG_06005_EXTENDED_OP_FACTORY_ALREADY_LOADED( "MSG_06005_EXTENDED_OP_FACTORY_ALREADY_LOADED" ),
     MSG_06006_INTERMEDIATE_FACTORY_ALREADY_LOADED( "MSG_06006_INTERMEDIATE_FACTORY_ALREADY_LOADED" ),
 
-    // api-ldap-extras-aci   7000-7999
+    // api-ldap-extras-aci              7000-7999
+    // none
 
-    // api-ldap-extras-codec 8000-8999
-    // api-ldap-extras-codec <>           8000-8099
+    // api-ldap-extras-codec            8000-8999
+    //     <>                               8000-8099
     MSG_08000_COOKIE( "MSG_08000_COOKIE" ),
     MSG_08001_REFRESH_DELETES( "MSG_08001_REFRESH_DELETESé" ),
     
-    // api-ldap-extras-codec controls     8100-8199
+    //     controls                         8100-8199
     MSG_08100_MODE( "MSG_08100_MODE" ),
     MSG_08101_FLAGS( "MSG_08101_FLAGS" ),
     MSG_08102_MAX_RETURN_LENGTH( "MSG_08102_MAX_RETURN_LENGTH" ),
@@ -1256,7 +1254,7 @@ public enum I18n
     MSG_08106_ENTRY_UUID( "MSG_08106_ENTRY_UUID" ),
     MSG_08107_VLV_REQUEST_CONTAINER_INITIALIZED( "MSG_08107_VLV_REQUEST_CONTAINER_INITIALIZED" ),
     
-    // api-ldap-extras-codec extended     8200-8399
+    //     extended                         8200-8399
     MSG_08200_CANCEL_ID( "MSG_08200_CANCEL_ID" ),
     MSG_08201_CONTROL_OID( "MSG_08201_CONTROL_OID" ),
     MSG_08202_CONTROL_CRITICALITY( "MSG_08202_CONTROL_CRITICALITY" ),
@@ -1278,25 +1276,35 @@ public enum I18n
     MSG_08218_KEY_ALGORITHM( "MSG_08218_KEY_ALGORITHM" ),
     MSG_08219_SUBJECT_DN( "MSG_08219_SUBJECT_DN" ),
 
-    // api-ldap-extras-codec intermediate 8300-8399
+    //     intermediate                     8300-8399
     MSG_08300_NEW_COOKIE( "MSG_08300_NEW_COOKIE" ),
     MSG_08301_REFRESH_DONE( "MSG_08301_REFRESH_DONE" ),
     MSG_08302_UUID( "MSG_08302_UUID" ),
 
-    // api-ldap-extras-codec-api 9000-9999
-    // api-ldap-extras-codec-api <>           9000 -  9099
-    // api-ldap-extras-codec-api controls     9100 -  9199
-    // api-ldap-extras-codec-api extended     9200 -  9299
-    // api-ldap-extras-codec-api intermediate 9300 -  9399
+    // api-ldap-extras-codec-api        9000-9999
+    //     <>                               9000 -  9099
+    // none
+    
+    //     controls                         9100 -  9199
+    // none
+    
+    //     extended                         9200 -  9299
+    // none
+    
+    //     intermediate                     9300 -  9399
+    // none
 
-    // api-ldap-extras-sp 10000-10999
+    // api-ldap-extras-sp               10000-10999
+    // none
 
-    // api-ldap-extras-trigger 11000-11999
+    // api-ldap-extras-trigger          11000-11999
+    // none
 
-    // api-ldap-extra-utils <> 12000-12999
+    // api-ldap-extra-utils             12000-12999
+    // none
 
-    // api-ldap-model 13000 - 13999
-    //   cursor         13100 - 13199
+    // api-ldap-model                   13000 - 13999
+    //     cursor                           13100 - 13199
     MSG_13100_CLOSING_EMPTY_CURSOR( "MSG_13100_CLOSING_EMPTY_CURSOR" ),
     MSG_13101_CLOSING_LIST_CURSOR( "MSG_13101_CLOSING_LIST_CURSOR" ),
     MSG_13102_CLOSING_SET_CURSOR( "MSG_13102_CLOSING_SET_CURSOR" ),
@@ -1306,15 +1314,16 @@ public enum I18n
     MSG_13105_CREATING_SET_CURSOR( "MSG_13105_CREATING_SET_CURSOR" ),
     MSG_13106_CREATING_SINGLE_CURSOR( "MSG_13106_CREATING_SINGLE_CURSOR" ),
     
-    //   entry          13200 - 13299
+    //     entry                            13200 - 13299
     MSG_13200_CANT_STORE_ATTRIBUTE( "MSG_13200_CANT_STORE_ATTRIBUTE" ),
     MSG_13201_DN_CANT_BE_NORMALIZED( "MSG_13201_DN_CANT_BE_NORMALIZED" ),
     MSG_13202_AT_IS_NULL( "MSG_13202_AT_IS_NULL" ),
     MSG_13203_MISSING_ATTRIBUTE_IN_ENTRY( "MSG_13203_MISSING_ATTRIBUTE_IN_ENTRY" ),
     
-    //   filter         13300 - 13399
+    //     filter                           13300 - 13399
+    // none
     
-    //   ldif           13400 - 13499
+    //     ldif                             13400 - 13499
     MSG_13400_LDIF_VERSION( "MSG_13400_LDIF_VERSION" ),
     MSG_13401_PARSED_NO_ENTRY( "MSG_13401_PARSED_NO_ENTRY" ),
     MSG_13402_PARSED_ONE_ENTRY( "MSG_13402_PARSED_ONE_ENTRY" ),
@@ -1331,16 +1340,15 @@ public enum I18n
     MSG_13413_NO_VERSION_ASSUMING_1( "MSG_13413_NO_VERSION_ASSUMING_1" ),
     MSG_13414_LDIF_FILE_EMPTY( "MSG_13414_LDIF_FILE_EMPTY" ),
 
-    //   message        13500 - 13599
+    //     message                          13500 - 13599
     MSG_13500_ATTRIBUTE_NOT_IN_SCHEMA( "MSG_13500_ATTRIBUTE_NOT_IN_SCHEMA" ),
     
-    //   name           13600 - 13699
+    //     name                             13600 - 13699
     MSG_13700_FAILED_TO_NORMALIZE( "MSG_13700_FAILED_TO_NORMALIZE" ),
     MSG_13701_SYNTAX_VALID( "MSG_13701_SYNTAX_VALID" ),
     MSG_13702_REMOVED_FROM_REGISTRY( "MSG_13702_REMOVED_FROM_REGISTRY" ),
     
-    
-    //   schema        13700 - 13899
+    //     schema                           13700 - 13899
     MSG_13703_AT_WITHOUT_EQ_MR( "MSG_13703_AT_WITHOUT_EQ_MR" ),
     MSG_13704_CANT_FIND_AT_WITH_SUPERIOR( "MSG_13704_CANT_FIND_AT_WITH_SUPERIOR" ),
     MSG_13705_CANT_FIND_AT_IN_MAY( "MSG_13705_CANT_FIND_AT_IN_MAY" ),
@@ -1395,21 +1403,18 @@ public enum I18n
     MSG_13754_COMPARING_NUMERIC_STRING_ORDERING( "MSG_13754_COMPARING_NUMERIC_STRING_ORDERING" ),
     MSG_13755_COMPARING_OBJECTS( "MSG_13755_COMPARING_OBJECTS" ),
     MSG_13756_LOOKED_UP_NAME( "MSG_13756_LOOKED_UP_NAME" ),
-
     
-    // api-ldap-net-mina 14000 - 14999
+    // api-ldap-net-mina                14000 - 14999
     MSG_14000_DECODING_PDU( "MSG_14000_DECODING_PDU" ),
     MSG_14001_NULL_BUFFER( "MSG_14001_NULL_BUFFER" ),
     MSG_14002_DECODED_LDAP_MESSAGE( "MSG_14002_DECODED_LDAP_MESSAGE" ),
     MSG_14003_ENCODED_LDAP_MESSAGE( "MSG_14003_ENCODED_LDAP_MESSAGE" ),
-
     
-    // api-ldap-schema-converter 15000 - 15999
+    // api-ldap-schema-converter        15000 - 15999
     MSG_15000_NO_SCHEMA_DEFINED( "MSG_15000_NO_SCHEMA_DEFINED" ),
     MSG_15001_GENERATING_SCHEMA( "MSG_15001_GENERATING_SCHEMA" ),
     
-    
-    // api-ldap-schema-data 16000 - 16999
+    // api-ldap-schema-data             16000 - 16999
     MSG_16000_BASE_PATH( "MSG_16000_BASE_PATH" ),
     MSG_16001_CREATING_DIR( "MSG_16001_CREATING_DIR" ),
     MSG_16002_DIR_EXISTS( "MSG_16002_DIR_EXISTS" ),
@@ -1436,7 +1441,7 @@ public enum I18n
     MSG_16023_CANNOT_DELETE_SCHEMAOBJECT( "MSG_16023_CANNOT_DELETE_SCHEMAOBJECT" ),
     MSG_16024_REMOVED_FROM_DISABLED_SCHEMA( "MSG_16024_REMOVED_FROM_DISABLED_SCHEMA" ),
 
-    // api-utils    17000 - 17999
+    // api-utils                        17000 - 17999
     MSG_17000_NO_EXPORT_FOUND( "MSG_17000_NO_EXPORT_FOUND" ),
     MSG_17001_PROCESSING_EXPORTS( "MSG_17001_PROCESSING_EXPORTS" ),
     MSG_17002_ADDED_PACKAGE( "MSG_17002_ADDED_PACKAGE" ),
@@ -1493,20 +1498,24 @@ public enum I18n
      */
     public static String err( I18n err, Object... args )
     {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append( err ).append( ' ' );
+
         try
         {
-            return err + " " + format( ERR_BUNDLE.getString( err.getErrorCode() ), args );
+            return sb.append( format( ERR_BUNDLE.getString( err.getErrorCode() ), args ) ).toString();
         }
         catch ( Exception e )
         {
-            StringBuilder sb = new StringBuilder();
             boolean comma = false;
+            sb.append( '(' );
 
             for ( Object obj : args )
             {
                 if ( comma )
                 {
-                    sb.append( "," );
+                    sb.append( ',' );
                 }
                 else
                 {
@@ -1515,7 +1524,8 @@ public enum I18n
 
                 sb.append( obj );
             }
-            return err + " (" + sb.toString() + ")";
+            
+            return sb.append( ')' ).toString();
         }
     }
     
@@ -1530,20 +1540,23 @@ public enum I18n
      */
     public static String msg( I18n msg, Object... args )
     {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append( msg ).append( ' ' );
         try
         {
-            return msg + " " + format( ERR_BUNDLE.getString( msg.getErrorCode() ), args );
+            return sb.append( format( ERR_BUNDLE.getString( msg.getErrorCode() ), args ) ).toString();
         }
         catch ( Exception e )
         {
-            StringBuilder sb = new StringBuilder();
             boolean comma = false;
+            sb.append( '(' );
 
             for ( Object obj : args )
             {
                 if ( comma )
                 {
-                    sb.append( "," );
+                    sb.append( ',' );
                 }
                 else
                 {
@@ -1552,14 +1565,14 @@ public enum I18n
 
                 sb.append( obj );
             }
-            return msg + " (" + sb.toString() + ")";
+            
+            return sb.append( ')' ).toString();
         }
     }
 
 
 
     /**
-     *
      * Translate a message with argument(s)
      *
      * @param msg The message
@@ -1582,12 +1595,13 @@ public enum I18n
             {
                 StringBuilder sb = new StringBuilder();
                 boolean comma = false;
+                sb.append( msg ).append( " (" );
 
                 for ( Object obj : args )
                 {
                     if ( comma )
                     {
-                        sb.append( "," );
+                        sb.append( ',' );
                     }
                     else
                     {
@@ -1597,7 +1611,7 @@ public enum I18n
                     sb.append( obj );
                 }
 
-                return msg + " (" + sb.toString() + ")";
+                return sb.append( ')' ).toString();
             }
         }
     }
