@@ -204,9 +204,11 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
             if ( attributeType.getSyntax() == null )
             {
                 // Some broken LDAP servers do not have proper syntax definitions, default to HR
-                if ( LOG.isInfoEnabled() )
+                // Log this on trace level only. Otherwise we get logs full of errors when working
+                // with AD and similar not-really-LDAP-compliant servers.
+                if ( LOG.isTraceEnabled() )
                 {
-                    LOG.info( I18n.err( I18n.ERR_13225_NO_SYNTAX ) );
+                    LOG.trace( I18n.err( I18n.ERR_13225_NO_SYNTAX ) );
                 }
                 
                 isHR = true;

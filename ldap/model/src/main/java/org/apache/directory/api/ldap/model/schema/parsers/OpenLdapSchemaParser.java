@@ -2614,6 +2614,8 @@ public class OpenLdapSchemaParser
         }
         catch ( IOException | LdapSchemaException e )
         {
+            // This exception is not passed as a cause in ParseException. Therefore at least log in, so it won't be lost.
+            LOG.trace( "Error parsing attribute type {}: {}", attributeTypeDescription, e.getMessage(), e );
             throw new ParseException( e.getMessage(), 0 );
         }
     }
@@ -2927,7 +2929,9 @@ public class OpenLdapSchemaParser
                 break;
             }
             
-            skipWhites( reader, pos, true );
+            // Make whitespace non-mandatory here.
+            // E.g. OpenDJ is missing the the space in some schema definitions.
+            skipWhites( reader, pos, false );
 
             if ( startsWith( pos, NAME_STR ) )
             {
