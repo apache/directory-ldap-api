@@ -36,7 +36,6 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
  */
 public class LdapProtocolCodecActivator implements BundleActivator
 {
-
     private ServiceTracker<LdapApiService, LdapApiService> serviceTracker;
 
     class LdapApiServiceTracker implements ServiceTrackerCustomizer<LdapApiService, LdapApiService>

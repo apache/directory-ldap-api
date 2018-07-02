@@ -290,6 +290,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             config.setBinaryAttributeDetector( new DefaultConfigurableBinaryAttributeDetector() );
         }
+        
+        this.timeout = config.getTimeout();
     }
 
 
@@ -665,7 +667,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         SocketAddress address = new InetSocketAddress( config.getLdapHost(), config.getLdapPort() );
 
         // And create the connection future
-        timeout = config.getTimeout();
         long maxRetry = System.currentTimeMillis() + timeout;
         ConnectFuture connectionFuture = null;
         boolean interrupted = false;
@@ -4682,6 +4683,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             else
             // for StartTLS
             {
+                ldapSession.getFilterChain().addFirst( SSL_FILTER_KEY, sslFilter );
+                
                 boolean isSecured = handshakeFuture.get( timeout, TimeUnit.MILLISECONDS );
                 
                 if ( !isSecured )
