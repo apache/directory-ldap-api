@@ -30,6 +30,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.schema.SchemaErrorHandler;
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +55,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
     /** A flag indicating that the Registry is relaxed or not */
     private boolean isRelaxed = Registries.STRICT;
 
+    private SchemaErrorHandler errorHandler;
 
     /**
      * Tells if the given OID is present on this registry
@@ -86,8 +88,9 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
         else
         {
             String msg = I18n.err( I18n.ERR_13741_OID_NOT_FOUND_IN_REGISTRY, oid );
-            LOG.error( msg );
-            throw new LdapException( msg );
+            LdapException error = new LdapException( msg );
+            errorHandler.handle( LOG, msg, error );
+            throw error;
         }
     }
 
@@ -110,8 +113,9 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
         else
         {
             String msg = I18n.err( I18n.ERR_13742_NO_SCHEMA_OBJECT_WITH_OID, oid );
-            LOG.error( msg );
-            throw new LdapException( msg );
+            LdapException error = new LdapException( msg );
+            errorHandler.handle( LOG, msg, error );
+            throw error;
         }
     }
 
@@ -135,8 +139,9 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
         if ( null == schemaObject )
         {
             String msg = I18n.err( I18n.ERR_13741_OID_NOT_FOUND_IN_REGISTRY, oid );
-            LOG.error( msg );
-            throw new LdapException( msg );
+            LdapException error = new LdapException( msg );
+            errorHandler.handle( LOG, msg, error );
+            throw error;
         }
 
         List<String> names = schemaObject.getNames();
@@ -215,6 +220,19 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
         isRelaxed = Registries.STRICT;
     }
 
+    
+    public SchemaErrorHandler getErrorHandler()
+    {
+        return errorHandler;
+    }
+
+
+    public void setErrorHandler( SchemaErrorHandler errorHandler )
+    {
+        this.errorHandler = errorHandler;
+    }
+
+
     /**
      * Adds an OID name pair to the registry.
      * 
@@ -264,11 +282,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
          */
         if ( byOid.containsKey( oid ) )
         {
-            if ( LOG.isInfoEnabled() )
-            {
-                LOG.info( I18n.err( I18n.ERR_13745_SCHEMA_OBJECT_WITH_OID_ALREADY_EXIST, oid ) );
-            }
-
+            errorHandler.handle( LOG, I18n.err( I18n.ERR_13745_SCHEMA_OBJECT_WITH_OID_ALREADY_EXIST, oid ), null );
             return;
         }
         else

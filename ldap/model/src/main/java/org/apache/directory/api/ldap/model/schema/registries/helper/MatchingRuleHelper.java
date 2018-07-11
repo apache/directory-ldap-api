@@ -20,8 +20,6 @@
 package org.apache.directory.api.ldap.model.schema.registries.helper;
 
 
-import java.util.List;
-
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
@@ -31,6 +29,7 @@ import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
+import org.apache.directory.api.ldap.model.schema.SchemaErrorHandler;
 import org.apache.directory.api.ldap.model.schema.comparators.ComparableComparator;
 import org.apache.directory.api.ldap.model.schema.normalizers.NoOpNormalizer;
 import org.apache.directory.api.ldap.model.schema.registries.Registries;
@@ -60,12 +59,12 @@ public final class MatchingRuleHelper
      * other SchemaObject
      *
      * @param matchingRule The MatchingRule to add to the Registries
-     * @param errors The errors we got while adding the MatchingRule to the registries
+     * @param errorHandler Error handler
      * @param registries The Registries
      * @throws LdapException If the addition failed
      */
     @SuppressWarnings("rawtypes")
-    public static void addToRegistries( MutableMatchingRule matchingRule, List<Throwable> errors, Registries registries )
+    public static void addToRegistries( MutableMatchingRule matchingRule, SchemaErrorHandler errorHandler, Registries registries )
         throws LdapException
     {
         if ( registries != null )
@@ -114,12 +113,7 @@ public final class MatchingRuleHelper
                         LdapSchemaExceptionCodes.MR_NONEXISTENT_SYNTAX, msg, ne );
                     ldapSchemaException.setSourceObject( matchingRule );
                     ldapSchemaException.setRelatedId( matchingRule.getSyntaxOid() );
-                    errors.add( ldapSchemaException );
-
-                    if ( LOG.isInfoEnabled() )
-                    {
-                        LOG.info( msg );
-                    }
+                    errorHandler.handle( LOG, msg, ldapSchemaException );
                 }
 
                 /**
@@ -162,11 +156,11 @@ public final class MatchingRuleHelper
      * an exception is thrown.
      *
      * @param matchingRule The MatchingRule to remove from the Registries
-     * @param errors The errors we got while removing the MatchingRule from the registries
+     * @param errorHandler Error handler
      * @param registries The Registries
      * @throws LdapException If the MatchingRule is not valid
      */
-    public static void removeFromRegistries( MatchingRule matchingRule, List<Throwable> errors, Registries registries )
+    public static void removeFromRegistries( MatchingRule matchingRule, SchemaErrorHandler errorHandler, Registries registries )
         throws LdapException
     {
         if ( registries != null )

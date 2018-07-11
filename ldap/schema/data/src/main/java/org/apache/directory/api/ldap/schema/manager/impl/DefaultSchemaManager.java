@@ -44,9 +44,11 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.LoadableSchemaObject;
+import org.apache.directory.api.ldap.model.schema.LoggingSchemaErrorHandler;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.SchemaErrorHandler;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
 import org.apache.directory.api.ldap.model.schema.SchemaObjectWrapper;
@@ -105,9 +107,6 @@ public class DefaultSchemaManager implements SchemaManager
     /** The global registries for this namingContext */
     private volatile Registries registries;
 
-    /** The list of errors produced when loading some schema elements */
-    private List<Throwable> errors;
-
     /** the factory that generates respective SchemaObjects from LDIF entries */
     private final EntityFactory factory;
 
@@ -123,6 +122,11 @@ public class DefaultSchemaManager implements SchemaManager
 
     /** A flag indicating that the SchemaManager is relaxed or not */
     private boolean isRelaxed = STRICT;
+    
+    /**
+     * Class that handles all the error that may occur during schema processing.
+     */
+    private SchemaErrorHandler errorHandler;
 
     /**
      * Creates a new instance of DefaultSchemaManager with the default schema schemaLoader
@@ -131,10 +135,10 @@ public class DefaultSchemaManager implements SchemaManager
     {
         // Default to the the root (one schemaManager for all the entries
         namingContext = Dn.ROOT_DSE;
-        errors = new ArrayList<>();
         registries = new Registries();
         factory = new SchemaEntityFactory();
         isRelaxed = STRICT;
+        setErrorHandler( new LoggingSchemaErrorHandler() );
         
         try
         {
@@ -170,10 +174,10 @@ public class DefaultSchemaManager implements SchemaManager
             schemaMap.put( schema.getSchemaName(), schema );
         }
         
-        errors = new ArrayList<>();
         registries = new Registries();
         factory = new SchemaEntityFactory();
         isRelaxed = STRICT;
+        setErrorHandler( new LoggingSchemaErrorHandler() );
     }
 
     
@@ -192,10 +196,10 @@ public class DefaultSchemaManager implements SchemaManager
             schemaMap.put( schema.getSchemaName(), schema );
         }
         
-        errors = new ArrayList<>();
         registries = new Registries();
         factory = new SchemaEntityFactory();
         isRelaxed = STRICT;
+        setErrorHandler( new LoggingSchemaErrorHandler() );
     }
     
 
@@ -215,10 +219,10 @@ public class DefaultSchemaManager implements SchemaManager
             schemaMap.put( schema.getSchemaName(), schema );
         }
         
-        errors = new ArrayList<>();
         registries = new Registries();
         factory = new SchemaEntityFactory();
         isRelaxed = relaxed;
+        setErrorHandler( new LoggingSchemaErrorHandler() );
     }
 
 
@@ -234,14 +238,13 @@ public class DefaultSchemaManager implements SchemaManager
         try
         {
             // Relax the controls at first
-            errors = new ArrayList<>();
 
             // Clone the Registries
             Registries clonedRegistries = registries.clone();
 
             // And update references. We may have errors, that may be fixed
             // by the new loaded schemas.
-            errors = clonedRegistries.checkRefInteg();
+            clonedRegistries.checkRefInteg();
 
             // Now, relax the cloned Registries if there is no error
             clonedRegistries.setRelaxed();
@@ -330,7 +333,7 @@ public class DefaultSchemaManager implements SchemaManager
 
             for ( SchemaObject schemaObject : toBeDeleted )
             {
-                registries.delete( errors, schemaObject );
+                registries.delete( schemaObject );
             }
         }
     }
@@ -347,33 +350,34 @@ public class DefaultSchemaManager implements SchemaManager
     {
         boolean disabled = false;
 
-        // Reset the errors if not null
-        if ( errors != null )
-        {
-            errors.clear();
-        }
+        // Reset the error handler
+        errorHandler.reset();
 
         // Work on a cloned and relaxed registries
         Registries clonedRegistries = cloneRegistries();
         clonedRegistries.setRelaxed();
-
+        
         for ( Schema schema : schemas )
         {
             unload( clonedRegistries, schema );
         }
-
+        
+        // Unload is producing some errors, not sure why. But they
+        // seem not relevant to disable functionality.
+        errorHandler.reset();
+        
         // Build the cross references
-        errors = clonedRegistries.buildReferences();
+        clonedRegistries.buildReferences();
 
         // Destroy the clonedRegistry
         clonedRegistries.clear();
 
-        if ( errors.isEmpty() )
+        if ( !errorHandler.wasError() )
         {
             // Ok no errors. Check the registries now
-            errors = clonedRegistries.checkRefInteg();
-
-            if ( errors.isEmpty() )
+            clonedRegistries.checkRefInteg();
+            
+            if ( !errorHandler.wasError() )
             {
                 // We are golden : let's apply the schemas in the real registries
                 for ( Schema schema : schemas )
@@ -381,9 +385,13 @@ public class DefaultSchemaManager implements SchemaManager
                     unload( registries, schema );
                     schema.disable();
                 }
+                
+                // Unload is producing some errors, not sure why. But they
+                // seem not relevant to disable functionality.
+                errorHandler.reset();
 
                 // Build the cross references
-                errors = registries.buildReferences();
+                registries.buildReferences();
                 registries.setStrict();
 
                 disabled = true;
@@ -458,10 +466,7 @@ public class DefaultSchemaManager implements SchemaManager
         boolean enabled = false;
 
         // Reset the errors if not null
-        if ( errors != null )
-        {
-            errors.clear();
-        }
+        errorHandler.reset();
 
         // Work on a cloned and relaxed registries
         Registries clonedRegistries = cloneRegistries();
@@ -498,17 +503,17 @@ public class DefaultSchemaManager implements SchemaManager
         }
 
         // Build the cross references
-        errors = clonedRegistries.buildReferences();
+        clonedRegistries.buildReferences();
 
         // Destroy the clonedRegistry
         clonedRegistries.clear();
 
-        if ( errors.isEmpty() )
+        if ( !errorHandler.wasError() )
         {
             // Ok no errors. Check the registries now
-            errors = clonedRegistries.checkRefInteg();
+            clonedRegistries.checkRefInteg();
 
-            if ( errors.isEmpty() )
+            if ( !errorHandler.wasError() )
             {
                 // We are golden : let's apply the schemas in the real registries
                 for ( Schema schema : schemas )
@@ -518,7 +523,7 @@ public class DefaultSchemaManager implements SchemaManager
                 }
 
                 // Build the cross references
-                errors = registries.buildReferences();
+                registries.buildReferences();
                 registries.setStrict();
 
                 enabled = true;
@@ -609,7 +614,7 @@ public class DefaultSchemaManager implements SchemaManager
     @Override
     public List<Throwable> getErrors()
     {
-        return errors;
+        return errorHandler.getErrors();
     }
 
 
@@ -648,10 +653,7 @@ public class DefaultSchemaManager implements SchemaManager
         boolean loaded = false;
 
         // Reset the errors if not null
-        if ( errors != null )
-        {
-            errors.clear();
-        }
+        errorHandler.reset();
 
         // Work on a cloned and relaxed registries
         Registries clonedRegistries = cloneRegistries();
@@ -670,14 +672,14 @@ public class DefaultSchemaManager implements SchemaManager
         }
 
         // Build the cross references
-        errors = clonedRegistries.buildReferences();
+        clonedRegistries.buildReferences();
 
-        if ( errors.isEmpty() )
+        if ( !errorHandler.wasError() )
         {
             // Ok no errors. Check the registries now
-            errors = clonedRegistries.checkRefInteg();
+            clonedRegistries.checkRefInteg();
 
-            if ( errors.isEmpty() )
+            if ( !errorHandler.wasError() )
             {
                 // We are golden : let's apply the schema in the real registries
                 registries.setRelaxed();
@@ -710,7 +712,7 @@ public class DefaultSchemaManager implements SchemaManager
                 }
 
                 // Build the cross references
-                errors = registries.buildReferences();
+                registries.buildReferences();
                 registries.setStrict();
 
                 loaded = true;
@@ -805,8 +807,8 @@ public class DefaultSchemaManager implements SchemaManager
                             LOG.info( msg );
                         }
                         
-                        Throwable error = new LdapProtocolErrorException( msg );
-                        errors.add( error );
+                        LdapProtocolErrorException error = new LdapProtocolErrorException( msg );
+                        errorHandler.handle( LOG, msg, error );
 
                         return false;
                     }
@@ -1077,22 +1079,24 @@ public class DefaultSchemaManager implements SchemaManager
         {
             if ( registries.isDisabledAccepted() || ( schema.isEnabled() && schemaObject.isEnabled() ) )
             {
-                registries.add( errors, schemaObject, false );
+                registries.add( schemaObject, false );
             }
             else
             {
-                errors.add( new Throwable() );
+                // What kind of error is this? TODO: better message
+                errorHandler.handle( LOG, null, new Throwable() );
             }
         }
         else
         {
             if ( schema.isEnabled() && schemaObject.isEnabled() )
             {
-                registries.add( errors, schemaObject, false );
+                registries.add( schemaObject, false );
             }
             else
             {
-                errors.add( new Throwable() );
+                // What kind of error is this? TODO: better message
+                errorHandler.handle( LOG, null, new Throwable() );
             }
         }
 
@@ -1168,7 +1172,7 @@ public class DefaultSchemaManager implements SchemaManager
         clonedRegistries.clear();
 
         // Apply the change to the correct registries if no errors
-        if ( errors.isEmpty() )
+        if ( !errorHandler.wasError() )
         {
             // No error, we can enable the schema in the real registries
             for ( Schema schema : schemas )
@@ -1232,10 +1236,7 @@ public class DefaultSchemaManager implements SchemaManager
         boolean loaded = false;
 
         // Reset the errors if not null
-        if ( errors != null )
-        {
-            errors.clear();
-        }
+        errorHandler.reset();
 
         // Work on a cloned and relaxed registries
         Registries clonedRegistries = cloneRegistries();
@@ -1248,14 +1249,14 @@ public class DefaultSchemaManager implements SchemaManager
         }
 
         // Build the cross references
-        errors = clonedRegistries.buildReferences();
+        clonedRegistries.buildReferences();
 
-        if ( errors.isEmpty() )
+        if ( !errorHandler.wasError() )
         {
             // Ok no errors. Check the registries now
-            errors = clonedRegistries.checkRefInteg();
+            clonedRegistries.checkRefInteg();
 
-            if ( errors.isEmpty() )
+            if ( !errorHandler.wasError() )
             {
                 // We are golden : let's apply the schema in the real registries
                 registries = clonedRegistries;
@@ -1384,10 +1385,10 @@ public class DefaultSchemaManager implements SchemaManager
         }
 
         // Build the cross references
-        errors = registries.buildReferences();
+        registries.buildReferences();
 
         // Check the registries now
-        errors = registries.checkRefInteg();
+        registries.checkRefInteg();
 
         return true;
     }
@@ -1500,10 +1501,7 @@ public class DefaultSchemaManager implements SchemaManager
         boolean unloaded = false;
 
         // Reset the errors if not null
-        if ( errors != null )
-        {
-            errors.clear();
-        }
+        errorHandler.reset();
 
         // Work on a cloned and relaxed registries
         Registries clonedRegistries = cloneRegistries();
@@ -1516,14 +1514,14 @@ public class DefaultSchemaManager implements SchemaManager
         }
 
         // Build the cross references
-        errors = clonedRegistries.buildReferences();
+        clonedRegistries.buildReferences();
 
-        if ( errors.isEmpty() )
+        if ( !errorHandler.wasError() )
         {
             // Ok no errors. Check the registries now
-            errors = clonedRegistries.checkRefInteg();
+            clonedRegistries.checkRefInteg();
 
-            if ( errors.isEmpty() )
+            if ( !errorHandler.wasError() )
             {
                 // We are golden : let's apply the schema in the real registries
                 registries.setRelaxed();
@@ -1548,7 +1546,7 @@ public class DefaultSchemaManager implements SchemaManager
                 }
 
                 // Build the cross references
-                errors = registries.buildReferences();
+                registries.buildReferences();
                 registries.setStrict();
 
                 unloaded = true;
@@ -1580,6 +1578,7 @@ public class DefaultSchemaManager implements SchemaManager
     @Override
     public boolean verify( Schema... schemas ) throws LdapException
     {
+        errorHandler.reset();
         // Work on a cloned registries
         Registries clonedRegistries = cloneRegistries();
 
@@ -1599,9 +1598,9 @@ public class DefaultSchemaManager implements SchemaManager
                 }
 
                 // Now, check the registries
-                List<Throwable> errorList = clonedRegistries.checkRefInteg();
+                clonedRegistries.checkRefInteg();
 
-                if ( !errorList.isEmpty() )
+                if ( !errorHandler.wasError() )
                 {
                     // We got an error : exit
                     clonedRegistries.clear();
@@ -1964,9 +1963,9 @@ public class DefaultSchemaManager implements SchemaManager
             else
             {
                 // We have an invalid SchemaObject, no need to go any further
-                Throwable error = new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, I18n.err(
+                LdapUnwillingToPerformException error = new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, I18n.err(
                     I18n.ERR_16079_INVALID_SCHEMA_OBJECT_CANNOT_BE_LOADED, schemaObject.getOid() ) );
-                errors.add( error );
+                errorHandler.handle( LOG, error.getMessage(), error );
             }
         }
 
@@ -1984,7 +1983,7 @@ public class DefaultSchemaManager implements SchemaManager
     public boolean add( SchemaObject schemaObject ) throws LdapException
     {
         // First, clear the errors
-        errors.clear();
+        errorHandler.reset();
 
         // Clone the schemaObject
         SchemaObject copy = copy( schemaObject );
@@ -1997,9 +1996,9 @@ public class DefaultSchemaManager implements SchemaManager
         if ( registries.isRelaxed() )
         {
             // Apply the addition right away
-            registries.add( errors, copy, true );
+            registries.add( copy, true );
 
-            return errors.isEmpty();
+            return !errorHandler.wasError();
         }
         else
         {
@@ -2011,7 +2010,7 @@ public class DefaultSchemaManager implements SchemaManager
                     LdapSchemaExceptionCodes.OID_ALREADY_REGISTERED, I18n.err( I18n.ERR_16036_OID_NOT_UNIQUE, 
                         schemaObject.getOid() ) );
                 ldapSchemaException.setSourceObject( schemaObject );
-                errors.add( ldapSchemaException );
+                errorHandler.handle( LOG, ldapSchemaException.getMessage(), ldapSchemaException );
 
                 return false;
             }
@@ -2028,7 +2027,7 @@ public class DefaultSchemaManager implements SchemaManager
                         schemaObject.getOid(), copy.getSchemaName() ) );
                 ldapSchemaException.setSourceObject( schemaObject );
                 ldapSchemaException.setRelatedId( copy.getSchemaName() );
-                errors.add( ldapSchemaException );
+                errorHandler.handle( LOG, ldapSchemaException.getMessage(), ldapSchemaException );
 
                 return false;
             }
@@ -2042,14 +2041,8 @@ public class DefaultSchemaManager implements SchemaManager
             {
                 // The SchemaObject must be associated with an existing schema
                 String msg = I18n.err( I18n.ERR_16038_NOT_ASSOCIATED_TO_A_SCHEMA, copy.getOid() );
-                
-                if ( LOG.isInfoEnabled() )
-                {
-                    LOG.info( msg );
-                }
-                
                 Throwable error = new LdapProtocolErrorException( msg );
-                errors.add( error );
+                errorHandler.handle( LOG, msg, error );
                 return false;
             }
 
@@ -2068,19 +2061,19 @@ public class DefaultSchemaManager implements SchemaManager
                 }
 
                 // Inject the new SchemaObject in the cloned registries
-                clonedRegistries.add( errors, copy, true );
+                clonedRegistries.add( copy, true );
 
                 // Remove the cloned registries
                 clonedRegistries.clear();
 
                 // If we didn't get any error, apply the addition to the real retistries
-                if ( errors.isEmpty() )
+                if ( !errorHandler.wasError() )
                 {
                     // Copy again as the clonedRegistries clear has removed the previous copy
                     copy = copy( schemaObject );
 
                     // Apply the addition to the real registries
-                    registries.add( errors, copy, true );
+                    registries.add( copy, true );
 
                     if ( LOG.isDebugEnabled() )
                     {
@@ -2092,12 +2085,8 @@ public class DefaultSchemaManager implements SchemaManager
                 else
                 {
                     // We have some error : reject the addition and get out
-                    if ( LOG.isInfoEnabled() )
-                    {
-                        LOG.info( I18n.msg( I18n.MSG_16020_CANNOT_LOAD_SCHEMAOBJECT, 
-                            copy.getOid(), Strings.listToString( errors ) ) );
-                    }
-
+                    errorHandler.handle( LOG, I18n.msg( I18n.MSG_16020_CANNOT_LOAD_SCHEMAOBJECT, 
+                            copy.getOid(), Strings.listToString( errorHandler.getErrors() ) ), null );
                     return false;
                 }
             }
@@ -2105,14 +2094,14 @@ public class DefaultSchemaManager implements SchemaManager
             {
                 // At least, we register the OID in the globalOidRegistry, and associates it with the
                 // schema
-                registries.associateWithSchema( errors, copy );
+                registries.associateWithSchema( copy );
 
                 if ( LOG.isDebugEnabled() )
                 {
                     LOG.debug( I18n.msg( I18n.MSG_16021_ADDED_INTO_DISABLED_SCHEMA, copy.getName(), schemaName ) );
                 }
                 
-                return errors.isEmpty();
+                return !errorHandler.wasError();
             }
         }
     }
@@ -2125,14 +2114,14 @@ public class DefaultSchemaManager implements SchemaManager
     public boolean delete( SchemaObject schemaObject ) throws LdapException
     {
         // First, clear the errors
-        errors.clear();
+        errorHandler.reset();
 
         if ( registries.isRelaxed() )
         {
             // Apply the addition right away
-            registries.delete( errors, schemaObject );
+            registries.delete( schemaObject );
 
-            return errors.isEmpty();
+            return !errorHandler.wasError();
         }
         else
         {
@@ -2142,7 +2131,7 @@ public class DefaultSchemaManager implements SchemaManager
             {
                 Throwable error = new LdapProtocolErrorException( I18n.err( I18n.ERR_16039_OID_DOES_NOT_EXIST, 
                     schemaObject.getOid() ) );
-                errors.add( error );
+                errorHandler.handle( LOG, error.getMessage(), error );
                 return false;
             }
 
@@ -2158,7 +2147,7 @@ public class DefaultSchemaManager implements SchemaManager
                     Strings.setToString( referencing ) );
 
                 Throwable error = new LdapProtocolErrorException( msg );
-                errors.add( error );
+                errorHandler.handle( LOG, msg, error );
                 return false;
             }
 
@@ -2172,14 +2161,8 @@ public class DefaultSchemaManager implements SchemaManager
             {
                 // The SchemaObject must be associated with an existing schema
                 String msg = I18n.err( I18n.ERR_16041_CANNOT_DELETE_SCHEMA_OBJECT, schemaObject.getOid() );
-
-                if ( LOG.isInfoEnabled() )
-                {
-                    LOG.info( msg );
-                }
-                
                 Throwable error = new LdapProtocolErrorException( msg );
-                errors.add( error );
+                errorHandler.handle( LOG, msg, error );
                 return false;
             }
 
@@ -2198,16 +2181,16 @@ public class DefaultSchemaManager implements SchemaManager
                 }
 
                 // Delete the SchemaObject from the cloned registries
-                clonedRegistries.delete( errors, toDelete );
+                clonedRegistries.delete( toDelete );
 
                 // Remove the cloned registries
                 clonedRegistries.clear();
 
                 // If we didn't get any error, apply the deletion to the real retistries
-                if ( errors.isEmpty() )
+                if ( !errorHandler.wasError() )
                 {
                     // Apply the deletion to the real registries
-                    registries.delete( errors, toDelete );
+                    registries.delete( toDelete );
 
                     if ( LOG.isDebugEnabled() )
                     {
@@ -2219,11 +2202,8 @@ public class DefaultSchemaManager implements SchemaManager
                 else
                 {
                     // We have some error : reject the deletion and get out
-                    if ( LOG.isInfoEnabled() )
-                    {
-                        LOG.info( I18n.msg( I18n.MSG_16023_CANNOT_DELETE_SCHEMAOBJECT, 
-                            schemaObject.getOid(), Strings.listToString( errors ) ) );
-                    }
+                    errorHandler.handle( LOG, I18n.msg( I18n.MSG_16023_CANNOT_DELETE_SCHEMAOBJECT, 
+                            schemaObject.getOid(), Strings.listToString( errorHandler.getErrors() ) ), null );
 
                     return false;
                 }
@@ -2232,14 +2212,14 @@ public class DefaultSchemaManager implements SchemaManager
             {
                 // At least, we register the OID in the globalOidRegistry, and associates it with the
                 // schema
-                registries.associateWithSchema( errors, schemaObject );
+                registries.associateWithSchema( schemaObject );
 
                 if ( LOG.isDebugEnabled() )
                 {
                     LOG.debug( I18n.msg( I18n.MSG_16024_REMOVED_FROM_DISABLED_SCHEMA, schemaObject.getName(), schemaName ) );
                 }
                 
-                return errors.isEmpty();
+                return !errorHandler.wasError();
             }
         }
     }
@@ -2459,6 +2439,19 @@ public class DefaultSchemaManager implements SchemaManager
     public void setStrict()
     {
         isRelaxed = STRICT;
+    }
+
+
+    public SchemaErrorHandler getErrorHandler()
+    {
+        return errorHandler;
+    }
+
+
+    public void setErrorHandler( SchemaErrorHandler errorHandler )
+    {
+        this.errorHandler = errorHandler;
+        registries.setErrorHandler( errorHandler );
     }
 
 

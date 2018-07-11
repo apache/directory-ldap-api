@@ -28,6 +28,7 @@ import org.apache.directory.api.ldap.model.exception.LdapSchemaExceptionCodes;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
+import org.apache.directory.api.ldap.model.schema.SchemaErrorHandler;
 import org.apache.directory.api.ldap.model.schema.registries.AttributeTypeRegistry;
 import org.apache.directory.api.ldap.model.schema.registries.ObjectClassRegistry;
 import org.apache.directory.api.ldap.model.schema.registries.Registries;
@@ -55,11 +56,11 @@ public final class ObjectClassHelper
      * other SchemaObject
      *
      * @param objectClass The ObjectClass to add to the Registries
-     * @param errors The errors we got while adding the ObjectClass to the Registries
+     * @param errorHandler Error handler
      * @param registries The Registries
      * @throws LdapException on failure
      */
-    public static void addToRegistries( ObjectClass objectClass, List<Throwable> errors, Registries registries ) throws LdapException
+    public static void addToRegistries( ObjectClass objectClass, SchemaErrorHandler errorHandler, Registries registries ) throws LdapException
     {
         if ( registries != null )
         {
@@ -68,13 +69,13 @@ public final class ObjectClassHelper
                 objectClass.unlock();
                 
                 // The superiors
-                buildSuperiors( objectClass, errors, registries );
+                buildSuperiors( objectClass, errorHandler, registries );
     
                 // The MAY AttributeTypes
-                buildMay( objectClass, errors, registries );
+                buildMay( objectClass, errorHandler, registries );
     
                 // The MUST AttributeTypes
-                buildMust( objectClass, errors, registries );
+                buildMust( objectClass, errorHandler, registries );
     
                 /**
                  * Add the OC references (using and usedBy) :
@@ -108,7 +109,7 @@ public final class ObjectClassHelper
      * Build the references to this ObjectClass SUPERIORS, checking that the type
      * hierarchy is correct.
      */
-    private static void buildSuperiors( ObjectClass objectClass, List<Throwable> errors, Registries registries )
+    private static void buildSuperiors( ObjectClass objectClass, SchemaErrorHandler errorHandler, Registries registries )
     {
         ObjectClassRegistry ocRegistry = registries.getObjectClassRegistry();
         List<String> superiorOids = objectClass.getSuperiorOids();
@@ -136,12 +137,7 @@ public final class ObjectClassHelper
                                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
                                     LdapSchemaExceptionCodes.OC_ABSTRACT_MUST_INHERIT_FROM_ABSTRACT_OC, msg );
                                 ldapSchemaException.setSourceObject( objectClass );
-                                errors.add( ldapSchemaException );
-
-                                if ( LOG.isInfoEnabled() )
-                                {
-                                    LOG.info( msg );
-                                }
+                                errorHandler.handle( LOG, msg, ldapSchemaException );
 
                                 continue;
                             }
@@ -157,12 +153,7 @@ public final class ObjectClassHelper
                                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
                                     LdapSchemaExceptionCodes.OC_AUXILIARY_CANNOT_INHERIT_FROM_STRUCTURAL_OC, msg );
                                 ldapSchemaException.setSourceObject( objectClass );
-                                errors.add( ldapSchemaException );
-
-                                if ( LOG.isInfoEnabled() )
-                                {
-                                    LOG.info( msg );
-                                }
+                                errorHandler.handle( LOG, msg, ldapSchemaException );
 
                                 continue;
                             }
@@ -178,12 +169,7 @@ public final class ObjectClassHelper
                                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
                                     LdapSchemaExceptionCodes.OC_STRUCTURAL_CANNOT_INHERIT_FROM_AUXILIARY_OC, msg );
                                 ldapSchemaException.setSourceObject( objectClass );
-                                errors.add( ldapSchemaException );
-
-                                if ( LOG.isInfoEnabled() )
-                                {
-                                    LOG.info( msg );
-                                }
+                                errorHandler.handle( LOG, msg, ldapSchemaException );
 
                                 continue;
                             }
@@ -207,12 +193,7 @@ public final class ObjectClassHelper
                         LdapSchemaExceptionCodes.OC_NONEXISTENT_SUPERIOR, msg, ne );
                     ldapSchemaException.setSourceObject( objectClass );
                     ldapSchemaException.setRelatedId( superiorName );
-                    errors.add( ldapSchemaException );
-
-                    if ( LOG.isInfoEnabled() )
-                    {
-                        LOG.info( msg );
-                    }
+                    errorHandler.handle( LOG, msg, ldapSchemaException );
 
                     return;
                 }
@@ -224,7 +205,7 @@ public final class ObjectClassHelper
     /**
      * Build and check the MUST AT for this ObjectClass.
      */
-    private static void buildMust( ObjectClass objectClass, List<Throwable> errors, Registries registries )
+    private static void buildMust( ObjectClass objectClass, SchemaErrorHandler errorHandler, Registries registries )
     {
         AttributeTypeRegistry atRegistry = registries.getAttributeTypeRegistry();
         List<String> mustAttributeTypeOids = objectClass.getMustAttributeTypeOids();
@@ -249,12 +230,7 @@ public final class ObjectClassHelper
                             LdapSchemaExceptionCodes.OC_COLLECTIVE_NOT_ALLOWED_IN_MUST, msg );
                         ldapSchemaException.setSourceObject( objectClass );
                         ldapSchemaException.setRelatedId( mustAttributeTypeName );
-                        errors.add( ldapSchemaException );
-
-                        if ( LOG.isInfoEnabled() )
-                        {
-                            LOG.info( msg );
-                        }
+                        errorHandler.handle( LOG, msg, ldapSchemaException );
 
                         continue;
                     }
@@ -269,12 +245,7 @@ public final class ObjectClassHelper
                             LdapSchemaExceptionCodes.OC_DUPLICATE_AT_IN_MUST, msg );
                         ldapSchemaException.setSourceObject( objectClass );
                         ldapSchemaException.setRelatedId( mustAttributeTypeName );
-                        errors.add( ldapSchemaException );
-
-                        if ( LOG.isInfoEnabled() )
-                        {
-                            LOG.info( msg );
-                        }
+                        errorHandler.handle( LOG, msg, ldapSchemaException );
 
                         continue;
                     }
@@ -291,12 +262,7 @@ public final class ObjectClassHelper
                             msg );
                         ldapSchemaException.setSourceObject( objectClass );
                         ldapSchemaException.setRelatedId( mustAttributeTypeName );
-                        errors.add( ldapSchemaException );
-
-                        if ( LOG.isInfoEnabled() )
-                        {
-                            LOG.info( msg );
-                        }
+                        errorHandler.handle( LOG, msg, ldapSchemaException );
 
                         continue;
                     }
@@ -313,12 +279,7 @@ public final class ObjectClassHelper
                         LdapSchemaExceptionCodes.OC_NONEXISTENT_MUST_AT, msg, ne );
                     ldapSchemaException.setSourceObject( objectClass );
                     ldapSchemaException.setRelatedId( mustAttributeTypeName );
-                    errors.add( ldapSchemaException );
-
-                    if ( LOG.isInfoEnabled() )
-                    {
-                        LOG.info( msg );
-                    }
+                    errorHandler.handle( LOG, msg, ldapSchemaException );
 
                     continue;
                 }
@@ -330,7 +291,7 @@ public final class ObjectClassHelper
     /**
      * Build and check the MAY AT for this ObjectClass
      */
-    private static void buildMay( ObjectClass objectClass, List<Throwable> errors, Registries registries )
+    private static void buildMay( ObjectClass objectClass, SchemaErrorHandler errorHandler, Registries registries )
     {
         AttributeTypeRegistry atRegistry = registries.getAttributeTypeRegistry();
         List<String> mayAttributeTypeOids = objectClass.getMayAttributeTypeOids();
@@ -354,12 +315,7 @@ public final class ObjectClassHelper
                             LdapSchemaExceptionCodes.OC_COLLECTIVE_NOT_ALLOWED_IN_MAY, msg );
                         ldapSchemaException.setSourceObject( objectClass );
                         ldapSchemaException.setRelatedId( mayAttributeTypeName );
-                        errors.add( ldapSchemaException );
-
-                        if ( LOG.isInfoEnabled() )
-                        {
-                            LOG.info( msg );
-                        }
+                        errorHandler.handle( LOG, msg, ldapSchemaException );
 
                         continue;
                     }
@@ -374,12 +330,7 @@ public final class ObjectClassHelper
                             LdapSchemaExceptionCodes.OC_DUPLICATE_AT_IN_MAY, msg );
                         ldapSchemaException.setSourceObject( objectClass );
                         ldapSchemaException.setRelatedId( mayAttributeTypeName );
-                        errors.add( ldapSchemaException );
-
-                        if ( LOG.isInfoEnabled() )
-                        {
-                            LOG.info( msg );
-                        }
+                        errorHandler.handle( LOG, msg, ldapSchemaException );
 
                         continue;
                     }
@@ -395,12 +346,7 @@ public final class ObjectClassHelper
                         LdapSchemaExceptionCodes.OC_NONEXISTENT_MAY_AT, msg, ne );
                     ldapSchemaException.setSourceObject( objectClass );
                     ldapSchemaException.setRelatedId( mayAttributeTypeName );
-                    errors.add( ldapSchemaException );
-
-                    if ( LOG.isInfoEnabled() )
-                    {
-                        LOG.info( msg );
-                    }
+                    errorHandler.handle( LOG, msg, ldapSchemaException );
 
                     continue;
                 }
@@ -417,11 +363,11 @@ public final class ObjectClassHelper
      * an exception is thrown.
      *
      * @param objectClass The ObjectClass to remove fro the registries
-     * @param errors The errors we got while removing the ObjectClass from the registries
+     * @param errorHandler Error handler
      * @param registries The Registries
      * @throws LdapException If the ObjectClass is not valid
      */
-    public static void removeFromRegistries( ObjectClass objectClass, List<Throwable> errors, Registries registries ) throws LdapException
+    public static void removeFromRegistries( ObjectClass objectClass, SchemaErrorHandler errorHandler, Registries registries ) throws LdapException
     {
         if ( registries != null )
         {

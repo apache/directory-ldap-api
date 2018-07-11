@@ -20,10 +20,9 @@
 package org.apache.directory.api.ldap.model.schema.registries.helper;
 
 
-import java.util.List;
-
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
+import org.apache.directory.api.ldap.model.schema.SchemaErrorHandler;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.registries.Registries;
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.OctetStringSyntaxChecker;
@@ -47,11 +46,11 @@ public final class LdapSyntaxHelper
      * other SchemaObject
      *
      * @param ldapSyntax The LdapSyntax to add to the Registries
-     * @param errors The errors we got while adding the LdapSyntax to the Registries
+     * @param errorHandler Error handler
      * @param registries The Registries
      * @throws LdapException If the addition failed
      */
-    public static void addToRegistries( LdapSyntax ldapSyntax, List<Throwable> errors, Registries registries )
+    public static void addToRegistries( LdapSyntax ldapSyntax, SchemaErrorHandler errorHandler, Registries registries )
         throws LdapException
     {
         if ( registries != null )
@@ -97,11 +96,11 @@ public final class LdapSyntaxHelper
      * an exception is thrown.
      *
      * @param ldapSyntax The LdapSyntax to remove from the Registries
-     * @param errors The errors we got while removing the LdapSyntax from the Registries
+     * @param errorHandler Error handler
      * @param registries The Registries
      * @throws LdapException If the LdapSyntax is not valid
      */
-    public static void removeFromRegistries( LdapSyntax ldapSyntax, List<Throwable> errors, Registries registries )
+    public static void removeFromRegistries( LdapSyntax ldapSyntax, SchemaErrorHandler errorHandler, Registries registries )
         throws LdapException
     {
         if ( ( registries != null ) && ( ldapSyntax.getSyntaxChecker() != null ) )

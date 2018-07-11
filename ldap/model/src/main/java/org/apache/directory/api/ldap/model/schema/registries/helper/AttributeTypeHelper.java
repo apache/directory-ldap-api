@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.model.schema.registries.helper;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.directory.api.i18n.I18n;
@@ -31,6 +30,7 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.api.ldap.model.schema.SchemaErrorHandler;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
 import org.apache.directory.api.ldap.model.schema.registries.AttributeTypeRegistry;
 import org.apache.directory.api.ldap.model.schema.registries.Registries;
@@ -60,11 +60,11 @@ public final class AttributeTypeHelper
      * an exception is thrown.
      * 
      * @param attributeType The AttributeType to add to the Registries
-     * @param errors The errors we got while adding the AttributeType to the Registries
+     * @param errorHandler Error handler
      * @param registries The Registries
      * @throws LdapException If the AttributeType is not valid
      */
-    public static void addToRegistries( MutableAttributeType attributeType, List<Throwable> errors, Registries registries ) throws LdapException
+    public static void addToRegistries( MutableAttributeType attributeType, SchemaErrorHandler errorHandler, Registries registries ) throws LdapException
     {
         if ( registries != null )
         {
@@ -74,29 +74,29 @@ public final class AttributeTypeHelper
                 AttributeTypeRegistry attributeTypeRegistry = registries.getAttributeTypeRegistry();
     
                 // The superior
-                if ( !buildSuperior( attributeType, errors, registries ) )
+                if ( !buildSuperior( attributeType, errorHandler, registries ) )
                 {
                     // We have had errors, let's stop here as we need a correct superior to continue
                     return;
                 }
     
                 // The Syntax
-                buildSyntax( attributeType, errors, registries );
+                buildSyntax( attributeType, errorHandler, registries );
     
                 // The EQUALITY matching rule
-                buildEquality( attributeType, errors, registries );
+                buildEquality( attributeType, errorHandler, registries );
     
                 // The ORDERING matching rule
-                buildOrdering( attributeType, errors, registries );
+                buildOrdering( attributeType, errorHandler, registries );
     
                 // The SUBSTR matching rule
-                buildSubstring( attributeType, errors, registries );
+                buildSubstring( attributeType, errorHandler, registries );
     
                 // Check the USAGE
-                checkUsage( attributeType, errors );
+                checkUsage( attributeType, errorHandler );
     
                 // Check the COLLECTIVE element
-                checkCollective( attributeType, errors );
+                checkCollective( attributeType, errorHandler );
     
                 // Inject the attributeType into the oid/normalizer map
                 attributeTypeRegistry.addMappingFor( attributeType );
@@ -146,7 +146,7 @@ public final class AttributeTypeHelper
     /**
      * Build the Superior AttributeType reference for an AttributeType
      */
-    private static boolean buildSuperior( MutableAttributeType attributeType, List<Throwable> errors, Registries registries )
+    private static boolean buildSuperior( MutableAttributeType attributeType, SchemaErrorHandler errorHandler, Registries registries )
     {
         MutableAttributeType currentSuperior;
         AttributeTypeRegistry attributeTypeRegistry = registries.getAttributeTypeRegistry();
@@ -169,12 +169,7 @@ public final class AttributeTypeHelper
                     LdapSchemaExceptionCodes.AT_NONEXISTENT_SUPERIOR, msg, e );
                 ldapSchemaException.setSourceObject( attributeType );
                 ldapSchemaException.setRelatedId( superiorOid );
-                errors.add( ldapSchemaException );
-
-                if ( LOG.isInfoEnabled() )
-                {
-                    LOG.info( msg );
-                }
+                errorHandler.handle( LOG, msg, ldapSchemaException );
 
                 // Get out now
                 return false;
@@ -191,12 +186,7 @@ public final class AttributeTypeHelper
                     LdapSchemaException ldapSchemaException = new LdapSchemaException(
                         LdapSchemaExceptionCodes.AT_CANNOT_SUBTYPE_COLLECTIVE_AT, msg );
                     ldapSchemaException.setSourceObject( attributeType );
-                    errors.add( ldapSchemaException );
-
-                    if ( LOG.isInfoEnabled() )
-                    {
-                        LOG.info( msg );
-                    }
+                    errorHandler.handle( LOG, msg, ldapSchemaException );
                     
                     return false;
                 }
@@ -208,7 +198,7 @@ public final class AttributeTypeHelper
                 // handled.
                 if ( currentSuperior.getSuperior() == null )
                 {
-                    registries.buildReference( errors, currentSuperior );
+                    registries.buildReference( currentSuperior );
                 }
 
                 // Update the descendant MAP
@@ -218,12 +208,7 @@ public final class AttributeTypeHelper
                 }
                 catch ( LdapException ne )
                 {
-                    errors.add( ne );
-
-                    if ( LOG.isInfoEnabled() )
-                    {
-                        LOG.info( ne.getMessage() );
-                    }
+                    errorHandler.handle( LOG, ne.getMessage(), ne );
                     
                     return false;
                 }
@@ -245,12 +230,7 @@ public final class AttributeTypeHelper
                         LdapSchemaException ldapSchemaException = new LdapSchemaException(
                             LdapSchemaExceptionCodes.AT_CYCLE_TYPE_HIERARCHY, msg );
                         ldapSchemaException.setSourceObject( attributeType );
-                        errors.add( ldapSchemaException );
-
-                        if ( LOG.isInfoEnabled() )
-                        {
-                            LOG.info( msg );
-                        }
+                        errorHandler.handle( LOG, msg, ldapSchemaException );
 
                         isOk = false;
 
@@ -276,12 +256,7 @@ public final class AttributeTypeHelper
                     LdapSchemaExceptionCodes.AT_NONEXISTENT_SUPERIOR, msg );
                 ldapSchemaException.setSourceObject( attributeType );
                 ldapSchemaException.setRelatedId( superiorOid );
-                errors.add( ldapSchemaException );
-
-                if ( LOG.isInfoEnabled() )
-                {
-                    LOG.info( msg );
-                }
+                errorHandler.handle( LOG, msg, ldapSchemaException );
 
                 // Get out now
                 return false;
@@ -298,7 +273,7 @@ public final class AttributeTypeHelper
     /**
      * Build the SYNTAX reference for an AttributeType
      */
-    private static void buildSyntax( MutableAttributeType attributeType, List<Throwable> errors, Registries registries )
+    private static void buildSyntax( MutableAttributeType attributeType, SchemaErrorHandler errorHandler, Registries registries )
     {
         String syntaxOid = attributeType.getSyntaxOid();
         
@@ -319,12 +294,7 @@ public final class AttributeTypeHelper
                     LdapSchemaExceptionCodes.AT_NONEXISTENT_SYNTAX, msg, ne );
                 ldapSchemaException.setSourceObject( attributeType );
                 ldapSchemaException.setRelatedId( syntaxOid );
-                errors.add( ldapSchemaException );
-
-                if ( LOG.isInfoEnabled() )
-                {
-                    LOG.info( msg );
-                }
+                errorHandler.handle( LOG, msg, ldapSchemaException );
                 
                 return;
             }
@@ -343,12 +313,7 @@ public final class AttributeTypeHelper
                     LdapSchemaExceptionCodes.AT_NONEXISTENT_SYNTAX, msg );
                 ldapSchemaException.setSourceObject( attributeType );
                 ldapSchemaException.setRelatedId( syntaxOid );
-                errors.add( ldapSchemaException );
-
-                if ( LOG.isInfoEnabled() )
-                {
-                    LOG.info( msg );
-                }
+                errorHandler.handle( LOG, msg, ldapSchemaException );
                 
                 return;
             }
@@ -370,12 +335,7 @@ public final class AttributeTypeHelper
                         LdapSchemaExceptionCodes.AT_NONEXISTENT_SYNTAX, msg );
                     ldapSchemaException.setSourceObject( attributeType );
                     ldapSchemaException.setRelatedId( syntaxOid );
-                    errors.add( ldapSchemaException );
-
-                    if ( LOG.isInfoEnabled() )
-                    {
-                        LOG.info( msg );
-                    }
+                    errorHandler.handle( LOG, msg, ldapSchemaException );
                     
                     return;
                 }
@@ -388,12 +348,7 @@ public final class AttributeTypeHelper
                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
                     LdapSchemaExceptionCodes.AT_SYNTAX_OR_SUPERIOR_REQUIRED, msg );
                 ldapSchemaException.setSourceObject( attributeType );
-                errors.add( ldapSchemaException );
-
-                if ( LOG.isInfoEnabled() )
-                {
-                    LOG.info( msg );
-                }
+                errorHandler.handle( LOG, msg, ldapSchemaException );
                 
                 return;
             }
@@ -404,7 +359,7 @@ public final class AttributeTypeHelper
     /**
      * Build the EQUALITY MR reference for an AttributeType
      */
-    private static void buildEquality( MutableAttributeType attributeType, List<Throwable> errors, Registries registries )
+    private static void buildEquality( MutableAttributeType attributeType, SchemaErrorHandler errorHandler, Registries registries )
     {
         String equalityOid = attributeType.getEqualityOid();
         
@@ -426,12 +381,7 @@ public final class AttributeTypeHelper
                     LdapSchemaExceptionCodes.AT_NONEXISTENT_EQUALITY_MATCHING_RULE, msg, ne );
                 ldapSchemaException.setSourceObject( attributeType );
                 ldapSchemaException.setRelatedId( equalityOid );
-                errors.add( ldapSchemaException );
-
-                if ( LOG.isInfoEnabled() )
-                {
-                    LOG.info( msg );
-                }
+                errorHandler.handle( LOG, msg, ldapSchemaException );
                 
                 return;
             }
@@ -452,12 +402,7 @@ public final class AttributeTypeHelper
                     LdapSchemaExceptionCodes.AT_NONEXISTENT_EQUALITY_MATCHING_RULE, msg );
                 ldapSchemaException.setSourceObject( attributeType );
                 ldapSchemaException.setRelatedId( equalityOid );
-                errors.add( ldapSchemaException );
-
-                if ( LOG.isInfoEnabled() )
-                {
-                    LOG.info( msg );
-                }
+                errorHandler.handle( LOG, msg, ldapSchemaException );
             }
         }
         else
@@ -476,7 +421,7 @@ public final class AttributeTypeHelper
     /**
      * Build the SUBSTR MR reference for an AttributeType
      */
-    private static void buildSubstring( MutableAttributeType attributeType, List<Throwable> errors, Registries registries )
+    private static void buildSubstring( MutableAttributeType attributeType, SchemaErrorHandler errorHandler, Registries registries )
     {
         String substringOid = attributeType.getSubstringOid();
         
@@ -498,12 +443,7 @@ public final class AttributeTypeHelper
                     LdapSchemaExceptionCodes.AT_NONEXISTENT_SUBSTRING_MATCHING_RULE, msg, ne );
                 ldapSchemaException.setSourceObject( attributeType );
                 ldapSchemaException.setRelatedId( substringOid );
-                errors.add( ldapSchemaException );
-
-                if ( LOG.isInfoEnabled() )
-                {
-                    LOG.info( msg );
-                }
+                errorHandler.handle( LOG, msg, ldapSchemaException );
                 
                 return;
             }
@@ -521,12 +461,7 @@ public final class AttributeTypeHelper
                     LdapSchemaExceptionCodes.AT_NONEXISTENT_SUBSTRING_MATCHING_RULE, msg );
                 ldapSchemaException.setSourceObject( attributeType );
                 ldapSchemaException.setRelatedId( substringOid );
-                errors.add( ldapSchemaException );
-
-                if ( LOG.isInfoEnabled() )
-                {
-                    LOG.info( msg );
-                }
+                errorHandler.handle( LOG, msg, ldapSchemaException );
                 
                 return;
             }
@@ -551,7 +486,7 @@ public final class AttributeTypeHelper
     /**
      * Build the ORDERING MR reference for an AttributeType
      */
-    private static void buildOrdering( MutableAttributeType attributeType, List<Throwable> errors, Registries registries )
+    private static void buildOrdering( MutableAttributeType attributeType, SchemaErrorHandler errorHandler, Registries registries )
     {
         String orderingOid = attributeType.getOrderingOid();
         
@@ -572,12 +507,7 @@ public final class AttributeTypeHelper
                     LdapSchemaExceptionCodes.AT_NONEXISTENT_ORDERING_MATCHING_RULE, msg, ne );
                 ldapSchemaException.setSourceObject( attributeType );
                 ldapSchemaException.setRelatedId( orderingOid );
-                errors.add( ldapSchemaException );
-
-                if ( LOG.isInfoEnabled() )
-                {
-                    LOG.info( msg );
-                }
+                errorHandler.handle( LOG, msg, ldapSchemaException );
                 
                 return;
             }
@@ -595,12 +525,7 @@ public final class AttributeTypeHelper
                     LdapSchemaExceptionCodes.AT_NONEXISTENT_ORDERING_MATCHING_RULE, msg );
                 ldapSchemaException.setSourceObject( attributeType );
                 ldapSchemaException.setRelatedId( orderingOid );
-                errors.add( ldapSchemaException );
-
-                if ( LOG.isInfoEnabled() )
-                {
-                    LOG.info( msg );
-                }
+                errorHandler.handle( LOG, msg, ldapSchemaException );
             }
         }
         else
@@ -619,7 +544,7 @@ public final class AttributeTypeHelper
     /**
      * Check the constraints for the Usage field.
      */
-    private static void checkUsage( AttributeType attributeType, List<Throwable> errors )
+    private static void checkUsage( AttributeType attributeType, SchemaErrorHandler errorHandler )
     {
         AttributeType superior = attributeType.getSuperior();
         
@@ -632,12 +557,7 @@ public final class AttributeTypeHelper
             LdapSchemaException ldapSchemaException = new LdapSchemaException(
                 LdapSchemaExceptionCodes.AT_MUST_HAVE_SAME_USAGE_THAN_SUPERIOR, msg );
             ldapSchemaException.setSourceObject( attributeType );
-            errors.add( ldapSchemaException );
-
-            if ( LOG.isInfoEnabled() )
-            {
-                LOG.info( msg );
-            }
+            errorHandler.handle( LOG, msg, ldapSchemaException );
             
             return;
         }
@@ -651,12 +571,7 @@ public final class AttributeTypeHelper
             LdapSchemaException ldapSchemaException = new LdapSchemaException(
                 LdapSchemaExceptionCodes.AT_USER_APPLICATIONS_USAGE_MUST_BE_USER_MODIFIABLE, msg );
             ldapSchemaException.setSourceObject( attributeType );
-            errors.add( ldapSchemaException );
-
-            if ( LOG.isInfoEnabled() )
-            {
-                LOG.info( msg );
-            }
+            errorHandler.handle( LOG, msg, ldapSchemaException );
         }
     }
 
@@ -664,7 +579,7 @@ public final class AttributeTypeHelper
     /**
      * Check the constraints for the Collective field.
      */
-    private static void checkCollective( MutableAttributeType attributeType, List<Throwable> errors )
+    private static void checkCollective( MutableAttributeType attributeType, SchemaErrorHandler errorHandler )
     {
         AttributeType superior = attributeType.getSuperior();
 
@@ -682,12 +597,7 @@ public final class AttributeTypeHelper
             LdapSchemaException ldapSchemaException = new LdapSchemaException(
                 LdapSchemaExceptionCodes.AT_COLLECTIVE_MUST_HAVE_USER_APPLICATIONS_USAGE, msg );
             ldapSchemaException.setSourceObject( attributeType );
-            errors.add( ldapSchemaException );
-
-            if ( LOG.isInfoEnabled() )
-            {
-                LOG.info( msg );
-            }
+            errorHandler.handle( LOG, msg, ldapSchemaException );
         }
 
         if ( attributeType.isCollective() && attributeType.isSingleValued() )
@@ -698,12 +608,7 @@ public final class AttributeTypeHelper
             LdapSchemaException ldapSchemaException = new LdapSchemaException(
                 LdapSchemaExceptionCodes.AT_COLLECTIVE_CANNOT_BE_SINGLE_VALUED, msg );
             ldapSchemaException.setSourceObject( attributeType );
-            errors.add( ldapSchemaException );
-
-            if ( LOG.isInfoEnabled() )
-            {
-                LOG.info( msg );
-            }
+            errorHandler.handle( LOG, msg, ldapSchemaException );
         }
     }
     
@@ -716,11 +621,11 @@ public final class AttributeTypeHelper
      * an exception is thrown.
      * 
      * @param attributeType The AttributeType to remove from the Registries
-     * @param errors The errors we got while removing the AttributeType from the Registries
+     * @param errorHandler Error handler
      * @param registries The Registries
      * @throws LdapException If the AttributeType is not valid
      */
-    public static void removeFromRegistries( AttributeType attributeType, List<Throwable> errors, Registries registries ) throws LdapException
+    public static void removeFromRegistries( AttributeType attributeType, SchemaErrorHandler errorHandler, Registries registries ) throws LdapException
     {
         if ( registries != null )
         {

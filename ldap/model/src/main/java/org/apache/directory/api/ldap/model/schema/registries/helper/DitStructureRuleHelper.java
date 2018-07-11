@@ -20,10 +20,9 @@
 package org.apache.directory.api.ldap.model.schema.registries.helper;
 
 
-import java.util.List;
-
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.DitStructureRule;
+import org.apache.directory.api.ldap.model.schema.SchemaErrorHandler;
 import org.apache.directory.api.ldap.model.schema.registries.Registries;
 
 
@@ -45,11 +44,11 @@ public final class DitStructureRuleHelper
      * other SchemaObject
      *
      * @param ditStructureRule The DitStructureRule to add to the Registries
-     * @param errors The errors we got while adding the DitContentRule to the Registries
+     * @param errorHandler Error handler
      * @param registries The Registries
      * @throws LdapException If the addition failed
      */
-    public static void addToRegistries( DitStructureRule ditStructureRule, List<Throwable> errors, Registries registries )
+    public static void addToRegistries( DitStructureRule ditStructureRule, SchemaErrorHandler errorHandler, Registries registries )
         throws LdapException
     {
         if ( registries != null )

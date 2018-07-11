@@ -30,6 +30,7 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.api.ldap.model.exception.LdapSchemaExceptionCodes;
 import org.apache.directory.api.ldap.model.schema.LoadableSchemaObject;
+import org.apache.directory.api.ldap.model.schema.SchemaErrorHandler;
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
 import org.apache.directory.api.ldap.model.schema.SchemaObjectType;
 import org.apache.directory.api.util.Strings;
@@ -62,6 +63,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     /** A flag indicating that the Registry is relaxed or not */
     private boolean isRelaxed;
 
+    private SchemaErrorHandler errorHandler;
 
     /**
      * Creates a new DefaultSchemaObjectRegistry instance.
@@ -120,7 +122,18 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
         isRelaxed = Registries.STRICT;
         oidRegistry.setStrict();
     }
+    
 
+    public SchemaErrorHandler getErrorHandler()
+    {
+        return errorHandler;
+    }
+
+    public void setErrorHandler( SchemaErrorHandler errorHandler )
+    {
+        this.errorHandler = errorHandler;
+        oidRegistry.setErrorHandler( errorHandler );
+    }
 
     /**
      * {@inheritDoc}

@@ -20,11 +20,10 @@
 package org.apache.directory.api.ldap.model.schema.registries.helper;
 
 
-import java.util.List;
-
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.NameForm;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.SchemaErrorHandler;
 import org.apache.directory.api.ldap.model.schema.registries.AttributeTypeRegistry;
 import org.apache.directory.api.ldap.model.schema.registries.Registries;
 
@@ -47,11 +46,11 @@ public final class NameFormHelper
      * other SchemaObject
      *
      * @param nameForm The NameForm to add to the Registries
-     * @param errors The errors we got while adding the NameForm to the Registries
+     * @param errorHandler Error handler
      * @param registries The Registries
      * @throws LdapException If the addition failed
      */
-    public static void addToRegistries( NameForm nameForm, List<Throwable> errors, Registries registries )
+    public static void addToRegistries( NameForm nameForm, SchemaErrorHandler errorHandler, Registries registries )
         throws LdapException
     {
         if ( registries != null )

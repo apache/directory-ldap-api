@@ -4297,17 +4297,16 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             olsp.parse( schemaFile );
 
             Registries registries = schemaManager.getRegistries();
-            List<Throwable> errors = new ArrayList<>();
 
             for ( AttributeType atType : olsp.getAttributeTypes() )
             {
-                registries.buildReference( errors, atType );
+                registries.buildReference( atType );
                 registries.getAttributeTypeRegistry().register( atType );
             }
 
             for ( ObjectClass oc : olsp.getObjectClasses() )
             {
-                registries.buildReference( errors, oc );
+                registries.buildReference( oc );
                 registries.getObjectClassRegistry().register( oc );
             }
 

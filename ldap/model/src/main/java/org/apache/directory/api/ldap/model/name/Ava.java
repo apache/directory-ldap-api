@@ -229,7 +229,8 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             catch ( LdapException le )
             {
                 String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
-                LOG.error( message );
+                // Do NOT log the message here. The error may be handled and therefore the log message may polute the log files.
+                // Let the caller log the exception if needed.
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
             }
 
@@ -240,7 +241,6 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             catch ( LdapInvalidAttributeValueException liave )
             {
                 String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
-                LOG.error( message );
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, liave );
             }
         }
@@ -278,7 +278,8 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             catch ( LdapException le )
             {
                 String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
-                LOG.error( message );
+                // Do NOT log the message here. The error may be handled and therefore the log message may polute the log files.
+                // Let the caller log the exception if needed.
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
             }
 
@@ -289,7 +290,6 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             catch ( LdapInvalidAttributeValueException liave )
             {
                 String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
-                LOG.error( message );
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, liave );
             }
         }
@@ -344,7 +344,8 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             catch ( LdapException le )
             {
                 String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
-                LOG.error( message );
+                // Do NOT log the message here. The error may be handled and therefore the log message may polute the log files.
+                // Let the caller log the exception if needed.
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
             }
 
@@ -355,7 +356,6 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             catch ( LdapInvalidAttributeValueException liave )
             {
                 String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
-                LOG.error( message );
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, liave );
             }
         }
@@ -392,7 +392,6 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             catch ( LdapException le )
             {
                 String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
-                LOG.error( message );
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
             }
 
@@ -403,7 +402,6 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             catch ( LdapInvalidAttributeValueException liave )
             {
                 String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
-                LOG.error( message );
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, liave );
             }
         }
@@ -605,7 +603,8 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             if ( Strings.isEmpty( normTypeTrimmed ) )
             {
                 String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
-                LOG.error( message );
+                // Do NOT log the message here. The error may be handled and therefore the log message may polute the log files.
+                // Let the caller log the exception if needed.
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message );
             }
             else
@@ -667,7 +666,8 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
                 else
                 {
                     String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
-                    LOG.error( message );
+                    // Do NOT log the message here. The error may be handled and therefore the log message may polute the log files.
+                    // Let the caller log the exception if needed.
                     throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
                 }
             }
@@ -689,7 +689,6 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             catch ( LdapException le )
             {
                 String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
-                LOG.error( message );
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
             }
 
@@ -1560,6 +1559,9 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
                     }
                     catch ( LdapException le )
                     {
+                        // TODO: is this OK? If the comparison is not reliable without normalization then we should throw exception
+                        // instead returning false. Returning false may be misleading and the log message can be easily overlooked. 
+                        // If the comparison is reliable, this should not really be an error. Maybe use debug or trace instead?
                         LOG.error( I18n.err( I18n.ERR_13620_CANNOT_NORMALIZE_VALUE ), le.getMessage() );
                         return false;
                     }
