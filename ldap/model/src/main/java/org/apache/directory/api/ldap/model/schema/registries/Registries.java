@@ -1832,55 +1832,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
 
     /**
-     * Remove the given SchemaObject from the Map associating SchemaObjetcs to their
-     * related Schema.
-     * 
-     * TODO: IS THIS METHOD USED AT ALL? It seems to be some kind of leftover.
-     *
-     * @param schemaObject The schemaObject to remove
-     * @throws LdapException If there is a problem
-     */
-    public void dissociateFromSchemaQuestionable( SchemaObject schemaObject ) throws LdapException
-    {
-        // And unregister the schemaObject within its schema
-        Set<SchemaObjectWrapper> content = schemaObjects.get( Strings.toLowerCaseAscii( schemaObject.getSchemaName() ) );
-
-        if ( content != null )
-        {
-            SchemaObjectWrapper schemaObjectWrapper = new SchemaObjectWrapper( schemaObject );
-
-            if ( content.contains( schemaObjectWrapper ) )
-            {
-                // remove the schemaObject
-                content.remove( schemaObjectWrapper );
-
-                // Update the global OidRegistry if the SchemaObject is not
-                // an instance of LoadableSchemaObject
-                if ( !( schemaObject instanceof LoadableSchemaObject ) )
-                {
-                    globalOidRegistry.unregister( schemaObject.getOid() );
-                }
-
-                if ( LOG.isDebugEnabled() )
-                {
-                    LOG.debug( I18n.msg( I18n.MSG_13738_UNREGISTERED, schemaObject.getObjectType(), schemaObject.getOid() ) );
-                }
-            }
-            else
-            {
-                // Not present !!
-                // What should we do ?
-                if ( LOG.isDebugEnabled() )
-                {
-                    LOG.debug( I18n.msg( I18n.MSG_13740_UNREGISTERED_FAILED_NOT_FOUND, schemaObject.getObjectType() ),
-                        schemaObject.getOid() );
-                }
-            }
-        }
-    }
-
-
-    /**
      * Checks if a specific SchemaObject is referenced by any other SchemaObject.
      *
      * @param schemaObject The SchemaObject we are looking for
