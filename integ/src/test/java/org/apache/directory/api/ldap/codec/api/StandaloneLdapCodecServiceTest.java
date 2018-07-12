@@ -140,7 +140,7 @@ public class StandaloneLdapCodecServiceTest
         assertNotNull( syncInfoValue );
         assertNotNull( codec );
 
-        Object o = codec.decorate( syncInfoValue );
+        codec.decorate( syncInfoValue );
         SyncInfoValue decorator = ( SyncInfoValue ) codec.decorate( syncInfoValue );
         assertNotNull( decorator );
     }

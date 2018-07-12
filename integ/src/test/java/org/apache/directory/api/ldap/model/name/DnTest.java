@@ -2584,7 +2584,7 @@ public class DnTest
     @Test
     public void testNumericOid() throws Exception
     {
-        Dn dn = new Dn( "ipHostNumber=X127.0.0.1+cn=loopback,ou=Hosts,dc=mygfs,dc=com" );
+        new Dn( "ipHostNumber=X127.0.0.1+cn=loopback,ou=Hosts,dc=mygfs,dc=com" );
 
         // numeric OID only
         Dn dn1 = new Dn( "cn=loopback+ipHostNumber=127.0.0.1,ou=Hosts,dc=mygfs,dc=com" );
@@ -3007,7 +3007,7 @@ public class DnTest
     @Test
     public void testSameAttributeInDn() throws LdapInvalidDnException
     {
-        Dn dn = new Dn( "l=eu + l=de + l=Berlin + l=Brandenburger Tor,dc=example,dc=org" );
+        new Dn( "l=eu + l=de + l=Berlin + l=Brandenburger Tor,dc=example,dc=org" );
     }
 
     

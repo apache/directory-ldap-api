@@ -1539,6 +1539,6 @@ public class AttributeTest
     public void testNullAT() throws LdapInvalidAttributeValueException
     {
         AttributeType attributeType = new AttributeType("mail");
-        Value stringValue = new Value(attributeType, "test@test.com");
+        new Value(attributeType, "test@test.com");
     }
 }

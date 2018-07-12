@@ -610,7 +610,7 @@ public class FilterParserTest
         assertTrue( node instanceof SubstringNode );
 
         assertEquals( 4, node.getAny().size() );
-        assertFalse( node.getAny().contains( new Value( "" ) ) );
+        assertFalse( node.getAny().contains( new Value( "" ).getValue() ) );
         assertTrue( node.getAny().contains( "e" ) );
         assertTrue( node.getAny().contains( "b" ) );
         assertTrue( node.getAny().contains( "c" ) );
@@ -652,7 +652,7 @@ public class FilterParserTest
         assertTrue( node instanceof SubstringNode );
 
         assertEquals( 4, node.getAny().size() );
-        assertFalse( node.getAny().contains( new Value( "" ) ) );
+        assertFalse( node.getAny().contains( new Value( "" ).getValue() ) );
         assertTrue( node.getAny().contains( "e" ) );
         assertTrue( node.getAny().contains( "b" ) );
         assertTrue( node.getAny().contains( "c" ) );

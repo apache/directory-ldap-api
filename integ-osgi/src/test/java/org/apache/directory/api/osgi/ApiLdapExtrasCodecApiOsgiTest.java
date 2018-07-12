@@ -43,7 +43,6 @@ import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTrans
 import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionResponseImpl;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIRequestImpl;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIResponseImpl;
-import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValueImpl;
 import org.apache.directory.api.ldap.model.name.Dn;
 
 

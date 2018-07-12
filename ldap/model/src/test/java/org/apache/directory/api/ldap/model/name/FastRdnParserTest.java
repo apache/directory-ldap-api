@@ -439,7 +439,7 @@ public class FastRdnParserTest
         
         for ( int i = 0; i < 10000000; i++ )
         {
-            Rdn rdn = new Rdn( "cn=test"+ i );
+            new Rdn( "cn=test"+ i );
         }
         
         long t1 = System.currentTimeMillis();

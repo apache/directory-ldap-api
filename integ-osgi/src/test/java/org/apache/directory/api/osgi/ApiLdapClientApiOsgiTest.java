@@ -62,6 +62,7 @@ public class ApiLdapClientApiOsgiTest extends ApiOsgiTestBase
         LdapConnectionPool ldapConnectionPool = new LdapConnectionPool( factory, config );
         ldapConnectionPool.getLdapApiService();
         ldapConnectionPool.getTestOnBorrow();
+        ldapConnectionPool.close();
     }
 
 }

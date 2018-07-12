@@ -48,9 +48,6 @@ public abstract class AbstractSchemaParser<T extends SchemaObject>
     /** The fast schemaObject parser */
     protected OpenLdapSchemaParser fastParser;
 
-    /** error code used when schema descritpion is null */
-    private I18n errorCodeOnNull;
-
     /**
      * Instantiates a new abstract schema parser.
      * 
@@ -63,7 +60,6 @@ public abstract class AbstractSchemaParser<T extends SchemaObject>
         I18n errorCodeOnParseExceptionWithPosition,
         I18n errorCodeOnParseException )
     {
-        this.errorCodeOnNull = errorCodeOnNull;
         fastParser = new OpenLdapSchemaParser();
     }
 

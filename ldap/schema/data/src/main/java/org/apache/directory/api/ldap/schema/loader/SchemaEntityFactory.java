@@ -343,8 +343,8 @@ public class SchemaEntityFactory implements EntityFactory
         // Create the syntaxChecker instance
         try
         {
-            Method builder = clazz.getMethod( "builder", null );
-            syntaxChecker = ( SyntaxChecker ) ( ( SCBuilder ) builder.invoke( null, null ) ).setOid( oid ).build();
+            Method builder = clazz.getMethod( "builder", ( Class<?>[] ) null );
+            syntaxChecker = ( SyntaxChecker ) ( ( SCBuilder ) builder.invoke( null, ( Object[] ) null ) ).setOid( oid ).build();
         }
         catch ( NoSuchMethodException nsme )
         {

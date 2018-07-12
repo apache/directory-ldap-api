@@ -678,7 +678,7 @@ public class DnParserTest
     @Test
     public void testEqualInRdn() throws LdapInvalidDnException
     {
-        Dn dn = new Dn( "uid=nghZwwtHgxgyvVbTQCYyeY\\+O4cc=,dc=example,dc=com" );
+        new Dn( "uid=nghZwwtHgxgyvVbTQCYyeY\\+O4cc=,dc=example,dc=com" );
     }
     
     
