@@ -406,7 +406,7 @@ public final class DefaultEntry implements Entry
         }
         catch ( IOException e )
         {
-            throw new LdapLdifException( I18n.err( I18n.ERR_13248_CANNOT_READ_ENTRY ) );
+            throw new LdapLdifException( I18n.err( I18n.ERR_13248_CANNOT_READ_ENTRY ), e );
         }
     }
 
@@ -612,6 +612,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry add( AttributeType attributeType, byte[]... values ) throws LdapException
     {
         if ( attributeType == null )
@@ -725,6 +726,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry add( String upId, AttributeType attributeType, byte[]... values ) throws LdapException
     {
         // ObjectClass with binary values are not allowed
@@ -888,6 +890,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry add( String upId, byte[]... values ) throws LdapException
     {
         if ( Strings.isEmpty( upId ) )
@@ -1188,6 +1191,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( AttributeType attributeType, byte[]... values )
     {
         if ( attributeType == null )
@@ -1259,6 +1263,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( String upId, byte[]... values )
     {
         if ( Strings.isEmpty( upId ) )
@@ -1431,6 +1436,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute put( String upId, byte[]... values )
     {
         if ( Strings.isEmpty( upId ) )
@@ -1607,6 +1613,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute put( AttributeType attributeType, byte[]... values ) throws LdapException
     {
         return put( null, attributeType, values );
@@ -1636,6 +1643,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute put( String upId, AttributeType attributeType, byte[]... values ) throws LdapException
     {
         if ( attributeType == null )
@@ -1818,6 +1826,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean remove( AttributeType attributeType, byte[]... values ) throws LdapException
     {
         if ( attributeType == null )
@@ -2059,6 +2068,7 @@ public final class DefaultEntry implements Entry
      * @return <code>true</code> if at least a value is removed, <code>false</code>
      * if not all the values have been removed or if the attribute does not exist.
      */
+    @Override
     public boolean remove( String upId, byte[]... values ) throws LdapException
     {
         if ( Strings.isEmpty( upId ) )
@@ -2651,10 +2661,10 @@ public final class DefaultEntry implements Entry
         }
         else
         {
-            if ( containsAttribute( "objectClass" ) )
-            {
-                Attribute objectClass = get( "objectclass" );
+            Attribute objectClass = get( "objectclass" );
 
+            if ( objectClass != null )
+            {
                 sb.append( objectClass.toString( tabs + "    " ) );
             }
         }
