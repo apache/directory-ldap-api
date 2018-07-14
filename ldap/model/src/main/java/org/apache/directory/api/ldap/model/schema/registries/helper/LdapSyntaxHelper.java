@@ -101,7 +101,6 @@ public final class LdapSyntaxHelper
      * @throws LdapException If the LdapSyntax is not valid
      */
     public static void removeFromRegistries( LdapSyntax ldapSyntax, SchemaErrorHandler errorHandler, Registries registries )
-        throws LdapException
     {
         if ( ( registries != null ) && ( ldapSyntax.getSyntaxChecker() != null ) )
         {

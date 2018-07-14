@@ -3354,7 +3354,6 @@ public final class PrepareString
      * @throws InvalidCharacterException If an invalid character is met
      */
     public static String insignificantSpacesStringValue( char[] origin )
-        throws InvalidCharacterException
     {
         if ( origin == null )
         {
@@ -3622,7 +3621,6 @@ public final class PrepareString
      * @throws InvalidCharacterException If an invalid character is met
      */
     public static String insignificantSpacesStringInitial( char[] origin )
-        throws InvalidCharacterException
     {
         if ( origin == null )
         {
@@ -3847,7 +3845,6 @@ public final class PrepareString
      * @throws InvalidCharacterException If an invalid character is met
      */
     public static String insignificantSpacesStringAny( char[] origin )
-        throws InvalidCharacterException
     {
         if ( origin == null )
         {
@@ -4062,7 +4059,6 @@ public final class PrepareString
      * @throws InvalidCharacterException If an invalid character is found in the String
      */
     public static String insignificantSpacesStringFinal( char[] origin )
-        throws InvalidCharacterException
     {
         if ( origin == null )
         {

@@ -166,7 +166,7 @@ public final class StoredProcedureGrammar extends AbstractGrammar<StoredProcedur
                 UniversalTag.SEQUENCE.getValue(),
                 new GrammarAction<StoredProcedureContainer>( "Stores the parameters" )
                 {
-                    public void action( StoredProcedureContainer container ) throws DecoderException
+                    public void action( StoredProcedureContainer container )
                     {
                         container.setGrammarEndAllowed( true );
                     }

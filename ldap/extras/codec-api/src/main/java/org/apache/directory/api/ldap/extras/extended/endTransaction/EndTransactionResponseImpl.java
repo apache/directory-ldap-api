@@ -72,14 +72,13 @@ public class EndTransactionResponseImpl extends ExtendedResponseImpl implements 
     {
         super( failedMessageId );
 
-        switch ( resultCode )
+        if ( resultCode == ResultCodeEnum.SUCCESS )
         {
-            case SUCCESS:
-                this.failedMessageId = -1;
-                break;
-
-            default:
-                this.failedMessageId = failedMessageId;
+            this.failedMessageId = -1;
+        }
+        else
+        {
+            this.failedMessageId = failedMessageId;
         }
 
         super.getLdapResult().setMatchedDn( null );

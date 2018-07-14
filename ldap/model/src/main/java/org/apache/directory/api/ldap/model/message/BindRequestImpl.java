@@ -367,7 +367,7 @@ public BindRequest setName( String name )
             return true;
         }
 
-        if ( ( obj == null ) || !( obj instanceof BindRequest ) )
+        if ( !( obj instanceof BindRequest ) )
         {
             return false;
         }

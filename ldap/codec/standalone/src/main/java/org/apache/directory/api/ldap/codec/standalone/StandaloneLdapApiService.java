@@ -211,7 +211,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      * 
      * @throws Exception
      */
-    private static List<String> getControlsFromSystemProperties() throws Exception
+    private static List<String> getControlsFromSystemProperties()
     {
         List<String> controlsList = new ArrayList<>();
 
@@ -248,7 +248,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      * Such extended operations are stored in the <b>apacheds.extendedOperations</b>
      * and <b>default.extendedOperation.requests</b> system properties.
      */
-    private static List<String> getExtendedOperationsFromSystemProperties() throws Exception
+    private static List<String> getExtendedOperationsFromSystemProperties()
     {
         List<String> extendedOperationsList = new ArrayList<>();
 
@@ -285,7 +285,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      * Such intermediate responses are stored in the <b>apacheds.intermediateResponses</b>
      * and <b>default.intermediateResponses.requests</b> system properties.
      */
-    private static List<String> getIntermediateResponsesFromSystemProperties() throws Exception
+    private static List<String> getIntermediateResponsesFromSystemProperties()
     {
         List<String> intermediateResponsesList = new ArrayList<>();
 
@@ -396,8 +396,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
         Constructor<?> constructor = clazz.getConstructor( types );
 
         ExtendedOperationFactory factory = ( ExtendedOperationFactory ) constructor
-            .newInstance( new Object[]
-                { this } );
+            .newInstance( this );
         getExtendedOperationFactories().put( factory.getOid(), factory );
 
         if ( LOG.isInfoEnabled() )

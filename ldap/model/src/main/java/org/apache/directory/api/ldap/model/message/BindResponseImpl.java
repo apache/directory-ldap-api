@@ -143,7 +143,7 @@ public class BindResponseImpl extends AbstractResultResponse implements BindResp
             return true;
         }
 
-        if ( ( obj == null ) || !( obj instanceof BindResponse ) )
+        if ( !( obj instanceof BindResponse ) )
         {
             return false;
         }

@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.codec.actions.request.search.filter;
 
 
-import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
@@ -55,7 +54,7 @@ public class InitAssertionValueFilter extends GrammarAction<LdapMessageContainer
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<SearchRequestDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainer<SearchRequestDecorator> container )
     {
         SearchRequestDecorator searchRequestDecorator = container.getMessage();
 

@@ -219,7 +219,7 @@ public class ExtensibleNode extends LeafNode
             return true;
         }
 
-        if ( ( obj == null ) || !( obj instanceof ExtensibleNode ) )
+        if ( !( obj instanceof ExtensibleNode ) )
         {
             return false;
         }

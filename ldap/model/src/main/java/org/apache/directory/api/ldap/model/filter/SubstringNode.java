@@ -361,10 +361,11 @@ public class SubstringNode extends LeafNode
             return true;
         }
 
-        if ( ( obj == null ) || !( obj instanceof SubstringNode ) )
+        if ( !( obj instanceof SubstringNode ) )
         {
             return false;
         }
+        
         SubstringNode that = ( SubstringNode ) obj;
 
         if ( initialPattern == null )

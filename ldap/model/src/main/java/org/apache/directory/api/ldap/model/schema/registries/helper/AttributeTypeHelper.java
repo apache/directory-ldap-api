@@ -314,8 +314,6 @@ public final class AttributeTypeHelper
                 ldapSchemaException.setSourceObject( attributeType );
                 ldapSchemaException.setRelatedId( syntaxOid );
                 errorHandler.handle( LOG, msg, ldapSchemaException );
-                
-                return;
             }
         }
         else
@@ -336,8 +334,6 @@ public final class AttributeTypeHelper
                     ldapSchemaException.setSourceObject( attributeType );
                     ldapSchemaException.setRelatedId( syntaxOid );
                     errorHandler.handle( LOG, msg, ldapSchemaException );
-                    
-                    return;
                 }
             }
             else
@@ -349,8 +345,6 @@ public final class AttributeTypeHelper
                     LdapSchemaExceptionCodes.AT_SYNTAX_OR_SUPERIOR_REQUIRED, msg );
                 ldapSchemaException.setSourceObject( attributeType );
                 errorHandler.handle( LOG, msg, ldapSchemaException );
-                
-                return;
             }
         }
     }
@@ -462,8 +456,6 @@ public final class AttributeTypeHelper
                 ldapSchemaException.setSourceObject( attributeType );
                 ldapSchemaException.setRelatedId( substringOid );
                 errorHandler.handle( LOG, msg, ldapSchemaException );
-                
-                return;
             }
         }
         else
@@ -479,10 +471,6 @@ public final class AttributeTypeHelper
     }
     
     
-
-
-
-
     /**
      * Build the ORDERING MR reference for an AttributeType
      */

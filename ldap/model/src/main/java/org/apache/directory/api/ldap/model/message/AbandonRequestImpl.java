@@ -150,7 +150,7 @@ public AbandonRequest addControl( Control control )
             return true;
         }
 
-        if ( ( obj == null ) || !( obj instanceof AbandonRequest ) )
+        if ( !( obj instanceof AbandonRequest ) )
         {
             return false;
         }

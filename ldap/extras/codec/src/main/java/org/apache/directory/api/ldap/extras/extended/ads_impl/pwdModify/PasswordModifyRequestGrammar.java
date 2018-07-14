@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify;
 
 
-import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.AbstractGrammar;
 import org.apache.directory.api.asn1.ber.grammar.Grammar;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
@@ -114,7 +113,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
                 PasswordModifyRequestConstants.USER_IDENTITY_TAG,
                 new GrammarAction<PasswordModifyRequestContainer>( "Set PasswordModifyRequest user identity" )
                 {
-                    public void action( PasswordModifyRequestContainer container ) throws DecoderException
+                    public void action( PasswordModifyRequestContainer container )
                     {
                         BerValue value = container.getCurrentTLV().getValue();
 
@@ -154,7 +153,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
                 PasswordModifyRequestConstants.OLD_PASSWORD_TAG,
                 new GrammarAction<PasswordModifyRequestContainer>( "Set PasswordModifyRequest oldPassword" )
                 {
-                    public void action( PasswordModifyRequestContainer container ) throws DecoderException
+                    public void action( PasswordModifyRequestContainer container )
                     {
                         BerValue value = container.getCurrentTLV().getValue();
 
@@ -195,7 +194,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
                 PasswordModifyRequestConstants.NEW_PASSWORD_TAG,
                 new GrammarAction<PasswordModifyRequestContainer>( "Set PasswordModifyRequest newPassword" )
                 {
-                    public void action( PasswordModifyRequestContainer container ) throws DecoderException
+                    public void action( PasswordModifyRequestContainer container )
                     {
                         BerValue value = container.getCurrentTLV().getValue();
 
@@ -235,7 +234,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
                 PasswordModifyRequestConstants.OLD_PASSWORD_TAG,
                 new GrammarAction<PasswordModifyRequestContainer>( "Set PasswordModifyRequest oldPassword" )
                 {
-                    public void action( PasswordModifyRequestContainer container ) throws DecoderException
+                    public void action( PasswordModifyRequestContainer container )
                     {
                         BerValue value = container.getCurrentTLV().getValue();
 
@@ -275,7 +274,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
                 PasswordModifyRequestConstants.NEW_PASSWORD_TAG,
                 new GrammarAction<PasswordModifyRequestContainer>( "Set PasswordModifyRequest newPassword" )
                 {
-                    public void action( PasswordModifyRequestContainer container ) throws DecoderException
+                    public void action( PasswordModifyRequestContainer container )
                     {
                         BerValue value = container.getCurrentTLV().getValue();
 
@@ -315,7 +314,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
                 PasswordModifyRequestConstants.NEW_PASSWORD_TAG,
                 new GrammarAction<PasswordModifyRequestContainer>( "Set PasswordModifyRequest newPassword" )
                 {
-                    public void action( PasswordModifyRequestContainer container ) throws DecoderException
+                    public void action( PasswordModifyRequestContainer container )
                     {
                         BerValue value = container.getCurrentTLV().getValue();
 

@@ -195,7 +195,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     }
 
 
-    private Schema[] buildSchemaArray( String... schemaNames ) throws LdapException
+    private Schema[] buildSchemaArray( String... schemaNames )
     {
         Schema[] schemas = new Schema[schemaNames.length];
         int pos = 0;

@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.codec.actions.response.search.reference;
 
 
-import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
@@ -56,7 +55,7 @@ public class InitSearchResultReference extends GrammarAction<LdapMessageContaine
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<SearchResultReferenceDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainer<SearchResultReferenceDecorator> container )
     {
         // Now, we can allocate the SearchResultReference Object
         SearchResultReferenceDecorator searchResultReference = new SearchResultReferenceDecorator(

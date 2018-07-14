@@ -525,8 +525,7 @@ public class SchemaEntityFactory implements EntityFactory
             
             try
             {
-                comparator = ( LdapComparator<?> ) constructor.newInstance( new Object[]
-                    { oid } );
+                comparator = ( LdapComparator<?> ) constructor.newInstance( oid );
             }
             catch ( InvocationTargetException ite )
             {

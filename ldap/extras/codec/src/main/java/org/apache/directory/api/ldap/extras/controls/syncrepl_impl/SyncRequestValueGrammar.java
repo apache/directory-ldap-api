@@ -157,7 +157,7 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
                 SyncRequestValueStatesEnum.COOKIE_STATE, UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<SyncRequestValueContainer>( "Set SyncRequestValueControl cookie" )
                 {
-                    public void action( SyncRequestValueContainer container ) throws DecoderException
+                    public void action( SyncRequestValueContainer container )
                     {
                         BerValue value = container.getCurrentTLV().getValue();
 
