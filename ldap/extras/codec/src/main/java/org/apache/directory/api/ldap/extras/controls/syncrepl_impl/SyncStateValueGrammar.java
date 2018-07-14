@@ -150,7 +150,7 @@ public final class SyncStateValueGrammar extends AbstractGrammar<SyncStateValueC
             UniversalTag.OCTET_STRING.getValue(),
             new GrammarAction<SyncStateValueContainer>( "Set SyncStateValueControl entryUUID" )
             {
-                public void action( SyncStateValueContainer container ) throws DecoderException
+                public void action( SyncStateValueContainer container )
                 {
                     BerValue value = container.getCurrentTLV().getValue();
 
@@ -182,7 +182,7 @@ public final class SyncStateValueGrammar extends AbstractGrammar<SyncStateValueC
             UniversalTag.OCTET_STRING.getValue(),
             new GrammarAction<SyncStateValueContainer>( "Set SyncStateValueControl cookie value" )
             {
-                public void action( SyncStateValueContainer container ) throws DecoderException
+                public void action( SyncStateValueContainer container )
                 {
                     BerValue value = container.getCurrentTLV().getValue();
 

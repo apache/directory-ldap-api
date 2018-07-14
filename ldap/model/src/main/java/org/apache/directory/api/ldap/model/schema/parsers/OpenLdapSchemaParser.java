@@ -763,8 +763,6 @@ public class OpenLdapSchemaParser
                     {
                         return;
                     }
-                    
-                    continue;
                 }
             }
             
@@ -778,7 +776,6 @@ public class OpenLdapSchemaParser
                 }
                 
                 hasSpace = true;
-                continue;
             }
             else
             {
@@ -6170,8 +6167,6 @@ public class OpenLdapSchemaParser
                 macro.setRawOidOrNameSuffix( realOid );
                 
                 objectIdentifierMacros.put( name, macro );
-                
-                return;
             }
         }
         else if ( isDigit( pos ) )
@@ -6182,8 +6177,6 @@ public class OpenLdapSchemaParser
             macro.setName( name );
             
             objectIdentifierMacros.put( name, macro );
-            
-            return;
         }
         else
         {

@@ -375,11 +375,7 @@ public final class Strings
                 // If the buffer has had characters added already check last
                 // added character. Only append a spc if last character was
                 // not whitespace.
-                if ( wsSeen )
-                {
-                    continue;
-                }
-                else
+                if ( !wsSeen )
                 {
                     wsSeen = true;
 
@@ -463,11 +459,7 @@ public final class Strings
 
             if ( car == ch )
             {
-                if ( same )
-                {
-                    continue;
-                }
-                else
+                if ( !same )
                 {
                     same = true;
                     newbuf[pos++] = car;

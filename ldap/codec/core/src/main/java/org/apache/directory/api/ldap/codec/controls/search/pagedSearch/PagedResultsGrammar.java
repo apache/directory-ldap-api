@@ -141,7 +141,7 @@ public final class PagedResultsGrammar extends AbstractGrammar<PagedResultsConta
                 PagedResultsStates.COOKIE_STATE, UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<PagedResultsContainer>( "Set PagedSearchControl cookie" )
                 {
-                    public void action( PagedResultsContainer container ) throws DecoderException
+                    public void action( PagedResultsContainer container )
                     {
                         BerValue value = container.getCurrentTLV().getValue();
 

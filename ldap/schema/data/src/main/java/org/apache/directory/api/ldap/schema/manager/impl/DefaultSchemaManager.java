@@ -1352,12 +1352,7 @@ public class DefaultSchemaManager implements SchemaManager
          */
         for ( String depName : deps )
         {
-            if ( registries.isSchemaLoaded( depName ) )
-            {
-                // The schema is already loaded. Loop on the next schema
-                continue;
-            }
-            else
+            if ( !registries.isSchemaLoaded( depName ) )
             {
                 // Call recursively this method
                 Schema schemaDep = schemaMap.get( depName );
@@ -1464,12 +1459,7 @@ public class DefaultSchemaManager implements SchemaManager
          */
         for ( String depName : deps )
         {
-            if ( registries.isSchemaLoaded( schemaName ) )
-            {
-                // The schema is already loaded. Loop on the next schema
-                continue;
-            }
-            else
+            if ( !registries.isSchemaLoaded( schemaName ) )
             {
                 // Call recursively this method
                 Schema schemaDep = schema.getSchemaLoader().getSchema( depName );

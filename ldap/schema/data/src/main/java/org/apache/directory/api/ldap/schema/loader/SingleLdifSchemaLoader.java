@@ -188,7 +188,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
     /**
      * Load all the schemaObjects
      */
-    private void loadSchemaObject( String schemaName, LdifEntry ldifEntry ) throws LdapException
+    private void loadSchemaObject( String schemaName, LdifEntry ldifEntry )
     {
         for ( String scObjTypeRdn : schemaObjectTypeRdns )
         {
@@ -220,8 +220,7 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
     }
 
 
-    private List<Entry> loadSchemaObjects( String schemaObjectType, Schema... schemas ) throws LdapException,
-        IOException
+    private List<Entry> loadSchemaObjects( String schemaObjectType, Schema... schemas )
     {
         Map<String, List<Entry>> m = scObjEntryMap.get( schemaObjectType );
         List<Entry> atList = new ArrayList<>();

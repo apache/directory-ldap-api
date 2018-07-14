@@ -139,7 +139,7 @@ public abstract class AssertionNode extends AbstractExprNode
             return true;
         }
 
-        if ( ( obj == null ) || !( obj instanceof AssertionNode ) )
+        if ( !( obj instanceof AssertionNode ) )
         {
             return false;
         }

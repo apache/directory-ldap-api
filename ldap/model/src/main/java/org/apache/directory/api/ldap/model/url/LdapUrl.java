@@ -336,11 +336,7 @@ public class LdapUrl
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_13038_INVALID_EXTENSIONS ) );
         }
 
-        if ( pos == chars.length )
-        {
-            return;
-        }
-        else
+        if ( pos != chars.length )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_13039_INVALID_CHAR_AT_LDAP_URL_END ) );
         }
@@ -1027,7 +1023,7 @@ public class LdapUrl
      * @return The string as a byte array.
      * @throws org.apache.directory.api.ldap.model.exception.UrlDecoderException if encoding is not supported
      */
-    private static byte[] getAsciiBytes( final String data ) throws UrlDecoderException
+    private static byte[] getAsciiBytes( final String data )
     {
         if ( data == null )
         {

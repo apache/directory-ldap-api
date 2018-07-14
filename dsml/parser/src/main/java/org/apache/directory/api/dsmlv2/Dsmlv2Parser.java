@@ -292,6 +292,7 @@ public class Dsmlv2Parser
                 {
                     throw new XmlPullParserException( I18n.err( I18n.ERR_03019_IO_EXCEPTION_OCCURED, ioe.getLocalizedMessage() ), xpp, ioe );
                 }
+
                 eventType = xpp.getEventType();
             }
 

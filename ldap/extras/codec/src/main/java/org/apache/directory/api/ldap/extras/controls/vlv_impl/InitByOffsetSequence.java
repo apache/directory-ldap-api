@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.extras.controls.vlv_impl;
 
 
-import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.i18n.I18n;
 import org.slf4j.Logger;
@@ -49,7 +48,7 @@ public class InitByOffsetSequence extends GrammarAction<VirtualListViewRequestCo
     /**
      * {@inheritDoc}
      */
-    public void action( VirtualListViewRequestContainer container ) throws DecoderException
+    public void action( VirtualListViewRequestContainer container )
     {
         if ( LOG.isDebugEnabled() )
         {

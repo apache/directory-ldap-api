@@ -1478,7 +1478,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * Create a Simple BindRequest ready to be sent.
      */
-    private BindRequest createBindRequest( String name, byte[] credentials ) throws LdapException
+    private BindRequest createBindRequest( String name, byte[] credentials )
     {
         return createBindRequest( name, credentials, null, ( Control[] ) null );
     }
@@ -1487,7 +1487,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * Create a Simple BindRequest ready to be sent.
      */
-    private BindRequest createBindRequest( Dn name, byte[] credentials ) throws LdapException
+    private BindRequest createBindRequest( Dn name, byte[] credentials )
     {
         return createBindRequest( name.getName(), credentials, null, ( Control[] ) null );
     }

@@ -49,7 +49,6 @@ public final class DitStructureRuleHelper
      * @throws LdapException If the addition failed
      */
     public static void addToRegistries( DitStructureRule ditStructureRule, SchemaErrorHandler errorHandler, Registries registries )
-        throws LdapException
     {
         if ( registries != null )
         {

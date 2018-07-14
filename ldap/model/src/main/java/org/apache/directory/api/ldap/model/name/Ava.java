@@ -558,7 +558,6 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      * @throws LdapInvalidDnException If the given type or value are invalid
      */
     private void createAva( SchemaManager schemaManager, String upType, Value value )
-        throws LdapInvalidDnException
     {
         StringBuilder sb = new StringBuilder();
 

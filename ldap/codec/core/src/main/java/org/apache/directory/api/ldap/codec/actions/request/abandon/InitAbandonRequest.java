@@ -99,8 +99,6 @@ public class InitAbandonRequest extends GrammarAction<LdapMessageContainer<Aband
             }
 
             container.setGrammarEndAllowed( true );
-
-            return;
         }
         catch ( IntegerDecoderException ide )
         {

@@ -1329,15 +1329,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         }
 
         // All is done for this ObjectClass, let's apply the registries
-        try
-        {
-            ObjectClassHelper.addToRegistries( objectClass, errorHandler, this );
-        }
-        catch ( LdapException ne )
-        {
-            // Do nothing. We may have a broken OC,
-            // but at this point, it doesn't matter.
-        }
+        ObjectClassHelper.addToRegistries( objectClass, errorHandler, this );
     }
 
 

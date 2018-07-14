@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.codec.actions.response.extended;
 
 
-import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
@@ -57,7 +56,7 @@ public class StoreExtendedResponseValue extends GrammarAction<LdapMessageContain
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<ExtendedResponseDecorator<?>> container ) throws DecoderException
+    public void action( LdapMessageContainer<ExtendedResponseDecorator<?>> container )
     {
         // We can allocate the ExtendedResponse Object
         ExtendedResponseDecorator<?> extendedResponse = container.getMessage();

@@ -3354,7 +3354,6 @@ public final class PrepareString
      * @throws InvalidCharacterException If an invalid character is met
      */
     public static String insignificantSpacesStringValue( char[] origin )
-        throws InvalidCharacterException
     {
         if ( origin == null )
         {
@@ -3368,48 +3367,6 @@ public final class PrepareString
         // have 2 more spaces (one at the beginning, one at the end, and each space in the 
         // middle will be doubled).
         int newPos = 0;
-        
-        /*
-        boolean spaceSeen = false;
-        int i = 0;
-        
-        for ( i = 0; i < origin.length; i++ )
-        {
-            if ( origin[i] != ' ' )
-            {
-                break;
-            }
-        }
-        
-        if ( i == origin.length )
-        {
-            return "  ";
-        }
-
-        char[] target = new char[origin.length * 2 + 1];
-        target[newPos++] = ' ';
-        
-        for ( ; i < origin.length; i++ )
-        {
-            if ( origin[i] == ' ' )
-            {
-                spaceSeen = true;
-                continue;
-            }
-            else if ( spaceSeen )
-            {
-                spaceSeen = false;
-                target[newPos++] = ' ';
-                target[newPos++] = ' ';
-            }
-            
-            target[newPos++] = origin[i];
-        }
-        
-        target[newPos++] = ' ';
-        
-        return new String( target, 0, newPos );
-        */
         
         char[] target = new char[origin.length * 2 + 1];
         NormStateEnum normState = NormStateEnum.START;
@@ -3622,7 +3579,6 @@ public final class PrepareString
      * @throws InvalidCharacterException If an invalid character is met
      */
     public static String insignificantSpacesStringInitial( char[] origin )
-        throws InvalidCharacterException
     {
         if ( origin == null )
         {
@@ -3847,7 +3803,6 @@ public final class PrepareString
      * @throws InvalidCharacterException If an invalid character is met
      */
     public static String insignificantSpacesStringAny( char[] origin )
-        throws InvalidCharacterException
     {
         if ( origin == null )
         {
@@ -4062,7 +4017,6 @@ public final class PrepareString
      * @throws InvalidCharacterException If an invalid character is found in the String
      */
     public static String insignificantSpacesStringFinal( char[] origin )
-        throws InvalidCharacterException
     {
         if ( origin == null )
         {

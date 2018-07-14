@@ -227,7 +227,7 @@ public final class LdifUtils
      * @return the corresponding LDIF code as a String
      * @throws LdapException If a naming exception is encountered.
      */
-    public static String convertToLdif( Entry entry ) throws LdapException
+    public static String convertToLdif( Entry entry )
     {
         return convertToLdif( entry, DEFAULT_LINE_LENGTH );
     }
@@ -241,7 +241,7 @@ public final class LdifUtils
      * @return the corresponding LDIF code as a String
      * @throws org.apache.directory.api.ldap.model.exception.LdapException If a naming exception is encountered.
      */
-    public static String convertToLdif( Entry entry, boolean includeVersionInfo ) throws LdapException
+    public static String convertToLdif( Entry entry, boolean includeVersionInfo )
     {
         String ldif = convertToLdif( entry, DEFAULT_LINE_LENGTH );
 
@@ -261,7 +261,7 @@ public final class LdifUtils
      * @return the corresponding LDIF code as a String
      * @throws LdapException If a naming exception is encountered.
      */
-    public static String convertAttributesToLdif( Entry entry ) throws LdapException
+    public static String convertAttributesToLdif( Entry entry )
     {
         return convertAttributesToLdif( entry, DEFAULT_LINE_LENGTH );
     }
@@ -295,7 +295,7 @@ public final class LdifUtils
      * @return the corresponding LDIF code as a String
      * @throws LdapException If a naming exception is encountered.
      */
-    public static String convertToLdif( Entry entry, int length ) throws LdapException
+    public static String convertToLdif( Entry entry, int length )
     {
         StringBuilder sb = new StringBuilder();
 
@@ -332,7 +332,7 @@ public final class LdifUtils
      * @return the corresponding LDIF code as a String
      * @throws LdapException If a naming exception is encountered.
      */
-    public static String convertAttributesToLdif( Entry entry, int length ) throws LdapException
+    public static String convertAttributesToLdif( Entry entry, int length )
     {
         StringBuilder sb = new StringBuilder();
 
@@ -550,7 +550,7 @@ public final class LdifUtils
      * @return the corresponding LDIF code as a String
      * @throws LdapException If a naming exception is encountered.
      */
-    public static String convertToLdif( Attribute attr ) throws LdapException
+    public static String convertToLdif( Attribute attr )
     {
         return convertToLdif( attr, DEFAULT_LINE_LENGTH );
     }
@@ -564,7 +564,7 @@ public final class LdifUtils
      * @return the corresponding LDIF code as a String
      * @throws LdapException If a naming exception is encountered.
      */
-    public static String convertToLdif( Attribute attr, int length ) throws LdapException
+    public static String convertToLdif( Attribute attr, int length )
     {
         StringBuilder sb = new StringBuilder();
         

@@ -253,7 +253,6 @@ public final class DseTypeSyntaxChecker extends SyntaxChecker
                 // yes
                 i++;
                 needKeyword = true;
-                continue;
             }
         }
 

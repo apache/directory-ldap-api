@@ -194,7 +194,7 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
                 AdDirSyncStatesEnum.COOKIE_STATE, UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<AdDirSyncContainer>( "Set AdDirSyncControl cookie" )
                 {
-                    public void action( AdDirSyncContainer container ) throws DecoderException
+                    public void action( AdDirSyncContainer container )
                     {
                         BerValue value = container.getCurrentTLV().getValue();
 

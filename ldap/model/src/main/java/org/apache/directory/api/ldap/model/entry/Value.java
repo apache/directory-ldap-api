@@ -212,7 +212,6 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
                 }
                 
                 isHR = true;
-                //throw new IllegalArgumentException( I18n.err( I18n.ERR_13225_NO_SYNTAX ) );
             }
             else
             {
@@ -681,7 +680,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      * @return a comparator associated with the attributeType or null if one cannot be found
      * @throws LdapException if resolution of schema entities fail
      */
-    private LdapComparator<?> getLdapComparator() throws LdapException
+    private LdapComparator<?> getLdapComparator()
     {
         if ( attributeType != null )
         {
@@ -797,7 +796,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      * @throws ClassNotFoundException If we can't instanciate a Value
      * @throws LdapInvalidAttributeValueException If the value is invalid
      */
-    public static Value deserialize( ObjectInput in ) throws IOException, ClassNotFoundException, LdapInvalidAttributeValueException
+    public static Value deserialize( ObjectInput in ) throws IOException, ClassNotFoundException
     {
         Value value = new Value( ( AttributeType ) null );
         value.readExternal( in );
@@ -1374,30 +1373,23 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
                 
                 // Use the comparator
                 // We have an AttributeType, we use the associated comparator
-                try
+                LdapComparator<String> comparator = ( LdapComparator<String> ) getLdapComparator();
+                
+                if ( other.attributeType.getEquality() == null )
                 {
-                    LdapComparator<String> comparator = ( LdapComparator<String> ) getLdapComparator();
-                    
-                    if ( other.attributeType.getEquality() == null )
-                    {
-                        // No equality ? Default to comparing using a String comparator
-                        return stringComparator.compare( normValue, other.normValue ) == 0;
-                    }
-                    
-                    
-                    // Compare normalized values
-                    if ( comparator == null )
-                    {
-                        return normValue.equals( other.normValue );
-                    }
-                    else
-                    {
-                        return comparator.compare( normValue, other.normValue ) == 0;
-                    }
+                    // No equality ? Default to comparing using a String comparator
+                    return stringComparator.compare( normValue, other.normValue ) == 0;
                 }
-                catch ( LdapException ne )
+                
+                
+                // Compare normalized values
+                if ( comparator == null )
                 {
-                    return false;
+                    return normValue.equals( other.normValue );
+                }
+                else
+                {
+                    return comparator.compare( normValue, other.normValue ) == 0;
                 }
             }
             

@@ -694,7 +694,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     @Override
     public boolean isHumanReadable()
     {
-        return isHR != null ? isHR : false;
+        return isHR != null && isHR;
     }
 
 

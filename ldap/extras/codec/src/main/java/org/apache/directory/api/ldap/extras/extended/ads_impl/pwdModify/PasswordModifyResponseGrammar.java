@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify;
 
 
-import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.AbstractGrammar;
 import org.apache.directory.api.asn1.ber.grammar.Grammar;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
@@ -112,7 +111,7 @@ public class PasswordModifyResponseGrammar extends AbstractGrammar<PasswordModif
                 PasswordModifyResponseConstants.GEN_PASSWORD_TAG,
                 new GrammarAction<PasswordModifyResponseContainer>( "Set PasswordModifyResponse user identity" )
                 {
-                    public void action( PasswordModifyResponseContainer container ) throws DecoderException
+                    public void action( PasswordModifyResponseContainer container )
                     {
                         BerValue value = container.getCurrentTLV().getValue();
 

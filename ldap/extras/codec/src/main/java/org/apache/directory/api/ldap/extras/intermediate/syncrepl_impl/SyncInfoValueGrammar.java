@@ -602,7 +602,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                 UniversalTag.SET.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "SyncIdSet syncUUIDs" )
                 {
-                    public void action( SyncInfoValueContainer container ) throws DecoderException
+                    public void action( SyncInfoValueContainer container )
                     {
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
@@ -624,7 +624,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                 UniversalTag.SET.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "SyncIdSet syncUUIDs" )
                 {
-                    public void action( SyncInfoValueContainer container ) throws DecoderException
+                    public void action( SyncInfoValueContainer container )
                     {
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
@@ -647,7 +647,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                 UniversalTag.SET.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "SyncIdSet syncUUIDs" )
                 {
-                    public void action( SyncInfoValueContainer container ) throws DecoderException
+                    public void action( SyncInfoValueContainer container )
                     {
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );

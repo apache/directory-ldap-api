@@ -283,7 +283,6 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
         if ( byOid.containsKey( oid ) )
         {
             errorHandler.handle( LOG, I18n.err( I18n.ERR_13745_SCHEMA_OBJECT_WITH_OID_ALREADY_EXIST, oid ), null );
-            return;
         }
         else
         {

@@ -245,7 +245,7 @@ public class CertGenerationGrammar extends AbstractGrammar<CertGenerationContain
                 UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<CertGenerationContainer>( "Set Cert Generation key algorithm value" )
                 {
-                    public void action( CertGenerationContainer container ) throws DecoderException
+                    public void action( CertGenerationContainer container )
                     {
                         BerValue value = container.getCurrentTLV().getValue();
 

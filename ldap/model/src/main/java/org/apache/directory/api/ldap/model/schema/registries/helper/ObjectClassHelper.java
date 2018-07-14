@@ -60,7 +60,7 @@ public final class ObjectClassHelper
      * @param registries The Registries
      * @throws LdapException on failure
      */
-    public static void addToRegistries( ObjectClass objectClass, SchemaErrorHandler errorHandler, Registries registries ) throws LdapException
+    public static void addToRegistries( ObjectClass objectClass, SchemaErrorHandler errorHandler, Registries registries )
     {
         if ( registries != null )
         {
@@ -280,8 +280,6 @@ public final class ObjectClassHelper
                     ldapSchemaException.setSourceObject( objectClass );
                     ldapSchemaException.setRelatedId( mustAttributeTypeName );
                     errorHandler.handle( LOG, msg, ldapSchemaException );
-
-                    continue;
                 }
             }
         }
@@ -347,8 +345,6 @@ public final class ObjectClassHelper
                     ldapSchemaException.setSourceObject( objectClass );
                     ldapSchemaException.setRelatedId( mayAttributeTypeName );
                     errorHandler.handle( LOG, msg, ldapSchemaException );
-
-                    continue;
                 }
             }
         }

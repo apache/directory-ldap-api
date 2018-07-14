@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.codec.actions.response.bind;
 
 
-import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
@@ -58,7 +57,7 @@ public class StoreServerSASLCreds extends GrammarAction<LdapMessageContainer<Bin
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<BindResponseDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainer<BindResponseDecorator> container )
     {
         // Get the Value and store it in the BindRequest
         TLV tlv = container.getCurrentTLV();

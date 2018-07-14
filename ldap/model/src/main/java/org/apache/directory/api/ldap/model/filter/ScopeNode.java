@@ -165,7 +165,7 @@ public class ScopeNode extends AbstractExprNode
             return true;
         }
 
-        if ( ( obj == null ) || !( obj instanceof ScopeNode ) )
+        if ( !( obj instanceof ScopeNode ) )
         {
             return false;
         }

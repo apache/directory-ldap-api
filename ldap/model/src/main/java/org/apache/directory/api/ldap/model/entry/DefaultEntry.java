@@ -2016,8 +2016,6 @@ public final class DefaultEntry implements Entry
                     {
                         LOG.warn( I18n.err( I18n.ERR_13218_AT_DOES_NOT_EXIST, attribute ) );
                     }
-                    
-                    continue;
                 }
             }
         }
@@ -2689,7 +2687,6 @@ public final class DefaultEntry implements Entry
                     {
                         sb.append( attribute.toString( tabs + "    " ) );
                         sb.append( '\n' );
-                        continue;
                     }
                 }
                 else
@@ -2699,7 +2696,6 @@ public final class DefaultEntry implements Entry
                     {
                         sb.append( attribute.toString( tabs + "    " ) );
                         sb.append( '\n' );
-                        continue;
                     }
                 }
             }

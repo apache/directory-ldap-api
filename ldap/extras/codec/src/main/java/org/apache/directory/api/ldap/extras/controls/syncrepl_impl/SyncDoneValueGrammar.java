@@ -84,7 +84,7 @@ public final class SyncDoneValueGrammar extends AbstractGrammar<SyncDoneValueCon
             UniversalTag.SEQUENCE.getValue(),
             new GrammarAction<SyncDoneValueContainer>( "Initialization" )
             {
-                public void action( SyncDoneValueContainer container ) throws DecoderException
+                public void action( SyncDoneValueContainer container )
                 {
                     // As all the values are optional or defaulted, we can end here
                     container.setGrammarEndAllowed( true );
@@ -104,7 +104,7 @@ public final class SyncDoneValueGrammar extends AbstractGrammar<SyncDoneValueCon
                 SyncDoneValueStatesEnum.COOKIE_STATE, UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<SyncDoneValueContainer>( "Set SyncDoneValueControl cookie" )
                 {
-                    public void action( SyncDoneValueContainer container ) throws DecoderException
+                    public void action( SyncDoneValueContainer container )
                     {
                         BerValue value = container.getCurrentTLV().getValue();
 

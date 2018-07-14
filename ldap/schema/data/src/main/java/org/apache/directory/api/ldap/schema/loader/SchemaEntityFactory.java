@@ -525,8 +525,7 @@ public class SchemaEntityFactory implements EntityFactory
             
             try
             {
-                comparator = ( LdapComparator<?> ) constructor.newInstance( new Object[]
-                    { oid } );
+                comparator = ( LdapComparator<?> ) constructor.newInstance( oid );
             }
             catch ( InvocationTargetException ite )
             {
@@ -1402,7 +1401,6 @@ public class SchemaEntityFactory implements EntityFactory
 
             if ( !schema.getSchemaName().equalsIgnoreCase( schemaName ) )
             {
-                
                 if ( LOG.isWarnEnabled() )
                 {
                     LOG.warn( I18n.msg( I18n.MSG_16011_SCHEMA_XSCHEMA_DIFF, schema.getSchemaName(), schemaName, entry ) );
