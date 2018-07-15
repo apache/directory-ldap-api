@@ -34,7 +34,7 @@ import org.apache.directory.api.i18n.I18n;
  */
 public final class Hex
 {
-    /** &lt;hex> ::= [0x30-0x39] | [0x41-0x46] | [0x61-0x66] */
+    /** &lt;hex&gt; ::= [0x30-0x39] | [0x41-0x46] | [0x61-0x66] */
     private static final byte[] HEX_VALUE =
         {
             // 00 -> 0F
