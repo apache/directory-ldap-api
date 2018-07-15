@@ -1242,7 +1242,7 @@ public enum I18n
     // api-ldap-extras-codec            8000-8999
     //     <>                               8000-8099
     MSG_08000_COOKIE( "MSG_08000_COOKIE" ),
-    MSG_08001_REFRESH_DELETES( "MSG_08001_REFRESH_DELETESé" ),
+    MSG_08001_REFRESH_DELETES( "MSG_08001_REFRESH_DELETES" ),
     
     //     controls                         8100-8199
     MSG_08100_MODE( "MSG_08100_MODE" ),
