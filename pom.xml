@@ -52,13 +52,13 @@
     <commons.pool.version>2.5.0</commons.pool.version>
     <dom4j.version>1.6.1</dom4j.version>
     <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
-    <forbiddenapis.version>2.2</forbiddenapis.version>
+    <forbiddenapis.version>2.5</forbiddenapis.version>
     <junit.version>4.12</junit.version>
     <log4j.version>1.2.17</log4j.version>
     <logback.version>1.2.3</logback.version>
     <mina.core.version>2.0.18</mina.core.version>
     <org.osgi.core.version>6.0.0</org.osgi.core.version>
-    <org.apache.felix.version>5.6.10</org.apache.felix.version>
+    <org.apache.felix.version>6.0.0</org.apache.felix.version>
     <pax-exam.version>4.11.0</pax-exam.version>
     <pax-url.version>2.5.4</pax-url.version>
     <slf4j.api.version>1.7.25</slf4j.api.version>
