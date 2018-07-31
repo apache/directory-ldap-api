@@ -101,6 +101,10 @@ public final class IntegerDecoder
      * <li>0x02 0x02 0x00 0xFF : integer 255</li>
      * </ul>
      * and so on...
+     * 
+     * @param value the BER PDU to parse
+     * @return The decoded value
+     * @exception IntegerDecoderException If the BER contains an invalid integer value 
      */
     private static int parseInt( BerValue value ) throws IntegerDecoderException
     {

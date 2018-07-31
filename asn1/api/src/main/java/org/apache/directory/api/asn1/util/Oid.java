@@ -81,56 +81,56 @@ public final class Oid
     /** The OID as a String */
     private String oidString;
     
-    private static final BigInteger JOINT_ISO_ITU_T = new BigInteger( "80" );
+    private static final BigInteger JOINT_ISO_ITU_T = BigInteger.valueOf( 80 );
     
     /**
      * The OID FSA states. We have the following Finite State Automaton :
      * 
      * <pre>
-     * (Start) --['0','1']--> (A)
-     * (start) --['2']--> (F)
+     * (Start) --['0','1']--&gt; (A)
+     * (start) --['2']--&gt; (F)
      * 
-     * (A) --['.']--> (B)
+     * (A) --['.']--&gt; (B)
      * 
-     * (B) --['0']--> (D)
-     * (B) --['1'..'3']--> (C)
-     * (B) --['4'..'9']--> (E)
+     * (B) --['0']--&gt; (D)
+     * (B) --['1'..'3']--&gt; (C)
+     * (B) --['4'..'9']--&gt; (E)
      * 
-     * (C) --[]--> (End)
-     * (C) --['.']--> (K)
-     * (C) --['0'..'9']--> (E)
+     * (C) --[]--&gt; (End)
+     * (C) --['.']--&gt; (K)
+     * (C) --['0'..'9']--&gt; (E)
      * 
-     * (D) --[]--> (End)
-     * (D) --['.']--> (K)
+     * (D) --[]--&gt; (End)
+     * (D) --['.']--&gt; (K)
      * 
-     * (E) --[]--> (End)
-     * (E) --['.']--> (K)
+     * (E) --[]--&gt; (End)
+     * (E) --['.']--&gt; (K)
      * 
-     * (F) --['.']--> (G)
+     * (F) --['.']--&gt; (G)
      * 
-     * (G) --['0']--> (I)
-     * (G) --['1'..'9']--> (H)
+     * (G) --['0']--&gt; (I)
+     * (G) --['1'..'9']--&gt; (H)
      *
-     * (H) --[]--> (End)
-     * (H) --['.']--> (K)
-     * (H) --['0'..'9']--> (J)
+     * (H) --[]--&gt; (End)
+     * (H) --['.']--&gt; (K)
+     * (H) --['0'..'9']--&gt; (J)
      * 
-     * (I) --[]--> (End)
-     * (I) --['.']--> (K)
+     * (I) --[]--&gt; (End)
+     * (I) --['.']--&gt; (K)
      *
-     * (J) --[]--> (End)
-     * (J) --['.']--> (K)
-     * (J) --['0'..'9']--> (J)
+     * (J) --[]--&gt; (End)
+     * (J) --['.']--&gt; (K)
+     * (J) --['0'..'9']--&gt; (J)
      * 
-     * (K) --['0']--> (M) 
-     * (K) --['1'..'9']--> (L)
+     * (K) --['0']--&gt; (M) 
+     * (K) --['1'..'9']--&gt; (L)
      * 
-     * (L) --[]--> (End)
-     * (L) --['.']--> (K)
-     * (L) --['0'..'9']--> (L)
+     * (L) --[]--&gt; (End)
+     * (L) --['.']--&gt; (K)
+     * (L) --['0'..'9']--&gt; (L)
      * 
-     * (M) --[]--> (End)
-     * (M) --['.']--> (K)
+     * (M) --[]--&gt; (End)
+     * (M) --['.']--&gt; (K)
      * </pre>
      */
     private enum OidFSAState 
@@ -368,9 +368,15 @@ public final class Oid
     /**
      * Process state A
      * <pre>
-     * (Start) --['0','1']--> (A)
-     * (start) --['2']--> (F)
+     * (Start) --['0','1']--&gt; (A)
+     * (start) --['2']--&gt; (F)
      * </pre>
+     * 
+     * @param oid The OID to check
+     * @param buffer The buffer gathering the binary OID
+     * @param pos The position in the OID string
+     * @return The next OID decoding state
+     * @throws DecoderException If the OID is invalid
      */
     private static OidFSAState processStateStart( String oid, byte[] buffer, int pos ) throws DecoderException
     {
@@ -396,8 +402,13 @@ public final class Oid
     /**
      * Process state B
      * <pre>
-     * (A) --['.']--> (B)
+     * (A) --['.']--&gt; (B)
      * </pre>
+     * 
+     * @param oid The OID to check
+     * @param pos The position in the OID string
+     * @return The next OID decoding state
+     * @throws DecoderException If the OID is invalid
      */
     private static OidFSAState processStateA( String oid, int pos ) throws DecoderException
     {
@@ -414,10 +425,16 @@ public final class Oid
     /**
      * Process state B
      * <pre>
-     * (B) --['0']--> (D)
-     * (B) --['1'..'3']--> (C)
-     * (B) --['4'..'9']--> (E)
+     * (B) --['0']--&gt; (D)
+     * (B) --['1'..'3']--&gt; (C)
+     * (B) --['4'..'9']--&gt; (E)
      * </pre>
+     * 
+     * @param oid The OID to check
+     * @param buffer The buffer gathering the binary OID
+     * @param pos The position in the OID string
+     * @return The next OID decoding state
+     * @throws DecoderException If the OID is invalid
      */
     private static OidFSAState processStateB( String oid, byte[] buffer, int pos ) throws DecoderException
     {
@@ -455,9 +472,15 @@ public final class Oid
     /**
      * Process state C
      * <pre>
-     * (C) --['.']--> (K)
-     * (C) --['0'..'9']--> (E)
+     * (C) --['.']--&gt; (K)
+     * (C) --['0'..'9']--&gt; (E)
      * </pre>
+     * 
+     * @param oid The OID to check
+     * @param buffer The buffer gathering the binary OID
+     * @param pos The position in the OID string
+     * @return The next OID decoding state
+     * @throws DecoderException If the OID is invalid
      */
     private static OidFSAState processStateC( String oid, byte[] buffer, int pos ) throws DecoderException
     {
@@ -494,9 +517,15 @@ public final class Oid
     /**
      * Process state D and E
      * <pre>
-     * (D) --['.']--> (K)
-     * (E) --['.']--> (K)
+     * (D) --['.']--&gt; (K)
+     * (E) --['.']--&gt; (K)
      * </pre>
+     * 
+     * @param oid The OID to check
+     * @param buffer The buffer gathering the binary OID
+     * @param pos The position in the OID string
+     * @return The next OID decoding state
+     * @throws DecoderException If the OID is invalid
      */
     private static OidFSAState processStateDE( String oid, byte[] buffer, int pos ) throws DecoderException
     {
@@ -519,8 +548,13 @@ public final class Oid
     /**
      * Process state F
      * <pre>
-     * (F) --['.']--> (G)
+     * (F) --['.']--&gt; (G)
      * </pre>
+     * 
+     * @param oid The OID to check
+     * @param pos The position in the OID string
+     * @return The next OID decoding state
+     * @throws DecoderException If the OID is invalid
      */
     private static OidFSAState processStateF( String oid, int pos ) throws DecoderException
     {
@@ -537,9 +571,15 @@ public final class Oid
     /**
      * Process state G
      * <pre>
-     * (G) --['0']--> (I)
-     * (G) --['1'..'9']--> (H)
+     * (G) --['0']--&gt; (I)
+     * (G) --['1'..'9']--&gt; (H)
      * </pre>
+     * 
+     * @param oid The OID to check
+     * @param buffer The buffer gathering the binary OID
+     * @param pos The position in the OID string
+     * @return The next OID decoding state
+     * @throws DecoderException If the OID is invalid
      */
     private static OidFSAState processStateG( String oid, byte[] buffer, int pos ) throws DecoderException
     {
@@ -574,9 +614,15 @@ public final class Oid
     /**
      * Process state H
      * <pre>
-     * (H) --['.']--> (K)
-     * (H) --['0'..'9']--> (J)
+     * (H) --['.']--&gt; (K)
+     * (H) --['0'..'9']--&gt; (J)
      * </pre>
+     * 
+     * @param oid The OID to check
+     * @param buffer The buffer gathering the binary OID
+     * @param pos The position in the OID string
+     * @return The next OID decoding state
+     * @throws DecoderException If the OID is invalid
      */
     private static OidFSAState processStateH( String oid, byte[] buffer, int pos ) throws DecoderException
     {
@@ -614,8 +660,14 @@ public final class Oid
     /**
      * Process state I
      * <pre>
-     * (I) --['.']--> (K)
+     * (I) --['.']--&gt; (K)
      * </pre>
+     * 
+     * @param oid The OID to check
+     * @param buffer The buffer gathering the binary OID
+     * @param pos The position in the OID string
+     * @return The next OID decoding state
+     * @throws DecoderException If the OID is invalid
      */
     private static OidFSAState processStateI( String oid, byte[] buffer, int pos ) throws DecoderException
     {
@@ -638,9 +690,16 @@ public final class Oid
     /**
      * Process state J
      * <pre>
-     * (J) --['.']--> (K)
-     * (J) --['0'..'9']--> (J)
+     * (J) --['.']--&gt; (K)
+     * (J) --['0'..'9']--&gt; (J)
      * </pre>
+     * 
+     * @param oid The OID to check
+     * @param buffer The buffer gathering the binary OID
+     * @param bufferPos The current position in the buffer
+     * @param pos The position in the OID string
+     * @return The next OID decoding state
+     * @throws DecoderException If the OID is invalid
      */
     private static OidFSAState processStateJ( String oid, byte[] buffer, int bufferPos, int pos ) throws DecoderException
     {
@@ -675,9 +734,16 @@ public final class Oid
     /**
      * Process state J
      * <pre>
-     * (K) --['0']--> (M)
-     * (K) --['1'..'9']--> (L)
+     * (K) --['0']--&gt; (M)
+     * (K) --['1'..'9']--&gt; (L)
      * </pre>
+     * 
+     * @param oid The OID to check
+     * @param buffer The buffer gathering the binary OID
+     * @param bufferPos The current position in the buffer
+     * @param pos The position in the OID string
+     * @return The next OID decoding state
+     * @throws DecoderException If the OID is invalid
      */
     private static OidFSAState processStateK( String oid, byte[] buffer, int bufferPos, int pos ) throws DecoderException
     {
@@ -711,9 +777,16 @@ public final class Oid
     /**
      * Process state J
      * <pre>
-     * (L) --['.']--> (K)
-     * (L) --['0'..'9']--> (L)
+     * (L) --['.']--&gt; (K)
+     * (L) --['0'..'9']--&gt; (L)
      * </pre>
+     * 
+     * @param oid The OID to check
+     * @param buffer The buffer gathering the binary OID
+     * @param bufferPos The current position in the buffer
+     * @param pos The position in the OID string
+     * @return The next OID decoding state
+     * @throws DecoderException If the OID is invalid
      */
     private static OidFSAState processStateL( String oid, byte[] buffer, int bufferPos, int pos ) throws DecoderException
     {
@@ -749,8 +822,13 @@ public final class Oid
     /**
      * Process state J
      * <pre>
-     * (M) --['.']--> (K)
+     * (M) --['.']--&gt; (K)
      * </pre>
+     * 
+     * @param oid The OID to check
+     * @param pos The position in the OID string
+     * @return The next OID decoding state
+     * @throws DecoderException If the OID is invalid
      */
     private static OidFSAState processStateM( String oid, int pos ) throws DecoderException
     {
@@ -771,6 +849,14 @@ public final class Oid
     /**
      * Convert a list of digits to a list of 7 bits bytes. We must start by the end, and we don't
      * know how many bytes we will need, except when we will be done with the conversion.
+     * 
+     * @param oid The OID to convert
+     * @param buffer The buffer gathering the binary OID
+     * @param start The starting position in the OID string
+     * @param nbDigits Teh number of digits the OID has 
+     * @param posBuffer The position in the buffer
+     * @param isJointIsoItuT A flag set if we know the OID is a JointIsoItuT OID
+     * @return The number of bytes required to store the OID in a PDU
      */
     private static int convert( String oid, byte[] buffer, int start, int nbDigits, int posBuffer, boolean isJointIsoItuT )
     {
