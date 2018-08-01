@@ -94,8 +94,9 @@ public final class FilterParser
     
     /**
      * Skip the white spaces (0x20, 0x09, 0x0a and 0x0d)
-     * @param filter
-     * @param pos
+     * 
+     * @param filter The filter being parsed
+     * @param pos The current position in the filter
      */
     private static void skipWhiteSpaces( byte[] filter, Position pos )
     {
@@ -156,11 +157,20 @@ public final class FilterParser
     /**
      * Parse an extensible
      *
-     *<pre>>
+     *<pre>
      * extensible     = ( attr [":dn"] [':' oid] ":=" assertionvalue )
      *                  / ( [":dn"] ':' oid ":=" assertionvalue )
      * matchingrule   = ":" oid
      * </pre>
+     * 
+     * @param schemaManager The {@link SchemaManager}
+     * @param attribute The filter's attribute
+     * @param filterBytes The filter bytes to parse
+     * @param pos The position in the filter bytes
+     * @param relaxed If the filter is analyzed in relaxed mode or not
+     * @return the created {@link ExprNode}
+     * @throws ParseException If the Node can't be parsed
+     * @throws LdapException If we met an error while parsing a filter element
      */
     private static ExprNode parseExtensible( SchemaManager schemaManager, String attribute, byte[] filterBytes,
         Position pos, boolean relaxed ) throws LdapException, ParseException
@@ -327,7 +337,7 @@ public final class FilterParser
      * With the specific constraints (RFC 4515):
      * 
      * <pre>
-     *    "The <valueencoding> rule ensures that the entire filter string is a"
+     *    "The &lt;valueencoding&lt; rule ensures that the entire filter string is a"
      *    "valid UTF-8 string and provides that the octets that represent the"
      *    "ASCII characters "*" (ASCII 0x2a), "(" (ASCII 0x28), ")" (ASCII"
      *    "0x29), "\" (ASCII 0x5c), and NUL (ASCII 0x00) are represented as a"
@@ -347,7 +357,13 @@ public final class FilterParser
      * unicodeSubset     = %x01-27 / %x2B-5B / %x5D-FFFF
      * </pre>
      * 
-     * @throws LdapInvalidAttributeValueException 
+     * @param schemaManager The {@link SchemaManager}
+     * @param attribute The associated Attribute
+     * @param filterBytes The filter bytes to parse
+     * @param pos The position in the filter bytes
+     * @return The parsed value
+     * @throws ParseException If the value can't be parsed
+     * @throws LdapInvalidAttributeValueException If the value is invalid
      */
     private static Value parseAssertionValue( SchemaManager schemaManager, String attribute, byte[] filterBytes,
         Position pos ) throws ParseException, LdapInvalidAttributeValueException
@@ -478,7 +494,7 @@ public final class FilterParser
      * With the specific constraints (RFC 4515):
      * 
      * <pre>
-     *    "The <valueencoding> rule ensures that the entire filter string is a"
+     *    "The &lt;valueencoding&gt; rule ensures that the entire filter string is a"
      *    "valid UTF-8 string and provides that the octets that represent the"
      *    "ASCII characters "*" (ASCII 0x2a), "(" (ASCII 0x28), ")" (ASCII"
      *    "0x29), "\" (ASCII 0x5c), and NUL (ASCII 0x00) are represented as a"
@@ -497,6 +513,12 @@ public final class FilterParser
      * HEX            = '0'-'9' / 'A'-'F' / 'a'-'f'
      * unicodeSubset     = %x01-27 / %x2B-5B / %x5D-FFFF
      * </pre>
+     * 
+     * @param schemaManager The {@link SchemaManager}
+     * @param filterBytes The filter bytes to parse
+     * @param pos The position in the filter bytes
+     * @return The parsed value
+     * @throws ParseException If the value can't be parsed
      */
     private static Value parseAssertionValue( SchemaManager schemaManager, byte[] filterBytes, Position pos )
         throws ParseException
@@ -566,6 +588,15 @@ public final class FilterParser
 
     /**
      * Parse a substring
+     * 
+     * @param schemaManager The {@link SchemaManager}
+     * @param attribute The filter's attribute
+     * @param initial The filter's initial part
+     * @param filterBytes The filter bytes to parse
+     * @param pos The position in the filter bytes
+     * @return the created {@link ExprNode}
+     * @throws ParseException If the Node can't be parsed
+     * @throws LdapException If we met an error while parsing a filter element
      */
     private static ExprNode parseSubstring( SchemaManager schemaManager, String attribute, Value initial,
         byte[] filterBytes, Position pos ) throws ParseException, LdapException
@@ -670,13 +701,21 @@ public final class FilterParser
      * seen as a present or as a substring. As stated in the RFC :
      *
      * <pre>
-     * "Note that although both the <substring> and <present> productions in"
+     * "Note that although both the &lt;substring&gt; and &lt;present&gt; productions in"
      * "the grammar above can produce the "attr=*" construct, this construct"
      * "is used only to denote a presence filter." (RFC 4515, 3)
      * </pre>
      * 
      * We have also to consider the difference between a substring and the
      * equality node : this last node does not contain a '*'
+     * 
+     * @param schemaManager The {@link SchemaManager}
+     * @param attribute The filter's attribute
+     * @param filterBytes The filter bytes to parse
+     * @param pos The position in the filter bytes
+     * @return the created {@link ExprNode}
+     * @throws ParseException If the Node can't be parsed
+     * @throws LdapException If we met an error while parsing a filter element
      */
     private static ExprNode parsePresenceEqOrSubstring( SchemaManager schemaManager, String attribute, byte[] filterBytes,
         Position pos ) throws ParseException, LdapException
@@ -786,7 +825,7 @@ public final class FilterParser
      * <pre>
      * item           = simple / present / substring / extensible
      * simple         = attr WSP* filtertype WSP* assertionvalue
-     * filtertype     = '=' / '~=' / '>=' / '<='
+     * filtertype     = '=' / '~=' / '&gt;=' / '&lt;='
      * present        = attr WSP* '=' '*'
      * substring      = attr WSP* '=' WSP* [initial] any [final]
      * extensible     = ( attr [":dn"] [':' oid] ":=" assertionvalue )
@@ -794,6 +833,15 @@ public final class FilterParser
      * matchingrule   = ":" oid
      * </pre>
      * An item starts with an attribute or a colon.
+     * 
+     * @param schemaManager The {@link SchemaManager}
+     * @param filterBytes The filter bytes to parse
+     * @param pos The position in the filter bytes
+     * @param b The type of item
+     * @param relaxed If the filter is analyzed in relaxed mode or not
+     * @return the created {@link ExprNode}
+     * @throws ParseException If the Node can't be parsed
+     * @throws LdapException If we met an error while parsing a filter element
      */
     @SuppressWarnings({ "rawtypes", })
     private static ExprNode parseItem( SchemaManager schemaManager, byte[] filterBytes, Position pos, byte b,
@@ -946,11 +994,20 @@ public final class FilterParser
     /**
      * Parse AND, OR and NOT nodes :
      * <pre>
-     * and            = '&' filterlist
+     * and            = '&amp;' filterlist
      * or             = '|' filterlist
      * not            = '!' filter
      * filterlist     = 1*filter
      * </pre>
+     * 
+     * @param schemaManager The {@link SchemaManager}
+     * @param node The node to feed
+     * @param filterBytes The filter bytes to parse
+     * @param pos The position in the filter bytes
+     * @param relaxed If the filter is analyzed in relaxed mode or not
+     * @return the created {@link ExprNode}
+     * @throws ParseException If the Node can't be parsed
+     * @throws LdapException If we met an error while parsing a filter element
      */
     private static ExprNode parseBranchNode( SchemaManager schemaManager, ExprNode node, byte[] filterBytes, Position pos,
         boolean relaxed ) throws ParseException, LdapException
@@ -1007,7 +1064,7 @@ public final class FilterParser
     /**
      * <pre>
      * filtercomp     = and / or / not / item
-     * and            = '&' WSP* filterlist
+     * and            = '&amp;' WSP* filterlist
      * or             = '|' WSP* filterlist
      * not            = '!' WSP* filter
      * item           = simple / present / substring / extensible
@@ -1019,6 +1076,14 @@ public final class FilterParser
      *                    / ( [dnattrs]
      *                         matchingrule COLON EQUALS assertionvalue )
      * </pre>
+     * 
+     * @param schemaManager The {@link SchemaManager}
+     * @param filterBytes The filter bytes to parse
+     * @param pos The position in the filter bytes
+     * @param relaxed If the filter is analyzed in relaxed mode or not
+     * @return the created {@link ExprNode}
+     * @throws ParseException If the Node can't be parsed
+     * @throws LdapException If we met an error while parsing a filter element
      */
     private static ExprNode parseFilterComp( SchemaManager schemaManager, byte[] filterBytes, Position pos,
         boolean relaxed ) throws ParseException, LdapException
@@ -1082,6 +1147,14 @@ public final class FilterParser
      * <pre>
      * filter ::= WSP* '(' WSP* filterComp WSP* ')' WSP*
      * </pre>
+     * 
+     * @param schemaManager The {@link SchemaManager}
+     * @param filterBytes The filter bytes to parse
+     * @param pos The position in the filter bytes
+     * @param relaxed If the filter is analyzed in relaxed mode or not
+     * @return the created {@link ExprNode}
+     * @throws ParseException If the Node can't be parsed
+     * @throws LdapException If we met an error while parsing a filter element
      */
     private static ExprNode parseFilterInternal( SchemaManager schemaManager, byte[] filterBytes, Position pos,
         boolean relaxed ) throws ParseException, LdapException

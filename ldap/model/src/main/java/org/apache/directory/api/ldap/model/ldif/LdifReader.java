@@ -786,13 +786,13 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      * &lt;critical-e&gt; ::= &lt;spaces&gt; &lt;boolean&gt; | e
      * &lt;boolean&gt; ::= "true" | "false"
      * &lt;value-spec-e&gt; ::= &lt;value-spec&gt; | e
-     * &lt;value-spec&gt; ::= ":" &lt;fill&gt; &lt;SAFE-STRING-e&gt; | "::" &lt;fill&gt; &lt;BASE64-STRING&gt; | ":<" &lt;fill&gt; &lt;url&gt;
+     * &lt;value-spec&gt; ::= ":" &lt;fill&gt; &lt;SAFE-STRING-e&gt; | "::" &lt;fill&gt; &lt;BASE64-STRING&gt; | ":&lt;" &lt;fill&gt; &lt;url&gt;
      * </pre>
      *
      * It can be read as :
      * <pre>
      * "control:" &lt;fill&gt; &lt;ldap-oid&gt; [ " "+ ( "true" |
-     * "false") ] [ ":" &lt;fill&gt; &lt;SAFE-STRING-e&gt; | "::" &lt;fill&gt; &lt;BASE64-STRING&gt; | ":<"
+     * "false") ] [ ":" &lt;fill&gt; &lt;SAFE-STRING-e&gt; | "::" &lt;fill&gt; &lt;BASE64-STRING&gt; | ":&lt;"
      * &lt;fill&gt; &lt;url&gt; ]
      * </pre>
      *

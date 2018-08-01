@@ -89,7 +89,7 @@ public interface PersistentSearch extends Control
      * For each changeType, tells if the notification is enabled
      * 
      * @param changeType The ChnageType we are interested in
-     * @return <T>TRUE<T> if the notification is set for this ChangeType
+     * @return <tt>TRUE<tt> if the notification is set for this ChangeType
      */
     boolean isNotificationEnabled( ChangeType changeType );
 

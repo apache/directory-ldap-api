@@ -629,9 +629,9 @@ quotestring [UpAndNormValue value]
  *
  * hexstring = SHARP 1*hexpair
  *
- * If in <hexstring> form, a BER representation can be obtained from
- * converting each <hexpair> of the <hexstring> to the octet indicated
- * by the <hexpair>.
+ * If in &lt;hexstring&gt; form, a BER representation can be obtained from
+ * converting each &lt;hexpair&gt; of the &lt;hexstring&gt; to the octet indicated
+ * by the &lt;hexpair&gt;.
  *
  */ 
 hexstring [UpAndNormValue value]
@@ -653,7 +653,7 @@ hexstring [UpAndNormValue value]
  * RFC 4514 Section 3
  *
  * ; The following characters are to be escaped when they appear
- * ; in the value to be encoded: ESC, one of <escaped>, leading
+ * ; in the value to be encoded: ESC, one of &lt;escaped&gt;, &lt;leading&gt;
  * ; SHARP or SPACE, trailing SPACE, and NULL.
  * string =   [ ( leadchar / pair ) [ *( stringchar / pair ) ( trailchar / pair ) ] ]
  * leadchar = LUTF1 | UTFMB
@@ -857,20 +857,20 @@ utfmb [UpAndNormValue value]
  * escaped = DQUOTE / PLUS / COMMA / SEMI / LANGLE / RANGLE
  * hexpair = HEX HEX
  *
- * If in <string> form, a LDAP string representation asserted value can
- * be obtained by replacing (left to right, non-recursively) each <pair>
- * appearing in the <string> as follows:
- *   replace <ESC><ESC> with <ESC>;
- *   replace <ESC><special> with <special>;
- *   replace <ESC><hexpair> with the octet indicated by the <hexpair>.
+ * If in &lt;string&gt; form, a LDAP string representation asserted value can
+ * be obtained by replacing (left to right, non-recursively) each &lt;pair&gt;
+ * appearing in the &lt;string&gt; as follows:
+ *   replace &lt;ESC&gt;&lt;ESC&gt; with &lt;ESC&gt;;
+ *   replace &lt;ESC&gt;&lt;special&gt; with &lt;special&gt;;
+ *   replace &lt;ESC&gt;&lt;hexpair&gt; with the octet indicated by the &lt;hexpair&gt;.
  * 
  * RFC 2253, Section 3
  * pair       = "\" ( special / "\" / QUOTATION / hexpair )
- * special    = "," / "=" / "+" / "<" /  ">" / "#" / ";"
+ * special    = "," / "=" / "+" / "&lt;" /  "&gt;" / "#" / ";"
  * 
  * RFC 1779, Section 2.3
  * &lt;pair&gt; ::= "\" ( &lt;special&gt; | "\" | '"')
- * &lt;special&gt; ::= "," | "=" | &lt;CR&gt; | "+" | "&lt;" |  ">"
+ * &lt;special&gt; ::= "," | "=" | &lt;CR&gt; | "+" | "&lt;" |  "&gt;"
  *           | "#" | ";"
  * 
  */ 

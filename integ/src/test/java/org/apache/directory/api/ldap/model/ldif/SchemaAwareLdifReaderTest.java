@@ -43,7 +43,10 @@ import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.message.Control;
+import org.apache.directory.api.ldap.model.schema.SchemaManager;
+import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.apache.directory.api.util.Strings;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,12 +62,14 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class LdifReaderTest
+public class SchemaAwareLdifReaderTest
 {
     private static byte[] data;
 
     private static File HJENSEN_JPEG_FILE = null;
     private static File FIONA_JPEG_FILE = null;
+    
+    private SchemaManager schemaManager;
 
 
     private static File createFile( String name, byte[] data ) throws IOException
@@ -84,8 +89,8 @@ public class LdifReaderTest
 
         return jpeg;
     }
-
-
+    
+    
     /**
      * Create a file to be used by ":<" values
      */
@@ -102,6 +107,16 @@ public class LdifReaderTest
         HJENSEN_JPEG_FILE = createFile( "hjensen", data );
         FIONA_JPEG_FILE = createFile( "fiona", data );
     }
+    
+
+    /**
+     * Initialize the SchemaManager
+     */
+    @Before
+    public void init()
+    {
+        schemaManager = new DefaultSchemaManager();
+    }
 
 
     @Test
@@ -109,7 +124,7 @@ public class LdifReaderTest
     {
         String ldif = null;
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -122,7 +137,7 @@ public class LdifReaderTest
     {
         String ldif = "";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -135,7 +150,7 @@ public class LdifReaderTest
     {
         String ldif = "\n\n\r\r\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -153,7 +168,7 @@ public class LdifReaderTest
                 " is is still a comment\n" +
                 "\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -174,7 +189,7 @@ public class LdifReaderTest
                 " 1\n" +
                 "# end";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -198,7 +213,7 @@ public class LdifReaderTest
                 "dependencies:\n" +
                 "envVars:";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -233,7 +248,7 @@ public class LdifReaderTest
                 "\n" +
                 "# end";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -260,7 +275,7 @@ public class LdifReaderTest
                 "dependencies:\n" +
                 "envVars:";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
 
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
@@ -309,7 +324,7 @@ public class LdifReaderTest
 
     private void testReaderAttrIdCaseInsensitive( String ldif ) throws Exception
     {
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
 
         List<LdifEntry> entries = reader.parseLdif( ldif );
         assertNotNull( entries );
@@ -355,7 +370,7 @@ public class LdifReaderTest
                 "control: 1.2.840.113556.1.4.805 true\n" +
                 "changetype: delete\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
 
         try
         {
@@ -398,7 +413,7 @@ public class LdifReaderTest
                 "dn: ou=Product Development, dc=airius, dc=com\n" +
                 "changetype: delete\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
 
         try
         {
@@ -442,7 +457,7 @@ public class LdifReaderTest
                 "dependencies:\n" +
                 "envVars:\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
 
         try
         {
@@ -485,7 +500,7 @@ public class LdifReaderTest
                 "dependencies:\n" +
                 "envVars:\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
 
         try
         {
@@ -513,10 +528,9 @@ public class LdifReaderTest
                 "objectClass: top\n" +
                 "objectClass: apApplication\n" +
                 "displayName: app1   \n" +
-                "dependencies:\n" +
-                "envVars:";
+                "userPassword:";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -537,10 +551,7 @@ public class LdifReaderTest
         attr = entry.get( "displayname" );
         assertTrue( attr.contains( "app1" ) );
 
-        attr = entry.get( "dependencies" );
-        assertEquals( "", attr.get().getValue() );
-
-        attr = entry.get( "envvars" );
+        attr = entry.get( "userPassword" );
         assertEquals( "", attr.get().getValue() );
     }
 
@@ -557,12 +568,11 @@ public class LdifReaderTest
                 "objectClass: apApplication\n" +
                 "displayName: app1\n" +
                 "serviceType: http\n" +
-                "dependencies:\n" +
+                "userPassword:\n" +
                 "httpHeaders:\n" +
-                "startupOptions:\n" +
-                "envVars:";
+                "startupOptions:";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -583,10 +593,7 @@ public class LdifReaderTest
         attr = entry.get( "displayname" );
         assertTrue( attr.contains( "app1" ) );
 
-        attr = entry.get( "dependencies" );
-        assertEquals( "", attr.get().getValue() );
-
-        attr = entry.get( "envvars" );
+        attr = entry.get( "userPassword" );
         assertEquals( "", attr.get().getValue() );
     }
 
@@ -603,12 +610,11 @@ public class LdifReaderTest
                 "objectClass: apApplication\n" +
                 "displayName: app1\n" +
                 "serviceType: http\n" +
-                "dependencies:\n" +
+                "userPassword:\n" +
                 "httpHeaders:\n" +
-                "startupOptions:\n" +
-                "envVars:";
+                "startupOptions:";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -629,10 +635,7 @@ public class LdifReaderTest
         attr = entry.get( "displayname" );
         assertTrue( attr.contains( "app1" ) );
 
-        attr = entry.get( "dependencies" );
-        assertEquals( "", attr.get().getValue() );
-
-        attr = entry.get( "envvars" );
+        attr = entry.get( "userPassword" );
         assertEquals( "", attr.get().getValue() );
     }
 
@@ -648,12 +651,11 @@ public class LdifReaderTest
                 "objectClass: apApplication\n" +
                 "displayName: app1\n" +
                 "serviceType: http\n" +
-                "dependencies:\n" +
+                "userPassword:\n" +
                 "httpHeaders:\n" +
-                "startupOptions:\n" +
-                "envVars:";
+                "startupOptions:";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -665,7 +667,7 @@ public class LdifReaderTest
         assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
 
         Attribute attr = entry.get( "cn" );
-        assertTrue( attr.contains( "Emmanuel L\u00e9charny".getBytes( StandardCharsets.UTF_8 ) ) );
+        assertTrue( attr.contains( "Emmanuel L\u00e9charny" ) );
 
         attr = entry.get( "objectclass" );
         assertTrue( attr.contains( "top" ) );
@@ -674,10 +676,7 @@ public class LdifReaderTest
         attr = entry.get( "displayname" );
         assertTrue( attr.contains( "app1" ) );
 
-        attr = entry.get( "dependencies" );
-        assertEquals( "", attr.get().getValue() );
-
-        attr = entry.get( "envvars" );
+        attr = entry.get( "userPassword" );
         assertEquals( "", attr.get().getValue() );
     }
 
@@ -694,12 +693,11 @@ public class LdifReaderTest
                 "objectClass: apApplication\n" +
                 "displayName: app1\n" +
                 "serviceType: http\n" +
-                "dependencies:\n" +
+                "userPassword:\n" +
                 "httpHeaders:\n" +
-                "startupOptions:\n" +
-                "envVars:";
+                "startupOptions:";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -711,7 +709,7 @@ public class LdifReaderTest
         assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
 
         Attribute attr = entry.get( "cn" );
-        assertTrue( attr.contains( "Emmanuel L\u00e9charny  ".getBytes( StandardCharsets.UTF_8 ) ) );
+        assertTrue( attr.contains( "Emmanuel L\u00e9charny  " ) );
 
         attr = entry.get( "objectclass" );
         assertTrue( attr.contains( "top" ) );
@@ -720,10 +718,7 @@ public class LdifReaderTest
         attr = entry.get( "displayname" );
         assertTrue( attr.contains( "app1" ) );
 
-        attr = entry.get( "dependencies" );
-        assertEquals( "", attr.get().getValue() );
-
-        attr = entry.get( "envvars" );
+        attr = entry.get( "userPassword" );
         assertEquals( "", attr.get().getValue() );
     }
 
@@ -753,7 +748,7 @@ public class LdifReaderTest
                 "sn: Jensen\n" +
                 "telephonenumber: +1 408 555 1212";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -829,7 +824,7 @@ public class LdifReaderTest
                 " rch of perfect sailing conditions.\n" +
                 "title:Product Manager, Rod and Reel Division";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -888,7 +883,7 @@ public class LdifReaderTest
                 " VyIGluIGl0IChhIENSKS4NICBCeSB0aGUgd2F5LCB5b3Ugc2hvdWxkIHJlYWxseSBnZXQg\n" +
                 " b3V0IG1vcmUu";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -920,8 +915,8 @@ public class LdifReaderTest
 
         attr = entry.get( "description" );
         assertTrue( attr
-            .contains( "What a careful reader you are!  This value is base-64-encoded because it has a control character in it (a CR).\r  By the way, you should really get out more."
-                .getBytes( StandardCharsets.UTF_8 ) ) );
+            .contains( "What a careful reader you are!  This value is base-64-encoded because it has a control character in it (a CR).\r" + 
+                        "  By the way, you should really get out more." ) );
     }
 
 
@@ -944,7 +939,7 @@ public class LdifReaderTest
                 " VyIGluIGl0IChhIENSKS4NICBCeSB0aGUgd2F5LCB5b3Ugc2hvdWxkIHJlYWxseSBnZXQg\n" +
                 " b3V0IG1vcmUu  ";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -976,8 +971,9 @@ public class LdifReaderTest
 
         attr = entry.get( "description" );
         assertTrue( attr
-            .contains( "What a careful reader you are!  This value is base-64-encoded because it has a control character in it (a CR).\r  By the way, you should really get out more."
-                .getBytes( StandardCharsets.UTF_8 ) ) );
+            .contains( "What a careful reader you are!  This value is base-64-encoded because it has a control character "
+                    + "in it (a CR).\r  By the way, you should really get out more."
+                 ) );
     }
 
 
@@ -1085,7 +1081,7 @@ public class LdifReaderTest
                 "cn;lang-en: Rodney Ogasawara\n" +
                 "title;lang-en: Sales, Director\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -1178,7 +1174,7 @@ public class LdifReaderTest
                 HJENSEN_JPEG_FILE.getAbsolutePath() +
                 "\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -1209,8 +1205,8 @@ public class LdifReaderTest
             }
             else if ( "jpegphoto".equalsIgnoreCase( values[i][0] ) )
             {
-                Attribute attr = entry.get( values[i][0] );
-                assertEquals( Strings.dumpBytes( data ), Strings.dumpBytes( attr.getBytes() ) );
+                // We can't have a jpegPhoto with a null value
+                assertNull( entry.get( values[i][0] ) );
             }
             else
             {
@@ -1247,7 +1243,7 @@ public class LdifReaderTest
                 HJENSEN_JPEG_FILE.getAbsolutePath() +
                 "\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         reader.setSizeLimit( 128 );
         reader.close();
 
@@ -1343,7 +1339,7 @@ public class LdifReaderTest
                 "delete: description\n" +
                 "-\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -1465,7 +1461,7 @@ public class LdifReaderTest
         item = modifs.get( 2 );
         assertEquals( ModificationOperation.REPLACE_ATTRIBUTE, item.getOperation() );
 
-        assertEquals( values[4][3][0], item.getAttribute().getId() );
+        assertEquals( values[4][3][0], item.getAttribute().getUpId() );
         assertTrue( item.getAttribute().contains( values[4][3][1], values[4][3][2] ) );
 
         // "delete: facsimiletelephonenumber"
@@ -1509,7 +1505,7 @@ public class LdifReaderTest
                 "control: 1.2.840.113556.1.4.805 true\n" +
                 "changetype: delete\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -1539,7 +1535,7 @@ public class LdifReaderTest
                 "control: 1.2.840.113556.1.4.805\n" +
                 "changetype: delete\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -1569,7 +1565,7 @@ public class LdifReaderTest
                 "control: 1.2.840.113556.1.4.805:control-value\n" +
                 "changetype: delete\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -1600,7 +1596,7 @@ public class LdifReaderTest
                 "control: true\n" +
                 "changetype: delete\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
 
         try
         {
@@ -1631,7 +1627,7 @@ public class LdifReaderTest
                 "control: 1.2.840.113A556.1.4.805 true\n" +
                 "changetype: delete\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
 
         try
         {
@@ -1684,7 +1680,7 @@ public class LdifReaderTest
                 "objectclass: organizationalunit\n" +
                 "ou: Users";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
 
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
@@ -1782,7 +1778,7 @@ public class LdifReaderTest
                 +
                 "prescriptiveACI: { identificationTag \"browseRoot\", precedence 100, authenticationLevel none, itemOrUserFirst userFirst: { userClasses { allUsers }, userPermissions { { protectedItems {entry}, grantsAndDenials { grantReturnDN, grantBrowse } } } } }\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -1821,7 +1817,7 @@ public class LdifReaderTest
                 HJENSEN_JPEG_FILE.getAbsolutePath() +
                 "\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -1840,9 +1836,9 @@ public class LdifReaderTest
             "version:   1\n" +
                 "dn: dc=example,dc=com\n" +
                 "changetype: add\n" +
-                "attr1: ATTR1\n";
+                "cn: ATTR1\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -1858,7 +1854,7 @@ public class LdifReaderTest
 
         assertEquals( 1, entry.getEntry().size() );
 
-        Attribute attr = entry.get( "attr1" );
+        Attribute attr = entry.get( "cn" );
         assertTrue( attr.contains( "ATTR1" ) );
     }
 
@@ -1870,10 +1866,10 @@ public class LdifReaderTest
             "version:   1\n" +
                 "dn: dc=example,dc=com\n" +
                 "changetype: add\n" +
-                "attr1: ATTR1\n" +
-                "attr1: ATTR2\n";
+                "cn: ATTR1\n" +
+                "cn: ATTR2\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -1889,7 +1885,7 @@ public class LdifReaderTest
 
         assertEquals( 1, entry.getEntry().size() );
 
-        Attribute attr = entry.get( "attr1" );
+        Attribute attr = entry.get( "cn" );
         assertEquals( 2, attr.size() );
         assertTrue( attr.contains( "ATTR1" ) );
         assertTrue( attr.contains( "ATTR2" ) );
@@ -1903,11 +1899,11 @@ public class LdifReaderTest
             "version:   1\n" +
                 "dn: dc=example,dc=com\n" +
                 "changetype: add\n" +
-                "attr1: ATTR1\n" +
-                "attr1: ATTR2\n" +
-                "attr2: ATTR1\n";
+                "cn: ATTR1\n" +
+                "cn: ATTR2\n" +
+                "sn: ATTR1\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -1923,12 +1919,12 @@ public class LdifReaderTest
 
         assertEquals( 2, entry.getEntry().size() );
 
-        Attribute attr = entry.get( "attr1" );
+        Attribute attr = entry.get( "cn" );
         assertEquals( 2, attr.size() );
         assertTrue( attr.contains( "ATTR1" ) );
         assertTrue( attr.contains( "ATTR2" ) );
 
-        Attribute attr2 = entry.get( "attr2" );
+        Attribute attr2 = entry.get( "sn" );
         assertEquals( 1, attr2.size() );
         assertTrue( attr2.contains( "ATTR1" ) );
     }
@@ -1942,7 +1938,7 @@ public class LdifReaderTest
                 "dn: dc=example,dc=com\n" +
                 "changetype: delete\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -1967,7 +1963,7 @@ public class LdifReaderTest
                 "control: 1.1.1\n" +
                 "changetype: delete\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -2006,7 +2002,7 @@ public class LdifReaderTest
                 "control: 1.1.6 true::RW1tYW51ZWwgTMOpY2hhcm55\n" +
                 "changetype: delete\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -2076,7 +2072,7 @@ public class LdifReaderTest
                 "changetype: delete\n" +
                 "attr1: test";
 
-        try ( LdifReader reader = new LdifReader() )
+        try ( LdifReader reader = new LdifReader( schemaManager ) )
         {
             reader.parseLdif( ldif );
         }
@@ -2092,7 +2088,7 @@ public class LdifReaderTest
                 "control: 1.1.1\n" +
                 "attr1: test";
 
-        try ( LdifReader reader = new LdifReader() )
+        try ( LdifReader reader = new LdifReader( schemaManager ) )
         {
             reader.parseLdif( ldif );
         }
@@ -2121,7 +2117,7 @@ public class LdifReaderTest
                 "userPassword:\n" +
                 "-";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -2168,7 +2164,7 @@ public class LdifReaderTest
                 comment +
                 ldif1 + "\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
 
         List<LdifEntry> lstEntries = null;
 
@@ -2218,7 +2214,7 @@ public class LdifReaderTest
         data = new byte[rafEntry1.getLengthBeforeParsing()];
         raf.read( data, ( int ) rafEntry1.getOffset(), data.length );
 
-        reader = new LdifReader();
+        reader = new LdifReader( schemaManager );
         LdifEntry reReadeRafEntry1 = reader.parseLdif( new String( data, Charset.defaultCharset() ) ).get( 0 );
         assertNotNull( reReadeRafEntry1 );
         assertEquals( rafEntry1.getOffset(), reReadeRafEntry1.getOffset() );
@@ -2230,7 +2226,7 @@ public class LdifReaderTest
         data = new byte[rafEntry2.getLengthBeforeParsing()];
         raf.readFully( data, 0, data.length );
 
-        reader = new LdifReader();
+        reader = new LdifReader( schemaManager );
         LdifEntry reReadeRafEntry2 = reader.parseLdif( new String( data, Charset.defaultCharset() ) ).get( 0 );
         assertNotNull( reReadeRafEntry2 );
         assertEquals( rafEntry2.getLengthBeforeParsing(), reReadeRafEntry2.getLengthBeforeParsing() );
@@ -2250,7 +2246,7 @@ public class LdifReaderTest
                 "changetype: delete\n" +
                 "attr1: test";
 
-        try ( LdifReader reader = new LdifReader() )
+        try ( LdifReader reader = new LdifReader( schemaManager ) )
         {
             try
             {
@@ -2270,7 +2266,7 @@ public class LdifReaderTest
                 "changetype: delete\n" +
                 "attr1: test";
 
-        try ( LdifReader reader = new LdifReader() )
+        try ( LdifReader reader = new LdifReader( schemaManager ) )
         {
             try
             {
@@ -2291,7 +2287,7 @@ public class LdifReaderTest
                 "changetype: delete\n" +
                 "attr1: test";
         
-        try ( LdifReader reader = new LdifReader() )
+        try ( LdifReader reader = new LdifReader( schemaManager ) )
         {
             try
             {
@@ -2322,7 +2318,7 @@ public class LdifReaderTest
                 "dependencies:\n" +
                 "envVars:";
         
-        try ( LdifReader reader = new LdifReader() )
+        try ( LdifReader reader = new LdifReader( schemaManager ) )
         {
             try
             {
@@ -2348,10 +2344,9 @@ public class LdifReaderTest
                 "objectClass: top\n" +
                 "objectClass: apApplication\n" +
                 "displayName: app1   \n" +
-                "dependencies:\n" +
-                "envVars:";
+                "userPassword: test";
 
-        try ( LdifReader reader = new LdifReader() )
+        try ( LdifReader reader = new LdifReader( schemaManager ) )
         {
             List<LdifEntry> entries = reader.parseLdif( ldif );
     
@@ -2363,6 +2358,12 @@ public class LdifReaderTest
             assertEquals( "", entry.getDn().getName() );
     
             Attribute attr = entry.get( "cn" );
+            
+            if ( attr.isHumanReadable() )
+            {
+                String cn = attr.getString();
+            }
+            
             assertTrue( attr.contains( "app1" ) );
     
             attr = entry.get( "objectclass" );
@@ -2372,11 +2373,8 @@ public class LdifReaderTest
             attr = entry.get( "displayname" );
             assertTrue( attr.contains( "app1" ) );
     
-            attr = entry.get( "dependencies" );
-            assertEquals( "", attr.get().getValue() );
-    
-            attr = entry.get( "envvars" );
-            assertEquals( "", attr.get().getValue() );
+            attr = entry.get( "userPassword" );
+            assertEquals( "test", attr.get().getValue() );
         }
     }
 
@@ -2395,7 +2393,7 @@ public class LdifReaderTest
                 "\n" +
                 "dn: cn=test3";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         reader.close();
 
@@ -2438,7 +2436,9 @@ public class LdifReaderTest
                 "telephonenumber: +1 408 555 1212\n" +
                 "An_idiot_Attribute: thanks M$ for that";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
+        
+        schemaManager.setRelaxed();
         List<LdifEntry> entries = reader.parseLdif( ldif );
         LdifEntry entry = entries.get( 0 );
         assertEquals( entry.get( "An_idiot_Attribute" ).getString(), "thanks M$ for that" );
@@ -2455,20 +2455,20 @@ public class LdifReaderTest
                 "dn: cn=DeviceTypes,cn=SDT,cn=prod_81,o=myconfiguration\n" +
                 "cn: DeviceTypes\n" +
                 "javaClassName: java.lang.String\n" +
-                "myconfigstringvalue: P:Phone (except BlackBerry)\n" +
-                "myconfigstringvalue:: WjpCbGFja0JlcnJ5w4LCrg==\n" +
-                "myconfigstringvalue: 3:Internet only device\n" +
+                "description: P:Phone (except BlackBerry)\n" +
+                "description:: WjpCbGFja0JlcnJ5w4LCrg==\n" +
+                "description: 3:Internet only device\n" +
                 "objectClass: top\n" +
                 "objectClass: javaobject\n" +
                 "objectClass: myconfigstringvaluedobject\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         LdifEntry entry = entries.get( 0 );
 
         // Check that the myconfigstringvalue contains 3 values
-        assertEquals( 3, entry.get( "myconfigstringvalue" ).size() );
-        assertTrue( entry.get( "myconfigstringvalue" ).isHumanReadable() );
+        assertEquals( 3, entry.get( "description" ).size() );
+        assertTrue( entry.get( "description" ).isHumanReadable() );
 
         reader.close();
     }
@@ -2483,20 +2483,20 @@ public class LdifReaderTest
                 "dn: cn=DeviceTypes,cn=SDT,cn=prod_81,o=myconfiguration\n" +
                 "cn: DeviceTypes\n" +
                 "javaClassName: java.lang.String\n" +
-                "myconfigstringvalue:: WjpCbGFja0JlcnJ5w4LCrg==\n" +
-                "myconfigstringvalue: P:Phone (except BlackBerry)\n" +
-                "myconfigstringvalue: 3:Internet only device\n" +
+                "description:: WjpCbGFja0JlcnJ5w4LCrg==\n" +
+                "description: P:Phone (except BlackBerry)\n" +
+                "description: 3:Internet only device\n" +
                 "objectClass: top\n" +
                 "objectClass: javaobject\n" +
                 "objectClass: myconfigstringvaluedobject\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         LdifEntry entry = entries.get( 0 );
 
         // Check that the myconfigstringvalue contains 3 values
-        assertEquals( 3, entry.get( "myconfigstringvalue" ).size() );
-        assertFalse( entry.get( "myconfigstringvalue" ).isHumanReadable() );
+        assertEquals( 3, entry.get( "description" ).size() );
+        assertTrue( entry.get( "description" ).isHumanReadable() );
 
         reader.close();
 
@@ -2515,13 +2515,13 @@ public class LdifReaderTest
             "objectClass: person\n" +
             "objectClass: organizationalPerson\n" +
             "-\n" +
-            "replace: sn\n" +
-            "sn: Nguyen Linh\n" +
+            "replace: userPassword\n" +
+            "userPassword:: dGVzdA==\n" +
             "-\n" +
-            "replace: url\n" +
+            "replace: javaSerializedData\n" +
             "-\n";
 
-        LdifReader reader = new LdifReader();
+        LdifReader reader = new LdifReader( schemaManager );
         List<LdifEntry> entries = reader.parseLdif( ldif );
         LdifEntry entry = entries.get( 0 );
 
@@ -2555,7 +2555,7 @@ public class LdifReaderTest
             "ads-baseDn:\n" +
             "ads-enabled: TRUE";
 
-        try ( LdifReader reader = new LdifReader() )
+        try ( LdifReader reader = new LdifReader( schemaManager ) )
         {
             List<LdifEntry> entries1 = reader.parseLdif( ldif1 );
             LdifEntry entry1 = entries1.get( 0 );

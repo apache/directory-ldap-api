@@ -85,8 +85,15 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
-     * Create a new instance of a schema aware Attribute, without ID nor value.
-     * Used by the serializer
+     * Create a new instance of a schema aware Attribute.
+     * Used by the serializer.
+     * 
+     * @param attributeType The associated AttributeType
+     * @param upId The user provided ID
+     * @param normId the normalized ID
+     * @param isHR tells if the attributeType is human readable
+     * @param hashCode The Attribute pre-computed hashcode
+     * @param values The associated values
      */
     /* No protection*/DefaultAttribute( AttributeType attributeType, String upId, String normId, boolean isHR,
         int hashCode, Value... values )
@@ -560,7 +567,11 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
-     * Check that the upId is either a name or the OID of a given AT
+     * Check that the id is either a name or the OID of a given AT
+     * 
+     * @param id The ID to check
+     * @param attributeType The attributeType to verify
+     * @return <tt>true</tt> if the id is a name or an OID
      */
     private boolean areCompatible( String id, AttributeType attributeType )
     {

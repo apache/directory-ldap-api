@@ -39,7 +39,6 @@ import java.util.Map;
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
-import org.apache.directory.api.ldap.model.ldif.LdapLdifException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.DitContentRule;
 import org.apache.directory.api.ldap.model.schema.DitStructureRule;
@@ -478,8 +477,6 @@ public class OpenLdapSchemaParser
 
     /**
      * Creates a reusable instance of an OpenLdapSchemaParser.
-     *
-     * @throws IOException if the pipe cannot be formed
      */
     public OpenLdapSchemaParser()
     {
@@ -629,40 +626,37 @@ public class OpenLdapSchemaParser
     {
         String rawOidOrNameSuffix = macro.getRawOidOrNameSuffix();
 
-        if ( macro.isResolved() )
+        if ( !macro.isResolved() )
         {
-            // finished
-            return;
-        }
-        else if ( rawOidOrNameSuffix.indexOf( COLON ) != -1 )
-        {
-            // resolve OID
-            String[] nameAndSuffix = rawOidOrNameSuffix.split( ":" );
-            
-            if ( objectIdentifierMacros.containsKey( nameAndSuffix[0] ) )
+            if ( rawOidOrNameSuffix.indexOf( COLON ) != -1 )
             {
-                OpenLdapObjectIdentifierMacro parentMacro = objectIdentifierMacros.get( nameAndSuffix[0] );
-                resolveObjectIdentifierMacro( parentMacro );
-                macro.setResolvedOid( parentMacro.getResolvedOid() + "." + nameAndSuffix[1] );
+                // resolve OID
+                String[] nameAndSuffix = rawOidOrNameSuffix.split( ":" );
+                
+                if ( objectIdentifierMacros.containsKey( nameAndSuffix[0] ) )
+                {
+                    OpenLdapObjectIdentifierMacro parentMacro = objectIdentifierMacros.get( nameAndSuffix[0] );
+                    resolveObjectIdentifierMacro( parentMacro );
+                    macro.setResolvedOid( parentMacro.getResolvedOid() + "." + nameAndSuffix[1] );
+                }
+                else
+                {
+                    throw new ParseException( I18n.err( I18n.ERR_13726_NO_OBJECT_IDENTIFIER_MACRO, nameAndSuffix[0] ), 0 );
+                }
             }
             else
             {
-                throw new ParseException( I18n.err( I18n.ERR_13726_NO_OBJECT_IDENTIFIER_MACRO, nameAndSuffix[0] ), 0 );
-            }
-
-        }
-        else
-        {
-            // no :suffix,
-            if ( objectIdentifierMacros.containsKey( rawOidOrNameSuffix ) )
-            {
-                OpenLdapObjectIdentifierMacro parentMacro = objectIdentifierMacros.get( rawOidOrNameSuffix );
-                resolveObjectIdentifierMacro( parentMacro );
-                macro.setResolvedOid( parentMacro.getResolvedOid() );
-            }
-            else
-            {
-                macro.setResolvedOid( rawOidOrNameSuffix );
+                // no :suffix,
+                if ( objectIdentifierMacros.containsKey( rawOidOrNameSuffix ) )
+                {
+                    OpenLdapObjectIdentifierMacro parentMacro = objectIdentifierMacros.get( rawOidOrNameSuffix );
+                    resolveObjectIdentifierMacro( parentMacro );
+                    macro.setResolvedOid( parentMacro.getResolvedOid() );
+                }
+                else
+                {
+                    macro.setResolvedOid( rawOidOrNameSuffix );
+                }
             }
         }
     }
@@ -711,7 +705,9 @@ public class OpenLdapSchemaParser
      * Parses a stream of OpenLDAP schemaObject elements/objects. Default charset is used.
      *
      * @param schemaIn a stream of schema objects
-     * @throws Exception 
+     * @throws ParseException  If the schema can't be parsed
+     * @throws LdapSchemaException If there is an error in the schema
+     * @throws IOException If the stream can't be read
      */
     public void parse( InputStream schemaIn ) throws ParseException, LdapSchemaException, IOException
     {
@@ -1338,7 +1334,7 @@ public class OpenLdapSchemaParser
      * COLON        ::= %x3A                ; colon (":")
      * SEMI_COLON   ::= %x3B                ; semi-colon(";")
      * SHARP        ::= %x23                ; octothorpe (or sharp sign) ("#")
-     * </pre
+     * </pre>
      */
     private static String getDescrRelaxed( PosSchema pos ) throws LdapSchemaException
     {
@@ -2147,6 +2143,7 @@ public class OpenLdapSchemaParser
      * number ::= DIGIT | LDIGIT DIGIT+
      * DIGIT  ::= [0-9]
      * LDIGIT ::= [1-9]
+     * </pre>
      */
     private static int getRuleId( PosSchema pos ) throws LdapSchemaException
     {
@@ -2445,6 +2442,7 @@ public class OpenLdapSchemaParser
      * <pre>
      * FQCN ::= FQCN_IDENTIFIER ( '.' FQCN_IDENTIFIER )*
      * FQCN_IDENTIFIER ::= ( JavaLetter ( JavaLetterOrDigit )*
+     * </pre>
      */
     private static String getFqcn( PosSchema pos ) throws LdapSchemaException
     {
@@ -2515,6 +2513,7 @@ public class OpenLdapSchemaParser
      * A base64 string
      * <pre>
      * byteCode ::= ( [a-z] | [A-Z] | [0-9] | '+' | '/' | '=' )*
+     * </pre>
      */
     private static String getByteCode( PosSchema pos )
     {
@@ -6192,7 +6191,8 @@ public class OpenLdapSchemaParser
      *
      * The lines represent *one* entry.
      *
-     * @throws LdapLdifException If something went wrong
+     * @throws LdapSchemaException If something went wrong in the schema
+     * @throws IOException If something went wrong with the stream
      */
     public void parse( Reader reader ) throws LdapSchemaException, IOException
     {
@@ -6245,7 +6245,6 @@ public class OpenLdapSchemaParser
      * Parses a file of OpenLDAP schemaObject elements/objects. Default charset is used.
      *
      * @param schemaFile a file of schema objects
-     * @throws IOException If the schemaObject can't be transformed to a byteArrayInputStream
      * @throws ParseException If the schemaObject can't be parsed
      */
     public void parse( File schemaFile ) throws ParseException

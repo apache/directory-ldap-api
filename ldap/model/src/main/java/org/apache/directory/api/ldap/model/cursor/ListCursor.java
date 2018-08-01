@@ -49,10 +49,10 @@ public class ListCursor<E> extends AbstractCursor<E>
     /** The associated comparator */
     private final Comparator<E> comparator;
 
-    /** The starting position for the cursor in the list. It can be > 0 */
+    /** The starting position for the cursor in the list. It can be &gt; 0 */
     private final int start;
 
-    /** The ending position for the cursor in the list. It can be < List.size() */
+    /** The ending position for the cursor in the list. It can be &lt; List.size() */
     private final int end;
     /** The current position in the list */
 

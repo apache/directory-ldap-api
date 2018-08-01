@@ -82,6 +82,7 @@ public class LdapInvalidAttributeValueException extends LdapOperationException
      * Checks to make sure the resultCode value is right for this exception
      * type.
      * 
+     * @param resultCode the code to check
      * @throws IllegalArgumentException
      *             if the result code is not one of
      *             {@link org.apache.directory.api.ldap.model.message.ResultCodeEnum#CONSTRAINT_VIOLATION},

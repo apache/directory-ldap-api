@@ -348,14 +348,11 @@ public class LdapUrl
      * <pre>
      * host        = IP-literal / IPv4address / reg-name
      * port        = *DIGIT
-     * <host> ::= <hostname> ':' <hostnumber><br>
-     * <hostname> ::= *[ <domainlabel> "." ] <toplabel><br>
-     * <domainlabel> ::= <alphadigit> | <alphadigit> *[
-     * <alphadigit> | "-" ] <alphadigit><br>
-     * <toplabel> ::= <alpha> | <alpha> *[ <alphadigit> |
-     * "-" ] <alphadigit><br>
-     * <hostnumber> ::= <digits> "." <digits> "."
-     * <digits> "." <digits>
+     * &lt;host&gt; ::= &lt;hostname&gt; ':' &lt;hostnumber&gt;
+     * &lt;hostname&gt; ::= *[ &lt;domainlabel&gt; "." ] &lt;toplabel&gt;
+     * &lt;domainlabel&gt; ::= &lt;alphadigit&gt; | &lt;alphadigit&gt; *[&lt;alphadigit&gt; | "-" ] &lt;alphadigit&gt;
+     * &lt;toplabel&gt; ::= &lt;alpha&gt; | &lt;alpha&gt; *[ &lt;alphadigit&gt; | "-" ] &lt;alphadigit&gt;
+     * &lt;hostnumber&gt; ::= &lt;digits&gt; "." &lt;digits&gt; "." &lt;digits&gt; "." &lt;digits&gt;
      * </pre>
      *
      * @param chars The buffer to parse
@@ -443,6 +440,7 @@ public class LdapUrl
      *               | [ *6( h16 ":" ) h16 ] "::"
      * h16         = 1*4HEXDIG
      * ls32        = ( h16 ":" h16 ) / IPv4address
+     * </pre>
      */
     private int parseIpLiteral( char[] chars, int pos )
     {
@@ -745,7 +743,7 @@ public class LdapUrl
      * reg-name    = *( unreserved / pct-encoded / sub-delims )
      * unreserved  = ALPHA / DIGIT / "-" / "." / "_" / "~"
      * pct-encoded = "%" HEXDIG HEXDIG
-     * sub-delims  = "!" | "$" | "&" | "'" | "(" | ")" | "*" | "+" | "," | ";" | "="
+     * sub-delims  = "!" | "$" | "&amp;" | "'" | "(" | ")" | "*" | "+" | "," | ";" | "="
      * HEXDIG      = DIGIT / A-F / a-f
      * </pre>
      */
@@ -930,8 +928,8 @@ public class LdapUrl
     /**
      * Parse this rule : <br>
      * <pre>
-     * <port> ::= <digit>+<br>
-     * <digit> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+     * &lt;port&gt; ::= &lt;digit&gt;+
+     * &lt;digit&gt; ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
      * </pre>
      * The port must be between 0 and 65535.
      *
@@ -971,7 +969,7 @@ public class LdapUrl
     /**
      * Parse this rule : <br>
      * <pre>
-     *   &lt;hostport> ::= &lt;host> [':' &lt;port>]
+     *   &lt;hostport&gt; ::= &lt;host&gt; [':' &lt;port&gt;]
      * </pre>
      *
      * @param chars The char array to parse
@@ -1149,6 +1147,7 @@ public class LdapUrl
      * keychar ::= [a-zA-Z0-0-]
      * numericOid ::= number 1*( DOT number )
      * number ::= 0 | [1-9][0-9]* 
+     * </pre>
      * 
      * @param attribute
      * @throws LdapURLEncodingException

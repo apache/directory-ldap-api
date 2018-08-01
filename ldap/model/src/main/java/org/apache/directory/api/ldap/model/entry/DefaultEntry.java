@@ -413,6 +413,9 @@ public final class DefaultEntry implements Entry
 
     /**
      * Get the trimmed and lower cased entry ID
+     * 
+     * @param upId The ID
+     * @return The retrieved ID
      */
     private String getId( String upId )
     {
@@ -434,6 +437,8 @@ public final class DefaultEntry implements Entry
      * Get the UpId if it is null.
      * 
      * @param upId The ID
+     * @param attributeType The AttributeType to retrieve
+     * @return the retrieved ID
      */
     private String getUpId( String upId, AttributeType attributeType )
     {
@@ -505,9 +510,10 @@ public final class DefaultEntry implements Entry
 
 
     /**
-     * normalizes the given Dn if it was not already normalized
+     * Normalizes the given Dn if it was not already normalized
      *
      * @param dn the Dn to be normalized
+     * @return The normalized Dn
      */
     private Dn normalizeDn( Dn dn )
     {
@@ -550,6 +556,11 @@ public final class DefaultEntry implements Entry
      * default to the AttributeType name.
      *
      * Updates the AttributeMap.
+     * 
+     * @param upId The user provided ID for the attribute to create
+     * @param attributeType The AttributeType to use
+     * @param values The values to add to this attribute
+     * @throws LdapInvalidAttributeValueException If one of the value is incorrect
      */
     protected void createAttribute( String upId, AttributeType attributeType, byte[]... values )
         throws LdapInvalidAttributeValueException
@@ -565,6 +576,11 @@ public final class DefaultEntry implements Entry
      * default to the AttributeType name.
      *
      * Updates the AttributeMap.
+     * 
+     * @param upId The user provided ID for the attribute to create
+     * @param attributeType The AttributeType to use
+     * @param values The values to add to this attribute
+     * @throws LdapInvalidAttributeValueException If one of the value is incorrect
      */
     protected void createAttribute( String upId, AttributeType attributeType, String... values )
         throws LdapInvalidAttributeValueException
@@ -580,6 +596,11 @@ public final class DefaultEntry implements Entry
      * default to the AttributeType name.
      *
      * Updates the AttributeMap.
+     * 
+     * @param upId The user provided ID for the attribute to create
+     * @param attributeType The AttributeType to use
+     * @param values The values to add to this attribute
+     * @throws LdapInvalidAttributeValueException If one of the value is incorrect
      */
     protected void createAttribute( String upId, AttributeType attributeType, Value... values )
         throws LdapInvalidAttributeValueException
@@ -592,6 +613,10 @@ public final class DefaultEntry implements Entry
 
     /**
      * Returns the attributeType from an Attribute ID.
+     * 
+     * @param upId The ID we are looking for
+     * @return The found attributeType
+     * @throws LdapException If the lookup failed
      */
     protected AttributeType getAttributeType( String upId ) throws LdapException
     {

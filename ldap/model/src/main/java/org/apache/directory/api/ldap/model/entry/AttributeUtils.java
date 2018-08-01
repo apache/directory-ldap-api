@@ -166,9 +166,15 @@ public final class AttributeUtils
     /**
      * Parse attribute's options :
      * 
+     * <pre>
      * options = *( ';' option )
      * option = 1*keychar
      * keychar = 'a'-z' | 'A'-'Z' / '0'-'9' / '-'
+     * </pre>
+     * 
+     * @param str The parsed option
+     * @param pos The position in the parsed option string
+     * @exception ParseException The parsed option is invalid
      */
     private static void parseOptions( char[] str, Position pos ) throws ParseException
     {
@@ -198,9 +204,15 @@ public final class AttributeUtils
     /**
      * Parse attribute's options :
      * 
+     * <pre>
      * options = *( ';' option )
      * option = 1*keychar
      * keychar = 'a'-z' | 'A'-'Z' / '0'-'9' / '-'
+     * </pre>
+     * 
+     * @param bytes The parsed option
+     * @param pos The position in the parsed option bytes
+     * @exception ParseException The parsed option is invalid
      */
     private static void parseOptions( byte[] bytes, Position pos ) throws ParseException
     {
@@ -228,9 +240,13 @@ public final class AttributeUtils
     /**
      * Parse a number :
      * 
+     * <pre>
      * number = '0' | '1'..'9' digits
      * digits = '0'..'9'*
+     * </pre>
      * 
+     * @param filter The number in the filter
+     * @param pos The position in the parsed filter string
      * @return true if a number has been found
      */
     private static boolean parseNumber( char[] filter, Position pos )
@@ -270,14 +286,16 @@ public final class AttributeUtils
     }
 
 
-
-
     /**
      * Parse a number :
      * 
+     * <pre>
      * number = '0' | '1'..'9' digits
      * digits = '0'..'9'*
+     * </pre>
      * 
+     * @param bytes The parsed number
+     * @param pos The position in the parsed number string
      * @return true if a number has been found
      */
     private static boolean parseNumber( byte[] bytes, Position pos )

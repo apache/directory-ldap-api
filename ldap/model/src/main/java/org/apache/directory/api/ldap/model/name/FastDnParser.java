@@ -34,7 +34,7 @@ import org.apache.directory.api.util.Strings;
 
 /**
  * A fast LDAP Dn parser that handles only simple DNs. If the Dn contains
- * any special character an {@link TooComplexException} is thrown.
+ * any special character an {@link LdapInvalidDnException} is thrown.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -587,7 +587,7 @@ import org.apache.directory.api.util.Strings;
     /**
      * Matches the assertion value. This method only handles simple values.
      * If we find any special character (BACKSLASH, PLUS, SHARP or DQUOTE),
-     * a TooComplexException will be thrown.
+     * a LdapInvalidDnException will be thrown.
      * 
      * @param name the name
      * @param pos the pos

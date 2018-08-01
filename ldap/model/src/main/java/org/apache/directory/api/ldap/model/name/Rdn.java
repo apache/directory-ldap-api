@@ -576,12 +576,10 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
     /**
      * Add an Ava to the current Rdn
      *
-     * @param upType The user provided type of the added Rdn.
-     * @param type The normalized provided type of the added Rdn.
-     * @param upValue The user provided value of the added Rdn
-     * @param value The normalized provided value of the added Rdn
-     * @throws LdapInvalidDnException
-     *             If the Rdn is invalid
+     * @param schemaManager The {@link SchemaManager}
+     * @param type The user provided type of the added Rdn.
+     * @param value The user provided provided value of the added Rdn
+     * @throws LdapInvalidDnException If the Rdn is invalid
      */
     private void addAVA( SchemaManager schemaManager, String type, Value value ) throws LdapInvalidDnException
     {

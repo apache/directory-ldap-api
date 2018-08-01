@@ -67,11 +67,12 @@ public class LdapAuthenticationNotSupportedException extends LdapOperationExcept
      * Checks to make sure the resultCode value is right for this exception
      * type.
      * 
+     * @param resultCode the code to check
      * @throws IllegalArgumentException
      *             if the result code is not one of
-     *             {@link ResultCodeEnum#INAPPROPRIATEAUTHENTICATION},
-     *             {@link ResultCodeEnum#AUTHMETHODNOTSUPPORTED},
-     *             {@link ResultCodeEnum#CONFIDENTIALITYREQUIRED}.
+     *             {@link ResultCodeEnum#INAPPROPRIATE_AUTHENTICATION},
+     *             {@link ResultCodeEnum#AUTH_METHOD_NOT_SUPPORTED},
+     *             {@link ResultCodeEnum#CONFIDENTIALITY_REQUIRED}.
      */
     private void checkResultCode( ResultCodeEnum resultCode )
     {

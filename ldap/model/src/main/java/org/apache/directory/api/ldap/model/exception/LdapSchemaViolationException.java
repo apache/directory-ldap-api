@@ -81,6 +81,7 @@ public class LdapSchemaViolationException extends LdapOperationException
      * Checks to make sure the resultCode value is right for this exception
      * type.
      * 
+     * @param resultCode the code to check
      * @throws IllegalArgumentException
      *             if the result code is not one of
      *             {@link ResultCodeEnum#OBJECT_CLASS_VIOLATION},

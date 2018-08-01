@@ -64,7 +64,7 @@ public abstract class LeafNode extends AbstractExprNode
     /**
      * Creates a leaf node.
      * 
-     * @param attributeType the attribute this node is based on
+     * @param attribute the attribute this node is based on
      * @param assertionType the type of this leaf node
      */
     protected LeafNode( String attribute, AssertionType assertionType )
@@ -171,6 +171,9 @@ public boolean isSchemaAware()
     
     /**
      * Escape a binary value into a String form that is accepted as a Filter
+     * 
+     * @param bytes The data to escape
+     * @return The escaped String
      */
     private static String escapeBytes( byte[] bytes )
     {
@@ -191,6 +194,9 @@ public boolean isSchemaAware()
     
     /**
      * Escape a String value into a String form that is accepted as a Filter
+     * 
+     * @param bytes The data to escape
+     * @return The escaped String
      */
     private static String escapeString( byte[] bytes )
     {
@@ -256,9 +262,10 @@ public boolean isSchemaAware()
      * Handles the escaping of special characters in LDAP search filter assertion values using the
      * &lt;valueencoding&gt; rule as described in
      * <a href="http://www.ietf.org/rfc/rfc4515.txt">RFC 4515</a>. Needed so that
-     * {@link ExprNode#printToBuffer(StringBuffer)} results in a valid filter string that can be parsed
+     * {@link ExprNode#printRefinementToBuffer(StringBuilder)} results in a valid filter string that can be parsed
      * again (as a way of cloning filters).
      *
+     * @param attributeType The associated {@link AttributeType}
      * @param value Right hand side of "attrId=value" assertion occurring in an LDAP search filter.
      * @return Escaped version of <code>value</code>
      */
@@ -309,7 +316,7 @@ public boolean isSchemaAware()
      * Handles the escaping of special characters in LDAP search filter assertion values using the
      * &lt;valueencoding&gt; rule as described in
      * <a href="http://www.ietf.org/rfc/rfc4515.txt">RFC 4515</a>. Needed so that
-     * {@link ExprNode#printToBuffer(StringBuffer)} results in a valid filter string that can be parsed
+     * {@link ExprNode#printRefinementToBuffer(StringBuilder)} results in a valid filter string that can be parsed
      * again (as a way of cloning filters).
      *
      * @param value Right hand side of "attrId=value" assertion occurring in an LDAP search filter.

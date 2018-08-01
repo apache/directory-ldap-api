@@ -235,7 +235,6 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      * only to be used by deserializers.
      *
      * @param attributeType the schema type associated with this Value
-     * @param value the value to wrap
      */
     /* Package protected*/ Value( AttributeType attributeType )
     {
@@ -678,7 +677,6 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      * that the comparator is extracted from.
      *
      * @return a comparator associated with the attributeType or null if one cannot be found
-     * @throws LdapException if resolution of schema entities fail
      */
     private LdapComparator<?> getLdapComparator()
     {
@@ -794,7 +792,6 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      * @return A new Value instance
      * @throws IOException If the stream can't be read
      * @throws ClassNotFoundException If we can't instanciate a Value
-     * @throws LdapInvalidAttributeValueException If the value is invalid
      */
     public static Value deserialize( ObjectInput in ) throws IOException, ClassNotFoundException
     {
