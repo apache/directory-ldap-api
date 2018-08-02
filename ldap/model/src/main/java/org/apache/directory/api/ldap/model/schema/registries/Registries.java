@@ -465,8 +465,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
      *   <li>8) NameForms (depends on ObjectClasses and AttributeTypes)</li>
      *   <li>9) DitStructureRules (depends onNameForms and DitStructureRules)</li>
      * </ul>
-     *
-     * @return a list of exceptions encountered while resolving entities
      */
     public void checkRefInteg()
     {
@@ -653,7 +651,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Build the SchemaObject references
      * 
-     * @param errors The List that collect errors
      * @param schemaObject The SchemaObject to add
      */
     public void buildReference( SchemaObject schemaObject )
@@ -719,7 +716,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Unlink the SchemaObject references
      * 
-     * @param errors The List that collect errors
      * @param schemaObject The SchemaObject to remove
      */
     public void removeReference( SchemaObject schemaObject )
@@ -878,8 +874,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
     /**
      * Build the usedBy and using references from the stored elements.
-     * 
-     * @return A list of all the errors we met during the cross reference update
      */
     public void buildReferences()
     {
@@ -922,7 +916,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * Attempts to resolve the SyntaxChecker associated with a Syntax.
      *
      * @param syntax the LdapSyntax to resolve the SyntaxChecker of
-     * @param errors the list of errors to add exceptions to
      */
     private void resolve( LdapSyntax syntax )
     {
@@ -943,7 +936,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * Attempts to resolve the Normalizer
      *
      * @param normalizer the Normalizer
-     * @param errors the list of errors to add exceptions to
      */
     private void resolve( Normalizer normalizer )
     {
@@ -955,7 +947,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * Attempts to resolve the LdapComparator
      *
      * @param comparator the LdapComparator
-     * @param errors the list of errors to add exceptions to
      */
     private void resolve( LdapComparator<?> comparator )
     {
@@ -966,8 +957,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Attempts to resolve the SyntaxChecker
      *
-     * @param normalizer the SyntaxChecker
-     * @param errors the list of errors to add exceptions to
+     * @param syntaxChecker the SyntaxChecker
      */
     private void resolve( SyntaxChecker syntaxChecker )
     {
@@ -978,6 +968,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Check if the Comparator, Normalizer and the syntax are
      * existing for a matchingRule.
+     * 
+     * @param matchingRule The matching rule to use
      */
     private void resolve( MatchingRule matchingRule )
     {
@@ -1336,7 +1328,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Applies the added SchemaObject to the given register
      *
-     * @param errors The list of collected errors
      * @param schemaObject The SchemaObject to add
      * @param check A flag set when we want the schema checks to be done
      * @throws LdapException If we weren't able to add the SchemaObject
@@ -1379,9 +1370,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Remove the given SchemaObject from the registries
      * 
-     * @param errors The list of collected errors
      * @param schemaObject The SchemaObject to delete
-     * @return The list of errors
      * @throws LdapException If the deletion failed
      */
     public void delete( SchemaObject schemaObject ) throws LdapException
@@ -1602,7 +1591,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * Store the given SchemaObject in the Map associating SchemaObjetcs to their
      * related Schema.
      *
-     * @param errors The list of errors we are accumulating while checking the schema
      * @param schemaObject The schemaObject to register
      */
     public void associateWithSchema( SchemaObject schemaObject )
@@ -1675,7 +1663,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * Store the given SchemaObject in the Map associating SchemaObjetcs to their
      * related Schema.
      *
-     * @param errors The list that collect errors
      * @param schemaObject The schemaObject to register
      * @throws LdapException If there is a problem
      */

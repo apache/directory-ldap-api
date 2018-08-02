@@ -25,6 +25,7 @@ package org.apache.directory.api.ldap.aci;
 
 
 import org.apache.directory.api.ldap.model.schema.normalizers.NameComponentNormalizer;
+import org.apache.directory.api.ldap.model.schema.Normalizer;
 }
 
 
@@ -73,8 +74,6 @@ tokens
      * Creates a (normalizing) subordinate DnParser for parsing Names.
      * This method MUST be called for each instance while we cannot do
      * constructor overloading for this class.
-     *
-     * @return the DnParser to be used for parsing Names
      */
     public void init()
     {
@@ -82,6 +81,8 @@ tokens
 
     /**
      * Sets the NameComponentNormalizer for this parser's dnParser.
+     *
+     * @param normalizer The {@link Normalizer} to use
      */
     public void setNormalizer(NameComponentNormalizer normalizer)
     {

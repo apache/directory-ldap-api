@@ -225,7 +225,6 @@ public final class LdifUtils
      * 
      * @param entry the Entry to convert
      * @return the corresponding LDIF code as a String
-     * @throws LdapException If a naming exception is encountered.
      */
     public static String convertToLdif( Entry entry )
     {
@@ -239,7 +238,6 @@ public final class LdifUtils
      * @param entry the Entry to convert
      * @param includeVersionInfo flag to tell whether to include version number or not
      * @return the corresponding LDIF code as a String
-     * @throws org.apache.directory.api.ldap.model.exception.LdapException If a naming exception is encountered.
      */
     public static String convertToLdif( Entry entry, boolean includeVersionInfo )
     {
@@ -259,7 +257,6 @@ public final class LdifUtils
      * 
      * @param entry the Entry to convert
      * @return the corresponding LDIF code as a String
-     * @throws LdapException If a naming exception is encountered.
      */
     public static String convertAttributesToLdif( Entry entry )
     {
@@ -293,7 +290,6 @@ public final class LdifUtils
      * @param entry the Entry to convert
      * @param length the expected line length
      * @return the corresponding LDIF code as a String
-     * @throws LdapException If a naming exception is encountered.
      */
     public static String convertToLdif( Entry entry, int length )
     {
@@ -330,7 +326,6 @@ public final class LdifUtils
      * @param entry the Entry to convert
      * @param length the expected line length
      * @return the corresponding LDIF code as a String
-     * @throws LdapException If a naming exception is encountered.
      */
     public static String convertAttributesToLdif( Entry entry, int length )
     {
@@ -548,7 +543,6 @@ public final class LdifUtils
      * 
      * @param attr the EntryAttribute to convert
      * @return the corresponding LDIF code as a String
-     * @throws LdapException If a naming exception is encountered.
      */
     public static String convertToLdif( Attribute attr )
     {
@@ -562,7 +556,6 @@ public final class LdifUtils
      * @param attr the EntryAttribute to convert
      * @param length the expected line length
      * @return the corresponding LDIF code as a String
-     * @throws LdapException If a naming exception is encountered.
      */
     public static String convertToLdif( Attribute attr, int length )
     {

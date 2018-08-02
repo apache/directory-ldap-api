@@ -1019,7 +1019,6 @@ public class LdapUrl
      *
      * @param data the string to be encoded
      * @return The string as a byte array.
-     * @throws org.apache.directory.api.ldap.model.exception.UrlDecoderException if encoding is not supported
      */
     private static byte[] getAsciiBytes( final String data )
     {

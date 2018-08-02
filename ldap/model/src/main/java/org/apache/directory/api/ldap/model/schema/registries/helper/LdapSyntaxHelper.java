@@ -98,7 +98,6 @@ public final class LdapSyntaxHelper
      * @param ldapSyntax The LdapSyntax to remove from the Registries
      * @param errorHandler Error handler
      * @param registries The Registries
-     * @throws LdapException If the LdapSyntax is not valid
      */
     public static void removeFromRegistries( LdapSyntax ldapSyntax, SchemaErrorHandler errorHandler, Registries registries )
     {

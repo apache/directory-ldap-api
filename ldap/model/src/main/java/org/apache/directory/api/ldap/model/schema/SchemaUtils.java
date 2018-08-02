@@ -134,10 +134,8 @@ public final class SchemaUtils
     /**
      * Renders qdescrs into an existing buffer.
      * 
-     * @param buf
-     *            the string buffer to render the quoted description strs into
-     * @param qdescrs
-     *            the quoted description strings to render
+     * @param buf the string buffer to render the quoted description strs into
+     * @param qdescrs the quoted description strings to render
      * @return the same string buffer that was given for call chaining
      */
     public static StringBuilder render( StringBuilder buf, List<String> qdescrs )
@@ -173,6 +171,8 @@ public final class SchemaUtils
      * qdescrlist ::= [ qdescr ( SP qdescr )* ]
      * qdescr     ::= SQUOTE descr SQUOTE
      * </pre>
+     * 
+     * @param buf the string buffer to render the quoted description strings into
      * @param qdescrs the quoted description strings to render
      * @return the string buffer the qdescrs are rendered into
      */
@@ -206,7 +206,8 @@ public final class SchemaUtils
     /**
      * Renders QDString into a new buffer.<br>
      * 
-     * @param qdescrs the quoted description strings to render
+     * @param buf the string buffer to render the quoted description string into
+     * @param qdString the quoted description strings to render
      * @return the string buffer the qdescrs are rendered into
      */
     private static StringBuilder renderQDString( StringBuilder buf, String qdString )

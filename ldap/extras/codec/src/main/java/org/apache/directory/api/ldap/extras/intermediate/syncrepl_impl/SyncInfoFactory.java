@@ -36,7 +36,9 @@ public class SyncInfoFactory implements IntermediateResponseFactory
     private LdapApiService codec;
 
     /**
+     * Creates an instance of SyncInfoFactory
      * 
+     * @param codec The {@link LdapApiService} instance
      */
     public SyncInfoFactory( LdapApiService codec )
     {

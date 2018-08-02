@@ -133,6 +133,8 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
 
     /**
      * Set the userId
+     * 
+     * @param userId The USer ID to set
      */
     /* no qualifier*/void setUserId( String userId )
     {
@@ -141,7 +143,9 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
 
 
     /**
-     * Set the DnId
+     * Set the Dn
+     * 
+     * @param dn the DN to set
      */
     /* no qualifier*/void setDn( Dn dn )
     {
@@ -215,6 +219,8 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
      * <pre>
      * 0x04 L1 authzId
      * </pre>
+     * 
+     * @return The extended operation's length
      */
     /* no qualifier */int computeLengthInternal()
     {

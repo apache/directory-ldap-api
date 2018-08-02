@@ -44,6 +44,8 @@ public enum SyncModifyDnType
 
     /**
      * Creates the value
+     * 
+     * @param value The MOD DN type
      */
     SyncModifyDnType( int value )
     {

@@ -146,6 +146,8 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
      *   | 
      *  [+-- 0x80 L2 genPassword] 
      * </pre>
+     * 
+     * @return The extended operation's length
      */
     /* no qualifier */int computeLengthInternal()
     {
@@ -165,7 +167,6 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
      * Encodes the PasswordModifyResponse extended operation.
      * 
      * @return A ByteBuffer that contains the encoded PDU
-     * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
      */
     /* no qualifier */ByteBuffer encodeInternal()
     {

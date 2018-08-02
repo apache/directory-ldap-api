@@ -378,7 +378,10 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
 
     /**
-     * Store the reader and intialize the LdifReader
+     * Store the reader and initialize the LdifReader
+     * 
+     * @param reader The reader to use
+     * @throws LdapException If the initialization failed
      */
     private void initReader( BufferedReader reader ) throws LdapException
     {

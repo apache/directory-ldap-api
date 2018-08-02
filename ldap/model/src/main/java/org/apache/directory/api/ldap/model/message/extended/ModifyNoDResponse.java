@@ -49,6 +49,8 @@ public final class ModifyNoDResponse extends ModifyResponseImpl
 
     /**
      * Creates a new instance of NoticeOfDisconnect.
+     * 
+     * @param rcode The {@link ResultCodeEnum} value to wrap
      */
     private ModifyNoDResponse( ResultCodeEnum rcode )
     {

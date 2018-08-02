@@ -40,7 +40,7 @@ public interface IntermediateResponseFactory
 
 
     /**
-     * Returns a new {@link IntermediateResponseDecorator} with the following encoded value.
+     * Returns a new {@link IntermediateResponse} with the following encoded value.
      * 
      * @param value the encoded value
      * @return the decorator for the extended response type

@@ -56,7 +56,7 @@ public abstract class SimpleNode<T> extends LeafNode
      * Creates a new SimpleNode object.
      * 
      * @param attribute the attribute name
-     * @param value the value to test for
+     * @param bytes the data to inject
      * @param assertionType the type of assertion represented by this ExprNode
      */
     protected SimpleNode( String attribute, byte[] bytes, AssertionType assertionType )
@@ -69,8 +69,8 @@ public abstract class SimpleNode<T> extends LeafNode
     /**
      * Creates a new SimpleNode object.
      * 
-     * @param attribute the attribute name
-     * @param value the value to test for
+     * @param attributeType the attribute name
+     * @param bytes the data to inject
      * @param assertionType the type of assertion represented by this ExprNode
      */
     protected SimpleNode( AttributeType attributeType, byte[] bytes, AssertionType assertionType )
@@ -100,7 +100,7 @@ public abstract class SimpleNode<T> extends LeafNode
      * Creates a new SimpleNode object.
      * 
      * @param attribute the attribute name
-     * @param value the value to test for
+     * @param string the value to inject
      * @param assertionType the type of assertion represented by this ExprNode
      */
     protected SimpleNode( String attribute, String string, AssertionType assertionType )
@@ -132,7 +132,7 @@ public abstract class SimpleNode<T> extends LeafNode
     /**
      * Creates a new SimpleNode object.
      * 
-     * @param attribute the attribute name
+     * @param attributeType the attribute name
      * @param value the value to test for
      * @param assertionType the type of assertion represented by this ExprNode
      */

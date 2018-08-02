@@ -706,7 +706,8 @@ public final class SchemaObjectRenderer
      * oidlist ::= oid ( WSP '$' WSP oid )*
      * </pre>
      * 
-     * @param qdescrs the quoted description strings to render
+     * @param buf The resulting buffer
+     * @param oids the list of OIDs to render
      * @return the string buffer the qdescrs are rendered into
      */
     private StringBuilder renderOids( StringBuilder buf, List<String> oids )
@@ -745,7 +746,8 @@ public final class SchemaObjectRenderer
     /**
      * Renders QDString into a new buffer.<br>
      * 
-     * @param qdescrs the quoted description strings to render
+     * @param buf The resulting buffer
+     * @param qdString the quoted description strings to render
      * @return the string buffer the qdescrs are rendered into
      */
     private StringBuilder renderQDString( StringBuilder buf, String qdString )

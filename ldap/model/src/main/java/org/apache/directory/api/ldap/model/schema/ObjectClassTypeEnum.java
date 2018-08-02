@@ -62,10 +62,7 @@ public enum ObjectClassTypeEnum
      * Private constructor so no other instances can be created other than the
      * public static constants in this class.
      * 
-     * @param name
-     *            a string name for the enumeration value.
-     * @param value
-     *            the integer value of the enumeration.
+     * @param value the integer value of the enumeration.
      */
     ObjectClassTypeEnum( int value )
     {

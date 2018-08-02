@@ -30,9 +30,9 @@ import org.apache.directory.api.util.Strings;
  * A syntax checker which checks to see if an attributeType's type is either: 
  * <ul>
  *   <li>userApplications</li>
- *   <lidirectoryOperation</li>
- *   <lidistributedOperation</li>
- *   <lidSAOperation</li>
+ *   <li>directoryOperation</li>
+ *   <li>distributedOperation</li>
+ *   <li>dSAOperation</li>
  * </ul>
 .* 
  * The case is NOT ignored.

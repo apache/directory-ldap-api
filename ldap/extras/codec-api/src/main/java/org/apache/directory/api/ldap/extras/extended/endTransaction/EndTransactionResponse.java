@@ -71,7 +71,7 @@ public interface EndTransactionResponse extends ExtendedResponse
     
     
     /**
-     * @return the list of <messageId, Controls> processed within the transaction 
+     * @return the list of &lt;messageId, Controls&gt; processed within the transaction 
      */
     List<UpdateControls> getUpdateControls();
 }

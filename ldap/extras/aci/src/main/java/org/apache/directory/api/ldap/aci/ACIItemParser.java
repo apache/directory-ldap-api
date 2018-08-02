@@ -92,7 +92,9 @@ public class ACIItemParser
 
     /**
      * Initializes the plumbing by creating a pipe and coupling the parser/lexer
-     * pair with it. param spec the specification to be parsed
+     * pair with it. 
+     * 
+     * @param spec the specification to be parsed
      */
     private synchronized void reset( String spec )
     {

@@ -66,7 +66,7 @@ public class EndTransactionResponseImpl extends ExtendedResponseImpl implements 
      * Create a new EndTransactionResponseImpl object
      * 
      * @param failedMessageId The faulty messageId
-     * @param rcode the result code
+     * @param resultCode the result code
      */
     public EndTransactionResponseImpl( int failedMessageId, ResultCodeEnum resultCode )
     {

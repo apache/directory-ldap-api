@@ -49,6 +49,8 @@ public final class SearchNoDResponse extends SearchResultDoneImpl
 
     /**
      * Creates a new instance of NoticeOfDisconnect.
+     * 
+     * @param rcode The {@link ResultCodeEnum} value to wrap
      */
     private SearchNoDResponse( ResultCodeEnum rcode )
     {

@@ -40,6 +40,8 @@ class ReusableAntlrACIItemChecker extends AntlrACIItemChecker
 {
     /**
      * Creates a ReusableAntlrACIItemChecker instance.
+     * 
+     * @param lexer The stream to use for tokens
      */
     ReusableAntlrACIItemChecker( TokenStream lexer )
     {

@@ -950,10 +950,9 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
 
 
     /**
-     * @param lengthBeforeParsing the lengthBeforeParsing to set
+     * @param length the lengthBeforeParsing to set
      */
-    /**No qualifier*/
-    void setLengthBeforeParsing( int length )
+    /*No qualifier*/ void setLengthBeforeParsing( int length )
     {
         this.lengthBeforeParsing = length;
     }
@@ -971,8 +970,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
     /**
      * @param offset the offset to set
      */
-    /**No qualifier*/
-    void setOffset( long offset )
+    /*No qualifier*/ void setOffset( long offset )
     {
         this.offset = offset;
     }

@@ -168,6 +168,8 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
      *   +--&gt; [0x80 0x0(1-3) [0..86400] ] 
      * </pre>  
      * L1 will always be &lt; 11.
+     * 
+     * @return The extended operation's length
      */
     /* no qualifier */int computeLengthInternal()
     {

@@ -154,6 +154,8 @@ public class EndTransactionRequestDecorator extends ExtendedRequestDecorator<End
      *   +-- 0x01 0x01 commit 
      *   +-- 0x04 L2 identifier] 
      * </pre>
+     * 
+     * @return The extended operation's length
      */
     /* No qualifier */int computeLengthInternal()
     {

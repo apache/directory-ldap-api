@@ -53,7 +53,7 @@ public class StartTransactionResponseImpl extends ExtendedResponseImpl implement
      * Create a new StartTransactionResponseImpl object
      * 
      * @param messageId The messageId
-     * @param rcode the result code
+     * @param resultCode the result code
      * @param transactionId The transaction ID 
      */
     public StartTransactionResponseImpl( int messageId, ResultCodeEnum resultCode, byte[] transactionId )

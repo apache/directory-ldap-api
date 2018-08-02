@@ -1298,7 +1298,7 @@ public class DefaultSchemaManager implements SchemaManager
      *
      * @param registries The Registries in which the schemas will be loaded
      * @param schema the current schema we are attempting to load
-     * @throws Exception if there is a cycle detected and/or another
+     * @throws LdapException if there is a cycle detected and/or another
      * failure results while loading, producing and or registering schema objects
      */
     private void loadDepsFirst( Registries registries, Schema schema ) throws LdapException
@@ -1405,7 +1405,7 @@ public class DefaultSchemaManager implements SchemaManager
      * control with dependency cycle detection.
      *
      * @param schema the current schema we are attempting to load
-     * @throws Exception if there is a cycle detected and/or another
+     * @throws LdapException if there is a cycle detected and/or another
      * failure results while loading, producing and or registering schema objects
      */
     private void loadDepsFirstRelaxed( Schema schema ) throws LdapException

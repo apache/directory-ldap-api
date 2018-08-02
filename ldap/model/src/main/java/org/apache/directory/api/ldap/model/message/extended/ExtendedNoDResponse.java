@@ -52,6 +52,8 @@ public final class ExtendedNoDResponse extends ExtendedResponseImpl
 
     /**
      * Creates a new instance of NoticeOfDisconnect.
+     * 
+     * @param rcode The {@link ResultCodeEnum} value to wrap
      */
     private ExtendedNoDResponse( ResultCodeEnum rcode )
     {

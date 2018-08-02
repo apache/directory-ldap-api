@@ -158,7 +158,6 @@ public final class MatchingRuleHelper
      * @param matchingRule The MatchingRule to remove from the Registries
      * @param errorHandler Error handler
      * @param registries The Registries
-     * @throws LdapException If the MatchingRule is not valid
      */
     public static void removeFromRegistries( MatchingRule matchingRule, SchemaErrorHandler errorHandler, Registries registries )
     {

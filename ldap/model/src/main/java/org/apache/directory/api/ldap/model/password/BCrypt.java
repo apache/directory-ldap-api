@@ -696,9 +696,10 @@ public class BCrypt
     /**
      * Perform the central password hashing step in the
      * bcrypt scheme
+     * 
      * @param password  the password to hash
      * @param salt  the binary salt to hash with the password
-     * @param log_rounds    the binary logarithm of the number
+     * @param logRounds    the binary logarithm of the number
      * of rounds of hashing to apply
      * @param cdata         the plaintext to encrypt
      * @return  an array containing the binary hashed password
@@ -842,7 +843,8 @@ public class BCrypt
 
     /**
      * Generate a salt for use with the BCrypt.hashpw() method
-     * @param log_rounds    the log2 of the number of rounds of
+     * 
+     * @param logRounds    the log2 of the number of rounds of
      * hashing to apply - the work factor therefore increases as
      * 2**log_rounds.
      * @param random        an instance of SecureRandom to use
@@ -876,10 +878,11 @@ public class BCrypt
 
     /**
      * Generate a salt for use with the BCrypt.hashpw() method
-     * @param log_rounds    the log2 of the number of rounds of
+     * 
+     * @param logRounds    the log2 of the number of rounds of
      * hashing to apply - the work factor therefore increases as
      * 2**log_rounds.
-     * @return  an encoded salt value
+     * @return an encoded salt value
      */
     public static String gensalt( int logRounds )
     {

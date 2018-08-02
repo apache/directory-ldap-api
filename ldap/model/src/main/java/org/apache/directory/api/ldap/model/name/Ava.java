@@ -416,8 +416,10 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     
     /**
      * Construct an Ava. The type and value are normalized :
-     * <li> the type is trimmed and lowercased </li>
-     * <li> the value is trimmed </li>
+     * <ul>
+     *   <li> the type is trimmed and lowercased </li>
+     *   <li> the value is trimmed </li>
+     * </ul>
      * <p>
      * Note that the upValue should <b>not</b> be null or empty, or resolved
      * to an empty string after having trimmed it.
@@ -441,8 +443,10 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     
     /**
      * Construct an Ava. The type and value are normalized :
-     * <li> the type is trimmed and lowercased </li>
-     * <li> the value is trimmed </li>
+     * <ul>
+     *   <li> the type is trimmed and lowercased </li>
+     *   <li> the value is trimmed </li>
+     * </ul>
      * <p>
      * Note that the upValue should <b>not</b> be null or empty, or resolved
      * to an empty string after having trimmed it.
@@ -500,8 +504,10 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 
     /**
      * Construct an Ava. The type and value are normalized :
-     * <li> the type is trimmed and lowercased </li>
-     * <li> the value is trimmed </li>
+     * <ul>
+     *   <li> the type is trimmed and lowercased </li>
+     *   <li> the value is trimmed </li>
+     * </ul>
      * <p>
      * Note that the upValue should <b>not</b> be null or empty, or resolved
      * to an empty string after having trimmed it.
@@ -554,8 +560,6 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      * @param schemaManager The SchemaManager instance
      * @param upType The User Provided type
      * @param value The value
-     * 
-     * @throws LdapInvalidDnException If the given type or value are invalid
      */
     private void createAva( SchemaManager schemaManager, String upType, Value value )
     {
@@ -581,8 +585,10 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 
     /**
      * Construct an Ava. The type and value are normalized :
-     * <li> the type is trimmed and lowercased </li>
-     * <li> the value is trimmed </li>
+     * <ul>
+     *   <li> the type is trimmed and lowercased </li>
+     *   <li> the value is trimmed </li>
+     * </ul>
      * <p>
      * Note that the upValue should <b>not</b> be null or empty, or resolved
      * to an empty string after having trimmed it.
@@ -635,7 +641,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 
 
     /**
-     * Apply a SchemaManager to the Ava. It will normalize the Ava.<br/>
+     * Apply a SchemaManager to the Ava. It will normalize the Ava.<br>
      * If the Ava already had a SchemaManager, then the new SchemaManager will be
      * used instead.
      * 

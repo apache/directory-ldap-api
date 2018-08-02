@@ -58,7 +58,6 @@ public final class ObjectClassHelper
      * @param objectClass The ObjectClass to add to the Registries
      * @param errorHandler Error handler
      * @param registries The Registries
-     * @throws LdapException on failure
      */
     public static void addToRegistries( ObjectClass objectClass, SchemaErrorHandler errorHandler, Registries registries )
     {

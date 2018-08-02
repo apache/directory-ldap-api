@@ -262,6 +262,8 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
      * Construct an empty sentinel used to hold the head (sentinel.next) and the
      * tail (sentinel.prev) of the list. The sentinel has a <code>null</code>
      * key and value.
+     * 
+     * @return The created sentinel
      */
     private static MapEntry createSentinel()
     {
@@ -275,6 +277,8 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
     /**
      * Removes an internal entry from the linked list. This does not remove it
      * from the underlying map.
+     * 
+     * @param entry The entry to remove
      */
     private void removeEntry( MapEntry entry )
     {
@@ -286,6 +290,8 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
     /**
      * Inserts a new internal entry to the tail of the linked list. This does
      * not add the entry to the underlying map.
+     * 
+     * @param entry The entry to insert
      */
     private void insertEntry( MapEntry entry )
     {
@@ -602,6 +608,9 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
     /**
      * Fully remove an entry from the map, returning the old entry or null if
      * there was no such entry with the specified key.
+     * 
+     * @param key The key to retreive
+     * @return The removed entry
      */
     private MapEntry removeImpl( Object key )
     {
@@ -985,6 +994,8 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
          * which they were added. The {@link #next()} method returns the type
          * specified by <code>returnType</code> which must be either KEY,
          * VALUE, or ENTRY.
+         * 
+         * @param returnType The type (KEY,VALUE, ENTRY) 
          */
         OrderedIterator( int returnType )
         {
@@ -1134,6 +1145,8 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
     /**
      * Returns the Map.Entry at the specified index
      * 
+     * @param index The index we are looking for
+     * @return The found entry
      * @throws ArrayIndexOutOfBoundsException
      *             if the specified index is <code>&lt; 0</code> or
      *             <code>&gt;</code> the size of the map.

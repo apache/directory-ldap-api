@@ -47,7 +47,12 @@ public enum AdDirSyncFlag
     /** The string description **/
     private String description;
     
-    /** A private constructor that associates a value and description to each flag */
+    /** 
+     * A private constructor that associates a value and description to each flag
+     * 
+     * @param value The AdDirSync integer value
+     * @param description The AdDirSync description
+     **/
     AdDirSyncFlag( int value, String description )
     {
         this.value = value;

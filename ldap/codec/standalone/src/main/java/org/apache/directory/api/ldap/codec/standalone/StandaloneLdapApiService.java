@@ -160,9 +160,11 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      *
      * @param controls The list of controls to store
      * @param extendedOperations The list of extended operations to store
+     * @param intermediateResponses The list of intermediate responsess to store
      * @throws Exception If we had an issue with one of the two lists
      */
-    public StandaloneLdapApiService( List<String> controls, List<String> extendedOperations, List<String> intermediateResponses ) throws Exception
+    public StandaloneLdapApiService( List<String> controls, List<String> extendedOperations, 
+            List<String> intermediateResponses ) throws Exception
     {
         CodecFactoryUtil.loadStockControls( getControlFactories(), this );
 
@@ -209,7 +211,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
     /**
      * Parses the system properties to obtain the controls list.
      * 
-     * @throws Exception
+     * @return A list of controls
      */
     private static List<String> getControlsFromSystemProperties()
     {
@@ -247,6 +249,8 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      * Parses the system properties to obtain the extended operations.
      * Such extended operations are stored in the <b>apacheds.extendedOperations</b>
      * and <b>default.extendedOperation.requests</b> system properties.
+     * 
+     * @return a list of extended operation
      */
     private static List<String> getExtendedOperationsFromSystemProperties()
     {
@@ -284,6 +288,8 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      * Parses the system properties to obtain the intermediate responses.
      * Such intermediate responses are stored in the <b>apacheds.intermediateResponses</b>
      * and <b>default.intermediateResponses.requests</b> system properties.
+     * 
+     * @return a list of intermediate responses
      */
     private static List<String> getIntermediateResponsesFromSystemProperties()
     {
@@ -306,6 +312,9 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
 
     /**
      * Loads a list of controls from their FQCN.
+     * 
+     * @param controlsList The list of controls to load
+     * @throws Exception if a control could not be loaded
      */
     private void loadControls( List<String> controlsList ) throws Exception
     {
@@ -322,6 +331,9 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
 
     /**
      * Loads a control from its FQCN.
+     * 
+     * @param controlFQCN The control FQCN
+     * @throws Exception If the control could not be loaded
      */
     private void loadControl( String controlFQCN ) throws Exception
     {
@@ -356,6 +368,9 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
 
     /**
      * Loads a list of extended operation from their FQCN
+     * 
+     * @param extendedOperationsList The list of extended operations to load
+     * @throws Exception If an extended operations cannot be loaded
      */
     private void loadExtendedOperations( List<String> extendedOperationsList ) throws Exception
     {
@@ -372,6 +387,9 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
 
     /**
      * Loads an of extended operations from its FQCN
+     * 
+     * @param extendedOperationFQCN The extended operations to load
+     * @throws Exception If the extended operations cannot be loaded
      */
     private void loadExtendedOperation( String extendedOperationFQCN ) throws Exception
     {
@@ -408,6 +426,9 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
 
     /**
      * Loads a list of intermediate responses from their FQCN
+     * 
+     * @param intermediateResponsesList The list of intermediate response to load
+     * @throws Exception If one of the intermediate response cannot be loaded
      */
     private void loadIntermediateResponse( List<String> intermediateResponsesList ) throws Exception
     {
@@ -424,6 +445,9 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
 
     /**
      * Loads an intermediate responses from its FQCN
+     * 
+     * @param intermediateResponseFQCN The intermediate response to load
+     * @throws Exception If the intermediate response cannot be loaded
      */
     private void loadIntermediateResponse( String intermediateResponseFQCN ) throws Exception
     {

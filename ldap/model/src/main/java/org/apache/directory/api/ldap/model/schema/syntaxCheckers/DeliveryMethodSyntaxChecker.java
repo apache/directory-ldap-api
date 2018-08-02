@@ -127,7 +127,7 @@ public final class DeliveryMethodSyntaxChecker extends SyntaxChecker
      * not already been found.
      * 
      * @param strValue The string we want to look into for a PDM 
-     * @param pos The current position in the string
+     * @param start The current position in the string
      * @param pdms The set containing all the PDM
      * @return if a Prefered Delivery Method is found in the given string, returns 
      * its position, otherwise, returns -1

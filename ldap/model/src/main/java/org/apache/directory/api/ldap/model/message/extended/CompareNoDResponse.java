@@ -49,6 +49,8 @@ public final class CompareNoDResponse extends CompareResponseImpl
 
     /**
      * Creates a new instance of NoticeOfDisconnect.
+     * 
+     * @param rcode The {@link ResultCodeEnum} value to wrap
      */
     private CompareNoDResponse( ResultCodeEnum rcode )
     {

@@ -40,7 +40,7 @@ public interface TransactionSpecification extends Control
     
     /**
      * Set the transaction ID
-     * @param The transaction identifier, an opaque byte array
+     * @param identifier The transaction identifier, an opaque byte array
      */
     void setIdentifier( byte[] identifier );
 }

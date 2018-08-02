@@ -106,7 +106,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
      * message being decoded. If the message is not fully decoded, the ucrrent state
      * is stored into this container
      * @param decodedMessages The list of decoded messages
-     * @throws Exception If the decoding failed
+     * @throws DecoderException If the decoding failed
      */
     private void decode( ByteBuffer buffer, LdapMessageContainer<MessageDecorator<? extends Message>> messageContainer,
         List<Message> decodedMessages ) throws DecoderException

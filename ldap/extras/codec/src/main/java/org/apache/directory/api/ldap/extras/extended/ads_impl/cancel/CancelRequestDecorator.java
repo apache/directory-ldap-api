@@ -157,6 +157,8 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
      *   | 
      *   +--&gt; 0x02 0x0(1-4) [0..2^31-1]
      * </pre> 
+     * 
+     * @return The extended operation's length
      */
     /* no qualifier */int computeLengthInternal()
     {

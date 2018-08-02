@@ -36,7 +36,7 @@ import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
  * 0xNN 0xNN (Header length)
  * "JFIF\0" (JFIF string with an ending \0)
  * some other bytes which are related to the image.
- * <pre>
+ * </pre>
  * 
  * We will check for those 11 bytes, except the length.
  * 

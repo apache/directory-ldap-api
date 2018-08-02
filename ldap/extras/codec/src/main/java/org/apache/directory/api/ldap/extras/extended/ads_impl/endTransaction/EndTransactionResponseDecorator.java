@@ -169,9 +169,11 @@ public class EndTransactionResponseDecorator extends ExtendedResponseDecorator<E
      *         +-- 0x30 L4 updateControls SEQUENCE
      *               |
      *               +-- 0x02 L5 messageID
-     *               +-- <controls>]
+     *               +-- &lt;controls&gt;]
      *               
      * </pre>
+     * 
+     * @return The extended operation's length
      */
     /* No qualifier */int computeLengthInternal()
     {

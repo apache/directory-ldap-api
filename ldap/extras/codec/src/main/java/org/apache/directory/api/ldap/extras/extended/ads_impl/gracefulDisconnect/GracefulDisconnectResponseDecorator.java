@@ -197,12 +197,14 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
      * <pre>
      * 0x30 L1 
      *   | 
-     *   +--> [ 0x02 0x0(1-4) [0..720] ] 
-     *   +--> [ 0x80 0x0(1-3) [0..86400] ] 
-     *   +--> [ 0x30 L2 
+     *   +--&gt; [ 0x02 0x0(1-4) [0..720] ] 
+     *   +--&gt; [ 0x80 0x0(1-3) [0..86400] ] 
+     *   +--&gt; [ 0x30 L2 
      *           | 
-     *           +--> (0x04 L3 value) + ]
+     *           +--&gt; (0x04 L3 value) + ]
      * </pre>
+     * 
+     * @return The extended operation's length
      */
     /* no qualifier */ int computeLengthInternal()
     {

@@ -118,7 +118,7 @@ public class Dsmlv2Parser
      * Sets the input file the parser is going to parse. Default charset is used.
      *
      * @param fileName the name of the file
-     * @throws FileNotFoundException if the file does not exist
+     * @throws IOException if the file does not exist
      * @throws XmlPullParserException if an error occurs in the parser
      */
     public void setInputFile( String fileName ) throws IOException, XmlPullParserException

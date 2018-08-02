@@ -2053,7 +2053,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
      * Creates a Control Value parsing the current node and adds it to the given parent 
      * @param container the DSMLv2Container
      * @param parent the parent 
-     * @throws XmlPullParserException
+     * @throws XmlPullParserException When the parsing fails
      */
     private void createAndAddControlValue( Dsmlv2Container container,
         AbstractDsmlMessageDecorator<? extends Message> parent )
@@ -2093,7 +2093,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
      * Creates a Control parsing the current node and adds it to the given parent 
      * @param container the DSMLv2Container
      * @param parent the parent 
-     * @throws XmlPullParserException
+     * @throws XmlPullParserException When the parsing fails
      */
     private void createAndAddControl( Dsmlv2Container container,
         AbstractDsmlMessageDecorator<? extends Message> parent ) throws XmlPullParserException

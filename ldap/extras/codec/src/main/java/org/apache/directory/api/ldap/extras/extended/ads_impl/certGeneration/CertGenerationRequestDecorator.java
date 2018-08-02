@@ -232,6 +232,8 @@ public class CertGenerationRequestDecorator extends ExtendedRequestDecorator<Cer
      *   +--&gt; 0x04 LL subject DN
      *   +--&gt; 0x04 LL key algorithm
      * </pre>
+     * 
+     * @return The extended operation's length
      */
     /* no qualifier */int computeLengthInternal()
     {

@@ -66,6 +66,9 @@ public class LdapEncoder
 
     /**
      * Compute the control's encoded length
+     * 
+     * @param control The control to compute
+     * @return the encoded control length
      */
     public static int computeControlLength( Control control )
     {
@@ -95,6 +98,10 @@ public class LdapEncoder
 
     /**
      * Encode a control to a byte[]
+     * 
+     * @param buffer The buffer that will contain the encoded control
+     * @param control The control to encode
+     * @return The control encoded in a byte[]
      */
     public static ByteBuffer encodeControl( ByteBuffer buffer, Control control ) throws EncoderException
     {
@@ -235,6 +242,7 @@ public class LdapEncoder
      * </pre>
      * 
      * @param messageDecorator the decorated Message who's length is to be encoded
+     * @return The message length
      */
     private int computeMessageLength( MessageDecorator<? extends Message> messageDecorator )
     {

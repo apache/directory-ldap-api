@@ -49,6 +49,8 @@ public final class BindNoDResponse extends BindResponseImpl
 
     /**
      * Creates a new instance of NoticeOfDisconnect.
+     * 
+     * @param rcode The {@link ResultCodeEnum} value to wrap
      */
     private BindNoDResponse( ResultCodeEnum rcode )
     {

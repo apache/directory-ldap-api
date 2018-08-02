@@ -28,7 +28,7 @@ import org.apache.directory.api.ldap.model.message.IntermediateResponse;
 
 
 /**
- * A {@link IntermediateResponselFactory} which creates {@link SyncInfoValue} instances.
+ * A {@link IntermediateResponseFactory} which creates {@link SyncInfoValue} instances.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$

@@ -202,6 +202,7 @@ public class SearchRequestDsml
      *
      * @param filter The filter to be transformed
      * @return An ExprNode
+     * @throws LdapSchemaException If the filter contains a wrong schema element
      */
     @SuppressWarnings({ "rawtypes" })
     private ExprNode transform( Filter filter ) throws LdapSchemaException

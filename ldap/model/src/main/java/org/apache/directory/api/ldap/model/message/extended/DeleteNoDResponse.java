@@ -49,6 +49,8 @@ public final class DeleteNoDResponse extends DeleteResponseImpl
 
     /**
      * Creates a new instance of NoticeOfDisconnect.
+     * 
+     * @param rcode The {@link ResultCodeEnum} value to wrap
      */
     private DeleteNoDResponse( ResultCodeEnum rcode )
     {

@@ -134,6 +134,8 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
      *                 +--&gt; 0x04 L6-m type
      *                 +--&gt; 0x04 L7-m value
      * </pre>
+     * 
+     * @return The extended operation's length
      */
     /* no qualifier */ int computeLengthInternal()
     {

@@ -3351,7 +3351,6 @@ public final class PrepareString
      * 
      * @param origin The String to modify
      * @return The modified String
-     * @throws InvalidCharacterException If an invalid character is met
      */
     public static String insignificantSpacesStringValue( char[] origin )
     {
@@ -3576,7 +3575,6 @@ public final class PrepareString
      * 
      * @param origin The String to modify
      * @return The modified String
-     * @throws InvalidCharacterException If an invalid character is met
      */
     public static String insignificantSpacesStringInitial( char[] origin )
     {
@@ -3800,7 +3798,6 @@ public final class PrepareString
      * 
      * @param origin The String to modify
      * @return The modified String
-     * @throws InvalidCharacterException If an invalid character is met
      */
     public static String insignificantSpacesStringAny( char[] origin )
     {
@@ -4014,7 +4011,6 @@ public final class PrepareString
      * 
      * @param origin The String to modify
      * @return The modified StringBuilder
-     * @throws InvalidCharacterException If an invalid character is found in the String
      */
     public static String insignificantSpacesStringFinal( char[] origin )
     {

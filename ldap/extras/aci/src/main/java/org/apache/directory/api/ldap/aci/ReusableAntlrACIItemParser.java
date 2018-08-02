@@ -40,6 +40,8 @@ class ReusableAntlrACIItemParser extends AntlrACIItemParser
 {
     /**
      * Creates a ReusableAntlrSubtreeSpecificationParser instance.
+     * 
+     * @param lexer The token stream to process
      */
     ReusableAntlrACIItemParser( TokenStream lexer )
     {
