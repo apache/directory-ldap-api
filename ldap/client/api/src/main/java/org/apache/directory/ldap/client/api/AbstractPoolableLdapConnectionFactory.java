@@ -176,9 +176,9 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PooledObj
      * will only occur if the connection pool was configured to validate.  This
      * means one of:
      * <ul>
-     * <li>{@link org.apache.commons.pool.impl.GenericObjectPool#setTestOnBorrow setTestOnBorrow}</li>
-     * <li>{@link org.apache.commons.pool.impl.GenericObjectPool#setTestWhileIdle setTestWhileIdle}</li>
-     * <li>{@link org.apache.commons.pool.impl.GenericObjectPool#setTestOnReturn setTestOnReturn}</li>
+     * <li>{@link org.apache.commons.pool2.impl.GenericObjectPool#setTestOnBorrow setTestOnBorrow}</li>
+     * <li>{@link org.apache.commons.pool2.impl.GenericObjectPool#setTestWhileIdle setTestWhileIdle}</li>
+     * <li>{@link org.apache.commons.pool2.impl.GenericObjectPool#setTestOnReturn setTestOnReturn}</li>
      * </ul>
      * must have been set to true on the pool.  The default validator is 
      * {@link LookupLdapConnectionValidator}.

@@ -54,6 +54,8 @@ public class FilterBuilder
     /**
      * A private constructor that creates a new instance of a FilterBuilder
      * containing a given filter.
+     * 
+     * @param filter The filter
      */
     /* No qualifier*/ FilterBuilder( Filter filter )
     {

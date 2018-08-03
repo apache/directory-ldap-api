@@ -112,6 +112,12 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * Get an OID from an entry. Handles the bad cases (null OID,
      * not a valid OID, ...)
+     * 
+     * @param entry The entry to process
+     * @param objectType The type of processed SchemaObject
+     * @param strict If we want a strict control of the OID
+     * @return The found OID
+     * @throws LdapInvalidAttributeValueException If the OID is not valid 
      */
     private String getOid( Entry entry, String objectType, boolean strict ) throws LdapInvalidAttributeValueException
     {
@@ -151,6 +157,11 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * Get an OID from an entry. Handles the bad cases (null OID,
      * not a valid OID, ...)
+     * 
+     * @param description The schemaObject description
+     * @param objectType The type of SchemaObject being processed
+     * @return The found OID
+     * @throws LdapInvalidAttributeValueException If the OID is invalid
      */
     private String getOid( SchemaObject description, String objectType ) throws LdapInvalidAttributeValueException
     {
@@ -187,6 +198,9 @@ public class SchemaEntityFactory implements EntityFactory
 
     /**
      * Check that the Entry is not null
+     * 
+     * @param entry The entry to check
+     * @param schemaEntity The message to log if the entry is invalid
      */
     private void checkEntry( Entry entry, String schemaEntity )
     {
@@ -206,6 +220,9 @@ public class SchemaEntityFactory implements EntityFactory
 
     /**
      * Check that the Description is not null
+     * 
+     * @param description description entry to check
+     * @param schemaEntity The message to log if the description is invalid
      */
     private void checkDescription( SchemaObject description, String schemaEntity )
     {
@@ -226,6 +243,10 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * Get the schema from its name. Return the Other reference if there
      * is no schema name. Throws a NPE if the schema is not loaded.
+     * 
+     * @param schemaName The schema name to fetch
+     * @param registries The registries where we get the schema from
+     * @return the found Schema
      */
     private Schema getSchema( String schemaName, Registries registries )
     {
@@ -301,7 +322,14 @@ public class SchemaEntityFactory implements EntityFactory
 
 
     /**
-     * Class load a syntaxChecker instance
+     * Class load a SyntaxChecker instance
+     * 
+     * @param schemaManager The SchemaManager
+     * @param oid The SyntaxChecker OID
+     * @param className The class name associated with the SyntaxChecker
+     * @param byteCode The SyntaxChecker class bytecode
+     * @return The loaded SyntaxChecker
+     * @throws LdapException If the SyntaxChecker cannot be loaded
      */
     private SyntaxChecker classLoadSyntaxChecker( SchemaManager schemaManager, String oid, String className,
         Attribute byteCode ) throws LdapException
@@ -478,6 +506,13 @@ public class SchemaEntityFactory implements EntityFactory
 
     /**
      * Class load a comparator instances
+     * 
+     * @param schemaManager The SchemaManager
+     * @param oid The comparator OID
+     * @param className The class name associated with the comparator
+     * @param byteCode The comparator class bytecode
+     * @return The loaded comparator
+     * @throws LdapException If the comparator cannot be loaded
      */
     private LdapComparator<?> classLoadComparator( SchemaManager schemaManager, String oid, String className,
         Attribute byteCode ) throws LdapException
@@ -701,6 +736,13 @@ public class SchemaEntityFactory implements EntityFactory
 
     /**
      * Class load a normalizer instances
+     * 
+     * @param schemaManager The SchemaManager
+     * @param oid The normalizer OID
+     * @param className The class name associated with the normalizer
+     * @param byteCode The normalizer class bytecode
+     * @return The loaded normalizer
+     * @throws LdapException If the normalizer cannot be loaded
      */
     private Normalizer classLoadNormalizer( SchemaManager schemaManager, String oid, String className,
         Attribute byteCode ) throws LdapException
@@ -990,6 +1032,9 @@ public class SchemaEntityFactory implements EntityFactory
 
     /**
      * Create a list of string from a multivalued attribute's values
+     * 
+     * @param attr The Attribute to read
+     * @return The list of values as Strings
      */
     private List<String> getStrings( Attribute attr )
     {
@@ -1232,7 +1277,11 @@ public class SchemaEntityFactory implements EntityFactory
 
     /**
      * Process the FQCN attribute
-     * @throws LdapInvalidAttributeValueException
+     * 
+     * @param entry The entry to read
+     * @param objectType The type of schema object
+     * @return The schema object FQCN
+     * @throws LdapInvalidAttributeValueException If the attribute does not contain a valid value
      */
     private String getFqcn( Entry entry, String objectType ) throws LdapInvalidAttributeValueException
     {
@@ -1257,6 +1306,10 @@ public class SchemaEntityFactory implements EntityFactory
 
     /**
      * Process the FQCN attribute
+     * 
+     * @param description The Schema Object description
+     * @param objectType The SchemaObject type
+     * @return The SchemaObject FQCN
      */
     private String getFqcn( LoadableSchemaObject description, String objectType )
     {
@@ -1281,6 +1334,10 @@ public class SchemaEntityFactory implements EntityFactory
 
     /**
      * Process the ByteCode attribute
+     * 
+     * @param description The SchemaObject description
+     * @param objectType The SchemaObject type
+     * @return The Attribute containing the byteCode
      */
     private Attribute getByteCode( LoadableSchemaObject description, String objectType )
     {
@@ -1305,7 +1362,10 @@ public class SchemaEntityFactory implements EntityFactory
 
 
     /**
-     * Return a String value, from teh given Valu, even if it's a binary value
+     * Return a String value, from the given Value, even if it's a binary value
+     * 
+     * @param attribute The Attribute to process
+     * @return The Attribute value as a String
      */
     private String getStringValue( Attribute attribute )
     {
@@ -1325,7 +1385,11 @@ public class SchemaEntityFactory implements EntityFactory
      *  - extensions
      *  - isReadOnly
      *  - isEnabled
-     * @throws org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException
+     *  
+     *  @param schemaObject The SchemaObject to set
+     *  @param entry The entry containing the SchemaObject properties
+     *  @param schema  the updated Schema 
+     * @throws LdapInvalidAttributeValueException If some of the properties are invalid
      */
     private void setSchemaObjectProperties( SchemaObject schemaObject, Entry entry, Schema schema )
         throws LdapInvalidAttributeValueException
@@ -1442,6 +1506,10 @@ public class SchemaEntityFactory implements EntityFactory
      *  - extensions
      *  - isReadOnly
      *  - isEnabled
+     *  
+     *  @param schemaObject The SchemaObject to set
+     *  @param description The SchemaObjetc description
+     *  @param schema  the updated Schema 
      */
     private void setSchemaObjectProperties( SchemaObject schemaObject, SchemaObject description, Schema schema )
     {

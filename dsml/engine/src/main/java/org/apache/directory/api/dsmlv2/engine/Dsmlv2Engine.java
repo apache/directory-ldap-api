@@ -31,8 +31,6 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.codec.Charsets;
-import org.apache.directory.api.asn1.DecoderException;
-import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.dsmlv2.DsmlDecorator;
 import org.apache.directory.api.dsmlv2.Dsmlv2Parser;
 import org.apache.directory.api.dsmlv2.ParserUtils;
@@ -190,7 +188,7 @@ public class Dsmlv2Engine
      * @param fileName the path to the file
      * @return the XML response in DSMLv2 Format
      * @throws XmlPullParserException if an error occurs in the parser
-     * @throws FileNotFoundException if the file does not exist
+     * @throws IOException if the file does not exist
      */
     public String processDSMLFile( String fileName ) throws XmlPullParserException, IOException
     {
@@ -795,8 +793,6 @@ public class Dsmlv2Engine
      * 
      * @param messageId the message Id
      * @throws LdapException If we had an issue while binding
-     * @throws EncoderException If we had an issue while encoding the request
-     * @throws DecoderException If we had an issue while decoding the request
      * @throws IOException If we had an issue while transmitting the request or re ceiving the response
      */
     protected void bind( int messageId ) throws LdapException, IOException

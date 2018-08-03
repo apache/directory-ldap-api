@@ -45,8 +45,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * The ANTLR generated TriggerSpecification parser.
- * 
- * @see http://docs.safehaus.org/display/APACHEDS/Grammar+for+Triggers
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -92,6 +90,8 @@ options
 
     /**
      * Sets the NameComponentNormalizer for this parser's dnParser.
+     *
+     * @param resolver The resolver to use
      */
     public void setNormalizerMappingResolver( NormalizerMappingResolver resolver )
     {

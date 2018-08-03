@@ -102,6 +102,7 @@ public class LdapEncoder
      * @param buffer The buffer that will contain the encoded control
      * @param control The control to encode
      * @return The control encoded in a byte[]
+     * @throws EncoderException If the encoding failed
      */
     public static ByteBuffer encodeControl( ByteBuffer buffer, Control control ) throws EncoderException
     {

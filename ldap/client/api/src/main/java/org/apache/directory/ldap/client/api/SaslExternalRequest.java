@@ -42,6 +42,8 @@ public class SaslExternalRequest extends AbstractSaslRequest
     
     /**
      * Creates a new instance of SaslExternalRequest.
+     * 
+     * @param authzId The authorization ID
      */
     public SaslExternalRequest( String authzId )
     {

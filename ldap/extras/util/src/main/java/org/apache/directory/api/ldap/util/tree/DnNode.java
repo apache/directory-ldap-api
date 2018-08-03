@@ -139,6 +139,9 @@ public class DnNode<N>
     //-------------------------------------------------------------------------
     /**
      * Check that the Dn is not null
+     * 
+     * @param dn The Dn to check
+     * @throws LdapException If teh Dn is null or empty
      */
     private void checkDn( Dn dn ) throws LdapException
     {
@@ -153,6 +156,12 @@ public class DnNode<N>
 
     /**
      * Create a new DnNode, recursively creating all the intermediate nodes.
+     *
+     * @param dn The nod's Dn
+     * @param element The element to set
+     * @param nbRdns The number of RDNs in the Dn
+     * @param nbRdns The number of level to create
+     * @throws LdapException If the Dn is null or empty
      */
     private DnNode<N> createNode( Dn dn, N element, int nbRdns ) throws LdapException
     {
@@ -198,6 +207,8 @@ public class DnNode<N>
 
     /**
      * Store the given element into the node
+     * 
+     * @param element The element to set
      */
     private synchronized void setElement( N element )
     {
@@ -316,7 +327,10 @@ public class DnNode<N>
 
 
     /**
-     * recursively check if the node has a descendant having an element
+     * Recursively check if the node has a descendant having an element
+     * 
+     * @param node The node to start from
+     * @return <tt>true</tt> if the node has some descendant
      */
     private synchronized boolean hasDescendantElement( DnNode<N> node )
     {
@@ -379,7 +393,10 @@ public class DnNode<N>
 
 
     /**
-     * recursively get all the elements from nodes having an element
+     * Recursively get all the elements from nodes having an element
+     * 
+     * @param node The node to start with
+     * @param descendants The list of descendant to fulfill
      */
     private synchronized void getDescendantElements( DnNode<N> node, List<N> descendants )
     {
@@ -954,7 +971,8 @@ public class DnNode<N>
      * update the children's Dn based on the new parent Dn created
      * after a rename or move operation
      * 
-     * @param newParentDn
+     * @param newParentDn The new parent's Dn
+     * @throws LdapInvalidDnException The parent DN is invalid
      */
     private synchronized void updateAfterModDn( Dn newParentDn ) throws LdapInvalidDnException
     {

@@ -41,9 +41,6 @@ public class HandshakeFuture implements Future<Boolean>
 
     /**
      * Creates a new instance of HandshakeFuture.
-     *
-     * @param connection the LDAP connection
-     * @param messageId The associated messageId
      */
     public HandshakeFuture()
     {
@@ -67,8 +64,6 @@ public class HandshakeFuture implements Future<Boolean>
 
     /**
      * Set the Future to done when the TLS handshake has completed
-     * 
-     * @throws InterruptedException if the operation has been cancelled by client
      */
     public synchronized void secured()
     {

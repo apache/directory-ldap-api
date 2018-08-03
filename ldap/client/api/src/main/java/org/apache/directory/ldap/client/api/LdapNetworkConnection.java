@@ -492,6 +492,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     /**
      * Create the connector
+     * 
+     * @throws LdapException If the connector can't be created
      */
     private void createConnector() throws LdapException
     {
@@ -557,7 +559,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * Check that a session is valid, ie we can send requests to the
      * server
      *
-     * @throws Exception If the session is not valid
+     * @throws InvalidConnectionException If the session is not valid
      */
     private void checkSession() throws InvalidConnectionException
     {
@@ -1190,6 +1192,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     /**
      * Internal AbandonRequest handling
+     * 
+     * @param abandonRequest The request to abandon
      */
     private void abandonInternal( AbandonRequest abandonRequest )
     {
@@ -1477,6 +1481,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     /**
      * Create a Simple BindRequest ready to be sent.
+     * 
+     * @param name The Bind name
+     * @param credentials The Bind credentials
+     * @return The created BindRequest instance
      */
     private BindRequest createBindRequest( String name, byte[] credentials )
     {
@@ -1486,6 +1494,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     /**
      * Create a Simple BindRequest ready to be sent.
+     * 
+     * @param name The Bind name
+     * @param credentials The Bind credentials
+     * @return The created BindRequest instance
      */
     private BindRequest createBindRequest( Dn name, byte[] credentials )
     {
@@ -2386,7 +2398,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      *
      * @param session The session we got the exception on
      * @param cause The exception cause
-     * @throws Exception The t
+     * @throws Exception If we have had another exception
      */
     @Override
     public void exceptionCaught( IoSession session, Throwable cause ) throws Exception
@@ -2418,6 +2430,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     /**
      * Check if the message is a NoticeOfDisconnect message
+     * 
+     * @param message The message to check
+     * @return <tt>true</tt> if the message is a Notice of Disconnect
      */
     private boolean isNoticeOfDisconnect( Message message )
     {
@@ -4356,7 +4371,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     /**
      * fetches the rootDSE from the server
-     * @throws LdapException
+     * 
+     * @param explicitAttributes The list of requested attributes
+     * @throws LdapException If we weren't bale to fetch the RootDSE
      */
     private void fetchRootDSE( String... explicitAttributes ) throws LdapException
     {
@@ -4630,7 +4647,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
 
     /**
-     * adds {@link SslFilter} to the IOConnector or IOSession's filter chain
+     * Adds {@link SslFilter} to the IOConnector or IOSession's filter chain
+     * 
+     * @throws LdapException If the SSL filter addition failed
      */
     private void addSslFilter() throws LdapException
     {
@@ -4897,7 +4916,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
 
     /**
-     * a reusable code block to be used in various bind methods
+     * A reusable code block to be used in various bind methods
+     * 
+     * @param request The request to send
+     * @throws LdapException If the request was ot properly sent
      */
     private void writeRequest( Request request ) throws LdapException
     {
@@ -4973,7 +4995,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      *     }
      * </pre>
      *
+     * @param realmName The realm name
+     * @param kdcHost The Kerberos server host
+     * @param kdcPort The Kerberos server port
      * @return the full path of the config file
+     * @throws IOException If the config file cannot be created
      */
     private String createKrb5ConfFile( String realmName, String kdcHost, int kdcPort ) throws IOException
     {

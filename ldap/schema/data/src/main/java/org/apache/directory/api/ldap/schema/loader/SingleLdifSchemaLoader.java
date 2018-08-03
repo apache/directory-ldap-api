@@ -153,6 +153,10 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
 
     /**
      * Initialize the Schema object from a Single LDIF file
+     * 
+     * @param in The input stream to process
+     * @throws LdapException If the schemas can't be initialized
+     * @throws IOException If we had an issue processing the InputStream
      */
     private void initializeSchemas( InputStream in ) throws LdapException, IOException
     {
@@ -187,6 +191,9 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
 
     /**
      * Load all the schemaObjects
+     * 
+     * @param schemaName The schema name
+     * @param ldifEntry The entry to load
      */
     private void loadSchemaObject( String schemaName, LdifEntry ldifEntry )
     {

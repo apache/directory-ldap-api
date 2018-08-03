@@ -42,6 +42,8 @@ import org.apache.directory.api.i18n.I18n;
 
     /**
      * Creates a new instance of SetOfFiltersFilter.
+     * 
+     * @param operator The operator
      */
     private SetOfFiltersFilter( FilterOperator operator )
     {

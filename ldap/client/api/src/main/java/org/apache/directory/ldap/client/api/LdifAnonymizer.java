@@ -187,6 +187,8 @@ public class LdifAnonymizer
     
     /**
      * Print the string into the PrintStream, with a NL at the end
+     * 
+     * @param str The string to print
      */
     private void println( String str )
     {
@@ -211,6 +213,11 @@ public class LdifAnonymizer
 
     /**
      * Initialize the anonymizer, filling the maps we use.
+     * 
+     * @param stringLatestValueMap The map of already seen Strings
+     * @param binaryLatestValueMap The map of already seen byte[]
+     * @param integerLatestValueMap  The map of already seen Integers
+     * @param telephoneNumberLatestValueMap   The map of already seen telephone numbers
      */
     private void init( Map<Integer, String> stringLatestValueMap, Map<Integer, byte[]> binaryLatestValueMap, 
         Map<Integer, String> integerLatestValueMap, Map<Integer, String> telephoneNumberLatestValueMap )
@@ -388,6 +395,11 @@ public class LdifAnonymizer
     
     /**
      * Anonymize an AVA
+     * 
+     * @param ava The AVA to anonymize
+     * @return The anonymized AVA
+     * @throws LdapInvalidDnException If the Ava is invalid
+     * @throws LdapInvalidAttributeValueException If teh Ava content is invalid
      */
     private Ava anonymizeAva( Ava ava ) throws LdapInvalidDnException, LdapInvalidAttributeValueException
     {
@@ -446,6 +458,10 @@ public class LdifAnonymizer
     
     /**
      * Anonymize the entry's DN
+     * 
+     * @param entryDn The DN to anonymize
+     * @return The anonymized DN
+     * @throws LdapException If the anonymization failed
      */
     private Dn anonymizeDn( Dn entryDn ) throws LdapException
     {
@@ -637,6 +653,10 @@ public class LdifAnonymizer
     
     /**
      * Anonymize a Modify change
+     * 
+     * @param ldifEntry The entry to anonymize
+     * @return The anonymized entry
+     * @throws LdapException If the anonymization failed
      */
     private LdifEntry anonymizeChangeModify( LdifEntry ldifEntry ) throws LdapException
     {
@@ -704,6 +724,10 @@ public class LdifAnonymizer
     
     /**
      * Anonymize a Add change
+     * 
+     * @param ldifEntry The entry to anonymize
+     * @return The anonymized entry
+     * @throws LdapException If the anonymization failed
      */
     private LdifEntry anonymizeChangeAdd( LdifEntry ldifEntry ) throws LdapException
     {
@@ -761,6 +785,10 @@ public class LdifAnonymizer
     
     /**
      * Anonymize a Delete change
+     * 
+     * @param ldifEntry The entry to anonymize
+     * @return The anonymized entry
+     * @throws LdapException If the anonymization failed
      */
     private LdifEntry anonymizeChangeDelete( LdifEntry ldifEntry ) throws LdapException
     {
@@ -777,6 +805,10 @@ public class LdifAnonymizer
     
     /**
      * Anonymize a Delete change
+     * 
+     * @param ldifEntry The entry to anonymize
+     * @return The anonymized entry
+     * @throws LdapException If the anonymization failed
      */
     private LdifEntry anonymizeChangeModDn( LdifEntry ldifEntry ) throws LdapException
     {
@@ -816,6 +848,10 @@ public class LdifAnonymizer
     
     /**
      * Anonymize the full entry
+     * 
+     * @param ldifEntry The entry to anonymize
+     * @return The anonymized entry
+     * @throws LdapException If the anonymization failed
      */
     private Entry anonymizeEntry( LdifEntry ldifEntry ) throws LdapException
     {

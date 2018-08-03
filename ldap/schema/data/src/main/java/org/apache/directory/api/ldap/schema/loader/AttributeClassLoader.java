@@ -77,6 +77,10 @@ public class AttributeClassLoader extends ClassLoader
     
     /**
      * Read data from a jar, and write them into a byte[]
+     * 
+     * @param input The Stream we will load the Attribute from
+     * @return A byte[] containing the Attribute
+     * @throws IOException If the stream can't be read
      */
     private static byte[] getBytes( InputStream input ) throws IOException 
     {
@@ -98,6 +102,13 @@ public class AttributeClassLoader extends ClassLoader
     }
 
     
+    /**
+     * Load classes from a jar
+     *  
+     * @param jarBytes The jar bytes
+     * @return A map containing the read classes
+     * @throws IOException If the stream can't be read
+     */
     private Map<String, Class<?>> loadClasses( byte[] jarBytes ) throws IOException 
     {
         Map<String, Class<?>> map = new HashMap<>();

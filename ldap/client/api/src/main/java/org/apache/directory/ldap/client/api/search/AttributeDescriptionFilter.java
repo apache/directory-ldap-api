@@ -33,6 +33,8 @@ package org.apache.directory.ldap.client.api.search;
 
     /**
      * Creates a new instance of AttributeDescription filter.
+     * 
+     * @param attribute The attribute to set
      */
     private AttributeDescriptionFilter( String attribute )
     {

@@ -116,7 +116,8 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
      * Scans for LDIF files just describing the various schema contained in
      * the schema repository.
      *
-     * @throws LdapException
+     * @throws LdapException if the schemas can't be initialized
+     * @throws IOException If teh schema can't be read
      */
     private void initializeSchemas() throws LdapException, IOException
     {

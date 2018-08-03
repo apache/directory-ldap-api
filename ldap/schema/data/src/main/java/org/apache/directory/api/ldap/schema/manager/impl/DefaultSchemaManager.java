@@ -232,6 +232,9 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * Clone the registries before doing any modification on it. Relax it
      * too so that we can update it.
+     * 
+     * @return The cloned Registries
+     * @throws LdapException If the Registries cannot be cloned
      */
     private Registries cloneRegistries() throws LdapException
     {
@@ -260,6 +263,10 @@ public class DefaultSchemaManager implements SchemaManager
 
     /**
      * Transform a String[] array of schema to a Schema[]
+     * 
+     * @param schemas The Schema names to process
+     * @return an array of Schema instance
+     * @throws LdapException If one of the Schema cannot be found
      */
     private Schema[] toArray( String... schemas ) throws LdapException
     {
@@ -315,6 +322,10 @@ public class DefaultSchemaManager implements SchemaManager
 
     /**
      * Delete all the schemaObjects for a given schema from the registries
+     * 
+     * @param schema The schema from which we want teh SchemaObjects to be deleted
+     * @param registries The Registries to process
+     * @throws LdapException If the SchemaObjects cannot be deleted
      */
     private void deleteSchemaObjects( Schema schema, Registries registries ) throws LdapException
     {
@@ -747,6 +758,11 @@ public class DefaultSchemaManager implements SchemaManager
      * Load the schema in the registries. We will load everything accordingly to the two flags :
      * - isRelaxed
      * - disabledAccepted
+     * 
+     * @param registries The Registries to process
+     * @param schema The schema to load in the Registries
+     * @return <tt>true</tt> if the schema has been loaded
+     * @throws LdapException If the schema cannot be loaded
      */
     private boolean load( Registries registries, Schema schema ) throws LdapException
     {
@@ -840,6 +856,11 @@ public class DefaultSchemaManager implements SchemaManager
      * Unload the schema from the registries. We will unload everything accordingly to the two flags :
      * - isRelaxed
      * - disabledAccepted
+     * 
+     * @param registries The Registries to process
+     * @param schema The schema to unload from the Registries
+     * @return <tt>true</tt> if the schema has been unloaded
+     * @throws LdapException If the schema cannot be unloaded
      */
     private boolean unload( Registries registries, Schema schema ) throws LdapException
     {
@@ -876,6 +897,11 @@ public class DefaultSchemaManager implements SchemaManager
 
     /**
      * Add all the Schema's AttributeTypes
+     * 
+     * @param schema The schema in which the AttributeTypes will be added
+     * @param registries The Registries to process
+     * @throws LdapException If the AttributeTypes cannot be added
+     * @throws IOException If the AttributeTypes cannot be loaded
      */
     private void addAttributeTypes( Schema schema, Registries registries ) throws LdapException, IOException
     {
@@ -895,6 +921,11 @@ public class DefaultSchemaManager implements SchemaManager
 
     /**
      * Add all the Schema's comparators
+     * 
+     * @param schema The schema in which the Comparators will be added
+     * @param registries The Registries to process
+     * @throws LdapException If the Comparators cannot be added
+     * @throws IOException If the Comparators cannot be loaded
      */
     private void addComparators( Schema schema, Registries registries ) throws LdapException, IOException
     {
@@ -940,6 +971,11 @@ public class DefaultSchemaManager implements SchemaManager
 
     /**
      * Add all the Schema's MatchingRules
+     * 
+     * @param schema The schema in which the MatchingRules will be added
+     * @param registries The Registries to process
+     * @throws LdapException If the MatchingRules cannot be added
+     * @throws IOException If the MatchingRules cannot be loaded
      */
     private void addMatchingRules( Schema schema, Registries registries ) throws LdapException, IOException
     {
@@ -989,6 +1025,11 @@ public class DefaultSchemaManager implements SchemaManager
 
     /**
      * Add all the Schema's Normalizers
+     * 
+     * @param schema The schema in which the Normalizers will be added
+     * @param registries The Registries to process
+     * @throws LdapException If the Normalizers cannot be added
+     * @throws IOException If the Normalizers cannot be loaded
      */
     private void addNormalizers( Schema schema, Registries registries ) throws LdapException, IOException
     {
@@ -1008,6 +1049,11 @@ public class DefaultSchemaManager implements SchemaManager
 
     /**
      * Add all the Schema's ObjectClasses
+     * 
+     * @param schema The schema in which the ObjectClasses will be added
+     * @param registries The Registries to process
+     * @throws LdapException If the ObjectClasses cannot be added
+     * @throws IOException If the ObjectClasses cannot be loaded
      */
     private void addObjectClasses( Schema schema, Registries registries ) throws LdapException, IOException
     {
@@ -1027,6 +1073,11 @@ public class DefaultSchemaManager implements SchemaManager
 
     /**
      * Add all the Schema's Syntaxes
+     * 
+     * @param schema The schema in which the Syntaxes will be added
+     * @param registries The Registries to process
+     * @throws LdapException If the Syntaxes cannot be added
+     * @throws IOException If the Syntaxes cannot be loaded
      */
     private void addSyntaxes( Schema schema, Registries registries ) throws LdapException, IOException
     {
@@ -1044,8 +1095,13 @@ public class DefaultSchemaManager implements SchemaManager
     }
 
 
-    /**Add
+    /**
      * Register all the Schema's SyntaxCheckers
+     * 
+     * @param schema The schema in which the SyntaxChecker will be added
+     * @param registries The Registries to process
+     * @throws LdapException If the SyntaxChecker cannot be added
+     * @throws IOException If the SyntaxChecker cannot be loaded
      */
     private void addSyntaxCheckers( Schema schema, Registries registries ) throws LdapException, IOException
     {
@@ -1869,6 +1925,9 @@ public class DefaultSchemaManager implements SchemaManager
 
     /**
      * Check that the given OID exists in the globalOidRegistry.
+     * 
+     * @param schemaObject The SchemaObject to check
+     * @return <tt>true</tt> if the OID exists
      */
     private boolean checkOidExist( SchemaObject schemaObject )
     {
@@ -1898,6 +1957,10 @@ public class DefaultSchemaManager implements SchemaManager
 
     /**
      * Get the inner SchemaObject if it's not a C/N/SC
+     * 
+     * @param schemaObject The SchemaObject to retreive
+     * @return The found SchemaObject
+     * @throws LdapException If the SchemaObject can't be found
      */
     private SchemaObject getSchemaObject( SchemaObject schemaObject ) throws LdapException
     {
@@ -1914,6 +1977,9 @@ public class DefaultSchemaManager implements SchemaManager
 
     /**
      * Retrieve the schema name for a specific SchemaObject, or return "other" if none is found.
+     * 
+     * @param schemaObject The schemaObject to read
+     * @return The schema name
      */
     private String getSchemaName( SchemaObject schemaObject )
     {

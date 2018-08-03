@@ -24,7 +24,7 @@ import org.apache.directory.api.ldap.model.filter.FilterEncoder;
 
 
 /**
- * A class to represent the various filters that take a value, like =, <=, >= or ~=.
+ * A class to represent the various filters that take a value, like =, &lt;=, &gt;= or ~=.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -42,6 +42,10 @@ import org.apache.directory.api.ldap.model.filter.FilterEncoder;
 
     /**
      * Creates a new instance of AttributeValueAssertionFilter.
+     * 
+     * @param attribute The Attribute
+     * @param value The value
+     * @param operator The operator
      */
     private AttributeValueAssertionFilter( String attribute, String value, FilterOperator operator )
     {
@@ -52,7 +56,7 @@ import org.apache.directory.api.ldap.model.filter.FilterEncoder;
 
 
     /**
-     * Creates an Approximate Filter : ( <attribute> ~= <value> )
+     * Creates an Approximate Filter : ( &lt;attribute&gt; ~= &lt;value&gt; )
      *
      * @param attribute The AttributeType
      * @param value The Value
@@ -65,7 +69,7 @@ import org.apache.directory.api.ldap.model.filter.FilterEncoder;
 
 
     /**
-     * Creates an equal Filter : ( <attribute> = <value> )
+     * Creates an equal Filter : ( &lt;attribute&gt; = &lt;value&gt; )
      *
      * @param attribute The AttributeType
      * @param value The Value
@@ -78,7 +82,7 @@ import org.apache.directory.api.ldap.model.filter.FilterEncoder;
 
 
     /**
-     * Creates a Greater Than Or Equal Filter : ( <attribute> >= <value> )
+     * Creates a Greater Than Or Equal Filter : ( &lt;attribute&gt; &gt;= &lt;value&gt; )
      *
      * @param attribute The AttributeType
      * @param value The Value
@@ -91,7 +95,7 @@ import org.apache.directory.api.ldap.model.filter.FilterEncoder;
 
 
     /**
-     * Creates a Less Than Or Equal Filter : ( <attribute> <= <value> )
+     * Creates a Less Than Or Equal Filter : ( &lt;attribute&gt; &lt;= &lt;value&gt; )
      *
      * @param attribute The AttributeType
      * @param value The Value

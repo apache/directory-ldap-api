@@ -56,7 +56,7 @@ public enum LdapOperation
      * 
      * Creates a new instance of LdapOperation.
      *
-     * @param name
+     * @param name The operation name
      */
     LdapOperation( String name )
     {

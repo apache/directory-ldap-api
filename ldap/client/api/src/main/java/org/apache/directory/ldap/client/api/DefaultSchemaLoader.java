@@ -239,7 +239,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
      * @param rootDse the Root DSE
      * @return <code>true</code> if this is an ApacheDS server,
      *         <code>false</code> if not.
-     * @throws LdapInvalidAttributeValueException
+     * @throws LdapInvalidAttributeValueException If the vendorName attribute contains an invalid value 
      */
     private boolean isApacheDs( Entry rootDse ) throws LdapInvalidAttributeValueException
     {
@@ -260,8 +260,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     /**
      * Load all the schemas.
      * 
-     * @param subschemaSubentryDn
-     * @throws LdapException
+     * @throws LdapException If one schema can't be loaded
      */
     private void loadSchemas() throws LdapException
     {

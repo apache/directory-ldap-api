@@ -49,6 +49,11 @@ final class SubstringFilter extends AbstractFilter
 
     /**
      * A private constructor that builds a SubstringFilter 
+     * 
+     * @param attribute The Attribute
+     * @param initial The 'initial' part
+     * @param any The 'any' part
+     * @param end The 'end' part
      */
     private SubstringFilter( String attribute, String initial, String[] any, String end )
     {

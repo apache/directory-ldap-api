@@ -24,12 +24,12 @@ package org.apache.directory.ldap.client.api.search;
 /**
  * The operators that can be used in a Filter :
  * <ul>
- * <li>AND: the '&' operator</li>
+ * <li>AND: the '&amp;' operator</li>
  * <li>OR: the '|' operator</li>
  * <li>NOT: the '!' operator</li>
  * <li>EQUAL: the '=' operator</li>
- * <li>LESS_THAN_OR_EQUAL: the '<=' operator</li>
- * <li>GREATER_THAN_OR_EQUAL: the '>=' operator</li>
+ * <li>LESS_THAN_OR_EQUAL: the '&lt;=' operator</li>
+ * <li>GREATER_THAN_OR_EQUAL: the '&gt;=' operator</li>
  * <li>PRESENT: the '=*' operator</li>
  * <li>APPROXIMATELY_EQUAL: the '~=' operator</li>
  * </ul>
@@ -54,6 +54,8 @@ package org.apache.directory.ldap.client.api.search;
 
     /**
      * Creates a new instance of FilterOperator.
+     * 
+     * @param operator The operator
      */
     FilterOperator( String operator )
     {
