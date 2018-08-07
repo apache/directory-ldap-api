@@ -23,15 +23,21 @@ pipeline {
       parallel {
         stage ('Compile Java 8') {
           agent {
-            docker 'maven:3-jdk-8'
+            docker {
+              image 'maven:3-jdk-8'
+              label 'ubuntu'
+            }
           }
           steps {
             sh 'mvn -V clean verify -DskipTests'
           }
         }
-        stage ('Build Java 11') {
+        stage ('Compile Java 11') {
           agent {
-            docker 'maven:3-jdk-11'
+            docker {
+              image 'maven:3-jdk-11'
+              label 'ubuntu'
+            }
           }
           steps {
             sh 'mvn -V clean verify -DskipTests'
@@ -43,7 +49,10 @@ pipeline {
       parallel {
         stage ('Test Java 8') {
           agent {
-            docker 'maven:3-jdk-8'
+            docker {
+              image 'maven:3-jdk-8'
+              label 'ubuntu'
+            }
           }
           steps {
             sh 'mvn -V clean verify'
@@ -56,7 +65,10 @@ pipeline {
         }
         stage ('Test Java 11') {
           agent {
-            docker 'maven:3-jdk-11'
+            docker {
+              image 'maven:3-jdk-11'
+              label 'ubuntu'
+            }
           }
           steps {
             sh 'mvn -V clean verify'
