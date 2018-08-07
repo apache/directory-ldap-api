@@ -84,7 +84,8 @@ public final class OidLenSyntaxChecker extends SyntaxChecker
     /**
      * 
      * Creates a new instance of OidLenSyntaxChecker.
-     *
+     * 
+     * @param oid The OID
      */
     private OidLenSyntaxChecker( String oid )
     {

@@ -161,6 +161,7 @@ public class DnNode<N>
      * @param element The element to set
      * @param nbRdns The number of RDNs in the Dn
      * @param nbRdns The number of level to create
+     * @return The created Node
      * @throws LdapException If the Dn is null or empty
      */
     private DnNode<N> createNode( Dn dn, N element, int nbRdns ) throws LdapException

@@ -61,9 +61,10 @@ import org.apache.directory.api.util.Strings;
     /**
      * Parses a Dn from a String
      *
+     * @param schemaManager The SchemaManager
      * @param name The Dn to parse
      * @return A valid Dn
-     * @throws org.apache.directory.api.ldap.model.exception.LdapException If the Dn was invalid
+     * @throws LdapException If the Dn was invalid
      */
     /* No protection*/static Dn parse( SchemaManager schemaManager, String name ) throws LdapException
     {
@@ -77,6 +78,7 @@ import org.apache.directory.api.util.Strings;
     /**
      * Parses the given name string and fills the given Dn object.
      * 
+     * @param schemaManager The SchemaManager
      * @param name the name to parse
      * @param dn the Dn to fill
      * 
@@ -141,6 +143,7 @@ import org.apache.directory.api.util.Strings;
     /**
      * Parses the given name string and fills the given Rdn object.
      * 
+     * @param schemaManager The SchemaManager
      * @param name the name to parse
      * @param rdn the Rdn to fill
      * 
@@ -237,7 +240,7 @@ import org.apache.directory.api.util.Strings;
      * 
      * @param name the name
      * @param pos the pos
-     * @throws LdapInvalidDnException 
+     * @throws LdapInvalidDnException If some invalid chars are found 
      */
     private static void matchSpaces( char[] name, Position pos ) throws LdapInvalidDnException
     {

@@ -89,6 +89,7 @@ public final class SubtreeSpecificationSyntaxChecker extends SyntaxChecker
      * Creates an instance of SubtreeSpecificationSyntaxChecker
      * 
      * @param oid The OID to use for this SyntaxChecker
+     * @param schemaManager the SchemaManager instance
      */
     private SubtreeSpecificationSyntaxChecker( String oid, SchemaManager schemaManager )
     {

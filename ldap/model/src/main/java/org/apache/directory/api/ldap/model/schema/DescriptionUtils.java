@@ -174,6 +174,9 @@ public final class DescriptionUtils
 
     /**
      * Generate the description for Comparators, Normalizers and SyntaxCheckers.
+     * 
+     * @param schemaObject The SchemaObject to process
+     * @return the found description
      */
     private static String getLoadableDescription( LoadableSchemaObject schemaObject )
     {

@@ -348,6 +348,10 @@ public final class PasswordUtil
      *  [1] https://en.wikipedia.org/wiki/Timing_attack
      *  [2] http://rdist.root.org/2009/05/28/timing-attack-in-google-keyczar-library/
      *  [3] https://cryptocoding.net/index.php/Coding_rules
+     *  
+     * @param provided The provided password
+     * @param stored The stored password
+     * @return <tt>true</tt> if the compared passwords are equal
      */
     private static boolean compareBytes( byte[] provided, byte[] stored )
     {
@@ -553,6 +557,12 @@ public final class PasswordUtil
 
     /**
      * Compute the credentials
+     * 
+     * @param credentials the credentials
+     * @param algoLength The algorithm length
+     * @param hashLen The hash length
+     * @param algorithm the algorithm to use
+     * @return The split password string, containing the credentials, the salt and the password
      */
     private static PasswordDetails getCredentials( byte[] credentials, int algoLength, int hashLen,
         LdapSecurityConstants algorithm )
@@ -624,6 +634,7 @@ public final class PasswordUtil
      * 
      * Note: this has been implemented to generate hashes compatible with what JIRA generates.
      *       See the <a href="http://pythonhosted.org/passlib/lib/passlib.hash.atlassian_pbkdf2_sha1.html">JIRA's passlib</a>
+     *       
      * @param credentials the credentials
      * @param algorithm the algorithm to use
      * @param salt the optional salt
@@ -649,6 +660,11 @@ public final class PasswordUtil
     /**
      * Gets the credentials from a PKCS5S2 hash.
      * The salt for PKCS5S2 hash is prepended to the password
+     * 
+     * @param credentials The password
+     * @param algoLength The length of the algorithm part
+     * @param algorithm The algorithm in use
+     * @return The split credentials, containing the algorithm, the salt and the password 
      */
     private static PasswordDetails getPbkdf2Credentials( byte[] credentials, int algoLength, LdapSecurityConstants algorithm )
     {

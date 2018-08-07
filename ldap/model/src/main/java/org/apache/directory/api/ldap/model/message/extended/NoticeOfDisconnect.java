@@ -120,6 +120,8 @@ public final class NoticeOfDisconnect extends ExtendedResponseImpl
 
     /**
      * Creates a new instance of NoticeOfDisconnect.
+     * 
+     * @param rcode The result code
      */
     private NoticeOfDisconnect( ResultCodeEnum rcode )
     {

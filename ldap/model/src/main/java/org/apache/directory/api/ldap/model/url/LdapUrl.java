@@ -441,6 +441,10 @@ public class LdapUrl
      * h16         = 1*4HEXDIG
      * ls32        = ( h16 ":" h16 ) / IPv4address
      * </pre>
+     * 
+     * @param chars The chars to parse
+     * @param pos The position in the chars
+     * @return The new position, or -1 if we had an error
      */
     private int parseIpLiteral( char[] chars, int pos )
     {
@@ -474,6 +478,7 @@ public class LdapUrl
 
     /**
      * Validates an IPv4 address. Returns true if valid.
+     * 
      * @param inet4Address the IPv4 address to validate
      * @return true if the argument contains a valid IPv4 address
      */
@@ -623,6 +628,10 @@ public class LdapUrl
      * h16         = 1*4HEXDIG
      * ls32        = ( h16 ":" h16 ) / IPv4address
      * </pre>
+     * 
+     * @param chars The chars to parse
+     * @param pos The position in the chars
+     * @return The new position, or -1 if we had an error
      */
     private int parseIPV6( char[] chars, int pos )
     {
@@ -660,6 +669,10 @@ public class LdapUrl
      * IPvFuture   = "v" 1*HEXDIG "." 1*( unreserved / sub-delims / ":" )
      * </pre>
      * (the "v" has already been parsed)
+     * 
+     * @param chars The chars to parse
+     * @param pos The position in the chars
+     * @return The new position, or -1 if we had an error
      */
     private int parseIPvFuture( char[] chars, int pos )
     {
@@ -746,6 +759,10 @@ public class LdapUrl
      * sub-delims  = "!" | "$" | "&amp;" | "'" | "(" | ")" | "*" | "+" | "," | ";" | "="
      * HEXDIG      = DIGIT / A-F / a-f
      * </pre>
+     * 
+     * @param chars The chars to parse
+     * @param pos The position in the chars
+     * @return The new position, or -1 if we had an error
      */
     private int parseRegName( char[] chars, int pos )
     {
@@ -815,6 +832,7 @@ public class LdapUrl
      * IPv4address = dec-octet "." dec-octet "." dec-octet "." dec-octet
      * dec-octet   = DIGIT | [1-9] DIGIT | "1" 2DIGIT | "2" [0-4] DIGIT | "25" [0-5]
      * </pre>
+     * 
      * @param chars The buffer to parse
      * @param pos The current position in the byte buffer
      * 
@@ -870,6 +888,12 @@ public class LdapUrl
      * <pre>
      * dec-octet   = DIGIT | [1-9] DIGIT | "1" 2DIGIT | "2" [0-4] DIGIT | "25" [0-5]
      * </pre>
+     * 
+     * @param chars The chars to parse 
+     * @param pos The position in the chars
+     * @param ipElem The IP elements to update
+     * @param octetNb The IP octet being processed
+     * @return The new position, or -1 if the IP octet is invalid
      */
     private int parseDecOctet( char[] chars, int pos, int[] ipElem, int octetNb )
     {
@@ -1148,8 +1172,8 @@ public class LdapUrl
      * number ::= 0 | [1-9][0-9]* 
      * </pre>
      * 
-     * @param attribute
-     * @throws LdapURLEncodingException
+     * @param attribute The attribute to validate
+     * @throws LdapURLEncodingException If teh attribute is invalid
      */
     private void validateAttribute( String attribute ) throws LdapURLEncodingException
     {

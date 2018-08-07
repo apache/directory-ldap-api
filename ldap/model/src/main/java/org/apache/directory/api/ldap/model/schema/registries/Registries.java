@@ -1028,6 +1028,9 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
     /**
      * Check AttributeType referential integrity
+     * 
+     * @param attributeType The AttributeType
+     * @param processed The set of superior to check
      */
     private void resolveRecursive( AttributeType attributeType, Set<String> processed )
     {
@@ -1161,6 +1164,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Check the inheritance, and the existence of MatchingRules and LdapSyntax
      * for an attribute
+     * 
+     * @param attributeType The AttributeType
      */
     private void resolve( AttributeType attributeType )
     {
@@ -1451,6 +1456,9 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
     /**
      * Retrieve the schema name for a specific SchemaObject, or return "other" if none is found.
+     * 
+     * @param schemaObject The SchemaObject
+     * @return The associated Schema
      */
     private String getSchemaName( SchemaObject schemaObject )
     {
@@ -1508,6 +1516,9 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
     /**
      * Register the given SchemaObject into the associated Registry
+     * 
+     * @param schemaObject The SchemaObject to register
+     * @throws LdapException If the SchemaObject cannot be registered
      */
     private void register( SchemaObject schemaObject ) throws LdapException
     {
@@ -1735,6 +1746,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * Unregister a SchemaObject from the registries
      *
      * @param schemaObject The SchemaObject we want to deregister
+     * @return The unregistred SchemaObject
      * @throws LdapException If the removal failed
      */
     private SchemaObject unregister( SchemaObject schemaObject ) throws LdapException
@@ -2144,6 +2156,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
     /**
      * Dump the reference operation as a String
+     * 
+     * @param op The operation
+     * @param reference The reference
+     * @param referee The referee
+     * @return The resulting string
      */
     private String dump( String op, SchemaObject reference, SchemaObject referee )
     {

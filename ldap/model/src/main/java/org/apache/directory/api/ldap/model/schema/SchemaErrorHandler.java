@@ -50,11 +50,15 @@ public interface SchemaErrorHandler
      * Returns true if the implementation handled at least one error.
      * This method is used for checks whether the schema processing should proceed or
      * stop, e.g. in cases when we want to stop processing on errors.
+     * 
+     * @return <tt>true</tt> if at least one error was met
      */
     boolean wasError();
     
     /**
      * Returns list of handled errors.
+     * 
+     * @return The list of found errors
      */
     List<Throwable> getErrors();
     

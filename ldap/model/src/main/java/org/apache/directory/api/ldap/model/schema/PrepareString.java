@@ -4218,6 +4218,9 @@ public final class PrepareString
     
     /**
      * Map for Ascii String, case insensitive
+     * 
+     * @param unicode The string to map
+     * @return The lower cased string
      */
     private static String mapIgnoreCaseAscii( String unicode )
     {
@@ -4399,6 +4402,9 @@ public final class PrepareString
     
     /**
      * Map for Ascii String, case sensitive
+     * 
+     * @param unicode The string to re-map
+     * @return The mapped string
      */
     private static String mapCaseSensitiveAscii( String unicode )
     {

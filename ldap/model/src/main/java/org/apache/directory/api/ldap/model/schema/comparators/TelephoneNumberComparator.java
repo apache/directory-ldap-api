@@ -57,6 +57,9 @@ public class TelephoneNumberComparator extends LdapComparator<String>
 
     /**
      * Remove all spaces and '-' from the telephone number
+     * 
+     * @param telephoneNumber The telephoneNumber to strip
+     * @return teh stripped telephoneNumber
      */
     private String strip( String telephoneNumber )
     {

@@ -78,7 +78,9 @@ options
     private SchemaManager schemaManager;
 
     /**
-     * Initiaize the checker
+     * Initialize the checker
+     *
+     * @param schemaManager the SchemaManager instance
      */
     public void init( SchemaManager schemaManager )
     {

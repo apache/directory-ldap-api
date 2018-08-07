@@ -57,6 +57,9 @@ public class ObjectIdentifierFirstComponentComparator extends LdapComparator<Str
 
     /**
      * Get the OID from the SchemaObject description
+     * 
+     * @param s The string cntaining the OID
+     * @return The found OID
      */
     private String getNumericOid( String s )
     {

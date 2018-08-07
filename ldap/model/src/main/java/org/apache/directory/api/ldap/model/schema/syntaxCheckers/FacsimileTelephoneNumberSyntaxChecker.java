@@ -118,6 +118,7 @@ public final class FacsimileTelephoneNumberSyntaxChecker extends SyntaxChecker
         
         /**
          * Create a new instance of FacsimileTelephoneNumberSyntaxChecker
+         * 
          * @return A new instance of FacsimileTelephoneNumberSyntaxChecker
          */
         @Override
@@ -131,6 +132,7 @@ public final class FacsimileTelephoneNumberSyntaxChecker extends SyntaxChecker
          * Set the default regular expression for the Telephone number
          * 
          * @param regexp the default regular expression.
+         * @return The FacsimileTelephneNumber Builder instance
          */
         public Builder setDefaultRegexp( String regexp )
         {
@@ -153,6 +155,8 @@ public final class FacsimileTelephoneNumberSyntaxChecker extends SyntaxChecker
     
     /**
      * Creates a new instance of TelephoneNumberSyntaxChecker.
+     * 
+     * @param oid the OID
      */
     private FacsimileTelephoneNumberSyntaxChecker( String oid )
     {
@@ -162,6 +166,10 @@ public final class FacsimileTelephoneNumberSyntaxChecker extends SyntaxChecker
     
     /**
      * Creates a new instance of TelephoneNumberSyntaxChecker.
+     * 
+     * @param oid The OID
+     * @param defaultRegexp the default regexp to use
+     * @param defaultPattern The default pattern to use
      */
     private FacsimileTelephoneNumberSyntaxChecker( String oid, String defaultRegexp, Pattern defaultPattern )
     {

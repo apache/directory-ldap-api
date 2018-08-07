@@ -60,6 +60,8 @@ public enum AdministrativeRole
 
     /**
      * Creates an instance of AdministrativeRole
+     * 
+     * @param role The role's name
      */
     AdministrativeRole( String role )
     {

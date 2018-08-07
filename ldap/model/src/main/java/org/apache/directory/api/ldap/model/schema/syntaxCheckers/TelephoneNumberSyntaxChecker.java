@@ -98,6 +98,7 @@ public final class TelephoneNumberSyntaxChecker extends SyntaxChecker
          * Set the default regular expression for the Telephone number
          * 
          * @param regexp the default regular expression.
+         * @return the TelephonenumberSyntaxChecker Builder instance
          */
         public Builder setDefaultRegexp( String regexp )
         {

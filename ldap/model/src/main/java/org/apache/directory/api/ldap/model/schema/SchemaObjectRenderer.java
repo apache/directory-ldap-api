@@ -657,6 +657,8 @@ public final class SchemaObjectRenderer
      * qdescrlist ::= [ qdescr ( SP qdescr )* ]
      * qdescr     ::= SQUOTE descr SQUOTE
      * </pre>
+     * 
+     * @param buf The buffer that will contain the result.
      * @param qdescrs the quoted description strings to render
      * @return the string buffer the qdescrs are rendered into
      */

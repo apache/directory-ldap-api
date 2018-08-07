@@ -74,43 +74,29 @@ public class IntegerComparator extends LdapComparator<Object> implements Seriali
         }
         else
         {
-            return compare( ( Long ) v1, ( Long ) v2 );
+            if ( v2 instanceof String )
+            {
+                return compare( ( String ) v1, ( String ) v2 );
+            }
+            else if ( v2 instanceof Value )
+            {
+                return compare( null, ( ( Value ) v2 ).getValue() );
+            }
+            else
+            {
+                return compare( null, v2 );
+            }
         }
     }
 
 
     /**
      * Implementation of the Compare method
-     */
-    private int compare( Long backendValue, Long assertValue )
-    {
-        if ( LOG.isDebugEnabled() )
-        {
-            LOG.debug( I18n.msg( I18n.MSG_13746_COMPARING_INTEGER, backendValue, assertValue ) );
-        }
-
-        // First, shortcut the process by comparing
-        // references. If they are equals, then o1 and o2
-        // reference the same object
-        if ( backendValue == assertValue )
-        {
-            return 0;
-        }
-
-        // Then, deal with one of o1 or o2 being null
-        // Both can't be null, because then they would
-        // have been caught by the previous test
-        if ( ( backendValue == null ) || ( assertValue == null ) )
-        {
-            return backendValue == null ? -1 : 1;
-        }
-
-        return backendValue.compareTo( assertValue );
-    }
-
-
-    /**
-     * Implementation of the Compare method
+     * 
+     * @param backendValue The stored value
+     * @param assertValue The provided value
+     * @return <tt>0</tt> if the values are equal, <tt>-1</tt> if the provided value is below
+     * the stored value, <tt>+1</tt> otherwise
      */
     private int compare( String backendValue, String assertValue )
     {
@@ -155,10 +141,22 @@ public class IntegerComparator extends LdapComparator<Object> implements Seriali
         {
             throw new IllegalArgumentException( I18n.err( I18n.ERR_13724_INVALID_VALUE, assertValue ), le );
         }
-
-        BigInteger b1 = new BigInteger( backendValue );
-        BigInteger b2 = new BigInteger( assertValue );
-
-        return b1.compareTo( b2 );
+        
+        try
+        {
+            // First try with longs
+            Long l1 = Long.valueOf( backendValue );
+            Long l2 = Long.valueOf( assertValue );
+            
+            return l1.compareTo( l2 );
+        }
+        catch ( NumberFormatException nfe )
+        {
+            // Ok, try with BigIntegers
+            BigInteger b1 = new BigInteger( backendValue );
+            BigInteger b2 = new BigInteger( assertValue );
+    
+            return b1.compareTo( b2 );
+        }
     }
 }

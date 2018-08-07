@@ -105,7 +105,9 @@ options
     
 
     /**
-     * Does nothing.
+     * Initialize the parser
+     *
+     * @param schemaManager the SchemaManager instance
      */
     public void init( SchemaManager schemaManager )
     {

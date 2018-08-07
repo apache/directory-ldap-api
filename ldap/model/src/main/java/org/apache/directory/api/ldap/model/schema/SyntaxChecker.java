@@ -48,6 +48,8 @@ public abstract class SyntaxChecker extends LoadableSchemaObject
         
         /**
          * The Builder constructor
+         * 
+         * @param oid The SyntaxChecker OID
          */
         protected SCBuilder( String oid )
         {

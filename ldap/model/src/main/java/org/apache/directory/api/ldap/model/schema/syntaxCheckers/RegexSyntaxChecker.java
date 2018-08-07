@@ -58,6 +58,7 @@ public final class RegexSyntaxChecker extends SyntaxChecker
          * Add a list of regexp to be applied by this SyntaxChecker
          * 
          * @param expressions The regexp list to add
+         * @return the RegexSyntaxChecker Builder instance
          */
         public Builder setExpressions( String[] expressions )
         {

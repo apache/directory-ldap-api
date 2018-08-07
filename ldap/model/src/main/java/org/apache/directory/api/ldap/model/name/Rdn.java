@@ -525,6 +525,10 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
     
     /**
      * Add an AVA in a List of Ava, at the right place (ordered)
+     * 
+     * @param avaList The list of Ava
+     * @param newAva The Ava to add
+     * @return The list of Ava with the new Ava at the right position
      */
     private List<Ava> addOrdered( List<Ava> avaList, Ava newAva )
     {
@@ -683,7 +687,9 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
     /**
      * Add an Ava to the current schema aware Rdn
      *
+     * @param schemaManager The SchemaManager
      * @param addedAva The added Ava
+     * @throws LdapInvalidDnException If the Ava is invalid
      */
     // WARNING : The protection level is left unspecified intentionally.
     // We need this method to be visible from the DnParser class, but not
@@ -1692,6 +1698,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      * &lt;spaces&gt; &lt;attributeValue&gt; &lt;nameComponents&gt;
      * </p>
      *
+     * @param schemaManager The SchemaManager
      * @param dn The String to parse
      * @param rdn The Rdn to fill. Beware that if the Rdn is not empty, the new
      *            AttributeTypeAndValue will be added.

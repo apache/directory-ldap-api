@@ -145,8 +145,14 @@ public final class AttributeTypeHelper
 
     /**
      * Build the Superior AttributeType reference for an AttributeType
+     * 
+     * @param attributeType The AttributeType to process
+     * @param errorHandler The error handler
+     * @param registries The Registries instance
+     * @return <tt>true</tt> if the AttributeType superiors hierarchy is correct, or if we don't have any superior
      */
-    private static boolean buildSuperior( MutableAttributeType attributeType, SchemaErrorHandler errorHandler, Registries registries )
+    private static boolean buildSuperior( MutableAttributeType attributeType, SchemaErrorHandler errorHandler, 
+            Registries registries )
     {
         MutableAttributeType currentSuperior;
         AttributeTypeRegistry attributeTypeRegistry = registries.getAttributeTypeRegistry();
@@ -272,8 +278,13 @@ public final class AttributeTypeHelper
 
     /**
      * Build the SYNTAX reference for an AttributeType
+     * 
+     * @param attributeType The AttributeType to process
+     * @param errorHandler The error handler
+     * @param registries The Registries instance
      */
-    private static void buildSyntax( MutableAttributeType attributeType, SchemaErrorHandler errorHandler, Registries registries )
+    private static void buildSyntax( MutableAttributeType attributeType, SchemaErrorHandler errorHandler, 
+            Registries registries )
     {
         String syntaxOid = attributeType.getSyntaxOid();
         
@@ -352,8 +363,13 @@ public final class AttributeTypeHelper
     
     /**
      * Build the EQUALITY MR reference for an AttributeType
+     * 
+     * @param attributeType The AttributeType to process
+     * @param errorHandler The error handler
+     * @param registries The Registries instance
      */
-    private static void buildEquality( MutableAttributeType attributeType, SchemaErrorHandler errorHandler, Registries registries )
+    private static void buildEquality( MutableAttributeType attributeType, SchemaErrorHandler errorHandler, 
+            Registries registries )
     {
         String equalityOid = attributeType.getEqualityOid();
         
@@ -414,8 +430,13 @@ public final class AttributeTypeHelper
 
     /**
      * Build the SUBSTR MR reference for an AttributeType
+     * 
+     * @param attributeType The AttributeType to process
+     * @param errorHandler The error handler
+     * @param registries The Registries instance
      */
-    private static void buildSubstring( MutableAttributeType attributeType, SchemaErrorHandler errorHandler, Registries registries )
+    private static void buildSubstring( MutableAttributeType attributeType, SchemaErrorHandler errorHandler,
+            Registries registries )
     {
         String substringOid = attributeType.getSubstringOid();
         
@@ -473,8 +494,13 @@ public final class AttributeTypeHelper
     
     /**
      * Build the ORDERING MR reference for an AttributeType
+     * 
+     * @param attributeType The AttributeType to process
+     * @param errorHandler The error handler
+     * @param registries The Registries instance
      */
-    private static void buildOrdering( MutableAttributeType attributeType, SchemaErrorHandler errorHandler, Registries registries )
+    private static void buildOrdering( MutableAttributeType attributeType, SchemaErrorHandler errorHandler, 
+            Registries registries )
     {
         String orderingOid = attributeType.getOrderingOid();
         
@@ -531,6 +557,9 @@ public final class AttributeTypeHelper
     
     /**
      * Check the constraints for the Usage field.
+     * 
+     * @param attributeType The AttributeType to check
+     * @param errorHandler The error handler
      */
     private static void checkUsage( AttributeType attributeType, SchemaErrorHandler errorHandler )
     {
@@ -566,6 +595,9 @@ public final class AttributeTypeHelper
 
     /**
      * Check the constraints for the Collective field.
+     * 
+     * @param attributeType The AttributeType to check
+     * @param errorHandler The error handler
      */
     private static void checkCollective( MutableAttributeType attributeType, SchemaErrorHandler errorHandler )
     {

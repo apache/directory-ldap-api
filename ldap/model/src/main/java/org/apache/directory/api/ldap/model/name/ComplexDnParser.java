@@ -39,8 +39,10 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
     /**
      * Parses an Dn.
      * 
+     * @param schemaManager The SchemaManager
      * @param name the string representation of the distinguished name
      * @param rdns the (empty) list where parsed RDNs are put to
+     * @return The normalized Dn
      * 
      * @throws LdapInvalidDnException the invalid name exception
      */
@@ -62,6 +64,7 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
     /**
      * Parses an Rdn.
      * 
+     * @param schemaManager The SchemaManager
      * @param name the string representation of the relative distinguished name
      * @param rdn the (empty) Rdn where parsed ATAVs are put into
      * 

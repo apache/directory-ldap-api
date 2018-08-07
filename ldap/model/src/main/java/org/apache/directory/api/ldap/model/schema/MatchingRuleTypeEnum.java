@@ -89,6 +89,8 @@ public enum MatchingRuleTypeEnum
     
     /**
      * Create an instance of MatchingRuleTypeEnum
+     * 
+     * @param oid The MatchingRule OID
      */
     MatchingRuleTypeEnum( String oid )
     {

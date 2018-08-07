@@ -603,6 +603,12 @@ public class OpenLdapSchemaParser
     }
 
 
+    /**
+     * Return a complete OID from a macro followed by an OID.
+     * 
+     * @param oid The OID to find
+     * @return The extended OID
+     */
     private String getResolveOid( String oid )
     {
         if ( oid != null && oid.indexOf( COLON ) != -1 )
@@ -622,6 +628,12 @@ public class OpenLdapSchemaParser
     }
 
 
+    /**
+     * Find the proper OID from a OID which may contain a macro
+     * 
+     * @param macro The element to resolve
+     * @throws ParseException If teh OID is invalid
+     */
     private void resolveObjectIdentifierMacro( OpenLdapObjectIdentifierMacro macro ) throws ParseException
     {
         String rawOidOrNameSuffix = macro.getRawOidOrNameSuffix();
@@ -722,6 +734,14 @@ public class OpenLdapSchemaParser
     }
     
     
+    /**
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param mandatory If the spaces are mandatory
+     * @throws IOException If the stream can't be read
+     * @throws LdapSchemaException If the schema is wrong
+     */
     private static void skipWhites( Reader reader, PosSchema pos, boolean mandatory ) throws IOException, LdapSchemaException
     {
         boolean hasSpace = false;
@@ -788,6 +808,10 @@ public class OpenLdapSchemaParser
     }
     
     
+    /**
+     * @param pos The position in the Schema
+     * @return <tt>true</tt> if this is a comment
+     */
     private static boolean isComment( PosSchema pos )
     {
         if ( isEmpty( pos ) )
@@ -799,12 +823,21 @@ public class OpenLdapSchemaParser
     }
     
     
+    /**
+     * @param pos The position in the Schema
+     * @return <tt>true</tt> of the line is empty
+     */
     private static boolean isEmpty( PosSchema pos )
     {
         return ( pos.line == null ) || ( pos.start >= pos.line.length() );
     }
     
     
+    /**
+     * @param pos The position in the Schema
+     * @param text The text to find at the beginning of the line
+     * @return <tt>true</tt> if teh line starts with the given text
+     */
     private static boolean startsWith( PosSchema pos, String text )
     {
         if ( ( pos.line == null ) || ( pos.line.length() - pos.start < text.length() ) )
@@ -816,12 +849,33 @@ public class OpenLdapSchemaParser
     }
     
     
+    /**
+     * Check if the stream starts with a given char at a given position
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param c The char to check
+     * @return <tt>true</tT> if the stream starts with the given char at the given position
+     * @throws IOException If we can't read the stream
+     * @throws LdapSchemaException If we have no char to read
+     */
     private static boolean startsWith( Reader reader, PosSchema pos, char c ) throws IOException, LdapSchemaException
     {
         return startsWith( reader, pos, c, UN_QUOTED );
     }
     
-    
+
+    /**
+     * Check if the stream at the given position starts with a given char
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param c The char to check
+     * @param quoted <tt>true</tt> if the char is quoted
+     * @return <tt>true</tt> if the stream starts with the given char at the given position
+     * @throws IOException If we can't read the stream
+     * @throws LdapSchemaException If we have no char to read
+     */
     private static boolean startsWith( Reader reader, PosSchema pos, char c, boolean quoted ) throws IOException, LdapSchemaException
     {
         if ( ( pos.line == null ) || ( pos.line.length() - pos.start < 1 ) )
@@ -856,6 +910,11 @@ public class OpenLdapSchemaParser
     }
     
     
+    /**
+     * @param pos The position in the Schema
+     * @param c The char to find at the beginning of the line
+     * @return <tt>true</tt> if the char is found at the beginning of the line
+     */
     private static boolean startsWith( PosSchema pos, char c )
     {
         if ( ( pos.line == null ) || ( pos.line.length() - pos.start < 1 ) )
@@ -867,18 +926,32 @@ public class OpenLdapSchemaParser
     }
 
     
+    /**
+     * @param pos The position in the Schema
+     * @return <tt>true</tt> if the first char is alphabetic
+     */
     private static boolean isAlpha( PosSchema pos )
     {
         return Character.isAlphabetic( pos.line.charAt( pos.start ) );
     }
     
     
+    /**
+     * @param pos The position in the Schema
+     * @return <tt>true</tt> if the first char is a digit
+     */
     private static boolean isDigit( PosSchema pos )
     {
         return Character.isDigit( pos.line.charAt( pos.start ) );
     }
 
     
+    /**
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @throws IOException If the stream can't be read
+     */
     private static void getLine( Reader reader, PosSchema pos ) throws IOException
     {
         pos.line = ( ( BufferedReader ) reader ).readLine();
@@ -892,11 +965,17 @@ public class OpenLdapSchemaParser
     
     
     /**
+     * <pre>
      * numericoid   ::= number ( DOT number )+
      * number       ::= DIGIT | LDIGIT DIGIT+
      * DIGIT        ::= %x30 | LDIGIT       ; "0"-"9"
      * LDIGIT       ::= %x31-39             ; "1"-"9"
      * DOT          ::= %x2E                ; period (".")
+     * </pre>
+     * 
+     * @param pos The position in the Schema
+     * @return The numeric OID
+     * @throws LdapSchemaException If the schema is wrong
      */
     private static String getNumericOid( PosSchema pos ) throws LdapSchemaException
     {
@@ -964,11 +1043,17 @@ public class OpenLdapSchemaParser
     
     
     /**
+     * <pre>
      * partialNumericoid   ::= number ( DOT number )*
      * number              ::= DIGIT | LDIGIT DIGIT+
      * DIGIT               ::= %x30 | LDIGIT       ; "0"-"9"
      * LDIGIT              ::= %x31-39             ; "1"-"9"
      * DOT                 ::= %x2E                ; period (".")
+     * </pre>
+     * 
+     * @param pos The position in the Schema
+     * @return The found OID
+     * @throws LdapSchemaException If the schema is wrong
      */
     private static String getPartialNumericOid( PosSchema pos ) throws LdapSchemaException
     {
@@ -1047,6 +1132,11 @@ public class OpenLdapSchemaParser
      * SEMI_COLON   ::= %x3B                ; semi-colon(";")
      * SHARP        ::= %x23                ; octothorpe (or sharp sign) ("#")
      * </pre>
+     * 
+     * @param pos The position in the Schema
+     * @param objectIdentifierMacros The set of existing Macros
+     * @return The found OID
+     * @throws LdapSchemaException If the schema is wrong
      */
     private static String getOidAndMacroRelaxed( PosSchema pos, 
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros ) throws LdapSchemaException
@@ -1123,6 +1213,10 @@ public class OpenLdapSchemaParser
      * DOT          ::= %x2E                ; period (".")
      * HYPHEN       ::= %x2D                ; hyphen ("-")
      * </pre>
+     * 
+     * @param pos The position in the Schema
+     * @return The found OID
+     * @throws LdapSchemaException If the schema is wrong
      */
     private static String getOidStrict( PosSchema pos ) throws LdapSchemaException
     {
@@ -1172,6 +1266,11 @@ public class OpenLdapSchemaParser
      * SEMI_COLON   ::= %x3B                ; semi-colon(";")
      * SHARP        ::= %x23                ; octothorpe (or sharp sign) ("#")
      * </pre>
+     * 
+     * @param pos The position in the Schema
+     * @param hadQuote If we have had a quote
+     * @return the found OID
+     * @throws LdapSchemaException If the schema is wrong
      */
     private static String getOidRelaxed( PosSchema pos, boolean hadQuote ) throws LdapSchemaException
     {
@@ -1269,6 +1368,10 @@ public class OpenLdapSchemaParser
      * DOT          ::= %x2E                ; period (".")
      * HYPHEN       ::= %x2D                ; hyphen ("-")
      * </pre>
+     * 
+     * @param pos The position in the Schema
+     * @return The descr
+     * @throws LdapSchemaException If the schema is wrong
      */
     private static String getDescrStrict( PosSchema pos ) throws LdapSchemaException
     {
@@ -1335,6 +1438,10 @@ public class OpenLdapSchemaParser
      * SEMI_COLON   ::= %x3B                ; semi-colon(";")
      * SHARP        ::= %x23                ; octothorpe (or sharp sign) ("#")
      * </pre>
+     * 
+     * @param pos The position in the Schema
+     * @return The descr
+     * @throws LdapSchemaException If the schema is wrong
      */
     private static String getDescrRelaxed( PosSchema pos ) throws LdapSchemaException
     {
@@ -1383,6 +1490,12 @@ public class OpenLdapSchemaParser
     }
     
     
+    /**
+     * 
+     * @param pos The position in the Schema
+     * @return The found macro, if any
+     * @throws LdapSchemaException If the schema is wrong
+     */
     private String getMacro( PosSchema pos ) throws LdapSchemaException
     {
         if ( isQuirksModeEnabled )
@@ -1491,7 +1604,12 @@ public class OpenLdapSchemaParser
      * keystring ::= keychar+
      * keychar ::= ALPHA | DIGIT | HYPHEN | UNDERSCORE | SEMI_COLON | DOT | COLON | SHARP 
      * </pre>
-     * @throws IOException 
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @return The QDescr
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static String getQDescrStrict( Reader reader, PosSchema pos ) throws LdapSchemaException, IOException
     {
@@ -1581,7 +1699,12 @@ public class OpenLdapSchemaParser
      * keystring ::= keychar+
      * keychar ::= ALPHA | DIGIT | HYPHEN | UNDERSCORE | SEMI_COLON | DOT | COLON | SHARP 
      * </pre>
-     * @throws IOException 
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @return the QDescr
+     * @throws IOException If the stream can't be read
+     * @throws LdapSchemaException If the schema is wrong
      */
     private static String getQDescrRelaxed( Reader reader, PosSchema pos ) throws LdapSchemaException, IOException
     {
@@ -1655,6 +1778,12 @@ public class OpenLdapSchemaParser
      * UTF4     ::= %xF0 %x90-BF UTF0 UTF0 | %xF1-F3 UTF0 UTF0 UTF0 | %xF4 %x80-8F UTF0 UTF0
      * ESC      ::= %x5C                            ; backslash ("\")
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @return The QDString
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static String getQDString( Reader reader, PosSchema pos ) throws LdapSchemaException, IOException
     {
@@ -1729,6 +1858,7 @@ public class OpenLdapSchemaParser
 
 
     /**
+     * <pre>
      * qdescrs ::= qdescr | LPAREN WSP qdescrlist WSP RPAREN
      * qdescrlist ::= [ qdescr *( SP qdescr ) ]
      * qdescr ::== SQUOTE descr SQUOTE
@@ -1736,10 +1866,17 @@ public class OpenLdapSchemaParser
      * keystring ::= leadkeychar *keychar
      * leadkeychar ::= ALPHA
      * keychar ::= ALPHA / DIGIT / HYPHEN
-     * @throws LdapSchemaException 
-     * @throws IOException 
+     * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param relaxed If the schema is to be processed in relaxed mode
+     * @return The list of QDescr
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
-    private static List<String> getQDescrs( Reader reader, PosSchema pos, boolean relaxed ) throws LdapSchemaException, IOException
+    private static List<String> getQDescrs( Reader reader, PosSchema pos, boolean relaxed ) 
+            throws LdapSchemaException, IOException
     {
         List<String> qdescrs = new ArrayList<>();
         
@@ -1815,8 +1952,12 @@ public class OpenLdapSchemaParser
      * qdstring     ::= SQUOTE dstring SQUOTE
      * dstring      ::= 1*( QS / QQ / QUTF8 )   ; escaped UTF-8 string
      * </pre>
-     * @throws LdapSchemaException 
-     * @throws IOException 
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @return The list of QDString
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static List<String> getQDStrings( Reader reader, PosSchema pos ) 
         throws LdapSchemaException, IOException
@@ -1866,6 +2007,12 @@ public class OpenLdapSchemaParser
      * oids     ::= oid | ( LPAREN WSP oidlist WSP RPAREN )
      * oidlist  ::= oid *( WSP DOLLAR WSP oid )
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @return The list of OIDs
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static List<String> getOidsStrict( Reader reader, PosSchema pos ) throws LdapSchemaException, IOException
     {
@@ -1931,6 +2078,12 @@ public class OpenLdapSchemaParser
      * oids     ::= oid | ( LPAREN WSP oidlist WSP RPAREN )
      * oidlist  ::= oid *( WSP DOLLAR WSP oid )
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @return The list of OIDs
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static List<String> getOidsRelaxed( Reader reader, PosSchema pos ) throws LdapSchemaException, IOException
     {
@@ -1992,7 +2145,13 @@ public class OpenLdapSchemaParser
 
     
     /**
+     * <pre>
      * noidlen = oidStrict [ LCURLY len RCURLY ]
+     * </pre>
+     *  
+     * @param attributeType The AttributeType
+     * @param pos The position in the Schema
+     * @throws LdapSchemaException If the schema is wrong
      */
     private static void getNoidLenStrict( MutableAttributeType attributeType, PosSchema pos ) throws LdapSchemaException
     {
@@ -2048,7 +2207,13 @@ public class OpenLdapSchemaParser
 
     
     /**
+     * <pre>
      * noidlen = oidRelaxed [ LCURLY len RCURLY ]
+     * </pre>
+     * 
+     * @param attributeType The AttributeType
+     * @param pos The position in the Schema
+     * @throws LdapSchemaException If the schema is wrong
      */
     private static void getNoidLenRelaxed( MutableAttributeType attributeType, PosSchema pos ) throws LdapSchemaException
     {
@@ -2144,6 +2309,10 @@ public class OpenLdapSchemaParser
      * DIGIT  ::= [0-9]
      * LDIGIT ::= [1-9]
      * </pre>
+     * 
+     * @param pos The position in the Schema
+     * @return The RuleID
+     * @throws LdapSchemaException If the schema is wrong
      */
     private static int getRuleId( PosSchema pos ) throws LdapSchemaException
     {
@@ -2172,6 +2341,12 @@ public class OpenLdapSchemaParser
      * ruleids      ::= ruleid | ( LPAREN WSP ruleidlist WSP RPAREN )
      * ruleidlist   ::= ruleid ( SP ruleid )*
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @return The list of RuleIDs
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static List<Integer> getRuleIds( Reader reader, PosSchema pos ) throws LdapSchemaException, IOException
     {
@@ -2232,6 +2407,12 @@ public class OpenLdapSchemaParser
     }
     
     
+    /**
+     * 
+     * @param pos The position in the Schema
+     * @return The USAGE
+     * @throws LdapSchemaException If the schema is wrong
+     */
     private static UsageEnum getUsageStrict( PosSchema pos ) throws LdapSchemaException
     {
         if ( isEmpty( pos ) )
@@ -2272,6 +2453,12 @@ public class OpenLdapSchemaParser
     }
     
     
+    /**
+     * 
+     * @param pos The position in the Schema
+     * @return The USAGE
+     * @throws LdapSchemaException If the schema is wrong
+     */
     private static UsageEnum getUsageRelaxed( PosSchema pos ) throws LdapSchemaException
     {
         if ( isEmpty( pos ) )
@@ -2384,8 +2571,12 @@ public class OpenLdapSchemaParser
      * qdstring     ::= SQUOTE dstring SQUOTE
      * dstring      ::= 1*( QS / QQ / QUTF8 )   ; escaped UTF-8 string
      * </pre>
-     * @throws IOException 
-     * @throws LdapSchemaException 
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param schemaObject The SchemaObject
+     * @throws IOException If the stream can't be read
+     * @throws LdapSchemaException If the schema is wrong
      */
     private static void processExtension( Reader reader, PosSchema pos, SchemaObject schemaObject ) 
         throws LdapSchemaException, IOException
@@ -2412,6 +2603,10 @@ public class OpenLdapSchemaParser
      * <pre>
      * xstring      ::= "X" HYPHEN ( ALPHA | HYPHEN | USCORE )+
      * </pre>
+     * 
+     * @param pos The position in the Schema
+     * @return the X-String
+     * @throws LdapSchemaException If the schema is wrong
      */
     private static String getXString( PosSchema pos ) throws LdapSchemaException
     {
@@ -2443,6 +2638,10 @@ public class OpenLdapSchemaParser
      * FQCN ::= FQCN_IDENTIFIER ( '.' FQCN_IDENTIFIER )*
      * FQCN_IDENTIFIER ::= ( JavaLetter ( JavaLetterOrDigit )*
      * </pre>
+     * 
+     * @param pos The position in the Schema
+     * @return The FQCN
+     * @throws LdapSchemaException If the schema is wrong
      */
     private static String getFqcn( PosSchema pos ) throws LdapSchemaException
     {
@@ -2514,6 +2713,9 @@ public class OpenLdapSchemaParser
      * <pre>
      * byteCode ::= ( [a-z] | [A-Z] | [0-9] | '+' | '/' | '=' )*
      * </pre>
+     * 
+     * @param pos The position in the Schema
+     * @return The ByteCode
      */
     private static String getByteCode( PosSchema pos )
     {
@@ -2540,6 +2742,14 @@ public class OpenLdapSchemaParser
     }
     
     
+    /**
+     * 
+     * @param elementsSeen The elements that have been processed already
+     * @param element The current element
+     * @param pos T he position in the Schema
+     * @return The elements we have just processed
+     * @throws LdapSchemaException If the schema is wrong
+     */
     private static int checkElement( int elementsSeen, SchemaObjectElements element, PosSchema pos ) throws LdapSchemaException
     {
         if ( ( elementsSeen & element.getValue() ) != 0 )
@@ -2646,8 +2856,13 @@ public class OpenLdapSchemaParser
      * extensions = *( SP xstring SP qdstrings )
      * xstring = "X" HYPHEN 1*( ALPHA / HYPHEN / USCORE ) 
      * </pre>
-     * @throws IOException 
-     * @throws LdapSchemaException 
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param objectIdentifierMacros The set of existing Macros
+     * @return An instance of AttributeType
+     * @throws IOException If the stream can't be read
+     * @throws LdapSchemaException If the schema is wrong
      */
     private static AttributeType parseAttributeTypeStrict( Reader reader, PosSchema pos,
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros ) throws IOException, LdapSchemaException
@@ -2888,8 +3103,13 @@ public class OpenLdapSchemaParser
      * extensions = *( SP xstring SP qdstrings )
      * xstring = "X" HYPHEN 1*( ALPHA / HYPHEN / USCORE ) 
      * </pre>
-     * @throws IOException 
-     * @throws LdapSchemaException 
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param objectIdentifierMacros The set of existing Macros
+     * @return An instance of AttributeType
+     * @throws IOException If the stream can't be read
+     * @throws LdapSchemaException If the schema is wrong
      */
     private static AttributeType parseAttributeTypeRelaxed( Reader reader, PosSchema pos,
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros ) throws IOException, LdapSchemaException
@@ -3136,6 +3356,13 @@ public class OpenLdapSchemaParser
      *    [ SP "NOT" SP oids ]       ; attribute types
      *    extensions WSP RPAREN      ; extensions
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param objectIdentifierMacros The set of existing Macros
+     * @return An instance of DitContentRule
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static DitContentRule parseDitContentRuleStrict( Reader reader, PosSchema pos,
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros ) throws IOException, LdapSchemaException
@@ -3293,6 +3520,13 @@ public class OpenLdapSchemaParser
      *    [ SP "NOT" SP oids ]       ; attribute types
      *    extensions WSP RPAREN      ; extensions
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param objectIdentifierMacros The set of existing Macros
+     * @return An instance of DitContentRule
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static DitContentRule parseDitContentRuleRelaxed( Reader reader, PosSchema pos,
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros ) throws IOException, LdapSchemaException
@@ -3497,6 +3731,12 @@ public class OpenLdapSchemaParser
      * ruleidlist = ruleid *( SP ruleid )
      * ruleid = number
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @return An instance of DitStructureRule
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static DitStructureRule parseDitStructureRuleStrict( Reader reader, PosSchema pos ) 
         throws IOException, LdapSchemaException
@@ -3634,6 +3874,13 @@ public class OpenLdapSchemaParser
      * ruleidlist = ruleid *( SP ruleid )
      * ruleid = number
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param objectIdentifierMacros The set of existing Macros
+     * @return An instance of DitStructureRule
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static DitStructureRule parseDitStructureRuleRelaxed( Reader reader, PosSchema pos,
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros ) 
@@ -3819,6 +4066,13 @@ public class OpenLdapSchemaParser
      * fqcn = fqcnComponent 1*( DOT fqcnComponent )
      * fqcnComponent = ???
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param objectIdentifierMacros The set of existing Macros
+     * @return An instance of LdapComparatorDescription
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static LdapComparatorDescription parseLdapComparatorStrict( Reader reader, PosSchema pos,
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros ) throws IOException, LdapSchemaException
@@ -3949,6 +4203,13 @@ public class OpenLdapSchemaParser
      * fqcn = fqcnComponent 1*( DOT fqcnComponent )
      * fqcnComponent = ???
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param objectIdentifierMacros The set of existing Macros
+     * @return An instance of LdapComparatorDescription
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static LdapComparatorDescription parseLdapComparatorRelaxed( Reader reader, PosSchema pos,
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros ) 
@@ -4092,6 +4353,13 @@ public class OpenLdapSchemaParser
      *    [ SP "DESC" SP qdstring ]  ; description
      *    extensions WSP RPAREN      ; extensions
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param objectIdentifierMacros The set of existing Macros
+     * @return An instance of LdapSyntax
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static LdapSyntax parseLdapSyntaxStrict( Reader reader, PosSchema pos,
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros ) throws IOException, LdapSchemaException
@@ -4176,6 +4444,13 @@ public class OpenLdapSchemaParser
      *    [ SP "DESC" SP qdstring ]  ; description
      *    extensions WSP RPAREN      ; extensions
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param objectIdentifierMacros The set of existing Macros
+     * @return An instance of LdapSyntax
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static LdapSyntax parseLdapSyntaxRelaxed( Reader reader, PosSchema pos,
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros ) throws IOException, LdapSchemaException
@@ -4302,6 +4577,13 @@ public class OpenLdapSchemaParser
      *    SP "SYNTAX" SP numericoid  ; assertion syntax
      *    extensions WSP RPAREN      ; extensions
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param objectIdentifierMacros The set of existing Macros
+     * @return An instance of MatchingRule
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static MatchingRule parseMatchingRuleStrict( Reader reader, PosSchema pos, 
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros ) throws IOException, LdapSchemaException
@@ -4428,6 +4710,13 @@ public class OpenLdapSchemaParser
      *    SP "SYNTAX" SP numericoid  ; assertion syntax
      *    extensions WSP RPAREN      ; extensions
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param objectIdentifierMacros The set of existing Macros
+     * @return An instance of MatchingRule
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static MatchingRule parseMatchingRuleRelaxed( Reader reader, PosSchema pos,
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros ) 
@@ -4585,8 +4874,15 @@ public class OpenLdapSchemaParser
      *    SP "APPLIES" SP oids       ; attribute types
      *    extensions WSP RPAREN      ; extensions
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param objectIdentifierMacros The set of existing Macros
+     * @return An instance of MatchingRuleUse
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
-    private static  MatchingRuleUse parseMatchingRuleUseStrict( Reader reader, PosSchema pos,
+    private static MatchingRuleUse parseMatchingRuleUseStrict( Reader reader, PosSchema pos,
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros ) throws IOException, LdapSchemaException
     {
         // Get rid of whites, comments end empty lines
@@ -4711,6 +5007,13 @@ public class OpenLdapSchemaParser
      *    SP "APPLIES" SP oids       ; attribute types
      *    extensions WSP RPAREN      ; extensions
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param objectIdentifierMacros The set of existing Macros
+     * @return An instance of MatchingRuleUse
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static MatchingRuleUse parseMatchingRuleUseRelaxed( Reader reader, PosSchema pos,
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros ) 
@@ -4872,6 +5175,13 @@ public class OpenLdapSchemaParser
      *    [ SP "MAY" SP oids ]       ; attribute types
      *    extensions WSP RPAREN      ; extensions
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @return An instance of NameForm
+     * @param objectIdentifierMacros The set of existing Macros
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static NameForm parseNameFormStrict( Reader reader, PosSchema pos,
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros ) throws IOException, LdapSchemaException
@@ -5032,6 +5342,13 @@ public class OpenLdapSchemaParser
      *    [ SP "MAY" SP oids ]       ; attribute types
      *    extensions WSP RPAREN      ; extensions
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param objectIdentifierMacros The set of existing Macros
+     * @return An instance of NameForm
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static NameForm parseNameFormRelaxed( Reader reader, PosSchema pos,
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros ) 
@@ -5221,6 +5538,13 @@ public class OpenLdapSchemaParser
      * fqcn = fqcnComponent 1*( DOT fqcnComponent )
      * fqcnComponent = ???
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param objectIdentifierMacros The set of existing Macros
+     * @return An instance of NormalizerDescription
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static NormalizerDescription parseNormalizerStrict( Reader reader, PosSchema pos,
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros ) throws IOException, LdapSchemaException
@@ -5351,6 +5675,13 @@ public class OpenLdapSchemaParser
      * fqcn = fqcnComponent 1*( DOT fqcnComponent )
      * fqcnComponent = ???
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param objectIdentifierMacros The set of existing Macros
+     * @return An instance of NormalizerDescription
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static NormalizerDescription parseNormalizerRelaxed( Reader reader, PosSchema pos,
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros ) 
@@ -5509,6 +5840,13 @@ public class OpenLdapSchemaParser
      *
      *   kind = "ABSTRACT" / "STRUCTURAL" / "AUXILIARY"
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param objectIdentifierMacros The set of existing Macros
+     * @return An instance of ObjectClass
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static ObjectClass parseObjectClassStrict( Reader reader, PosSchema pos,
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros ) 
@@ -5680,6 +6018,13 @@ public class OpenLdapSchemaParser
      *
      *   kind = "ABSTRACT" / "STRUCTURAL" / "AUXILIARY"
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param objectIdentifierMacros The set of existing Macros
+     * @return An instance of ObjectClass
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static ObjectClass parseObjectClassRelaxed( Reader reader, PosSchema pos,
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros ) 
@@ -5895,6 +6240,13 @@ public class OpenLdapSchemaParser
      * fqcn = fqcnComponent 1*( DOT fqcnComponent )
      * fqcnComponent = ???
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param objectIdentifierMacros The set of existing Macros
+     * @return An instance of SyntaxCheckerDescription
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static SyntaxCheckerDescription parseSyntaxCheckerStrict( Reader reader, PosSchema pos,
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros ) throws IOException, LdapSchemaException
@@ -6025,6 +6377,13 @@ public class OpenLdapSchemaParser
      * fqcn = fqcnComponent 1*( DOT fqcnComponent )
      * fqcnComponent = ???
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @param objectIdentifierMacros The set of existing Macros
+     * @return An instance of SyntaxCheckerDescription
+     * @throws LdapSchemaException If the schema is wrong
+     * @throws IOException If the stream can't be read
      */
     private static SyntaxCheckerDescription parseSyntaxCheckerRelaxed( Reader reader, PosSchema pos,
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros ) 
@@ -6124,6 +6483,11 @@ public class OpenLdapSchemaParser
      * descr             ::= ALPHA ( ALPHA | DIGIT | HYPHEN )*
      * macroOid         ::= (descr ':')? oid
      * </pre>
+     * 
+     * @param reader The stream reader
+     * @param pos The position in the Schema
+     * @throws LdapSchemaException If something went wrong in the schema
+     * @throws IOException If the stream can't be read
      */
     private void processObjectIdentifier( Reader reader, PosSchema pos ) throws IOException, LdapSchemaException
     {
@@ -6191,8 +6555,9 @@ public class OpenLdapSchemaParser
      *
      * The lines represent *one* entry.
      *
+     * @param reader The stream reader
      * @throws LdapSchemaException If something went wrong in the schema
-     * @throws IOException If something went wrong with the stream
+     * @throws IOException If the stream can't be read
      */
     public void parse( Reader reader ) throws LdapSchemaException, IOException
     {

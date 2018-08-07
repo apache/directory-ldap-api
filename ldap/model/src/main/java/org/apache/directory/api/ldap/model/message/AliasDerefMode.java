@@ -60,6 +60,7 @@ public enum AliasDerefMode
      * public static constants in this class.
      * 
      * @param value the integer value of the enumeration.
+     * @param jndiValue the JNDI value
      */
     AliasDerefMode( int value, String jndiValue )
     {

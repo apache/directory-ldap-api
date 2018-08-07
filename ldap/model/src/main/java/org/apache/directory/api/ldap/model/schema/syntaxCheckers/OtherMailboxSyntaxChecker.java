@@ -73,6 +73,8 @@ public final class OtherMailboxSyntaxChecker extends SyntaxChecker
     
     /**
      * Creates a new instance of OtherMailboxSyntaxChecker.
+     * 
+     * @param oid The OID
      */
     private OtherMailboxSyntaxChecker( String oid )
     {

@@ -1028,6 +1028,8 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /**
      * Create a copy of the current Dn
+     * 
+     * @return The copied Dn
      */
     private Dn copy()
     {
@@ -1196,8 +1198,10 @@ public class Dn implements Iterable<Rdn>, Externalizable
     /**
      * Parse a Dn.
      *
+     * @param schemaManager The SchemaManager
      * @param name The Dn to be parsed
      * @param rdns The list that will contain the RDNs
+     * @return The nromalized Dn
      * @throws LdapInvalidDnException If the Dn is invalid
      */
     private static String parseInternal( SchemaManager schemaManager, String name, List<Rdn> rdns ) throws LdapInvalidDnException

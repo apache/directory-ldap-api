@@ -44,6 +44,8 @@ public enum ModificationOperation
 
     /**
      * Creates a new instance of ModificationOperation.
+     * 
+     * @param value The value
      */
     ModificationOperation( int value )
     {

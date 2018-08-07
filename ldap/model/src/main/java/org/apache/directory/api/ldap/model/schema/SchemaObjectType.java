@@ -70,6 +70,8 @@ public enum SchemaObjectType
 
     /**
      * A private constructor to associated a number to the type
+     * 
+     * @param value the value
      */
     SchemaObjectType( int value )
     {

@@ -107,6 +107,10 @@ public final class ObjectClassHelper
     /**
      * Build the references to this ObjectClass SUPERIORS, checking that the type
      * hierarchy is correct.
+     * 
+     * @param objectClass The oOjectClass to process
+     * @param errorHandler The error handler
+     * @param registries The Registries instance
      */
     private static void buildSuperiors( ObjectClass objectClass, SchemaErrorHandler errorHandler, Registries registries )
     {
@@ -203,6 +207,10 @@ public final class ObjectClassHelper
 
     /**
      * Build and check the MUST AT for this ObjectClass.
+     * 
+     * @param objectClass The oOjectClass to process
+     * @param errorHandler The error handler
+     * @param registries The Registries instance
      */
     private static void buildMust( ObjectClass objectClass, SchemaErrorHandler errorHandler, Registries registries )
     {
@@ -287,6 +295,10 @@ public final class ObjectClassHelper
     
     /**
      * Build and check the MAY AT for this ObjectClass
+     * 
+     * @param objectClass The oOjectClass to process
+     * @param errorHandler The error handler
+     * @param registries The Registries instance
      */
     private static void buildMay( ObjectClass objectClass, SchemaErrorHandler errorHandler, Registries registries )
     {

@@ -97,6 +97,7 @@ UTFMB : '\u0080'..'\uFFFE' ;
 
 /**
  * RFC 4514, Section 3:
+ * <pre>
  * LUTF1 = %x01-1F / %x21 / %x24-2A / %x2D-3A /
  *    %x3D / %x3F-5B / %x5D-7F
  *
@@ -108,6 +109,12 @@ UTFMB : '\u0080'..'\uFFFE' ;
  *   UNDERSCORE (0x5F)
  *   DIGIT (0x30-0x39)
  *   ALPHA (0x41-0x5A and 0x61-0x7A)
+ * </pre>
+ *
+ * @param _createToken If a Token is to be to created
+ * @throws RecognitionException If the token is invalid
+ * @throws TokenStreamException When we weren't able to fetch a token
+ * @throws CharStreamException If we can't process the stream
  */
 CHAR_REST : 
     '\u0001'..'\u001F' |
@@ -164,14 +171,19 @@ options    {
  * Parses a Dn string.
  *
  * RFC 4514, Section 3
+ * <pre>
  * distinguishedName = [ relativeDistinguishedName
  *     *( COMMA relativeDistinguishedName ) ]
+ * </pre>
  *
  * RFC 2253, Section 3
+ * <pre>
  * distinguishedName = [name] 
  * name       = name-component *("," name-component)
+ * </pre>
  *
  * RFC 1779, Section 2.3
+ * <pre>
  * &lt;name&gt; ::= &lt;name-component&gt; ( &lt;spaced-separator&gt; )
  *        | &lt;name-component&gt; &lt;spaced-separator&gt; &lt;name&gt;
  * &lt;spaced-separator&gt; ::= &lt;optional-space&gt;
@@ -179,6 +191,12 @@ options    {
  *             &lt;optional-space&gt;
  * &lt;separator&gt; ::=  "," | ";"
  * &lt;optional-space&gt; ::= ( &lt;CR&gt; ) *( " " )
+ * </pre>
+ *
+ * @param schemaManager The SchemaManager
+ * @param dn The Dn to update
+ * @throws RecognitionException If the token is invalid
+ * @throws TokenStreamException When we weren't able to fetch a token
  */
 distinguishedName [SchemaManager schemaManager, Dn dn]
     {
@@ -225,14 +243,19 @@ distinguishedName [SchemaManager schemaManager, Dn dn]
  * Parses a Dn string.
  *
  * RFC 4514, Section 3
+ * <pre>
  * distinguishedName = [ relativeDistinguishedName
  *     *( COMMA relativeDistinguishedName ) ]
+ * </pre>
  *
  * RFC 2253, Section 3
+ * <pre>
  * distinguishedName = [name] 
  * name       = name-component *("," name-component)
+ * </pre>
  *
  * RFC 1779, Section 2.3
+ * <pre>
  * &lt;name&gt; ::= &lt;name-component&gt; ( &lt;spaced-separator&gt; )
  *        | &lt;name-component&gt; &lt;spaced-separator&gt; &lt;name&gt;
  * &lt;spaced-separator&gt; ::= &lt;optional-space&gt;
@@ -240,7 +263,13 @@ distinguishedName [SchemaManager schemaManager, Dn dn]
  *             &lt;optional-space&gt;
  * &lt;separator&gt; ::=  "," | ";"
  * &lt;optional-space&gt; ::= ( &lt;CR&gt; ) *( " " )
+ * </pre>
  *
+ * @param schemaManager The SchemaManager
+ * @param rdns The list of Rdns to update
+ * @return The normalized Dn
+ * @throws RecognitionException If the token is invalid
+ * @throws TokenStreamException When we weren't able to fetch a token
  */
 relativeDistinguishedNames [SchemaManager schemaManager, List<Rdn> rdns] returns [String normNameStr]
     {
@@ -277,17 +306,27 @@ relativeDistinguishedNames [SchemaManager schemaManager, List<Rdn> rdns] returns
  * Parses a Rdn string.
  *
  * RFC 4514, Section 3
+ * <pre>
  * relativeDistinguishedName = attributeTypeAndValue
  *     *( PLUS attributeTypeAndValue )
+ * </pre>
  *
  * RFC 2253, Section 3
+ * <pre>
  * name-component = attributeTypeAndValue *("+" attributeTypeAndValue)
+ * </pre>
  *
  * RFC 1779, Section 2.3
+ * <pre>
  * &lt;name-component&gt; ::= &lt;attribute&gt;
  *     | &lt;attribute&gt; &lt;optional-space&gt; "+"
  *       &lt;optional-space&gt; &lt;name-component&gt;
+ * </pre>
  *
+ * @param schemaManager The SchemaManager
+ * @param rdn The Rdn to update
+ * @throws RecognitionException If the token is invalid
+ * @throws TokenStreamException When we weren't able to fetch a token
  */
 relativeDistinguishedName [SchemaManager schemaManager, Rdn rdn]
     {
@@ -398,11 +437,20 @@ relativeDistinguishedName [SchemaManager schemaManager, Rdn rdn]
 
 /**
  * RFC 4514, Section 3
+ * <pre>
  * attributeTypeAndValue = attributeType EQUALS attributeValue
+ * </pre>
  *
  * RFC 2253, Section 3
+ * <pre>
  * attributeTypeAndValue = attributeType "=" attributeValue
+ * </pre>
  *
+ * @param schemaManager The SchemaManager
+ * @param rdn The Rdn to update
+ * @return The user provided Ava
+ * @throws RecognitionException If the token is invalid
+ * @throws TokenStreamException When we weren't able to fetch a token
  */
 attributeTypeAndValue [SchemaManager schemaManager, Rdn rdn] returns [String upNameStr]
     {
@@ -500,9 +548,14 @@ attributeTypeAndValue [SchemaManager schemaManager, Rdn rdn] returns [String upN
 /**
  * RFC 4514 Section 3
  *
+ * <pre>
  * attributeType = descr / numericoid
+ * </pre>
  *
- */    
+ * @return The AttributeType
+ * @throws RecognitionException If the token is invalid
+ * @throws TokenStreamException When we weren't able to fetch a token
+ */
 attributeType returns [String attributeType]
     {
         matchedProduction( "attributeType()" );
@@ -519,14 +572,19 @@ attributeType returns [String attributeType]
 /**
  * RFC 4512 Section 1.4
  *
+ * <pre>
  * descr = keystring
  * keystring = leadkeychar *keychar
  * leadkeychar = ALPHA
  * keychar = ALPHA / DIGIT / HYPHEN
+ * </pre>
  *
  * We additionally add UNDERSCORE because some servers allow them.
  *
- */    
+ * @return The description
+ * @throws RecognitionException If the token is invalid
+ * @throws TokenStreamException When we weren't able to fetch a token
+ */
 descr returns [String descr]
     {
         matchedProduction( "descr()" );
@@ -552,12 +610,17 @@ descr returns [String descr]
 /**
  * RFC 4512 Section 1.4
  *
+ * <pre>
  * numericoid = number 1*( DOT number )
  * number  = DIGIT / ( LDIGIT 1*DIGIT )
  * DIGIT   = %x30 / LDIGIT       ; "0"-"9"
  * LDIGIT  = %x31-39             ; "1"-"9"
+ * </pre>
  *
- */   
+ * @return The numeric OID
+ * @throws RecognitionException If the token is invalid
+ * @throws TokenStreamException When we weren't able to fetch a token
+ */
 numericoid returns [String numericoid = ""]
     {
         matchedProduction( "numericoid()" );
@@ -569,15 +632,23 @@ numericoid returns [String numericoid = ""]
 
 /**
  * RFC 4514, Section 3
+ * <pre>
  * attributeValue = string / hexstring
+ * </pre>
  *
  * RFC 2253, Section 3
+ * <pre>
  * attributeValue = string
  * string     = *( stringchar / pair )
  *              / "#" hexstring
  *              / QUOTATION *( quotechar / pair ) QUOTATION ; only from v2
  *
  * We still accept both forms, which means we can have a value surrounded by '"'
+ * </pre>
+ *
+ * @param value The value to update
+ * @throws RecognitionException If the token is invalid
+ * @throws TokenStreamException When we weren't able to fetch a token
  */
 attributeValue [UpAndNormValue value] 
     {
@@ -597,9 +668,14 @@ attributeValue [UpAndNormValue value]
 
 /**
  * RFC 2253, Section 3
+ * <pre>
  *              / QUOTATION *( quotechar / pair ) QUOTATION ; only from v2
  * quotechar     = &lt;any character except "\" or QUOTATION &gt;
+ * </pre>
  *
+ * @param value The value to update
+ * @throws RecognitionException If the token is invalid
+ * @throws TokenStreamException When we weren't able to fetch a token
  */
 quotestring [UpAndNormValue value] 
     {
@@ -627,12 +703,17 @@ quotestring [UpAndNormValue value]
 /**
  * RFC 4514 Section 3
  *
+ * <pre>
  * hexstring = SHARP 1*hexpair
  *
  * If in &lt;hexstring&gt; form, a BER representation can be obtained from
  * converting each &lt;hexpair&gt; of the &lt;hexstring&gt; to the octet indicated
  * by the &lt;hexpair&gt;.
+ * </pre>
  *
+ * @param value The value to update
+ * @throws RecognitionException If the token is invalid
+ * @throws TokenStreamException When we weren't able to fetch a token
  */ 
 hexstring [UpAndNormValue value]
     {
@@ -652,6 +733,7 @@ hexstring [UpAndNormValue value]
 /**
  * RFC 4514 Section 3
  *
+ * <pre>
  * ; The following characters are to be escaped when they appear
  * ; in the value to be encoded: ESC, one of &lt;escaped&gt;, &lt;leading&gt;
  * ; SHARP or SPACE, trailing SPACE, and NULL.
@@ -659,6 +741,11 @@ hexstring [UpAndNormValue value]
  * leadchar = LUTF1 | UTFMB
  * stringchar = SUTF1 / UTFMB
  * trailchar = TUTF1 / UTFMB
+ * </pre>
+ *
+ * @param value The value to update
+ * @throws RecognitionException If the token is invalid
+ * @throws TokenStreamException When we weren't able to fetch a token
  */ 
 string [UpAndNormValue value]
     {
@@ -675,6 +762,7 @@ string [UpAndNormValue value]
 
 /**
  * RFC 4514, Section 3:
+ * <pre>
  * LUTF1 = %x01-1F / %x21 / %x24-2A / %x2D-3A /
  *    %x3D / %x3F-5B / %x5D-7F
  *
@@ -685,6 +773,11 @@ string [UpAndNormValue value]
  *   UNDERSCORE (0x5F)
  *   DIGIT (0x30-0x39)
  *   ALPHA (0x41-0x5A and 0x61-0x7A)
+ * </pre>
+ *
+ * @param value The value to update
+ * @throws RecognitionException If the token is invalid
+ * @throws TokenStreamException When we weren't able to fetch a token
  */
 lutf1 [UpAndNormValue value]
     {
@@ -744,6 +837,7 @@ lutf1 [UpAndNormValue value]
 
 /**
  * RFC 4514, Section 3:
+ * <pre>
  * SUTF1 = %x01-21 / %x23-2A / %x2D-3A /
  *    %x3D / %x3F-5B / %x5D-7F
  *
@@ -756,6 +850,11 @@ lutf1 [UpAndNormValue value]
  *   ALPHA (0x41-0x5A and 0x61-0x7A)
  *   SHARP (0x23)
  *   SPACE (0x20)
+ * </pre>
+ *
+ * @param value The value to update
+ * @throws RecognitionException If the token is invalid
+ * @throws TokenStreamException When we weren't able to fetch a token
  */
 sutf1 [UpAndNormValue value]
     {
@@ -835,7 +934,13 @@ sutf1 [UpAndNormValue value]
     }
     ;
 
-
+/**
+ * Process a UTFMB char
+ *
+ * @param value The value to update
+ * @throws RecognitionException If the token is invalid
+ * @throws TokenStreamException When we weren't able to fetch a token
+ */
 utfmb [UpAndNormValue value]
     {
         matchedProduction( "utfmb()" );
@@ -852,6 +957,7 @@ utfmb [UpAndNormValue value]
 
 /**
  * RFC 4514, Section 3
+ * <pre>
  * pair = ESC ( ESC / special / hexpair )
  * special = escaped / SPACE / SHARP / EQUALS
  * escaped = DQUOTE / PLUS / COMMA / SEMI / LANGLE / RANGLE
@@ -863,16 +969,24 @@ utfmb [UpAndNormValue value]
  *   replace &lt;ESC&gt;&lt;ESC&gt; with &lt;ESC&gt;;
  *   replace &lt;ESC&gt;&lt;special&gt; with &lt;special&gt;;
  *   replace &lt;ESC&gt;&lt;hexpair&gt; with the octet indicated by the &lt;hexpair&gt;.
+ * </pre>
  * 
  * RFC 2253, Section 3
+ * <pre>
  * pair       = "\" ( special / "\" / QUOTATION / hexpair )
  * special    = "," / "=" / "+" / "&lt;" /  "&gt;" / "#" / ";"
+ * </pre>
  * 
  * RFC 1779, Section 2.3
+ * <pre>
  * &lt;pair&gt; ::= "\" ( &lt;special&gt; | "\" | '"')
  * &lt;special&gt; ::= "," | "=" | &lt;CR&gt; | "+" | "&lt;" |  "&gt;"
  *           | "#" | ";"
+ * </pre>
  * 
+ * @param value The value to update
+ * @throws RecognitionException If the token is invalid
+ * @throws TokenStreamException When we weren't able to fetch a token
  */ 
 pair [UpAndNormValue value]
     {
@@ -919,13 +1033,18 @@ pair [UpAndNormValue value]
 /**
  * RFC 4514 Section 3
  * 
+ * <pre>
  * special = escaped / SPACE / SHARP / EQUALS
  * escaped = DQUOTE / PLUS / COMMA / SEMI / LANGLE / RANGLE
+ * </pre>
  *
+ * @return The special char
+ * @throws RecognitionException If the token is invalid
+ * @throws TokenStreamException When we weren't able to fetch a token
  */
 special returns [char special]
     {
-        matchedProduction( "special()" );
+        matchedProduction( "()" );
     }
     :
     (

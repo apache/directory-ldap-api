@@ -40,6 +40,8 @@ class ReusableAntlrSubtreeSpecificationChecker extends AntlrSubtreeSpecification
 {
     /**
      * Creates a ReusableAntlrSubtreeSpecificationParser instance.
+     * 
+     * @param lexer The Token stream
      */
     ReusableAntlrSubtreeSpecificationChecker( TokenStream lexer )
     {

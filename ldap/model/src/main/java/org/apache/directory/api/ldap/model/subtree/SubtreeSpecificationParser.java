@@ -1,4 +1,6 @@
 /*
+
+
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
  *  distributed with this work for additional information
@@ -94,7 +96,9 @@ public class SubtreeSpecificationParser
 
     /**
      * Initializes the plumbing by creating a pipe and coupling the parser/lexer
-     * pair with it. param spec the specification to be parsed
+     * pair with it.
+     * 
+     * @param spec The specification to parse
      */
     private synchronized void reset( String spec )
     {

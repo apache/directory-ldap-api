@@ -302,6 +302,14 @@ public final class LdifRevertor
 
     /**
      * A small helper class to compute the simple revert.
+     * 
+     * @param entry The entry to revert
+     * @param newDn The new Dn
+     * @param newSuperior The new superior, if it has changed (null otherwise)
+     * @param oldRdn The old Rdn
+     * @param newRdn The new RDN if the RDN has changed
+     * @return The reverted entry
+     * @throws LdapInvalidDnException If the Dn is invalid
      */
     private static LdifEntry revertEntry( Entry entry, Dn newDn, Dn newSuperior, Rdn oldRdn, Rdn newRdn )
         throws LdapInvalidDnException
@@ -345,6 +353,12 @@ public final class LdifRevertor
 
     /**
      * A helper method to generate the modified attribute after a rename.
+     * 
+     * @param parentDn The parent Dn
+     * @param entry The entry to revert
+     * @param oldRdn The old Rdn
+     * @param newRdn The new Rdn
+     * @return The modified entry
      */
     private static LdifEntry generateModify( Dn parentDn, Entry entry, Rdn oldRdn, Rdn newRdn )
     {
@@ -376,7 +390,15 @@ public final class LdifRevertor
 
 
     /**
-     * A helper method which generates a reverted entry
+     * A helper method which generates a reverted entry for a MODDN operation
+     * 
+     * @param newSuperior The new superior, if it has changed (null otherwise)
+     * @param newRdn The new RDN if the RDN has changed
+     * @param newDn The new Dn
+     * @param oldRdn The old Rdn
+     * @param deleteOldRdn If the old Rdn attributes must be deleted or not
+     * @return The reverted entry
+     * @throws LdapInvalidDnException If the DN is invalid
      */
     private static LdifEntry generateReverted( Dn newSuperior, Rdn newRdn, Dn newDn, Rdn oldRdn, boolean deleteOldRdn )
         throws LdapInvalidDnException
