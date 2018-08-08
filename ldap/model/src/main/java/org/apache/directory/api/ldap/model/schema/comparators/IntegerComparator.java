@@ -64,6 +64,7 @@ public class IntegerComparator extends LdapComparator<Object> implements Seriali
     @Override
     public int compare( Object v1, Object v2 )
     {
+        // The value can be a String, a Value or a Long
         if ( v1 == null )
         {
             if ( v2 == null )
@@ -75,7 +76,12 @@ public class IntegerComparator extends LdapComparator<Object> implements Seriali
                 return -1;
             }
         }
-        else if ( v1 instanceof String )
+        else if ( v2 == null )
+        {
+            return 1;
+        }
+        
+        if ( v1 instanceof String )
         {
             return compare( ( String ) v1, ( String ) v2 );
         }
@@ -83,9 +89,9 @@ public class IntegerComparator extends LdapComparator<Object> implements Seriali
         {
             return compare( ( ( Value ) v1 ).getValue(), ( ( Value ) v2 ).getValue() ); 
         }
-        else
+        else 
         {
-            return 1;
+            return Long.compare( ( Long ) v1, ( Long ) v2 );
         }
     }
 
