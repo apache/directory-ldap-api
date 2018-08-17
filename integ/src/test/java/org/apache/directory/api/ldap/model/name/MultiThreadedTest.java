@@ -76,12 +76,12 @@ public class MultiThreadedTest
     @Test
     public void testNormalize() throws Exception
     {
-        sharedRdn = new Rdn( schemaManager, sharedRdn );
+        Rdn SchemaAwareSharedRdn = new Rdn( schemaManager, sharedRdn );
 
-        assertTrue( sharedRdn.isSchemaAware() );
+        assertTrue( SchemaAwareSharedRdn.isSchemaAware() );
 
-        sharedDn = new Dn( schemaManager, sharedDn );
-        assertTrue( sharedDn.isSchemaAware() );
+        Dn schemaAwareSharedDn = new Dn( schemaManager, sharedDn );
+        assertTrue( schemaAwareSharedDn.isSchemaAware() );
     }
 
 
@@ -90,11 +90,11 @@ public class MultiThreadedTest
     {
         assertEquals( referenceAva.hashCode(), sharedAva.hashCode() );
 
-        sharedRdn = new Rdn( schemaManager, sharedRdn );
-        assertEquals( referenceRdn.hashCode(), sharedRdn.hashCode() );
+        Rdn SchemaAwareSharedRdn = new Rdn( schemaManager, sharedRdn );
+        assertEquals( referenceRdn.hashCode(), SchemaAwareSharedRdn.hashCode() );
 
-        sharedDn = new Dn( schemaManager, sharedDn );
-        assertEquals( referenceDn.hashCode(), sharedDn.hashCode() );
+        Dn schemaAwareSharedDn = new Dn( schemaManager, sharedDn );
+        assertEquals( referenceDn.hashCode(), schemaAwareSharedDn.hashCode() );
     }
 
 
@@ -105,15 +105,15 @@ public class MultiThreadedTest
         assertTrue( referenceAva.equals( sharedAva ) );
         assertTrue( sharedAva.equals( referenceAva ) );
 
-        sharedRdn = new Rdn( schemaManager, sharedRdn );
-        assertEquals( referenceRdn, sharedRdn );
-        assertTrue( referenceRdn.equals( sharedRdn ) );
-        assertTrue( sharedRdn.equals( referenceRdn ) );
+        Rdn SchemaAwareSharedRdn = new Rdn( schemaManager, sharedRdn );
+        assertEquals( referenceRdn, SchemaAwareSharedRdn );
+        assertTrue( referenceRdn.equals( SchemaAwareSharedRdn ) );
+        assertTrue( SchemaAwareSharedRdn.equals( referenceRdn ) );
 
-        sharedDn = new Dn( schemaManager, sharedDn );
-        assertEquals( referenceDn, sharedDn );
-        assertTrue( referenceDn.equals( sharedDn ) );
-        assertTrue( sharedDn.equals( referenceDn ) );
+        Dn schemaAwareSharedDn = new Dn( schemaManager, sharedDn );
+        assertEquals( referenceDn, schemaAwareSharedDn );
+        assertTrue( referenceDn.equals( schemaAwareSharedDn ) );
+        assertTrue( schemaAwareSharedDn.equals( referenceDn ) );
     }
 
 
@@ -129,5 +129,4 @@ public class MultiThreadedTest
         assertEquals( referenceDn, sharedDn );
         assertEquals( sharedDn, referenceDn );
     }
-
 }
