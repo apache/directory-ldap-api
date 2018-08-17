@@ -1080,6 +1080,42 @@ public final class DefaultEntry implements Entry
 
         // We are done !
         return clone;
+
+        /*
+        // First, clone the structure
+        //DefaultEntry clone = ( DefaultEntry ) shallowClone();
+        try
+        {
+            DefaultEntry clone = ( DefaultEntry ) super.clone();
+            clone.attributes = new HashMap<>( attributes.size() );
+    
+            // now clone all the attributes
+            //clone.attributes.clear();
+    
+            if ( schemaManager != null )
+            {
+                for ( Attribute attribute : attributes.values() )
+                {
+                    String oid = attribute.getAttributeType().getOid();
+                    clone.attributes.put( oid, attribute.clone() );
+                }
+            }
+            else
+            {
+                for ( Attribute attribute : attributes.values() )
+                {
+                    clone.attributes.put( attribute.getId(), attribute.clone() );
+                }
+            }
+
+            // We are done !
+            return clone;
+        }
+        catch ( CloneNotSupportedException cnse )
+        {
+            return this;
+        }
+        */
     }
 
 
