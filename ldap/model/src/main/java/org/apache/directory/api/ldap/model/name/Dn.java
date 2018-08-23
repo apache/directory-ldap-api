@@ -1082,6 +1082,11 @@ public class Dn implements Iterable<Rdn>, Externalizable
         // Shortcut if the Dn is normalized
         if ( isSchemaAware() )
         {
+            if ( normName == null )
+            {
+                // equals() should never NPE
+                return other.normName == null;
+            }
             return normName.equals( other.normName );
         }
         
