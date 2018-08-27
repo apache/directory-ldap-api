@@ -495,7 +495,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     {
         Value value = get();
 
-        if ( !isHR && ( value != null ) )
+        if ( !isHumanReadable() && ( value != null ) )
         {
             return value.getBytes();
         }
@@ -514,7 +514,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     {
         Value value = get();
 
-        if ( isHR && ( value != null ) )
+        if ( isHumanReadable() && ( value != null ) )
         {
             return value.getValue();
         }
