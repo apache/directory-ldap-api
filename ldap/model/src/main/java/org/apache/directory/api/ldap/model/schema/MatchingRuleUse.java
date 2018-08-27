@@ -104,6 +104,7 @@ public class MatchingRuleUse extends AbstractSchemaObject
 
         applicableAttributeOids = new ArrayList<>();
         applicableAttributes = new ArrayList<>();
+        computeHashCode();
     }
 
 
@@ -137,10 +138,8 @@ public class MatchingRuleUse extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.applicableAttributeOids = applicableAttributeOids;
-        }
+        this.applicableAttributeOids = applicableAttributeOids;
+        computeHashCode();
     }
 
 
@@ -156,18 +155,17 @@ public class MatchingRuleUse extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
+        this.applicableAttributes = applicableAttributes;
+
+        // update the OIDS now
+        applicableAttributeOids.clear();
+
+        for ( AttributeType at : applicableAttributes )
         {
-            this.applicableAttributes = applicableAttributes;
-
-            // update the OIDS now
-            applicableAttributeOids.clear();
-
-            for ( AttributeType at : applicableAttributes )
-            {
-                applicableAttributeOids.add( at.getOid() );
-            }
+            applicableAttributeOids.add( at.getOid() );
         }
+        
+        computeHashCode();
     }
 
 
@@ -183,9 +181,10 @@ public class MatchingRuleUse extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly && !applicableAttributeOids.contains( oid ) )
+        if ( !applicableAttributeOids.contains( oid ) )
         {
             applicableAttributeOids.add( oid );
+            computeHashCode();
         }
     }
 
@@ -202,10 +201,11 @@ public class MatchingRuleUse extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly && !applicableAttributeOids.contains( attributeType.getOid() ) )
+        if ( !applicableAttributeOids.contains( attributeType.getOid() ) )
         {
             applicableAttributes.add( attributeType );
             applicableAttributeOids.add( attributeType.getOid() );
+            computeHashCode();
         }
     }
 
@@ -283,5 +283,6 @@ public class MatchingRuleUse extends AbstractSchemaObject
         // Clear the references
         applicableAttributes.clear();
         applicableAttributeOids.clear();
+        computeHashCode();
     }
 }

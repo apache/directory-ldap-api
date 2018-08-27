@@ -184,22 +184,6 @@ public interface SchemaObject
 
 
     /**
-     * Tells if this SchemaObject is ReadOnly.
-     * 
-     * @return true if the SchemaObject is not modifiable
-     */
-    boolean isReadOnly();
-
-
-    /**
-     * Sets the SchemaObject readOnly flag
-     * 
-     * @param isReadOnly The current SchemaObject ReadOnly status
-     */
-    void setReadOnly( boolean isReadOnly );
-
-
-    /**
      * Gets whether or not this SchemaObject has been inactivated. All
      * SchemaObjects except Syntaxes allow for this parameter within their
      * definition. For Syntaxes this property should always return false in

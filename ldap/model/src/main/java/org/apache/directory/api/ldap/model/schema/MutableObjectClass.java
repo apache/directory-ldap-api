@@ -95,13 +95,12 @@ public class MutableObjectClass extends ObjectClass
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
+        for ( String oid : oids )
         {
-            for ( String oid : oids )
-            {
-                mayAttributeTypeOids.add( oid );
-            }
+            mayAttributeTypeOids.add( oid );
         }
+        
+        computeHashCode();
     }
 
 
@@ -117,17 +116,16 @@ public class MutableObjectClass extends ObjectClass
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
+        for ( AttributeType attributeType : attributeTypes )
         {
-            for ( AttributeType attributeType : attributeTypes )
+            if ( !mayAttributeTypeOids.contains( attributeType.getOid() ) )
             {
-                if ( !mayAttributeTypeOids.contains( attributeType.getOid() ) )
-                {
-                    mayAttributeTypes.add( attributeType );
-                    mayAttributeTypeOids.add( attributeType.getOid() );
-                }
+                mayAttributeTypes.add( attributeType );
+                mayAttributeTypeOids.add( attributeType.getOid() );
             }
         }
+        
+        computeHashCode();
     }
 
 
@@ -141,10 +139,8 @@ public class MutableObjectClass extends ObjectClass
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.mayAttributeTypeOids = mayAttributeTypeOids;
-        }
+        this.mayAttributeTypeOids = mayAttributeTypeOids;
+        computeHashCode();
     }
 
 
@@ -160,18 +156,17 @@ public class MutableObjectClass extends ObjectClass
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
+        this.mayAttributeTypes = mayAttributeTypes;
+
+        // update the OIDS now
+        mayAttributeTypeOids.clear();
+
+        for ( AttributeType may : mayAttributeTypes )
         {
-            this.mayAttributeTypes = mayAttributeTypes;
-
-            // update the OIDS now
-            mayAttributeTypeOids.clear();
-
-            for ( AttributeType may : mayAttributeTypes )
-            {
-                mayAttributeTypeOids.add( may.getOid() );
-            }
+            mayAttributeTypeOids.add( may.getOid() );
         }
+        
+        computeHashCode();
     }
 
 
@@ -182,6 +177,11 @@ public class MutableObjectClass extends ObjectClass
      */
     public void updateMayAttributeTypes( List<AttributeType> mayAttributeTypes )
     {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
+        }
+
         this.mayAttributeTypes.clear();
         this.mayAttributeTypes.addAll( mayAttributeTypes );
 
@@ -207,13 +207,12 @@ public class MutableObjectClass extends ObjectClass
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
+        for ( String oid : oids )
         {
-            for ( String oid : oids )
-            {
-                mustAttributeTypeOids.add( oid );
-            }
+            mustAttributeTypeOids.add( oid );
         }
+        
+        computeHashCode();
     }
 
 
@@ -229,17 +228,16 @@ public class MutableObjectClass extends ObjectClass
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
+        for ( AttributeType attributeType : attributeTypes )
         {
-            for ( AttributeType attributeType : attributeTypes )
+            if ( !mustAttributeTypeOids.contains( attributeType.getOid() ) )
             {
-                if ( !mustAttributeTypeOids.contains( attributeType.getOid() ) )
-                {
-                    mustAttributeTypes.add( attributeType );
-                    mustAttributeTypeOids.add( attributeType.getOid() );
-                }
+                mustAttributeTypes.add( attributeType );
+                mustAttributeTypeOids.add( attributeType.getOid() );
             }
         }
+        
+        computeHashCode();
     }
 
 
@@ -253,10 +251,8 @@ public class MutableObjectClass extends ObjectClass
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.mustAttributeTypeOids = mustAttributeTypeOids;
-        }
+        this.mustAttributeTypeOids = mustAttributeTypeOids;
+        computeHashCode();
     }
 
 
@@ -272,18 +268,17 @@ public class MutableObjectClass extends ObjectClass
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
+        this.mustAttributeTypes = mustAttributeTypes;
+
+        // update the OIDS now
+        mustAttributeTypeOids.clear();
+
+        for ( AttributeType may : mustAttributeTypes )
         {
-            this.mustAttributeTypes = mustAttributeTypes;
-
-            // update the OIDS now
-            mustAttributeTypeOids.clear();
-
-            for ( AttributeType may : mustAttributeTypes )
-            {
-                mustAttributeTypeOids.add( may.getOid() );
-            }
+            mustAttributeTypeOids.add( may.getOid() );
         }
+        
+        computeHashCode();
     }
 
 
@@ -294,6 +289,11 @@ public class MutableObjectClass extends ObjectClass
      */
     public void updateMustAttributeTypes( List<AttributeType> mustAttributeTypes )
     {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
+        }
+
         this.mustAttributeTypes.clear();
         this.mustAttributeTypes.addAll( mustAttributeTypes );
 
@@ -319,16 +319,15 @@ public class MutableObjectClass extends ObjectClass
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
+        for ( String oid : oids )
         {
-            for ( String oid : oids )
+            if ( !superiorOids.contains( oid ) )
             {
-                if ( !superiorOids.contains( oid ) )
-                {
-                    superiorOids.add( oid );
-                }
+                superiorOids.add( oid );
             }
         }
+        
+        computeHashCode();
     }
 
 
@@ -344,17 +343,16 @@ public class MutableObjectClass extends ObjectClass
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
+        for ( MutableObjectClass objectClass : objectClasses )
         {
-            for ( MutableObjectClass objectClass : objectClasses )
+            if ( !superiorOids.contains( objectClass.getOid() ) )
             {
-                if ( !superiorOids.contains( objectClass.getOid() ) )
-                {
-                    superiorOids.add( objectClass.getOid() );
-                    superiors.add( objectClass );
-                }
+                superiorOids.add( objectClass.getOid() );
+                superiors.add( objectClass );
             }
         }
+        
+        computeHashCode();
     }
 
 
@@ -370,18 +368,17 @@ public class MutableObjectClass extends ObjectClass
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
+        this.superiors = superiors;
+
+        // update the OIDS now
+        superiorOids.clear();
+
+        for ( ObjectClass oc : superiors )
         {
-            this.superiors = superiors;
-
-            // update the OIDS now
-            superiorOids.clear();
-
-            for ( ObjectClass oc : superiors )
-            {
-                superiorOids.add( oc.getOid() );
-            }
+            superiorOids.add( oc.getOid() );
         }
+        
+        computeHashCode();
     }
 
 
@@ -392,6 +389,11 @@ public class MutableObjectClass extends ObjectClass
      */
     public void updateSuperiors( List<ObjectClass> superiors )
     {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
+        }
+
         this.superiors.clear();
         this.superiors.addAll( superiors );
 
@@ -417,10 +419,8 @@ public class MutableObjectClass extends ObjectClass
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.superiorOids = superiorOids;
-        }
+        this.superiorOids = superiorOids;
+        computeHashCode();
     }
 
 
@@ -436,10 +436,8 @@ public class MutableObjectClass extends ObjectClass
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.objectClassType = objectClassType;
-        }
+        this.objectClassType = objectClassType;
+        computeHashCode();
     }
 
 
@@ -459,5 +457,6 @@ public class MutableObjectClass extends ObjectClass
         mustAttributeTypeOids.clear();
         superiors.clear();
         superiorOids.clear();
+        computeHashCode();
     }
 }

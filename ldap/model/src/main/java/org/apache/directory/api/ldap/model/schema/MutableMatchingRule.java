@@ -86,6 +86,7 @@ public class MutableMatchingRule extends MatchingRule
     public MutableMatchingRule( String oid )
     {
         super( oid );
+        computeHashCode();
     }
 
 
@@ -101,10 +102,8 @@ public class MutableMatchingRule extends MatchingRule
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.ldapSyntaxOid = oid;
-        }
+        this.ldapSyntaxOid = oid;
+        computeHashCode();
     }
 
 
@@ -120,11 +119,9 @@ public class MutableMatchingRule extends MatchingRule
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.ldapSyntax = ldapSyntax;
-            this.ldapSyntaxOid = ldapSyntax.getOid();
-        }
+        this.ldapSyntax = ldapSyntax;
+        this.ldapSyntaxOid = ldapSyntax.getOid();
+        computeHashCode();
     }
 
 
@@ -142,6 +139,7 @@ public class MutableMatchingRule extends MatchingRule
 
         this.ldapSyntax = ldapSyntax;
         this.ldapSyntaxOid = ldapSyntax.getOid();
+        computeHashCode();
     }
 
 
@@ -158,10 +156,8 @@ public class MutableMatchingRule extends MatchingRule
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.ldapComparator = ( LdapComparator<? super Object> ) ldapComparator;
-        }
+        this.ldapComparator = ( LdapComparator<? super Object> ) ldapComparator;
+        computeHashCode();
     }
 
 
@@ -179,6 +175,7 @@ public class MutableMatchingRule extends MatchingRule
         }
 
         this.ldapComparator = ( LdapComparator<? super Object> ) ldapComparator;
+        computeHashCode();
     }
 
 
@@ -194,10 +191,8 @@ public class MutableMatchingRule extends MatchingRule
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.normalizer = normalizer;
-        }
+        this.normalizer = normalizer;
+        computeHashCode();
     }
 
 
@@ -214,6 +209,7 @@ public class MutableMatchingRule extends MatchingRule
         }
 
         this.normalizer = normalizer;
+        computeHashCode();
     }
 
 
@@ -230,5 +226,6 @@ public class MutableMatchingRule extends MatchingRule
         ldapComparator = null;
         ldapSyntax = null;
         normalizer = null;
+        computeHashCode();
     }
 }

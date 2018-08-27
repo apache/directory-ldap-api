@@ -141,6 +141,8 @@ public class MutableAttributeType extends AttributeType
     public MutableAttributeType( String oid )
     {
         super( oid );
+        
+        computeHashCode();
     }
 
 
@@ -156,10 +158,9 @@ public class MutableAttributeType extends AttributeType
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.isSingleValued = singleValued;
-        }
+        this.isSingleValued = singleValued;
+
+        computeHashCode();
     }
 
 
@@ -175,10 +176,9 @@ public class MutableAttributeType extends AttributeType
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.canUserModify = userModifiable;
-        }
+        this.canUserModify = userModifiable;
+
+        computeHashCode();
     }
 
 
@@ -195,6 +195,8 @@ public class MutableAttributeType extends AttributeType
         }
 
         this.isCollective = collective;
+
+        computeHashCode();
     }
 
 
@@ -210,10 +212,9 @@ public class MutableAttributeType extends AttributeType
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.isCollective = collective;
-        }
+        this.isCollective = collective;
+
+        computeHashCode();
     }
 
 
@@ -236,10 +237,9 @@ public class MutableAttributeType extends AttributeType
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.usage = usage;
-        }
+        this.usage = usage;
+
+        computeHashCode();
     }
 
 
@@ -263,6 +263,8 @@ public class MutableAttributeType extends AttributeType
         }
 
         this.usage = newUsage;
+    
+        computeHashCode();
     }
 
 
@@ -279,10 +281,9 @@ public class MutableAttributeType extends AttributeType
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.syntaxLength = length;
-        }
+        this.syntaxLength = length;
+
+        computeHashCode();
     }
 
 
@@ -298,10 +299,9 @@ public class MutableAttributeType extends AttributeType
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.superiorOid = superiorOid;
-        }
+        this.superiorOid = superiorOid;
+
+        computeHashCode();
     }
 
 
@@ -317,11 +317,10 @@ public class MutableAttributeType extends AttributeType
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.superior = superior;
-            this.superiorOid = superior.getOid();
-        }
+        this.superior = superior;
+        this.superiorOid = superior.getOid();
+
+        computeHashCode();
     }
 
 
@@ -337,10 +336,9 @@ public class MutableAttributeType extends AttributeType
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.superiorOid = newSuperiorOid;
-        }
+        this.superiorOid = newSuperiorOid;
+
+        computeHashCode();
     }
 
 
@@ -358,6 +356,8 @@ public class MutableAttributeType extends AttributeType
 
         this.superior = newSuperior;
         this.superiorOid = newSuperior.getOid();
+
+        computeHashCode();
     }
 
 
@@ -373,10 +373,9 @@ public class MutableAttributeType extends AttributeType
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.syntaxOid = syntaxOid;
-        }
+        this.syntaxOid = syntaxOid;
+
+        computeHashCode();
     }
 
 
@@ -392,11 +391,10 @@ public class MutableAttributeType extends AttributeType
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.syntax = syntax;
-            this.syntaxOid = syntax.getOid();
-        }
+        this.syntax = syntax;
+        this.syntaxOid = syntax.getOid();
+
+        computeHashCode();
     }
 
 
@@ -414,6 +412,8 @@ public class MutableAttributeType extends AttributeType
 
         this.syntax = newSyntax;
         this.syntaxOid = newSyntax.getOid();
+
+        computeHashCode();
     }
 
 
@@ -429,10 +429,9 @@ public class MutableAttributeType extends AttributeType
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.equalityOid = equalityOid;
-        }
+        this.equalityOid = equalityOid;
+
+        computeHashCode();
     }
 
 
@@ -448,11 +447,10 @@ public class MutableAttributeType extends AttributeType
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.equality = equality;
-            this.equalityOid = equality.getOid();
-        }
+        this.equality = equality;
+        this.equalityOid = equality.getOid();
+
+        computeHashCode();
     }
 
 
@@ -470,6 +468,8 @@ public class MutableAttributeType extends AttributeType
 
         this.equality = newEquality;
         this.equalityOid = newEquality.getOid();
+
+        computeHashCode();
     }
 
 
@@ -485,10 +485,9 @@ public class MutableAttributeType extends AttributeType
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.orderingOid = orderingOid;
-        }
+        this.orderingOid = orderingOid;
+
+        computeHashCode();
     }
 
 
@@ -504,11 +503,10 @@ public class MutableAttributeType extends AttributeType
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.ordering = ordering;
-            this.orderingOid = ordering.getOid();
-        }
+        this.ordering = ordering;
+        this.orderingOid = ordering.getOid();
+
+        computeHashCode();
     }
 
 
@@ -526,6 +524,8 @@ public class MutableAttributeType extends AttributeType
 
         this.ordering = newOrdering;
         this.orderingOid = newOrdering.getOid();
+
+        computeHashCode();
     }
 
 
@@ -541,10 +541,9 @@ public class MutableAttributeType extends AttributeType
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.substringOid = substrOid;
-        }
+        this.substringOid = substrOid;
+
+        computeHashCode();
     }
 
 
@@ -560,11 +559,10 @@ public class MutableAttributeType extends AttributeType
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.substring = substring;
-            this.substringOid = substring.getOid();
-        }
+        this.substring = substring;
+        this.substringOid = substring.getOid();
+
+        computeHashCode();
     }
 
 
@@ -582,6 +580,8 @@ public class MutableAttributeType extends AttributeType
 
         this.substring = newSubstring;
         this.substringOid = newSubstring.getOid();
+
+        computeHashCode();
     }
 
 
@@ -600,5 +600,7 @@ public class MutableAttributeType extends AttributeType
         substring = null;
         superior = null;
         syntax = null;
+        
+        computeHashCode();
     }
 }

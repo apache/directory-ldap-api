@@ -1504,7 +1504,6 @@ public class SchemaEntityFactory implements EntityFactory
      *  - schemaName
      *  - specification (if any)
      *  - extensions
-     *  - isReadOnly
      *  - isEnabled
      *  
      *  @param schemaObject The SchemaObject to set
@@ -1525,11 +1524,6 @@ public class SchemaEntityFactory implements EntityFactory
         // The isEnabled field. Has the description does not hold a
         // Disable field, we will inherit from the schema enable field
         schemaObject.setEnabled( schema.isEnabled() );
-
-        // The isReadOnly field. We don't have this data in the description,
-        // so set it to false
-        // TODO : should it be a X-READONLY extension ?
-        schemaObject.setReadOnly( false );
 
         // The specification field
         schemaObject.setSpecification( description.getSpecification() );

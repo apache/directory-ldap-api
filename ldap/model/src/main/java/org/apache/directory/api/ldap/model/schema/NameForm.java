@@ -128,6 +128,7 @@ public class NameForm extends AbstractSchemaObject
 
         mustAttributeTypes = new ArrayList<>();
         mayAttributeTypes = new ArrayList<>();
+        computeHashCode();
     }
 
 
@@ -167,10 +168,8 @@ public class NameForm extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.structuralObjectClassOid = structuralObjectClassOid;
-        }
+        this.structuralObjectClassOid = structuralObjectClassOid;
+        computeHashCode();
     }
 
 
@@ -186,11 +185,9 @@ public class NameForm extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.structuralObjectClass = structuralObjectClass;
-            this.structuralObjectClassOid = structuralObjectClass.getOid();
-        }
+        this.structuralObjectClass = structuralObjectClass;
+        this.structuralObjectClassOid = structuralObjectClass.getOid();
+        computeHashCode();
     }
 
 
@@ -232,10 +229,8 @@ public class NameForm extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.mustAttributeTypeOids = mustAttributeTypeOids;
-        }
+        this.mustAttributeTypeOids = mustAttributeTypeOids;
+        computeHashCode();
     }
 
 
@@ -251,18 +246,17 @@ public class NameForm extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
+        this.mustAttributeTypes = mustAttributeTypes;
+
+        // update the OIDS now
+        mustAttributeTypeOids.clear();
+
+        for ( AttributeType may : mustAttributeTypes )
         {
-            this.mustAttributeTypes = mustAttributeTypes;
-
-            // update the OIDS now
-            mustAttributeTypeOids.clear();
-
-            for ( AttributeType may : mustAttributeTypes )
-            {
-                mustAttributeTypeOids.add( may.getOid() );
-            }
+            mustAttributeTypeOids.add( may.getOid() );
         }
+        
+        computeHashCode();
     }
 
 
@@ -278,10 +272,8 @@ public class NameForm extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            mustAttributeTypeOids.add( oid );
-        }
+        mustAttributeTypeOids.add( oid );
+        computeHashCode();
     }
 
 
@@ -297,10 +289,11 @@ public class NameForm extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly && !mustAttributeTypeOids.contains( attributeType.getOid() ) )
+        if ( !mustAttributeTypeOids.contains( attributeType.getOid() ) )
         {
             mustAttributeTypes.add( attributeType );
             mustAttributeTypeOids.add( attributeType.getOid() );
+            computeHashCode();
         }
     }
 
@@ -343,10 +336,8 @@ public class NameForm extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.mayAttributeTypeOids = mayAttributeTypeOids;
-        }
+        this.mayAttributeTypeOids = mayAttributeTypeOids;
+        computeHashCode();
     }
 
 
@@ -362,18 +353,17 @@ public class NameForm extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
+        this.mayAttributeTypes = mayAttributeTypes;
+
+        // update the OIDS now
+        mayAttributeTypeOids.clear();
+
+        for ( AttributeType may : mayAttributeTypes )
         {
-            this.mayAttributeTypes = mayAttributeTypes;
-
-            // update the OIDS now
-            mayAttributeTypeOids.clear();
-
-            for ( AttributeType may : mayAttributeTypes )
-            {
-                mayAttributeTypeOids.add( may.getOid() );
-            }
+            mayAttributeTypeOids.add( may.getOid() );
         }
+        
+        computeHashCode();
     }
 
 
@@ -389,10 +379,8 @@ public class NameForm extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            mayAttributeTypeOids.add( oid );
-        }
+        mayAttributeTypeOids.add( oid );
+        computeHashCode();
     }
 
 
@@ -408,10 +396,11 @@ public class NameForm extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly && !mayAttributeTypeOids.contains( attributeType.getOid() ) )
+        if ( !mayAttributeTypeOids.contains( attributeType.getOid() ) )
         {
             mayAttributeTypes.add( attributeType );
             mayAttributeTypeOids.add( attributeType.getOid() );
+            computeHashCode();
         }
     }
 
@@ -508,5 +497,6 @@ public class NameForm extends AbstractSchemaObject
         mustAttributeTypes.clear();
         mustAttributeTypeOids.clear();
         structuralObjectClass = null;
+        computeHashCode();
     }
 }

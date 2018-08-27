@@ -104,6 +104,7 @@ public class DitStructureRule extends AbstractSchemaObject
         this.ruleId = ruleId;
         form = null;
         superRules = new ArrayList<>();
+        computeHashCode();
     }
 
 
@@ -128,10 +129,8 @@ public class DitStructureRule extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.form = form;
-        }
+        this.form = form;
+        computeHashCode();
     }
 
 
@@ -156,10 +155,8 @@ public class DitStructureRule extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.ruleId = ruleId;
-        }
+        this.ruleId = ruleId;
+        computeHashCode();
     }
 
 
@@ -184,10 +181,8 @@ public class DitStructureRule extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.superRules = superRules;
-        }
+        this.superRules = superRules;
+        computeHashCode();
     }
 
 
@@ -204,6 +199,8 @@ public class DitStructureRule extends AbstractSchemaObject
         }
 
         superRules.add( superRule );
+        
+        computeHashCode();
     }
 
 
@@ -291,5 +288,7 @@ public class DitStructureRule extends AbstractSchemaObject
 
         // Clear the references
         superRules.clear();
+        
+        computeHashCode();
     }
 }

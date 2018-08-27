@@ -97,6 +97,7 @@ public class MatchingRule extends AbstractSchemaObject
     public MatchingRule( String oid )
     {
         super( SchemaObjectType.MATCHING_RULE, oid );
+        computeHashCode();
     }
 
 

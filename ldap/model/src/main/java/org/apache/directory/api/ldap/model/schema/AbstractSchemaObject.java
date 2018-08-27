@@ -89,9 +89,6 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     /** Whether or not this SchemaObject is enabled */
     protected boolean isEnabled = true;
 
-    /** Whether or not this SchemaObject can be modified */
-    protected boolean isReadOnly = false;
-
     /** Whether or not this SchemaObject is obsolete */
     protected boolean isObsolete = false;
 
@@ -114,7 +111,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     protected volatile boolean locked;
 
     /** The hashcode for this schemaObject */
-    private int h;
+    protected volatile int h = 0;
 
 
     /**
@@ -130,6 +127,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         this.oid = oid;
         extensions = new HashMap<>();
         names = new ArrayList<>();
+        computeHashCode();
     }
 
 
@@ -224,7 +222,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
     /**
      * Add a new name to the list of names for this SchemaObject. The name
-     * is lowercased and trimmed.
+     * is lower cased and trimmed.
      * 
      * @param namesToAdd The names to add
      */
@@ -236,31 +234,30 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
+        // We must avoid duplicated names, as names are case insensitive
+        Set<String> lowerNames = new HashSet<>();
+
+        // Fills a set with all the existing names
+        for ( String name : this.names )
         {
-            // We must avoid duplicated names, as names are case insensitive
-            Set<String> lowerNames = new HashSet<>();
+            lowerNames.add( Strings.toLowerCaseAscii( name ) );
+        }
 
-            // Fills a set with all the existing names
-            for ( String name : this.names )
+        for ( String name : namesToAdd )
+        {
+            if ( name != null )
             {
-                lowerNames.add( Strings.toLowerCaseAscii( name ) );
-            }
-
-            for ( String name : namesToAdd )
-            {
-                if ( name != null )
+                String lowerName = Strings.toLowerCaseAscii( name );
+                // Check that the lower cased names is not already present
+                if ( !lowerNames.contains( lowerName ) )
                 {
-                    String lowerName = Strings.toLowerCaseAscii( name );
-                    // Check that the lower cased names is not already present
-                    if ( !lowerNames.contains( lowerName ) )
-                    {
-                        this.names.add( name );
-                        lowerNames.add( lowerName );
-                    }
+                    this.names.add( name );
+                    lowerNames.add( lowerName );
                 }
             }
         }
+        
+        computeHashCode();
     }
 
 
@@ -283,18 +280,17 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
             return;
         }
 
-        if ( !isReadOnly )
-        {
-            this.names = new ArrayList<>( names.size() );
+        this.names = new ArrayList<>( names.size() );
 
-            for ( String name : names )
+        for ( String name : names )
+        {
+            if ( name != null )
             {
-                if ( name != null )
-                {
-                    this.names.add( name );
-                }
+                this.names.add( name );
             }
         }
+        
+        computeHashCode();
     }
 
 
@@ -316,18 +312,17 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
             return;
         }
 
-        if ( !isReadOnly )
-        {
-            this.names.clear();
+        this.names.clear();
 
-            for ( String name : names )
+        for ( String name : names )
+        {
+            if ( name != null )
             {
-                if ( name != null )
-                {
-                    this.names.add( name );
-                }
+                this.names.add( name );
             }
         }
+        
+        computeHashCode();
     }
 
 
@@ -356,10 +351,9 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.description = description;
-        }
+        this.description = description;
+        
+        computeHashCode();
     }
 
 
@@ -388,10 +382,9 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.specification = specification;
-        }
+        this.specification = specification;
+        
+        computeHashCode();
     }
 
 
@@ -428,39 +421,14 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     @Override
     public void setEnabled( boolean enabled )
     {
-        if ( !isReadOnly )
-        {
-            isEnabled = enabled;
-        }
-    }
-
-
-    /**
-     * Tells if this SchemaObject is ReadOnly.
-     * 
-     * @return true if the SchemaObject is not modifiable
-     */
-    @Override
-    public boolean isReadOnly()
-    {
-        return isReadOnly;
-    }
-
-
-    /**
-     * Sets the SchemaObject readOnly flag
-     * 
-     * @param readOnly The current SchemaObject ReadOnly status
-     */
-    @Override
-    public void setReadOnly( boolean readOnly )
-    {
         if ( locked )
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        this.isReadOnly = readOnly;
+        isEnabled = enabled;
+        
+        computeHashCode();
     }
 
 
@@ -492,10 +460,9 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.isObsolete = obsolete;
-        }
+        this.isObsolete = obsolete;
+        
+        computeHashCode();
     }
 
 
@@ -557,17 +524,16 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
+        List<String> valueList = new ArrayList<>();
+
+        for ( String value : values )
         {
-            List<String> valueList = new ArrayList<>();
-
-            for ( String value : values )
-            {
-                valueList.add( value );
-            }
-
-            extensions.put( Strings.toUpperCaseAscii( key ), valueList );
+            valueList.add( value );
         }
+
+        extensions.put( Strings.toUpperCaseAscii( key ), valueList );
+        
+        computeHashCode();
     }
 
 
@@ -584,10 +550,9 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            extensions.put( Strings.toUpperCaseAscii( key ), values );
-        }
+        extensions.put( Strings.toUpperCaseAscii( key ), values );
+        
+        computeHashCode();
     }
 
 
@@ -604,7 +569,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly && ( extensions != null ) )
+        if ( extensions != null )
         {
             this.extensions = new HashMap<>();
 
@@ -620,6 +585,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
                 this.extensions.put( Strings.toUpperCaseAscii( entry.getKey() ), values );
             }
 
+            computeHashCode();
         }
     }
 
@@ -674,27 +640,9 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.schemaName = schemaName;
-        }
-    }
-
-
-    /**
-     * This method is final to forbid the inherited classes to implement
-     * it. This has been done for performances reasons : the hashcode should
-     * be computed only once, and stored locally.
-     * 
-     * The hashcode is currently computed in the lock() method, which is a hack
-     * that should be fixed.
-     * 
-     * @return {@inheritDoc}
-     */
-    @Override
-    public final int hashCode()
-    {
-        return h;
+        this.schemaName = schemaName;
+        
+        computeHashCode();
     }
 
 
@@ -835,11 +783,6 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
             return false;
         }
 
-        if ( this.isReadOnly != that.isReadOnly )
-        {
-            return false;
-        }
-
         if ( this.description == null )
         {
             return that.description == null;
@@ -883,7 +826,6 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         // copy the flags
         isEnabled = original.isEnabled();
         isObsolete = original.isObsolete();
-        isReadOnly = original.isReadOnly();
 
         // copy the names
         names = new ArrayList<>();
@@ -939,6 +881,18 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
         // Clear the names
         names.clear();
+        
+        computeHashCode();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void lock()
+    {
+        locked = true;
     }
 
 
@@ -949,56 +903,55 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     {
         locked = false;
     }
-
-
+    
+    
     /**
-     * {@inheritDoc}
+     * Compute the hashcode, and store it in the 'h' variable
      */
-    @Override
-    public final void lock()
+    protected void computeHashCode()
     {
-        if ( locked )
-        {
-            return;
-        }
-
-        h = 37;
+        int hash = 37;
 
         // The OID
-        h += h * 17 + oid.hashCode();
+        if ( oid != null )
+        {
+            hash += hash * 17 + oid.hashCode();
+        }
 
         // The SchemaObject type
-        h += h * 17 + objectType.getValue();
+        if ( objectType != null )
+        {
+            hash += hash * 17 + objectType.getValue();
+        }
 
         // The Names, if any
         if ( ( names != null ) && !names.isEmpty() )
         {
             for ( String name : names )
             {
-                h += h * 17 + name.hashCode();
+                hash += hash * 17 + name.hashCode();
             }
         }
 
         // The schemaName if any
         if ( schemaName != null )
         {
-            h += h * 17 + schemaName.hashCode();
+            hash += hash * 17 + schemaName.hashCode();
         }
 
-        h += h * 17 + ( isEnabled ? 1 : 0 );
-        h += h * 17 + ( isReadOnly ? 1 : 0 );
+        hash += hash * 17 + ( isEnabled ? 1 : 0 );
 
         // The description, if any
         if ( description != null )
         {
-            h += h * 17 + description.hashCode();
+            hash += hash * 17 + description.hashCode();
         }
 
         // The extensions, if any
         for ( Map.Entry<String, List<String>> entry : extensions.entrySet() )
         {
             String key = entry.getKey();
-            h += h * 17 + key.hashCode();
+            hash += hash * 17 + key.hashCode();
 
             List<String> values = entry.getValue();
 
@@ -1006,11 +959,21 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
             {
                 for ( String value : values )
                 {
-                    h += h * 17 + value.hashCode();
+                    hash += hash * 17 + value.hashCode();
                 }
             }
         }
+        
+        h = hash;
+    }
 
-        locked = true;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode()
+    {
+        return h;
     }
 }

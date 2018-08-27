@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.apache.directory.api.i18n.I18n;
 
-
 /**
  * A ditContentRule specification. ditContentRules identify the content of
  * entries of a particular structural objectClass. They specify the AUXILIARY
@@ -158,6 +157,7 @@ public class DitContentRule extends AbstractSchemaObject
         mustAttributeTypes = new ArrayList<>();
         notAttributeTypes = new ArrayList<>();
         auxObjectClasses = new ArrayList<>();
+        computeHashCode();
     }
 
 
@@ -182,10 +182,9 @@ public class DitContentRule extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            auxObjectClassOids.add( oid );
-        }
+        auxObjectClassOids.add( oid );
+        
+        computeHashCode();
     }
 
 
@@ -201,10 +200,12 @@ public class DitContentRule extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly && !auxObjectClassOids.contains( objectClass.getOid() ) )
+        if ( !auxObjectClassOids.contains( objectClass.getOid() ) )
         {
             auxObjectClasses.add( objectClass );
             auxObjectClassOids.add( objectClass.getOid() );
+            
+            computeHashCode();
         }
     }
 
@@ -219,10 +220,9 @@ public class DitContentRule extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.auxObjectClassOids = auxObjectClassOids;
-        }
+        this.auxObjectClassOids = auxObjectClassOids;
+        
+        computeHashCode();
     }
 
 
@@ -236,18 +236,17 @@ public class DitContentRule extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
+        this.auxObjectClasses = auxObjectClasses;
+
+        // update the OIDS now
+        auxObjectClassOids.clear();
+
+        for ( ObjectClass oc : auxObjectClasses )
         {
-            this.auxObjectClasses = auxObjectClasses;
-
-            // update the OIDS now
-            auxObjectClassOids.clear();
-
-            for ( ObjectClass oc : auxObjectClasses )
-            {
-                auxObjectClassOids.add( oc.getOid() );
-            }
+            auxObjectClassOids.add( oc.getOid() );
         }
+        
+        computeHashCode();
     }
 
 
@@ -281,10 +280,9 @@ public class DitContentRule extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            mayAttributeTypeOids.add( oid );
-        }
+        mayAttributeTypeOids.add( oid );
+        
+        computeHashCode();
     }
 
 
@@ -300,10 +298,12 @@ public class DitContentRule extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly && !mayAttributeTypeOids.contains( attributeType.getOid() ) )
+        if ( !mayAttributeTypeOids.contains( attributeType.getOid() ) )
         {
             mayAttributeTypes.add( attributeType );
             mayAttributeTypeOids.add( attributeType.getOid() );
+            
+            computeHashCode();
         }
     }
 
@@ -318,10 +318,9 @@ public class DitContentRule extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.mayAttributeTypeOids = mayAttributeTypeOids;
-        }
+        this.mayAttributeTypeOids = mayAttributeTypeOids;
+        
+        computeHashCode();
     }
 
 
@@ -337,18 +336,17 @@ public class DitContentRule extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
+        this.mayAttributeTypes = mayAttributeTypes;
+
+        // update the OIDS now
+        mayAttributeTypeOids.clear();
+
+        for ( AttributeType may : mayAttributeTypes )
         {
-            this.mayAttributeTypes = mayAttributeTypes;
-
-            // update the OIDS now
-            mayAttributeTypeOids.clear();
-
-            for ( AttributeType may : mayAttributeTypes )
-            {
-                mayAttributeTypeOids.add( may.getOid() );
-            }
+            mayAttributeTypeOids.add( may.getOid() );
         }
+        
+        computeHashCode();
     }
 
 
@@ -382,10 +380,9 @@ public class DitContentRule extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            mustAttributeTypeOids.add( oid );
-        }
+        mustAttributeTypeOids.add( oid );
+        
+        computeHashCode();
     }
 
 
@@ -401,10 +398,12 @@ public class DitContentRule extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly && !mustAttributeTypeOids.contains( attributeType.getOid() ) )
+        if ( !mustAttributeTypeOids.contains( attributeType.getOid() ) )
         {
             mustAttributeTypes.add( attributeType );
             mustAttributeTypeOids.add( attributeType.getOid() );
+            
+            computeHashCode();
         }
     }
 
@@ -419,10 +418,9 @@ public class DitContentRule extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.mustAttributeTypeOids = mustAttributeTypeOids;
-        }
+        this.mustAttributeTypeOids = mustAttributeTypeOids;
+        
+        computeHashCode();
     }
 
 
@@ -438,18 +436,17 @@ public class DitContentRule extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
+        this.mustAttributeTypes = mustAttributeTypes;
+
+        // update the OIDS now
+        mustAttributeTypeOids.clear();
+
+        for ( AttributeType may : mustAttributeTypes )
         {
-            this.mustAttributeTypes = mustAttributeTypes;
-
-            // update the OIDS now
-            mustAttributeTypeOids.clear();
-
-            for ( AttributeType may : mustAttributeTypes )
-            {
-                mustAttributeTypeOids.add( may.getOid() );
-            }
+            mustAttributeTypeOids.add( may.getOid() );
         }
+        
+        computeHashCode();
     }
 
 
@@ -483,10 +480,9 @@ public class DitContentRule extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            notAttributeTypeOids.add( oid );
-        }
+        notAttributeTypeOids.add( oid );
+        
+        computeHashCode();
     }
 
 
@@ -502,10 +498,12 @@ public class DitContentRule extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly && !notAttributeTypeOids.contains( attributeType.getOid() ) )
+        if ( !notAttributeTypeOids.contains( attributeType.getOid() ) )
         {
             notAttributeTypes.add( attributeType );
             notAttributeTypeOids.add( attributeType.getOid() );
+            
+            computeHashCode();
         }
     }
 
@@ -520,10 +518,9 @@ public class DitContentRule extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.notAttributeTypeOids = notAttributeTypeOids;
-        }
+        this.notAttributeTypeOids = notAttributeTypeOids;
+        
+        computeHashCode();
     }
 
 
@@ -539,18 +536,17 @@ public class DitContentRule extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
+        this.notAttributeTypes = notAttributeTypes;
+
+        // update the OIDS now
+        notAttributeTypeOids.clear();
+
+        for ( AttributeType not : notAttributeTypes )
         {
-            this.notAttributeTypes = notAttributeTypes;
-
-            // update the OIDS now
-            notAttributeTypeOids.clear();
-
-            for ( AttributeType not : notAttributeTypes )
-            {
-                notAttributeTypeOids.add( not.getOid() );
-            }
+            notAttributeTypeOids.add( not.getOid() );
         }
+        
+        computeHashCode();
     }
 
 
@@ -674,5 +670,6 @@ public class DitContentRule extends AbstractSchemaObject
         mustAttributeTypeOids.clear();
         notAttributeTypes.clear();
         notAttributeTypeOids.clear();
+        computeHashCode();
     }
 }

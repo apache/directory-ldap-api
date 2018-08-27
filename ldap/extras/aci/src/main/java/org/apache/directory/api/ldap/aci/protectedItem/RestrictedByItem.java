@@ -80,11 +80,11 @@ public class RestrictedByItem extends ProtectedItem
             {
                 if ( item != null )
                 {
-                    hash = hash * 17 + item.hashCode();
+                    hash = hash * item.hashCode();
                 }
                 else
                 {
-                    hash = hash * 17 + 37;
+                    hash = hash * 37;
                 }
             }
         }

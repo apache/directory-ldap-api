@@ -54,6 +54,7 @@ public abstract class LoadableSchemaObject extends AbstractSchemaObject
 
         fqcn = "";
         bytecode = null;
+        computeHashCode();
     }
 
 
@@ -68,6 +69,7 @@ public abstract class LoadableSchemaObject extends AbstractSchemaObject
 
         fqcn = "";
         bytecode = null;
+        computeHashCode();
     }
 
 
@@ -93,10 +95,8 @@ public abstract class LoadableSchemaObject extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.bytecode = bytecode;
-        }
+        this.bytecode = bytecode;
+        computeHashCode();
     }
 
 
@@ -121,10 +121,8 @@ public abstract class LoadableSchemaObject extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.fqcn = fqcn;
-        }
+        this.fqcn = fqcn;
+        computeHashCode();
     }
 
 

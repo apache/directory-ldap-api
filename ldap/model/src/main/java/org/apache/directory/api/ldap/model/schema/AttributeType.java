@@ -186,6 +186,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     public AttributeType( String oid )
     {
         super( SchemaObjectType.ATTRIBUTE_TYPE, oid );
+        computeHashCode();
     }
 
 
@@ -618,8 +619,8 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
         return copy;
     }
-
-
+    
+    
     /**
      * {@inheritDoc}
      */

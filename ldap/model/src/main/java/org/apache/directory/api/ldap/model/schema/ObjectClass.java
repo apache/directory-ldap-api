@@ -109,6 +109,7 @@ public class ObjectClass extends AbstractSchemaObject
         mustAttributeTypes = new ArrayList<>();
         superiors = new ArrayList<>();
         objectClassType = ObjectClassTypeEnum.STRUCTURAL;
+        computeHashCode();
     }
 
 

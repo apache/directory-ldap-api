@@ -90,6 +90,7 @@ public class LdapSyntax extends AbstractSchemaObject
     public LdapSyntax( String oid )
     {
         super( SchemaObjectType.LDAP_SYNTAX, oid );
+        computeHashCode();
     }
 
 
@@ -104,6 +105,7 @@ public class LdapSyntax extends AbstractSchemaObject
         super( SchemaObjectType.LDAP_SYNTAX, oid );
         this.description = description;
         this.hasHumanReadableFlag = false;
+        computeHashCode();
     }
 
 
@@ -120,6 +122,7 @@ public class LdapSyntax extends AbstractSchemaObject
         this.description = description;
         this.isHumanReadable = isHumanReadable;
         this.hasHumanReadableFlag = true;
+        computeHashCode();
     }
 
 
@@ -175,11 +178,9 @@ public class LdapSyntax extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.isHumanReadable = humanReadable;
-            this.hasHumanReadableFlag = true;
-        }
+        this.isHumanReadable = humanReadable;
+        this.hasHumanReadableFlag = true;
+        computeHashCode();
     }
 
 
@@ -207,10 +208,8 @@ public class LdapSyntax extends AbstractSchemaObject
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
         }
 
-        if ( !isReadOnly )
-        {
-            this.syntaxChecker = syntaxChecker;
-        }
+        this.syntaxChecker = syntaxChecker;
+        computeHashCode();
     }
 
 
@@ -227,6 +226,7 @@ public class LdapSyntax extends AbstractSchemaObject
         }
 
         this.syntaxChecker = newSyntaxChecker;
+        computeHashCode();
     }
 
 
@@ -316,5 +316,7 @@ public class LdapSyntax extends AbstractSchemaObject
 
         // Clear the references
         syntaxChecker = null;
+        
+        computeHashCode();
     }
 }
