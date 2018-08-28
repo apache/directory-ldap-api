@@ -86,7 +86,6 @@ public class MutableMatchingRule extends MatchingRule
     public MutableMatchingRule( String oid )
     {
         super( oid );
-        computeHashCode();
     }
 
 
@@ -103,7 +102,6 @@ public class MutableMatchingRule extends MatchingRule
         }
 
         this.ldapSyntaxOid = oid;
-        computeHashCode();
     }
 
 
@@ -121,7 +119,6 @@ public class MutableMatchingRule extends MatchingRule
 
         this.ldapSyntax = ldapSyntax;
         this.ldapSyntaxOid = ldapSyntax.getOid();
-        computeHashCode();
     }
 
 
@@ -139,7 +136,6 @@ public class MutableMatchingRule extends MatchingRule
 
         this.ldapSyntax = ldapSyntax;
         this.ldapSyntaxOid = ldapSyntax.getOid();
-        computeHashCode();
     }
 
 
@@ -157,7 +153,6 @@ public class MutableMatchingRule extends MatchingRule
         }
 
         this.ldapComparator = ( LdapComparator<? super Object> ) ldapComparator;
-        computeHashCode();
     }
 
 
@@ -175,7 +170,6 @@ public class MutableMatchingRule extends MatchingRule
         }
 
         this.ldapComparator = ( LdapComparator<? super Object> ) ldapComparator;
-        computeHashCode();
     }
 
 
@@ -192,7 +186,6 @@ public class MutableMatchingRule extends MatchingRule
         }
 
         this.normalizer = normalizer;
-        computeHashCode();
     }
 
 
@@ -209,7 +202,6 @@ public class MutableMatchingRule extends MatchingRule
         }
 
         this.normalizer = normalizer;
-        computeHashCode();
     }
 
 
@@ -226,6 +218,5 @@ public class MutableMatchingRule extends MatchingRule
         ldapComparator = null;
         ldapSyntax = null;
         normalizer = null;
-        computeHashCode();
     }
 }

@@ -54,7 +54,6 @@ public abstract class LoadableSchemaObject extends AbstractSchemaObject
 
         fqcn = "";
         bytecode = null;
-        computeHashCode();
     }
 
 
@@ -69,7 +68,6 @@ public abstract class LoadableSchemaObject extends AbstractSchemaObject
 
         fqcn = "";
         bytecode = null;
-        computeHashCode();
     }
 
 
@@ -96,7 +94,6 @@ public abstract class LoadableSchemaObject extends AbstractSchemaObject
         }
 
         this.bytecode = bytecode;
-        computeHashCode();
     }
 
 
@@ -122,7 +119,6 @@ public abstract class LoadableSchemaObject extends AbstractSchemaObject
         }
 
         this.fqcn = fqcn;
-        computeHashCode();
     }
 
 

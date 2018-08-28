@@ -99,8 +99,6 @@ public class MutableObjectClass extends ObjectClass
         {
             mayAttributeTypeOids.add( oid );
         }
-        
-        computeHashCode();
     }
 
 
@@ -124,8 +122,6 @@ public class MutableObjectClass extends ObjectClass
                 mayAttributeTypeOids.add( attributeType.getOid() );
             }
         }
-        
-        computeHashCode();
     }
 
 
@@ -140,7 +136,6 @@ public class MutableObjectClass extends ObjectClass
         }
 
         this.mayAttributeTypeOids = mayAttributeTypeOids;
-        computeHashCode();
     }
 
 
@@ -165,8 +160,6 @@ public class MutableObjectClass extends ObjectClass
         {
             mayAttributeTypeOids.add( may.getOid() );
         }
-        
-        computeHashCode();
     }
 
 
@@ -211,8 +204,6 @@ public class MutableObjectClass extends ObjectClass
         {
             mustAttributeTypeOids.add( oid );
         }
-        
-        computeHashCode();
     }
 
 
@@ -236,8 +227,6 @@ public class MutableObjectClass extends ObjectClass
                 mustAttributeTypeOids.add( attributeType.getOid() );
             }
         }
-        
-        computeHashCode();
     }
 
 
@@ -252,7 +241,6 @@ public class MutableObjectClass extends ObjectClass
         }
 
         this.mustAttributeTypeOids = mustAttributeTypeOids;
-        computeHashCode();
     }
 
 
@@ -277,8 +265,6 @@ public class MutableObjectClass extends ObjectClass
         {
             mustAttributeTypeOids.add( may.getOid() );
         }
-        
-        computeHashCode();
     }
 
 
@@ -326,8 +312,6 @@ public class MutableObjectClass extends ObjectClass
                 superiorOids.add( oid );
             }
         }
-        
-        computeHashCode();
     }
 
 
@@ -351,8 +335,6 @@ public class MutableObjectClass extends ObjectClass
                 superiors.add( objectClass );
             }
         }
-        
-        computeHashCode();
     }
 
 
@@ -377,8 +359,6 @@ public class MutableObjectClass extends ObjectClass
         {
             superiorOids.add( oc.getOid() );
         }
-        
-        computeHashCode();
     }
 
 
@@ -420,7 +400,6 @@ public class MutableObjectClass extends ObjectClass
         }
 
         this.superiorOids = superiorOids;
-        computeHashCode();
     }
 
 
@@ -437,7 +416,6 @@ public class MutableObjectClass extends ObjectClass
         }
 
         this.objectClassType = objectClassType;
-        computeHashCode();
     }
 
 
@@ -457,6 +435,5 @@ public class MutableObjectClass extends ObjectClass
         mustAttributeTypeOids.clear();
         superiors.clear();
         superiorOids.clear();
-        computeHashCode();
     }
 }

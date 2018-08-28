@@ -128,7 +128,6 @@ public class NameForm extends AbstractSchemaObject
 
         mustAttributeTypes = new ArrayList<>();
         mayAttributeTypes = new ArrayList<>();
-        computeHashCode();
     }
 
 
@@ -169,7 +168,6 @@ public class NameForm extends AbstractSchemaObject
         }
 
         this.structuralObjectClassOid = structuralObjectClassOid;
-        computeHashCode();
     }
 
 
@@ -187,7 +185,6 @@ public class NameForm extends AbstractSchemaObject
 
         this.structuralObjectClass = structuralObjectClass;
         this.structuralObjectClassOid = structuralObjectClass.getOid();
-        computeHashCode();
     }
 
 
@@ -230,7 +227,6 @@ public class NameForm extends AbstractSchemaObject
         }
 
         this.mustAttributeTypeOids = mustAttributeTypeOids;
-        computeHashCode();
     }
 
 
@@ -255,8 +251,6 @@ public class NameForm extends AbstractSchemaObject
         {
             mustAttributeTypeOids.add( may.getOid() );
         }
-        
-        computeHashCode();
     }
 
 
@@ -273,7 +267,6 @@ public class NameForm extends AbstractSchemaObject
         }
 
         mustAttributeTypeOids.add( oid );
-        computeHashCode();
     }
 
 
@@ -293,7 +286,6 @@ public class NameForm extends AbstractSchemaObject
         {
             mustAttributeTypes.add( attributeType );
             mustAttributeTypeOids.add( attributeType.getOid() );
-            computeHashCode();
         }
     }
 
@@ -337,7 +329,6 @@ public class NameForm extends AbstractSchemaObject
         }
 
         this.mayAttributeTypeOids = mayAttributeTypeOids;
-        computeHashCode();
     }
 
 
@@ -362,8 +353,6 @@ public class NameForm extends AbstractSchemaObject
         {
             mayAttributeTypeOids.add( may.getOid() );
         }
-        
-        computeHashCode();
     }
 
 
@@ -380,7 +369,6 @@ public class NameForm extends AbstractSchemaObject
         }
 
         mayAttributeTypeOids.add( oid );
-        computeHashCode();
     }
 
 
@@ -400,7 +388,6 @@ public class NameForm extends AbstractSchemaObject
         {
             mayAttributeTypes.add( attributeType );
             mayAttributeTypeOids.add( attributeType.getOid() );
-            computeHashCode();
         }
     }
 
@@ -497,6 +484,5 @@ public class NameForm extends AbstractSchemaObject
         mustAttributeTypes.clear();
         mustAttributeTypeOids.clear();
         structuralObjectClass = null;
-        computeHashCode();
     }
 }

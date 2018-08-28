@@ -90,7 +90,6 @@ public class LdapSyntax extends AbstractSchemaObject
     public LdapSyntax( String oid )
     {
         super( SchemaObjectType.LDAP_SYNTAX, oid );
-        computeHashCode();
     }
 
 
@@ -180,7 +179,6 @@ public class LdapSyntax extends AbstractSchemaObject
 
         this.isHumanReadable = humanReadable;
         this.hasHumanReadableFlag = true;
-        computeHashCode();
     }
 
 
@@ -209,7 +207,6 @@ public class LdapSyntax extends AbstractSchemaObject
         }
 
         this.syntaxChecker = syntaxChecker;
-        computeHashCode();
     }
 
 
@@ -226,7 +223,6 @@ public class LdapSyntax extends AbstractSchemaObject
         }
 
         this.syntaxChecker = newSyntaxChecker;
-        computeHashCode();
     }
 
 
@@ -316,7 +312,5 @@ public class LdapSyntax extends AbstractSchemaObject
 
         // Clear the references
         syntaxChecker = null;
-        
-        computeHashCode();
     }
 }

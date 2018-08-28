@@ -141,8 +141,6 @@ public class MutableAttributeType extends AttributeType
     public MutableAttributeType( String oid )
     {
         super( oid );
-        
-        computeHashCode();
     }
 
 
@@ -159,8 +157,6 @@ public class MutableAttributeType extends AttributeType
         }
 
         this.isSingleValued = singleValued;
-
-        computeHashCode();
     }
 
 
@@ -177,8 +173,6 @@ public class MutableAttributeType extends AttributeType
         }
 
         this.canUserModify = userModifiable;
-
-        computeHashCode();
     }
 
 
@@ -195,8 +189,6 @@ public class MutableAttributeType extends AttributeType
         }
 
         this.isCollective = collective;
-
-        computeHashCode();
     }
 
 
@@ -213,8 +205,6 @@ public class MutableAttributeType extends AttributeType
         }
 
         this.isCollective = collective;
-
-        computeHashCode();
     }
 
 
@@ -238,8 +228,6 @@ public class MutableAttributeType extends AttributeType
         }
 
         this.usage = usage;
-
-        computeHashCode();
     }
 
 
@@ -263,8 +251,6 @@ public class MutableAttributeType extends AttributeType
         }
 
         this.usage = newUsage;
-    
-        computeHashCode();
     }
 
 
@@ -282,8 +268,6 @@ public class MutableAttributeType extends AttributeType
         }
 
         this.syntaxLength = length;
-
-        computeHashCode();
     }
 
 
@@ -300,8 +284,6 @@ public class MutableAttributeType extends AttributeType
         }
 
         this.superiorOid = superiorOid;
-
-        computeHashCode();
     }
 
 
@@ -319,8 +301,6 @@ public class MutableAttributeType extends AttributeType
 
         this.superior = superior;
         this.superiorOid = superior.getOid();
-
-        computeHashCode();
     }
 
 
@@ -337,8 +317,6 @@ public class MutableAttributeType extends AttributeType
         }
 
         this.superiorOid = newSuperiorOid;
-
-        computeHashCode();
     }
 
 
@@ -356,8 +334,6 @@ public class MutableAttributeType extends AttributeType
 
         this.superior = newSuperior;
         this.superiorOid = newSuperior.getOid();
-
-        computeHashCode();
     }
 
 
@@ -374,8 +350,6 @@ public class MutableAttributeType extends AttributeType
         }
 
         this.syntaxOid = syntaxOid;
-
-        computeHashCode();
     }
 
 
@@ -393,8 +367,6 @@ public class MutableAttributeType extends AttributeType
 
         this.syntax = syntax;
         this.syntaxOid = syntax.getOid();
-
-        computeHashCode();
     }
 
 
@@ -412,8 +384,6 @@ public class MutableAttributeType extends AttributeType
 
         this.syntax = newSyntax;
         this.syntaxOid = newSyntax.getOid();
-
-        computeHashCode();
     }
 
 
@@ -430,8 +400,6 @@ public class MutableAttributeType extends AttributeType
         }
 
         this.equalityOid = equalityOid;
-
-        computeHashCode();
     }
 
 
@@ -449,8 +417,6 @@ public class MutableAttributeType extends AttributeType
 
         this.equality = equality;
         this.equalityOid = equality.getOid();
-
-        computeHashCode();
     }
 
 
@@ -468,8 +434,6 @@ public class MutableAttributeType extends AttributeType
 
         this.equality = newEquality;
         this.equalityOid = newEquality.getOid();
-
-        computeHashCode();
     }
 
 
@@ -486,8 +450,6 @@ public class MutableAttributeType extends AttributeType
         }
 
         this.orderingOid = orderingOid;
-
-        computeHashCode();
     }
 
 
@@ -505,8 +467,6 @@ public class MutableAttributeType extends AttributeType
 
         this.ordering = ordering;
         this.orderingOid = ordering.getOid();
-
-        computeHashCode();
     }
 
 
@@ -524,8 +484,6 @@ public class MutableAttributeType extends AttributeType
 
         this.ordering = newOrdering;
         this.orderingOid = newOrdering.getOid();
-
-        computeHashCode();
     }
 
 
@@ -542,8 +500,6 @@ public class MutableAttributeType extends AttributeType
         }
 
         this.substringOid = substrOid;
-
-        computeHashCode();
     }
 
 
@@ -561,8 +517,6 @@ public class MutableAttributeType extends AttributeType
 
         this.substring = substring;
         this.substringOid = substring.getOid();
-
-        computeHashCode();
     }
 
 
@@ -580,8 +534,6 @@ public class MutableAttributeType extends AttributeType
 
         this.substring = newSubstring;
         this.substringOid = newSubstring.getOid();
-
-        computeHashCode();
     }
 
 
@@ -600,7 +552,5 @@ public class MutableAttributeType extends AttributeType
         substring = null;
         superior = null;
         syntax = null;
-        
-        computeHashCode();
     }
 }

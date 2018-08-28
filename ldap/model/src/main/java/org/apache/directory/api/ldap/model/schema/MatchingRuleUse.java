@@ -104,7 +104,6 @@ public class MatchingRuleUse extends AbstractSchemaObject
 
         applicableAttributeOids = new ArrayList<>();
         applicableAttributes = new ArrayList<>();
-        computeHashCode();
     }
 
 
@@ -139,7 +138,6 @@ public class MatchingRuleUse extends AbstractSchemaObject
         }
 
         this.applicableAttributeOids = applicableAttributeOids;
-        computeHashCode();
     }
 
 
@@ -164,8 +162,6 @@ public class MatchingRuleUse extends AbstractSchemaObject
         {
             applicableAttributeOids.add( at.getOid() );
         }
-        
-        computeHashCode();
     }
 
 
@@ -184,7 +180,6 @@ public class MatchingRuleUse extends AbstractSchemaObject
         if ( !applicableAttributeOids.contains( oid ) )
         {
             applicableAttributeOids.add( oid );
-            computeHashCode();
         }
     }
 
@@ -205,7 +200,6 @@ public class MatchingRuleUse extends AbstractSchemaObject
         {
             applicableAttributes.add( attributeType );
             applicableAttributeOids.add( attributeType.getOid() );
-            computeHashCode();
         }
     }
 
@@ -283,6 +277,5 @@ public class MatchingRuleUse extends AbstractSchemaObject
         // Clear the references
         applicableAttributes.clear();
         applicableAttributeOids.clear();
-        computeHashCode();
     }
 }
