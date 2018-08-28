@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
-    <version>42</version>
+    <version>43</version>
     <relativePath />
   </parent>
 
@@ -48,7 +48,7 @@
     <commons.codec.version>1.11</commons.codec.version>
     <commons.collections.version>3.2.2</commons.collections.version>
     <commons.lang.version>2.6</commons.lang.version>
-    <commons.pool.version>2.5.0</commons.pool.version>
+    <commons.pool.version>2.6.0</commons.pool.version>
     <dom4j.version>1.6.1</dom4j.version>
     <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
     <forbiddenapis.version>2.5</forbiddenapis.version>
@@ -57,8 +57,8 @@
     <logback.version>1.2.3</logback.version>
     <mina.core.version>2.0.18</mina.core.version>
     <org.osgi.core.version>6.0.0</org.osgi.core.version>
-    <org.apache.felix.version>6.0.0</org.apache.felix.version>
-    <pax-exam.version>4.11.0</pax-exam.version>
+    <org.apache.felix.version>6.0.1</org.apache.felix.version>
+    <pax-exam.version>4.12.0</pax-exam.version>
     <pax-url.version>2.5.4</pax-url.version>
     <slf4j.api.version>1.7.25</slf4j.api.version>
     <slf4j.api.bundleversion>"$«range;[==,=+)»"</slf4j.api.bundleversion>
