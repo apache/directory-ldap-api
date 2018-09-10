@@ -61,12 +61,6 @@
       <groupId>org.apache.servicemix.bundles</groupId>
       <artifactId>org.apache.servicemix.bundles.xpp3</artifactId>
     </dependency>
-
-    <dependency>
-      <groupId>findbugs</groupId>
-      <artifactId>annotations</artifactId>
-      <scope>provided</scope>
-    </dependency>
   </dependencies>
 
   <build>

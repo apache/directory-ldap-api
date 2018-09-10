@@ -23,7 +23,6 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.startTransaction;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequest;
 import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionRequest;
 import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionRequestImpl;
 import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionResponse;
@@ -60,7 +59,7 @@ public class StartTransactionFactory implements ExtendedOperationFactory
     @Override
     public String getOid()
     {
-        return CancelRequest.EXTENSION_OID;
+        return StartTransactionRequest.EXTENSION_OID;
     }
 
 

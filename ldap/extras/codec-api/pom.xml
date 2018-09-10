@@ -44,12 +44,6 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>api-ldap-model</artifactId>
     </dependency>
-
-    <dependency>
-      <groupId>findbugs</groupId>
-      <artifactId>annotations</artifactId>
-      <scope>provided</scope>
-    </dependency>
   </dependencies>
 
   <build>

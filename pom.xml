@@ -50,7 +50,6 @@
     <commons.lang.version>2.6</commons.lang.version>
     <commons.pool.version>2.6.0</commons.pool.version>
     <dom4j.version>1.6.1</dom4j.version>
-    <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
     <forbiddenapis.version>2.5</forbiddenapis.version>
     <junit.version>4.12</junit.version>
     <log4j.version>1.2.17</log4j.version>
@@ -588,12 +587,6 @@
         <groupId>org.apache.servicemix.bundles</groupId>
         <artifactId>org.apache.servicemix.bundles.xpp3</artifactId>
         <version>${xpp3.version}_7</version>
-      </dependency>
-
-      <dependency>
-        <groupId>findbugs</groupId>
-        <artifactId>annotations</artifactId>
-        <version>${findbugs.annotations.version}</version>
       </dependency>
 
       <dependency>
