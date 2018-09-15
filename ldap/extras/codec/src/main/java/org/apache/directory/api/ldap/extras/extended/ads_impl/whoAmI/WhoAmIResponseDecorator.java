@@ -102,7 +102,7 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
             }
             catch ( EncoderException e )
             {
-                LOG.error( I18n.err( I18n.ERR_08218_CERT_GENERATE_PAYLOAD_ENCODING_FAILED ), e );
+                LOG.error( I18n.err( I18n.ERR_08230_WHOAMI_PAYLOAD_ENCODING_FAILED ), e );
                 throw new RuntimeException( e );
             }
         }

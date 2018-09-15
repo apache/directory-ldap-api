@@ -58,7 +58,7 @@ public class StartTransactionResponseImpl extends ExtendedResponseImpl implement
      */
     public StartTransactionResponseImpl( int messageId, ResultCodeEnum resultCode, byte[] transactionId )
     {
-        super( messageId );
+        super( messageId, EXTENSION_OID );
 
         switch ( resultCode )
         {
@@ -89,7 +89,7 @@ public class StartTransactionResponseImpl extends ExtendedResponseImpl implement
      */
     public StartTransactionResponseImpl( int messageId, byte[] transactionId )
     {
-        super( messageId );
+        super( messageId, EXTENSION_OID );
         super.getLdapResult().setMatchedDn( null );
         super.getLdapResult().setResultCode( ResultCodeEnum.SUCCESS );
         this.transactionId = Strings.copy( transactionId );
@@ -118,19 +118,6 @@ public class StartTransactionResponseImpl extends ExtendedResponseImpl implement
         super( StartTransactionRequest.EXTENSION_OID );
         super.getLdapResult().setMatchedDn( null );
         super.getLdapResult().setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
-    }
-
-
-    /**
-     * Gets the OID uniquely identifying this extended response (a.k.a. its
-     * name). It's a null value for the Cancel response
-     * 
-     * @return the OID of the extended response type.
-     */
-    @Override
-    public String getResponseName()
-    {
-        return "";
     }
 
 

@@ -98,7 +98,7 @@ public class StartTransactionFactory implements ExtendedOperationFactory
             return ( StartTransactionRequestDecorator ) modelRequest;
         }
 
-        return new StartTransactionRequestDecorator( codec, null );
+        return new StartTransactionRequestDecorator( codec, ( StartTransactionRequest ) modelRequest );
     }
 
 
@@ -106,13 +106,13 @@ public class StartTransactionFactory implements ExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public StartTransactionResponseDecorator decorate( ExtendedResponse decoratedMessage )
+    public StartTransactionResponseDecorator decorate( ExtendedResponse decoratedResponse )
     {
-        if ( decoratedMessage instanceof StartTransactionResponseDecorator )
+        if ( decoratedResponse instanceof StartTransactionResponseDecorator )
         {
-            return ( StartTransactionResponseDecorator ) decoratedMessage;
+            return ( StartTransactionResponseDecorator ) decoratedResponse;
         }
 
-        return new StartTransactionResponseDecorator( codec, null );
+        return new StartTransactionResponseDecorator( codec, ( StartTransactionResponse ) decoratedResponse );
     }
 }

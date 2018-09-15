@@ -21,9 +21,19 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.startTransaction;
 
 
 import org.apache.directory.api.ldap.codec.decorators.ExtendedResponseDecorator;
+
+import java.nio.ByteBuffer;
+
+import org.apache.directory.api.asn1.EncoderException;
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionResponse;
+import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionResponseImpl;
 import org.apache.directory.api.util.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -33,6 +43,9 @@ import org.apache.directory.api.util.Strings;
  */
 public class StartTransactionResponseDecorator extends ExtendedResponseDecorator<StartTransactionResponse> implements StartTransactionResponse
 {
+    /** A logger for this class */
+    private static final Logger LOG = LoggerFactory.getLogger( StartTransactionResponseDecorator.class );
+
     /** The startTransaction response */
     private StartTransactionResponse startTransactionResponse;
 
@@ -53,6 +66,67 @@ public class StartTransactionResponseDecorator extends ExtendedResponseDecorator
      * {@inheritDoc}
      */
     @Override
+    public byte[] getResponseValue()
+    {
+        if ( responseValue == null )
+        {
+            try
+            {
+                responseValue = encodeInternal().array();
+            }
+            catch ( EncoderException e )
+            {
+                LOG.error( I18n.err( I18n.ERR_08231_START_TRANSACTION_PAYLOAD_ENCODING_FAILED ), e );
+                throw new RuntimeException( e );
+            }
+        }
+
+        return responseValue;
+    }
+
+
+    /**
+     * Compute the StartTransactionResponse extended operation length
+     * <pre>
+     * 0x04 L1 transactionId
+     * </pre>
+     * 
+     * @return The extended operation's length
+     */
+    /* no qualifier */int computeLengthInternal()
+    {
+        if ( startTransactionResponse.getTransactionId() != null )
+        {
+            return 1 + TLV.getNbBytes( startTransactionResponse.getTransactionId().length )
+                + startTransactionResponse.getTransactionId().length;
+        }
+        else
+        {
+            return 1 + 1;
+        }
+    }
+
+
+    /**
+     * Encodes the StartTransactionResponse extended operation.
+     * 
+     * @return A ByteBuffer that contains the encoded PDU
+     * @throws EncoderException If anything goes wrong.
+     */
+    /* no qualifier */ByteBuffer encodeInternal() throws EncoderException
+    {
+        ByteBuffer bb = ByteBuffer.allocate( computeLengthInternal() );
+
+        BerValue.encode( bb, startTransactionResponse.getTransactionId() );
+
+        return bb;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setResponseValue( byte[] responseValue )
     {
         this.responseValue = Strings.copy( responseValue );
@@ -66,5 +140,14 @@ public class StartTransactionResponseDecorator extends ExtendedResponseDecorator
     public byte[] getTransactionId()
     {
         return startTransactionResponse.getTransactionId();
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void setTransactionId( byte[] transactionId )
+    {
+        ( ( StartTransactionResponseImpl ) getDecorated() ).setTransactionId( transactionId );
     }
 }
