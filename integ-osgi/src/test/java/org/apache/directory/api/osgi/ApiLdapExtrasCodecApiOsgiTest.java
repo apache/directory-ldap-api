@@ -35,6 +35,8 @@ import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStat
 import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewRequestImpl;
 import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewResponseImpl
 ;
+import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionRequestImpl;
+import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionResponseImpl;
 import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyRequestImpl;
 import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyResponseImpl;
 import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequestImpl;
@@ -61,24 +63,26 @@ public class ApiLdapExtrasCodecApiOsgiTest extends ApiOsgiTestBase
     {
         SynchronizationModeEnum.REFRESH_AND_PERSIST.getValue();
         new AdDirSyncImpl().getOid();
-        new AdShowDeletedImpl().getOid();
         new AdPolicyHintsImpl().getOid();
+        new AdShowDeletedImpl().getOid();
         new ChangeNotificationsImpl().getOid();
-        new PermissiveModifyImpl().getOid();
+        new EndTransactionRequestImpl();
+        new EndTransactionResponseImpl();
+        new PasswordModifyRequestImpl().getUserIdentity();
+        new PasswordModifyResponseImpl( 5 ).setResponseName( "foo" );
         new PasswordPolicyImpl().getOid();
         new PasswordPolicyResponseImpl().getGraceAuthNRemaining();
+        new PermissiveModifyImpl().getOid();
+        new StartTlsRequestImpl();
+        new StartTlsResponseImpl();
+        new StartTransactionRequestImpl();
+        new StartTransactionResponseImpl();
         new SyncDoneValueImpl().getOid();
         new SyncRequestValueImpl().getOid();
         new SyncStateValueImpl( true ).getCookie();
         new VirtualListViewRequestImpl().getOid();
         new VirtualListViewResponseImpl().getOid();
-        new PasswordModifyRequestImpl().getUserIdentity();
-        new PasswordModifyResponseImpl( 5 ).setResponseName( "foo" );
         new WhoAmIRequestImpl();
         new WhoAmIResponseImpl().setDn( new Dn( "uid=admin,ou=system" ) );
-        new StartTlsRequestImpl();
-        new StartTlsResponseImpl();
-        new StartTransactionRequestImpl();
-        new StartTransactionResponseImpl();
     }
 }
