@@ -87,6 +87,16 @@ public class EndTransactionResponseDecorator extends ExtendedResponseDecorator<E
      * {@inheritDoc}
      */
     @Override
+    public byte[] getResponseValue()
+    {
+        return responseValue;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setResponseValue( byte[] responseValue )
     {
         EndTransactionResponseDecoder decoder = new EndTransactionResponseDecoder();

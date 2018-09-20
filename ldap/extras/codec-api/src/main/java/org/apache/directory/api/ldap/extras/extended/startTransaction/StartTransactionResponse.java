@@ -27,9 +27,8 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
  * The interface for Start Transaction Extended Response. It's described in RFC 5805 :
  * 
  * <pre>
- * ExtendedResponse ::= [APPLICATION 24] SEQUENCE {
+ * StartTransactionResponse ::= [APPLICATION 24] SEQUENCE {
  *            COMPONENTS OF LDAPResult,
- *            responseName     [10] LDAPOID OPTIONAL,
  *            responseValue    [11] OCTET STRING OPTIONAL }
  * </pre>
  * 
@@ -40,10 +39,6 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
  */
 public interface StartTransactionResponse extends ExtendedResponse
 {
-    /** The OID for the Start Transaction extended operation response. */
-    String EXTENSION_OID = StartTransactionRequest.EXTENSION_OID;
-    
-    
     /**
      * @return The transaction ID if success
      */

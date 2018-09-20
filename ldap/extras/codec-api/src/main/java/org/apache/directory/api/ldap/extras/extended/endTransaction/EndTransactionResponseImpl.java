@@ -89,11 +89,11 @@ public class EndTransactionResponseImpl extends ExtendedResponseImpl implements 
     /**
      * Create a new EndTransactionResponseImpl instance
      * 
-     * @param failedMessageId The request's messageId
+     * @param messageId The request's messageId
      */
-    public EndTransactionResponseImpl( int failedMessageId )
+    public EndTransactionResponseImpl( int messageId )
     {
-        super( failedMessageId );
+        super( messageId );
         super.getLdapResult().setMatchedDn( null );
         super.getLdapResult().setResultCode( ResultCodeEnum.SUCCESS );
     }
@@ -106,7 +106,7 @@ public class EndTransactionResponseImpl extends ExtendedResponseImpl implements 
     {
         super( EndTransactionRequest.EXTENSION_OID );
         super.getLdapResult().setMatchedDn( null );
-        super.getLdapResult().setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
+        super.getLdapResult().setResultCode( ResultCodeEnum.SUCCESS );
     }
 
 

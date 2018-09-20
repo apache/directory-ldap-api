@@ -27,12 +27,11 @@ import org.apache.directory.api.ldap.model.message.ExtendedRequest;
  * The StartTransactionRequest interface. This is for the RFC 5805 Start Transaction Request,
  * which grammar is :
  * <pre>
- * ExtendedRequest ::= [APPLICATION 23] SEQUENCE {
- *              requestName      [0] LDAPOID,
- *              requestValue     [1] OCTET STRING OPTIONAL }
+ * StartTransactionRequest ::= [APPLICATION 23] SEQUENCE {
+ *              requestName      [0] LDAPOID
+ * }
  * </pre>
- * 
- * where 'requestName' is 1.3.6.1.1.21.1 and requestValue is absent.
+ * where 'requestName' is 1.3.6.1.1.21.1.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

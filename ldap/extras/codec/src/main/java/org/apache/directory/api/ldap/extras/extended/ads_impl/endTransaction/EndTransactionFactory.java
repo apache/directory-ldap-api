@@ -23,7 +23,7 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequest;
+import org.apache.directory.api.ldap.codec.decorators.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionRequest;
 import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionRequestImpl;
 import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionResponse;
@@ -60,7 +60,7 @@ public class EndTransactionFactory implements ExtendedOperationFactory
     @Override
     public String getOid()
     {
-        return CancelRequest.EXTENSION_OID;
+        return EndTransactionRequest.EXTENSION_OID;
     }
 
 
@@ -70,7 +70,8 @@ public class EndTransactionFactory implements ExtendedOperationFactory
     @Override
     public EndTransactionResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
-        EndTransactionResponseDecorator response = new EndTransactionResponseDecorator( codec, new EndTransactionResponseImpl() );
+        EndTransactionResponseDecorator response = new EndTransactionResponseDecorator( codec, 
+                new EndTransactionResponseImpl() );
         response.setResponseValue( encodedValue );
 
         return response;
@@ -83,7 +84,15 @@ public class EndTransactionFactory implements ExtendedOperationFactory
     @Override
     public EndTransactionRequest newRequest( byte[] value )
     {
-        return new EndTransactionRequestDecorator( codec, new EndTransactionRequestImpl() );
+        EndTransactionRequestDecorator req = 
+                new EndTransactionRequestDecorator( codec, new EndTransactionRequestImpl() );
+
+        if ( value != null )
+        {
+            req.setRequestValue( value );
+        }
+
+        return req;
     }
 
 
@@ -98,7 +107,7 @@ public class EndTransactionFactory implements ExtendedOperationFactory
             return ( EndTransactionRequestDecorator ) modelRequest;
         }
 
-        return new EndTransactionRequestDecorator( codec, null );
+        return new EndTransactionRequestDecorator( codec, ( EndTransactionRequest ) modelRequest );
     }
 
 
@@ -106,13 +115,24 @@ public class EndTransactionFactory implements ExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public EndTransactionResponseDecorator decorate( ExtendedResponse decoratedMessage )
+    public EndTransactionResponseDecorator decorate( ExtendedResponse decoratedResponse )
     {
-        if ( decoratedMessage instanceof EndTransactionResponseDecorator )
+        if ( decoratedResponse instanceof EndTransactionResponseDecorator )
         {
-            return ( EndTransactionResponseDecorator ) decoratedMessage;
+            return ( EndTransactionResponseDecorator ) decoratedResponse;
         }
 
-        return new EndTransactionResponseDecorator( codec, null );
+        // It's an opaque extended operation
+        ExtendedResponseDecorator<ExtendedResponse> response = 
+                ( ExtendedResponseDecorator<ExtendedResponse> ) decoratedResponse;
+
+        // Decode the response, as it's an opaque operation
+        EndTransactionResponse endTransactionResponse = new EndTransactionResponseImpl();
+        
+        endTransactionResponse.setMessageId( response.getMessageId() );
+        endTransactionResponse.getLdapResult().setResultCode( response.getLdapResult().getResultCode() );
+        endTransactionResponse.getLdapResult().setDiagnosticMessage( response.getLdapResult().getDiagnosticMessage() );
+
+        return new EndTransactionResponseDecorator( codec, endTransactionResponse );
     }
 }

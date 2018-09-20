@@ -27,11 +27,10 @@ import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
  * Implement the extended Start Transaction Request as described in RFC 5805.
  * 
  * It's grammar is :
- * 
  * <pre>
- * ExtendedRequest ::= [APPLICATION 23] SEQUENCE {
- *              requestName      [0] LDAPOID,
- *              requestValue     [1] OCTET STRING OPTIONAL }
+ * StartTransactionRequest ::= [APPLICATION 23] SEQUENCE {
+ *              requestName      [0] LDAPOID
+ * }
  * </pre>
  * 
  * where 'requestName' is 1.3.6.1.1.21.1 and requestValue is absent.
@@ -73,5 +72,15 @@ public class StartTransactionRequestImpl extends AbstractExtendedRequest impleme
         }
 
         return ( StartTransactionResponse ) getResponse();
+    }
+
+
+    /**
+     * @see Object#toString()
+     */
+    @Override
+    public String toString()
+    {
+        return "StartTransactionRequest";
     }
 }

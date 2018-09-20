@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.startTransaction;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.decorators.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionRequest;
 import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionRequestImpl;
 import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionResponse;
@@ -83,7 +84,15 @@ public class StartTransactionFactory implements ExtendedOperationFactory
     @Override
     public StartTransactionRequest newRequest( byte[] value )
     {
-        return new StartTransactionRequestDecorator( codec, new StartTransactionRequestImpl() );
+        StartTransactionRequestDecorator req = 
+                new StartTransactionRequestDecorator( codec, new StartTransactionRequestImpl() );
+
+        if ( value != null )
+        {
+            req.setRequestValue( value );
+        }
+
+        return req;
     }
 
 
@@ -113,6 +122,17 @@ public class StartTransactionFactory implements ExtendedOperationFactory
             return ( StartTransactionResponseDecorator ) decoratedResponse;
         }
 
-        return new StartTransactionResponseDecorator( codec, ( StartTransactionResponse ) decoratedResponse );
+        // It's an opaque extended operation
+        ExtendedResponseDecorator<ExtendedResponse> response = 
+                ( ExtendedResponseDecorator<ExtendedResponse> ) decoratedResponse;
+
+        // Decode the response, as it's an opaque operation
+        StartTransactionResponse startTransactionResponse = new StartTransactionResponseImpl( response.getResponseValue() );
+        
+        startTransactionResponse.setMessageId( response.getMessageId() );
+        startTransactionResponse.getLdapResult().setResultCode( response.getLdapResult().getResultCode() );
+        startTransactionResponse.getLdapResult().setDiagnosticMessage( response.getLdapResult().getDiagnosticMessage() );
+
+        return new StartTransactionResponseDecorator( codec, startTransactionResponse );
     }
 }

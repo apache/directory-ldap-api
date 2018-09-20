@@ -31,6 +31,9 @@ public class ExtendedResponseImpl extends AbstractResultResponse implements Exte
 
     /** Object identifier for the extended response */
     protected String responseName;
+    
+    /** The ResponseValue part of the extended response */
+    //protected byte[] responseValue;
 
     /** Extended response message type enumeration value */
     private static final MessageTypeEnum TYPE = MessageTypeEnum.EXTENDED_RESPONSE;

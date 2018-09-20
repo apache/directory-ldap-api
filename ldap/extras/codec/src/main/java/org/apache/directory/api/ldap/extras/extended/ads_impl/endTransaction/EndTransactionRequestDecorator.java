@@ -120,6 +120,29 @@ public class EndTransactionRequestDecorator extends ExtendedRequestDecorator<End
      * {@inheritDoc}
      */
     @Override
+    public byte[] getRequestValue()
+    {
+        if ( requestValue == null )
+        {
+            try
+            {
+                requestValue = encodeInternal().array();
+            }
+            catch ( EncoderException e )
+            {
+                LOG.error( I18n.err( I18n.ERR_08232_END_TRANSACTION_PAYLOAD_ENCODING_FAILED ), e );
+                throw new RuntimeException( e );
+            }
+        }
+
+        return requestValue;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setRequestValue( byte[] requestValue )
     {
         EndTransactionRequestDecoder decoder = new EndTransactionRequestDecoder();

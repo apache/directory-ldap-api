@@ -32,9 +32,8 @@ import org.apache.directory.api.util.Strings;
  * The interface for Start Transaction Extended Response. It's described in RFC 5805 :
  * 
  * <pre>
- * ExtendedResponse ::= [APPLICATION 24] SEQUENCE {
+ * StartTransactionResponse ::= [APPLICATION 24] SEQUENCE {
  *            COMPONENTS OF LDAPResult,
- *            responseName     [10] LDAPOID OPTIONAL,
  *            responseValue    [11] OCTET STRING OPTIONAL }
  * </pre>
  * 
@@ -58,7 +57,7 @@ public class StartTransactionResponseImpl extends ExtendedResponseImpl implement
      */
     public StartTransactionResponseImpl( int messageId, ResultCodeEnum resultCode, byte[] transactionId )
     {
-        super( messageId, EXTENSION_OID );
+        super( messageId );
 
         switch ( resultCode )
         {
@@ -89,7 +88,7 @@ public class StartTransactionResponseImpl extends ExtendedResponseImpl implement
      */
     public StartTransactionResponseImpl( int messageId, byte[] transactionId )
     {
-        super( messageId, EXTENSION_OID );
+        super( messageId );
         super.getLdapResult().setMatchedDn( null );
         super.getLdapResult().setResultCode( ResultCodeEnum.SUCCESS );
         this.transactionId = Strings.copy( transactionId );
@@ -179,5 +178,29 @@ public class StartTransactionResponseImpl extends ExtendedResponseImpl implement
     public void setTransactionId( byte[] transactionId )
     {
         this.transactionId = Strings.copy( transactionId );
+    }
+
+
+    /**
+     * @see Object#toString()
+     */
+    @Override
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append( "StartTransactionResponse :" );
+        sb.append( "\n    transactionID : " );
+
+        if ( transactionId != null )
+        {
+            sb.append( Strings.dumpBytes( transactionId ) );
+        }
+        else
+        {
+            sb.append( "null" );
+        }
+
+        return sb.toString();
     }
 }

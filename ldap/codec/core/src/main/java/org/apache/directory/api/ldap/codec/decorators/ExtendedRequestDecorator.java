@@ -181,11 +181,12 @@ public ExtendedRequest addControl( Control control )
         requestNameBytes = Strings.getBytesUtf8( getRequestName() );
 
         extendedRequestLength = 1 + TLV.getNbBytes( requestNameBytes.length ) + requestNameBytes.length;
+        requestValue = getRequestValue();
 
-        if ( getRequestValue() != null )
+        if ( requestValue != null )
         {
-            extendedRequestLength += 1 + TLV.getNbBytes( getRequestValue().length )
-                + getRequestValue().length;
+            extendedRequestLength += 1 + TLV.getNbBytes( requestValue.length )
+                + requestValue.length;
         }
 
         return 1 + TLV.getNbBytes( extendedRequestLength ) + extendedRequestLength;
@@ -227,15 +228,17 @@ public ExtendedRequest addControl( Control control )
             }
 
             // The requestValue, if any
-            if ( getRequestValue() != null )
+            requestValue = getRequestValue();
+            
+            if ( requestValue != null )
             {
                 buffer.put( ( byte ) LdapCodecConstants.EXTENDED_REQUEST_VALUE_TAG );
 
-                buffer.put( TLV.getBytes( getRequestValue().length ) );
+                buffer.put( TLV.getBytes( requestValue.length ) );
 
-                if ( getRequestValue().length != 0 )
+                if ( requestValue.length != 0 )
                 {
-                    buffer.put( getRequestValue() );
+                    buffer.put( requestValue );
                 }
             }
         }
