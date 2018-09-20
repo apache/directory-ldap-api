@@ -259,7 +259,7 @@ public class LdapEncoder
         Map<String, Control> controls = messageDecorator.getControls();
 
         // Do the same thing for Controls, if any.
-        if ( controls.size() > 0 )
+        if ( !controls.isEmpty() )
         {
             // Controls :
             // 0xA0 L3

@@ -81,6 +81,7 @@ public class PasswordModifyFactory implements ExtendedOperationFactory
         PasswordModifyResponseDecorator response = new PasswordModifyResponseDecorator( codec,
             new PasswordModifyResponseImpl() );
         response.setResponseValue( encodedValue );
+        
         return response;
     }
 

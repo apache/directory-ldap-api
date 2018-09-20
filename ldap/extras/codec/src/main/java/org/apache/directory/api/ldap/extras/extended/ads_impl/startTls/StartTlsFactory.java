@@ -73,6 +73,7 @@ public class StartTlsFactory implements ExtendedOperationFactory
         StartTlsResponseDecorator response = new StartTlsResponseDecorator( codec,
             new StartTlsResponseImpl() );
         response.setResponseValue( encodedValue );
+        
         return response;
     }
 
@@ -135,6 +136,6 @@ public class StartTlsFactory implements ExtendedOperationFactory
         startTlsResponse.getLdapResult().setResultCode( response.getLdapResult().getResultCode() );
         startTlsResponse.getLdapResult().setDiagnosticMessage( response.getLdapResult().getDiagnosticMessage() );
 
-        return new StartTlsResponseDecorator( codec, new StartTlsResponseImpl() );
+        return new StartTlsResponseDecorator( codec, startTlsResponse );
     }
 }

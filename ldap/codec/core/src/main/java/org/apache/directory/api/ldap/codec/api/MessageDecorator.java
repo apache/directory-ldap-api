@@ -218,7 +218,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
 
         Map<String, Control> controls = decoratedMessage.getControls();
 
-        if ( controls != null )
+        if ( ( controls != null ) && !controls.isEmpty() )
         {
             for ( Control control : controls.values() )
             {
