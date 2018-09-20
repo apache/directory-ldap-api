@@ -628,21 +628,17 @@ public class DefaultLdapCodecService implements LdapApiService
     @Override
     public ExtendedRequestDecorator<?> decorate( ExtendedRequest decoratedMessage )
     {
-        ExtendedRequestDecorator<?> req;
-
         ExtendedOperationFactory extendedRequestFactory = extendedOperationFactories.get( decoratedMessage
             .getRequestName() );
 
         if ( extendedRequestFactory != null )
         {
-            req = ( ExtendedRequestDecorator<?> ) extendedRequestFactory.decorate( decoratedMessage );
+            return ( ExtendedRequestDecorator<?> ) extendedRequestFactory.decorate( decoratedMessage );
         }
         else
         {
-            req = new ExtendedRequestDecorator<>( this, decoratedMessage );
+            return new ExtendedRequestDecorator<>( this, decoratedMessage );
         }
-
-        return req;
     }
 
 
