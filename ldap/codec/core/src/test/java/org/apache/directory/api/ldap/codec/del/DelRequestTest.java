@@ -69,47 +69,15 @@ public class DelRequestTest extends AbstractCodecServiceTest
         ByteBuffer stream = ByteBuffer.allocate( 0x27 );
 
         stream.put( new byte[]
-            { 0x30,
-                0x25, // LDAPMessage ::= SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                // CHOICE { ..., delRequest DelRequest, ...
-                // DelRequest ::= [APPLICATION 10] LDAPDN;
-                0x4A,
-                0x20,
-                'c',
-                'n',
-                '=',
-                't',
-                'e',
-                's',
-                't',
-                'M',
-                'o',
-                'd',
-                'i',
-                'f',
-                'y',
-                ',',
-                'o',
-                'u',
-                '=',
-                'u',
-                's',
-                'e',
-                'r',
-                's',
-                ',',
-                'o',
-                'u',
-                '=',
-                's',
-                'y',
-                's',
-                't',
-                'e',
-                'm' } );
+            { 
+              0x30, 0x25,               // LDAPMessage ::= SEQUENCE {
+                0x02, 0x01, 0x01,       // messageID MessageID
+                                        // CHOICE { ..., delRequest DelRequest, ...
+                                        // DelRequest ::= [APPLICATION 10] LDAPDN;
+                0x4A, 0x20,
+                  'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',',
+                  'o', 'u', '=', 'u', 's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm' 
+            } );
 
         String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
@@ -143,7 +111,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
         // Check the encoding
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( internalDeleteRequest );
+            ByteBuffer bb = encoder.encodeMessage( new DeleteRequestDecorator( codec, internalDeleteRequest ) );
 
             // Check the length
             assertEquals( 0x27, bb.limit() );
@@ -171,47 +139,15 @@ public class DelRequestTest extends AbstractCodecServiceTest
         ByteBuffer stream = ByteBuffer.allocate( 0x27 );
 
         stream.put( new byte[]
-            { 0x30,
-                0x25, // LDAPMessage ::= SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                // CHOICE { ..., delRequest DelRequest, ...
-                // DelRequest ::= [APPLICATION 10] LDAPDN;
-                0x4A,
-                0x20,
-                'c',
-                'n',
-                ':',
-                't',
-                'e',
-                's',
-                't',
-                'M',
-                'o',
-                'd',
-                'i',
-                'f',
-                'y',
-                ',',
-                'o',
-                'u',
-                '=',
-                'u',
-                's',
-                'e',
-                'r',
-                's',
-                ',',
-                'o',
-                'u',
-                '=',
-                's',
-                'y',
-                's',
-                't',
-                'e',
-                'm' } );
+            {
+              0x30, 0x25,               // LDAPMessage ::= SEQUENCE {
+                0x02, 0x01, 0x01,       // messageID MessageID
+                                        // CHOICE { ..., delRequest DelRequest, ...
+                                        // DelRequest ::= [APPLICATION 10] LDAPDN;
+                0x4A, 0x20,
+                  'c', 'n', ':', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 
+                  'o', 'u', '=', 'u', 's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm' 
+            } );
 
         stream.flip();
 
@@ -249,14 +185,12 @@ public class DelRequestTest extends AbstractCodecServiceTest
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
         stream.put( new byte[]
-            { 0x30, 0x05, // LDAPMessage ::= SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                // CHOICE { ..., delRequest DelRequest, ...
-                // DelRequest ::= [APPLICATION 10] LDAPDN;
-                0x4A,
-                0x00 // Empty Dn
+            { 
+              0x30, 0x05,               // LDAPMessage ::= SEQUENCE {
+                0x02, 0x01, 0x01,       // messageID MessageID
+                                        // CHOICE { ..., delRequest DelRequest, ...
+                                        // DelRequest ::= [APPLICATION 10] LDAPDN;
+                0x4A, 0x00              // Empty Dn
         } );
 
         stream.flip();
@@ -290,76 +224,19 @@ public class DelRequestTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             {
-                0x30,
-                0x42, // LDAPMessage ::= SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                // CHOICE { ..., delRequest DelRequest, ...
-                // DelRequest ::= [APPLICATION 10] LDAPDN;
-                0x4A,
-                0x20,
-                'c',
-                'n',
-                '=',
-                't',
-                'e',
-                's',
-                't',
-                'M',
-                'o',
-                'd',
-                'i',
-                'f',
-                'y',
-                ',',
-                'o',
-                'u',
-                '=',
-                'u',
-                's',
-                'e',
-                'r',
-                's',
-                ',',
-                'o',
-                'u',
-                '=',
-                's',
-                'y',
-                's',
-                't',
-                'e',
-                'm',
-                ( byte ) 0xA0,
-                0x1B, // A control
-                0x30,
-                0x19,
-                0x04,
-                0x17,
-                0x32,
-                0x2E,
-                0x31,
-                0x36,
-                0x2E,
-                0x38,
-                0x34,
-                0x30,
-                0x2E,
-                0x31,
-                0x2E,
-                0x31,
-                0x31,
-                0x33,
-                0x37,
-                0x33,
-                0x30,
-                0x2E,
-                0x33,
-                0x2E,
-                0x34,
-                0x2E,
-                0x32 } );
+              0x30, 0x42,               // LDAPMessage ::= SEQUENCE {
+                0x02, 0x01, 0x01,       // messageID MessageID
+                                        // CHOICE { ..., delRequest DelRequest, ...
+                                        // DelRequest ::= [APPLICATION 10] LDAPDN;
+                0x4A, 0x20,
+                  'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',',
+                  'o', 'u', '=', 'u', 's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                ( byte ) 0xA0, 0x1B,    // A control
+                  0x30, 0x19,
+                    0x04, 0x17,
+                      '2', '.', '1', '6', '.', '8', '4', '0', '.', '1', '.', '1', '1', '3', 
+                      '7', '3', '0', '.', '3', '.', '4', '.', '2'
+            } );
 
         String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
@@ -404,7 +281,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
         // Check the encoding
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( internalDeleteRequest );
+            ByteBuffer bb = encoder.encodeMessage( new DeleteRequestDecorator( codec, internalDeleteRequest ) );
 
             // Check the length
             assertEquals( 0x44, bb.limit() );

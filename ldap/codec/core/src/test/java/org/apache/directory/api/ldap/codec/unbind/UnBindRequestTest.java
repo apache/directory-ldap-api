@@ -62,21 +62,19 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
 
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
         stream.put( new byte[]
-            { 0x30, 0x05, // LDAPMessage ::=SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                0x42,
-                0x00, // CHOICE { ..., unbindRequest UnbindRequest,...
-            // UnbindRequest ::= [APPLICATION 2] NULL
-        } );
+            { 
+              0x30, 0x05,               // LDAPMessage ::=SEQUENCE {
+                0x02, 0x01, 0x01,       // messageID MessageID
+                0x42, 0x00,             // CHOICE { ..., unbindRequest UnbindRequest,...
+                                        // UnbindRequest ::= [APPLICATION 2] NULL
+            } );
 
         String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<UnbindRequestDecorator> ldapMessageContainer = new LdapMessageContainer<UnbindRequestDecorator>(
-            codec );
+        LdapMessageContainer<UnbindRequestDecorator> ldapMessageContainer = 
+                new LdapMessageContainer<UnbindRequestDecorator>( codec );
 
         try
         {
@@ -98,7 +96,7 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
 
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( internalUnbindRequest );
+            ByteBuffer bb = encoder.encodeMessage( new UnbindRequestDecorator( codec, internalUnbindRequest ) );
 
             // Check the length
             assertEquals( 0x07, bb.limit() );
@@ -125,50 +123,24 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
 
         ByteBuffer stream = ByteBuffer.allocate( 0x24 );
         stream.put( new byte[]
-            { 0x30,
-                0x22, // LDAPMessage ::=SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                0x42,
-                0x00, // CHOICE { ..., unbindRequest UnbindRequest,...
-                // UnbindRequest ::= [APPLICATION 2] NULL
-                ( byte ) 0xA0,
-                0x1B, // A control
-                0x30,
-                0x19,
-                0x04,
-                0x17,
-                '2',
-                '.',
-                '1',
-                '6',
-                '.',
-                '8',
-                '4',
-                '0',
-                '.',
-                '1',
-                '.',
-                '1',
-                '1',
-                '3',
-                '7',
-                '3',
-                '0',
-                '.',
-                '3',
-                '.',
-                '4',
-                '.',
-                '2' } );
+            { 
+              0x30, 0x22,               // LDAPMessage ::=SEQUENCE {
+                0x02, 0x01, 0x01,       // messageID MessageID
+                0x42, 0x00,             // CHOICE { ..., unbindRequest UnbindRequest,...
+                                        // UnbindRequest ::= [APPLICATION 2] NULL
+                ( byte ) 0xA0, 0x1B,    // A control
+                  0x30, 0x19,
+                    0x04, 0x17,
+                      '2', '.', '1', '6', '.', '8', '4', '0', '.', '1', '.', 
+                      '1', '1', '3', '7', '3', '0', '.', '3', '.', '4', '.', '2'
+            } );
 
         String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<UnbindRequestDecorator> ldapMessageContainer = new LdapMessageContainer<UnbindRequestDecorator>(
-            codec );
+        LdapMessageContainer<UnbindRequestDecorator> ldapMessageContainer = 
+                new LdapMessageContainer<UnbindRequestDecorator>( codec );
 
         try
         {
@@ -190,7 +162,7 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
         assertEquals( 1, controls.size() );
 
         @SuppressWarnings("unchecked")
-        CodecControl<Control> control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) controls
+        CodecControl<Control> control = ( CodecControl<Control> ) controls
             .get( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
         assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
@@ -202,7 +174,7 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
 
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( internalUnbindRequest );
+            ByteBuffer bb = encoder.encodeMessage( new UnbindRequestDecorator( codec, internalUnbindRequest ) );
 
             // Check the length
             assertEquals( 0x24, bb.limit() );
@@ -229,22 +201,18 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
 
         ByteBuffer stream = ByteBuffer.allocate( 0x09 );
         stream.put( new byte[]
-            { 0x30, 0x07, // LDAPMessage ::=SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                0x42,
-                0x02, // CHOICE { ..., unbindRequest UnbindRequest,...
-                0x04,
-                0x00 // UnbindRequest ::= [APPLICATION 2] NULL
-
-        } );
+            { 
+              0x30, 0x07,               // LDAPMessage ::=SEQUENCE {
+                0x02, 0x01, 0x01,       // messageID MessageID
+                0x42, 0x02,             // CHOICE { ..., unbindRequest UnbindRequest,...
+                  0x04, 0x00            // UnbindRequest ::= [APPLICATION 2] NULL
+            } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<UnbindRequestDecorator> ldapMessageContainer = new LdapMessageContainer<UnbindRequestDecorator>(
-            codec );
+        LdapMessageContainer<UnbindRequestDecorator> ldapMessageContainer = 
+                new LdapMessageContainer<UnbindRequestDecorator>( codec );
 
         // Decode a UnbindRequest message
         try
