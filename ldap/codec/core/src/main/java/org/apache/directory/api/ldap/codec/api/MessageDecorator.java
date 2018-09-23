@@ -23,19 +23,49 @@ package org.apache.directory.api.ldap.codec.api;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.directory.api.ldap.codec.decorators.AbandonRequestDecorator;
+import org.apache.directory.api.ldap.codec.decorators.AddRequestDecorator;
+import org.apache.directory.api.ldap.codec.decorators.AddResponseDecorator;
+import org.apache.directory.api.ldap.codec.decorators.BindRequestDecorator;
+import org.apache.directory.api.ldap.codec.decorators.BindResponseDecorator;
+import org.apache.directory.api.ldap.codec.decorators.CompareRequestDecorator;
+import org.apache.directory.api.ldap.codec.decorators.CompareResponseDecorator;
+import org.apache.directory.api.ldap.codec.decorators.DeleteRequestDecorator;
+import org.apache.directory.api.ldap.codec.decorators.DeleteResponseDecorator;
 import org.apache.directory.api.ldap.codec.decorators.IntermediateResponseDecorator;
+import org.apache.directory.api.ldap.codec.decorators.ModifyDnRequestDecorator;
+import org.apache.directory.api.ldap.codec.decorators.ModifyDnResponseDecorator;
+import org.apache.directory.api.ldap.codec.decorators.ModifyRequestDecorator;
+import org.apache.directory.api.ldap.codec.decorators.ModifyResponseDecorator;
 import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
 import org.apache.directory.api.ldap.codec.decorators.SearchResultDoneDecorator;
 import org.apache.directory.api.ldap.codec.decorators.SearchResultEntryDecorator;
 import org.apache.directory.api.ldap.codec.decorators.SearchResultReferenceDecorator;
+import org.apache.directory.api.ldap.codec.decorators.UnbindRequestDecorator;
+import org.apache.directory.api.ldap.model.message.AbandonRequest;
+import org.apache.directory.api.ldap.model.message.AddRequest;
+import org.apache.directory.api.ldap.model.message.AddResponse;
+import org.apache.directory.api.ldap.model.message.BindRequest;
+import org.apache.directory.api.ldap.model.message.BindResponse;
+import org.apache.directory.api.ldap.model.message.CompareRequest;
+import org.apache.directory.api.ldap.model.message.CompareResponse;
 import org.apache.directory.api.ldap.model.message.Control;
+import org.apache.directory.api.ldap.model.message.DeleteRequest;
+import org.apache.directory.api.ldap.model.message.DeleteResponse;
+import org.apache.directory.api.ldap.model.message.ExtendedRequest;
+import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.api.ldap.model.message.IntermediateResponse;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
+import org.apache.directory.api.ldap.model.message.ModifyDnRequest;
+import org.apache.directory.api.ldap.model.message.ModifyDnResponse;
+import org.apache.directory.api.ldap.model.message.ModifyRequest;
+import org.apache.directory.api.ldap.model.message.ModifyResponse;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.apache.directory.api.ldap.model.message.SearchResultDone;
 import org.apache.directory.api.ldap.model.message.SearchResultEntry;
 import org.apache.directory.api.ldap.model.message.SearchResultReference;
+import org.apache.directory.api.ldap.model.message.UnbindRequest;
 
 
 /**
@@ -108,9 +138,70 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
 
         switch ( decoratedMessage.getType() )
         {
+            case ABANDON_REQUEST:
+                decorator = new AbandonRequestDecorator( codec, ( AbandonRequest ) decoratedMessage );
+                break;
+
+            case ADD_REQUEST:
+                decorator = new AddRequestDecorator( codec, ( AddRequest ) decoratedMessage );
+                break;
+
+            case ADD_RESPONSE:
+                decorator = new AddResponseDecorator( codec, ( AddResponse ) decoratedMessage );
+                break;
+
+            case BIND_REQUEST:
+                decorator = new BindRequestDecorator( codec, ( BindRequest ) decoratedMessage );
+                break;
+
+            case BIND_RESPONSE:
+                decorator = new BindResponseDecorator( codec, ( BindResponse ) decoratedMessage );
+                break;
+
+            case COMPARE_REQUEST:
+                decorator = new CompareRequestDecorator( codec, ( CompareRequest ) decoratedMessage );
+                break;
+
+            case COMPARE_RESPONSE:
+                decorator = new CompareResponseDecorator( codec, ( CompareResponse ) decoratedMessage );
+                break;
+
+            case DEL_REQUEST:
+                decorator = new DeleteRequestDecorator( codec, ( DeleteRequest ) decoratedMessage );
+                break;
+
+            case DEL_RESPONSE:
+                decorator = new DeleteResponseDecorator( codec, ( DeleteResponse ) decoratedMessage );
+                break;
+
+            case EXTENDED_REQUEST:
+                decorator = codec.decorate( ( ExtendedRequest ) decoratedMessage );
+                break;
+
+            case EXTENDED_RESPONSE:
+                decorator = codec.decorate( ( ExtendedResponse ) decoratedMessage );
+                break;
+
             case INTERMEDIATE_RESPONSE:
                 decorator = new IntermediateResponseDecorator( codec, ( IntermediateResponse ) decoratedMessage );
                 break;
+
+            case MODIFY_REQUEST:
+                decorator = new ModifyRequestDecorator( codec, ( ModifyRequest ) decoratedMessage );
+                break;
+
+            case MODIFY_RESPONSE:
+                decorator = new ModifyResponseDecorator( codec, ( ModifyResponse ) decoratedMessage );
+                break;
+
+            case MODIFYDN_REQUEST:
+                decorator = new ModifyDnRequestDecorator( codec, ( ModifyDnRequest ) decoratedMessage );
+                break;
+
+            case MODIFYDN_RESPONSE:
+                decorator = new ModifyDnResponseDecorator( codec, ( ModifyDnResponse ) decoratedMessage );
+                break;
+
             case SEARCH_REQUEST:
                 decorator = new SearchRequestDecorator( codec, ( SearchRequest ) decoratedMessage );
                 break;
@@ -125,6 +216,10 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
 
             case SEARCH_RESULT_REFERENCE:
                 decorator = new SearchResultReferenceDecorator( codec, ( SearchResultReference ) decoratedMessage );
+                break;
+
+            case UNBIND_REQUEST:
+                decorator = new UnbindRequestDecorator( codec, ( UnbindRequest ) decoratedMessage );
                 break;
 
             default:
