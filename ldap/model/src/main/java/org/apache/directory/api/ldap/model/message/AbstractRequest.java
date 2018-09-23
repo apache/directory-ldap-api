@@ -25,7 +25,7 @@ package org.apache.directory.api.ldap.model.message;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AbstractRequest extends AbstractMessage implements Request
+public abstract class AbstractRequest extends AbstractMessage implements Request
 {
     static final long serialVersionUID = -4511116249089399040L;
 
