@@ -36,7 +36,7 @@ import org.apache.directory.api.ldap.model.message.ModifyResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ModifyResponseDecorator extends ResponseDecorator<ModifyResponse>
+public class ModifyResponseDecorator extends AbstractResponseDecorator<ModifyResponse>
     implements ModifyResponse
 {
     /** The encoded modifyResponse length */

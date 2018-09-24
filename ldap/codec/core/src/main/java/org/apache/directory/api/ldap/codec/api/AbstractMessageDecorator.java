@@ -75,7 +75,7 @@ import org.apache.directory.api.ldap.model.message.UnbindRequest;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class MessageDecorator<E extends Message> implements Message, Decorator<E>
+public abstract class AbstractMessageDecorator<E extends Message> implements Message, Decorator<E>
 {
     /** The decorated Message */
     private final E decoratedMessage;
@@ -102,7 +102,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
      * @param codec The LDAP Service instance to use
      * @param decoratedMessage The message to decorate
      */
-    protected MessageDecorator( LdapApiService codec, E decoratedMessage )
+    protected AbstractMessageDecorator( LdapApiService codec, E decoratedMessage )
     {
         this.codec = codec;
         this.decoratedMessage = decoratedMessage;
@@ -127,14 +127,14 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
      * @param decoratedMessage The message to decorate
      * @return The decorator instance
      */
-    public static MessageDecorator<? extends Message> getDecorator( LdapApiService codec, Message decoratedMessage )
+    public static AbstractMessageDecorator<? extends Message> getDecorator( LdapApiService codec, Message decoratedMessage )
     {
-        if ( decoratedMessage instanceof MessageDecorator )
+        if ( decoratedMessage instanceof AbstractMessageDecorator )
         {
-            return ( MessageDecorator<?> ) decoratedMessage;
+            return ( AbstractMessageDecorator<?> ) decoratedMessage;
         }
 
-        MessageDecorator<?> decorator;
+        AbstractMessageDecorator<?> decorator;
 
         switch ( decoratedMessage.getType() )
         {

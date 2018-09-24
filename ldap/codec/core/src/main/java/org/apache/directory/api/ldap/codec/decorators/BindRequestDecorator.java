@@ -40,7 +40,7 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class BindRequestDecorator extends SingleReplyRequestDecorator<BindRequest> implements BindRequest
+public class BindRequestDecorator extends AbstractSingleReplyRequestDecorator<BindRequest> implements BindRequest
 {
     /** The bind request length */
     private int bindRequestLength;

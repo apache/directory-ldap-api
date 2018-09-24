@@ -36,7 +36,7 @@ import org.apache.directory.api.ldap.model.message.SearchResultDone;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SearchResultDoneDecorator extends ResponseDecorator<SearchResultDone> implements SearchResultDone
+public class SearchResultDoneDecorator extends AbstractResponseDecorator<SearchResultDone> implements SearchResultDone
 {
     /** The encoded searchResultDone length */
     private int searchResultDoneLength;

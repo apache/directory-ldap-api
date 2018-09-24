@@ -55,13 +55,13 @@ import javax.security.sasl.SaslClient;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.codec.api.BinaryAttributeDetector;
 import org.apache.directory.api.ldap.codec.api.DefaultConfigurableBinaryAttributeDetector;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.codec.api.LdapDecoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.api.MessageDecorator;
 import org.apache.directory.api.ldap.codec.api.MessageEncoderException;
 import org.apache.directory.api.ldap.codec.api.SchemaBinaryAttributeDetector;
 import org.apache.directory.api.ldap.codec.decorators.AbandonRequestDecorator;
@@ -894,8 +894,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         // Store the container into the session if we don't have one
         @SuppressWarnings("unchecked")
-        LdapMessageContainer<MessageDecorator<? extends Message>> container =
-            ( LdapMessageContainer<MessageDecorator<? extends Message>> ) ldapSession
+        LdapMessageContainer<AbstractMessageDecorator<? extends Message>> container =
+            ( LdapMessageContainer<AbstractMessageDecorator<? extends Message>> ) ldapSession
                 .getAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR );
 
         if ( container != null )
@@ -915,7 +915,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             }
 
             ldapSession.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR,
-                new LdapMessageContainer<MessageDecorator<? extends Message>>( codec, atDetector ) );
+                new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec, atDetector ) );
         }
 
         // Initialize the MessageId
@@ -4279,7 +4279,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             // Change the container's BinaryDetector
             ldapSession.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR,
-                new LdapMessageContainer<MessageDecorator<? extends Message>>( codec,
+                new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec,
                     new SchemaBinaryAttributeDetector( schemaManager ) ) );
 
         }
@@ -4541,7 +4541,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     public void sessionCreated( IoSession session ) throws Exception
     {
         // Last, store the message container
-        LdapMessageContainer<? extends MessageDecorator<Message>> ldapMessageContainer =
+        LdapMessageContainer<? extends AbstractMessageDecorator<Message>> ldapMessageContainer =
             new LdapMessageContainer<>(
                 codec, config.getBinaryAttributeDetector() );
 

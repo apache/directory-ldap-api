@@ -36,7 +36,7 @@ import org.apache.directory.api.ldap.model.message.CompareResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CompareResponseDecorator extends ResponseDecorator<CompareResponse>
+public class CompareResponseDecorator extends AbstractResponseDecorator<CompareResponse>
     implements CompareResponse
 {
     /** The encoded compareResponse length */

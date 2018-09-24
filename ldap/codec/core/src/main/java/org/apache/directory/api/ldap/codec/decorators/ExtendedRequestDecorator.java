@@ -41,7 +41,7 @@ import org.apache.directory.api.util.Strings;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ExtendedRequestDecorator<Q extends ExtendedRequest>
-    extends SingleReplyRequestDecorator<Q> implements ExtendedRequest
+    extends AbstractSingleReplyRequestDecorator<Q> implements ExtendedRequest
 {
     /** The extended request length */
     private int extendedRequestLength;

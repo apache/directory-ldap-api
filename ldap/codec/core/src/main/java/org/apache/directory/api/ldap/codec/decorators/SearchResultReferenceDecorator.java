@@ -30,7 +30,7 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
-import org.apache.directory.api.ldap.codec.api.MessageDecorator;
+import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.message.SearchResultReference;
 
@@ -40,7 +40,7 @@ import org.apache.directory.api.ldap.model.message.SearchResultReference;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SearchResultReferenceDecorator extends MessageDecorator<SearchResultReference>
+public class SearchResultReferenceDecorator extends AbstractMessageDecorator<SearchResultReference>
     implements SearchResultReference
 {
     /** The search result reference length */

@@ -42,7 +42,7 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CompareRequestDecorator extends SingleReplyRequestDecorator<CompareRequest>
+public class CompareRequestDecorator extends AbstractSingleReplyRequestDecorator<CompareRequest>
     implements CompareRequest
 {
     /** The bytes of the attribute id used in the comparison */

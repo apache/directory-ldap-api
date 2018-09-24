@@ -130,7 +130,7 @@ import org.apache.directory.api.ldap.codec.actions.response.search.reference.Ini
 import org.apache.directory.api.ldap.codec.actions.response.search.reference.StoreReference;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.api.MessageDecorator;
+import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
 import org.apache.directory.api.ldap.codec.search.ExtensibleMatchFilter;
 import org.apache.directory.api.ldap.model.message.Message;
@@ -147,13 +147,13 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public final class LdapMessageGrammar extends
-    AbstractGrammar<LdapMessageContainer<MessageDecorator<? extends Message>>>
+    AbstractGrammar<LdapMessageContainer<AbstractMessageDecorator<? extends Message>>>
 {
     /** The logger */
     static final Logger LOG = LoggerFactory.getLogger( LdapMessageGrammar.class );
 
     /** The instance of grammar. LdapMessageGrammar is a singleton */
-    private static Grammar<LdapMessageContainer<MessageDecorator<? extends Message>>> instance =
+    private static Grammar<LdapMessageContainer<AbstractMessageDecorator<? extends Message>>> instance =
         new LdapMessageGrammar();
 
 
@@ -182,7 +182,7 @@ public final class LdapMessageGrammar extends
         //
         // We will just check that the length is not null
         super.transitions[LdapStatesEnum.START_STATE.ordinal()][SEQUENCE.getValue()] =
-            new GrammarTransition<LdapMessageContainer<MessageDecorator<? extends Message>>>(
+            new GrammarTransition<LdapMessageContainer<AbstractMessageDecorator<? extends Message>>>(
                 LdapStatesEnum.START_STATE,
                 LdapStatesEnum.LDAP_MESSAGE_STATE,
                 SEQUENCE,
@@ -202,7 +202,7 @@ public final class LdapMessageGrammar extends
         // The message ID will be temporarily stored in the container, because we can't store it
         // into an object.
         super.transitions[LdapStatesEnum.LDAP_MESSAGE_STATE.ordinal()][INTEGER.getValue()] =
-            new GrammarTransition<LdapMessageContainer<MessageDecorator<? extends Message>>>(
+            new GrammarTransition<LdapMessageContainer<AbstractMessageDecorator<? extends Message>>>(
                 LdapStatesEnum.LDAP_MESSAGE_STATE,
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 INTEGER,

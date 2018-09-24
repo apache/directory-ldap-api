@@ -31,7 +31,7 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.api.MessageDecorator;
+import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.codec.decorators.UnbindRequestDecorator;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.Message;
@@ -72,7 +72,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        Asn1Container ldapMessageContainer = new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
+        Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
         // Decode a BindRequest PDU
         try
@@ -108,7 +108,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        Asn1Container ldapMessageContainer = new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
+        Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
         // Decode a BindRequest PDU
         try
@@ -144,7 +144,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        Asn1Container ldapMessageContainer = new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
+        Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
         // Decode a BindRequest PDU
         try
@@ -181,7 +181,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        Asn1Container ldapMessageContainer = new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
+        Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
         // Decode a BindRequest PDU
         try
@@ -222,7 +222,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
             stream.flip();
 
             // Allocate a LdapMessage Container
-            Asn1Container ldapMessageContainer = new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
+            Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
             // Decode a BindRequest PDU
             try

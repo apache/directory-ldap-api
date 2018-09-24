@@ -21,53 +21,37 @@ package org.apache.directory.api.ldap.codec.decorators;
 
 
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.MessageDecorator;
-import org.apache.directory.api.ldap.model.message.LdapResult;
-import org.apache.directory.api.ldap.model.message.ResultResponse;
+import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
+import org.apache.directory.api.ldap.model.message.Request;
 
 
 /**
- * A decorator for the Response message. It will store the LdapResult.
+ * A decorator for the LdapResultResponse message
  * 
- * @param <M> The response to be decorated
+ * @param <M> The request to decorate
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class ResponseDecorator<M extends ResultResponse> extends MessageDecorator<M> implements ResultResponse
+public abstract class AbstractRequestDecorator<M extends Request> extends AbstractMessageDecorator<M> implements Request
 {
-    /** The LdapResult decorator */
-    private LdapResultDecorator ldapResultDecorator;
-
-
     /**
-     * Makes a AddRequest encodable.
+     * Makes Request a MessageDecorator.
      *
      * @param codec The LDAP service instance
-     * @param decoratedMessage the decorated AddRequest
+     * @param decoratedMessage the decorated message
      */
-    public ResponseDecorator( LdapApiService codec, M decoratedMessage )
+    public AbstractRequestDecorator( LdapApiService codec, M decoratedMessage )
     {
         super( codec, decoratedMessage );
-
-        ldapResultDecorator = new LdapResultDecorator( codec, decoratedMessage.getLdapResult() );
     }
 
 
     /**
-     * @return the ldapResultDecorator
+     * {@inheritDoc}
      */
     @Override
-    public LdapResult getLdapResult()
+    public boolean hasResponse()
     {
-        return ldapResultDecorator;
-    }
-
-
-    /**
-     * @param ldapResultDecorator the ldapResultDecorator to set
-     */
-    public void setLdapResult( LdapResultDecorator ldapResultDecorator )
-    {
-        this.ldapResultDecorator = ldapResultDecorator;
+        return ( getDecorated() ).hasResponse();
     }
 }

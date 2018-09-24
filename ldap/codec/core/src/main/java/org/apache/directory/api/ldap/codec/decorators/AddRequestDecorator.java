@@ -48,7 +48,7 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRequest> implements
+public final class AddRequestDecorator extends AbstractSingleReplyRequestDecorator<AddRequest> implements
     AddRequest
 {
     /** The add request length */

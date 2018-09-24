@@ -36,7 +36,7 @@ import org.apache.directory.api.ldap.codec.AttributeValueAssertion;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.api.MessageDecorator;
+import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.codec.search.AndFilter;
 import org.apache.directory.api.ldap.codec.search.AttributeValueAssertionFilter;
 import org.apache.directory.api.ldap.codec.search.ConnectorFilter;
@@ -81,7 +81,7 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SearchRequestDecorator extends MessageDecorator<SearchRequest> implements SearchRequest
+public class SearchRequestDecorator extends AbstractMessageDecorator<SearchRequest> implements SearchRequest
 {
     /** The searchRequest length */
     private int searchRequestLength;
@@ -268,8 +268,8 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     @SuppressWarnings("unchecked")
     public void unstackFilters( Asn1Container container )
     {
-        LdapMessageContainer<MessageDecorator<Message>> ldapMessageContainer =
-            ( LdapMessageContainer<MessageDecorator<Message>> ) container;
+        LdapMessageContainer<AbstractMessageDecorator<Message>> ldapMessageContainer =
+            ( LdapMessageContainer<AbstractMessageDecorator<Message>> ) container;
 
         TLV tlv = ldapMessageContainer.getCurrentTLV();
         TLV localParent = tlv.getParent();

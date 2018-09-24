@@ -30,23 +30,22 @@ import java.util.Observer;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AbstractAbandonableRequest extends AbstractRequest implements AbandonableRequest
+public abstract class AbstractAbandonableRequest extends AbstractRequest implements AbandonableRequest
 {
     static final long serialVersionUID = -4511116249089399040L;
 
     /** Flag indicating whether or not this request returns a response. */
     private boolean abandoned = false;
 
-    private RequestObservable o;
+    /** A filed used to check if the request has been abandonned */
+    private RequestObservable observable;
 
 
     /**
      * Subclasses must provide these parameters via a super constructor call.
      * 
-     * @param id
-     *            the sequential message identifier
-     * @param type
-     *            the request type enum
+     * @param id the sequential message identifier
+     * @param type the request type enum
      */
     protected AbstractAbandonableRequest( final int id, final MessageTypeEnum type )
     {
@@ -66,13 +65,15 @@ public class AbstractAbandonableRequest extends AbstractRequest implements Aband
         }
 
         abandoned = true;
-        if ( o == null )
+        
+        if ( observable == null )
         {
-            o = new RequestObservable();
+            observable = new RequestObservable();
         }
-        o.setChanged();
-        o.notifyObservers();
-        o.deleteObservers();
+        
+        observable.setChanged();
+        observable.notifyObservers();
+        observable.deleteObservers();
     }
 
 
@@ -92,12 +93,12 @@ public class AbstractAbandonableRequest extends AbstractRequest implements Aband
     @Override
     public AbandonableRequest addAbandonListener( final AbandonListener listener )
     {
-        if ( o == null )
+        if ( observable == null )
         {
-            o = new RequestObservable();
+            observable = new RequestObservable();
         }
 
-        o.addObserver( new Observer()
+        observable.addObserver( new Observer()
         {
             @Override
             public void update( Observable o, Object arg )

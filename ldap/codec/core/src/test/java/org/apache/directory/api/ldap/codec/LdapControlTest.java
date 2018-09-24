@@ -34,7 +34,7 @@ import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.api.MessageDecorator;
+import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.codec.decorators.AbandonRequestDecorator;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.AbandonRequest;
@@ -288,7 +288,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
 
         // Allocate a LdapMessageContainer Container
         Asn1Container ldapMessageContainer =
-            new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
+            new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
         // Decode the PDU
         try
@@ -334,7 +334,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
 
         // Allocate a LdapMessageContainer Container
         Asn1Container ldapMessageContainer =
-            new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
+            new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
         // Decode the PDU
         try
@@ -379,7 +379,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
 
         // Allocate a LdapMessageContainer Container
         Asn1Container ldapMessageContainer =
-            new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
+            new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
         // Decode the PDU
         try

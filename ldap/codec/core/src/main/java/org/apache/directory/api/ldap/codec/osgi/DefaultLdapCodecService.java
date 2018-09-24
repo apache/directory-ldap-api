@@ -40,7 +40,7 @@ import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.IntermediateResponseFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.api.MessageDecorator;
+import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.codec.controls.cascade.CascadeFactory;
 import org.apache.directory.api.ldap.codec.controls.manageDsaIT.ManageDsaITFactory;
 import org.apache.directory.api.ldap.codec.controls.proxiedauthz.ProxiedAuthzFactory;
@@ -393,7 +393,7 @@ public class DefaultLdapCodecService implements LdapApiService
     @Override
     public Asn1Container newMessageContainer()
     {
-        return new LdapMessageContainer<MessageDecorator<? extends Message>>( this );
+        return new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( this );
     }
 
 

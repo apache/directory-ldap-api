@@ -33,7 +33,7 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.api.MessageDecorator;
+import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.codec.decorators.AbandonRequestDecorator;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.AbandonRequest;
@@ -266,8 +266,8 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessageContainer Container
-        LdapMessageContainer<MessageDecorator<? extends Message>> ldapMessageContainer =
-            new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
+        LdapMessageContainer<AbstractMessageDecorator<? extends Message>> ldapMessageContainer =
+            new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
         // Decode the PDU
         try
@@ -304,8 +304,8 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessageContainer Container
-        LdapMessageContainer<MessageDecorator<? extends Message>> ldapMessageContainer =
-            new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
+        LdapMessageContainer<AbstractMessageDecorator<? extends Message>> ldapMessageContainer =
+            new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
         // Decode the PDU
         try

@@ -36,7 +36,7 @@ import org.apache.directory.api.ldap.model.message.UnbindRequest;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class UnbindRequestDecorator extends RequestDecorator<UnbindRequest> implements UnbindRequest
+public class UnbindRequestDecorator extends AbstractRequestDecorator<UnbindRequest> implements UnbindRequest
 {
     /**
      * Makes Request a MessageDecorator.

@@ -164,7 +164,7 @@ public class LdapEncoder
      */
     public ByteBuffer encodeMessage( Message message ) throws EncoderException
     {
-        MessageDecorator<? extends Message> decorator = MessageDecorator.getDecorator( codec, message );
+        AbstractMessageDecorator<? extends Message> decorator = AbstractMessageDecorator.getDecorator( codec, message );
         int length = computeMessageLength( decorator );
         ByteBuffer buffer = ByteBuffer.allocate( length );
 
@@ -245,7 +245,7 @@ public class LdapEncoder
      * @param messageDecorator the decorated Message who's length is to be encoded
      * @return The message length
      */
-    private int computeMessageLength( MessageDecorator<? extends Message> messageDecorator )
+    private int computeMessageLength( AbstractMessageDecorator<? extends Message> messageDecorator )
     {
         // The length of the MessageId. It's the sum of
         // - the tag (0x02), 1 byte

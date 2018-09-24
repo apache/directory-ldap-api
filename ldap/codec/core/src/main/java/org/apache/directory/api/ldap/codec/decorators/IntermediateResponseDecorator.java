@@ -37,7 +37,7 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class IntermediateResponseDecorator<I extends IntermediateResponse> extends ResponseDecorator<I>
+public class IntermediateResponseDecorator<I extends IntermediateResponse> extends AbstractResponseDecorator<I>
     implements IntermediateResponse
 {
     /** The response name as a byte[] */

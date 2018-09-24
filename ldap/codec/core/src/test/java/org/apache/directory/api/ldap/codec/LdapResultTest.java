@@ -33,7 +33,7 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.api.MessageDecorator;
+import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.codec.decorators.AddResponseDecorator;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.AddResponse;
@@ -82,7 +82,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        Asn1Container ldapMessageContainer = new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
+        Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
         // Decode a AddResponse message
         try
@@ -125,7 +125,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        Asn1Container ldapMessageContainer = new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
+        Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
         // Decode a AddResponse message
         try
@@ -175,7 +175,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
             stream.flip();
 
             // Allocate a LdapMessage Container
-            Asn1Container ldapMessageContainer = new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
+            Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
             // Decode a AddResponse PDU
             try
@@ -219,7 +219,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        Asn1Container ldapMessageContainer = new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
+        Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
         // Decode a AddResponse message
         try
@@ -263,7 +263,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        Asn1Container ldapMessageContainer = new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
+        Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
         // Decode a AddResponse message
         try
@@ -678,8 +678,8 @@ public class LdapResultTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<MessageDecorator<? extends Message>> container =
-            new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
+        LdapMessageContainer<AbstractMessageDecorator<? extends Message>> container =
+            new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
         // Decode the AddResponse PDU
         try

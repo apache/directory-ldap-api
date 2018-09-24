@@ -32,7 +32,7 @@ import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
-import org.apache.directory.api.ldap.codec.api.MessageDecorator;
+import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
@@ -48,7 +48,7 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEntry> implements SearchResultEntry
+public class SearchResultEntryDecorator extends AbstractMessageDecorator<SearchResultEntry> implements SearchResultEntry
 {
     /** A temporary storage for the byte[] representing the objectName */
     private byte[] objectNameBytes;

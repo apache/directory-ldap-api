@@ -36,7 +36,7 @@ import org.apache.directory.api.ldap.model.message.Message;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdapMessageContainer<E extends MessageDecorator<? extends Message>> extends AbstractContainer
+public class LdapMessageContainer<E extends AbstractMessageDecorator<? extends Message>> extends AbstractContainer
 {
     /** The Message decorator to store various temporary values */
     private E messageDecorator;

@@ -39,7 +39,7 @@ import org.apache.directory.api.util.Strings;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ExtendedResponseDecorator<R extends ExtendedResponse> extends ResponseDecorator<R>
+public class ExtendedResponseDecorator<R extends ExtendedResponse> extends AbstractResponseDecorator<R>
     implements ExtendedResponse
 {
     /** The response name (OID) as a byte[] */

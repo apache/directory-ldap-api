@@ -21,8 +21,10 @@ package org.apache.directory.api.ldap.codec.decorators;
 
 
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.model.message.ResultResponse;
-import org.apache.directory.api.ldap.model.message.ResultResponseRequest;
+import org.apache.directory.api.ldap.model.message.AbandonListener;
+import org.apache.directory.api.ldap.model.message.AbandonableRequest;
+import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
+import org.apache.directory.api.ldap.model.message.SingleReplyRequest;
 
 
 /**
@@ -32,8 +34,8 @@ import org.apache.directory.api.ldap.model.message.ResultResponseRequest;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class ResultResponseRequestDecorator<M extends ResultResponseRequest>
-    extends RequestDecorator<M> implements ResultResponseRequest
+public abstract class AbstractSingleReplyRequestDecorator<M extends SingleReplyRequest>
+    extends AbstractResultResponseRequestDecorator<M> implements SingleReplyRequest, AbandonableRequest
 {
     /**
      * Makes Request a MessageDecorator.
@@ -41,7 +43,7 @@ public abstract class ResultResponseRequestDecorator<M extends ResultResponseReq
      * @param codec The LDAP service instance
      * @param decoratedMessage the decorated message
      */
-    public ResultResponseRequestDecorator( LdapApiService codec, M decoratedMessage )
+    public AbstractSingleReplyRequestDecorator( LdapApiService codec, M decoratedMessage )
     {
         super( codec, decoratedMessage );
     }
@@ -51,9 +53,9 @@ public abstract class ResultResponseRequestDecorator<M extends ResultResponseReq
      * {@inheritDoc}
      */
     @Override
-    public boolean hasResponse()
+    public MessageTypeEnum getResponseType()
     {
-        return getDecorated().hasResponse();
+        return getDecorated().getResponseType();
     }
 
 
@@ -61,8 +63,30 @@ public abstract class ResultResponseRequestDecorator<M extends ResultResponseReq
      * {@inheritDoc}
      */
     @Override
-    public ResultResponse getResultResponse()
+    public void abandon()
     {
-        return getDecorated().getResultResponse();
+        ( ( AbandonableRequest ) getDecorated() ).abandon();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isAbandoned()
+    {
+        return ( ( AbandonableRequest ) getDecorated() ).isAbandoned();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AbandonableRequest addAbandonListener( AbandonListener listener )
+    {
+        ( ( AbandonableRequest ) getDecorated() ).addAbandonListener( listener );
+
+        return this;
     }
 }

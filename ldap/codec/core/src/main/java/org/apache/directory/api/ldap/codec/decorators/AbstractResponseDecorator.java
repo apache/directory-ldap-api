@@ -21,37 +21,53 @@ package org.apache.directory.api.ldap.codec.decorators;
 
 
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.MessageDecorator;
-import org.apache.directory.api.ldap.model.message.Request;
+import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
+import org.apache.directory.api.ldap.model.message.LdapResult;
+import org.apache.directory.api.ldap.model.message.ResultResponse;
 
 
 /**
- * A decorator for the LdapResultResponse message
+ * A decorator for the Response message. It will store the LdapResult.
  * 
- * @param <M> The request to decorate
+ * @param <M> The response to be decorated
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class RequestDecorator<M extends Request> extends MessageDecorator<M> implements Request
+public abstract class AbstractResponseDecorator<M extends ResultResponse> extends AbstractMessageDecorator<M> implements ResultResponse
 {
+    /** The LdapResult decorator */
+    private LdapResultDecorator ldapResultDecorator;
+
+
     /**
-     * Makes Request a MessageDecorator.
+     * Makes a AddRequest encodable.
      *
      * @param codec The LDAP service instance
-     * @param decoratedMessage the decorated message
+     * @param decoratedMessage the decorated AddRequest
      */
-    public RequestDecorator( LdapApiService codec, M decoratedMessage )
+    public AbstractResponseDecorator( LdapApiService codec, M decoratedMessage )
     {
         super( codec, decoratedMessage );
+
+        ldapResultDecorator = new LdapResultDecorator( codec, decoratedMessage.getLdapResult() );
     }
 
 
     /**
-     * {@inheritDoc}
+     * @return the ldapResultDecorator
      */
     @Override
-    public boolean hasResponse()
+    public LdapResult getLdapResult()
     {
-        return ( getDecorated() ).hasResponse();
+        return ldapResultDecorator;
+    }
+
+
+    /**
+     * @param ldapResultDecorator the ldapResultDecorator to set
+     */
+    public void setLdapResult( LdapResultDecorator ldapResultDecorator )
+    {
+        this.ldapResultDecorator = ldapResultDecorator;
     }
 }

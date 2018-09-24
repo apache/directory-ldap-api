@@ -28,7 +28,7 @@ import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.api.MessageDecorator;
+import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -51,7 +51,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreMessageId extends GrammarAction<LdapMessageContainer<MessageDecorator<? extends Message>>>
+public class StoreMessageId extends GrammarAction<LdapMessageContainer<AbstractMessageDecorator<? extends Message>>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreMessageId.class );
@@ -70,7 +70,7 @@ public class StoreMessageId extends GrammarAction<LdapMessageContainer<MessageDe
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainer<MessageDecorator<? extends Message>> container ) throws DecoderException
+    public void action( LdapMessageContainer<AbstractMessageDecorator<? extends Message>> container ) throws DecoderException
     {
         // The current TLV should be a integer
         // We get it and store it in MessageId
