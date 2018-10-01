@@ -510,7 +510,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
      */
     public boolean isHR()
     {
-        return ( syntax != null ) && ( syntax.isHumanReadable );
+        return ( syntax != null ) && ( syntax.isHumanReadable() );
     }
 
 
