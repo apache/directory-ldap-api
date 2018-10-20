@@ -42,7 +42,7 @@
 
         <!-- The external dependencies -->
         <include>antlr:antlr:jar:${antlr.version}</include>
-        <include>commons-collections:commons-collections:jar:${commons.collections.version}</include>
+        <include>org.apache.commons:commons-collections4:jar:${commons.collections.version}</include>
         <include>log4j:log4j:jar:${log4j.version}</include>
         <include>org.slf4j:slf4j-api:jar:${slf4j.api.version}</include>
         <include>org.slf4j:slf4j-log4j12:jar:${slf4j.log4j12.version}</include>

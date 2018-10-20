@@ -46,8 +46,8 @@
     <!-- Set versions for depending jars -->
     <antlr.version>2.7.7</antlr.version>
     <commons.codec.version>1.11</commons.codec.version>
-    <commons.collections.version>3.2.2</commons.collections.version>
-    <commons.lang.version>2.6</commons.lang.version>
+    <commons.collections.version>4.2</commons.collections.version>
+    <commons.lang.version>3.8.1</commons.lang.version>
     <commons.pool.version>2.6.0</commons.pool.version>
     <dom4j.version>1.6.1</dom4j.version>
     <forbiddenapis.version>2.5</forbiddenapis.version>
@@ -474,14 +474,14 @@
       </dependency>
 
       <dependency>
-        <groupId>commons-collections</groupId>
-        <artifactId>commons-collections</artifactId>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-collections4</artifactId>
         <version>${commons.collections.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>commons-lang</groupId>
-        <artifactId>commons-lang</artifactId>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
         <version>${commons.lang.version}</version>
       </dependency>
 

@@ -23,7 +23,6 @@ package org.apache.directory.api.ldap.trigger;
 
 import java.util.List;
 
-import org.apache.commons.lang.NullArgumentException;
 import org.apache.directory.api.i18n.I18n;
 
 
@@ -55,7 +54,7 @@ public class TriggerSpecification
         
         if ( ( ldapOperation == null ) || ( actionTime == null ) || ( spSpecs == null ) )
         {
-            throw new NullArgumentException( I18n.err( I18n.ERR_11000_TRIGGER_SPECIFICATION_INIT_WITH_NULL ) );
+            throw new NullPointerException( I18n.err( I18n.ERR_11000_TRIGGER_SPECIFICATION_INIT_WITH_NULL ) );
         }
         
         if ( spSpecs.isEmpty() )

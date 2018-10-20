@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.collections.list.UnmodifiableList;
+import org.apache.commons.collections4.list.UnmodifiableList;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
@@ -724,10 +724,9 @@ public class Dn implements Iterable<Rdn>, Externalizable
      *
      * @return All the components
      */
-    @SuppressWarnings("unchecked")
     public List<Rdn> getRdns()
     {
-        return UnmodifiableList.decorate( rdns );
+        return UnmodifiableList.unmodifiableList( rdns );
     }
 
 

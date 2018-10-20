@@ -23,7 +23,7 @@ package org.apache.directory.api.ldap.model.filter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 
 
 /**

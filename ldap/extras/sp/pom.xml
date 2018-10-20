@@ -63,8 +63,8 @@
     </dependency> 
 
     <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
     </dependency>
   </dependencies>
 
@@ -83,7 +83,7 @@
               org.apache.directory.api.ldap.sp;version=${project.version};-noimport:=true
             </Export-Package>
             <Import-Package>
-              org.apache.commons.lang;version=${commons.lang.version},
+              org.apache.commons.lang3;version=${commons.lang.version},
               org.apache.directory.api.ldap.codec.api;version=${project.version},
               org.apache.directory.api.ldap.extras.extended.storedProcedure;version=${project.version},
               org.apache.directory.api.ldap.model.constants;version=${project.version},

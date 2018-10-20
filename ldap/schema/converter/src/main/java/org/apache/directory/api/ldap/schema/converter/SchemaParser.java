@@ -31,7 +31,7 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.List;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.util.Strings;
 
@@ -143,13 +143,13 @@ public class SchemaParser
         }
         catch ( RecognitionException re )
         {
-            String msg = I18n.err( I18n.ERR_15003_PARSER_FAILURE, schemaName, ExceptionUtils.getFullStackTrace( re ) );
+            String msg = I18n.err( I18n.ERR_15003_PARSER_FAILURE, schemaName, ExceptionUtils.getStackTrace( re ) );
             init();
             throw new ParseException( msg, re.getColumn() );
         }
         catch ( TokenStreamException tse )
         {
-            String msg = I18n.err( I18n.ERR_15003_PARSER_FAILURE, schemaName, ExceptionUtils.getFullStackTrace( tse ) );
+            String msg = I18n.err( I18n.ERR_15003_PARSER_FAILURE, schemaName, ExceptionUtils.getStackTrace( tse ) );
             init();
             throw new ParseException( msg, 0 );
         }
