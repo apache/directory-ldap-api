@@ -50,7 +50,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 /**
  * Test the DefaultEntryAttribute class
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @RunWith(ConcurrentJunitRunner.class)
@@ -211,7 +211,7 @@ public class AttributeTest
 
 
     /**
-     * Test method 
+     * Test method
      */
     @Test
     public void testDefaultClientAttributeStringStringArray()
@@ -228,7 +228,7 @@ public class AttributeTest
 
 
     /**
-     * Test method 
+     * Test method
      */
     @Test
     public void testDefaultClientAttributeStringBytesArray()
@@ -296,15 +296,7 @@ public class AttributeTest
 
         attr3.add( BYTES1, BYTES2 );
 
-        try
-        {
-            attr3.getString();
-            fail();
-        }
-        catch ( LdapInvalidAttributeValueException ivae )
-        {
-            assertTrue( true );
-        }
+        assertEquals( "ab", attr3.getString() );
     }
 
 
@@ -1530,8 +1522,8 @@ public class AttributeTest
         assertTrue( dcaSer.contains( password ) );
         assertFalse( dcaSer.isHumanReadable() );
     }
-    
-    
+
+
     /**
      * test that we properly throw an exception, and not a NPE, when no AttributeType is provided.
      */

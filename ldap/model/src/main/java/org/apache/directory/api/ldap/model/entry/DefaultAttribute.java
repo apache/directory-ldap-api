@@ -514,9 +514,23 @@ public class DefaultAttribute implements Attribute, Cloneable
     {
         Value value = get();
 
-        if ( isHumanReadable() && ( value != null ) )
+        if ( isHumanReadable() )
         {
-            return value.getValue();
+            if ( value != null )
+            {
+                return value.getValue();
+            }
+            else
+            {
+                return "";
+            }
+        }
+        
+        if ( attributeType == null )
+        {
+            // Special case : the Attribute is not schema aware.
+            // The value is binary, we will try to convert it to a String
+            return Strings.utf8ToString( value.getBytes() );
         }
 
         String message = I18n.err( I18n.ERR_13215_VALUE_EXPECT_STRING );
