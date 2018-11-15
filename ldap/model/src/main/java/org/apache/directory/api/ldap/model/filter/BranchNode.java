@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 package org.apache.directory.api.ldap.model.filter;
 
@@ -23,13 +23,13 @@ package org.apache.directory.api.ldap.model.filter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 
 
 /**
  * Node representing branches within the expression tree corresponding to
  * logical operators within the filter expression.
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class BranchNode extends AbstractExprNode
@@ -60,7 +60,7 @@ public abstract class BranchNode extends AbstractExprNode
 
     /**
      * Creates a BranchNode using a logical operator and a list of children.
-     * 
+     *
      * @param assertionType the node's type
      * @param childList the child nodes under this branch node.
      */
@@ -79,7 +79,7 @@ public abstract class BranchNode extends AbstractExprNode
 
     /**
      * Creates a BranchNode using a logical operator.
-     * 
+     *
      * @param assertionType the node's type
      */
     protected BranchNode( AssertionType assertionType )
@@ -103,7 +103,7 @@ public abstract class BranchNode extends AbstractExprNode
 
     /**
      * Makes a full clone in new memory space of the current node and children
-     * 
+     *
      * @return the clone
      */
     @Override
@@ -118,7 +118,7 @@ public abstract class BranchNode extends AbstractExprNode
 
             for ( ExprNode child : children )
             {
-                ( ( BranchNode ) clone ).children.add( ( ExprNode ) child.clone() );
+                ( ( BranchNode ) clone ).children.add( child.clone() );
             }
         }
 
@@ -128,7 +128,7 @@ public abstract class BranchNode extends AbstractExprNode
 
     /**
      * Adds a child node to this branch node node
-     * 
+     *
      * @param node the child expression to add to this branch node
      */
     public void addNode( ExprNode node )
@@ -138,8 +138,8 @@ public abstract class BranchNode extends AbstractExprNode
 
 
     /**
-     * Adds a child node to this branch node at the head rather than the tail. 
-     * 
+     * Adds a child node to this branch node at the head rather than the tail.
+     *
      * @param node the child expression to add to this branch node
      */
     public void addNodeToHead( ExprNode node )
@@ -153,7 +153,7 @@ public abstract class BranchNode extends AbstractExprNode
      * array list so that backends can sort the order of children using their
      * own search optimization algorithms. We want backends and other parts of
      * the system to be able to induce side effects on the tree structure.
-     * 
+     *
      * @return the list of child nodes under this branch node.
      */
     public List<ExprNode> getChildren()
@@ -164,7 +164,7 @@ public abstract class BranchNode extends AbstractExprNode
 
     /**
      * Sets the list of children under this node.
-     * 
+     *
      * @param list the list of children to set.
      */
     public void setChildren( List<ExprNode> list )
@@ -177,7 +177,7 @@ public abstract class BranchNode extends AbstractExprNode
      * Convenience method that gets the first child in the children array. Its
      * very useful for NOT nodes since they only have one child by avoiding code
      * that looks like: <code> ( ExprNode ) m_children.get( 0 ) </code>
-     * 
+     *
      * @return the first child
      */
     public ExprNode getFirstChild()
@@ -194,7 +194,7 @@ public abstract class BranchNode extends AbstractExprNode
     /**
      * @see ExprNode#accept(
      *FilterVisitor)
-     *      
+     *
      * @return The modified element
      */
     @Override
@@ -233,7 +233,7 @@ public abstract class BranchNode extends AbstractExprNode
 
     /**
      * Tells if this Node is Schema aware.
-     * 
+     *
      * @return true if the Node is SchemaAware
      */
     @Override
@@ -252,7 +252,7 @@ public abstract class BranchNode extends AbstractExprNode
                     return false;
                 }
             }
-            
+
             return true;
         }
     }
@@ -260,7 +260,7 @@ public abstract class BranchNode extends AbstractExprNode
 
     /**
      * @see Object#hashCode()
-     * @return the instance's hash code 
+     * @return the instance's hash code
      */
     @Override
     public int hashCode()

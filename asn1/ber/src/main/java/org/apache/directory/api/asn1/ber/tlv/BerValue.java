@@ -24,6 +24,7 @@ import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.EncoderException;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.asn1.util.Asn1StringUtils;
 import org.apache.directory.api.asn1.util.BitString;
 import org.apache.directory.api.asn1.util.Oid;
@@ -784,6 +785,35 @@ public class BerValue
         {
             throw new EncoderException( I18n.err( I18n.ERR_01301_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
         }
+    }
+
+
+    /**
+     * Encode an integer value
+     *
+     * @param buffer The PDU in which the value will be put
+     * @param value The integer to be encoded
+     */
+    public static void encodeInteger( Asn1Buffer buffer, int value )
+    {
+        buffer.put( getBytes( value ) );
+        buffer.put( ( byte ) getNbBytes( value ) );
+        buffer.put( UniversalTag.INTEGER.getValue() );
+    }
+
+
+    /**
+     * Encode an integer value, with a specific tag
+     *
+     * @param buffer The PDU in which the value will be put
+     * @param tag The tag to use
+     * @param value The integer to be encoded
+     */
+    public static void encodeInteger( Asn1Buffer buffer, byte tag, int value )
+    {
+        buffer.put( getBytes( value ) );
+        buffer.put( ( byte ) getNbBytes( value ) );
+        buffer.put( tag );
     }
 
 

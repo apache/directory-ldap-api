@@ -29,6 +29,7 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
@@ -43,6 +44,9 @@ import org.apache.directory.api.util.Strings;
  */
 public final class LdapEncoder
 {
+    /**
+     * Make this final class impossible to instaciate from teh outside
+     */
     private LdapEncoder()
     {
         // Nothing to do
@@ -121,6 +125,75 @@ public final class LdapEncoder
 
         return buffer;
     }
+
+
+    /**
+     * Encode the controls
+     *
+     * @param buffer The buffer that will contain the encoded control
+     * @param codec The LdapApiService instance
+     * @param controls The control to encode
+     */
+    public static void encodeControlsReverse( Asn1Buffer buffer, LdapApiService codec, Map<String, Control> controls )
+    {
+
+    }
+
+
+    /**
+     * Generate the PDU which contains the encoded object.
+     *
+     * The generation is done in two phases :
+     * - first, we compute the length of each part and the
+     * global PDU length
+     * - second, we produce the PDU.
+     *
+     * <pre>
+     * 0x30 L1
+     *   |
+     *   +--&gt; 0x02 L2 MessageId
+     *   +--&gt; ProtocolOp
+     *   +--&gt; Controls
+     *
+     * L2 = Length(MessageId)
+     * L1 = Length(0x02) + Length(L2) + L2 + Length(ProtocolOp) + Length(Controls)
+     * LdapMessageLength = Length(0x30) + Length(L1) + L1
+     * </pre>
+     *
+     * @param codec The LdapApiService instance
+     * @param message The message to encode
+     * @return A ByteBuffer that contains the PDU
+     * @throws EncoderException If anything goes wrong.
+     */
+    public static ByteBuffer encodeMessageReverse( LdapApiService codec, Message message ) throws EncoderException
+    {
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        // The controls, if any
+        Map<String, Control> controls = message.getControls();
+
+        if ( ( controls != null ) && ( controls.size() > 0 ) )
+        {
+            encodeControlsReverse( buffer, codec, message.getControls() );
+        }
+
+
+        // The protocolOp part
+
+        // The message Id
+        BerValue.encodeInteger( buffer, message.getMessageId() );
+
+        // The LdapMessage Sequence
+        // BerValue.encodeSequence( buffer );
+
+        byte[] result = buffer.getBytes();
+        ByteBuffer bb = ByteBuffer.allocate( result.length );
+        bb.put( result );
+        bb.flip();
+
+        return bb;
+    }
+
 
     /**
      * Generate the PDU which contains the encoded object.

@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 package org.apache.directory.api.ldap.model.schema.registries;
 
@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Object identifier registry. It stores the OIDs for AT, OC, MR, LS, MRU, DSR, DCR and NF.
  * An OID is unique, and associated with a SO.
- * 
+ *
  * @param <T> The type of SchemaObject
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -51,7 +51,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
 
     /** Maps OID to a type of SchemaObject */
     private Map<String, T> byOid = new HashMap<>();
-    
+
     /** A flag indicating that the Registry is relaxed or not */
     private boolean isRelaxed = Registries.STRICT;
 
@@ -59,7 +59,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
 
     /**
      * Tells if the given OID is present on this registry
-     * 
+     *
      * @param oid The OID to lookup
      * @return true if the OID already exists
      */
@@ -72,7 +72,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
     /**
      * Gets the primary name associated with an OID.  The primary name is the
      * first name specified for the OID.
-     * 
+     *
      * @param oid the object identifier
      * @return the primary name
      * @throws LdapException if oid does not exist
@@ -96,8 +96,8 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
 
 
     /**
-     * Gets the SchemaObject associated with an OID. 
-     * 
+     * Gets the SchemaObject associated with an OID.
+     *
      * @param oid the object identifier
      * @return the associated SchemaObject
      * @throws LdapException if oid does not exist
@@ -121,13 +121,13 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
 
 
     /**
-     * Gets the names associated with an OID.  An OID is unique however it may 
+     * Gets the names associated with an OID.  An OID is unique however it may
      * have many names used to refer to it.  A good example is the cn and
-     * commonName attribute names for OID 2.5.4.3.  Within a server one name 
+     * commonName attribute names for OID 2.5.4.3.  Within a server one name
      * within the set must be chosen as the primary name.  This is used to
      * name certain things within the server internally.  If there is more than
      * one name then the first name is taken to be the primary.
-     * 
+     *
      * @param oid the OID for which we return the set of common names
      * @return a sorted set of names
      * @throws org.apache.directory.api.ldap.model.exception.LdapException if oid does not exist
@@ -157,7 +157,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
 
     /**
      * Lists all the OIDs within the registry.  This may be a really big list.
-     * 
+     *
      * @return all the OIDs registered
      */
     public Iterator<String> iteratorOids()
@@ -168,7 +168,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
 
     /**
      * Lists all the SchemaObjects within the registry.  This may be a really big list.
-     * 
+     *
      * @return all the SchemaObject registered
      */
     @Override
@@ -177,7 +177,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
         return byOid.values().iterator();
     }
 
-    
+
     /**
      * Tells if the Registry is permissive or if it must be checked
      * against inconsistencies.
@@ -220,7 +220,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
         isRelaxed = Registries.STRICT;
     }
 
-    
+
     public SchemaErrorHandler getErrorHandler()
     {
         return errorHandler;
@@ -235,7 +235,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
 
     /**
      * Adds an OID name pair to the registry.
-     * 
+     *
      * @param schemaObject The SchemaObject the oid belongs to
      * @throws LdapException If something went wrong
      */
@@ -249,7 +249,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
             {
                 LOG.debug( message );
             }
-            
+
             throw new LdapException( message );
         }
 
@@ -265,7 +265,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
                 {
                     LOG.debug( message );
                 }
-                
+
                 throw new LdapException( message );
             }
         }
@@ -297,8 +297,8 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
 
 
     /**
-     * Store the given SchemaObject into the OidRegistry. Available only to 
-     * the current package. A weak form (no check is done) of the register 
+     * Store the given SchemaObject into the OidRegistry. Available only to
+     * the current package. A weak form (no check is done) of the register
      * method, define for clone methods.
      *
      * @param schemaObject The SchemaObject to inject into the OidRegistry
@@ -329,7 +329,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
 
     /**
      * Copy the OidRegistry, without the contained values
-     * 
+     *
      * @return A new OidRegistry instance
      */
     public OidRegistry<T> copy()

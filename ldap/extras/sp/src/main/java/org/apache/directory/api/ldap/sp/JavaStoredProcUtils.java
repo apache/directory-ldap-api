@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- * 
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
  *  under the License.
- * 
+ *
  */
 
 package org.apache.directory.api.ldap.sp;
@@ -36,7 +36,7 @@ import javax.naming.ldap.ExtendedRequest;
 import javax.naming.ldap.ExtendedResponse;
 import javax.naming.ldap.LdapContext;
 
-import org.apache.commons.lang.SerializationUtils;
+import org.apache.commons.lang3.SerializationUtils;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequestImpl;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
@@ -61,7 +61,7 @@ public final class JavaStoredProcUtils
 
     /**
      * Returns the stream data of a Java class.
-     * 
+     *
      * @param clazz
      *           The class whose stream data will be retrieved.
      * @return
@@ -76,7 +76,7 @@ public final class JavaStoredProcUtils
         String classFileName = fullClassName.substring( lastDot + 1 ) + ".class";
         URL url = clazz.getResource( classFileName );
         InputStream in;
-        
+
         try
         {
             in = url.openStream();
@@ -87,9 +87,9 @@ public final class JavaStoredProcUtils
             ne.setRootCause( ioe );
             throw ne;
         }
-        
+
         File file;
-        
+
         try
         {
             file = new File( url.toURI() );
@@ -100,7 +100,7 @@ public final class JavaStoredProcUtils
             ne.setRootCause( urie );
             throw ne;
         }
-        
+
         int size = ( int ) file.length();
         byte[] buf = new byte[size];
 
@@ -125,7 +125,7 @@ public final class JavaStoredProcUtils
 
     /**
      * Loads a Java class's stream data as a subcontext of an LdapContext given.
-     * 
+     *
      * @param ctx
      *           The parent context of the Java class entry to be loaded.
      * @param clazz
@@ -151,7 +151,7 @@ public final class JavaStoredProcUtils
 
     /**
      * Invoke a Stored Procedure
-     * 
+     *
      * @param ctx The execution context
      * @param procedureName The procedure to execute
      * @param arguments The procedure's arguments

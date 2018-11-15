@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 package org.apache.directory.api.ldap.schema.converter;
 
@@ -31,7 +31,7 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.List;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.util.Strings;
 
@@ -120,14 +120,14 @@ public class SchemaParser
         }
 
         producerThread.start();
-        
+
         return invokeParser( schemaObject );
     }
 
 
     /**
      * Invoke the parser
-     * 
+     *
      * @param schemaName The schema to be parsed
      * @return A list of schema elements
      * @throws java.io.IOException If the schema file can't be processed
@@ -143,13 +143,13 @@ public class SchemaParser
         }
         catch ( RecognitionException re )
         {
-            String msg = I18n.err( I18n.ERR_15003_PARSER_FAILURE, schemaName, ExceptionUtils.getFullStackTrace( re ) );
+            String msg = I18n.err( I18n.ERR_15003_PARSER_FAILURE, schemaName, ExceptionUtils.getStackTrace( re ) );
             init();
             throw new ParseException( msg, re.getColumn() );
         }
         catch ( TokenStreamException tse )
         {
-            String msg = I18n.err( I18n.ERR_15003_PARSER_FAILURE, schemaName, ExceptionUtils.getFullStackTrace( tse ) );
+            String msg = I18n.err( I18n.ERR_15003_PARSER_FAILURE, schemaName, ExceptionUtils.getStackTrace( tse ) );
             init();
             throw new ParseException( msg, 0 );
         }
@@ -198,7 +198,7 @@ public class SchemaParser
         producerThread.start();
         invokeParser( "schema file ==> " + schemaFile.getAbsolutePath() );
     }
-    
+
 
     /**
      * The thread which read the schema files and fill the

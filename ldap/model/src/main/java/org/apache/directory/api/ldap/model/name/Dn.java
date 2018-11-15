@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.collections.list.UnmodifiableList;
+import org.apache.commons.collections4.list.UnmodifiableList;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
@@ -165,7 +165,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /**
      * Construct an empty Schema aware Dn object
-     * 
+     *
      *  @param schemaManager The SchemaManager to use
      */
     public Dn( SchemaManager schemaManager )
@@ -178,7 +178,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /**
      * Construct an empty Schema aware Dn object
-     * 
+     *
      *  @param schemaManager The SchemaManager to use
      *  @param dn The Dn to use
      *  @throws LdapInvalidDnException If the Dn is invalid
@@ -219,7 +219,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      *     "ou", exampleName,
      *     baseDn);
      * </pre>
-     * 
+     *
      * @param upRdns The list of String composing the Dn
      * @throws LdapInvalidDnException If the resulting Dn is invalid
      */
@@ -247,7 +247,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      *     "ou", exampleName,
      *     baseDn);
      * </pre>
-     * 
+     *
      * @param schemaManager the schema manager
      * @param upRdns The list of String composing the Dn
      * @throws LdapInvalidDnException If the resulting Dn is invalid
@@ -300,7 +300,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         // Stores the representations of a Dn : internal (as a string and as a
         // byte[]) and external.
         upName = sbUpName.toString();
-        
+
         try
         {
             normName = parseInternal( schemaManager, upName, rdns );
@@ -376,7 +376,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
     public Dn( SchemaManager schemaManager, Rdn... rdns ) throws LdapInvalidDnException
     {
         this.schemaManager = schemaManager;
-        
+
         if ( rdns == null )
         {
             return;
@@ -400,7 +400,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /**
      * Get the associated SchemaManager if any.
-     * 
+     *
      * @return The SchemaManager
      */
     public SchemaManager getSchemaManager()
@@ -491,17 +491,17 @@ public class Dn implements Iterable<Rdn>, Externalizable
     {
         return normName == null ? "" : normName;
     }
-    
-    
+
+
     /**
      * @return The RDN as an escaped String
      */
     public String getEscaped()
     {
         StringBuilder sb = new StringBuilder();
-        
+
         boolean isFirst = true;
-        
+
         for ( Rdn rdn : rdns )
         {
             if ( isFirst )
@@ -512,10 +512,10 @@ public class Dn implements Iterable<Rdn>, Externalizable
             {
                 sb.append( ',' );
             }
-            
+
             sb.append( rdn.getEscaped() );
         }
-        
+
         return sb.toString();
     }
 
@@ -724,10 +724,9 @@ public class Dn implements Iterable<Rdn>, Externalizable
      *
      * @return All the components
      */
-    @SuppressWarnings("unchecked")
     public List<Rdn> getRdns()
     {
-        return UnmodifiableList.decorate( rdns );
+        return UnmodifiableList.unmodifiableList( rdns );
     }
 
 
@@ -739,12 +738,12 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * as a parameter. Here is a working example :
      * <pre>
      * Dn dn = new Dn( "cn=test, dc=server, dc=directory, dc=apache, dc=org" );
-     * 
+     *
      * Dn descendant = dn.getDescendantOf( "dc=apache, dc=org" );
-     * 
+     *
      * // At this point, the descendant contains cn=test, dc=server, dc=directory"
      * </pre>
-     * 
+     *
      * @param ancestor The parent DN
      * @return The part of the DN that is the descendant
      * @throws LdapInvalidDnException If the Dn is invalid
@@ -763,12 +762,12 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * as a parameter. Here is a working example :
      * <pre>
      * Dn dn = new Dn( "cn=test, dc=server, dc=directory, dc=apache, dc=org" );
-     * 
+     *
      * Dn descendant = dn.getDescendantOf( "dc=apache, dc=org" );
-     * 
+     *
      * // At this point, the descendant contains cn=test, dc=server, dc=directory"
      * </pre>
-     * 
+     *
      * @param ancestor The parent DN
      * @return The part of the DN that is the descendant
      * @throws LdapInvalidDnException If the Dn is invalid
@@ -827,12 +826,12 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * as a parameter. Here is a working example :
      * <pre>
      * Dn dn = new Dn( "cn=test, dc=server, dc=directory, dc=apache, dc=org" );
-     * 
+     *
      * Dn ancestor = dn.getAncestorOf( "cn=test, dc=server, dc=directory" );
-     * 
+     *
      * // At this point, the ancestor contains "dc=apache, dc=org"
      * </pre>
-     * 
+     *
      * @param descendant The child DN
      * @return The part of the DN that is the ancestor
      * @throws LdapInvalidDnException If the Dn is invalid
@@ -851,12 +850,12 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * as a parameter. Here is a working example :
      * <pre>
      * Dn dn = new Dn( "cn=test, dc=server, dc=directory, dc=apache, dc=org" );
-     * 
+     *
      * Dn ancestor = dn.getAncestorOf( new Dn( "cn=test, dc=server, dc=directory" ) );
-     * 
+     *
      * // At this point, the ancestor contains "dc=apache, dc=org"
      * </pre>
-     * 
+     *
      * @param descendant The child DN
      * @return The part of the DN that is the ancestor
      * @throws LdapInvalidDnException If the Dn is invalid
@@ -909,12 +908,12 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /**
      * Add a suffix to the Dn. For instance, if the current Dn is "ou=people",
-     * and the suffix "dc=example,dc=com", then the resulting Dn will be 
-     * "ou=people,dc=example,dc=com" 
-     * 
+     * and the suffix "dc=example,dc=com", then the resulting Dn will be
+     * "ou=people,dc=example,dc=com"
+     *
      * @param suffix the suffix to add
      * @return The resulting Dn with the additional suffix
-     * @throws LdapInvalidDnException If the resulting Dn is not valid 
+     * @throws LdapInvalidDnException If the resulting Dn is not valid
      */
     public Dn add( Dn suffix ) throws LdapInvalidDnException
     {
@@ -947,12 +946,12 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /**
      * Add a suffix to the Dn. For instance, if the current Dn is "ou=people",
-     * and the suffix "dc=example,dc=com", then the resulting Dn will be 
-     * "ou=people,dc=example,dc=com" 
-     * 
+     * and the suffix "dc=example,dc=com", then the resulting Dn will be
+     * "ou=people,dc=example,dc=com"
+     *
      * @param comp the suffix to add
      * @return The resulting Dn with the additional suffix
-     * @throws LdapInvalidDnException If the resulting Dn is not valid 
+     * @throws LdapInvalidDnException If the resulting Dn is not valid
      */
     public Dn add( String comp ) throws LdapInvalidDnException
     {
@@ -1028,7 +1027,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /**
      * Create a copy of the current Dn
-     * 
+     *
      * @return The copied Dn
      */
     private Dn copy()
@@ -1053,7 +1052,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
     public boolean equals( Object obj )
     {
         Dn other;
-        
+
         if ( obj instanceof String )
         {
             try
@@ -1073,7 +1072,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         {
             return false;
         }
-        
+
         if ( other.size() != this.size() )
         {
             return false;
@@ -1089,7 +1088,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             }
             return normName.equals( other.normName );
         }
-        
+
         for ( int i = 0; i < this.size(); i++ )
         {
             if ( !other.rdns.get( i ).equals( rdns.get( i ) ) )
@@ -1102,7 +1101,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         return true;
     }
 
-    
+
     /**
      * Tells if the Dn is schema aware
      *
@@ -1119,7 +1118,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * the rightmost to the leftmost. For instance, the following code :<br>
      * <pre>
      * Dn dn = new Dn( "sn=test, dc=apache, dc=org );
-     * 
+     *
      * for ( Rdn rdn : dn )
      * {
      *     System.out.println( rdn.toString() );
@@ -1131,7 +1130,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * dc=apache
      * sn=test
      * </pre>
-     * 
+     *
      */
     @Override
     public Iterator<Rdn> iterator()
@@ -1243,7 +1242,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             rdn.readExternal( in );
             rdns.add( rdn );
         }
-        
+
         toUpName();
     }
 
