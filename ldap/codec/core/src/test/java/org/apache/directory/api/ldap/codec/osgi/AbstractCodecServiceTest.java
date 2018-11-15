@@ -22,7 +22,6 @@ package org.apache.directory.api.ldap.codec.osgi;
 
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
-import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
 import org.apache.mina.filter.codec.ProtocolDecoder;
@@ -54,12 +53,14 @@ public abstract class AbstractCodecServiceTest
 
         codec.registerProtocolCodecFactory( new ProtocolCodecFactory()
         {
+            @Override
             public ProtocolEncoder getEncoder( IoSession session ) throws Exception
             {
                 return null;
             }
 
 
+            @Override
             public ProtocolDecoder getDecoder( IoSession session ) throws Exception
             {
                 return null;
@@ -70,7 +71,6 @@ public abstract class AbstractCodecServiceTest
         {
             LdapApiServiceFactory.initialize( codec );
         }
-        encoder = new LdapEncoder( codec );
     }
 
 
@@ -81,6 +81,5 @@ public abstract class AbstractCodecServiceTest
     public static void tearDownLdapCodecService()
     {
         codec = null;
-        encoder = null;
     }
 }

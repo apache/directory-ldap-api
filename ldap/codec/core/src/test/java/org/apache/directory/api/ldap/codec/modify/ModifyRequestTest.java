@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 package org.apache.directory.api.ldap.codec.modify;
 
@@ -32,6 +32,7 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
+import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
 import org.apache.directory.api.ldap.codec.decorators.ModifyRequestDecorator;
@@ -54,7 +55,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 /**
  * Test the ModifyRequest codec
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @RunWith(ConcurrentJunitRunner.class)
@@ -217,7 +218,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         // Check the encoding
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( modifyRequest );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, modifyRequest );
 
             // Check the length
             assertEquals( 0x54, bb.limit() );
@@ -560,7 +561,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         // Check the encoding, by decoding and re-encoding the result
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( modifyRequest );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, modifyRequest );
 
             // Check the length
             assertEquals( 0x8C, bb.limit() );
@@ -579,7 +580,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
 
             ModifyRequest modifyRequest2 = ldapMessageContainer.getMessage();
 
-            bb = encoder.encodeMessage( modifyRequest2 );
+            bb = LdapEncoder.encodeMessage( codec, modifyRequest2 );
             String decodedPdu2 = Strings.dumpBytes( bb.array() );
 
             assertEquals( decodedPdu1, decodedPdu2 );
@@ -845,7 +846,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         // Check the encoding, by decoding and re-encoding the result
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( modifyRequest );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, modifyRequest );
 
             // Check the length
             assertEquals( 0xB9, bb.limit() );
@@ -864,7 +865,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
 
             ModifyRequest modifyRequest2 = ldapMessageContainer.getMessage();
 
-            bb = encoder.encodeMessage( modifyRequest2 );
+            bb = LdapEncoder.encodeMessage( codec, modifyRequest2 );
             String decodedPdu2 = Strings.dumpBytes( bb.array() );
 
             assertEquals( decodedPdu1, decodedPdu2 );
@@ -1039,7 +1040,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         // Check the encoding
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( modifyRequest );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, modifyRequest );
 
             // Check the length
             assertEquals( 0x5C, bb.limit() );
@@ -1962,7 +1963,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         // Check the encoding
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( modifyRequest );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, modifyRequest );
 
             // Check the length
             assertEquals( 0x37, bb.limit() );
@@ -2120,12 +2121,12 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         CodecControl<Control> control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) modifyRequest
             .getControl( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
+        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( modifyRequest );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, modifyRequest );
 
             // Check the length
             assertEquals( 0x54, bb.limit() );
@@ -2257,7 +2258,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         // Check the encoding
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( modifyRequest );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, modifyRequest );
 
             // Check the length
             assertEquals( 0x3D, bb.limit() );

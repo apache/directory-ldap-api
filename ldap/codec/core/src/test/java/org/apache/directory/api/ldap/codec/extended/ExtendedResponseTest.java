@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 package org.apache.directory.api.ldap.codec.extended;
 
@@ -31,6 +31,7 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
+import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
@@ -48,7 +49,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 /**
  * Test the ExtendedResponse codec
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @RunWith(ConcurrentJunitRunner.class)
@@ -141,7 +142,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         // Check the encoding
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( extendedResponse );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, extendedResponse );
 
             // Check the length
             assertEquals( 0x24, bb.limit() );
@@ -175,9 +176,9 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
                 0x02,
                 0x01,
                 0x01, // messageID MessageID
-                // CHOICE { 
-                //    ..., 
-                //    extendedResp ExtendedResponse, 
+                // CHOICE {
+                //    ...,
+                //    extendedResp ExtendedResponse,
                 //    ...
                 0x78,
                 0x1D, // ExtendedResponse ::= [APPLICATION 23] SEQUENCE {
@@ -209,7 +210,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
                 '.',
                 '2',
                 ( byte ) 0x8B,
-                0x05, // response [11] OCTET STRING OPTIONAL } 
+                0x05, // response [11] OCTET STRING OPTIONAL }
                 'v',
                 'a',
                 'l',
@@ -287,7 +288,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         // Check the encoding
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( extendedResponse );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, extendedResponse );
 
             // Check the length
             assertEquals( 0x41, bb.limit() );
@@ -366,7 +367,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         // Check the encoding
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( extendedResponse );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, extendedResponse );
 
             // Check the length
             assertEquals( 0x0E, bb.limit() );
@@ -484,7 +485,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         // Check the encoding
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( extendedResponse );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, extendedResponse );
 
             // Check the length
             assertEquals( 0x2B, bb.limit() );
@@ -726,7 +727,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         // Check the encoding
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( extendedResponse );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, extendedResponse );
 
             // Check the length
             assertEquals( 0x1D, bb.limit() );
@@ -863,7 +864,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         // Check the encoding
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( extendedResponse );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, extendedResponse );
 
             // Check the length
             assertEquals( 0x3A, bb.limit() );
@@ -961,7 +962,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         // Check the encoding
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( extendedResponse );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, extendedResponse );
 
             // Check the length
             assertEquals( 0x1F, bb.limit() );
@@ -1101,7 +1102,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         // Check the encoding
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( extendedResponse );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, extendedResponse );
 
             // Check the length
             assertEquals( 0x3C, bb.limit() );

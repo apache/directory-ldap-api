@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 package org.apache.directory.api.ldap.codec;
 
@@ -32,9 +32,10 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
+import org.apache.directory.api.ldap.codec.api.CodecControl;
+import org.apache.directory.api.ldap.codec.api.LdapEncoder;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.AbandonRequestDecorator;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.AbandonRequest;
@@ -64,7 +65,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
 
         ByteBuffer stream = ByteBuffer.allocate( 0x64 );
         stream.put( new byte[]
-            { 
+            {
                 0x30, 0x62,                         // LDAPMessage ::=SEQUENCE {
                   0x02, 0x01, 0x03,                 // messageID MessageID
                     0x50, 0x01, 0x02,               // CHOICE { ..., abandonRequest
@@ -73,7 +74,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
                     0x30, 0x1A,                     // Control ::= SEQUENCE {
                       0x04, 0x0D,                   // controlType LDAPOID,
                         '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '1',
-                      0x01, 0x01, ( byte ) 0xFF,    // criticality BOOLEAN DEFAULT FALSE, 
+                      0x01, 0x01, ( byte ) 0xFF,    // criticality BOOLEAN DEFAULT FALSE,
                       0x04, 0x06,                   // controlValue OCTET STRING OPTIONAL }
                         'a', 'b', 'c', 'd', 'e', 'f',
                     0x30, 0x17,                     // Control ::= SEQUENCE {
@@ -87,7 +88,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
                       0x01, 0x01, ( byte ) 0xFF,    // criticality BOOLEAN DEFAULT FALSE}
                     0x30, 0x0F,                     // Control ::= SEQUENCE {
                       0x04, 0x0D,                   // controlType LDAPOID}
-                        '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '4' 
+                        '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '4'
             } );
 
         stream.flip();
@@ -125,32 +126,32 @@ public class LdapControlTest extends AbstractCodecServiceTest
         CodecControl<Control> control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) controls
             .get( "1.3.6.1.5.5.1" );
         assertEquals( "1.3.6.1.5.5.1", control.getOid() );
-        assertEquals( "0x61 0x62 0x63 0x64 0x65 0x66 ", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
+        assertEquals( "0x61 0x62 0x63 0x64 0x65 0x66 ", Strings.dumpBytes( control.getValue() ) );
         assertTrue( control.isCritical() );
         internalAbandonRequest.addControl( control );
 
         control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) controls.get( "1.3.6.1.5.5.2" );
         assertEquals( "1.3.6.1.5.5.2", control.getOid() );
-        assertEquals( "0x67 0x68 0x69 0x6A 0x6B 0x6C ", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
+        assertEquals( "0x67 0x68 0x69 0x6A 0x6B 0x6C ", Strings.dumpBytes( control.getValue() ) );
         assertFalse( control.isCritical() );
         internalAbandonRequest.addControl( control );
 
         control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) controls.get( "1.3.6.1.5.5.3" );
         assertEquals( "1.3.6.1.5.5.3", control.getOid() );
-        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
+        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
         assertTrue( control.isCritical() );
         internalAbandonRequest.addControl( control );
 
         control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) controls.get( "1.3.6.1.5.5.4" );
         assertEquals( "1.3.6.1.5.5.4", control.getOid() );
-        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
+        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
         assertFalse( control.isCritical() );
         internalAbandonRequest.addControl( control );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( new AbandonRequestDecorator( codec, internalAbandonRequest ) );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, new AbandonRequestDecorator( codec, internalAbandonRequest ) );
 
             // Check the length
             assertEquals( 0x64, bb.limit() );
@@ -178,7 +179,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
         }
     }
 
-    
+
     /**
      * Test the decoding of a Request with an empty list of controls
      */
@@ -189,7 +190,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
 
         ByteBuffer stream = ByteBuffer.allocate( 0x0A );
         stream.put( new byte[]
-            { 
+            {
                 0x30, 0x08,                         // LDAPMessage ::=SEQUENCE {
                   0x02, 0x01, 0x03,                 // messageID MessageID
                     0x50, 0x01, 0x02,               // CHOICE { ..., abandonRequest
@@ -232,7 +233,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
         // Check the encoding
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( new AbandonRequestDecorator( codec, internalAbandonRequest ) );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, new AbandonRequestDecorator( codec, internalAbandonRequest ) );
 
             // Check the length, which should be 2 bytes shorter, as we don't encode teh empty control
             assertEquals( 0x08, bb.limit() );
@@ -271,7 +272,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
 
         ByteBuffer stream = ByteBuffer.allocate( 0x19 );
         stream.put( new byte[]
-            { 
+            {
                 0x30, 0x17,                         // LDAPMessage ::=SEQUENCE {
                   0x02, 0x01, 0x03,                 // messageID MessageID
                 0x50, 0x01, 0x02,                   // CHOICE { ..., abandonRequest
@@ -281,7 +282,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
                     0x04, 0x00,                     // controlType LDAPOID,
                     0x01, 0x01, ( byte ) 0xFF,      // criticality BOOLEAN DEFAULT FALSE,
                     0x04, 0x06,                     // controlValue OCTET STRING OPTIONAL }
-                      'a', 'b', 'c', 'd', 'e', 'f', 
+                      'a', 'b', 'c', 'd', 'e', 'f',
             } );
 
         stream.flip();
@@ -315,7 +316,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
 
         ByteBuffer stream = ByteBuffer.allocate( 0x20 );
         stream.put( new byte[]
-            { 
+            {
                 0x30, 0x1E,                         // LDAPMessage ::=SEQUENCE {
                   0x02, 0x01, 0x03,                 // messageID MessageID
                 0x50, 0x01, 0x02,                   // CHOICE { ..., abandonRequest
@@ -327,7 +328,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
                       'b', 'a', 'd', ' ', 'o', 'i', 'd',
                     0x01, 0x01, ( byte ) 0xFF,
                     0x04, 0x06,                     // controlValue OCTET STRING OPTIONAL }
-                      'a', 'b', 'c', 'd', 'e', 'f', 
+                      'a', 'b', 'c', 'd', 'e', 'f',
             } );
 
         stream.flip();
@@ -361,7 +362,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
 
         ByteBuffer stream = ByteBuffer.allocate( 0x25 );
         stream.put( new byte[]
-            { 
+            {
                 0x30, 0x23,                         // LDAPMessage ::=SEQUENCE {
                   0x02, 0x01, 0x03,                 // messageID MessageID
                 0x50, 0x01, 0x02,                   // CHOICE { ..., abandonRequest

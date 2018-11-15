@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 package org.apache.directory.api.ldap.codec.modifyDn;
 
@@ -27,13 +27,11 @@ import static org.junit.Assert.fail;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
+import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
 import org.apache.directory.api.ldap.codec.decorators.ModifyDnRequestDecorator;
@@ -47,10 +45,13 @@ import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+
 
 /**
  * Test the ModifyDNRequest codec
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @RunWith(ConcurrentJunitRunner.class)
@@ -175,7 +176,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
         // Check the encoding
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( modifyDnRequest );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, modifyDnRequest );
 
             // Check the length
             assertEquals( 0x48, bb.limit() );
@@ -687,12 +688,12 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
         CodecControl<Control> control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) modifyDnRequest
             .getControl( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
+        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( modifyDnRequest );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, modifyDnRequest );
 
             // Check the length
             assertEquals( 0x65, bb.limit() );
@@ -815,7 +816,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
         // Check the encoding
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( modifyDnRequest );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, modifyDnRequest );
 
             // Check the length
             assertEquals( 0x3D, bb.limit() );
@@ -975,12 +976,12 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
         CodecControl<Control> control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) modifyDnRequest
             .getControl( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
+        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( modifyDnRequest );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, modifyDnRequest );
 
             // Check the length
             assertEquals( 0x5A, bb.limit() );

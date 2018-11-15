@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 package org.apache.directory.api.ldap.codec.api;
 
@@ -38,35 +38,20 @@ import org.apache.directory.api.util.Strings;
 
 /**
  * LDAP BER encoder.
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdapEncoder
+public final class LdapEncoder
 {
-    /** The LdapCodecService */
-    private LdapApiService codec;
-
-
-    /**
-     * Creates an instance of Ldap message encoder
-     * 
-     * @param codec The Codec service to use to handle Controls and extended operations,
-     * plus to get access to the underlying services.
-     */
-    public LdapEncoder( LdapApiService codec )
+    private LdapEncoder()
     {
-        if ( codec == null )
-        {
-            throw new NullPointerException( I18n.err( I18n.ERR_05203_CODEC_ARGS_CANNOT_BE_NULL ) );
-        }
-
-        this.codec = codec;
+        // Nothing to do
     }
 
 
     /**
      * Compute the control's encoded length
-     * 
+     *
      * @param control The control to compute
      * @return the encoded control length
      */
@@ -98,7 +83,7 @@ public class LdapEncoder
 
     /**
      * Encode a control to a byte[]
-     * 
+     *
      * @param buffer The buffer that will contain the encoded control
      * @param control The control to encode
      * @return The control encoded in a byte[]
@@ -137,35 +122,35 @@ public class LdapEncoder
         return buffer;
     }
 
-
     /**
-     * Generate the PDU which contains the encoded object. 
-     * 
-     * The generation is done in two phases : 
+     * Generate the PDU which contains the encoded object.
+     *
+     * The generation is done in two phases :
      * - first, we compute the length of each part and the
-     * global PDU length 
-     * - second, we produce the PDU. 
-     * 
+     * global PDU length
+     * - second, we produce the PDU.
+     *
      * <pre>
-     * 0x30 L1 
-     *   | 
-     *   +--&gt; 0x02 L2 MessageId  
-     *   +--&gt; ProtocolOp 
-     *   +--&gt; Controls 
-     *   
+     * 0x30 L1
+     *   |
+     *   +--&gt; 0x02 L2 MessageId
+     *   +--&gt; ProtocolOp
+     *   +--&gt; Controls
+     *
      * L2 = Length(MessageId)
      * L1 = Length(0x02) + Length(L2) + L2 + Length(ProtocolOp) + Length(Controls)
      * LdapMessageLength = Length(0x30) + Length(L1) + L1
      * </pre>
-     * 
+     *
      * @param message The message to encode
      * @return A ByteBuffer that contains the PDU
      * @throws EncoderException If anything goes wrong.
      */
-    public ByteBuffer encodeMessage( Message message ) throws EncoderException
+    public static ByteBuffer encodeMessage( LdapApiService codec, Message message ) throws EncoderException
     {
         AbstractMessageDecorator<? extends Message> decorator = AbstractMessageDecorator.getDecorator( codec, message );
         int length = computeMessageLength( decorator );
+
         ByteBuffer buffer = ByteBuffer.allocate( length );
 
         try
@@ -229,23 +214,23 @@ public class LdapEncoder
 
 
     /**
-     * Compute the LdapMessage length LdapMessage : 
+     * Compute the LdapMessage length LdapMessage :
      * <pre>
-     * 0x30 L1 
-     *   | 
-     *   +--&gt; 0x02 0x0(1-4) [0..2^31-1] (MessageId) 
-     *   +--&gt; protocolOp 
-     *   [+--&gt; Controls] 
-     *   
-     * MessageId length = Length(0x02) + length(MessageId) + MessageId.length 
-     * L1 = length(ProtocolOp) 
+     * 0x30 L1
+     *   |
+     *   +--&gt; 0x02 0x0(1-4) [0..2^31-1] (MessageId)
+     *   +--&gt; protocolOp
+     *   [+--&gt; Controls]
+     *
+     * MessageId length = Length(0x02) + length(MessageId) + MessageId.length
+     * L1 = length(ProtocolOp)
      * LdapMessage length = Length(0x30) + Length(L1) + MessageId length + L1
      * </pre>
-     * 
+     *
      * @param messageDecorator the decorated Message who's length is to be encoded
      * @return The message length
      */
-    private int computeMessageLength( AbstractMessageDecorator<? extends Message> messageDecorator )
+    private static int computeMessageLength( AbstractMessageDecorator<? extends Message> messageDecorator )
     {
         // The length of the MessageId. It's the sum of
         // - the tag (0x02), 1 byte
@@ -310,7 +295,7 @@ public class LdapEncoder
 
     /**
      * Encode the Referral message to a PDU.
-     * 
+     *
      * @param buffer The buffer where to put the PDU
      * @param referral The referral to encode
      * @exception EncoderException If the encoding failed

@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 package org.apache.directory.api.ldap.codec.search;
 
@@ -30,13 +30,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
+import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
@@ -54,10 +52,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+
 
 /**
  * A test case for SearchRequest messages
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @RunWith(ConcurrentJunitRunner.class)
@@ -113,7 +114,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                 0x01,
                 0x01, //      messageID MessageID
                 0x63,
-                0x5D, //      CHOICE { ..., 
+                0x5D, //      CHOICE { ...,
                 //          searchRequest SearchRequest, ...
                 // SearchRequest ::= APPLICATION[3] SEQUENCE {
                 0x04,
@@ -169,7 +170,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                 0x02,
                 0x02,
                 0x03,
-                ( byte ) 0xE8, // timeLimit INTEGER (0 .. maxInt), (1000) 
+                ( byte ) 0xE8, // timeLimit INTEGER (0 .. maxInt), (1000)
                 0x01,
                 0x01,
                 ( byte ) 0xFF, // typesOnly
@@ -276,7 +277,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         // attributes may have been reordered
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( searchRequest );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchRequest );
 
             // Check the length
             assertEquals( 0x64, bb.limit() );
@@ -509,14 +510,14 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         CodecControl<Control> control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) searchRequest
             .getControl( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
+        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
         // Check the encoding
         // We won't check the whole PDU, as it may differs because
         // attributes may have been reordered
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( searchRequest );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchRequest );
 
             // Check the length
             assertEquals( 0x0081, bb.limit() );
@@ -718,7 +719,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         // attributes may have been reordered
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( searchRequest );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchRequest );
 
             // Check the length
             assertEquals( 0x64, bb.limit() );
@@ -923,7 +924,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         // attributes may have been reordered
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( searchRequest );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchRequest );
 
             // Check the length
             assertEquals( 0x67, bb.limit() );
@@ -1131,7 +1132,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         // attributes may have been reordered
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( searchRequest );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchRequest );
 
             // Check the length
             assertEquals( 0x6A, bb.limit() );
@@ -1335,7 +1336,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         // attributes may have been reordered
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( searchRequest );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchRequest );
 
             // Check the length
             assertEquals( 0x67, bb.limit() );
@@ -1534,7 +1535,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         // attributes may have been reordered
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( searchRequest );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchRequest );
 
             // Check the length
             assertEquals( 0x6A, bb.limit() );
@@ -1738,7 +1739,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         // attributes may have been reordered
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( searchRequest );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchRequest );
 
             // Check the length
             assertEquals( 0x67, bb.limit() );
@@ -1948,7 +1949,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         // attributes may have been reordered
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( searchRequest );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchRequest );
 
             // Check the length
             assertEquals( 0x6A, bb.limit() );
@@ -2154,7 +2155,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         // attributes may have been reordered
         try
         {
-            ByteBuffer bb = encoder.encodeMessage( searchRequest );
+            ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchRequest );
 
             // Check the length
             assertEquals( 0x67, bb.limit() );
