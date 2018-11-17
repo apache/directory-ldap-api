@@ -30,6 +30,7 @@ import java.util.Map;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
@@ -38,7 +39,6 @@ import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.BindRequest;
 import org.apache.directory.api.ldap.model.message.BindRequestImpl;
 import org.apache.directory.api.ldap.model.message.Control;
-import org.apache.directory.api.ldap.model.message.controls.OpaqueControl;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 import org.junit.Ignore;
@@ -54,7 +54,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-@Ignore("Ignore performance tests: should not be with integration tests")
+//@Ignore("Ignore performance tests: should not be with integration tests")
 public class BindRequestPerfTest extends AbstractCodecServiceTest
 {
     /**
@@ -232,26 +232,27 @@ public class BindRequestPerfTest extends AbstractCodecServiceTest
      * controls
      */
     @Test
-    @Ignore
+    //@Ignore
     public void testEncodeBindRequestPerf() throws Exception
     {
         Dn dn = new Dn( "uid=akarasulu,dc=example,dc=com" );
-        int nbLoops = 1000000;
+        int nbLoops = 100_000_000;
+
+        // Check the decoded BindRequest
+        BindRequest bindRequest = new BindRequestImpl();
+        bindRequest.setMessageId( 1 );
+
+        bindRequest.setSimple( true );
+        bindRequest.setDn( dn );
+        bindRequest.setCredentials( Strings.getBytesUtf8( "password" ) );
+        //Control control = new ManageDsaITImpl();
+
+        //bindRequest.addControl( control );
+
         long t0 = System.currentTimeMillis();
 
         for ( int i = 0; i < nbLoops; i++ )
         {
-            // Check the decoded BindRequest
-            BindRequest bindRequest = new BindRequestImpl();
-            bindRequest.setMessageId( 1 );
-
-            bindRequest.setSimple( true );
-            bindRequest.setDn( dn );
-            bindRequest.setCredentials( Strings.getBytesUtf8( "password" ) );
-            Control control = new OpaqueControl( "2.16.840.1.113730.3.4.2" );
-
-            bindRequest.addControl( control );
-
             // Check the encoding
             try
             {
@@ -266,5 +267,27 @@ public class BindRequestPerfTest extends AbstractCodecServiceTest
 
         long t1 = System.currentTimeMillis();
         System.out.println( "BindRequest testEncodeBindRequestPerf, " + nbLoops + " loops, Delta = " + ( t1 - t0 ) );
+
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        long t2 = System.currentTimeMillis();
+
+        for ( int i = 0; i < nbLoops; i++ )
+        {
+            // Check the encoding
+            try
+            {
+                LdapEncoder.encodeMessageReverse( buffer, codec, bindRequest );
+                buffer.clear();
+            }
+            catch ( EncoderException ee )
+            {
+                ee.printStackTrace();
+                fail( ee.getMessage() );
+            }
+        }
+
+        long t3 = System.currentTimeMillis();
+        System.out.println( "BindRequest testEncodeBindRequestPerf reverse, " + nbLoops + " loops, Delta = " + ( t3 - t2 ) );
     }
 }

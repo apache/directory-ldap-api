@@ -29,6 +29,7 @@ import org.apache.directory.api.asn1.util.Asn1StringUtils;
 import org.apache.directory.api.asn1.util.BitString;
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -624,6 +625,133 @@ public class BerValue
 
 
     /**
+     * Encode an integer value
+     *
+     * @param buffer The PDU in which the value will be put
+     * @param value The integer to be encoded
+     */
+    public static void encodeInteger( Asn1Buffer buffer, int value )
+    {
+        buffer.put( getBytes( value ) );
+        buffer.put( ( byte ) getNbBytes( value ) );
+        buffer.put( UniversalTag.INTEGER.getValue() );
+    }
+
+
+    /**
+     * Encode an integer value, with a specific tag
+     *
+     * @param buffer The PDU in which the value will be put
+     * @param tag The tag to use
+     * @param value The integer to be encoded
+     */
+    public static void encodeInteger( Asn1Buffer buffer, byte tag, int value )
+    {
+        buffer.put( getBytes( value ) );
+        buffer.put( ( byte ) getNbBytes( value ) );
+        buffer.put( tag );
+    }
+
+
+    /**
+     * Encode an OctetString
+     *
+     * @param buffer The PDU in which the value will be put
+     * @param value The integer to be encoded
+     */
+    public static void encodeOctetString( Asn1Buffer buffer, byte[] data )
+    {
+        if ( Strings.isEmpty( data ) )
+        {
+            buffer.put( ( byte ) 0 );
+        }
+        else
+        {
+            buffer.put( data );
+            buffer.put( TLV.getBytes( data.length ) );
+        }
+
+        buffer.put( UniversalTag.OCTET_STRING.getValue() );
+    }
+
+
+    /**
+     * Encode an OctetString
+     *
+     * @param buffer The PDU in which the value will be put
+     * @param tag The tag to use
+     * @param data The OctetString to be encoded
+     */
+    public static void encodeOctetString( Asn1Buffer buffer, byte tag, byte[] data )
+    {
+        if ( Strings.isEmpty( data ) )
+        {
+            buffer.put( ( byte ) 0 );
+        }
+        else
+        {
+            buffer.put( data );
+            buffer.put( TLV.getBytes( data.length ) );
+        }
+
+        buffer.put( tag );
+    }
+
+
+    /**
+     * Encode a Sequence
+     *
+     * @param buffer The PDU in which the value will be put
+     * @param value The integer to be encoded
+     */
+    public static void encodeSequence( Asn1Buffer buffer )
+    {
+        buffer.put( TLV.getBytes( buffer.getPos() ) );
+        buffer.put( UniversalTag.SEQUENCE.getValue() );
+    }
+
+
+    /**
+     * Encode a Sequence, with a specific length
+     *
+     * @param buffer The PDU in which the value will be put
+     * @param start The Sequence length
+     */
+    public static void encodeSequence( Asn1Buffer buffer, int start )
+    {
+        buffer.put( TLV.getBytes( buffer.getPos() - start ) );
+        buffer.put( UniversalTag.SEQUENCE.getValue() );
+    }
+
+
+    /**
+     * Encode a Sequence, with a specific tag
+     *
+     * @param buffer The PDU in which the value will be put
+     * @param tag The tag to use
+     */
+    public static void encodeSequence( Asn1Buffer buffer, byte tag )
+    {
+        buffer.put( TLV.getBytes( buffer.getPos() ) );
+        buffer.put( tag );
+    }
+
+
+    /**
+     * Encode a Sequence, with a specific length and tag
+     *
+     * @param buffer The PDU in which the value will be put
+     * @param tag The tag to use
+     * @param start The position in the buffer this Sequence starts
+     */
+    public static void encodeSequence( Asn1Buffer buffer, byte tag, int start )
+    {
+        buffer.put( TLV.getBytes( buffer.getPos() - start ) );
+        buffer.put( tag );
+    }
+
+
+    /**
      * Encode a String value
      *
      * @param buffer The PDU in which the value will be put
@@ -785,35 +913,6 @@ public class BerValue
         {
             throw new EncoderException( I18n.err( I18n.ERR_01301_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
         }
-    }
-
-
-    /**
-     * Encode an integer value
-     *
-     * @param buffer The PDU in which the value will be put
-     * @param value The integer to be encoded
-     */
-    public static void encodeInteger( Asn1Buffer buffer, int value )
-    {
-        buffer.put( getBytes( value ) );
-        buffer.put( ( byte ) getNbBytes( value ) );
-        buffer.put( UniversalTag.INTEGER.getValue() );
-    }
-
-
-    /**
-     * Encode an integer value, with a specific tag
-     *
-     * @param buffer The PDU in which the value will be put
-     * @param tag The tag to use
-     * @param value The integer to be encoded
-     */
-    public static void encodeInteger( Asn1Buffer buffer, byte tag, int value )
-    {
-        buffer.put( getBytes( value ) );
-        buffer.put( ( byte ) getNbBytes( value ) );
-        buffer.put( tag );
     }
 
 

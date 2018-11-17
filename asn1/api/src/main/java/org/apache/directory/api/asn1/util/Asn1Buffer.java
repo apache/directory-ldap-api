@@ -20,6 +20,8 @@
 
 package org.apache.directory.api.asn1.util;
 
+import java.nio.ByteBuffer;
+
 /**
  * A buffer used to store an encoding PDU. It's auto-extended, and
  * filled by the end.
@@ -107,11 +109,12 @@ public class Asn1Buffer
     /**
      * @return The stored encoded PDU.
      */
-    public byte[] getBytes()
+    public ByteBuffer getBytes()
     {
-        byte[] result = new byte[pos];
+        ByteBuffer result = ByteBuffer.allocate( pos );
 
-        System.arraycopy( buffer, buffer.length - pos, result, 0, pos );
+        result.put( buffer, buffer.length - pos, pos );
+        result.flip();
 
         return result;
     }

@@ -31,6 +31,7 @@ import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.codec.factory.BindRequestFactory;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.Referral;
@@ -51,7 +52,6 @@ public final class LdapEncoder
     {
         // Nothing to do
     }
-
 
     /**
      * Compute the control's encoded length
@@ -134,9 +134,48 @@ public final class LdapEncoder
      * @param codec The LdapApiService instance
      * @param controls The control to encode
      */
-    public static void encodeControlsReverse( Asn1Buffer buffer, LdapApiService codec, Map<String, Control> controls )
+    private static void encodeControlsReverse( Asn1Buffer buffer, LdapApiService codec, Map<String, Control> controls )
     {
+        // Encode each control
+        /*for ( Control control : controls.values() )
+        {
+            encodeControlReverse( buffer, control );
 
+            // The OctetString tag if the value is not null
+            int controlValueLength = ( ( CodecControl<?> ) control ).computeLength();
+
+            if ( controlValueLength > 0 )
+            {
+                buffer.put( UniversalTag.OCTET_STRING.getValue() );
+                buffer.put( TLV.getBytes( controlValueLength ) );
+
+                // And now, the value
+                ( ( org.apache.directory.api.ldap.codec.api.CodecControl<?> ) control ).encode( buffer );
+            }
+        }
+        */
+
+        BerValue.encodeSequence( buffer, ( byte ) LdapCodecConstants.CONTROLS_TAG );
+    }
+
+
+    /**
+     * Encode the protocolOp part of a message
+     *
+     * @param buffer The buffer that will contain the encoded control
+     * @param codec The LdapApiService instance
+     * @param message The message to encode
+     */
+    private static void encodeProtocolOp( Asn1Buffer buffer, LdapApiService codec, Message message )
+    {
+        switch ( message.getClass().getName() )
+        {
+            case "BindRequestImpl" :
+                BindRequestFactory.INSTANCE.encodeReverse( buffer, message );
+
+                default:
+                    // Nothing to do
+        }
     }
 
 
@@ -165,10 +204,8 @@ public final class LdapEncoder
      * @return A ByteBuffer that contains the PDU
      * @throws EncoderException If anything goes wrong.
      */
-    public static ByteBuffer encodeMessageReverse( LdapApiService codec, Message message ) throws EncoderException
+    public static ByteBuffer encodeMessageReverse( Asn1Buffer buffer, LdapApiService codec, Message message ) throws EncoderException
     {
-        Asn1Buffer buffer = new Asn1Buffer();
-
         // The controls, if any
         Map<String, Control> controls = message.getControls();
 
@@ -177,21 +214,16 @@ public final class LdapEncoder
             encodeControlsReverse( buffer, codec, message.getControls() );
         }
 
-
         // The protocolOp part
+        encodeProtocolOp( buffer, codec, message );
 
         // The message Id
         BerValue.encodeInteger( buffer, message.getMessageId() );
 
         // The LdapMessage Sequence
-        // BerValue.encodeSequence( buffer );
+        BerValue.encodeSequence( buffer );
 
-        byte[] result = buffer.getBytes();
-        ByteBuffer bb = ByteBuffer.allocate( result.length );
-        bb.put( result );
-        bb.flip();
-
-        return bb;
+        return buffer.getBytes();
     }
 
 

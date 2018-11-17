@@ -21,6 +21,8 @@ package org.apache.directory.api.asn1.util;
 
 import static org.junit.Assert.assertEquals;
 
+import java.nio.ByteBuffer;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -42,12 +44,12 @@ public class Asn1BufferTest
         }
 
         assertEquals( 1024, buffer.getPos() );
-        byte[] result = buffer.getBytes();
+        ByteBuffer result = buffer.getBytes();
 
         for ( int i = 0; i < 512; i++ )
         {
-            assertEquals( 0x01, result[i + i] );
-            assertEquals( ( byte ) ( 511 - i ), result[ i + i + 1] );
+            assertEquals( 0x01, result.get( i + i ) );
+            assertEquals( ( byte ) ( 511 - i ), result.get( i + i + 1 ) );
         }
     }
 
@@ -63,11 +65,11 @@ public class Asn1BufferTest
         }
 
         assertEquals( 1024, buffer.getPos() );
-        byte[] result = buffer.getBytes();
+        ByteBuffer result = buffer.getBytes();
 
         for ( int i = 0; i < 1024; i++ )
         {
-            assertEquals( ( byte ) ( 1023 - i ), result[i] );
+            assertEquals( ( byte ) ( 1023 - i ), result.get( i ) );
         }
     }
 
@@ -84,11 +86,11 @@ public class Asn1BufferTest
 
         assertEquals( 1025, buffer.getPos() );
         assertEquals( 2048, buffer.getSize() );
-        byte[] result = buffer.getBytes();
+        ByteBuffer result = buffer.getBytes();
 
         for ( int i = 0; i < 1025; i++ )
         {
-            assertEquals( ( byte ) ( 1024 - i ), result[i] );
+            assertEquals( ( byte ) ( 1024 - i ), result.get( i ) );
         }
     }
 
