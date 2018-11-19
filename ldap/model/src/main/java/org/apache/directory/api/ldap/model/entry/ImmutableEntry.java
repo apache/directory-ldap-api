@@ -37,7 +37,7 @@ import org.apache.directory.api.util.exception.NotImplementedException;
 /**
  * A default implementation of a ServerEntry which should suite most
  * use cases.
- * 
+ *
  * This class is final, it should not be extended.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -55,10 +55,10 @@ public class ImmutableEntry implements Entry
     // Constructors
     //-------------------------------------------------------------------------
     /**
-     * Creates a new instance of DefaultEntry. 
+     * Creates a new instance of DefaultEntry.
      * <p>
      * This entry <b>must</b> be initialized before being used !
-     * 
+     *
      * @param entry The encapsulated entry
      */
     public ImmutableEntry( Entry entry )
@@ -73,6 +73,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry add( AttributeType attributeType, byte[]... values ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -105,6 +106,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry add( String upId, AttributeType attributeType, byte[]... values ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -148,6 +150,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    @Override
     public Entry add( String upId, byte[]... values ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -232,6 +235,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( AttributeType attributeType, byte[]... values )
     {
         return entry.contains( attributeType, values );
@@ -261,6 +265,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains( String upId, byte[]... values )
     {
         return entry.contains( upId, values );
@@ -320,6 +325,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute put( String upId, byte[]... values )
     {
         new Exception().printStackTrace();
@@ -363,6 +369,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute put( AttributeType attributeType, byte[]... values ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -395,6 +402,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     /**
      * {@inheritDoc}
      */
+    @Override
     public Attribute put( String upId, AttributeType attributeType, byte[]... values ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -438,6 +446,7 @@ public Entry add( String upId, Value... values ) throws LdapException
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean remove( AttributeType attributeType, byte[]... values ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -469,10 +478,10 @@ public Entry add( String upId, Value... values ) throws LdapException
 
     /**
      * <p>
-     * Removes the attribute with the specified AttributeTypes. 
+     * Removes the attribute with the specified AttributeTypes.
      * </p>
      * <p>
-     * The removed attribute are returned by this method. 
+     * The removed attribute are returned by this method.
      * </p>
      * <p>
      * If there is no attribute with the specified AttributeTypes,
@@ -512,15 +521,16 @@ public Entry add( String upId, Value... values ) throws LdapException
      * will be removed too.
      * </p>
      * <p>
-     * If the attribute does not exist, nothing is done and the method returns 
+     * If the attribute does not exist, nothing is done and the method returns
      * <code>false</code>
-     * </p> 
+     * </p>
      *
-     * @param upId The attribute ID  
+     * @param upId The attribute ID
      * @param values the values to be removed
      * @return <code>true</code> if at least a value is removed, <code>false</code>
-     * if not all the values have been removed or if the attribute does not exist. 
+     * if not all the values have been removed or if the attribute does not exist.
      */
+    @Override
     public boolean remove( String upId, byte[]... values ) throws LdapException
     {
         new Exception().printStackTrace();
@@ -540,14 +550,14 @@ public Entry add( String upId, Value... values ) throws LdapException
      * will be removed too.
      * </p>
      * <p>
-     * If the attribute does not exist, nothing is done and the method returns 
+     * If the attribute does not exist, nothing is done and the method returns
      * <code>false</code>
-     * </p> 
+     * </p>
      *
-     * @param upId The attribute ID  
+     * @param upId The attribute ID
      * @param values the attributes to be removed
      * @return <code>true</code> if at least a value is removed, <code>false</code>
-     * if not all the values have been removed or if the attribute does not exist. 
+     * if not all the values have been removed or if the attribute does not exist.
      */
     @Override
     public boolean remove( String upId, String... values ) throws LdapException
@@ -569,14 +579,14 @@ public Entry add( String upId, Value... values ) throws LdapException
      * will be removed too.
      * </p>
      * <p>
-     * If the attribute does not exist, nothing is done and the method returns 
+     * If the attribute does not exist, nothing is done and the method returns
      * <code>false</code>
-     * </p> 
+     * </p>
      *
-     * @param upId The attribute ID  
+     * @param upId The attribute ID
      * @param values the attributes to be removed
      * @return <code>true</code> if at least a value is removed, <code>false</code>
-     * if not all the values have been removed or if the attribute does not exist. 
+     * if not all the values have been removed or if the attribute does not exist.
      */
     @Override
     public boolean remove( String upId, Value... values ) throws LdapException
@@ -673,8 +683,8 @@ public Entry add( String upId, Value... values ) throws LdapException
      *     <b>[attribute]*</b> : each attribute, if we have some
      *   </li>
      * </ul>
-     * 
-     * {@inheritDoc} 
+     *
+     * {@inheritDoc}
      */
     @Override
     public void writeExternal( ObjectOutput out ) throws IOException
@@ -696,15 +706,15 @@ public Entry add( String upId, Value... values ) throws LdapException
 
     /**
      * Serialize an Entry.
-     * 
+     *
      * The structure is the following :
      * <b>[a byte]</b> : if the Dn is empty 0 will be written else 1
      * <b>[Rdn]</b> : The entry's Rdn.
-     * <b>[numberAttr]</b> : the bumber of attributes. Can be 0 
-     * <b>[attribute's oid]*</b> : The attribute's OID to get back 
+     * <b>[numberAttr]</b> : the bumber of attributes. Can be 0
+     * <b>[attribute's oid]*</b> : The attribute's OID to get back
      * the attributeType on deserialization
      * <b>[Attribute]*</b> The attribute
-     * 
+     *
      * @param out the buffer in which the data will be serialized
      * @throws IOException if the serialization failed
      */
@@ -716,8 +726,8 @@ public Entry add( String upId, Value... values ) throws LdapException
 
 
     /**
-     * Deserialize an entry. 
-     * 
+     * Deserialize an entry.
+     *
      * @param in The buffer containing the serialized serverEntry
      * @throws IOException if there was a problem when deserializing
      * @throws ClassNotFoundException if we can't deserialize an expected object
@@ -734,7 +744,7 @@ public Entry add( String upId, Value... values ) throws LdapException
      * before the comparison can be done.
      *
      * @see java.lang.Object#hashCode()
-     * @return the instance's hash code 
+     * @return the instance's hash code
      */
     @Override
     public int hashCode()

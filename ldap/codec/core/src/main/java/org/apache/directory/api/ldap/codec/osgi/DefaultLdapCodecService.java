@@ -34,13 +34,13 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.BasicControlDecorator;
+import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.IntermediateResponseFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.codec.controls.cascade.CascadeFactory;
 import org.apache.directory.api.ldap.codec.controls.manageDsaIT.ManageDsaITFactory;
 import org.apache.directory.api.ldap.codec.controls.proxiedauthz.ProxiedAuthzFactory;
@@ -126,7 +126,7 @@ public class DefaultLdapCodecService implements LdapApiService
 
         ControlFactory<EntryChange> entryChangeFactory = new EntryChangeFactory( this );
         controlFactories.put( entryChangeFactory.getOid(), entryChangeFactory );
-        
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, entryChangeFactory.getOid() ) );
@@ -134,7 +134,7 @@ public class DefaultLdapCodecService implements LdapApiService
 
         ControlFactory<ManageDsaIT> manageDsaItFactory = new ManageDsaITFactory( this );
         controlFactories.put( manageDsaItFactory.getOid(), manageDsaItFactory );
-        
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, manageDsaItFactory.getOid() ) );
@@ -142,7 +142,7 @@ public class DefaultLdapCodecService implements LdapApiService
 
         ControlFactory<ProxiedAuthz> proxiedAuthzFactory = new ProxiedAuthzFactory( this );
         controlFactories.put( proxiedAuthzFactory.getOid(), proxiedAuthzFactory );
-        
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, proxiedAuthzFactory.getOid() ) );
@@ -150,7 +150,7 @@ public class DefaultLdapCodecService implements LdapApiService
 
         ControlFactory<PagedResults> pageResultsFactory = new PagedResultsFactory( this );
         controlFactories.put( pageResultsFactory.getOid(), pageResultsFactory );
-        
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, pageResultsFactory.getOid() ) );
@@ -158,7 +158,7 @@ public class DefaultLdapCodecService implements LdapApiService
 
         ControlFactory<PersistentSearch> persistentSearchFactory = new PersistentSearchFactory( this );
         controlFactories.put( persistentSearchFactory.getOid(), persistentSearchFactory );
-        
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, persistentSearchFactory.getOid() ) );
@@ -166,7 +166,7 @@ public class DefaultLdapCodecService implements LdapApiService
 
         ControlFactory<Subentries> subentriesFactory = new SubentriesFactory( this );
         controlFactories.put( subentriesFactory.getOid(), subentriesFactory );
-        
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, subentriesFactory.getOid() ) );
@@ -174,7 +174,7 @@ public class DefaultLdapCodecService implements LdapApiService
 
         ControlFactory<SortRequest> sortRequestFactory = new SortRequestFactory( this );
         controlFactories.put( sortRequestFactory.getOid(), sortRequestFactory );
-        
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, sortRequestFactory.getOid() ) );
@@ -182,7 +182,7 @@ public class DefaultLdapCodecService implements LdapApiService
 
         ControlFactory<SortResponse> sortResponseFactory = new SortResponseFactory( this );
         controlFactories.put( sortResponseFactory.getOid(), sortResponseFactory );
-        
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, sortResponseFactory.getOid() ) );
@@ -705,6 +705,7 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * @return the controlFactories
      */
+    @Override
     public Map<String, ControlFactory<? extends Control>> getControlFactories()
     {
         return controlFactories;

@@ -268,7 +268,7 @@ public final class DefaultEntry implements Entry
             {
                 this.dn = new Dn( schemaManager, dn );
             }
-            
+
             initObjectClassAT();
         }
     }
@@ -333,7 +333,7 @@ public final class DefaultEntry implements Entry
                 {
                     LOG.warn( I18n.msg( I18n.MSG_13200_CANT_STORE_ATTRIBUTE, attribute.getId() ) );
                 }
-                
+
                 throw ne;
             }
         }
@@ -413,7 +413,7 @@ public final class DefaultEntry implements Entry
 
     /**
      * Get the trimmed and lower cased entry ID
-     * 
+     *
      * @param upId The ID
      * @return The retrieved ID
      */
@@ -435,7 +435,7 @@ public final class DefaultEntry implements Entry
 
     /**
      * Get the UpId if it is null.
-     * 
+     *
      * @param upId The ID
      * @param attributeType The AttributeType to retrieve
      * @return the retrieved ID
@@ -530,7 +530,7 @@ public final class DefaultEntry implements Entry
                 {
                     LOG.warn( I18n.msg( I18n.MSG_13201_DN_CANT_BE_NORMALIZED, dn ) );
                 }
-                
+
                 return dn;
             }
         }
@@ -556,7 +556,7 @@ public final class DefaultEntry implements Entry
      * default to the AttributeType name.
      *
      * Updates the AttributeMap.
-     * 
+     *
      * @param upId The user provided ID for the attribute to create
      * @param attributeType The AttributeType to use
      * @param values The values to add to this attribute
@@ -576,7 +576,7 @@ public final class DefaultEntry implements Entry
      * default to the AttributeType name.
      *
      * Updates the AttributeMap.
-     * 
+     *
      * @param upId The user provided ID for the attribute to create
      * @param attributeType The AttributeType to use
      * @param values The values to add to this attribute
@@ -596,7 +596,7 @@ public final class DefaultEntry implements Entry
      * default to the AttributeType name.
      *
      * Updates the AttributeMap.
-     * 
+     *
      * @param upId The user provided ID for the attribute to create
      * @param attributeType The AttributeType to use
      * @param values The values to add to this attribute
@@ -613,7 +613,7 @@ public final class DefaultEntry implements Entry
 
     /**
      * Returns the attributeType from an Attribute ID.
-     * 
+     *
      * @param upId The ID we are looking for
      * @return The found attributeType
      * @throws LdapException If the lookup failed
@@ -1088,10 +1088,10 @@ public final class DefaultEntry implements Entry
         {
             DefaultEntry clone = ( DefaultEntry ) super.clone();
             clone.attributes = new HashMap<>( attributes.size() );
-    
+
             // now clone all the attributes
             //clone.attributes.clear();
-    
+
             if ( schemaManager != null )
             {
                 for ( Attribute attribute : attributes.values() )
@@ -2096,7 +2096,7 @@ public final class DefaultEntry implements Entry
                     {
                         LOG.warn( I18n.msg( I18n.MSG_13203_MISSING_ATTRIBUTE_IN_ENTRY, attribute ) );
                     }
-                    
+
                     continue;
                 }
 
@@ -2136,7 +2136,7 @@ public final class DefaultEntry implements Entry
             {
                 LOG.info( I18n.err( I18n.ERR_13204_NULL_ATTRIBUTE_ID ) );
             }
-            
+
             return false;
         }
 
@@ -2220,7 +2220,7 @@ public final class DefaultEntry implements Entry
             {
                 LOG.info( I18n.err( I18n.ERR_13204_NULL_ATTRIBUTE_ID ) );
             }
-            
+
             return false;
         }
 
@@ -2303,7 +2303,7 @@ public final class DefaultEntry implements Entry
             {
                 LOG.info( I18n.err( I18n.ERR_13204_NULL_ATTRIBUTE_ID ) );
             }
-            
+
             return false;
         }
 
@@ -2411,7 +2411,7 @@ public final class DefaultEntry implements Entry
     @Override
     public Iterator<Attribute> iterator()
     {
-        return Collections.unmodifiableMap( attributes ).values().iterator();
+        return attributes.values().iterator();
     }
 
 
@@ -2443,7 +2443,7 @@ public final class DefaultEntry implements Entry
      *     <b>[attribute]*</b> : each attribute, if we have some
      *   </li>
      * </ul>
-     * 
+     *
      * {@inheritDoc}
      */
     @Override

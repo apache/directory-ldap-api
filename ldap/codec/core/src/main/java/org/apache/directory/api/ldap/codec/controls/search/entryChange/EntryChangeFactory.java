@@ -20,9 +20,11 @@
 package org.apache.directory.api.ldap.codec.controls.search.entryChange;
 
 
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.EntryChange;
 
 
@@ -76,5 +78,13 @@ public class EntryChangeFactory implements ControlFactory<EntryChange>
     public CodecControl<EntryChange> newCodecControl( EntryChange control )
     {
         return new EntryChangeDecorator( codec, control );
+    }
+
+
+    @Override
+    public void encodeValue( Asn1Buffer buffer, Control control )
+    {
+        // TODO Auto-generated method stub
+
     }
 }

@@ -54,7 +54,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * Clone the current entry
-     * 
+     *
      * @return a full copy of this entry
      */
     Entry clone();
@@ -62,7 +62,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * Shallow Clone the current entry. We don't deep clone the attributes
-     * 
+     *
      * @return a shallow copy of this entry
      */
     Entry shallowClone();
@@ -78,9 +78,9 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * Tells if an entry as some specific ObjectClasses values
-     * 
+     *
      * @param objectClasses The ObjectClasses we want to check
-     * @return <code>true</code> if all the ObjectClasses value are present 
+     * @return <code>true</code> if all the ObjectClasses value are present
      * in the ObjectClass attribute
      */
     boolean hasObjectClass( String... objectClasses );
@@ -88,9 +88,9 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * Tells if an entry has some specific ObjectClasses Attributes
-     * 
+     *
      * @param objectClasses The ObjectClasses we want to check
-     * @return <code>true</code> if the ObjectClasses Attribute are present 
+     * @return <code>true</code> if the ObjectClasses Attribute are present
      * in the ObjectClass attribute
      */
     boolean hasObjectClass( Attribute... objectClasses );
@@ -99,10 +99,10 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
     /**
      * <p>
      * Returns the attribute with the specified alias. The return value
-     * is <code>null</code> if no match is found.  
+     * is <code>null</code> if no match is found.
      * </p>
-     * <p>An Attribute with an id different from the supplied alias may 
-     * be returned: for example a call with 'cn' may in some implementations 
+     * <p>An Attribute with an id different from the supplied alias may
+     * be returned: for example a call with 'cn' may in some implementations
      * return an Attribute whose getId() field returns 'commonName'.
      * </p>
      *
@@ -114,7 +114,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * Returns the attribute associated with an AttributeType
-     * 
+     *
      * @param attributeType the AttributeType we are looking for
      * @return the associated attribute
      */
@@ -167,15 +167,15 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * <p>
-     * Add an attribute (represented by its AttributeType and some binary values) into an 
+     * Add an attribute (represented by its AttributeType and some binary values) into an
      * entry.
      * </p>
-     * <p> 
-     * If we already have an attribute with the same values, the duplicated values 
+     * <p>
+     * If we already have an attribute with the same values, the duplicated values
      * are not added (duplicated values are not allowed)
      * </p>
      * <p>
-     * If the value cannot be added, or if the AttributeType is null or invalid, 
+     * If the value cannot be added, or if the AttributeType is null or invalid,
      * a LdapException is thrown.
      * </p>
      *
@@ -189,18 +189,18 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * <p>
-     * Add an attribute (represented by its AttributeType and some String values) into an 
+     * Add an attribute (represented by its AttributeType and some String values) into an
      * entry.
      * </p>
-     * <p> 
-     * If we already have an attribute with the same values, the duplicated values 
+     * <p>
+     * If we already have an attribute with the same values, the duplicated values
      * are not added (duplicated values are not allowed)
      * </p>
-     * <p> 
-     * If the value cannot be added, or if the AttributeType is null or invalid, 
+     * <p>
+     * If the value cannot be added, or if the AttributeType is null or invalid,
      * a LdapException is thrown.
      * </p>
-     * 
+     *
      * @param attributeType The attribute Type
      * @param values The list of binary values to inject. It can be empty
      * @return the modified entry
@@ -211,15 +211,15 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * <p>
-     * Add an attribute (represented by its AttributeType and some values) into an 
+     * Add an attribute (represented by its AttributeType and some values) into an
      * entry.
      * </p>
-     * <p> 
-     * If we already have an attribute with the same values, the duplicated values 
+     * <p>
+     * If we already have an attribute with the same values, the duplicated values
      * are not added (duplicated values are not allowed)
      * </p>
      * <p>
-     * If the value cannot be added, or if the AttributeType is null or invalid, 
+     * If the value cannot be added, or if the AttributeType is null or invalid,
      * a LdapException is thrown.
      * </p>
      *
@@ -233,15 +233,15 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * <p>
-     * Add an attribute (represented by its AttributeType and some binary values) into an 
+     * Add an attribute (represented by its AttributeType and some binary values) into an
      * entry. Set the User Provider ID at the same time
      * </p>
-     * <p> 
-     * If we already have an attribute with the same values, the duplicated values 
+     * <p>
+     * If we already have an attribute with the same values, the duplicated values
      * are not added (duplicated values are not allowed)
      * </p>
      * <p>
-     * If the value cannot be added, or if the AttributeType is null or invalid, 
+     * If the value cannot be added, or if the AttributeType is null or invalid,
      * a LdapException is thrown.
      * </p>
      *
@@ -256,15 +256,15 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * <p>
-     * Add an attribute (represented by its AttributeType and some String values) into an 
+     * Add an attribute (represented by its AttributeType and some String values) into an
      * entry. Set the User Provider ID at the same time
      * </p>
-     * <p> 
-     * If we already have an attribute with the same values, the duplicated values 
+     * <p>
+     * If we already have an attribute with the same values, the duplicated values
      * are not added (duplicated values are not allowed)
      * </p>
      * <p>
-     * If the value cannot be added, or if the AttributeType is null or invalid, 
+     * If the value cannot be added, or if the AttributeType is null or invalid,
      * a LdapException is thrown.
      * </p>
      *
@@ -279,15 +279,15 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * <p>
-     * Add an attribute (represented by its AttributeType and some values) into an 
+     * Add an attribute (represented by its AttributeType and some values) into an
      * entry. Set the User Provider ID at the same time
      * </p>
-     * <p> 
-     * If we already have an attribute with the same values, nothing is done 
+     * <p>
+     * If we already have an attribute with the same values, nothing is done
      * (duplicated values are not allowed)
      * </p>
      * <p>
-     * If the value cannot be added, or if the AttributeType is null or invalid, 
+     * If the value cannot be added, or if the AttributeType is null or invalid,
      * a LdapException is thrown.
      * </p>
      *
@@ -303,7 +303,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
     /**
      * Add some String values to the current Entry.
      *
-     * @param upId The user provided ID of the attribute we want to add 
+     * @param upId The user provided ID of the attribute we want to add
      * some values to
      * @param values The list of String values to add
      * @return the modified entry
@@ -315,7 +315,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
     /**
      * Add some binary values to the current Entry.
      *
-     * @param upId The user provided ID of the attribute we want to add 
+     * @param upId The user provided ID of the attribute we want to add
      * some values to
      * @param values The list of binary values to add
      * @return the modified entry
@@ -327,7 +327,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
     /**
      * Add some Values to the current Entry.
      *
-     * @param upId The user provided ID of the attribute we want to add 
+     * @param upId The user provided ID of the attribute we want to add
      * some values to
      * @param values The list of Values to add
      * @return the modified entry
@@ -338,11 +338,11 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * <p>
-     * Places attributes in the attribute collection. 
+     * Places attributes in the attribute collection.
      * </p>
-     * <p>If there is already an attribute with the same ID as any of the 
-     * new attributes, the old ones are removed from the collection and 
-     * are returned by this method. If there was no attribute with the 
+     * <p>If there is already an attribute with the same ID as any of the
+     * new attributes, the old ones are removed from the collection and
+     * are returned by this method. If there was no attribute with the
      * same ID the return value is <code>null</code>.
      *</p>
      *
@@ -355,12 +355,12 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * <p>
-     * Places a new attribute with the supplied AttributeType and binary values 
-     * into the attribute collection. 
+     * Places a new attribute with the supplied AttributeType and binary values
+     * into the attribute collection.
      * </p>
      * <p>
      * If there is already an attribute with the same AttributeType, the old
-     * one is removed from the collection and is returned by this method. 
+     * one is removed from the collection and is returned by this method.
      * </p>
      * <p>
      * This method provides a mechanism to put an attribute with a
@@ -377,12 +377,12 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * <p>
-     * Places a new attribute with the supplied AttributeType and String values 
-     * into the attribute collection. 
+     * Places a new attribute with the supplied AttributeType and String values
+     * into the attribute collection.
      * </p>
      * <p>
      * If there is already an attribute with the same AttributeType, the old
-     * one is removed from the collection and is returned by this method. 
+     * one is removed from the collection and is returned by this method.
      * </p>
      * <p>
      * This method provides a mechanism to put an attribute with a
@@ -399,12 +399,12 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * <p>
-     * Places a new attribute with the supplied AttributeType and some values 
-     * into the attribute collection. 
+     * Places a new attribute with the supplied AttributeType and some values
+     * into the attribute collection.
      * </p>
      * <p>
      * If there is already an attribute with the same AttributeType, the old
-     * one is removed from the collection and is returned by this method. 
+     * one is removed from the collection and is returned by this method.
      * </p>
      * <p>
      * This method provides a mechanism to put an attribute with a
@@ -421,15 +421,15 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * <p>
-     * Places a new attribute with the supplied AttributeType and some binary values 
-     * into the attribute collection. 
+     * Places a new attribute with the supplied AttributeType and some binary values
+     * into the attribute collection.
      * </p>
      * <p>
      * The given User provided ID will be used for this new AttributeEntry.
      * </p>
      * <p>
      * If there is already an attribute with the same AttributeType, the old
-     * one is removed from the collection and is returned by this method. 
+     * one is removed from the collection and is returned by this method.
      * </p>
      * <p>
      * This method provides a mechanism to put an attribute with a
@@ -447,15 +447,15 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * <p>
-     * Places a new attribute with the supplied AttributeType and some String values 
-     * into the attribute collection. 
+     * Places a new attribute with the supplied AttributeType and some String values
+     * into the attribute collection.
      * </p>
      * <p>
      * The given User provided ID will be used for this new AttributeEntry.
      * </p>
      * <p>
      * If there is already an attribute with the same AttributeType, the old
-     * one is removed from the collection and is returned by this method. 
+     * one is removed from the collection and is returned by this method.
      * </p>
      * <p>
      * This method provides a mechanism to put an attribute with a
@@ -473,15 +473,15 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * <p>
-     * Places a new attribute with the supplied AttributeType and some values 
-     * into the attribute collection. 
+     * Places a new attribute with the supplied AttributeType and some values
+     * into the attribute collection.
      * </p>
      * <p>
      * The given User provided ID will be used for this new AttributeEntry.
      * </p>
      * <p>
      * If there is already an attribute with the same AttributeType, the old
-     * one is removed from the collection and is returned by this method. 
+     * one is removed from the collection and is returned by this method.
      * </p>
      * <p>
      * This method provides a mechanism to put an attribute with a
@@ -499,10 +499,10 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * <p>
-     * Put an attribute (represented by its ID and some binary values) into an entry. 
+     * Put an attribute (represented by its ID and some binary values) into an entry.
      * </p>
-     * <p> 
-     * If the attribute already exists, the previous attribute will be 
+     * <p>
+     * If the attribute already exists, the previous attribute will be
      * replaced and returned.
      * </p>
      *
@@ -515,10 +515,10 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * <p>
-     * Put an attribute (represented by its ID and some String values) into an entry. 
+     * Put an attribute (represented by its ID and some String values) into an entry.
      * </p>
-     * <p> 
-     * If the attribute already exists, the previous attribute will be 
+     * <p>
+     * If the attribute already exists, the previous attribute will be
      * replaced and returned.
      * </p>
      *
@@ -531,10 +531,10 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * <p>
-     * Put an attribute (represented by its ID and some values) into an entry. 
+     * Put an attribute (represented by its ID and some values) into an entry.
      * </p>
-     * <p> 
-     * If the attribute already exists, the previous attribute will be 
+     * <p>
+     * If the attribute already exists, the previous attribute will be
      * replaced and returned.
      * </p>
      *
@@ -557,14 +557,14 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * will be removed too.
      * </p>
      * <p>
-     * If the attribute does not exist, nothing is done and the method returns 
+     * If the attribute does not exist, nothing is done and the method returns
      * <code>false</code>
-     * </p> 
+     * </p>
      *
-     * @param attributeType The attribute type  
+     * @param attributeType The attribute type
      * @param values the values to be removed
      * @return <code>true</code> if at least a value is removed, <code>false</code>
-     * if not all the values have been removed or if the attribute does not exist. 
+     * if not all the values have been removed or if the attribute does not exist.
      * @throws LdapException If the removal failed
      */
     boolean remove( AttributeType attributeType, byte[]... values ) throws LdapException;
@@ -582,14 +582,14 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * will be removed too.
      * </p>
      * <p>
-     * If the attribute does not exist, nothing is done and the method returns 
+     * If the attribute does not exist, nothing is done and the method returns
      * <code>false</code>
-     * </p> 
+     * </p>
      *
-     * @param attributeType The attribute type  
+     * @param attributeType The attribute type
      * @param values the values to be removed
      * @return <code>true</code> if at least a value is removed, <code>false</code>
-     * if not all the values have been removed or if the attribute does not exist. 
+     * if not all the values have been removed or if the attribute does not exist.
      * @throws LdapException If the removal failed
      */
     boolean remove( AttributeType attributeType, String... values ) throws LdapException;
@@ -607,14 +607,14 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * will be removed too.
      * </p>
      * <p>
-     * If the attribute does not exist, nothing is done and the method returns 
+     * If the attribute does not exist, nothing is done and the method returns
      * <code>false</code>
-     * </p> 
+     * </p>
      *
-     * @param attributeType The attribute type  
+     * @param attributeType The attribute type
      * @param values the values to be removed
      * @return <code>true</code> if at least a value is removed, <code>false</code>
-     * if not all the values have been removed or if the attribute does not exist. 
+     * if not all the values have been removed or if the attribute does not exist.
      * @throws LdapException If the removal failed
      */
     boolean remove( AttributeType attributeType, Value... values ) throws LdapException;
@@ -634,10 +634,10 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * <p>
-     * Removes the attribute with the specified AttributeTypes. 
+     * Removes the attribute with the specified AttributeTypes.
      * </p>
      * <p>
-     * The removed attribute are returned by this method. 
+     * The removed attribute are returned by this method.
      * </p>
      * <p>
      * If there is no attribute with the specified AttributeTypes,
@@ -661,14 +661,14 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * will be removed too.
      * </p>
      * <p>
-     * If the attribute does not exist, nothing is done and the method returns 
+     * If the attribute does not exist, nothing is done and the method returns
      * <code>false</code>
-     * </p> 
+     * </p>
      *
-     * @param upId The attribute ID  
+     * @param upId The attribute ID
      * @param values the attribute's values to be removed
      * @return <code>true</code> if at least a value is removed, <code>false</code>
-     * if not all the values have been removed or if the attribute does not exist. 
+     * if not all the values have been removed or if the attribute does not exist.
      * @throws LdapException If the removal failed
      */
     boolean remove( String upId, byte[]... values ) throws LdapException;
@@ -686,14 +686,14 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * will be removed too.
      * </p>
      * <p>
-     * If the attribute does not exist, nothing is done and the method returns 
+     * If the attribute does not exist, nothing is done and the method returns
      * <code>false</code>
-     * </p> 
+     * </p>
      *
-     * @param upId The attribute ID  
+     * @param upId The attribute ID
      * @param values the attribute's values to be removed
      * @return <code>true</code> if at least a value is removed, <code>false</code>
-     * if no values have been removed or if the attribute does not exist. 
+     * if no values have been removed or if the attribute does not exist.
      * @throws LdapException If the provided values are invalid
      */
     boolean remove( String upId, String... values ) throws LdapException;
@@ -711,14 +711,14 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * will be removed too.
      * </p>
      * <p>
-     * If the attribute does not exist, nothing is done and the method returns 
+     * If the attribute does not exist, nothing is done and the method returns
      * <code>false</code>
-     * </p> 
+     * </p>
      *
-     * @param upId The attribute ID  
+     * @param upId The attribute ID
      * @param values the attribute's values to be removed
      * @return <code>true</code> if at least a value is removed, <code>false</code>
-     * if not all the values have been removed or if the attribute does not exist. 
+     * if not all the values have been removed or if the attribute does not exist.
      * @throws LdapException if the attribute does not exists
      */
     boolean remove( String upId, Value... values ) throws LdapException;
@@ -726,10 +726,10 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
       * <p>
-      * Removes the attribute with the specified alias. 
+      * Removes the attribute with the specified alias.
       * </p>
       * <p>
-      * The removed attribute are returned by this method. 
+      * The removed attribute are returned by this method.
       * </p>
       * <p>
       * If there is no attribute with the specified alias,
@@ -796,7 +796,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * </p>
      *
      * @param attributes The Attributes to look for
-     * @return <code>true</code> if all the attributes are found within 
+     * @return <code>true</code> if all the attributes are found within
      * the entry, <code>false</code> if at least one of them is not present.
      */
     boolean contains( Attribute... attributes );
@@ -808,7 +808,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @param upId The Attribute we are looking for.
      * @param values The searched values.
      * @return <code>true</code> if all the values are found within the attribute,
-     * false if at least one value is not present or if the ID is not valid. 
+     * false if at least one value is not present or if the ID is not valid.
      */
     boolean contains( String upId, byte[]... values );
 
@@ -819,7 +819,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @param upId The Attribute we are looking for.
      * @param values The searched values.
      * @return <code>true</code> if all the values are found within the attribute,
-     * false if at least one value is not present or if the ID is not valid. 
+     * false if at least one value is not present or if the ID is not valid.
      */
     boolean contains( String upId, String... values );
 
@@ -830,7 +830,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @param upId The Attribute we are looking for.
      * @param values The searched values.
      * @return <code>true</code> if all the values are found within the attribute,
-     * false if at least one value is not present or if the ID is not valid. 
+     * false if at least one value is not present or if the ID is not valid.
      */
     boolean contains( String upId, Value... values );
 
@@ -861,7 +861,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     /**
      * A pretty-pinter for Entries
-     * 
+     *
      * @param tabs The tabs to add before any output
      * @return The pretty-printed entry
      */

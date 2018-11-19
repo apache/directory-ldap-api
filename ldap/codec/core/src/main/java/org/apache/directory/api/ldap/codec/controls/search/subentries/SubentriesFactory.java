@@ -20,14 +20,16 @@
 package org.apache.directory.api.ldap.codec.controls.search.subentries;
 
 
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.Subentries;
 
 
 /**
- * A factory for creating {@link Subentries} Controls and their 
+ * A factory for creating {@link Subentries} Controls and their
  * {@link SubentriesDecorator} objects.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -51,7 +53,7 @@ public class SubentriesFactory implements ControlFactory<Subentries>
 
 
     /**
-     * 
+     *
      * {@inheritDoc}
      */
     @Override
@@ -62,7 +64,7 @@ public class SubentriesFactory implements ControlFactory<Subentries>
 
 
     /**
-     * 
+     *
      * {@inheritDoc}
      */
     @Override
@@ -73,12 +75,20 @@ public class SubentriesFactory implements ControlFactory<Subentries>
 
 
     /**
-     * 
+     *
      * {@inheritDoc}
      */
     @Override
     public CodecControl<Subentries> newCodecControl( Subentries control )
     {
         return new SubentriesDecorator( codec, control );
+    }
+
+
+    @Override
+    public void encodeValue( Asn1Buffer buffer, Control control )
+    {
+        // TODO Auto-generated method stub
+
     }
 }

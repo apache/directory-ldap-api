@@ -26,11 +26,13 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.Map;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
@@ -185,7 +187,7 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a AbandonRequest with no controls
      */
     @Test
-    public void testDecodeAbandonRequestNoControlsHighMessageId()
+    public void testDecodeAbandonRequestNoControlsHighMessageId() throws EncoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -199,7 +201,6 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
                                                             // AbandonRequest ::= [APPLICATION 16] MessageID
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessageContainer Container
@@ -235,15 +236,19 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x0A, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes( bb.array() );
-
-            assertEquals( encodedPdu, decodedPdu );
+            assertTrue( Arrays.equals( stream.array(), bb.array() ) );
         }
         catch ( EncoderException ee )
         {
             ee.printStackTrace();
             fail( ee.getMessage() );
         }
+
+        // Check the reverse encoding
+        Asn1Buffer buffer = new Asn1Buffer();
+        LdapEncoder.encodeMessageReverse( buffer, codec, internalAbandonRequest );
+
+        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
     }
 
 

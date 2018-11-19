@@ -20,10 +20,12 @@
 package org.apache.directory.api.ldap.extras.controls.ad_impl;
 
 
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.controls.ad.AdPolicyHints;
+import org.apache.directory.api.ldap.model.message.Control;
 
 
 /**
@@ -74,5 +76,13 @@ public class AdPolicyHintsFactory implements ControlFactory<AdPolicyHints>
     public CodecControl<AdPolicyHints> newCodecControl( AdPolicyHints control )
     {
         return new AdPolicyHintsDecorator( codec, control );
+    }
+
+
+    @Override
+    public void encodeValue( Asn1Buffer buffer, Control control )
+    {
+        // TODO Auto-generated method stub
+
     }
 }

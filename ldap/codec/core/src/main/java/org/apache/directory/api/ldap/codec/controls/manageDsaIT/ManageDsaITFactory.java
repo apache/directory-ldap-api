@@ -20,9 +20,11 @@
 package org.apache.directory.api.ldap.codec.controls.manageDsaIT;
 
 
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaITImpl;
 
@@ -77,5 +79,13 @@ public class ManageDsaITFactory implements ControlFactory<ManageDsaIT>
     public CodecControl<ManageDsaIT> newCodecControl( ManageDsaIT control )
     {
         return new ManageDsaITDecorator( codec, control );
+    }
+
+
+    @Override
+    public void encodeValue( Asn1Buffer buffer, Control control )
+    {
+        // TODO Auto-generated method stub
+
     }
 }

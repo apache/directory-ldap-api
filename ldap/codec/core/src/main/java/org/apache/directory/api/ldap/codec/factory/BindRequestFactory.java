@@ -32,9 +32,9 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-
 public final class BindRequestFactory implements Messagefactory
 {
+    /** The static instance */
     public static final BindRequestFactory INSTANCE = new BindRequestFactory();
 
     private BindRequestFactory()
@@ -60,6 +60,7 @@ public final class BindRequestFactory implements Messagefactory
     @Override
     public void encodeReverse( Asn1Buffer buffer, Message message )
     {
+        int pos = buffer.getPos();
         BindRequest bindMessage = ( BindRequest ) message;
 
         // The authentication
@@ -102,6 +103,6 @@ public final class BindRequestFactory implements Messagefactory
         BerValue.encodeInteger( buffer, 3 );
 
         // The BindRequest Tag
-        BerValue.encodeSequence( buffer, LdapCodecConstants.BIND_REQUEST_TAG );
+        BerValue.encodeSequence( buffer, LdapCodecConstants.BIND_REQUEST_TAG, pos );
     }
 }

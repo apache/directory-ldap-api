@@ -20,11 +20,13 @@
 package org.apache.directory.api.ldap.extras.controls.transaction_impl;
 
 
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.controls.transaction.TransactionSpecification;
 import org.apache.directory.api.ldap.extras.controls.transaction.TransactionSpecificationImpl;
+import org.apache.directory.api.ldap.model.message.Control;
 
 
 /**
@@ -76,5 +78,13 @@ public class TransactionSpecificationFactory implements ControlFactory<Transacti
     public CodecControl<TransactionSpecification> newCodecControl( TransactionSpecification control )
     {
         return new TransactionSpecificationDecorator( codec, control );
+    }
+
+
+    @Override
+    public void encodeValue( Asn1Buffer buffer, Control control )
+    {
+        // TODO Auto-generated method stub
+
     }
 }

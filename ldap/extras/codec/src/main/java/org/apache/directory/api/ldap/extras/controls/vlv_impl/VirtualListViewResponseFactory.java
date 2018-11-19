@@ -21,10 +21,12 @@
 package org.apache.directory.api.ldap.extras.controls.vlv_impl;
 
 
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewResponse;
+import org.apache.directory.api.ldap.model.message.Control;
 
 
 /**
@@ -75,5 +77,13 @@ public class VirtualListViewResponseFactory implements ControlFactory<VirtualLis
     public CodecControl<VirtualListViewResponse> newCodecControl( VirtualListViewResponse control )
     {
         return new VirtualListViewResponseDecorator( codec, control );
+    }
+
+
+    @Override
+    public void encodeValue( Asn1Buffer buffer, Control control )
+    {
+        // TODO Auto-generated method stub
+
     }
 }

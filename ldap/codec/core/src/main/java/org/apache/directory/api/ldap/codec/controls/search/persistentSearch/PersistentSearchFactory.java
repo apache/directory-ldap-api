@@ -20,14 +20,16 @@
 package org.apache.directory.api.ldap.codec.controls.search.persistentSearch;
 
 
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.PersistentSearch;
 
 
 /**
- * A factory to create a PersistentSearch control 
+ * A factory to create a PersistentSearch control
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -39,7 +41,7 @@ public class PersistentSearchFactory implements ControlFactory<PersistentSearch>
 
     /**
      * Create a new PersistentSearchFactory instance
-     * 
+     *
      * @param codec The LdapApiService instance
      */
     public PersistentSearchFactory( LdapApiService codec )
@@ -75,5 +77,13 @@ public class PersistentSearchFactory implements ControlFactory<PersistentSearch>
     public CodecControl<PersistentSearch> newCodecControl( PersistentSearch control )
     {
         return new PersistentSearchDecorator( codec, control );
+    }
+
+
+    @Override
+    public void encodeValue( Asn1Buffer buffer, Control control )
+    {
+        // TODO Auto-generated method stub
+
     }
 }

@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.codec.api;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.directory.api.asn1.EncoderException;
@@ -31,6 +32,8 @@ import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.codec.factory.AbandonRequestFactory;
+import org.apache.directory.api.ldap.codec.factory.AddRequestFactory;
 import org.apache.directory.api.ldap.codec.factory.BindRequestFactory;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
@@ -128,34 +131,52 @@ public final class LdapEncoder
 
 
     /**
-     * Encode the controls
+     * Encode a control to a byte[]. The controls are encoded recursively, to start with the last
+     * control first.
+     * <br>
+     * A control is encoded as:
+     * <pre>
+     * 0x30 LL
+     *   0x04 LL abcd               control OID
+     *   [0x01 0x01 0x00/0xFF]      control criticality
+     *   [0x04 LL value]            control value
+     * </pre>
+     *
      *
      * @param buffer The buffer that will contain the encoded control
-     * @param codec The LdapApiService instance
-     * @param controls The control to encode
+     * @param control The control to encode
+     * @return The control encoded in a byte[]
+     * @throws EncoderException If the encoding failed
      */
-    private static void encodeControlsReverse( Asn1Buffer buffer, LdapApiService codec, Map<String, Control> controls )
+    private static void encodeControlsReverse( Asn1Buffer buffer, LdapApiService codec,
+        Map<String, Control> controls, Iterator<String> iterator ) throws EncoderException
     {
-        // Encode each control
-        /*for ( Control control : controls.values() )
+        if ( iterator.hasNext() )
         {
-            encodeControlReverse( buffer, control );
+            Control control = controls.get( iterator.next() );
 
-            // The OctetString tag if the value is not null
-            int controlValueLength = ( ( CodecControl<?> ) control ).computeLength();
+            encodeControlsReverse( buffer, codec, controls, iterator );
 
-            if ( controlValueLength > 0 )
+            // Fetch the control's factory from the LdapApiService
+            ControlFactory<?> controlFactory = codec.getControlFactories().get( control.getOid() );
+
+            int start = buffer.getPos();
+
+            // the value, if any
+            controlFactory.encodeValue( buffer, control );
+
+            // The criticality
+            if ( control.isCritical() )
             {
-                buffer.put( UniversalTag.OCTET_STRING.getValue() );
-                buffer.put( TLV.getBytes( controlValueLength ) );
-
-                // And now, the value
-                ( ( org.apache.directory.api.ldap.codec.api.CodecControl<?> ) control ).encode( buffer );
+                BerValue.encodeBoolean( buffer, control.isCritical() );
             }
-        }
-        */
 
-        BerValue.encodeSequence( buffer, ( byte ) LdapCodecConstants.CONTROLS_TAG );
+            // The OID
+            BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( control.getOid() ) );
+
+            // The Control Sequence
+            BerValue.encodeSequence( buffer, start );
+        }
     }
 
 
@@ -168,13 +189,22 @@ public final class LdapEncoder
      */
     private static void encodeProtocolOp( Asn1Buffer buffer, LdapApiService codec, Message message )
     {
-        switch ( message.getClass().getName() )
+        switch ( message.getClass().getSimpleName() )
         {
+            case "AbandonRequestImpl" :
+                AbandonRequestFactory.INSTANCE.encodeReverse( buffer, message );
+                return;
+
+            case "AddRequestImpl" :
+                AddRequestFactory.INSTANCE.encodeReverse( buffer, message );
+                return;
+
             case "BindRequestImpl" :
                 BindRequestFactory.INSTANCE.encodeReverse( buffer, message );
+                return;
 
-                default:
-                    // Nothing to do
+            default:
+                // Nothing to do
         }
     }
 
@@ -211,7 +241,7 @@ public final class LdapEncoder
 
         if ( ( controls != null ) && ( controls.size() > 0 ) )
         {
-            encodeControlsReverse( buffer, codec, message.getControls() );
+            encodeControlsReverse( buffer, codec, message.getControls(), message.getControls().keySet().iterator() );
         }
 
         // The protocolOp part

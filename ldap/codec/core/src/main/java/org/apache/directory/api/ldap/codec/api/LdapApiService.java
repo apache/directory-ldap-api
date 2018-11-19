@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.codec.api;
 
 
 import java.util.Iterator;
+import java.util.Map;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
@@ -54,7 +55,7 @@ public interface LdapApiService
 
     /**
      * Returns an Iterator over the OID Strings of registered controls.
-     * 
+     *
      * @return The registered control OID Strings
      */
     Iterator<String> registeredControls();
@@ -62,7 +63,7 @@ public interface LdapApiService
 
     /**
      * Checks if a control has been registered.
-     * 
+     *
      * @param oid The Control OID we are looking for
      * @return The OID of the control to check for registration
      */
@@ -71,7 +72,7 @@ public interface LdapApiService
 
     /**
      * Registers an {@link ControlFactory} with this service.
-     * 
+     *
      * @param factory The control factory
      * @return The registred control factory
      */
@@ -80,7 +81,7 @@ public interface LdapApiService
 
     /**
      * Unregisters an {@link ControlFactory} with this service.
-     * 
+     *
      * @param oid The oid of the control the factory is associated with.
      * @return The unregistred control factory
      */
@@ -125,12 +126,18 @@ public interface LdapApiService
     Control fromJndiControl( javax.naming.ldap.Control jndiControl ) throws DecoderException;
 
 
+    /**
+     * @return the controlFactories
+     */
+    Map<String, ControlFactory<? extends Control>> getControlFactories();
+
+
     // ------------------------------------------------------------------------
     // Extended Request Methods
     // ------------------------------------------------------------------------
 
     /**
-     * Returns an Iterator over the OID Strings of registered extended 
+     * Returns an Iterator over the OID Strings of registered extended
      * requests.
      *
      * @return The registered extended request OID Strings
@@ -139,9 +146,9 @@ public interface LdapApiService
 
 
     /**
-     * Registers an {@link ExtendedOperationFactory} for generating extended request 
+     * Registers an {@link ExtendedOperationFactory} for generating extended request
      * response pairs.
-     * 
+     *
      * @param factory The extended request factory
      * @return The displaced factory if one existed for the oid
      */
@@ -149,9 +156,9 @@ public interface LdapApiService
 
 
     /**
-     * Unregisters an {@link ExtendedOperationFactory} for generating extended 
+     * Unregisters an {@link ExtendedOperationFactory} for generating extended
      * request response pairs.
-     * 
+     *
      * @param oid The extended request oid
      * @return The displaced factory if one existed for the oid
      */
@@ -159,21 +166,21 @@ public interface LdapApiService
 
 
     /**
-     * Checks to see if an extended operation, either a standard request 
+     * Checks to see if an extended operation, either a standard request
      * response, pair or just an unsolicited response is registered.
      *
      * @param oid The object identifier for the extended operation
      * @return true if registered, false if not
      */
     boolean isExtendedOperationRegistered( String oid );
-    
-    
+
+
     // ------------------------------------------------------------------------
     // Intermediate Response Methods
     // ------------------------------------------------------------------------
-    
+
     /**
-     * Returns an Iterator over the OID Strings of registered intermediate 
+     * Returns an Iterator over the OID Strings of registered intermediate
      * responses.
      *
      * @return The registered Intermediate response OID Strings
@@ -183,7 +190,7 @@ public interface LdapApiService
 
     /**
      * Registers an {@link IntermediateResponseFactory} for generating intermediate response
-     * 
+     *
      * @param factory The intermediate response factory
      * @return The displaced factory if one existed for the oid
      */
@@ -191,9 +198,9 @@ public interface LdapApiService
 
 
     /**
-     * Unregisters an {@link IntermediateResponseFactory} for generating intermediate 
+     * Unregisters an {@link IntermediateResponseFactory} for generating intermediate
      * response
-     * 
+     *
      * @param oid The intermediate response oid
      * @return The displaced factory if one existed for the oid
      */
@@ -217,7 +224,7 @@ public interface LdapApiService
     /**
      * Creates a model ExtendedResponse from the JNDI ExtendedResponse.
      *
-     * @param jndiResponse The JNDI ExtendedResponse 
+     * @param jndiResponse The JNDI ExtendedResponse
      * @return The model ExtendedResponse
      * @throws DecoderException if the response value cannot be decoded.
      */
@@ -225,9 +232,9 @@ public interface LdapApiService
 
 
     /**
-     * Creates a JNDI {@link javax.naming.ldap.ExtendedResponse} from the model 
+     * Creates a JNDI {@link javax.naming.ldap.ExtendedResponse} from the model
      * {@link ExtendedResponse}.
-     * 
+     *
      * @param modelResponse The extended response to convert
      * @return A JNDI extended response
      * @throws EncoderException If the conversion failed
@@ -238,7 +245,7 @@ public interface LdapApiService
     /**
      * Creates a model ExtendedResponse from the JNDI ExtendedRequest.
      *
-     * @param jndiRequest The JNDI ExtendedRequest 
+     * @param jndiRequest The JNDI ExtendedRequest
      * @return The model ExtendedRequest
      * @throws DecoderException if the request value cannot be decoded.
      */
@@ -246,9 +253,9 @@ public interface LdapApiService
 
 
     /**
-     * Creates a JNDI {@link javax.naming.ldap.ExtendedRequest} from the model 
+     * Creates a JNDI {@link javax.naming.ldap.ExtendedRequest} from the model
      * {@link ExtendedRequest}.
-     * 
+     *
      * @param modelRequest The extended request to convert
      * @return A JNDI extended request
      * @throws EncoderException If the conversion failed
@@ -272,7 +279,7 @@ public interface LdapApiService
      * Registers a ProtocolCodecFactory with this LdapCodecService.
      *
      * @param factory The factory being registered.
-     * @return The previously set {@link ProtocolCodecFactory}, or null if 
+     * @return The previously set {@link ProtocolCodecFactory}, or null if
      * none had been set earlier.
      */
     ProtocolCodecFactory registerProtocolCodecFactory( ProtocolCodecFactory factory );
@@ -289,13 +296,13 @@ public interface LdapApiService
     /**
      * Create an instance of a ExtendedResponse, knowing its OID. Inject the payload
      * into it.
-     * 
+     *
      * @param responseName The extendedRespose OID
      * @param messageId The original message ID
      * @param serializedResponse The serialized response payload
      * @param <E> The extended response type
      * @return The extendedResponse instance
-     * 
+     *
      * @throws DecoderException If the payload is incorrect
      */
     <E extends ExtendedResponse> E newExtendedResponse( String responseName, int messageId, byte[] serializedResponse )
@@ -304,7 +311,7 @@ public interface LdapApiService
 
     /**
      * Creates a new ExtendedRequest instance.
-     * 
+     *
      * @param oid the extended request's object identifier
      * @param value the encoded value of the extended request
      * @return The new extended request
@@ -315,13 +322,13 @@ public interface LdapApiService
     /**
      * Create an instance of a IntermediateResponse, knowing its OID. Inject the payload
      * into it.
-     * 
+     *
      * @param responseName The intermediateRespose OID
      * @param messageId The original message ID
      * @param serializedResponse The serialized response payload
      * @param <I> The intermediate response type
      * @return The intermediateResponse instance
-     * 
+     *
      * @throws DecoderException If the payload is incorrect
      */
     <I extends IntermediateResponse> I newIntermediateResponse( String responseName, int messageId, byte[] serializedResponse )

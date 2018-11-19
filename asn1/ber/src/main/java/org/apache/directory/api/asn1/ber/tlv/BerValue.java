@@ -625,6 +625,25 @@ public class BerValue
 
 
     /**
+     * Encode a boolean value
+     *
+     * @param buffer The PDU in which the value will be put
+     * @param bool The boolean to be encoded
+     */
+    public static void encodeBoolean( Asn1Buffer buffer, boolean bool )
+    {
+        if ( bool )
+        {
+            buffer.put( ENCODED_TRUE );
+        }
+        else
+        {
+            buffer.put( ENCODED_FALSE );
+        }
+    }
+
+
+    /**
      * Encode an integer value
      *
      * @param buffer The PDU in which the value will be put
@@ -701,8 +720,7 @@ public class BerValue
     /**
      * Encode a Sequence
      *
-     * @param buffer The PDU in which the value will be put
-     * @param value The integer to be encoded
+     * @param buffer The PDU in which the Sequence will be put
      */
     public static void encodeSequence( Asn1Buffer buffer )
     {
@@ -714,7 +732,7 @@ public class BerValue
     /**
      * Encode a Sequence, with a specific length
      *
-     * @param buffer The PDU in which the value will be put
+     * @param buffer The PDU in which the Sequence will be put
      * @param start The Sequence length
      */
     public static void encodeSequence( Asn1Buffer buffer, int start )
@@ -727,7 +745,7 @@ public class BerValue
     /**
      * Encode a Sequence, with a specific tag
      *
-     * @param buffer The PDU in which the value will be put
+     * @param buffer The PDU in which the Sequence will be put
      * @param tag The tag to use
      */
     public static void encodeSequence( Asn1Buffer buffer, byte tag )
@@ -740,11 +758,63 @@ public class BerValue
     /**
      * Encode a Sequence, with a specific length and tag
      *
-     * @param buffer The PDU in which the value will be put
+     * @param buffer The PDU in which the Sequence will be put
      * @param tag The tag to use
      * @param start The position in the buffer this Sequence starts
      */
     public static void encodeSequence( Asn1Buffer buffer, byte tag, int start )
+    {
+        buffer.put( TLV.getBytes( buffer.getPos() - start ) );
+        buffer.put( tag );
+    }
+
+
+    /**
+     * Encode a Set
+     *
+     * @param buffer The PDU in which the Set will be put
+     */
+    public static void encodeSet( Asn1Buffer buffer )
+    {
+        buffer.put( TLV.getBytes( buffer.getPos() ) );
+        buffer.put( UniversalTag.SET.getValue() );
+    }
+
+
+    /**
+     * Encode a Set, with a specific length
+     *
+     * @param buffer The PDU in which the Set will be put
+     * @param start The Set length
+     */
+    public static void encodeSet( Asn1Buffer buffer, int start )
+    {
+        buffer.put( TLV.getBytes( buffer.getPos() - start ) );
+        buffer.put( UniversalTag.SET.getValue() );
+    }
+
+
+    /**
+     * Encode a Set, with a specific tag
+     *
+     * @param buffer The PDU in which the value will be put
+     * @param tag The tag to use
+     */
+    public static void encodeSet( Asn1Buffer buffer, byte tag )
+    {
+        buffer.put( TLV.getBytes( buffer.getPos() ) );
+        buffer.put( tag );
+    }
+
+
+    /**
+     * Encode a Set, with a specific length and tag
+     *
+     * @param buffer The PDU in which the set will be put
+     * @param tag The tag to use
+     * @param start The position in the buffer this Set starts
+     */
+    public static void encodeSet( Asn1Buffer buffer, byte tag, int start )
     {
         buffer.put( TLV.getBytes( buffer.getPos() - start ) );
         buffer.put( tag );

@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.codec.api;
 
 
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.model.message.Control;
 
 
@@ -30,7 +31,7 @@ import org.apache.directory.api.ldap.model.message.Control;
  * those controls.
  *
  * @param <C> The Control to create
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface ControlFactory<C extends Control>
@@ -58,4 +59,13 @@ public interface ControlFactory<C extends Control>
      * @return The decorator wrapping the Control.
      */
     CodecControl<C> newCodecControl( C control );
+
+
+    /**
+     * Encode the value part of the control.
+     *
+     * @param buffer The buffer into whicht o put the encoded value
+     * @param control The control to encode
+     */
+    void encodeValue( Asn1Buffer buffer, Control control );
 }
