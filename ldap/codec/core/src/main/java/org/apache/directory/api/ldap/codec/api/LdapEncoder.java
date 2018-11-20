@@ -35,6 +35,7 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.factory.AbandonRequestFactory;
 import org.apache.directory.api.ldap.codec.factory.AddRequestFactory;
 import org.apache.directory.api.ldap.codec.factory.BindRequestFactory;
+import org.apache.directory.api.ldap.codec.factory.CompareRequestFactory;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.Referral;
@@ -201,6 +202,10 @@ public final class LdapEncoder
 
             case "BindRequestImpl" :
                 BindRequestFactory.INSTANCE.encodeReverse( buffer, message );
+                return;
+
+            case "CompareRequestImpl" :
+                CompareRequestFactory.INSTANCE.encodeReverse( buffer, message );
                 return;
 
             default:

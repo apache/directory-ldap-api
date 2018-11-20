@@ -58,37 +58,37 @@ public final class Strings
     private static final boolean[] IS_PRINTABLE_CHAR =
         {
             // ---, ---, ---, ---, ---, ---, ---, ---
-            false, false, false, false, false, false, false, false, 
+            false, false, false, false, false, false, false, false,
             // ---, ---, ---, ---, ---, ---, ---, ---
-            false, false, false, false, false, false, false, false, 
+            false, false, false, false, false, false, false, false,
             // ---, ---, ---, ---, ---, ---, ---, ---
-            false, false, false, false, false, false, false, false, 
+            false, false, false, false, false, false, false, false,
             // ---, ---, ---, ---, ---, ---, ---, ---
-            false, false, false, false, false, false, false, false, 
+            false, false, false, false, false, false, false, false,
             // ' ', ---, ---, ---, ---, ---, ---, "'"
-            true,  false, false, false, false, false, false, true,  
+            true,  false, false, false, false, false, false, true,
             // '(', ')', ---, '+', ',', '-', '.', '/'
-            true,  true,  false, true,  true,  true,  true,  true,  
+            true,  true,  false, true,  true,  true,  true,  true,
             // '0', '1', '2', '3', '4', '5', '6', '7',
-            true,  true,  true,  true,  true,  true,  true,  true,  
+            true,  true,  true,  true,  true,  true,  true,  true,
             // '8', '9', ':', ---, ---, '=', ---, '?'
-            true,  true,  true,  false, false, true,  false, true,  
+            true,  true,  true,  false, false, true,  false, true,
             // ---, 'A', 'B', 'C', 'D', 'E', 'F', 'G',
-            false, true,  true,  true,  true,  true,  true,  true,  
+            false, true,  true,  true,  true,  true,  true,  true,
             // 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'
-            true,  true,  true,  true,  true,  true,  true,  true,  
+            true,  true,  true,  true,  true,  true,  true,  true,
             // 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W'
-            true,  true,  true,  true,  true,  true,  true,  true,  
+            true,  true,  true,  true,  true,  true,  true,  true,
             // 'X', 'Y', 'Z', ---, ---, ---, ---, ---
-            true,  true,  true,  false, false, false, false, false, 
+            true,  true,  true,  false, false, false, false, false,
             // ---, 'a', 'b', 'c', 'd', 'e', 'f', 'g'
-            false, true,  true,  true,  true,  true,  true,  true,  
+            false, true,  true,  true,  true,  true,  true,  true,
             // 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o'
-            true,  true,  true,  true,  true,  true,  true,  true,  
+            true,  true,  true,  true,  true,  true,  true,  true,
             // 'p', 'q', 'r', 's', 't', 'u', 'v', 'w'
-            true,  true,  true,  true,  true,  true,  true,  true, 
+            true,  true,  true,  true,  true,  true,  true,  true,
             // 'x', 'y', 'z', ---, ---, ---, ---, ---
-            true,  true,  true,  false, false, false, false, false 
+            true,  true,  true,  false, false, false, false, false
     };
 
     private static final char[] TO_LOWER_CASE =
@@ -210,31 +210,31 @@ public final class Strings
 
     /** The ASCI chars */
     private static final byte[] UTF8 = new byte[]
-        {   
-            0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 
-            0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 
-            0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 
-            0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 
-            0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 
-            0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F, 
-            0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 
-            0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F, 
-            0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 
-            0x48, 0x49, 0x4A, 0x4B, 0x4C, 0x4D, 0x4E, 0x4F, 
-            0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 
-            0x58, 0x59, 0x5A, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F, 
-            0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 
-            0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F, 
-            0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77, 
-            0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7D, 0x7E, 0x7F 
+        {
+            0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+            0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+            0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
+            0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
+            0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27,
+            0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F,
+            0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37,
+            0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F,
+            0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47,
+            0x48, 0x49, 0x4A, 0x4B, 0x4C, 0x4D, 0x4E, 0x4F,
+            0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57,
+            0x58, 0x59, 0x5A, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F,
+            0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67,
+            0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F,
+            0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77,
+            0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7D, 0x7E, 0x7F
         };
 
     /** An empty byte array */
     public static final byte[] EMPTY_BYTES = new byte[0];
-    
+
     /** An empty String */
     public static final String EMPTY_STRING = "";
-    
+
     /** An empty String array */
     public static final String[] EMPTY_STRING_ARRAY = new String[]{};
 
@@ -502,7 +502,7 @@ public final class Strings
         buf.append( str.substring( 0, head ) ).append( "..." );
         buf.append( str.substring( str.length() - tail ) );
         buf.append( ']' );
-        
+
         return buf.toString();
     }
 
@@ -1628,11 +1628,11 @@ public final class Strings
 
 
     /**
-     * When the string to convert to bytes is pure ascii, this is a faster 
+     * When the string to convert to bytes is pure ascii, this is a faster
      * method than the getBytesUtf8. Otherwise, it's slower.
-     * 
+     *
      * @param string The string to convert to byte[]
-     * @return The bytes 
+     * @return The bytes
      */
     public static byte[] getBytesUtf8Ascii( String string )
     {
@@ -1868,7 +1868,7 @@ public final class Strings
      * 'a'-'z', 'A'-'Z', '0'-'9', '.' and '-' only.
      * <br>
      * Deprecated :  Use {@link #toLowerCaseAscii(String)}
-     * 
+     *
      * @param value The String to lowercase
      * @return The lowercase string
      * @deprecated Use {@link #toLowerCaseAscii(String)}
@@ -2192,7 +2192,7 @@ public final class Strings
             {
                 LOG.debug( I18n.msg( I18n.MSG_17007_SYNTAX_VALID, uuid ) );
             }
-            
+
             return true;
         }
 
@@ -2200,7 +2200,7 @@ public final class Strings
         {
             LOG.debug( I18n.msg( I18n.MSG_17008_SYNTAX_INVALID, uuid ) );
         }
-        
+
         return false;
     }
 
@@ -2391,7 +2391,7 @@ public final class Strings
 
     /**
      * Create a new UUID using a long as the least significant bits
-     * 
+     *
      * @param value The least significant bits.
      * @return The created UUID
      */
@@ -2399,8 +2399,8 @@ public final class Strings
     {
         return new UUID( 0, value ).toString();
     }
-    
-    
+
+
     /**
      * Past an ASCII String to a number
      *
@@ -2410,13 +2410,13 @@ public final class Strings
     public static int parseInt( String value )
     {
         long res = 0;
-        
+
         for ( char c : value.toCharArray() )
         {
             if ( ( c >= '0' ) && ( c <= '9' ) )
             {
                 res = res * 10 + ( c - '0' );
-                
+
                 if ( res > Integer.MAX_VALUE )
                 {
                     throw new NumberFormatException( I18n.err( I18n.ERR_17002_INTEGER_TOO_BIG, value ) );
@@ -2427,11 +2427,11 @@ public final class Strings
                 throw new NumberFormatException( I18n.err( I18n.ERR_17003_INTEGER_INVALID, value ) );
             }
         }
-        
+
         return ( int ) res;
     }
-    
-    
+
+
     /**
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      * @param b1 The first byte[] to compare
@@ -2492,7 +2492,7 @@ public final class Strings
             }
         }
 
-        // b2 is longer w/ b1 as prefix 
+        // b2 is longer w/ b1 as prefix
         if ( b1.length == minLength )
         {
             return -1;

@@ -69,67 +69,22 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         ByteBuffer stream = ByteBuffer.allocate( 0x38 );
 
         stream.put( new byte[]
-            { 0x30,
-                0x36, // LDAPMessage ::= SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                // CHOICE { ..., compareRequest CompareRequest, ...
-                0x6E,
-                0x31, // CompareRequest ::= [APPLICATION 14] SEQUENCE {
-                // entry LDAPDN,
-                0x04,
-                0x20,
-                'c',
-                'n',
-                '=',
-                't',
-                'e',
-                's',
-                't',
-                'M',
-                'o',
-                'd',
-                'i',
-                'f',
-                'y',
-                ',',
-                'o',
-                'u',
-                '=',
-                'u',
-                's',
-                'e',
-                'r',
-                's',
-                ',',
-                'o',
-                'u',
-                '=',
-                's',
-                'y',
-                's',
-                't',
-                'e',
-                'm',
-                // ava AttributeValueAssertion }
-                0x30,
-                0x0D, // AttributeValueAssertion ::= SEQUENCE {
-                // attributeDesc AttributeDescription,
-                0x04,
-                0x04,
-                't',
-                'e',
-                's',
-                't',
-                // assertionValue AssertionValue }
-                0x04,
-                0x05,
-                'v',
-                'a',
-                'l',
-                'u',
-                'e' } );
+            {
+                0x30, 0x36,                 // LDAPMessage ::= SEQUENCE {
+                  0x02, 0x01, 0x01,         // messageID MessageID
+                                            // CHOICE { ..., compareRequest CompareRequest, ...
+                  0x6E, 0x31,               // CompareRequest ::= [APPLICATION 14] SEQUENCE {
+                    0x04, 0x20,             // entry LDAPDN,
+                      'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y',
+                      ',', 'o', 'u', '=', 'u', 's', 'e', 'r', 's', ',',
+                      'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                                            // ava AttributeValueAssertion }
+                    0x30, 0x0D,             // AttributeValueAssertion ::= SEQUENCE {
+                      0x04, 0x04,           // attributeDesc AttributeDescription,
+                        't', 'e', 's', 't',
+                      0x04, 0x05,           // assertionValue AssertionValue }
+                        'v', 'a', 'l', 'u', 'e'
+            } );
 
         String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
@@ -188,13 +143,11 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
         stream.put( new byte[]
-            { 0x30, 0x05, // LDAPMessage ::= SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                // CHOICE { ..., compareRequest CompareRequest, ...
-                0x6E,
-                0x00 // CompareRequest ::= [APPLICATION 14] SEQUENCE {
+            {
+                0x30, 0x05,             // LDAPMessage ::= SEQUENCE {
+                  0x02, 0x01, 0x01,     // messageID MessageID
+                                        // CHOICE { ..., compareRequest CompareRequest, ...
+                  0x6E, 0x00            // CompareRequest ::= [APPLICATION 14] SEQUENCE {
         } );
 
         stream.flip();
@@ -227,33 +180,19 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         ByteBuffer stream = ByteBuffer.allocate( 0x18 );
 
         stream.put( new byte[]
-            { 0x30, 0x16, // LDAPMessage ::= SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                // CHOICE { ..., compareRequest CompareRequest, ...
-                0x6E,
-                0x11, // CompareRequest ::= [APPLICATION 14] SEQUENCE {
-                0x04,
-                0x00, // entry LDAPDN,
-                // ava AttributeValueAssertion }
-                0x30,
-                0x0D, // AttributeValueAssertion ::= SEQUENCE {
-                // attributeDesc AttributeDescription,
-                0x04,
-                0x04,
-                't',
-                'e',
-                's',
-                't',
-                // assertionValue AssertionValue }
-                0x04,
-                0x05,
-                'v',
-                'a',
-                'l',
-                'u',
-                'e' } );
+            {
+                0x30, 0x16,                 // LDAPMessage ::= SEQUENCE {
+                  0x02, 0x01, 0x01,         // messageID MessageID
+                                            // CHOICE { ..., compareRequest CompareRequest, ...
+                  0x6E, 0x11,               // CompareRequest ::= [APPLICATION 14] SEQUENCE {
+                    0x04, 0x00,             // entry LDAPDN,
+                                            // ava AttributeValueAssertion }
+                    0x30, 0x0D,             // AttributeValueAssertion ::= SEQUENCE {
+                      0x04, 0x04,           // attributeDesc AttributeDescription,
+                        't', 'e', 's', 't',
+                      0x04, 0x05,           // assertionValue AssertionValue }
+                        'v', 'a', 'l', 'u', 'e'
+            } );
 
         stream.flip();
 
@@ -285,52 +224,17 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         ByteBuffer stream = ByteBuffer.allocate( 0x2B );
 
         stream.put( new byte[]
-            { 0x30,
-                0x29, // LDAPMessage ::= SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                // CHOICE { ..., compareRequest CompareRequest, ...
-                0x6E,
-                0x24, // CompareRequest ::= [APPLICATION 14] SEQUENCE {
-                // entry LDAPDN,
-                0x04,
-                0x20,
-                'c',
-                'n',
-                '=',
-                't',
-                'e',
-                's',
-                't',
-                'M',
-                'o',
-                'd',
-                'i',
-                'f',
-                'y',
-                ',',
-                'o',
-                'u',
-                '=',
-                'u',
-                's',
-                'e',
-                'r',
-                's',
-                ',',
-                'o',
-                'u',
-                '=',
-                's',
-                'y',
-                's',
-                't',
-                'e',
-                'm',
-                // ava AttributeValueAssertion }
-                0x30,
-                0x00 // AttributeValueAssertion ::= SEQUENCE {
+            {
+                0x30, 0x29,                 // LDAPMessage ::= SEQUENCE {
+                  0x02, 0x01, 0x01,         // messageID MessageID
+                                            // CHOICE { ..., compareRequest CompareRequest, ...
+                  0x6E, 0x24,               // CompareRequest ::= [APPLICATION 14] SEQUENCE {
+                    0x04, 0x20,             // entry LDAPDN,
+                      'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y',
+                      ',', 'o', 'u', '=', 'u', 's', 'e', 'r', 's', ',',
+                      'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                                            // ava AttributeValueAssertion }
+                    0x30, 0x00              // AttributeValueAssertion ::= SEQUENCE {
         } );
 
         stream.flip();
@@ -363,52 +267,17 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         ByteBuffer stream = ByteBuffer.allocate( 0x2B );
 
         stream.put( new byte[]
-            { 0x30,
-                0x29, // LDAPMessage ::= SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                // CHOICE { ..., compareRequest CompareRequest, ...
-                0x6E,
-                0x24, // CompareRequest ::= [APPLICATION 14] SEQUENCE {
-                // entry LDAPDN,
-                0x04,
-                0x20,
-                'c',
-                'n',
-                ':',
-                't',
-                'e',
-                's',
-                't',
-                'M',
-                'o',
-                'd',
-                'i',
-                'f',
-                'y',
-                ',',
-                'o',
-                'u',
-                '=',
-                'u',
-                's',
-                'e',
-                'r',
-                's',
-                ',',
-                'o',
-                'u',
-                '=',
-                's',
-                'y',
-                's',
-                't',
-                'e',
-                'm',
-                // ava AttributeValueAssertion }
-                0x30,
-                0x00 // AttributeValueAssertion ::= SEQUENCE {
+            {
+                0x30, 0x29,                 // LDAPMessage ::= SEQUENCE {
+                  0x02, 0x01, 0x01,         // messageID MessageID
+                                            // CHOICE { ..., compareRequest CompareRequest, ...
+                  0x6E, 0x24,               // CompareRequest ::= [APPLICATION 14] SEQUENCE {
+                    0x04, 0x20,             // entry LDAPDN,
+                      'c', 'n', ':', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y',
+                      ',', 'o', 'u', '=', 'u', 's', 'e', 'r', 's', ',',
+                      'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                                            // ava AttributeValueAssertion }
+                    0x30, 0x00              // AttributeValueAssertion ::= SEQUENCE {
         } );
 
         stream.flip();
@@ -446,54 +315,19 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         ByteBuffer stream = ByteBuffer.allocate( 0x2D );
 
         stream.put( new byte[]
-            { 0x30,
-                0x2B, // LDAPMessage ::= SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                // CHOICE { ..., compareRequest CompareRequest, ...
-                0x6E,
-                0x26, // CompareRequest ::= [APPLICATION 14] SEQUENCE {
-                // entry LDAPDN,
-                0x04,
-                0x20,
-                'c',
-                'n',
-                '=',
-                't',
-                'e',
-                's',
-                't',
-                'M',
-                'o',
-                'd',
-                'i',
-                'f',
-                'y',
-                ',',
-                'o',
-                'u',
-                '=',
-                'u',
-                's',
-                'e',
-                'r',
-                's',
-                ',',
-                'o',
-                'u',
-                '=',
-                's',
-                'y',
-                's',
-                't',
-                'e',
-                'm',
-                // ava AttributeValueAssertion }
-                0x30,
-                0x02, // AttributeValueAssertion ::= SEQUENCE {
-                0x04,
-                0x00 } );
+            {
+                0x30, 0x2B,                 // LDAPMessage ::= SEQUENCE {
+                  0x02, 0x01, 0x01,         // messageID MessageID
+                                            // CHOICE { ..., compareRequest CompareRequest, ...
+                  0x6E, 0x26,               // CompareRequest ::= [APPLICATION 14] SEQUENCE {
+                    0x04, 0x20,             // entry LDAPDN,
+                      'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y',
+                      ',', 'o', 'u', '=', 'u', 's', 'e', 'r', 's', ',',
+                      'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                                            // ava AttributeValueAssertion }
+                    0x30, 0x02,             // AttributeValueAssertion ::= SEQUENCE {
+                      0x04, 0x00
+            } );
 
         stream.flip();
 
@@ -530,62 +364,21 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         ByteBuffer stream = ByteBuffer.allocate( 0x33 );
 
         stream.put( new byte[]
-            { 0x30,
-                0x31, // LDAPMessage ::= SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                // CHOICE { ..., compareRequest CompareRequest, ...
-                0x6E,
-                0x2C, // CompareRequest ::= [APPLICATION 14] SEQUENCE {
-                // entry LDAPDN,
-                0x04,
-                0x20,
-                'c',
-                'n',
-                '=',
-                't',
-                'e',
-                's',
-                't',
-                'M',
-                'o',
-                'd',
-                'i',
-                'f',
-                'y',
-                ',',
-                'o',
-                'u',
-                '=',
-                'u',
-                's',
-                'e',
-                'r',
-                's',
-                ',',
-                'o',
-                'u',
-                '=',
-                's',
-                'y',
-                's',
-                't',
-                'e',
-                'm',
-                // ava AttributeValueAssertion }
-                0x30,
-                0x08, // AttributeValueAssertion ::= SEQUENCE {
-                // attributeDesc AttributeDescription,
-                0x04,
-                0x04,
-                't',
-                'e',
-                's',
-                't',
-                // assertionValue AssertionValue }
-                0x04,
-                0x00 } );
+            {
+                0x30, 0x31,                 // LDAPMessage ::= SEQUENCE {
+                  0x02, 0x01, 0x01,         // messageID MessageID
+                                            // CHOICE { ..., compareRequest CompareRequest, ...
+                  0x6E, 0x2C,               // CompareRequest ::= [APPLICATION 14] SEQUENCE {
+                    0x04, 0x20,             // entry LDAPDN,
+                      'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y',
+                      ',', 'o', 'u', '=', 'u', 's', 'e', 'r', 's', ',',
+                      'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                                            // ava AttributeValueAssertion }
+                    0x30, 0x08,             // AttributeValueAssertion ::= SEQUENCE {
+                      0x04, 0x04,           // attributeDesc AttributeDescription,
+                        't', 'e', 's', 't',
+                      0x04, 0x00            // assertionValue AssertionValue }
+            } );
 
         String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
@@ -645,96 +438,26 @@ public class CompareRequestTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             {
-                0x30,
-                0x53, // LDAPMessage ::= SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                // CHOICE { ..., compareRequest CompareRequest, ...
-                0x6E,
-                0x31, // CompareRequest ::= [APPLICATION 14] SEQUENCE {
-                // entry LDAPDN,
-                0x04,
-                0x20,
-                'c',
-                'n',
-                '=',
-                't',
-                'e',
-                's',
-                't',
-                'M',
-                'o',
-                'd',
-                'i',
-                'f',
-                'y',
-                ',',
-                'o',
-                'u',
-                '=',
-                'u',
-                's',
-                'e',
-                'r',
-                's',
-                ',',
-                'o',
-                'u',
-                '=',
-                's',
-                'y',
-                's',
-                't',
-                'e',
-                'm',
-                // ava AttributeValueAssertion }
-                0x30,
-                0x0D, // AttributeValueAssertion ::= SEQUENCE {
-                // attributeDesc AttributeDescription,
-                0x04,
-                0x04,
-                't',
-                'e',
-                's',
-                't',
-                // assertionValue AssertionValue }
-                0x04,
-                0x05,
-                'v',
-                'a',
-                'l',
-                'u',
-                'e',
-                ( byte ) 0xA0,
-                0x1B, // A control
-                0x30,
-                0x19,
-                0x04,
-                0x17,
-                0x32,
-                0x2E,
-                0x31,
-                0x36,
-                0x2E,
-                0x38,
-                0x34,
-                0x30,
-                0x2E,
-                0x31,
-                0x2E,
-                0x31,
-                0x31,
-                0x33,
-                0x37,
-                0x33,
-                0x30,
-                0x2E,
-                0x33,
-                0x2E,
-                0x34,
-                0x2E,
-                0x32 } );
+                0x30, 0x53,                 // LDAPMessage ::= SEQUENCE {
+                  0x02, 0x01, 0x01,         // messageID MessageID
+                                            // CHOICE { ..., compareRequest CompareRequest, ...
+                  0x6E, 0x31,               // CompareRequest ::= [APPLICATION 14] SEQUENCE {
+                    0x04, 0x20,             // entry LDAPDN,
+                      'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y',
+                      ',', 'o', 'u', '=', 'u', 's', 'e', 'r', 's', ',',
+                      'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                                            // ava AttributeValueAssertion }
+                    0x30, 0x0D,             // AttributeValueAssertion ::= SEQUENCE {
+                      0x04, 0x04,           // attributeDesc AttributeDescription,
+                        't', 'e', 's', 't',
+                      0x04, 0x05,           // assertionValue AssertionValue }
+                        'v', 'a', 'l', 'u', 'e',
+                  ( byte ) 0xA0, 0x1B,      // A control
+                    0x30, 0x19,
+                      0x04, 0x17,
+                        '2', '.', '1', '6', '.', '8', '4', '0', '.', '1',  '.', '1', '1', '3', '7', '3', '0',
+                        '.', '3', '.', '4', '.', '2'
+            } );
 
         String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();

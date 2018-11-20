@@ -84,7 +84,5 @@ public class AdDirSyncFactory implements ControlFactory<AdDirSync>
     @Override
     public void encodeValue( Asn1Buffer buffer, Control control )
     {
-        // TODO Auto-generated method stub
-
     }
 }

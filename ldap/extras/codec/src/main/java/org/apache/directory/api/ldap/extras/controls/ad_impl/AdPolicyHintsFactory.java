@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.extras.controls.ad_impl;
 
 
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
@@ -79,10 +80,18 @@ public class AdPolicyHintsFactory implements ControlFactory<AdPolicyHints>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void encodeValue( Asn1Buffer buffer, Control control )
     {
-        // TODO Auto-generated method stub
+        int start = buffer.getPos();
 
+        // Encode the flags
+        BerValue.encodeInteger( buffer, ( ( AdPolicyHints ) control ).getFlags() );
+
+        // Encode the SEQ
+        BerValue.encodeSequence( buffer, start );
     }
 }

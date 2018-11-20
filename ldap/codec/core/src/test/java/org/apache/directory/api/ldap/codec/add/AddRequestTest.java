@@ -31,8 +31,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.naming.NamingException;
-
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Container;
@@ -76,7 +74,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
      * @throws EncoderException
      */
     @Test
-    public void testDecodeAddRequestSuccess() throws NamingException, EncoderException
+    public void testDecodeAddRequestSuccess() throws DecoderException, EncoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -121,15 +119,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
             new LdapMessageContainer<AddRequestDecorator>( codec );
 
         // Decode a AddRequest message
-        try
-        {
-            ldapDecoder.decode( stream, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        ldapDecoder.decode( stream, container );
 
         AddRequest addRequest = container.getMessage();
 
@@ -185,34 +175,27 @@ public class AddRequestTest extends AbstractCodecServiceTest
         }
 
         // Check the encoding
+        ByteBuffer bb = LdapEncoder.encodeMessage( codec, addRequest );
+
+        // Check the length
+        assertEquals( 0x59, bb.limit() );
+
+        // We cannot compare the PDU, as the attributes order is not
+        // kept. Let's decode again and compare the resulting AddRequest
         try
         {
-            ByteBuffer bb = LdapEncoder.encodeMessage( codec, addRequest );
-
-            // Check the length
-            assertEquals( 0x59, bb.limit() );
-
-            // We cannot compare the PDU, as the attributes order is not
-            // kept. Let's decode again and compare the resulting AddRequest
-            try
-            {
-                ldapDecoder.decode( bb, container );
-            }
-            catch ( DecoderException de )
-            {
-                de.printStackTrace();
-                fail( de.getMessage() );
-            }
-
-            AddRequest addRequest2 = container.getMessage();
-            assertEquals( addRequest, addRequest2 );
+            ldapDecoder.decode( bb, container );
         }
-        catch ( EncoderException ee )
+        catch ( DecoderException de )
         {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
+            de.printStackTrace();
+            fail( de.getMessage() );
         }
 
+        AddRequest addRequest2 = container.getMessage();
+        assertEquals( addRequest, addRequest2 );
+
+        // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
         AddRequest request = new AddRequestImpl();
@@ -228,8 +211,8 @@ public class AddRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a AddRequest with a null body
      */
-    @Test
-    public void testDecodeAddRequestNullBody()
+    @Test( expected=DecoderException.class )
+    public void testDecodeAddRequestNullBody() throws DecoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -248,25 +231,15 @@ public class AddRequestTest extends AbstractCodecServiceTest
         Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
         // Decode a AddRequest message
-        try
-        {
-            ldapDecoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( true );
-            return;
-        }
-
-        fail( "We should not reach this point" );
+        ldapDecoder.decode( stream, ldapMessageContainer );
     }
 
 
     /**
      * Test the decoding of a AddRequest with a null entry
      */
-    @Test
-    public void testDecodeAddRequestNullEntry()
+    @Test( expected=DecoderException.class )
+    public void testDecodeAddRequestNullEntry() throws DecoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -316,18 +289,17 @@ public class AddRequestTest extends AbstractCodecServiceTest
             assertTrue( response instanceof AddResponseImpl );
             assertEquals( ResultCodeEnum.NAMING_VIOLATION, ( ( AddResponseImpl ) response ).getLdapResult()
                 .getResultCode() );
-            return;
-        }
 
-        fail( "We should not reach this point" );
+            throw de;
+        }
     }
 
 
     /**
      * Test the decoding of a AddRequest
      */
-    @Test
-    public void testDecodeAddRequestbadDN()
+    @Test( expected=DecoderException.class )
+    public void testDecodeAddRequestbadDN() throws DecoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -380,18 +352,17 @@ public class AddRequestTest extends AbstractCodecServiceTest
             assertTrue( response instanceof AddResponseImpl );
             assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( ( AddResponseImpl ) response ).getLdapResult()
                 .getResultCode() );
-            return;
-        }
 
-        fail( "We should not reach this point" );
+            throw de;
+        }
     }
 
 
     /**
      * Test the decoding of a AddRequest with a null attributeList
      */
-    @Test
-    public void testDecodeAddRequestNullAttributes()
+    @Test( expected=DecoderException.class )
+    public void testDecodeAddRequestNullAttributes() throws DecoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -417,25 +388,15 @@ public class AddRequestTest extends AbstractCodecServiceTest
         Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
         // Decode a AddRequest message
-        try
-        {
-            ldapDecoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( true );
-            return;
-        }
-
-        fail( "We should not reach this point" );
+        ldapDecoder.decode( stream, ldapMessageContainer );
     }
 
 
     /**
      * Test the decoding of a AddRequest with a empty attributeList
      */
-    @Test
-    public void testDecodeAddRequestNullAttributeList()
+    @Test( expected=DecoderException.class )
+    public void testDecodeAddRequestNullAttributeList() throws DecoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -462,25 +423,15 @@ public class AddRequestTest extends AbstractCodecServiceTest
         Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
         // Decode a AddRequest message
-        try
-        {
-            ldapDecoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( true );
-            return;
-        }
-
-        fail( "We should not reach this point" );
+        ldapDecoder.decode( stream, ldapMessageContainer );
     }
 
 
     /**
      * Test the decoding of a AddRequest with a empty attributeList
      */
-    @Test
-    public void testDecodeAddRequestNullType()
+    @Test( expected=DecoderException.class )
+    public void testDecodeAddRequestNullType() throws DecoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -519,18 +470,17 @@ public class AddRequestTest extends AbstractCodecServiceTest
             assertTrue( response instanceof AddResponseImpl );
             assertEquals( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, ( ( AddResponseImpl ) response ).getLdapResult()
                 .getResultCode() );
-            return;
-        }
 
-        fail( "We should not reach this point" );
+            throw de;
+        }
     }
 
 
     /**
      * Test the decoding of a AddRequest with a empty attributeList
      */
-    @Test
-    public void testDecodeAddRequestNoVals()
+    @Test( expected=DecoderException.class )
+    public void testDecodeAddRequestNoVals() throws DecoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -559,25 +509,15 @@ public class AddRequestTest extends AbstractCodecServiceTest
         Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
         // Decode a AddRequest message
-        try
-        {
-            ldapDecoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( true );
-            return;
-        }
-
-        fail( "We should not reach this point" );
+        ldapDecoder.decode( stream, ldapMessageContainer );
     }
 
 
     /**
      * Test the decoding of a AddRequest with a empty attributeList
      */
-    @Test
-    public void testDecodeAddRequestNullVals()
+    @Test( expected=DecoderException.class )
+    public void testDecodeAddRequestNullVals() throws DecoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -607,17 +547,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
         Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
         // Decode a AddRequest message
-        try
-        {
-            ldapDecoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( true );
-            return;
-        }
-
-        fail( "We should not reach this point" );
+        ldapDecoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -625,7 +555,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a AddRequest with a empty attributeList
      */
     @Test
-    public void testDecodeAddRequestEmptyAttributeValue() throws NamingException
+    public void testDecodeAddRequestEmptyAttributeValue() throws DecoderException, EncoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -657,15 +587,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddRequestDecorator> container = new LdapMessageContainer<AddRequestDecorator>( codec );
 
         // Decode a AddRequest message
-        try
-        {
-            ldapDecoder.decode( stream, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        ldapDecoder.decode( stream, container );
 
         AddRequest addRequest = container.getMessage();
 
@@ -687,22 +609,24 @@ public class AddRequestTest extends AbstractCodecServiceTest
         }
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb = LdapEncoder.encodeMessage( codec, addRequest );
+        ByteBuffer bb = LdapEncoder.encodeMessage( codec, addRequest );
 
-            // Check the length
-            assertEquals( 0x34, bb.limit() );
+        // Check the length
+        assertEquals( 0x34, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes( bb.array() );
+        String encodedPdu = Strings.dumpBytes( bb.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        AddRequest request = new AddRequestImpl();
+        request.setEntry( addRequest.getEntry() );
+        request.setMessageId( addRequest.getMessageId() );
+
+        LdapEncoder.encodeMessageReverse( buffer, codec, request );
+
+        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
     }
 
 
@@ -711,7 +635,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
      * control
      */
     @Test
-    public void testDecodeAddRequestEmptyAttributeValueWithControl() throws NamingException
+    public void testDecodeAddRequestEmptyAttributeValueWithControl() throws  DecoderException, EncoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -749,15 +673,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddRequestDecorator> container = new LdapMessageContainer<AddRequestDecorator>( codec );
 
         // Decode a AddRequest message
-        try
-        {
-            ldapDecoder.decode( stream, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        ldapDecoder.decode( stream, container );
 
         AddRequest addRequest = container.getMessage();
 
@@ -792,21 +708,13 @@ public class AddRequestTest extends AbstractCodecServiceTest
         assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb = LdapEncoder.encodeMessage( codec, addRequest );
+        ByteBuffer bb = LdapEncoder.encodeMessage( codec, addRequest );
 
-            // Check the length
-            assertEquals( 0x51, bb.limit() );
+        // Check the length
+        assertEquals( 0x51, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes( bb.array() );
+        String encodedPdu = Strings.dumpBytes( bb.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
     }
 }
