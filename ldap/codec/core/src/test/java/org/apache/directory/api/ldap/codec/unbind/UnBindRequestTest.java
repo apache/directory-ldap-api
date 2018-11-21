@@ -22,14 +22,15 @@ package org.apache.directory.api.ldap.codec.unbind;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.Map;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
@@ -57,7 +58,7 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a UnBindRequest with no controls
      */
     @Test
-    public void testDecodeUnBindRequestNoControls()
+    public void testDecodeUnBindRequestNoControls() throws DecoderException, EncoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -77,15 +78,7 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<UnbindRequestDecorator> ldapMessageContainer =
                 new LdapMessageContainer<UnbindRequestDecorator>( codec );
 
-        try
-        {
-            ldapDecoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        ldapDecoder.decode( stream, ldapMessageContainer );
 
         UnbindRequest unbindRequest = ldapMessageContainer.getMessage();
 
@@ -95,22 +88,21 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
         UnbindRequest internalUnbindRequest = new UnbindRequestImpl();
         internalUnbindRequest.setMessageId( unbindRequest.getMessageId() );
 
-        try
-        {
-            ByteBuffer bb = LdapEncoder.encodeMessage( codec, new UnbindRequestDecorator( codec, internalUnbindRequest ) );
+        ByteBuffer bb = LdapEncoder.encodeMessage( codec, new UnbindRequestDecorator( codec, internalUnbindRequest ) );
 
-            // Check the length
-            assertEquals( 0x07, bb.limit() );
+        // Check the length
+        assertEquals( 0x07, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes( bb.array() );
+        String encodedPdu = Strings.dumpBytes( bb.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
+
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        LdapEncoder.encodeMessageReverse( buffer, codec, internalUnbindRequest );
+
+        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
     }
 
 
@@ -118,7 +110,7 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a UnBindRequest with controls
      */
     @Test
-    public void testDecodeUnBindRequestWithControls()
+    public void testDecodeUnBindRequestWithControls() throws DecoderException, EncoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -143,15 +135,7 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<UnbindRequestDecorator> ldapMessageContainer =
                 new LdapMessageContainer<UnbindRequestDecorator>( codec );
 
-        try
-        {
-            ldapDecoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        ldapDecoder.decode( stream, ldapMessageContainer );
 
         UnbindRequest unbindRequest = ldapMessageContainer.getMessage();
 
@@ -173,30 +157,22 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
         internalUnbindRequest.setMessageId( unbindRequest.getMessageId() );
         internalUnbindRequest.addControl( control );
 
-        try
-        {
-            ByteBuffer bb = LdapEncoder.encodeMessage( codec, new UnbindRequestDecorator( codec, internalUnbindRequest ) );
+        ByteBuffer bb = LdapEncoder.encodeMessage( codec, new UnbindRequestDecorator( codec, internalUnbindRequest ) );
 
-            // Check the length
-            assertEquals( 0x24, bb.limit() );
+        // Check the length
+        assertEquals( 0x24, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes( bb.array() );
+        String encodedPdu = Strings.dumpBytes( bb.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
     }
 
 
     /**
      * Test the decoding of a UnBindRequest with a not null body
      */
-    @Test
-    public void testDecodeUnBindRequestNotNull()
+    @Test( expected=DecoderException.class )
+    public void testDecodeUnBindRequestNotNull() throws DecoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -216,16 +192,6 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
                 new LdapMessageContainer<UnbindRequestDecorator>( codec );
 
         // Decode a UnbindRequest message
-        try
-        {
-            ldapDecoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( true );
-            return;
-        }
-
-        fail( "We should not reach this point" );
+        ldapDecoder.decode( stream, ldapMessageContainer );
     }
 }

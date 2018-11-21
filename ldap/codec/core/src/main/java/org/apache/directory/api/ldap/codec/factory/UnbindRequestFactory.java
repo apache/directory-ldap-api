@@ -22,41 +22,38 @@ package org.apache.directory.api.ldap.codec.factory;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
-import org.apache.directory.api.ldap.model.message.DeleteRequest;
 import org.apache.directory.api.ldap.model.message.Message;
-import org.apache.directory.api.util.Strings;
 
 /**
- * The DeleteRequest factory.
+ * The UnbindRequest factory.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public final class DeleteRequestFactory implements Messagefactory
+public final class UnbindRequestFactory implements Messagefactory
 {
     /** The static instance */
-    public static final DeleteRequestFactory INSTANCE = new DeleteRequestFactory();
+    public static final UnbindRequestFactory INSTANCE = new UnbindRequestFactory();
 
-    private DeleteRequestFactory()
+    private UnbindRequestFactory()
     {
         // Nothing to do
     }
 
     /**
-     * Encode the DeleteRequest message to a PDU.
+     * Encode the UnbindRequest message to a PDU.
      * <br>
-     * DelRequest :
+     * UnbindRequest :
      * <pre>
-     * 0x4A LL entry DN
+     * 0x42 00
      * </pre>
      *
      * @param buffer The buffer where to put the PDU
-     * @param message the DeleteRequest to encode
+     * @param message the UnbindRequest to encode
      */
     @Override
     public void encodeReverse( Asn1Buffer buffer, Message message )
     {
-        // The entry
-        BerValue.encodeOctetString( buffer, LdapCodecConstants.DEL_REQUEST_TAG,
-            Strings.getBytesUtf8( ( ( DeleteRequest ) message ).getName().getName() ) );
+        // The OpCode
+        BerValue.encodeSequence( buffer, LdapCodecConstants.UNBIND_REQUEST_TAG, buffer.getPos() );
     }
 }

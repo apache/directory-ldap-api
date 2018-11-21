@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 package org.apache.directory.api.ldap.codec.decorators;
 
@@ -74,7 +74,7 @@ public class ModifyRequestDecorator extends AbstractSingleReplyRequestDecorator<
 
     /** A local storage for the operation */
     private ModificationOperation currentOperation;
-    
+
     /** The DN as a byte[] */
     private byte[] dnBytes;
 
@@ -93,7 +93,7 @@ public class ModifyRequestDecorator extends AbstractSingleReplyRequestDecorator<
 
     /**
      * Store the current operation
-     * 
+     *
      * @param currentOperation The currentOperation to set.
      */
     public void setCurrentOperation( int currentOperation )
@@ -104,7 +104,7 @@ public class ModifyRequestDecorator extends AbstractSingleReplyRequestDecorator<
 
     /**
      * Add a new attributeTypeAndValue
-     * 
+     *
      * @param type The attribute's name
      */
     public void addAttributeTypeAndValues( String type )
@@ -127,7 +127,7 @@ public class ModifyRequestDecorator extends AbstractSingleReplyRequestDecorator<
 
     /**
      * Add a new value to the current attribute
-     * 
+     *
      * @param value The value to add
      * @throws LdapException If teh value is invalid
      */
@@ -139,7 +139,7 @@ public class ModifyRequestDecorator extends AbstractSingleReplyRequestDecorator<
 
     /**
      * Add a new value to the current attribute
-     * 
+     *
      * @param value The value to add
      * @throws LdapException If teh value is invalid
      */
@@ -224,6 +224,7 @@ public class ModifyRequestDecorator extends AbstractSingleReplyRequestDecorator<
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest remove( String attributeName, byte[]... attributeValue )
     {
         getDecorated().remove( attributeName, attributeValue );
@@ -283,6 +284,7 @@ public class ModifyRequestDecorator extends AbstractSingleReplyRequestDecorator<
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest add( String attributeName, byte[]... attributeValue )
     {
         getDecorated().add( attributeName, attributeValue );
@@ -330,6 +332,7 @@ public class ModifyRequestDecorator extends AbstractSingleReplyRequestDecorator<
     /**
      * {@inheritDoc}
      */
+    @Override
     public ModifyRequest replace( String attributeName, byte[]... attributeValue )
     {
         getDecorated().replace( attributeName, attributeValue );
@@ -397,7 +400,7 @@ public class ModifyRequestDecorator extends AbstractSingleReplyRequestDecorator<
     //-------------------------------------------------------------------------
 
     /**
-     * Compute the ModifyRequest length 
+     * Compute the ModifyRequest length
      * <br>
      * ModifyRequest :
      * <pre>
@@ -471,7 +474,7 @@ public class ModifyRequestDecorator extends AbstractSingleReplyRequestDecorator<
                     for ( Value value : modification.getAttribute() )
                     {
                         byte[] valueBytes = value.getBytes();
-                        
+
                         if ( valueBytes != null )
                         {
                             localValuesLength += 1 + TLV.getNbBytes( valueBytes.length ) + valueBytes.length;
@@ -508,9 +511,9 @@ public class ModifyRequestDecorator extends AbstractSingleReplyRequestDecorator<
 
 
     /**
-     * Encode the ModifyRequest message to a PDU. 
+     * Encode the ModifyRequest message to a PDU.
      * <br>
-     * ModifyRequest : 
+     * ModifyRequest :
      * <pre>
      * 0x66 LL
      *   0x04 LL object
@@ -521,19 +524,19 @@ public class ModifyRequestDecorator extends AbstractSingleReplyRequestDecorator<
      *         0x04 LL type
      *         0x31 LL vals
      *           0x04 LL attributeValue
-     *           ... 
+     *           ...
      *           0x04 LL attributeValue
-     *     ... 
+     *     ...
      *     0x30 LL modification sequence
      *       0x0A 0x01 operation
      *       0x30 LL modification
      *         0x04 LL type
      *         0x31 LL vals
      *           0x04 LL attributeValue
-     *           ... 
+     *           ...
      *           0x04 LL attributeValue
      * </pre>
-     * 
+     *
      * @param buffer The buffer where to put the PDU
      * @return The PDU.
      */
@@ -542,7 +545,7 @@ public class ModifyRequestDecorator extends AbstractSingleReplyRequestDecorator<
     {
         try
         {
-            // The AddRequest Tag
+            // The ModifyRequest Tag
             buffer.put( LdapCodecConstants.MODIFY_REQUEST_TAG );
             buffer.put( TLV.getBytes( modifyRequestLength ) );
 

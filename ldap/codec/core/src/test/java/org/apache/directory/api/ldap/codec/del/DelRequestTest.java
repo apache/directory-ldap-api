@@ -22,14 +22,15 @@ package org.apache.directory.api.ldap.codec.del;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.Map;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
@@ -63,7 +64,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a full DelRequest
      */
     @Test
-    public void testDecodeDelRequestSuccess()
+    public void testDecodeDelRequestSuccess() throws DecoderException, EncoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -88,15 +89,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
             codec );
 
         // Decode a DelRequest PDU
-        try
-        {
-            ldapDecoder.decode( stream, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        ldapDecoder.decode( stream, container );
 
         // Check the decoded DelRequest PDU
         DeleteRequest delRequest = container.getMessage();
@@ -110,30 +103,29 @@ public class DelRequestTest extends AbstractCodecServiceTest
         internalDeleteRequest.setName( delRequest.getName() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb = LdapEncoder.encodeMessage( codec, new DeleteRequestDecorator( codec, internalDeleteRequest ) );
+        ByteBuffer bb = LdapEncoder.encodeMessage( codec, new DeleteRequestDecorator( codec, internalDeleteRequest ) );
 
-            // Check the length
-            assertEquals( 0x27, bb.limit() );
+        // Check the length
+        assertEquals( 0x27, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes( bb.array() );
+        String encodedPdu = Strings.dumpBytes( bb.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
+
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        LdapEncoder.encodeMessageReverse( buffer, codec, internalDeleteRequest );
+
+        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
     }
 
 
     /**
      * Test the decoding of a full DelRequest
      */
-    @Test
-    public void testDecodeDelRequestBadDN()
+    @Test( expected=DecoderException.class )
+    public void testDecodeDelRequestBadDN() throws DecoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -168,18 +160,17 @@ public class DelRequestTest extends AbstractCodecServiceTest
             assertTrue( response instanceof DeleteResponseImpl );
             assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( ( DeleteResponseImpl ) response ).getLdapResult()
                 .getResultCode() );
-            return;
-        }
 
-        fail( "We should not reach this point" );
+            throw de;
+        }
     }
 
 
     /**
      * Test the decoding of an empty DelRequest
      */
-    @Test
-    public void testDecodeDelRequestEmpty()
+    @Test( expected=DecoderException.class )
+    public void testDecodeDelRequestEmpty() throws DecoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -201,15 +192,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
             codec );
 
         // Decode a DelRequest PDU
-        try
-        {
-            ldapDecoder.decode( stream, container );
-            fail( "We should never reach this point !!!" );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( true );
-        }
+        ldapDecoder.decode( stream, container );
     }
 
 
@@ -217,7 +200,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a full DelRequest with controls
      */
     @Test
-    public void testDecodeDelRequestSuccessWithControls()
+    public void testDecodeDelRequestSuccessWithControls() throws DecoderException, EncoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -247,15 +230,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
             codec );
 
         // Decode a DelRequest PDU
-        try
-        {
-            ldapDecoder.decode( stream, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        ldapDecoder.decode( stream, container );
 
         // Check the decoded DelRequest PDU
         DeleteRequest delRequest = container.getMessage();
@@ -280,22 +255,13 @@ public class DelRequestTest extends AbstractCodecServiceTest
         internalDeleteRequest.addControl( control );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb = LdapEncoder.encodeMessage( codec, new DeleteRequestDecorator( codec, internalDeleteRequest ) );
+        ByteBuffer bb = LdapEncoder.encodeMessage( codec, new DeleteRequestDecorator( codec, internalDeleteRequest ) );
 
-            // Check the length
-            assertEquals( 0x44, bb.limit() );
+        // Check the length
+        assertEquals( 0x44, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes( bb.array() );
+        String encodedPdu = Strings.dumpBytes( bb.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
     }
-
 }
