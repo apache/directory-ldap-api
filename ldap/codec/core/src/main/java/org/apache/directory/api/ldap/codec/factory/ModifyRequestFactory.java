@@ -185,6 +185,5 @@ public final class ModifyRequestFactory implements Messagefactory
 
         // The ModifyRequest tag
         BerValue.encodeSequence( buffer, LdapCodecConstants.MODIFY_REQUEST_TAG, start );
-
     }
 }

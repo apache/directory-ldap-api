@@ -673,6 +673,35 @@ public class BerValue
 
 
     /**
+     * Encode an integer value
+     *
+     * @param buffer The PDU in which the value will be put
+     * @param value The long to be encoded
+     */
+    public static void encodeInteger( Asn1Buffer buffer, long value )
+    {
+        buffer.put( getBytes( value ) );
+        buffer.put( ( byte ) getNbBytes( value ) );
+        buffer.put( UniversalTag.INTEGER.getValue() );
+    }
+
+
+    /**
+     * Encode an integer value, with a specific tag
+     *
+     * @param buffer The PDU in which the value will be put
+     * @param tag The tag to use
+     * @param value The long to be encoded
+     */
+    public static void encodeInteger( Asn1Buffer buffer, byte tag, long value )
+    {
+        buffer.put( getBytes( value ) );
+        buffer.put( ( byte ) getNbBytes( value ) );
+        buffer.put( tag );
+    }
+
+
+    /**
      * Encode an OctetString
      *
      * @param buffer The PDU in which the value will be put

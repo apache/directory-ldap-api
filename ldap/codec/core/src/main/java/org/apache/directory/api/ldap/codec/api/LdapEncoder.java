@@ -37,7 +37,9 @@ import org.apache.directory.api.ldap.codec.factory.AddRequestFactory;
 import org.apache.directory.api.ldap.codec.factory.BindRequestFactory;
 import org.apache.directory.api.ldap.codec.factory.CompareRequestFactory;
 import org.apache.directory.api.ldap.codec.factory.DeleteRequestFactory;
+import org.apache.directory.api.ldap.codec.factory.ModifyDnRequestFactory;
 import org.apache.directory.api.ldap.codec.factory.ModifyRequestFactory;
+import org.apache.directory.api.ldap.codec.factory.SearchRequestFactory;
 import org.apache.directory.api.ldap.codec.factory.UnbindRequestFactory;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
@@ -217,6 +219,14 @@ public final class LdapEncoder
 
             case "ModifyRequestImpl" :
                 ModifyRequestFactory.INSTANCE.encodeReverse( buffer, message );
+                return;
+
+            case "ModifyDnRequestImpl" :
+                ModifyDnRequestFactory.INSTANCE.encodeReverse( buffer, message );
+                return;
+
+            case "SearchRequestImpl" :
+                SearchRequestFactory.INSTANCE.encodeReverse( buffer, message );
                 return;
 
             case "UnbindRequestImpl" :
