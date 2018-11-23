@@ -27,6 +27,7 @@ import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.filter.AndNode;
 import org.apache.directory.api.ldap.model.filter.ApproximateNode;
+import org.apache.directory.api.ldap.model.filter.BranchNode;
 import org.apache.directory.api.ldap.model.filter.EqualityNode;
 import org.apache.directory.api.ldap.model.filter.ExprNode;
 import org.apache.directory.api.ldap.model.filter.ExtensibleNode;
@@ -35,6 +36,7 @@ import org.apache.directory.api.ldap.model.filter.LessEqNode;
 import org.apache.directory.api.ldap.model.filter.NotNode;
 import org.apache.directory.api.ldap.model.filter.OrNode;
 import org.apache.directory.api.ldap.model.filter.PresenceNode;
+import org.apache.directory.api.ldap.model.filter.SimpleNode;
 import org.apache.directory.api.ldap.model.filter.SubstringNode;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
@@ -77,18 +79,18 @@ public final class SearchRequestFactory implements Messagefactory
 
 
     /**
-     * Encode a AndNode.
+     * Encode a BranchNode.
      * <br>
-     * AndFilter :
+     * BranchFilter :
      * <pre>
-     * 0xA0 LL
+     * 0xA1/0xA2/0xA3 LL
      *  filter.encode() ... filter.encode()
      * </pre>
      *
      * @param buffer The buffer where to put the PDU
-     * @param node The AND filter to encode
+     * @param node The Branch filter to encode
      */
-    private void encodeFilter( Asn1Buffer buffer, AndNode node )
+    private void encodeFilter( Asn1Buffer buffer, BranchNode node, byte tag )
     {
         int start = buffer.getPos();
 
@@ -100,83 +102,25 @@ public final class SearchRequestFactory implements Messagefactory
             encodeFilters( buffer, children.iterator() );
         }
 
-        // The AndNode sequence
-        BerValue.encodeSequence( buffer, ( byte ) LdapCodecConstants.AND_FILTER_TAG, start );
+        // The BranchNode sequence
+        BerValue.encodeSequence( buffer, tag, start );
     }
 
 
     /**
-     * Encode a OrNode.
-     * <br>
-     * OrFilter :
+     * Encode a SimpleNode.
      * <pre>
-     * 0xA1 LL
-     *  filter.encode() ... filter.encode()
-     * </pre>
-     *
-     * @param buffer The buffer where to put the PDU
-     * @param node The OR filter to encode
-     */
-    private void encodeFilter( Asn1Buffer buffer, OrNode node )
-    {
-        int start = buffer.getPos();
-
-        // encode each filter
-        List<ExprNode> children = node.getChildren();
-
-        if ( ( children != null ) && ( !children.isEmpty() ) )
-        {
-            encodeFilters( buffer, children.iterator() );
-        }
-
-        // The AndNode sequence
-        BerValue.encodeSequence( buffer, ( byte ) LdapCodecConstants.OR_FILTER_TAG, start );
-    }
-
-
-    /**
-     * Encode a NotNode.
-     * <br>
-     * NotFilter :
+     * SimpleFilter :
      * <pre>
-     * 0xA2 LL
-     *  filter.encode() ... filter.encode()
-     * </pre>
-     *
-     * @param buffer The buffer where to put the PDU
-     * @param node The NOT filter to encode
-     */
-    private void encodeFilter( Asn1Buffer buffer, NotNode node )
-    {
-        int start = buffer.getPos();
-
-        // encode each filter
-        List<ExprNode> children = node.getChildren();
-
-        if ( ( children != null ) && ( !children.isEmpty() ) )
-        {
-            encodeFilters( buffer, children.iterator() );
-        }
-
-        // The NotNode sequence
-        BerValue.encodeSequence( buffer, ( byte ) LdapCodecConstants.NOT_FILTER_TAG, start );
-    }
-
-
-    /**
-     * Encode a EqualityNode.
-     * <pre>
-     * EqualityFilter :
-     * <pre>
-     * 0xA3 LL
+     * 0xA3/0xA5/0xA6/A8 LL
      *   0x04 LL attributeDesc
      *   0x04 LL assertionValue
      * </pre>
      *
      * @param buffer The buffer where to put the PDU
-     * @param node The Equality filter to encode
+     * @param node The Simple filter to encode
      */
-    private void encodeFilter( Asn1Buffer buffer, EqualityNode<?> node )
+    private void encodeFilter( Asn1Buffer buffer, SimpleNode<?> node, byte tag )
     {
         int start = buffer.getPos();
 
@@ -187,35 +131,7 @@ public final class SearchRequestFactory implements Messagefactory
         BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( node.getAttribute() ) );
 
         // The EqualityNode sequence
-        BerValue.encodeSequence( buffer, ( byte ) LdapCodecConstants.EQUALITY_MATCH_FILTER_TAG, start );
-    }
-
-
-    /**
-     * Encode a ApproximateNode.
-     * <pre>
-     * ApproximateFilter :
-     * <pre>
-     * 0xA8 LL
-     *   0x04 LL attributeDesc
-     *   0x04 LL assertionValue
-     * </pre>
-     *
-     * @param buffer The buffer where to put the PDU
-     * @param node The Approximate filter to encode
-     */
-    private void encodeFilter( Asn1Buffer buffer, ApproximateNode<?> node )
-    {
-        int start = buffer.getPos();
-
-        // The attribute desc
-        BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( node.getEscapedValue() ) );
-
-        // The assertion desc
-        BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( node.getAttribute() ) );
-
-        // The EqualityNode sequence
-        BerValue.encodeSequence( buffer, ( byte ) LdapCodecConstants.APPROX_MATCH_FILTER_TAG, start );
+        BerValue.encodeSequence( buffer, tag, start );
     }
 
 
@@ -235,62 +151,6 @@ public final class SearchRequestFactory implements Messagefactory
         // The PresentFilter Tag
         BerValue.encodeOctetString( buffer, ( byte ) LdapCodecConstants.PRESENT_FILTER_TAG,
             Strings.getBytesUtf8( node.getAttribute() ) );
-    }
-
-
-    /**
-     * Encode a GreaterEqNode.
-     * <pre>
-     * GreaterEqFilter :
-     * <pre>
-     * 0xA5 LL
-     *   0x04 LL attributeDesc
-     *   0x04 LL assertionValue
-     * </pre>
-     *
-     * @param buffer The buffer where to put the PDU
-     * @param node The GreaterEq filter to encode
-     */
-    private void encodeFilter( Asn1Buffer buffer, GreaterEqNode<?> node )
-    {
-        int start = buffer.getPos();
-
-        // The attribute desc
-        BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( node.getEscapedValue() ) );
-
-        // The assertion desc
-        BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( node.getAttribute() ) );
-
-        // The EqualityNode sequence
-        BerValue.encodeSequence( buffer, ( byte ) LdapCodecConstants.GREATER_OR_EQUAL_FILTER_TAG, start );
-    }
-
-
-    /**
-     * Encode a LessEqNode.
-     * <pre>
-     * LessEqFilter :
-     * <pre>
-     * 0xA6 LL
-     *   0x04 LL attributeDesc
-     *   0x04 LL assertionValue
-     * </pre>
-     *
-     * @param buffer The buffer where to put the PDU
-     * @param node The LessEq filter to encode
-     */
-    private void encodeFilter( Asn1Buffer buffer, LessEqNode<?> node )
-    {
-        int start = buffer.getPos();
-
-        // The attribute desc
-        BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( node.getEscapedValue() ) );
-
-        // The assertion desc
-        BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( node.getAttribute() ) );
-
-        // The EqualityNode sequence
-        BerValue.encodeSequence( buffer, ( byte ) LdapCodecConstants.LESS_OR_EQUAL_FILTER_TAG, start );
     }
 
 
@@ -419,36 +279,35 @@ public final class SearchRequestFactory implements Messagefactory
         switch ( node.getClass().getSimpleName() )
         {
             case "AndNode" :
-                encodeFilter( buffer, ( AndNode ) node );
+                encodeFilter( buffer, ( AndNode ) node, ( byte ) LdapCodecConstants.AND_FILTER_TAG );
                 break;
 
             case "ApproximateNode" :
-                encodeFilter( buffer, ( ApproximateNode<?> ) node );
+                encodeFilter( buffer, ( ApproximateNode<?> ) node, ( byte ) LdapCodecConstants.APPROX_MATCH_FILTER_TAG );
                 break;
 
             case "EqualityNode" :
-                encodeFilter( buffer, ( EqualityNode<?> ) node );
+                encodeFilter( buffer, ( EqualityNode<?> ) node, ( byte ) LdapCodecConstants.EQUALITY_MATCH_FILTER_TAG );
                 break;
 
             case "ExtensibleNode" :
                 encodeFilter( buffer, ( ExtensibleNode ) node );
                 break;
 
-
             case "GreaterEqNode" :
-                encodeFilter( buffer, ( GreaterEqNode<?> ) node );
+                encodeFilter( buffer, ( GreaterEqNode<?> ) node, ( byte ) LdapCodecConstants.GREATER_OR_EQUAL_FILTER_TAG );
                 break;
 
             case "LessEqNode" :
-                encodeFilter( buffer, ( LessEqNode<?> ) node );
+                encodeFilter( buffer, ( LessEqNode<?> ) node, ( byte ) LdapCodecConstants.LESS_OR_EQUAL_FILTER_TAG );
                 break;
 
             case "NotNode" :
-                encodeFilter( buffer, ( NotNode ) node );
+                encodeFilter( buffer, ( NotNode ) node, ( byte ) LdapCodecConstants.NOT_FILTER_TAG );
                 break;
 
             case "OrNode" :
-                encodeFilter( buffer, ( OrNode ) node );
+                encodeFilter( buffer, ( OrNode ) node, ( byte ) LdapCodecConstants.OR_FILTER_TAG );
                 break;
 
             case "PresenceNode" :
