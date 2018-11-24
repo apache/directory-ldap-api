@@ -37,7 +37,6 @@ import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.actions.AllowGrammarEnd;
 import org.apache.directory.api.ldap.codec.actions.CheckLengthNotNull;
-import org.apache.directory.api.ldap.codec.actions.request.abandon.InitAbandonRequest;
 import org.apache.directory.api.ldap.codec.actions.controls.AddControl;
 import org.apache.directory.api.ldap.codec.actions.controls.InitControls;
 import org.apache.directory.api.ldap.codec.actions.controls.StoreControlCriticality;
@@ -49,6 +48,7 @@ import org.apache.directory.api.ldap.codec.actions.ldapResult.InitReferrals;
 import org.apache.directory.api.ldap.codec.actions.ldapResult.StoreErrorMessage;
 import org.apache.directory.api.ldap.codec.actions.ldapResult.StoreMatchedDN;
 import org.apache.directory.api.ldap.codec.actions.ldapResult.StoreResultCode;
+import org.apache.directory.api.ldap.codec.actions.request.abandon.InitAbandonRequest;
 import org.apache.directory.api.ldap.codec.actions.request.add.AddAddRequestAttributeType;
 import org.apache.directory.api.ldap.codec.actions.request.add.AddAttributeValue;
 import org.apache.directory.api.ldap.codec.actions.request.add.InitAddRequest;
@@ -128,9 +128,9 @@ import org.apache.directory.api.ldap.codec.actions.response.search.entry.StoreSe
 import org.apache.directory.api.ldap.codec.actions.response.search.entry.StoreSearchResultEntryObjectName;
 import org.apache.directory.api.ldap.codec.actions.response.search.reference.InitSearchResultReference;
 import org.apache.directory.api.ldap.codec.actions.response.search.reference.StoreReference;
+import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
 import org.apache.directory.api.ldap.codec.search.ExtensibleMatchFilter;
 import org.apache.directory.api.ldap.model.message.Message;
@@ -4856,6 +4856,7 @@ public final class LdapMessageGrammar extends
             LdapCodecConstants.MATCHING_RULE_ID_TAG, new GrammarAction<LdapMessageContainer<SearchRequestDecorator>>(
                 "Store matching rule Value" )
             {
+                @Override
                 public void action( LdapMessageContainer<SearchRequestDecorator> container ) throws DecoderException
                 {
                     SearchRequestDecorator searchRequest = container.getMessage();
@@ -4913,13 +4914,15 @@ public final class LdapMessageGrammar extends
         //     matchValue [3] AssertionValue,
         //     ...
         //
-        // Store the matching rule ID
+        // Store the match value
+        /*
         super.transitions[LdapStatesEnum.EXTENSIBLE_MATCH_STATE.ordinal()][LdapCodecConstants.MATCH_VALUE_TAG] =
             new GrammarTransition(
                 LdapStatesEnum.EXTENSIBLE_MATCH_STATE,
                 LdapStatesEnum.MATCH_VALUE_STATE,
                 LdapCodecConstants.MATCH_VALUE_TAG,
                 new StoreMatchValue() );
+                */
 
         // --------------------------------------------------------------------------------------------
         // Transition from matching rule to type matching rule
@@ -4953,7 +4956,7 @@ public final class LdapMessageGrammar extends
         //     matchValue [3] AssertionValue,
         //     ...
         //
-        // Store the matching rule ID
+        // Store the matching value
         super.transitions[LdapStatesEnum.MATCHING_RULE_STATE.ordinal()][LdapCodecConstants.MATCH_VALUE_TAG] =
             new GrammarTransition(
                 LdapStatesEnum.MATCHING_RULE_STATE,
@@ -4973,7 +4976,7 @@ public final class LdapMessageGrammar extends
         //     matchValue [3] AssertionValue,
         //     ...
         //
-        // Store the matching rule ID
+        // Store the matching value
         super.transitions[LdapStatesEnum.TYPE_MATCHING_RULE_STATE.ordinal()][LdapCodecConstants.MATCH_VALUE_TAG] =
             new GrammarTransition(
                 LdapStatesEnum.TYPE_MATCHING_RULE_STATE,

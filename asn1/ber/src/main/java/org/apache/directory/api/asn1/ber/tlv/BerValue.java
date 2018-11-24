@@ -644,6 +644,30 @@ public class BerValue
 
 
     /**
+     * Encode a boolean value
+     *
+     * @param buffer The PDU in which the value will be put
+     * @param tag the TAG to use
+     * @param bool The boolean to be encoded
+     */
+    public static void encodeBoolean( Asn1Buffer buffer, byte tag, boolean bool )
+    {
+        if ( bool )
+        {
+            buffer.put( TRUE_VALUE );
+            buffer.put( ( byte ) 0x01 );
+            buffer.put( tag );
+        }
+        else
+        {
+            buffer.put( FALSE_VALUE );
+            buffer.put( ( byte ) 0x01 );
+            buffer.put( tag );
+        }
+    }
+
+
+    /**
      * Encode an integer value
      *
      * @param buffer The PDU in which the value will be put

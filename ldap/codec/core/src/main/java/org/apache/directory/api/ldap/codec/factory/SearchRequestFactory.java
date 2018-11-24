@@ -239,7 +239,7 @@ public final class SearchRequestFactory implements Messagefactory
         // The dnAttributes flag, if true only
         if ( node.hasDnAttributes() )
         {
-            BerValue.encodeBoolean( buffer, true );
+            BerValue.encodeBoolean( buffer, ( byte ) LdapCodecConstants.DN_ATTRIBUTES_FILTER_TAG, true );
         }
 
         // The matching value
