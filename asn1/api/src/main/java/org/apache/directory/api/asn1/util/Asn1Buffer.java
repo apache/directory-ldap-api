@@ -50,6 +50,15 @@ public class Asn1Buffer
 
 
     /**
+     * @return The current position in the buffer
+     */
+    public void setPos( int pos )
+    {
+        this.pos = pos;
+    }
+
+
+    /**
      * Store a byte at the current position in the buffer
      *
      * @param b The byte to store
@@ -62,8 +71,8 @@ public class Asn1Buffer
             extend( 1 );
         }
 
-        buffer[buffer.length - pos - 1] = b;
         pos++;
+        buffer[buffer.length - pos] = b;
     }
 
 
@@ -81,8 +90,8 @@ public class Asn1Buffer
         }
 
 
-        System.arraycopy( bytes, 0, buffer, buffer.length - ( pos + bytes.length ), bytes.length );
         pos += bytes.length;
+        System.arraycopy( bytes, 0, buffer, buffer.length - pos, bytes.length );
     }
 
 

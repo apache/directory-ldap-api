@@ -1643,13 +1643,12 @@ public final class Strings
 
         try
         {
-            char[] chars = string.toCharArray();
-            byte[] bytes = new byte[chars.length];
+            byte[] bytes = new byte[string.length()];
             int pos = 0;
 
-            for ( char c : chars )
+            for ( int i = 0; i < string.length(); i++ )
             {
-                bytes[pos++] = UTF8[c];
+                bytes[pos++] = UTF8[string.charAt( i )];
             }
 
             return bytes;

@@ -729,7 +729,7 @@ public class BerValue
      * Encode an OctetString
      *
      * @param buffer The PDU in which the value will be put
-     * @param value The integer to be encoded
+     * @param value The byte[] to be encoded
      */
     public static void encodeOctetString( Asn1Buffer buffer, byte[] data )
     {

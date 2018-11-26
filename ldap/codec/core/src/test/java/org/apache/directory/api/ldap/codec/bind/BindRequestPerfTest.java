@@ -63,98 +63,31 @@ public class BindRequestPerfTest extends AbstractCodecServiceTest
      */
     @Test
     @Ignore
-    public void testDecodeBindRequestSimpleNoControlsPerf()
+    public void testDecodeBindRequestSimpleControlsPerf()
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x52 );
         stream.put( new byte[]
             {
-                0x30,
-                0x50, // LDAPMessage ::=SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                0x60,
-                0x2E, // CHOICE { ..., bindRequest BindRequest, ...
-                // BindRequest ::= APPLICATION[0] SEQUENCE {
-                0x02,
-                0x01,
-                0x03, // version INTEGER (1..127),
-                0x04,
-                0x1F, // name LDAPDN,
-                'u',
-                'i',
-                'd',
-                '=',
-                'a',
-                'k',
-                'a',
-                'r',
-                'a',
-                's',
-                'u',
-                'l',
-                'u',
-                ',',
-                'd',
-                'c',
-                '=',
-                'e',
-                'x',
-                'a',
-                'm',
-                'p',
-                'l',
-                'e',
-                ',',
-                'd',
-                'c',
-                '=',
-                'c',
-                'o',
-                'm',
-                ( byte ) 0x80,
-                0x08, // authentication AuthenticationChoice
-                // AuthenticationChoice ::= CHOICE { simple [0] OCTET STRING,
-                // ...
-                'p',
-                'a',
-                's',
-                's',
-                'w',
-                'o',
-                'r',
-                'd',
-                ( byte ) 0xA0,
-                0x1B, // A control
-                0x30,
-                0x19,
-                0x04,
-                0x17,
-                0x32,
-                0x2E,
-                0x31,
-                0x36,
-                0x2E,
-                0x38,
-                0x34,
-                0x30,
-                0x2E,
-                0x31,
-                0x2E,
-                0x31,
-                0x31,
-                0x33,
-                0x37,
-                0x33,
-                0x30,
-                0x2E,
-                0x33,
-                0x2E,
-                0x34,
-                0x2E,
-                0x32 } );
+                0x30, 0x50,                 // LDAPMessage ::=SEQUENCE {
+                  0x02, 0x01, 0x01,         // messageID MessageID
+                  0x60, 0x2E,               // CHOICE { ..., bindRequest BindRequest, ...
+                                            // BindRequest ::= APPLICATION[0] SEQUENCE {
+                    0x02, 0x01, 0x03,       // version INTEGER (1..127),
+                    0x04, 0x1F,             // name LDAPDN,
+                      'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',', 'd', 'c', '=', 'e', 'x', 'a',
+                      'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm',
+                    ( byte ) 0x80, 0x08,    // authentication AuthenticationChoice
+                                            // AuthenticationChoice ::= CHOICE { simple [0] OCTET STRING,
+                                            // ...
+                      'p', 'a', 's', 's', 'w', 'o', 'r', 'd',
+                    ( byte ) 0xA0, 0x1B,    // A control
+                      0x30, 0x19,
+                        0x04, 0x17,
+                          '2', '.', '1', '6', '.', '8', '4', '0', '.', '1', '.',
+                          '1', '1', '3', '7', '3', '0', '.', '3', '.', '4', '.', '2'
+            } );
 
         String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
@@ -165,7 +98,7 @@ public class BindRequestPerfTest extends AbstractCodecServiceTest
         // Decode the BindRequest PDU
         try
         {
-            int nbLoops = 1000000;
+            int nbLoops = 1_000_000;
             long t0 = System.currentTimeMillis();
 
             for ( int i = 0; i < nbLoops; i++ )
@@ -232,7 +165,7 @@ public class BindRequestPerfTest extends AbstractCodecServiceTest
      * controls
      */
     @Test
-    //@Ignore
+    @Ignore
     public void testEncodeBindRequestPerf() throws Exception
     {
         Dn dn = new Dn( "uid=akarasulu,dc=example,dc=com" );
@@ -248,46 +181,45 @@ public class BindRequestPerfTest extends AbstractCodecServiceTest
         //Control control = new ManageDsaITImpl();
 
         //bindRequest.addControl( control );
-
+/*
         long t0 = System.currentTimeMillis();
 
         for ( int i = 0; i < nbLoops; i++ )
         {
             // Check the encoding
-            try
-            {
-                LdapEncoder.encodeMessage( codec, bindRequest );
-            }
-            catch ( EncoderException ee )
-            {
-                ee.printStackTrace();
-                fail( ee.getMessage() );
-            }
+            LdapEncoder.encodeMessage( codec, bindRequest );
         }
 
         long t1 = System.currentTimeMillis();
         System.out.println( "BindRequest testEncodeBindRequestPerf, " + nbLoops + " loops, Delta = " + ( t1 - t0 ) );
+*/
+        long sum = 0L;
+        long max = 0L;
+        long min = Long.MAX_VALUE;
 
-        Asn1Buffer buffer = new Asn1Buffer();
-
-        long t2 = System.currentTimeMillis();
-
-        for ( int i = 0; i < nbLoops; i++ )
+        for ( int j = 0; j < 12; j++ )
         {
-            // Check the encoding
-            try
+            Asn1Buffer buffer = new Asn1Buffer();
+
+            long t2 = System.currentTimeMillis();
+
+            for ( int i = 0; i < nbLoops; i++ )
             {
+                // Check the encoding
                 LdapEncoder.encodeMessageReverse( buffer, codec, bindRequest );
                 buffer.clear();
             }
-            catch ( EncoderException ee )
-            {
-                ee.printStackTrace();
-                fail( ee.getMessage() );
-            }
+
+            long delta = System.currentTimeMillis() - t2;
+            System.out.println( "delta: " + delta );
+
+            sum += delta;
+            min = delta < min ? delta: min;
+            max = delta > max ? delta: max;
         }
 
-        long t3 = System.currentTimeMillis();
-        System.out.println( "BindRequest testEncodeBindRequestPerf reverse, " + nbLoops + " loops, Delta = " + ( t3 - t2 ) );
+        sum -= min + max;
+        System.out.println( "BindRequest testEncodeBindRequestPerf reverse, " + nbLoops + " loops, Delta = "
+        + ( sum/10 ) + ", min = " + min + ", max = " + max );
     }
 }

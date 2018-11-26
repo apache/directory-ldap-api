@@ -67,7 +67,8 @@ public final class BindRequestFactory implements Messagefactory
         if ( bindMessage.isSimple() )
         {
             // Simple authentication
-            BerValue.encodeOctetString( buffer, ( byte ) LdapCodecConstants.BIND_REQUEST_SIMPLE_TAG, bindMessage.getCredentials() );
+            BerValue.encodeOctetString( buffer, ( byte ) LdapCodecConstants.BIND_REQUEST_SIMPLE_TAG,
+                bindMessage.getCredentials() );
         }
         else
         {
@@ -91,12 +92,12 @@ public final class BindRequestFactory implements Messagefactory
         if ( !Dn.isNullOrEmpty( dn ) )
         {
             // A DN has been provided
-            BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( dn.getName() ) );
+            BerValue.encodeOctetString( buffer, Strings.getBytesUtf8Ascii( dn.getName() ) );
         }
         else
         {
             // No DN has been provided, let's use the name as a string instead
-            BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( bindMessage.getName() ) );
+            BerValue.encodeOctetString( buffer, Strings.getBytesUtf8Ascii( bindMessage.getName() ) );
         }
 
         // The version (LDAP V3 only)

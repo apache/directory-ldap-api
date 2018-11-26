@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 package org.apache.directory.api.ldap.model.message;
 
@@ -30,7 +30,7 @@ import org.apache.directory.api.util.Strings;
 /**
  * Bind protocol operation request which authenticates and begins a client
  * session. Does not yet contain interfaces for SASL authentication mechanisms.
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org"> Apache Directory Project</a>
  */
 public class BindRequestImpl extends AbstractAbandonableRequest implements BindRequest
@@ -318,7 +318,7 @@ public BindRequest setName( String name )
     /**
      * Gets the protocol response message type for this request which produces
      * at least one response.
-     * 
+     *
      * @return the message type of the response.
      */
     @Override
@@ -330,7 +330,7 @@ public BindRequest setName( String name )
 
     /**
      * The result containing response for this request.
-     * 
+     *
      * @return the result containing response for this request
      */
     @Override
@@ -458,7 +458,7 @@ public BindRequest setName( String name )
 
     /**
      * Get a String representation of a BindRequest
-     * 
+     *
      * @return A BindRequest String
      */
     @Override

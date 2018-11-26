@@ -22,7 +22,6 @@ package org.apache.directory.api.ldap.codec.add;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -182,15 +181,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         // We cannot compare the PDU, as the attributes order is not
         // kept. Let's decode again and compare the resulting AddRequest
-        try
-        {
-            ldapDecoder.decode( bb, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        ldapDecoder.decode( bb, container );
 
         AddRequest addRequest2 = container.getMessage();
         assertEquals( addRequest, addRequest2 );

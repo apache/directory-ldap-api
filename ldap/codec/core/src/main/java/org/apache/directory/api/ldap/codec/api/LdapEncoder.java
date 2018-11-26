@@ -34,7 +34,9 @@ import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.factory.AbandonRequestFactory;
 import org.apache.directory.api.ldap.codec.factory.AddRequestFactory;
+import org.apache.directory.api.ldap.codec.factory.AddResponseFactory;
 import org.apache.directory.api.ldap.codec.factory.BindRequestFactory;
+import org.apache.directory.api.ldap.codec.factory.BindResponseFactory;
 import org.apache.directory.api.ldap.codec.factory.CompareRequestFactory;
 import org.apache.directory.api.ldap.codec.factory.DeleteRequestFactory;
 import org.apache.directory.api.ldap.codec.factory.ModifyDnRequestFactory;
@@ -195,41 +197,49 @@ public final class LdapEncoder
      */
     private static void encodeProtocolOp( Asn1Buffer buffer, LdapApiService codec, Message message )
     {
-        switch ( message.getClass().getSimpleName() )
+        switch ( message.getType() )
         {
-            case "AbandonRequestImpl" :
+            case ABANDON_REQUEST :
                 AbandonRequestFactory.INSTANCE.encodeReverse( buffer, message );
                 return;
 
-            case "AddRequestImpl" :
+            case ADD_REQUEST :
                 AddRequestFactory.INSTANCE.encodeReverse( buffer, message );
                 return;
 
-            case "BindRequestImpl" :
+            case ADD_RESPONSE:
+                AddResponseFactory.INSTANCE.encodeReverse( buffer, message );
+                return;
+
+            case BIND_REQUEST :
                 BindRequestFactory.INSTANCE.encodeReverse( buffer, message );
                 return;
 
-            case "CompareRequestImpl" :
+            case BIND_RESPONSE :
+                BindResponseFactory.INSTANCE.encodeReverse( buffer, message );
+                return;
+
+            case COMPARE_REQUEST :
                 CompareRequestFactory.INSTANCE.encodeReverse( buffer, message );
                 return;
 
-            case "DeleteRequestImpl" :
+            case DEL_REQUEST :
                 DeleteRequestFactory.INSTANCE.encodeReverse( buffer, message );
                 return;
 
-            case "ModifyRequestImpl" :
+            case MODIFY_REQUEST :
                 ModifyRequestFactory.INSTANCE.encodeReverse( buffer, message );
                 return;
 
-            case "ModifyDnRequestImpl" :
+            case MODIFYDN_REQUEST :
                 ModifyDnRequestFactory.INSTANCE.encodeReverse( buffer, message );
                 return;
 
-            case "SearchRequestImpl" :
+            case SEARCH_REQUEST :
                 SearchRequestFactory.INSTANCE.encodeReverse( buffer, message );
                 return;
 
-            case "UnbindRequestImpl" :
+            case UNBIND_REQUEST :
                 UnbindRequestFactory.INSTANCE.encodeReverse( buffer, message );
                 return;
 
