@@ -71,8 +71,8 @@ public class ModifyDNResponseTest extends AbstractCodecServiceTest
             {
                 0x30, 0x0C,                 // LDAPMessage ::=SEQUENCE {
                   0x02, 0x01, 0x01,         // messageID MessageID
-                  0x6D, 0x07,               // CHOICE { ..., modifyResponse ModifyResponse, ...
-                                            // ModifyResponse ::= [APPLICATION 7] LDAPResult
+                  0x6D, 0x07,               // CHOICE { ..., modifyDnResponse ModifyDNResponse, ...
+                                            // ModifyDNResponse ::= [APPLICATION 13] LDAPResult
                     0x0A, 0x01, 0x00,       // LDAPResult ::= SEQUENCE {
                                             // resultCode ENUMERATED {
                                             // success (0), ...
@@ -137,8 +137,8 @@ public class ModifyDNResponseTest extends AbstractCodecServiceTest
             {
                 0x30, 0x29,                 // LDAPMessage ::=SEQUENCE {
                   0x02, 0x01, 0x01,         // messageID MessageID
-                  0x6D, 0x07,               // CHOICE { ..., modifyResponse ModifyResponse, ...
-                                            // ModifyResponse ::= [APPLICATION 7] LDAPResult
+                  0x6D, 0x07,               // CHOICE { ..., modifyDnResponse ModifyDNResponse, ...
+                                            // ModifyDNResponse ::= [APPLICATION 13] LDAPResult
                     0x0A, 0x01, 0x00,       // LDAPResult ::= SEQUENCE {
                                             // resultCode ENUMERATED {
                                             // success (0), ...
@@ -209,7 +209,7 @@ public class ModifyDNResponseTest extends AbstractCodecServiceTest
             {
                 0x30, 0x05,                 // LDAPMessage ::=SEQUENCE {
                   0x02, 0x01, 0x01,         // messageID MessageID
-                  0x6D, 0x00,               // CHOICE { ..., modifyResponse ModifyResponse, ...
+                  0x6D, 0x00,               // CHOICE { ..., modifyDnResponse ModifyDNResponse, ...
             } );
 
         stream.flip();
