@@ -25,7 +25,9 @@ import java.util.Iterator;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.model.message.LdapResult;
+import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.Referral;
+import org.apache.directory.api.ldap.model.message.ResultResponse;
 import org.apache.directory.api.util.Strings;
 
 /**
@@ -129,5 +131,31 @@ public abstract class ResponseFactory implements Messagefactory
 
         // The result code
         BerValue.encodeEnumerated( buffer, ldapResult.getResultCode().getValue() );
+    }
+
+
+    /**
+     * Encode the Response message to a PDU.
+     * <br>
+     * Response :
+     * <pre>
+     * 0x&lt;tag&gt; L1
+     *  |
+     *  +--&gt; LdapResult
+     * </pre>
+     *
+     * @param buffer The buffer where to put the PDU
+     * @param tag The message tag
+     * @param message the Response to encode
+     */
+    protected void encodeReverse( Asn1Buffer buffer, byte tag, Message message )
+    {
+        int start = buffer.getPos();
+
+        // The LDAPResult part
+        encodeLdapResultReverse( buffer, ( ( ResultResponse ) message ).getLdapResult() );
+
+        // The BindResponse Tag
+        BerValue.encodeSequence( buffer, tag, start );
     }
 }

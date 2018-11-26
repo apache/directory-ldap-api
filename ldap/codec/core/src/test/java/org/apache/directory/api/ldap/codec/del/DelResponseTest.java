@@ -22,14 +22,15 @@ package org.apache.directory.api.ldap.codec.del;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.Map;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
@@ -37,6 +38,7 @@ import org.apache.directory.api.ldap.codec.decorators.DeleteResponseDecorator;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.DeleteResponse;
+import org.apache.directory.api.ldap.model.message.DeleteResponseImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
@@ -59,65 +61,29 @@ public class DelResponseTest extends AbstractCodecServiceTest
      * Test the decoding of a DelResponse
      */
     @Test
-    public void testDecodeDelResponseSuccess()
+    public void testDecodeDelResponseSuccess() throws DecoderException, EncoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x2D );
 
         stream.put( new byte[]
-            { 0x30,
-                0x2B, // LDAPMessage ::=SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                0x6B,
-                0x26, // CHOICE { ..., delResponse DelResponse, ...
-                // DelResponse ::= [APPLICATION 11] LDAPResult
-                0x0A,
-                0x01,
-                0x21, // LDAPResult ::= SEQUENCE {
-                // resultCode ENUMERATED {
-                // success (0), ...
-                // },
-                0x04,
-                0x1F, // matchedDN LDAPDN,
-                'u',
-                'i',
-                'd',
-                '=',
-                'a',
-                'k',
-                'a',
-                'r',
-                'a',
-                's',
-                'u',
-                'l',
-                'u',
-                ',',
-                'd',
-                'c',
-                '=',
-                'e',
-                'x',
-                'a',
-                'm',
-                'p',
-                'l',
-                'e',
-                ',',
-                'd',
-                'c',
-                '=',
-                'c',
-                'o',
-                'm',
-                0x04,
-                0x00 // errorMessage
-            // LDAPString,
-            // referral [3] Referral OPTIONAL }
-            // }
+            {
+                0x30, 0x2B,                 // LDAPMessage ::=SEQUENCE {
+                  0x02, 0x01, 0x01,         // messageID MessageID
+                  0x6B, 0x26,               // CHOICE { ..., delResponse DelResponse, ...
+                                            // DelResponse ::= [APPLICATION 11] LDAPResult
+                    0x0A, 0x01, 0x21,       // LDAPResult ::= SEQUENCE {
+                                            // resultCode ENUMERATED {
+                                            // aliasProblem (33), ...
+                                            // },
+                    0x04, 0x1F,             // matchedDN LDAPDN,
+                      'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',',
+                      'd', 'c', '=', 'e', 'x', 'a', 'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm',
+                    0x04, 0x00              // errorMessage
+                                            // LDAPString,
+                                            // referral [3] Referral OPTIONAL }
+                                            // }
         } );
 
         String decodedPdu = Strings.dumpBytes( stream.array() );
@@ -128,15 +94,7 @@ public class DelResponseTest extends AbstractCodecServiceTest
             new LdapMessageContainer<DeleteResponseDecorator>( codec );
 
         // Decode the DelResponse PDU
-        try
-        {
-            ldapDecoder.decode( stream, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        ldapDecoder.decode( stream, container );
 
         // Check the decoded DelResponse PDU
         DeleteResponse delResponse = container.getMessage();
@@ -147,42 +105,43 @@ public class DelResponseTest extends AbstractCodecServiceTest
         assertEquals( "", delResponse.getLdapResult().getDiagnosticMessage() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb = LdapEncoder.encodeMessage( codec, delResponse );
+        ByteBuffer bb = LdapEncoder.encodeMessage( codec, delResponse );
 
-            // Check the length
-            assertEquals( 0x2D, bb.limit() );
+        // Check the length
+        assertEquals( 0x2D, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes( bb.array() );
+        String encodedPdu = Strings.dumpBytes( bb.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
+
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        DeleteResponse response = new DeleteResponseImpl( delResponse.getMessageId() );
+        response.getLdapResult().setResultCode( ResultCodeEnum.ALIAS_PROBLEM );
+        response.getLdapResult().setMatchedDn( delResponse.getLdapResult().getMatchedDn() );
+
+        LdapEncoder.encodeMessageReverse( buffer, codec, response );
+
+        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
     }
 
 
     /**
      * Test the decoding of a DelResponse with no LdapResult
      */
-    @Test
-    public void testDecodeDelResponseEmptyResult()
+    @Test( expected=DecoderException.class )
+    public void testDecodeDelResponseEmptyResult() throws DecoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
         stream.put( new byte[]
-            { 0x30, 0x05, // LDAPMessage ::=SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                0x6B,
-                0x00, // CHOICE { ..., delResponse DelResponse, ...
+            {
+                0x30, 0x05,                 // LDAPMessage ::=SEQUENCE {
+                  0x02, 0x01, 0x01,         // messageID MessageID
+                  0x6B, 0x00,               // CHOICE { ..., delResponse DelResponse, ...
             } );
 
         stream.flip();
@@ -192,17 +151,7 @@ public class DelResponseTest extends AbstractCodecServiceTest
             new LdapMessageContainer<DeleteResponseDecorator>( codec );
 
         // Decode a DelResponse message
-        try
-        {
-            ldapDecoder.decode( stream, container );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( true );
-            return;
-        }
-
-        fail( "We should not reach this point" );
+        ldapDecoder.decode( stream, container );
     }
 
 
@@ -210,7 +159,7 @@ public class DelResponseTest extends AbstractCodecServiceTest
      * Test the decoding of a DelResponse with controls
      */
     @Test
-    public void testDecodeDelResponseSuccessWithControls()
+    public void testDecodeDelResponseSuccessWithControls() throws DecoderException, EncoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -218,87 +167,26 @@ public class DelResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             {
-                0x30, 0x48, // LDAPMessage ::=SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                0x6B,
-                0x26, // CHOICE { ..., delResponse DelResponse, ...
-                      // DelResponse ::= [APPLICATION 11] LDAPResult
-                0x0A,
-                0x01,
-                0x21, // LDAPResult ::= SEQUENCE {
-                      // resultCode ENUMERATED {
-                      // success (0), ...
-                      // },
-                0x04,
-                0x1F, // matchedDN LDAPDN,
-                'u',
-                'i',
-                'd',
-                '=',
-                'a',
-                'k',
-                'a',
-                'r',
-                'a',
-                's',
-                'u',
-                'l',
-                'u',
-                ',',
-                'd',
-                'c',
-                '=',
-                'e',
-                'x',
-                'a',
-                'm',
-                'p',
-                'l',
-                'e',
-                ',',
-                'd',
-                'c',
-                '=',
-                'c',
-                'o',
-                'm',
-                0x04,
-                0x00, // errorMessage
-                      // LDAPString,
-                      // referral [3] Referral OPTIONAL }
-                      // }
-                ( byte ) 0xA0,
-                0x1B, // A control
-                0x30,
-                0x19,
-                0x04,
-                0x17,
-                0x32,
-                0x2E,
-                0x31,
-                0x36,
-                0x2E,
-                0x38,
-                0x34,
-                0x30,
-                0x2E,
-                0x31,
-                0x2E,
-                0x31,
-                0x31,
-                0x33,
-                0x37,
-                0x33,
-                0x30,
-                0x2E,
-                0x33,
-                0x2E,
-                0x34,
-                0x2E,
-                0x32
-
+                0x30, 0x48,                 // LDAPMessage ::=SEQUENCE {
+                  0x02, 0x01, 0x01,         // messageID MessageID
+                  0x6B, 0x26,               // CHOICE { ..., delResponse DelResponse, ...
+                                            // DelResponse ::= [APPLICATION 11] LDAPResult
+                    0x0A, 0x01, 0x21,       // LDAPResult ::= SEQUENCE {
+                                            // resultCode ENUMERATED {
+                                            // success (21), ...
+                                            // },
+                    0x04, 0x1F,             // matchedDN LDAPDN,
+                      'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',',
+                      'd', 'c', '=', 'e', 'x', 'a', 'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm',
+                    0x04, 0x00,             // errorMessage
+                                            // LDAPString,
+                                            // referral [3] Referral OPTIONAL }
+                                            // }
+                    ( byte ) 0xA0, 0x1B,    // A control
+                      0x30, 0x19,
+                        0x04, 0x17,
+                          '2', '.', '1', '6', '.', '8', '4', '0', '.', '1', '.',
+                          '1', '1', '3', '7', '3', '0', '.', '3', '.', '4', '.', '2'
         } );
 
         String decodedPdu = Strings.dumpBytes( stream.array() );
@@ -309,15 +197,7 @@ public class DelResponseTest extends AbstractCodecServiceTest
             new LdapMessageContainer<DeleteResponseDecorator>( codec );
 
         // Decode the DelResponse PDU
-        try
-        {
-            ldapDecoder.decode( stream, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        ldapDecoder.decode( stream, container );
 
         // Check the decoded DelResponse PDU
         DeleteResponse delResponse = container.getMessage();
@@ -339,22 +219,13 @@ public class DelResponseTest extends AbstractCodecServiceTest
         assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb = LdapEncoder.encodeMessage( codec, delResponse );
+        ByteBuffer bb = LdapEncoder.encodeMessage( codec, delResponse );
 
-            // Check the length
-            assertEquals( 0x4A, bb.limit() );
+        // Check the length
+        assertEquals( 0x4A, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes( bb.array() );
+        String encodedPdu = Strings.dumpBytes( bb.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
     }
-
 }

@@ -24,37 +24,37 @@ import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.Message;
 
 /**
- * The AddResponse factory.
+ * The ModifyDnResponse factory.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public final class AddResponseFactory extends ResponseFactory
+public final class ModifyDnResponseFactory extends ResponseFactory
 {
     /** The static instance */
-    public static final AddResponseFactory INSTANCE = new AddResponseFactory();
+    public static final ModifyDnResponseFactory INSTANCE = new ModifyDnResponseFactory();
 
-    private AddResponseFactory()
+    private ModifyDnResponseFactory()
     {
         super();
     }
 
 
     /**
-     * Encode the AddResponse message to a PDU.
+     * Encode the ModifyDnResponse message to a PDU.
      * <br>
-     * AddResponse :
+     * ModifyDnResponse :
      * <pre>
-     * 0x69 L1
+     * 0x6D L1
      *  |
      *  +--&gt; LdapResult
      * </pre>
      *
      * @param buffer The buffer where to put the PDU
-     * @param message the AddResponse to encode
+     * @param message the ModifyDnResponse to encode
      */
     @Override
     public void encodeReverse( Asn1Buffer buffer, Message message )
     {
-        encodeReverse( buffer, LdapCodecConstants.ADD_RESPONSE_TAG, message );
+        encodeReverse( buffer, LdapCodecConstants.MODIFY_DN_RESPONSE_TAG, message );
     }
 }

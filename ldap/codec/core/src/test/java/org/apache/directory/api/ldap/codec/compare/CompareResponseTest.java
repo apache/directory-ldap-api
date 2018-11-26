@@ -22,20 +22,22 @@ package org.apache.directory.api.ldap.codec.compare;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.Map;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.CompareResponseDecorator;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.CompareResponse;
+import org.apache.directory.api.ldap.model.message.CompareResponseImpl;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.util.Strings;
@@ -59,33 +61,27 @@ public class CompareResponseTest extends AbstractCodecServiceTest
      * Test the decoding of a CompareResponse
      */
     @Test
-    public void testDecodeCompareResponseSuccess()
+    public void testDecodeCompareResponseSuccess() throws DecoderException, EncoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x0E );
 
         stream.put( new byte[]
-            { 0x30, 0x0C, // LDAPMessage ::=SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                0x6F,
-                0x07, // CHOICE { ..., compareResponse CompareResponse,
-                // ...
-                // CompareResponse ::= [APPLICATION 15] LDAPResult
-                0x0A,
-                0x01,
-                0x00, // LDAPResult ::= SEQUENCE {
-                // resultCode ENUMERATED {
-                // success (0), ...
-                // },
-                0x04,
-                0x00, // matchedDN LDAPDN,
-                0x04,
-                0x00 // errorMessage LDAPString,
-            // referral [3] Referral OPTIONAL }
-            // }
+            {
+                0x30, 0x0C,                 // LDAPMessage ::=SEQUENCE {
+                  0x02, 0x01, 0x01,         // messageID MessageID
+                  0x6F, 0x07,               // CHOICE { ..., compareResponse CompareResponse,
+                                            // ...
+                                            // CompareResponse ::= [APPLICATION 15] LDAPResult
+                    0x0A, 0x01, 0x00,       // LDAPResult ::= SEQUENCE {
+                                            // resultCode ENUMERATED {
+                                            // success (0), ...
+                                            // },
+                    0x04, 0x00,             // matchedDN LDAPDN,
+                    0x04, 0x00              // errorMessage LDAPString,
+                                            // referral [3] Referral OPTIONAL }
+                                            // }
         } );
 
         String decodedPdu = Strings.dumpBytes( stream.array() );
@@ -96,15 +92,7 @@ public class CompareResponseTest extends AbstractCodecServiceTest
             new LdapMessageContainer<CompareResponseDecorator>( codec );
 
         // Decode the CompareResponse PDU
-        try
-        {
-            ldapDecoder.decode( stream, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        ldapDecoder.decode( stream, container );
 
         // Check the decoded CompareResponse PDU
         CompareResponse compareResponse = container.getMessage();
@@ -115,22 +103,24 @@ public class CompareResponseTest extends AbstractCodecServiceTest
         assertEquals( "", compareResponse.getLdapResult().getDiagnosticMessage() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb = LdapEncoder.encodeMessage( codec, compareResponse );
+        ByteBuffer bb = LdapEncoder.encodeMessage( codec, compareResponse );
 
-            // Check the length
-            assertEquals( 0x0E, bb.limit() );
+        // Check the length
+        assertEquals( 0x0E, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes( bb.array() );
+        String encodedPdu = Strings.dumpBytes( bb.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
+
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        CompareResponse response = new CompareResponseImpl( compareResponse.getMessageId() );
+        response.getLdapResult().setResultCode( ResultCodeEnum.SUCCESS );
+
+        LdapEncoder.encodeMessageReverse( buffer, codec, response );
+
+        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
     }
 
 
@@ -138,63 +128,33 @@ public class CompareResponseTest extends AbstractCodecServiceTest
      * Test the decoding of a CompareResponse with controls
      */
     @Test
-    public void testDecodeCompareResponseSuccessWithControls()
+    public void testDecodeCompareResponseSuccessWithControls() throws DecoderException, EncoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x2B );
 
         stream.put( new byte[]
-            { 0x30,
-                0x29, // LDAPMessage ::=SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                0x6F,
-                0x07, // CHOICE { ..., compareResponse CompareResponse,
-                // ...
-                // CompareResponse ::= [APPLICATION 15] LDAPResult
-                0x0A,
-                0x01,
-                0x00, // LDAPResult ::= SEQUENCE {
-                // resultCode ENUMERATED {
-                // success (0), ...
-                // },
-                0x04,
-                0x00, // matchedDN LDAPDN,
-                0x04,
-                0x00, // errorMessage LDAPString,
-                // referral [3] Referral OPTIONAL }
-                // }
-                ( byte ) 0xA0,
-                0x1B, // A control
-                0x30,
-                0x19,
-                0x04,
-                0x17,
-                0x32,
-                0x2E,
-                0x31,
-                0x36,
-                0x2E,
-                0x38,
-                0x34,
-                0x30,
-                0x2E,
-                0x31,
-                0x2E,
-                0x31,
-                0x31,
-                0x33,
-                0x37,
-                0x33,
-                0x30,
-                0x2E,
-                0x33,
-                0x2E,
-                0x34,
-                0x2E,
-                0x32 } );
+            {
+                0x30, 0x29,                 // LDAPMessage ::=SEQUENCE {
+                  0x02, 0x01, 0x01,         // messageID MessageID
+                  0x6F, 0x07,               // CHOICE { ..., compareResponse CompareResponse,
+                                            // ...
+                                            // CompareResponse ::= [APPLICATION 15] LDAPResult
+                    0x0A, 0x01, 0x00,       // LDAPResult ::= SEQUENCE {
+                                            // resultCode ENUMERATED {
+                                            // success (0), ...
+                                            // },
+                    0x04, 0x00,             // matchedDN LDAPDN,
+                    0x04, 0x00,             // errorMessage LDAPString,
+                                            // referral [3] Referral OPTIONAL }
+                                            // }
+                    ( byte ) 0xA0, 0x1B,    // A control
+                      0x30, 0x19,
+                        0x04, 0x17,
+                          '2', '.', '1', '6', '.', '8', '4', '0', '.', '1', '.',
+                          '1', '1', '3', '7', '3', '0', '.', '3', '.', '4', '.', '2'
+            } );
 
         String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
@@ -204,15 +164,7 @@ public class CompareResponseTest extends AbstractCodecServiceTest
             new LdapMessageContainer<CompareResponseDecorator>( codec );
 
         // Decode the CompareResponse PDU
-        try
-        {
-            ldapDecoder.decode( stream, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        ldapDecoder.decode( stream, container );
 
         // Check the decoded CompareResponse PDU
         CompareResponse compareResponse = container.getMessage();
@@ -234,44 +186,34 @@ public class CompareResponseTest extends AbstractCodecServiceTest
         assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb = LdapEncoder.encodeMessage( codec, compareResponse );
+        ByteBuffer bb = LdapEncoder.encodeMessage( codec, compareResponse );
 
-            // Check the length
-            assertEquals( 0x2B, bb.limit() );
+        // Check the length
+        assertEquals( 0x2B, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes( bb.array() );
+        String encodedPdu = Strings.dumpBytes( bb.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
     }
 
 
     /**
      * Test the decoding of a CompareResponse with no LdapResult
      */
-    @Test
-    public void testDecodeCompareResponseEmptyResult()
+    @Test( expected=DecoderException.class )
+    public void testDecodeCompareResponseEmptyResult() throws DecoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
         stream.put( new byte[]
-            { 0x30, 0x05, // LDAPMessage ::=SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                0x6F,
-                0x00 // CHOICE { ..., compareResponse CompareResponse,
-            // ...
-        } );
+            {
+                0x30, 0x05,             // LDAPMessage ::=SEQUENCE {
+                  0x02, 0x01, 0x01,     // messageID MessageID
+                  0x6F, 0x00            // CHOICE { ..., compareResponse CompareResponse,
+                                        // ...
+            } );
 
         stream.flip();
 
@@ -280,16 +222,6 @@ public class CompareResponseTest extends AbstractCodecServiceTest
             new LdapMessageContainer<CompareResponseDecorator>( codec );
 
         // Decode a CompareResponse message
-        try
-        {
-            ldapDecoder.decode( stream, container );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( true );
-            return;
-        }
-
-        fail( "We should not reach this point" );
+        ldapDecoder.decode( stream, container );
     }
 }

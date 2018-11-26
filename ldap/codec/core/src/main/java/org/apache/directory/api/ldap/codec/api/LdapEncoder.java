@@ -38,9 +38,13 @@ import org.apache.directory.api.ldap.codec.factory.AddResponseFactory;
 import org.apache.directory.api.ldap.codec.factory.BindRequestFactory;
 import org.apache.directory.api.ldap.codec.factory.BindResponseFactory;
 import org.apache.directory.api.ldap.codec.factory.CompareRequestFactory;
+import org.apache.directory.api.ldap.codec.factory.CompareResponseFactory;
 import org.apache.directory.api.ldap.codec.factory.DeleteRequestFactory;
+import org.apache.directory.api.ldap.codec.factory.DeleteResponseFactory;
 import org.apache.directory.api.ldap.codec.factory.ModifyDnRequestFactory;
+import org.apache.directory.api.ldap.codec.factory.ModifyDnResponseFactory;
 import org.apache.directory.api.ldap.codec.factory.ModifyRequestFactory;
+import org.apache.directory.api.ldap.codec.factory.ModifyResponseFactory;
 import org.apache.directory.api.ldap.codec.factory.SearchRequestFactory;
 import org.apache.directory.api.ldap.codec.factory.UnbindRequestFactory;
 import org.apache.directory.api.ldap.model.message.Control;
@@ -223,16 +227,32 @@ public final class LdapEncoder
                 CompareRequestFactory.INSTANCE.encodeReverse( buffer, message );
                 return;
 
+            case COMPARE_RESPONSE :
+                CompareResponseFactory.INSTANCE.encodeReverse( buffer, message );
+                return;
+
             case DEL_REQUEST :
                 DeleteRequestFactory.INSTANCE.encodeReverse( buffer, message );
+                return;
+
+            case DEL_RESPONSE :
+                DeleteResponseFactory.INSTANCE.encodeReverse( buffer, message );
                 return;
 
             case MODIFY_REQUEST :
                 ModifyRequestFactory.INSTANCE.encodeReverse( buffer, message );
                 return;
 
+            case MODIFY_RESPONSE :
+                ModifyResponseFactory.INSTANCE.encodeReverse( buffer, message );
+                return;
+
             case MODIFYDN_REQUEST :
                 ModifyDnRequestFactory.INSTANCE.encodeReverse( buffer, message );
+                return;
+
+            case MODIFYDN_RESPONSE :
+                ModifyDnResponseFactory.INSTANCE.encodeReverse( buffer, message );
                 return;
 
             case SEARCH_REQUEST :
