@@ -48,6 +48,7 @@ import org.apache.directory.api.ldap.codec.factory.ModifyResponseFactory;
 import org.apache.directory.api.ldap.codec.factory.SearchRequestFactory;
 import org.apache.directory.api.ldap.codec.factory.SearchResultDoneFactory;
 import org.apache.directory.api.ldap.codec.factory.SearchResultEntryFactory;
+import org.apache.directory.api.ldap.codec.factory.SearchResultReferenceFactory;
 import org.apache.directory.api.ldap.codec.factory.UnbindRequestFactory;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
@@ -267,6 +268,10 @@ public final class LdapEncoder
 
             case SEARCH_RESULT_ENTRY :
                 SearchResultEntryFactory.INSTANCE.encodeReverse( buffer, message );
+                return;
+
+            case SEARCH_RESULT_REFERENCE :
+                SearchResultReferenceFactory.INSTANCE.encodeReverse( buffer, message );
                 return;
 
             case UNBIND_REQUEST :

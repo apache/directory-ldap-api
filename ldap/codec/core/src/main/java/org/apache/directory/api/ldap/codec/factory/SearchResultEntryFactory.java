@@ -57,7 +57,7 @@ public final class SearchResultEntryFactory extends ResponseFactory
      * </pre>
      *
      * @param buffer The buffer where to put the PDU
-     * @param attributes The iterator on the attributes
+     * @param values The iterator on the values
      */
     private void encodeValues( Asn1Buffer buffer, Iterator<Value> values )
     {

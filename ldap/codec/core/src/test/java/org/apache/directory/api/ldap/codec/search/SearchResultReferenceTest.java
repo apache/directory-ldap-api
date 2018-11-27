@@ -26,6 +26,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -33,6 +34,7 @@ import java.util.Set;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
@@ -41,6 +43,7 @@ import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.message.SearchResultReference;
+import org.apache.directory.api.ldap.model.message.SearchResultReferenceImpl;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -62,14 +65,15 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchResultReference
      */
     @Test
-    public void testDecodeSearchResultReferenceSuccess()
+    public void testDecodeSearchResultReferenceSuccess() throws DecoderException, EncoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x3d8 );
 
         String[] ldapUrls = new String[]
-            { "ldap:///", "ldap://directory.apache.org:80/", "ldap://d-a.org:80/", "ldap://1.2.3.4/",
+            {
+                "ldap:///", "ldap://directory.apache.org:80/", "ldap://d-a.org:80/", "ldap://1.2.3.4/",
                 "ldap://1.2.3.4:80/", "ldap://1.1.1.100000.a/", "ldap://directory.apache.org:389/dc=example,dc=org/",
                 "ldap://directory.apache.org:389/dc=example", "ldap://directory.apache.org:389/dc=example%202,dc=org",
                 "ldap://directory.apache.org:389/dc=example,dc=org?ou",
@@ -81,24 +85,18 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
                 "ldap://host.com:6666/o=University%20of%20Michigan,c=US??sub?(cn=Babs%20Jensen)",
                 "ldap://ldap.itd.umich.edu/c=GB?objectClass?one", "ldap://ldap.question.com/o=Question%3f,c=US?mail",
                 "ldap://ldap.netscape.com/o=Babsco,c=US???(int=%5c00%5c00%5c00%5c04)",
-                "ldap:///??sub??bindname=cn=Manager%2co=Foo", "ldap:///??sub??!bindname=cn=Manager%2co=Foo" };
+                "ldap:///??sub??bindname=cn=Manager%2co=Foo", "ldap:///??sub??!bindname=cn=Manager%2co=Foo"
+            };
 
         stream.put( new byte[]
             {
-
-                0x30, ( byte ) 0x82, 0x03, ( byte ) 0xd4, // LDAPMessage
-                // ::=SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                0x73,
-                ( byte ) 0x82,
-                0x03,
-                ( byte ) 0xcd, // CHOICE { ...,
-            // searchResEntry
-            // SearchResultEntry,
-            // ...
-            // SearchResultReference ::= [APPLICATION 19] SEQUENCE OF LDAPURL
+                0x30, ( byte ) 0x82, 0x03, ( byte ) 0xd4,   // LDAPMessage SEQUENCE {
+                  0x02, 0x01, 0x01,                         // messageID MessageID
+                  0x73, ( byte ) 0x82, 0x03, ( byte ) 0xcd, // CHOICE { ...,
+                                                            // searchResEntry
+                                                            // SearchResultEntry,
+                                                            // ...
+                                                            // SearchResultReference ::= [APPLICATION 19] SEQUENCE OF LDAPURL
         } );
 
         for ( int i = 0; i < ldapUrls.length; i++ )
@@ -121,15 +119,7 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultReferenceDecorator> ldapMessageContainer = new LdapMessageContainer<SearchResultReferenceDecorator>(
             codec );
 
-        try
-        {
-            ldapDecoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        ldapDecoder.decode( stream, ldapMessageContainer );
 
         SearchResultReference searchResultReference = ldapMessageContainer.getMessage();
 
@@ -161,22 +151,24 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
         assertTrue( ldapUrlsSet.size() == 0 );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchResultReference );
+        ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchResultReference );
 
-            // Check the length
-            assertEquals( 0x3D8, bb.limit() );
+        // Check the length
+        assertEquals( 0x3D8, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes( bb.array() );
+        String encodedPdu = Strings.dumpBytes( bb.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
+
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        SearchResultReference response = new SearchResultReferenceImpl( searchResultReference.getMessageId() );
+        response.setReferral( referral );
+
+        LdapEncoder.encodeMessageReverse( buffer, codec, response );
+
+        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
     }
 
 
@@ -184,14 +176,15 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchResultReference with controls
      */
     @Test
-    public void testDecodeSearchResultReferenceSuccessWithControls()
+    public void testDecodeSearchResultReferenceSuccessWithControls() throws DecoderException, EncoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x3F5 );
 
         String[] ldapUrls = new String[]
-            { "ldap:///", "ldap://directory.apache.org:80/", "ldap://d-a.org:80/", "ldap://1.2.3.4/",
+            {
+                "ldap:///", "ldap://directory.apache.org:80/", "ldap://d-a.org:80/", "ldap://1.2.3.4/",
                 "ldap://1.2.3.4:80/", "ldap://1.1.1.100000.a/", "ldap://directory.apache.org:389/dc=example,dc=org/",
                 "ldap://directory.apache.org:389/dc=example", "ldap://directory.apache.org:389/dc=example%202,dc=org",
                 "ldap://directory.apache.org:389/dc=example,dc=org?ou",
@@ -203,24 +196,19 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
                 "ldap://host.com:6666/o=University%20of%20Michigan,c=US??sub?(cn=Babs%20Jensen)",
                 "ldap://ldap.itd.umich.edu/c=GB?objectClass?one", "ldap://ldap.question.com/o=Question%3f,c=US?mail",
                 "ldap://ldap.netscape.com/o=Babsco,c=US???(int=%5c00%5c00%5c00%5c04)",
-                "ldap:///??sub??bindname=cn=Manager%2co=Foo", "ldap:///??sub??!bindname=cn=Manager%2co=Foo" };
+                "ldap:///??sub??bindname=cn=Manager%2co=Foo", "ldap:///??sub??!bindname=cn=Manager%2co=Foo"
+            };
 
         stream.put( new byte[]
             {
 
-                0x30, ( byte ) 0x82, 0x03, ( byte ) 0xF1, // LDAPMessage
-                // ::=SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                0x73,
-                ( byte ) 0x82,
-                0x03,
-                ( byte ) 0xcd, // CHOICE { ...,
-            // searchResEntry
-            // SearchResultEntry,
-            // ...
-            // SearchResultReference ::= [APPLICATION 19] SEQUENCE OF LDAPURL
+                0x30, ( byte ) 0x82, 0x03, ( byte ) 0xF1,   // LDAPMessage
+                  0x02, 0x01, 0x01,                         // messageID MessageID
+                  0x73, ( byte ) 0x82, 0x03, ( byte ) 0xcd, // CHOICE { ...,
+                                                            // searchResEntry
+                                                            // SearchResultEntry,
+                                                            // ...
+                                                            // SearchResultReference ::= [APPLICATION 19] SEQUENCE OF LDAPURL
         } );
 
         for ( int i = 0; i < ldapUrls.length; i++ )
@@ -237,35 +225,13 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
         }
 
         byte[] controlBytes = new byte[]
-            { ( byte ) 0xA0,
-                0x1B, // A control
-                0x30,
-                0x19,
-                0x04,
-                0x17,
-                0x32,
-                0x2E,
-                0x31,
-                0x36,
-                0x2E,
-                0x38,
-                0x34,
-                0x30,
-                0x2E,
-                0x31,
-                0x2E,
-                0x31,
-                0x31,
-                0x33,
-                0x37,
-                0x33,
-                0x30,
-                0x2E,
-                0x33,
-                0x2E,
-                0x34,
-                0x2E,
-                0x32 };
+            {
+                ( byte ) 0xA0, 0x1B,    // A control
+                  0x30, 0x19,
+                    0x04, 0x17,
+                      '2', '.', '1', '6', '.', '8', '4', '0', '.', '1', '.',
+                      '1', '1', '3', '7', '3', '0', '.', '3', '.', '4', '.', '2'
+            };
 
         for ( int i = 0; i < controlBytes.length; i++ )
         {
@@ -279,16 +245,8 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultReferenceDecorator> ldapMessageContainer = new LdapMessageContainer<SearchResultReferenceDecorator>(
             codec );
 
-        try
-        {
-            ldapMessageContainer.clean();
-            ldapDecoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        ldapMessageContainer.clean();
+        ldapDecoder.decode( stream, ldapMessageContainer );
 
         stream.flip();
 
@@ -333,30 +291,22 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
         assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchResultReference );
+        ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchResultReference );
 
-            // Check the length
-            assertEquals( 0x3F5, bb.limit() );
+        // Check the length
+        assertEquals( 0x3F5, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes( bb.array() );
+        String encodedPdu = Strings.dumpBytes( bb.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
     }
 
 
     /**
      * Test the decoding of a SearchResultReference with no reference
      */
-    @Test
-    public void testDecodeSearchResultReferenceNoReference()
+    @Test( expected=DecoderException.class )
+    public void testDecodeSearchResultReferenceNoReference() throws DecoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -364,15 +314,11 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             {
-
-                0x30, 0x05, // LDAPMessage ::=SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                0x73,
-                0x00 // CHOICE { ..., searchResEntry SearchResultEntry,
-            // ...
-            // SearchResultReference ::= [APPLICATION 19] SEQUENCE OF LDAPURL
+                0x30, 0x05,                 // LDAPMessage ::=SEQUENCE {
+                  0x02, 0x01, 0x01,         // messageID MessageID
+                  0x73, 0x00                // CHOICE { ..., searchResEntry SearchResultEntry,
+                                            // ...
+                                            // SearchResultReference ::= [APPLICATION 19] SEQUENCE OF LDAPURL
         } );
 
         stream.flip();
@@ -382,17 +328,7 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
             codec );
 
         // Decode a SearchResultReference message
-        try
-        {
-            ldapDecoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( true );
-            return;
-        }
-
-        fail( "We should not reach this point" );
+        ldapDecoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -400,7 +336,7 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchResultReference with one reference
      */
     @Test
-    public void testDecodeSearchResultReferenceOneReference()
+    public void testDecodeSearchResultReferenceOneReference() throws DecoderException, EncoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -408,30 +344,12 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             {
-
-                0x30, 0x0F, // LDAPMessage ::=SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // messageID MessageID
-                0x73,
-                0x0A, // CHOICE { ..., searchResEntry SearchResultEntry,
-                // ...
-                0x04,
-                0x08,
-                'l',
-                'd',
-                'a',
-                'p',
-                ':',
-                '/',
-                '/',
-                '/' // SearchResultReference
-            // ::=
-            // [APPLICATION
-            // 19]
-            // SEQUENCE
-            // OF
-            // LDAPURL
+                0x30, 0x0F,                 // LDAPMessage ::=SEQUENCE {
+                  0x02, 0x01, 0x01,         // messageID MessageID
+                  0x73, 0x0A,               // CHOICE { ..., searchResEntry SearchResultEntry,
+                                            // ...
+                    0x04, 0x08,             // SearchResultReference
+                      'l', 'd', 'a', 'p', ':', '/', '/', '/'
         } );
 
         String decodedPdu = Strings.dumpBytes( stream.array() );
@@ -441,15 +359,7 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultReferenceDecorator> ldapMessageContainer = new LdapMessageContainer<SearchResultReferenceDecorator>(
             codec );
 
-        try
-        {
-            ldapDecoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        ldapDecoder.decode( stream, ldapMessageContainer );
 
         SearchResultReference searchResultReference = ldapMessageContainer.getMessage();
 
@@ -465,21 +375,23 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
         }
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchResultReference );
+        ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchResultReference );
 
-            // Check the length
-            assertEquals( 0x11, bb.limit() );
+        // Check the length
+        assertEquals( 0x11, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes( bb.array() );
+        String encodedPdu = Strings.dumpBytes( bb.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
+
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        SearchResultReference response = new SearchResultReferenceImpl( searchResultReference.getMessageId() );
+        response.setReferral( referral );
+
+        LdapEncoder.encodeMessageReverse( buffer, codec, response );
+
+        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
     }
 }
