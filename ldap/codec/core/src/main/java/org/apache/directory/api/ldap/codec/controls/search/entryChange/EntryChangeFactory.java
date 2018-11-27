@@ -83,6 +83,9 @@ public class EntryChangeFactory extends AbstractControlFactory<EntryChange>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void encodeValue( Asn1Buffer buffer, Control control )
     {
