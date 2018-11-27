@@ -20,7 +20,9 @@
 package org.apache.directory.api.ldap.codec.controls.search.pagedSearch;
 
 
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
@@ -34,7 +36,7 @@ import org.apache.directory.api.ldap.model.message.controls.PagedResults;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class PagedResultsFactory implements ControlFactory<PagedResults>
+public class PagedResultsFactory extends AbstractControlFactory<PagedResults>
 {
     /** The LDAP codec service */
     private LdapApiService codec;
@@ -47,7 +49,7 @@ public class PagedResultsFactory implements ControlFactory<PagedResults>
      */
     public PagedResultsFactory( LdapApiService codec )
     {
-        this.codec = codec;
+        super( codec );
     }
 
 
@@ -81,10 +83,21 @@ public class PagedResultsFactory implements ControlFactory<PagedResults>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void encodeValue( Asn1Buffer buffer, Control control )
     {
-        // TODO Auto-generated method stub
+        int start = buffer.getPos();
 
+        // The cookie
+        BerValue.encodeOctetString( buffer, ( ( PagedResults ) control ).getCookie() );
+
+        // The size
+        BerValue.encodeInteger( buffer, ( ( PagedResults ) control ).getSize() );
+
+        // The sequence
+        BerValue.encodeSequence( buffer, start );
     }
 }
