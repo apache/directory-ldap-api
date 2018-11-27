@@ -160,6 +160,7 @@ public class Asn1Buffer
     @Override
     public String toString()
     {
-        return "[" + buffer.length + ", " + pos + "] '" + Asn1StringUtils.dumpBytes( buffer ) + '\'';
+        return "[" + buffer.length + ", " + pos + "] '"
+            + Asn1StringUtils.dumpBytes( buffer, buffer.length - pos, pos ) + '\'';
     }
 }

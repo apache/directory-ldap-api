@@ -20,11 +20,10 @@
 package org.apache.directory.api.ldap.codec.controls.cascade;
 
 
-import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.Cascade;
 import org.apache.directory.api.ldap.model.message.controls.CascadeImpl;
 
@@ -35,7 +34,7 @@ import org.apache.directory.api.ldap.model.message.controls.CascadeImpl;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class CascadeFactory implements ControlFactory<Cascade>
+public class CascadeFactory extends AbstractControlFactory<Cascade>
 {
     /** The LDAP codec responsible for encoding and decoding Cascade Controls */
     private LdapApiService codec;
@@ -48,7 +47,7 @@ public class CascadeFactory implements ControlFactory<Cascade>
      */
     public CascadeFactory( LdapApiService codec )
     {
-        this.codec = codec;
+        super( codec );
     }
 
 
@@ -79,13 +78,5 @@ public class CascadeFactory implements ControlFactory<Cascade>
     public CodecControl<Cascade> newCodecControl( Cascade control )
     {
         return new CascadeDecorator( codec, control );
-    }
-
-
-    @Override
-    public void encodeValue( Asn1Buffer buffer, Control control )
-    {
-        // TODO Auto-generated method stub
-
     }
 }

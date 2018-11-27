@@ -24,6 +24,7 @@ import java.util.Iterator;
 
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.LdapResult;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.Referral;
@@ -108,12 +109,16 @@ public abstract class ResponseFactory implements Messagefactory
 
         if ( referral != null )
         {
+            int start = buffer.getPos();
             Collection<String> urls = referral.getLdapUrls();
 
-            if ( ( urls != null ) && !urls.isEmpty() )
+            if ( urls != null )
             {
                 encodeReferralUrls( buffer, urls.iterator() );
             }
+
+            // The referral tag
+            BerValue.encodeSequence( buffer, ( byte ) LdapCodecConstants.LDAP_RESULT_REFERRAL_SEQUENCE_TAG, start );
         }
 
         // The errorMessage

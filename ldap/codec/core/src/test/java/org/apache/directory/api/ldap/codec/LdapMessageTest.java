@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.codec;
 
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -30,6 +31,7 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
@@ -58,8 +60,8 @@ public class LdapMessageTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of null length messageId
      */
-    @Test
-    public void testDecodeMessageLengthNull()
+    @Test( expected=DecoderException.class )
+    public void testDecodeMessageLengthNull() throws DecoderException
     {
 
         Asn1Decoder ldapDecoder = new Asn1Decoder();
@@ -76,25 +78,15 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
         // Decode a BindRequest PDU
-        try
-        {
-            ldapDecoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( true );
-            return;
-        }
-
-        fail( "We should not reach this point !" );
+        ldapDecoder.decode( stream, ldapMessageContainer );
     }
 
 
     /**
      * Test the decoding of null length messageId
      */
-    @Test
-    public void testDecodeMessageIdLengthNull()
+    @Test( expected=DecoderException.class )
+    public void testDecodeMessageIdLengthNull() throws DecoderException
     {
 
         Asn1Decoder ldapDecoder = new Asn1Decoder();
@@ -112,25 +104,15 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
         // Decode a BindRequest PDU
-        try
-        {
-            ldapDecoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( true );
-            return;
-        }
-
-        fail( "We should not reach this point !" );
+        ldapDecoder.decode( stream, ldapMessageContainer );
     }
 
 
     /**
      * Test the decoding of null length messageId
      */
-    @Test
-    public void testDecodeMessageIdMinusOne()
+    @Test( expected=DecoderException.class )
+    public void testDecodeMessageIdMinusOne() throws DecoderException
     {
 
         Asn1Decoder ldapDecoder = new Asn1Decoder();
@@ -148,25 +130,15 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
         // Decode a BindRequest PDU
-        try
-        {
-            ldapDecoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( true );
-            return;
-        }
-
-        fail( "We should not reach this point !" );
+        ldapDecoder.decode( stream, ldapMessageContainer );
     }
 
 
     /**
      * Test the decoding of messageId which value is -1
      */
-    @Test
-    public void testDecodeMessageIdMaxInt()
+    @Test( expected=DecoderException.class )
+    public void testDecodeMessageIdMaxInt() throws DecoderException
     {
 
         Asn1Decoder ldapDecoder = new Asn1Decoder();
@@ -185,17 +157,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
 
         // Decode a BindRequest PDU
-        try
-        {
-            ldapDecoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( true );
-            return;
-        }
-
-        fail( "We should not reach this point !" );
+        ldapDecoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -287,7 +249,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
      * Test the decoding of a LdapMessage with a large MessageId
      */
     @Test
-    public void testDecodeUnBindRequestNoControls()
+    public void testDecodeUnBindRequestNoControls() throws DecoderException, EncoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -307,15 +269,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         LdapMessageContainer<UnbindRequestDecorator> container =
             new LdapMessageContainer<UnbindRequestDecorator>( codec );
 
-        try
-        {
-            ldapDecoder.decode( stream, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        ldapDecoder.decode( stream, container );
 
         Message message = container.getMessage();
 
@@ -325,21 +279,20 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         UnbindRequest internalUnbindRequest = new UnbindRequestImpl();
         internalUnbindRequest.setMessageId( message.getMessageId() );
 
-        try
-        {
-            ByteBuffer bb = LdapEncoder.encodeMessage( codec, new UnbindRequestDecorator( codec, internalUnbindRequest ) );
+        ByteBuffer bb = LdapEncoder.encodeMessage( codec, new UnbindRequestDecorator( codec, internalUnbindRequest ) );
 
-            // Check the length
-            assertEquals( 0x08, bb.limit() );
+        // Check the length
+        assertEquals( 0x08, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes( bb.array() );
+        String encodedPdu = Strings.dumpBytes( bb.array() );
 
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertEquals( encodedPdu, decodedPdu );
+
+        // Check the reverse encoding
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        ByteBuffer result = LdapEncoder.encodeMessageReverse( buffer, codec, internalUnbindRequest );
+
+        assertArrayEquals( stream.array(), result.array() );
     }
 }

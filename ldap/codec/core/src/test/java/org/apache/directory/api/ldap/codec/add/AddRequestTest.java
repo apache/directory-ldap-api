@@ -51,6 +51,7 @@ import org.apache.directory.api.ldap.model.message.AddResponseImpl;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.api.ldap.model.message.controls.ManageDsaITImpl;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -707,5 +708,17 @@ public class AddRequestTest extends AbstractCodecServiceTest
         String encodedPdu = Strings.dumpBytes( bb.array() );
 
         assertEquals( encodedPdu, decodedPdu );
+
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        AddRequest request = new AddRequestImpl();
+        request.setEntry( addRequest.getEntry() );
+        request.setMessageId( addRequest.getMessageId() );
+        request.addControl( new ManageDsaITImpl() );
+
+        LdapEncoder.encodeMessageReverse( buffer, codec, request );
+
+        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
     }
 }

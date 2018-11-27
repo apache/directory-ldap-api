@@ -20,12 +20,15 @@
 package org.apache.directory.api.ldap.codec.controls.search.entryChange;
 
 
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.EntryChange;
+import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -34,11 +37,10 @@ import org.apache.directory.api.ldap.model.message.controls.EntryChange;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class EntryChangeFactory implements ControlFactory<EntryChange>
+public class EntryChangeFactory extends AbstractControlFactory<EntryChange>
 {
-    /** The LDAP codec service */
-    private LdapApiService codec;
-
+    /** Default value when no change number is provided */
+    public static final int UNDEFINED_CHANGE_NUMBER = -1;
 
     /**
      * Creates a new instance of EntryChangeFactory.
@@ -47,7 +49,7 @@ public class EntryChangeFactory implements ControlFactory<EntryChange>
      */
     public EntryChangeFactory( LdapApiService codec )
     {
-        this.codec = codec;
+        super( codec );
     }
 
 
@@ -84,7 +86,27 @@ public class EntryChangeFactory implements ControlFactory<EntryChange>
     @Override
     public void encodeValue( Asn1Buffer buffer, Control control )
     {
-        // TODO Auto-generated method stub
+        int start = buffer.getPos();
 
+        EntryChange entryChange = ( EntryChange ) control;
+
+        // The changeNumber
+        if ( entryChange.getChangeNumber() != UNDEFINED_CHANGE_NUMBER )
+        {
+            BerValue.encodeInteger( buffer, entryChange.getChangeNumber() );
+        }
+
+        // The previous DN if any
+        if ( entryChange.getPreviousDn() != null )
+        {
+            BerValue.encodeOctetString( buffer,
+                Strings.getBytesUtf8Ascii( entryChange.getPreviousDn().getName() ) );
+        }
+
+        // The change type
+        BerValue.encodeEnumerated( buffer, entryChange.getChangeType().getValue() );
+
+        // The EntryChangeNotification sequence
+        BerValue.encodeSequence( buffer, start );
     }
 }

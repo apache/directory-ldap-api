@@ -84,6 +84,35 @@ public final class Asn1StringUtils
 
 
     /**
+     * Helper function that dump an array of bytes in hex form
+     *
+     * @param buffer The bytes array to dump
+     * @param start The starting point in the buffer
+     * @param length The number of bytes to print
+     * @return A string representation of the array of bytes
+     */
+    public static String dumpBytes( byte[] buffer, int start, int length )
+    {
+        if ( buffer == null )
+        {
+            return "";
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for ( int i = start; i < start + length; i++ )
+        {
+            byte b = buffer[i];
+
+            sb.append( "0x" ).append( ( char ) ( HEX_CHAR[( b & 0x00F0 ) >> 4] ) ).append(
+                ( char ) ( HEX_CHAR[b & 0x000F] ) ).append( " " );
+        }
+
+        return sb.toString();
+    }
+
+
+    /**
      * Return UTF-8 encoded byte[] representation of a String
      *
      * @param string The string to be transformed to a byte array

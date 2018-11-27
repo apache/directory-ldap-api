@@ -168,8 +168,10 @@ public final class LdapEncoder
     {
         if ( iterator.hasNext() )
         {
+            // Get the Control from its OID
             Control control = controls.get( iterator.next() );
 
+            // Encode the remaining controls recursively
             encodeControlsReverse( buffer, codec, controls, iterator );
 
             // Fetch the control's factory from the LdapApiService
@@ -311,12 +313,17 @@ public final class LdapEncoder
      */
     public static ByteBuffer encodeMessageReverse( Asn1Buffer buffer, LdapApiService codec, Message message ) throws EncoderException
     {
+        int start = buffer.getPos();
+
         // The controls, if any
         Map<String, Control> controls = message.getControls();
 
         if ( ( controls != null ) && ( controls.size() > 0 ) )
         {
-            encodeControlsReverse( buffer, codec, message.getControls(), message.getControls().keySet().iterator() );
+            encodeControlsReverse( buffer, codec, controls, controls.keySet().iterator() );
+
+            // The controls tag
+            BerValue.encodeSequence( buffer, ( byte ) LdapCodecConstants.CONTROLS_TAG, start );
         }
 
         // The protocolOp part
