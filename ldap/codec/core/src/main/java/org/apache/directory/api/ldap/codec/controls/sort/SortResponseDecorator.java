@@ -36,7 +36,7 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ControlDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.controls.SortResponse;
-import org.apache.directory.api.ldap.model.message.controls.SortResponseControlImpl;
+import org.apache.directory.api.ldap.model.message.controls.SortResponseImpl;
 import org.apache.directory.api.ldap.model.message.controls.SortResultCode;
 import org.apache.directory.api.util.Strings;
 
@@ -60,7 +60,7 @@ public class SortResponseDecorator extends ControlDecorator<SortResponse> implem
      */
     public SortResponseDecorator( LdapApiService codec )
     {
-        super( codec, new SortResponseControlImpl() );
+        super( codec, new SortResponseImpl() );
     }
 
 

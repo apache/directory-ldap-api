@@ -37,7 +37,7 @@ import org.apache.directory.api.ldap.codec.api.ControlDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.controls.SortKey;
 import org.apache.directory.api.ldap.model.message.controls.SortRequest;
-import org.apache.directory.api.ldap.model.message.controls.SortRequestControlImpl;
+import org.apache.directory.api.ldap.model.message.controls.SortRequestImpl;
 import org.apache.directory.api.util.Strings;
 
 
@@ -68,7 +68,7 @@ public class SortRequestDecorator extends ControlDecorator<SortRequest> implemen
      */
     public SortRequestDecorator( LdapApiService codec )
     {
-        super( codec, new SortRequestControlImpl() );
+        super( codec, new SortRequestImpl() );
     }
 
 
