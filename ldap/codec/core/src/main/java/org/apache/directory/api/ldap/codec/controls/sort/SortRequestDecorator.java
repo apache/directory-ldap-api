@@ -20,6 +20,9 @@
 package org.apache.directory.api.ldap.codec.controls.sort;
 
 
+import static org.apache.directory.api.ldap.codec.controls.sort.SortRequestFactory.ORDERING_RULE_TAG;
+import static org.apache.directory.api.ldap.codec.controls.sort.SortRequestFactory.REVERSE_ORDER_TAG;
+
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,12 +56,6 @@ public class SortRequestDecorator extends ControlDecorator<SortRequest> implemen
     private int sortReqLen = 0;
 
     private List<Integer> sortKeyLenList = new ArrayList<>();
-
-    /** ASN.1 BER tag for the forward ordering rule */
-    public static final int ORDERING_RULE_TAG = 0x80;
-
-    /** ASN.1 BER tag for the backward ordering rule */
-    public static final int REVERSE_ORDER_TAG = 0x81;
 
 
     /**

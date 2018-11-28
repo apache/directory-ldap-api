@@ -20,8 +20,8 @@
 package org.apache.directory.api.ldap.codec.controls.sort;
 
 
-import static org.apache.directory.api.ldap.codec.controls.sort.SortRequestDecorator.ORDERING_RULE_TAG;
-import static org.apache.directory.api.ldap.codec.controls.sort.SortRequestDecorator.REVERSE_ORDER_TAG;
+import static org.apache.directory.api.ldap.codec.controls.sort.SortRequestFactory.ORDERING_RULE_TAG;
+import static org.apache.directory.api.ldap.codec.controls.sort.SortRequestFactory.REVERSE_ORDER_TAG;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.AbstractGrammar;
@@ -67,7 +67,7 @@ public final class SortRequestGrammar extends AbstractGrammar<SortRequestContain
                 BerValue value = container.getCurrentTLV().getValue();
 
                 String atDesc = Strings.utf8ToString( value.getData() );
-                
+
                 if ( LOG.isDebugEnabled() )
                 {
                     LOG.debug( I18n.msg( I18n.MSG_05307_ATTRIBUTE_TYPE_DESC, atDesc ) );
@@ -177,7 +177,7 @@ public final class SortRequestGrammar extends AbstractGrammar<SortRequestContain
 
     /**
      * This class is a singleton.
-     * 
+     *
      * @return An instance on this grammar
      */
     public static Grammar<?> getInstance()
