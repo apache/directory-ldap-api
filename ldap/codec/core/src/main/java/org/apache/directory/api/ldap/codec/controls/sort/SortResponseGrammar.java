@@ -20,6 +20,8 @@
 package org.apache.directory.api.ldap.codec.controls.sort;
 
 
+import static org.apache.directory.api.ldap.codec.controls.sort.SortResponseFactory.ATTRIBUTE_TYPE_TAG;
+
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.AbstractGrammar;
 import org.apache.directory.api.asn1.ber.grammar.Grammar;
@@ -59,16 +61,16 @@ public final class SortResponseGrammar extends AbstractGrammar<SortResponseConta
             new GrammarTransition<SortResponseContainer>( SortResponseStates.START_STATE,
                 SortResponseStates.SEQUENCE_STATE,
                 UniversalTag.SEQUENCE.getValue(), null );
-        
+
         super.transitions[SortResponseStates.SEQUENCE_STATE.ordinal()][UniversalTag.ENUMERATED.getValue()] =
             new GrammarTransition<SortResponseContainer>( SortResponseStates.SEQUENCE_STATE,
                 SortResponseStates.RESULT_CODE_STATE,
                 UniversalTag.ENUMERATED.getValue(), new StoreSortResponseResultCode<SortResponseContainer>() );
 
-        super.transitions[SortResponseStates.RESULT_CODE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
+        super.transitions[SortResponseStates.RESULT_CODE_STATE.ordinal()][ATTRIBUTE_TYPE_TAG] =
             new GrammarTransition<SortResponseContainer>( SortResponseStates.RESULT_CODE_STATE,
                 SortResponseStates.AT_DESC_STATE,
-                UniversalTag.OCTET_STRING.getValue(), new GrammarAction<SortResponseContainer>()
+                ATTRIBUTE_TYPE_TAG, new GrammarAction<SortResponseContainer>()
                 {
 
                     @Override
@@ -82,7 +84,7 @@ public final class SortResponseGrammar extends AbstractGrammar<SortResponseConta
                         {
                             LOG.debug( I18n.msg( I18n.MSG_05310_ATTRIBUTE_TYPE, atType ) );
                         }
-                        
+
                         container.getControl().setAttributeName( atType );
                         container.setGrammarEndAllowed( true );
                     }
@@ -93,7 +95,7 @@ public final class SortResponseGrammar extends AbstractGrammar<SortResponseConta
 
     /**
      * This class is a singleton.
-     * 
+     *
      * @return An instance on this grammar
      */
     public static Grammar<?> getInstance()

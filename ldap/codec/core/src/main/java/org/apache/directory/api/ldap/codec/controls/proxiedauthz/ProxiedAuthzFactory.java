@@ -21,11 +21,13 @@ package org.apache.directory.api.ldap.codec.controls.proxiedauthz;
 
 
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.ProxiedAuthz;
+import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -34,12 +36,8 @@ import org.apache.directory.api.ldap.model.message.controls.ProxiedAuthz;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ProxiedAuthzFactory implements ControlFactory<ProxiedAuthz>
+public class ProxiedAuthzFactory extends AbstractControlFactory<ProxiedAuthz>
 {
-    /** The LDAP codec service */
-    private LdapApiService codec;
-
-
     /**
      * Creates a new instance of ProxiedAuthzFactory.
      *
@@ -47,7 +45,7 @@ public class ProxiedAuthzFactory implements ControlFactory<ProxiedAuthz>
      */
     public ProxiedAuthzFactory( LdapApiService codec )
     {
-        this.codec = codec;
+        super( codec );
     }
 
 
@@ -84,7 +82,11 @@ public class ProxiedAuthzFactory implements ControlFactory<ProxiedAuthz>
     @Override
     public void encodeValue( Asn1Buffer buffer, Control control )
     {
-        // TODO Auto-generated method stub
+        byte[] authzId = Strings.getBytesUtf8( ( ( ProxiedAuthz ) control ).getAuthzId() );
 
+        if ( authzId != null )
+        {
+            buffer.put( authzId );
+        }
     }
 }

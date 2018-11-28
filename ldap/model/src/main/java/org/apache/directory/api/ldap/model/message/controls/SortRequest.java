@@ -28,12 +28,13 @@ import org.apache.directory.api.ldap.model.message.Control;
 /**
  * Implementation of Server Side Sort request control based on
  * the <a href="http://tools.ietf.org/html/rfc2891">RFC 2891</a><br><br>
- * 
- *       SortKeyList ::= SEQUENCE OF SEQUENCE {<br>
- *               attributeType   AttributeDescription,<br>
- *               orderingRule    [0] MatchingRuleId OPTIONAL,<br>
- *               reverseOrder    [1] BOOLEAN DEFAULT FALSE }<br>
  *
+ * <pre>
+ *       SortKeyList ::= SEQUENCE OF SEQUENCE {
+ *               attributeType   AttributeDescription,
+ *               orderingRule    [0] MatchingRuleId OPTIONAL,
+ *               reverseOrder    [1] BOOLEAN DEFAULT FALSE }
+ * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface SortRequest extends Control
@@ -44,7 +45,7 @@ public interface SortRequest extends Control
 
     /**
      * sets the sort keys
-     *  
+     *
      * @param sortKeys The list of keys to be sorted
      */
     void setSortKeys( List<SortKey> sortKeys );
@@ -58,7 +59,7 @@ public interface SortRequest extends Control
 
     /**
      * adds a sort key
-     * 
+     *
      * @param sortKey The list of keys to be sorted
      */
     void addSortKey( SortKey sortKey );

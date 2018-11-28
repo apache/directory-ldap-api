@@ -36,10 +36,6 @@ import org.apache.directory.api.ldap.extras.controls.changeNotifications.ChangeN
  */
 public class ChangeNotificationsFactory extends AbstractControlFactory<ChangeNotifications>
 {
-    /** The LDAP codec responsible for encoding and decoding Controls */
-    private LdapApiService codec;
-
-
     /**
      * Creates a new instance of ChangeNotificationsFactory.
      *

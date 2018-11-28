@@ -6,24 +6,27 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 package org.apache.directory.api.ldap.codec.controls.proxiedauthz;
 
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import java.nio.ByteBuffer;
 
+import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.controls.ProxiedAuthz;
 import org.apache.directory.api.util.Strings;
@@ -36,7 +39,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 /**
  * Test the ProxiedAuthzControlTest codec
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @RunWith(ConcurrentJunitRunner.class)
@@ -54,7 +57,7 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
             {
                 // ProxiedAuthzNotification ::= dn:dc=example,dc=com
                 'd', 'n', ':', 'd', 'c', '=', 'e', 'x', 'a', 'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm'
-        } );
+            } );
         bb.flip();
 
         ProxiedAuthzDecorator decorator = new ProxiedAuthzDecorator( codec );
@@ -62,6 +65,16 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
         ProxiedAuthz proxiedAuthz = ( ProxiedAuthz ) decorator.decode( bb.array() );
 
         assertEquals( "dn:dc=example,dc=com", proxiedAuthz.getAuthzId() );
+
+        // test reverse encoding
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        ControlFactory<ProxiedAuthz> factory =
+            ( ControlFactory<ProxiedAuthz> ) codec.getControlFactories().get( ProxiedAuthz.OID );
+
+        factory.encodeValue( buffer, proxiedAuthz );
+
+        assertArrayEquals( bb.array(), buffer.getBytes().array() );
     }
 
 
@@ -76,7 +89,7 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
             {
                 // ProxiedAuthzNotification ::= u:elecharny
                 'u', ':', 'e', 'l', (byte)0xc3, (byte)0xa9, 'c', 'h', 'a', 'r', 'n', 'y'
-        } );
+            } );
         bb.flip();
 
         ProxiedAuthzDecorator decorator = new ProxiedAuthzDecorator( codec );
@@ -84,6 +97,16 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
         ProxiedAuthz proxiedAuthz = ( ProxiedAuthz ) decorator.decode( bb.array() );
 
         assertEquals( "u:el\u00e9charny", proxiedAuthz.getAuthzId() );
+
+        // test reverse encoding
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        ControlFactory<ProxiedAuthz> factory =
+            ( ControlFactory<ProxiedAuthz> ) codec.getControlFactories().get( ProxiedAuthz.OID );
+
+        factory.encodeValue( buffer, proxiedAuthz );
+
+        assertArrayEquals( bb.array(), buffer.getBytes().array() );
     }
 
 
@@ -97,7 +120,7 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
         bb.put( new byte[]
             {
                 // ProxiedAuthzNotification ::= anonymous
-        } );
+            } );
         bb.flip();
 
         ProxiedAuthzDecorator decorator = new ProxiedAuthzDecorator( codec );
@@ -105,9 +128,19 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
         ProxiedAuthz proxiedAuthz = ( ProxiedAuthz ) decorator.decode( bb.array() );
 
         assertEquals( "", proxiedAuthz.getAuthzId() );
+
+        // test reverse encoding
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        ControlFactory<ProxiedAuthz> factory =
+            ( ControlFactory<ProxiedAuthz> ) codec.getControlFactories().get( ProxiedAuthz.OID );
+
+        factory.encodeValue( buffer, proxiedAuthz );
+
+        assertArrayEquals( bb.array(), buffer.getBytes().array() );
     }
-    
-    
+
+
     /**
      * Test the decoding of a ProxiedAuthzControl with a wrong DN user
      */
@@ -119,15 +152,15 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
             {
                 // ProxiedAuthzNotification ::= dn:dc=example,dc=com
                 'd', 'n', ':', 'd', 'c', '=', 'e', 'x', 'a', 'm', 'p', 'l', 'e', ',', 'd', 'c'
-        } );
+            } );
         bb.flip();
 
         ProxiedAuthzDecorator decorator = new ProxiedAuthzDecorator( codec );
 
         decorator.decode( bb.array() );
     }
-    
-    
+
+
     /**
      * Test the decoding of a ProxiedAuthzControl with a wrong user
      */
@@ -139,7 +172,7 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
             {
                 // ProxiedAuthzNotification ::= dn:dc=example,dc=com
                 'v', 'n', ':', 'w', 'r', 'o', 'n', 'g'
-        } );
+            } );
         bb.flip();
 
         ProxiedAuthzDecorator decorator = new ProxiedAuthzDecorator( codec );
@@ -166,11 +199,21 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
 
         ProxiedAuthzDecorator decorator = new ProxiedAuthzDecorator( codec );
 
-        ProxiedAuthz proxiedAuthz = ( ProxiedAuthz ) decorator.getDecorated();
+        ProxiedAuthz proxiedAuthz = decorator.getDecorated();
         proxiedAuthz.setAuthzId( "dn:dc=example,dc=com" );
         bb = decorator.encode( ByteBuffer.allocate( decorator.computeLength() ) );
         String decoded = Strings.dumpBytes( bb.array() );
         assertEquals( expected, decoded );
+
+        // test reverse encoding
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        ControlFactory<ProxiedAuthz> factory =
+            ( ControlFactory<ProxiedAuthz> ) codec.getControlFactories().get( ProxiedAuthz.OID );
+
+        factory.encodeValue( buffer, proxiedAuthz );
+
+        assertArrayEquals( bb.array(), buffer.getBytes().array() );
     }
 
 
@@ -185,18 +228,28 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
             {
                 // ProxiedAuthzNotification ::= u:elecharny
                 'u', ':', 'e', 'l', (byte)0xc3, (byte)0xa9, 'c', 'h', 'a', 'r', 'n', 'y'
-        } );
+            } );
 
         String expected = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         ProxiedAuthzDecorator decorator = new ProxiedAuthzDecorator( codec );
 
-        ProxiedAuthz proxiedAuthz = ( ProxiedAuthz ) decorator.getDecorated();
+        ProxiedAuthz proxiedAuthz = decorator.getDecorated();
         proxiedAuthz.setAuthzId( "u:el\u00e9charny" );
         bb = decorator.encode( ByteBuffer.allocate( decorator.computeLength() ) );
         String decoded = Strings.dumpBytes( bb.array() );
         assertEquals( expected, decoded );
+
+        // test reverse encoding
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        ControlFactory<ProxiedAuthz> factory =
+            ( ControlFactory<ProxiedAuthz> ) codec.getControlFactories().get( ProxiedAuthz.OID );
+
+        factory.encodeValue( buffer, proxiedAuthz );
+
+        assertArrayEquals( bb.array(), buffer.getBytes().array() );
     }
 
 
@@ -210,17 +263,27 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
         bb.put( new byte[]
             {
                 // ProxiedAuthzNotification ::= anonymous
-        } );
+            } );
 
         String expected = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         ProxiedAuthzDecorator decorator = new ProxiedAuthzDecorator( codec );
 
-        ProxiedAuthz proxiedAuthz = ( ProxiedAuthz ) decorator.getDecorated();
+        ProxiedAuthz proxiedAuthz = decorator.getDecorated();
         proxiedAuthz.setAuthzId( "" );
         bb = decorator.encode( ByteBuffer.allocate( decorator.computeLength() ) );
         String decoded = Strings.dumpBytes( bb.array() );
         assertEquals( expected, decoded );
+
+        // test reverse encoding
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        ControlFactory<ProxiedAuthz> factory =
+            ( ControlFactory<ProxiedAuthz> ) codec.getControlFactories().get( ProxiedAuthz.OID );
+
+        factory.encodeValue( buffer, proxiedAuthz );
+
+        assertArrayEquals( bb.array(), buffer.getBytes().array() );
     }
 }

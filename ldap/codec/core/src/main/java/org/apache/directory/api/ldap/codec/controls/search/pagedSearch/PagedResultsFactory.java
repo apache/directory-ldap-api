@@ -38,10 +38,6 @@ import org.apache.directory.api.ldap.model.message.controls.PagedResults;
  */
 public class PagedResultsFactory extends AbstractControlFactory<PagedResults>
 {
-    /** The LDAP codec service */
-    private LdapApiService codec;
-
-
     /**
      * Creates a new instance of PagedResultsFactory.
      *

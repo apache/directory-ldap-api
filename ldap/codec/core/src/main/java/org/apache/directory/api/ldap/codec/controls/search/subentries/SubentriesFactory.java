@@ -20,9 +20,10 @@
 package org.apache.directory.api.ldap.codec.controls.search.subentries;
 
 
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
-import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.Subentries;
@@ -35,12 +36,8 @@ import org.apache.directory.api.ldap.model.message.controls.Subentries;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SubentriesFactory implements ControlFactory<Subentries>
+public class SubentriesFactory extends AbstractControlFactory<Subentries>
 {
-    /** The LDAP codec service */
-    private LdapApiService codec;
-
-
     /**
      * Creates a new instance of SubentriesFactory.
      *
@@ -48,12 +45,11 @@ public class SubentriesFactory implements ControlFactory<Subentries>
      */
     public SubentriesFactory( LdapApiService codec )
     {
-        this.codec = codec;
+        super( codec );
     }
 
 
     /**
-     *
      * {@inheritDoc}
      */
     @Override
@@ -64,7 +60,6 @@ public class SubentriesFactory implements ControlFactory<Subentries>
 
 
     /**
-     *
      * {@inheritDoc}
      */
     @Override
@@ -75,7 +70,6 @@ public class SubentriesFactory implements ControlFactory<Subentries>
 
 
     /**
-     *
      * {@inheritDoc}
      */
     @Override
@@ -85,10 +79,12 @@ public class SubentriesFactory implements ControlFactory<Subentries>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void encodeValue( Asn1Buffer buffer, Control control )
     {
-        // TODO Auto-generated method stub
-
+        BerValue.encodeBoolean( buffer, ( ( ( Subentries ) control ).isVisible() ) );
     }
 }

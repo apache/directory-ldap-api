@@ -20,9 +20,10 @@
 package org.apache.directory.api.ldap.codec.controls.search.persistentSearch;
 
 
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
-import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.PersistentSearch;
@@ -34,11 +35,8 @@ import org.apache.directory.api.ldap.model.message.controls.PersistentSearch;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class PersistentSearchFactory implements ControlFactory<PersistentSearch>
+public class PersistentSearchFactory extends AbstractControlFactory<PersistentSearch>
 {
-    private LdapApiService codec;
-
-
     /**
      * Create a new PersistentSearchFactory instance
      *
@@ -46,7 +44,7 @@ public class PersistentSearchFactory implements ControlFactory<PersistentSearch>
      */
     public PersistentSearchFactory( LdapApiService codec )
     {
-        this.codec = codec;
+        super( codec );
     }
 
 
@@ -80,10 +78,25 @@ public class PersistentSearchFactory implements ControlFactory<PersistentSearch>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void encodeValue( Asn1Buffer buffer, Control control )
     {
-        // TODO Auto-generated method stub
+        PersistentSearch persistentSearch = ( PersistentSearch ) control;
+        int start = buffer.getPos();
 
+        // The returnECs flag
+        BerValue.encodeBoolean( buffer, persistentSearch.isReturnECs() );
+
+        // The changeOnly flag
+        BerValue.encodeBoolean( buffer, persistentSearch.isChangesOnly() );
+
+        // The changeTypes
+        BerValue.encodeInteger( buffer, persistentSearch.getChangeTypes() );
+
+        // The PersistentSearch sequence
+        BerValue.encodeSequence( buffer, start );
     }
 }

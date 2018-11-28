@@ -20,6 +20,8 @@
 package org.apache.directory.api.ldap.codec.controls.sort;
 
 
+import static org.apache.directory.api.ldap.codec.controls.sort.SortResponseFactory.ATTRIBUTE_TYPE_TAG;
+
 import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.Asn1Object;
@@ -29,6 +31,7 @@ import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
+import org.apache.directory.api.asn1.util.Asn1StringUtils;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ControlDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
@@ -115,7 +118,11 @@ public class SortResponseDecorator extends ControlDecorator<SortResponse> implem
 
         if ( getAttributeName() != null )
         {
-            BerValue.encode( buffer, getAttributeName() );
+            buffer.put( ( byte ) ATTRIBUTE_TYPE_TAG );
+            byte[] value = Asn1StringUtils.getBytesUtf8( getAttributeName() );
+
+            buffer.put( TLV.getBytes( value.length ) );
+            buffer.put( value );
         }
 
         return buffer;

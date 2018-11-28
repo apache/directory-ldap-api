@@ -36,10 +36,6 @@ import org.apache.directory.api.ldap.model.message.controls.CascadeImpl;
  */
 public class CascadeFactory extends AbstractControlFactory<Cascade>
 {
-    /** The LDAP codec responsible for encoding and decoding Cascade Controls */
-    private LdapApiService codec;
-
-
     /**
      * Creates a new instance of CascadeFactory.
      *

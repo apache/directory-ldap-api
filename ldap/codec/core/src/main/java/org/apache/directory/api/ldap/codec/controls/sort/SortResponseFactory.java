@@ -20,12 +20,15 @@
 package org.apache.directory.api.ldap.codec.controls.sort;
 
 
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.SortResponse;
+import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -34,11 +37,10 @@ import org.apache.directory.api.ldap.model.message.controls.SortResponse;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SortResponseFactory implements ControlFactory<SortResponse>
+public class SortResponseFactory extends AbstractControlFactory<SortResponse>
 {
-    /** The LDAP codec service */
-    private LdapApiService codec;
-
+    /** ASN.1 BER tag for the AttriubteType */
+    public static final int ATTRIBUTE_TYPE_TAG = 0x80;
 
     /**
      * Creates a new instance of SortResponseFactory.
@@ -47,7 +49,7 @@ public class SortResponseFactory implements ControlFactory<SortResponse>
      */
     public SortResponseFactory( LdapApiService codec )
     {
-        this.codec = codec;
+        super( codec );
     }
 
 
@@ -81,10 +83,27 @@ public class SortResponseFactory implements ControlFactory<SortResponse>
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void encodeValue( Asn1Buffer buffer, Control control )
     {
-        // TODO Auto-generated method stub
+        SortResponse sortResponse = ( SortResponse ) control;
 
+        int start = buffer.getPos();
+
+        // The attributeType, if any
+        if ( sortResponse.getAttributeName() != null )
+        {
+            BerValue.encodeOctetString( buffer, ( byte ) ATTRIBUTE_TYPE_TAG,
+                Strings.getBytesUtf8Ascii( sortResponse.getAttributeName() ) );
+        }
+
+        // The sortResult
+        BerValue.encodeEnumerated( buffer, sortResponse.getSortResult().getVal() );
+
+        // The overall sequence
+        BerValue.encodeSequence( buffer, start );
     }
 }

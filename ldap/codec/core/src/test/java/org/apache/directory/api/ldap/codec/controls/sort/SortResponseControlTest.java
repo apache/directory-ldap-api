@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.codec.controls.sort;
 
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -27,7 +28,8 @@ import static org.junit.Assert.assertTrue;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
-import org.apache.directory.api.ldap.codec.controls.sort.SortResponseDecorator;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.controls.SortResponse;
 import org.apache.directory.api.ldap.model.message.controls.SortResultCode;
@@ -47,24 +49,35 @@ public class SortResponseControlTest extends AbstractCodecServiceTest
         buffer.put( new byte[]
             {
                0x30, 0x07,
-                0x0A, 0x01, 0x00,
-                0x04, 0x02, 'c', 'n'
+                 0x0A, 0x01, 0x00,
+                 ( byte ) 0x80, 0x02,
+                   'c', 'n'
             } );
         buffer.flip();
-        
+
         SortResponseDecorator decorator = new SortResponseDecorator( codec );
         SortResponse control = ( SortResponse ) decorator.decode( buffer.array() );
-        
+
         assertEquals( SortResultCode.SUCCESS, control.getSortResult() );
         assertEquals( "cn", control.getAttributeName() );
-        
+
         ByteBuffer encoded = ByteBuffer.allocate( buffer.capacity() );
         decorator.computeLength();
         decorator.encode( encoded );
         assertTrue( Arrays.equals( buffer.array(), encoded.array() ) );
+
+        // test reverse encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+
+        ControlFactory<SortResponse> factory =
+            ( ControlFactory<SortResponse> ) codec.getControlFactories().get( SortResponse.OID );
+
+        factory.encodeValue( asn1Buffer, control );
+
+        assertArrayEquals( buffer.array(), asn1Buffer.getBytes().array() );
     }
 
-    
+
     @Test
     public void testDecodeControlWithoutAtType() throws Exception
     {
@@ -72,20 +85,30 @@ public class SortResponseControlTest extends AbstractCodecServiceTest
         buffer.put( new byte[]
             {
                0x30, 0x03,
-                0x0A, 0x01, 0x10
+                 0x0A, 0x01, 0x10
             } );
         buffer.flip();
-        
+
         SortResponseDecorator decorator = new SortResponseDecorator( codec );
         SortResponse control = ( SortResponse ) decorator.decode( buffer.array() );
-        
+
         assertEquals( SortResultCode.NOSUCHATTRIBUTE, control.getSortResult() );
         assertNull( control.getAttributeName() );
-        
+
         ByteBuffer encoded = ByteBuffer.allocate( buffer.capacity() );
         decorator.computeLength();
         decorator.encode( encoded );
         assertTrue( Arrays.equals( buffer.array(), encoded.array() ) );
+
+        // test reverse encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+
+        ControlFactory<SortResponse> factory =
+            ( ControlFactory<SortResponse> ) codec.getControlFactories().get( SortResponse.OID );
+
+        factory.encodeValue( asn1Buffer, control );
+
+        assertArrayEquals( buffer.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -96,12 +119,11 @@ public class SortResponseControlTest extends AbstractCodecServiceTest
         buffer.put( new byte[]
             {
                0x30, 0x03,
-                0x0A, 0x01, 0x0A
+                 0x0A, 0x01, 0x0A
             } );
         buffer.flip();
-        
+
         SortResponseDecorator decorator = new SortResponseDecorator( codec );
         decorator.decode( buffer.array() );
     }
-
 }
