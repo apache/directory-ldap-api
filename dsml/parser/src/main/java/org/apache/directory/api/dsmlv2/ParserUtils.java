@@ -312,6 +312,7 @@ public final class ParserUtils
 
         try
         {
+            factory.setFeature( javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE );
             transformer = factory.newTransformer( new StreamSource( ParserUtils.class
                 .getResourceAsStream( "/org/apache/directory/shared/dsmlv2/DSMLv2.xslt" ) ) );
         }
