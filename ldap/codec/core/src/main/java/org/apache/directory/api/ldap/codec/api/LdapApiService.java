@@ -54,15 +54,24 @@ public interface LdapApiService
     // ------------------------------------------------------------------------
 
     /**
-     * Returns an Iterator over the OID Strings of registered controls.
+     * Returns an Iterator over the OID Strings of registered request controls.
      *
      * @return The registered control OID Strings
      */
-    Iterator<String> registeredControls();
+    Iterator<String> registeredRequestControls();
 
 
     /**
-     * Checks if a control has been registered.
+     * Returns an Iterator over the OID Strings of registered response controls.
+     *
+     * @return The registered control OID Strings
+     */
+    Iterator<String> registeredResponseControls();
+
+
+    /**
+     * Checks if a control has been registered. It will check in both the
+     * request and response control maps.
      *
      * @param oid The Control OID we are looking for
      * @return The OID of the control to check for registration
@@ -71,30 +80,57 @@ public interface LdapApiService
 
 
     /**
-     * Registers an {@link ControlFactory} with this service.
+     * Registers an request {@link ControlFactory} with this service.
      *
      * @param factory The control factory
-     * @return The registred control factory
+     * @return The registered control factory
      */
-    ControlFactory<?> registerControl( ControlFactory<?> factory );
+    ControlFactory<?> registerRequestControl( ControlFactory<?> factory );
 
 
     /**
-     * Unregisters an {@link ControlFactory} with this service.
+     * Registers an response {@link ControlFactory} with this service.
+     *
+     * @param factory The control factory
+     * @return The registered control factory
+     */
+    ControlFactory<?> registerResponseControl( ControlFactory<?> factory );
+
+
+    /**
+     * Unregisters a request {@link ControlFactory} with this service.
      *
      * @param oid The oid of the control the factory is associated with.
-     * @return The unregistred control factory
+     * @return The unregistered control factory
      */
-    ControlFactory<?> unregisterControl( String oid );
+    ControlFactory<?> unregisterRequestControl( String oid );
 
 
     /**
-     * Creates a new codec control decorator of the specified type.
+     * Unregisters a response {@link ControlFactory} with this service.
+     *
+     * @param oid The oid of the control the factory is associated with.
+     * @return The unregistered control factory
+     */
+    ControlFactory<?> unregisterResponseControl( String oid );
+
+
+    /**
+     * Creates a new request codec control decorator of the specified type.
      *
      * @param oid The OID of the new control to create.
      * @return The newly created codec control.
      */
-    CodecControl<? extends Control> newControl( String oid );
+    CodecControl<? extends Control> newRequestControl( String oid );
+
+
+    /**
+     * Creates a new response codec control decorator of the specified type.
+     *
+     * @param oid The OID of the new control to create.
+     * @return The newly created codec control.
+     */
+    CodecControl<? extends Control> newResponseControl( String oid );
 
 
     /**
@@ -127,9 +163,15 @@ public interface LdapApiService
 
 
     /**
-     * @return the controlFactories
+     * @return the request controlFactories
      */
-    Map<String, ControlFactory<? extends Control>> getControlFactories();
+    Map<String, ControlFactory<? extends Control>> getRequestControlFactories();
+
+
+    /**
+     * @return the response controlFactories
+     */
+    Map<String, ControlFactory<? extends Control>> getResponseControlFactories();
 
 
     // ------------------------------------------------------------------------

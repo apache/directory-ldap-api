@@ -20,32 +20,34 @@
 package org.apache.directory.api.ldap.extras.controls.ad_impl;
 
 
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.controls.ad.AdDirSync;
+import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncResponse;
+import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncResponseFlag;
 import org.apache.directory.api.ldap.model.message.Control;
 
 
 /**
- * A {@link ControlFactory} which creates {@link AdDirSync} controls.
+ * A {@link ControlFactory} which creates {@link AdDirSyncResponse} controls.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class AdDirSyncFactory implements ControlFactory<AdDirSync>
+public class AdDirSyncResponseFactory implements ControlFactory<AdDirSyncResponse>
 {
     /** The codec for this factory */
     private LdapApiService codec;
 
 
     /**
-     * Creates a new instance of AdDirSyncFactory.
+     * Creates a new instance of AdDirSyncResponseFactory.
      *
      * @param codec The codec for this factory.
      */
-    public AdDirSyncFactory( LdapApiService codec )
+    public AdDirSyncResponseFactory( LdapApiService codec )
     {
         this.codec = codec;
     }
@@ -57,7 +59,7 @@ public class AdDirSyncFactory implements ControlFactory<AdDirSync>
     @Override
     public String getOid()
     {
-        return AdDirSync.OID;
+        return AdDirSyncResponse.OID;
     }
 
 
@@ -65,9 +67,9 @@ public class AdDirSyncFactory implements ControlFactory<AdDirSync>
      * {@inheritDoc}
      */
     @Override
-    public CodecControl<AdDirSync> newCodecControl()
+    public CodecControl<AdDirSyncResponse> newCodecControl()
     {
-        return new AdDirSyncDecorator( codec );
+        return new AdDirSyncResponseDecorator( codec );
     }
 
 
@@ -75,14 +77,31 @@ public class AdDirSyncFactory implements ControlFactory<AdDirSync>
      * {@inheritDoc}
      */
     @Override
-    public CodecControl<AdDirSync> newCodecControl( AdDirSync control )
+    public CodecControl<AdDirSyncResponse> newCodecControl( AdDirSyncResponse control )
     {
-        return new AdDirSyncDecorator( codec, control );
+        return new AdDirSyncResponseDecorator( codec, control );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void encodeValue( Asn1Buffer buffer, Control control )
     {
+        AdDirSyncResponse adDirSync = ( AdDirSyncResponse ) control;
+        int start = buffer.getPos();
+
+        // Encode the cookie
+        BerValue.encodeOctetString( buffer, adDirSync.getCookie() );
+
+        // Encode the MaxReturnLength/
+        BerValue.encodeInteger( buffer, adDirSync.getMaxReturnLength() );
+
+        // Encode the flags
+        BerValue.encodeInteger( buffer, AdDirSyncResponseFlag.getBitmask( adDirSync.getFlags() ) );
+
+        // Encode the SEQ
+        BerValue.encodeSequence( buffer, start );
     }
 }

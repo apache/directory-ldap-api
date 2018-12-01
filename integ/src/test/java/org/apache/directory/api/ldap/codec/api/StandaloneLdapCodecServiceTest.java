@@ -56,7 +56,8 @@ public class StandaloneLdapCodecServiceTest
             + "org.apache.directory.api.ldap.codec.controls.search.subentries.SubentriesFactory,"
             + "org.apache.directory.api.ldap.codec.controls.sort.SortRequestFactory,"
             + "org.apache.directory.api.ldap.codec.controls.sort.SortResponseFactory,"
-            + "org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncFactory,"
+            + "org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncRequestFactory,"
+            + "org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncResponseFactory,"
             + "org.apache.directory.api.ldap.extras.controls.ad_impl.AdPolicyHintsFactory,"
             + "org.apache.directory.api.ldap.extras.controls.ad_impl.AdShowDeletedFactory,"
             + "org.apache.directory.api.ldap.extras.controls.changeNotifications_impl.ChangeNotificationsFactory,"
@@ -83,7 +84,7 @@ public class StandaloneLdapCodecServiceTest
                     + "org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureFactory,"
                     + "org.apache.directory.api.ldap.extras.extended.ads_impl.whoAmI.WhoAmIFactory"
                     );
-        
+
         System
         .setProperty(
             StandaloneLdapApiService.INTERMEDIATE_RESPONSES_LIST,
@@ -102,7 +103,7 @@ public class StandaloneLdapCodecServiceTest
 
         assertTrue( codec.isControlRegistered( PasswordPolicy.OID ) );
 
-        CodecControl<? extends Control> control = codec.newControl( PasswordPolicy.OID );
+        CodecControl<? extends Control> control = codec.newRequestControl( PasswordPolicy.OID );
         assertNotNull( control );
         assertNotNull( codec );
     }

@@ -53,6 +53,7 @@ import org.apache.directory.api.ldap.codec.factory.UnbindRequestFactory;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.Referral;
+import org.apache.directory.api.ldap.model.message.Request;
 import org.apache.directory.api.util.Strings;
 
 
@@ -164,7 +165,7 @@ public final class LdapEncoder
      * @throws EncoderException If the encoding failed
      */
     private static void encodeControlsReverse( Asn1Buffer buffer, LdapApiService codec,
-        Map<String, Control> controls, Iterator<String> iterator ) throws EncoderException
+        Map<String, Control> controls, Iterator<String> iterator, boolean isRequest ) throws EncoderException
     {
         if ( iterator.hasNext() )
         {
@@ -172,10 +173,24 @@ public final class LdapEncoder
             Control control = controls.get( iterator.next() );
 
             // Encode the remaining controls recursively
-            encodeControlsReverse( buffer, codec, controls, iterator );
+            encodeControlsReverse( buffer, codec, controls, iterator, isRequest );
 
             // Fetch the control's factory from the LdapApiService
-            ControlFactory<?> controlFactory = codec.getControlFactories().get( control.getOid() );
+            ControlFactory<?> controlFactory;
+
+            if ( isRequest )
+            {
+                controlFactory = codec.getRequestControlFactories().get( control.getOid() );
+            }
+            else
+            {
+                controlFactory = codec.getResponseControlFactories().get( control.getOid() );
+            }
+
+            if ( controlFactory == null )
+            {
+                throw new EncoderException( I18n.err( I18n.ERR_08002_CANNOT_FIND_CONTROL_FACTORY, control.getOid() ) );
+            }
 
             int start = buffer.getPos();
 
@@ -320,7 +335,7 @@ public final class LdapEncoder
 
         if ( ( controls != null ) && ( controls.size() > 0 ) )
         {
-            encodeControlsReverse( buffer, codec, controls, controls.keySet().iterator() );
+            encodeControlsReverse( buffer, codec, controls, controls.keySet().iterator(), message instanceof Request );
 
             // The controls tag
             BerValue.encodeSequence( buffer, ( byte ) LdapCodecConstants.CONTROLS_TAG, start );

@@ -70,7 +70,7 @@ public class SortResponseControlTest extends AbstractCodecServiceTest
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
         ControlFactory<SortResponse> factory =
-            ( ControlFactory<SortResponse> ) codec.getControlFactories().get( SortResponse.OID );
+            ( ControlFactory<SortResponse> ) codec.getResponseControlFactories().get( SortResponse.OID );
 
         factory.encodeValue( asn1Buffer, control );
 
@@ -104,7 +104,7 @@ public class SortResponseControlTest extends AbstractCodecServiceTest
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
         ControlFactory<SortResponse> factory =
-            ( ControlFactory<SortResponse> ) codec.getControlFactories().get( SortResponse.OID );
+            ( ControlFactory<SortResponse> ) codec.getResponseControlFactories().get( SortResponse.OID );
 
         factory.encodeValue( asn1Buffer, control );
 

@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.codec.standalone;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
@@ -30,6 +31,7 @@ import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.IntermediateResponseFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.util.Strings;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
 import org.slf4j.Logger;
@@ -86,13 +88,13 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
     /**
      * Creates a new instance of StandaloneLdapCodecService.
      * <br><br>
-     * The following pom configuration is intended for use by unit test running 
+     * The following pom configuration is intended for use by unit test running
      * tools like Maven's surefire:
      * <pre>
      *   &lt;properties&gt;
      *     &lt;codec.plugin.directory&gt;${project.build.directory}/pluginDirectory&lt;/codec.plugin.directory&gt;
      *   &lt;/properties&gt;
-     * 
+     *
      *   &lt;build&gt;
      *     &lt;plugins&gt;
      *       &lt;plugin&gt;
@@ -119,7 +121,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      *           &lt;/systemPropertyVariables&gt;
      *         &lt;/configuration&gt;
      *       &lt;/plugin&gt;
-     *       
+     *
      *       &lt;plugin&gt;
      *         &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
      *         &lt;artifactId&gt;maven-dependency-plugin&lt;/artifactId&gt;
@@ -146,7 +148,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      *     &lt;/plugins&gt;
      *   &lt;/build&gt;
      * </pre>
-     * 
+     *
      * @throws Exception If we had an issue initializing the LDAP service
      */
     public StandaloneLdapApiService() throws Exception
@@ -163,17 +165,18 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      * @param intermediateResponses The list of intermediate responsess to store
      * @throws Exception If we had an issue with one of the two lists
      */
-    public StandaloneLdapApiService( List<String> controls, List<String> extendedOperations, 
+    public StandaloneLdapApiService( List<String> controls, List<String> extendedOperations,
             List<String> intermediateResponses ) throws Exception
     {
-        CodecFactoryUtil.loadStockControls( getControlFactories(), this );
+        CodecFactoryUtil.loadStockControls( getRequestControlFactories(), getResponseControlFactories(), this );
 
         CodecFactoryUtil.loadStockExtendedOperations( getExtendedOperationFactories(), this );
 
         CodecFactoryUtil.loadStockIntermediateResponses( getIntermediateResponseFactories(), this );
 
         // Load the controls
-        loadControls( controls );
+        loadControls( controls, getRequestControlFactories() );
+        loadControls( controls, getResponseControlFactories() );
 
         // Load the extended operations
         loadExtendedOperations( extendedOperations );
@@ -190,7 +193,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
                     Class.forName( DEFAULT_PROTOCOL_CODEC_FACTORY );
                 Constructor<? extends ProtocolCodecFactory> constructor =
                     clazz.getConstructor( LdapApiService.class );
-                
+
                 if ( constructor != null )
                 {
                     setProtocolCodecFactory( constructor.newInstance( this ) );
@@ -210,7 +213,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
 
     /**
      * Parses the system properties to obtain the controls list.
-     * 
+     *
      * @return A list of controls
      */
     private static List<String> getControlsFromSystemProperties()
@@ -249,7 +252,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      * Parses the system properties to obtain the extended operations.
      * Such extended operations are stored in the <b>apacheds.extendedOperations</b>
      * and <b>default.extendedOperation.requests</b> system properties.
-     * 
+     *
      * @return a list of extended operation
      */
     private static List<String> getExtendedOperationsFromSystemProperties()
@@ -288,7 +291,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      * Parses the system properties to obtain the intermediate responses.
      * Such intermediate responses are stored in the <b>apacheds.intermediateResponses</b>
      * and <b>default.intermediateResponses.requests</b> system properties.
-     * 
+     *
      * @return a list of intermediate responses
      */
     private static List<String> getIntermediateResponsesFromSystemProperties()
@@ -312,18 +315,19 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
 
     /**
      * Loads a list of controls from their FQCN.
-     * 
+     *
      * @param controlsList The list of controls to load
      * @throws Exception if a control could not be loaded
      */
-    private void loadControls( List<String> controlsList ) throws Exception
+    private void loadControls( List<String> controlsList, Map<String, ControlFactory<? extends Control>> controlFactories )
+        throws Exception
     {
         // Adding all controls
         if ( !controlsList.isEmpty() )
         {
             for ( String controlFQCN : controlsList )
             {
-                loadControl( controlFQCN );
+                loadControl( controlFQCN, controlFactories );
             }
         }
     }
@@ -331,19 +335,20 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
 
     /**
      * Loads a control from its FQCN.
-     * 
+     *
      * @param controlFQCN The control FQCN
      * @throws Exception If the control could not be loaded
      */
-    private void loadControl( String controlFQCN ) throws Exception
+    private void loadControl( String controlFQCN, Map<String, ControlFactory<? extends Control>> controlFactories )
+        throws Exception
     {
-        if ( getControlFactories().containsKey( controlFQCN ) )
+        if ( controlFactories.containsKey( controlFQCN ) )
         {
             if ( LOG.isDebugEnabled() )
             {
                 LOG.debug( I18n.msg( I18n.MSG_06003_CONTROL_FACTORY_ALREADY_LOADED, controlFQCN ) );
             }
-            
+
             return;
         }
 
@@ -357,7 +362,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
         Constructor<?> constructor = clazz.getConstructor( types );
 
         ControlFactory<?> factory = ( ControlFactory<?> ) constructor.newInstance( this );
-        getControlFactories().put( factory.getOid(), factory );
+        controlFactories.put( factory.getOid(), factory );
 
         if ( LOG.isInfoEnabled() )
         {
@@ -368,7 +373,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
 
     /**
      * Loads a list of extended operation from their FQCN
-     * 
+     *
      * @param extendedOperationsList The list of extended operations to load
      * @throws Exception If an extended operations cannot be loaded
      */
@@ -387,7 +392,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
 
     /**
      * Loads an of extended operations from its FQCN
-     * 
+     *
      * @param extendedOperationFQCN The extended operations to load
      * @throws Exception If the extended operations cannot be loaded
      */
@@ -399,7 +404,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
             {
                 LOG.debug( I18n.msg( I18n.MSG_06005_EXTENDED_OP_FACTORY_ALREADY_LOADED, extendedOperationFQCN ) );
             }
-            
+
             return;
         }
 
@@ -426,7 +431,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
 
     /**
      * Loads a list of intermediate responses from their FQCN
-     * 
+     *
      * @param intermediateResponsesList The list of intermediate response to load
      * @throws Exception If one of the intermediate response cannot be loaded
      */
@@ -445,7 +450,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
 
     /**
      * Loads an intermediate responses from its FQCN
-     * 
+     *
      * @param intermediateResponseFQCN The intermediate response to load
      * @throws Exception If the intermediate response cannot be loaded
      */
@@ -457,7 +462,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
             {
                 LOG.debug( I18n.msg( I18n.MSG_06006_INTERMEDIATE_FACTORY_ALREADY_LOADED, intermediateResponseFQCN ) );
             }
-            
+
             return;
         }
 

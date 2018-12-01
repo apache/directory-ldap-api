@@ -70,7 +70,7 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
         Asn1Buffer buffer = new Asn1Buffer();
 
         ControlFactory<ProxiedAuthz> factory =
-            ( ControlFactory<ProxiedAuthz> ) codec.getControlFactories().get( ProxiedAuthz.OID );
+            ( ControlFactory<ProxiedAuthz> ) codec.getRequestControlFactories().get( ProxiedAuthz.OID );
 
         factory.encodeValue( buffer, proxiedAuthz );
 
@@ -102,7 +102,7 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
         Asn1Buffer buffer = new Asn1Buffer();
 
         ControlFactory<ProxiedAuthz> factory =
-            ( ControlFactory<ProxiedAuthz> ) codec.getControlFactories().get( ProxiedAuthz.OID );
+            ( ControlFactory<ProxiedAuthz> ) codec.getRequestControlFactories().get( ProxiedAuthz.OID );
 
         factory.encodeValue( buffer, proxiedAuthz );
 
@@ -133,7 +133,7 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
         Asn1Buffer buffer = new Asn1Buffer();
 
         ControlFactory<ProxiedAuthz> factory =
-            ( ControlFactory<ProxiedAuthz> ) codec.getControlFactories().get( ProxiedAuthz.OID );
+            ( ControlFactory<ProxiedAuthz> ) codec.getRequestControlFactories().get( ProxiedAuthz.OID );
 
         factory.encodeValue( buffer, proxiedAuthz );
 
@@ -209,7 +209,7 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
         Asn1Buffer buffer = new Asn1Buffer();
 
         ControlFactory<ProxiedAuthz> factory =
-            ( ControlFactory<ProxiedAuthz> ) codec.getControlFactories().get( ProxiedAuthz.OID );
+            ( ControlFactory<ProxiedAuthz> ) codec.getRequestControlFactories().get( ProxiedAuthz.OID );
 
         factory.encodeValue( buffer, proxiedAuthz );
 
@@ -245,7 +245,7 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
         Asn1Buffer buffer = new Asn1Buffer();
 
         ControlFactory<ProxiedAuthz> factory =
-            ( ControlFactory<ProxiedAuthz> ) codec.getControlFactories().get( ProxiedAuthz.OID );
+            ( ControlFactory<ProxiedAuthz> ) codec.getRequestControlFactories().get( ProxiedAuthz.OID );
 
         factory.encodeValue( buffer, proxiedAuthz );
 
@@ -280,7 +280,7 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
         Asn1Buffer buffer = new Asn1Buffer();
 
         ControlFactory<ProxiedAuthz> factory =
-            ( ControlFactory<ProxiedAuthz> ) codec.getControlFactories().get( ProxiedAuthz.OID );
+            ( ControlFactory<ProxiedAuthz> ) codec.getRequestControlFactories().get( ProxiedAuthz.OID );
 
         factory.encodeValue( buffer, proxiedAuthz );
 

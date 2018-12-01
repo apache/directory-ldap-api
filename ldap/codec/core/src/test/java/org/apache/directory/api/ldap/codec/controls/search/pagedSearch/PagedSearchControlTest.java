@@ -89,7 +89,7 @@ public class PagedSearchControlTest extends AbstractCodecServiceTest
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        PagedResultsFactory factory = ( PagedResultsFactory ) codec.getControlFactories().get( PagedResults.OID );
+        PagedResultsFactory factory = ( PagedResultsFactory ) codec.getRequestControlFactories().get( PagedResults.OID );
         factory.encodeValue( asn1Buffer, ctrl );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
@@ -194,7 +194,7 @@ public class PagedSearchControlTest extends AbstractCodecServiceTest
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        PagedResultsFactory factory = ( PagedResultsFactory ) codec.getControlFactories().get( PagedResults.OID );
+        PagedResultsFactory factory = ( PagedResultsFactory ) codec.getResponseControlFactories().get( PagedResults.OID );
         factory.encodeValue( asn1Buffer, ctrl );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
@@ -257,7 +257,7 @@ public class PagedSearchControlTest extends AbstractCodecServiceTest
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        PagedResultsFactory factory = ( PagedResultsFactory ) codec.getControlFactories().get( PagedResults.OID );
+        PagedResultsFactory factory = ( PagedResultsFactory ) codec.getResponseControlFactories().get( PagedResults.OID );
         factory.encodeValue( asn1Buffer, ctrl );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );

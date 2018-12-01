@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.api.dsmlv2.request;
@@ -80,7 +80,7 @@ import org.xmlpull.v1.XmlPullParserException;
 public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
 {
     private LdapApiService codec = LdapApiServiceFactory.getSingleton();
-    
+
     /** Some literal */
     private static final String BATCH_REQUEST = "batchRequest";
     private static final String ABANDON_REQUEST = "abandonRequest";
@@ -222,7 +222,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             String attributeValue;
             // requestID
             attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
-            
+
             if ( attributeValue != null )
             {
                 abandonRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
@@ -234,10 +234,10 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                     throw new XmlPullParserException( I18n.err( I18n.ERR_03000_REQUEST_ID_REQUIRED ), xpp, null );
                 }
             }
-            
+
             // abandonID
             attributeValue = xpp.getAttributeValue( "", "abandonID" );
-            
+
             if ( attributeValue != null )
             {
                 try
@@ -276,7 +276,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             String attributeValue;
             // requestID
             attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
-            
+
             if ( attributeValue != null )
             {
                 addRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
@@ -288,10 +288,10 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                     throw new XmlPullParserException( I18n.err( I18n.ERR_03000_REQUEST_ID_REQUIRED ), xpp, null );
                 }
             }
-            
+
             // dn
             attributeValue = xpp.getAttributeValue( "", "dn" );
-            
+
             if ( attributeValue != null )
             {
                 try
@@ -372,7 +372,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
 
                 // Getting the value
                 String nextText = xpp.nextText();
-                
+
                 if ( !Strings.isEmpty( nextText ) )
                 {
                     try
@@ -1850,17 +1850,17 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             try
             {
                 ExprNode exprNode = searchRequestDecorator.getFilterNode();
-                
+
                 if ( exprNode == null )
                 {
                     throw new IllegalStateException( I18n.err( I18n.ERR_03041_NO_FILTER_ELEMENT ) );
                 }
-                
+
                 searchRequest.setFilter( exprNode );
             }
             catch ( LdapSchemaException lse )
             {
-                
+
             }
         }
     };
@@ -1962,7 +1962,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
 
                 // Getting the value
                 String nextText = xpp.nextText();
-                
+
                 if ( !Strings.isEmpty( nextText ) )
                 {
                     if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
@@ -2008,7 +2008,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                     throw new XmlPullParserException( I18n.err( I18n.ERR_03034_INCORRECT_TYPE_VALUE ), xpp, null );
                 }
 
-                control = codec.newControl( codec.newControl( attributeValue ) );
+                control = codec.newControl( codec.newRequestControl( attributeValue ) );
                 ( ( Request ) container.getBatchRequest().getCurrentRequest() ).addControl( control );
             }
             else

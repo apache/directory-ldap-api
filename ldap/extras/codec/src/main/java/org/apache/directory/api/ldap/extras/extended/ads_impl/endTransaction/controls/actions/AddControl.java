@@ -59,6 +59,7 @@ public class AddControl extends GrammarAction<ControlsContainer>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void action( ControlsContainer container ) throws DecoderException
     {
         TLV tlv = container.getCurrentTLV();
@@ -87,11 +88,11 @@ public class AddControl extends GrammarAction<ControlsContainer>
             throw new DecoderException( msg );
         }
 
-        CodecControl<?> control = container.getLdapCodecService().newControl( oidValue );
+        CodecControl<?> control = container.getLdapCodecService().newResponseControl( oidValue );
 
         container.setCurrentControl( control );
         container.addControl( control );
-        
+
         // We can have an END transition
         container.setGrammarEndAllowed( true );
 

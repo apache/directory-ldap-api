@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 package org.apache.directory.api.ldap.extras.controls.ad_impl;
 
@@ -24,11 +24,11 @@ import org.apache.directory.api.asn1.ber.grammar.States;
 
 
 /**
- * ASN.1 grammar constants of AdDirSync Control.
- * 
+ * ASN.1 grammar constants of AdDirSyncRequest Control.
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public enum AdDirSyncStatesEnum implements States
+public enum AdDirSyncRequestStatesEnum implements States
 {
 
     /** The END_STATE */
@@ -38,40 +38,40 @@ public enum AdDirSyncStatesEnum implements States
     START_STATE,
 
     /** sequence start state */
-    AD_DIR_SYNC_SEQUENCE_STATE,
+    AD_DIR_SYNC_REQUEST_SEQUENCE_STATE,
 
-    /** flag state */
-    FLAG_STATE,
+    /** parentFirst state */
+    PARENTS_FIRST_STATE,
 
-    /** maxReturnLength value state */
-    MAX_RETURN_LENGTH_STATE,
+    /** maxAttributeCount value state */
+    MAX_ATTRIBUTE_COUNT_STATE,
 
     /** cookie value state */
     COOKIE_STATE,
 
     /** terminal state */
-    LAST_AD_DIR_SYNC_STATE;
+    LAST_AD_DIR_SYNC_REQUEST_STATE;
 
     /**
      * Get the grammar name
-     * 
+     *
      * @return The grammar name
      */
     public String getGrammarName()
     {
-        return "AD_DIR_SYNC_GRAMMAR";
+        return "AD_DIR_SYNC_REQUEST_GRAMMAR";
     }
 
 
     /**
      * Get the string representing the state
-     * 
+     *
      * @param state The state number
      * @return The String representing the state
      */
     public String getState( int state )
     {
-        return ( state == END_STATE.ordinal() ) ? "AD_DIR_SYNC_GRAMMAR" : name();
+        return ( state == END_STATE.ordinal() ) ? "AD_DIR_SYNC_REQUEST_GRAMMAR" : name();
     }
 
 
@@ -89,7 +89,7 @@ public enum AdDirSyncStatesEnum implements States
      * {@inheritDoc}
      */
     @Override
-    public AdDirSyncStatesEnum getStartState()
+    public AdDirSyncRequestStatesEnum getStartState()
     {
         return START_STATE;
     }

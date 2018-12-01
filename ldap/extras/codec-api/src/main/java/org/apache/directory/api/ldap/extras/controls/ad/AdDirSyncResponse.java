@@ -26,10 +26,9 @@ import org.apache.directory.api.ldap.model.message.Control;
 
 
 /**
- * The DirSync control, as described in http://tools.ietf.org/html/draft-armijo-ldap-dirsync-00.
- * We use the same control for both the SearchRequest and the SearchResultDone. Here is the
- * ASN/1 description of the SearchRequest control :
- * 
+ * The DirSync response control, as described in http://tools.ietf.org/html/draft-armijo-ldap-dirsync-00.
+ * Here is the ASN/1 description of the SearchRequest control :
+ *
  * <pre>
  * Repl    Control ::= SEQUENCE {
  *     controlType             1.2.840.113556.1.4.841
@@ -37,33 +36,20 @@ import org.apache.directory.api.ldap.model.message.Control;
  *     criticality             TRUE
  * }
  * </pre>
- * 
- * the control value can be one of the two structures :
- * 
+ *
+ * the control value is :
  * <pre>
- * Client side :
- * realReplControlValue ::= SEQUENCE {
- *     flags                 integer
- *     maxBytes              integer
- *     cookie                OCTET STRING
- * }
- * </pre>
- * 
- * or
- * 
- * <pre>
- * Server side :
  * realReplControlValue ::= SEQUENCE {
  *     flag                  integer
  *     maxReturnLength       integer
  *     cookie                OCTET STRING
  * }
- * </pre> 
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  *
  */
-public interface AdDirSync extends Control
+public interface AdDirSyncResponse extends Control
 {
     /** This control OID */
     String OID = "1.2.840.113556.1.4.841";
@@ -103,23 +89,23 @@ public interface AdDirSync extends Control
      * <li>LDAP_DIRSYNC_INCREMENTAL_VALUES (0x7FFFFFFF)</li>
      * </ul>
      */
-    Set<AdDirSyncFlag> getFlags();
+    Set<AdDirSyncResponseFlag> getFlags();
 
 
     /**
      * @param flags The flags to be set. See {@link EnumSet} for how to generate EnumSets.
      */
-    void setFlags( Set<AdDirSyncFlag> flags );
+    void setFlags( Set<AdDirSyncResponseFlag> flags );
 
 
     /**
      * @param flag The flag to be added to the current collection of flags.
      */
-    void addFlag( AdDirSyncFlag flag );
+    void addFlag( AdDirSyncResponseFlag flag );
 
 
     /**
-     * @param flag The flag to be removed from the current collection of flags. 
+     * @param flag The flag to be removed from the current collection of flags.
      */
-    void removeFlag( AdDirSyncFlag flag );
+    void removeFlag( AdDirSyncResponseFlag flag );
 }

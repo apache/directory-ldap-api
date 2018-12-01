@@ -89,8 +89,11 @@ public class DefaultLdapCodecService implements LdapApiService
     /** A logger */
     private static final Logger LOG = LoggerFactory.getLogger( DefaultLdapCodecService.class );
 
-    /** The map of registered {@link org.apache.directory.api.ldap.codec.api.ControlFactory}'s */
-    private Map<String, ControlFactory<? extends Control>> controlFactories = new HashMap<>();
+    /** The map of registered request {@link ControlFactory}'s */
+    private Map<String, ControlFactory<? extends Control>> requestControlFactories = new HashMap<>();
+
+    /** The map of registered response {@link ControlFactory}'s */
+    private Map<String, ControlFactory<? extends Control>> responseControlFactories = new HashMap<>();
 
     /** The map of registered {@link org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory}'s by request OID */
     private Map<String, ExtendedOperationFactory> extendedOperationFactories = new HashMap<>();
@@ -117,7 +120,7 @@ public class DefaultLdapCodecService implements LdapApiService
     private void loadStockControls()
     {
         ControlFactory<Cascade> cascadeFactory = new CascadeFactory( this );
-        controlFactories.put( cascadeFactory.getOid(), cascadeFactory );
+        requestControlFactories.put( cascadeFactory.getOid(), cascadeFactory );
 
         if ( LOG.isInfoEnabled() )
         {
@@ -125,7 +128,7 @@ public class DefaultLdapCodecService implements LdapApiService
         }
 
         ControlFactory<EntryChange> entryChangeFactory = new EntryChangeFactory( this );
-        controlFactories.put( entryChangeFactory.getOid(), entryChangeFactory );
+        responseControlFactories.put( entryChangeFactory.getOid(), entryChangeFactory );
 
         if ( LOG.isInfoEnabled() )
         {
@@ -133,23 +136,16 @@ public class DefaultLdapCodecService implements LdapApiService
         }
 
         ControlFactory<ManageDsaIT> manageDsaItFactory = new ManageDsaITFactory( this );
-        controlFactories.put( manageDsaItFactory.getOid(), manageDsaItFactory );
+        requestControlFactories.put( manageDsaItFactory.getOid(), manageDsaItFactory );
 
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, manageDsaItFactory.getOid() ) );
         }
 
-        ControlFactory<ProxiedAuthz> proxiedAuthzFactory = new ProxiedAuthzFactory( this );
-        controlFactories.put( proxiedAuthzFactory.getOid(), proxiedAuthzFactory );
-
-        if ( LOG.isInfoEnabled() )
-        {
-            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, proxiedAuthzFactory.getOid() ) );
-        }
-
         ControlFactory<PagedResults> pageResultsFactory = new PagedResultsFactory( this );
-        controlFactories.put( pageResultsFactory.getOid(), pageResultsFactory );
+        requestControlFactories.put( pageResultsFactory.getOid(), pageResultsFactory );
+        responseControlFactories.put( pageResultsFactory.getOid(), pageResultsFactory );
 
         if ( LOG.isInfoEnabled() )
         {
@@ -157,23 +153,23 @@ public class DefaultLdapCodecService implements LdapApiService
         }
 
         ControlFactory<PersistentSearch> persistentSearchFactory = new PersistentSearchFactory( this );
-        controlFactories.put( persistentSearchFactory.getOid(), persistentSearchFactory );
+        requestControlFactories.put( persistentSearchFactory.getOid(), persistentSearchFactory );
 
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, persistentSearchFactory.getOid() ) );
         }
 
-        ControlFactory<Subentries> subentriesFactory = new SubentriesFactory( this );
-        controlFactories.put( subentriesFactory.getOid(), subentriesFactory );
+        ControlFactory<ProxiedAuthz> proxiedAuthzFactory = new ProxiedAuthzFactory( this );
+        requestControlFactories.put( proxiedAuthzFactory.getOid(), proxiedAuthzFactory );
 
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, subentriesFactory.getOid() ) );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, proxiedAuthzFactory.getOid() ) );
         }
 
         ControlFactory<SortRequest> sortRequestFactory = new SortRequestFactory( this );
-        controlFactories.put( sortRequestFactory.getOid(), sortRequestFactory );
+        requestControlFactories.put( sortRequestFactory.getOid(), sortRequestFactory );
 
         if ( LOG.isInfoEnabled() )
         {
@@ -181,11 +177,19 @@ public class DefaultLdapCodecService implements LdapApiService
         }
 
         ControlFactory<SortResponse> sortResponseFactory = new SortResponseFactory( this );
-        controlFactories.put( sortResponseFactory.getOid(), sortResponseFactory );
+        responseControlFactories.put( sortResponseFactory.getOid(), sortResponseFactory );
 
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, sortResponseFactory.getOid() ) );
+        }
+
+        ControlFactory<Subentries> subentriesFactory = new SubentriesFactory( this );
+        requestControlFactories.put( subentriesFactory.getOid(), subentriesFactory );
+
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, subentriesFactory.getOid() ) );
         }
     }
 
@@ -198,9 +202,18 @@ public class DefaultLdapCodecService implements LdapApiService
      * {@inheritDoc}
      */
     @Override
-    public ControlFactory<?> registerControl( ControlFactory<?> factory )
+    public ControlFactory<?> registerRequestControl( ControlFactory<?> factory )
     {
-        return controlFactories.put( factory.getOid(), factory );
+        return requestControlFactories.put( factory.getOid(), factory );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ControlFactory<?> registerResponseControl( ControlFactory<?> factory )
+    {
+        return responseControlFactories.put( factory.getOid(), factory );
     }
 
 
@@ -208,9 +221,9 @@ public class DefaultLdapCodecService implements LdapApiService
      * {@inheritDoc}
      */
     @Override
-    public ControlFactory<?> unregisterControl( String oid )
+    public ControlFactory<?> unregisterRequestControl( String oid )
     {
-        return controlFactories.remove( oid );
+        return requestControlFactories.remove( oid );
     }
 
 
@@ -218,9 +231,29 @@ public class DefaultLdapCodecService implements LdapApiService
      * {@inheritDoc}
      */
     @Override
-    public Iterator<String> registeredControls()
+    public ControlFactory<?> unregisterResponseControl( String oid )
     {
-        return Collections.unmodifiableSet( controlFactories.keySet() ).iterator();
+        return responseControlFactories.remove( oid );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Iterator<String> registeredRequestControls()
+    {
+        return Collections.unmodifiableSet( requestControlFactories.keySet() ).iterator();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Iterator<String> registeredResponseControls()
+    {
+        return Collections.unmodifiableSet( responseControlFactories.keySet() ).iterator();
     }
 
 
@@ -230,7 +263,7 @@ public class DefaultLdapCodecService implements LdapApiService
     @Override
     public boolean isControlRegistered( String oid )
     {
-        return controlFactories.containsKey( oid );
+        return requestControlFactories.containsKey( oid ) | responseControlFactories.containsKey( oid );
     }
 
 
@@ -300,9 +333,26 @@ public class DefaultLdapCodecService implements LdapApiService
      * {@inheritDoc}
      */
     @Override
-    public CodecControl<? extends Control> newControl( String oid )
+    public CodecControl<? extends Control> newRequestControl( String oid )
     {
-        ControlFactory<?> factory = controlFactories.get( oid );
+        ControlFactory<?> factory = requestControlFactories.get( oid );
+
+        if ( factory == null )
+        {
+            return new BasicControlDecorator( this, new OpaqueControl( oid ) );
+        }
+
+        return factory.newCodecControl();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CodecControl<? extends Control> newResponseControl( String oid )
+    {
+        ControlFactory<?> factory = responseControlFactories.get( oid );
 
         if ( factory == null )
         {
@@ -325,14 +375,14 @@ public class DefaultLdapCodecService implements LdapApiService
             throw new NullPointerException( I18n.err( I18n.ERR_05400_CONTROL_ARGUMENT_WAS_NULL ) );
         }
 
-        // protect agains being multiply decorated
+        // protect against being multiply decorated
         if ( control instanceof CodecControl )
         {
             return ( CodecControl<?> ) control;
         }
 
         @SuppressWarnings("rawtypes")
-        ControlFactory factory = controlFactories.get( control.getOid() );
+        ControlFactory factory = requestControlFactories.get( control.getOid() );
 
         if ( factory == null )
         {
@@ -365,7 +415,7 @@ public class DefaultLdapCodecService implements LdapApiService
     public Control fromJndiControl( javax.naming.ldap.Control control ) throws DecoderException
     {
         @SuppressWarnings("rawtypes")
-        ControlFactory factory = controlFactories.get( control.getID() );
+        ControlFactory factory = requestControlFactories.get( control.getID() );
 
         if ( factory == null )
         {
@@ -703,21 +753,40 @@ public class DefaultLdapCodecService implements LdapApiService
 
 
     /**
-     * @return the controlFactories
+     * {@inheritDoc}
      */
     @Override
-    public Map<String, ControlFactory<? extends Control>> getControlFactories()
+    public Map<String, ControlFactory<? extends Control>> getRequestControlFactories()
     {
-        return controlFactories;
+        return requestControlFactories;
     }
 
 
     /**
-     * @param controlFactories the controlFactories to set
+     * {@inheritDoc}
      */
-    public void setControlFactories( Map<String, ControlFactory<? extends Control>> controlFactories )
+    @Override
+    public Map<String, ControlFactory<? extends Control>> getResponseControlFactories()
     {
-        this.controlFactories = controlFactories;
+        return responseControlFactories;
+    }
+
+
+    /**
+     * @param requestControlFactories the request controlFactories to set
+     */
+    public void setRequestControlFactories( Map<String, ControlFactory<? extends Control>> requestControlFactories )
+    {
+        this.requestControlFactories = requestControlFactories;
+    }
+
+
+    /**
+     * @param responseControlFactories the response controlFactories to set
+     */
+    public void setResponseControlFactories( Map<String, ControlFactory<? extends Control>> responseControlFactories )
+    {
+        this.responseControlFactories = responseControlFactories;
     }
 
 

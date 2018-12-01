@@ -81,7 +81,7 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getControlFactories().get( EntryChange.OID );
+        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( EntryChange.OID );
         factory.encodeValue( asn1Buffer, entryChange );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
@@ -119,7 +119,7 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getControlFactories().get( EntryChange.OID );
+        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( EntryChange.OID );
         factory.encodeValue( asn1Buffer, entryChange );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
@@ -155,7 +155,7 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getControlFactories().get( EntryChange.OID );
+        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( EntryChange.OID );
         factory.encodeValue( asn1Buffer, entryChange );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
@@ -218,7 +218,7 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getControlFactories().get( EntryChange.OID );
+        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( EntryChange.OID );
         factory.encodeValue( asn1Buffer, entryChange );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
@@ -310,7 +310,7 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getControlFactories().get( EntryChange.OID );
+        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( EntryChange.OID );
         factory.encodeValue( asn1Buffer, entryChange );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
@@ -353,7 +353,7 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getControlFactories().get( EntryChange.OID );
+        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( EntryChange.OID );
         factory.encodeValue( asn1Buffer, entryChange );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );

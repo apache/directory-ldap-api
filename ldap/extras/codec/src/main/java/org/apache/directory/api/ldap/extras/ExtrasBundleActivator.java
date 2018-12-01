@@ -22,16 +22,18 @@ package org.apache.directory.api.ldap.extras;
 
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.controls.ad.AdShowDeleted;
+import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncRequest;
+import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncResponse;
 import org.apache.directory.api.ldap.extras.controls.ad.AdPolicyHints;
-import org.apache.directory.api.ldap.extras.controls.ad.AdDirSync;
-import org.apache.directory.api.ldap.extras.controls.ad_impl.AdShowDeletedFactory;
+import org.apache.directory.api.ldap.extras.controls.ad.AdShowDeleted;
+import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncRequestFactory;
+import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncResponseFactory;
 import org.apache.directory.api.ldap.extras.controls.ad_impl.AdPolicyHintsFactory;
+import org.apache.directory.api.ldap.extras.controls.ad_impl.AdShowDeletedFactory;
 import org.apache.directory.api.ldap.extras.controls.changeNotifications.ChangeNotifications;
 import org.apache.directory.api.ldap.extras.controls.changeNotifications_impl.ChangeNotificationsFactory;
 import org.apache.directory.api.ldap.extras.controls.permissiveModify.PermissiveModify;
 import org.apache.directory.api.ldap.extras.controls.permissiveModify_impl.PermissiveModifyFactory;
-import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncFactory;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
 import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValue;
@@ -74,8 +76,8 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 
 /**
- * A BundleActivator for the ldap codec extras extension: extra ApacheDS and 
- * Apache Directory Studio specific controls and extended operations. 
+ * A BundleActivator for the ldap codec extras extension: extra ApacheDS and
+ * Apache Directory Studio specific controls and extended operations.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -164,18 +166,24 @@ public class ExtrasBundleActivator implements BundleActivator
 
         private void unregisterExtrasControls( LdapApiService codec )
         {
-            codec.unregisterControl( AdDirSync.OID );
-            codec.unregisterControl( AdShowDeleted.OID );
-            codec.unregisterControl( AdPolicyHints.OID );
-            codec.unregisterControl( ChangeNotifications.OID );
-            codec.unregisterControl( PasswordPolicy.OID );
-            codec.unregisterControl( PermissiveModify.OID );
-            codec.unregisterControl( SyncDoneValue.OID );
-            codec.unregisterControl( SyncRequestValue.OID );
-            codec.unregisterControl( SyncStateValue.OID );
-            codec.unregisterControl( TransactionSpecification.OID );
-            codec.unregisterControl( VirtualListViewRequest.OID );
-            codec.unregisterControl( VirtualListViewResponse.OID );
+            // Request controls
+            codec.unregisterRequestControl( AdDirSyncRequest.OID );
+            codec.unregisterRequestControl( AdPolicyHints.OID );
+            codec.unregisterRequestControl( AdShowDeleted.OID );
+            codec.unregisterRequestControl( ChangeNotifications.OID );
+            codec.unregisterRequestControl( PasswordPolicy.OID );
+            codec.unregisterRequestControl( PermissiveModify.OID );
+            codec.unregisterRequestControl( SyncRequestValue.OID );
+            codec.unregisterRequestControl( TransactionSpecification.OID );
+            codec.unregisterRequestControl( VirtualListViewRequest.OID );
+
+            // Response controls
+            codec.unregisterResponseControl( AdDirSyncRequest.OID );
+            codec.unregisterResponseControl( ChangeNotifications.OID );
+            codec.unregisterResponseControl( PasswordPolicy.OID );
+            codec.unregisterResponseControl( SyncDoneValue.OID );
+            codec.unregisterResponseControl( SyncStateValue.OID );
+            codec.unregisterResponseControl( VirtualListViewResponse.OID );
         }
 
 
@@ -201,42 +209,47 @@ public class ExtrasBundleActivator implements BundleActivator
          */
         private void registerExtrasControls( LdapApiService codec )
         {
-            ControlFactory<AdDirSync> adDirSyncFactory = new AdDirSyncFactory( codec );
-            codec.registerControl( adDirSyncFactory );
-            
-            ControlFactory<AdShowDeleted> adDeletedFactory = new AdShowDeletedFactory( codec );
-            codec.registerControl( adDeletedFactory );
-            
+            ControlFactory<AdDirSyncRequest> adDirSyncRequestFactory = new AdDirSyncRequestFactory( codec );
+            codec.registerRequestControl( adDirSyncRequestFactory );
+
+            ControlFactory<AdDirSyncResponse> adDirSyncResponseFactory = new AdDirSyncResponseFactory( codec );
+            codec.registerResponseControl( adDirSyncResponseFactory );
+
             ControlFactory<AdPolicyHints> adPolicyHintsFactory = new AdPolicyHintsFactory( codec );
-            codec.registerControl( adPolicyHintsFactory );
-            
+            codec.registerRequestControl( adPolicyHintsFactory );
+
+            ControlFactory<AdShowDeleted> adShowDeletedFactory = new AdShowDeletedFactory( codec );
+            codec.registerRequestControl( adShowDeletedFactory );
+
             ControlFactory<ChangeNotifications> changeNotificationsFactory = new ChangeNotificationsFactory( codec );
-            codec.registerControl( changeNotificationsFactory );
+            codec.registerRequestControl( changeNotificationsFactory );
+            codec.registerResponseControl( changeNotificationsFactory );
 
             ControlFactory<PasswordPolicy> passwordPolicyFactory = new PasswordPolicyFactory( codec );
-            codec.registerControl( passwordPolicyFactory );
+            codec.registerRequestControl( passwordPolicyFactory );
+            codec.registerResponseControl( passwordPolicyFactory );
 
             ControlFactory<PermissiveModify> permissiveModifyFactory = new PermissiveModifyFactory( codec );
-            codec.registerControl( permissiveModifyFactory );
+            codec.registerRequestControl( permissiveModifyFactory );
 
             ControlFactory<SyncDoneValue> syncDoneValuefactory = new SyncDoneValueFactory( codec );
-            codec.registerControl( syncDoneValuefactory );
+            codec.registerResponseControl( syncDoneValuefactory );
 
             ControlFactory<SyncRequestValue> syncRequestValueFactory = new SyncRequestValueFactory( codec );
-            codec.registerControl( syncRequestValueFactory );
+            codec.registerRequestControl( syncRequestValueFactory );
 
             ControlFactory<SyncStateValue> syncStateValuefactory = new SyncStateValueFactory( codec );
-            codec.registerControl( syncStateValuefactory );
+            codec.registerResponseControl( syncStateValuefactory );
 
             ControlFactory<TransactionSpecification> transactionSpecificationfactory = new TransactionSpecificationFactory( codec );
-            codec.registerControl( transactionSpecificationfactory );
+            codec.registerRequestControl( transactionSpecificationfactory );
 
             ControlFactory<VirtualListViewRequest> virtualListViewRequestFactory = new VirtualListViewRequestFactory( codec );
-            codec.registerControl( virtualListViewRequestFactory );
+            codec.registerRequestControl( virtualListViewRequestFactory );
 
             ControlFactory<VirtualListViewResponse> virtualListViewResponseFactory = new VirtualListViewResponseFactory(
                 codec );
-            codec.registerControl( virtualListViewResponseFactory );
+            codec.registerResponseControl( virtualListViewResponseFactory );
         }
     }
 
@@ -252,8 +265,8 @@ public class ExtrasBundleActivator implements BundleActivator
             context, LdapApiService.class, ldapApiServiceTracker );
         serviceTracker.open();
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

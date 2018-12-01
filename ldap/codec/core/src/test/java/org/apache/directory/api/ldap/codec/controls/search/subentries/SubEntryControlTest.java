@@ -78,7 +78,7 @@ public class SubEntryControlTest extends AbstractCodecServiceTest
         // Test reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        ControlFactory<Subentries> factory = ( ControlFactory<Subentries> )codec.getControlFactories().get( Subentries.OID );
+        ControlFactory<Subentries> factory = ( ControlFactory<Subentries> )codec.getRequestControlFactories().get( Subentries.OID );
 
         factory.encodeValue( asn1Buffer, subentries );
 
@@ -114,7 +114,7 @@ public class SubEntryControlTest extends AbstractCodecServiceTest
         // Test reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        ControlFactory<Subentries> factory = ( ControlFactory<Subentries> )codec.getControlFactories().get( Subentries.OID );
+        ControlFactory<Subentries> factory = ( ControlFactory<Subentries> )codec.getRequestControlFactories().get( Subentries.OID );
 
         factory.encodeValue( asn1Buffer, subentries );
 

@@ -81,7 +81,7 @@ public class PSearchControlTest extends AbstractCodecServiceTest
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
         ControlFactory<PersistentSearch> factory =
-            ( ControlFactory<PersistentSearch> )codec.getControlFactories().get( PersistentSearch.OID );
+            ( ControlFactory<PersistentSearch> )codec.getRequestControlFactories().get( PersistentSearch.OID );
 
         factory.encodeValue( asn1Buffer, ctrl );
 
@@ -119,7 +119,7 @@ public class PSearchControlTest extends AbstractCodecServiceTest
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
         ControlFactory<PersistentSearch> factory =
-            ( ControlFactory<PersistentSearch> )codec.getControlFactories().get( PersistentSearch.OID );
+            ( ControlFactory<PersistentSearch> )codec.getRequestControlFactories().get( PersistentSearch.OID );
 
         factory.encodeValue( asn1Buffer, ctrl );
 

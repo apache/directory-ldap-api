@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 package org.apache.directory.api.ldap.extras.controls.ad_impl;
 
@@ -32,17 +32,17 @@ import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ControlDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.controls.ad.AdDirSync;
-import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncFlag;
-import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncImpl;
+import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncResponse;
+import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncResponseFlag;
+import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncResponseImpl;
 import org.apache.directory.api.util.Strings;
 
 /**
  * A decorator around AdDirSync control. It will encode and decode this control.
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements AdDirSync
+public class AdDirSyncResponseDecorator extends ControlDecorator<AdDirSyncResponse> implements AdDirSyncResponse
 {
     /** The global length for this control */
     private int adDirSyncLength;
@@ -53,12 +53,12 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
 
     /**
      * Creates a new instance of AdDirSyncControlCodec.
-     * 
+     *
      * @param codec The LDAP Service to use
      */
-    public AdDirSyncDecorator( LdapApiService codec )
+    public AdDirSyncResponseDecorator( LdapApiService codec )
     {
-        super( codec, new AdDirSyncImpl() );
+        super( codec, new AdDirSyncResponseImpl() );
     }
 
 
@@ -68,52 +68,52 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
      * @param codec The LDAP Service to use
      * @param control The control to be decorated
      */
-    public AdDirSyncDecorator( LdapApiService codec, AdDirSync control )
+    public AdDirSyncResponseDecorator( LdapApiService codec, AdDirSyncResponse control )
     {
         super( codec, control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public Set<AdDirSyncFlag> getFlags()
+    public Set<AdDirSyncResponseFlag> getFlags()
     {
         return getDecorated().getFlags();
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setFlags( Set<AdDirSyncFlag> flags )
+    public void setFlags( Set<AdDirSyncResponseFlag> flags )
     {
         getDecorated().setFlags( flags );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public void addFlag( AdDirSyncFlag flag )
+    public void addFlag( AdDirSyncResponseFlag flag )
     {
         getDecorated().addFlag( flag );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public void removeFlag( AdDirSyncFlag flag )
+    public void removeFlag( AdDirSyncResponseFlag flag )
     {
         getDecorated().removeFlag( flag );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -123,7 +123,7 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
         return getDecorated().getMaxReturnLength();
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -132,7 +132,7 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
     {
         getDecorated().setMaxReturnLength( maxReturnLength );
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -178,7 +178,7 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
     public int computeLength()
     {
         // the flags length
-        int flagsLength = BerValue.getNbBytes( AdDirSyncFlag.getBitmask( getFlags() ) );
+        int flagsLength = BerValue.getNbBytes( AdDirSyncResponseFlag.getBitmask( getFlags() ) );
         adDirSyncLength = 1 + TLV.getNbBytes( flagsLength ) + flagsLength;
 
         // the maxReturnLength length
@@ -187,7 +187,7 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
 
         // cookie's length
         byte[] cookie = getCookie();
-        
+
         if ( cookie == null )
         {
             adDirSyncLength += 1 + 1;
@@ -224,11 +224,11 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
         buffer.put( TLV.getBytes( adDirSyncLength ) );
 
         // Encode the flags
-        BerValue.encode( buffer, AdDirSyncFlag.getBitmask( getFlags() ) );
+        BerValue.encode( buffer, AdDirSyncResponseFlag.getBitmask( getFlags() ) );
 
         // Encode the MaxReturnLength
         BerValue.encode( buffer, getMaxReturnLength() );
-        
+
         // Encode the cookie
         BerValue.encode( buffer, getCookie() );
 
@@ -254,11 +254,11 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
                 buffer.put( TLV.getBytes( adDirSyncLength ) );
 
                 // Encode the Flags flag
-                BerValue.encode( buffer, AdDirSyncFlag.getBitmask( getFlags() ) );
+                BerValue.encode( buffer, AdDirSyncResponseFlag.getBitmask( getFlags() ) );
 
                 // Encode the MaxReturnLength
                 BerValue.encode( buffer, getMaxReturnLength() );
-                
+
                 // Encode the cookie
                 BerValue.encode( buffer, getCookie() );
 
@@ -272,8 +272,8 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
 
         return value;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -281,7 +281,7 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );
-        AdDirSyncContainer container = new AdDirSyncContainer( getCodecService(), this );
+        AdDirSyncResponseContainer container = new AdDirSyncResponseContainer( getCodecService(), this );
         DECODER.decode( bb, container );
         return this;
     }

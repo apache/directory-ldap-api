@@ -52,7 +52,7 @@ public class ApiLdapExtrasCodecOsgiTest extends ApiOsgiTestBase
     @Override
     protected void useBundleClasses() throws Exception
     {
-        CodecControl<? extends Control> control = ldapApiService.newControl( PasswordPolicy.OID );
+        CodecControl<? extends Control> control = ldapApiService.newRequestControl( PasswordPolicy.OID );
         assertNotNull( control );
         assertTrue( control instanceof PasswordPolicyDecorator );
 

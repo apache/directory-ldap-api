@@ -25,10 +25,11 @@ import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
+import org.apache.directory.api.ldap.model.message.Request;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,8 +92,16 @@ public class AddControl extends GrammarAction<LdapMessageContainer<AbstractMessa
         }
 
         Message message = container.getMessage();
+        Control control;
 
-        Control control = container.getLdapCodecService().newControl( oidValue );
+        if ( message instanceof Request )
+        {
+            control = container.getLdapCodecService().newRequestControl( oidValue );
+        }
+        else
+        {
+            control = container.getLdapCodecService().newResponseControl( oidValue );
+        }
 
         message.addControl( control );
 

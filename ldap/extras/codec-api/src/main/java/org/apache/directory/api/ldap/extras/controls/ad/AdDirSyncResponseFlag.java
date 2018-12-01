@@ -27,7 +27,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public enum AdDirSyncFlag
+public enum AdDirSyncResponseFlag
 {
     /** The Object Security flag */
     LDAP_DIRSYNC_OBJECT_SECURITY( 0x0001, "Object Security" ),
@@ -53,7 +53,7 @@ public enum AdDirSyncFlag
      * @param value The AdDirSync integer value
      * @param description The AdDirSync description
      **/
-    AdDirSyncFlag( int value, String description )
+    AdDirSyncResponseFlag( int value, String description )
     {
         this.value = value;
         this.description = description;
@@ -84,10 +84,10 @@ public enum AdDirSyncFlag
      * @param value The integer value
      * @return a set of all flags associated with the integer value
      */
-    public static Set<AdDirSyncFlag> getFlags( int value )
+    public static Set<AdDirSyncResponseFlag> getFlags( int value )
     {
-        EnumSet<AdDirSyncFlag> result = EnumSet.noneOf( AdDirSyncFlag.class );
-        for ( AdDirSyncFlag flag : EnumSet.allOf( AdDirSyncFlag.class ) )
+        EnumSet<AdDirSyncResponseFlag> result = EnumSet.noneOf( AdDirSyncResponseFlag.class );
+        for ( AdDirSyncResponseFlag flag : EnumSet.allOf( AdDirSyncResponseFlag.class ) )
         {
             if ( ( flag.getValue() & value ) == flag.getValue() )
             {
@@ -103,11 +103,11 @@ public enum AdDirSyncFlag
      * @param flags The AdDirSync flags
      * @return a bitmask in integer form associated with the set of flags
      */
-    public static int getBitmask( Set<AdDirSyncFlag> flags )
+    public static int getBitmask( Set<AdDirSyncResponseFlag> flags )
     {
         int mask = 0;
         
-        for ( AdDirSyncFlag flag : flags )
+        for ( AdDirSyncResponseFlag flag : flags )
         {
             mask += flag.getValue();
         }

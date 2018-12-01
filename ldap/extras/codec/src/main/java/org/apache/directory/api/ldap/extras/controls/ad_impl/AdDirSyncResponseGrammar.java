@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 package org.apache.directory.api.ldap.extras.controls.ad_impl;
 
@@ -31,70 +31,71 @@ import org.apache.directory.api.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncFlag;
+import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncResponseFlag;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 /**
- * 
+ *
  * Implementation of AdDirSync Response Control. All the actions are declared in
  * this class. As it is a singleton, these declaration are only done once.
  *
  *  The decoded grammar is as follows :
- *  
+ *
  *  <pre>
  * realReplControlValue ::= SEQUENCE {
  *     flag                  integer
  *     maxReturnLength       integer
  *     cookie                OCTET STRING
  * }
- * </pre> 
- *  
+ * </pre>
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
+public final class AdDirSyncResponseGrammar extends AbstractGrammar<AdDirSyncResponseContainer>
 {
 
     /** the logger */
-    private static final Logger LOG = LoggerFactory.getLogger( AdDirSyncGrammar.class );
+    private static final Logger LOG = LoggerFactory.getLogger( AdDirSyncResponseGrammar.class );
 
-    /** AdDirSyncControlGrammar singleton instance */
-    private static final AdDirSyncGrammar INSTANCE = new AdDirSyncGrammar();
+    /** AdDirSyncResponseControlGrammar singleton instance */
+    private static final AdDirSyncResponseGrammar INSTANCE = new AdDirSyncResponseGrammar();
 
 
     /**
-     * 
-     * Creates a new instance of AdDirSyncControlGrammar.
+     *
+     * Creates a new instance of AdDirSyncResponseControlGrammar.
      *
      */
     @SuppressWarnings("unchecked")
-    private AdDirSyncGrammar()
+    private AdDirSyncResponseGrammar()
     {
-        setName( AdDirSyncGrammar.class.getName() );
+        setName( AdDirSyncResponseGrammar.class.getName() );
 
-        super.transitions = new GrammarTransition[AdDirSyncStatesEnum.LAST_AD_DIR_SYNC_STATE.ordinal()][256];
+        super.transitions = new GrammarTransition[AdDirSyncResponseStatesEnum.LAST_AD_DIR_SYNC_RESPONSE_STATE.ordinal()][256];
 
-        /** 
-         * Transition from initial state to AdDirSync sequence
+        /**
+         * Transition from initial state to AdDirSyncResponse sequence
          * AdDirSync ::= SEQUENCE {
          *     ...
-         *     
-         * Initialize the adDirSync object
+         *
+         * Initialize the adDirSyncResponse object
          */
-        super.transitions[AdDirSyncStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] = 
-            new GrammarTransition<AdDirSyncContainer>(
-            AdDirSyncStatesEnum.START_STATE, AdDirSyncStatesEnum.AD_DIR_SYNC_SEQUENCE_STATE,
+        super.transitions[AdDirSyncResponseStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
+            new GrammarTransition<AdDirSyncResponseContainer>(
+            AdDirSyncResponseStatesEnum.START_STATE, AdDirSyncResponseStatesEnum.AD_DIR_SYNC_RESPONSE_SEQUENCE_STATE,
             UniversalTag.SEQUENCE.getValue(),
-            new GrammarAction<AdDirSyncContainer>( "Initialization" )
+            new GrammarAction<AdDirSyncResponseContainer>( "Initialization" )
             {
-                public void action( AdDirSyncContainer container ) throws DecoderException
+                @Override
+                public void action( AdDirSyncResponseContainer container ) throws DecoderException
                 {
                 }
             } );
 
-        
+
         /**
          * transition from start to flag
          * realReplControlValue ::= SEQUENCE {
@@ -102,35 +103,36 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
          *    ....
          * }
          */
-        super.transitions[AdDirSyncStatesEnum.AD_DIR_SYNC_SEQUENCE_STATE.ordinal()][UniversalTag.INTEGER
+        super.transitions[AdDirSyncResponseStatesEnum.AD_DIR_SYNC_RESPONSE_SEQUENCE_STATE.ordinal()][UniversalTag.INTEGER
             .getValue()] =
-            new GrammarTransition<AdDirSyncContainer>( AdDirSyncStatesEnum.AD_DIR_SYNC_SEQUENCE_STATE,
-                AdDirSyncStatesEnum.FLAG_STATE, UniversalTag.INTEGER.getValue(),
-                new GrammarAction<AdDirSyncContainer>( "Set AdDirSyncControl parentFirst" )
+            new GrammarTransition<AdDirSyncResponseContainer>( AdDirSyncResponseStatesEnum.AD_DIR_SYNC_RESPONSE_SEQUENCE_STATE,
+                AdDirSyncResponseStatesEnum.FLAG_STATE, UniversalTag.INTEGER.getValue(),
+                new GrammarAction<AdDirSyncResponseContainer>( "Set AdDirSyncResponseControl flag" )
                 {
-                    public void action( AdDirSyncContainer container ) throws DecoderException
+                    @Override
+                    public void action( AdDirSyncResponseContainer container ) throws DecoderException
                     {
                         BerValue value = container.getCurrentTLV().getValue();
 
                         try
                         {
                             int flagValue = IntegerDecoder.parse( value );
-                            
-                            Set<AdDirSyncFlag> flags = AdDirSyncFlag.getFlags( flagValue );
-                            
+
+                            Set<AdDirSyncResponseFlag> flags = AdDirSyncResponseFlag.getFlags( flagValue );
+
                             if ( flags == null )
                             {
                                 String msg = I18n.err( I18n.ERR_08104_AD_DIR_SYNC_FLAG_DECODING_FAILURE, flagValue );
                                 LOG.error( msg );
                                 throw new DecoderException( msg );
                             }
-                            
+
                             if ( LOG.isDebugEnabled() )
                             {
                                 LOG.debug( I18n.msg( I18n.MSG_08101_FLAGS, flags.toString() ) );
                             }
-                            
-                            container.getAdDirSyncControl().setFlags( flags );
+
+                            container.getAdDirSyncResponseControl().setFlags( flags );
                         }
                         catch ( IntegerDecoderException ide )
                         {
@@ -141,7 +143,7 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
                     }
                 } );
 
-        
+
         /**
          * transition from flag to maxReturnLength
          * realReplControlValue ::= SEQUENCE {
@@ -150,26 +152,27 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
          *    ....
          * }
          */
-        super.transitions[AdDirSyncStatesEnum.FLAG_STATE.ordinal()][UniversalTag.INTEGER
+        super.transitions[AdDirSyncResponseStatesEnum.FLAG_STATE.ordinal()][UniversalTag.INTEGER
             .getValue()] =
-            new GrammarTransition<AdDirSyncContainer>( AdDirSyncStatesEnum.FLAG_STATE,
-                AdDirSyncStatesEnum.MAX_RETURN_LENGTH_STATE, UniversalTag.INTEGER.getValue(),
-                new GrammarAction<AdDirSyncContainer>( "Set AdDirSyncControl maxReturnLength" )
+            new GrammarTransition<AdDirSyncResponseContainer>( AdDirSyncResponseStatesEnum.FLAG_STATE,
+                AdDirSyncResponseStatesEnum.MAX_RETURN_LENGTH_STATE, UniversalTag.INTEGER.getValue(),
+                new GrammarAction<AdDirSyncResponseContainer>( "Set AdDirSyncResponseControl maxReturnLength" )
                 {
-                    public void action( AdDirSyncContainer container ) throws DecoderException
+                    @Override
+                    public void action( AdDirSyncResponseContainer container ) throws DecoderException
                     {
                         BerValue value = container.getCurrentTLV().getValue();
 
                         try
                         {
                             int maxReturnLength = IntegerDecoder.parse( value );
-                            
+
                             if ( LOG.isDebugEnabled() )
                             {
                                 LOG.debug( I18n.msg( I18n.MSG_08102_MAX_RETURN_LENGTH, maxReturnLength ) );
                             }
-                            
-                            container.getAdDirSyncControl().setMaxReturnLength( maxReturnLength );
+
+                            container.getAdDirSyncResponseControl().setMaxReturnLength( maxReturnLength );
                         }
                         catch ( IntegerDecoderException ide )
                         {
@@ -179,8 +182,8 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
                         }
                     }
                 } );
-        
-        
+
+
         /**
          * transition from maxReturnLength to cookie
          *     ...
@@ -188,13 +191,14 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
          *     cookie                  OCTET STRING
          * }
          */
-        super.transitions[AdDirSyncStatesEnum.MAX_RETURN_LENGTH_STATE.ordinal()][UniversalTag.OCTET_STRING
+        super.transitions[AdDirSyncResponseStatesEnum.MAX_RETURN_LENGTH_STATE.ordinal()][UniversalTag.OCTET_STRING
             .getValue()] =
-            new GrammarTransition<AdDirSyncContainer>( AdDirSyncStatesEnum.MAX_RETURN_LENGTH_STATE,
-                AdDirSyncStatesEnum.COOKIE_STATE, UniversalTag.OCTET_STRING.getValue(),
-                new GrammarAction<AdDirSyncContainer>( "Set AdDirSyncControl cookie" )
+            new GrammarTransition<AdDirSyncResponseContainer>( AdDirSyncResponseStatesEnum.MAX_RETURN_LENGTH_STATE,
+                AdDirSyncResponseStatesEnum.COOKIE_STATE, UniversalTag.OCTET_STRING.getValue(),
+                new GrammarAction<AdDirSyncResponseContainer>( "Set AdDirSyncResponseControl cookie" )
                 {
-                    public void action( AdDirSyncContainer container )
+                    @Override
+                    public void action( AdDirSyncResponseContainer container )
                     {
                         BerValue value = container.getCurrentTLV().getValue();
 
@@ -205,7 +209,7 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
                             LOG.debug( I18n.msg( I18n.MSG_08000_COOKIE, Strings.dumpBytes( cookie ) ) );
                         }
 
-                        container.getAdDirSyncControl().setCookie( cookie );
+                        container.getAdDirSyncResponseControl().setCookie( cookie );
 
                         container.setGrammarEndAllowed( true );
                     }
@@ -216,7 +220,7 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
     /**
      * @return the singleton instance of the AdDirSyncControlGrammar
      */
-    public static Grammar<AdDirSyncContainer> getInstance()
+    public static Grammar<AdDirSyncResponseContainer> getInstance()
     {
         return INSTANCE;
     }

@@ -36,13 +36,14 @@ import org.apache.directory.api.ldap.codec.controls.search.persistentSearch.Pers
 import org.apache.directory.api.ldap.codec.controls.search.subentries.SubentriesFactory;
 import org.apache.directory.api.ldap.codec.controls.sort.SortRequestFactory;
 import org.apache.directory.api.ldap.codec.controls.sort.SortResponseFactory;
-
-import org.apache.directory.api.ldap.extras.controls.ad.AdShowDeleted;
+import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncRequest;
+import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncResponse;
 import org.apache.directory.api.ldap.extras.controls.ad.AdPolicyHints;
-import org.apache.directory.api.ldap.extras.controls.ad_impl.AdShowDeletedFactory;
+import org.apache.directory.api.ldap.extras.controls.ad.AdShowDeleted;
+import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncRequestFactory;
+import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncResponseFactory;
 import org.apache.directory.api.ldap.extras.controls.ad_impl.AdPolicyHintsFactory;
-import org.apache.directory.api.ldap.extras.controls.ad.AdDirSync;
-import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncFactory;
+import org.apache.directory.api.ldap.extras.controls.ad_impl.AdShowDeletedFactory;
 import org.apache.directory.api.ldap.extras.controls.changeNotifications.ChangeNotifications;
 import org.apache.directory.api.ldap.extras.controls.changeNotifications_impl.ChangeNotificationsFactory;
 import org.apache.directory.api.ldap.extras.controls.permissiveModify.PermissiveModify;
@@ -102,179 +103,213 @@ public final class CodecFactoryUtil
 
     /**
      * Loads the Controls implement out of the box in the codec.
-     * 
-     * @param controlFactories The Control factories to use
+     *
+     * @param requestControlFactories The Request Control factories to use
+     * @param responseControlFactories The Response Control factories to use
      * @param apiService The LDAP Service instance to use
      */
-    public static void loadStockControls( Map<String, ControlFactory<?>> controlFactories, LdapApiService apiService )
+    public static void loadStockControls( Map<String, ControlFactory<?>> requestControlFactories,
+        Map<String, ControlFactory<?>> responseControlFactories, LdapApiService apiService )
     {
         // Standard controls
+        // Cascade
         ControlFactory<Cascade> cascadeFactory = new CascadeFactory( apiService );
-        controlFactories.put( cascadeFactory.getOid(), cascadeFactory );
+        requestControlFactories.put( cascadeFactory.getOid(), cascadeFactory );
 
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, cascadeFactory.getOid() ) );
         }
 
+        // EntryChange
         ControlFactory<EntryChange> entryChangeFactory = new EntryChangeFactory( apiService );
-        controlFactories.put( entryChangeFactory.getOid(), entryChangeFactory );
-        
+        responseControlFactories.put( entryChangeFactory.getOid(), entryChangeFactory );
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, entryChangeFactory.getOid() ) );
         }
 
+        // ManageDsaIT
         ControlFactory<ManageDsaIT> manageDsaITFactory = new ManageDsaITFactory( apiService );
-        controlFactories.put( manageDsaITFactory.getOid(), manageDsaITFactory );
-        
+        requestControlFactories.put( manageDsaITFactory.getOid(), manageDsaITFactory );
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, manageDsaITFactory.getOid() ) );
         }
 
-        ControlFactory<ProxiedAuthz> proxiedAuthzFactory = new ProxiedAuthzFactory( apiService );
-        controlFactories.put( proxiedAuthzFactory.getOid(), proxiedAuthzFactory );
-        
-        if ( LOG.isInfoEnabled() )
-        {
-            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, proxiedAuthzFactory.getOid() ) );
-        }
-
+        // pagedResults (both a request and response control)
         ControlFactory<PagedResults> pagedResultsFactory = new PagedResultsFactory( apiService );
-        controlFactories.put( pagedResultsFactory.getOid(), pagedResultsFactory );
-        
+        requestControlFactories.put( pagedResultsFactory.getOid(), pagedResultsFactory );
+        responseControlFactories.put( pagedResultsFactory.getOid(), pagedResultsFactory );
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, pagedResultsFactory.getOid() ) );
         }
 
+        // Proxied
+        ControlFactory<ProxiedAuthz> proxiedAuthzFactory = new ProxiedAuthzFactory( apiService );
+        requestControlFactories .put( proxiedAuthzFactory.getOid(), proxiedAuthzFactory );
+
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, proxiedAuthzFactory.getOid() ) );
+        }
+
+        // PersistentSearch
         ControlFactory<PersistentSearch> persistentSearchFactory = new PersistentSearchFactory( apiService );
-        controlFactories.put( persistentSearchFactory.getOid(), persistentSearchFactory );
-        
+        requestControlFactories.put( persistentSearchFactory.getOid(), persistentSearchFactory );
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, persistentSearchFactory.getOid() ) );
         }
 
-        ControlFactory<Subentries> subentriesFactory = new SubentriesFactory( apiService );
-        controlFactories.put( subentriesFactory.getOid(), subentriesFactory );
-        
-        if ( LOG.isInfoEnabled() )
-        {
-            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, subentriesFactory.getOid() ) );
-        }
-        
+        // SortRequest
         ControlFactory<SortRequest> sortRequestFactory = new SortRequestFactory( apiService );
-        controlFactories.put( sortRequestFactory.getOid(), sortRequestFactory );
-        
+        requestControlFactories.put( sortRequestFactory.getOid(), sortRequestFactory );
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, sortRequestFactory.getOid() ) );
         }
 
+        // SortResponse
         ControlFactory<SortResponse> sortResponseFactory = new SortResponseFactory( apiService );
-        controlFactories.put( sortResponseFactory.getOid(), sortResponseFactory );
-        
+        responseControlFactories.put( sortResponseFactory.getOid(), sortResponseFactory );
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, sortResponseFactory.getOid() ) );
         }
 
-        // Extra controls
-        ControlFactory<AdDirSync> adDirSyncFactory = new AdDirSyncFactory( apiService );
-        controlFactories.put( adDirSyncFactory.getOid(), adDirSyncFactory );
-        
+        // Subentries
+        ControlFactory<Subentries> subentriesFactory = new SubentriesFactory( apiService );
+        requestControlFactories.put( subentriesFactory.getOid(), subentriesFactory );
+
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, adDirSyncFactory.getOid() ) );
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, subentriesFactory.getOid() ) );
         }
-        
+
+        // Extra controls
+        // AdDirSync request
+        ControlFactory<AdDirSyncRequest> adDirSyncRequestFactory = new AdDirSyncRequestFactory( apiService );
+        requestControlFactories.put( adDirSyncRequestFactory.getOid(), adDirSyncRequestFactory );
+
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, adDirSyncRequestFactory.getOid() ) );
+        }
+
+        // AdDirSync response
+        ControlFactory<AdDirSyncResponse> adDirSyncResponseFactory = new AdDirSyncResponseFactory( apiService );
+        responseControlFactories.put( adDirSyncResponseFactory.getOid(), adDirSyncResponseFactory );
+
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, adDirSyncRequestFactory.getOid() ) );
+        }
+
+        // AdShowDelete
         ControlFactory<AdShowDeleted> adShowDeletedFactory = new AdShowDeletedFactory( apiService );
-        controlFactories.put( adShowDeletedFactory.getOid(), adShowDeletedFactory );
-        
+        requestControlFactories.put( adShowDeletedFactory.getOid(), adShowDeletedFactory );
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, adShowDeletedFactory.getOid() ) );
         }
-        
+
+        // AdPolicyHints
         ControlFactory<AdPolicyHints> adPolicyHintsFactory = new AdPolicyHintsFactory( apiService );
-        controlFactories.put( adPolicyHintsFactory.getOid(), adPolicyHintsFactory );
-        
+        requestControlFactories.put( adPolicyHintsFactory.getOid(), adPolicyHintsFactory );
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, adPolicyHintsFactory.getOid() ) );
         }
 
+        // ChangeNotification
         ControlFactory<ChangeNotifications> changeNotificationsFactory = new ChangeNotificationsFactory( apiService );
-        controlFactories.put( changeNotificationsFactory.getOid(), changeNotificationsFactory );
-        
+        requestControlFactories.put( changeNotificationsFactory.getOid(), changeNotificationsFactory );
+        responseControlFactories.put( changeNotificationsFactory.getOid(), changeNotificationsFactory );
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, changeNotificationsFactory.getOid() ) );
         }
 
+        // PermissiveModify
         ControlFactory<PermissiveModify> permissiveModifyFactory = new PermissiveModifyFactory( apiService );
-        controlFactories.put( permissiveModifyFactory.getOid(), permissiveModifyFactory );
-        
+        requestControlFactories.put( permissiveModifyFactory.getOid(), permissiveModifyFactory );
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, permissiveModifyFactory.getOid() ) );
         }
 
+        // PasswordPolicy (request and response)
         ControlFactory<PasswordPolicy> passwordPolicyFactory = new PasswordPolicyFactory( apiService );
-        controlFactories.put( passwordPolicyFactory.getOid(), passwordPolicyFactory );
-        
+        requestControlFactories.put( passwordPolicyFactory.getOid(), passwordPolicyFactory );
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, passwordPolicyFactory.getOid() ) );
         }
 
+        // SyncDoneValue
         ControlFactory<SyncDoneValue> syncDoneValueFactory = new SyncDoneValueFactory( apiService );
-        controlFactories.put( syncDoneValueFactory.getOid(), syncDoneValueFactory );
-        
+        responseControlFactories.put( syncDoneValueFactory.getOid(), syncDoneValueFactory );
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, syncDoneValueFactory.getOid() ) );
-        } 
+        }
 
+        // SyncRequestValue
         ControlFactory<SyncRequestValue> syncRequestValueFactory = new SyncRequestValueFactory( apiService );
-        controlFactories.put( syncRequestValueFactory.getOid(), syncRequestValueFactory );
-        
+        requestControlFactories.put( syncRequestValueFactory.getOid(), syncRequestValueFactory );
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, syncRequestValueFactory.getOid() ) );
         }
 
+        // SyncStateValue
         ControlFactory<SyncStateValue> syncStateValueFactory = new SyncStateValueFactory( apiService );
-        controlFactories.put( syncStateValueFactory.getOid(), syncStateValueFactory );
-        
+        requestControlFactories.put( syncStateValueFactory.getOid(), syncStateValueFactory );
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, syncStateValueFactory.getOid() ) );
         }
 
+        // TransactionSpecification
         ControlFactory<TransactionSpecification> transactionSpecificationFactory = new TransactionSpecificationFactory( apiService );
-        controlFactories.put( transactionSpecificationFactory.getOid(), transactionSpecificationFactory );
-        
+        requestControlFactories.put( transactionSpecificationFactory.getOid(), transactionSpecificationFactory );
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, transactionSpecificationFactory.getOid() ) );
         }
 
+        // VirtualListViewRequest
         ControlFactory<VirtualListViewRequest> virtualListViewRequestFactory = new VirtualListViewRequestFactory(
             apiService );
-        controlFactories.put( virtualListViewRequestFactory.getOid(), virtualListViewRequestFactory );
-        
+        requestControlFactories.put( virtualListViewRequestFactory.getOid(), virtualListViewRequestFactory );
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, virtualListViewRequestFactory.getOid() ) );
         }
 
+        // VirtualListViewResponse
         ControlFactory<VirtualListViewResponse> virtualListViewResponseFactory = new VirtualListViewResponseFactory(
             apiService );
-        controlFactories.put( virtualListViewResponseFactory.getOid(), virtualListViewResponseFactory );
-        
+        responseControlFactories.put( virtualListViewResponseFactory.getOid(), virtualListViewResponseFactory );
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, virtualListViewResponseFactory.getOid() ) );
@@ -295,7 +330,7 @@ public final class CodecFactoryUtil
      * <li>startTls</li>
      * <li>startTransaction</li>
      * </ul>
-     * 
+     *
      * @param extendendOperationsFactories The map of extended operation factories
      * @param apiService The LdapApiService to use
      */
@@ -320,7 +355,7 @@ public final class CodecFactoryUtil
 
         EndTransactionFactory endTransactionFactory = new EndTransactionFactory( apiService );
         extendendOperationsFactories.put( endTransactionFactory.getOid(), endTransactionFactory );
-        
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06001_REGISTERED_EXTENDED_OP_FACTORY, endTransactionFactory.getOid() ) );
@@ -328,7 +363,7 @@ public final class CodecFactoryUtil
 
         GracefulDisconnectFactory gracefulDisconnectFactory = new GracefulDisconnectFactory( apiService );
         extendendOperationsFactories.put( gracefulDisconnectFactory.getOid(), gracefulDisconnectFactory );
-        
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06001_REGISTERED_EXTENDED_OP_FACTORY, gracefulDisconnectFactory.getOid() ) );
@@ -336,7 +371,7 @@ public final class CodecFactoryUtil
 
         GracefulShutdownFactory gracefulShutdownFactory = new GracefulShutdownFactory( apiService );
         extendendOperationsFactories.put( gracefulShutdownFactory.getOid(), gracefulShutdownFactory );
-        
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06001_REGISTERED_EXTENDED_OP_FACTORY, gracefulShutdownFactory.getOid() ) );
@@ -344,7 +379,7 @@ public final class CodecFactoryUtil
 
         PasswordModifyFactory passwordModifyFactory = new PasswordModifyFactory( apiService );
         extendendOperationsFactories.put( passwordModifyFactory.getOid(), passwordModifyFactory );
-        
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06001_REGISTERED_EXTENDED_OP_FACTORY, passwordModifyFactory.getOid() ) );
@@ -352,7 +387,7 @@ public final class CodecFactoryUtil
 
         StartTlsFactory startTlsFactory = new StartTlsFactory( apiService );
         extendendOperationsFactories.put( startTlsFactory.getOid(), startTlsFactory );
-        
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06001_REGISTERED_EXTENDED_OP_FACTORY, startTlsFactory.getOid() ) );
@@ -360,7 +395,7 @@ public final class CodecFactoryUtil
 
         StartTransactionFactory startTransactionFactory = new StartTransactionFactory( apiService );
         extendendOperationsFactories.put( startTransactionFactory.getOid(), startTransactionFactory );
-        
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06001_REGISTERED_EXTENDED_OP_FACTORY, startTransactionFactory.getOid() ) );
@@ -368,7 +403,7 @@ public final class CodecFactoryUtil
 
         StoredProcedureFactory storedProcedureFactory = new StoredProcedureFactory( apiService );
         extendendOperationsFactories.put( storedProcedureFactory.getOid(), storedProcedureFactory );
-        
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06001_REGISTERED_EXTENDED_OP_FACTORY, storedProcedureFactory.getOid() ) );
@@ -376,7 +411,7 @@ public final class CodecFactoryUtil
 
         WhoAmIFactory whoAmIFactory = new WhoAmIFactory( apiService );
         extendendOperationsFactories.put( whoAmIFactory.getOid(), whoAmIFactory );
-        
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06001_REGISTERED_EXTENDED_OP_FACTORY, whoAmIFactory.getOid() ) );
@@ -389,7 +424,7 @@ public final class CodecFactoryUtil
      * <ul>
      * <li>syncInfovalue</li>
      * </ul>
-     * 
+     *
      * @param intermediateResponseFactories The map of intermediate response factories
      * @param apiService The LdapApiService to use
      */
@@ -398,7 +433,7 @@ public final class CodecFactoryUtil
     {
         SyncInfoValueFactory syncInfoValueFactory = new SyncInfoValueFactory( apiService );
         intermediateResponseFactories.put( syncInfoValueFactory.getOid(), syncInfoValueFactory );
-        
+
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06002_REGISTERED_INTERMEDIATE_FACTORY, syncInfoValueFactory.getOid() ) );

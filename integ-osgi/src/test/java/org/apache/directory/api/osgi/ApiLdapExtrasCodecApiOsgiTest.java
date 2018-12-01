@@ -21,7 +21,7 @@ package org.apache.directory.api.osgi;
 
 
 import org.apache.directory.api.ldap.extras.controls.SynchronizationModeEnum;
-import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncImpl;
+import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncRequestImpl;
 import org.apache.directory.api.ldap.extras.controls.ad.AdShowDeletedImpl;
 import org.apache.directory.api.ldap.extras.controls.ad.AdPolicyHintsImpl;
 
@@ -62,7 +62,7 @@ public class ApiLdapExtrasCodecApiOsgiTest extends ApiOsgiTestBase
     protected void useBundleClasses() throws Exception
     {
         SynchronizationModeEnum.REFRESH_AND_PERSIST.getValue();
-        new AdDirSyncImpl().getOid();
+        new AdDirSyncRequestImpl().getOid();
         new AdPolicyHintsImpl().getOid();
         new AdShowDeletedImpl().getOid();
         new ChangeNotificationsImpl().getOid();

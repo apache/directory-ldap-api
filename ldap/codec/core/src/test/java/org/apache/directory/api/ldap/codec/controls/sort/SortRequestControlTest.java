@@ -128,7 +128,7 @@ public class SortRequestControlTest extends AbstractCodecServiceTest
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
         ControlFactory<SortRequest> factory =
-            ( ControlFactory<SortRequest> ) codec.getControlFactories().get( SortRequest.OID );
+            ( ControlFactory<SortRequest> ) codec.getRequestControlFactories().get( SortRequest.OID );
 
         factory.encodeValue( asn1Buffer, control );
 
@@ -186,7 +186,7 @@ public class SortRequestControlTest extends AbstractCodecServiceTest
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
         ControlFactory<SortRequest> factory =
-            ( ControlFactory<SortRequest> ) codec.getControlFactories().get( SortRequest.OID );
+            ( ControlFactory<SortRequest> ) codec.getRequestControlFactories().get( SortRequest.OID );
 
         factory.encodeValue( asn1Buffer, control );
 
@@ -226,7 +226,7 @@ public class SortRequestControlTest extends AbstractCodecServiceTest
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
         ControlFactory<SortRequest> factory =
-            ( ControlFactory<SortRequest> ) codec.getControlFactories().get( SortRequest.OID );
+            ( ControlFactory<SortRequest> ) codec.getRequestControlFactories().get( SortRequest.OID );
 
         factory.encodeValue( asn1Buffer, control );
 
@@ -274,7 +274,7 @@ public class SortRequestControlTest extends AbstractCodecServiceTest
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
         ControlFactory<SortRequest> factory =
-            ( ControlFactory<SortRequest> ) codec.getControlFactories().get( SortRequest.OID );
+            ( ControlFactory<SortRequest> ) codec.getRequestControlFactories().get( SortRequest.OID );
 
         factory.encodeValue( asn1Buffer, control );
 
