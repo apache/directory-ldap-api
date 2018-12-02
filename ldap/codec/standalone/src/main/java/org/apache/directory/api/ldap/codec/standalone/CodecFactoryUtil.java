@@ -253,6 +253,7 @@ public final class CodecFactoryUtil
         // PasswordPolicy (request and response)
         ControlFactory<PasswordPolicy> passwordPolicyFactory = new PasswordPolicyFactory( apiService );
         requestControlFactories.put( passwordPolicyFactory.getOid(), passwordPolicyFactory );
+        responseControlFactories.put( passwordPolicyFactory.getOid(), passwordPolicyFactory );
 
         if ( LOG.isInfoEnabled() )
         {

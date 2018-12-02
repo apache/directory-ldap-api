@@ -368,7 +368,7 @@ public class DefaultLdapCodecService implements LdapApiService
      */
     @SuppressWarnings("unchecked")
     @Override
-    public CodecControl<? extends Control> newControl( Control control )
+    public CodecControl<? extends Control> newRequestControl( Control control )
     {
         if ( control == null )
         {
@@ -396,10 +396,40 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
+    @Override
+    public CodecControl<? extends Control> newResponseControl( Control control )
+    {
+        if ( control == null )
+        {
+            throw new NullPointerException( I18n.err( I18n.ERR_05400_CONTROL_ARGUMENT_WAS_NULL ) );
+        }
+
+        // protect against being multiply decorated
+        if ( control instanceof CodecControl )
+        {
+            return ( CodecControl<?> ) control;
+        }
+
+        @SuppressWarnings("rawtypes")
+        ControlFactory factory = responseControlFactories.get( control.getOid() );
+
+        if ( factory == null )
+        {
+            return new BasicControlDecorator( this, control );
+        }
+
+        return factory.newCodecControl( control );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public javax.naming.ldap.Control toJndiControl( Control control ) throws EncoderException
     {
-        CodecControl<? extends Control> decorator = newControl( control );
+        CodecControl<? extends Control> decorator = newRequestControl( control );
         ByteBuffer bb = ByteBuffer.allocate( decorator.computeLength() );
         decorator.encode( bb );
         bb.flip();

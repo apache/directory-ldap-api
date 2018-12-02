@@ -2008,7 +2008,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                     throw new XmlPullParserException( I18n.err( I18n.ERR_03034_INCORRECT_TYPE_VALUE ), xpp, null );
                 }
 
-                control = codec.newControl( codec.newRequestControl( attributeValue ) );
+                control = codec.newRequestControl( codec.newRequestControl( attributeValue ) );
                 ( ( Request ) container.getBatchRequest().getCurrentRequest() ).addControl( control );
             }
             else

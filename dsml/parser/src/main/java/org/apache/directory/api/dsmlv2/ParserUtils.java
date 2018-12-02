@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- * 
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
  *  under the License.
- * 
+ *
  */
 package org.apache.directory.api.dsmlv2;
 
@@ -125,7 +125,7 @@ public final class ParserUtils
 
     /**
      * Tells is the given value is a Base64 binary value
-     * 
+     *
      * @param parser the XPP parser to use
      * @param attrValue the attribute value
      * @return true if the value of the current tag is Base64BinaryEncoded, false if not
@@ -194,7 +194,7 @@ public final class ParserUtils
 
     /**
      * Parses and verify the parsed value of the requestID
-     * 
+     *
      * @param attributeValue the value of the attribute
      * @param xpp the XmlPullParser
      * @return the int value of the resquestID
@@ -227,7 +227,7 @@ public final class ParserUtils
      * @param element the element to add the Controls to
      * @param controls a List of Controls
      */
-    public static void addControls( LdapApiService codec, Element element, Collection<Control> controls )
+    public static void addControls( LdapApiService codec, Element element, Collection<Control> controls, boolean isRequest )
     {
         if ( controls != null )
         {
@@ -253,7 +253,14 @@ public final class ParserUtils
                 }
                 else
                 {
-                    value = codec.newControl( control ).getValue();
+                    if ( isRequest )
+                    {
+                        value = codec.newRequestControl( control ).getValue();
+                    }
+                    else
+                    {
+                        value = codec.newResponseControl( control ).getValue();
+                    }
                 }
 
                 if ( value != null )
@@ -300,7 +307,7 @@ public final class ParserUtils
 
     /**
      * XML Pretty Printer XSLT Transformation
-     * 
+     *
      * @param document the Dom4j Document
      * @return the transformed document
      */
@@ -322,7 +329,7 @@ public final class ParserUtils
             {
                 LOG.warn( I18n.msg( I18n.MSG_3000_FAILED_TO_CREATE_XSLT_TRANSFORMER ), e1 );
             }
-            
+
             // return original document
             return document;
         }

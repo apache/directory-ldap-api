@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 package org.apache.directory.api.dsmlv2.response;
 
@@ -75,7 +75,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 /**
  * This Class represents the DSMLv2 Response Grammar
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Grammar
@@ -505,7 +505,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
             // Checking and adding the batchRequest's attributes
             String attributeValue;
-            
+
             // requestID
             attributeValue = xpp.getAttributeValue( "", "requestID" );
 
@@ -515,10 +515,10 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
                 container.getBatchResponse().addResponse( errorResponse );
             }
-            
+
             // type
             attributeValue = xpp.getAttributeValue( "", "type" );
-            
+
             if ( attributeValue != null )
             {
                 if ( attributeValue.equals( errorResponse.getTypeDescr( ErrorResponseType.NOT_ATTEMPTED ) ) )
@@ -2039,7 +2039,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
     /**
      * Get the instance of this grammar
-     * 
+     *
      * @return
      *      an instance on this grammar
      */
@@ -2050,9 +2050,9 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
 
     /**
-     * Creates a Control Value parsing the current node and adds it to the given parent 
+     * Creates a Control Value parsing the current node and adds it to the given parent
      * @param container the DSMLv2Container
-     * @param parent the parent 
+     * @param parent the parent
      * @throws XmlPullParserException When the parsing fails
      */
     private void createAndAddControlValue( Dsmlv2Container container,
@@ -2087,12 +2087,12 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             throw new XmlPullParserException( I18n.err( I18n.ERR_03008_UNEXPECTED_ERROR, ioe.getMessage() ), xpp, ioe );
         }
     }
-    
-    
+
+
     /**
-     * Creates a Control parsing the current node and adds it to the given parent 
+     * Creates a Control parsing the current node and adds it to the given parent
      * @param container the DSMLv2Container
-     * @param parent the parent 
+     * @param parent the parent
      * @throws XmlPullParserException When the parsing fails
      */
     private void createAndAddControl( Dsmlv2Container container,
@@ -2114,14 +2114,14 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 throw new XmlPullParserException( I18n.err( I18n.ERR_03006_INCORRECT_TYPE_ATTRIBUTE_VALUE ), xpp, null );
             }
 
-            control = container.getLdapCodecService().newControl( new OpaqueControl( attributeValue ) );
+            control = container.getLdapCodecService().newResponseControl( new OpaqueControl( attributeValue ) );
             parent.addControl( control );
         }
         else
         {
             throw new XmlPullParserException( I18n.err( I18n.ERR_03005_REQUIRE_ATTRIBUTE_TYPE ), xpp, null );
         }
-        
+
         // CRITICALITY
         attributeValue = xpp.getAttributeValue( "", "criticality" );
 

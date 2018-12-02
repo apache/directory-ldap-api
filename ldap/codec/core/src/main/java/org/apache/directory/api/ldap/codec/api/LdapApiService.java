@@ -134,12 +134,21 @@ public interface LdapApiService
 
 
     /**
-     * Creates a new codec control decorator for the provided control.
+     * Creates a new request codec control decorator for the provided control.
      *
      * @param control The control the codec control is generated for.
      * @return The newly created codec control.
      */
-    CodecControl<? extends Control> newControl( Control control );
+    CodecControl<? extends Control> newRequestControl( Control control );
+
+
+    /**
+     * Creates a new response codec control decorator for the provided control.
+     *
+     * @param control The control the codec control is generated for.
+     * @return The newly created codec control.
+     */
+    CodecControl<? extends Control> newResponseControl( Control control );
 
 
     /**

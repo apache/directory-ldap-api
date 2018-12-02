@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 package org.apache.directory.api.dsmlv2.response;
 
@@ -90,7 +90,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
         }
 
         // Controls
-        ParserUtils.addControls( codec, root, message.getControls().values() );
+        ParserUtils.addControls( codec, root, message.getControls().values(), false );
 
         // ResultCode
         Element resultCodeElement = root.addElement( "resultCode" );
@@ -99,7 +99,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
 
         // ErrorMessage
         String errorMessage = result.getDiagnosticMessage();
-        
+
         if ( ( errorMessage != null ) && ( errorMessage.length() != 0 ) )
         {
             Element errorMessageElement = root.addElement( "errorMessage" );
@@ -147,7 +147,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
 
     /**
      * Get the matched Dn
-     * 
+     *
      * @return Returns the matchedDN.
      */
     @Override
@@ -159,7 +159,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
 
     /**
      * Set the Matched Dn
-     * 
+     *
      * @param matchedDn The matchedDn to set.
      */
     @Override
@@ -171,7 +171,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
 
     /**
      * Get the referrals
-     * 
+     *
      * @return Returns the referrals.
      */
     public List<String> getReferrals()
@@ -182,7 +182,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
 
     /**
      * Add a referral
-     * 
+     *
      * @param referral The referral to add.
      */
     public void addReferral( LdapUrl referral )
@@ -193,7 +193,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
 
     /**
      * Get the result code
-     * 
+     *
      * @return Returns the resultCode.
      */
     @Override
@@ -205,7 +205,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
 
     /**
      * Set the result code
-     * 
+     *
      * @param resultCode The resultCode to set.
      */
     @Override
