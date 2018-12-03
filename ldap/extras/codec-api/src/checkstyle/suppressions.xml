@@ -28,5 +28,6 @@
     <suppress files="org.apache.directory.api.ldap.extras.extended" checks="InterfaceIsType" />
     <suppress files="org.apache.directory.api.ldap.extras.controls.ad" checks="InterfaceIsType" />
     <suppress files="org.apache.directory.api.ldap.extras.controls.permissiveModify" checks="InterfaceIsType" />
+    <suppress files="org.apache.directory.api.ldap.extras.controls.ppolicy" checks="InterfaceIsType" />
     <suppress files="org.apache.directory.api.ldap.extras.controls.changeNotifications" checks="InterfaceIsType" />
 </suppressions>
