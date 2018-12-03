@@ -23,7 +23,16 @@ import org.apache.directory.api.ldap.model.message.Control;
 
 
 /**
- * A persistence search object
+ * A persistence search object, as defined in https://tools.ietf.org/html/draft-ietf-ldapext-psearch-03
+ * 
+ * <pre>
+ *  PersistentSearch ::= SEQUENCE {
+ *         changeTypes INTEGER,
+ *         changesOnly BOOLEAN,
+ *         returnECs BOOLEAN
+ * }
+
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
