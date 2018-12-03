@@ -27,8 +27,10 @@ import javax.inject.Inject;
 
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
-import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyDecorator;
+import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyRequest;
+import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponse;
+import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyRequestDecorator;
+import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyResponseDecorator;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.startTls.StartTlsRequestDecorator;
 import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequest;
 import org.apache.directory.api.ldap.model.message.Control;
@@ -52,9 +54,13 @@ public class ApiLdapExtrasCodecOsgiTest extends ApiOsgiTestBase
     @Override
     protected void useBundleClasses() throws Exception
     {
-        CodecControl<? extends Control> control = ldapApiService.newRequestControl( PasswordPolicy.OID );
-        assertNotNull( control );
-        assertTrue( control instanceof PasswordPolicyDecorator );
+        CodecControl<? extends Control> ppRequest = ldapApiService.newRequestControl( PasswordPolicyRequest.OID );
+        assertNotNull( ppRequest );
+        assertTrue( ppRequest instanceof PasswordPolicyRequestDecorator );
+
+        CodecControl<? extends Control> ppResponse = ldapApiService.newResponseControl( PasswordPolicyResponse.OID );
+        assertNotNull( ppResponse );
+        assertTrue( ppResponse instanceof PasswordPolicyResponseDecorator );
 
         ExtendedRequest extendedRequest = ldapApiService.newExtendedRequest( StartTlsRequest.EXTENSION_OID, null );
         assertNotNull( extendedRequest );

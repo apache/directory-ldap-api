@@ -28,7 +28,7 @@ import org.apache.directory.api.asn1.actions.AbstractReadInteger;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreGraceAuthNRemaining extends AbstractReadInteger<PasswordPolicyContainer>
+public class StoreGraceAuthNRemaining extends AbstractReadInteger<PasswordPolicyResponseContainer>
 {
 
     /**
@@ -44,9 +44,9 @@ public class StoreGraceAuthNRemaining extends AbstractReadInteger<PasswordPolicy
      * {@inheritDoc}
      */
     @Override
-    protected void setIntegerValue( int value, PasswordPolicyContainer ppolicyContainer )
+    protected void setIntegerValue( int value, PasswordPolicyResponseContainer ppolicyContainer )
     {
-        ppolicyContainer.getPasswordPolicyResponseControl().getResponse().setGraceAuthNRemaining( value );
+        ppolicyContainer.getPasswordPolicyResponseControl().setGraceAuthNRemaining( value );
 
         ppolicyContainer.setGrammarEndAllowed( true );
     }

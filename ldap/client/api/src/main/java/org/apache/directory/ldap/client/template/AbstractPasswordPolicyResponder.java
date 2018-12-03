@@ -21,8 +21,8 @@ package org.apache.directory.ldap.client.template;
 
 
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
-import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyDecorator;
+import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponse;
+import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyResponseDecorator;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Response;
@@ -42,12 +42,12 @@ import org.apache.directory.ldap.client.template.exception.PasswordException;
  */
 public abstract class AbstractPasswordPolicyResponder implements PasswordPolicyResponder
 {
-    private final PasswordPolicyDecorator passwordPolicyRequestControl;
+    private final PasswordPolicyResponseDecorator passwordPolicyResponseControl;
 
 
     protected AbstractPasswordPolicyResponder( LdapApiService ldapApiService )
     {
-        this.passwordPolicyRequestControl = new PasswordPolicyDecorator(
+        this.passwordPolicyResponseControl = new PasswordPolicyResponseDecorator(
             ldapApiService );
     }
     
@@ -76,26 +76,27 @@ public abstract class AbstractPasswordPolicyResponder implements PasswordPolicyR
      * @return The created PasswordException
      */
     protected PasswordException fail( ResultResponse resultResponse, 
-            PasswordPolicy passwordPolicy, ResultCodeEnum resultCode )
+            PasswordPolicyResponse passwordPolicyResponse, ResultCodeEnum resultCode )
     {
         PasswordException exception = new PasswordException();
         exception.setResultCode( resultCode );
-        if ( passwordPolicy != null
-            && passwordPolicy.getResponse() != null
-            && passwordPolicy.getResponse().getPasswordPolicyError() != null )
+        
+        if ( passwordPolicyResponse != null
+            && passwordPolicyResponse.getPasswordPolicyError() != null )
         {
-            exception.setPasswordPolicyError( passwordPolicy.getResponse().getPasswordPolicyError() );
+            exception.setPasswordPolicyError( passwordPolicyResponse.getPasswordPolicyError() );
         }
         return exception;
     }
 
 
-    private PasswordPolicy getPasswordPolicy( Response response )
+    private PasswordPolicyResponse getPasswordPolicy( Response response )
     {
-        Control control = response.getControls().get( passwordPolicyRequestControl.getOid() );
+        Control control = response.getControls().get( passwordPolicyResponseControl.getOid() );
+        
         return control == null
             ? null
-            : ( ( PasswordPolicyDecorator ) control ).getDecorated();
+            : ( ( PasswordPolicyResponseDecorator ) control ).getDecorated();
     }
 
 
@@ -109,15 +110,16 @@ public abstract class AbstractPasswordPolicyResponder implements PasswordPolicyR
         try
         {
             ResultResponse response = operation.process();
-            PasswordPolicy passwordPolicy = getPasswordPolicy( response );
+            PasswordPolicyResponse passwordPolicyResponse = getPasswordPolicy( response );
             ResultCodeEnum resultCode = response.getLdapResult().getResultCode();
+            
             if ( resultCode == ResultCodeEnum.SUCCESS )
             {
-                return success( passwordPolicy );
+                return success( passwordPolicyResponse );
             }
             else
             {
-                throw fail( response, passwordPolicy, resultCode );
+                throw fail( response, passwordPolicyResponse, resultCode );
             }
         }
         catch ( LdapException e )
@@ -130,13 +132,13 @@ public abstract class AbstractPasswordPolicyResponder implements PasswordPolicyR
      * Returns a <code>PasswordWarning</code>, or <code>null</code> if no 
      * warnings were present in the supplied <code>passwordPolicy</code>.
      * 
-     * @param passwordPolicy The PasswordPolicy in use
+     * @param passwordPolicyResponse The PasswordPolicyReponse in use
      * @return The created PasswordWarning
      */
-    protected PasswordWarning success( PasswordPolicy passwordPolicy ) 
+    protected PasswordWarning success( PasswordPolicyResponse passwordPolicyResponse ) 
     {
-        return passwordPolicy == null
+        return passwordPolicyResponse == null
                 ? null
-                : PasswordWarningImpl.newWarning( passwordPolicy );
+                : PasswordWarningImpl.newWarning( passwordPolicyResponse );
     }
 }

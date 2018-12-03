@@ -19,16 +19,40 @@
  */
 package org.apache.directory.api.ldap.extras.controls.ppolicy;
 
+import org.apache.directory.api.ldap.model.message.Control;
 
 /**
  * The PasswordPolicy response. It contains information about the error if we
- * had one when injecting a bad password into the server.
+ * had one when injecting a bad password into the server. Here is the controlValue
+ * ASN.1 grammar:
+ * <pre>
+ * PasswordPolicyResponseValue ::= SEQUENCE {
+ *       warning [0] CHOICE {
+ *          timeBeforeExpiration [0] INTEGER (0 .. maxInt),
+ *          graceAuthNsRemaining [1] INTEGER (0 .. maxInt) 
+ *       } OPTIONAL,
+ *       error   [1] ENUMERATED {
+ *          passwordExpired             (0),
+ *          accountLocked               (1),
+ *          changeAfterReset            (2),
+ *          passwordModNotAllowed       (3),
+ *          mustSupplyOldPassword       (4),
+ *          insufficientPasswordQuality (5),
+ *          passwordTooShort            (6),
+ *          passwordTooYoung            (7),
+ *          passwordInHistory           (8) } OPTIONAL 
+ *       }
+ * }
+ * </pre>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface PasswordPolicyResponse
+public interface PasswordPolicyResponse extends Control
 {
+    /** the password policy response control */
+    String OID = "1.3.6.1.4.1.42.2.27.8.5.1";
+
     /**
      * Returns the time before expiration.  Will return -1 if this warning 
      * was not present in the response.

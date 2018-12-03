@@ -23,8 +23,8 @@ package org.apache.directory.api.ldap.extras.controls.ppolicy_impl;
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
-import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyImpl;
+import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponse;
+import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponseImpl;
 
 
 /**
@@ -32,9 +32,9 @@ import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyImpl;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PasswordPolicyContainer extends AbstractContainer
+public class PasswordPolicyResponseContainer extends AbstractContainer
 {
-    private PasswordPolicyDecorator control;
+    private PasswordPolicyResponse control;
 
 
     /**
@@ -42,12 +42,12 @@ public class PasswordPolicyContainer extends AbstractContainer
      * 
      * @param codec The LDAP Service to use
      */
-    public PasswordPolicyContainer( LdapApiService codec )
+    public PasswordPolicyResponseContainer( LdapApiService codec )
     {
         super();
-        control = new PasswordPolicyDecorator( codec, new PasswordPolicyImpl() );
-        setGrammar( PasswordPolicyGrammar.getInstance() );
-        setTransition( PasswordPolicyStates.START_STATE );
+        control = new PasswordPolicyResponseDecorator( codec, new PasswordPolicyResponseImpl() );
+        setGrammar( PasswordPolicyResponseGrammar.getInstance() );
+        setTransition( PasswordPolicyResponseStates.START_STATE );
     }
 
 
@@ -57,28 +57,21 @@ public class PasswordPolicyContainer extends AbstractContainer
      * @param codec The LDAP Service to use
      * @param ppolicyResponse The PasswordPolicy response
      */
-    public PasswordPolicyContainer( LdapApiService codec, PasswordPolicy ppolicyResponse )
+    public PasswordPolicyResponseContainer( LdapApiService codec, PasswordPolicyResponse ppolicyResponse )
     {
         super();
 
-        if ( ppolicyResponse instanceof PasswordPolicyDecorator )
-        {
-            this.control = ( PasswordPolicyDecorator ) ppolicyResponse;
-        }
-        else
-        {
-            control = new PasswordPolicyDecorator( codec, ppolicyResponse );
-        }
+        control = new PasswordPolicyResponseDecorator( codec, ppolicyResponse );
 
-        setGrammar( PasswordPolicyGrammar.getInstance() );
-        setTransition( PasswordPolicyStates.START_STATE );
+        setGrammar( PasswordPolicyResponseGrammar.getInstance() );
+        setTransition( PasswordPolicyResponseStates.START_STATE );
     }
 
 
     /**
-     * @return The decorated PasswordPolicy control
+     * @return the PasswordPolicyResponseControlCodec object
      */
-    public PasswordPolicyDecorator getPasswordPolicyResponseControl()
+    public PasswordPolicyResponse getPasswordPolicyResponseControl()
     {
         return control;
     }
@@ -89,7 +82,7 @@ public class PasswordPolicyContainer extends AbstractContainer
      * 
      * @param control The decorated PasswordPolicy control
      */
-    public void setPasswordPolicyResponseControl( PasswordPolicyDecorator control )
+    public void setPasswordPolicyResponseControl( PasswordPolicyResponseDecorator control )
     {
         this.control = control;
     }

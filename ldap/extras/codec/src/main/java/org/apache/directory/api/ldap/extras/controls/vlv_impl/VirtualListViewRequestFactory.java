@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.extras.controls.vlv_impl;
 
 
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
@@ -34,11 +35,8 @@ import org.apache.directory.api.ldap.model.message.Control;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class VirtualListViewRequestFactory implements ControlFactory<VirtualListViewRequest>
+public class VirtualListViewRequestFactory extends AbstractControlFactory<VirtualListViewRequest>
 {
-    private LdapApiService codec;
-
-
     /**
      * Creates a new instance of VirtualListViewRequestFactory.
      *
@@ -46,7 +44,7 @@ public class VirtualListViewRequestFactory implements ControlFactory<VirtualList
      */
     public VirtualListViewRequestFactory( LdapApiService codec )
     {
-        this.codec = codec;
+        super( codec );
     }
 
 

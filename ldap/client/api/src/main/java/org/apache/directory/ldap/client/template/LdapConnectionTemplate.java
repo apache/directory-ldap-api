@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyDecorator;
+import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyResponseDecorator;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Value;
@@ -75,7 +75,7 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     };
 
     private LdapConnectionPool connectionPool;
-    private final PasswordPolicyDecorator passwordPolicyRequestControl;
+    private final PasswordPolicyResponseDecorator passwordPolicyRequestControl;
     private PasswordPolicyResponder passwordPolicyResponder;
     private ModelFactory modelFactory;
 
@@ -93,7 +93,7 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
         }
         
         this.connectionPool = connectionPool;
-        this.passwordPolicyRequestControl = new PasswordPolicyDecorator(
+        this.passwordPolicyRequestControl = new PasswordPolicyResponseDecorator(
             connectionPool.getLdapApiService() );
         this.passwordPolicyResponder = new PasswordPolicyResponderImpl(
             connectionPool.getLdapApiService() );

@@ -31,15 +31,15 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PPolicyInit extends GrammarAction<PasswordPolicyContainer>
+public class PPolicyResponseInit extends GrammarAction<PasswordPolicyResponseContainer>
 {
     /** The logger */
-    private static final Logger LOG = LoggerFactory.getLogger( PPolicyInit.class );
+    private static final Logger LOG = LoggerFactory.getLogger( PPolicyResponseInit.class );
 
     /**
      * Instantiates a new PPolicyInit action.
      */
-    public PPolicyInit()
+    public PPolicyResponseInit()
     {
         super( "Initialize the PasswordPolicyResponseControlContainer" );
     }
@@ -48,7 +48,7 @@ public class PPolicyInit extends GrammarAction<PasswordPolicyContainer>
     /**
      * {@inheritDoc}
      */
-    public void action( PasswordPolicyContainer container )
+    public void action( PasswordPolicyResponseContainer container )
     {
         // As all the values are optional or defaulted, we can end here
         container.setGrammarEndAllowed( true );

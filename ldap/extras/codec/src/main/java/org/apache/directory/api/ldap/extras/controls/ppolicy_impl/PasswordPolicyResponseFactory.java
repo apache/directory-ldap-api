@@ -21,73 +21,70 @@ package org.apache.directory.api.ldap.extras.controls.ppolicy_impl;
 
 
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
+import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyRequest;
+import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponse;
 import org.apache.directory.api.ldap.model.message.Control;
 
 
 /**
- * A {@link ControlFactory} which creates {@link PasswordPolicy} controls.
+ * A {@link ControlFactory} which creates {@link PasswordPolicyResponse} controls.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class PasswordPolicyFactory implements ControlFactory<PasswordPolicy>
+public class PasswordPolicyResponseFactory extends AbstractControlFactory<PasswordPolicyResponse>
 {
-
-    private LdapApiService codec;
-
-
     /**
-     * Creates a new instance of PasswordPolicyFactory.
+     * Creates a new instance of PasswordPolicyResponseFactory.
      *
      * @param codec The LDAP Service to use
      */
-    public PasswordPolicyFactory( LdapApiService codec )
+    public PasswordPolicyResponseFactory( LdapApiService codec )
     {
-        this.codec = codec;
+        super( codec );
     }
 
 
     /**
-     *
      * {@inheritDoc}
      */
     @Override
     public String getOid()
     {
-        return PasswordPolicy.OID;
+        return PasswordPolicyRequest.OID;
     }
 
 
     /**
-     *
      * {@inheritDoc}
      */
     @Override
-    public CodecControl<PasswordPolicy> newCodecControl()
+    public CodecControl<PasswordPolicyResponse> newCodecControl()
     {
-        return new PasswordPolicyDecorator( codec );
+        return new PasswordPolicyResponseDecorator( codec );
     }
 
 
     /**
-     *
      * {@inheritDoc}
      */
     @Override
-    public CodecControl<PasswordPolicy> newCodecControl( PasswordPolicy control )
+    public CodecControl<PasswordPolicyResponse> newCodecControl( PasswordPolicyResponse control )
     {
-        return new PasswordPolicyDecorator( codec, control );
+        return new PasswordPolicyResponseDecorator( codec, control );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void encodeValue( Asn1Buffer buffer, Control control )
     {
         // TODO Auto-generated method stub
-
     }
 }

@@ -28,7 +28,7 @@ import org.apache.directory.api.asn1.actions.AbstractReadInteger;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreTimeBeforeExpiration extends AbstractReadInteger<PasswordPolicyContainer>
+public class StoreTimeBeforeExpiration extends AbstractReadInteger<PasswordPolicyResponseContainer>
 {
 
     /**
@@ -44,9 +44,9 @@ public class StoreTimeBeforeExpiration extends AbstractReadInteger<PasswordPolic
      * {@inheritDoc}
      */
     @Override
-    protected void setIntegerValue( int value, PasswordPolicyContainer ppolicyContainer )
+    protected void setIntegerValue( int value, PasswordPolicyResponseContainer ppolicyContainer )
     {
-        ppolicyContainer.getPasswordPolicyResponseControl().getResponse().setTimeBeforeExpiration( value );
+        ppolicyContainer.getPasswordPolicyResponseControl().setTimeBeforeExpiration( value );
 
         ppolicyContainer.setGrammarEndAllowed( true );
     }

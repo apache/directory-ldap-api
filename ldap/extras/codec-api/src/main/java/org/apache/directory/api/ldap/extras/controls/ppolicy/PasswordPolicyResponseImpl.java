@@ -19,6 +19,7 @@
  */
 package org.apache.directory.api.ldap.extras.controls.ppolicy;
 
+import org.apache.directory.api.ldap.model.message.controls.AbstractControl;
 
 /**
  * A PasswordPolicyResponse.
@@ -26,8 +27,17 @@ package org.apache.directory.api.ldap.extras.controls.ppolicy;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class PasswordPolicyResponseImpl implements PasswordPolicyResponse
+public class PasswordPolicyResponseImpl extends AbstractControl implements PasswordPolicyResponse
 {
+    /**
+     * Creates a new instance of a PasswordPolicy response Control.
+     */
+    public PasswordPolicyResponseImpl()
+    {
+        super( PasswordPolicyResponse.OID );
+    }
+
+    
     /** time before expiration of the password */
     private int timeBeforeExpiration = -1;
 

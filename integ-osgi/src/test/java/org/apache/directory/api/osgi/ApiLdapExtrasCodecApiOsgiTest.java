@@ -22,12 +22,13 @@ package org.apache.directory.api.osgi;
 
 import org.apache.directory.api.ldap.extras.controls.SynchronizationModeEnum;
 import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncRequestImpl;
+import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncResponseImpl;
 import org.apache.directory.api.ldap.extras.controls.ad.AdShowDeletedImpl;
 import org.apache.directory.api.ldap.extras.controls.ad.AdPolicyHintsImpl;
 
 import org.apache.directory.api.ldap.extras.controls.changeNotifications.ChangeNotificationsImpl;
 import org.apache.directory.api.ldap.extras.controls.permissiveModify.PermissiveModifyImpl;
-import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyImpl;
+import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyRequestImpl;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponseImpl;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValueImpl;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncRequest.SyncRequestValueImpl;
@@ -62,26 +63,31 @@ public class ApiLdapExtrasCodecApiOsgiTest extends ApiOsgiTestBase
     protected void useBundleClasses() throws Exception
     {
         SynchronizationModeEnum.REFRESH_AND_PERSIST.getValue();
+        
+        // Controls
         new AdDirSyncRequestImpl().getOid();
+        new AdDirSyncResponseImpl().getOid();
         new AdPolicyHintsImpl().getOid();
         new AdShowDeletedImpl().getOid();
         new ChangeNotificationsImpl().getOid();
-        new EndTransactionRequestImpl();
-        new EndTransactionResponseImpl();
-        new PasswordModifyRequestImpl().getUserIdentity();
-        new PasswordModifyResponseImpl( 5 ).setResponseName( "foo" );
-        new PasswordPolicyImpl().getOid();
+        new PasswordPolicyRequestImpl().getOid();
         new PasswordPolicyResponseImpl().getGraceAuthNRemaining();
         new PermissiveModifyImpl().getOid();
-        new StartTlsRequestImpl();
-        new StartTlsResponseImpl();
-        new StartTransactionRequestImpl();
-        new StartTransactionResponseImpl();
         new SyncDoneValueImpl().getOid();
         new SyncRequestValueImpl().getOid();
         new SyncStateValueImpl( true ).getCookie();
         new VirtualListViewRequestImpl().getOid();
         new VirtualListViewResponseImpl().getOid();
+        
+        // Extended operations
+        new EndTransactionRequestImpl();
+        new EndTransactionResponseImpl();
+        new PasswordModifyRequestImpl().getUserIdentity();
+        new PasswordModifyResponseImpl( 5 ).setResponseName( "foo" );
+        new StartTlsRequestImpl();
+        new StartTlsResponseImpl();
+        new StartTransactionRequestImpl();
+        new StartTransactionResponseImpl();
         new WhoAmIRequestImpl();
         new WhoAmIResponseImpl().setDn( new Dn( "uid=admin,ou=system" ) );
     }

@@ -21,7 +21,6 @@
 package org.apache.directory.ldap.client.template;
 
 
-import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyErrorEnum;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponse;
 
@@ -45,9 +44,8 @@ final class PasswordWarningImpl implements PasswordWarning
     }
 
 
-    static PasswordWarning newWarning( PasswordPolicy policy )
+    static PasswordWarning newWarning( PasswordPolicyResponse response )
     {
-        PasswordPolicyResponse response = policy.getResponse();
         if ( response != null )
         {
             PasswordWarningImpl policyWarning = new PasswordWarningImpl();

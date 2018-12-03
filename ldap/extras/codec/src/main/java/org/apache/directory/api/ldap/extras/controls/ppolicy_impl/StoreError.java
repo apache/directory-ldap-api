@@ -50,10 +50,10 @@ public class StoreError<C extends Asn1Container> extends AbstractReadInteger<C>
     @Override
     protected void setIntegerValue( int value, Asn1Container container )
     {
-        PasswordPolicyContainer ppolicyContainer = ( PasswordPolicyContainer ) container;
+        PasswordPolicyResponseContainer ppolicyContainer = ( PasswordPolicyResponseContainer ) container;
 
         PasswordPolicyErrorEnum error = PasswordPolicyErrorEnum.get( value );
-        ppolicyContainer.getPasswordPolicyResponseControl().getResponse().setPasswordPolicyError( error );
+        ppolicyContainer.getPasswordPolicyResponseControl().setPasswordPolicyError( error );
 
         ppolicyContainer.setGrammarEndAllowed( true );
     }

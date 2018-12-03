@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.extras.controls.syncrepl_impl;
 
 
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
@@ -34,12 +35,8 @@ import org.apache.directory.api.ldap.model.message.Control;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SyncStateValueFactory implements ControlFactory<SyncStateValue>
+public class SyncStateValueFactory extends AbstractControlFactory<SyncStateValue>
 {
-    /** The codec for this factory */
-    private LdapApiService codec;
-
-
     /**
      * Creates a new instance of SyncStateValueFactory.
      *
@@ -47,7 +44,7 @@ public class SyncStateValueFactory implements ControlFactory<SyncStateValue>
      */
     public SyncStateValueFactory( LdapApiService codec )
     {
-        this.codec = codec;
+        super( codec );
     }
 
 

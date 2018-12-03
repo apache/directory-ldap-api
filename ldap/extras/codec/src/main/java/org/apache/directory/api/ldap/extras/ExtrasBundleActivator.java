@@ -34,8 +34,10 @@ import org.apache.directory.api.ldap.extras.controls.changeNotifications.ChangeN
 import org.apache.directory.api.ldap.extras.controls.changeNotifications_impl.ChangeNotificationsFactory;
 import org.apache.directory.api.ldap.extras.controls.permissiveModify.PermissiveModify;
 import org.apache.directory.api.ldap.extras.controls.permissiveModify_impl.PermissiveModifyFactory;
-import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
-import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory;
+import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyRequest;
+import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponse;
+import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyRequestFactory;
+import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyResponseFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValue;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncRequest.SyncRequestValue;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateValue;
@@ -171,7 +173,7 @@ public class ExtrasBundleActivator implements BundleActivator
             codec.unregisterRequestControl( AdPolicyHints.OID );
             codec.unregisterRequestControl( AdShowDeleted.OID );
             codec.unregisterRequestControl( ChangeNotifications.OID );
-            codec.unregisterRequestControl( PasswordPolicy.OID );
+            codec.unregisterRequestControl( PasswordPolicyRequest.OID );
             codec.unregisterRequestControl( PermissiveModify.OID );
             codec.unregisterRequestControl( SyncRequestValue.OID );
             codec.unregisterRequestControl( TransactionSpecification.OID );
@@ -179,8 +181,7 @@ public class ExtrasBundleActivator implements BundleActivator
 
             // Response controls
             codec.unregisterResponseControl( AdDirSyncRequest.OID );
-            codec.unregisterResponseControl( ChangeNotifications.OID );
-            codec.unregisterResponseControl( PasswordPolicy.OID );
+            codec.unregisterResponseControl( PasswordPolicyRequest.OID );
             codec.unregisterResponseControl( SyncDoneValue.OID );
             codec.unregisterResponseControl( SyncStateValue.OID );
             codec.unregisterResponseControl( VirtualListViewResponse.OID );
@@ -225,9 +226,11 @@ public class ExtrasBundleActivator implements BundleActivator
             codec.registerRequestControl( changeNotificationsFactory );
             codec.registerResponseControl( changeNotificationsFactory );
 
-            ControlFactory<PasswordPolicy> passwordPolicyFactory = new PasswordPolicyFactory( codec );
-            codec.registerRequestControl( passwordPolicyFactory );
-            codec.registerResponseControl( passwordPolicyFactory );
+            ControlFactory<PasswordPolicyRequest> passwordPolicyRequestFactory = new PasswordPolicyRequestFactory( codec );
+            codec.registerRequestControl( passwordPolicyRequestFactory );
+
+            ControlFactory<PasswordPolicyResponse> passwordPolicyResponseFactory = new PasswordPolicyResponseFactory( codec );
+            codec.registerResponseControl( passwordPolicyResponseFactory );
 
             ControlFactory<PermissiveModify> permissiveModifyFactory = new PermissiveModifyFactory( codec );
             codec.registerRequestControl( permissiveModifyFactory );

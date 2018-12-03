@@ -25,29 +25,29 @@ import org.apache.directory.api.asn1.ber.grammar.States;
 
 
 /**
- * various states used in {@link PasswordPolicyGrammar}.
+ * Various states used in {@link PasswordPolicyResponseGrammar}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public enum PasswordPolicyStates implements States
+public enum PasswordPolicyResponseStates implements States
 {
     /** Initial state */
     START_STATE,
     
     /** PasswordPolicyResponseValue ::= SEQUENCE  transition */
-    PPOLICY_SEQ_STATE,
+    PPOLICY_RESP_SEQ_STATE,
     
     /** warning [0] CHOICE transition */
-    PPOLICY_WARNING_TAG_STATE,
+    PPOLICY_RESP_WARNING_TAG_STATE,
     
     /** timeBeforeExpiration [0] INTEGER (0 .. maxInt) transition */
-    PPOLICY_TIME_BEFORE_EXPIRATION_STATE,
+    PPOLICY_RESP_TIME_BEFORE_EXPIRATION_STATE,
     
     /** graceAuthNsRemaining [1] INTEGER (0 .. maxInt) } OPTIONAL transition */
-    PPOLICY_GRACE_AUTHNS_REMAINING_STATE,
+    PPOLICY_RESP_GRACE_AUTHNS_REMAINING_STATE,
     
     /** error   [1] ENUMERATED transition */
-    PPOLICY_ERROR_TAG_STATE,
+    PPOLICY_RESP_ERROR_TAG_STATE,
 
     /** end state */
     END_STATE;
@@ -90,7 +90,7 @@ public enum PasswordPolicyStates implements States
      * {@inheritDoc}
      */
     @Override
-    public PasswordPolicyStates getStartState()
+    public PasswordPolicyResponseStates getStartState()
     {
         return START_STATE;
     }

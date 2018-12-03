@@ -48,8 +48,10 @@ import org.apache.directory.api.ldap.extras.controls.changeNotifications.ChangeN
 import org.apache.directory.api.ldap.extras.controls.changeNotifications_impl.ChangeNotificationsFactory;
 import org.apache.directory.api.ldap.extras.controls.permissiveModify.PermissiveModify;
 import org.apache.directory.api.ldap.extras.controls.permissiveModify_impl.PermissiveModifyFactory;
-import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
-import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory;
+import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyRequest;
+import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponse;
+import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyRequestFactory;
+import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyResponseFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValue;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncRequest.SyncRequestValue;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateValue;
@@ -149,15 +151,6 @@ public final class CodecFactoryUtil
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, pagedResultsFactory.getOid() ) );
         }
 
-        // Proxied
-        ControlFactory<ProxiedAuthz> proxiedAuthzFactory = new ProxiedAuthzFactory( apiService );
-        requestControlFactories .put( proxiedAuthzFactory.getOid(), proxiedAuthzFactory );
-
-        if ( LOG.isInfoEnabled() )
-        {
-            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, proxiedAuthzFactory.getOid() ) );
-        }
-
         // PersistentSearch
         ControlFactory<PersistentSearch> persistentSearchFactory = new PersistentSearchFactory( apiService );
         requestControlFactories.put( persistentSearchFactory.getOid(), persistentSearchFactory );
@@ -165,6 +158,15 @@ public final class CodecFactoryUtil
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, persistentSearchFactory.getOid() ) );
+        }
+
+        // Proxied
+        ControlFactory<ProxiedAuthz> proxiedAuthzFactory = new ProxiedAuthzFactory( apiService );
+        requestControlFactories .put( proxiedAuthzFactory.getOid(), proxiedAuthzFactory );
+
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, proxiedAuthzFactory.getOid() ) );
         }
 
         // SortRequest
@@ -213,15 +215,6 @@ public final class CodecFactoryUtil
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, adDirSyncRequestFactory.getOid() ) );
         }
 
-        // AdShowDelete
-        ControlFactory<AdShowDeleted> adShowDeletedFactory = new AdShowDeletedFactory( apiService );
-        requestControlFactories.put( adShowDeletedFactory.getOid(), adShowDeletedFactory );
-
-        if ( LOG.isInfoEnabled() )
-        {
-            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, adShowDeletedFactory.getOid() ) );
-        }
-
         // AdPolicyHints
         ControlFactory<AdPolicyHints> adPolicyHintsFactory = new AdPolicyHintsFactory( apiService );
         requestControlFactories.put( adPolicyHintsFactory.getOid(), adPolicyHintsFactory );
@@ -229,6 +222,15 @@ public final class CodecFactoryUtil
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, adPolicyHintsFactory.getOid() ) );
+        }
+
+        // AdShowDelete
+        ControlFactory<AdShowDeleted> adShowDeletedFactory = new AdShowDeletedFactory( apiService );
+        requestControlFactories.put( adShowDeletedFactory.getOid(), adShowDeletedFactory );
+
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, adShowDeletedFactory.getOid() ) );
         }
 
         // ChangeNotification
@@ -241,6 +243,24 @@ public final class CodecFactoryUtil
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, changeNotificationsFactory.getOid() ) );
         }
 
+        // PasswordPolicy request
+        ControlFactory<PasswordPolicyRequest> passwordPolicyRequestFactory = new PasswordPolicyRequestFactory( apiService );
+        requestControlFactories.put( passwordPolicyRequestFactory.getOid(), passwordPolicyRequestFactory );
+
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, passwordPolicyRequestFactory.getOid() ) );
+        }
+
+        // PasswordPolicy response
+        ControlFactory<PasswordPolicyResponse> passwordPolicyResponseFactory = new PasswordPolicyResponseFactory( apiService );
+        responseControlFactories.put( passwordPolicyResponseFactory.getOid(), passwordPolicyResponseFactory );
+
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, passwordPolicyResponseFactory.getOid() ) );
+        }
+
         // PermissiveModify
         ControlFactory<PermissiveModify> permissiveModifyFactory = new PermissiveModifyFactory( apiService );
         requestControlFactories.put( permissiveModifyFactory.getOid(), permissiveModifyFactory );
@@ -248,16 +268,6 @@ public final class CodecFactoryUtil
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, permissiveModifyFactory.getOid() ) );
-        }
-
-        // PasswordPolicy (request and response)
-        ControlFactory<PasswordPolicy> passwordPolicyFactory = new PasswordPolicyFactory( apiService );
-        requestControlFactories.put( passwordPolicyFactory.getOid(), passwordPolicyFactory );
-        responseControlFactories.put( passwordPolicyFactory.getOid(), passwordPolicyFactory );
-
-        if ( LOG.isInfoEnabled() )
-        {
-            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, passwordPolicyFactory.getOid() ) );
         }
 
         // SyncDoneValue

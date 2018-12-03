@@ -32,17 +32,17 @@ import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ControlDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
-import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyImpl;
+import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyErrorEnum;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponse;
+import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponseImpl;
 
 
 /**
- * PasswordPolicy decorator.
+ * PasswordPolicyResponse decorator.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> implements PasswordPolicy
+public class PasswordPolicyResponseDecorator extends ControlDecorator<PasswordPolicyResponse> implements PasswordPolicyResponse
 {
     /** An instance of this decoder */
     private static final Asn1Decoder DECODER = new Asn1Decoder();
@@ -53,25 +53,13 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
 
 
     /**
-     * Creates a new instance of PasswordPolicyDecorator.
+     * Creates a new instance of PasswordPolicyResponseDecorator.
      * 
      * @param codec The LDAP Service to use
      */
-    public PasswordPolicyDecorator( LdapApiService codec )
+    public PasswordPolicyResponseDecorator( LdapApiService codec )
     {
-        super( codec, new PasswordPolicyImpl() );
-    }
-
-
-    /**
-     * Creates a new instance of PasswordPolicyDecorator.
-     * 
-     * @param codec The LDAP Service to use
-     * @param hasResponse The hasResponse flag
-     */
-    public PasswordPolicyDecorator( LdapApiService codec, boolean hasResponse )
-    {
-        super( codec, new PasswordPolicyImpl( hasResponse ) );
+        super( codec, new PasswordPolicyResponseImpl() );
     }
 
 
@@ -81,7 +69,7 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
      * @param codec The LDAP Service to use
      * @param policy The asswordPolicy to use
      */
-    public PasswordPolicyDecorator( LdapApiService codec, PasswordPolicy policy )
+    public PasswordPolicyResponseDecorator( LdapApiService codec, PasswordPolicyResponse policy )
     {
         super( codec, policy );
     }
@@ -93,15 +81,6 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
     @Override
     public void setValue( byte[] value )
     {
-        if ( ( value == null ) || ( value.length <= 2 ) )
-        {
-            setResponse( null );
-        }
-        else if ( !hasResponse() )
-        {
-            setResponse( true );
-        }
-
         super.setValue( value );
     }
 
@@ -117,19 +96,14 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
         ppolicySeqLength = 0;
         warningLength = 0;
 
-        if ( !hasResponse() )
+        if ( getDecorated().getTimeBeforeExpiration() >= 0 )
         {
-            return 0;
-        }
-
-        if ( getResponse().getTimeBeforeExpiration() >= 0 )
-        {
-            int timeBeforeExpirationValueLength = BerValue.getNbBytes( getResponse().getTimeBeforeExpiration() );
+            int timeBeforeExpirationValueLength = BerValue.getNbBytes( getDecorated().getTimeBeforeExpiration() );
             warningLength = 1 + TLV.getNbBytes( timeBeforeExpirationValueLength ) + timeBeforeExpirationValueLength;
         }
-        else if ( getResponse().getGraceAuthNRemaining() >= 0 )
+        else if ( getDecorated().getGraceAuthNRemaining() >= 0 )
         {
-            int graceAuthNsRemainingValueLength = BerValue.getNbBytes( getResponse().getGraceAuthNRemaining() );
+            int graceAuthNsRemainingValueLength = BerValue.getNbBytes( getDecorated().getGraceAuthNRemaining() );
             warningLength = 1 + TLV.getNbBytes( graceAuthNsRemainingValueLength ) + graceAuthNsRemainingValueLength;
         }
 
@@ -138,7 +112,7 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
             ppolicySeqLength = 1 + TLV.getNbBytes( warningLength ) + warningLength;
         }
 
-        if ( getResponse().getPasswordPolicyError() != null )
+        if ( getDecorated().getPasswordPolicyError() != null )
         {
             ppolicySeqLength += 1 + 1 + 1;
         }
@@ -155,11 +129,6 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
     @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
-        if ( !hasResponse() )
-        {
-            return buffer;
-        }
-
         if ( buffer == null )
         {
             throw new EncoderException( I18n.err( I18n.ERR_08000_CANNOT_PUT_A_PDU_IN_NULL_BUFFER ) );
@@ -169,8 +138,8 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
         buffer.put( UniversalTag.SEQUENCE.getValue() );
         buffer.put( TLV.getBytes( ppolicySeqLength ) );
 
-        if ( ( getResponse().getTimeBeforeExpiration() < 0 ) && ( getResponse().getGraceAuthNRemaining() < 0 ) && (
-            getResponse().getPasswordPolicyError() == null ) )
+        if ( ( getDecorated().getTimeBeforeExpiration() < 0 ) && ( getDecorated().getGraceAuthNRemaining() < 0 ) && (
+            getDecorated().getPasswordPolicyError() == null ) )
         {
             return buffer;
         }
@@ -182,28 +151,28 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
                 buffer.put( ( byte ) PasswordPolicyTags.PPOLICY_WARNING_TAG.getValue() );
                 buffer.put( TLV.getBytes( warningLength ) );
 
-                if ( getResponse().getTimeBeforeExpiration() >= 0 )
+                if ( getDecorated().getTimeBeforeExpiration() >= 0 )
                 {
                     BerValue.encode(
                         buffer,
                         ( byte ) PasswordPolicyTags.TIME_BEFORE_EXPIRATION_TAG.getValue(),
-                        getResponse().getTimeBeforeExpiration() );
+                        getDecorated().getTimeBeforeExpiration() );
                 }
-                else if ( getResponse().getGraceAuthNRemaining() >= 0 )
+                else if ( getDecorated().getGraceAuthNRemaining() >= 0 )
                 {
                     BerValue.encode(
                         buffer,
                         ( byte ) PasswordPolicyTags.GRACE_AUTHNS_REMAINING_TAG.getValue(),
-                        getResponse().getGraceAuthNRemaining() );
+                        getDecorated().getGraceAuthNRemaining() );
                 }
             }
 
-            if ( getResponse().getPasswordPolicyError() != null )
+            if ( getDecorated().getPasswordPolicyError() != null )
             {
                 BerValue.encode(
                     buffer,
                     ( byte ) PasswordPolicyTags.PPOLICY_ERROR_TAG.getValue(),
-                    getResponse().getPasswordPolicyError().getValue() );
+                    getDecorated().getPasswordPolicyError().getValue() );
             }
         }
 
@@ -222,20 +191,20 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
         sb.append( "  PasswordPolicyResponse control :\n" );
         sb.append( "   oid          : '" ).append( getOid() ).append( '\n' );
 
-        if ( hasResponse() && getResponse().getTimeBeforeExpiration() >= 0 )
+        if ( getDecorated().getTimeBeforeExpiration() >= 0 )
         {
-            sb.append( "   timeBeforeExpiration          : '" ).append( getResponse().getTimeBeforeExpiration() )
+            sb.append( "   timeBeforeExpiration          : '" ).append( getDecorated().getTimeBeforeExpiration() )
                 .append( '\n' );
         }
-        else if ( hasResponse() && getResponse().getGraceAuthNRemaining() >= 0 )
+        else if ( getDecorated().getGraceAuthNRemaining() >= 0 )
         {
-            sb.append( "   graceAuthNsRemaining          : '" ).append( getResponse().getGraceAuthNRemaining() )
+            sb.append( "   graceAuthNsRemaining          : '" ).append( getDecorated().getGraceAuthNRemaining() )
                 .append( '\n' );
         }
 
-        if ( hasResponse() && getResponse().getPasswordPolicyError() != null )
+        if ( getDecorated().getPasswordPolicyError() != null )
         {
-            sb.append( "   ppolicyError          : '" ).append( getResponse().getPasswordPolicyError().toString() )
+            sb.append( "   ppolicyError          : '" ).append( getDecorated().getPasswordPolicyError().toString() )
                 .append( '\n' );
         }
 
@@ -249,58 +218,69 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
     @Override
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
-        if ( !hasResponse() )
-        {
-            return this;
-        }
-
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );
-        PasswordPolicyContainer container = new PasswordPolicyContainer( getCodecService(), this );
+        PasswordPolicyResponseContainer container = new PasswordPolicyResponseContainer( getCodecService(), getDecorated() );
         DECODER.decode( bb, container );
         return this;
     }
 
 
     /**
-     *
      * {@inheritDoc}
      */
     @Override
-    public boolean hasResponse()
+    public int getTimeBeforeExpiration()
     {
-        return getDecorated().hasResponse();
+        return getDecorated().getTimeBeforeExpiration();
     }
 
 
     /**
-     *
      * {@inheritDoc}
      */
     @Override
-    public void setResponse( PasswordPolicyResponse response )
+    public void setTimeBeforeExpiration( int timeBeforeExpiration )
     {
-        getDecorated().setResponse( response );
+        getDecorated().setTimeBeforeExpiration( timeBeforeExpiration );
     }
 
 
     /**
-     *
      * {@inheritDoc}
      */
     @Override
-    public PasswordPolicyResponse setResponse( boolean hasResponse )
+    public int getGraceAuthNRemaining()
     {
-        return getDecorated().setResponse( hasResponse );
+        return getDecorated().getGraceAuthNRemaining();
     }
 
 
     /**
-     *
      * {@inheritDoc}
      */
     @Override
-    public PasswordPolicyResponse getResponse()
+    public void setGraceAuthNRemaining( int graceAuthNRemaining )
     {
-        return getDecorated().getResponse();
+        getDecorated().setGraceAuthNRemaining( graceAuthNRemaining );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PasswordPolicyErrorEnum getPasswordPolicyError()
+    {
+        return getDecorated().getPasswordPolicyError();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPasswordPolicyError( PasswordPolicyErrorEnum ppolicyError )
+    {
+        getDecorated().setPasswordPolicyError( ppolicyError );
     }
 }

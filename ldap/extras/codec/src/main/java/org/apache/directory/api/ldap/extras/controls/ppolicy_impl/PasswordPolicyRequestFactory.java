@@ -17,88 +17,73 @@
  *   under the License.
  *
  */
-package org.apache.directory.api.ldap.extras.controls.ad_impl;
+package org.apache.directory.api.ldap.extras.controls.ppolicy_impl;
 
 
-import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncResponse;
-import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncResponseFlag;
+import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyRequest;
 import org.apache.directory.api.ldap.model.message.Control;
 
 
 /**
- * A {@link ControlFactory} which creates {@link AdDirSyncResponse} controls.
+ * A {@link ControlFactory} which creates {@link PasswordPolicyRequest} controls.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class AdDirSyncResponseFactory extends AbstractControlFactory<AdDirSyncResponse>
+public class PasswordPolicyRequestFactory extends AbstractControlFactory<PasswordPolicyRequest>
 {
     /**
-     * Creates a new instance of AdDirSyncResponseFactory.
+     * Creates a new instance of PasswordPolicyRequestFactory.
      *
-     * @param codec The codec for this factory.
+     * @param codec The LDAP Service to use
      */
-    public AdDirSyncResponseFactory( LdapApiService codec )
+    public PasswordPolicyRequestFactory( LdapApiService codec )
     {
         super( codec );
     }
 
 
     /**
+     *
      * {@inheritDoc}
      */
     @Override
     public String getOid()
     {
-        return AdDirSyncResponse.OID;
+        return PasswordPolicyRequest.OID;
     }
 
 
     /**
+     *
      * {@inheritDoc}
      */
     @Override
-    public CodecControl<AdDirSyncResponse> newCodecControl()
+    public CodecControl<PasswordPolicyRequest> newCodecControl()
     {
-        return new AdDirSyncResponseDecorator( codec );
+        return new PasswordPolicyRequestDecorator( codec );
     }
 
 
     /**
+     *
      * {@inheritDoc}
      */
     @Override
-    public CodecControl<AdDirSyncResponse> newCodecControl( AdDirSyncResponse control )
+    public CodecControl<PasswordPolicyRequest> newCodecControl( PasswordPolicyRequest control )
     {
-        return new AdDirSyncResponseDecorator( codec, control );
+        return new PasswordPolicyRequestDecorator( codec, control );
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void encodeValue( Asn1Buffer buffer, Control control )
     {
-        AdDirSyncResponse adDirSync = ( AdDirSyncResponse ) control;
-        int start = buffer.getPos();
-
-        // Encode the cookie
-        BerValue.encodeOctetString( buffer, adDirSync.getCookie() );
-
-        // Encode the MaxReturnLength/
-        BerValue.encodeInteger( buffer, adDirSync.getMaxReturnLength() );
-
-        // Encode the flags
-        BerValue.encodeInteger( buffer, AdDirSyncResponseFlag.getBitmask( adDirSync.getFlags() ) );
-
-        // Encode the SEQ
-        BerValue.encodeSequence( buffer, start );
+        // TODO Auto-generated method stub
     }
 }

@@ -24,7 +24,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.directory.api.ldap.codec.standalone.StandaloneLdapApiService;
-import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
+import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyRequest;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequest;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequestImpl;
 import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValue;
@@ -62,7 +62,8 @@ public class StandaloneLdapCodecServiceTest
             + "org.apache.directory.api.ldap.extras.controls.ad_impl.AdShowDeletedFactory,"
             + "org.apache.directory.api.ldap.extras.controls.changeNotifications_impl.ChangeNotificationsFactory,"
             + "org.apache.directory.api.ldap.extras.controls.permissiveModify_impl.PermissiveModifyFactory,"
-            + "org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory,"
+            + "org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyRequestFactory,"
+            + "org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyResponseFactory,"
             + "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncDoneValueFactory,"
             + "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory,"
             + "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory,"
@@ -101,9 +102,9 @@ public class StandaloneLdapCodecServiceTest
     {
         LdapApiService codec = LdapApiServiceFactory.getSingleton();
 
-        assertTrue( codec.isControlRegistered( PasswordPolicy.OID ) );
+        assertTrue( codec.isControlRegistered( PasswordPolicyRequest.OID ) );
 
-        CodecControl<? extends Control> control = codec.newRequestControl( PasswordPolicy.OID );
+        CodecControl<? extends Control> control = codec.newRequestControl( PasswordPolicyRequest.OID );
         assertNotNull( control );
         assertNotNull( codec );
     }

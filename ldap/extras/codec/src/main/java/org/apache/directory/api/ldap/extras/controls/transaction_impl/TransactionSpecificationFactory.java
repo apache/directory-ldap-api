@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.extras.controls.transaction_impl;
 
 
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
@@ -34,12 +35,8 @@ import org.apache.directory.api.ldap.model.message.Control;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class TransactionSpecificationFactory implements ControlFactory<TransactionSpecification>
+public class TransactionSpecificationFactory extends AbstractControlFactory<TransactionSpecification>
 {
-    /** The LDAP codec responsible for encoding and decoding Cascade Controls */
-    private LdapApiService codec;
-
-
     /**
      * Creates a new instance of TransactionSpecificationFactory.
      *
@@ -47,7 +44,7 @@ public class TransactionSpecificationFactory implements ControlFactory<Transacti
      */
     public TransactionSpecificationFactory( LdapApiService codec )
     {
-        this.codec = codec;
+        super( codec );
     }
 
 
