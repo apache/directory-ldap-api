@@ -21,6 +21,7 @@
 package org.apache.directory.api.ldap.extras.controls.vlv_impl;
 
 
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
@@ -78,10 +79,49 @@ public class VirtualListViewRequestFactory extends AbstractControlFactory<Virtua
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void encodeValue( Asn1Buffer buffer, Control control )
     {
-        // TODO Auto-generated method stub
+        int start = buffer.getPos();
+        VirtualListViewRequest vlvRequest = ( VirtualListViewRequest ) control;
+        
+        // The contextID
+        if ( vlvRequest.getContextId() != null )
+        {
+            BerValue.encodeOctetString( buffer, vlvRequest.getContextId() );
+        }
+        
+        if ( vlvRequest.hasOffset() )
+        {
+            int offsetStart = buffer.getPos();
 
+            // The contentCount
+            BerValue.encodeInteger( buffer, vlvRequest.getContentCount() );
+            
+            // The offset
+            BerValue.encodeInteger( buffer, vlvRequest.getOffset() );
+
+            // The byOffset tag
+            BerValue.encodeSequence( buffer, ( byte ) VirtualListViewerTags.BY_OFFSET_TAG.getValue(), offsetStart );
+        }
+        else
+        {
+            // The assertion value
+            BerValue.encodeOctetString( buffer, 
+                ( byte ) VirtualListViewerTags.ASSERTION_VALUE_TAG.getValue(), 
+                vlvRequest.getAssertionValue() );
+        }
+        
+        // after count
+        BerValue.encodeInteger( buffer, vlvRequest.getAfterCount() );
+        
+        // before count
+        BerValue.encodeInteger( buffer, vlvRequest.getBeforeCount() );
+        
+        // The sequence
+        BerValue.encodeSequence( buffer, start );
     }
 }

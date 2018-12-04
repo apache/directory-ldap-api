@@ -1,0 +1,497 @@
+/*
+ *   Licensed to the Apache Software Foundation (ASF) under one
+ *   or more contributor license agreements.  See the NOTICE file
+ *   distributed with this work for additional information
+ *   regarding copyright ownership.  The ASF licenses this file
+ *   to you under the Apache License, Version 2.0 (the
+ *   "License"); you may not use this file except in compliance
+ *   with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing,
+ *   software distributed under the License is distributed on an
+ *   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *   KIND, either express or implied.  See the License for the
+ *   specific language governing permissions and limitations
+ *   under the License.
+ *
+ */
+
+package org.apache.directory.api.ldap.extras.controls.vlv;
+
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.nio.ByteBuffer;
+
+import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.EncoderException;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
+import org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewRequestDecorator;
+import org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewRequestFactory;
+import org.apache.directory.api.util.Strings;
+import org.junit.Before;
+import org.junit.Test;
+
+
+/**
+ * VLV request control tests.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
+public class VLVRequestControlTest extends AbstractCodecServiceTest
+{
+    @Before
+    public void init()
+    {
+        codec.registerRequestControl( new VirtualListViewRequestFactory( codec ) );
+    }
+
+    
+    @Test
+    public void testDecodeOffsetWithContextID() throws DecoderException, EncoderException
+    {
+        ByteBuffer bb = ByteBuffer.allocate( 0x16 );
+
+        bb.put( new byte[]
+            {
+                0x30, 0x14,             // VirtualListViewRequest ::= SEQUENCE {
+                  0x02, 0x01, 0x01,     //    beforeCount    INTEGER (0..maxInt),
+                  0x02, 0x01, 0x01,     //    afterCount     INTEGER (0..maxInt),
+                  ( byte ) 0xA0, 0x06,  //    target       CHOICE {
+                                        //                   byOffset        [0] SEQUENCE {
+                    0x02, 0x01, 0x01,   //                        offset          INTEGER (1 .. maxInt),
+                    0x02, 0x01, 0x01,   //                        contentCount    INTEGER (0 .. maxInt) },
+                  0x04, 0x04,           //    contextID     OCTET STRING OPTIONAL }
+                    'a', 'b', 'c', 'd'
+            } );
+
+        bb.flip();
+
+        // Test decoding
+        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
+        VirtualListViewRequest virtualListView = ( VirtualListViewRequest ) control.decode( bb.array() );
+
+        assertEquals( 1, virtualListView.getBeforeCount() );
+        assertEquals( 1, virtualListView.getAfterCount() );
+        assertTrue( virtualListView.hasOffset() );
+        assertEquals( 1, virtualListView.getOffset() );
+        assertEquals( 1, virtualListView.getContentCount() );
+        assertEquals( "abcd", Strings.utf8ToString( virtualListView.getContextId() ) );
+
+        // Test encoding
+        ByteBuffer encoded = ( ( VirtualListViewRequestDecorator ) virtualListView ).encode(
+            ByteBuffer.allocate( ( ( VirtualListViewRequestDecorator ) virtualListView ).computeLength() ) );
+        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
+        
+        // Check the reverse encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+
+        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().get( VirtualListViewRequest.OID );
+        factory.encodeValue( asn1Buffer, virtualListView );
+
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
+    }
+
+
+    @Test
+    public void testDecodeOffsetWithoutContextID() throws DecoderException, EncoderException
+    {
+        ByteBuffer bb = ByteBuffer.allocate( 0x10 );
+
+        bb.put( new byte[]
+            {
+                0x30, 0x0E,             // VirtualListViewRequest ::= SEQUENCE {
+                  0x02, 0x01, 0x01,     //    beforeCount    INTEGER (0..maxInt),
+                  0x02, 0x01, 0x01,     //    afterCount     INTEGER (0..maxInt),
+                  ( byte ) 0xA0, 0x06,  //    target       CHOICE {
+                                        //                   byOffset        [0] SEQUENCE {
+                    0x02, 0x01, 0x01,   //                        offset          INTEGER (1 .. maxInt),
+                    0x02, 0x01, 0x01,   //                        contentCount    INTEGER (0 .. maxInt) },
+            } );
+
+        bb.flip();
+
+        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
+        VirtualListViewRequest virtualListView = ( VirtualListViewRequest ) control.decode( bb.array() );
+
+        assertEquals( 1, virtualListView.getBeforeCount() );
+        assertEquals( 1, virtualListView.getAfterCount() );
+        assertTrue( virtualListView.hasOffset() );
+        assertEquals( 1, virtualListView.getOffset() );
+        assertEquals( 1, virtualListView.getContentCount() );
+        assertNull( virtualListView.getContextId() );
+
+        ByteBuffer encoded = ( ( VirtualListViewRequestDecorator ) virtualListView ).encode(
+            ByteBuffer.allocate( ( ( VirtualListViewRequestDecorator ) virtualListView ).computeLength() ) );
+        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
+        
+        // Check the reverse encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+
+        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().get( VirtualListViewRequest.OID );
+        factory.encodeValue( asn1Buffer, virtualListView );
+
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
+    }
+
+
+    @Test
+    public void testDecodeOffsetEmptyContextID() throws DecoderException, EncoderException
+    {
+        ByteBuffer bb = ByteBuffer.allocate( 0x12 );
+
+        bb.put( new byte[]
+            {
+                0x30, 0x10,             // VirtualListViewRequest ::= SEQUENCE {
+                  0x02, 0x01, 0x01,     //    beforeCount    INTEGER (0..maxInt),
+                  0x02, 0x01, 0x01,     //    afterCount     INTEGER (0..maxInt),
+                  ( byte ) 0xA0, 0x06,  //    target       CHOICE {
+                                        //                   byOffset        [0] SEQUENCE {
+                    0x02, 0x01, 0x01,   //                        offset          INTEGER (1 .. maxInt),
+                    0x02, 0x01, 0x01,   //                        contentCount    INTEGER (0 .. maxInt) },
+                    0x04, 0x00          //    contextID     OCTET STRING OPTIONAL }
+            } );
+
+        bb.flip();
+
+        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
+        VirtualListViewRequest virtualListView = ( VirtualListViewRequest ) control.decode( bb.array() );
+
+        assertEquals( 1, virtualListView.getBeforeCount() );
+        assertEquals( 1, virtualListView.getAfterCount() );
+        assertTrue( virtualListView.hasOffset() );
+        assertEquals( 1, virtualListView.getOffset() );
+        assertEquals( 1, virtualListView.getContentCount() );
+        assertNull( virtualListView.getContextId() );
+
+        ByteBuffer encoded = ( ( VirtualListViewRequestDecorator ) virtualListView ).encode(
+            ByteBuffer.allocate( ( ( VirtualListViewRequestDecorator ) virtualListView ).computeLength() ) );
+
+        bb = ByteBuffer.allocate( 0x10 );
+        bb.put( new byte[]
+            {
+                0x30, 0x0E,             // VirtualListViewRequest ::= SEQUENCE {
+                  0x02, 0x01, 0x01,     //    beforeCount    INTEGER (0..maxInt),
+                  0x02, 0x01, 0x01,     //    afterCount     INTEGER (0..maxInt),
+                  ( byte ) 0xA0, 0x06,  //    target       CHOICE {
+                                        //                   byOffset        [0] SEQUENCE {
+                    0x02, 0x01, 0x01,   //                        offset          INTEGER (1 .. maxInt),
+                    0x02, 0x01, 0x01    //                        contentCount    INTEGER (0 .. maxInt) },
+            } );
+
+        assertArrayEquals( bb.array(), encoded.array() );
+
+        // Check the reverse encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+
+        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().get( VirtualListViewRequest.OID );
+        factory.encodeValue( asn1Buffer, virtualListView );
+
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
+    }
+
+
+    @Test
+    public void testDecodeAssertionValueWithContextID() throws DecoderException, EncoderException
+    {
+        ByteBuffer bb = ByteBuffer.allocate( 0x14 );
+
+        bb.put( new byte[]
+            {
+                0x30, 0x12,             // VirtualListViewRequest ::= SEQUENCE {
+                  0x02, 0x01, 0x01,     //    beforeCount    INTEGER (0..maxInt),
+                  0x02, 0x01, 0x01,     //    afterCount     INTEGER (0..maxInt),
+                                        //        target       CHOICE {
+                  ( byte ) 0x81, 0x04,  //              greaterThanOrEqual [1] AssertionValue },
+                    'a', 'b', 'c', 'd',
+                  0x04, 0x04,           //    contextID     OCTET STRING OPTIONAL }
+                    'a', 'b', 'c', 'd'
+        } );
+
+        bb.flip();
+
+        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
+        VirtualListViewRequest virtualListView = ( VirtualListViewRequest ) control.decode( bb.array() );
+
+        assertEquals( 1, virtualListView.getBeforeCount() );
+        assertEquals( 1, virtualListView.getAfterCount() );
+        assertTrue( virtualListView.hasAssertionValue() );
+        assertEquals( "abcd", Strings.utf8ToString( virtualListView.getAssertionValue() ) );
+        assertEquals( "abcd", Strings.utf8ToString( virtualListView.getContextId() ) );
+
+        ByteBuffer encoded = ( ( VirtualListViewRequestDecorator ) virtualListView ).encode(
+            ByteBuffer.allocate( ( ( VirtualListViewRequestDecorator ) virtualListView ).computeLength() ) );
+        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
+
+        // Check the reverse encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+
+        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().get( VirtualListViewRequest.OID );
+        factory.encodeValue( asn1Buffer, virtualListView );
+
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
+    }
+
+
+    @Test
+    public void testDecodeAssertionValueEmptyContextID() throws Exception
+    {
+        ByteBuffer bb = ByteBuffer.allocate( 0x10 );
+
+        bb.put( new byte[]
+            {
+                0x30, 0x0E,                 // VirtualListViewRequest ::= SEQUENCE {
+                  0x02, 0x01, 0x01,         //    beforeCount    INTEGER (0..maxInt),
+                  0x02, 0x01, 0x01,         //    afterCount     INTEGER (0..maxInt),
+                                            //        target       CHOICE {
+                  ( byte ) 0x81, 0x04,      //              greaterThanOrEqual [1] AssertionValue },
+                      'a', 'b', 'c', 'd',
+                  0x04, 0x00                //    contextID     OCTET STRING OPTIONAL }
+        } );
+
+        bb.flip();
+
+        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
+        VirtualListViewRequest virtualListView = ( VirtualListViewRequest ) control.decode( bb.array() );
+
+        assertEquals( 1, virtualListView.getBeforeCount() );
+        assertEquals( 1, virtualListView.getAfterCount() );
+        assertTrue( virtualListView.hasAssertionValue() );
+        assertEquals( "abcd", Strings.utf8ToString( virtualListView.getAssertionValue() ) );
+        assertNull( virtualListView.getContextId() );
+
+        bb = ByteBuffer.allocate( 0x0E );
+        bb.put( new byte[]
+            {
+                0x30, 0x0C,                 // VirtualListViewRequest ::= SEQUENCE {
+                  0x02, 0x01, 0x01,         //    beforeCount    INTEGER (0..maxInt),
+                  0x02, 0x01, 0x01,         //    afterCount     INTEGER (0..maxInt),
+                                            //        target       CHOICE {
+                  ( byte ) 0x81, 0x04,      //              greaterThanOrEqual [1] AssertionValue },
+                      'a', 'b', 'c', 'd'
+        } );
+
+        ByteBuffer encoded = ( ( VirtualListViewRequestDecorator ) virtualListView ).encode(
+            ByteBuffer.allocate( ( ( VirtualListViewRequestDecorator ) virtualListView ).computeLength() ) );
+        assertArrayEquals( bb.array(), encoded.array() );
+
+        // Check the reverse encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+
+        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().get( VirtualListViewRequest.OID );
+        factory.encodeValue( asn1Buffer, virtualListView );
+
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
+    }
+
+
+    @Test
+    public void testDecodeAssertionValueWithoutContextID() throws Exception
+    {
+        ByteBuffer bb = ByteBuffer.allocate( 0x0E );
+
+        bb.put( new byte[]
+            {
+                0x30, 0x0C,                 // VirtualListViewRequest ::= SEQUENCE {
+                  0x02, 0x01, 0x01,         //    beforeCount    INTEGER (0..maxInt),
+                  0x02, 0x01, 0x01,         //    afterCount     INTEGER (0..maxInt),
+                                            //        target       CHOICE {
+                  ( byte ) 0x81, 0x04,      //              greaterThanOrEqual [1] AssertionValue },
+                      'a', 'b', 'c', 'd'
+            } );
+
+        bb.flip();
+
+        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
+        VirtualListViewRequest virtualListView = ( VirtualListViewRequest ) control.decode( bb.array() );
+
+        assertEquals( 1, virtualListView.getBeforeCount() );
+        assertEquals( 1, virtualListView.getAfterCount() );
+        assertTrue( virtualListView.hasAssertionValue() );
+        assertEquals( "abcd", Strings.utf8ToString( virtualListView.getAssertionValue() ) );
+        assertNull( virtualListView.getContextId() );
+
+        ByteBuffer encoded = ( ( VirtualListViewRequestDecorator ) virtualListView ).encode(
+            ByteBuffer.allocate( ( ( VirtualListViewRequestDecorator ) virtualListView ).computeLength() ) );
+        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
+
+        // Check the reverse encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+
+        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().get( VirtualListViewRequest.OID );
+        factory.encodeValue( asn1Buffer, virtualListView );
+
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
+    }
+
+
+    @Test(expected = DecoderException.class)
+    public void testDecodeEmptySequence() throws Exception
+    {
+        ByteBuffer bb = ByteBuffer.allocate( 0x2 );
+
+        bb.put( new byte[]
+            {
+                0x30, 0x00
+            } );
+
+        bb.flip();
+
+        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
+        control.decode( bb.array() );
+    }
+
+
+    @Test(expected = DecoderException.class)
+    public void testDecodeNoBeforeCount() throws Exception
+    {
+        ByteBuffer bb = ByteBuffer.allocate( 0x13 );
+
+        bb.put( new byte[]
+            {
+                0x30, 0x11,             // VirtualListViewRequest ::= SEQUENCE {
+                  0x02, 0x01, 0x01,     //    afterCount     INTEGER (0..maxInt),
+                  ( byte ) 0xA0, 0x06,  //    target       CHOICE {
+                                        //                   byOffset        [0] SEQUENCE {
+                    0x02, 0x01, 0x01,   //                        offset          INTEGER (1 .. maxInt),
+                    0x02, 0x01, 0x01,   //                        contentCount    INTEGER (0 .. maxInt) },
+                    0x04, 0x04,         //    contextID     OCTET STRING OPTIONAL }
+                    'a', 'b', 'c', 'd'
+            } );
+
+        bb.flip();
+
+        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
+        control.decode( bb.array() );
+    }
+
+
+    @Test(expected = DecoderException.class)
+    public void testDecodeNoTarget() throws Exception
+    {
+        ByteBuffer bb = ByteBuffer.allocate( 0x0E );
+
+        bb.put( new byte[]
+            {
+                0x30, 0x0C,             // VirtualListViewRequest ::= SEQUENCE {
+                  0x02, 0x01, 0x01,     //    beforeCount     INTEGER (0..maxInt),
+                  0x02, 0x01, 0x01,     //    afterCount     INTEGER (0..maxInt),
+                  0x04, 0x04,           //    contextID     OCTET STRING OPTIONAL }
+                  'a', 'b', 'c', 'd'
+            } );
+
+        bb.flip();
+
+        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
+        control.decode( bb.array() );
+    }
+
+
+    @Test(expected = DecoderException.class)
+    public void testDecodeEmptyByOffset() throws Exception
+    {
+        ByteBuffer bb = ByteBuffer.allocate( 0x10 );
+
+        bb.put( new byte[]
+            {
+                0x30, 0x0E,             // VirtualListViewRequest ::= SEQUENCE {
+                  0x02, 0x01, 0x01,     //    beforeCount     INTEGER (0..maxInt),
+                  0x02, 0x01, 0x01,     //    afterCount     INTEGER (0..maxInt),
+                  ( byte ) 0xA0, 0x00,  //    target       CHOICE {
+                  0x04, 0x04,           //    contextID     OCTET STRING OPTIONAL }
+                    'a', 'b', 'c', 'd'
+            } );
+
+        bb.flip();
+
+        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
+        control.decode( bb.array() );
+    }
+
+
+    @Test
+    public void testDecodeEmptyAssertionValue() throws Exception
+    {
+        ByteBuffer bb = ByteBuffer.allocate( 0x10 );
+
+        bb.put( new byte[]
+            {
+                0x30, 0x0E,             // VirtualListViewRequest ::= SEQUENCE {
+                  0x02, 0x01, 0x01,     //    beforeCount     INTEGER (0..maxInt),
+                  0x02, 0x01, 0x01,     //    afterCount     INTEGER (0..maxInt),
+                  ( byte ) 0x81, 0x00,  //    greaterThanOrEqual [1] AssertionValue },
+                  0x04, 0x04,           //    contextID     OCTET STRING OPTIONAL }
+                    'a', 'b', 'c', 'd'
+            } );
+
+        bb.flip();
+
+        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
+        VirtualListViewRequest virtualListView = ( VirtualListViewRequest ) control.decode( bb.array() );
+
+        assertEquals( 1, virtualListView.getBeforeCount() );
+        assertEquals( 1, virtualListView.getAfterCount() );
+        assertTrue( virtualListView.hasAssertionValue() );
+        assertEquals( "", Strings.utf8ToString( virtualListView.getAssertionValue() ) );
+        assertEquals( "abcd", Strings.utf8ToString( virtualListView.getContextId() ) );
+
+        ByteBuffer encoded = ( ( VirtualListViewRequestDecorator ) virtualListView ).encode(
+            ByteBuffer.allocate( ( ( VirtualListViewRequestDecorator ) virtualListView ).computeLength() ) );
+        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
+    }
+
+
+    @Test(expected = DecoderException.class)
+    public void testDecodeByOffsetNoOffsetOrContentCount() throws Exception
+    {
+        ByteBuffer bb = ByteBuffer.allocate( 0x13 );
+
+        bb.put( new byte[]
+            {
+                0x30, 0x11,             // VirtualListViewRequest ::= SEQUENCE {
+                  0x02, 0x01, 0x01,     //    beforeCount    INTEGER (0..maxInt),
+                  0x02, 0x01, 0x01,     //    afterCount     INTEGER (0..maxInt),
+                  ( byte ) 0xA0, 0x03,  //    target       CHOICE {
+                                        //                   byOffset        [0] SEQUENCE {
+                    0x02, 0x01, 0x01,   //                        offset          INTEGER (1 .. maxInt),
+                    0x04, 0x04,         //    contextID     OCTET STRING OPTIONAL }
+                    'a', 'b', 'c', 'd'
+            } );
+
+        bb.flip();
+
+        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
+        control.decode( bb.array() );
+    }
+
+
+    @Test(expected = DecoderException.class)
+    public void testDecodeByOffsetWrongOffset() throws Exception
+    {
+        ByteBuffer bb = ByteBuffer.allocate( 0x16 );
+
+        bb.put( new byte[]
+            {
+                0x30, 0x14,             // VirtualListViewRequest ::= SEQUENCE {
+                  0x02, 0x01, 0x01,     //    beforeCount    INTEGER (0..maxInt),
+                  0x02, 0x01, 0x01,     //    afterCount     INTEGER (0..maxInt),
+                  ( byte ) 0xA0, 0x06,  //    target       CHOICE {
+                                        //                   byOffset        [0] SEQUENCE {
+                    0x02, 0x01, 0x00,   //                        offset          INTEGER (1 .. maxInt),
+                    0x02, 0x01, 0x01,   //                        contentCount    INTEGER (0 .. maxInt) },
+                    0x04, 0x04,         //    contextID     OCTET STRING OPTIONAL }
+                    'a', 'b', 'c', 'd'
+            } );
+
+        bb.flip();
+
+        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
+        control.decode( bb.array() );
+    }
+}
