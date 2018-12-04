@@ -55,10 +55,12 @@ public class AdDirSyncRequestControlTest extends AbstractCodecServiceTest
     {
         codec.registerRequestControl( new AdDirSyncRequestFactory( codec ) );
     }
+    
+    
     @Test
     public void testAdDirSyncRequestControl() throws DecoderException, EncoderException
     {
-        ByteBuffer bb = ByteBuffer.allocate( 0x0F );
+        ByteBuffer bb = ByteBuffer.allocate( 0x0E );
 
         bb.put( new byte[]
             {
@@ -82,9 +84,15 @@ public class AdDirSyncRequestControlTest extends AbstractCodecServiceTest
         // test encoding
         ByteBuffer buffer = ( ( AdDirSyncRequestDecorator ) adDirSync ).encode( ByteBuffer
             .allocate( ( ( AdDirSyncRequestDecorator ) adDirSync ).computeLength() ) );
-        String expected = "0x30 0x0C 0x02 0x01 0x01 0x02 0x01 0x00 0x04 0x04 0x78 0x6B 0x63 0x64 ";
-        String decoded = Strings.dumpBytes( buffer.array() );
-        assertEquals( expected, decoded );
+        assertArrayEquals( bb.array(), buffer.array() );
+
+        // Check the reverse encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+
+        AdDirSyncRequestFactory factory = ( AdDirSyncRequestFactory ) codec.getRequestControlFactories().get( AdDirSyncRequest.OID );
+        factory.encodeValue( asn1Buffer, adDirSync );
+
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 
 
@@ -114,9 +122,7 @@ public class AdDirSyncRequestControlTest extends AbstractCodecServiceTest
         // test encoding
         ByteBuffer buffer = ( ( AdDirSyncRequestDecorator ) adDirSync ).encode( ByteBuffer
             .allocate( ( ( AdDirSyncRequestDecorator ) adDirSync ).computeLength() ) );
-        String expected = "0x30 0x08 0x02 0x01 0x01 0x02 0x01 0x00 0x04 0x00 ";
-        String decoded = Strings.dumpBytes( buffer.array() );
-        assertEquals( expected, decoded );
+        assertArrayEquals( bb.array(), buffer.array() );
 
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();

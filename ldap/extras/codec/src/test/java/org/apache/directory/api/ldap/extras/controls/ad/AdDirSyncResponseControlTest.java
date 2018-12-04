@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.extras.controls.ad;
 
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import java.nio.ByteBuffer;
@@ -27,9 +28,12 @@ import java.util.EnumSet;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncResponseDecorator;
+import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncResponseFactory;
 import org.apache.directory.api.util.Strings;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -47,6 +51,13 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class AdDirSyncResponseControlTest extends AbstractCodecServiceTest
 {
+    @Before
+    public void init()
+    {
+        codec.registerRequestControl( new AdDirSyncResponseFactory( codec ) );
+    }
+    
+    
     @Test
     public void testAdDirSyncControl() throws DecoderException, EncoderException
     {
@@ -77,9 +88,15 @@ public class AdDirSyncResponseControlTest extends AbstractCodecServiceTest
         // test encoding
         ByteBuffer buffer = ( ( AdDirSyncResponseDecorator ) adDirSync ).encode( ByteBuffer
             .allocate( ( ( AdDirSyncResponseDecorator ) adDirSync ).computeLength() ) );
-        String expected = "0x30 0x0D 0x02 0x02 0x08 0x01 0x02 0x01 0x00 0x04 0x04 0x78 0x6B 0x63 0x64 ";
-        String decoded = Strings.dumpBytes( buffer.array() );
-        assertEquals( expected, decoded );
+        assertArrayEquals( bb.array(), buffer.array() );
+
+        // Check the reverse encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+
+        AdDirSyncResponseFactory factory = ( AdDirSyncResponseFactory ) codec.getRequestControlFactories().get( AdDirSyncResponse.OID );
+        factory.encodeValue( asn1Buffer, adDirSync );
+
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 
 
@@ -109,9 +126,15 @@ public class AdDirSyncResponseControlTest extends AbstractCodecServiceTest
         // test encoding
         ByteBuffer buffer = ( ( AdDirSyncResponseDecorator ) adDirSync ).encode( ByteBuffer
             .allocate( ( ( AdDirSyncResponseDecorator ) adDirSync ).computeLength() ) );
-        String expected = "0x30 0x08 0x02 0x01 0x01 0x02 0x01 0x00 0x04 0x00 ";
-        String decoded = Strings.dumpBytes( buffer.array() );
-        assertEquals( expected, decoded );
+        assertArrayEquals( bb.array(), buffer.array() );
+
+        // Check the reverse encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+
+        AdDirSyncResponseFactory factory = ( AdDirSyncResponseFactory ) codec.getRequestControlFactories().get( AdDirSyncResponse.OID );
+        factory.encodeValue( asn1Buffer, adDirSync );
+
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 
 

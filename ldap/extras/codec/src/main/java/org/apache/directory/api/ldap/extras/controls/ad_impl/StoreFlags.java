@@ -47,5 +47,6 @@ public class StoreFlags extends AbstractReadInteger<AdPolicyHintsContainer>
     protected void setIntegerValue( int value, AdPolicyHintsContainer adPolicyHintsContainer )
     {
         adPolicyHintsContainer.getDecorator().setFlags( value );
+        adPolicyHintsContainer.setGrammarEndAllowed( true );
     }
 }
