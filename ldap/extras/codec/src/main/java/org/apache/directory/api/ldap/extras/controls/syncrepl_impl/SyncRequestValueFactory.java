@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.extras.controls.syncrepl_impl;
 
 
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
@@ -81,7 +82,25 @@ public class SyncRequestValueFactory extends AbstractControlFactory<SyncRequestV
     @Override
     public void encodeValue( Asn1Buffer buffer, Control control )
     {
-        // TODO Auto-generated method stub
+        int start = buffer.getPos();
+        SyncRequestValue syncRequestValue = ( SyncRequestValue ) control;
+        
+        // The reloadHint if not false
+        if ( syncRequestValue.isReloadHint() )
+        {
+            BerValue.encodeBoolean( buffer, true );
+        }
 
+        // The cookie, if any
+        if ( syncRequestValue.getCookie() != null )
+        {
+            BerValue.encodeOctetString( buffer, syncRequestValue.getCookie() );
+        }
+        
+        // The mode
+        BerValue.encodeEnumerated( buffer, syncRequestValue.getMode().getValue() );
+
+        // The sequence
+        BerValue.encodeSequence( buffer, start );
     }
 }
