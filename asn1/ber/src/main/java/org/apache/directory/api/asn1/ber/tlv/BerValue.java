@@ -1114,6 +1114,21 @@ public class BerValue
      * Encode an enumerated value
      *
      * @param buffer The PDU in which the value will be put
+     * @param tag The tag to use
+     * @param value The integer to be encoded
+     */
+    public static void encodeEnumerated( Asn1Buffer buffer, byte tag, int value )
+    {
+        buffer.put( getBytes( value ) );
+        buffer.put( TLV.getBytes( getNbBytes( value ) ) );
+        buffer.put( tag );
+    }
+
+
+    /**
+     * Encode an enumerated value
+     *
+     * @param buffer The PDU in which the value will be put
      * @param value The integer to be encoded
      * @throws EncoderException if the PDU in which the value should be encoded is
      * two small

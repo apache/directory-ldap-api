@@ -21,6 +21,7 @@
 package org.apache.directory.api.ldap.extras.controls.ppolicy;
 
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -28,9 +29,11 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyResponseDecorator;
-import org.apache.directory.api.util.Strings;
+import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyResponseFactory;
+import org.junit.Before;
 import org.junit.Test;
 
 
@@ -39,8 +42,15 @@ import org.junit.Test;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PasswordPolicyTest extends AbstractCodecServiceTest
+public class PasswordPolicyResponseTest extends AbstractCodecServiceTest
 {
+    @Before
+    public void init()
+    {
+        codec.registerRequestControl( new PasswordPolicyResponseFactory( codec ) );
+    }
+
+    
     @Test
     public void testDecodeRespWithExpiryWarningAndError() throws DecoderException, EncoderException
     {
@@ -48,11 +58,12 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
 
         bb.put( new byte[]
             {
-                0x30, 0x08,
-                  ( byte ) 0xA0, 0x03,              // timeBeforeExpiration
-                  ( byte ) 0x80, 0x01, 0x01,
-                  ( byte ) 0x81, 0x01, 0x01         // ppolicyError
-        } );
+                0x30, 0x08,                         // PasswordPolicyResponseValue ::= SEQUENCE {
+                  ( byte ) 0xA0, 0x03,              //     warning [0] CHOICE {
+                    ( byte ) 0x80, 0x01, 0x01,      //        timeBeforeExpiration [0] INTEGER (0 .. maxInt),
+                  ( byte ) 0x81, 0x01, 0x01         //     error   [1] ENUMERATED {
+                                                    //          accountLocked               (1),
+            } );
 
         bb.flip();
 
@@ -64,7 +75,16 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
 
         ByteBuffer encoded = ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).encode(
             ByteBuffer.allocate( ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).computeLength() ) );
-        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
+        assertArrayEquals( bb.array(), encoded.array() );
+        
+        // Check the reverse encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+
+        PasswordPolicyResponseFactory factory = ( PasswordPolicyResponseFactory ) codec.getRequestControlFactories().get( PasswordPolicyResponse.OID );
+        factory.encodeValue( asn1Buffer, passwordPolicy );
+
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
+
     }
 
 
@@ -75,11 +95,12 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
 
         bb.put( new byte[]
             {
-                0x30, 0x08,
-                  ( byte ) 0xA0, 0x03,            // warning
-                  ( byte ) 0x81, 0x01, 0x01,      // graceAuthNsRemaining
-                  ( byte ) 0x81, 0x01, 0x01       // error
-        } );
+                0x30, 0x08,                         // PasswordPolicyResponseValue ::= SEQUENCE {
+                  ( byte ) 0xA0, 0x03,              //     warning [0] CHOICE {
+                    ( byte ) 0x81, 0x01, 0x01,      //         graceAuthNsRemaining [1] INTEGER (0 .. maxInt) } OPTIONAL,
+                  ( byte ) 0x81, 0x01, 0x01         //     error   [1] ENUMERATED {
+                                                    //          accountLocked               (1),
+            } );
 
         bb.flip();
 
@@ -91,7 +112,15 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
 
         ByteBuffer encoded = ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).encode(
             ByteBuffer.allocate( ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).computeLength() ) );
-        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
+        assertArrayEquals( bb.array(), encoded.array() );
+        
+        // Check the reverse encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+
+        PasswordPolicyResponseFactory factory = ( PasswordPolicyResponseFactory ) codec.getRequestControlFactories().get( PasswordPolicyResponse.OID );
+        factory.encodeValue( asn1Buffer, passwordPolicy );
+
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 
 
@@ -102,10 +131,10 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
 
         bb.put( new byte[]
             {
-                0x30, 0x05,
-                  ( byte ) 0xA0, 0x03,
-                  ( byte ) 0x80, 0x01, 0x01 //  timeBeforeExpiration
-        } );
+                0x30, 0x05,                     // PasswordPolicyResponseValue ::= SEQUENCE {
+                  ( byte ) 0xA0, 0x03,          //     warning [0] CHOICE {
+                    ( byte ) 0x80, 0x01, 0x01   //        timeBeforeExpiration [0] INTEGER (0 .. maxInt),
+            } );
 
         bb.flip();
 
@@ -116,7 +145,15 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
 
         ByteBuffer encoded = ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).encode(
             ByteBuffer.allocate( ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).computeLength() ) );
-        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
+        assertArrayEquals( bb.array(), encoded.array() );
+        
+        // Check the reverse encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+
+        PasswordPolicyResponseFactory factory = ( PasswordPolicyResponseFactory ) codec.getRequestControlFactories().get( PasswordPolicyResponse.OID );
+        factory.encodeValue( asn1Buffer, passwordPolicy );
+
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 
 
@@ -127,10 +164,10 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
 
         bb.put( new byte[]
             {
-                0x30, 0x05,
-                  ( byte ) 0xA0, 0x03,
-                  ( byte ) 0x81, 0x01, 0x01 //  graceAuthNsRemaining
-        } );
+                0x30, 0x05,                     // PasswordPolicyResponseValue ::= SEQUENCE {
+                  ( byte ) 0xA0, 0x03,          //     warning [0] CHOICE {
+                    ( byte ) 0x81, 0x01, 0x01   //         graceAuthNsRemaining [1] INTEGER (0 .. maxInt) } OPTIONAL,
+            } );
 
         bb.flip();
 
@@ -141,7 +178,15 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
 
         ByteBuffer encoded = ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).encode(
             ByteBuffer.allocate( ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).computeLength() ) );
-        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
+        assertArrayEquals( bb.array(), encoded.array() );
+        
+        // Check the reverse encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+
+        PasswordPolicyResponseFactory factory = ( PasswordPolicyResponseFactory ) codec.getRequestControlFactories().get( PasswordPolicyResponse.OID );
+        factory.encodeValue( asn1Buffer, passwordPolicy );
+
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 
 
@@ -152,9 +197,10 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
 
         bb.put( new byte[]
             {
-                0x30, 0x03,
-                  ( byte ) 0x81, 0x01, 0x01 //  error
-        } );
+                0x30, 0x03,                     // PasswordPolicyResponseValue ::= SEQUENCE {
+                  ( byte ) 0x81, 0x01, 0x01     //     error   [1] ENUMERATED {
+                                                //          accountLocked               (1),
+            } );
 
         bb.flip();
 
@@ -165,7 +211,15 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
 
         ByteBuffer encoded = ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).encode(
             ByteBuffer.allocate( ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).computeLength() ) );
-        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
+        assertArrayEquals( bb.array(), encoded.array() );
+        
+        // Check the reverse encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+
+        PasswordPolicyResponseFactory factory = ( PasswordPolicyResponseFactory ) codec.getRequestControlFactories().get( PasswordPolicyResponse.OID );
+        factory.encodeValue( asn1Buffer, passwordPolicy );
+
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 
 
@@ -176,8 +230,8 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
 
         bb.put( new byte[]
             {
-                0x30, 0x00
-        } );
+                0x30, 0x00                      // PasswordPolicyResponseValue ::= SEQUENCE {
+            } );
 
         bb.flip();
 
@@ -188,6 +242,14 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
 
         ByteBuffer encoded = ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).encode(
             ByteBuffer.allocate( ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).computeLength() ) );
-        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
+        assertArrayEquals( bb.array(), encoded.array() );
+        
+        // Check the reverse encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+
+        PasswordPolicyResponseFactory factory = ( PasswordPolicyResponseFactory ) codec.getRequestControlFactories().get( PasswordPolicyResponse.OID );
+        factory.encodeValue( asn1Buffer, passwordPolicy );
+
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 }
