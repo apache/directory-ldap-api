@@ -442,10 +442,39 @@ public class DefaultLdapCodecService implements LdapApiService
      * {@inheritDoc}
      */
     @Override
-    public Control fromJndiControl( javax.naming.ldap.Control control ) throws DecoderException
+    public Control fromJndiRequestControl( javax.naming.ldap.Control control ) throws DecoderException
     {
         @SuppressWarnings("rawtypes")
         ControlFactory factory = requestControlFactories.get( control.getID() );
+
+        if ( factory == null )
+        {
+            OpaqueControl ourControl = new OpaqueControl( control.getID() );
+            ourControl.setCritical( control.isCritical() );
+            BasicControlDecorator decorator =
+                new BasicControlDecorator( this, ourControl );
+            decorator.setValue( control.getEncodedValue() );
+            return decorator;
+        }
+
+        @SuppressWarnings("unchecked")
+        CodecControl<? extends Control> ourControl = factory.newCodecControl();
+        ourControl.setCritical( control.isCritical() );
+        ourControl.setValue( control.getEncodedValue() );
+        ourControl.decode( control.getEncodedValue() );
+
+        return ourControl;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Control fromJndiResponseControl( javax.naming.ldap.Control control ) throws DecoderException
+    {
+        @SuppressWarnings("rawtypes")
+        ControlFactory factory = responseControlFactories.get( control.getID() );
 
         if ( factory == null )
         {

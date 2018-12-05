@@ -46,29 +46,32 @@ public class StandaloneLdapCodecServiceTest
     public static void setupLdapApiService() throws Exception
     {
         // Load the extension points
-        System.setProperty( StandaloneLdapApiService.CONTROLS_LIST,
+        System.setProperty( StandaloneLdapApiService.REQUEST_CONTROLS_LIST,
             "org.apache.directory.api.ldap.codec.controls.cascade.CascadeFactory,"
             + "org.apache.directory.api.ldap.codec.controls.manageDsaIT.ManageDsaITFactory,"
-            + "org.apache.directory.api.ldap.codec.controls.proxiedauthz.ProxiedAuthzFactory,"
-            + "org.apache.directory.api.ldap.codec.controls.search.entryChange.EntryChangeFactory,"
             + "org.apache.directory.api.ldap.codec.controls.search.pagedSearch.PagedResultsFactory,"
             + "org.apache.directory.api.ldap.codec.controls.search.persistentSearch.PersistentSearchFactory,"
-            + "org.apache.directory.api.ldap.codec.controls.search.subentries.SubentriesFactory,"
+            + "org.apache.directory.api.ldap.codec.controls.proxiedauthz.ProxiedAuthzFactory,"
             + "org.apache.directory.api.ldap.codec.controls.sort.SortRequestFactory,"
-            + "org.apache.directory.api.ldap.codec.controls.sort.SortResponseFactory,"
+            + "org.apache.directory.api.ldap.codec.controls.search.subentries.SubentriesFactory,"
             + "org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncRequestFactory,"
-            + "org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncResponseFactory,"
             + "org.apache.directory.api.ldap.extras.controls.ad_impl.AdPolicyHintsFactory,"
             + "org.apache.directory.api.ldap.extras.controls.ad_impl.AdShowDeletedFactory,"
             + "org.apache.directory.api.ldap.extras.controls.changeNotifications_impl.ChangeNotificationsFactory,"
-            + "org.apache.directory.api.ldap.extras.controls.permissiveModify_impl.PermissiveModifyFactory,"
             + "org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyRequestFactory,"
+            + "org.apache.directory.api.ldap.extras.controls.permissiveModify_impl.PermissiveModifyFactory,"
+            + "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory,"
+            + "org.apache.directory.api.ldap.extras.controls.transaction_impl.TransactionSpecificationFactory,"
+            + "org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewRequestFactory," );
+
+        System.setProperty( StandaloneLdapApiService.RESPONSE_CONTROLS_LIST,
+            "org.apache.directory.api.ldap.codec.controls.search.entryChange.EntryChangeFactory,"
+            + "org.apache.directory.api.ldap.codec.controls.search.pagedSearch.PagedResultsFactory,"
+            + "org.apache.directory.api.ldap.codec.controls.sort.SortResponseFactory,"
+            + "org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncResponseFactory,"
             + "org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyResponseFactory,"
             + "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncDoneValueFactory,"
-            + "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory,"
             + "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory,"
-            + "org.apache.directory.api.ldap.extras.controls.transaction_impl.TransactionSpecificationFactory,"
-            + "org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewRequestFactory,"
             + "org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewResponseFactory" );
 
         System

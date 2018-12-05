@@ -141,18 +141,34 @@ public final class JndiUtils
 
 
     /**
-     * Convert a JNDI control to a LDAP API control
+     * Convert a JNDI request control to a LDAP API control
      * @param codec The LDAP API service to use
      * @param jndiControl The control to convert
-     * @return A LDAP API control
+     * @return A LDAP API request control
      * @throws DecoderException If the conversion failed
      * @deprecated We don't use JNDI anymore
      */
     @Deprecated
-    public static Control fromJndiControl( LdapApiService codec, javax.naming.ldap.Control jndiControl )
+    public static Control fromJndiRequestControl( LdapApiService codec, javax.naming.ldap.Control jndiControl )
         throws DecoderException
     {
-        return codec.fromJndiControl( jndiControl );
+        return codec.fromJndiRequestControl( jndiControl );
+    }
+
+
+    /**
+     * Convert a JNDI response control to a LDAP API control
+     * @param codec The LDAP API service to use
+     * @param jndiControl The control to convert
+     * @return A LDAP API response control
+     * @throws DecoderException If the conversion failed
+     * @deprecated We don't use JNDI anymore
+     */
+    @Deprecated
+    public static Control fromJndiResponseControl( LdapApiService codec, javax.naming.ldap.Control jndiControl )
+        throws DecoderException
+    {
+        return codec.fromJndiResponseControl( jndiControl );
     }
 
 
@@ -165,7 +181,7 @@ public final class JndiUtils
      * @deprecated We don't use JNDI anymore
      */
     @Deprecated
-    public static Control[] fromJndiControls( LdapApiService codec, javax.naming.ldap.Control... jndiControls )
+    public static Control[] fromJndiRequestControls( LdapApiService codec, javax.naming.ldap.Control... jndiControls )
         throws DecoderException
     {
         if ( jndiControls != null )
@@ -175,7 +191,7 @@ public final class JndiUtils
 
             for ( javax.naming.ldap.Control jndiControl : jndiControls )
             {
-                controls[i++] = fromJndiControl( codec, jndiControl );
+                controls[i++] = fromJndiRequestControl( codec, jndiControl );
             }
 
             return controls;

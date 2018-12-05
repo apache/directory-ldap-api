@@ -44,7 +44,8 @@ import org.slf4j.LoggerFactory;
  * <ul>
  *   <li>Controls :
  *     <ul>
- *       <li>apacheds.controls</li>
+ *       <li>apacheds.request.controls</li>
+ *       <li>apacheds.response.controls</li>
  *       <li>default.controls</li>
  *     </ul>
  *   </li>
@@ -69,8 +70,11 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
     /** A logger */
     private static final Logger LOG = LoggerFactory.getLogger( StandaloneLdapApiService.class );
 
-    /** The list of controls to load at startup */
-    public static final String CONTROLS_LIST = "apacheds.controls";
+    /** The list of request controls to load at startup */
+    public static final String REQUEST_CONTROLS_LIST = "apacheds.request.controls";
+
+    /** The list of response controls to load at startup */
+    public static final String RESPONSE_CONTROLS_LIST = "apacheds.response.controls";
 
     /** The list of extended operations to load at startup */
     public static final String EXTENDED_OPERATIONS_LIST = "apacheds.extendedOperations";
@@ -83,6 +87,25 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
 
     /** The (old) list of extra extended operations to load at startup */
     private static final String OLD_EXTRA_EXTENDED_OPERATION_LIST = "extra.extendedOperations";
+    
+    /** The control's type */
+    public enum ControlType
+    {
+        REQUEST( REQUEST_CONTROLS_LIST ),
+        RESPONSE( RESPONSE_CONTROLS_LIST );
+        
+        private String property;
+        
+        ControlType( String property )
+        {
+            this.property = property;
+        }
+        
+        private String getProperty()
+        {
+            return property;
+        }
+    }
 
 
     /**
@@ -153,7 +176,10 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      */
     public StandaloneLdapApiService() throws Exception
     {
-        this( getControlsFromSystemProperties(), getExtendedOperationsFromSystemProperties(), getIntermediateResponsesFromSystemProperties() );
+        this( getControlsFromSystemProperties( ControlType.REQUEST ), 
+            getControlsFromSystemProperties( ControlType.RESPONSE ), 
+            getExtendedOperationsFromSystemProperties(), 
+            getIntermediateResponsesFromSystemProperties() );
     }
 
 
@@ -165,8 +191,9 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      * @param intermediateResponses The list of intermediate responsess to store
      * @throws Exception If we had an issue with one of the two lists
      */
-    public StandaloneLdapApiService( List<String> controls, List<String> extendedOperations,
-            List<String> intermediateResponses ) throws Exception
+    public StandaloneLdapApiService( List<String> requestControls, 
+        List<String> responseControls, List<String> extendedOperations,
+        List<String> intermediateResponses ) throws Exception
     {
         CodecFactoryUtil.loadStockControls( getRequestControlFactories(), getResponseControlFactories(), this );
 
@@ -175,8 +202,8 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
         CodecFactoryUtil.loadStockIntermediateResponses( getIntermediateResponseFactories(), this );
 
         // Load the controls
-        loadControls( controls, getRequestControlFactories() );
-        loadControls( controls, getResponseControlFactories() );
+        loadControls( requestControls, getRequestControlFactories() );
+        loadControls( responseControls, getResponseControlFactories() );
 
         // Load the extended operations
         loadExtendedOperations( extendedOperations );
@@ -216,30 +243,33 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      *
      * @return A list of controls
      */
-    private static List<String> getControlsFromSystemProperties()
+    private static List<String> getControlsFromSystemProperties( ControlType type )
     {
         List<String> controlsList = new ArrayList<>();
 
-        // Loading controls list from command line properties if it exists
-        String controlsString = System.getProperty( CONTROLS_LIST );
-
-        if ( !Strings.isEmpty( controlsString ) )
-        {
-            for ( String control : controlsString.split( "," ) )
+        if ( type == ControlType.REQUEST )
+        {            
+            // Loading request controls list from command line properties if it exists
+            String controlsString = System.getProperty( type.getProperty() );
+    
+            if ( !Strings.isEmpty( controlsString ) )
             {
-                controlsList.add( control );
-            }
-        }
-        else
-        {
-            // Loading old default controls list from command line properties if it exists
-            String oldDefaultControlsString = System.getProperty( OLD_DEFAULT_CONTROLS_LIST );
-
-            if ( !Strings.isEmpty( oldDefaultControlsString ) )
-            {
-                for ( String control : oldDefaultControlsString.split( "," ) )
+                for ( String control : controlsString.split( "," ) )
                 {
                     controlsList.add( control );
+                }
+            }
+            else
+            {
+                // Loading old default controls list from command line properties if it exists
+                String oldDefaultControlsString = System.getProperty( OLD_DEFAULT_CONTROLS_LIST );
+    
+                if ( !Strings.isEmpty( oldDefaultControlsString ) )
+                {
+                    for ( String control : oldDefaultControlsString.split( "," ) )
+                    {
+                        controlsList.add( control );
+                    }
                 }
             }
         }

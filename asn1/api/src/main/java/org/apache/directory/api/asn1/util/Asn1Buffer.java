@@ -37,7 +37,16 @@ public class Asn1Buffer
     private int pos = 0;
 
     /** A buffer to store the encoded PDU */
-    private byte[] buffer = new byte[DEFAULT_SIZE];
+    private byte[] buffer;
+    
+    
+    /**
+     * Creates a new Asn1Buffer instance
+     */
+    public Asn1Buffer()
+    {
+        buffer = new byte[DEFAULT_SIZE];
+    }
 
 
     /**

@@ -162,13 +162,23 @@ public interface LdapApiService
 
 
     /**
-     * Creates a model control from the JNDI control.
+     * Creates a model request control from the JNDI request control.
      *
      * @param jndiControl The JNDI control.
+     * @return The model request control.
+     * @throws DecoderException if there are problems decoding the value of the JNDI control.
+     */
+    Control fromJndiRequestControl( javax.naming.ldap.Control jndiControl ) throws DecoderException;
+
+
+    /**
+     * Creates a model response control from the JNDI response control.
+     *
+     * @param jndiControl The JNDI response control.
      * @return The model control.
      * @throws DecoderException if there are problems decoding the value of the JNDI control.
      */
-    Control fromJndiControl( javax.naming.ldap.Control jndiControl ) throws DecoderException;
+    Control fromJndiResponseControl( javax.naming.ldap.Control jndiControl ) throws DecoderException;
 
 
     /**
