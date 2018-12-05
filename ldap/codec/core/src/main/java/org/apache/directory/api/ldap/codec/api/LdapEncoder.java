@@ -196,6 +196,12 @@ public final class LdapEncoder
 
             // the value, if any
             controlFactory.encodeValue( buffer, control );
+            
+            if ( buffer.getPos() != start )
+            {
+                // The control value sequence, as an OctetString
+                BerValue.encodeSequence( buffer, ( byte ) UniversalTag.OCTET_STRING.getValue(), start );
+            }
 
             // The criticality
             if ( control.isCritical() )

@@ -20,11 +20,11 @@
 package org.apache.directory.api.ldap.codec.add;
 
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -196,7 +196,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         LdapEncoder.encodeMessageReverse( buffer, codec, request );
 
-        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
@@ -609,6 +609,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
         String encodedPdu = Strings.dumpBytes( bb.array() );
 
         assertEquals( encodedPdu, decodedPdu );
+        
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
@@ -618,7 +619,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         LdapEncoder.encodeMessageReverse( buffer, codec, request );
 
-        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
@@ -719,6 +720,6 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         LdapEncoder.encodeMessageReverse( buffer, codec, request );
 
-        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 }

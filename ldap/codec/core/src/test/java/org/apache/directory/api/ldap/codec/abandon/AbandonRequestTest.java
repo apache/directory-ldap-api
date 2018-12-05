@@ -20,13 +20,12 @@
 package org.apache.directory.api.ldap.codec.abandon;
 
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.Map;
 
 import org.apache.directory.api.asn1.DecoderException;
@@ -119,26 +118,26 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
 
         assertEquals( 4, controls.size() );
 
-        CodecControl<? extends Control> control = ( org.apache.directory.api.ldap.codec.api.CodecControl<?> ) controls
+        CodecControl<? extends Control> control = ( CodecControl<?> ) controls
             .get( "1.3.6.1.5.5.1" );
         assertEquals( "1.3.6.1.5.5.1", control.getOid() );
         assertEquals( "0x61 0x62 0x63 0x64 0x65 0x66 ", Strings.dumpBytes( control.getValue() ) );
         assertTrue( control.isCritical() );
         internalAbandonRequest.addControl( control );
 
-        control = ( org.apache.directory.api.ldap.codec.api.CodecControl<?> ) controls.get( "1.3.6.1.5.5.2" );
+        control = ( CodecControl<?> ) controls.get( "1.3.6.1.5.5.2" );
         assertEquals( "1.3.6.1.5.5.2", control.getOid() );
         assertEquals( "0x67 0x68 0x69 0x6A 0x6B 0x6C ", Strings.dumpBytes( control.getValue() ) );
         assertFalse( control.isCritical() );
         internalAbandonRequest.addControl( control );
 
-        control = ( org.apache.directory.api.ldap.codec.api.CodecControl<?> ) controls.get( "1.3.6.1.5.5.3" );
+        control = ( CodecControl<?> ) controls.get( "1.3.6.1.5.5.3" );
         assertEquals( "1.3.6.1.5.5.3", control.getOid() );
         assertEquals( "", Strings.dumpBytes( control.getValue() ) );
         assertTrue( control.isCritical() );
         internalAbandonRequest.addControl( control );
 
-        control = ( org.apache.directory.api.ldap.codec.api.CodecControl<?> ) controls.get( "1.3.6.1.5.5.4" );
+        control = ( CodecControl<?> ) controls.get( "1.3.6.1.5.5.4" );
         assertEquals( "1.3.6.1.5.5.4", control.getOid() );
         assertEquals( "", Strings.dumpBytes( control.getValue() ) );
         assertFalse( control.isCritical() );
@@ -152,15 +151,7 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
 
         // Don't check the PDU, as control are in a Map, and can be in a different order
         // So we decode the generated PDU, and we compare it with the initial message
-        try
-        {
-            ldapDecoder.decode( bb, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        ldapDecoder.decode( bb, ldapMessageContainer );
 
         AbandonRequest abandonRequest2 = ldapMessageContainer.getMessage();
         assertEquals( abandonRequest, abandonRequest2 );
@@ -210,13 +201,13 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
         // Check the length
         assertEquals( 0x0A, bb.limit() );
 
-        assertTrue( Arrays.equals( stream.array(), bb.array() ) );
+        assertArrayEquals( stream.array(), bb.array() );
 
         // Check the reverse encoding
         Asn1Buffer buffer = new Asn1Buffer();
         LdapEncoder.encodeMessageReverse( buffer, codec, internalAbandonRequest );
 
-        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
