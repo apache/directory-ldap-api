@@ -122,7 +122,7 @@ public class SortRequestFactory extends AbstractControlFactory<SortRequest>
             }
 
             // The attributeType
-            BerValue.encodeOctetString( buffer, Strings.getBytesUtf8Ascii( sortKey.getAttributeTypeDesc() ) );
+            BerValue.encodeOctetString( buffer, sortKey.getAttributeTypeDesc() );
 
             // The sequence
             BerValue.encodeSequence( buffer, start );

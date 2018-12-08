@@ -24,7 +24,16 @@ import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 
 
 /**
- * The interface for a certificate generation request extended operation.
+ * The interface for a certificate generation request extended operation. The 
+ * ASN.1 grammar for the value is :
+ * <pre>
+ *  CertGeneration ::= SEQUENCE {
+ *      target          OCTET STRING,
+ *      issuer          OCTET STRING,
+ *      subject         OCTET STRING,
+ *      keyAlgorithm    OCTET STRING
+ *  }
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

@@ -729,7 +729,7 @@ public class BerValue
      * Encode an OctetString
      *
      * @param buffer The PDU in which the value will be put
-     * @param value The byte[] to be encoded
+     * @param data The byte[] to be encoded
      */
     public static void encodeOctetString( Asn1Buffer buffer, byte[] data )
     {
@@ -741,6 +741,29 @@ public class BerValue
         {
             buffer.put( data );
             buffer.put( TLV.getBytes( data.length ) );
+        }
+
+        buffer.put( UniversalTag.OCTET_STRING.getValue() );
+    }
+
+
+    /**
+     * Encode an OctetString
+     *
+     * @param buffer The PDU in which the value will be put
+     * @param value The String to be encoded
+     */
+    public static void encodeOctetString( Asn1Buffer buffer, String value )
+    {
+        if ( Strings.isEmpty( value ) )
+        {
+            buffer.put( ( byte ) 0 );
+        }
+        else
+        {
+            byte[] bytes = Strings.getBytesUtf8Ascii( value );
+            buffer.put( bytes );
+            buffer.put( TLV.getBytes( bytes.length ) );
         }
 
         buffer.put( UniversalTag.OCTET_STRING.getValue() );
@@ -764,6 +787,30 @@ public class BerValue
         {
             buffer.put( data );
             buffer.put( TLV.getBytes( data.length ) );
+        }
+
+        buffer.put( tag );
+    }
+
+
+    /**
+     * Encode an OctetString
+     *
+     * @param buffer The PDU in which the value will be put
+     * @param tag The tag to use
+     * @param value The OctetString to be encoded
+     */
+    public static void encodeOctetString( Asn1Buffer buffer, byte tag, String value )
+    {
+        if ( Strings.isEmpty( value ) )
+        {
+            buffer.put( ( byte ) 0 );
+        }
+        else
+        {
+            byte[] bytes = Strings.getBytesUtf8Ascii( value );
+            buffer.put( bytes );
+            buffer.put( TLV.getBytes( bytes.length ) );
         }
 
         buffer.put( tag );

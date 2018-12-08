@@ -21,6 +21,9 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.cancel;
 
 
 import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequest;
@@ -29,6 +32,7 @@ import org.apache.directory.api.ldap.extras.extended.cancel.CancelResponse;
 import org.apache.directory.api.ldap.extras.extended.cancel.CancelResponseImpl;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
+import org.apache.directory.api.ldap.model.message.Message;
 
 
 /**
@@ -37,11 +41,8 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CancelFactory implements ExtendedOperationFactory
+public class CancelFactory extends AbstractExtendedOperationFactory
 {
-    /** The Codec service */
-    private LdapApiService codec;
-
     /**
      * Creates a new instance of CancelFactory.
      *
@@ -49,7 +50,7 @@ public class CancelFactory implements ExtendedOperationFactory
      */
     public CancelFactory( LdapApiService codec )
     {
-        this.codec = codec;
+        super( codec );
     }
 
 
@@ -116,5 +117,23 @@ public class CancelFactory implements ExtendedOperationFactory
         }
 
         return new CancelResponseDecorator( codec, ( CancelResponse ) decoratedMessage );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void encodeValue( Asn1Buffer buffer, Message extendedOperation )
+    {
+        int start  = buffer.getPos();
+        CancelRequest cancelRequest = ( CancelRequest ) extendedOperation;
+        
+        // the ID
+        BerValue.encodeInteger( buffer, cancelRequest.getCancelId() );
+        
+        // The sequence
+        BerValue.encodeSequence( buffer, start );
+        
     }
 }

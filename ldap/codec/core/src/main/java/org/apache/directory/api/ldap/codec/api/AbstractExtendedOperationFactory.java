@@ -20,26 +20,25 @@
 package org.apache.directory.api.ldap.codec.api;
 
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.model.message.Control;
+import org.apache.directory.api.ldap.model.message.Message;
 
 /**
- * A factory that encode the Control value
+ * A Factory to encode Extended Request and Response messages
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @param <C> The Control type
  */
-public abstract class AbstractControlFactory<C extends Control> implements ControlFactory<C>
+public abstract class AbstractExtendedOperationFactory implements ExtendedOperationFactory
 {
     /** The LDAP codec responsible for encoding and decoding ManageDsaIT Control */
     protected LdapApiService codec;
 
     /**
      *
-     * Creates a new instance of AbstractControlFactory.
+     * Creates a new instance of AbstractExctendedFactory.
      *
      * @param codec The LdapApiSevice instance
      */
-    protected AbstractControlFactory( LdapApiService codec )
+    protected AbstractExtendedOperationFactory( LdapApiService codec )
     {
         this.codec = codec;
     }
@@ -49,9 +48,8 @@ public abstract class AbstractControlFactory<C extends Control> implements Contr
      * {@inheritDoc}
      */
     @Override
-    public void encodeValue( Asn1Buffer buffer, Control control )
+    public void encodeValue( Asn1Buffer buffer, Message extendedOperation )
     {
         // Nothing to do by default
     }
-
 }

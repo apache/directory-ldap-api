@@ -20,16 +20,18 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction;
 
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionRequest;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
@@ -46,7 +48,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class EndTransactionRequestTest
+public class EndTransactionRequestTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of a EndTransactionRequest with nothing in it
@@ -57,7 +59,8 @@ public class EndTransactionRequestTest
         Asn1Decoder decoder = new Asn1Decoder();
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
         bb.put( new byte[]
-            { 0x30, 0x00, // EndTransactionRequest ::= SEQUENCE {
+            { 
+                0x30, 0x00, // EndTransactionRequest ::= SEQUENCE {
             } );
         
         bb.flip();
@@ -77,9 +80,10 @@ public class EndTransactionRequestTest
         Asn1Decoder decoder = new Asn1Decoder();
         ByteBuffer bb = ByteBuffer.allocate( 0x05 );
         bb.put( new byte[]
-            { 0x30, 0x03,              // EndTransactionRequest ::= SEQUENCE {
-                0x01, 0x01, 0x00       // Commit, TRUE
-        } );
+            { 
+                0x30, 0x03,              // EndTransactionRequest ::= SEQUENCE {
+                  0x01, 0x01, 0x00       // Commit, TRUE
+            } );
 
         bb.flip();
 
@@ -94,29 +98,21 @@ public class EndTransactionRequestTest
      * @throws EncoderException 
      */
     @Test
-    public void testEndTransactionRequestNoCommitIdentifier() throws EncoderException
+    public void testEndTransactionRequestNoCommitIdentifier() throws DecoderException, EncoderException
     {
         Asn1Decoder decoder = new Asn1Decoder();
         ByteBuffer bb = ByteBuffer.allocate( 0x08 );
         bb.put( new byte[]
-            { 0x30, 0x06,                       // EndTransactionRequest ::= SEQUENCE {
-                0x04, 0x04, 't', 'e', 's', 't'  // identifier (test)
-        } );
+            { 
+                0x30, 0x06,                       // EndTransactionRequest ::= SEQUENCE {
+                  0x04, 0x04, 't', 'e', 's', 't'  // identifier (test)
+            } );
 
-        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         EndTransactionRequestContainer container = new EndTransactionRequestContainer();
 
-        try
-        {
-            decoder.decode( bb, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        decoder.decode( bb, container );
         
         EndTransactionRequest endTransactionRequest = container.getEndTransactionRequest();
         assertTrue( endTransactionRequest.getCommit() );
@@ -128,9 +124,13 @@ public class EndTransactionRequestTest
         // Check the encoding
         ByteBuffer bb1 = ( ( EndTransactionRequestDecorator ) endTransactionRequest ).encodeInternal();
 
-        String encodedPdu = Strings.dumpBytes( bb1.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
+        assertArrayEquals( bb.array(), bb1.array() );
+        
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        EndTransactionFactory factory = new EndTransactionFactory( codec );
+        factory.encodeValue( asn1Buffer, endTransactionRequest );
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 
 
@@ -139,30 +139,22 @@ public class EndTransactionRequestTest
      * @throws EncoderException 
      */
     @Test
-    public void testEndTransactionRequesoCommitIdentifier() throws EncoderException
+    public void testEndTransactionRequesoCommitIdentifier() throws DecoderException, EncoderException
     {
         Asn1Decoder decoder = new Asn1Decoder();
         ByteBuffer bb = ByteBuffer.allocate( 0x0B );
         bb.put( new byte[]
-            { 0x30, 0x09,                       // EndTransactionRequest ::= SEQUENCE {
-                0x01, 0x01, 0x00,               // Commit, FALSE
-                0x04, 0x04, 't', 'e', 's', 't'  // identifier (test)
-        } );
+            { 
+                0x30, 0x09,                       // EndTransactionRequest ::= SEQUENCE {
+                  0x01, 0x01, 0x00,               // Commit, FALSE
+                  0x04, 0x04, 't', 'e', 's', 't'  // identifier (test)
+            } );
 
-        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         EndTransactionRequestContainer container = new EndTransactionRequestContainer();
 
-        try
-        {
-            decoder.decode( bb, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        decoder.decode( bb, container );
         
         EndTransactionRequest endTransactionRequest = container.getEndTransactionRequest();
         assertFalse( endTransactionRequest.getCommit() );
@@ -174,9 +166,13 @@ public class EndTransactionRequestTest
         // Check the encoding
         ByteBuffer bb1 = ( ( EndTransactionRequestDecorator ) endTransactionRequest ).encodeInternal();
 
-        String encodedPdu = Strings.dumpBytes( bb1.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
+        assertArrayEquals( bb.array(), bb1.array() );
+        
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        EndTransactionFactory factory = new EndTransactionFactory( codec );
+        factory.encodeValue( asn1Buffer, endTransactionRequest );
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 
 
@@ -185,30 +181,22 @@ public class EndTransactionRequestTest
      * @throws EncoderException 
      */
     @Test
-    public void testEndTransactionRequesoCommitEmptyIdentifier() throws EncoderException
+    public void testEndTransactionRequesoCommitEmptyIdentifier() throws DecoderException, EncoderException
     {
         Asn1Decoder decoder = new Asn1Decoder();
         ByteBuffer bb = ByteBuffer.allocate( 0x07 );
         bb.put( new byte[]
-            { 0x30, 0x05,                       // EndTransactionRequest ::= SEQUENCE {
-                0x01, 0x01, 0x00,               // Commit, FALSE
-                0x04, 0x00                      // identifier (empty)
-        } );
+            { 
+                0x30, 0x05,                       // EndTransactionRequest ::= SEQUENCE {
+                  0x01, 0x01, 0x00,               // Commit, FALSE
+                  0x04, 0x00                      // identifier (empty)
+            } );
 
-        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         EndTransactionRequestContainer container = new EndTransactionRequestContainer();
 
-        try
-        {
-            decoder.decode( bb, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        decoder.decode( bb, container );
         
         EndTransactionRequest endTransactionRequest = container.getEndTransactionRequest();
         assertFalse( endTransactionRequest.getCommit() );
@@ -220,8 +208,12 @@ public class EndTransactionRequestTest
         // Check the encoding
         ByteBuffer bb1 = ( ( EndTransactionRequestDecorator ) endTransactionRequest ).encodeInternal();
 
-        String encodedPdu = Strings.dumpBytes( bb1.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
+        assertArrayEquals( bb.array(), bb1.array() );
+        
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        EndTransactionFactory factory = new EndTransactionFactory( codec );
+        factory.encodeValue( asn1Buffer, endTransactionRequest );
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 }

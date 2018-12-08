@@ -27,7 +27,6 @@ import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.message.SearchResultReference;
-import org.apache.directory.api.util.Strings;
 
 /**
  * The SearchResultReference factory.
@@ -65,7 +64,7 @@ public final class SearchResultReferenceFactory extends ResponseFactory
 
             encodeReferralUrls( buffer, urls );
 
-            BerValue.encodeOctetString( buffer, Strings.getBytesUtf8Ascii( url ) );
+            BerValue.encodeOctetString( buffer, url );
         }
     }
 

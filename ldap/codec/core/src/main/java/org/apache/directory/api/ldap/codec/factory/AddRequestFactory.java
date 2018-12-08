@@ -29,7 +29,6 @@ import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.message.AddRequest;
 import org.apache.directory.api.ldap.model.message.Message;
-import org.apache.directory.api.util.Strings;
 
 /**
  * The AddRequest factory.
@@ -115,7 +114,7 @@ public final class AddRequestFactory implements Messagefactory
             BerValue.encodeSet( buffer, start );
 
             // The attribute type
-            BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( attribute.getUpId() ) );
+            BerValue.encodeOctetString( buffer, attribute.getUpId() );
 
             // The attribute sequence
             BerValue.encodeSequence( buffer, start );
@@ -167,7 +166,7 @@ public final class AddRequestFactory implements Messagefactory
         BerValue.encodeSequence( buffer, start );
 
         // The entry DN
-        BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( entry.getDn().getName() ) );
+        BerValue.encodeOctetString( buffer, entry.getDn().getName() );
 
         // The AddRequest Tag
         BerValue.encodeSequence( buffer, LdapCodecConstants.ADD_REQUEST_TAG, start );

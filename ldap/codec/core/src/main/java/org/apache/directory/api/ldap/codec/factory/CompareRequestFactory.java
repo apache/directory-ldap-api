@@ -24,7 +24,6 @@ import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.CompareRequest;
 import org.apache.directory.api.ldap.model.message.Message;
-import org.apache.directory.api.util.Strings;
 
 /**
  * The CompareRequest factory.
@@ -66,13 +65,13 @@ public final class CompareRequestFactory implements Messagefactory
         BerValue.encodeOctetString( buffer, compareMessage.getAssertionValue().getBytes() );
 
         // The attributeDesc
-        BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( compareMessage.getAttributeId() ) );
+        BerValue.encodeOctetString( buffer, compareMessage.getAttributeId() );
 
         // The attributeValueAssertion sequence Tag
         BerValue.encodeSequence( buffer, pos );
 
         // The entry DN
-        BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( compareMessage.getName().getName() ) );
+        BerValue.encodeOctetString( buffer, compareMessage.getName().getName() );
 
         // The CompareRequest Tag
         BerValue.encodeSequence( buffer, LdapCodecConstants.COMPARE_REQUEST_TAG, pos );

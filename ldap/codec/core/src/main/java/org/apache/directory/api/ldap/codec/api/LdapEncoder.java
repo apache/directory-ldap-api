@@ -210,7 +210,7 @@ public final class LdapEncoder
             }
 
             // The OID
-            BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( control.getOid() ) );
+            BerValue.encodeOctetString( buffer, control.getOid() );
 
             // The Control Sequence
             BerValue.encodeSequence( buffer, start );

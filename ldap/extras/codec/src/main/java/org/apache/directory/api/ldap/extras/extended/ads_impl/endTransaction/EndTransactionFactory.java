@@ -21,6 +21,9 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction;
 
 
 import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.decorators.ExtendedResponseDecorator;
@@ -30,6 +33,7 @@ import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransacti
 import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionResponseImpl;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
+import org.apache.directory.api.ldap.model.message.Message;
 
 
 /**
@@ -38,11 +42,8 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class EndTransactionFactory implements ExtendedOperationFactory
+public class EndTransactionFactory extends AbstractExtendedOperationFactory
 {
-    private LdapApiService codec;
-
-
     /**
      * Creates a new instance of EndTransactionFactory.
      *
@@ -50,7 +51,7 @@ public class EndTransactionFactory implements ExtendedOperationFactory
      */
     public EndTransactionFactory( LdapApiService codec )
     {
-        this.codec = codec;
+        super( codec );
     }
 
 
@@ -134,5 +135,28 @@ public class EndTransactionFactory implements ExtendedOperationFactory
         endTransactionResponse.getLdapResult().setDiagnosticMessage( response.getLdapResult().getDiagnosticMessage() );
 
         return new EndTransactionResponseDecorator( codec, endTransactionResponse );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void encodeValue( Asn1Buffer buffer, Message extendedOperation )
+    {
+        int start  = buffer.getPos();
+        EndTransactionRequest transactionRequest = ( EndTransactionRequest ) extendedOperation;
+        
+        // The identifier
+        BerValue.encodeOctetString( buffer, transactionRequest.getTransactionId() );
+        
+        // The commit flag, if false
+        if ( !transactionRequest.getCommit() )
+        {
+            BerValue.encodeBoolean( buffer, false );
+        }
+        
+        // The sequence
+        BerValue.encodeSequence( buffer, start );
     }
 }

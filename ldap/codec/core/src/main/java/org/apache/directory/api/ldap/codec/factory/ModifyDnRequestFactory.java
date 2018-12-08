@@ -75,10 +75,10 @@ public final class ModifyDnRequestFactory implements Messagefactory
         BerValue.encodeBoolean( buffer, modifyDnRequest.getDeleteOldRdn() );
 
         // The new RDN
-        BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( modifyDnRequest.getNewRdn().getName() ) );
+        BerValue.encodeOctetString( buffer, modifyDnRequest.getNewRdn().getName() );
 
         // The entry DN
-        BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( modifyDnRequest.getName().getName() ) );
+        BerValue.encodeOctetString( buffer, modifyDnRequest.getName().getName() );
 
         // The ModifyDnRequest tag
         BerValue.encodeSequence( buffer, LdapCodecConstants.MODIFY_DN_REQUEST_TAG, start );

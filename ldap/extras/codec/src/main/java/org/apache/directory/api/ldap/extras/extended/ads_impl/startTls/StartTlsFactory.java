@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.startTls;
 
 
 import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.decorators.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
@@ -38,11 +39,8 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StartTlsFactory implements ExtendedOperationFactory
+public class StartTlsFactory extends AbstractExtendedOperationFactory
 {
-    private LdapApiService codec;
-
-
     /**
      * Creates a new instance of StartTlsFactory.
      *
@@ -50,7 +48,7 @@ public class StartTlsFactory implements ExtendedOperationFactory
      */
     public StartTlsFactory( LdapApiService codec )
     {
-        this.codec = codec;
+        super( codec );
     }
 
 

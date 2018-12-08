@@ -26,6 +26,7 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
+import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.decorators.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
@@ -44,11 +45,8 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class WhoAmIFactory implements ExtendedOperationFactory
+public class WhoAmIFactory extends AbstractExtendedOperationFactory
 {
-    private LdapApiService codec;
-
-
     /**
      * Creates a new instance of WhoAmIFactory.
      *
@@ -56,7 +54,7 @@ public class WhoAmIFactory implements ExtendedOperationFactory
      */
     public WhoAmIFactory( LdapApiService codec )
     {
-        this.codec = codec;
+        super( codec );
     }
 
 

@@ -29,7 +29,6 @@ import org.apache.directory.api.ldap.model.message.LdapResult;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.message.ResultResponse;
-import org.apache.directory.api.util.Strings;
 
 /**
  * The Response factory.
@@ -68,7 +67,7 @@ public abstract class ResponseFactory implements Messagefactory
 
             encodeReferralUrls( buffer, urls );
 
-            BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( url ) );
+            BerValue.encodeOctetString( buffer, url );
         }
     }
 
@@ -122,12 +121,12 @@ public abstract class ResponseFactory implements Messagefactory
         }
 
         // The errorMessage
-        BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( ldapResult.getDiagnosticMessage() ) );
+        BerValue.encodeOctetString( buffer, ldapResult.getDiagnosticMessage() );
 
         // The matchedDN
         if ( ldapResult.getMatchedDn() != null )
         {
-            BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( ldapResult.getMatchedDn().getName() ) );
+            BerValue.encodeOctetString( buffer, ldapResult.getMatchedDn().getName() );
         }
         else
         {

@@ -28,7 +28,6 @@ import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.EntryChange;
-import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -102,8 +101,7 @@ public class EntryChangeFactory extends AbstractControlFactory<EntryChange>
         // The previous DN if any
         if ( entryChange.getPreviousDn() != null )
         {
-            BerValue.encodeOctetString( buffer,
-                Strings.getBytesUtf8Ascii( entryChange.getPreviousDn().getName() ) );
+            BerValue.encodeOctetString( buffer, entryChange.getPreviousDn().getName() );
         }
 
         // The change type

@@ -21,6 +21,9 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration;
 
 
 import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationRequest;
@@ -29,6 +32,7 @@ import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerati
 import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationResponseImpl;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
+import org.apache.directory.api.ldap.model.message.Message;
 
 
 /**
@@ -37,11 +41,8 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CertGenerationFactory implements ExtendedOperationFactory
+public class CertGenerationFactory extends AbstractExtendedOperationFactory
 {
-    private LdapApiService codec;
-
-
     /**
      * Creates a new instance of CertGenerationFactory.
      *
@@ -49,7 +50,7 @@ public class CertGenerationFactory implements ExtendedOperationFactory
      */
     public CertGenerationFactory( LdapApiService codec )
     {
-        this.codec = codec;
+        super( codec );
     }
 
 
@@ -116,5 +117,31 @@ public class CertGenerationFactory implements ExtendedOperationFactory
         }
 
         return new CertGenerationResponseDecorator( codec, ( CertGenerationResponse ) decoratedMessage );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void encodeValue( Asn1Buffer buffer, Message extendedOperation )
+    {
+        int start  = buffer.getPos();
+        CertGenerationRequest certGenerationRequest = ( CertGenerationRequest ) extendedOperation;
+        
+        // the key algorithm
+        BerValue.encodeOctetString( buffer, certGenerationRequest.getKeyAlgorithm() );
+        
+        // The subject
+        BerValue.encodeOctetString( buffer, certGenerationRequest.getSubjectDN() );
+
+        // The issuer
+        BerValue.encodeOctetString( buffer, certGenerationRequest.getIssuerDN() );
+        
+        // The target
+        BerValue.encodeOctetString( buffer, certGenerationRequest.getTargetDN() );
+        
+        // The sequence
+        BerValue.encodeSequence( buffer, start );
     }
 }

@@ -80,7 +80,7 @@ public final class BindRequestFactory implements Messagefactory
             }
 
             // The mechanism
-            BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( bindMessage.getSaslMechanism() ) );
+            BerValue.encodeOctetString( buffer, bindMessage.getSaslMechanism() );
 
             // The SASL tag
             BerValue.encodeSequence( buffer, ( byte ) LdapCodecConstants.BIND_REQUEST_SASL_TAG );
@@ -92,12 +92,12 @@ public final class BindRequestFactory implements Messagefactory
         if ( !Dn.isNullOrEmpty( dn ) )
         {
             // A DN has been provided
-            BerValue.encodeOctetString( buffer, Strings.getBytesUtf8Ascii( dn.getName() ) );
+            BerValue.encodeOctetString( buffer, dn.getName() );
         }
         else
         {
             // No DN has been provided, let's use the name as a string instead
-            BerValue.encodeOctetString( buffer, Strings.getBytesUtf8Ascii( bindMessage.getName() ) );
+            BerValue.encodeOctetString( buffer, bindMessage.getName() );
         }
 
         // The version (LDAP V3 only)

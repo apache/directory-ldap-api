@@ -64,7 +64,7 @@ public interface ControlFactory<C extends Control>
     /**
      * Encode the value part of the control.
      *
-     * @param buffer The buffer into whicht o put the encoded value
+     * @param buffer The buffer into which to put the encoded value
      * @param control The control to encode
      */
     void encodeValue( Asn1Buffer buffer, Control control );

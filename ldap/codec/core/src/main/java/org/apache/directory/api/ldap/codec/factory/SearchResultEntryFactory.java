@@ -29,7 +29,6 @@ import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.SearchResultEntry;
-import org.apache.directory.api.util.Strings;
 
 /**
  * The SearchResultEntry factory.
@@ -70,7 +69,7 @@ public final class SearchResultEntryFactory extends ResponseFactory
             // The value
             if ( value.isHumanReadable() )
             {
-                BerValue.encodeOctetString( buffer, Strings.getBytesUtf8Ascii( value.getValue() ) );
+                BerValue.encodeOctetString( buffer, value.getValue() );
             }
             else
             {
@@ -116,7 +115,7 @@ public final class SearchResultEntryFactory extends ResponseFactory
             BerValue.encodeSet( buffer, start );
 
             // The attribute type
-            BerValue.encodeOctetString( buffer, Strings.getBytesUtf8Ascii( attribute.getId() ) );
+            BerValue.encodeOctetString( buffer, attribute.getId() );
 
             // Attribute sequence
             BerValue.encodeSequence( buffer, start );
@@ -170,8 +169,7 @@ public final class SearchResultEntryFactory extends ResponseFactory
         BerValue.encodeSequence( buffer, start );
 
         // The objectName
-        BerValue.encodeOctetString( buffer,
-            Strings.getBytesUtf8Ascii( searchResultEntry.getObjectName().getName() ) );
+        BerValue.encodeOctetString( buffer, searchResultEntry.getObjectName().getName() );
 
         // The SearchResultEntry tag
         BerValue.encodeSequence( buffer, LdapCodecConstants.SEARCH_RESULT_ENTRY_TAG, start );

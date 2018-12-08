@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown;
 
 
 import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownRequest;
@@ -37,11 +38,8 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class GracefulShutdownFactory implements ExtendedOperationFactory
+public class GracefulShutdownFactory extends AbstractExtendedOperationFactory
 {
-    private LdapApiService codec;
-
-
     /**
      * Creates a new instance of GracefulShutdownFactory.
      *
@@ -49,7 +47,7 @@ public class GracefulShutdownFactory implements ExtendedOperationFactory
      */
     public GracefulShutdownFactory( LdapApiService codec )
     {
-        this.codec = codec;
+        super( codec );
     }
 
 

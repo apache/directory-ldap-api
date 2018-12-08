@@ -30,7 +30,6 @@ import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.ModifyRequest;
-import org.apache.directory.api.util.Strings;
 
 /**
  * The ModifyRequest factory.
@@ -71,7 +70,7 @@ public final class ModifyRequestFactory implements Messagefactory
             // The value
             if ( value.isHumanReadable() )
             {
-                BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( value.getValue() ) );
+                BerValue.encodeOctetString( buffer, value.getValue() );
             }
             else
             {
@@ -120,7 +119,7 @@ public final class ModifyRequestFactory implements Messagefactory
             BerValue.encodeSet( buffer, start );
 
             // The attribute type
-            BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( attribute.getUpId() ) );
+            BerValue.encodeOctetString( buffer, attribute.getUpId() );
 
             // The attribute sequence
             BerValue.encodeSequence( buffer, start );
@@ -181,7 +180,7 @@ public final class ModifyRequestFactory implements Messagefactory
         }
 
         // The entry DN
-        BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( modifyRequest.getName().getName() ) );
+        BerValue.encodeOctetString( buffer, modifyRequest.getName().getName() );
 
         // The ModifyRequest tag
         BerValue.encodeSequence( buffer, LdapCodecConstants.MODIFY_REQUEST_TAG, start );

@@ -125,10 +125,10 @@ public final class SearchRequestFactory implements Messagefactory
         int start = buffer.getPos();
 
         // The attribute desc
-        BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( node.getEscapedValue() ) );
+        BerValue.encodeOctetString( buffer, node.getEscapedValue() );
 
         // The assertion desc
-        BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( node.getAttribute() ) );
+        BerValue.encodeOctetString( buffer, node.getAttribute() );
 
         // The EqualityNode sequence
         BerValue.encodeSequence( buffer, tag, start );
@@ -208,7 +208,7 @@ public final class SearchRequestFactory implements Messagefactory
         BerValue.encodeSequence( buffer, start );
 
         // The type
-        BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( node.getAttribute() ) );
+        BerValue.encodeOctetString( buffer, node.getAttribute() );
 
         // The EqualityNode sequence
         BerValue.encodeSequence( buffer, ( byte ) LdapCodecConstants.SUBSTRINGS_FILTER_TAG, start );
@@ -358,7 +358,7 @@ public final class SearchRequestFactory implements Messagefactory
         {
             for ( int i = attributes.size(); i > 0; i-- )
             {
-                BerValue.encodeOctetString( buffer, Strings.getBytesUtf8( attributes.get( i - 1 ) ) );
+                BerValue.encodeOctetString( buffer, attributes.get( i - 1 ) );
             }
         }
 

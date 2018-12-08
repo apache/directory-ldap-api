@@ -21,9 +21,11 @@ package org.apache.directory.api.ldap.codec.api;
 
 
 import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.decorators.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
+import org.apache.directory.api.ldap.model.message.Message;
 
 
 /**
@@ -80,4 +82,13 @@ public interface ExtendedOperationFactory
      * @return The decorated message 
      */
     ExtendedResponse decorate( ExtendedResponse decoratedMessage );
+
+
+    /**
+     * Encode the value part of the extended operation.
+     *
+     * @param buffer The buffer into which to put the encoded value
+     * @param extendedOperation The ExtendedOperation to encode
+     */
+    void encodeValue( Asn1Buffer buffer, Message extendedOperation );
 }
