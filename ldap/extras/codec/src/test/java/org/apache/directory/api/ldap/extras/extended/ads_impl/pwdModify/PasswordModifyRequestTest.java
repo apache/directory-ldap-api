@@ -20,15 +20,17 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify;
 
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyRequestContainer;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyRequestDecorator;
 import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyRequest;
@@ -47,34 +49,26 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class PasswordModifyRequestTest
+public class PasswordModifyRequestTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of a PasswordModifyRequest with nothing in it
      */
     @Test
-    public void testDecodePasswordModifyRequestEmpty()
+    public void testDecodePasswordModifyRequestEmpty() throws DecoderException
     {
         Asn1Decoder decoder = new Asn1Decoder();
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
         bb.put( new byte[]
-            { 0x30, 0x00, // PasswordModifyRequest ::= SEQUENCE {
+            { 
+                0x30, 0x00, // PasswordModifyRequest ::= SEQUENCE {
             } );
 
-        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
 
-        try
-        {
-            decoder.decode( bb, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        decoder.decode( bb, container );
 
         PasswordModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNull( pwdModifyRequest.getUserIdentity() );
@@ -87,9 +81,13 @@ public class PasswordModifyRequestTest
         // Check the encoding
         ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-        String encodedPdu = Strings.dumpBytes( bb1.array() );
+        assertArrayEquals( bb.array(), bb1.array() );
 
-        assertEquals( encodedPdu, decodedPdu );
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        PasswordModifyFactory factory = new PasswordModifyFactory( codec );
+        factory.encodeValue( asn1Buffer, pwdModifyRequest );
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 
 
@@ -97,30 +95,21 @@ public class PasswordModifyRequestTest
      * Test the decoding of a PasswordModifyRequest with an empty user identity
      */
     @Test
-    public void testDecodePasswordModifyRequestUserIdentityNull()
+    public void testDecodePasswordModifyRequestUserIdentityNull() throws DecoderException
     {
         Asn1Decoder decoder = new Asn1Decoder();
         ByteBuffer bb = ByteBuffer.allocate( 0x04 );
         bb.put( new byte[]
-            { 0x30, 0x02, // PasswordModifyRequest ::= SEQUENCE {
-                ( byte ) 0x80,
-                0x00 // userIdentity    [0]  OCTET STRING OPTIONAL
+            { 
+                0x30, 0x02,                 // PasswordModifyRequest ::= SEQUENCE {
+                  ( byte ) 0x80, 0x00       // userIdentity    [0]  OCTET STRING OPTIONAL
         } );
 
-        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
 
-        try
-        {
-            decoder.decode( bb, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        decoder.decode( bb, container );
 
         PasswordModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNotNull( pwdModifyRequest.getUserIdentity() );
@@ -134,9 +123,13 @@ public class PasswordModifyRequestTest
         // Check the encoding
         ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-        String encodedPdu = Strings.dumpBytes( bb1.array() );
+        assertArrayEquals( bb.array(), bb1.array() );
 
-        assertEquals( encodedPdu, decodedPdu );
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        PasswordModifyFactory factory = new PasswordModifyFactory( codec );
+        factory.encodeValue( asn1Buffer, pwdModifyRequest );
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 
 
@@ -144,34 +137,22 @@ public class PasswordModifyRequestTest
      * Test the decoding of a PasswordModifyRequest with a user identity
      */
     @Test
-    public void testDecodePasswordModifyRequestUserIdentityValue()
+    public void testDecodePasswordModifyRequestUserIdentityValue() throws DecoderException
     {
         Asn1Decoder decoder = new Asn1Decoder();
         ByteBuffer bb = ByteBuffer.allocate( 0x08 );
         bb.put( new byte[]
-            { 0x30, 0x06, // PasswordModifyRequest ::= SEQUENCE {
-                ( byte ) 0x80,
-                0x04, // userIdentity    [0]  OCTET STRING OPTIONAL
-                'a',
-                'b',
-                'c',
-                'd'
+            { 
+                0x30, 0x06,                 // PasswordModifyRequest ::= SEQUENCE {
+                  ( byte ) 0x80, 0x04,      // userIdentity    [0]  OCTET STRING OPTIONAL
+                    'a', 'b', 'c', 'd'
         } );
 
-        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
 
-        try
-        {
-            decoder.decode( bb, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        decoder.decode( bb, container );
 
         PasswordModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNotNull( pwdModifyRequest.getUserIdentity() );
@@ -185,9 +166,13 @@ public class PasswordModifyRequestTest
         // Check the encoding
         ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-        String encodedPdu = Strings.dumpBytes( bb1.array() );
+        assertArrayEquals( bb.array(), bb1.array() );
 
-        assertEquals( encodedPdu, decodedPdu );
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        PasswordModifyFactory factory = new PasswordModifyFactory( codec );
+        factory.encodeValue( asn1Buffer, pwdModifyRequest );
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 
 
@@ -196,36 +181,23 @@ public class PasswordModifyRequestTest
      * an empty newPassword
      */
     @Test
-    public void testDecodePasswordModifyRequestUserIdentityValueNewPasswordEmpty()
+    public void testDecodePasswordModifyRequestUserIdentityValueNewPasswordEmpty() throws DecoderException
     {
         Asn1Decoder decoder = new Asn1Decoder();
         ByteBuffer bb = ByteBuffer.allocate( 0x0A );
         bb.put( new byte[]
-            { 0x30, 0x08, // PasswordModifyRequest ::= SEQUENCE {
-                ( byte ) 0x80,
-                0x04, // userIdentity    [0]  OCTET STRING OPTIONAL
-                'a',
-                'b',
-                'c',
-                'd',
-                ( byte ) 0x82, // newPassword    [2]  OCTET STRING OPTIONAL
-                0x00
-        } );
+            { 
+                0x30, 0x08,                   // PasswordModifyRequest ::= SEQUENCE {
+                  ( byte ) 0x80, 0x04,        // userIdentity    [0]  OCTET STRING OPTIONAL
+                    'a', 'b', 'c', 'd',
+                  ( byte ) 0x82, 0x00         // newPassword    [2]  OCTET STRING OPTIONAL
+            } );
 
-        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
 
-        try
-        {
-            decoder.decode( bb, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        decoder.decode( bb, container );
 
         PasswordModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNotNull( pwdModifyRequest.getUserIdentity() );
@@ -240,9 +212,13 @@ public class PasswordModifyRequestTest
         // Check the encoding
         ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-        String encodedPdu = Strings.dumpBytes( bb1.array() );
+        assertArrayEquals( bb.array(), bb1.array() );
 
-        assertEquals( encodedPdu, decodedPdu );
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        PasswordModifyFactory factory = new PasswordModifyFactory( codec );
+        factory.encodeValue( asn1Buffer, pwdModifyRequest );
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 
 
@@ -251,40 +227,24 @@ public class PasswordModifyRequestTest
      * a newPassword
      */
     @Test
-    public void testDecodePasswordModifyRequestUserIdentityValueNewPassword()
+    public void testDecodePasswordModifyRequestUserIdentityValueNewPassword() throws DecoderException
     {
         Asn1Decoder decoder = new Asn1Decoder();
         ByteBuffer bb = ByteBuffer.allocate( 0x0E );
         bb.put( new byte[]
-            { 0x30, 0x0C, // PasswordModifyRequest ::= SEQUENCE {
-                ( byte ) 0x80,
-                0x04, // userIdentity    [0]  OCTET STRING OPTIONAL
-                'a',
-                'b',
-                'c',
-                'd',
-                ( byte ) 0x82, // newPassword    [2]  OCTET STRING OPTIONAL
-                0x04,
-                'e',
-                'f',
-                'g',
-                'h'
-        } );
+            { 
+                0x30, 0x0C,                     // PasswordModifyRequest ::= SEQUENCE {
+                  ( byte ) 0x80, 0x04,          // userIdentity    [0]  OCTET STRING OPTIONAL
+                    'a', 'b', 'c', 'd',
+                  ( byte ) 0x82, 0x04,          // newPassword    [2]  OCTET STRING OPTIONAL
+                    'e', 'f', 'g', 'h'
+            } );
 
-        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
 
-        try
-        {
-            decoder.decode( bb, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        decoder.decode( bb, container );
 
         PasswordModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNotNull( pwdModifyRequest.getUserIdentity() );
@@ -299,9 +259,13 @@ public class PasswordModifyRequestTest
         // Check the encoding
         ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-        String encodedPdu = Strings.dumpBytes( bb1.array() );
+        assertArrayEquals( bb.array(), bb1.array() );
 
-        assertEquals( encodedPdu, decodedPdu );
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        PasswordModifyFactory factory = new PasswordModifyFactory( codec );
+        factory.encodeValue( asn1Buffer, pwdModifyRequest );
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 
 
@@ -309,36 +273,23 @@ public class PasswordModifyRequestTest
      * Test the decoding of a PasswordModifyRequest with a user identity
      */
     @Test
-    public void testDecodePasswordModifyRequestUserIdentityValueOldPasswordEmpty()
+    public void testDecodePasswordModifyRequestUserIdentityValueOldPasswordEmpty() throws DecoderException
     {
         Asn1Decoder decoder = new Asn1Decoder();
         ByteBuffer bb = ByteBuffer.allocate( 0x0A );
         bb.put( new byte[]
-            { 0x30, 0x08, // PasswordModifyRequest ::= SEQUENCE {
-                ( byte ) 0x80,
-                0x04, // userIdentity    [0]  OCTET STRING OPTIONAL
-                'a',
-                'b',
-                'c',
-                'd',
-                ( byte ) 0x81,
-                0x00 // oldPassword    [1]  OCTET STRING OPTIONAL
-        } );
+            { 
+                0x30, 0x08,                 // PasswordModifyRequest ::= SEQUENCE {
+                  ( byte ) 0x80, 0x04,      // userIdentity    [0]  OCTET STRING OPTIONAL
+                    'a', 'b', 'c', 'd',
+                  ( byte ) 0x81, 0x00       // oldPassword    [1]  OCTET STRING OPTIONAL
+            } );
 
-        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
 
-        try
-        {
-            decoder.decode( bb, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        decoder.decode( bb, container );
 
         PasswordModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNotNull( pwdModifyRequest.getUserIdentity() );
@@ -353,9 +304,13 @@ public class PasswordModifyRequestTest
         // Check the encoding
         ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-        String encodedPdu = Strings.dumpBytes( bb1.array() );
+        assertArrayEquals( bb.array(), bb1.array() );
 
-        assertEquals( encodedPdu, decodedPdu );
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        PasswordModifyFactory factory = new PasswordModifyFactory( codec );
+        factory.encodeValue( asn1Buffer, pwdModifyRequest );
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 
 
@@ -363,40 +318,24 @@ public class PasswordModifyRequestTest
      * Test the decoding of a PasswordModifyRequest with a user identity
      */
     @Test
-    public void testDecodePasswordModifyRequestUserIdentityValueOldPasswordValue()
+    public void testDecodePasswordModifyRequestUserIdentityValueOldPasswordValue() throws DecoderException
     {
         Asn1Decoder decoder = new Asn1Decoder();
         ByteBuffer bb = ByteBuffer.allocate( 0x0E );
         bb.put( new byte[]
-            { 0x30, 0x0C, // PasswordModifyRequest ::= SEQUENCE {
-                ( byte ) 0x80,
-                0x04, // userIdentity    [0]  OCTET STRING OPTIONAL
-                'a',
-                'b',
-                'c',
-                'd',
-                ( byte ) 0x81,
-                0x04, // oldPassword    [1]  OCTET STRING OPTIONAL
-                'e',
-                'f',
-                'g',
-                'h'
-        } );
+            { 
+                0x30, 0x0C,                 // PasswordModifyRequest ::= SEQUENCE {
+                  ( byte ) 0x80, 0x04,      // userIdentity    [0]  OCTET STRING OPTIONAL
+                    'a', 'b', 'c', 'd',
+                  ( byte ) 0x81, 0x04,      // oldPassword    [1]  OCTET STRING OPTIONAL
+                    'e', 'f', 'g', 'h'
+            } );
 
-        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
 
-        try
-        {
-            decoder.decode( bb, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        decoder.decode( bb, container );
 
         PasswordModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNotNull( pwdModifyRequest.getUserIdentity() );
@@ -411,9 +350,13 @@ public class PasswordModifyRequestTest
         // Check the encoding
         ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-        String encodedPdu = Strings.dumpBytes( bb1.array() );
+        assertArrayEquals( bb.array(), bb1.array() );
 
-        assertEquals( encodedPdu, decodedPdu );
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        PasswordModifyFactory factory = new PasswordModifyFactory( codec );
+        factory.encodeValue( asn1Buffer, pwdModifyRequest );
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 
 
@@ -422,42 +365,25 @@ public class PasswordModifyRequestTest
      * and empty newPassword
      */
     @Test
-    public void testDecodePasswordModifyRequestUserIdentityValueOldPasswordValueNewPasswordNull()
+    public void testDecodePasswordModifyRequestUserIdentityValueOldPasswordValueNewPasswordNull() throws DecoderException
     {
         Asn1Decoder decoder = new Asn1Decoder();
         ByteBuffer bb = ByteBuffer.allocate( 0x10 );
         bb.put( new byte[]
-            { 0x30, 0x0E, // PasswordModifyRequest ::= SEQUENCE {
-                ( byte ) 0x80,
-                0x04, // userIdentity    [0]  OCTET STRING OPTIONAL
-                'a',
-                'b',
-                'c',
-                'd',
-                ( byte ) 0x81,
-                0x04, // oldPassword    [1]  OCTET STRING OPTIONAL
-                'e',
-                'f',
-                'g',
-                'h',
-                ( byte ) 0x82, // newPassword    [2]  OCTET STRING OPTIONAL
-                0x00
-        } );
+            { 
+                0x30, 0x0E,                 // PasswordModifyRequest ::= SEQUENCE {
+                  ( byte ) 0x80, 0x04,      // userIdentity    [0]  OCTET STRING OPTIONAL
+                    'a', 'b', 'c', 'd',
+                  ( byte ) 0x81, 0x04,      // oldPassword    [1]  OCTET STRING OPTIONAL
+                    'e', 'f', 'g', 'h',
+                  ( byte ) 0x82, 0x00       // newPassword    [2]  OCTET STRING OPTIONAL
+            } );
 
-        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
 
-        try
-        {
-            decoder.decode( bb, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        decoder.decode( bb, container );
 
         PasswordModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNotNull( pwdModifyRequest.getUserIdentity() );
@@ -473,9 +399,13 @@ public class PasswordModifyRequestTest
         // Check the encoding
         ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-        String encodedPdu = Strings.dumpBytes( bb1.array() );
+        assertArrayEquals( bb.array(), bb1.array() );
 
-        assertEquals( encodedPdu, decodedPdu );
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        PasswordModifyFactory factory = new PasswordModifyFactory( codec );
+        factory.encodeValue( asn1Buffer, pwdModifyRequest );
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 
 
@@ -484,46 +414,26 @@ public class PasswordModifyRequestTest
      * and a newPassword
      */
     @Test
-    public void testDecodePasswordModifyRequestUserIdentityValueOldPasswordValueNewPasswordValue()
+    public void testDecodePasswordModifyRequestUserIdentityValueOldPasswordValueNewPasswordValue() throws DecoderException
     {
         Asn1Decoder decoder = new Asn1Decoder();
         ByteBuffer bb = ByteBuffer.allocate( 0x14 );
         bb.put( new byte[]
-            { 0x30, 0x12, // PasswordModifyRequest ::= SEQUENCE {
-                ( byte ) 0x80,
-                0x04, // userIdentity    [0]  OCTET STRING OPTIONAL
-                'a',
-                'b',
-                'c',
-                'd',
-                ( byte ) 0x81,
-                0x04, // oldPassword    [1]  OCTET STRING OPTIONAL
-                'e',
-                'f',
-                'g',
-                'h',
-                ( byte ) 0x82, // newPassword    [2]  OCTET STRING OPTIONAL
-                0x04,
-                'i',
-                'j',
-                'k',
-                'l'
-        } );
+            { 
+                0x30, 0x12,                 // PasswordModifyRequest ::= SEQUENCE {
+                  ( byte ) 0x80, 0x04,      // userIdentity    [0]  OCTET STRING OPTIONAL
+                    'a', 'b', 'c', 'd',
+                  ( byte ) 0x81, 0x04,      // oldPassword    [1]  OCTET STRING OPTIONAL
+                    'e', 'f', 'g', 'h',
+                  ( byte ) 0x82, 0x04,      // newPassword    [2]  OCTET STRING OPTIONAL
+                    'i', 'j', 'k', 'l'
+            } );
 
-        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
 
-        try
-        {
-            decoder.decode( bb, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        decoder.decode( bb, container );
 
         PasswordModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNotNull( pwdModifyRequest.getUserIdentity() );
@@ -539,9 +449,13 @@ public class PasswordModifyRequestTest
         // Check the encoding
         ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-        String encodedPdu = Strings.dumpBytes( bb1.array() );
+        assertArrayEquals( bb.array(), bb1.array() );
 
-        assertEquals( encodedPdu, decodedPdu );
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        PasswordModifyFactory factory = new PasswordModifyFactory( codec );
+        factory.encodeValue( asn1Buffer, pwdModifyRequest );
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 
 
@@ -549,30 +463,21 @@ public class PasswordModifyRequestTest
      * Test the decoding of a PasswordModifyRequest with an empty user identity
      */
     @Test
-    public void testDecodePasswordModifyRequestOldPasswordNull()
+    public void testDecodePasswordModifyRequestOldPasswordNull() throws DecoderException
     {
         Asn1Decoder decoder = new Asn1Decoder();
         ByteBuffer bb = ByteBuffer.allocate( 0x04 );
         bb.put( new byte[]
-            { 0x30, 0x02, // PasswordModifyRequest ::= SEQUENCE {
-                ( byte ) 0x81,
-                0x00 // oldPassword    [1]  OCTET STRING OPTIONAL
-        } );
+            { 
+                0x30, 0x02,             // PasswordModifyRequest ::= SEQUENCE {
+                  ( byte ) 0x81, 0x00   // oldPassword    [1]  OCTET STRING OPTIONAL
+            } );
 
-        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
 
-        try
-        {
-            decoder.decode( bb, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        decoder.decode( bb, container );
 
         PasswordModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNull( pwdModifyRequest.getUserIdentity() );
@@ -586,9 +491,13 @@ public class PasswordModifyRequestTest
         // Check the encoding
         ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-        String encodedPdu = Strings.dumpBytes( bb1.array() );
+        assertArrayEquals( bb.array(), bb1.array() );
 
-        assertEquals( encodedPdu, decodedPdu );
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        PasswordModifyFactory factory = new PasswordModifyFactory( codec );
+        factory.encodeValue( asn1Buffer, pwdModifyRequest );
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 
 
@@ -596,34 +505,22 @@ public class PasswordModifyRequestTest
      * Test the decoding of a PasswordModifyRequest with an oldPassword
      */
     @Test
-    public void testDecodePasswordModifyRequestOldPasswordValue()
+    public void testDecodePasswordModifyRequestOldPasswordValue() throws DecoderException
     {
         Asn1Decoder decoder = new Asn1Decoder();
         ByteBuffer bb = ByteBuffer.allocate( 0x08 );
         bb.put( new byte[]
-            { 0x30, 0x06, // PasswordModifyRequest ::= SEQUENCE {
-                ( byte ) 0x81,
-                0x04, // oldPassword    [1]  OCTET STRING OPTIONAL
-                'a',
-                'b',
-                'c',
-                'd'
-        } );
+            { 
+                0x30, 0x06,                 // PasswordModifyRequest ::= SEQUENCE {
+                  ( byte ) 0x81, 0x04,      // oldPassword    [1]  OCTET STRING OPTIONAL
+                    'a', 'b', 'c', 'd'
+            } );
 
-        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
 
-        try
-        {
-            decoder.decode( bb, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        decoder.decode( bb, container );
 
         PasswordModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNull( pwdModifyRequest.getUserIdentity() );
@@ -637,9 +534,13 @@ public class PasswordModifyRequestTest
         // Check the encoding
         ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-        String encodedPdu = Strings.dumpBytes( bb1.array() );
+        assertArrayEquals( bb.array(), bb1.array() );
 
-        assertEquals( encodedPdu, decodedPdu );
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        PasswordModifyFactory factory = new PasswordModifyFactory( codec );
+        factory.encodeValue( asn1Buffer, pwdModifyRequest );
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 
 
@@ -648,36 +549,23 @@ public class PasswordModifyRequestTest
      * empty  newPassword
      */
     @Test
-    public void testDecodePasswordModifyRequestOldPasswordValueNewPasswordEmpty()
+    public void testDecodePasswordModifyRequestOldPasswordValueNewPasswordEmpty() throws DecoderException
     {
         Asn1Decoder decoder = new Asn1Decoder();
         ByteBuffer bb = ByteBuffer.allocate( 0x0A );
         bb.put( new byte[]
-            { 0x30, 0x08, // PasswordModifyRequest ::= SEQUENCE {
-                ( byte ) 0x81,
-                0x04, // oldPassword    [1]  OCTET STRING OPTIONAL
-                'a',
-                'b',
-                'c',
-                'd',
-                ( byte ) 0x82, // newPassword    [2]  OCTET STRING OPTIONAL
-                0x00
-        } );
+            { 
+                0x30, 0x08,                 // PasswordModifyRequest ::= SEQUENCE {
+                  ( byte ) 0x81, 0x04,      // oldPassword    [1]  OCTET STRING OPTIONAL
+                    'a', 'b', 'c', 'd',
+                  ( byte ) 0x82, 0x00       // newPassword    [2]  OCTET STRING OPTIONAL
+            } );
 
-        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
 
-        try
-        {
-            decoder.decode( bb, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        decoder.decode( bb, container );
 
         PasswordModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNull( pwdModifyRequest.getUserIdentity() );
@@ -692,9 +580,13 @@ public class PasswordModifyRequestTest
         // Check the encoding
         ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-        String encodedPdu = Strings.dumpBytes( bb1.array() );
+        assertArrayEquals( bb.array(), bb1.array() );
 
-        assertEquals( encodedPdu, decodedPdu );
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        PasswordModifyFactory factory = new PasswordModifyFactory( codec );
+        factory.encodeValue( asn1Buffer, pwdModifyRequest );
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 
 
@@ -703,40 +595,24 @@ public class PasswordModifyRequestTest
      * newPassword
      */
     @Test
-    public void testDecodePasswordModifyRequestOldPasswordValueNewPasswordValue()
+    public void testDecodePasswordModifyRequestOldPasswordValueNewPasswordValue() throws DecoderException
     {
         Asn1Decoder decoder = new Asn1Decoder();
         ByteBuffer bb = ByteBuffer.allocate( 0x0E );
         bb.put( new byte[]
-            { 0x30, 0x0C, // PasswordModifyRequest ::= SEQUENCE {
-                ( byte ) 0x81,
-                0x04, // oldPassword    [1]  OCTET STRING OPTIONAL
-                'a',
-                'b',
-                'c',
-                'd',
-                ( byte ) 0x82, // newPassword    [2]  OCTET STRING OPTIONAL
-                0x04,
-                'e',
-                'f',
-                'g',
-                'h'
-        } );
+            { 
+                0x30, 0x0C,                 // PasswordModifyRequest ::= SEQUENCE {
+                  ( byte ) 0x81, 0x04,      // oldPassword    [1]  OCTET STRING OPTIONAL
+                    'a', 'b', 'c', 'd',
+                  ( byte ) 0x82, 0x04,      // newPassword    [2]  OCTET STRING OPTIONAL
+                    'e', 'f', 'g', 'h'
+            } );
 
-        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
 
-        try
-        {
-            decoder.decode( bb, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        decoder.decode( bb, container );
 
         PasswordModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNull( pwdModifyRequest.getUserIdentity() );
@@ -751,8 +627,12 @@ public class PasswordModifyRequestTest
         // Check the encoding
         ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).encodeInternal();
 
-        String encodedPdu = Strings.dumpBytes( bb1.array() );
+        assertArrayEquals( bb.array(), bb1.array() );
 
-        assertEquals( encodedPdu, decodedPdu );
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        PasswordModifyFactory factory = new PasswordModifyFactory( codec );
+        factory.encodeValue( asn1Buffer, pwdModifyRequest );
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 }

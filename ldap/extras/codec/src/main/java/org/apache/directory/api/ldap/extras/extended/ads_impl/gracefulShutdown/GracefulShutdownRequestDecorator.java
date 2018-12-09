@@ -215,6 +215,7 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
             bb.put( ( byte ) BerValue.getNbBytes( gracefulShutdownRequest.getDelay() ) );
             bb.put( BerValue.getBytes( gracefulShutdownRequest.getDelay() ) );
         }
+        
         return bb;
     }
 

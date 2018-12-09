@@ -32,7 +32,6 @@ import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerati
 import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationResponseImpl;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
-import org.apache.directory.api.ldap.model.message.Message;
 
 
 /**
@@ -124,10 +123,10 @@ public class CertGenerationFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public void encodeValue( Asn1Buffer buffer, Message extendedOperation )
+    public void encodeValue( Asn1Buffer buffer, ExtendedRequest extendedRequest )
     {
         int start  = buffer.getPos();
-        CertGenerationRequest certGenerationRequest = ( CertGenerationRequest ) extendedOperation;
+        CertGenerationRequest certGenerationRequest = ( CertGenerationRequest ) extendedRequest;
         
         // the key algorithm
         BerValue.encodeOctetString( buffer, certGenerationRequest.getKeyAlgorithm() );

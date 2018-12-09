@@ -26,6 +26,8 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.decorators.ExtendedResponseDecorator;
@@ -193,5 +195,43 @@ public class PasswordModifyFactory extends AbstractExtendedOperationFactory
         }
 
         return decorated;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void encodeValue( Asn1Buffer buffer, ExtendedRequest extendedRequest )
+    {
+        int start  = buffer.getPos();
+        PasswordModifyRequest passwordModifyRequest = ( PasswordModifyRequest ) extendedRequest;
+        
+        // The new password if any
+        if ( passwordModifyRequest.getNewPassword() != null )
+        {
+            BerValue.encodeOctetString( buffer, 
+                ( byte ) PasswordModifyRequestConstants.NEW_PASSWORD_TAG,
+                passwordModifyRequest.getNewPassword() );
+        }
+
+        // The old password if any
+        if ( passwordModifyRequest.getOldPassword() != null )
+        {
+            BerValue.encodeOctetString( buffer, 
+                ( byte ) PasswordModifyRequestConstants.OLD_PASSWORD_TAG,
+                passwordModifyRequest.getOldPassword() );
+        }
+        
+        // The user identity if any
+        if ( passwordModifyRequest.getUserIdentity() != null )
+        {
+            BerValue.encodeOctetString( buffer, 
+                ( byte ) PasswordModifyRequestConstants.USER_IDENTITY_TAG,
+                passwordModifyRequest.getUserIdentity() );
+        }
+        
+        // The sequence
+        BerValue.encodeSequence( buffer, start );
     }
 }

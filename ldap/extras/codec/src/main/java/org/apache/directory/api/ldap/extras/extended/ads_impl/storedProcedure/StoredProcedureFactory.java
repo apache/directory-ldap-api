@@ -20,10 +20,15 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure;
 
 
+import java.util.Iterator;
+
 import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureParameter;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequest;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureResponse;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureResponseImpl;
@@ -116,5 +121,53 @@ public class StoredProcedureFactory extends AbstractExtendedOperationFactory
         }
 
         return new StoredProcedureResponseDecorator( codec, ( StoredProcedureResponse ) decoratedMessage );
+    }
+    
+    
+    private void encodeParameters( Asn1Buffer buffer, Iterator<StoredProcedureParameter> parameters )
+    {
+        if ( parameters.hasNext() )
+        {
+            StoredProcedureParameter parameter = parameters.next();
+            
+            encodeParameters( buffer, parameters );
+            
+            int start = buffer.getPos();
+            
+            // The value
+            BerValue.encodeOctetString( buffer, parameter.getValue() );
+            
+            // The type
+            BerValue.encodeOctetString( buffer, parameter.getType() );
+            
+            // The parameter sequence
+            BerValue.encodeSequence( buffer, start );
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void encodeValue( Asn1Buffer buffer, ExtendedRequest extendedRequest )
+    {
+        int start  = buffer.getPos();
+        
+        StoredProcedureRequest storedProcedureRequest = ( StoredProcedureRequest ) extendedRequest; 
+        
+        encodeParameters( buffer, storedProcedureRequest.getParameters().iterator() );
+        
+        // The parameters sequence
+        BerValue.encodeSequence( buffer, start );
+        
+        // The procedure
+        BerValue.encodeOctetString( buffer, storedProcedureRequest.getProcedure() );
+
+        // The language
+        BerValue.encodeOctetString( buffer, storedProcedureRequest.getLanguage() );
+        
+        // The sequence
+        BerValue.encodeSequence( buffer, start );
     }
 }

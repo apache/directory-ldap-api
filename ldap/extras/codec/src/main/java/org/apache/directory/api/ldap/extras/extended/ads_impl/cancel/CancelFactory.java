@@ -32,7 +32,6 @@ import org.apache.directory.api.ldap.extras.extended.cancel.CancelResponse;
 import org.apache.directory.api.ldap.extras.extended.cancel.CancelResponseImpl;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
-import org.apache.directory.api.ldap.model.message.Message;
 
 
 /**
@@ -124,10 +123,10 @@ public class CancelFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public void encodeValue( Asn1Buffer buffer, Message extendedOperation )
+    public void encodeValue( Asn1Buffer buffer, ExtendedRequest extendedRequest )
     {
         int start  = buffer.getPos();
-        CancelRequest cancelRequest = ( CancelRequest ) extendedOperation;
+        CancelRequest cancelRequest = ( CancelRequest ) extendedRequest;
         
         // the ID
         BerValue.encodeInteger( buffer, cancelRequest.getCancelId() );

@@ -25,7 +25,6 @@ import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.decorators.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
-import org.apache.directory.api.ldap.model.message.Message;
 
 
 /**
@@ -85,10 +84,19 @@ public interface ExtendedOperationFactory
 
 
     /**
-     * Encode the value part of the extended operation.
+     * Encode the value part of the extended request operation.
      *
      * @param buffer The buffer into which to put the encoded value
-     * @param extendedOperation The ExtendedOperation to encode
+     * @param extendedRequest The ExtendedRequest Operation to encode
      */
-    void encodeValue( Asn1Buffer buffer, Message extendedOperation );
+    void encodeValue( Asn1Buffer buffer, ExtendedRequest extendedRequest );
+
+
+    /**
+     * Encode the value part of the extended response operation.
+     *
+     * @param buffer The buffer into which to put the encoded value
+     * @param extendedResponse The ExtendedResponse Operation to encode
+     */
+    void encodeValue( Asn1Buffer buffer, ExtendedResponse extendedResponse );
 }

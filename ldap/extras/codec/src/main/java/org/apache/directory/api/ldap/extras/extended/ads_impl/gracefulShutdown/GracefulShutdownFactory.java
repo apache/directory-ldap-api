@@ -21,9 +21,12 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown;
 
 
 import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulActionConstants;
 import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownRequest;
 import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownRequestImpl;
 import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownResponse;
@@ -114,5 +117,33 @@ public class GracefulShutdownFactory extends AbstractExtendedOperationFactory
         }
 
         return new GracefulShutdownResponseDecorator( codec, ( GracefulShutdownResponse ) decoratedMessage );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void encodeValue( Asn1Buffer buffer, ExtendedRequest extendedRequest )
+    {
+        int start  = buffer.getPos();
+        GracefulShutdownRequest gracefulShutdownRequest = ( GracefulShutdownRequest ) extendedRequest;
+        
+        // The delay, if any
+        if ( gracefulShutdownRequest.getDelay() != 0 )
+        {
+            BerValue.encodeInteger( buffer, 
+                ( byte ) GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG, 
+                gracefulShutdownRequest.getDelay() );
+        }
+        
+        // The timeOffline
+        if ( gracefulShutdownRequest.getTimeOffline() != 0 )
+        {
+            BerValue.encodeInteger( buffer, gracefulShutdownRequest.getTimeOffline() );
+        }
+        
+        // The sequence
+        BerValue.encodeSequence( buffer, start );
     }
 }
