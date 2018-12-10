@@ -26,6 +26,7 @@ import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
+import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction.controls.ControlsContainer;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -88,6 +89,8 @@ public class AddControl extends GrammarAction<ControlsContainer>
             throw new DecoderException( msg );
         }
 
+        ControlFactory<?> factory = container.getLdapCodecService().getResponseControlFactories().get( oidValue );
+        container.setFactory( factory );
         CodecControl<?> control = container.getLdapCodecService().newResponseControl( oidValue );
 
         container.setCurrentControl( control );

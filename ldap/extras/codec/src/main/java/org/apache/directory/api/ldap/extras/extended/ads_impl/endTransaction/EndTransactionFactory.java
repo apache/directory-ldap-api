@@ -20,10 +20,14 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction;
 
 
+import java.util.Iterator;
+
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
+import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.decorators.ExtendedResponseDecorator;
@@ -31,6 +35,8 @@ import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransacti
 import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionRequestImpl;
 import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionResponse;
 import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionResponseImpl;
+import org.apache.directory.api.ldap.extras.extended.endTransaction.UpdateControls;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 
@@ -153,6 +159,95 @@ public class EndTransactionFactory extends AbstractExtendedOperationFactory
         if ( !transactionRequest.getCommit() )
         {
             BerValue.encodeBoolean( buffer, false );
+        }
+        
+        // The sequence
+        BerValue.encodeSequence( buffer, start );
+    }
+    
+    
+    private void encodeControls( Asn1Buffer buffer, Iterator<Control> controls )
+    {
+        if ( controls.hasNext() )
+        {
+            Control control = controls.next();
+            
+            encodeControls( buffer, controls );
+
+            int start = buffer.getPos();
+            
+            // The control value, if any
+            ControlFactory<?> controlFactory = codec.getResponseControlFactories().get( control.getOid() );
+            
+            if ( controlFactory != null )
+            {
+                controlFactory.encodeValue( buffer, control );
+                
+                // The value sequence
+                BerValue.encodeSequence( buffer, UniversalTag.OCTET_STRING.getValue(), start );
+            }
+            
+            // The control criticality of TRUE
+            if ( control.isCritical() )
+            {
+                BerValue.encodeBoolean( buffer, true );
+            }
+            
+            // The control oid
+            BerValue.encodeOctetString( buffer, control.getOid() );
+            
+            // The control sequence
+            BerValue.encodeSequence( buffer, start );
+        }
+    } 
+    
+    
+    private void encodeUpdatedControls( Asn1Buffer buffer, Iterator<UpdateControls> updateControls )
+    {
+        if ( updateControls.hasNext() )
+        {
+            UpdateControls updateControl = updateControls.next();
+            
+            encodeUpdatedControls( buffer, updateControls );
+
+            int start = buffer.getPos();
+            
+            // The controls
+            encodeControls( buffer, updateControl.getControls().iterator() );
+            
+            // The controls sequence
+            BerValue.encodeSequence( buffer, start );
+            
+            // The messageID
+            BerValue.encodeInteger( buffer, updateControl.getMessageId() );
+
+            // The sequence
+            BerValue.encodeSequence( buffer, start );
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void encodeValue( Asn1Buffer buffer, ExtendedResponse extendedResponse )
+    {
+        int start  = buffer.getPos();
+        EndTransactionResponse endTransactionResponse = ( EndTransactionResponse ) extendedResponse;
+        
+        // The controls
+        if ( endTransactionResponse.getUpdateControls().size() > 0 )
+        {
+            encodeUpdatedControls( buffer, endTransactionResponse.getUpdateControls().iterator() );
+            
+            BerValue.encodeSequence( buffer, start );
+        }
+        
+        // The messageID flag, if false
+        if ( endTransactionResponse.getMessageId() >= 0 )
+        {
+            BerValue.encodeInteger( buffer, endTransactionResponse.getMessageId() );
         }
         
         // The sequence

@@ -1,6 +1,7 @@
 package org.apache.directory.api.ldap.extras;
 
 
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -13,7 +14,7 @@ import org.junit.BeforeClass;
  */
 public abstract class AbstractCodecServiceTest
 {
-    protected static DefaultLdapCodecService codec;
+    protected static LdapApiService codec;
 
 
     /**

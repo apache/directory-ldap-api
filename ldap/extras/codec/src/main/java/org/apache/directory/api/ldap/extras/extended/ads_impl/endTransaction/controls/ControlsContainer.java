@@ -24,8 +24,9 @@ import java.util.List;
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
+import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
+import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.model.message.Control;
 
 /**
@@ -40,6 +41,9 @@ public class ControlsContainer extends AbstractContainer
     
     /** The current control */
     private CodecControl<?> currentControl;
+    
+    /** The control factory */
+    private ControlFactory<?> factory;
 
     /** The codec service */
     private final LdapApiService codec;
@@ -52,7 +56,7 @@ public class ControlsContainer extends AbstractContainer
         super();
         setGrammar( ControlsGrammar.getInstance() );
         setTransition( ControlsStates.START_STATE );
-        this.codec = new DefaultLdapCodecService();
+        this.codec = LdapApiServiceFactory.getSingleton();
     }
 
 
@@ -100,5 +104,23 @@ public class ControlsContainer extends AbstractContainer
     public void addControl( Control control )
     {
         controls.add( control );
+    }
+
+
+    /**
+     * @return the factory
+     */
+    public ControlFactory<?> getFactory()
+    {
+        return factory;
+    }
+
+
+    /**
+     * @param factory the factory to set
+     */
+    public void setFactory( ControlFactory<?> factory )
+    {
+        this.factory = factory;
     }
 }

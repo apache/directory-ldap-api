@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction.controls.actions;
 
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
@@ -77,7 +78,15 @@ public class StoreControlValue extends GrammarAction<ControlsContainer>
         }
         else
         {
-            control.setValue( value.getData() );
+            try
+            {
+                control.decode( value.getData() );
+            }
+            catch ( DecoderException e )
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
 
         // We can have an END transition
