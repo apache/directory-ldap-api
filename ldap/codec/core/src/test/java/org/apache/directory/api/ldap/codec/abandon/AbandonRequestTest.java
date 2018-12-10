@@ -42,6 +42,10 @@ import org.apache.directory.api.ldap.model.message.AbandonRequest;
 import org.apache.directory.api.ldap.model.message.AbandonRequestImpl;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
+import org.apache.directory.api.ldap.model.message.controls.Cascade;
+import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
+import org.apache.directory.api.ldap.model.message.controls.PagedResults;
+import org.apache.directory.api.ldap.model.message.controls.SortRequest;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -67,31 +71,53 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
-        ByteBuffer stream = ByteBuffer.allocate( 0x64 );
+        ByteBuffer stream = ByteBuffer.allocate( 0x9C );
         stream.put( new byte[]
             {
-              0x30, 0x62,                               // LDAPMessage ::=SEQUENCE {
+              0x30, (byte)0x81, (byte)0x99,             // LDAPMessage ::=SEQUENCE {
                 0x02, 0x01, 0x03,                       // messageID MessageID
                 0x50, 0x01, 0x02,                       // CHOICE { ..., abandonRequest
-                ( byte ) 0xA0, 0x5A,                    // controls [0] Controls OPTIONAL }
-                  0x30, 0x1A,                           // Control ::= SEQUENCE {
-                    0x04, 0x0D,                         // controlType LDAPOID,
-                      '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '1',
+                ( byte ) 0xA0, (byte)0x81, (byte)0x90,  // controls [0] Controls OPTIONAL }
+                  0x30, 0x2E,                           // Control ::= SEQUENCE {
+                    0x04, 0x16,                         // controlType LDAPOID,
+                                                        // SortRequest
+                      '1', '.', '2', '.', '8', '4', '0', '.', 
+                      '1', '1', '3', '5', '5', '6', '.', '1', 
+                      '.', '4', '.', '4', '7', '3',
                     0x01, 0x01, ( byte ) 0xFF,          // criticality BOOLEAN DEFAULT FALSE,
-                    0x04, 0x06,                         // controlValue OCTET STRING OPTIONAL }
-                      'a', 'b', 'c', 'd', 'e', 'f',
-                  0x30, 0x17,                           // Control ::= SEQUENCE {
-                    0x04, 0x0D,                         // controlType LDAPOID,
-                      '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '2',
-                    0x04, 0x06,                         // controlValue OCTET STRING OPTIONAL }
-                      'g', 'h', 'i', 'j', 'k', 'l',
-                  0x30, 0x12,                           // Control ::= SEQUENCE {
-                    0x04, 0x0D,                         // controlType LDAPOID,
-                      '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '3',
+                    0x04, 0x11,                         // controlValue OCTET STRING OPTIONAL }
+                      0x30, 0x0F,                       // SortKeyList ::= SEQUENCE OF SEQUENCE {
+                        0x30, 0x07,                     // SEQUENCE
+                          0x04, 0x02,                   // attributeType   AttributeDescription,
+                            'c', 'n',
+                          (byte)0x81, 0x01, (byte)0xFF, // reverseOrder    [1] BOOLEAN DEFAULT FALSE }
+                        0x30, 0x04,                     // SEQUENCE
+                          0x04, 0x02,                   // attributeType   AttributeDescription,
+                            's', 'n',
+                  0x30, 0x25,                           // Control ::= SEQUENCE {
+                    0x04, 0x16,                         // controlType LDAPOID,
+                                                        // PagedResults
+                      '1', '.', '2', '.', '8', '4', '0', '.', 
+                      '1', '1', '3', '5', '5', '6', '.', '1', 
+                      '.', '4', '.', '3', '1', '9',
+                    0x04, 0x0B,                         // controlValue OCTET STRING OPTIONAL }
+                      0x30, 0x09,                       // realSearchControlValue ::= SEQUENCE {
+                        0x02, 0x01, 0x10,               // size            INTEGER (0..maxInt),
+                        0x04, 0x04,                     // cookie          OCTET STRING
+                          't', 't', 't', 't',
+                  0x30, 0x1C,                           // Control ::= SEQUENCE {
+                    0x04, 0x17,                         // controlType LDAPOID,
+                                                        // ManageDsaIT
+                      '2', '.', '1', '6', '.', '8', '4', '0', 
+                      '.', '1', '.', '1', '1', '3', '7', '3', 
+                      '0', '.', '3', '.', '4', '.', '2',
                     0x01, 0x01, ( byte ) 0xFF,          // criticality BOOLEAN DEFAULT FALSE }
-                  0x30, 0x0F,                           // Control ::= SEQUENCE {
-                    0x04, 0x0D,                         // controlType LDAPOID}
-                      '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '4'
+                  0x30, 0x19,                           // Control ::= SEQUENCE {
+                    0x04, 0x17,                         // controlType LDAPOID} 
+                                                        // Cascade
+                      '1', '.', '3', '.', '6', '.', '1', '.', 
+                      '4', '.', '1', '.', '1', '8', '0', '6', 
+                      '0', '.', '0', '.', '0', '.', '1'
             } );
 
         stream.flip();
@@ -119,26 +145,32 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
         assertEquals( 4, controls.size() );
 
         CodecControl<? extends Control> control = ( CodecControl<?> ) controls
-            .get( "1.3.6.1.5.5.1" );
-        assertEquals( "1.3.6.1.5.5.1", control.getOid() );
-        assertEquals( "0x61 0x62 0x63 0x64 0x65 0x66 ", Strings.dumpBytes( control.getValue() ) );
+            .get( "1.2.840.113556.1.4.473" );
+        assertEquals( "1.2.840.113556.1.4.473", control.getOid() );
+        assertTrue( control instanceof SortRequest );
+        assertEquals( "0x30 0x0F 0x30 0x07 0x04 0x02 0x63 0x6E 0x81 0x01 0xFF 0x30 0x04 0x04 0x02 0x73 0x6E ", 
+            Strings.dumpBytes( control.getValue() ) );
         assertTrue( control.isCritical() );
+        assertEquals( 2, ( ( SortRequest ) control ).getSortKeys().size() );
         internalAbandonRequest.addControl( control );
 
-        control = ( CodecControl<?> ) controls.get( "1.3.6.1.5.5.2" );
-        assertEquals( "1.3.6.1.5.5.2", control.getOid() );
-        assertEquals( "0x67 0x68 0x69 0x6A 0x6B 0x6C ", Strings.dumpBytes( control.getValue() ) );
+        control = ( CodecControl<?> ) controls.get( "1.2.840.113556.1.4.319" );
+        assertEquals( "1.2.840.113556.1.4.319", control.getOid() );
+        assertTrue( control instanceof PagedResults );
+        assertEquals( "0x30 0x09 0x02 0x01 0x10 0x04 0x04 0x74 0x74 0x74 0x74 ", Strings.dumpBytes( control.getValue() ) );
         assertFalse( control.isCritical() );
         internalAbandonRequest.addControl( control );
 
-        control = ( CodecControl<?> ) controls.get( "1.3.6.1.5.5.3" );
-        assertEquals( "1.3.6.1.5.5.3", control.getOid() );
+        control = ( CodecControl<?> ) controls.get( "2.16.840.1.113730.3.4.2" );
+        assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
+        assertTrue( control instanceof ManageDsaIT );
         assertEquals( "", Strings.dumpBytes( control.getValue() ) );
         assertTrue( control.isCritical() );
         internalAbandonRequest.addControl( control );
 
-        control = ( CodecControl<?> ) controls.get( "1.3.6.1.5.5.4" );
-        assertEquals( "1.3.6.1.5.5.4", control.getOid() );
+        control = ( CodecControl<?> ) controls.get( "1.3.6.1.4.1.18060.0.0.1" );
+        assertEquals( "1.3.6.1.4.1.18060.0.0.1", control.getOid() );
+        assertTrue( control instanceof Cascade );
         assertEquals( "", Strings.dumpBytes( control.getValue() ) );
         assertFalse( control.isCritical() );
         internalAbandonRequest.addControl( control );
@@ -147,7 +179,7 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
         ByteBuffer bb = LdapEncoder.encodeMessage( codec, new AbandonRequestDecorator( codec, internalAbandonRequest ) );
 
         // Check the length
-        assertEquals( 0x64, bb.limit() );
+        assertEquals( 0x9C, bb.limit() );
 
         // Don't check the PDU, as control are in a Map, and can be in a different order
         // So we decode the generated PDU, and we compare it with the initial message
@@ -155,6 +187,22 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
 
         AbandonRequest abandonRequest2 = ldapMessageContainer.getMessage();
         assertEquals( abandonRequest, abandonRequest2 );
+        
+        // Check reverse encoding
+        Asn1Buffer buffer = new Asn1Buffer();
+        LdapEncoder.encodeMessageReverse( buffer, codec, internalAbandonRequest );
+
+        // Check that the decoded messages are equals
+        LdapMessageContainer<AbandonRequestDecorator> ldapMessageContainer2 =
+            new LdapMessageContainer<AbandonRequestDecorator>( codec );
+
+        // Decode the PDU
+        ldapDecoder.decode( buffer.getBytes(), ldapMessageContainer2 );
+
+        // Check that everything is OK
+        AbandonRequestDecorator abandonRequest3 = ldapMessageContainer.getMessage();
+        
+        assertEquals( abandonRequest, abandonRequest3 );
     }
 
 
