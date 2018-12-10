@@ -234,4 +234,25 @@ public class PasswordModifyFactory extends AbstractExtendedOperationFactory
         // The sequence
         BerValue.encodeSequence( buffer, start );
     }
+    
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void encodeValue( Asn1Buffer buffer, ExtendedResponse extendedResponse )
+    {
+        int start  = buffer.getPos();
+        
+        // The gen password
+        if ( ( ( PasswordModifyResponse ) extendedResponse ).getGenPassword() != null )
+        {
+            BerValue.encodeOctetString( buffer, 
+                ( byte ) PasswordModifyResponseConstants.GEN_PASSWORD_TAG,
+                ( ( PasswordModifyResponse ) extendedResponse ).getGenPassword() );
+        }
+        
+        // The sequence
+        BerValue.encodeSequence( buffer, start );
+    }
 }

@@ -20,7 +20,12 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect;
 
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.decorators.ExtendedRequestDecorator;
@@ -109,5 +114,59 @@ public class GracefulDisconnectFactory extends AbstractExtendedOperationFactory
         req.setResponseValue( encodedValue );
         
         return req;
+    }
+
+    private void encodeUrls( Asn1Buffer buffer, Iterator<String> urls )
+    {
+        if ( urls.hasNext() )
+        {
+            String url = urls.next();
+            
+            encodeUrls( buffer, urls );
+            
+            BerValue.encodeOctetString( buffer, url );
+        }
+    }
+   
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void encodeValue( Asn1Buffer buffer, ExtendedResponse extendedResponse )
+    {
+        int start  = buffer.getPos();
+        GracefulDisconnectResponse gracefulDisconnectResponse = ( GracefulDisconnectResponse ) extendedResponse;
+        
+        // The URLs if any
+        if ( gracefulDisconnectResponse.getReplicatedContexts() != null )
+        {
+            Collection<String> urls = gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls();
+            
+            if ( urls.size() != 0 )
+            {
+                encodeUrls( buffer, urls.iterator() );
+
+                // The URLs sequence
+                BerValue.encodeSequence( buffer, start );
+            }
+        }
+        
+        // The delay, if any
+        if ( gracefulDisconnectResponse.getDelay() != 0 )
+        {
+            BerValue.encodeInteger( buffer,
+                ( byte ) GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG,
+                gracefulDisconnectResponse.getDelay() );
+        }
+
+        // The timeOffline, if any
+        if ( gracefulDisconnectResponse.getTimeOffline() != 0 )
+        {
+            BerValue.encodeInteger( buffer, gracefulDisconnectResponse.getTimeOffline() );
+        }
+        
+        // The sequence
+        BerValue.encodeSequence( buffer, start );
     }
 }

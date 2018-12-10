@@ -130,6 +130,12 @@ public class EndTransactionResponseTest extends AbstractCodecServiceTest
         ByteBuffer bb1 = ( ( EndTransactionResponseDecorator ) endTransactionResponse ).encodeInternal();
 
         assertArrayEquals( bb.array(), bb1.array() );
+        
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        EndTransactionFactory factory = new EndTransactionFactory( codec );
+        factory.encodeValue( asn1Buffer, endTransactionResponse );
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 

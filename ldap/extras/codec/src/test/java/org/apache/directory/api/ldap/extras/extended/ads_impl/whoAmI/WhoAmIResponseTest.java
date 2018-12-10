@@ -21,10 +21,10 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.whoAmI;
 
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
 
@@ -32,6 +32,8 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,40 +49,38 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class WhoAmIResponseTest
+public class WhoAmIResponseTest extends AbstractCodecServiceTest
 {
     /**
      * Test the normal WhoAmI response message
      */
     @Test
-    public void testDecodeWhoAmINull()
+    public void testDecodeWhoAmINull() throws DecoderException, EncoderException
     {
         Asn1Decoder whoAmIResponseDecoder = new WhoAmIResponseDecoder();
 
-        ByteBuffer stream = ByteBuffer.allocate( 0x00 );
+        ByteBuffer bb = ByteBuffer.allocate( 0x00 );
 
-        stream.put( new byte[]
+        bb.put( new byte[]
             {} ).flip();
 
-        Strings.dumpBytes( stream.array() );
+        Strings.dumpBytes( bb.array() );
 
         // Allocate a WhoAmI Container
         Asn1Container whoAmIResponseContainer = new WhoAmIResponseContainer();
 
         // Decode a WhoAmI message
-        try
-        {
-            whoAmIResponseDecoder.decode( stream, whoAmIResponseContainer );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        whoAmIResponseDecoder.decode( bb, whoAmIResponseContainer );
 
         WhoAmIResponseDecorator whoAmIResponse = ( ( WhoAmIResponseContainer ) whoAmIResponseContainer ).getWhoAmIResponse();
 
         assertNull( whoAmIResponse );
+        
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        WhoAmIFactory factory = new WhoAmIFactory( codec );
+        factory.encodeValue( asn1Buffer, whoAmIResponse );
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -88,7 +88,7 @@ public class WhoAmIResponseTest
      * Test a WhoAmI message with no authzId
      */
     @Test
-    public void testDecodeWhoAmINoWhoAmIAuthzIdEmpty()
+    public void testDecodeWhoAmINoWhoAmIAuthzIdEmpty() throws DecoderException, EncoderException
     {
         Asn1Decoder whoAmIResponseDecoder = new WhoAmIResponseDecoder();
 
@@ -97,41 +97,28 @@ public class WhoAmIResponseTest
         stream.put( new byte[]
             {
                 0x04, 0x00
-        } ).flip();
-
-        String decodedPdu = Strings.dumpBytes( stream.array() );
+            } ).flip();
 
         // Allocate a WhoAmI Container
         Asn1Container whoAmIResponseContainer = new WhoAmIResponseContainer();
 
         // Decode a WhoAmI message
-        try
-        {
-            whoAmIResponseDecoder.decode( stream, whoAmIResponseContainer );
-        }
-        catch ( DecoderException de )
-        {
-            fail();
-        }
+        whoAmIResponseDecoder.decode( stream, whoAmIResponseContainer );
         
         WhoAmIResponseDecorator whoAmIResponse = ( (WhoAmIResponseContainer ) whoAmIResponseContainer ).getWhoAmIResponse();
 
         assertNull( whoAmIResponse.getAuthzId() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb = whoAmIResponse.encodeInternal();
+        ByteBuffer bb = whoAmIResponse.encodeInternal();
 
-            String encodedPdu = Strings.dumpBytes( bb.array() );
-
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertArrayEquals( stream.array(), bb.array() );
+        
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        WhoAmIFactory factory = new WhoAmIFactory( codec );
+        factory.encodeValue( asn1Buffer, whoAmIResponse );
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -139,7 +126,7 @@ public class WhoAmIResponseTest
      * Test a WhoAmI message with a DN authzId
      */
     @Test
-    public void testDecodeWhoAmINoWhoAmIAuthzIdDN()
+    public void testDecodeWhoAmINoWhoAmIAuthzIdDN() throws DecoderException, EncoderException
     {
         Asn1Decoder whoAmIResponseDecoder = new WhoAmIResponseDecoder();
 
@@ -149,22 +136,13 @@ public class WhoAmIResponseTest
             {
                 0x04, 0x0C,
                   'd', 'n', ':', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm'
-        } ).flip();
-
-        String decodedPdu = Strings.dumpBytes( stream.array() );
+            } ).flip();
 
         // Allocate a WhoAmI Container
         Asn1Container whoAmIResponseContainer = new WhoAmIResponseContainer();
 
         // Decode a WhoAmI message
-        try
-        {
-            whoAmIResponseDecoder.decode( stream, whoAmIResponseContainer );
-        }
-        catch ( DecoderException de )
-        {
-            fail();
-        }
+        whoAmIResponseDecoder.decode( stream, whoAmIResponseContainer );
         
         WhoAmIResponseDecorator whoAmIResponse = ( (WhoAmIResponseContainer ) whoAmIResponseContainer ).getWhoAmIResponse();
 
@@ -173,19 +151,15 @@ public class WhoAmIResponseTest
         
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb = whoAmIResponse.encodeInternal();
+        ByteBuffer bb = whoAmIResponse.encodeInternal();
 
-            String encodedPdu = Strings.dumpBytes( bb.array() );
-
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertArrayEquals( stream.array(), bb.array() );
+        
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        WhoAmIFactory factory = new WhoAmIFactory( codec );
+        factory.encodeValue( asn1Buffer, whoAmIResponse );
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -193,7 +167,7 @@ public class WhoAmIResponseTest
      * Test a WhoAmI message with a UserId authzId
      */
     @Test
-    public void testDecodeWhoAmINoWhoAmIAuthzIdUserId()
+    public void testDecodeWhoAmINoWhoAmIAuthzIdUserId() throws DecoderException, EncoderException
     {
         Asn1Decoder whoAmIResponseDecoder = new WhoAmIResponseDecoder();
 
@@ -203,40 +177,27 @@ public class WhoAmIResponseTest
             {
                 0x04, 0x07,
                   'u', ':', 't', 'e', 's', 't', 0x00
-        } ).flip();
-
-        String decodedPdu = Strings.dumpBytes( stream.array() );
+            } ).flip();
 
         // Allocate a WhoAmI Container
         Asn1Container whoAmIResponseContainer = new WhoAmIResponseContainer();
 
         // Decode a WhoAmI message
-        try
-        {
-            whoAmIResponseDecoder.decode( stream, whoAmIResponseContainer );
-        }
-        catch ( DecoderException de )
-        {
-            fail();
-        }
+        whoAmIResponseDecoder.decode( stream, whoAmIResponseContainer );
         
         WhoAmIResponseDecorator whoAmIResponse = ( (WhoAmIResponseContainer ) whoAmIResponseContainer ).getWhoAmIResponse();
 
         assertNotNull( whoAmIResponse.getAuthzId() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer bb = whoAmIResponse.encodeInternal();
+        ByteBuffer bb = whoAmIResponse.encodeInternal();
 
-            String encodedPdu = Strings.dumpBytes( bb.array() );
-
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
+        assertArrayEquals( stream.array(), bb.array() );
+        
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        WhoAmIFactory factory = new WhoAmIFactory( codec );
+        factory.encodeValue( asn1Buffer, whoAmIResponse );
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 }

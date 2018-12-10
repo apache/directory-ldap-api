@@ -20,15 +20,17 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify;
 
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyResponseContainer;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyResponseDecorator;
 import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyResponse;
@@ -47,34 +49,26 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class PasswordModifyResponseTest
+public class PasswordModifyResponseTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of a PasswordModifyResponse with nothing in it
      */
     @Test
-    public void testDecodePasswordModifyResponseEmpty()
+    public void testDecodePasswordModifyResponseEmpty() throws DecoderException
     {
         Asn1Decoder decoder = new Asn1Decoder();
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
         bb.put( new byte[]
-            { 0x30, 0x00, // PasswordModifyResponse ::= SEQUENCE {
+            { 
+                0x30, 0x00  // PasswordModifyResponse ::= SEQUENCE {
             } );
 
-        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         PasswordModifyResponseContainer container = new PasswordModifyResponseContainer();
 
-        try
-        {
-            decoder.decode( bb, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        decoder.decode( bb, container );
 
         PasswordModifyResponse pwdModifyResponse = container.getPwdModifyResponse();
         assertNull( pwdModifyResponse.getGenPassword() );
@@ -85,9 +79,13 @@ public class PasswordModifyResponseTest
         // Check the encoding
         ByteBuffer bb1 = ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).encodeInternal();
 
-        String encodedPdu = Strings.dumpBytes( bb1.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
+        assertArrayEquals( bb.array(), bb1.array() );
+        
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        PasswordModifyFactory factory = new PasswordModifyFactory( codec );
+        factory.encodeValue( asn1Buffer, pwdModifyResponse );
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -95,30 +93,21 @@ public class PasswordModifyResponseTest
      * Test the decoding of a PasswordModifyResponse with an empty genPassword
      */
     @Test
-    public void testDecodePasswordModifyResponseUserIdentityNull()
+    public void testDecodePasswordModifyResponseUserIdentityNull() throws DecoderException
     {
         Asn1Decoder decoder = new Asn1Decoder();
         ByteBuffer bb = ByteBuffer.allocate( 0x04 );
         bb.put( new byte[]
-            { 0x30, 0x02, // PasswordModifyResponse ::= SEQUENCE {
-                ( byte ) 0x80,
-                0x00 // genPassword    [0]  OCTET STRING OPTIONAL
-        } );
+            { 
+                0x30, 0x02,             // PasswordModifyResponse ::= SEQUENCE {
+                  ( byte ) 0x80, 0x00   // genPassword    [0]  OCTET STRING OPTIONAL
+            } );
 
-        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         PasswordModifyResponseContainer container = new PasswordModifyResponseContainer();
 
-        try
-        {
-            decoder.decode( bb, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        decoder.decode( bb, container );
 
         PasswordModifyResponse pwdModifyResponse = container.getPwdModifyResponse();
         assertNotNull( pwdModifyResponse.getGenPassword() );
@@ -130,9 +119,13 @@ public class PasswordModifyResponseTest
         // Check the encoding
         ByteBuffer bb1 = ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).encodeInternal();
 
-        String encodedPdu = Strings.dumpBytes( bb1.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
+        assertArrayEquals( bb.array(), bb1.array() );
+        
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        PasswordModifyFactory factory = new PasswordModifyFactory( codec );
+        factory.encodeValue( asn1Buffer, pwdModifyResponse );
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -140,34 +133,22 @@ public class PasswordModifyResponseTest
      * Test the decoding of a PasswordModifyResponse with a genPassword
      */
     @Test
-    public void testDecodePasswordModifyResponseUserIdentityValue()
+    public void testDecodePasswordModifyResponseUserIdentityValue() throws DecoderException
     {
         Asn1Decoder decoder = new Asn1Decoder();
         ByteBuffer bb = ByteBuffer.allocate( 0x08 );
         bb.put( new byte[]
-            { 0x30, 0x06, // PasswordModifyResponse ::= SEQUENCE {
-                ( byte ) 0x80,
-                0x04, // genPassword    [0]  OCTET STRING OPTIONAL
-                'a',
-                'b',
-                'c',
-                'd'
-        } );
+            { 
+                0x30, 0x06,             // PasswordModifyResponse ::= SEQUENCE {
+                  ( byte ) 0x80, 0x04,  // genPassword    [0]  OCTET STRING OPTIONAL
+                    'a', 'b', 'c', 'd'
+            } );
 
-        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         PasswordModifyResponseContainer container = new PasswordModifyResponseContainer();
 
-        try
-        {
-            decoder.decode( bb, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
+        decoder.decode( bb, container );
 
         PasswordModifyResponse pwdModifyResponse = container.getPwdModifyResponse();
         assertNotNull( pwdModifyResponse.getGenPassword() );
@@ -179,8 +160,12 @@ public class PasswordModifyResponseTest
         // Check the encoding
         ByteBuffer bb1 = ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).encodeInternal();
 
-        String encodedPdu = Strings.dumpBytes( bb1.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
+        assertArrayEquals( bb.array(), bb1.array() );
+        
+        // Check the reverse decoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        PasswordModifyFactory factory = new PasswordModifyFactory( codec );
+        factory.encodeValue( asn1Buffer, pwdModifyResponse );
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 }

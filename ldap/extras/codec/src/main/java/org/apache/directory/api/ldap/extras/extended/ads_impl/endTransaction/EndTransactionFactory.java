@@ -245,9 +245,9 @@ public class EndTransactionFactory extends AbstractExtendedOperationFactory
         }
         
         // The messageID flag, if false
-        if ( endTransactionResponse.getMessageId() >= 0 )
+        if ( endTransactionResponse.getFailedMessageId() >= 0 )
         {
-            BerValue.encodeInteger( buffer, endTransactionResponse.getMessageId() );
+            BerValue.encodeInteger( buffer, endTransactionResponse.getFailedMessageId() );
         }
         
         // The sequence
