@@ -20,19 +20,21 @@
 package org.apache.directory.api.ldap.extras.intermediate.syncrepl;
 
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValue;
 import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SynchronizationInfoEnum;
 import org.apache.directory.api.ldap.extras.intermediate.syncrepl_impl.SyncInfoValueDecorator;
+import org.apache.directory.api.ldap.extras.intermediate.syncrepl_impl.SyncInfoValueFactory;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,21 +55,18 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
     //--------------------------------------------------------------------------------
     // NewCookie choice tests
     //--------------------------------------------------------------------------------
-
     /**
      * Test the decoding of a SyncInfoValue control, newCookie choice
      */
     @Test
-    public void testDecodeSyncInfoValueControlNewCookie() throws Exception
+    public void testDecodeSyncInfoValueControlNewCookie() throws DecoderException, EncoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x05 );
         bb.put( new byte[]
             {
                 ( byte ) 0x80, 0x03, // syncInfoValue ::= CHOICE {
-                'a',
-                'b',
-                'c' //     newCookie [0] syncCookie
-        } );
+                  'a', 'b', 'c' //     newCookie [0] syncCookie
+            } );
         bb.flip();
 
         SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
@@ -79,16 +78,16 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         assertEquals( "abc", Strings.utf8ToString( syncInfoValue.getCookie() ) );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
-                .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
-            assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
-        }
-        catch ( EncoderException ee )
-        {
-            fail();
-        }
+        ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
+            .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
+        assertArrayEquals( bb.array(), encoded.array() );
+        
+        // Check the revert encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        SyncInfoValueFactory factory = new SyncInfoValueFactory( codec );
+        factory.encodeValue( asn1Buffer, syncInfoValue );
+        
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -96,7 +95,7 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
      * Test the decoding of a SyncInfoValue control, empty newCookie choice
      */
     @Test
-    public void testDecodeSyncInfoValueControlEmptyNewCookie() throws Exception
+    public void testDecodeSyncInfoValueControlEmptyNewCookie() throws DecoderException, EncoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
         bb.put( new byte[]
@@ -115,16 +114,16 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         assertEquals( "", Strings.utf8ToString( syncInfoValue.getCookie() ) );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
-                .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
-            assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
-        }
-        catch ( EncoderException ee )
-        {
-            fail();
-        }
+        ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
+            .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
+        assertArrayEquals( bb.array(), encoded.array() );
+        
+        // Check the revert encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        SyncInfoValueFactory factory = new SyncInfoValueFactory( codec );
+        factory.encodeValue( asn1Buffer, syncInfoValue );
+        
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -136,7 +135,7 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
      * refreshDone = true
      */
     @Test
-    public void testDecodeSyncInfoValueControlRefreshDelete() throws Exception
+    public void testDecodeSyncInfoValueControlRefreshDelete() throws DecoderException, EncoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0A );
         bb.put( new byte[]
@@ -160,29 +159,26 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         assertTrue( syncInfoValue.isRefreshDone() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer buffer = ByteBuffer.allocate( 0x07 );
-            buffer.put( new byte[]
-                {
-                    ( byte ) 0xA1, 0x05, // syncInfoValue ::= CHOICE {
-                                         //     refreshDelete [1] SEQUENCE {
-                    0x04,
-                    0x03,
-                    'a',
-                    'b',
-                    'c' //         cookie       syncCookie OPTIONAL,
+        ByteBuffer buffer = ByteBuffer.allocate( 0x07 );
+        buffer.put( new byte[]
+            {
+                ( byte ) 0xA1, 0x05, // syncInfoValue ::= CHOICE {
+                                     //     refreshDelete [1] SEQUENCE {
+                  0x04, 0x03,
+                    'a', 'b', 'c'    //         cookie       syncCookie OPTIONAL,
             } );
-            buffer.flip();
+        buffer.flip();
 
-            ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
-                .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
-            assertEquals( Strings.dumpBytes( buffer.array() ), Strings.dumpBytes( encoded.array() ) );
-        }
-        catch ( EncoderException ee )
-        {
-            fail();
-        }
+        ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
+            .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
+        assertArrayEquals( buffer.array(), encoded.array() );
+        
+        // Check the revert encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        SyncInfoValueFactory factory = new SyncInfoValueFactory( codec );
+        factory.encodeValue( asn1Buffer, syncInfoValue );
+        
+        assertArrayEquals( buffer.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -191,22 +187,17 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
      * refreshDone = false
      */
     @Test
-    public void testDecodeSyncInfoValueControlRefreshDeleteRefreshDoneFalse() throws Exception
+    public void testDecodeSyncInfoValueControlRefreshDeleteRefreshDoneFalse() throws DecoderException, EncoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0A );
         bb.put( new byte[]
             {
-                ( byte ) 0xA1, 0x08, // syncInfoValue ::= CHOICE {
-                                     //     refreshDelete [1] SEQUENCE {
-                0x04,
-                0x03,
-                'a',
-                'b',
-                'c', //         cookie       syncCookie OPTIONAL,
-                0x01,
-                0x01,
-                ( byte ) 0x00 //         refreshDone  BOOLEAN DEFAULT TRUE
-        } );
+                ( byte ) 0xA1, 0x08,                // syncInfoValue ::= CHOICE {
+                                                    //     refreshDelete [1] SEQUENCE {
+                  0x04, 0x03,
+                    'a', 'b', 'c',                  //         cookie       syncCookie OPTIONAL,
+                  0x01, 0x01, ( byte ) 0x00         //         refreshDone  BOOLEAN DEFAULT TRUE
+            } );
         bb.flip();
 
         SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
@@ -220,16 +211,16 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         assertFalse( syncInfoValue.isRefreshDone() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
-                .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
-            assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
-        }
-        catch ( EncoderException ee )
-        {
-            fail();
-        }
+        ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
+            .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
+        assertArrayEquals( bb.array(), encoded.array() );
+        
+        // Check the revert encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        SyncInfoValueFactory factory = new SyncInfoValueFactory( codec );
+        factory.encodeValue( asn1Buffer, syncInfoValue );
+        
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -238,19 +229,16 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
      * no refreshDone
      */
     @Test
-    public void testDecodeSyncInfoValueControlRefreshDeleteNoRefreshDone() throws Exception
+    public void testDecodeSyncInfoValueControlRefreshDeleteNoRefreshDone() throws DecoderException, EncoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x07 );
         bb.put( new byte[]
             {
                 ( byte ) 0xA1, 0x05, // syncInfoValue ::= CHOICE {
                                      //     refreshDelete [1] SEQUENCE {
-                0x04,
-                0x03,
-                'a',
-                'b',
-                'c' //         cookie       syncCookie OPTIONAL,
-        } );
+                  0x04, 0x03,
+                    'a', 'b', 'c'    //         cookie       syncCookie OPTIONAL,
+            } );
         bb.flip();
 
         SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
@@ -264,16 +252,16 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         assertTrue( syncInfoValue.isRefreshDone() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
-                .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
-            assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
-        }
-        catch ( EncoderException ee )
-        {
-            fail();
-        }
+        ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
+            .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
+        assertArrayEquals( bb.array(), encoded.array() );
+        
+        // Check the revert encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        SyncInfoValueFactory factory = new SyncInfoValueFactory( codec );
+        factory.encodeValue( asn1Buffer, syncInfoValue );
+        
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -289,10 +277,8 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             {
                 ( byte ) 0xA1, 0x03, // syncInfoValue ::= CHOICE {
                                      //     refreshDelete [1] SEQUENCE {
-                0x01,
-                0x01,
-                0x00 //        refreshDone  BOOLEAN DEFAULT TRUE
-        } );
+                  0x01, 0x01, 0x00   //        refreshDone  BOOLEAN DEFAULT TRUE
+            } );
         bb.flip();
 
         SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
@@ -306,16 +292,16 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         assertFalse( syncInfoValue.isRefreshDone() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
-                .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
-            assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
-        }
-        catch ( EncoderException ee )
-        {
-            fail();
-        }
+        ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
+            .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
+        assertArrayEquals( bb.array(), encoded.array() );
+        
+        // Check the revert encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        SyncInfoValueFactory factory = new SyncInfoValueFactory( codec );
+        factory.encodeValue( asn1Buffer, syncInfoValue );
+        
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -330,7 +316,7 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         bb.put( new byte[]
             {
                 ( byte ) 0xA1, 0x00 // syncInfoValue ::= CHOICE {
-        } );
+            } );
         bb.flip();
 
         SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
@@ -344,16 +330,16 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         assertTrue( syncInfoValue.isRefreshDone() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
-                .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
-            assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
-        }
-        catch ( EncoderException ee )
-        {
-            fail();
-        }
+        ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
+            .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
+        assertArrayEquals( bb.array(), encoded.array() );
+        
+        // Check the revert encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        SyncInfoValueFactory factory = new SyncInfoValueFactory( codec );
+        factory.encodeValue( asn1Buffer, syncInfoValue );
+        
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -370,17 +356,12 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         ByteBuffer bb = ByteBuffer.allocate( 0x0A );
         bb.put( new byte[]
             {
-                ( byte ) 0xA2, 0x08, // syncInfoValue ::= CHOICE {
-                                     //     refreshPresent [2] SEQUENCE {
-                0x04,
-                0x03,
-                'a',
-                'b',
-                'c', //         cookie       syncCookie OPTIONAL,
-                0x01,
-                0x01,
-                ( byte ) 0xFF //         refreshDone  BOOLEAN DEFAULT TRUE
-        } );
+                ( byte ) 0xA2, 0x08,         // syncInfoValue ::= CHOICE {
+                                             //     refreshPresent [2] SEQUENCE {
+                  0x04, 0x03,
+                    'a', 'b', 'c',           //         cookie       syncCookie OPTIONAL,
+                  0x01, 0x01, ( byte ) 0xFF  //         refreshDone  BOOLEAN DEFAULT TRUE
+            } );
         bb.flip();
 
         SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
@@ -394,29 +375,27 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         assertTrue( syncInfoValue.isRefreshDone() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer buffer = ByteBuffer.allocate( 0x07 );
-            buffer.put( new byte[]
-                {
-                    ( byte ) 0xA2, 0x05, // syncInfoValue ::= CHOICE {
-                                         //     refreshPresent [2] SEQUENCE {
-                    0x04,
-                    0x03,
-                    'a',
-                    'b',
-                    'c' //         cookie       syncCookie OPTIONAL,
+        ByteBuffer buffer = ByteBuffer.allocate( 0x07 );
+        buffer.put( new byte[]
+            {
+                ( byte ) 0xA2, 0x05, // syncInfoValue ::= CHOICE {
+                                     //     refreshPresent [2] SEQUENCE {
+                  0x04, 0x03,
+                    'a', 'b', 'c'    //         cookie       syncCookie OPTIONAL,
             } );
-            buffer.flip();
+        buffer.flip();
 
-            ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
-                .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
-            assertEquals( Strings.dumpBytes( buffer.array() ), Strings.dumpBytes( encoded.array() ) );
-        }
-        catch ( EncoderException ee )
-        {
-            fail();
-        }
+        ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
+            .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
+        assertArrayEquals( buffer.array(), encoded.array() );
+
+        
+        // Check the revert encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        SyncInfoValueFactory factory = new SyncInfoValueFactory( codec );
+        factory.encodeValue( asn1Buffer, syncInfoValue );
+        
+        assertArrayEquals( buffer.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -430,17 +409,12 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         ByteBuffer bb = ByteBuffer.allocate( 0x0A );
         bb.put( new byte[]
             {
-                ( byte ) 0xA2, 0x08, // syncInfoValue ::= CHOICE {
-                                     //     refreshPresent [2] SEQUENCE {
-                0x04,
-                0x03,
-                'a',
-                'b',
-                'c', //         cookie       syncCookie OPTIONAL,
-                0x01,
-                0x01,
-                ( byte ) 0x00 //         refreshDone  BOOLEAN DEFAULT TRUE
-        } );
+                ( byte ) 0xA2, 0x08,            // syncInfoValue ::= CHOICE {
+                                                //     refreshPresent [2] SEQUENCE {
+                  0x04, 0x03,
+                    'a', 'b', 'c',              //         cookie       syncCookie OPTIONAL,
+                  0x01, 0x01, ( byte ) 0x00     //         refreshDone  BOOLEAN DEFAULT TRUE
+            } );
         bb.flip();
 
         SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
@@ -454,16 +428,16 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         assertFalse( syncInfoValue.isRefreshDone() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
-                .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
-            assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
-        }
-        catch ( EncoderException ee )
-        {
-            fail();
-        }
+        ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
+            .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
+        assertArrayEquals( bb.array(), encoded.array() );
+        
+        // Check the revert encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        SyncInfoValueFactory factory = new SyncInfoValueFactory( codec );
+        factory.encodeValue( asn1Buffer, syncInfoValue );
+        
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -479,12 +453,9 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             {
                 ( byte ) 0xA2, 0x05, // syncInfoValue ::= CHOICE {
                                      //     refreshPresent [2] SEQUENCE {
-                0x04,
-                0x03,
-                'a',
-                'b',
-                'c' //         cookie       syncCookie OPTIONAL,
-        } );
+                  0x04, 0x03,
+                  'a', 'b', 'c'      //         cookie       syncCookie OPTIONAL,
+            } );
         bb.flip();
 
         SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
@@ -498,16 +469,16 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         assertTrue( syncInfoValue.isRefreshDone() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
-                .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
-            assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
-        }
-        catch ( EncoderException ee )
-        {
-            fail();
-        }
+        ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
+            .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
+        assertArrayEquals( bb.array(), encoded.array() );
+        
+        // Check the revert encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        SyncInfoValueFactory factory = new SyncInfoValueFactory( codec );
+        factory.encodeValue( asn1Buffer, syncInfoValue );
+        
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -523,10 +494,8 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             {
                 ( byte ) 0xA2, 0x03, // syncInfoValue ::= CHOICE {
                                      //     refreshPresent [2] SEQUENCE {
-                0x01,
-                0x01,
-                0x00 //        refreshDone  BOOLEAN DEFAULT TRUE
-        } );
+                  0x01, 0x01, 0x00   //        refreshDone  BOOLEAN DEFAULT TRUE
+            } );
         bb.flip();
 
         SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
@@ -540,16 +509,16 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         assertFalse( syncInfoValue.isRefreshDone() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
-                .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
-            assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
-        }
-        catch ( EncoderException ee )
-        {
-            fail();
-        }
+        ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
+            .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
+        assertArrayEquals( bb.array(), encoded.array() );
+        
+        // Check the revert encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        SyncInfoValueFactory factory = new SyncInfoValueFactory( codec );
+        factory.encodeValue( asn1Buffer, syncInfoValue );
+        
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -564,7 +533,7 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         bb.put( new byte[]
             {
                 ( byte ) 0xA2, 0x00 // syncInfoValue ::= CHOICE {
-        } );
+            } );
         bb.flip();
 
         SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
@@ -578,16 +547,16 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         assertTrue( syncInfoValue.isRefreshDone() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
-                .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
-            assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
-        }
-        catch ( EncoderException ee )
-        {
-            fail();
-        }
+        ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
+            .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
+        assertArrayEquals( bb.array(), encoded.array() );
+        
+        // Check the revert encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        SyncInfoValueFactory factory = new SyncInfoValueFactory( codec );
+        factory.encodeValue( asn1Buffer, syncInfoValue );
+        
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -597,8 +566,8 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SyncInfoValue control, syncIdSet choice, empty
      */
-    @Test
-    public void testDecodeSyncInfoValueControlSyncIdSetEmpty()
+    @Test( expected=DecoderException.class )
+    public void testDecodeSyncInfoValueControlSyncIdSetEmpty() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
         bb.put( new byte[]
@@ -612,15 +581,7 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
 
         decorator.setSyncInfoValueType( SynchronizationInfoEnum.SYNC_ID_SET );
 
-        try
-        {
-            ( ( SyncInfoValueDecorator ) decorator ).decode( bb.array() );
-            fail( "Should not get there" );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( true );
-        }
+        ( ( SyncInfoValueDecorator ) decorator ).decode( bb.array() );
     }
 
 
@@ -628,19 +589,16 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
      * Test the decoding of a SyncInfoValue control, syncIdSet choice, cookie
      * but no UUID set
      */
-    @Test
-    public void testDecodeSyncInfoValueControlSyncIdSetCookieNoSet()
+    @Test( expected=DecoderException.class )
+    public void testDecodeSyncInfoValueControlSyncIdSetCookieNoSet() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x07 );
         bb.put( new byte[]
             {
                 ( byte ) 0xA3, 0x05, // syncInfoValue ::= CHOICE {
                                      //     syncIdSet [3] SEQUENCE {
-                0x04,
-                0x03,
-                'a',
-                'b',
-                'c', //         cookie       syncCookie OPTIONAL,
+                  0x04, 0x03,
+                    'a', 'b', 'c',   //         cookie       syncCookie OPTIONAL,
             } );
         bb.flip();
 
@@ -648,15 +606,7 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
 
         decorator.setSyncInfoValueType( SynchronizationInfoEnum.SYNC_ID_SET );
 
-        try
-        {
-            ( ( SyncInfoValueDecorator ) decorator ).decode( bb.array() );
-            fail( "Should not get there" );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( true );
-        }
+        ( ( SyncInfoValueDecorator ) decorator ).decode( bb.array() );
     }
 
 
@@ -664,17 +614,15 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
      * Test the decoding of a SyncInfoValue control, syncIdSet choice, no cookie
      * a refreshDeletes flag, but no UUID set
      */
-    @Test
-    public void testDecodeSyncInfoValueControlSyncIdSetNoCookieRefreshDeletesNoSet()
+    @Test( expected=DecoderException.class )
+    public void testDecodeSyncInfoValueControlSyncIdSetNoCookieRefreshDeletesNoSet() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x05 );
         bb.put( new byte[]
             {
                 ( byte ) 0xA3, 0x03, // syncInfoValue ::= CHOICE {
                                      //     syncIdSet [3] SEQUENCE {
-                0x01,
-                0x01,
-                0x00, //         refreshDeletes BOOLEAN DEFAULT FALSE,
+                  0x01, 0x01, 0x00,  //         refreshDeletes BOOLEAN DEFAULT FALSE,
             } );
         bb.flip();
 
@@ -682,15 +630,7 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
 
         decorator.setSyncInfoValueType( SynchronizationInfoEnum.SYNC_ID_SET );
 
-        try
-        {
-            ( ( SyncInfoValueDecorator ) decorator ).decode( bb.array() );
-            fail( "Should not get there" );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( true );
-        }
+        ( ( SyncInfoValueDecorator ) decorator ).decode( bb.array() );
     }
 
 
@@ -698,22 +638,17 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
      * Test the decoding of a SyncInfoValue control, syncIdSet choice, a cookie
      * a refreshDeletes flag, but no UUID set
      */
-    @Test
-    public void testDecodeSyncInfoValueControlSyncIdSetCookieRefreshDeletesNoSet()
+    @Test( expected=DecoderException.class )
+    public void testDecodeSyncInfoValueControlSyncIdSetCookieRefreshDeletesNoSet() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0A );
         bb.put( new byte[]
             {
                 ( byte ) 0xA3, 0x08, // syncInfoValue ::= CHOICE {
                                      //     syncIdSet [3] SEQUENCE {
-                0x04,
-                0x03,
-                'a',
-                'b',
-                'c', //         cookie         syncCookie OPTIONAL,
-                0x01,
-                0x01,
-                0x00, //         refreshDeletes BOOLEAN DEFAULT FALSE,
+                  0x04, 0x03,
+                    'a', 'b', 'c',   //         cookie         syncCookie OPTIONAL,
+                  0x01, 0x01, 0x00,  //         refreshDeletes BOOLEAN DEFAULT FALSE,
             } );
         bb.flip();
 
@@ -721,15 +656,7 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
 
         decorator.setSyncInfoValueType( SynchronizationInfoEnum.SYNC_ID_SET );
 
-        try
-        {
-            ( ( SyncInfoValueDecorator ) decorator ).decode( bb.array() );
-            fail( "Should not get there" );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( true );
-        }
+        ( ( SyncInfoValueDecorator ) decorator ).decode( bb.array() );
     }
 
 
@@ -745,8 +672,7 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             {
                 ( byte ) 0xA3, 0x02, // syncInfoValue ::= CHOICE {
                                      //     syncIdSet [3] SEQUENCE {
-                0x31,
-                0x00, //         syncUUIDs SET OF syncUUID
+                  0x31, 0x00,        //         syncUUIDs SET OF syncUUID
             } );
         bb.flip();
 
@@ -762,16 +688,16 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         assertEquals( 0, syncInfoValue.getSyncUUIDs().size() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
-                .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
-            assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
-        }
-        catch ( EncoderException ee )
-        {
-            fail();
-        }
+        ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
+            .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
+        assertArrayEquals( bb.array(), encoded.array() );
+        
+        // Check the revert encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        SyncInfoValueFactory factory = new SyncInfoValueFactory( codec );
+        factory.encodeValue( asn1Buffer, syncInfoValue );
+        
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -785,65 +711,19 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         ByteBuffer bb = ByteBuffer.allocate( 0x3A );
         bb.put( new byte[]
             {
-                ( byte ) 0xA3, 0x38, // syncInfoValue ::= CHOICE {
-                                     //     syncIdSet [3] SEQUENCE {
-                0x31,
-                0x36, //         syncUUIDs SET OF syncUUID
-                0x04,
-                0x10, // syncUUID
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x04,
-                0x10, // syncUUID
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x04,
-                0x10, // syncUUID
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03
-        } );
+                ( byte ) 0xA3, 0x38,        // syncInfoValue ::= CHOICE {
+                                            //     syncIdSet [3] SEQUENCE {
+                  0x31, 0x36,               //         syncUUIDs SET OF syncUUID
+                    0x04, 0x10,             // syncUUID
+                      0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+                      0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+                    0x04, 0x10,             // syncUUID
+                      0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
+                      0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
+                    0x04, 0x10,             // syncUUID
+                      0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03,
+                      0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03
+            } );
         bb.flip();
 
         SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
@@ -868,16 +748,16 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         }
 
         // Check the encoding
-        try
-        {
-            ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
-                .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
-            assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
-        }
-        catch ( EncoderException ee )
-        {
-            fail();
-        }
+        ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
+            .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
+        assertArrayEquals( bb.array(), encoded.array() );
+        
+        // Check the revert encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        SyncInfoValueFactory factory = new SyncInfoValueFactory( codec );
+        factory.encodeValue( asn1Buffer, syncInfoValue );
+        
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -893,13 +773,9 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             {
                 ( byte ) 0xA3, 0x07, // syncInfoValue ::= CHOICE {
                                      //     syncIdSet [3] SEQUENCE {
-                0x04,
-                0x03,
-                'a',
-                'b',
-                'c', //         cookie         syncCookie OPTIONAL,
-                0x31,
-                0x00, //         syncUUIDs SET OF syncUUID
+                  0x04, 0x03,
+                    'a', 'b', 'c',   //         cookie         syncCookie OPTIONAL,
+                  0x31, 0x00,        //         syncUUIDs SET OF syncUUID
             } );
         bb.flip();
 
@@ -915,16 +791,16 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         assertEquals( 0, syncInfoValue.getSyncUUIDs().size() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
-                .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
-            assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
-        }
-        catch ( EncoderException ee )
-        {
-            fail();
-        }
+        ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
+            .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
+        assertArrayEquals( bb.array(), encoded.array() );
+        
+        // Check the revert encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        SyncInfoValueFactory factory = new SyncInfoValueFactory( codec );
+        factory.encodeValue( asn1Buffer, syncInfoValue );
+        
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -938,70 +814,21 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         ByteBuffer bb = ByteBuffer.allocate( 0x3F );
         bb.put( new byte[]
             {
-                ( byte ) 0xA3, 0x3D, // syncInfoValue ::= CHOICE {
-                                     //     syncIdSet [3] SEQUENCE {
-                0x04,
-                0x03,
-                'a',
-                'b',
-                'c', //         cookie         syncCookie OPTIONAL,
-                0x31,
-                0x36, //         syncUUIDs SET OF syncUUID
-                0x04,
-                0x10, // syncUUID
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x04,
-                0x10, // syncUUID
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x04,
-                0x10, // syncUUID
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03
-        } );
+                ( byte ) 0xA3, 0x3D,            // syncInfoValue ::= CHOICE {
+                                                //     syncIdSet [3] SEQUENCE {
+                  0x04, 0x03,
+                    'a', 'b', 'c',              //         cookie         syncCookie OPTIONAL,
+                  0x31, 0x36,                   //         syncUUIDs SET OF syncUUID
+                    0x04, 0x10,                 // syncUUID
+                      0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+                      0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+                    0x04, 0x10,                 // syncUUID
+                      0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
+                      0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
+                    0x04, 0x10,                 // syncUUID
+                      0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03,
+                      0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03
+            } );
         bb.flip();
 
         SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
@@ -1026,16 +853,16 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         }
 
         // Check the encoding
-        try
-        {
-            ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
-                .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
-            assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
-        }
-        catch ( EncoderException ee )
-        {
-            fail();
-        }
+        ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
+            .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
+        assertArrayEquals( bb.array(), encoded.array() );
+        
+        // Check the revert encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        SyncInfoValueFactory factory = new SyncInfoValueFactory( codec );
+        factory.encodeValue( asn1Buffer, syncInfoValue );
+        
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -1051,11 +878,8 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             {
                 ( byte ) 0xA3, 0x05, // syncInfoValue ::= CHOICE {
                                      //     syncIdSet [3] SEQUENCE {
-                0x01,
-                0x01,
-                0x10, //         refreshDeletes BOOLEAN DEFAULT FALSE,
-                0x31,
-                0x00, //         syncUUIDs SET OF syncUUID
+                  0x01, 0x01, 0x10,  //         refreshDeletes BOOLEAN DEFAULT FALSE,
+                  0x31, 0x00,        //         syncUUIDs SET OF syncUUID
             } );
         bb.flip();
 
@@ -1071,29 +895,26 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         assertEquals( 0, syncInfoValue.getSyncUUIDs().size() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer buffer = ByteBuffer.allocate( 0x07 );
-            buffer.put( new byte[]
-                {
-                    ( byte ) 0xA3, 0x05, // syncInfoValue ::= CHOICE {
-                                         //     syncIdSet [3] SEQUENCE {
-                    0x01,
-                    0x01,
-                    ( byte ) 0xFF, //         refreshDeletes BOOLEAN DEFAULT FALSE,
-                    0x31,
-                    0x00, //         syncUUIDs SET OF syncUUID
-                } );
-            buffer.flip();
+        ByteBuffer buffer = ByteBuffer.allocate( 0x07 );
+        buffer.put( new byte[]
+            {
+                ( byte ) 0xA3, 0x05,         // syncInfoValue ::= CHOICE {
+                                             //     syncIdSet [3] SEQUENCE {
+                  0x01, 0x01, ( byte ) 0xFF, //         refreshDeletes BOOLEAN DEFAULT FALSE,
+                  0x31, 0x00,                //         syncUUIDs SET OF syncUUID
+            } );
+        buffer.flip();
 
-            ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
-                .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
-            assertEquals( Strings.dumpBytes( buffer.array() ), Strings.dumpBytes( encoded.array() ) );
-        }
-        catch ( EncoderException ee )
-        {
-            fail();
-        }
+        ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
+            .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
+        assertArrayEquals( buffer.array(), encoded.array() );
+        
+        // Check the revert encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        SyncInfoValueFactory factory = new SyncInfoValueFactory( codec );
+        factory.encodeValue( asn1Buffer, syncInfoValue );
+        
+        assertArrayEquals( buffer.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -1109,66 +930,18 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             {
                 ( byte ) 0xA3, 0x3B, // syncInfoValue ::= CHOICE {
                                      //     syncIdSet [3] SEQUENCE {
-                0x01,
-                0x01,
-                0x10, //         refreshDeletes BOOLEAN DEFAULT FALSE,
-                0x31,
-                0x36, //         syncUUIDs SET OF syncUUID
-                0x04,
-                0x10, // syncUUID
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x04,
-                0x10, // syncUUID
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x04,
-                0x10, // syncUUID
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03
-        } );
+                  0x01, 0x01, 0x10, //         refreshDeletes BOOLEAN DEFAULT FALSE,
+                  0x31, 0x36, //         syncUUIDs SET OF syncUUID
+                    0x04, 0x10,             // syncUUID
+                      0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+                      0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+                    0x04, 0x10,             // syncUUID
+                      0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
+                      0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
+                    0x04, 0x10,             // syncUUID
+                      0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03,
+                      0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03
+            } );
         bb.flip();
 
         SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
@@ -1193,83 +966,35 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         }
 
         // Check the encoding
-        try
-        {
-            ByteBuffer buffer = ByteBuffer.allocate( 0x3D );
-            buffer.put( new byte[]
-                {
-                    ( byte ) 0xA3, 0x3B, // syncInfoValue ::= CHOICE {
-                                         //     syncIdSet [3] SEQUENCE {
-                    0x01,
-                    0x01,
-                    ( byte ) 0xFF, //         refreshDeletes BOOLEAN DEFAULT FALSE,
-                    0x31,
-                    0x36, //         syncUUIDs SET OF syncUUID
-                    0x04,
-                    0x10, // syncUUID
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x04,
-                    0x10, // syncUUID
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x04,
-                    0x10, // syncUUID
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03
+        ByteBuffer buffer = ByteBuffer.allocate( 0x3D );
+        buffer.put( new byte[]
+            {
+                ( byte ) 0xA3, 0x3B, // syncInfoValue ::= CHOICE {
+                                     //     syncIdSet [3] SEQUENCE {
+                  0x01, 0x01, ( byte ) 0xFF, //         refreshDeletes BOOLEAN DEFAULT FALSE,
+                  0x31, 0x36, //         syncUUIDs SET OF syncUUID
+                    0x04, 0x10,             // syncUUID
+                      0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+                      0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+                    0x04, 0x10,             // syncUUID
+                      0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
+                      0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
+                    0x04, 0x10,             // syncUUID
+                      0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03,
+                      0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03
             } );
-            buffer.flip();
+        buffer.flip();
 
-            ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
-                .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
-            assertEquals( Strings.dumpBytes( buffer.array() ), Strings.dumpBytes( encoded.array() ) );
-        }
-        catch ( EncoderException ee )
-        {
-            fail();
-        }
+        ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
+            .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
+        assertArrayEquals( buffer.array(), encoded.array() );
+        
+        // Check the revert encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        SyncInfoValueFactory factory = new SyncInfoValueFactory( codec );
+        factory.encodeValue( asn1Buffer, syncInfoValue );
+        
+        assertArrayEquals( buffer.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -1283,18 +1008,12 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         ByteBuffer bb = ByteBuffer.allocate( 0x0C );
         bb.put( new byte[]
             {
-                ( byte ) 0xA3, 0x0A, // syncInfoValue ::= CHOICE {
-                                     //     syncIdSet [3] SEQUENCE {
-                0x04,
-                0x03,
-                'a',
-                'b',
-                'c', //         cookie         syncCookie OPTIONAL,
-                0x01,
-                0x01,
-                0x10, //         refreshDeletes BOOLEAN DEFAULT FALSE,
-                0x31,
-                0x00, //         syncUUIDs SET OF syncUUID
+                ( byte ) 0xA3, 0x0A,    // syncInfoValue ::= CHOICE {
+                                        //     syncIdSet [3] SEQUENCE {
+                  0x04, 0x03,
+                    'a', 'b', 'c',      //         cookie         syncCookie OPTIONAL,
+                  0x01, 0x01, 0x10,     //         refreshDeletes BOOLEAN DEFAULT FALSE,
+                  0x31, 0x00,           //         syncUUIDs SET OF syncUUID
             } );
         bb.flip();
 
@@ -1310,34 +1029,28 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         assertEquals( 0, syncInfoValue.getSyncUUIDs().size() );
 
         // Check the encoding
-        try
-        {
-            ByteBuffer buffer = ByteBuffer.allocate( 0x0C );
-            buffer.put( new byte[]
-                {
-                    ( byte ) 0xA3, 0x0A, // syncInfoValue ::= CHOICE {
-                                         //     syncIdSet [3] SEQUENCE {
-                    0x04,
-                    0x03,
-                    'a',
-                    'b',
-                    'c', //         cookie         syncCookie OPTIONAL,
-                    0x01,
-                    0x01,
-                    ( byte ) 0xFF, //         refreshDeletes BOOLEAN DEFAULT FALSE,
-                    0x31,
-                    0x00, //         syncUUIDs SET OF syncUUID
-                } );
-            buffer.flip();
+        ByteBuffer buffer = ByteBuffer.allocate( 0x0C );
+        buffer.put( new byte[]
+            {
+                ( byte ) 0xA3, 0x0A,            // syncInfoValue ::= CHOICE {
+                                                //     syncIdSet [3] SEQUENCE {
+                  0x04, 0x03,
+                    'a', 'b', 'c',              //         cookie         syncCookie OPTIONAL,
+                  0x01, 0x01, ( byte ) 0xFF,    //         refreshDeletes BOOLEAN DEFAULT FALSE,
+                  0x31, 0x00,                   //         syncUUIDs SET OF syncUUID
+            } );
+        buffer.flip();
 
-            ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
-                .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
-            assertEquals( Strings.dumpBytes( buffer.array() ), Strings.dumpBytes( encoded.array() ) );
-        }
-        catch ( EncoderException ee )
-        {
-            fail();
-        }
+        ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
+            .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
+        assertArrayEquals( buffer.array(), encoded.array() );
+        
+        // Check the revert encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        SyncInfoValueFactory factory = new SyncInfoValueFactory( codec );
+        factory.encodeValue( asn1Buffer, syncInfoValue );
+        
+        assertArrayEquals( buffer.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -1351,73 +1064,22 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         ByteBuffer bb = ByteBuffer.allocate( 0x42 );
         bb.put( new byte[]
             {
-                ( byte ) 0xA3, 0x40, // syncInfoValue ::= CHOICE {
-                                     //     syncIdSet [3] SEQUENCE {
-                0x04,
-                0x03,
-                'a',
-                'b',
-                'c', //         cookie         syncCookie OPTIONAL,
-                0x01,
-                0x01,
-                0x10, //         refreshDeletes BOOLEAN DEFAULT FALSE,
-                0x31,
-                0x36, //         syncUUIDs SET OF syncUUID
-                0x04,
-                0x10, // syncUUID
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x04,
-                0x10, // syncUUID
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x02,
-                0x04,
-                0x10, // syncUUID
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03,
-                0x03
-        } );
+                ( byte ) 0xA3, 0x40,        // syncInfoValue ::= CHOICE {
+                                            //     syncIdSet [3] SEQUENCE {
+                  0x04, 0x03,
+                    'a', 'b', 'c',          //         cookie         syncCookie OPTIONAL,
+                  0x01, 0x01, 0x10,         //         refreshDeletes BOOLEAN DEFAULT FALSE,
+                  0x31, 0x36,               //         syncUUIDs SET OF syncUUID
+                    0x04, 0x10,             // syncUUID
+                      0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+                      0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+                    0x04, 0x10,             // syncUUID
+                      0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
+                      0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
+                    0x04, 0x10,             // syncUUID
+                      0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03,
+                      0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03
+            } );
         bb.flip();
 
         SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
@@ -1442,88 +1104,37 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         }
 
         // Check the encoding
-        try
-        {
             ByteBuffer buffer = ByteBuffer.allocate( 0x42 );
             buffer.put( new byte[]
                 {
-                    ( byte ) 0xA3, 0x40, // syncInfoValue ::= CHOICE {
-                                         //     syncIdSet [3] SEQUENCE {
-                    0x04,
-                    0x03,
-                    'a',
-                    'b',
-                    'c', //         cookie         syncCookie OPTIONAL,
-                    0x01,
-                    0x01,
-                    ( byte ) 0xFF, //         refreshDeletes BOOLEAN DEFAULT FALSE,
-                    0x31,
-                    0x36, //         syncUUIDs SET OF syncUUID
-                    0x04,
-                    0x10, // syncUUID
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x01,
-                    0x04,
-                    0x10, // syncUUID
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x02,
-                    0x04,
-                    0x10, // syncUUID
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03,
-                    0x03
-            } );
+                    ( byte ) 0xA3, 0x40,        // syncInfoValue ::= CHOICE {
+                                                //     syncIdSet [3] SEQUENCE {
+                      0x04, 0x03,
+                        'a', 'b', 'c',          //         cookie         syncCookie OPTIONAL,
+                      0x01, 0x01, ( byte ) 0xFF,//         refreshDeletes BOOLEAN DEFAULT FALSE,
+                      0x31, 0x36,               //         syncUUIDs SET OF syncUUID
+                        0x04, 0x10,             // syncUUID
+                          0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+                          0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+                        0x04, 0x10,             // syncUUID
+                          0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
+                          0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
+                        0x04, 0x10,             // syncUUID
+                          0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03,
+                          0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03
+                } );
             buffer.flip();
 
             ByteBuffer encoded = ( ( SyncInfoValueDecorator ) syncInfoValue ).encode( ByteBuffer
                 .allocate( ( ( SyncInfoValueDecorator ) syncInfoValue ).computeLength() ) );
-            assertEquals( Strings.dumpBytes( buffer.array() ), Strings.dumpBytes( encoded.array() ) );
-        }
-        catch ( EncoderException ee )
-        {
-            fail();
-        }
+            assertArrayEquals( buffer.array(), encoded.array() );
+            
+            // Check the revert encoding
+            Asn1Buffer asn1Buffer = new Asn1Buffer();
+            SyncInfoValueFactory factory = new SyncInfoValueFactory( codec );
+            factory.encodeValue( asn1Buffer, syncInfoValue );
+            
+            assertArrayEquals( buffer.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -1531,57 +1142,29 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
      * Test the decoding of a SyncInfoValue control, syncIdSet choice, with some
      * invalid UUID
      */
-    @Test
-    public void testDecodeSyncInfoValueControlSyncIdSetTooSmallUUID()
+    @Test( expected=DecoderException.class )
+    public void testDecodeSyncInfoValueControlSyncIdSetTooSmallUUID() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x1D );
         bb.put( new byte[]
             {
-                ( byte ) 0xA3, 0x1B, // syncInfoValue ::= CHOICE {
-                                     //     syncIdSet [3] SEQUENCE {
-                0x04,
-                0x03,
-                'a',
-                'b',
-                'c', //         cookie         syncCookie OPTIONAL,
-                0x01,
-                0x01,
-                0x10, //         refreshDeletes BOOLEAN DEFAULT FALSE,
-                0x31,
-                0x11, //         syncUUIDs SET OF syncUUID
-                0x04,
-                0x0F, // syncUUID
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01
-        } );
+                ( byte ) 0xA3, 0x1B,        // syncInfoValue ::= CHOICE {
+                                            //     syncIdSet [3] SEQUENCE {
+                  0x04, 0x03,
+                    'a', 'b', 'c',          //         cookie         syncCookie OPTIONAL,
+                  0x01, 0x01, 0x10,         //         refreshDeletes BOOLEAN DEFAULT FALSE,
+                  0x31, 0x11,               //         syncUUIDs SET OF syncUUID
+                    0x04, 0x0F,             // syncUUID
+                      0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+                      0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01
+            } );
         bb.flip();
 
         SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
 
         decorator.setSyncInfoValueType( SynchronizationInfoEnum.SYNC_ID_SET );
 
-        try
-        {
-            ( ( SyncInfoValueDecorator ) decorator ).decode( bb.array() );
-            fail( "Should not be there" );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( true );
-        }
+        ( ( SyncInfoValueDecorator ) decorator ).decode( bb.array() );
     }
 
 
@@ -1589,57 +1172,28 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
      * Test the decoding of a SyncInfoValue control, syncIdSet choice, with some
      * invalid UUID
      */
-    @Test
-    public void testDecodeSyncInfoValueControlSyncIdSetTooLongUUID()
+    @Test( expected=DecoderException.class )
+    public void testDecodeSyncInfoValueControlSyncIdSetTooLongUUID() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x20 );
         bb.put( new byte[]
             {
-                ( byte ) 0xA3, 0x1E, // syncInfoValue ::= CHOICE {
-                                     //     syncIdSet [3] SEQUENCE {
-                0x04,
-                0x03,
-                'a',
-                'b',
-                'c', //         cookie         syncCookie OPTIONAL,
-                0x01,
-                0x01,
-                0x10, //         refreshDeletes BOOLEAN DEFAULT FALSE,
-                0x31,
-                0x13, //         syncUUIDs SET OF syncUUID
-                0x04,
-                0x11, // syncUUID
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01,
-                0x01
-        } );
+                ( byte ) 0xA3, 0x1E,        // syncInfoValue ::= CHOICE {
+                                            //     syncIdSet [3] SEQUENCE {
+                  0x04, 0x03,
+                    'a', 'b', 'c',          //         cookie         syncCookie OPTIONAL,
+                  0x01, 0x01, 0x10,         //         refreshDeletes BOOLEAN DEFAULT FALSE,
+                  0x31, 0x13,               //         syncUUIDs SET OF syncUUID
+                    0x04, 0x10,             // syncUUID
+                      0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+                      0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+                      0x01
+            } );
         bb.flip();
 
         SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         decorator.setSyncInfoValueType( SynchronizationInfoEnum.SYNC_ID_SET );
 
-        try
-        {
-            ( ( SyncInfoValueDecorator ) decorator ).decode( bb.array() );
-            fail( "Should not be there" );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( true );
-        }
+        ( ( SyncInfoValueDecorator ) decorator ).decode( bb.array() );
     }
 }

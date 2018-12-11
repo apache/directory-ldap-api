@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.codec.api;
 
 
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.model.message.IntermediateResponse;
 
 
@@ -56,4 +57,15 @@ public interface IntermediateResponseFactory
      * @return The decorated message 
      */
     IntermediateResponse decorate( IntermediateResponse decoratedMessage );
+    
+
+
+    /**
+     * Encode the value part of the intermediate response operation.
+     *
+     * @param buffer The buffer into which to put the encoded value
+     * @param IntermediateResponse The IntermediateResponse Operation to encode
+     */
+    void encodeValue( Asn1Buffer buffer, IntermediateResponse intermediateResponse );
+
 }

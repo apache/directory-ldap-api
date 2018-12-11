@@ -51,6 +51,7 @@ import org.apache.directory.api.ldap.model.message.AddResponseImpl;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaITImpl;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
@@ -652,7 +653,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
                           'l', // type AttributeDescription,
                       0x31, 0x02,
                         0x04, 0x00,
-                    ( byte ) 0xA0, 0x1B, // A control
+                    ( byte ) 0xA0, 0x1B, // A control (ManageDsaIT)
                       0x30, 0x19,
                         0x04, 0x17,
                           '2', '.', '1', '6', '.', '8', '4', '0', '.', '1',  '.', '1', '1', '3', '7', '3', '0',
@@ -695,8 +696,8 @@ public class AddRequestTest extends AbstractCodecServiceTest
         assertTrue( addRequest.hasControl( "2.16.840.1.113730.3.4.2" ) );
 
         @SuppressWarnings("unchecked")
-        CodecControl<Control> control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) controls
-            .get( "2.16.840.1.113730.3.4.2" );
+        CodecControl<Control> control = ( CodecControl<Control> ) controls.get( "2.16.840.1.113730.3.4.2" );
+        assertTrue( control instanceof ManageDsaIT );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
         assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
@@ -721,5 +722,17 @@ public class AddRequestTest extends AbstractCodecServiceTest
         LdapEncoder.encodeMessageReverse( buffer, codec, request );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
+        
+        // Check encode reverse
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+
+        AddRequest request2 = new AddRequestImpl();
+        request2.setEntry( addRequest.getEntry() );
+        request2.setMessageId( addRequest.getMessageId() );
+        request2.addControl( new ManageDsaITImpl() );
+
+        LdapEncoder.encodeMessageReverse( asn1Buffer, codec, request2 );
+
+        assertArrayEquals( stream.array(), asn1Buffer.getBytes().array() );
     }
 }
