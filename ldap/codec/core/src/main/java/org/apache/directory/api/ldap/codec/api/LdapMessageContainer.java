@@ -24,6 +24,7 @@ import org.apache.directory.api.asn1.ber.AbstractContainer;
 import org.apache.directory.api.ldap.codec.LdapMessageGrammar;
 import org.apache.directory.api.ldap.codec.LdapStatesEnum;
 import org.apache.directory.api.ldap.model.message.Control;
+import org.apache.directory.api.ldap.model.message.LdapResult;
 import org.apache.directory.api.ldap.model.message.Message;
 
 
@@ -52,6 +53,9 @@ public class LdapMessageContainer<E extends AbstractMessageDecorator<? extends M
 
     /** The codec service */
     private final LdapApiService codec;
+    
+    /** The current LdapResult for a response */
+    private LdapResult ldapResult;
 
 
     /**
@@ -195,5 +199,23 @@ public class LdapMessageContainer<E extends AbstractMessageDecorator<? extends M
     public BinaryAttributeDetector getBinaryAttributeDetector()
     {
         return binaryAttributeDetector;
+    }
+
+
+    /**
+     * @return the ldapResult
+     */
+    public LdapResult getLdapResult()
+    {
+        return ldapResult;
+    }
+
+
+    /**
+     * @param ldapResult the ldapResult to set
+     */
+    public void setLdapResult( LdapResult ldapResult )
+    {
+        this.ldapResult = ldapResult;
     }
 }

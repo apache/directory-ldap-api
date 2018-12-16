@@ -41,6 +41,9 @@ import org.apache.directory.api.ldap.codec.factory.CompareRequestFactory;
 import org.apache.directory.api.ldap.codec.factory.CompareResponseFactory;
 import org.apache.directory.api.ldap.codec.factory.DeleteRequestFactory;
 import org.apache.directory.api.ldap.codec.factory.DeleteResponseFactory;
+import org.apache.directory.api.ldap.codec.factory.ExtendedRequestFactory;
+import org.apache.directory.api.ldap.codec.factory.ExtendedResponseFactory;
+import org.apache.directory.api.ldap.codec.factory.IntermediateResponseFactory;
 import org.apache.directory.api.ldap.codec.factory.ModifyDnRequestFactory;
 import org.apache.directory.api.ldap.codec.factory.ModifyDnResponseFactory;
 import org.apache.directory.api.ldap.codec.factory.ModifyRequestFactory;
@@ -230,75 +233,87 @@ public final class LdapEncoder
         switch ( message.getType() )
         {
             case ABANDON_REQUEST :
-                AbandonRequestFactory.INSTANCE.encodeReverse( buffer, message );
+                AbandonRequestFactory.INSTANCE.encodeReverse( codec, buffer, message );
                 return;
 
             case ADD_REQUEST :
-                AddRequestFactory.INSTANCE.encodeReverse( buffer, message );
+                AddRequestFactory.INSTANCE.encodeReverse( codec, buffer, message );
                 return;
 
             case ADD_RESPONSE:
-                AddResponseFactory.INSTANCE.encodeReverse( buffer, message );
+                AddResponseFactory.INSTANCE.encodeReverse( codec, buffer, message );
                 return;
 
             case BIND_REQUEST :
-                BindRequestFactory.INSTANCE.encodeReverse( buffer, message );
+                BindRequestFactory.INSTANCE.encodeReverse( codec, buffer, message );
                 return;
 
             case BIND_RESPONSE :
-                BindResponseFactory.INSTANCE.encodeReverse( buffer, message );
+                BindResponseFactory.INSTANCE.encodeReverse( codec, buffer, message );
                 return;
 
             case COMPARE_REQUEST :
-                CompareRequestFactory.INSTANCE.encodeReverse( buffer, message );
+                CompareRequestFactory.INSTANCE.encodeReverse( codec, buffer, message );
                 return;
 
             case COMPARE_RESPONSE :
-                CompareResponseFactory.INSTANCE.encodeReverse( buffer, message );
+                CompareResponseFactory.INSTANCE.encodeReverse( codec, buffer, message );
                 return;
 
             case DEL_REQUEST :
-                DeleteRequestFactory.INSTANCE.encodeReverse( buffer, message );
+                DeleteRequestFactory.INSTANCE.encodeReverse( codec, buffer, message );
                 return;
 
             case DEL_RESPONSE :
-                DeleteResponseFactory.INSTANCE.encodeReverse( buffer, message );
+                DeleteResponseFactory.INSTANCE.encodeReverse( codec, buffer, message );
+                return;
+                
+            case EXTENDED_REQUEST :
+                ExtendedRequestFactory.INSTANCE.encodeReverse( codec, buffer, message );
+                return;
+                
+            case EXTENDED_RESPONSE :
+                ExtendedResponseFactory.INSTANCE.encodeReverse( codec, buffer, message );
+                return;
+                
+            case INTERMEDIATE_RESPONSE :
+                IntermediateResponseFactory.INSTANCE.encodeReverse( codec, buffer, message );
                 return;
 
             case MODIFY_REQUEST :
-                ModifyRequestFactory.INSTANCE.encodeReverse( buffer, message );
+                ModifyRequestFactory.INSTANCE.encodeReverse( codec, buffer, message );
                 return;
 
             case MODIFY_RESPONSE :
-                ModifyResponseFactory.INSTANCE.encodeReverse( buffer, message );
+                ModifyResponseFactory.INSTANCE.encodeReverse( codec, buffer, message );
                 return;
 
             case MODIFYDN_REQUEST :
-                ModifyDnRequestFactory.INSTANCE.encodeReverse( buffer, message );
+                ModifyDnRequestFactory.INSTANCE.encodeReverse( codec, buffer, message );
                 return;
 
             case MODIFYDN_RESPONSE :
-                ModifyDnResponseFactory.INSTANCE.encodeReverse( buffer, message );
+                ModifyDnResponseFactory.INSTANCE.encodeReverse( codec, buffer, message );
                 return;
 
             case SEARCH_REQUEST :
-                SearchRequestFactory.INSTANCE.encodeReverse( buffer, message );
+                SearchRequestFactory.INSTANCE.encodeReverse( codec, buffer, message );
                 return;
 
             case SEARCH_RESULT_DONE :
-                SearchResultDoneFactory.INSTANCE.encodeReverse( buffer, message );
+                SearchResultDoneFactory.INSTANCE.encodeReverse( codec, buffer, message );
                 return;
 
             case SEARCH_RESULT_ENTRY :
-                SearchResultEntryFactory.INSTANCE.encodeReverse( buffer, message );
+                SearchResultEntryFactory.INSTANCE.encodeReverse( codec, buffer, message );
                 return;
 
             case SEARCH_RESULT_REFERENCE :
-                SearchResultReferenceFactory.INSTANCE.encodeReverse( buffer, message );
+                SearchResultReferenceFactory.INSTANCE.encodeReverse( codec, buffer, message );
                 return;
 
             case UNBIND_REQUEST :
-                UnbindRequestFactory.INSTANCE.encodeReverse( buffer, message );
+                UnbindRequestFactory.INSTANCE.encodeReverse( codec, buffer, message );
                 return;
 
             default:

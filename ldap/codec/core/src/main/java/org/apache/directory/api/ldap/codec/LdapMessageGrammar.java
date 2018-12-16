@@ -2010,11 +2010,11 @@ public final class LdapMessageGrammar extends
         // URI ::= LDAPString
         //
         // Adda new Referral
-        super.transitions[LdapStatesEnum.REFERRAL_ER_STATE.ordinal()][LdapCodecConstants.EXTENDED_RESPONSE_RESPONSE_NAME_TAG] =
+        super.transitions[LdapStatesEnum.REFERRAL_ER_STATE.ordinal()][LdapCodecConstants.EXTENDED_RESPONSE_NAME_TAG] =
             new GrammarTransition(
                 LdapStatesEnum.REFERRAL_ER_STATE,
                 LdapStatesEnum.RESPONSE_NAME_STATE,
-                LdapCodecConstants.EXTENDED_RESPONSE_RESPONSE_NAME_TAG,
+                LdapCodecConstants.EXTENDED_RESPONSE_NAME_TAG,
                 new StoreExtendedResponseName() );
 
         // --------------------------------------------------------------------------------------------
@@ -2024,11 +2024,11 @@ public final class LdapMessageGrammar extends
         // URI ::= LDAPString
         //
         // Add a new Referral
-        super.transitions[LdapStatesEnum.REFERRAL_ER_STATE.ordinal()][LdapCodecConstants.EXTENDED_RESPONSE_RESPONSE_TAG] =
+        super.transitions[LdapStatesEnum.REFERRAL_ER_STATE.ordinal()][LdapCodecConstants.EXTENDED_RESPONSE_VALUE_TAG] =
             new GrammarTransition(
                 LdapStatesEnum.REFERRAL_ER_STATE,
                 LdapStatesEnum.RESPONSE_STATE,
-                LdapCodecConstants.EXTENDED_RESPONSE_RESPONSE_TAG,
+                LdapCodecConstants.EXTENDED_RESPONSE_VALUE_TAG,
                 new StoreExtendedResponseValue() );
 
         // --------------------------------------------------------------------------------------------
@@ -2072,11 +2072,11 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Stores the response name
-        super.transitions[LdapStatesEnum.ERROR_MESSAGE_ER_STATE.ordinal()][LdapCodecConstants.EXTENDED_RESPONSE_RESPONSE_NAME_TAG] =
+        super.transitions[LdapStatesEnum.ERROR_MESSAGE_ER_STATE.ordinal()][LdapCodecConstants.EXTENDED_RESPONSE_NAME_TAG] =
             new GrammarTransition(
                 LdapStatesEnum.ERROR_MESSAGE_ER_STATE,
                 LdapStatesEnum.RESPONSE_NAME_STATE,
-                LdapCodecConstants.EXTENDED_RESPONSE_RESPONSE_NAME_TAG,
+                LdapCodecConstants.EXTENDED_RESPONSE_NAME_TAG,
                 new StoreExtendedResponseName() );
 
         // --------------------------------------------------------------------------------------------
@@ -2089,11 +2089,11 @@ public final class LdapMessageGrammar extends
         //     response       [11] OCTET STRING OPTIONAL}
         //
         // Stores the response
-        super.transitions[LdapStatesEnum.RESPONSE_NAME_STATE.ordinal()][LdapCodecConstants.EXTENDED_RESPONSE_RESPONSE_TAG] =
+        super.transitions[LdapStatesEnum.RESPONSE_NAME_STATE.ordinal()][LdapCodecConstants.EXTENDED_RESPONSE_VALUE_TAG] =
             new GrammarTransition(
                 LdapStatesEnum.RESPONSE_NAME_STATE,
                 LdapStatesEnum.RESPONSE_STATE,
-                LdapCodecConstants.EXTENDED_RESPONSE_RESPONSE_TAG,
+                LdapCodecConstants.EXTENDED_RESPONSE_VALUE_TAG,
                 new StoreExtendedResponseValue() );
 
         // --------------------------------------------------------------------------------------------
@@ -2121,11 +2121,11 @@ public final class LdapMessageGrammar extends
         //     response       [11] OCTET STRING OPTIONAL}
         //
         // Stores the response
-        super.transitions[LdapStatesEnum.ERROR_MESSAGE_ER_STATE.ordinal()][LdapCodecConstants.EXTENDED_RESPONSE_RESPONSE_TAG] =
+        super.transitions[LdapStatesEnum.ERROR_MESSAGE_ER_STATE.ordinal()][LdapCodecConstants.EXTENDED_RESPONSE_VALUE_TAG] =
             new GrammarTransition(
                 LdapStatesEnum.ERROR_MESSAGE_ER_STATE,
                 LdapStatesEnum.RESPONSE_STATE,
-                LdapCodecConstants.EXTENDED_RESPONSE_RESPONSE_TAG,
+                LdapCodecConstants.EXTENDED_RESPONSE_VALUE_TAG,
                 new StoreExtendedResponseValue() );
 
         // --------------------------------------------------------------------------------------------

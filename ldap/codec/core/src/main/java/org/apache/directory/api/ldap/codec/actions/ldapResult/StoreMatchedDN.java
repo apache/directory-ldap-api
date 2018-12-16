@@ -30,7 +30,6 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.LdapResult;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.api.ldap.model.message.ResultResponse;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -73,8 +72,7 @@ public class StoreMatchedDN extends GrammarAction<LdapMessageContainer<AbstractM
         Dn matchedDn;
         ResultCodeEnum resultCode;
 
-        ResultResponse response = ( ResultResponse ) container.getMessage();
-        LdapResult ldapResult = response.getLdapResult();
+        LdapResult ldapResult = container.getLdapResult();
         resultCode = ldapResult.getResultCode();
 
         // We have to handle the special case of a 0 length matched

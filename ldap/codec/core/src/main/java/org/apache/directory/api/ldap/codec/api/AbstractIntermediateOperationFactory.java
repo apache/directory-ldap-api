@@ -20,26 +20,25 @@
 package org.apache.directory.api.ldap.codec.api;
 
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.model.message.ExtendedRequest;
-import org.apache.directory.api.ldap.model.message.ExtendedResponse;
+import org.apache.directory.api.ldap.model.message.IntermediateResponse;
 
 /**
- * A Factory to encode Extended Request and Response messages
+ * A Factory to encode Intermediate Response message
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractExtendedOperationFactory implements ExtendedOperationFactory
+public abstract class AbstractIntermediateOperationFactory implements IntermediateOperationFactory
 {
-    /** The LDAP codec responsible for encoding and decoding */
+    /** The LDAP codec responsible for encoding and decoding Controls */
     protected LdapApiService codec;
 
     /**
      *
-     * Creates a new instance of AbstractExtendedOperationFactory.
+     * Creates a new instance of AbstractIntermediateOperationFactory.
      *
      * @param codec The LdapApiService instance
      */
-    protected AbstractExtendedOperationFactory( LdapApiService codec )
+    protected AbstractIntermediateOperationFactory( LdapApiService codec )
     {
         this.codec = codec;
     }
@@ -49,17 +48,7 @@ public abstract class AbstractExtendedOperationFactory implements ExtendedOperat
      * {@inheritDoc}
      */
     @Override
-    public void encodeValue( Asn1Buffer buffer, ExtendedRequest extendedRequest )
-    {
-        // Nothing to do by default
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void encodeValue( Asn1Buffer buffer, ExtendedResponse extendedResponse )
+    public void encodeValue( Asn1Buffer buffer, IntermediateResponse intermediateResponse )
     {
         // Nothing to do by default
     }

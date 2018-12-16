@@ -30,7 +30,7 @@ import org.apache.directory.api.ldap.model.message.IntermediateResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface IntermediateResponseFactory
+public interface IntermediateOperationFactory
 {
     /**
      * Gets the OID of the IntermediateResponse this factory generates.
@@ -67,5 +67,4 @@ public interface IntermediateResponseFactory
      * @param IntermediateResponse The IntermediateResponse Operation to encode
      */
     void encodeValue( Asn1Buffer buffer, IntermediateResponse intermediateResponse );
-
 }

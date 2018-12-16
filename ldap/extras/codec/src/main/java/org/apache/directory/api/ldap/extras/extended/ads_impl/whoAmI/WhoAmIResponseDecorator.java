@@ -24,14 +24,13 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
-import org.apache.directory.api.asn1.ber.tlv.BerValue;
-import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.decorators.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIResponse;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIResponseImpl;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -224,15 +223,7 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
      */
     /* no qualifier */int computeLengthInternal()
     {
-        if ( whoAmIResponse.getAuthzId() != null )
-        {
-            return 1 + TLV.getNbBytes( whoAmIResponse.getAuthzId().length )
-                + whoAmIResponse.getAuthzId().length;
-        }
-        else
-        {
-            return 1 + 1;
-        }
+        return 0;
     }
 
 
@@ -244,10 +235,22 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
      */
     /* no qualifier */ByteBuffer encodeInternal() throws EncoderException
     {
-        ByteBuffer bb = ByteBuffer.allocate( computeLengthInternal() );
+        byte[] authzid = whoAmIResponse.getAuthzId();
+        ByteBuffer bb;
+        
+        if ( !Strings.isEmpty( authzid ) )
+        {
+            bb = ByteBuffer.allocate( authzid.length );
 
-        BerValue.encode( bb, whoAmIResponse.getAuthzId() );
-
+            bb.put( authzid );
+            bb.flip();
+        }
+        
+        else
+        {
+            bb = ByteBuffer.allocate( 0 );
+        }
+        
         return bb;
     }
 }

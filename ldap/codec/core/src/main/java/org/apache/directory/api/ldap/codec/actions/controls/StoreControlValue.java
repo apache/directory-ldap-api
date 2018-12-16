@@ -70,8 +70,7 @@ public class StoreControlValue extends GrammarAction<LdapMessageContainer<Abstra
     {
         TLV tlv = container.getCurrentTLV();
 
-        AbstractMessageDecorator<?> message = container.getMessage();
-        CodecControl<? extends Control> control = message.getCurrentControl();
+        CodecControl<? extends Control> control = container.getCurrentControl();
 
         // Get the current control
         BerValue value = tlv.getValue();

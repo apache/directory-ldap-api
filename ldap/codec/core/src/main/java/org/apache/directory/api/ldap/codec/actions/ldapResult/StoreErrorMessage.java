@@ -27,7 +27,6 @@ import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.model.message.LdapResult;
 import org.apache.directory.api.ldap.model.message.Message;
-import org.apache.directory.api.ldap.model.message.ResultResponse;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,8 +78,7 @@ public class StoreErrorMessage extends GrammarAction<LdapMessageContainer<Abstra
             errorMessage = Strings.utf8ToString( tlv.getValue().getData() );
         }
 
-        ResultResponse response = ( ResultResponse ) container.getMessage();
-        LdapResult ldapResult = response.getLdapResult();
+        LdapResult ldapResult = container.getLdapResult();
         ldapResult.setDiagnosticMessage( errorMessage );
 
         // We can have an END transition

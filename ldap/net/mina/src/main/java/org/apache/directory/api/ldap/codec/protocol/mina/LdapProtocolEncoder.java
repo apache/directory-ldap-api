@@ -22,6 +22,8 @@ package org.apache.directory.api.ldap.codec.protocol.mina;
 
 import java.nio.ByteBuffer;
 
+import org.apache.directory.api.asn1.EncoderException;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
@@ -75,15 +77,27 @@ public class LdapProtocolEncoder implements ProtocolEncoder
     @Override
     public void encode( IoSession session, Object message, ProtocolEncoderOutput out ) throws Exception
     {
-        ByteBuffer buffer = LdapEncoder.encodeMessage( codec, ( Message ) message );
-
-        IoBuffer ioBuffer = IoBuffer.wrap( buffer );
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        
+        try
+        { 
+            LdapEncoder.encodeMessageReverse( asn1Buffer, codec, ( Message ) message );
+        }
+        catch ( EncoderException e )
+        {
+            e.printStackTrace();
+            throw e;
+        }
+        
+        ByteBuffer encoded = asn1Buffer.getBytes();
+        
+        IoBuffer ioBuffer = IoBuffer.wrap( encoded );
 
         if ( CODEC_LOG.isDebugEnabled() )
         {
-            byte[] dumpBuffer = new byte[buffer.limit()];
-            buffer.get( dumpBuffer );
-            buffer.flip();
+            byte[] dumpBuffer = new byte[encoded.limit()];
+            encoded.get( dumpBuffer );
+            encoded.flip();
             CODEC_LOG.debug( I18n.msg( I18n.MSG_14003_ENCODED_LDAP_MESSAGE, message, Strings.dumpBytes( dumpBuffer ) ) );
         }
 

@@ -130,9 +130,9 @@ public final class LdapCodecConstants
 
     public static final int PRESENT_FILTER_TAG = 0x87;
 
-    public static final int EXTENDED_RESPONSE_RESPONSE_NAME_TAG = 0x8A;
+    public static final int EXTENDED_RESPONSE_NAME_TAG = 0x8A;
 
-    public static final int EXTENDED_RESPONSE_RESPONSE_TAG = 0x8B;
+    public static final int EXTENDED_RESPONSE_VALUE_TAG = 0x8B;
 
     public static final int CONTROLS_TAG = 0xA0;
 

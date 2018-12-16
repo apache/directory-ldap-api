@@ -23,6 +23,7 @@ import java.util.Iterator;
 
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
@@ -55,6 +56,7 @@ public final class SearchResultEntryFactory extends ResponseFactory
      * 0x04 LL attributeValue
      * </pre>
      *
+     * @param codec The LdapApiService instance
      * @param buffer The buffer where to put the PDU
      * @param values The iterator on the values
      */
@@ -115,7 +117,7 @@ public final class SearchResultEntryFactory extends ResponseFactory
             BerValue.encodeSet( buffer, start );
 
             // The attribute type
-            BerValue.encodeOctetString( buffer, attribute.getId() );
+            BerValue.encodeOctetString( buffer, attribute.getUpId() );
 
             // Attribute sequence
             BerValue.encodeSequence( buffer, start );
@@ -150,7 +152,7 @@ public final class SearchResultEntryFactory extends ResponseFactory
      * @param message the SearchResultEntry to encode
      */
     @Override
-    public void encodeReverse( Asn1Buffer buffer, Message message )
+    public void encodeReverse( LdapApiService codec, Asn1Buffer buffer, Message message )
     {
         int start = buffer.getPos();
 

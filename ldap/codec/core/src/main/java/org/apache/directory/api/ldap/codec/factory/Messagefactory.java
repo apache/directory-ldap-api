@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.codec.factory;
 
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Message;
 
 /**
@@ -33,8 +34,9 @@ public interface Messagefactory
     /**
      * Encode a message, in a reverse way (ie, starting from the end of the PDU.
      *
+     * @param codec The LdapApiService instance
      * @param buffer The buffer where to put the PDU
      * @param message The message to encode
      */
-    void encodeReverse( Asn1Buffer buffer, Message message );
+    void encodeReverse( LdapApiService codec, Asn1Buffer buffer, Message message );
 }

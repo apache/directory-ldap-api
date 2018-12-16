@@ -74,45 +74,7 @@ public class WhoAmIResponseTest extends AbstractCodecServiceTest
 
         WhoAmIResponseDecorator whoAmIResponse = ( ( WhoAmIResponseContainer ) whoAmIResponseContainer ).getWhoAmIResponse();
 
-        assertNull( whoAmIResponse );
-        
-        // Check the reverse decoding
-        Asn1Buffer asn1Buffer = new Asn1Buffer();
-        WhoAmIFactory factory = new WhoAmIFactory( codec );
-        factory.encodeValue( asn1Buffer, whoAmIResponse );
-        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
-    }
-
-
-    /**
-     * Test a WhoAmI message with no authzId
-     */
-    @Test
-    public void testDecodeWhoAmINoWhoAmIAuthzIdEmpty() throws DecoderException, EncoderException
-    {
-        Asn1Decoder whoAmIResponseDecoder = new WhoAmIResponseDecoder();
-
-        ByteBuffer stream = ByteBuffer.allocate( 0x02 );
-
-        stream.put( new byte[]
-            {
-                0x04, 0x00
-            } ).flip();
-
-        // Allocate a WhoAmI Container
-        Asn1Container whoAmIResponseContainer = new WhoAmIResponseContainer();
-
-        // Decode a WhoAmI message
-        whoAmIResponseDecoder.decode( stream, whoAmIResponseContainer );
-        
-        WhoAmIResponseDecorator whoAmIResponse = ( (WhoAmIResponseContainer ) whoAmIResponseContainer ).getWhoAmIResponse();
-
         assertNull( whoAmIResponse.getAuthzId() );
-
-        // Check the encoding
-        ByteBuffer bb = whoAmIResponse.encodeInternal();
-
-        assertArrayEquals( stream.array(), bb.array() );
         
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
@@ -130,12 +92,11 @@ public class WhoAmIResponseTest extends AbstractCodecServiceTest
     {
         Asn1Decoder whoAmIResponseDecoder = new WhoAmIResponseDecoder();
 
-        ByteBuffer stream = ByteBuffer.allocate( 0x0E );
+        ByteBuffer stream = ByteBuffer.allocate( 0x0C );
 
         stream.put( new byte[]
             {
-                0x04, 0x0C,
-                  'd', 'n', ':', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm'
+                'd', 'n', ':', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm'
             } ).flip();
 
         // Allocate a WhoAmI Container
@@ -144,7 +105,7 @@ public class WhoAmIResponseTest extends AbstractCodecServiceTest
         // Decode a WhoAmI message
         whoAmIResponseDecoder.decode( stream, whoAmIResponseContainer );
         
-        WhoAmIResponseDecorator whoAmIResponse = ( (WhoAmIResponseContainer ) whoAmIResponseContainer ).getWhoAmIResponse();
+        WhoAmIResponseDecorator whoAmIResponse = ( ( WhoAmIResponseContainer ) whoAmIResponseContainer ).getWhoAmIResponse();
 
         assertNotNull( whoAmIResponse.getAuthzId() );
         assertEquals( "dn:ou=system", Strings.utf8ToString( whoAmIResponse.getAuthzId() ) );
@@ -171,12 +132,11 @@ public class WhoAmIResponseTest extends AbstractCodecServiceTest
     {
         Asn1Decoder whoAmIResponseDecoder = new WhoAmIResponseDecoder();
 
-        ByteBuffer stream = ByteBuffer.allocate( 0x09 );
+        ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
         stream.put( new byte[]
             {
-                0x04, 0x07,
-                  'u', ':', 't', 'e', 's', 't', 0x00
+                'u', ':', 't', 'e', 's', 't', 0x00
             } ).flip();
 
         // Allocate a WhoAmI Container

@@ -26,6 +26,7 @@ import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
+import org.apache.directory.api.ldap.codec.api.ControlDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
@@ -92,6 +93,7 @@ public class AddControl extends GrammarAction<LdapMessageContainer<AbstractMessa
         }
 
         Message message = container.getMessage();
+        
         Control control;
 
         if ( message instanceof Request )
@@ -102,8 +104,10 @@ public class AddControl extends GrammarAction<LdapMessageContainer<AbstractMessa
         {
             control = container.getLdapCodecService().newResponseControl( oidValue );
         }
-
+    
         message.addControl( control );
+
+        container.setCurrentControl( ( ControlDecorator<?> ) control );
 
         // We can have an END transition
         container.setGrammarEndAllowed( true );

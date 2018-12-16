@@ -26,7 +26,6 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
-import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
@@ -39,6 +38,7 @@ import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIResponseImpl;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -78,7 +78,12 @@ public class WhoAmIFactory extends AbstractExtendedOperationFactory
     {
         WhoAmIResponseDecorator response = new WhoAmIResponseDecorator( codec,
             new WhoAmIResponseImpl() );
-        response.setResponseValue( encodedValue );
+        
+        if ( encodedValue != null )
+        {  
+            response.setResponseValue( encodedValue );
+        }
+        
         return response;
     }
 
@@ -136,9 +141,15 @@ public class WhoAmIFactory extends AbstractExtendedOperationFactory
         ExtendedResponseDecorator<ExtendedResponse> response = ( ExtendedResponseDecorator<ExtendedResponse> ) decoratedResponse;
 
         // Decode the response, as it's an opaque operation
-        Asn1Decoder decoder = new Asn1Decoder();
+        Asn1Decoder decoder = new WhoAmIResponseDecoder();
 
         byte[] value = response.getResponseValue();
+        
+        if ( value == null )
+        {
+            value = Strings.EMPTY_BYTES;
+        }
+        
         ByteBuffer buffer = ByteBuffer.wrap( value );
 
         WhoAmIResponseContainer container = new WhoAmIResponseContainer();
@@ -179,11 +190,20 @@ public class WhoAmIFactory extends AbstractExtendedOperationFactory
     @Override
     public void encodeValue( Asn1Buffer buffer, ExtendedResponse extendedResponse )
     {
+        // Reset the responseName, it should always be null for a WhoAMI extended operation
+        extendedResponse.setResponseName( null );
+        
         if ( extendedResponse == null )
         {
             return;
         }
         
-        BerValue.encodeOctetString( buffer, ( ( WhoAmIResponse ) extendedResponse ).getAuthzId() );
+        // The authzID as a opaque byte array
+        byte[] authzid =  ( ( WhoAmIResponse ) extendedResponse ).getAuthzId();
+        
+        if ( !Strings.isEmpty( authzid ) )
+        {
+            buffer.put( authzid );
+        }
     }
 }

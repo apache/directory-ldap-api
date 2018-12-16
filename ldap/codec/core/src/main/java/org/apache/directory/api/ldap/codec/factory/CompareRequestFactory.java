@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.codec.factory;
 
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.CompareRequest;
 import org.apache.directory.api.ldap.model.message.Message;
@@ -52,11 +53,12 @@ public final class CompareRequestFactory implements Messagefactory
      *       0x04 LL assertionValue
      * </pre>
      *
+     * @param codec The LdapApiService instance
      * @param buffer The buffer where to put the PDU
      * @param message the CompareRequest to encode
      */
     @Override
-    public void encodeReverse( Asn1Buffer buffer, Message message )
+    public void encodeReverse( LdapApiService codec, Asn1Buffer buffer, Message message )
     {
         int pos = buffer.getPos();
         CompareRequest compareMessage = ( CompareRequest ) message;

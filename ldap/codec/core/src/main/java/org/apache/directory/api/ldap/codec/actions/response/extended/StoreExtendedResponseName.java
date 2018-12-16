@@ -89,7 +89,7 @@ public class StoreExtendedResponseName extends GrammarAction<LdapMessageContaine
             
             ( ( ExtendedResponseDecorator<?> ) extendedResponse ).setLdapResult( ( LdapResultDecorator ) ( container
                 .getMessage().getLdapResult() ) );
-            container.setMessage( LdapApiServiceFactory.getSingleton().decorate( extendedResponse ) );
+            container.setMessage( ( ExtendedResponseDecorator<?> ) extendedResponse );
         }
 
         // We can have an END transition

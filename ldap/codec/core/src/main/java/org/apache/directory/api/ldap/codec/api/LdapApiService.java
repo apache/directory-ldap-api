@@ -196,7 +196,6 @@ public interface LdapApiService
     // ------------------------------------------------------------------------
     // Extended Request Methods
     // ------------------------------------------------------------------------
-
     /**
      * Returns an Iterator over the OID Strings of registered extended
      * requests.
@@ -204,6 +203,15 @@ public interface LdapApiService
      * @return The registered extended request OID Strings
      */
     Iterator<String> registeredExtendedRequests();
+    
+    
+    /**
+     * Returns an Iterator over the OID Strings of registered extended
+     * responses.
+     *
+     * @return The registered extended response OID Strings
+     */
+    Iterator<String> registeredExtendedResponses();
 
 
     /**
@@ -211,9 +219,19 @@ public interface LdapApiService
      * response pairs.
      *
      * @param factory The extended request factory
-     * @return The displaced factory if one existed for the oid
+     * @return The registered factory if one existed for the oid
      */
     ExtendedOperationFactory registerExtendedRequest( ExtendedOperationFactory factory );
+
+
+    /**
+     * Registers an {@link ExtendedOperationFactory} for generating extended response
+     * response pairs.
+     *
+     * @param factory The extended response factory
+     * @return The registered factory if one existed for the oid
+     */
+    ExtendedOperationFactory registerExtendedResponse( ExtendedOperationFactory factory );
 
 
     /**
@@ -221,19 +239,49 @@ public interface LdapApiService
      * request response pairs.
      *
      * @param oid The extended request oid
-     * @return The displaced factory if one existed for the oid
+     * @return The registered factory if one existed for the oid
      */
     ExtendedOperationFactory unregisterExtendedRequest( String oid );
 
 
     /**
-     * Checks to see if an extended operation, either a standard request
-     * response, pair or just an unsolicited response is registered.
+     * Unregisters an {@link ExtendedOperationFactory} for generating extended
+     * responses.
      *
-     * @param oid The object identifier for the extended operation
+     * @param oid The extended response oid
+     * @return The registered factory if one existed for the oid
+     */
+    ExtendedOperationFactory unregisterExtendedResponse( String oid );
+
+
+    /**
+     * Checks to see if an extended request operation is registered.
+     *
+     * @param oid The object identifier for the extended request operation
      * @return true if registered, false if not
      */
-    boolean isExtendedOperationRegistered( String oid );
+    boolean isExtendedRequestRegistered( String oid );
+
+
+    /**
+     * Checks to see if an extended response operation is registered.
+     *
+     * @param oid The object identifier for the extended response operation
+     * @return true if registered, false if not
+     */
+    boolean isExtendedResponseRegistered( String oid );
+    
+    
+    /**
+     * @return the extendedRequestFactories
+     */
+    Map<String, ExtendedOperationFactory> getExtendedRequestFactories();
+
+
+    /**
+     * @return the extendedResponseFactories
+     */
+    Map<String, ExtendedOperationFactory> getExtendedResponseFactories();
 
 
     // ------------------------------------------------------------------------
@@ -250,22 +298,22 @@ public interface LdapApiService
 
 
     /**
-     * Registers an {@link IntermediateResponseFactory} for generating intermediate response
+     * Registers an {@link IntermediateOperationFactory} for generating intermediate response
      *
      * @param factory The intermediate response factory
      * @return The displaced factory if one existed for the oid
      */
-    IntermediateResponseFactory registerIntermediateResponse( IntermediateResponseFactory factory );
+    IntermediateOperationFactory registerIntermediateResponse( IntermediateOperationFactory factory );
 
 
     /**
-     * Unregisters an {@link IntermediateResponseFactory} for generating intermediate
+     * Unregisters an {@link IntermediateOperationFactory} for generating intermediate
      * response
      *
      * @param oid The intermediate response oid
      * @return The displaced factory if one existed for the oid
      */
-    IntermediateResponseFactory unregisterIntermediateResponse( String oid );
+    IntermediateOperationFactory unregisterIntermediateResponse( String oid );
 
 
     /**
@@ -276,6 +324,11 @@ public interface LdapApiService
      */
     boolean isIntermediateResponseRegistered( String oid );
 
+
+    /**
+     * @return the intermediateResponseFactories
+     */
+    Map<String, IntermediateOperationFactory> getIntermediateResponseFactories();
 
 
     // ------------------------------------------------------------------------

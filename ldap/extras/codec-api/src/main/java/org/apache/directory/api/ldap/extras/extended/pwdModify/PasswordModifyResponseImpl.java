@@ -49,7 +49,7 @@ public class PasswordModifyResponseImpl extends ExtendedResponseImpl implements 
      */
     public PasswordModifyResponseImpl( int messageId, ResultCodeEnum rcode, String diagnosticMessage )
     {
-        super( messageId, EXTENSION_OID );
+        super( messageId, null );
 
         super.getLdapResult().setMatchedDn( null );
         super.getLdapResult().setResultCode( rcode );
@@ -64,7 +64,7 @@ public class PasswordModifyResponseImpl extends ExtendedResponseImpl implements 
      */
     public PasswordModifyResponseImpl( int messageId, ResultCodeEnum rcode )
     {
-        super( messageId, EXTENSION_OID );
+        super( messageId, null );
 
         super.getLdapResult().setMatchedDn( null );
         super.getLdapResult().setResultCode( rcode );
@@ -78,7 +78,7 @@ public class PasswordModifyResponseImpl extends ExtendedResponseImpl implements 
      */
     public PasswordModifyResponseImpl( int messageId )
     {
-        super( messageId, EXTENSION_OID );
+        super( messageId, null );
         super.getLdapResult().setMatchedDn( null );
         super.getLdapResult().setResultCode( ResultCodeEnum.SUCCESS );
     }
@@ -89,7 +89,7 @@ public class PasswordModifyResponseImpl extends ExtendedResponseImpl implements 
      */
     public PasswordModifyResponseImpl()
     {
-        super( EXTENSION_OID );
+        super( null );
         super.getLdapResult().setMatchedDn( null );
         super.getLdapResult().setResultCode( ResultCodeEnum.SUCCESS );
     }

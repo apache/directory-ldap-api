@@ -25,6 +25,7 @@ import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.ExtendedResponseDecorator;
+import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,7 +73,8 @@ public class StoreExtendedResponseValue extends GrammarAction<LdapMessageContain
         }
         else
         {
-            extendedResponse.setResponseValue( tlv.getValue().getData() );
+            ( ( ExtendedResponseDecorator<ExtendedResponse> ) extendedResponse ).
+                setResponseValue( tlv.getValue().getData() );
         }
 
         // We can have an END transition

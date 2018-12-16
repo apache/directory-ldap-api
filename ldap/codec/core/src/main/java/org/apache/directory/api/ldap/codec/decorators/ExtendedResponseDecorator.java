@@ -188,7 +188,7 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Abstr
             // The ID, if any
             if ( responseNameBytes != null )
             {
-                buffer.put( ( byte ) LdapCodecConstants.EXTENDED_RESPONSE_RESPONSE_NAME_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.EXTENDED_RESPONSE_NAME_TAG );
                 buffer.put( TLV.getBytes( responseNameBytes.length ) );
 
                 if ( responseNameBytes.length != 0 )
@@ -202,7 +202,7 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Abstr
 
             if ( encodedValue != null )
             {
-                buffer.put( ( byte ) LdapCodecConstants.EXTENDED_RESPONSE_RESPONSE_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.EXTENDED_RESPONSE_VALUE_TAG );
 
                 buffer.put( TLV.getBytes( encodedValue.length ) );
 

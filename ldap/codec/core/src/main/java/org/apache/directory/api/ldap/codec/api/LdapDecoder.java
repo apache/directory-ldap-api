@@ -82,6 +82,7 @@ public class LdapDecoder
                 byte[] buf = new byte[in.available()];
 
                 amount = in.read( buf );
+                
                 if ( amount == -1 )
                 {
                     break;

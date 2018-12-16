@@ -84,9 +84,6 @@ public abstract class AbstractMessageDecorator<E extends Message> implements Mes
     /** Map of message controls using OID Strings for keys and Control values */
     private final Map<String, Control> controls;
 
-    /** The current control */
-    private CodecControl<? extends Control> currentControl;
-
     /** The encoded Message length */
     protected int messageLength;
 
@@ -277,17 +274,6 @@ public abstract class AbstractMessageDecorator<E extends Message> implements Mes
     }
 
 
-    /**
-     * Get the current Control Object
-     *
-     * @return The current Control Object
-     */
-    public CodecControl<? extends Control> getCurrentControl()
-    {
-        return currentControl;
-    }
-
-
     //-------------------------------------------------------------------------
     // The Message methods
     //-------------------------------------------------------------------------
@@ -363,7 +349,6 @@ public abstract class AbstractMessageDecorator<E extends Message> implements Mes
 
         decoratedMessage.addControl( decorated );
         controls.put( control.getOid(), controlDecorator );
-        currentControl = controlDecorator;
 
         return this;
     }

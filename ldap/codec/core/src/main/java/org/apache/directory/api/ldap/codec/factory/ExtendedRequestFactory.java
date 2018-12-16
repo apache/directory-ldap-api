@@ -21,61 +21,75 @@ package org.apache.directory.api.ldap.codec.factory;
 
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
-import org.apache.directory.api.ldap.model.message.BindResponse;
+import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.Message;
+import org.apache.directory.api.util.Strings;
 
 /**
- * The BindResponse factory.
+ * The ExtendedRequest factory.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public final class BindResponseFactory extends ResponseFactory
+public final class ExtendedRequestFactory implements Messagefactory
 {
     /** The static instance */
-    public static final BindResponseFactory INSTANCE = new BindResponseFactory();
+    public static final ExtendedRequestFactory INSTANCE = new ExtendedRequestFactory();
 
-    private BindResponseFactory()
+    private ExtendedRequestFactory()
     {
         super();
     }
 
 
     /**
-     * Encode the BindResponse message to a PDU.
+     * Encode the ExtendedRequest message to a PDU.
      * <br>
-     * BindResponse :
+     * ExtendedRequest :
      * <pre>
-     * 0x61 L1
+     * 0x77 L1
      *  |
-     *  +--&gt; LdapResult
-     * [+--0x87 LL serverSaslCreds]
+     *  +--&gt; 0x80 LL abcd requestName
+     * [+--&gt; 0x81 LL abcd requestValue]
      * </pre>
      *
      * @param codec The LdapApiService instance
      * @param buffer The buffer where to put the PDU
-     * @param message the BindResponse to encode
+     * @param message the DeleteResponse to encode
      */
     @Override
     public void encodeReverse( LdapApiService codec, Asn1Buffer buffer, Message message )
     {
         int start = buffer.getPos();
-        BindResponse bindResponse = ( ( BindResponse ) message );
-
-        // The serverSASL creds, if any
-        byte[] serverSaslCreds = bindResponse.getServerSaslCreds();
-
-        if ( serverSaslCreds != null )
+        ExtendedRequest extendedRequest = ( ExtendedRequest ) message;
+        
+        // The responseValue, if any
+        ExtendedOperationFactory factory = codec.getExtendedRequestFactories().
+            get( extendedRequest.getRequestName() );
+        
+        if ( factory != null )
         {
-            BerValue.encodeOctetString( buffer, ( byte ) LdapCodecConstants.SERVER_SASL_CREDENTIAL_TAG,
-                serverSaslCreds );
+            factory.encodeValue( buffer, extendedRequest );
+
+            if ( buffer.getPos() > start )
+            {
+                BerValue.encodeSequence( buffer, 
+                    ( byte ) LdapCodecConstants.EXTENDED_REQUEST_VALUE_TAG,
+                    start );
+            }
         }
-
-        // The LDAPResult part
-        encodeLdapResultReverse( buffer, bindResponse.getLdapResult() );
-
-        // The BindResponse Tag
-        BerValue.encodeSequence( buffer, LdapCodecConstants.BIND_RESPONSE_TAG, start );
+        
+        // The responseName, if any
+        if ( !Strings.isEmpty( extendedRequest.getRequestName() ) )
+        {
+            BerValue.encodeOctetString( buffer, 
+                ( byte ) LdapCodecConstants.EXTENDED_REQUEST_NAME_TAG,
+                extendedRequest.getRequestName() );
+        }
+        
+        // The sequence
+        BerValue.encodeSequence( buffer, LdapCodecConstants.EXTENDED_REQUEST_TAG, start );
     }
 }

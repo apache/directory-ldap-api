@@ -22,7 +22,7 @@ package org.apache.directory.api.ldap.extras.intermediate.syncrepl_impl;
 
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.codec.api.IntermediateResponseFactory;
+import org.apache.directory.api.ldap.codec.api.IntermediateOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValue;
 import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValueImpl;
@@ -30,12 +30,12 @@ import org.apache.directory.api.ldap.model.message.IntermediateResponse;
 
 
 /**
- * A {@link IntermediateResponseFactory} which creates {@link SyncInfoValue} instances.
+ * A {@link IntermediateOperationFactory} which creates {@link SyncInfoValue} instances.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SyncInfoValueFactory implements IntermediateResponseFactory
+public class SyncInfoValueFactory implements IntermediateOperationFactory
 {
     /** The LDAP Service instance */ 
     private LdapApiService codec;

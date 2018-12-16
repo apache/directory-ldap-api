@@ -30,6 +30,7 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.model.message.LdapResult;
+import org.apache.directory.api.ldap.model.message.LdapResultImpl;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.message.ResultResponse;
@@ -93,7 +94,19 @@ public class StoreResultCode extends GrammarAction<LdapMessageContainer<Abstract
         }
 
         ResultResponse response = ( ResultResponse ) container.getMessage();
-        LdapResult ldapResult = response.getLdapResult();
+        
+        LdapResult ldapResult;
+        
+        if ( response == null ) 
+        {
+            ldapResult = new LdapResultImpl();
+        }
+        else
+        {
+            ldapResult = response.getLdapResult();
+        }
+
+        container.setLdapResult( ldapResult );
         ldapResult.setResultCode( resultCode );
     }
 }

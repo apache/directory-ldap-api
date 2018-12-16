@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.codec.factory;
 
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.Message;
 
@@ -48,10 +49,11 @@ public final class UnbindRequestFactory implements Messagefactory
      * </pre>
      *
      * @param buffer The buffer where to put the PDU
+     * @param codec The LdapApiService instance
      * @param message the UnbindRequest to encode
      */
     @Override
-    public void encodeReverse( Asn1Buffer buffer, Message message )
+    public void encodeReverse( LdapApiService codec, Asn1Buffer buffer, Message message )
     {
         // The OpCode
         BerValue.encodeSequence( buffer, LdapCodecConstants.UNBIND_REQUEST_TAG, buffer.getPos() );

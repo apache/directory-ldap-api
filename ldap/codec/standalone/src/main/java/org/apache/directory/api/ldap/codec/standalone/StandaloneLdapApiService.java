@@ -28,7 +28,7 @@ import java.util.Map;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
-import org.apache.directory.api.ldap.codec.api.IntermediateResponseFactory;
+import org.apache.directory.api.ldap.codec.api.IntermediateOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
 import org.apache.directory.api.ldap.model.message.Control;
@@ -197,7 +197,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
     {
         CodecFactoryUtil.loadStockControls( getRequestControlFactories(), getResponseControlFactories(), this );
 
-        CodecFactoryUtil.loadStockExtendedOperations( getExtendedOperationFactories(), this );
+        CodecFactoryUtil.loadStockExtendedOperations( getExtendedRequestFactories(), getExtendedResponseFactories(), this );
 
         CodecFactoryUtil.loadStockIntermediateResponses( getIntermediateResponseFactories(), this );
 
@@ -414,25 +414,25 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
         {
             for ( String extendedOperationFQCN : extendedOperationsList )
             {
-                loadExtendedOperation( extendedOperationFQCN );
+                loadExtendedRequest( extendedOperationFQCN );
             }
         }
     }
 
 
     /**
-     * Loads an of extended operations from its FQCN
+     * Loads an extended request from its FQCN
      *
-     * @param extendedOperationFQCN The extended operations to load
+     * @param extendedRequestFQCN The extended operations to load
      * @throws Exception If the extended operations cannot be loaded
      */
-    private void loadExtendedOperation( String extendedOperationFQCN ) throws Exception
+    private void loadExtendedRequest( String extendedRequestFQCN ) throws Exception
     {
-        if ( getExtendedOperationFactories().containsKey( extendedOperationFQCN ) )
+        if ( getExtendedRequestFactories().containsKey( extendedRequestFQCN ) )
         {
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( I18n.msg( I18n.MSG_06005_EXTENDED_OP_FACTORY_ALREADY_LOADED, extendedOperationFQCN ) );
+                LOG.debug( I18n.msg( I18n.MSG_06005_EXTENDED_OP_FACTORY_ALREADY_LOADED, extendedRequestFQCN ) );
             }
 
             return;
@@ -445,12 +445,12 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
         // helps DI containers that use xml config as xml ignores whitespace
         @SuppressWarnings("unchecked")
         Class<? extends ExtendedOperationFactory> clazz = ( Class<? extends ExtendedOperationFactory> ) Class
-            .forName( extendedOperationFQCN.trim() );
+            .forName( extendedRequestFQCN.trim() );
         Constructor<?> constructor = clazz.getConstructor( types );
 
         ExtendedOperationFactory factory = ( ExtendedOperationFactory ) constructor
             .newInstance( this );
-        getExtendedOperationFactories().put( factory.getOid(), factory );
+        getExtendedRequestFactories().put( factory.getOid(), factory );
 
         if ( LOG.isInfoEnabled() )
         {
@@ -502,11 +502,11 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
         // note, trimming whitespace doesn't hurt as it is a class name and
         // helps DI containers that use xml config as xml ignores whitespace
         @SuppressWarnings("unchecked")
-        Class<? extends IntermediateResponseFactory> clazz = ( Class<? extends IntermediateResponseFactory> ) Class
+        Class<? extends IntermediateOperationFactory> clazz = ( Class<? extends IntermediateOperationFactory> ) Class
             .forName( intermediateResponseFQCN.trim() );
         Constructor<?> constructor = clazz.getConstructor( types );
 
-        IntermediateResponseFactory factory = ( IntermediateResponseFactory ) constructor
+        IntermediateOperationFactory factory = ( IntermediateOperationFactory ) constructor
             .newInstance( this );
         getIntermediateResponseFactories().put( factory.getOid(), factory );
 

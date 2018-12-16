@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.codec.factory;
 
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.BindRequest;
 import org.apache.directory.api.ldap.model.message.Message;
@@ -54,11 +55,12 @@ public final class BindRequestFactory implements Messagefactory
      *                          \ 0x83 LL 0x04 LL mechanism [0x04 LL credential]
      * </pre>
      *
+     * @param codec The LdapApiService instance
      * @param buffer The buffer where to put the PDU
      * @param message the BindRequest to encode
      */
     @Override
-    public void encodeReverse( Asn1Buffer buffer, Message message )
+    public void encodeReverse( LdapApiService codec, Asn1Buffer buffer, Message message )
     {
         int pos = buffer.getPos();
         BindRequest bindMessage = ( BindRequest ) message;

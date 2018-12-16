@@ -55,7 +55,7 @@ public class WhoAmIResponseImpl extends ExtendedResponseImpl implements WhoAmIRe
      */
     public WhoAmIResponseImpl( int messageId, ResultCodeEnum rcode, String diagnosticMessage )
     {
-        super( messageId, EXTENSION_OID );
+        super( messageId, null );
 
         super.getLdapResult().setMatchedDn( null );
         super.getLdapResult().setResultCode( rcode );
@@ -84,7 +84,7 @@ public class WhoAmIResponseImpl extends ExtendedResponseImpl implements WhoAmIRe
      */
     public WhoAmIResponseImpl( int messageId )
     {
-        super( messageId, EXTENSION_OID );
+        super( messageId, null );
         super.getLdapResult().setMatchedDn( null );
         super.getLdapResult().setResultCode( ResultCodeEnum.SUCCESS );
     }

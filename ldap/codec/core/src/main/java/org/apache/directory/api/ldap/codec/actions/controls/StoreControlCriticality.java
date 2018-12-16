@@ -70,8 +70,7 @@ public class StoreControlCriticality extends GrammarAction<LdapMessageContainer<
         TLV tlv = container.getCurrentTLV();
 
         // Get the current control
-        AbstractMessageDecorator<? extends Message> message = container.getMessage();
-        Control control = message.getCurrentControl();
+        Control control = container.getCurrentControl();
 
         // Store the criticality
         // We get the value. If it's a 0, it's a FALSE. If it's
