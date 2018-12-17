@@ -32,6 +32,7 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
@@ -171,7 +172,8 @@ public class LdapControlTest extends AbstractCodecServiceTest
         internalAbandonRequest.addControl( control );
 
         // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, new AbandonRequestDecorator( codec, internalAbandonRequest ) );
+        Asn1Buffer buffer = new Asn1Buffer();
+        ByteBuffer bb = LdapEncoder.encodeMessageReverse( buffer, codec, internalAbandonRequest );
 
         // Check the length
         assertEquals( 0x9C, bb.limit() );
@@ -229,7 +231,8 @@ public class LdapControlTest extends AbstractCodecServiceTest
         assertEquals( 0, controls.size() );
 
         // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, new AbandonRequestDecorator( codec, internalAbandonRequest ) );
+        Asn1Buffer buffer = new Asn1Buffer();
+        ByteBuffer bb = LdapEncoder.encodeMessageReverse( buffer, codec, internalAbandonRequest );
 
         // Check the length, which should be 2 bytes shorter, as we don't encode teh empty control
         assertEquals( 0x08, bb.limit() );

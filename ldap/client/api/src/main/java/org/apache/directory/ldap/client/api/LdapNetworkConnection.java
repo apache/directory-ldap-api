@@ -64,15 +64,6 @@ import org.apache.directory.api.ldap.codec.api.LdapDecoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.MessageEncoderException;
 import org.apache.directory.api.ldap.codec.api.SchemaBinaryAttributeDetector;
-import org.apache.directory.api.ldap.codec.decorators.AbandonRequestDecorator;
-import org.apache.directory.api.ldap.codec.decorators.AddRequestDecorator;
-import org.apache.directory.api.ldap.codec.decorators.BindRequestDecorator;
-import org.apache.directory.api.ldap.codec.decorators.CompareRequestDecorator;
-import org.apache.directory.api.ldap.codec.decorators.DeleteRequestDecorator;
-import org.apache.directory.api.ldap.codec.decorators.ModifyDnRequestDecorator;
-import org.apache.directory.api.ldap.codec.decorators.ModifyRequestDecorator;
-import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
-import org.apache.directory.api.ldap.codec.decorators.UnbindRequestDecorator;
 import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequestImpl;
 import org.apache.directory.api.ldap.model.constants.LdapConstants;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
@@ -1143,7 +1134,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         addToFutureMap( newId, addFuture );
 
         // Send the request to the server
-        writeRequest( new AddRequestDecorator( codec, addRequest ) );
+        writeRequest( addRequest );
 
         // Ok, done return the future
         return addFuture;
@@ -1215,7 +1206,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         abandonRequest.setMessageId( newId );
 
         // Send the request to the server
-        ldapSession.write( new AbandonRequestDecorator( codec, abandonRequest ) );
+        ldapSession.write( abandonRequest );
 
         // remove the associated listener if any
         int abandonId = abandonRequest.getAbandoned();
@@ -1561,7 +1552,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         addToFutureMap( newId, bindFuture );
 
-        writeRequest( new BindRequestDecorator( codec, bindRequest ) );
+        writeRequest( bindRequest );
 
         // Ok, done return the future
         return bindFuture;
@@ -2267,7 +2258,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         addToFutureMap( searchRequest.getMessageId(), searchFuture );
 
         // Send the request to the server
-        writeRequest( new SearchRequestDecorator( codec, searchRequest ) );
+        writeRequest( searchRequest );
 
         // Check that the future hasn't be canceled
         if ( searchFuture.isCancelled() )
@@ -2334,7 +2325,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         // Send the request to the server
         // Use this for logging instead: WriteFuture unbindFuture = ldapSession.write( unbindRequest )
-        WriteFuture unbindFuture = ldapSession.write( new UnbindRequestDecorator( codec, unbindRequest ) );
+        WriteFuture unbindFuture = ldapSession.write( unbindRequest );
 
         unbindFuture.awaitUninterruptibly( timeout );
 
@@ -3020,7 +3011,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         addToFutureMap( newId, modifyFuture );
 
         // Send the request to the server
-        writeRequest( new ModifyRequestDecorator( codec, modRequest ) );
+        writeRequest( modRequest );
 
         // Ok, done return the future
         return modifyFuture;
@@ -3422,7 +3413,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         addToFutureMap( newId, modifyDnFuture );
 
         // Send the request to the server
-        writeRequest( new ModifyDnRequestDecorator( codec, modDnRequest ) );
+        writeRequest( modDnRequest );
 
         // Ok, done return the future
         return modifyDnFuture;
@@ -3635,7 +3626,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         addToFutureMap( newId, deleteFuture );
 
         // Send the request to the server
-        writeRequest( new DeleteRequestDecorator( codec, deleteRequest ) );
+        writeRequest( deleteRequest );
 
         // Ok, done return the future
         return deleteFuture;
@@ -3847,7 +3838,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         addToFutureMap( newId, compareFuture );
 
         // Send the request to the server
-        writeRequest( new CompareRequestDecorator( codec, compareRequest ) );
+        writeRequest( compareRequest );
 
         // Ok, done return the future
         return compareFuture;
@@ -4821,7 +4812,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
                 // Stores the challenge's response, and send it to the server
                 bindRequest.setCredentials( challengeResponse );
-                writeRequest( new BindRequestDecorator( codec, bindRequest ) );
+                writeRequest( bindRequest );
 
                 // Get the server's response, blocking
                 bindResponse = bindFuture.get( timeout, TimeUnit.MILLISECONDS );
@@ -4851,7 +4842,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 bindRequestCopy.setVersion3( bindRequest.getVersion3() );
                 bindRequestCopy.addAllControls( bindRequest.getControls().values().toArray( new Control[0] ) );
 
-                writeRequest( new BindRequestDecorator( codec, bindRequestCopy ) );
+                writeRequest( bindRequestCopy );
 
                 bindResponse = bindFuture.get( timeout, TimeUnit.MILLISECONDS );
 
@@ -4889,7 +4880,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
                     addToFutureMap( newId, bindFuture );
 
-                    writeRequest( new BindRequestDecorator( codec, bindRequest ) );
+                    writeRequest( bindRequest );
 
                     bindResponse = bindFuture.get( timeout, TimeUnit.MILLISECONDS );
 
