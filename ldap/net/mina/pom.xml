@@ -67,6 +67,7 @@
               org.apache.directory.api.asn1;version=${project.version},
               org.apache.directory.api.asn1.ber;version=${project.version},
               org.apache.directory.api.asn1.ber.tlv;version=${project.version},
+              org.apache.directory.api.asn1.util;version=${project.version},
               org.apache.directory.api.ldap.codec.api;version=${project.version},
               org.apache.directory.api.ldap.model.constants;version=${project.version},
               org.apache.directory.api.ldap.model.exception;version=${project.version},
