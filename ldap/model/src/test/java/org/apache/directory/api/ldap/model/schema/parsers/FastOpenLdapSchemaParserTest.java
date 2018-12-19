@@ -60,7 +60,6 @@ public class FastOpenLdapSchemaParserTest
     public void setUp() throws Exception
     {
         parser = new OpenLdapSchemaParser();
-        // parser.setParserMonitor( new ConsoleParserMonitor() );
     }
 
 

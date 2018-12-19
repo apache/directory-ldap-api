@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnec
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
+import org.apache.directory.api.ldap.extras.extended.gracefulDisconnect.GracefulDisconnectResponse;
 
 
 /**
@@ -31,7 +32,7 @@ import org.apache.directory.api.asn1.ber.AbstractContainer;
 public class GracefulDisconnectContainer extends AbstractContainer
 {
     /** GracefulShutdown */
-    private GracefulDisconnectResponseDecorator gracefulDisconnectResponse;
+    private GracefulDisconnectResponse gracefulDisconnectResponse;
 
 
     /**
@@ -51,7 +52,7 @@ public class GracefulDisconnectContainer extends AbstractContainer
      */
     public GracefulDisconnectResponseDecorator getGracefulDisconnectResponse()
     {
-        return gracefulDisconnectResponse;
+        return ( GracefulDisconnectResponseDecorator ) gracefulDisconnectResponse;
     }
 
 
@@ -61,7 +62,7 @@ public class GracefulDisconnectContainer extends AbstractContainer
      * 
      * @param gracefulDisconnectResponse the GracefulShutdown to set.
      */
-    public void setGracefulDisconnectResponse( GracefulDisconnectResponseDecorator gracefulDisconnectResponse )
+    public void setGracefulDisconnectResponse( GracefulDisconnectResponse gracefulDisconnectResponse )
     {
         this.gracefulDisconnectResponse = gracefulDisconnectResponse;
     }

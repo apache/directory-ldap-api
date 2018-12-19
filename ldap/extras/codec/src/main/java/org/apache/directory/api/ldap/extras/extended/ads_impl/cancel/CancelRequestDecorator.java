@@ -32,6 +32,7 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.decorators.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequest;
+import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -127,7 +128,7 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
 
         try
         {
-            if ( requestValue != null )
+            if ( !Strings.isEmpty( requestValue ) )
             {
                 CancelRequest cancel = decoder.decode( requestValue );
                 cancelRequest.setCancelId( cancel.getCancelId() );

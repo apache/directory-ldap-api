@@ -45,8 +45,6 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
 {
     private static final Logger LOG = LoggerFactory.getLogger( WhoAmIResponseDecorator.class );
 
-    private WhoAmIResponse whoAmIResponse;
-
 
     /**
      * Creates a new instance of WhoAmIResponseDecorator.
@@ -57,7 +55,6 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
     public WhoAmIResponseDecorator( LdapApiService codec, WhoAmIResponse decoratedMessage )
     {
         super( codec, decoratedMessage );
-        whoAmIResponse = decoratedMessage;
     }
 
 
@@ -67,13 +64,11 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
     @Override
     public void setResponseValue( byte[] responseValue )
     {
-        WhoAmIResponseDecoder decoder = new WhoAmIResponseDecoder();
-
         try
         {
             if ( responseValue != null )
             {
-                whoAmIResponse = decoder.decode( responseValue );
+                WhoAmIResponseDecoder.decode( this, responseValue );
 
                 this.responseValue = new byte[responseValue.length];
                 System.arraycopy( responseValue, 0, this.responseValue, 0, responseValue.length );
@@ -123,7 +118,6 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setAuthzId( byte[] authzId )
     {
         ( ( WhoAmIResponseImpl ) getDecorated() ).setAuthzId( authzId );
@@ -137,7 +131,7 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
      */
     /* no qualifier*/void setUserId( String userId )
     {
-        ( ( WhoAmIResponseImpl ) whoAmIResponse ).setUserId( userId );
+        ( ( WhoAmIResponseImpl ) decoratedMessage ).setUserId( userId );
     }
 
 
@@ -148,7 +142,7 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
      */
     /* no qualifier*/void setDn( Dn dn )
     {
-        ( ( WhoAmIResponseImpl ) whoAmIResponse ).setDn( dn );
+        ( ( WhoAmIResponseImpl ) decoratedMessage ).setDn( dn );
     }
 
 
@@ -158,7 +152,7 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
     @Override
     public boolean isDnAuthzId()
     {
-        return whoAmIResponse.isDnAuthzId();
+        return decoratedMessage.isDnAuthzId();
     }
 
 
@@ -168,7 +162,7 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
     @Override
     public boolean isUserAuthzId()
     {
-        return whoAmIResponse.isUserAuthzId();
+        return decoratedMessage.isUserAuthzId();
     }
 
 
@@ -178,7 +172,7 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
     @Override
     public String getAuthzIdString()
     {
-        return whoAmIResponse.getAuthzIdString();
+        return decoratedMessage.getAuthzIdString();
     }
 
 
@@ -188,7 +182,7 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
     @Override
     public String getUserId()
     {
-        return whoAmIResponse.getUserId();
+        return decoratedMessage.getUserId();
     }
 
 
@@ -198,7 +192,7 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
     @Override
     public Dn getDn()
     {
-        return whoAmIResponse.getDn();
+        return decoratedMessage.getDn();
     }
 
 
@@ -235,7 +229,7 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
      */
     /* no qualifier */ByteBuffer encodeInternal() throws EncoderException
     {
-        byte[] authzid = whoAmIResponse.getAuthzId();
+        byte[] authzid = decoratedMessage.getAuthzId();
         ByteBuffer bb;
         
         if ( !Strings.isEmpty( authzid ) )

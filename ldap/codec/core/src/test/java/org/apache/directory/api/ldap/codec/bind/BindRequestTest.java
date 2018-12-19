@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.codec.bind;
 
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -27,7 +28,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.Map;
 
 import org.apache.directory.api.asn1.DecoderException;
@@ -43,7 +43,6 @@ import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
 import org.apache.directory.api.ldap.codec.decorators.BindRequestDecorator;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.BindRequest;
-import org.apache.directory.api.ldap.model.message.BindRequestImpl;
 import org.apache.directory.api.ldap.model.message.BindResponseImpl;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
@@ -188,11 +187,10 @@ public class BindRequestTest extends AbstractCodecServiceTest
                       'p', 'a', 's', 's', 'w', 'o', 'r', 'd'
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<BindRequestDecorator>( codec );
+        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the BindRequest PDU
         ldapDecoder.decode( stream, container );
@@ -206,15 +204,12 @@ public class BindRequestTest extends AbstractCodecServiceTest
         assertTrue( bindRequest.isSimple() );
         assertEquals( "password", Strings.utf8ToString( bindRequest.getCredentials() ) );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, bindRequest );
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
 
-        // Check the length
-        assertEquals( 0x35, bb.limit() );
+        LdapEncoder.encodeMessageReverse( buffer, codec, bindRequest );
 
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
@@ -247,15 +242,14 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<AbstractMessageDecorator<? extends Message>> container =
-            new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
+        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the BindRequest PDU
         try
         {
             ldapDecoder.decode( stream, container );
 
-            BindRequest bindRequest = ((BindRequestDecorator)container.getMessage());
+            BindRequest bindRequest = container.getMessage();
             assertNull( bindRequest.getDn() );
             assertEquals( "uid:akarasulu,dc=example,dc=com", bindRequest.getName() );
         }
@@ -329,12 +323,10 @@ public class BindRequestTest extends AbstractCodecServiceTest
                       'p', 'a', 's', 's', 'w', 'o', 'r', 'd'
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
-
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<BindRequestDecorator>( codec );
+        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the BindRequest PDU
         ldapDecoder.decode( stream, container );
@@ -348,27 +340,12 @@ public class BindRequestTest extends AbstractCodecServiceTest
         assertTrue( bindRequest.isSimple() );
         assertEquals( "password", Strings.utf8ToString( bindRequest.getCredentials() ) );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, bindRequest );
-
-        // Check the length
-        assertEquals( 0x16, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
-
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        BindRequest request = new BindRequestImpl();
-        request.setCredentials( "password" );
-        request.setSimple( true );
-        request.setMessageId( 1 );
+        LdapEncoder.encodeMessageReverse( buffer, codec, bindRequest );
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, request );
-
-        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
@@ -402,11 +379,10 @@ public class BindRequestTest extends AbstractCodecServiceTest
                         'K', 'E', 'R', 'B', 'E', 'R', 'O', 'S', '_', 'V', '4'
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<BindRequestDecorator>( codec );
+        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the BindRequest PDU
         ldapDecoder.decode( stream, container );
@@ -420,28 +396,12 @@ public class BindRequestTest extends AbstractCodecServiceTest
         assertFalse( bindRequest.isSimple() );
         assertEquals( "KERBEROS_V4", bindRequest.getSaslMechanism() );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, bindRequest );
-
-        // Check the length
-        assertEquals( 0x3A, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
-
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        BindRequest request = new BindRequestImpl();
-        request.setName( "uid=akarasulu,dc=example,dc=com" );
-        request.setSimple( false );
-        request.setSaslMechanism( "KERBEROS_V4" );
-        request.setMessageId( 1 );
+        LdapEncoder.encodeMessageReverse( buffer, codec, bindRequest );
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, request );
-
-        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
@@ -481,11 +441,10 @@ public class BindRequestTest extends AbstractCodecServiceTest
                         'a', 'b', 'c', 'd', 'e', 'f'
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<BindRequestDecorator>( codec );
+        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the BindRequest PDU
         ldapDecoder.decode( stream, container );
@@ -500,28 +459,12 @@ public class BindRequestTest extends AbstractCodecServiceTest
         assertEquals( "KERBEROS_V4", bindRequest.getSaslMechanism() );
         assertEquals( "abcdef", Strings.utf8ToString( bindRequest.getCredentials() ) );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, bindRequest );
-
-        // Check the length
-        assertEquals( 0x42, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        BindRequest request = new BindRequestImpl();
-        request.setName( "uid=akarasulu,dc=example,dc=com" );
-        request.setSimple( false );
-        request.setSaslMechanism( "KERBEROS_V4" );
-        request.setMessageId( 1 );
-        request.setCredentials( "abcdef" );
+        LdapEncoder.encodeMessageReverse( buffer, codec, bindRequest );
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, request );
-
-        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
@@ -559,11 +502,10 @@ public class BindRequestTest extends AbstractCodecServiceTest
                         'a', 'b', 'c', 'd', 'e', 'f'
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<BindRequestDecorator>( codec );
+        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the BindRequest PDU
         ldapDecoder.decode( stream, container );
@@ -578,27 +520,12 @@ public class BindRequestTest extends AbstractCodecServiceTest
         assertEquals( "KERBEROS_V4", bindRequest.getSaslMechanism() );
         assertEquals( "abcdef", Strings.utf8ToString( bindRequest.getCredentials() ) );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, bindRequest );
-
-        // Check the length
-        assertEquals( 0x23, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        BindRequest request = new BindRequestImpl();
-        request.setSimple( false );
-        request.setSaslMechanism( "KERBEROS_V4" );
-        request.setMessageId( 1 );
-        request.setCredentials( "abcdef" );
+        LdapEncoder.encodeMessageReverse( buffer, codec, bindRequest );
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, request );
-
-        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
@@ -621,7 +548,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<BindRequestDecorator>( codec );
+        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest message
         ldapDecoder.decode( stream, container );
@@ -648,7 +575,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<BindRequestDecorator>( codec );
+        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest message
         ldapDecoder.decode( stream, container );
@@ -675,7 +602,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<BindRequestDecorator>( codec );
+        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest message
         ldapDecoder.decode( stream, container );
@@ -702,7 +629,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<BindRequestDecorator>( codec );
+        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest message
         ldapDecoder.decode( stream, container );
@@ -729,7 +656,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<BindRequestDecorator>( codec );
+        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest message
         ldapDecoder.decode( stream, container );
@@ -756,7 +683,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<BindRequestDecorator>( codec );
+        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest message
         ldapDecoder.decode( stream, container );
@@ -784,7 +711,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<BindRequestDecorator>( codec );
+        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest message
         ldapDecoder.decode( stream, container );
@@ -810,11 +737,10 @@ public class BindRequestTest extends AbstractCodecServiceTest
                     ( byte ) 0x80, 0x00
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<BindRequestDecorator>( codec );
+        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the BindRequest PDU
         ldapDecoder.decode( stream, container );
@@ -828,26 +754,12 @@ public class BindRequestTest extends AbstractCodecServiceTest
         assertTrue( bindRequest.isSimple() );
         assertEquals( "", Strings.utf8ToString( bindRequest.getCredentials() ) );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, bindRequest );
-
-        // Check the length
-        assertEquals( 0x0E, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
-
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        BindRequest request = new BindRequestImpl();
-        request.setSimple( true );
-        request.setMessageId( 1 );
+        LdapEncoder.encodeMessageReverse( buffer, codec, bindRequest );
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, request );
-
-        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
@@ -873,7 +785,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<BindRequestDecorator>( codec );
+        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest message
         try
@@ -915,11 +827,10 @@ public class BindRequestTest extends AbstractCodecServiceTest
                       0x04, 0x00
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<BindRequestDecorator>( codec );
+        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the BindRequest PDU
         ldapDecoder.decode( stream, container );
@@ -933,26 +844,11 @@ public class BindRequestTest extends AbstractCodecServiceTest
         assertFalse( bindRequest.isSimple() );
         assertEquals( "", bindRequest.getSaslMechanism() );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, bindRequest );
-
-        // Check the length
-        assertEquals( 0x10, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
-
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        BindRequest request = new BindRequestImpl();
-        request.setSimple( false );
-        request.setMessageId( 1 );
-
-        LdapEncoder.encodeMessageReverse( buffer, codec, request );
-
-        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
+        LdapEncoder.encodeMessageReverse( buffer, codec, bindRequest );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
@@ -1021,11 +917,10 @@ public class BindRequestTest extends AbstractCodecServiceTest
                       0x04, 0x00,
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<BindRequestDecorator>( codec );
+        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the BindRequest PDU
         ldapDecoder.decode( stream, container );
@@ -1040,26 +935,12 @@ public class BindRequestTest extends AbstractCodecServiceTest
         assertEquals( "", bindRequest.getSaslMechanism() );
         assertEquals( "", Strings.utf8ToString( bindRequest.getCredentials() ) );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, bindRequest );
-
-        // Check the length
-        assertEquals( 0x12, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        BindRequest request = new BindRequestImpl();
-        request.setSimple( false );
-        request.setMessageId( 1 );
-        request.setCredentials( "" );
+        LdapEncoder.encodeMessageReverse( buffer, codec, bindRequest );
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, request );
-
-        assertTrue( Arrays.equals(
+        assertArrayEquals(
             new byte[]
                 {
                     0x30, 0x0E,             // LDAPMessage ::=SEQUENCE {
@@ -1070,7 +951,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
                         ( byte ) 0xA3, 0x02,
                           0x04, 0x00
                 },
-            buffer.getBytes().array() ) );
+            buffer.getBytes().array() );
     }
 
 
@@ -1101,11 +982,10 @@ public class BindRequestTest extends AbstractCodecServiceTest
                         '1', '1', '3', '7', '3', '0', '.', '3', '.', '4', '.', '2'
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<BindRequestDecorator>( codec );
+        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the BindRequest PDU
         ldapDecoder.decode( stream, container );
@@ -1126,20 +1006,31 @@ public class BindRequestTest extends AbstractCodecServiceTest
         assertEquals( 1, controls.size() );
 
         @SuppressWarnings("unchecked")
-        CodecControl<Control> control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) controls
+        CodecControl<Control> control = ( CodecControl<Control> ) controls
             .get( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
         assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, bindRequest );
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
 
-        // Check the length
-        assertEquals( 0x2F, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
+        LdapEncoder.encodeMessageReverse( buffer, codec, bindRequest );
+        assertArrayEquals( 
+            new byte[]
+            {
+                0x30, 0x2B,             // LDAPMessage ::=SEQUENCE {
+                  0x02, 0x01, 0x01,     // messageID MessageID
+                  0x60, 0x09,           // CHOICE { ..., bindRequest BindRequest, ...
+                    0x02, 0x01, 0x03,   // version INTEGER (1..127),
+                    0x04, 0x00,
+                    ( byte ) 0xA3, 0x02,
+                      0x04, 0x00,
+                  ( byte ) 0xA0, 0x1B,  // A control
+                    0x30, 0x19,
+                      0x04, 0x17,
+                        '2', '.', '1', '6', '.', '8', '4', '0', '.', '1', '.',
+                        '1', '1', '3', '7', '3', '0', '.', '3', '.', '4', '.', '2'
+            }, buffer.getBytes().array() );
     }
 
 
@@ -1168,11 +1059,10 @@ public class BindRequestTest extends AbstractCodecServiceTest
                         '1', '1', '3', '7', '3', '0', '.', '3', '.', '4', '.', '2'
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<BindRequestDecorator>( codec );
+        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the BindRequest PDU
         ldapDecoder.decode( stream, container );
@@ -1198,15 +1088,11 @@ public class BindRequestTest extends AbstractCodecServiceTest
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
         assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, bindRequest );
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
 
-        // Check the length
-        assertEquals( 0x2D, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
+        LdapEncoder.encodeMessageReverse( buffer, codec, bindRequest );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
     /**

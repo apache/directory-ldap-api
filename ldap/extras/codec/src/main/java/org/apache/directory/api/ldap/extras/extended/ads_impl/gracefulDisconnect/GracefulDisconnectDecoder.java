@@ -46,10 +46,12 @@ public class GracefulDisconnectDecoder extends Asn1Decoder
      * @return An GracefulDisconnect object
      * @throws DecoderException If the decoding failed
      */
-    public GracefulDisconnectResponse decode( byte[] stream ) throws DecoderException
+    public GracefulDisconnectResponse decode( GracefulDisconnectResponse gracefulDisconnectResponse, 
+        byte[] stream ) throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.wrap( stream );
         GracefulDisconnectContainer container = new GracefulDisconnectContainer();
+        container.setGracefulDisconnectResponse( gracefulDisconnectResponse );
         DECODER.decode( bb, container );
         GracefulDisconnectResponseDecorator gracefulDisconnect = container.getGracefulDisconnectResponse();
 

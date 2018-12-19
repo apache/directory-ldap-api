@@ -81,12 +81,4 @@ public interface WhoAmIResponse extends ExtendedResponse
      * @return The DN or null
      */
     Dn getDn();
-
-
-    /**
-     * set the authzid
-     * 
-     * @param authzId The authzId to set
-     */
-    void setAuthzId( byte[] authzId );
 }

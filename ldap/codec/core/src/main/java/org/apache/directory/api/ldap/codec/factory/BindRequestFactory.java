@@ -62,7 +62,7 @@ public final class BindRequestFactory implements Messagefactory
     @Override
     public void encodeReverse( LdapApiService codec, Asn1Buffer buffer, Message message )
     {
-        int pos = buffer.getPos();
+        int start = buffer.getPos();
         BindRequest bindMessage = ( BindRequest ) message;
 
         // The authentication
@@ -85,7 +85,7 @@ public final class BindRequestFactory implements Messagefactory
             BerValue.encodeOctetString( buffer, bindMessage.getSaslMechanism() );
 
             // The SASL tag
-            BerValue.encodeSequence( buffer, ( byte ) LdapCodecConstants.BIND_REQUEST_SASL_TAG );
+            BerValue.encodeSequence( buffer, ( byte ) LdapCodecConstants.BIND_REQUEST_SASL_TAG, start );
         }
 
         // The name
@@ -106,6 +106,6 @@ public final class BindRequestFactory implements Messagefactory
         BerValue.encodeInteger( buffer, 3 );
 
         // The BindRequest Tag
-        BerValue.encodeSequence( buffer, LdapCodecConstants.BIND_REQUEST_TAG, pos );
+        BerValue.encodeSequence( buffer, LdapCodecConstants.BIND_REQUEST_TAG, start );
     }
 }

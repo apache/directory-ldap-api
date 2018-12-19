@@ -26,7 +26,6 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIResponse;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIResponseImpl;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
@@ -55,7 +54,7 @@ public class WhoAmIResponseDecoder extends Asn1Decoder
     public void decode( ByteBuffer stream, Asn1Container container ) throws DecoderException
     {
         ( ( WhoAmIResponseContainer ) container ).setWhoAmIResponse( 
-            ( WhoAmIResponseDecorator ) decode( stream.array() ) );
+            decode( ( ( WhoAmIResponseContainer ) container ).getWhoAmIResponse(), stream.array() ) );
     }
 
 
@@ -67,14 +66,11 @@ public class WhoAmIResponseDecoder extends Asn1Decoder
      * @return a WhoAmIRequest object
      * @throws org.apache.directory.api.asn1.DecoderException If the decoding failed
      */
-    public WhoAmIResponse decode( byte[] data ) throws DecoderException
+    public static WhoAmIResponse decode( WhoAmIResponse whoAmIResponse, byte[] data ) throws DecoderException
     {
-        WhoAmIResponseDecorator whoAmIResponse = new WhoAmIResponseDecorator(
-            LdapApiServiceFactory.getSingleton(), new WhoAmIResponseImpl() );
-
         if ( Strings.isEmpty( data ) )
         {
-            whoAmIResponse.setAuthzId( null );
+            ( ( WhoAmIResponseImpl ) whoAmIResponse ).setAuthzId( null );
         }
         else
         {
@@ -91,8 +87,8 @@ public class WhoAmIResponseDecoder extends Asn1Decoder
                 case 2 :
                     if ( ( data[0] == 'u' ) && ( data[1] == ':' ) )
                     {
-                        whoAmIResponse.setAuthzId( data );
-                        whoAmIResponse.setUserId( Strings.utf8ToString( data, 3, data.length - 3 ) );
+                        ( ( WhoAmIResponseImpl ) whoAmIResponse ).setAuthzId( data );
+                        ( ( WhoAmIResponseImpl ) whoAmIResponse ).setUserId( Strings.utf8ToString( data, 2, data.length - 2 ) );
                     }
                     else
                     {
@@ -109,8 +105,8 @@ public class WhoAmIResponseDecoder extends Asn1Decoder
                         case 'u' :
                             if ( data[1] == ':' )
                             {
-                                whoAmIResponse.setAuthzId( data );
-                                whoAmIResponse.setUserId( Strings.utf8ToString( data, 3, data.length - 3 ) );
+                                ( ( WhoAmIResponseImpl ) whoAmIResponse ).setAuthzId( data );
+                                ( ( WhoAmIResponseImpl ) whoAmIResponse ).setUserId( Strings.utf8ToString( data, 2, data.length - 2 ) );
                             }
                             else
                             {
@@ -127,11 +123,11 @@ public class WhoAmIResponseDecoder extends Asn1Decoder
                                 // Check that the remaining bytes are a valid DN
                                 if ( Dn.isValid( Strings.utf8ToString( data, 3, data.length - 3 ) ) )
                                 {
-                                    whoAmIResponse.setAuthzId( data );
+                                    ( ( WhoAmIResponseImpl ) whoAmIResponse ).setAuthzId( data );
                                     
                                     try
                                     {
-                                        whoAmIResponse.setDn( new Dn( Strings.utf8ToString( data, 3, data.length - 3 ) ) );
+                                        ( ( WhoAmIResponseImpl ) whoAmIResponse ).setDn( new Dn( Strings.utf8ToString( data, 3, data.length - 3 ) ) );
                                     }
                                     catch ( LdapInvalidDnException e )
                                     {

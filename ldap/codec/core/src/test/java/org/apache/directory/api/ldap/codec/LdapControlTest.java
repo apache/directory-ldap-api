@@ -126,7 +126,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
         ldapDecoder.decode( stream, ldapMessageContainer );
 
         // Check that everything is OK
-        AbandonRequestDecorator abandonRequest = ldapMessageContainer.getMessage();
+        AbandonRequest abandonRequest = ldapMessageContainer.getMessage();
 
         // Copy the message
         AbandonRequest internalAbandonRequest = new AbandonRequestImpl( abandonRequest.getAbandoned() );
@@ -216,7 +216,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
         ldapDecoder.decode( stream, ldapMessageContainer );
 
         // Check that everything is OK
-        AbandonRequestDecorator abandonRequest = ldapMessageContainer.getMessage();
+        AbandonRequest abandonRequest = ldapMessageContainer.getMessage();
 
         // Copy the message
         AbandonRequest internalAbandonRequest = new AbandonRequestImpl( abandonRequest.getAbandoned() );

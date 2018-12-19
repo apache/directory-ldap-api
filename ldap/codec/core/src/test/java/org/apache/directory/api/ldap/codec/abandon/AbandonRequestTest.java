@@ -32,7 +32,6 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
@@ -41,7 +40,6 @@ import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.AbandonRequest;
 import org.apache.directory.api.ldap.model.message.AbandonRequestImpl;
 import org.apache.directory.api.ldap.model.message.Control;
-import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.controls.Cascade;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
 import org.apache.directory.api.ldap.model.message.controls.PagedResults;
@@ -123,14 +121,13 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessageContainer Container
-        LdapMessageContainer<AbandonRequestDecorator> ldapMessageContainer =
-            new LdapMessageContainer<AbandonRequestDecorator>( codec );
+        LdapMessageContainer<AbandonRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        ldapDecoder.decode( stream, container );
 
         // Check that everything is OK
-        AbandonRequestDecorator abandonRequest = ldapMessageContainer.getMessage();
+        AbandonRequestDecorator abandonRequest = container.getMessage();
 
         // Copy the message
         AbandonRequest internalAbandonRequest = new AbandonRequestImpl( abandonRequest.getAbandoned() );
@@ -175,19 +172,6 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
         assertFalse( control.isCritical() );
         internalAbandonRequest.addControl( control );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, new AbandonRequestDecorator( codec, internalAbandonRequest ) );
-
-        // Check the length
-        assertEquals( 0x9C, bb.limit() );
-
-        // Don't check the PDU, as control are in a Map, and can be in a different order
-        // So we decode the generated PDU, and we compare it with the initial message
-        ldapDecoder.decode( bb, ldapMessageContainer );
-
-        AbandonRequest abandonRequest2 = ldapMessageContainer.getMessage();
-        assertEquals( abandonRequest, abandonRequest2 );
-        
         // Check reverse encoding
         Asn1Buffer buffer = new Asn1Buffer();
         LdapEncoder.encodeMessageReverse( buffer, codec, internalAbandonRequest );
@@ -200,7 +184,7 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
         ldapDecoder.decode( buffer.getBytes(), ldapMessageContainer2 );
 
         // Check that everything is OK
-        AbandonRequestDecorator abandonRequest3 = ldapMessageContainer.getMessage();
+        AbandonRequestDecorator abandonRequest3 = container.getMessage();
         
         assertEquals( abandonRequest, abandonRequest3 );
     }
@@ -227,14 +211,13 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessageContainer Container
-        LdapMessageContainer<AbandonRequestDecorator> ldapMessageContainer =
-            new LdapMessageContainer<AbandonRequestDecorator>( codec );
+        LdapMessageContainer<AbandonRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        ldapDecoder.decode( stream, container );
 
         // Check that everything is OK
-        AbandonRequest abandonRequest = ldapMessageContainer.getMessage();
+        AbandonRequest abandonRequest = container.getMessage();
 
         assertEquals( 32787, abandonRequest.getMessageId() );
         assertEquals( 2, abandonRequest.getAbandoned() );
@@ -243,13 +226,6 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
         AbandonRequest internalAbandonRequest = new AbandonRequestImpl( abandonRequest.getAbandoned() );
         internalAbandonRequest.setMessageId( abandonRequest.getMessageId() );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, new AbandonRequestDecorator( codec, internalAbandonRequest )  );
-
-        // Check the length
-        assertEquals( 0x0A, bb.limit() );
-
-        assertArrayEquals( stream.array(), bb.array() );
 
         // Check the reverse encoding
         Asn1Buffer buffer = new Asn1Buffer();
@@ -279,11 +255,10 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessageContainer Container
-        LdapMessageContainer<AbstractMessageDecorator<? extends Message>> ldapMessageContainer =
-            new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
+        LdapMessageContainer<AbandonRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        ldapDecoder.decode( stream, container );
     }
 
 
@@ -307,10 +282,9 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessageContainer Container
-        LdapMessageContainer<AbstractMessageDecorator<? extends Message>> ldapMessageContainer =
-            new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
+        LdapMessageContainer<AbandonRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        ldapDecoder.decode( stream, container );
     }
 }

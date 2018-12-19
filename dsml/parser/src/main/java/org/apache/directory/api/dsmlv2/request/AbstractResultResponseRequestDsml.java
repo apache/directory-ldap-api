@@ -82,49 +82,6 @@ public abstract class AbstractResultResponseRequestDsml<E extends ResultResponse
 
 
     /**
-     * Gets the name of the request according to the type of the decorated element.
-     *
-     * @return
-     *      the name of the request according to the type of the decorated element.
-     */
-    private String getRequestName()
-    {
-        switch ( getDecorated().getType() )
-        {
-            case ABANDON_REQUEST:
-                return "abandonRequest";
-
-            case ADD_REQUEST:
-                return "addRequest";
-
-            case BIND_REQUEST:
-                return "authRequest";
-
-            case COMPARE_REQUEST:
-                return "compareRequest";
-
-            case DEL_REQUEST:
-                return "delRequest";
-
-            case EXTENDED_REQUEST:
-                return "extendedRequest";
-
-            case MODIFYDN_REQUEST:
-                return "modDNRequest";
-
-            case MODIFY_REQUEST:
-                return "modifyRequest";
-
-            case SEARCH_REQUEST:
-                return "searchRequest";
-
-            default:
-                return "error";
-        }
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     @Override

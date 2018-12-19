@@ -30,10 +30,11 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
-import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
+import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIResponse;
+import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIResponseImpl;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -67,12 +68,13 @@ public class WhoAmIResponseTest extends AbstractCodecServiceTest
         Strings.dumpBytes( bb.array() );
 
         // Allocate a WhoAmI Container
-        Asn1Container whoAmIResponseContainer = new WhoAmIResponseContainer();
+        WhoAmIResponseContainer whoAmIResponseContainer = new WhoAmIResponseContainer();
+        whoAmIResponseContainer.setWhoAmIResponse( new WhoAmIResponseImpl() );
 
         // Decode a WhoAmI message
         whoAmIResponseDecoder.decode( bb, whoAmIResponseContainer );
 
-        WhoAmIResponseDecorator whoAmIResponse = ( ( WhoAmIResponseContainer ) whoAmIResponseContainer ).getWhoAmIResponse();
+        WhoAmIResponse whoAmIResponse = whoAmIResponseContainer.getWhoAmIResponse();
 
         assertNull( whoAmIResponse.getAuthzId() );
         
@@ -100,27 +102,23 @@ public class WhoAmIResponseTest extends AbstractCodecServiceTest
             } ).flip();
 
         // Allocate a WhoAmI Container
-        Asn1Container whoAmIResponseContainer = new WhoAmIResponseContainer();
+        WhoAmIResponseContainer whoAmIResponseContainer = new WhoAmIResponseContainer();
+        whoAmIResponseContainer.setWhoAmIResponse( new WhoAmIResponseImpl() );
 
         // Decode a WhoAmI message
         whoAmIResponseDecoder.decode( stream, whoAmIResponseContainer );
         
-        WhoAmIResponseDecorator whoAmIResponse = ( ( WhoAmIResponseContainer ) whoAmIResponseContainer ).getWhoAmIResponse();
+        WhoAmIResponse whoAmIResponse = whoAmIResponseContainer.getWhoAmIResponse();
 
         assertNotNull( whoAmIResponse.getAuthzId() );
         assertEquals( "dn:ou=system", Strings.utf8ToString( whoAmIResponse.getAuthzId() ) );
         
 
-        // Check the encoding
-        ByteBuffer bb = whoAmIResponse.encodeInternal();
-
-        assertArrayEquals( stream.array(), bb.array() );
-        
-        // Check the reverse decoding
+        // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
         WhoAmIFactory factory = new WhoAmIFactory( codec );
         factory.encodeValue( asn1Buffer, whoAmIResponse );
-        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
+        assertArrayEquals( stream.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -140,24 +138,20 @@ public class WhoAmIResponseTest extends AbstractCodecServiceTest
             } ).flip();
 
         // Allocate a WhoAmI Container
-        Asn1Container whoAmIResponseContainer = new WhoAmIResponseContainer();
+        WhoAmIResponseContainer whoAmIResponseContainer = new WhoAmIResponseContainer();
+        whoAmIResponseContainer.setWhoAmIResponse( new WhoAmIResponseImpl() );
 
         // Decode a WhoAmI message
         whoAmIResponseDecoder.decode( stream, whoAmIResponseContainer );
         
-        WhoAmIResponseDecorator whoAmIResponse = ( (WhoAmIResponseContainer ) whoAmIResponseContainer ).getWhoAmIResponse();
+        WhoAmIResponse whoAmIResponse = whoAmIResponseContainer.getWhoAmIResponse();
 
         assertNotNull( whoAmIResponse.getAuthzId() );
 
-        // Check the encoding
-        ByteBuffer bb = whoAmIResponse.encodeInternal();
-
-        assertArrayEquals( stream.array(), bb.array() );
-        
-        // Check the reverse decoding
+        // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
         WhoAmIFactory factory = new WhoAmIFactory( codec );
         factory.encodeValue( asn1Buffer, whoAmIResponse );
-        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
+        assertArrayEquals( stream.array(), asn1Buffer.getBytes().array() );
     }
 }

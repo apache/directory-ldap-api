@@ -20,12 +20,12 @@
 package org.apache.directory.api.ldap.codec.compare;
 
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.Map;
 
 import org.apache.directory.api.asn1.DecoderException;
@@ -39,7 +39,6 @@ import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
 import org.apache.directory.api.ldap.codec.decorators.CompareRequestDecorator;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.CompareRequest;
-import org.apache.directory.api.ldap.model.message.CompareRequestImpl;
 import org.apache.directory.api.ldap.model.message.CompareResponseImpl;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
@@ -89,12 +88,10 @@ public class CompareRequestTest extends AbstractCodecServiceTest
                         'v', 'a', 'l', 'u', 'e'
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<CompareRequestDecorator> container = new LdapMessageContainer<CompareRequestDecorator>(
-            codec );
+        LdapMessageContainer<CompareRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the CompareRequest PDU
         ldapDecoder.decode( stream, container );
@@ -107,28 +104,12 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         assertEquals( "test", compareRequest.getAttributeId() );
         assertEquals( "value", compareRequest.getAssertionValue().toString() );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, compareRequest );
-
-        // Check the length
-        assertEquals( 0x38, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
-
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        CompareRequest request = new CompareRequestImpl();
-        request.setName( compareRequest.getName() );
-        request.setMessageId( 1 );
-        request.setAttributeId( compareRequest.getAttributeId() );
-        request.setAssertionValue( compareRequest.getAssertionValue().getBytes() );
+        LdapEncoder.encodeMessageReverse( buffer, codec, compareRequest );
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, request );
-
-        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
@@ -153,7 +134,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<CompareRequestDecorator> container = new LdapMessageContainer<CompareRequestDecorator>(
+        LdapMessageContainer<CompareRequestDecorator> container = new LdapMessageContainer<>(
             codec );
 
         // Decode the CompareRequest PDU
@@ -189,8 +170,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<CompareRequestDecorator> container = new LdapMessageContainer<CompareRequestDecorator>(
-            codec );
+        LdapMessageContainer<CompareRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the CompareRequest PDU
         ldapDecoder.decode( stream, container );
@@ -224,8 +204,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<CompareRequestDecorator> container = new LdapMessageContainer<CompareRequestDecorator>(
-            codec );
+        LdapMessageContainer<CompareRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the CompareRequest PDU
         ldapDecoder.decode( stream, container );
@@ -259,8 +238,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<CompareRequestDecorator> container = new LdapMessageContainer<CompareRequestDecorator>(
-            codec );
+        LdapMessageContainer<CompareRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the CompareRequest PDU
         try
@@ -309,8 +287,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<CompareRequestDecorator> container = new LdapMessageContainer<CompareRequestDecorator>(
-            codec );
+        LdapMessageContainer<CompareRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the CompareRequest PDU
         try
@@ -358,12 +335,10 @@ public class CompareRequestTest extends AbstractCodecServiceTest
                       0x04, 0x00            // assertionValue AssertionValue }
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<CompareRequestDecorator> container = new LdapMessageContainer<CompareRequestDecorator>(
-            codec );
+        LdapMessageContainer<CompareRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the CompareRequest PDU
         ldapDecoder.decode( stream, container );
@@ -376,28 +351,12 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         assertEquals( "test", compareRequest.getAttributeId() );
         assertEquals( "", compareRequest.getAssertionValue().toString() );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, compareRequest );
-
-        // Check the length
-        assertEquals( 0x33, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
-
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        CompareRequest request = new CompareRequestImpl();
-        request.setName( compareRequest.getName() );
-        request.setMessageId( 1 );
-        request.setAttributeId( compareRequest.getAttributeId() );
-        request.setAssertionValue( compareRequest.getAssertionValue().getBytes() );
+        LdapEncoder.encodeMessageReverse( buffer, codec, compareRequest );
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, request );
-
-        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
@@ -434,7 +393,6 @@ public class CompareRequestTest extends AbstractCodecServiceTest
                         '.', '3', '.', '4', '.', '2'
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
@@ -464,13 +422,10 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
         // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, compareRequest );
+        Asn1Buffer buffer = new Asn1Buffer();
 
-        // Check the length
-        assertEquals( 0x55, bb.limit() );
+        LdapEncoder.encodeMessageReverse( buffer, codec, compareRequest );
 
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 }

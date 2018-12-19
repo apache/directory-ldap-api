@@ -25,7 +25,6 @@ import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.decorators.LdapResultDecorator;
@@ -84,7 +83,7 @@ public class StoreExtendedResponseName extends GrammarAction<LdapMessageContaine
             String responseName = Oid.fromString( Strings.asciiBytesToString( tlv.getValue().getData() ) )
                 .toString();
 
-            extendedResponse = LdapApiServiceFactory.getSingleton().newExtendedResponse( responseName,
+            extendedResponse = container.getLdapCodecService().newExtendedResponse( responseName,
                 container.getMessageId(), null );
             
             ( ( ExtendedResponseDecorator<?> ) extendedResponse ).setLdapResult( ( LdapResultDecorator ) ( container

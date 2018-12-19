@@ -83,7 +83,7 @@ public abstract class AbstractRequestDsml<E extends Request>
      *
      * @return the name of the request according to the type of the decorated element.
      */
-    private String getRequestName()
+    protected String getRequestName()
     {
         switch ( getDecorated().getType() )
         {

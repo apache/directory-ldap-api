@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.whoAmI;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
+import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIResponse;
 
 
 /**
@@ -31,7 +32,7 @@ import org.apache.directory.api.asn1.ber.AbstractContainer;
 public class WhoAmIResponseContainer extends AbstractContainer
 {
     /** WhoAmIResponse decorator*/
-    private WhoAmIResponseDecorator whoAmIResponse;
+    private WhoAmIResponse whoAmIResponse;
 
 
     /**
@@ -49,7 +50,7 @@ public class WhoAmIResponseContainer extends AbstractContainer
     /**
      * @return Returns the WhoAmIResponse instance.
      */
-    public WhoAmIResponseDecorator getWhoAmIResponse()
+    public WhoAmIResponse getWhoAmIResponse()
     {
         return whoAmIResponse;
     }
@@ -59,11 +60,11 @@ public class WhoAmIResponseContainer extends AbstractContainer
      * Set a WhoAmIResponse Object into the container. It will be completed by
      * the ldapDecoder.
      * 
-     * @param whoAmIResponseDecorator the WhoAmIResponse to set.
+     * @param whoAmIResponse the WhoAmIResponse to set.
      */
-    public void setWhoAmIResponse( WhoAmIResponseDecorator whoAmIResponseDecorator )
+    public void setWhoAmIResponse( WhoAmIResponse whoAmIResponse )
     {
-        this.whoAmIResponse = whoAmIResponseDecorator;
+        this.whoAmIResponse = whoAmIResponse;
     }
 
 

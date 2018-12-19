@@ -27,7 +27,7 @@ import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.grammar.GrammarTransition;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
+import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIResponse;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIResponseImpl;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -85,8 +85,7 @@ public class WhoAmIResponseGrammar extends AbstractGrammar<WhoAmIResponseContain
                 {
                     public void action( WhoAmIResponseContainer container ) throws DecoderException
                     {
-                        WhoAmIResponseDecorator whoAmIResponse = new WhoAmIResponseDecorator(
-                            LdapApiServiceFactory.getSingleton(), new WhoAmIResponseImpl() );
+                        WhoAmIResponse whoAmIResponse = new WhoAmIResponseImpl();
                         container.setWhoAmIResponse( whoAmIResponse );
                         
                         byte[] data = container.getCurrentTLV().getValue().getData();
@@ -106,8 +105,8 @@ public class WhoAmIResponseGrammar extends AbstractGrammar<WhoAmIResponseContain
                                 case 2 :
                                     if ( ( data[0] == 'u' ) && ( data[1] == ':' ) )
                                     {
-                                        whoAmIResponse.setAuthzId( data );
-                                        whoAmIResponse.setUserId( Strings.utf8ToString( data, 3, data.length - 3 ) );
+                                        ( ( WhoAmIResponseImpl ) whoAmIResponse ).setAuthzId( data );
+                                        ( ( WhoAmIResponseImpl ) whoAmIResponse ).setUserId( Strings.utf8ToString( data, 3, data.length - 3 ) );
                                     }
                                     else
                                     {
@@ -124,8 +123,8 @@ public class WhoAmIResponseGrammar extends AbstractGrammar<WhoAmIResponseContain
                                         case 'u' :
                                             if ( data[1] == ':' )
                                             {
-                                                whoAmIResponse.setAuthzId( data );
-                                                whoAmIResponse.setUserId( Strings.utf8ToString( data, 3, data.length - 3 ) );
+                                                ( ( WhoAmIResponseImpl ) whoAmIResponse ).setAuthzId( data );
+                                                ( ( WhoAmIResponseImpl ) whoAmIResponse ).setUserId( Strings.utf8ToString( data, 3, data.length - 3 ) );
                                             }
                                             else
                                             {
@@ -142,11 +141,11 @@ public class WhoAmIResponseGrammar extends AbstractGrammar<WhoAmIResponseContain
                                                 // Check that the remaining bytes are a valid DN
                                                 if ( Dn.isValid( Strings.utf8ToString( data, 3, data.length - 3 ) ) )
                                                 {
-                                                    whoAmIResponse.setAuthzId( data );
+                                                    ( ( WhoAmIResponseImpl ) whoAmIResponse ).setAuthzId( data );
                                                     
                                                     try
                                                     {
-                                                        whoAmIResponse.setDn( new Dn( Strings.utf8ToString( data, 3, data.length - 3 ) ) );
+                                                        ( ( WhoAmIResponseImpl ) whoAmIResponse ).setDn( new Dn( Strings.utf8ToString( data, 3, data.length - 3 ) ) );
                                                     }
                                                     catch ( LdapInvalidDnException e )
                                                     {
@@ -180,7 +179,7 @@ public class WhoAmIResponseGrammar extends AbstractGrammar<WhoAmIResponseContain
                         }
                         else
                         {
-                            whoAmIResponse.setAuthzId( null );
+                            ( ( WhoAmIResponseImpl ) whoAmIResponse ).setAuthzId( null );
                         }
 
                         // We may have nothing left

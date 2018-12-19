@@ -59,8 +59,6 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
     /** The encoded LDAP URL list */
     private List<byte[]> ldapUrlBytes;
 
-    private GracefulDisconnectResponse gracefulDisconnectResponse;
-
     /**
      * Creates a new instance of CancelResponseDecorator.
      *
@@ -70,7 +68,6 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
     public GracefulDisconnectResponseDecorator( LdapApiService codec, GracefulDisconnectResponse decoratedMessage )
     {
         super( codec, decoratedMessage );
-        gracefulDisconnectResponse = decoratedMessage;
     }
 
     
@@ -116,7 +113,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
         {
             if ( responseValue != null )
             {
-                decoder.decode( responseValue );
+                decoder.decode( this, responseValue );
                 this.responseValue = new byte[responseValue.length];
                 System.arraycopy( responseValue, 0, this.responseValue, 0, responseValue.length );
             }
@@ -138,7 +135,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
     @Override
     public int getDelay()
     {
-        return gracefulDisconnectResponse.getDelay();
+        return getDecorated().getDelay();
     }
 
 
@@ -148,7 +145,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
     @Override
     public void setDelay( int delay )
     {
-        gracefulDisconnectResponse.setDelay( delay );
+        getDecorated().setDelay( delay );
     }
 
 
@@ -158,7 +155,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
     @Override
     public int getTimeOffline()
     {
-        return gracefulDisconnectResponse.getTimeOffline();
+        return getDecorated().getTimeOffline();
     }
 
 
@@ -168,7 +165,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
     @Override
     public void setTimeOffline( int timeOffline )
     {
-        gracefulDisconnectResponse.setTimeOffline( timeOffline );
+        getDecorated().setTimeOffline( timeOffline );
     }
 
 
@@ -178,7 +175,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
     @Override
     public Referral getReplicatedContexts()
     {
-        return gracefulDisconnectResponse.getReplicatedContexts();
+        return getDecorated().getReplicatedContexts();
     }
     
     
@@ -188,7 +185,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
     @Override
     public void addReplicatedContexts( String replicatedContext )
     {
-        gracefulDisconnectResponse.getReplicatedContexts().addLdapUrl( replicatedContext );
+        getDecorated().getReplicatedContexts().addLdapUrl( replicatedContext );
     }
 
 
@@ -210,25 +207,25 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
     {
         gracefulDisconnectSequenceLength = 0;
 
-        if ( gracefulDisconnectResponse.getTimeOffline() != 0 )
+        if ( getDecorated().getTimeOffline() != 0 )
         {
-            gracefulDisconnectSequenceLength += 1 + 1 + BerValue.getNbBytes( gracefulDisconnectResponse.getTimeOffline() );
+            gracefulDisconnectSequenceLength += 1 + 1 + BerValue.getNbBytes( getDecorated().getTimeOffline() );
         }
 
-        if ( gracefulDisconnectResponse.getDelay() != 0 )
+        if ( getDecorated().getDelay() != 0 )
         {
-            gracefulDisconnectSequenceLength += 1 + 1 + BerValue.getNbBytes( gracefulDisconnectResponse.getDelay() );
+            gracefulDisconnectSequenceLength += 1 + 1 + BerValue.getNbBytes( getDecorated().getDelay() );
         }
 
-        if ( ( gracefulDisconnectResponse.getReplicatedContexts() != null )
-            && ( !gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().isEmpty() ) )
+        if ( ( getDecorated().getReplicatedContexts() != null )
+            && ( !getDecorated().getReplicatedContexts().getLdapUrls().isEmpty() ) )
         {
             replicatedContextsLength = 0;
             
-            ldapUrlBytes = new ArrayList<>( gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().size() );
+            ldapUrlBytes = new ArrayList<>( getDecorated().getReplicatedContexts().getLdapUrls().size() );
 
             // We may have more than one reference.
-            for ( String replicatedContext : gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls() )
+            for ( String replicatedContext : getDecorated().getReplicatedContexts().getLdapUrls() )
             {
                 byte[] bytes = Strings.getBytesUtf8( replicatedContext );
                 ldapUrlBytes.add( bytes );
@@ -259,20 +256,20 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
         bb.put( UniversalTag.SEQUENCE.getValue() );
         bb.put( TLV.getBytes( gracefulDisconnectSequenceLength ) );
 
-        if ( gracefulDisconnectResponse.getTimeOffline() != 0 )
+        if ( getDecorated().getTimeOffline() != 0 )
         {
-            BerValue.encode( bb, gracefulDisconnectResponse.getTimeOffline() );
+            BerValue.encode( bb, getDecorated().getTimeOffline() );
         }
 
-        if ( gracefulDisconnectResponse.getDelay() != 0 )
+        if ( getDecorated().getDelay() != 0 )
         {
             bb.put( ( byte ) GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG );
-            bb.put( ( byte ) TLV.getNbBytes( gracefulDisconnectResponse.getDelay() ) );
-            bb.put( BerValue.getBytes( gracefulDisconnectResponse.getDelay() ) );
+            bb.put( ( byte ) TLV.getNbBytes( getDecorated().getDelay() ) );
+            bb.put( BerValue.getBytes( getDecorated().getDelay() ) );
         }
 
-        if ( ( gracefulDisconnectResponse.getReplicatedContexts() != null )
-            && ( !gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().isEmpty() ) )
+        if ( ( getDecorated().getReplicatedContexts() != null )
+            && ( !getDecorated().getReplicatedContexts().getLdapUrls().isEmpty() ) )
         {
             bb.put( UniversalTag.SEQUENCE.getValue() );
             bb.put( TLV.getBytes( replicatedContextsLength ) );
@@ -297,16 +294,16 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
         StringBuilder sb = new StringBuilder();
 
         sb.append( "Graceful Disconnect extended operation" );
-        sb.append( "    TimeOffline : " ).append( gracefulDisconnectResponse.getTimeOffline() ).append( '\n' );
-        sb.append( "    Delay : " ).append( gracefulDisconnectResponse.getDelay() ).append( '\n' );
+        sb.append( "    TimeOffline : " ).append( getDecorated().getTimeOffline() ).append( '\n' );
+        sb.append( "    Delay : " ).append( getDecorated().getDelay() ).append( '\n' );
 
-        if ( ( gracefulDisconnectResponse.getReplicatedContexts() != null ) 
-            && ( !gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().isEmpty() ) )
+        if ( ( getDecorated().getReplicatedContexts() != null ) 
+            && ( !getDecorated().getReplicatedContexts().getLdapUrls().isEmpty() ) )
         {
             sb.append( "    Replicated contexts :" );
 
             // We may have more than one reference.
-            for ( String url : gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls() )
+            for ( String url : getDecorated().getReplicatedContexts().getLdapUrls() )
             {
                 sb.append( "\n        " ).append( url );
             }

@@ -25,7 +25,6 @@ import java.io.StringWriter;
 import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.DecoderException;
-import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
@@ -76,15 +75,7 @@ public class WhoAmIFactory extends AbstractExtendedOperationFactory
     @Override
     public WhoAmIResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
-        WhoAmIResponseDecorator response = new WhoAmIResponseDecorator( codec,
-            new WhoAmIResponseImpl() );
-        
-        if ( encodedValue != null )
-        {  
-            response.setResponseValue( encodedValue );
-        }
-        
-        return response;
+        return WhoAmIResponseDecoder.decode( new WhoAmIResponseImpl(), encodedValue );
     }
 
 
@@ -141,8 +132,6 @@ public class WhoAmIFactory extends AbstractExtendedOperationFactory
         ExtendedResponseDecorator<ExtendedResponse> response = ( ExtendedResponseDecorator<ExtendedResponse> ) decoratedResponse;
 
         // Decode the response, as it's an opaque operation
-        Asn1Decoder decoder = new WhoAmIResponseDecoder();
-
         byte[] value = response.getResponseValue();
         
         if ( value == null )
@@ -152,14 +141,11 @@ public class WhoAmIFactory extends AbstractExtendedOperationFactory
         
         ByteBuffer buffer = ByteBuffer.wrap( value );
 
-        WhoAmIResponseContainer container = new WhoAmIResponseContainer();
-        WhoAmIResponse whoAmIResponse = null;
+        WhoAmIResponse whoAmIResponse = new WhoAmIResponseImpl( response.getMessageId() );
 
         try
         {
-            decoder.decode( buffer, container );
-
-            whoAmIResponse = container.getWhoAmIResponse();
+            WhoAmIResponseDecoder.decode( whoAmIResponse, buffer.array() );
 
             // Now, update the created response with what we got from the extendedResponse
             whoAmIResponse.getLdapResult().setResultCode( response.getLdapResult().getResultCode() );
@@ -190,13 +176,13 @@ public class WhoAmIFactory extends AbstractExtendedOperationFactory
     @Override
     public void encodeValue( Asn1Buffer buffer, ExtendedResponse extendedResponse )
     {
-        // Reset the responseName, it should always be null for a WhoAMI extended operation
-        extendedResponse.setResponseName( null );
-        
         if ( extendedResponse == null )
         {
             return;
         }
+
+        // Reset the responseName, it should always be null for a WhoAMI extended operation
+        extendedResponse.setResponseName( null );
         
         // The authzID as a opaque byte array
         byte[] authzid =  ( ( WhoAmIResponse ) extendedResponse ).getAuthzId();

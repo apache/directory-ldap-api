@@ -2101,16 +2101,7 @@ public class DefaultAttribute implements Attribute, Cloneable
         {
             for ( int i = 0; i < nbValues; i++ )
             {
-                Value value;
-
-                if ( isHR )
-                {
-                    value = new Value( attributeType );
-                }
-                else
-                {
-                    value = new Value( attributeType );
-                }
+                Value value = new Value( attributeType );
 
                 value.readExternal( in );
 

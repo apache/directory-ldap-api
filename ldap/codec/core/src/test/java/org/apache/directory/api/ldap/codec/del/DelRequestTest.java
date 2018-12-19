@@ -20,11 +20,11 @@
 package org.apache.directory.api.ldap.codec.del;
 
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.Map;
 
 import org.apache.directory.api.asn1.DecoderException;
@@ -39,7 +39,6 @@ import org.apache.directory.api.ldap.codec.decorators.DeleteRequestDecorator;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.DeleteRequest;
-import org.apache.directory.api.ldap.model.message.DeleteRequestImpl;
 import org.apache.directory.api.ldap.model.message.DeleteResponseImpl;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
@@ -81,12 +80,10 @@ public class DelRequestTest extends AbstractCodecServiceTest
                   'o', 'u', '=', 'u', 's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm'
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<DeleteRequestDecorator> container = new LdapMessageContainer<DeleteRequestDecorator>(
-            codec );
+        LdapMessageContainer<DeleteRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode a DelRequest PDU
         ldapDecoder.decode( stream, container );
@@ -97,27 +94,12 @@ public class DelRequestTest extends AbstractCodecServiceTest
         assertEquals( 1, delRequest.getMessageId() );
         assertEquals( "cn=testModify,ou=users,ou=system", delRequest.getName().toString() );
 
-        // Check the length
-        DeleteRequest internalDeleteRequest = new DeleteRequestImpl();
-        internalDeleteRequest.setMessageId( delRequest.getMessageId() );
-        internalDeleteRequest.setName( delRequest.getName() );
-
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, new DeleteRequestDecorator( codec, internalDeleteRequest ) );
-
-        // Check the length
-        assertEquals( 0x27, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
-
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, internalDeleteRequest );
+        LdapEncoder.encodeMessageReverse( buffer, codec, delRequest );
 
-        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
@@ -145,8 +127,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<DeleteRequestDecorator> container = new LdapMessageContainer<DeleteRequestDecorator>(
-            codec );
+        LdapMessageContainer<DeleteRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode a DelRequest PDU
         try
@@ -188,8 +169,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<DeleteRequestDecorator> container = new LdapMessageContainer<DeleteRequestDecorator>(
-            codec );
+        LdapMessageContainer<DeleteRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode a DelRequest PDU
         ldapDecoder.decode( stream, container );
@@ -222,12 +202,10 @@ public class DelRequestTest extends AbstractCodecServiceTest
                       '7', '3', '0', '.', '3', '.', '4', '.', '2'
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<DeleteRequestDecorator> container = new LdapMessageContainer<DeleteRequestDecorator>(
-            codec );
+        LdapMessageContainer<DeleteRequestDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode a DelRequest PDU
         ldapDecoder.decode( stream, container );
@@ -249,19 +227,11 @@ public class DelRequestTest extends AbstractCodecServiceTest
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
         assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
-        DeleteRequest internalDeleteRequest = new DeleteRequestImpl();
-        internalDeleteRequest.setMessageId( delRequest.getMessageId() );
-        internalDeleteRequest.setName( delRequest.getName() );
-        internalDeleteRequest.addControl( control );
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, new DeleteRequestDecorator( codec, internalDeleteRequest ) );
+        LdapEncoder.encodeMessageReverse( buffer, codec, delRequest );
 
-        // Check the length
-        assertEquals( 0x44, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 }

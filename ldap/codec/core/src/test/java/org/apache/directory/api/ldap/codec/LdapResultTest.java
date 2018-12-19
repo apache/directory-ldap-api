@@ -44,7 +44,6 @@ import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.message.ReferralImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -234,12 +233,10 @@ public class LdapResultTest extends AbstractCodecServiceTest
                     0x04, 0x00              // Empty errorMessage
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<AddResponseDecorator> container =
-            new LdapMessageContainer<AddResponseDecorator>( codec );
+        LdapMessageContainer<AddResponseDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the AddResponse PDU
         ldapDecoder.decode( stream, container );
@@ -251,15 +248,6 @@ public class LdapResultTest extends AbstractCodecServiceTest
         assertEquals( ResultCodeEnum.SUCCESS, addResponse.getLdapResult().getResultCode() );
         assertEquals( "", addResponse.getLdapResult().getMatchedDn().getName() );
         assertEquals( "", addResponse.getLdapResult().getDiagnosticMessage() );
-
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, addResponse );
-
-        // Check the length
-        assertEquals( 0x0E, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
 
         // Check the reverse encoding
         Asn1Buffer buffer = new Asn1Buffer();
@@ -296,11 +284,10 @@ public class LdapResultTest extends AbstractCodecServiceTest
                         'l', 'd', 'a', 'p', ':', '/', '/', '/',
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<AddResponseDecorator> container = new LdapMessageContainer<AddResponseDecorator>( codec );
+        LdapMessageContainer<AddResponseDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the AddResponse PDU
         ldapDecoder.decode( stream, container );
@@ -320,15 +307,6 @@ public class LdapResultTest extends AbstractCodecServiceTest
         Collection<String> ldapUrls = referral.getLdapUrls();
 
         assertTrue( ldapUrls.contains( "ldap:///" ) );
-
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, addResponse );
-
-        // Check the length
-        assertEquals( 0x1A, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
 
         // Check the reverse encoding
         Asn1Buffer buffer = new Asn1Buffer();
@@ -371,11 +349,10 @@ public class LdapResultTest extends AbstractCodecServiceTest
                         'l', 'd', 'a', 'p', ':', '/', '/', '/',
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<AddResponseDecorator> container = new LdapMessageContainer<AddResponseDecorator>( codec );
+        LdapMessageContainer<AddResponseDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the AddResponse PDU
         ldapDecoder.decode( stream, container );
@@ -400,15 +377,6 @@ public class LdapResultTest extends AbstractCodecServiceTest
         {
             assertEquals( "ldap:///", ldapUrl );
         }
-
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, addResponse );
-
-        // Check the length
-        assertEquals( 0x24, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
 
         // Check the reverse encoding
         Asn1Buffer buffer = new Asn1Buffer();
@@ -452,11 +420,10 @@ public class LdapResultTest extends AbstractCodecServiceTest
                       0x04, 0x00
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<AddResponseDecorator> container = new LdapMessageContainer<AddResponseDecorator>( codec );
+        LdapMessageContainer<AddResponseDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the AddResponse PDU
         ldapDecoder.decode( stream, container );
@@ -486,15 +453,6 @@ public class LdapResultTest extends AbstractCodecServiceTest
             assertEquals( expected[i], ldapUrl );
             i++;
         }
-
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, addResponse );
-
-        // Check the length
-        assertEquals( 0x1C, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
 
         // Check the reverse encoding
         Asn1Buffer buffer = new Asn1Buffer();

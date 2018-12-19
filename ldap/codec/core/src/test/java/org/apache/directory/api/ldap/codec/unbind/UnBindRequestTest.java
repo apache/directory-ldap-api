@@ -20,11 +20,10 @@
 package org.apache.directory.api.ldap.codec.unbind;
 
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.Map;
 
 import org.apache.directory.api.asn1.DecoderException;
@@ -38,7 +37,6 @@ import org.apache.directory.api.ldap.codec.decorators.UnbindRequestDecorator;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.UnbindRequest;
-import org.apache.directory.api.ldap.model.message.UnbindRequestImpl;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -71,12 +69,10 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
                                         // UnbindRequest ::= [APPLICATION 2] NULL
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<UnbindRequestDecorator> ldapMessageContainer =
-                new LdapMessageContainer<UnbindRequestDecorator>( codec );
+        LdapMessageContainer<UnbindRequestDecorator> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -84,25 +80,12 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
 
         assertEquals( 1, unbindRequest.getMessageId() );
 
-        // Check the encoding
-        UnbindRequest internalUnbindRequest = new UnbindRequestImpl();
-        internalUnbindRequest.setMessageId( unbindRequest.getMessageId() );
-
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, new UnbindRequestDecorator( codec, internalUnbindRequest ) );
-
-        // Check the length
-        assertEquals( 0x07, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
-
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, internalUnbindRequest );
+        LdapEncoder.encodeMessageReverse( buffer, codec, unbindRequest );
 
-        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
@@ -128,12 +111,10 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
                       '1', '1', '3', '7', '3', '0', '.', '3', '.', '4', '.', '2'
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<UnbindRequestDecorator> ldapMessageContainer =
-                new LdapMessageContainer<UnbindRequestDecorator>( codec );
+        LdapMessageContainer<UnbindRequestDecorator> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -152,19 +133,12 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
         assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
-        // Check the encoding
-        UnbindRequest internalUnbindRequest = new UnbindRequestImpl();
-        internalUnbindRequest.setMessageId( unbindRequest.getMessageId() );
-        internalUnbindRequest.addControl( control );
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
 
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, new UnbindRequestDecorator( codec, internalUnbindRequest ) );
+        LdapEncoder.encodeMessageReverse( buffer, codec, unbindRequest );
 
-        // Check the length
-        assertEquals( 0x24, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
@@ -188,8 +162,7 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<UnbindRequestDecorator> ldapMessageContainer =
-                new LdapMessageContainer<UnbindRequestDecorator>( codec );
+        LdapMessageContainer<UnbindRequestDecorator> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a UnbindRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );

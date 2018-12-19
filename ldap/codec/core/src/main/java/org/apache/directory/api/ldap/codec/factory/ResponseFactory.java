@@ -60,7 +60,7 @@ public abstract class ResponseFactory implements Messagefactory
      * @param buffer The buffer that will contain the encoded urls
      * @param urls The urls to encode
      */
-    private void encodeReferralUrls( Asn1Buffer buffer, Iterator<String> urls )
+    protected void encodeReferralUrls( Asn1Buffer buffer, Iterator<String> urls )
     {
         if ( urls.hasNext() )
         {

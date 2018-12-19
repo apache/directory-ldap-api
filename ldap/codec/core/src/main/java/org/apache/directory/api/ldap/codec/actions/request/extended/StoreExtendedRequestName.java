@@ -25,7 +25,6 @@ import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
@@ -96,9 +95,9 @@ public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer
                     throw new DecoderException( msg );
                 }
 
-                req = LdapApiServiceFactory.getSingleton().newExtendedRequest( requestName, null );
+                req = container.getLdapCodecService().newExtendedRequest( requestName, null );
                 req.setMessageId( container.getMessageId() );
-                container.setMessage( LdapApiServiceFactory.getSingleton().decorate( req ) );
+                container.setMessage( container.getLdapCodecService().decorate( req ) );
             }
             catch ( DecoderException de )
             {

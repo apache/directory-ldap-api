@@ -96,8 +96,8 @@ public class WhoAmIResponseImpl extends ExtendedResponseImpl implements WhoAmIRe
     public WhoAmIResponseImpl()
     {
         super( EXTENSION_OID );
-        super.getLdapResult().setMatchedDn( null );
-        super.getLdapResult().setResultCode( ResultCodeEnum.SUCCESS );
+        ldapResult.setMatchedDn( null );
+        ldapResult.setResultCode( ResultCodeEnum.SUCCESS );
     }
 
 
@@ -112,9 +112,10 @@ public class WhoAmIResponseImpl extends ExtendedResponseImpl implements WhoAmIRe
 
 
     /**
-     * {@inheritDoc}
+     * Set the authzId value
+     * 
+     * @param authzId the value to store
      */
-    @Override
     public void setAuthzId( byte[] authzId )
     {
         this.authzId = authzId;

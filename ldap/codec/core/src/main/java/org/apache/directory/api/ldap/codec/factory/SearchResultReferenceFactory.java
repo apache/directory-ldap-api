@@ -19,8 +19,6 @@
  */
 package org.apache.directory.api.ldap.codec.factory;
 
-import java.util.Iterator;
-
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
@@ -42,32 +40,6 @@ public final class SearchResultReferenceFactory extends ResponseFactory
     private SearchResultReferenceFactory()
     {
         super();
-    }
-
-
-    /**
-     * Encode the values recursively
-     *
-     * <pre>
-     * 0x04 LL attributeValue
-     * ...
-     * 0x04 LL attributeValue
-     * </pre>
-     *
-     * @param codec The LdapApiService instance
-     * @param buffer The buffer where to put the PDU
-     * @param uls The iterator on the URLs
-     */
-    private void encodeReferralUrls( Asn1Buffer buffer, Iterator<String> urls )
-    {
-        if ( urls.hasNext() )
-        {
-            String url = urls.next();
-
-            encodeReferralUrls( buffer, urls );
-
-            BerValue.encodeOctetString( buffer, url );
-        }
     }
 
 

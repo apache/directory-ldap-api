@@ -968,7 +968,7 @@ public class DefaultLdapCodecService implements LdapApiService
             sb.append( "[" ).append( element.getKey() ).append( "]\n" );
         }
         
-        sb.append( "Response controls      :" );
+        sb.append( "Response controls      :\n" );
         
         for ( Map.Entry<String, ControlFactory<?>> element : responseControlFactories .entrySet() )
         {
@@ -977,7 +977,7 @@ public class DefaultLdapCodecService implements LdapApiService
             sb.append( "[" ).append( element.getKey() ).append( "]\n" );
         }
         
-        sb.append( "Extended requests      :" );
+        sb.append( "Extended requests      :\n" );
         
         for ( Map.Entry<String, ExtendedOperationFactory> element : extendedRequestFactories .entrySet() )
         {
@@ -986,7 +986,7 @@ public class DefaultLdapCodecService implements LdapApiService
             sb.append( "[" ).append( element.getKey() ).append( "]\n" );
         }
         
-        sb.append( "Extended responses     :" );
+        sb.append( "Extended responses     :\n" );
         
         for ( Map.Entry<String, ExtendedOperationFactory> element : extendedResponseFactories.entrySet() )
         {
@@ -995,7 +995,7 @@ public class DefaultLdapCodecService implements LdapApiService
             sb.append( "[" ).append( element.getKey() ).append( "]\n" );
         }
         
-        sb.append( "Intermediate responses :" );
+        sb.append( "Intermediate responses :\n" );
         
         for ( Map.Entry<String, IntermediateOperationFactory> element : intermediateResponseFactories .entrySet() )
         {

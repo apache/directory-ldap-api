@@ -20,11 +20,10 @@
 package org.apache.directory.api.ldap.codec.del;
 
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.Map;
 
 import org.apache.directory.api.asn1.DecoderException;
@@ -38,7 +37,6 @@ import org.apache.directory.api.ldap.codec.decorators.DeleteResponseDecorator;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.DeleteResponse;
-import org.apache.directory.api.ldap.model.message.DeleteResponseImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
@@ -86,12 +84,10 @@ public class DelResponseTest extends AbstractCodecServiceTest
                                             // }
         } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<DeleteResponseDecorator> container =
-            new LdapMessageContainer<DeleteResponseDecorator>( codec );
+        LdapMessageContainer<DeleteResponseDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the DelResponse PDU
         ldapDecoder.decode( stream, container );
@@ -104,26 +100,12 @@ public class DelResponseTest extends AbstractCodecServiceTest
         assertEquals( "uid=akarasulu,dc=example,dc=com", delResponse.getLdapResult().getMatchedDn().getName() );
         assertEquals( "", delResponse.getLdapResult().getDiagnosticMessage() );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, delResponse );
-
-        // Check the length
-        assertEquals( 0x2D, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
-
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        DeleteResponse response = new DeleteResponseImpl( delResponse.getMessageId() );
-        response.getLdapResult().setResultCode( ResultCodeEnum.ALIAS_PROBLEM );
-        response.getLdapResult().setMatchedDn( delResponse.getLdapResult().getMatchedDn() );
+        LdapEncoder.encodeMessageReverse( buffer, codec, delResponse );
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, response );
-
-        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
@@ -147,8 +129,7 @@ public class DelResponseTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<DeleteResponseDecorator> container =
-            new LdapMessageContainer<DeleteResponseDecorator>( codec );
+        LdapMessageContainer<DeleteResponseDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode a DelResponse message
         ldapDecoder.decode( stream, container );
@@ -163,11 +144,11 @@ public class DelResponseTest extends AbstractCodecServiceTest
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
-        ByteBuffer stream = ByteBuffer.allocate( 0x4A );
+        ByteBuffer stream = ByteBuffer.allocate( 0x51 );
 
         stream.put( new byte[]
             {
-                0x30, 0x48,                 // LDAPMessage ::=SEQUENCE {
+                0x30, 0x4F,                 // LDAPMessage ::=SEQUENCE {
                   0x02, 0x01, 0x01,         // messageID MessageID
                   0x6B, 0x26,               // CHOICE { ..., delResponse DelResponse, ...
                                             // DelResponse ::= [APPLICATION 11] LDAPResult
@@ -182,19 +163,20 @@ public class DelResponseTest extends AbstractCodecServiceTest
                                             // LDAPString,
                                             // referral [3] Referral OPTIONAL }
                                             // }
-                    ( byte ) 0xA0, 0x1B,    // A control
-                      0x30, 0x19,
-                        0x04, 0x17,
-                          '2', '.', '1', '6', '.', '8', '4', '0', '.', '1', '.',
-                          '1', '1', '3', '7', '3', '0', '.', '3', '.', '4', '.', '2'
+                  ( byte ) 0xA0, 0x22,      // A control
+                    0x30, 0x20,
+                      0x04, 0x17,
+                        '2', '.', '1', '6', '.', '8', '4', '0', '.', '1', '.',
+                        '1', '1', '3', '7', '3', '0', '.', '3', '.', '4', '.', '7',
+                      0x04, 0x05,           // Control value
+                        0x30, 0x03,         // EntryChangeNotification ::= SEQUENCE {
+                          0x0A, 0x01, 0x01  //     changeType ENUMERATED {
         } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<DeleteResponseDecorator> container =
-            new LdapMessageContainer<DeleteResponseDecorator>( codec );
+        LdapMessageContainer<DeleteResponseDecorator> container = new LdapMessageContainer<>( codec );
 
         // Decode the DelResponse PDU
         ldapDecoder.decode( stream, container );
@@ -213,19 +195,15 @@ public class DelResponseTest extends AbstractCodecServiceTest
         assertEquals( 1, controls.size() );
 
         @SuppressWarnings("unchecked")
-        CodecControl<Control> control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) controls
-            .get( "2.16.840.1.113730.3.4.2" );
-        assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
+        CodecControl<Control> control = ( CodecControl<Control> ) controls.get( "2.16.840.1.113730.3.4.7" );
+        assertEquals( "2.16.840.1.113730.3.4.7", control.getOid() );
+        assertEquals( "0x30 0x03 0x0A 0x01 0x01 ", Strings.dumpBytes( control.getValue() ) );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, delResponse );
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
 
-        // Check the length
-        assertEquals( 0x4A, bb.limit() );
+        LdapEncoder.encodeMessageReverse( buffer, codec, delResponse );
 
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 }
