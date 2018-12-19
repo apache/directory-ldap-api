@@ -624,6 +624,60 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
      * {@inheritDoc}
      */
     @Override
+    public int hashCode()
+    {
+        int ath = super.hashCode();
+        
+        // USER_MODIFY
+        ath += ath * 17 + ( canUserModify ? 1 : 0 );
+        
+        // COLLECTIVE
+        ath += ath * 17 + ( isCollective ? 1 : 0 );
+        
+        // MULTI_VALUED
+        ath += ath * 17 + ( isSingleValued ? 1 : 0 );
+        
+        // The syntax
+        if ( syntax != null )
+        {
+            ath += ath * 17 + syntax.hashCode();
+        }
+
+        // The equality matching rule if any
+        if ( equality != null )
+        {
+            ath += ath * 17 + equality.hashCode();
+        }
+
+        // The substring matching rule if any
+        if ( substring != null )
+        {
+            ath += ath * 17 + substring.hashCode();
+        }
+        
+        // The superior if any
+        if ( superior != null )
+        {
+            ath += ath * 17 + superior.hashCode();
+        }
+        
+        // The ordering if any
+        if ( ordering != null )
+        {
+            ath += ath * 17 + ordering.hashCode();
+        }
+        
+        // Last, not least, the usage
+        ath += ath * 17 + usage.getValue();
+        
+        return ath;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean equals( Object o )
     {
         if ( this == o )

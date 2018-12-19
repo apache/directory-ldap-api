@@ -176,6 +176,8 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         }
 
         this.oid = oid;
+        
+        computeHashCode();
     }
 
 

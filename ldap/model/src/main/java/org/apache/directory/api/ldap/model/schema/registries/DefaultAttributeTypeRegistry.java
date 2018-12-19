@@ -30,6 +30,8 @@ import java.util.Set;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapNoSuchAttributeException;
+import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
+import org.apache.directory.api.ldap.model.exception.LdapSchemaExceptionCodes;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.SchemaObjectType;
@@ -165,6 +167,12 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
         if ( ancestor == null )
         {
             return;
+        }
+        
+        // Check if the ancestor is not the attribute type itself
+        if ( attributeType.getOid().equals( ancestor.getOid() ) )
+        {
+            throw new LdapSchemaException( LdapSchemaExceptionCodes.AT_CYCLE_TYPE_HIERARCHY );
         }
 
         // Get the ancestor's descendant, if any
