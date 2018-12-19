@@ -83,6 +83,7 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.exception.LdapNoPermissionException;
 import org.apache.directory.api.ldap.model.exception.LdapOperationException;
 import org.apache.directory.api.ldap.model.exception.LdapOtherException;
+import org.apache.directory.api.ldap.model.exception.LdapTlsHandshakeException;
 import org.apache.directory.api.ldap.model.message.AbandonRequest;
 import org.apache.directory.api.ldap.model.message.AbandonRequestImpl;
 import org.apache.directory.api.ldap.model.message.AddRequest;
@@ -685,11 +686,17 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 
                     if ( !isSecured )
                     {
-                        throw new LdapOperationException( ResultCodeEnum.OTHER, I18n.err( I18n.ERR_04120_TLS_HANDSHAKE_ERROR ) );
+                        Throwable cause = ( Throwable ) connectionFuture.getSession().getAttribute( EXCEPTION_KEY );
+                        throw new LdapTlsHandshakeException( I18n.err( I18n.ERR_04120_TLS_HANDSHAKE_ERROR ), cause );
                     }
                 }
                 catch ( Exception e )
                 {
+                    if ( e instanceof LdapException )
+                    {
+                        throw ( LdapException ) e;
+                    }
+
                     String msg = I18n.err( I18n.ERR_04122_SSL_CONTEXT_INIT_FAILURE );
                     LOG.error( msg, e );
                     throw new LdapException( msg, e );
@@ -2407,7 +2414,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             LOG.warn( cause.getMessage(), cause );
         }
-            
+
         session.setAttribute( EXCEPTION_KEY, cause );
 
         if ( cause instanceof ProtocolEncoderException )
@@ -4548,7 +4555,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     public void sessionClosed( IoSession session ) throws Exception
     {
         // no need to handle if this session was closed by the user
-        if ( !connected.get() )
+        if ( ldapSession == null || !connected.get() )
         {
             return;
         }
@@ -4707,12 +4714,18 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 
                 if ( !isSecured )
                 {
-                    throw new LdapOperationException( ResultCodeEnum.OTHER, I18n.err( I18n.ERR_04120_TLS_HANDSHAKE_ERROR ) );
+                    Throwable cause = ( Throwable ) ldapSession.getAttribute( EXCEPTION_KEY );
+                    throw new LdapTlsHandshakeException( I18n.err( I18n.ERR_04120_TLS_HANDSHAKE_ERROR ), cause );
                 }
             }
         }
         catch ( Exception e )
         {
+            if ( e instanceof LdapException )
+            {
+                throw ( LdapException ) e;
+            }
+
             String msg = I18n.err( I18n.ERR_04122_SSL_CONTEXT_INIT_FAILURE );
             LOG.error( msg, e );
             throw new LdapException( msg, e );
