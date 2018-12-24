@@ -103,7 +103,6 @@ import org.apache.directory.api.ldap.model.message.DeleteResponse;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.api.ldap.model.message.IntermediateResponse;
-import org.apache.directory.api.ldap.model.message.IntermediateResponseImpl;
 import org.apache.directory.api.ldap.model.message.LdapResult;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.ModifyDnRequest;
@@ -2630,7 +2629,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
                 ExtendedFuture extendedFuture = ( ExtendedFuture ) responseFuture;
 
-                // remove the listener from the listener map
                 if ( LOG.isDebugEnabled() )
                 {
                     if ( extendedResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
@@ -2654,29 +2652,25 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 break;
 
             case INTERMEDIATE_RESPONSE:
-                IntermediateResponse intermediateResponse;
+                IntermediateResponse intermediateResponse = ( IntermediateResponse ) response;
 
+                // Store the response into the future
                 if ( responseFuture instanceof SearchFuture )
                 {
-                    intermediateResponse = new IntermediateResponseImpl( messageId );
-                    addControls( intermediateResponse, response );
                     ( ( SearchFuture ) responseFuture ).set( intermediateResponse );
                 }
                 else if ( responseFuture instanceof ExtendedFuture )
                 {
-                    intermediateResponse = new IntermediateResponseImpl( messageId );
-                    addControls( intermediateResponse, response );
                     ( ( ExtendedFuture ) responseFuture ).set( intermediateResponse );
                 }
                 else
                 {
                     // currently we only support IR for search and extended operations
-                    throw new UnsupportedOperationException( I18n.err( I18n.ERR_04111_UNKNOWN_RESPONSE_FUTURE_TYPE, 
+                    throw new UnsupportedOperationException( I18n.err( I18n.ERR_04111_UNKNOWN_RESPONSE_FUTURE_TYPE,
                         responseFuture.getClass().getName() ) );
                 }
 
-                intermediateResponse.setResponseName( ( ( IntermediateResponse ) response ).getResponseName() );
-                intermediateResponse.setResponseValue( ( ( IntermediateResponse ) response ).getResponseValue() );
+                // Do not remove the future from the map, that's done when receiving search result done
 
                 break;
 
