@@ -21,7 +21,6 @@ package org.apache.directory.api.ldap.model.exception;
 
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.io.IOException;
@@ -41,8 +40,6 @@ public class LdapTlsHandshakeExceptionTest
     {
         LdapTlsHandshakeException e = new LdapTlsHandshakeException( "msg", null );
         assertThat( e.getMessage(), equalTo( "msg, reason: Unspecified" ) );
-        assertThat( e.getReasonPhrase(), equalTo( "Unspecified" ) );
-        assertThat( e.getRootCause(), equalTo( null ) );
     }
 
 
@@ -51,8 +48,6 @@ public class LdapTlsHandshakeExceptionTest
     {
         LdapTlsHandshakeException e = new LdapTlsHandshakeException( "msg", new IOException( "foo" ) );
         assertThat( e.getMessage(), equalTo( "msg, reason: Unspecified: foo" ) );
-        assertThat( e.getReasonPhrase(), equalTo( "Unspecified" ) );
-        assertThat( e.getRootCause(), instanceOf( IOException.class ) );
     }
 
 
@@ -61,8 +56,6 @@ public class LdapTlsHandshakeExceptionTest
     {
         LdapTlsHandshakeException e = new LdapTlsHandshakeException( "msg", new CertificateExpiredException( "foo" ) );
         assertThat( e.getMessage(), equalTo( "msg, reason: Certificate expired: foo" ) );
-        assertThat( e.getReasonPhrase(), equalTo( "Certificate expired" ) );
-        assertThat( e.getRootCause(), instanceOf( CertificateExpiredException.class ) );
     }
 
 
@@ -72,8 +65,6 @@ public class LdapTlsHandshakeExceptionTest
         LdapTlsHandshakeException e = new LdapTlsHandshakeException( "msg",
             new CertificateNotYetValidException( "foo" ) );
         assertThat( e.getMessage(), equalTo( "msg, reason: Certificate not yet valid: foo" ) );
-        assertThat( e.getReasonPhrase(), equalTo( "Certificate not yet valid" ) );
-        assertThat( e.getRootCause(), instanceOf( CertificateNotYetValidException.class ) );
     }
 
 
@@ -83,8 +74,6 @@ public class LdapTlsHandshakeExceptionTest
         LdapTlsHandshakeException e = new LdapTlsHandshakeException( "msg",
             new Exception( new CertPathBuilderException( "foo" ) ) );
         assertThat( e.getMessage(), equalTo( "msg, reason: Failed to build certification path: foo" ) );
-        assertThat( e.getReasonPhrase(), equalTo( "Failed to build certification path" ) );
-        assertThat( e.getRootCause(), instanceOf( CertPathBuilderException.class ) );
     }
 
 
@@ -95,7 +84,6 @@ public class LdapTlsHandshakeExceptionTest
             new Exception( new Exception( new Exception( new Exception(
                 new CertPathValidatorException( "foo", null, null, -1, BasicReason.ALGORITHM_CONSTRAINED ) ) ) ) ) );
         assertThat( e.getMessage(), equalTo( "msg, reason: Failed to verify certification path: foo" ) );
-        assertThat( e.getReasonPhrase(), equalTo( "Failed to verify certification path" ) );
-        assertThat( e.getRootCause(), instanceOf( CertPathValidatorException.class ) );
     }
+
 }
