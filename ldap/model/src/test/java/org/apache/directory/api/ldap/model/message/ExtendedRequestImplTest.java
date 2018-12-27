@@ -23,9 +23,6 @@ package org.apache.directory.api.ldap.model.message;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -42,9 +39,6 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class ExtendedRequestImplTest
 {
-    private static final Map<String, Control> EMPTY_CONTROL_MAP = new HashMap<String, Control>();
-
-
     /**
      * Tests the same object reference for equality.
      */
