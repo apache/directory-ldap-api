@@ -46,7 +46,7 @@ public class StoreContextId extends AbstractReadOctetString<VirtualListViewReque
     @Override
     protected void setOctetString( byte[] value, VirtualListViewRequestContainer vlvContainer )
     {
-        vlvContainer.getDecorator().setContextId( value );
+        vlvContainer.getVirtualListViewRequest().setContextId( value );
 
         // The last element is optional, we can quit here
         vlvContainer.setGrammarEndAllowed( true );

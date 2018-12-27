@@ -20,9 +20,11 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction;
 
 
+import java.nio.ByteBuffer;
 import java.util.Iterator;
 
 import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
@@ -30,7 +32,6 @@ import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.decorators.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionRequest;
 import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionRequestImpl;
 import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionResponse;
@@ -56,7 +57,7 @@ public class EndTransactionFactory extends AbstractExtendedOperationFactory
      */
     public EndTransactionFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, EndTransactionRequest.EXTENSION_OID );
     }
 
 
@@ -64,9 +65,38 @@ public class EndTransactionFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public EndTransactionRequest newRequest()
     {
-        return EndTransactionRequest.EXTENSION_OID;
+        EndTransactionRequest endTransactionRequest = new EndTransactionRequestImpl();
+
+        return endTransactionRequest;
+
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EndTransactionRequest newRequest( byte[] encodedValue ) throws DecoderException
+    {
+        EndTransactionRequest endTransactionRequest = new EndTransactionRequestImpl();
+        decodeValue( endTransactionRequest, encodedValue );
+
+        return endTransactionRequest;
+
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EndTransactionResponse newResponse()
+    {
+        EndTransactionResponse endTransactionResponse = new EndTransactionResponseImpl();
+
+        return endTransactionResponse;
     }
 
 
@@ -76,70 +106,36 @@ public class EndTransactionFactory extends AbstractExtendedOperationFactory
     @Override
     public EndTransactionResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
-        EndTransactionResponseDecorator response = new EndTransactionResponseDecorator( codec, 
-                new EndTransactionResponseImpl() );
-        response.setResponseValue( encodedValue );
-
-        return response;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EndTransactionRequest newRequest( byte[] value )
-    {
-        EndTransactionRequestDecorator req = 
-                new EndTransactionRequestDecorator( codec, new EndTransactionRequestImpl() );
-
-        if ( value != null )
-        {
-            req.setRequestValue( value );
-        }
-
-        return req;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EndTransactionRequestDecorator decorate( ExtendedRequest modelRequest )
-    {
-        if ( modelRequest instanceof EndTransactionRequestDecorator )
-        {
-            return ( EndTransactionRequestDecorator ) modelRequest;
-        }
-
-        return new EndTransactionRequestDecorator( codec, ( EndTransactionRequest ) modelRequest );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EndTransactionResponseDecorator decorate( ExtendedResponse decoratedResponse )
-    {
-        if ( decoratedResponse instanceof EndTransactionResponseDecorator )
-        {
-            return ( EndTransactionResponseDecorator ) decoratedResponse;
-        }
-
-        // It's an opaque extended operation
-        ExtendedResponseDecorator<ExtendedResponse> response = 
-                ( ExtendedResponseDecorator<ExtendedResponse> ) decoratedResponse;
-
-        // Decode the response, as it's an opaque operation
         EndTransactionResponse endTransactionResponse = new EndTransactionResponseImpl();
-        
-        endTransactionResponse.setMessageId( response.getMessageId() );
-        endTransactionResponse.getLdapResult().setResultCode( response.getLdapResult().getResultCode() );
-        endTransactionResponse.getLdapResult().setDiagnosticMessage( response.getLdapResult().getDiagnosticMessage() );
+        decodeValue( endTransactionResponse, encodedValue );
 
-        return new EndTransactionResponseDecorator( codec, endTransactionResponse );
+        return endTransactionResponse;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void decodeValue( ExtendedRequest extendedRequest, byte[] requestValue ) throws DecoderException
+    {
+        ByteBuffer bb = ByteBuffer.wrap( requestValue );
+        EndTransactionRequestContainer container = new EndTransactionRequestContainer();
+        container.setEndTransactionRequest( ( EndTransactionRequest ) extendedRequest ); 
+        new Asn1Decoder().decode( bb, container );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void decodeValue( ExtendedResponse extendedResponse, byte[] requestValue ) throws DecoderException
+    {
+        ByteBuffer bb = ByteBuffer.wrap( requestValue );
+        EndTransactionResponseContainer container = new EndTransactionResponseContainer();
+        container.setEndTransactionResponse( ( EndTransactionResponse ) extendedResponse ); 
+        new Asn1Decoder().decode( bb, container );
     }
 
 

@@ -24,9 +24,8 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
-import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
@@ -46,7 +45,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreSearchRequestBaseObject extends GrammarAction<LdapMessageContainer<SearchRequestDecorator>>
+public class StoreSearchRequestBaseObject extends GrammarAction<LdapMessageContainerDirect<SearchRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreSearchRequestBaseObject.class );
@@ -64,16 +63,13 @@ public class StoreSearchRequestBaseObject extends GrammarAction<LdapMessageConta
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<SearchRequestDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<SearchRequest> container ) throws DecoderException
     {
-        SearchRequestDecorator searchRequestDecorator = container.getMessage();
-        SearchRequest searchRequest = searchRequestDecorator.getDecorated();
+        SearchRequest searchRequest = container.getMessage();
 
         TLV tlv = container.getCurrentTLV();
 
         // We have to check that this is a correct Dn
-        Dn baseObject;
-
         // We have to handle the special case of a 0 length base
         // object,
         // which means that the search is done from the default
@@ -85,7 +81,8 @@ public class StoreSearchRequestBaseObject extends GrammarAction<LdapMessageConta
 
             try
             {
-                baseObject = new Dn( dnStr );
+                Dn baseObject = new Dn( dnStr );
+                searchRequest.setBase( baseObject );
             }
             catch ( LdapInvalidDnException ine )
             {
@@ -99,14 +96,12 @@ public class StoreSearchRequestBaseObject extends GrammarAction<LdapMessageConta
         }
         else
         {
-            baseObject = Dn.EMPTY_DN;
+            searchRequest.setBase( Dn.EMPTY_DN );
         }
-
-        searchRequest.setBase( baseObject );
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( I18n.msg( I18n.MSG_05160_SEARCHING_WITH_ROOT_DN, baseObject ) );
+            LOG.debug( I18n.msg( I18n.MSG_05160_SEARCHING_WITH_ROOT_DN, searchRequest.getBase() ) );
         }
     }
 }

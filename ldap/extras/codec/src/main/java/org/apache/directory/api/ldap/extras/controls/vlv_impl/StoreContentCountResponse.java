@@ -45,6 +45,6 @@ public class StoreContentCountResponse extends AbstractReadInteger<VirtualListVi
     @Override
     protected void setIntegerValue( int value, VirtualListViewResponseContainer vlvContainer )
     {
-        vlvContainer.getDecorator().setContentCount( value );
+        vlvContainer.getVirtualListViewResponse().setContentCount( value );
     }
 }

@@ -24,9 +24,9 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.SearchResultEntryDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.message.SearchResultEntry;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreSearchResultEntryObjectName extends GrammarAction<LdapMessageContainer<SearchResultEntryDecorator>>
+public class StoreSearchResultEntryObjectName extends GrammarAction<LdapMessageContainerDirect<SearchResultEntry>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreSearchResultEntryObjectName.class );
@@ -61,18 +61,16 @@ public class StoreSearchResultEntryObjectName extends GrammarAction<LdapMessageC
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<SearchResultEntryDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<SearchResultEntry> container ) throws DecoderException
     {
-        SearchResultEntryDecorator searchResultEntry = container.getMessage();
+        SearchResultEntry searchResultEntry = container.getMessage();
 
         TLV tlv = container.getCurrentTLV();
-
-        Dn objectName = Dn.EMPTY_DN;
 
         // Store the value.
         if ( tlv.getLength() == 0 )
         {
-            searchResultEntry.setObjectName( objectName );
+            searchResultEntry.setObjectName( Dn.EMPTY_DN );
         }
         else
         {
@@ -81,7 +79,8 @@ public class StoreSearchResultEntryObjectName extends GrammarAction<LdapMessageC
 
             try
             {
-                objectName = new Dn( dnStr );
+                Dn objectName = new Dn( dnStr );
+                searchResultEntry.setObjectName( objectName );
             }
             catch ( LdapInvalidDnException ine )
             {
@@ -90,8 +89,6 @@ public class StoreSearchResultEntryObjectName extends GrammarAction<LdapMessageC
                 LOG.error( I18n.err( I18n.ERR_05114_ERROR_MESSAGE, msg, ine.getMessage() ) );
                 throw new DecoderException( msg, ine );
             }
-
-            searchResultEntry.setObjectName( objectName );
         }
 
         if ( LOG.isDebugEnabled() )

@@ -29,8 +29,6 @@ import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.BooleanDecoder;
 import org.apache.directory.api.asn1.ber.tlv.BooleanDecoderException;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
-import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionRequestImpl;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,15 +86,7 @@ public class EndTransactionRequestGrammar extends AbstractGrammar<EndTransaction
                 EndTransactionRequestStates.START_STATE,
                 EndTransactionRequestStates.SEQUENCE_STATE,
                 SEQUENCE, 
-                new GrammarAction<EndTransactionRequestContainer>( "Init EndTransactionRequest" )
-                {
-                    public void action( EndTransactionRequestContainer container )
-                    {
-                        EndTransactionRequestDecorator endTransactionRequestDecorator = new EndTransactionRequestDecorator(
-                            LdapApiServiceFactory.getSingleton(), new EndTransactionRequestImpl() );
-                        container.setEndTransactionRequest( endTransactionRequestDecorator );
-                    }
-                } );
+                null );
 
         /**
          * Transition from Sequence to commit flag

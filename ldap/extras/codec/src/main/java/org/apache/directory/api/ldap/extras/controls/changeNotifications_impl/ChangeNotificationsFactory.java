@@ -21,7 +21,6 @@ package org.apache.directory.api.ldap.extras.controls.changeNotifications_impl;
 
 
 import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.controls.changeNotifications.ChangeNotifications;
@@ -43,7 +42,7 @@ public class ChangeNotificationsFactory extends AbstractControlFactory<ChangeNot
      */
     public ChangeNotificationsFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, ChangeNotifications.OID );
     }
 
 
@@ -51,28 +50,8 @@ public class ChangeNotificationsFactory extends AbstractControlFactory<ChangeNot
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public ChangeNotifications newControl()
     {
-        return ChangeNotifications.OID;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<ChangeNotifications> newCodecControl()
-    {
-        return new ChangeNotificationsDecorator( codec, new ChangeNotificationsImpl() );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<ChangeNotifications> newCodecControl( ChangeNotifications control )
-    {
-        return new ChangeNotificationsDecorator( codec, control );
+        return new ChangeNotificationsImpl();
     }
 }

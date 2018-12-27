@@ -32,8 +32,8 @@ import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateTypeEnum;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateValue;
-import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncStateValueDecorator;
 import org.apache.directory.api.util.Strings;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -50,12 +50,18 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class SyncStateValueControlTest extends AbstractCodecServiceTest
 {
-    private void testReverseEncoding( SyncStateValue syncStateValue, ByteBuffer bb )
+    @Before
+    public void init()
+    {
+        codec.registerResponseControl( new SyncStateValueFactory( codec ) );
+    }
+    
+    
+    private void testReverseEncoding( SyncStateValue syncStateValue, SyncStateValueFactory factory, ByteBuffer bb )
     {
         // Test reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
         
-        SyncStateValueFactory factory = new SyncStateValueFactory( codec );
         factory.encodeValue( asn1Buffer, syncStateValue );
         assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
@@ -81,22 +87,17 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncStateValue decorator = new SyncStateValueDecorator( codec );
-
-        SyncStateValue syncStateValue = ( SyncStateValue ) ( ( SyncStateValueDecorator ) decorator )
-            .decode( bb.array() );
+        SyncStateValueFactory factory = ( SyncStateValueFactory ) codec.getResponseControlFactories().
+            get( SyncStateValue.OID );
+        SyncStateValue syncStateValue = factory.newControl();
+        factory.decodeValue( syncStateValue, bb.array() );
 
         assertEquals( SyncStateTypeEnum.PRESENT, syncStateValue.getSyncStateType() );
         assertEquals( "abc", Strings.utf8ToString( syncStateValue.getEntryUUID() ) );
         assertEquals( "xkcd", Strings.utf8ToString( syncStateValue.getCookie() ) );
 
-        // Check the encoding
-        ByteBuffer encoded = ( ( SyncStateValueDecorator ) syncStateValue ).encode( ByteBuffer
-            .allocate( ( ( SyncStateValueDecorator ) syncStateValue ).computeLength() ) );
-        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
-        
         // Test reverse encoding
-        testReverseEncoding( syncStateValue, bb );
+        testReverseEncoding( syncStateValue, factory, bb );
     }
 
 
@@ -118,22 +119,17 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncStateValue decorator = new SyncStateValueDecorator( codec );
-
-        SyncStateValue syncStateValue = ( SyncStateValue ) ( ( SyncStateValueDecorator ) decorator )
-            .decode( bb.array() );
+        SyncStateValueFactory factory = ( SyncStateValueFactory ) codec.getResponseControlFactories().
+            get( SyncStateValue.OID );
+        SyncStateValue syncStateValue = factory.newControl();
+        factory.decodeValue( syncStateValue, bb.array() );
 
         assertEquals( SyncStateTypeEnum.ADD, syncStateValue.getSyncStateType() );
         assertEquals( "abc", Strings.utf8ToString( syncStateValue.getEntryUUID() ) );
         assertNull( syncStateValue.getCookie() );
 
-        // Check the encoding
-        ByteBuffer encoded = ( ( SyncStateValueDecorator ) syncStateValue ).encode( ByteBuffer
-            .allocate( ( ( SyncStateValueDecorator ) syncStateValue ).computeLength() ) );
-        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
-        
         // Test reverse encoding
-        testReverseEncoding( syncStateValue, bb );
+        testReverseEncoding( syncStateValue, factory, bb );
     }
 
 
@@ -156,10 +152,10 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncStateValue decorator = new SyncStateValueDecorator( codec );
-
-        SyncStateValue syncStateValue = ( SyncStateValue ) ( ( SyncStateValueDecorator ) decorator )
-            .decode( bb.array() );
+        SyncStateValueFactory factory = ( SyncStateValueFactory ) codec.getResponseControlFactories().
+            get( SyncStateValue.OID );
+        SyncStateValue syncStateValue = factory.newControl();
+        factory.decodeValue( syncStateValue, bb.array() );
 
         assertEquals( SyncStateTypeEnum.MODIFY, syncStateValue.getSyncStateType() );
         assertEquals( "abc", Strings.utf8ToString( syncStateValue.getEntryUUID() ) );
@@ -178,12 +174,8 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        ByteBuffer encoded = ( ( SyncStateValueDecorator ) syncStateValue ).encode( ByteBuffer
-            .allocate( ( ( SyncStateValueDecorator ) syncStateValue ).computeLength() ) );
-        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
-        
         // Test reverse encoding
-        testReverseEncoding( syncStateValue, bb );
+        testReverseEncoding( syncStateValue, factory, bb );
     }
 
 
@@ -200,9 +192,10 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncStateValue decorator = new SyncStateValueDecorator( codec );
-
-        ( ( SyncStateValueDecorator ) decorator ).decode( bb.array() );
+        SyncStateValueFactory factory = ( SyncStateValueFactory ) codec.getResponseControlFactories().
+            get( SyncStateValue.OID );
+        SyncStateValue syncStateValue = factory.newControl();
+        factory.decodeValue( syncStateValue, bb.array() );
     }
 
 
@@ -221,9 +214,10 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncStateValue decorator = new SyncStateValueDecorator( codec );
-
-        ( ( SyncStateValueDecorator ) decorator ).decode( bb.array() );
+        SyncStateValueFactory factory = ( SyncStateValueFactory ) codec.getResponseControlFactories().
+            get( SyncStateValue.OID );
+        SyncStateValue syncStateValue = factory.newControl();
+        factory.decodeValue( syncStateValue, bb.array() );
     }
 
 
@@ -243,9 +237,10 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncStateValue decorator = new SyncStateValueDecorator( codec );
-
-        ( ( SyncStateValueDecorator ) decorator ).decode( bb.array() );
+        SyncStateValueFactory factory = ( SyncStateValueFactory ) codec.getResponseControlFactories().
+            get( SyncStateValue.OID );
+        SyncStateValue syncStateValue = factory.newControl();
+        factory.decodeValue( syncStateValue, bb.array() );
     }
 
 
@@ -270,21 +265,16 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncStateValue decorator = new SyncStateValueDecorator( codec );
-
-        SyncStateValue syncStateValue = ( SyncStateValue ) ( ( SyncStateValueDecorator ) decorator )
-            .decode( bb.array() );
+        SyncStateValueFactory factory = ( SyncStateValueFactory ) codec.getResponseControlFactories().
+            get( SyncStateValue.OID );
+        SyncStateValue syncStateValue = factory.newControl();
+        factory.decodeValue( syncStateValue, bb.array() );
 
         assertEquals( SyncStateTypeEnum.MODDN, syncStateValue.getSyncStateType() );
         assertEquals( "abc", Strings.utf8ToString( syncStateValue.getEntryUUID() ) );
         assertEquals( "xkcd", Strings.utf8ToString( syncStateValue.getCookie() ) );
 
-        // Check the encoding
-        ByteBuffer encoded = ( ( SyncStateValueDecorator ) syncStateValue ).encode( ByteBuffer
-            .allocate( ( ( SyncStateValueDecorator ) syncStateValue ).computeLength() ) );
-        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
-        
         // Test reverse encoding
-        testReverseEncoding( syncStateValue, bb );
+        testReverseEncoding( syncStateValue, factory, bb );
     }
 }

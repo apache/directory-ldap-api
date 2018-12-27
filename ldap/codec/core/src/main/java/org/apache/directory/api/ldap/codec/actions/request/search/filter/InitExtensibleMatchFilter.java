@@ -23,10 +23,10 @@ package org.apache.directory.api.ldap.codec.actions.request.search.filter;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.search.ExtensibleMatchFilter;
 import org.apache.directory.api.ldap.codec.search.Filter;
+import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitExtensibleMatchFilter extends GrammarAction<LdapMessageContainer<SearchRequestDecorator>>
+public class InitExtensibleMatchFilter extends GrammarAction<LdapMessageContainerDirect<SearchRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitExtensibleMatchFilter.class );
@@ -53,15 +53,13 @@ public class InitExtensibleMatchFilter extends GrammarAction<LdapMessageContaine
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<SearchRequestDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<SearchRequest> container ) throws DecoderException
     {
-        SearchRequestDecorator searchRequestDecorator = container.getMessage();
-
         // We can allocate the ExtensibleMatch Filter
-        Filter extensibleMatchFilter = new ExtensibleMatchFilter( container.getTlvId() );
+        Filter extensibleMatchFilter = new ExtensibleMatchFilter( container.getCurrentTLV().getId() );
 
-        searchRequestDecorator.addCurrentFilter( extensibleMatchFilter );
-        searchRequestDecorator.setTerminalFilter( extensibleMatchFilter );
+        container.addCurrentFilter( extensibleMatchFilter );
+        container.setTerminalFilter( extensibleMatchFilter );
 
         if ( LOG.isDebugEnabled() )
         {

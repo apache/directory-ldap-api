@@ -20,11 +20,14 @@
 package org.apache.directory.api.ldap.codec.actions.request.extended;
 
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.ExtendedRequestDecorator;
+import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.model.message.ExtendedRequest;
+import org.apache.directory.api.ldap.model.message.OpaqueExtendedRequest;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +42,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreExtendedRequestValue extends GrammarAction<LdapMessageContainer<ExtendedRequestDecorator<?>>>
+public class StoreExtendedRequestValue extends GrammarAction<LdapMessageContainerDirect<ExtendedRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreExtendedRequestValue.class );
@@ -57,23 +60,45 @@ public class StoreExtendedRequestValue extends GrammarAction<LdapMessageContaine
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainer<ExtendedRequestDecorator<?>> container )
+    public void action( LdapMessageContainerDirect<ExtendedRequest> container ) throws DecoderException
     {
         // We can allocate the ExtendedRequest Object
-        ExtendedRequestDecorator<?> extendedRequest = container.getMessage();
+        ExtendedRequest extendedRequest = container.getMessage();
 
         // Get the Value and store it in the ExtendedRequest
         TLV tlv = container.getCurrentTLV();
+        
+        ExtendedOperationFactory factory = container.getLdapCodecService().
+            getExtendedRequestFactories().get( extendedRequest.getRequestName() );
 
         // We have to handle the special case of a 0 length matched
         // value
-        if ( tlv.getLength() == 0 )
+        try
         {
-            extendedRequest.setRequestValue( Strings.EMPTY_BYTES );
+            if ( factory == null )
+            {
+                if ( tlv.getLength() == 0 )
+                {
+                    ( ( OpaqueExtendedRequest ) extendedRequest ).setRequestValue( Strings.EMPTY_BYTES );
+                } 
+                else
+                {
+                    ( ( OpaqueExtendedRequest ) extendedRequest ).setRequestValue( tlv.getValue().getData() );
+                }
+            }
+            else
+            {
+                factory.decodeValue( extendedRequest, tlv.getValue().getData() );
+            }
         }
-        else
+        catch ( DecoderException de )
         {
-            extendedRequest.setRequestValue( tlv.getValue().getData() );
+            String msg = I18n.err( I18n.ERR_05158_INVALID_REQUEST_VALUE,
+                Strings.dumpBytes( tlv.getValue().getData() ) );
+            LOG.error( I18n.err( I18n.ERR_05114_ERROR_MESSAGE, msg, de.getMessage() ) );
+
+            // Rethrow the exception, we will get a PROTOCOL_ERROR
+            throw de;
         }
 
         // We can have an END transition
@@ -81,7 +106,8 @@ public class StoreExtendedRequestValue extends GrammarAction<LdapMessageContaine
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( I18n.msg( I18n.MSG_05127_EXTENDED_VALUE, extendedRequest.getRequestValue() ) );
+            LOG.debug( I18n.msg( I18n.MSG_05127_EXTENDED_VALUE, 
+                Strings.dumpBytes( tlv.getValue().getData() ) ) );
         }
     }
 }

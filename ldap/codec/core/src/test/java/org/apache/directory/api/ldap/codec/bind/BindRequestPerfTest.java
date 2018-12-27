@@ -20,25 +20,11 @@
 package org.apache.directory.api.ldap.codec.bind;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.nio.ByteBuffer;
-import java.util.Map;
-
-import org.apache.directory.api.asn1.DecoderException;
-import org.apache.directory.api.asn1.EncoderException;
-import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.BindRequestDecorator;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.BindRequest;
 import org.apache.directory.api.ldap.model.message.BindRequestImpl;
-import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 import org.junit.Ignore;
@@ -57,109 +43,6 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 //@Ignore("Ignore performance tests: should not be with integration tests")
 public class BindRequestPerfTest extends AbstractCodecServiceTest
 {
-    /**
-     * Test the decoding of a BindRequest with Simple authentication and no
-     * controls
-     */
-    @Test
-    @Ignore
-    public void testDecodeBindRequestSimpleControlsPerf()
-    {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
-        ByteBuffer stream = ByteBuffer.allocate( 0x52 );
-        stream.put( new byte[]
-            {
-                0x30, 0x50,                 // LDAPMessage ::=SEQUENCE {
-                  0x02, 0x01, 0x01,         // messageID MessageID
-                  0x60, 0x2E,               // CHOICE { ..., bindRequest BindRequest, ...
-                                            // BindRequest ::= APPLICATION[0] SEQUENCE {
-                    0x02, 0x01, 0x03,       // version INTEGER (1..127),
-                    0x04, 0x1F,             // name LDAPDN,
-                      'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',', 'd', 'c', '=', 'e', 'x', 'a',
-                      'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm',
-                    ( byte ) 0x80, 0x08,    // authentication AuthenticationChoice
-                                            // AuthenticationChoice ::= CHOICE { simple [0] OCTET STRING,
-                                            // ...
-                      'p', 'a', 's', 's', 'w', 'o', 'r', 'd',
-                    ( byte ) 0xA0, 0x1B,    // A control
-                      0x30, 0x19,
-                        0x04, 0x17,
-                          '2', '.', '1', '6', '.', '8', '4', '0', '.', '1', '.',
-                          '1', '1', '3', '7', '3', '0', '.', '3', '.', '4', '.', '2'
-            } );
-
-        String decodedPdu = Strings.dumpBytes( stream.array() );
-        stream.flip();
-
-        // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<BindRequestDecorator>( codec );
-
-        // Decode the BindRequest PDU
-        try
-        {
-            int nbLoops = 1_000_000;
-            long t0 = System.currentTimeMillis();
-
-            for ( int i = 0; i < nbLoops; i++ )
-            {
-                ldapDecoder.decode( stream, container );
-                container.clean();
-                stream.flip();
-            }
-
-            long t1 = System.currentTimeMillis();
-            System.out.println( "testDecodeBindRequestSimpleNoControlsPerf, " + nbLoops + " loops, Delta = "
-                + ( t1 - t0 ) );
-
-            ldapDecoder.decode( stream, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
-
-        // Check the decoded BindRequest
-        BindRequest bindRequest = container.getMessage();
-
-        assertEquals( 1, bindRequest.getMessageId() );
-        assertTrue( bindRequest.isVersion3() );
-        assertEquals( "uid=akarasulu,dc=example,dc=com", bindRequest.getName().toString() );
-        assertTrue( bindRequest.isSimple() );
-        assertEquals( "password", Strings.utf8ToString( bindRequest.getCredentials() ) );
-
-        // Check the Control
-        Map<String, Control> controls = bindRequest.getControls();
-
-        assertEquals( 1, controls.size() );
-
-        @SuppressWarnings("unchecked")
-        CodecControl<Control> control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) controls
-            .get( "2.16.840.1.113730.3.4.2" );
-        assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
-
-        // Check the encoding
-        try
-        {
-            ByteBuffer bb = LdapEncoder.encodeMessage( codec, bindRequest );
-
-            // Check the length
-            assertEquals( 0x52, bb.limit() );
-
-            String encodedPdu = Strings.dumpBytes( bb.array() );
-
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
-    }
-
-
     /**
      * Test the decoding of a BindRequest with Simple authentication and no
      * controls

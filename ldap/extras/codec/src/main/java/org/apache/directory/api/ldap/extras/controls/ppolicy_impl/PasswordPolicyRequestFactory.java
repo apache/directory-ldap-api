@@ -20,13 +20,11 @@
 package org.apache.directory.api.ldap.extras.controls.ppolicy_impl;
 
 
-import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyRequest;
-import org.apache.directory.api.ldap.model.message.Control;
+import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyRequestImpl;
 
 
 /**
@@ -44,7 +42,7 @@ public class PasswordPolicyRequestFactory extends AbstractControlFactory<Passwor
      */
     public PasswordPolicyRequestFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, PasswordPolicyRequest.OID );
     }
 
 
@@ -53,37 +51,8 @@ public class PasswordPolicyRequestFactory extends AbstractControlFactory<Passwor
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public PasswordPolicyRequest newControl()
     {
-        return PasswordPolicyRequest.OID;
-    }
-
-
-    /**
-     *
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<PasswordPolicyRequest> newCodecControl()
-    {
-        return new PasswordPolicyRequestDecorator( codec );
-    }
-
-
-    /**
-     *
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<PasswordPolicyRequest> newCodecControl( PasswordPolicyRequest control )
-    {
-        return new PasswordPolicyRequestDecorator( codec, control );
-    }
-
-
-    @Override
-    public void encodeValue( Asn1Buffer buffer, Control control )
-    {
-        // TODO Auto-generated method stub
+        return new PasswordPolicyRequestImpl();
     }
 }

@@ -22,7 +22,7 @@ package org.apache.directory.ldap.client.template;
 
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponse;
-import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyResponseDecorator;
+import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponseImpl;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Response;
@@ -42,13 +42,12 @@ import org.apache.directory.ldap.client.template.exception.PasswordException;
  */
 public abstract class AbstractPasswordPolicyResponder implements PasswordPolicyResponder
 {
-    private final PasswordPolicyResponseDecorator passwordPolicyResponseControl;
+    private final PasswordPolicyResponse passwordPolicyResponseControl;
 
 
     protected AbstractPasswordPolicyResponder( LdapApiService ldapApiService )
     {
-        this.passwordPolicyResponseControl = new PasswordPolicyResponseDecorator(
-            ldapApiService );
+        this.passwordPolicyResponseControl = new PasswordPolicyResponseImpl();
     }
     
     
@@ -96,7 +95,7 @@ public abstract class AbstractPasswordPolicyResponder implements PasswordPolicyR
         
         return control == null
             ? null
-            : ( ( PasswordPolicyResponseDecorator ) control ).getDecorated();
+            : ( PasswordPolicyResponse ) control;
     }
 
 

@@ -80,6 +80,12 @@ public final class IntermediateResponseFactory extends ResponseFactory
                     start );
             }
         }
+        else if ( !Strings.isEmpty( intermediateResponse.getResponseValue() ) )
+        {
+            BerValue.encodeOctetString( buffer, 
+                ( byte ) LdapCodecConstants.INTERMEDIATE_RESPONSE_VALUE_TAG,
+                intermediateResponse.getResponseValue() );
+        }
         
         // The responseName, if any
         if ( !Strings.isEmpty( intermediateResponse.getResponseName() ) )

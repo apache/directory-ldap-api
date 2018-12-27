@@ -21,7 +21,9 @@ package org.apache.directory.api.ldap.extras.controls.syncrepl_impl;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
+import org.apache.directory.api.ldap.codec.api.ControlContainer;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncRequest.SyncRequestValue;
+import org.apache.directory.api.ldap.model.message.Control;
 
 
 /**
@@ -29,31 +31,17 @@ import org.apache.directory.api.ldap.extras.controls.syncrepl.syncRequest.SyncRe
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SyncRequestValueContainer extends AbstractContainer
+public class SyncRequestValueContainer extends AbstractContainer implements ControlContainer
 {
     /** SyncRequestValueControl */
-    private SyncRequestValue control;
-
-
-    /**
-     * Creates a new SyncRequestValueControlContainer object. We will store one grammar,
-     * it's enough ...
-     */
-    public SyncRequestValueContainer()
-    {
-        super();
-        setGrammar( SyncRequestValueGrammar.getInstance() );
-        setTransition( SyncRequestValueStatesEnum.START_STATE );
-    }
-
+    private Control control;
 
     /**
-     * Creates a new SyncRequestValueControlContainer object. We will store one grammar,
-     * it's enough ...
+     * Creates a new SyncRequestValueControlContainer object. 
      * 
      * @param control The control to store
      */
-    public SyncRequestValueContainer( SyncRequestValue control )
+    public SyncRequestValueContainer( Control control )
     {
         super();
         this.control = control;
@@ -65,9 +53,9 @@ public class SyncRequestValueContainer extends AbstractContainer
     /**
      * @return Returns the syncRequestValue control.
      */
-    public SyncRequestValue getSyncRequestValueControl()
+    public SyncRequestValue getSyncRequestValue()
     {
-        return control;
+        return ( SyncRequestValue ) control;
     }
 
 
@@ -77,7 +65,7 @@ public class SyncRequestValueContainer extends AbstractContainer
      * 
      * @param control the SyncRequestValueControl to set.
      */
-    public void setSyncRequestValueControl( SyncRequestValue control )
+    public void setControl( Control control )
     {
         this.control = control;
     }

@@ -23,9 +23,10 @@ package org.apache.directory.api.ldap.codec.actions.response.search.entry;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.SearchResultEntryDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.message.SearchResultEntry;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreSearchResultAttributeValue extends GrammarAction<LdapMessageContainer<SearchResultEntryDecorator>>
+public class StoreSearchResultAttributeValue extends GrammarAction<LdapMessageContainerDirect<SearchResultEntry>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreSearchResultAttributeValue.class );
@@ -59,20 +60,18 @@ public class StoreSearchResultAttributeValue extends GrammarAction<LdapMessageCo
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<SearchResultEntryDecorator> container )
+    public void action( LdapMessageContainerDirect<SearchResultEntry> container )
     {
-        SearchResultEntryDecorator searchResultEntry = container.getMessage();
+        Attribute currentAttribute = container.getCurrentAttribute();
 
         TLV tlv = container.getCurrentTLV();
 
         // Store the value
-        Object value = null;
-
         try
         {
             if ( tlv.getLength() == 0 )
             {
-                searchResultEntry.addAttributeValue( "" );
+                currentAttribute.add( "" );
 
                 if ( LOG.isDebugEnabled() )
                 {
@@ -81,9 +80,10 @@ public class StoreSearchResultAttributeValue extends GrammarAction<LdapMessageCo
             }
             else
             {
-                if ( container.isBinary( searchResultEntry.getCurrentAttribute().getId() ) )
+                if ( container.isBinary( container.getCurrentAttribute().getId() ) )
                 {
-                    value = tlv.getValue().getData();
+                    byte[] value = tlv.getValue().getData();
+                    currentAttribute.add( value );
 
                     if ( LOG.isDebugEnabled() )
                     {
@@ -92,7 +92,8 @@ public class StoreSearchResultAttributeValue extends GrammarAction<LdapMessageCo
                 }
                 else
                 {
-                    value = Strings.utf8ToString( tlv.getValue().getData() );
+                    String value = Strings.utf8ToString( tlv.getValue().getData() );
+                    currentAttribute.add( value );
 
                     if ( LOG.isDebugEnabled() )
                     {
@@ -100,7 +101,6 @@ public class StoreSearchResultAttributeValue extends GrammarAction<LdapMessageCo
                     }
                 }
 
-                searchResultEntry.addAttributeValue( value );
             }
         }
         catch ( LdapException le )

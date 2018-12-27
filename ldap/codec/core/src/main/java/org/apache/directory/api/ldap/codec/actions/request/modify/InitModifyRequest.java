@@ -21,10 +21,12 @@ package org.apache.directory.api.ldap.codec.actions.request.modify;
 
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.ModifyRequestDecorator;
+import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.model.message.ModifyRequest;
 import org.apache.directory.api.ldap.model.message.ModifyRequestImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -35,9 +37,11 @@ import org.apache.directory.api.ldap.model.message.ModifyRequestImpl;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitModifyRequest extends GrammarAction<LdapMessageContainer<ModifyRequestDecorator>>
+public class InitModifyRequest extends GrammarAction<LdapMessageContainerDirect<ModifyRequest>>
 {
-    /**
+    /** The logger */
+    private static final Logger LOG = LoggerFactory.getLogger( InitModifyRequest.class );
+   /**
      * Instantiates a new action.
      */
     public InitModifyRequest()
@@ -50,13 +54,16 @@ public class InitModifyRequest extends GrammarAction<LdapMessageContainer<Modify
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainer<ModifyRequestDecorator> container )
+    public void action( LdapMessageContainerDirect<ModifyRequest> container )
     {
         // Now, we can allocate the ModifyRequest Object
-        ModifyRequest internalModifyRequest = new ModifyRequestImpl();
-        internalModifyRequest.setMessageId( container.getMessageId() );
-        ModifyRequestDecorator modifyRequestDecorator = new ModifyRequestDecorator(
-            container.getLdapCodecService(), internalModifyRequest );
-        container.setMessage( modifyRequestDecorator );
+        ModifyRequest modifyRequest = new ModifyRequestImpl();
+        modifyRequest.setMessageId( container.getMessageId() );
+        container.setMessage( modifyRequest );
+        
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_05120_COMPARE_REQUEST ) );
+        }
     }
 }

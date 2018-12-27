@@ -24,9 +24,9 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.search.SubstringFilter;
+import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreAny extends GrammarAction<LdapMessageContainer<SearchRequestDecorator>>
+public class StoreAny extends GrammarAction<LdapMessageContainerDirect<SearchRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreAny.class );
@@ -61,14 +61,12 @@ public class StoreAny extends GrammarAction<LdapMessageContainer<SearchRequestDe
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<SearchRequestDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<SearchRequest> container ) throws DecoderException
     {
-        SearchRequestDecorator decorator = container.getMessage();
-
         TLV tlv = container.getCurrentTLV();
 
         // Store the value.
-        SubstringFilter substringFilter = ( SubstringFilter ) decorator.getTerminalFilter();
+        SubstringFilter substringFilter = ( SubstringFilter ) container.getTerminalFilter();
 
         if ( tlv.getLength() == 0 )
         {
@@ -82,7 +80,7 @@ public class StoreAny extends GrammarAction<LdapMessageContainer<SearchRequestDe
 
         // We now have to get back to the nearest filter which is
         // not terminal.
-        decorator.unstackFilters( container );
+        container.unstackFilters();
 
         if ( LOG.isDebugEnabled() )
         {

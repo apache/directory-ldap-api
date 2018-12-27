@@ -23,8 +23,7 @@ package org.apache.directory.api.ldap.codec.actions.request.search;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.apache.directory.api.ldap.model.message.SearchRequestImpl;
 import org.slf4j.Logger;
@@ -39,7 +38,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitSearchRequest extends GrammarAction<LdapMessageContainer<SearchRequestDecorator>>
+public class InitSearchRequest extends GrammarAction<LdapMessageContainerDirect<SearchRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitSearchRequest.class );
@@ -57,17 +56,14 @@ public class InitSearchRequest extends GrammarAction<LdapMessageContainer<Search
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<SearchRequestDecorator> container )
+    public void action( LdapMessageContainerDirect<SearchRequest> container )
     {
         // Now, we can allocate the SearchRequest Object
         TLV tlv = container.getCurrentTLV();
 
-        SearchRequest internalSearchRequest = new SearchRequestImpl();
-        internalSearchRequest.setMessageId( container.getMessageId() );
-        SearchRequestDecorator searchRequest = new SearchRequestDecorator(
-            container.getLdapCodecService(), internalSearchRequest );
-
-        searchRequest.setTlvId( tlv.getId() );
+        SearchRequest searchRequest = new SearchRequestImpl();
+        searchRequest.setMessageId( container.getMessageId() );
+        container.setTlvId( tlv.getId() );
         container.setMessage( searchRequest );
 
         if ( LOG.isDebugEnabled() )

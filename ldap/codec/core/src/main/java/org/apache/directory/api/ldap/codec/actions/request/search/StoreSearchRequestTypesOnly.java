@@ -27,8 +27,7 @@ import org.apache.directory.api.asn1.ber.tlv.BooleanDecoder;
 import org.apache.directory.api.asn1.ber.tlv.BooleanDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -45,7 +44,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreSearchRequestTypesOnly extends GrammarAction<LdapMessageContainer<SearchRequestDecorator>>
+public class StoreSearchRequestTypesOnly extends GrammarAction<LdapMessageContainerDirect<SearchRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreSearchRequestTypesOnly.class );
@@ -62,9 +61,9 @@ public class StoreSearchRequestTypesOnly extends GrammarAction<LdapMessageContai
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<SearchRequestDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<SearchRequest> container ) throws DecoderException
     {
-        SearchRequest searchRequest = container.getMessage().getDecorated();
+        SearchRequest searchRequest = container.getMessage();
 
         TLV tlv = container.getCurrentTLV();
 

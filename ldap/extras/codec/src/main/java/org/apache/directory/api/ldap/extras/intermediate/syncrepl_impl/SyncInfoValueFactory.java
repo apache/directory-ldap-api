@@ -20,10 +20,14 @@
 package org.apache.directory.api.ldap.extras.intermediate.syncrepl_impl;
 
 
+import java.nio.ByteBuffer;
+
+import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.ber.Asn1Container;
+import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.IntermediateOperationFactory;
-import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValue;
 import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValueImpl;
 import org.apache.directory.api.ldap.model.message.IntermediateResponse;
@@ -37,24 +41,20 @@ import org.apache.directory.api.ldap.model.message.IntermediateResponse;
  */
 public class SyncInfoValueFactory implements IntermediateOperationFactory
 {
-    /** The LDAP Service instance */ 
-    private LdapApiService codec;
-
-
     /**
      * Creates a new instance of SyncInfoValueFactory.
      *
      * @param codec The codec for this factory.
      */
-    public SyncInfoValueFactory( LdapApiService codec )
+    public SyncInfoValueFactory()
     {
-        this.codec = codec;
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOid()
     {
         return SyncInfoValue.OID;
@@ -64,18 +64,10 @@ public class SyncInfoValueFactory implements IntermediateOperationFactory
     /**
      * {@inheritDoc}
      */
-    public SyncInfoValue newDecorator()
+    @Override
+    public SyncInfoValue newResponse()
     {
-        return new SyncInfoValueDecorator( codec );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public SyncInfoValue newDecorator( SyncInfoValue syncInfoValue )
-    {
-        return new SyncInfoValueDecorator( codec, syncInfoValue );
+        return new SyncInfoValueImpl();
     }
 
 
@@ -83,27 +75,20 @@ public class SyncInfoValueFactory implements IntermediateOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public SyncInfoValue newResponse( byte[] encodedValue )
+    public SyncInfoValue newResponse( byte[] responseValue )
     {
-        SyncInfoValueDecorator response = new SyncInfoValueDecorator( codec, new SyncInfoValueImpl() );
-        response.setResponseValue( encodedValue );
-
-        return response;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public SyncInfoValueDecorator decorate( IntermediateResponse decoratedMessage )
-    {
-        if ( decoratedMessage instanceof SyncInfoValueDecorator )
+        SyncInfoValue syncInfoValue = new SyncInfoValueImpl();
+        
+        try
         {
-            return ( SyncInfoValueDecorator ) decoratedMessage;
+            decodeValue( syncInfoValue, responseValue );
+        }
+        catch ( DecoderException de )
+        {
+            
         }
 
-        return new SyncInfoValueDecorator( codec, ( SyncInfoValue ) decoratedMessage );
+        return syncInfoValue;
     }
 
 
@@ -191,5 +176,17 @@ public class SyncInfoValueFactory implements IntermediateOperationFactory
             default:
                 break;
         }
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void decodeValue( IntermediateResponse intermediateResponse, byte[] responseValue ) throws DecoderException
+    {
+        ByteBuffer buffer = ByteBuffer.wrap( responseValue );
+        SyncInfoValueContainer container = new SyncInfoValueContainer( ( SyncInfoValue ) intermediateResponse );
+        new Asn1Decoder().decode( buffer, ( Asn1Container ) container );
     }
 }

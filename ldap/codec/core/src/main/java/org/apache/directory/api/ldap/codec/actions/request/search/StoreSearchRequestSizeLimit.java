@@ -27,8 +27,7 @@ import org.apache.directory.api.asn1.ber.tlv.LongDecoder;
 import org.apache.directory.api.asn1.ber.tlv.LongDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +43,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreSearchRequestSizeLimit extends GrammarAction<LdapMessageContainer<SearchRequestDecorator>>
+public class StoreSearchRequestSizeLimit extends GrammarAction<LdapMessageContainerDirect<SearchRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreSearchRequestSizeLimit.class );
@@ -61,20 +60,20 @@ public class StoreSearchRequestSizeLimit extends GrammarAction<LdapMessageContai
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<SearchRequestDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<SearchRequest> container ) throws DecoderException
     {
-        SearchRequest searchRequest = container.getMessage().getDecorated();
+        SearchRequest searchRequest = container.getMessage();
 
         TLV tlv = container.getCurrentTLV();
 
         // The current TLV should be a integer
         // We get it and store it in sizeLimit
         BerValue value = tlv.getValue();
-        long sizeLimit = 0;
 
         try
         {
-            sizeLimit = LongDecoder.parse( value, 0, Integer.MAX_VALUE );
+            long sizeLimit = LongDecoder.parse( value, 0, Integer.MAX_VALUE );
+            searchRequest.setSizeLimit( sizeLimit );
         }
         catch ( LongDecoderException lde )
         {
@@ -83,11 +82,9 @@ public class StoreSearchRequestSizeLimit extends GrammarAction<LdapMessageContai
             throw new DecoderException( msg, lde );
         }
 
-        searchRequest.setSizeLimit( sizeLimit );
-
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( I18n.msg( I18n.MSG_05163_SIZE_LIMIT_SET_TO, Long.valueOf( sizeLimit ) ) );
+            LOG.debug( I18n.msg( I18n.MSG_05163_SIZE_LIMIT_SET_TO, searchRequest.getSizeLimit() ) );
         }
     }
 }

@@ -20,7 +20,10 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.cancel;
 
 
+import java.nio.ByteBuffer;
+
 import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
@@ -31,7 +34,6 @@ import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequestImpl;
 import org.apache.directory.api.ldap.extras.extended.cancel.CancelResponse;
 import org.apache.directory.api.ldap.extras.extended.cancel.CancelResponseImpl;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
-import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 
 
 /**
@@ -49,7 +51,7 @@ public class CancelFactory extends AbstractExtendedOperationFactory
      */
     public CancelFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, CancelRequest.EXTENSION_OID );
     }
 
 
@@ -57,9 +59,9 @@ public class CancelFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public CancelRequest newRequest()
     {
-        return CancelRequest.EXTENSION_OID;
+        return new CancelRequestImpl();
     }
 
 
@@ -67,12 +69,12 @@ public class CancelFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public CancelResponse newResponse( byte[] encodedValue ) throws DecoderException
+    public CancelRequest newRequest( byte[] encodedValue ) throws DecoderException
     {
-        CancelResponseDecorator response = new CancelResponseDecorator( codec, new CancelResponseImpl() );
-        response.setResponseValue( encodedValue );
+        CancelRequest cancelRequest = new CancelRequestImpl();
+        decodeValue( cancelRequest, encodedValue );
 
-        return response;
+        return cancelRequest;
     }
 
 
@@ -80,12 +82,9 @@ public class CancelFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public CancelRequest newRequest( byte[] value )
+    public CancelResponse newResponse()
     {
-        CancelRequestDecorator req = new CancelRequestDecorator( codec, new CancelRequestImpl() );
-        req.setRequestValue( value );
-
-        return req;
+        return new CancelResponseImpl();
     }
 
 
@@ -93,29 +92,12 @@ public class CancelFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public CancelRequestDecorator decorate( ExtendedRequest modelRequest )
+    public void decodeValue( ExtendedRequest extendedRequest, byte[] requestValue ) throws DecoderException
     {
-        if ( modelRequest instanceof CancelRequestDecorator )
-        {
-            return ( CancelRequestDecorator ) modelRequest;
-        }
-
-        return new CancelRequestDecorator( codec, ( CancelRequest ) modelRequest );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CancelResponseDecorator decorate( ExtendedResponse decoratedMessage )
-    {
-        if ( decoratedMessage instanceof CancelResponseDecorator )
-        {
-            return ( CancelResponseDecorator ) decoratedMessage;
-        }
-
-        return new CancelResponseDecorator( codec, ( CancelResponse ) decoratedMessage );
+        ByteBuffer bb = ByteBuffer.wrap( requestValue );
+        CancelRequestContainer container = new CancelRequestContainer();
+        container.setCancelRequest( ( CancelRequest ) extendedRequest ); 
+        new Asn1Decoder().decode( bb, container );
     }
 
 

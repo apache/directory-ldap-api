@@ -20,14 +20,11 @@
 package org.apache.directory.api.ldap.extras.controls.permissiveModify_impl;
 
 
-import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.controls.permissiveModify.PermissiveModify;
 import org.apache.directory.api.ldap.extras.controls.permissiveModify.PermissiveModifyImpl;
-import org.apache.directory.api.ldap.model.message.Control;
 
 
 /**
@@ -45,7 +42,7 @@ public class PermissiveModifyFactory extends AbstractControlFactory<PermissiveMo
      */
     public PermissiveModifyFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, PermissiveModify.OID );
     }
 
 
@@ -53,36 +50,8 @@ public class PermissiveModifyFactory extends AbstractControlFactory<PermissiveMo
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public PermissiveModify newControl()
     {
-        return PermissiveModify.OID;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<PermissiveModify> newCodecControl()
-    {
-        return new PermissiveModifyDecorator( codec, new PermissiveModifyImpl() );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<PermissiveModify> newCodecControl( PermissiveModify control )
-    {
-        return new PermissiveModifyDecorator( codec, control );
-    }
-
-
-    @Override
-    public void encodeValue( Asn1Buffer buffer, Control control )
-    {
-        // TODO Auto-generated method stub
-
+        return new PermissiveModifyImpl();
     }
 }

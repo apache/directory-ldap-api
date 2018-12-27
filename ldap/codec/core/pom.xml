@@ -127,7 +127,6 @@
               org.apache.directory.api.ldap.codec.api;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.codec.controls;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.codec.controls.*;version=${project.version};-noimport:=true,
-              org.apache.directory.api.ldap.codec.decorators;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.codec.osgi;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.codec.search;version=${project.version};-noimport:=true
             </Export-Package>

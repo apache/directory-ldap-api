@@ -33,8 +33,6 @@ import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
-import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionResponseImpl;
 import org.apache.directory.api.ldap.extras.extended.endTransaction.UpdateControls;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.util.Strings;
@@ -100,10 +98,11 @@ public class EndTransactionResponseGrammar extends AbstractGrammar<EndTransactio
                 {
                     public void action( EndTransactionResponseContainer container )
                     {
-                        // Create the decorator, and stores it in the container
-                        EndTransactionResponseDecorator endTransactionResponseDecorator = new EndTransactionResponseDecorator(
-                            LdapApiServiceFactory.getSingleton(), new EndTransactionResponseImpl() );
-                        container.setEndTransactionResponse( endTransactionResponseDecorator );
+                        // May be empty
+                        if ( container.getCurrentTLV().getLength() == 0 )
+                        {
+                            container.setGrammarEndAllowed( true );
+                        }
                     }
                 } );
 
@@ -188,7 +187,7 @@ public class EndTransactionResponseGrammar extends AbstractGrammar<EndTransactio
                         // Create the current UpdateControls
                         UpdateControls currentUpdateControls = new UpdateControls();
                         
-                        container.getEndTransactionResponse().setCurrentControls( currentUpdateControls );
+                        container.setCurrentControls( currentUpdateControls );
                     }
                 } );
 
@@ -211,7 +210,7 @@ public class EndTransactionResponseGrammar extends AbstractGrammar<EndTransactio
                 {
                     public void action( EndTransactionResponseContainer container ) throws DecoderException
                     {
-                        UpdateControls currentUpdateControls = container.getEndTransactionResponse().getCurrentUpdateControls();
+                        UpdateControls currentUpdateControls = container.getCurrentUpdateControls();
                         BerValue value = container.getCurrentTLV().getValue();
 
                         try
@@ -263,7 +262,7 @@ public class EndTransactionResponseGrammar extends AbstractGrammar<EndTransactio
                             List<Control> controls = EndTransactionResponseContainer.decode( value.getData() );
                             
                             // Add the updateControls to the list of updateControls
-                            UpdateControls currentUpdateControls = container.getEndTransactionResponse().getCurrentUpdateControls();
+                            UpdateControls currentUpdateControls = container.getCurrentUpdateControls();
                             
                             // Add the decoder controls
                             currentUpdateControls.setControls( controls );
@@ -309,7 +308,7 @@ public class EndTransactionResponseGrammar extends AbstractGrammar<EndTransactio
                         // Create a new current UpdateControl
                         UpdateControls currentUpdateControls = new UpdateControls();
                         
-                        container.getEndTransactionResponse().setCurrentControls( currentUpdateControls );
+                        container.setCurrentControls( currentUpdateControls );
                     }
                 } );
     }

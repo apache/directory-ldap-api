@@ -20,24 +20,22 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.whoAmI;
 
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.nio.ByteBuffer;
-
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
-import org.apache.directory.api.ldap.codec.decorators.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIRequest;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIRequestImpl;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIResponse;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIResponseImpl;
-import org.apache.directory.api.ldap.model.message.ExtendedRequest;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
-import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -48,6 +46,9 @@ import org.apache.directory.api.util.Strings;
  */
 public class WhoAmIFactory extends AbstractExtendedOperationFactory
 {
+    /** logger */
+    private static final Logger LOG = LoggerFactory.getLogger( WhoAmIFactory.class );
+    
     /**
      * Creates a new instance of WhoAmIFactory.
      *
@@ -55,7 +56,7 @@ public class WhoAmIFactory extends AbstractExtendedOperationFactory
      */
     public WhoAmIFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, WhoAmIRequest.EXTENSION_OID );
     }
 
 
@@ -63,9 +64,9 @@ public class WhoAmIFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public WhoAmIRequest newRequest()
     {
-        return WhoAmIRequest.EXTENSION_OID;
+        return new WhoAmIRequestImpl();
     }
 
 
@@ -73,26 +74,16 @@ public class WhoAmIFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public WhoAmIResponse newResponse( byte[] encodedValue ) throws DecoderException
+    public WhoAmIRequest newRequest( byte[] value ) throws DecoderException
     {
-        return WhoAmIResponseDecoder.decode( new WhoAmIResponseImpl(), encodedValue );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WhoAmIRequest newRequest( byte[] value )
-    {
-        WhoAmIRequestDecorator req = new WhoAmIRequestDecorator( codec, new WhoAmIRequestImpl() );
+        WhoAmIRequest whoAmIRequest = new WhoAmIRequestImpl();
 
         if ( value != null )
         {
-            req.setRequestValue( value );
+            decodeValue( whoAmIRequest, value );
         }
 
-        return req;
+        return whoAmIRequest;
     }
 
 
@@ -100,14 +91,9 @@ public class WhoAmIFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public WhoAmIRequestDecorator decorate( ExtendedRequest modelRequest )
+    public WhoAmIResponse newResponse() throws DecoderException
     {
-        if ( modelRequest instanceof WhoAmIRequestDecorator )
-        {
-            return ( WhoAmIRequestDecorator ) modelRequest;
-        }
-
-        return new WhoAmIRequestDecorator( codec, ( WhoAmIRequest ) modelRequest );
+        return new WhoAmIResponseImpl();
     }
 
 
@@ -115,60 +101,18 @@ public class WhoAmIFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public WhoAmIResponseDecorator decorate( ExtendedResponse decoratedResponse )
+    public WhoAmIResponse newResponse( byte[] value ) throws DecoderException
     {
-        if ( decoratedResponse instanceof WhoAmIResponseDecorator )
+        WhoAmIResponse whoAmIResponse = new WhoAmIResponseImpl();
+
+        if ( value != null )
         {
-            return ( WhoAmIResponseDecorator ) decoratedResponse;
+            decodeValue( whoAmIResponse, value );
         }
 
-        if ( decoratedResponse instanceof WhoAmIResponse )
-        {
-            return new WhoAmIResponseDecorator( codec, ( WhoAmIResponse ) decoratedResponse );
-        }
-
-        // It's an opaque extended operation
-        @SuppressWarnings("unchecked")
-        ExtendedResponseDecorator<ExtendedResponse> response = ( ExtendedResponseDecorator<ExtendedResponse> ) decoratedResponse;
-
-        // Decode the response, as it's an opaque operation
-        byte[] value = response.getResponseValue();
-        
-        if ( value == null )
-        {
-            value = Strings.EMPTY_BYTES;
-        }
-        
-        ByteBuffer buffer = ByteBuffer.wrap( value );
-
-        WhoAmIResponse whoAmIResponse = new WhoAmIResponseImpl( response.getMessageId() );
-
-        try
-        {
-            WhoAmIResponseDecoder.decode( whoAmIResponse, buffer.array() );
-
-            // Now, update the created response with what we got from the extendedResponse
-            whoAmIResponse.getLdapResult().setResultCode( response.getLdapResult().getResultCode() );
-            whoAmIResponse.getLdapResult().setDiagnosticMessage( response.getLdapResult().getDiagnosticMessage() );
-            whoAmIResponse.getLdapResult().setMatchedDn( response.getLdapResult().getMatchedDn() );
-            whoAmIResponse.getLdapResult().setReferral( response.getLdapResult().getReferral() );
-        }
-        catch ( DecoderException de )
-        {
-            StringWriter sw = new StringWriter();
-            de.printStackTrace( new PrintWriter( sw ) );
-            String stackTrace = sw.toString();
-
-            // Error while decoding the value. 
-            whoAmIResponse = new WhoAmIResponseImpl(
-                decoratedResponse.getMessageId(),
-                ResultCodeEnum.OPERATIONS_ERROR,
-                stackTrace );
-        }
-
-        return new WhoAmIResponseDecorator( codec, whoAmIResponse );
+        return whoAmIResponse;
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -191,5 +135,122 @@ public class WhoAmIFactory extends AbstractExtendedOperationFactory
         {
             buffer.put( authzid );
         }
+    }
+    
+    
+    /**
+     * Decode a PDU which must contain a WhoAmIResponse extended operation.
+     * Note that the stream of bytes much contain a full PDU, not a partial one.
+     * 
+     * @param whoAmIResponse The WhoAmI extended response that will be feed
+     * @param data The bytes to be decoded
+     * @return a WhoAmIRequest object
+     * @throws org.apache.directory.api.asn1.DecoderException If the decoding failed
+     */
+    public static WhoAmIResponse decode( WhoAmIResponse whoAmIResponse, byte[] data ) throws DecoderException
+    {
+        if ( Strings.isEmpty( data ) )
+        {
+            ( ( WhoAmIResponseImpl ) whoAmIResponse ).setAuthzId( null );
+        }
+        else
+        {
+            switch ( data.length )
+            {
+                case 0:
+                    // Error
+                case 1:
+                    // Error
+                    String msg = I18n.err( I18n.ERR_08226_AUTHZID_TOO_SHORT_MISSING_U_OR_DN );
+                    LOG.error( msg );
+                    throw new DecoderException( msg );
+
+                case 2 :
+                    if ( ( data[0] == 'u' ) && ( data[1] == ':' ) )
+                    {
+                        ( ( WhoAmIResponseImpl ) whoAmIResponse ).setAuthzId( data );
+                        ( ( WhoAmIResponseImpl ) whoAmIResponse ).setUserId( Strings.utf8ToString( data, 2, data.length - 2 ) );
+                    }
+                    else
+                    {
+                        msg = I18n.err( I18n.ERR_08227_AUTHZID_MUST_START_WITH_U_OR_DN, Strings.utf8ToString( data ) );
+                        LOG.error( msg );
+                        throw new DecoderException( msg );
+                    }
+                    
+                    break;
+                    
+                default :
+                    switch ( data[0] )
+                    {
+                        case 'u' :
+                            if ( data[1] == ':' )
+                            {
+                                ( ( WhoAmIResponseImpl ) whoAmIResponse ).setAuthzId( data );
+                                ( ( WhoAmIResponseImpl ) whoAmIResponse ).setUserId( Strings.utf8ToString( data, 2, data.length - 2 ) );
+                            }
+                            else
+                            {
+                                msg = I18n.err( I18n.ERR_08227_AUTHZID_MUST_START_WITH_U_OR_DN, Strings.utf8ToString( data ) );
+                                LOG.error( msg );
+                                throw new DecoderException( msg );
+                            }
+                            
+                            break;
+                            
+                        case 'd' :
+                            if ( ( data[1] == 'n' ) && ( data[2] == ':' ) )
+                            {
+                                // Check that the remaining bytes are a valid DN
+                                if ( Dn.isValid( Strings.utf8ToString( data, 3, data.length - 3 ) ) )
+                                {
+                                    ( ( WhoAmIResponseImpl ) whoAmIResponse ).setAuthzId( data );
+                                    
+                                    try
+                                    {
+                                        ( ( WhoAmIResponseImpl ) whoAmIResponse ).setDn( new Dn( Strings.utf8ToString( data, 3, data.length - 3 ) ) );
+                                    }
+                                    catch ( LdapInvalidDnException e )
+                                    {
+                                        // Should never happen
+                                    }
+                                }
+                                else
+                                {
+                                    msg = I18n.err( I18n.ERR_08227_AUTHZID_MUST_START_WITH_U_OR_DN, Strings.utf8ToString( data ) );
+                                    LOG.error( msg );
+                                    throw new DecoderException( msg );
+                                }
+                            }
+                            else
+                            {
+                                msg = I18n.err( I18n.ERR_08227_AUTHZID_MUST_START_WITH_U_OR_DN, Strings.utf8ToString( data ) );
+                                LOG.error( msg );
+                                throw new DecoderException( msg );
+                            }
+                            
+                            break;
+
+                        default :
+                            msg = I18n.err( I18n.ERR_08227_AUTHZID_MUST_START_WITH_U_OR_DN, Strings.utf8ToString( data ) );
+                            LOG.error( msg );
+                            throw new DecoderException( msg );
+                    }
+                    
+                    break;
+            }
+        }
+
+        return whoAmIResponse;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void decodeValue( ExtendedResponse extendedResponse, byte[] responseValue ) throws DecoderException
+    {
+        decode( ( WhoAmIResponse ) extendedResponse, responseValue );
     }
 }

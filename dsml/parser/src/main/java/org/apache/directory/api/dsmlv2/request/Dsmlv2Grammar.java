@@ -40,7 +40,7 @@ import org.apache.directory.api.dsmlv2.request.BatchRequestDsml.OnError;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml.Processing;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml.ResponseOrder;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
+import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
@@ -57,13 +57,14 @@ import org.apache.directory.api.ldap.model.message.CompareRequest;
 import org.apache.directory.api.ldap.model.message.CompareRequestImpl;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.DeleteRequestImpl;
-import org.apache.directory.api.ldap.model.message.ExtendedRequestImpl;
+import org.apache.directory.api.ldap.model.message.OpaqueExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ModifyDnRequestImpl;
 import org.apache.directory.api.ldap.model.message.ModifyRequestImpl;
 import org.apache.directory.api.ldap.model.message.Request;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.apache.directory.api.ldap.model.message.SearchRequestImpl;
 import org.apache.directory.api.ldap.model.message.SearchScope;
+import org.apache.directory.api.ldap.model.message.controls.OpaqueControl;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.util.Base64;
@@ -643,7 +644,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
         {
             ExtendedRequestDsml<?, ?> extendedRequest =
                 new ExtendedRequestDsml<>( codec,
-                    new ExtendedRequestImpl() );
+                    new OpaqueExtendedRequest() );
             container.getBatchRequest().addRequest( extendedRequest );
 
             XmlPullParser xpp = container.getParser();
@@ -1994,10 +1995,11 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             XmlPullParser xpp = container.getParser();
-            CodecControl<? extends Control> control;
+            Control control;
 
             // Checking and adding the Control's attributes
             String attributeValue;
+            
             // TYPE
             attributeValue = xpp.getAttributeValue( "", "type" );
 
@@ -2007,8 +2009,18 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 {
                     throw new XmlPullParserException( I18n.err( I18n.ERR_03034_INCORRECT_TYPE_VALUE ), xpp, null );
                 }
-
-                control = codec.newRequestControl( codec.newRequestControl( attributeValue ) );
+                
+                ControlFactory<? extends Control> factory = codec.getRequestControlFactories().get( attributeValue );
+                
+                if ( factory == null )
+                {
+                    control = new OpaqueControl( attributeValue );
+                }
+                else
+                {
+                    control = factory.newControl();
+                }
+                
                 ( ( Request ) container.getBatchRequest().getCurrentRequest() ).addControl( control );
             }
             else

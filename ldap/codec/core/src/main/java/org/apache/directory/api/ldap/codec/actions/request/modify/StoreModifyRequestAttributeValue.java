@@ -23,9 +23,10 @@ package org.apache.directory.api.ldap.codec.actions.request.modify;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.ModifyRequestDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.message.ModifyRequest;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreModifyRequestAttributeValue extends GrammarAction<LdapMessageContainer<ModifyRequestDecorator>>
+public class StoreModifyRequestAttributeValue extends GrammarAction<LdapMessageContainerDirect<ModifyRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreModifyRequestAttributeValue.class );
@@ -54,32 +55,31 @@ public class StoreModifyRequestAttributeValue extends GrammarAction<LdapMessageC
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainer<ModifyRequestDecorator> container )
+    public void action( LdapMessageContainerDirect<ModifyRequest> container )
     {
-        ModifyRequestDecorator modifyRequestDecorator = container.getMessage();
-
         TLV tlv = container.getCurrentTLV();
 
         // Store the value. It can't be null
         byte[] value = Strings.EMPTY_BYTES;
+        Attribute currentAttribute = container.getCurrentAttribute();
 
         try
         {
             if ( tlv.getLength() == 0 )
             {
-                modifyRequestDecorator.addAttributeValue( "" );
+                currentAttribute.add( "" );
             }
             else
             {
                 value = tlv.getValue().getData();
 
-                if ( container.isBinary( modifyRequestDecorator.getCurrentAttributeType() ) )
+                if ( container.isBinary( currentAttribute.getId() ) )
                 {
-                    modifyRequestDecorator.addAttributeValue( value );
+                    container.getCurrentAttribute().add( value );
                 }
                 else
                 {
-                    modifyRequestDecorator.addAttributeValue( Strings.utf8ToString( ( byte[] ) value ) );
+                    currentAttribute.add( Strings.utf8ToString( ( byte[] ) value ) );
                 }
             }
         }

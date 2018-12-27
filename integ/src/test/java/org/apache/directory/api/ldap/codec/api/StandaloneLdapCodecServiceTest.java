@@ -25,10 +25,12 @@ import static org.junit.Assert.assertTrue;
 
 import org.apache.directory.api.ldap.codec.standalone.StandaloneLdapApiService;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyRequest;
+import org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureFactory;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequest;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequestImpl;
 import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValue;
 import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValueImpl;
+import org.apache.directory.api.ldap.extras.intermediate.syncrepl_impl.SyncInfoValueFactory;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.util.Strings;
 import org.junit.BeforeClass;
@@ -107,7 +109,7 @@ public class StandaloneLdapCodecServiceTest
 
         assertTrue( codec.isControlRegistered( PasswordPolicyRequest.OID ) );
 
-        CodecControl<? extends Control> control = codec.newRequestControl( PasswordPolicyRequest.OID );
+        Control control = codec.getRequestControlFactories().get( PasswordPolicyRequest.OID ).newControl();
         assertNotNull( control );
         assertNotNull( codec );
     }
@@ -126,9 +128,12 @@ public class StandaloneLdapCodecServiceTest
 
         assertNotNull( req );
         assertNotNull( codec );
-
-        StoredProcedureRequest decorator = ( StoredProcedureRequest ) codec.decorate( req );
-        assertNotNull( decorator );
+        
+        StoredProcedureFactory factory = ( StoredProcedureFactory ) codec.getExtendedRequestFactories().get( 
+            StoredProcedureRequest.EXTENSION_OID );
+        
+        req = factory.newRequest();
+        assertNotNull( req );
     }
 
 
@@ -145,8 +150,10 @@ public class StandaloneLdapCodecServiceTest
         assertNotNull( syncInfoValue );
         assertNotNull( codec );
 
-        codec.decorate( syncInfoValue );
-        SyncInfoValue decorator = ( SyncInfoValue ) codec.decorate( syncInfoValue );
-        assertNotNull( decorator );
+        SyncInfoValueFactory factory = 
+            ( SyncInfoValueFactory ) codec.getIntermediateResponseFactories().get( 
+                SyncInfoValue.OID );
+        syncInfoValue = ( SyncInfoValue ) factory.newResponse();
+        assertNotNull( syncInfoValue );
     }
 }

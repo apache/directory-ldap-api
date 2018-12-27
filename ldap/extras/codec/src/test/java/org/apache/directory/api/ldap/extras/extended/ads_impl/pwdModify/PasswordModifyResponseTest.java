@@ -25,16 +25,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.nio.ByteBuffer;
-
 import org.apache.directory.api.asn1.DecoderException;
-import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyResponseContainer;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyResponseDecorator;
 import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyResponse;
 import org.apache.directory.api.util.Strings;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -51,41 +47,36 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class PasswordModifyResponseTest extends AbstractCodecServiceTest
 {
+    @Before
+    public void init()
+    {
+        codec.registerExtendedResponse( new PasswordModifyFactory( codec ) );
+    }
+    
+    
     /**
      * Test the decoding of a PasswordModifyResponse with nothing in it
      */
     @Test
     public void testDecodePasswordModifyResponseEmpty() throws DecoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x02 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x00  // PasswordModifyResponse ::= SEQUENCE {
-            } );
+            };
 
-        bb.flip();
+        PasswordModifyFactory factory = ( PasswordModifyFactory ) codec.getExtendedResponseFactories().
+            get( PasswordModifyResponse.EXTENSION_OID );
+        PasswordModifyResponse passwordModifyResponse = ( PasswordModifyResponse ) factory.newResponse( bb );
 
-        PasswordModifyResponseContainer container = new PasswordModifyResponseContainer();
+        assertNull( passwordModifyResponse.getGenPassword() );
 
-        decoder.decode( bb, container );
-
-        PasswordModifyResponse pwdModifyResponse = container.getPwdModifyResponse();
-        assertNull( pwdModifyResponse.getGenPassword() );
-
-        // Check the length
-        assertEquals( 0x02, ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).computeLengthInternal() );
-
-        // Check the encoding
-        ByteBuffer bb1 = ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).encodeInternal();
-
-        assertArrayEquals( bb.array(), bb1.array() );
-        
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        PasswordModifyFactory factory = new PasswordModifyFactory( codec );
-        factory.encodeValue( asn1Buffer, pwdModifyResponse );
-        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
+
+        factory.encodeValue( asn1Buffer, passwordModifyResponse );
+
+        assertArrayEquals( bb, asn1Buffer.getBytes().array() );
     }
 
 
@@ -95,37 +86,25 @@ public class PasswordModifyResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodePasswordModifyResponseUserIdentityNull() throws DecoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x04 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x02,             // PasswordModifyResponse ::= SEQUENCE {
                   ( byte ) 0x80, 0x00   // genPassword    [0]  OCTET STRING OPTIONAL
-            } );
+            };
 
-        bb.flip();
+        PasswordModifyFactory factory = ( PasswordModifyFactory ) codec.getExtendedResponseFactories().
+            get( PasswordModifyResponse.EXTENSION_OID );
+        PasswordModifyResponse passwordModifyResponse = ( PasswordModifyResponse ) factory.newResponse( bb );
 
-        PasswordModifyResponseContainer container = new PasswordModifyResponseContainer();
+        assertNotNull( passwordModifyResponse.getGenPassword() );
+        assertEquals( 0, passwordModifyResponse.getGenPassword().length );
 
-        decoder.decode( bb, container );
-
-        PasswordModifyResponse pwdModifyResponse = container.getPwdModifyResponse();
-        assertNotNull( pwdModifyResponse.getGenPassword() );
-        assertEquals( 0, pwdModifyResponse.getGenPassword().length );
-
-        // Check the length
-        assertEquals( 0x04, ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).computeLengthInternal() );
-
-        // Check the encoding
-        ByteBuffer bb1 = ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).encodeInternal();
-
-        assertArrayEquals( bb.array(), bb1.array() );
-        
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        PasswordModifyFactory factory = new PasswordModifyFactory( codec );
-        factory.encodeValue( asn1Buffer, pwdModifyResponse );
-        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
+
+        factory.encodeValue( asn1Buffer, passwordModifyResponse );
+
+        assertArrayEquals( bb, asn1Buffer.getBytes().array() );
     }
 
 
@@ -135,37 +114,25 @@ public class PasswordModifyResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodePasswordModifyResponseUserIdentityValue() throws DecoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x08 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x06,             // PasswordModifyResponse ::= SEQUENCE {
                   ( byte ) 0x80, 0x04,  // genPassword    [0]  OCTET STRING OPTIONAL
                     'a', 'b', 'c', 'd'
-            } );
+            };
 
-        bb.flip();
+        PasswordModifyFactory factory = ( PasswordModifyFactory ) codec.getExtendedResponseFactories().
+            get( PasswordModifyResponse.EXTENSION_OID );
+        PasswordModifyResponse passwordModifyResponse = ( PasswordModifyResponse ) factory.newResponse( bb );
 
-        PasswordModifyResponseContainer container = new PasswordModifyResponseContainer();
+        assertNotNull( passwordModifyResponse.getGenPassword() );
+        assertEquals( "abcd", Strings.utf8ToString( passwordModifyResponse.getGenPassword() ) );
 
-        decoder.decode( bb, container );
-
-        PasswordModifyResponse pwdModifyResponse = container.getPwdModifyResponse();
-        assertNotNull( pwdModifyResponse.getGenPassword() );
-        assertEquals( "abcd", Strings.utf8ToString( pwdModifyResponse.getGenPassword() ) );
-
-        // Check the length
-        assertEquals( 0x08, ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).computeLengthInternal() );
-
-        // Check the encoding
-        ByteBuffer bb1 = ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).encodeInternal();
-
-        assertArrayEquals( bb.array(), bb1.array() );
-        
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        PasswordModifyFactory factory = new PasswordModifyFactory( codec );
-        factory.encodeValue( asn1Buffer, pwdModifyResponse );
-        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
+
+        factory.encodeValue( asn1Buffer, passwordModifyResponse );
+
+        assertArrayEquals( bb, asn1Buffer.getBytes().array() );
     }
 }

@@ -20,8 +20,6 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify;
 
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.DecoderException;
@@ -30,17 +28,13 @@ import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
-import org.apache.directory.api.ldap.codec.decorators.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyRequest;
 import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyRequest;
 import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyRequestImpl;
 import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyResponse;
 import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyResponseImpl;
-import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
-import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 
 
 /**
@@ -58,7 +52,7 @@ public class PasswordModifyFactory extends AbstractExtendedOperationFactory
      */
     public PasswordModifyFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, PasswordModifyRequest.EXTENSION_OID );
     }
 
 
@@ -66,9 +60,36 @@ public class PasswordModifyFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public PasswordModifyRequest newRequest()
     {
-        return PasswordModifyRequest.EXTENSION_OID;
+        PasswordModifyRequest passwordModifyRequest = new PasswordModifyRequestImpl();
+
+        return passwordModifyRequest;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PasswordModifyRequest newRequest( byte[] encodedValue ) throws DecoderException
+    {
+        PasswordModifyRequest passwordModifyRequest = new PasswordModifyRequestImpl();
+        decodeValue( passwordModifyRequest, encodedValue );
+
+        return passwordModifyRequest;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PasswordModifyResponse newResponse()
+    {
+        PasswordModifyResponse passwordModifyResponse = new PasswordModifyResponseImpl();
+        
+        return passwordModifyResponse;
     }
 
 
@@ -78,11 +99,10 @@ public class PasswordModifyFactory extends AbstractExtendedOperationFactory
     @Override
     public PasswordModifyResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
-        PasswordModifyResponseDecorator response = new PasswordModifyResponseDecorator( codec,
-            new PasswordModifyResponseImpl() );
-        response.setResponseValue( encodedValue );
-        
-        return response;
+        PasswordModifyResponse passwordModifyResponse = new PasswordModifyResponseImpl();
+        decodeValue( passwordModifyResponse, encodedValue );
+
+        return passwordModifyResponse;
     }
 
 
@@ -90,111 +110,12 @@ public class PasswordModifyFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public PasswordModifyRequest newRequest( byte[] value )
+    public void decodeValue( ExtendedRequest extendedRequest, byte[] requestValue ) throws DecoderException
     {
-        PasswordModifyRequestDecorator req = new PasswordModifyRequestDecorator( codec, new PasswordModifyRequestImpl() );
-
-        if ( value != null )
-        {
-            req.setRequestValue( value );
-        }
-
-        return req;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PasswordModifyRequestDecorator decorate( ExtendedRequest modelRequest )
-    {
-        if ( modelRequest instanceof PasswordModifyRequestDecorator )
-        {
-            return ( PasswordModifyRequestDecorator ) modelRequest;
-        }
-
-        return new PasswordModifyRequestDecorator( codec, ( PasswordModifyRequest ) modelRequest );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PasswordModifyResponseDecorator decorate( ExtendedResponse decoratedResponse )
-    {
-        if ( decoratedResponse instanceof PasswordModifyResponseDecorator )
-        {
-            return ( PasswordModifyResponseDecorator ) decoratedResponse;
-        }
-
-        if ( decoratedResponse instanceof PasswordModifyResponse )
-        {
-            return new PasswordModifyResponseDecorator( codec, ( PasswordModifyResponse ) decoratedResponse );
-        }
-
-        // It's an opaque extended operation
-        @SuppressWarnings("unchecked")
-        ExtendedResponseDecorator<ExtendedResponse> response = ( ExtendedResponseDecorator<ExtendedResponse> ) decoratedResponse;
-
-        // Decode the response, as it's an opaque operation
-        Asn1Decoder decoder = new Asn1Decoder();
-
-        byte[] value = response.getResponseValue();
-        PasswordModifyResponseContainer container = new PasswordModifyResponseContainer();
-        
-        PasswordModifyResponse pwdModifyResponse;
-        
-        if ( value != null )
-        {
-            ByteBuffer buffer = ByteBuffer.wrap( value );
-    
-            try
-            {
-                decoder.decode( buffer, container );
-                pwdModifyResponse = container.getPwdModifyResponse();
-
-                // Now, update the created response with what we got from the extendedResponse
-                pwdModifyResponse.getLdapResult().setResultCode( response.getLdapResult().getResultCode() );
-                pwdModifyResponse.getLdapResult().setDiagnosticMessage( response.getLdapResult().getDiagnosticMessage() );
-                pwdModifyResponse.getLdapResult().setMatchedDn( response.getLdapResult().getMatchedDn() );
-                pwdModifyResponse.getLdapResult().setReferral( response.getLdapResult().getReferral() );
-            }
-            catch ( DecoderException de )
-            {
-                StringWriter sw = new StringWriter();
-                de.printStackTrace( new PrintWriter( sw ) );
-                String stackTrace = sw.toString();
-    
-                // Error while decoding the value. 
-                pwdModifyResponse = new PasswordModifyResponseImpl(
-                    decoratedResponse.getMessageId(),
-                    ResultCodeEnum.OPERATIONS_ERROR,
-                    stackTrace );
-            }
-        }
-        else
-        {
-            pwdModifyResponse = new PasswordModifyResponseImpl();
-    
-            // Now, update the created response with what we got from the extendedResponse
-            pwdModifyResponse.getLdapResult().setResultCode( response.getLdapResult().getResultCode() );
-            pwdModifyResponse.getLdapResult().setDiagnosticMessage( response.getLdapResult().getDiagnosticMessage() );
-            pwdModifyResponse.getLdapResult().setMatchedDn( response.getLdapResult().getMatchedDn() );
-            pwdModifyResponse.getLdapResult().setReferral( response.getLdapResult().getReferral() );
-        }
-
-        PasswordModifyResponseDecorator decorated = new PasswordModifyResponseDecorator( codec, pwdModifyResponse );
-
-        Control ppolicyControl = response.getControl( PasswordPolicyRequest.OID );
-
-        if ( ppolicyControl != null )
-        {
-            decorated.addControl( ppolicyControl );
-        }
-
-        return decorated;
+        ByteBuffer bb = ByteBuffer.wrap( requestValue );
+        PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
+        container.setPasswordModifyRequest( ( PasswordModifyRequest ) extendedRequest ); 
+        new Asn1Decoder().decode( bb, container );
     }
 
 
@@ -234,7 +155,20 @@ public class PasswordModifyFactory extends AbstractExtendedOperationFactory
         // The sequence
         BerValue.encodeSequence( buffer, start );
     }
-    
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void decodeValue( ExtendedResponse extendedResponse, byte[] responseValue ) throws DecoderException
+    {
+        ByteBuffer bb = ByteBuffer.wrap( responseValue );
+        PasswordModifyResponseContainer container = new PasswordModifyResponseContainer();
+        container.setPasswordModifyResponse( ( PasswordModifyResponse ) extendedResponse ); 
+        new Asn1Decoder().decode( bb, container );
+    }
+
 
     /**
      * {@inheritDoc}

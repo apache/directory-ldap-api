@@ -24,9 +24,8 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
-import org.apache.directory.api.ldap.codec.decorators.ModifyDnRequestDecorator;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.ModifyDnRequest;
 import org.apache.directory.api.ldap.model.message.ModifyDnResponseImpl;
@@ -46,7 +45,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreModifyDnRequestEntryName extends GrammarAction<LdapMessageContainer<ModifyDnRequestDecorator>>
+public class StoreModifyDnRequestEntryName extends GrammarAction<LdapMessageContainerDirect<ModifyDnRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreModifyDnRequestEntryName.class );
@@ -64,17 +63,14 @@ public class StoreModifyDnRequestEntryName extends GrammarAction<LdapMessageCont
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainer<ModifyDnRequestDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<ModifyDnRequest> container ) throws DecoderException
     {
         ModifyDnRequest modifyDnRequest = container.getMessage();
 
         // Get the Value and store it in the modifyDNRequest
         TLV tlv = container.getCurrentTLV();
 
-        // We have to handle the special case of a 0 length matched
-        // Dn
-        Dn entry;
-
+        // We have to handle the special case of a 0 length matched DN
         if ( tlv.getLength() == 0 )
         {
             // This will generate a PROTOCOL_ERROR
@@ -87,7 +83,8 @@ public class StoreModifyDnRequestEntryName extends GrammarAction<LdapMessageCont
 
             try
             {
-                entry = new Dn( dnStr );
+                Dn entry = new Dn( dnStr );
+                modifyDnRequest.setName( entry );
             }
             catch ( LdapInvalidDnException ine )
             {
@@ -98,13 +95,11 @@ public class StoreModifyDnRequestEntryName extends GrammarAction<LdapMessageCont
                 throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_DN_SYNTAX,
                     Dn.EMPTY_DN, ine );
             }
-
-            modifyDnRequest.setName( entry );
         }
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( I18n.msg( I18n.MSG_05137_MODIFYING_DN, entry ) );
+            LOG.debug( I18n.msg( I18n.MSG_05137_MODIFYING_DN, modifyDnRequest.getName() ) );
         }
     }
 }

@@ -20,9 +20,11 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure;
 
 
+import java.nio.ByteBuffer;
 import java.util.Iterator;
 
 import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
@@ -30,10 +32,10 @@ import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureParameter;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequest;
+import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequestImpl;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureResponse;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureResponseImpl;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
-import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 
 
 /**
@@ -51,7 +53,7 @@ public class StoredProcedureFactory extends AbstractExtendedOperationFactory
      */
     public StoredProcedureFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, StoredProcedureRequest.EXTENSION_OID );
     }
 
 
@@ -59,9 +61,9 @@ public class StoredProcedureFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public StoredProcedureRequest newRequest()
     {
-        return StoredProcedureRequest.EXTENSION_OID;
+        return new StoredProcedureRequestImpl();
     }
 
 
@@ -69,12 +71,13 @@ public class StoredProcedureFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public StoredProcedureResponse newResponse( byte[] encodedValue ) throws DecoderException
+    public StoredProcedureRequest newRequest( byte[] value ) throws DecoderException
     {
-        StoredProcedureResponseDecorator response = new StoredProcedureResponseDecorator( codec,
-            new StoredProcedureResponseImpl() );
-        response.setResponseValue( encodedValue );
-        return response;
+        StoredProcedureRequest storedProcedureRequest = new StoredProcedureRequestImpl();
+
+        decodeValue( storedProcedureRequest, value );
+
+        return storedProcedureRequest;
     }
 
 
@@ -82,15 +85,9 @@ public class StoredProcedureFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public StoredProcedureRequest newRequest( byte[] value )
+    public StoredProcedureResponse newResponse()
     {
-        StoredProcedureRequestDecorator req = new StoredProcedureRequestDecorator( codec );
-
-        if ( value != null )
-        {
-            req.setRequestValue( value );
-        }
-        return req;
+        return new StoredProcedureResponseImpl();
     }
 
 
@@ -98,31 +95,14 @@ public class StoredProcedureFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public StoredProcedureRequestDecorator decorate( ExtendedRequest modelRequest )
+    public void decodeValue( ExtendedRequest extendedRequest, byte[] requestValue ) throws DecoderException
     {
-        if ( modelRequest instanceof StoredProcedureRequestDecorator )
-        {
-            return ( StoredProcedureRequestDecorator ) modelRequest;
-        }
-
-        return new StoredProcedureRequestDecorator( codec, ( StoredProcedureRequest ) modelRequest );
+        ByteBuffer bb = ByteBuffer.wrap( requestValue );
+        StoredProcedureRequestContainer container = new StoredProcedureRequestContainer();
+        container.setStoredProcedureRequest( ( StoredProcedureRequest ) extendedRequest ); 
+        new Asn1Decoder().decode( bb, container );
     }
 
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public StoredProcedureResponseDecorator decorate( ExtendedResponse decoratedMessage )
-    {
-        if ( decoratedMessage instanceof StoredProcedureResponseDecorator )
-        {
-            return ( StoredProcedureResponseDecorator ) decoratedMessage;
-        }
-
-        return new StoredProcedureResponseDecorator( codec, ( StoredProcedureResponse ) decoratedMessage );
-    }
-    
     
     private void encodeParameters( Asn1Buffer buffer, Iterator<StoredProcedureParameter> parameters )
     {

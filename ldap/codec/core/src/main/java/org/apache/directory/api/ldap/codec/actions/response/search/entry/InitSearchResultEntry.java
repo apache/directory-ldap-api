@@ -21,8 +21,8 @@ package org.apache.directory.api.ldap.codec.actions.response.search.entry;
 
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.SearchResultEntryDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.model.message.SearchResultEntry;
 import org.apache.directory.api.ldap.model.message.SearchResultEntryImpl;
 
 
@@ -34,7 +34,7 @@ import org.apache.directory.api.ldap.model.message.SearchResultEntryImpl;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitSearchResultEntry extends GrammarAction<LdapMessageContainer<SearchResultEntryDecorator>>
+public class InitSearchResultEntry extends GrammarAction<LdapMessageContainerDirect<SearchResultEntry>>
 {
     /**
      * Instantiates a new action.
@@ -48,11 +48,10 @@ public class InitSearchResultEntry extends GrammarAction<LdapMessageContainer<Se
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<SearchResultEntryDecorator> container )
+    public void action( LdapMessageContainerDirect<SearchResultEntry> container )
     {
         // Now, we can allocate the SearchResultEntry Object
-        SearchResultEntryDecorator searchResultEntry = new SearchResultEntryDecorator(
-            container.getLdapCodecService(), new SearchResultEntryImpl( container.getMessageId() ) );
+        SearchResultEntry searchResultEntry = new SearchResultEntryImpl( container.getMessageId() );
         container.setMessage( searchResultEntry );
     }
 }

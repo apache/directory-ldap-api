@@ -25,13 +25,9 @@ import static org.junit.Assert.assertTrue;
 
 import javax.inject.Inject;
 
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyRequest;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponse;
-import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyRequestDecorator;
-import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyResponseDecorator;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.startTls.StartTlsRequestDecorator;
 import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequest;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
@@ -54,17 +50,19 @@ public class ApiLdapExtrasCodecOsgiTest extends ApiOsgiTestBase
     @Override
     protected void useBundleClasses() throws Exception
     {
-        CodecControl<? extends Control> ppRequest = ldapApiService.newRequestControl( PasswordPolicyRequest.OID );
+        Control ppRequest = ldapApiService.getRequestControlFactories().
+            get( PasswordPolicyRequest.OID ).newControl();
         assertNotNull( ppRequest );
-        assertTrue( ppRequest instanceof PasswordPolicyRequestDecorator );
+        assertTrue( ppRequest instanceof PasswordPolicyRequest );
 
-        CodecControl<? extends Control> ppResponse = ldapApiService.newResponseControl( PasswordPolicyResponse.OID );
+        Control ppResponse = ldapApiService.getResponseControlFactories().
+            get( PasswordPolicyResponse.OID ).newControl();
+        
         assertNotNull( ppResponse );
-        assertTrue( ppResponse instanceof PasswordPolicyResponseDecorator );
+        assertTrue( ppResponse instanceof PasswordPolicyResponse );
 
-        ExtendedRequest extendedRequest = ldapApiService.newExtendedRequest( StartTlsRequest.EXTENSION_OID, null );
+        ExtendedRequest extendedRequest = ldapApiService.getExtendedRequestFactories().get( StartTlsRequest.EXTENSION_OID ).newRequest();
         assertNotNull( extendedRequest );
-        assertTrue( extendedRequest instanceof StartTlsRequestDecorator );
+        assertTrue( extendedRequest instanceof StartTlsRequest );
     }
-
 }

@@ -32,7 +32,6 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
-import org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewRequestDecorator;
 import org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewRequestFactory;
 import org.apache.directory.api.util.Strings;
 import org.junit.Before;
@@ -74,8 +73,10 @@ public class VLVRequestControlTest extends AbstractCodecServiceTest
         bb.flip();
 
         // Test decoding
-        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
-        VirtualListViewRequest virtualListView = ( VirtualListViewRequest ) control.decode( bb.array() );
+        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().
+            get( VirtualListViewRequest.OID );
+        VirtualListViewRequest virtualListView = factory.newControl();
+        factory.decodeValue( virtualListView, bb.array() );
 
         assertEquals( 1, virtualListView.getBeforeCount() );
         assertEquals( 1, virtualListView.getAfterCount() );
@@ -84,15 +85,9 @@ public class VLVRequestControlTest extends AbstractCodecServiceTest
         assertEquals( 1, virtualListView.getContentCount() );
         assertEquals( "abcd", Strings.utf8ToString( virtualListView.getContextId() ) );
 
-        // Test encoding
-        ByteBuffer encoded = ( ( VirtualListViewRequestDecorator ) virtualListView ).encode(
-            ByteBuffer.allocate( ( ( VirtualListViewRequestDecorator ) virtualListView ).computeLength() ) );
-        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
-        
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().get( VirtualListViewRequest.OID );
         factory.encodeValue( asn1Buffer, virtualListView );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
@@ -117,8 +112,10 @@ public class VLVRequestControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
-        VirtualListViewRequest virtualListView = ( VirtualListViewRequest ) control.decode( bb.array() );
+        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().
+            get( VirtualListViewRequest.OID );
+        VirtualListViewRequest virtualListView = factory.newControl();
+        factory.decodeValue( virtualListView, bb.array() );
 
         assertEquals( 1, virtualListView.getBeforeCount() );
         assertEquals( 1, virtualListView.getAfterCount() );
@@ -127,14 +124,9 @@ public class VLVRequestControlTest extends AbstractCodecServiceTest
         assertEquals( 1, virtualListView.getContentCount() );
         assertNull( virtualListView.getContextId() );
 
-        ByteBuffer encoded = ( ( VirtualListViewRequestDecorator ) virtualListView ).encode(
-            ByteBuffer.allocate( ( ( VirtualListViewRequestDecorator ) virtualListView ).computeLength() ) );
-        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
-        
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().get( VirtualListViewRequest.OID );
         factory.encodeValue( asn1Buffer, virtualListView );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
@@ -160,8 +152,10 @@ public class VLVRequestControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
-        VirtualListViewRequest virtualListView = ( VirtualListViewRequest ) control.decode( bb.array() );
+        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().
+            get( VirtualListViewRequest.OID );
+        VirtualListViewRequest virtualListView = factory.newControl();
+        factory.decodeValue( virtualListView, bb.array() );
 
         assertEquals( 1, virtualListView.getBeforeCount() );
         assertEquals( 1, virtualListView.getAfterCount() );
@@ -170,30 +164,22 @@ public class VLVRequestControlTest extends AbstractCodecServiceTest
         assertEquals( 1, virtualListView.getContentCount() );
         assertNull( virtualListView.getContextId() );
 
-        ByteBuffer encoded = ( ( VirtualListViewRequestDecorator ) virtualListView ).encode(
-            ByteBuffer.allocate( ( ( VirtualListViewRequestDecorator ) virtualListView ).computeLength() ) );
-
-        bb = ByteBuffer.allocate( 0x10 );
-        bb.put( new byte[]
-            {
-                0x30, 0x0E,             // VirtualListViewRequest ::= SEQUENCE {
-                  0x02, 0x01, 0x01,     //    beforeCount    INTEGER (0..maxInt),
-                  0x02, 0x01, 0x01,     //    afterCount     INTEGER (0..maxInt),
-                  ( byte ) 0xA0, 0x06,  //    target       CHOICE {
-                                        //                   byOffset        [0] SEQUENCE {
-                    0x02, 0x01, 0x01,   //                        offset          INTEGER (1 .. maxInt),
-                    0x02, 0x01, 0x01    //                        contentCount    INTEGER (0 .. maxInt) },
-            } );
-
-        assertArrayEquals( bb.array(), encoded.array() );
-
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().get( VirtualListViewRequest.OID );
         factory.encodeValue( asn1Buffer, virtualListView );
 
-        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
+        assertArrayEquals( 
+            new byte[]
+                {
+                    0x30, 0x0E,             // VirtualListViewRequest ::= SEQUENCE {
+                      0x02, 0x01, 0x01,     //    beforeCount    INTEGER (0..maxInt),
+                      0x02, 0x01, 0x01,     //    afterCount     INTEGER (0..maxInt),
+                      ( byte ) 0xA0, 0x06,  //    target       CHOICE {
+                                            //                   byOffset        [0] SEQUENCE {
+                        0x02, 0x01, 0x01,   //                        offset          INTEGER (1 .. maxInt),
+                        0x02, 0x01, 0x01    //                        contentCount    INTEGER (0 .. maxInt) },
+                },  asn1Buffer.getBytes().array() );
     }
 
 
@@ -216,8 +202,10 @@ public class VLVRequestControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
-        VirtualListViewRequest virtualListView = ( VirtualListViewRequest ) control.decode( bb.array() );
+        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().
+            get( VirtualListViewRequest.OID );
+        VirtualListViewRequest virtualListView = factory.newControl();
+        factory.decodeValue( virtualListView, bb.array() );
 
         assertEquals( 1, virtualListView.getBeforeCount() );
         assertEquals( 1, virtualListView.getAfterCount() );
@@ -225,14 +213,9 @@ public class VLVRequestControlTest extends AbstractCodecServiceTest
         assertEquals( "abcd", Strings.utf8ToString( virtualListView.getAssertionValue() ) );
         assertEquals( "abcd", Strings.utf8ToString( virtualListView.getContextId() ) );
 
-        ByteBuffer encoded = ( ( VirtualListViewRequestDecorator ) virtualListView ).encode(
-            ByteBuffer.allocate( ( ( VirtualListViewRequestDecorator ) virtualListView ).computeLength() ) );
-        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
-
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().get( VirtualListViewRequest.OID );
         factory.encodeValue( asn1Buffer, virtualListView );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
@@ -257,8 +240,10 @@ public class VLVRequestControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
-        VirtualListViewRequest virtualListView = ( VirtualListViewRequest ) control.decode( bb.array() );
+        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().
+            get( VirtualListViewRequest.OID );
+        VirtualListViewRequest virtualListView = factory.newControl();
+        factory.decodeValue( virtualListView, bb.array() );
 
         assertEquals( 1, virtualListView.getBeforeCount() );
         assertEquals( 1, virtualListView.getAfterCount() );
@@ -266,28 +251,21 @@ public class VLVRequestControlTest extends AbstractCodecServiceTest
         assertEquals( "abcd", Strings.utf8ToString( virtualListView.getAssertionValue() ) );
         assertNull( virtualListView.getContextId() );
 
-        bb = ByteBuffer.allocate( 0x0E );
-        bb.put( new byte[]
-            {
-                0x30, 0x0C,                 // VirtualListViewRequest ::= SEQUENCE {
-                  0x02, 0x01, 0x01,         //    beforeCount    INTEGER (0..maxInt),
-                  0x02, 0x01, 0x01,         //    afterCount     INTEGER (0..maxInt),
-                                            //        target       CHOICE {
-                  ( byte ) 0x81, 0x04,      //              greaterThanOrEqual [1] AssertionValue },
-                      'a', 'b', 'c', 'd'
-        } );
-
-        ByteBuffer encoded = ( ( VirtualListViewRequestDecorator ) virtualListView ).encode(
-            ByteBuffer.allocate( ( ( VirtualListViewRequestDecorator ) virtualListView ).computeLength() ) );
-        assertArrayEquals( bb.array(), encoded.array() );
-
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().get( VirtualListViewRequest.OID );
         factory.encodeValue( asn1Buffer, virtualListView );
 
-        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
+        assertArrayEquals( 
+            new byte[]
+                {
+                    0x30, 0x0C,                 // VirtualListViewRequest ::= SEQUENCE {
+                      0x02, 0x01, 0x01,         //    beforeCount    INTEGER (0..maxInt),
+                      0x02, 0x01, 0x01,         //    afterCount     INTEGER (0..maxInt),
+                                                //        target       CHOICE {
+                      ( byte ) 0x81, 0x04,      //              greaterThanOrEqual [1] AssertionValue },
+                          'a', 'b', 'c', 'd'
+            },  asn1Buffer.getBytes().array() );
     }
 
 
@@ -308,8 +286,10 @@ public class VLVRequestControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
-        VirtualListViewRequest virtualListView = ( VirtualListViewRequest ) control.decode( bb.array() );
+        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().
+            get( VirtualListViewRequest.OID );
+        VirtualListViewRequest virtualListView = factory.newControl();
+        factory.decodeValue( virtualListView, bb.array() );
 
         assertEquals( 1, virtualListView.getBeforeCount() );
         assertEquals( 1, virtualListView.getAfterCount() );
@@ -317,14 +297,9 @@ public class VLVRequestControlTest extends AbstractCodecServiceTest
         assertEquals( "abcd", Strings.utf8ToString( virtualListView.getAssertionValue() ) );
         assertNull( virtualListView.getContextId() );
 
-        ByteBuffer encoded = ( ( VirtualListViewRequestDecorator ) virtualListView ).encode(
-            ByteBuffer.allocate( ( ( VirtualListViewRequestDecorator ) virtualListView ).computeLength() ) );
-        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
-
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().get( VirtualListViewRequest.OID );
         factory.encodeValue( asn1Buffer, virtualListView );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
@@ -343,8 +318,10 @@ public class VLVRequestControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
-        control.decode( bb.array() );
+        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().
+            get( VirtualListViewRequest.OID );
+        VirtualListViewRequest virtualListView = factory.newControl();
+        factory.decodeValue( virtualListView, bb.array() );
     }
 
 
@@ -367,8 +344,10 @@ public class VLVRequestControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
-        control.decode( bb.array() );
+        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().
+            get( VirtualListViewRequest.OID );
+        VirtualListViewRequest virtualListView = factory.newControl();
+        factory.decodeValue( virtualListView, bb.array() );
     }
 
 
@@ -388,8 +367,10 @@ public class VLVRequestControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
-        control.decode( bb.array() );
+        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().
+            get( VirtualListViewRequest.OID );
+        VirtualListViewRequest virtualListView = factory.newControl();
+        factory.decodeValue( virtualListView, bb.array() );
     }
 
 
@@ -410,8 +391,10 @@ public class VLVRequestControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
-        control.decode( bb.array() );
+        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().
+            get( VirtualListViewRequest.OID );
+        VirtualListViewRequest virtualListView = factory.newControl();
+        factory.decodeValue( virtualListView, bb.array() );
     }
 
 
@@ -432,8 +415,10 @@ public class VLVRequestControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
-        VirtualListViewRequest virtualListView = ( VirtualListViewRequest ) control.decode( bb.array() );
+        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().
+            get( VirtualListViewRequest.OID );
+        VirtualListViewRequest virtualListView = factory.newControl();
+        factory.decodeValue( virtualListView, bb.array() );
 
         assertEquals( 1, virtualListView.getBeforeCount() );
         assertEquals( 1, virtualListView.getAfterCount() );
@@ -441,9 +426,12 @@ public class VLVRequestControlTest extends AbstractCodecServiceTest
         assertEquals( "", Strings.utf8ToString( virtualListView.getAssertionValue() ) );
         assertEquals( "abcd", Strings.utf8ToString( virtualListView.getContextId() ) );
 
-        ByteBuffer encoded = ( ( VirtualListViewRequestDecorator ) virtualListView ).encode(
-            ByteBuffer.allocate( ( ( VirtualListViewRequestDecorator ) virtualListView ).computeLength() ) );
-        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
+        // Check the reverse encoding
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+
+        factory.encodeValue( asn1Buffer, virtualListView );
+
+        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
 
 
@@ -466,8 +454,10 @@ public class VLVRequestControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
-        control.decode( bb.array() );
+        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().
+            get( VirtualListViewRequest.OID );
+        VirtualListViewRequest virtualListView = factory.newControl();
+        factory.decodeValue( virtualListView, bb.array() );
     }
 
 
@@ -491,7 +481,9 @@ public class VLVRequestControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
-        control.decode( bb.array() );
+        VirtualListViewRequestFactory factory = ( VirtualListViewRequestFactory ) codec.getRequestControlFactories().
+            get( VirtualListViewRequest.OID );
+        VirtualListViewRequest virtualListView = factory.newControl();
+        factory.decodeValue( virtualListView, bb.array() );
     }
 }

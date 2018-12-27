@@ -113,7 +113,7 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
                                         LOG.debug( I18n.msg( I18n.MSG_05300_CHANGE_TYPE, changeType ) );
                                     }
 
-                                    container.getEntryChangeDecorator().setChangeType( changeType );
+                                    container.getEntryChange().setChangeType( changeType );
                                     break;
 
                                 default:
@@ -156,7 +156,7 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
                 {
                     public void action( EntryChangeContainer container ) throws DecoderException
                     {
-                        ChangeType changeType = container.getEntryChangeDecorator().getChangeType();
+                        ChangeType changeType = container.getEntryChange().getChangeType();
 
                         if ( changeType != ChangeType.MODDN )
                         {
@@ -183,7 +183,7 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
                                 LOG.debug( I18n.msg( I18n.MSG_05301_PREVIOUS_DN, previousDn ) );
                             }
 
-                            container.getEntryChangeDecorator().setPreviousDn( previousDn );
+                            container.getEntryChange().setPreviousDn( previousDn );
 
                             // We can have an END transition
                             container.setGrammarEndAllowed( true );
@@ -208,7 +208,7 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
                         LOG.debug( I18n.msg( I18n.MSG_05302_CHANGE_NUMBER, changeNumber ) );
                     }
 
-                    container.getEntryChangeDecorator().setChangeNumber( changeNumber );
+                    container.getEntryChange().setChangeNumber( changeNumber );
 
                     // We can have an END transition
                     container.setGrammarEndAllowed( true );

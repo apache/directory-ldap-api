@@ -51,7 +51,7 @@ public class ExtendedRequestImplTest
     @Test
     public void testEqualsSameObj()
     {
-        ExtendedRequestImpl req = new ExtendedRequestImpl();
+        OpaqueExtendedRequest req = new OpaqueExtendedRequest();
         req.setMessageId( 5 );
         assertTrue( req.equals( req ) );
     }
@@ -63,11 +63,11 @@ public class ExtendedRequestImplTest
     @Test
     public void testEqualsExactCopy()
     {
-        ExtendedRequestImpl req0 = new ExtendedRequestImpl();
+        OpaqueExtendedRequest req0 = new OpaqueExtendedRequest();
         req0.setMessageId( 5 );
         req0.setRequestName( "1.1.1.1" );
 
-        ExtendedRequestImpl req1 = new ExtendedRequestImpl();
+        OpaqueExtendedRequest req1 = new OpaqueExtendedRequest();
         req1.setMessageId( 5 );
         req1.setRequestName( "1.1.1.1" );
 
@@ -82,7 +82,7 @@ public class ExtendedRequestImplTest
     @Test
     public void testHashCodeSameObj()
     {
-        ExtendedRequestImpl req = new ExtendedRequestImpl();
+        OpaqueExtendedRequest req = new OpaqueExtendedRequest();
         req.setMessageId( 5 );
         assertTrue( req.hashCode() == req.hashCode() );
     }
@@ -94,11 +94,11 @@ public class ExtendedRequestImplTest
     @Test
     public void testHashCodeExactCopy()
     {
-        ExtendedRequestImpl req0 = new ExtendedRequestImpl();
+        OpaqueExtendedRequest req0 = new OpaqueExtendedRequest();
         req0.setMessageId( 5 );
         req0.setRequestName( "1.1.1.1" );
 
-        ExtendedRequestImpl req1 = new ExtendedRequestImpl();
+        OpaqueExtendedRequest req1 = new OpaqueExtendedRequest();
         req1.setMessageId( 5 );
         req1.setRequestName( "1.1.1.1" );
 
@@ -112,9 +112,9 @@ public class ExtendedRequestImplTest
     @Test
     public void testNotEqualDiffId()
     {
-        ExtendedRequestImpl req0 = new ExtendedRequestImpl();
+        OpaqueExtendedRequest req0 = new OpaqueExtendedRequest();
         req0.setMessageId( 7 );
-        ExtendedRequestImpl req1 = new ExtendedRequestImpl();
+        OpaqueExtendedRequest req1 = new OpaqueExtendedRequest();
         req1.setMessageId( 5 );
 
         assertFalse( req0.equals( req1 ) );
@@ -128,11 +128,11 @@ public class ExtendedRequestImplTest
     @Test
     public void testNotEqualDiffOID()
     {
-        ExtendedRequestImpl req0 = new ExtendedRequestImpl();
+        OpaqueExtendedRequest req0 = new OpaqueExtendedRequest();
         req0.setMessageId( 5 );
         req0.setRequestName( "1.1.1.1" );
 
-        ExtendedRequestImpl req1 = new ExtendedRequestImpl();
+        OpaqueExtendedRequest req1 = new OpaqueExtendedRequest();
         req1.setMessageId( 5 );
         req0.setRequestName( "1.2.2.1" );
 
@@ -147,127 +147,15 @@ public class ExtendedRequestImplTest
     @Test
     public void testNotEqualDiffValue()
     {
-        ExtendedRequestImpl req0 = new ExtendedRequestImpl();
+        OpaqueExtendedRequest req0 = new OpaqueExtendedRequest();
         req0.setMessageId( 5 );
         req0.setRequestName( "1.1.1.1" );
 
-        ExtendedRequestImpl req1 = new ExtendedRequestImpl();
+        OpaqueExtendedRequest req1 = new OpaqueExtendedRequest();
         req1.setMessageId( 5 );
         req0.setRequestName( "1.1.1.1" );
 
         assertFalse( req0.equals( req1 ) );
         assertFalse( req1.equals( req0 ) );
-    }
-
-
-    /**
-     * Tests for equality even when another ExtendedRequest implementation is
-     * used.
-     */
-    @Test
-    public void testEqualsDiffImpl()
-    {
-        ExtendedRequest req0 = new ExtendedRequest()
-        {
-            public ExtendedRequest setRequestName( String oid )
-            {
-                return this;
-            }
-
-
-            public MessageTypeEnum getResponseType()
-            {
-                return MessageTypeEnum.EXTENDED_RESPONSE;
-            }
-
-
-            public boolean hasResponse()
-            {
-                return true;
-            }
-
-
-            public MessageTypeEnum getType()
-            {
-                return MessageTypeEnum.EXTENDED_REQUEST;
-            }
-
-
-            public Map<String, Control> getControls()
-            {
-                return EMPTY_CONTROL_MAP;
-            }
-
-
-            public ExtendedRequest addControl( Control control )
-            {
-                return this;
-            }
-
-
-            public ExtendedRequest removeControl( Control control )
-            {
-                return this;
-            }
-
-
-            public int getMessageId()
-            {
-                return 5;
-            }
-
-
-            public Object get( Object key )
-            {
-                return null;
-            }
-
-
-            public Object put( Object key, Object value )
-            {
-                return null;
-            }
-
-
-            public ExtendedResponse getResultResponse()
-            {
-                return null;
-            }
-
-
-            public String getRequestName()
-            {
-                return null;
-            }
-
-
-            public ExtendedRequest addAllControls( Control[] controls )
-            {
-                return this;
-            }
-
-
-            public boolean hasControl( String oid )
-            {
-                return false;
-            }
-
-
-            public Control getControl( String oid )
-            {
-                return null;
-            }
-
-
-            public ExtendedRequest setMessageId( int messageId )
-            {
-                return this;
-            }
-        };
-
-        ExtendedRequestImpl req1 = new ExtendedRequestImpl();
-        req1.setMessageId( 5 );
-        assertTrue( req1.equals( req0 ) );
-        assertFalse( req0.equals( req1 ) );
     }
 }

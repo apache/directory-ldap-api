@@ -26,6 +26,7 @@ import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.api.ldap.model.message.Message;
+import org.apache.directory.api.ldap.model.message.OpaqueExtendedResponse;
 import org.apache.directory.api.util.Strings;
 
 /**
@@ -79,6 +80,16 @@ public final class ExtendedResponseFactory extends ResponseFactory
                 BerValue.encodeSequence( buffer, 
                     ( byte ) LdapCodecConstants.EXTENDED_RESPONSE_VALUE_TAG,
                     start );
+            }
+        }
+        else
+        {
+            byte[] responseValue = ( ( OpaqueExtendedResponse ) extendedResponse ).getResponseValue();
+            
+            if ( !Strings.isEmpty( responseValue ) )
+            {
+                BerValue.encodeOctetString( buffer, 
+                    ( byte ) LdapCodecConstants.EXTENDED_RESPONSE_VALUE_TAG, responseValue );
             }
         }
         

@@ -24,9 +24,10 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
-import org.apache.directory.api.ldap.codec.decorators.ModifyRequestDecorator;
+import org.apache.directory.api.ldap.model.entry.Attribute;
+import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.message.ModifyRequest;
 import org.apache.directory.api.ldap.model.message.ModifyResponseImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
@@ -50,7 +51,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AddModifyRequestAttribute extends GrammarAction<LdapMessageContainer<ModifyRequestDecorator>>
+public class AddModifyRequestAttribute extends GrammarAction<LdapMessageContainerDirect<ModifyRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( AddModifyRequestAttribute.class );
@@ -68,10 +69,9 @@ public class AddModifyRequestAttribute extends GrammarAction<LdapMessageContaine
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainer<ModifyRequestDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<ModifyRequest> container ) throws DecoderException
     {
-        ModifyRequestDecorator modifyRequestDecorator = container.getMessage();
-        ModifyRequest modifyRequest = modifyRequestDecorator.getDecorated();
+        ModifyRequest modifyRequest = container.getMessage();
 
         TLV tlv = container.getCurrentTLV();
 
@@ -90,7 +90,9 @@ public class AddModifyRequestAttribute extends GrammarAction<LdapMessageContaine
         else
         {
             type = Strings.utf8ToString( tlv.getValue().getData() );
-            modifyRequestDecorator.addAttributeTypeAndValues( type );
+            Attribute currentAttribute = new DefaultAttribute( type );
+            container.setCurrentAttribute( currentAttribute );
+            container.getCurrentModification().setAttribute( currentAttribute );
         }
 
         if ( LOG.isDebugEnabled() )

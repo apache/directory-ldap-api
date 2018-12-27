@@ -22,8 +22,8 @@ package org.apache.directory.api.ldap.codec.actions.response.intermediate;
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.IntermediateResponseDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.model.message.IntermediateResponse;
 import org.apache.directory.api.ldap.model.message.IntermediateResponseImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitIntermediateResponse extends GrammarAction<LdapMessageContainer<IntermediateResponseDecorator<?>>>
+public class InitIntermediateResponse extends GrammarAction<LdapMessageContainerDirect<IntermediateResponse>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitIntermediateResponse.class );
@@ -55,13 +55,10 @@ public class InitIntermediateResponse extends GrammarAction<LdapMessageContainer
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<IntermediateResponseDecorator<?>> container )
+    public void action( LdapMessageContainerDirect<IntermediateResponse> container )
     {
         // Now, we can allocate the IntermediateResponse Object
-        IntermediateResponseDecorator intermediateResponse =
-            new IntermediateResponseDecorator( container.getLdapCodecService(),
-                new IntermediateResponseImpl( container.getMessageId() ) );
-        container.setMessage( intermediateResponse );
+        container.setMessage( new IntermediateResponseImpl( container.getMessageId() ) );
 
         if ( LOG.isDebugEnabled() )
         {

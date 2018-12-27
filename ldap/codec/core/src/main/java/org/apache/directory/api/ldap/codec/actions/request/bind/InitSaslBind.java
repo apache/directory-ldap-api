@@ -24,9 +24,8 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
-import org.apache.directory.api.ldap.codec.decorators.BindRequestDecorator;
 import org.apache.directory.api.ldap.model.message.BindRequest;
 import org.apache.directory.api.ldap.model.message.BindResponseImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
@@ -51,7 +50,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitSaslBind extends GrammarAction<LdapMessageContainer<BindRequestDecorator>>
+public class InitSaslBind extends GrammarAction<LdapMessageContainerDirect<BindRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitSaslBind.class );
@@ -69,7 +68,7 @@ public class InitSaslBind extends GrammarAction<LdapMessageContainer<BindRequest
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainer<BindRequestDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<BindRequest> container ) throws DecoderException
     {
         BindRequest bindRequestMessage = container.getMessage();
         TLV tlv = container.getCurrentTLV();

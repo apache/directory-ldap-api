@@ -27,11 +27,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.controls.SortKey;
 import org.apache.directory.api.ldap.model.message.controls.SortRequest;
@@ -47,8 +45,8 @@ public class SortRequestControlTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeControl() throws Exception
     {
-        ByteBuffer buffer = ByteBuffer.allocate( 16 );
-        buffer.put( new byte[]
+        ByteBuffer stream = ByteBuffer.allocate( 16 );
+        stream.put( new byte[]
             {
                0x30, 0x0E,
                  0x30, 0x0C,
@@ -58,10 +56,11 @@ public class SortRequestControlTest extends AbstractCodecServiceTest
                      'o', 'i', 'd',
                    (byte)0x81, 0x01, 0x00
             } );
-        buffer.flip();
+        stream.flip();
 
-        SortRequestDecorator decorator = new SortRequestDecorator( codec );
-        SortRequest control = ( SortRequest ) decorator.decode( buffer.array() );
+        SortRequestFactory factory = ( SortRequestFactory ) codec.getRequestControlFactories().get( SortRequest.OID );
+        SortRequest control = factory.newControl();
+        factory.decodeValue( control, stream.array() );
 
         assertEquals( 1, control.getSortKeys().size() );
 
@@ -71,22 +70,26 @@ public class SortRequestControlTest extends AbstractCodecServiceTest
         assertFalse( sk.isReverseOrder() );
 
         // default value of false reverseOrder will not be encoded
-        int skipBytes = 3;
-        ByteBuffer encoded = ByteBuffer.allocate( buffer.capacity() - skipBytes );
-        decorator.computeLength();
-        decorator.encode( encoded );
-        assertFalse( Arrays.equals( buffer.array(), encoded.array() ) );
-        assertEquals( buffer.array().length - skipBytes, encoded.array().length );
-
-        // test reverse encoding impossible, th flag is false and won't be encoded
+        Asn1Buffer buffer = new Asn1Buffer();
+        factory.encodeValue( buffer, control );
+        assertArrayEquals( 
+            new byte[]
+                {
+                   0x30, 0x0B,
+                     0x30, 0x09,
+                       0x04, 0x02,
+                         'c', 'n',
+                       (byte)0x80, 0x03,
+                         'o', 'i', 'd',
+                }, buffer.getBytes().array() );
     }
 
 
     @Test
     public void testDecodeControlWithMultipleSortKeys() throws Exception
     {
-        ByteBuffer buffer = ByteBuffer.allocate( 0x1E );
-        buffer.put( new byte[]
+        ByteBuffer stream = ByteBuffer.allocate( 0x1E );
+        stream.put( new byte[]
             {
                0x30, 0x1C,
                  0x30, 0x0C,
@@ -102,10 +105,11 @@ public class SortRequestControlTest extends AbstractCodecServiceTest
                      'i', 'o', 'd',
                    (byte)0x81, 0x01, (byte)0xFF
             } );
-        buffer.flip();
+        stream.flip();
 
-        SortRequestDecorator decorator = new SortRequestDecorator( codec );
-        SortRequest control = ( SortRequest ) decorator.decode( buffer.array() );
+        SortRequestFactory factory = ( SortRequestFactory ) codec.getRequestControlFactories().get( SortRequest.OID );
+        SortRequest control = factory.newControl();
+        factory.decodeValue( control, stream.array() );
 
         assertEquals( 2, control.getSortKeys().size() );
 
@@ -119,45 +123,38 @@ public class SortRequestControlTest extends AbstractCodecServiceTest
         assertEquals( "iod", sk.getMatchingRuleId() );
         assertTrue( sk.isReverseOrder() );
 
-        ByteBuffer encoded = ByteBuffer.allocate( buffer.capacity() );
-        decorator.computeLength();
-        decorator.encode( encoded );
-        assertTrue( Arrays.equals( buffer.array(), encoded.array() ) );
-
-        // test reverse encoding
-        Asn1Buffer asn1Buffer = new Asn1Buffer();
-
-        ControlFactory<SortRequest> factory =
-            ( ControlFactory<SortRequest> ) codec.getRequestControlFactories().get( SortRequest.OID );
-
-        factory.encodeValue( asn1Buffer, control );
-
-        assertArrayEquals( buffer.array(), asn1Buffer.getBytes().array() );
+        // Check reverse encoder
+        Asn1Buffer buffer = new Asn1Buffer();
+        
+        factory.encodeValue( buffer, control );
+        
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
     @Test(expected = DecoderException.class)
     public void testDecodeWithoutAtDesc() throws Exception
     {
-        ByteBuffer buffer = ByteBuffer.allocate( 7 );
-        buffer.put( new byte[]
+        ByteBuffer stream = ByteBuffer.allocate( 16 );
+        stream.put( new byte[]
             {
                0x30, 0x05,
                  0x30, 0x03,
                   (byte)0x81, 0x01, 0x00
             } );
-        buffer.flip();
+        stream.flip();
 
-        SortRequestDecorator decorator = new SortRequestDecorator( codec );
-        decorator.decode( buffer.array() );
+        SortRequestFactory factory = ( SortRequestFactory ) codec.getRequestControlFactories().get( SortRequest.OID );
+        SortRequest control = factory.newControl();
+        factory.decodeValue( control, stream.array() );
     }
 
 
     @Test
     public void testDecodeControlWithoutMrOid() throws Exception
     {
-        ByteBuffer buffer = ByteBuffer.allocate( 11 );
-        buffer.put( new byte[]
+        ByteBuffer stream = ByteBuffer.allocate( 0x0B );
+        stream.put( new byte[]
             {
                0x30, 0x09,
                  0x30, 0x07,
@@ -165,10 +162,11 @@ public class SortRequestControlTest extends AbstractCodecServiceTest
                      'c', 'n',
                    (byte)0x81, 0x01, (byte)0xFF
             } );
-        buffer.flip();
+        stream.flip();
 
-        SortRequestDecorator decorator = new SortRequestDecorator( codec );
-        SortRequest control = ( SortRequest ) decorator.decode( buffer.array() );
+        SortRequestFactory factory = ( SortRequestFactory ) codec.getRequestControlFactories().get( SortRequest.OID );
+        SortRequest control = factory.newControl();
+        factory.decodeValue( control, stream.array() );
 
         assertEquals( 1, control.getSortKeys().size() );
 
@@ -177,38 +175,31 @@ public class SortRequestControlTest extends AbstractCodecServiceTest
         assertNull( sk.getMatchingRuleId() );
         assertTrue( sk.isReverseOrder() );
 
-        ByteBuffer encoded = ByteBuffer.allocate( buffer.capacity() );
-        decorator.computeLength();
-        decorator.encode( encoded );
-        assertTrue( Arrays.equals( buffer.array(), encoded.array() ) );
-
-        // test reverse encoding
-        Asn1Buffer asn1Buffer = new Asn1Buffer();
-
-        ControlFactory<SortRequest> factory =
-            ( ControlFactory<SortRequest> ) codec.getRequestControlFactories().get( SortRequest.OID );
-
-        factory.encodeValue( asn1Buffer, control );
-
-        assertArrayEquals( buffer.array(), asn1Buffer.getBytes().array() );
+        // Check reverse encoder
+        Asn1Buffer buffer = new Asn1Buffer();
+        
+        factory.encodeValue( buffer, control );
+        
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
     @Test
     public void testDecodeControlWithAtDescOnly() throws Exception
     {
-        ByteBuffer buffer = ByteBuffer.allocate( 8 );
-        buffer.put( new byte[]
+        ByteBuffer stream = ByteBuffer.allocate( 0x08 );
+        stream.put( new byte[]
             {
                0x30, 0x06,
                  0x30, 0x04,
                    0x04, 0x02,
                      'c', 'n'
             } );
-        buffer.flip();
+        stream.flip();
 
-        SortRequestDecorator decorator = new SortRequestDecorator( codec );
-        SortRequest control = ( SortRequest ) decorator.decode( buffer.array() );
+        SortRequestFactory factory = ( SortRequestFactory ) codec.getRequestControlFactories().get( SortRequest.OID );
+        SortRequest control = factory.newControl();
+        factory.decodeValue( control, stream.array() );
 
         assertEquals( 1, control.getSortKeys().size() );
 
@@ -217,28 +208,20 @@ public class SortRequestControlTest extends AbstractCodecServiceTest
         assertNull( sk.getMatchingRuleId() );
         assertFalse( sk.isReverseOrder() );
 
-        ByteBuffer encoded = ByteBuffer.allocate( buffer.capacity() );
-        decorator.computeLength();
-        decorator.encode( encoded );
-        assertTrue( Arrays.equals( buffer.array(), encoded.array() ) );
-
-        // test reverse encoding
-        Asn1Buffer asn1Buffer = new Asn1Buffer();
-
-        ControlFactory<SortRequest> factory =
-            ( ControlFactory<SortRequest> ) codec.getRequestControlFactories().get( SortRequest.OID );
-
-        factory.encodeValue( asn1Buffer, control );
-
-        assertArrayEquals( buffer.array(), asn1Buffer.getBytes().array() );
+        // Check reverse encoder
+        Asn1Buffer buffer = new Asn1Buffer();
+        
+        factory.encodeValue( buffer, control );
+        
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
     @Test
     public void testDecodeControlWithMultipleAtDescOnly() throws Exception
     {
-        ByteBuffer buffer = ByteBuffer.allocate( 0x0E );
-        buffer.put( new byte[]
+        ByteBuffer stream = ByteBuffer.allocate( 0x0E );
+        stream.put( new byte[]
             {
                0x30, 0x0C,
                  0x30, 0x04,
@@ -248,10 +231,11 @@ public class SortRequestControlTest extends AbstractCodecServiceTest
                    0x04, 0x02,
                      's', 'n'
             } );
-        buffer.flip();
+        stream.flip();
 
-        SortRequestDecorator decorator = new SortRequestDecorator( codec );
-        SortRequest control = ( SortRequest ) decorator.decode( buffer.array() );
+        SortRequestFactory factory = ( SortRequestFactory ) codec.getRequestControlFactories().get( SortRequest.OID );
+        SortRequest control = factory.newControl();
+        factory.decodeValue( control, stream.array() );
 
         assertEquals( 2, control.getSortKeys().size() );
 
@@ -265,19 +249,11 @@ public class SortRequestControlTest extends AbstractCodecServiceTest
         assertNull( sk.getMatchingRuleId() );
         assertFalse( sk.isReverseOrder() );
 
-        ByteBuffer encoded = ByteBuffer.allocate( buffer.capacity() );
-        decorator.computeLength();
-        decorator.encode( encoded );
-        assertArrayEquals( buffer.array(), encoded.array() );
-
-        // test reverse encoding
-        Asn1Buffer asn1Buffer = new Asn1Buffer();
-
-        ControlFactory<SortRequest> factory =
-            ( ControlFactory<SortRequest> ) codec.getRequestControlFactories().get( SortRequest.OID );
-
-        factory.encodeValue( asn1Buffer, control );
-
-        assertArrayEquals( buffer.array(), asn1Buffer.getBytes().array() );
+        // Check reverse encoder
+        Asn1Buffer buffer = new Asn1Buffer();
+        
+        factory.encodeValue( buffer, control );
+        
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 }

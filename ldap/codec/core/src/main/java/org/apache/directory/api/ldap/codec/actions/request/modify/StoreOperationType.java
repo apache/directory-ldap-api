@@ -27,8 +27,10 @@ import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.ModifyRequestDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.model.entry.DefaultModification;
+import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.message.ModifyRequest;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +47,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreOperationType extends GrammarAction<LdapMessageContainer<ModifyRequestDecorator>>
+public class StoreOperationType extends GrammarAction<LdapMessageContainerDirect<ModifyRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreOperationType.class );
@@ -63,10 +65,9 @@ public class StoreOperationType extends GrammarAction<LdapMessageContainer<Modif
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainer<ModifyRequestDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<ModifyRequest> container ) throws DecoderException
     {
-        ModifyRequestDecorator modifyRequestDecorator = container.getMessage();
-
+        ModifyRequest modifyRequest = container.getMessage();
         TLV tlv = container.getCurrentTLV();
 
         // Decode the operation type
@@ -74,7 +75,12 @@ public class StoreOperationType extends GrammarAction<LdapMessageContainer<Modif
 
         try
         {
+            // Store the current operation.
             operation = IntegerDecoder.parse( tlv.getValue(), 0, 2 );
+            Modification modification = new DefaultModification();
+            modification.setOperation( operation );
+            modifyRequest.addModification( modification );
+            container.setCurrentModification( modification );
         }
         catch ( IntegerDecoderException ide )
         {
@@ -84,9 +90,6 @@ public class StoreOperationType extends GrammarAction<LdapMessageContainer<Modif
             // This will generate a PROTOCOL_ERROR
             throw new DecoderException( msg, ide );
         }
-
-        // Store the current operation.
-        modifyRequestDecorator.setCurrentOperation( operation );
 
         if ( LOG.isDebugEnabled() )
         {

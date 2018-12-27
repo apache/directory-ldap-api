@@ -115,7 +115,7 @@ public final class SyncDoneValueGrammar extends AbstractGrammar<SyncDoneValueCon
                             LOG.debug( I18n.msg( I18n.MSG_08000_COOKIE, Strings.dumpBytes( cookie ) ) );
                         }
 
-                        container.getSyncDoneValueControl().setCookie( cookie );
+                        container.getSyncDoneValue().setCookie( cookie );
 
                         container.setGrammarEndAllowed( true );
                     }
@@ -137,7 +137,7 @@ public final class SyncDoneValueGrammar extends AbstractGrammar<SyncDoneValueCon
                             LOG.debug( I18n.msg( I18n.MSG_08001_REFRESH_DELETES, refreshDeletes ) );
                         }
 
-                        container.getSyncDoneValueControl().setRefreshDeletes( refreshDeletes );
+                        container.getSyncDoneValue().setRefreshDeletes( refreshDeletes );
 
                         // the END transition for grammar
                         container.setGrammarEndAllowed( true );

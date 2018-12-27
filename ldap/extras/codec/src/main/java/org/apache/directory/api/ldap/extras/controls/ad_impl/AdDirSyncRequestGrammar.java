@@ -120,7 +120,7 @@ public final class AdDirSyncRequestGrammar extends AbstractGrammar<AdDirSyncRequ
                                 LOG.debug( I18n.msg( I18n.MSG_08108_PARENTS_FIRST, parentsFirst ) );
                             }
 
-                            container.getAdDirSyncRequestControl().setParentsFirst( parentsFirst );
+                            container.getAdDirSyncRequest().setParentsFirst( parentsFirst );
                         }
                         catch ( IntegerDecoderException ide )
                         {
@@ -160,7 +160,7 @@ public final class AdDirSyncRequestGrammar extends AbstractGrammar<AdDirSyncRequ
                                 LOG.debug( I18n.msg( I18n.MSG_08109_MAX_ATTRIBUTE_COUNT, maxAttributeCount ) );
                             }
 
-                            container.getAdDirSyncRequestControl().setMaxAttributeCount( maxAttributeCount );
+                            container.getAdDirSyncRequest().setMaxAttributeCount( maxAttributeCount );
                         }
                         catch ( IntegerDecoderException ide )
                         {
@@ -197,7 +197,7 @@ public final class AdDirSyncRequestGrammar extends AbstractGrammar<AdDirSyncRequ
                             LOG.debug( I18n.msg( I18n.MSG_08000_COOKIE, Strings.dumpBytes( cookie ) ) );
                         }
 
-                        container.getAdDirSyncRequestControl().setCookie( cookie );
+                        container.getAdDirSyncRequest().setCookie( cookie );
 
                         container.setGrammarEndAllowed( true );
                     }

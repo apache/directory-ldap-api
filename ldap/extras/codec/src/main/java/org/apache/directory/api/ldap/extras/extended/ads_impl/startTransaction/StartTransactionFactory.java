@@ -20,17 +20,13 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.startTransaction;
 
 
-import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.decorators.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionRequest;
 import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionRequestImpl;
 import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionResponse;
 import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionResponseImpl;
-import org.apache.directory.api.ldap.model.message.ExtendedRequest;
-import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 
 
 /**
@@ -48,7 +44,7 @@ public class StartTransactionFactory extends AbstractExtendedOperationFactory
      */
     public StartTransactionFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, StartTransactionRequest.EXTENSION_OID );
     }
 
 
@@ -56,9 +52,9 @@ public class StartTransactionFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public StartTransactionRequest newRequest()
     {
-        return StartTransactionRequest.EXTENSION_OID;
+        return new StartTransactionRequestImpl();
     }
 
 
@@ -66,71 +62,8 @@ public class StartTransactionFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public StartTransactionResponse newResponse( byte[] encodedValue ) throws DecoderException
+    public StartTransactionResponse newResponse()
     {
-        StartTransactionResponseDecorator response = 
-            new StartTransactionResponseDecorator( codec, new StartTransactionResponseImpl() );
-        response.setResponseValue( encodedValue );
-
-        return response;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public StartTransactionRequest newRequest( byte[] value )
-    {
-        StartTransactionRequestDecorator req = 
-                new StartTransactionRequestDecorator( codec, new StartTransactionRequestImpl() );
-
-        if ( value != null )
-        {
-            req.setRequestValue( value );
-        }
-
-        return req;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public StartTransactionRequestDecorator decorate( ExtendedRequest modelRequest )
-    {
-        if ( modelRequest instanceof StartTransactionRequestDecorator )
-        {
-            return ( StartTransactionRequestDecorator ) modelRequest;
-        }
-
-        return new StartTransactionRequestDecorator( codec, ( StartTransactionRequest ) modelRequest );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public StartTransactionResponseDecorator decorate( ExtendedResponse decoratedResponse )
-    {
-        if ( decoratedResponse instanceof StartTransactionResponseDecorator )
-        {
-            return ( StartTransactionResponseDecorator ) decoratedResponse;
-        }
-
-        // It's an opaque extended operation
-        ExtendedResponseDecorator<ExtendedResponse> response = 
-                ( ExtendedResponseDecorator<ExtendedResponse> ) decoratedResponse;
-
-        // Decode the response, as it's an opaque operation
-        StartTransactionResponse startTransactionResponse = new StartTransactionResponseImpl( response.getResponseValue() );
-        
-        startTransactionResponse.setMessageId( response.getMessageId() );
-        startTransactionResponse.getLdapResult().setResultCode( response.getLdapResult().getResultCode() );
-        startTransactionResponse.getLdapResult().setDiagnosticMessage( response.getLdapResult().getDiagnosticMessage() );
-
-        return new StartTransactionResponseDecorator( codec, startTransactionResponse );
+        return new StartTransactionResponseImpl();
     }
 }

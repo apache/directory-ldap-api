@@ -20,14 +20,14 @@
 package org.apache.directory.api.ldap.extras.controls.ppolicy_impl;
 
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyRequest;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponse;
+import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponseImpl;
 import org.apache.directory.api.ldap.model.message.Control;
 
 
@@ -46,7 +46,7 @@ public class PasswordPolicyResponseFactory extends AbstractControlFactory<Passwo
      */
     public PasswordPolicyResponseFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, PasswordPolicyResponse.OID );
     }
 
 
@@ -54,29 +54,9 @@ public class PasswordPolicyResponseFactory extends AbstractControlFactory<Passwo
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public PasswordPolicyResponse newControl()
     {
-        return PasswordPolicyRequest.OID;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<PasswordPolicyResponse> newCodecControl()
-    {
-        return new PasswordPolicyResponseDecorator( codec );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<PasswordPolicyResponse> newCodecControl( PasswordPolicyResponse control )
-    {
-        return new PasswordPolicyResponseDecorator( codec, control );
+        return new PasswordPolicyResponseImpl();
     }
 
 
@@ -129,5 +109,15 @@ public class PasswordPolicyResponseFactory extends AbstractControlFactory<Passwo
         
         // The sequence
         BerValue.encodeSequence( buffer, start );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void decodeValue( Control control, byte[] controlBytes ) throws DecoderException
+    {
+        decodeValue( new PasswordPolicyResponseContainer( control ), control, controlBytes );
     }
 }

@@ -22,8 +22,9 @@ package org.apache.directory.api.ldap.extras.controls.vlv_impl;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
-import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.ControlContainer;
 import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewRequest;
+import org.apache.directory.api.ldap.model.message.Control;
 
 
 /**
@@ -31,64 +32,31 @@ import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewRequest;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class VirtualListViewRequestContainer extends AbstractContainer
+public class VirtualListViewRequestContainer extends AbstractContainer implements ControlContainer
 {
-    private VirtualListViewRequestDecorator control;
-
-    private LdapApiService codec;
-
+    /** The VLV request control */
+    private Control control;
 
     /**
      * Creates a new VirtualListViewRequestContainer instance
      * 
-     * @param codec The LDAP Service to use
+     * @param control The VLV control to store
      */
-    public VirtualListViewRequestContainer( LdapApiService codec )
+    public VirtualListViewRequestContainer( Control control )
     {
         super();
-        this.codec = codec;
         setGrammar( VirtualListViewRequestGrammar.getInstance() );
         setTransition( VirtualListViewRequestStates.START_STATE );
-    }
-
-
-    /**
-     * Creates a new VirtualListViewRequestContainer instance
-     * 
-     * @param control The VLV control
-     * @param codec The LDAP Service to use
-     */
-    public VirtualListViewRequestContainer( VirtualListViewRequestDecorator control, LdapApiService codec )
-    {
-        this( codec );
-        decorate( control );
+        this.control = control;
     }
 
 
     /**
      * @return The VLV control
      */
-    public VirtualListViewRequestDecorator getDecorator()
+    public VirtualListViewRequest getVirtualListViewRequest()
     {
-        return control;
-    }
-
-
-    /**
-     * Decorate he VLV control
-     * 
-     * @param control The control to decorate
-     */
-    public void decorate( VirtualListViewRequest control )
-    {
-        if ( control instanceof VirtualListViewRequestDecorator )
-        {
-            this.control = ( VirtualListViewRequestDecorator ) control;
-        }
-        else
-        {
-            this.control = new VirtualListViewRequestDecorator( codec, control );
-        }
+        return ( VirtualListViewRequest ) control;
     }
 
 
@@ -97,7 +65,7 @@ public class VirtualListViewRequestContainer extends AbstractContainer
      * 
      * @param control The VLV control
      */
-    public void setVirtualListViewRequestControl( VirtualListViewRequestDecorator control )
+    public void setControl( Control control )
     {
         this.control = control;
     }

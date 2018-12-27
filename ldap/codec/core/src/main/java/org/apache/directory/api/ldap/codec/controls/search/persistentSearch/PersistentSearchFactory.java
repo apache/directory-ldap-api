@@ -20,13 +20,14 @@
 package org.apache.directory.api.ldap.codec.controls.search.persistentSearch;
 
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.PersistentSearch;
+import org.apache.directory.api.ldap.model.message.controls.PersistentSearchImpl;
 
 
 /**
@@ -44,7 +45,7 @@ public class PersistentSearchFactory extends AbstractControlFactory<PersistentSe
      */
     public PersistentSearchFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, PersistentSearch.OID );
     }
 
 
@@ -52,29 +53,9 @@ public class PersistentSearchFactory extends AbstractControlFactory<PersistentSe
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public PersistentSearch newControl()
     {
-        return PersistentSearch.OID;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<PersistentSearch> newCodecControl()
-    {
-        return new PersistentSearchDecorator( codec );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<PersistentSearch> newCodecControl( PersistentSearch control )
-    {
-        return new PersistentSearchDecorator( codec, control );
+        return new PersistentSearchImpl();
     }
 
 
@@ -98,5 +79,15 @@ public class PersistentSearchFactory extends AbstractControlFactory<PersistentSe
 
         // The PersistentSearch sequence
         BerValue.encodeSequence( buffer, start );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void decodeValue( Control control, byte[] controlBytes ) throws DecoderException
+    {
+        decodeValue( new PersistentSearchContainer( control ), control, controlBytes );
     }
 }

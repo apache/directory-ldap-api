@@ -20,12 +20,14 @@
 package org.apache.directory.api.ldap.codec.actions.response.extended;
 
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.ExtendedResponseDecorator;
+import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
+import org.apache.directory.api.ldap.model.message.OpaqueExtendedResponse;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +42,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreExtendedResponseValue extends GrammarAction<LdapMessageContainer<ExtendedResponseDecorator<?>>>
+public class StoreExtendedResponseValue extends GrammarAction<LdapMessageContainerDirect<ExtendedResponse>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreExtendedResponseValue.class );
@@ -57,24 +59,43 @@ public class StoreExtendedResponseValue extends GrammarAction<LdapMessageContain
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<ExtendedResponseDecorator<?>> container )
+    public void action( LdapMessageContainerDirect<ExtendedResponse> container ) throws DecoderException
     {
         // We can allocate the ExtendedResponse Object
-        ExtendedResponseDecorator<?> extendedResponse = container.getMessage();
+        ExtendedResponse extendedResponse = container.getMessage();
 
         // Get the Value and store it in the ExtendedResponse
         TLV tlv = container.getCurrentTLV();
+        
+        ExtendedOperationFactory factory = container.getExtendedFactory();
 
-        // We have to handle the special case of a 0 length matched
-        // OID
-        if ( tlv.getLength() == 0 )
+        // We have to handle the special case of a 0 length matched value
+        try
         {
-            extendedResponse.setResponseValue( Strings.EMPTY_BYTES );
+            if ( factory == null )
+            {
+                if ( tlv.getLength() == 0 )
+                {
+                    ( ( OpaqueExtendedResponse ) extendedResponse ).setResponseValue( Strings.EMPTY_BYTES );
+                }
+                else
+                {
+                    ( ( OpaqueExtendedResponse ) extendedResponse ).setResponseValue( tlv.getValue().getData() );
+                }
+            }
+            else
+            {
+                factory.decodeValue( extendedResponse, tlv.getValue().getData() );
+            }
         }
-        else
+        catch ( DecoderException de )
         {
-            ( ( ExtendedResponseDecorator<ExtendedResponse> ) extendedResponse ).
-                setResponseValue( tlv.getValue().getData() );
+            String msg = I18n.err( I18n.ERR_05158_INVALID_REQUEST_VALUE,
+                Strings.dumpBytes( tlv.getValue().getData() ) );
+            LOG.error( I18n.err( I18n.ERR_05114_ERROR_MESSAGE, msg, de.getMessage() ) );
+
+            // Rethrow the exception, we will get a PROTOCOL_ERROR
+            throw de;
         }
 
         // We can have an END transition
@@ -82,7 +103,7 @@ public class StoreExtendedResponseValue extends GrammarAction<LdapMessageContain
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( I18n.msg( I18n.MSG_05173_EXTENDED_VALUE, extendedResponse.getResponseValue() ) );
+            LOG.debug( I18n.msg( I18n.MSG_05173_EXTENDED_VALUE, Strings.dumpBytes( tlv.getValue().getData() ) ) );
         }
     }
 }

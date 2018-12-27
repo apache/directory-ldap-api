@@ -25,9 +25,8 @@ import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
+import org.apache.directory.api.ldap.codec.api.ControlFactory;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.util.Strings;
@@ -47,7 +46,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreControlValue extends GrammarAction<LdapMessageContainer<AbstractMessageDecorator<? extends Message>>>
+public class StoreControlValue extends GrammarAction<LdapMessageContainerDirect<Message>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreControlValue.class );
@@ -66,24 +65,20 @@ public class StoreControlValue extends GrammarAction<LdapMessageContainer<Abstra
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainer<AbstractMessageDecorator<? extends Message>> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<Message> container ) throws DecoderException
     {
         TLV tlv = container.getCurrentTLV();
 
-        CodecControl<? extends Control> control = container.getCurrentControl();
+        Control control = container.getCurrentControl();
 
         // Get the current control
         BerValue value = tlv.getValue();
 
         // Store the value - have to handle the special case of a 0 length value
-        if ( tlv.getLength() == 0 )
+        if ( tlv.getLength() >= 0 )
         {
-            control.setValue( Strings.EMPTY_BYTES );
-        }
-        else
-        {
-            control.setValue( value.getData() );
-            control.decode( value.getData() );
+            ControlFactory<?> factory = container.getControlFactory();
+            factory.decodeValue( control, value.getData() );
         }
 
         // We can have an END transition
@@ -91,7 +86,7 @@ public class StoreControlValue extends GrammarAction<LdapMessageContainer<Abstra
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( I18n.msg( I18n.MSG_08203_CONTROL_VALUE, Strings.dumpBytes( control.getValue() ) ) );
+            LOG.debug( I18n.msg( I18n.MSG_08203_CONTROL_VALUE, Strings.dumpBytes( value.getData() ) ) );
         }
     }
 }

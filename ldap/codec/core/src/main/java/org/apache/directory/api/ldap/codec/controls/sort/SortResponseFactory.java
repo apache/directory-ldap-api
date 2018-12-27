@@ -20,14 +20,15 @@
 package org.apache.directory.api.ldap.codec.controls.sort;
 
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.SortResponse;
+import org.apache.directory.api.ldap.model.message.controls.SortResponseImpl;
 import org.apache.directory.api.util.Strings;
 
 
@@ -49,7 +50,7 @@ public class SortResponseFactory extends AbstractControlFactory<SortResponse>
      */
     public SortResponseFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, SortResponse.OID );
     }
 
 
@@ -57,29 +58,9 @@ public class SortResponseFactory extends AbstractControlFactory<SortResponse>
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public SortResponse newControl()
     {
-        return SortResponse.OID;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<SortResponse> newCodecControl()
-    {
-        return new SortResponseDecorator( codec );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<SortResponse> newCodecControl( SortResponse control )
-    {
-        return new SortResponseDecorator( codec, control );
+        return new SortResponseImpl();
     }
 
 
@@ -105,5 +86,15 @@ public class SortResponseFactory extends AbstractControlFactory<SortResponse>
 
         // The overall sequence
         BerValue.encodeSequence( buffer, start );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void decodeValue( Control control, byte[] controlBytes ) throws DecoderException
+    {
+        decodeValue( new SortResponseContainer( control ), control, controlBytes );
     }
 }

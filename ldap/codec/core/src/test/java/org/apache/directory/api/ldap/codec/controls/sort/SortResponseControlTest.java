@@ -23,13 +23,10 @@ package org.apache.directory.api.ldap.codec.controls.sort;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.controls.SortResponse;
 import org.apache.directory.api.ldap.model.message.controls.SortResultCode;
@@ -45,85 +42,75 @@ public class SortResponseControlTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeControl() throws Exception
     {
-        ByteBuffer buffer = ByteBuffer.allocate( 0x09 );
-        buffer.put( new byte[]
+        ByteBuffer bb = ByteBuffer.allocate( 0x09 );
+        bb.put( new byte[]
             {
                0x30, 0x07,
                  0x0A, 0x01, 0x00,
                  ( byte ) 0x80, 0x02,
                    'c', 'n'
             } );
-        buffer.flip();
+        bb.flip();
 
-        SortResponseDecorator decorator = new SortResponseDecorator( codec );
-        SortResponse control = ( SortResponse ) decorator.decode( buffer.array() );
+        SortResponseFactory factory = ( SortResponseFactory ) codec.getResponseControlFactories().
+            get( SortResponse.OID );
+        SortResponse control = factory.newControl();
+        factory.decodeValue( control, bb.array() );
 
         assertEquals( SortResultCode.SUCCESS, control.getSortResult() );
         assertEquals( "cn", control.getAttributeName() );
 
-        ByteBuffer encoded = ByteBuffer.allocate( buffer.capacity() );
-        decorator.computeLength();
-        decorator.encode( encoded );
-        assertTrue( Arrays.equals( buffer.array(), encoded.array() ) );
-
         // test reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        ControlFactory<SortResponse> factory =
-            ( ControlFactory<SortResponse> ) codec.getResponseControlFactories().get( SortResponse.OID );
-
         factory.encodeValue( asn1Buffer, control );
 
-        assertArrayEquals( buffer.array(), asn1Buffer.getBytes().array() );
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
     @Test
     public void testDecodeControlWithoutAtType() throws Exception
     {
-        ByteBuffer buffer = ByteBuffer.allocate( 0x05 );
-        buffer.put( new byte[]
+        ByteBuffer bb = ByteBuffer.allocate( 0x05 );
+        bb.put( new byte[]
             {
                0x30, 0x03,
                  0x0A, 0x01, 0x10
             } );
-        buffer.flip();
+        bb.flip();
 
-        SortResponseDecorator decorator = new SortResponseDecorator( codec );
-        SortResponse control = ( SortResponse ) decorator.decode( buffer.array() );
+        SortResponseFactory factory = ( SortResponseFactory ) codec.getResponseControlFactories().
+            get( SortResponse.OID );
+        SortResponse control = factory.newControl();
+        factory.decodeValue( control, bb.array() );
 
         assertEquals( SortResultCode.NOSUCHATTRIBUTE, control.getSortResult() );
         assertNull( control.getAttributeName() );
 
-        ByteBuffer encoded = ByteBuffer.allocate( buffer.capacity() );
-        decorator.computeLength();
-        decorator.encode( encoded );
-        assertTrue( Arrays.equals( buffer.array(), encoded.array() ) );
-
         // test reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        ControlFactory<SortResponse> factory =
-            ( ControlFactory<SortResponse> ) codec.getResponseControlFactories().get( SortResponse.OID );
-
         factory.encodeValue( asn1Buffer, control );
 
-        assertArrayEquals( buffer.array(), asn1Buffer.getBytes().array() );
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void testDecodeControlWithWrongResultCode() throws Exception
     {
-        ByteBuffer buffer = ByteBuffer.allocate( 0x05 );
-        buffer.put( new byte[]
+        ByteBuffer bb = ByteBuffer.allocate( 0x05 );
+        bb.put( new byte[]
             {
                0x30, 0x03,
                  0x0A, 0x01, 0x0A
             } );
-        buffer.flip();
+        bb.flip();
 
-        SortResponseDecorator decorator = new SortResponseDecorator( codec );
-        decorator.decode( buffer.array() );
+        SortResponseFactory factory = ( SortResponseFactory ) codec.getResponseControlFactories().
+            get( SortResponse.OID );
+        SortResponse control = factory.newControl();
+        factory.decodeValue( control, bb.array() );
     }
 }

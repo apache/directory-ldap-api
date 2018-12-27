@@ -27,8 +27,7 @@ import org.apache.directory.api.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +43,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreSearchRequestTimeLimit extends GrammarAction<LdapMessageContainer<SearchRequestDecorator>>
+public class StoreSearchRequestTimeLimit extends GrammarAction<LdapMessageContainerDirect<SearchRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreSearchRequestTimeLimit.class );
@@ -61,9 +60,9 @@ public class StoreSearchRequestTimeLimit extends GrammarAction<LdapMessageContai
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<SearchRequestDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<SearchRequest> container ) throws DecoderException
     {
-        SearchRequest searchRequest = container.getMessage().getDecorated();
+        SearchRequest searchRequest = container.getMessage();
 
         TLV tlv = container.getCurrentTLV();
 
@@ -71,11 +70,10 @@ public class StoreSearchRequestTimeLimit extends GrammarAction<LdapMessageContai
         // We get it and store it in timeLimit
         BerValue value = tlv.getValue();
 
-        int timeLimit = 0;
-
         try
         {
-            timeLimit = IntegerDecoder.parse( value, 0, Integer.MAX_VALUE );
+            int timeLimit = IntegerDecoder.parse( value, 0, Integer.MAX_VALUE );
+            searchRequest.setTimeLimit( timeLimit );
         }
         catch ( IntegerDecoderException ide )
         {
@@ -84,11 +82,9 @@ public class StoreSearchRequestTimeLimit extends GrammarAction<LdapMessageContai
             throw new DecoderException( msg, ide );
         }
 
-        searchRequest.setTimeLimit( timeLimit );
-
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( I18n.msg( I18n.MSG_05164_TIME_LIMIT_SET_TO, Integer.valueOf( timeLimit ) ) );
+            LOG.debug( I18n.msg( I18n.MSG_05164_TIME_LIMIT_SET_TO, searchRequest.getTimeLimit() ) );
         }
     }
 }

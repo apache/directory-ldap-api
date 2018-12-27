@@ -20,12 +20,12 @@
 package org.apache.directory.api.ldap.codec.modify;
 
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
@@ -33,23 +33,19 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
-import org.apache.directory.api.ldap.codec.decorators.ModifyRequestDecorator;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.entry.Attribute;
-import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Modification;
-import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.ModifyRequest;
-import org.apache.directory.api.ldap.model.message.ModifyRequestImpl;
 import org.apache.directory.api.ldap.model.message.ModifyResponseImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -116,12 +112,10 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
                               't', 'e', 's', 't'
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ModifyRequestDecorator> ldapMessageContainer =
-            new LdapMessageContainer<ModifyRequestDecorator>( codec );
+        LdapMessageContainerDirect<ModifyRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         // Decode a ModifyRequest PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -152,30 +146,12 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
             }
         }
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, modifyRequest );
-
-        // Check the length
-        assertEquals( 0x54, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
-
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        ModifyRequest request = new ModifyRequestImpl();
-        request.setName( modifyRequest.getName() );
-        request.setMessageId( 1 );
-        request.addModification( new DefaultModification(
-            ModificationOperation.REPLACE_ATTRIBUTE, "l", "Paris" ) );
-        request.addModification( new DefaultModification(
-            ModificationOperation.ADD_ATTRIBUTE, "attrs", "test" ) );
+        LdapEncoder.encodeMessageReverse( buffer, codec, modifyRequest );
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, request );
-
-        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
@@ -231,8 +207,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ModifyRequestDecorator> ldapMessageContainer =
-            new LdapMessageContainer<ModifyRequestDecorator>( codec );
+        LdapMessageContainerDirect<ModifyRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         // Decode a ModifyRequest PDU
         try
@@ -261,7 +236,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
-        ByteBuffer stream = ByteBuffer.allocate( 0x18C );
+        ByteBuffer stream = ByteBuffer.allocate( 0x8C );
 
         stream.put( new byte[]
             {
@@ -299,8 +274,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ModifyRequestDecorator> ldapMessageContainer =
-            new LdapMessageContainer<ModifyRequestDecorator>( codec );
+        LdapMessageContainerDirect<ModifyRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         // Decode a ModifyRequest PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -331,30 +305,12 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         attrValue = attributeValue.getString();
         assertEquals( "XXX", attrValue );
 
-        // Check the encoding, by decoding and re-encoding the result
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, modifyRequest );
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
 
-        // Check the length
-        assertEquals( 0x8C, bb.limit() );
+        LdapEncoder.encodeMessageReverse( buffer, codec, modifyRequest );
 
-        String decodedPdu1 = Strings.dumpBytes( bb.array() );
-
-        try
-        {
-            ldapDecoder.decode( bb, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
-
-        ModifyRequest modifyRequest2 = ldapMessageContainer.getMessage();
-
-        bb = LdapEncoder.encodeMessage( codec, modifyRequest2 );
-        String decodedPdu2 = Strings.dumpBytes( bb.array() );
-
-        assertEquals( decodedPdu1, decodedPdu2 );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
@@ -367,7 +323,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
-        ByteBuffer stream = ByteBuffer.allocate( 0x18C );
+        ByteBuffer stream = ByteBuffer.allocate( 0xB9 );
 
         stream.put( new byte[]
             {
@@ -411,8 +367,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ModifyRequestDecorator> ldapMessageContainer =
-            new LdapMessageContainer<ModifyRequestDecorator>( codec );
+        LdapMessageContainerDirect<ModifyRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         // Decode a ModifyRequest PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -452,30 +407,12 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         attrValue = attributeValue.getString();
         assertEquals( "01234567890", attrValue );
 
-        // Check the encoding, by decoding and re-encoding the result
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, modifyRequest );
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
 
-        // Check the length
-        assertEquals( 0xB9, bb.limit() );
+        LdapEncoder.encodeMessageReverse( buffer, codec, modifyRequest );
 
-        String decodedPdu1 = Strings.dumpBytes( bb.array() );
-
-        try
-        {
-            ldapDecoder.decode( bb, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
-
-        ModifyRequest modifyRequest2 = ldapMessageContainer.getMessage();
-
-        bb = LdapEncoder.encodeMessage( codec, modifyRequest2 );
-        String decodedPdu2 = Strings.dumpBytes( bb.array() );
-
-        assertEquals( decodedPdu1, decodedPdu2 );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
@@ -530,12 +467,10 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
                                   't', 'e', 's', 't'
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ModifyRequestDecorator> ldapMessageContainer =
-            new LdapMessageContainer<ModifyRequestDecorator>( codec );
+        LdapMessageContainerDirect<ModifyRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         // Decode a ModifyRequest PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -566,30 +501,12 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         String attrValue = attributeValue.getString();
         assertEquals( "test", attrValue );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, modifyRequest );
-
-        // Check the length
-        assertEquals( 0x5C, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
-
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        ModifyRequest request = new ModifyRequestImpl();
-        request.setName( modifyRequest.getName() );
-        request.setMessageId( 1 );
-        request.addModification( new DefaultModification(
-            ModificationOperation.REPLACE_ATTRIBUTE, "l", "Paris", "London" ) );
-        request.addModification( new DefaultModification(
-            ModificationOperation.ADD_ATTRIBUTE, "attrs", "test" ) );
+        LdapEncoder.encodeMessageReverse( buffer, codec, modifyRequest );
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, request );
-
-        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
@@ -615,8 +532,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ModifyRequestDecorator> ldapMessageContainer =
-            new LdapMessageContainer<ModifyRequestDecorator>( codec );
+        LdapMessageContainerDirect<ModifyRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         // Decode a ModifyRequest PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -644,8 +560,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ModifyRequestDecorator> ldapMessageContainer =
-            new LdapMessageContainer<ModifyRequestDecorator>( codec );
+        LdapMessageContainerDirect<ModifyRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         // Decode a ModifyRequest PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -676,8 +591,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ModifyRequestDecorator> ldapMessageContainer =
-            new LdapMessageContainer<ModifyRequestDecorator>( codec );
+        LdapMessageContainerDirect<ModifyRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         // Decode a ModifyRequest PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -709,8 +623,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ModifyRequestDecorator> ldapMessageContainer =
-            new LdapMessageContainer<ModifyRequestDecorator>( codec );
+        LdapMessageContainerDirect<ModifyRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         // Decode a ModifyRequest PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -743,8 +656,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ModifyRequestDecorator> ldapMessageContainer =
-            new LdapMessageContainer<ModifyRequestDecorator>( codec );
+        LdapMessageContainerDirect<ModifyRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         // Decode a ModifyRequest PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -778,8 +690,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ModifyRequestDecorator> ldapMessageContainer =
-            new LdapMessageContainer<ModifyRequestDecorator>( codec );
+        LdapMessageContainerDirect<ModifyRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         // Decode a ModifyRequest PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -813,8 +724,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ModifyRequestDecorator> ldapMessageContainer =
-            new LdapMessageContainer<ModifyRequestDecorator>( codec );
+        LdapMessageContainerDirect<ModifyRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         // Decode a ModifyRequest PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -849,8 +759,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ModifyRequestDecorator> ldapMessageContainer =
-            new LdapMessageContainer<ModifyRequestDecorator>( codec );
+        LdapMessageContainerDirect<ModifyRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         // Decode a ModifyRequest PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -886,8 +795,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ModifyRequestDecorator> ldapMessageContainer =
-            new LdapMessageContainer<ModifyRequestDecorator>( codec );
+        LdapMessageContainerDirect<ModifyRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         // Decode a ModifyRequest PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -924,8 +832,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ModifyRequestDecorator> ldapMessageContainer =
-            new LdapMessageContainer<ModifyRequestDecorator>( codec );
+        LdapMessageContainerDirect<ModifyRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         // Decode a ModifyRequest PDU
         try
@@ -977,8 +884,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ModifyRequestDecorator> ldapMessageContainer =
-            new LdapMessageContainer<ModifyRequestDecorator>( codec );
+        LdapMessageContainerDirect<ModifyRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         // Decode a ModifyRequest PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -1015,12 +921,10 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
                            0x31, 0x00
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ModifyRequestDecorator> ldapMessageContainer =
-            new LdapMessageContainer<ModifyRequestDecorator>( codec );
+        LdapMessageContainerDirect<ModifyRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         // Decode a ModifyRequest PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -1041,28 +945,12 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         assertEquals( "l", Strings.toLowerCaseAscii( attributeValue.getUpId() ) );
         assertEquals( 0, attributeValue.size() );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, modifyRequest );
-
-        // Check the length
-        assertEquals( 0x37, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
-
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        ModifyRequest request = new ModifyRequestImpl();
-        request.setName( modifyRequest.getName() );
-        request.setMessageId( 49 );
-        request.addModification( new DefaultModification(
-            ModificationOperation.ADD_ATTRIBUTE, "l" ) );
+        LdapEncoder.encodeMessageReverse( buffer, codec, modifyRequest );
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, request );
-
-        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
@@ -1101,12 +989,10 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
                         '.', '3', '.', '4', '.', '2'
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ModifyRequestDecorator> ldapMessageContainer =
-            new LdapMessageContainer<ModifyRequestDecorator>( codec );
+        LdapMessageContainerDirect<ModifyRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         // Decode a ModifyRequest PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -1132,21 +1018,16 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
 
         assertEquals( 1, controls.size() );
 
-        @SuppressWarnings("unchecked")
-        CodecControl<Control> control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) modifyRequest
-            .getControl( "2.16.840.1.113730.3.4.2" );
+        Control control = modifyRequest.getControl( "2.16.840.1.113730.3.4.2" );
+        assertTrue( control instanceof ManageDsaIT );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, modifyRequest );
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
 
-        // Check the length
-        assertEquals( 0x54, bb.limit() );
+        LdapEncoder.encodeMessageReverse( buffer, codec, modifyRequest );
 
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
@@ -1184,12 +1065,10 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
                             'b'
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ModifyRequestDecorator> ldapMessageContainer =
-            new LdapMessageContainer<ModifyRequestDecorator>( codec );
+        LdapMessageContainerDirect<ModifyRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         // Decode a ModifyRequest PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -1213,27 +1092,11 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         assertTrue( attributeValue.contains( "a" ) );
         assertTrue( attributeValue.contains( "b" ) );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, modifyRequest );
-
-        // Check the length
-        assertEquals( 0x3D, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
-
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        ModifyRequest request = new ModifyRequestImpl();
-        request.setName( modifyRequest.getName() );
-        request.setMessageId( 49 );
-        request.addModification( new DefaultModification(
-            ModificationOperation.ADD_ATTRIBUTE, "l", "a", "b" ) );
+        LdapEncoder.encodeMessageReverse( buffer, codec, modifyRequest );
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, request );
-
-        assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 }

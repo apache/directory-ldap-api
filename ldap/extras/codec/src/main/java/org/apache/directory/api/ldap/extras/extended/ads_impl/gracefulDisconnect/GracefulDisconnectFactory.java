@@ -20,15 +20,16 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect;
 
 
+import java.nio.ByteBuffer;
 import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
-import org.apache.directory.api.ldap.codec.decorators.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.gracefulDisconnect.GracefulDisconnectResponse;
 import org.apache.directory.api.ldap.extras.extended.gracefulDisconnect.GracefulDisconnectResponseImpl;
@@ -51,7 +52,7 @@ public class GracefulDisconnectFactory extends AbstractExtendedOperationFactory
      */
     public GracefulDisconnectFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, GracefulDisconnectResponse.EXTENSION_OID );
     }
 
 
@@ -59,8 +60,7 @@ public class GracefulDisconnectFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public ExtendedRequestDecorator<ExtendedRequest> decorate(
-        ExtendedRequest modelRequest )
+    public ExtendedRequest newRequest()
     {
         // Nothing to do (there's no request associated to GracefulDisconnectResponse)
         return null;
@@ -71,35 +71,9 @@ public class GracefulDisconnectFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public ExtendedResponse decorate( ExtendedResponse decoratedMessage )
+    public GracefulDisconnectResponse newResponse()
     {
-        if ( decoratedMessage instanceof GracefulDisconnectResponseDecorator )
-        {
-            return decoratedMessage;
-        }
-
-        return new GracefulDisconnectResponseDecorator( codec, ( GracefulDisconnectResponse ) decoratedMessage );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getOid()
-    {
-        return GracefulDisconnectResponse.EXTENSION_OID;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ExtendedRequest newRequest( byte[] value )
-    {
-        // Nothing to do (there's no request associated to GracefulDisconnectResponse)
-        return null;
+        return new GracefulDisconnectResponseImpl();
     }
 
 
@@ -109,13 +83,26 @@ public class GracefulDisconnectFactory extends AbstractExtendedOperationFactory
     @Override
     public GracefulDisconnectResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
-        GracefulDisconnectResponseDecorator req = new GracefulDisconnectResponseDecorator( codec,
-            new GracefulDisconnectResponseImpl() );
-        req.setResponseValue( encodedValue );
+        GracefulDisconnectResponse gracefulDisconnectResponse = new GracefulDisconnectResponseImpl();
+        decodeValue( gracefulDisconnectResponse, encodedValue );
         
-        return req;
+        return gracefulDisconnectResponse;
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void decodeValue( ExtendedResponse extendedResponse, byte[] requestValue ) throws DecoderException
+    {
+        ByteBuffer bb = ByteBuffer.wrap( requestValue );
+        GracefulDisconnectResponseContainer container = new GracefulDisconnectResponseContainer();
+        container.setGracefulDisconnectResponse( ( GracefulDisconnectResponse ) extendedResponse ); 
+        new Asn1Decoder().decode( bb, container );
+    }
+
+    
     private void encodeUrls( Asn1Buffer buffer, Iterator<String> urls )
     {
         if ( urls.hasNext() )
@@ -127,7 +114,7 @@ public class GracefulDisconnectFactory extends AbstractExtendedOperationFactory
             BerValue.encodeOctetString( buffer, url );
         }
     }
-   
+
 
     /**
      * {@inheritDoc}

@@ -20,7 +20,10 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown;
 
 
+import java.nio.ByteBuffer;
+
 import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
@@ -32,7 +35,6 @@ import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulSh
 import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownResponse;
 import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownResponseImpl;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
-import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 
 
 /**
@@ -50,7 +52,7 @@ public class GracefulShutdownFactory extends AbstractExtendedOperationFactory
      */
     public GracefulShutdownFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, GracefulShutdownRequest.EXTENSION_OID );
     }
 
 
@@ -64,16 +66,16 @@ public class GracefulShutdownFactory extends AbstractExtendedOperationFactory
     }
 
 
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public GracefulShutdownResponse newResponse( byte[] encodedValue ) throws DecoderException
+    public GracefulShutdownRequest newRequest()
     {
-        GracefulShutdownResponseDecorator response = new GracefulShutdownResponseDecorator(
-            codec, new GracefulShutdownResponseImpl() );
-        response.setResponseValue( encodedValue );
-        return response;
+        GracefulShutdownRequest gracefulShutdownRequest = new GracefulShutdownRequestImpl();
+
+        return gracefulShutdownRequest;
     }
 
 
@@ -81,12 +83,12 @@ public class GracefulShutdownFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public GracefulShutdownRequest newRequest( byte[] value )
+    public GracefulShutdownRequest newRequest( byte[] encodedValue ) throws DecoderException
     {
-        GracefulShutdownRequestDecorator req = new GracefulShutdownRequestDecorator( codec,
-            new GracefulShutdownRequestImpl() );
-        req.setRequestValue( value );
-        return req;
+        GracefulShutdownRequest gracefulShutdownRequest = new GracefulShutdownRequestImpl();
+        decodeValue( gracefulShutdownRequest, encodedValue );
+
+        return gracefulShutdownRequest;
     }
 
 
@@ -94,14 +96,9 @@ public class GracefulShutdownFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public ExtendedRequest decorate( ExtendedRequest modelRequest )
+    public GracefulShutdownResponse newResponse()
     {
-        if ( modelRequest instanceof GracefulShutdownRequestDecorator )
-        {
-            return modelRequest;
-        }
-
-        return new GracefulShutdownRequestDecorator( codec, ( GracefulShutdownRequest ) modelRequest );
+        return new GracefulShutdownResponseImpl();
     }
 
 
@@ -109,14 +106,12 @@ public class GracefulShutdownFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public ExtendedResponse decorate( ExtendedResponse decoratedMessage )
+    public void decodeValue( ExtendedRequest extendedRequest, byte[] requestValue ) throws DecoderException
     {
-        if ( decoratedMessage instanceof GracefulShutdownResponseDecorator )
-        {
-            return decoratedMessage;
-        }
-
-        return new GracefulShutdownResponseDecorator( codec, ( GracefulShutdownResponse ) decoratedMessage );
+        ByteBuffer bb = ByteBuffer.wrap( requestValue );
+        GracefulShutdownRequestContainer container = new GracefulShutdownRequestContainer();
+        container.setGracefulShutdownRequest( ( GracefulShutdownRequest ) extendedRequest ); 
+        new Asn1Decoder().decode( bb, container );
     }
 
 

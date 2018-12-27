@@ -23,8 +23,7 @@ package org.apache.directory.api.ldap.codec.actions.request.compare;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.CompareRequestDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.model.message.CompareRequest;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -46,7 +45,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreCompareRequestAssertionValue extends GrammarAction<LdapMessageContainer<CompareRequestDecorator>>
+public class StoreCompareRequestAssertionValue extends GrammarAction<LdapMessageContainerDirect<CompareRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreCompareRequestAssertionValue.class );
@@ -64,7 +63,7 @@ public class StoreCompareRequestAssertionValue extends GrammarAction<LdapMessage
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainer<CompareRequestDecorator> container )
+    public void action( LdapMessageContainerDirect<CompareRequest> container )
     {
         // Get the CompareRequest Object
         CompareRequest compareRequest = container.getMessage();

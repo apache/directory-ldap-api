@@ -20,14 +20,15 @@
 package org.apache.directory.api.ldap.codec.controls.search.entryChange;
 
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.EntryChange;
+import org.apache.directory.api.ldap.model.message.controls.EntryChangeImpl;
 
 
 /**
@@ -48,7 +49,7 @@ public class EntryChangeFactory extends AbstractControlFactory<EntryChange>
      */
     public EntryChangeFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, EntryChange.OID );
     }
 
 
@@ -56,29 +57,9 @@ public class EntryChangeFactory extends AbstractControlFactory<EntryChange>
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public EntryChange newControl()
     {
-        return EntryChange.OID;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<EntryChange> newCodecControl()
-    {
-        return new EntryChangeDecorator( codec );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<EntryChange> newCodecControl( EntryChange control )
-    {
-        return new EntryChangeDecorator( codec, control );
+        return new EntryChangeImpl();
     }
 
 
@@ -109,5 +90,15 @@ public class EntryChangeFactory extends AbstractControlFactory<EntryChange>
 
         // The EntryChangeNotification sequence
         BerValue.encodeSequence( buffer, start );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void decodeValue( Control control, byte[] controlBytes ) throws DecoderException
+    {
+        decodeValue( new EntryChangeContainer( control ), control, controlBytes );
     }
 }

@@ -23,17 +23,14 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnec
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-import java.nio.ByteBuffer;
 import java.util.Iterator;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
-import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectContainer;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectDecoder;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectResponseDecorator;
+import org.apache.directory.api.ldap.extras.extended.gracefulDisconnect.GracefulDisconnectResponse;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -50,15 +47,20 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
 {
+    @Before
+    public void init()
+    {
+        codec.registerExtendedResponse( new GracefulDisconnectFactory( codec ) );
+    }
+    
+    
     /**
      * Test the decoding of a GracefulDisconnect
      */
     @Test
     public void testDecodeGracefulDisconnectSuccess() throws DecoderException, EncoderException
     {
-        Asn1Decoder decoder = new GracefulDisconnectDecoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x70 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x6E,                             // GracefulDisconnec ::= SEQUENCE {
                   0x02, 0x01, 0x01,                     // timeOffline INTEGER (0..720) DEFAULT 0,
@@ -79,35 +81,26 @@ public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
                         'c', '0', '0', '%', '5', 'c', '0', '0', 
                         '%', '5', 'c', '0', '0', '%', '5', 'c', 
                         '0', '4', ')'
-            } );
-        bb.flip();
+            };
 
-        GracefulDisconnectContainer container = new GracefulDisconnectContainer();
+        GracefulDisconnectFactory factory = ( GracefulDisconnectFactory ) codec.getExtendedResponseFactories().
+            get( GracefulDisconnectResponse.EXTENSION_OID );
+        GracefulDisconnectResponse gracefulDisconnectResponse = ( GracefulDisconnectResponse ) factory.newResponse( bb );
 
-        decoder.decode( bb, container );
-
-        GracefulDisconnectResponseDecorator gracefulDisconnect = container.getGracefulDisconnectResponse();
-        assertEquals( 1, gracefulDisconnect.getTimeOffline() );
-        assertEquals( 1, gracefulDisconnect.getDelay() );
-        assertEquals( 2, gracefulDisconnect.getReplicatedContexts().getLdapUrls().size() );
+        assertEquals( 1, gracefulDisconnectResponse.getTimeOffline() );
+        assertEquals( 1, gracefulDisconnectResponse.getDelay() );
+        assertEquals( 2, gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().size() );
         
-        Iterator<String> ldapUrls = gracefulDisconnect.getReplicatedContexts().getLdapUrls().iterator();
+        Iterator<String> ldapUrls = gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().iterator();
         assertEquals( "ldap://directory.apache.org:80/", ldapUrls.next() );
         assertEquals( "ldap://ldap.netscape.com/o=Babsco,c=US???(int=%5c00%5c00%5c00%5c04)", ldapUrls.next() );
 
-        // Check the length
-        assertEquals( 0x70, gracefulDisconnect.computeLengthInternal() );
-
-        // Check the encoding
-        ByteBuffer bb1 = gracefulDisconnect.encodeInternal();
-
-        assertArrayEquals( bb.array(), bb1.array() );
-        
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        GracefulDisconnectFactory factory = new GracefulDisconnectFactory( codec );
-        factory.encodeValue( asn1Buffer, gracefulDisconnect );
-        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
+
+        factory.encodeValue( asn1Buffer, gracefulDisconnectResponse );
+
+        assertArrayEquals( bb, asn1Buffer.getBytes().array() );
     }
 
 
@@ -117,38 +110,26 @@ public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeGracefulDisconnectTimeOffline() throws DecoderException, EncoderException
     {
-        Asn1Decoder decoder = new GracefulDisconnectDecoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x05 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x03,             // GracefulDisconnect ::= SEQUENCE {
                   0x02, 0x01, 0x01      // timeOffline INTEGER (0..720) DEFAULT 0,
-            } );
+            };
 
-        bb.flip();
+        GracefulDisconnectFactory factory = ( GracefulDisconnectFactory ) codec.getExtendedResponseFactories().
+            get( GracefulDisconnectResponse.EXTENSION_OID );
+        GracefulDisconnectResponse gracefulDisconnectResponse = ( GracefulDisconnectResponse ) factory.newResponse( bb );
 
-        GracefulDisconnectContainer container = new GracefulDisconnectContainer();
+        assertEquals( 1, gracefulDisconnectResponse.getTimeOffline() );
+        assertEquals( 0, gracefulDisconnectResponse.getDelay() );
+        assertEquals( 0, gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().size() );
 
-        decoder.decode( bb, container );
-
-        GracefulDisconnectResponseDecorator gracefulDisconnect = container.getGracefulDisconnectResponse();
-        assertEquals( 1, gracefulDisconnect.getTimeOffline() );
-        assertEquals( 0, gracefulDisconnect.getDelay() );
-        assertEquals( 0, gracefulDisconnect.getReplicatedContexts().getLdapUrls().size() );
-
-        // Check the length
-        assertEquals( 0x05, gracefulDisconnect.computeLengthInternal() );
-
-        // Check the encoding
-        ByteBuffer bb1 = gracefulDisconnect.encodeInternal();
-
-        assertArrayEquals( bb.array(), bb1.array() );
-        
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        GracefulDisconnectFactory factory = new GracefulDisconnectFactory( codec );
-        factory.encodeValue( asn1Buffer, gracefulDisconnect );
-        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
+
+        factory.encodeValue( asn1Buffer, gracefulDisconnectResponse );
+
+        assertArrayEquals( bb, asn1Buffer.getBytes().array() );
     }
 
 
@@ -158,38 +139,27 @@ public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeGracefulDisconnectDelay() throws DecoderException, EncoderException
     {
-        Asn1Decoder decoder = new GracefulDisconnectDecoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x05 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x03,                     // GracefulDisconnect ::= SEQUENCE {
                   ( byte ) 0x80, 0x01, 0x01     // delay INTEGER (0..86400) DEFAULT 0
-            } );
+            };
 
-        bb.flip();
+        GracefulDisconnectFactory factory = ( GracefulDisconnectFactory ) codec.getExtendedResponseFactories().
+            get( GracefulDisconnectResponse.EXTENSION_OID );
+        GracefulDisconnectResponse gracefulDisconnectResponse = ( GracefulDisconnectResponse ) factory.newResponse( bb );
 
-        GracefulDisconnectContainer container = new GracefulDisconnectContainer();
+        assertEquals( 0, gracefulDisconnectResponse.getTimeOffline() );
+        assertEquals( 1, gracefulDisconnectResponse.getDelay() );
+        assertEquals( 0, gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().size() );
 
-        decoder.decode( bb, container );
 
-        GracefulDisconnectResponseDecorator gracefulDisconnect = container.getGracefulDisconnectResponse();
-        assertEquals( 0, gracefulDisconnect.getTimeOffline() );
-        assertEquals( 1, gracefulDisconnect.getDelay() );
-        assertEquals( 0, gracefulDisconnect.getReplicatedContexts().getLdapUrls().size() );
-
-        // Check the length
-        assertEquals( 0x05, gracefulDisconnect.computeLengthInternal() );
-
-        // Check the encoding
-        ByteBuffer bb1 = gracefulDisconnect.encodeInternal();
-
-        assertArrayEquals( bb.array(), bb1.array() );
-        
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        GracefulDisconnectFactory factory = new GracefulDisconnectFactory( codec );
-        factory.encodeValue( asn1Buffer, gracefulDisconnect );
-        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
+
+        factory.encodeValue( asn1Buffer, gracefulDisconnectResponse );
+
+        assertArrayEquals( bb, asn1Buffer.getBytes().array() );
     }
 
 
@@ -199,39 +169,27 @@ public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeGracefulDisconnectTimeOfflineDelay() throws DecoderException, EncoderException
     {
-        Asn1Decoder decoder = new GracefulDisconnectDecoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x08 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x06,                     // GracefulDisconnect ::= SEQUENCE {
                   0x02, 0x01, 0x01,             // timeOffline INTEGER (0..720) DEFAULT 0,
                   ( byte ) 0x80, 0x01, 0x01,    // timeOffline INTEGER (0..720) DEFAULT 0,
-            } );
+            };
 
-        bb.flip();
+        GracefulDisconnectFactory factory = ( GracefulDisconnectFactory ) codec.getExtendedResponseFactories().
+            get( GracefulDisconnectResponse.EXTENSION_OID );
+        GracefulDisconnectResponse gracefulDisconnectResponse = ( GracefulDisconnectResponse ) factory.newResponse( bb );
 
-        GracefulDisconnectContainer container = new GracefulDisconnectContainer();
+        assertEquals( 1, gracefulDisconnectResponse.getTimeOffline() );
+        assertEquals( 1, gracefulDisconnectResponse.getDelay() );
+        assertEquals( 0, gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().size() );
 
-        decoder.decode( bb, container );
-
-        GracefulDisconnectResponseDecorator gracefulDisconnect = container.getGracefulDisconnectResponse();
-        assertEquals( 1, gracefulDisconnect.getTimeOffline() );
-        assertEquals( 1, gracefulDisconnect.getDelay() );
-        assertEquals( 0, gracefulDisconnect.getReplicatedContexts().getLdapUrls().size() );
-
-        // Check the length
-        assertEquals( 0x08, gracefulDisconnect.computeLengthInternal() );
-
-        // Check the encoding
-        ByteBuffer bb1 = gracefulDisconnect.encodeInternal();
-
-        assertArrayEquals( bb.array(), bb1.array() );
-        
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        GracefulDisconnectFactory factory = new GracefulDisconnectFactory( codec );
-        factory.encodeValue( asn1Buffer, gracefulDisconnect );
-        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
+
+        factory.encodeValue( asn1Buffer, gracefulDisconnectResponse );
+
+        assertArrayEquals( bb, asn1Buffer.getBytes().array() );
     }
 
 
@@ -241,9 +199,7 @@ public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeGracefulDisconnectReplicatedContextsOnly() throws DecoderException, EncoderException
     {
-        Asn1Decoder decoder = new GracefulDisconnectDecoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x6A );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             {
                 0x30, 0x68,             // GracefulDisconnec ::= SEQUENCE {
                   0x30, 0x66,           // replicatedContexts Referral OPTIONAL
@@ -263,36 +219,26 @@ public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
                       '%', '5', 'c', '0', '0', '%', '5', 'c', 
                       '0', '4', ')'
 
-            } );
+            };
 
-        bb.flip();
+        GracefulDisconnectFactory factory = ( GracefulDisconnectFactory ) codec.getExtendedResponseFactories().
+            get( GracefulDisconnectResponse.EXTENSION_OID );
+        GracefulDisconnectResponse gracefulDisconnectResponse = ( GracefulDisconnectResponse ) factory.newResponse( bb );
 
-        GracefulDisconnectContainer container = new GracefulDisconnectContainer();
-
-        decoder.decode( bb, container );
-
-        GracefulDisconnectResponseDecorator gracefulDisconnect = container.getGracefulDisconnectResponse();
-        assertEquals( 0, gracefulDisconnect.getTimeOffline() );
-        assertEquals( 0, gracefulDisconnect.getDelay() );
-        assertEquals( 2, gracefulDisconnect.getReplicatedContexts().getLdapUrls().size() );
+        assertEquals( 0, gracefulDisconnectResponse.getTimeOffline() );
+        assertEquals( 0, gracefulDisconnectResponse.getDelay() );
+        assertEquals( 2, gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().size() );
         
-        Iterator<String> ldapUrls = gracefulDisconnect.getReplicatedContexts().getLdapUrls().iterator();
+        Iterator<String> ldapUrls = gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().iterator();
         assertEquals( "ldap://directory.apache.org:80/", ldapUrls.next() );
         assertEquals( "ldap://ldap.netscape.com/o=Babsco,c=US???(int=%5c00%5c00%5c00%5c04)", ldapUrls.next() );
 
-        // Check the length
-        assertEquals( 0x6A, gracefulDisconnect.computeLengthInternal() );
-
-        // Check the encoding
-        ByteBuffer bb1 = gracefulDisconnect.encodeInternal();
-    
-        assertArrayEquals( bb.array(), bb1.array() );
-        
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        GracefulDisconnectFactory factory = new GracefulDisconnectFactory( codec );
-        factory.encodeValue( asn1Buffer, gracefulDisconnect );
-        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
+
+        factory.encodeValue( asn1Buffer, gracefulDisconnectResponse );
+
+        assertArrayEquals( bb, asn1Buffer.getBytes().array() );
     }
 
 
@@ -302,37 +248,25 @@ public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeGracefulDisconnectEmpty() throws DecoderException, EncoderException
     {
-        Asn1Decoder decoder = new GracefulDisconnectDecoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x02 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x00 // GracefulDisconnect ::= SEQUENCE {
-            } );
+            };
 
-        bb.flip();
+        GracefulDisconnectFactory factory = ( GracefulDisconnectFactory ) codec.getExtendedResponseFactories().
+            get( GracefulDisconnectResponse.EXTENSION_OID );
+        GracefulDisconnectResponse gracefulDisconnectResponse = ( GracefulDisconnectResponse ) factory.newResponse( bb );
 
-        GracefulDisconnectContainer container = new GracefulDisconnectContainer();
+        assertEquals( 0, gracefulDisconnectResponse.getTimeOffline() );
+        assertEquals( 0, gracefulDisconnectResponse.getDelay() );
+        assertEquals( 0, gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().size() );
 
-        decoder.decode( bb, container );
-
-        GracefulDisconnectResponseDecorator gracefulDisconnect = container.getGracefulDisconnectResponse();
-        assertEquals( 0, gracefulDisconnect.getTimeOffline() );
-        assertEquals( 0, gracefulDisconnect.getDelay() );
-        assertEquals( 0, gracefulDisconnect.getReplicatedContexts().getLdapUrls().size() );
-
-        // Check the length
-        assertEquals( 0x02, gracefulDisconnect.computeLengthInternal() );
-
-        // Check the encoding
-        ByteBuffer bb1 = gracefulDisconnect.encodeInternal();
-
-        assertArrayEquals( bb.array(), bb1.array() );
-        
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        GracefulDisconnectFactory factory = new GracefulDisconnectFactory( codec );
-        factory.encodeValue( asn1Buffer, gracefulDisconnect );
-        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
+
+        factory.encodeValue( asn1Buffer, gracefulDisconnectResponse );
+
+        assertArrayEquals( bb, asn1Buffer.getBytes().array() );
     }
 
 
@@ -344,18 +278,15 @@ public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeGracefulDisconnectTimeOfflineOffLimit() throws DecoderException
     {
-        Asn1Decoder decoder = new GracefulDisconnectDecoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x0b );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x04,                         // GracefulDisconnect ::= SEQUENCE {
                   0x02, 0x02, 0x03, ( byte ) 0xE8   // timeOffline INTEGER (0..720) DEFAULT 0,
-            } );
-        bb.flip();
+            };
 
-        GracefulDisconnectContainer container = new GracefulDisconnectContainer();
-
-        decoder.decode( bb, container );
+        GracefulDisconnectFactory factory = ( GracefulDisconnectFactory ) codec.getExtendedResponseFactories().
+            get( GracefulDisconnectResponse.EXTENSION_OID );
+        factory.newResponse( bb );
     }
 
 
@@ -365,19 +296,16 @@ public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeGracefulDisconnectDelayOffLimit() throws DecoderException
     {
-        Asn1Decoder decoder = new GracefulDisconnectDecoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x0b );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x05,                             // GracefulDisconnect ::= SEQUENCE {
                   ( byte ) 0x80, 0x03,
                     0x01, ( byte ) 0x86, ( byte ) 0xA0  // delay INTEGER (0..86400) DEFAULT 0
-            } );
-        bb.flip();
+            };
 
-        GracefulDisconnectContainer container = new GracefulDisconnectContainer();
-
-        decoder.decode( bb, container );
+        GracefulDisconnectFactory factory = ( GracefulDisconnectFactory ) codec.getExtendedResponseFactories().
+            get( GracefulDisconnectResponse.EXTENSION_OID );
+        factory.newResponse( bb );
     }
 
 
@@ -387,18 +315,15 @@ public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeGracefulDisconnectTimeOfflineEmpty() throws DecoderException
     {
-        Asn1Decoder decoder = new GracefulDisconnectDecoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x0b );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x02,         // GracefulDisconnect ::= SEQUENCE {
                   0x02, 0x00        // timeOffline INTEGER (0..720) DEFAULT 0,
-            } );
-        bb.flip();
+            };
 
-        GracefulDisconnectContainer container = new GracefulDisconnectContainer();
-
-        decoder.decode( bb, container );
+        GracefulDisconnectFactory factory = ( GracefulDisconnectFactory ) codec.getExtendedResponseFactories().
+            get( GracefulDisconnectResponse.EXTENSION_OID );
+        factory.newResponse( bb );
     }
 
 
@@ -408,18 +333,15 @@ public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeGracefulDisconnectDelayEmpty() throws DecoderException
     {
-        Asn1Decoder decoder = new GracefulDisconnectDecoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x0b );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x02,                 // GracefulDisconnect ::= SEQUENCE {
                   ( byte ) 0x80, 0x00       // delay INTEGER (0..86400) DEFAULT 0
-            } );
-        bb.flip();
+            };
 
-        GracefulDisconnectContainer container = new GracefulDisconnectContainer();
-
-        decoder.decode( bb, container );
+        GracefulDisconnectFactory factory = ( GracefulDisconnectFactory ) codec.getExtendedResponseFactories().
+            get( GracefulDisconnectResponse.EXTENSION_OID );
+        factory.newResponse( bb );
     }
 
 
@@ -430,18 +352,15 @@ public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeGracefulDisconnectReplicatedContextsEmpty() throws DecoderException
     {
-        Asn1Decoder decoder = new GracefulDisconnectDecoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x04 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x02,         // GracefulDisconnect ::= SEQUENCE {
                   0x30, 0x00        // replicatedContexts Referral OPTIONAL
-            } );
-        bb.flip();
+            };
 
-        GracefulDisconnectContainer container = new GracefulDisconnectContainer();
-
-        decoder.decode( bb, container );
+        GracefulDisconnectFactory factory = ( GracefulDisconnectFactory ) codec.getExtendedResponseFactories().
+            get( GracefulDisconnectResponse.EXTENSION_OID );
+        factory.newResponse( bb );
     }
 
 
@@ -452,18 +371,15 @@ public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeGracefulDisconnectReplicatedContextsInvalid() throws DecoderException
     {
-        Asn1Decoder decoder = new GracefulDisconnectDecoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x06 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x04,             // GracefulDisconnect ::= SEQUENCE {
                   0x30, 0x02,           // replicatedContexts Referral OPTIONAL
                     0x04, 0x00 
-            } );
-        bb.flip();
+            };
 
-        GracefulDisconnectContainer container = new GracefulDisconnectContainer();
-
-        decoder.decode( bb, container );
+        GracefulDisconnectFactory factory = ( GracefulDisconnectFactory ) codec.getExtendedResponseFactories().
+            get( GracefulDisconnectResponse.EXTENSION_OID );
+        factory.newResponse( bb );
     }
 }

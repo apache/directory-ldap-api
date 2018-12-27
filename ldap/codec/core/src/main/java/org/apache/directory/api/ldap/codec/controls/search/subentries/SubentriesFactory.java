@@ -20,18 +20,18 @@
 package org.apache.directory.api.ldap.codec.controls.search.subentries;
 
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.Subentries;
+import org.apache.directory.api.ldap.model.message.controls.SubentriesImpl;
 
 
 /**
- * A factory for creating {@link Subentries} Controls and their
- * {@link SubentriesDecorator} objects.
+ * A factory for creating {@link Subentries} Control instance.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -45,7 +45,7 @@ public class SubentriesFactory extends AbstractControlFactory<Subentries>
      */
     public SubentriesFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, Subentries.OID );
     }
 
 
@@ -53,29 +53,9 @@ public class SubentriesFactory extends AbstractControlFactory<Subentries>
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public Subentries newControl()
     {
-        return Subentries.OID;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<Subentries> newCodecControl()
-    {
-        return new SubentriesDecorator( codec );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<Subentries> newCodecControl( Subentries control )
-    {
-        return new SubentriesDecorator( codec, control );
+        return new SubentriesImpl();
     }
 
 
@@ -86,5 +66,15 @@ public class SubentriesFactory extends AbstractControlFactory<Subentries>
     public void encodeValue( Asn1Buffer buffer, Control control )
     {
         BerValue.encodeBoolean( buffer, ( ( ( Subentries ) control ).isVisible() ) );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void decodeValue( Control control, byte[] controlBytes ) throws DecoderException
+    {
+        decodeValue( new SubentriesContainer( control ), control, controlBytes );
     }
 }

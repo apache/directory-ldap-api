@@ -29,6 +29,8 @@ import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.ber.tlv.TLVStateEnum;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction.controls.ControlsContainer;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction.controls.ControlsStates;
+import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionResponse;
+import org.apache.directory.api.ldap.extras.extended.endTransaction.UpdateControls;
 import org.apache.directory.api.ldap.model.message.Control;
 
 
@@ -40,9 +42,10 @@ import org.apache.directory.api.ldap.model.message.Control;
 public class EndTransactionResponseContainer extends AbstractContainer
 {
     /** EndTransactionResponse decorator*/
-    private EndTransactionResponseDecorator endTransactionResponse;
+    private EndTransactionResponse endTransactionResponse;
     
-    private static final Asn1Decoder DECODER = new Asn1Decoder();
+    /** The current UpdateControls */
+    private UpdateControls currentUpdateControls;
 
     /**
      * Creates a new EndTransactionResponseContainer object. We will store one
@@ -59,7 +62,7 @@ public class EndTransactionResponseContainer extends AbstractContainer
     /**
      * @return Returns the EndTransactionResponse instance.
      */
-    public EndTransactionResponseDecorator getEndTransactionResponse()
+    public EndTransactionResponse getEndTransactionResponse()
     {
         return endTransactionResponse;
     }
@@ -69,11 +72,29 @@ public class EndTransactionResponseContainer extends AbstractContainer
      * Set a EndTransactionResponse Object into the container. It will be completed by
      * the ldapDecoder.
      * 
-     * @param endTransactionResponseDecorator the EndTransactionResponse to set.
+     * @param endTransactionResponse the EndTransactionResponse to set.
      */
-    public void setEndTransactionResponse( EndTransactionResponseDecorator endTransactionResponseDecorator )
+    public void setEndTransactionResponse( EndTransactionResponse endTransactionResponse )
     {
-        this.endTransactionResponse = endTransactionResponseDecorator;
+        this.endTransactionResponse = endTransactionResponse;
+    }
+
+    
+    /**
+     * @return the currentUpdateControls
+     */
+    public UpdateControls getCurrentUpdateControls()
+    {
+        return currentUpdateControls;
+    }
+
+    
+    /**
+     * @param currentUpdateControls the currentUpdateControls to set
+     */
+    public void setCurrentControls( UpdateControls currentUpdateControls )
+    {
+        this.currentUpdateControls = currentUpdateControls;
     }
 
 
@@ -85,6 +106,7 @@ public class EndTransactionResponseContainer extends AbstractContainer
     {
         super.clean();
         endTransactionResponse = null;
+        currentUpdateControls = null;
     }
     
     
@@ -99,11 +121,12 @@ public class EndTransactionResponseContainer extends AbstractContainer
     {
         ByteBuffer bb = ByteBuffer.wrap( controlsBytes );
         ControlsContainer container = new ControlsContainer();
+        Asn1Decoder decoder = new Asn1Decoder();
         
         // Loop on all the contained controls
         while ( bb.hasRemaining() )
         {
-            DECODER.decode( bb, container );
+            decoder.decode( bb, container );
             container.setState( TLVStateEnum.TAG_STATE_START );
             container.setTransition( ControlsStates.START_STATE );
         }

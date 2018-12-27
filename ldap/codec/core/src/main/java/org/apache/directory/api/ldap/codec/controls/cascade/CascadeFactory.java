@@ -21,7 +21,6 @@ package org.apache.directory.api.ldap.codec.controls.cascade;
 
 
 import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.controls.Cascade;
@@ -43,7 +42,7 @@ public class CascadeFactory extends AbstractControlFactory<Cascade>
      */
     public CascadeFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, Cascade.OID );
     }
 
 
@@ -51,28 +50,8 @@ public class CascadeFactory extends AbstractControlFactory<Cascade>
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public Cascade newControl()
     {
-        return Cascade.OID;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<Cascade> newCodecControl()
-    {
-        return new CascadeDecorator( codec, new CascadeImpl() );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<Cascade> newCodecControl( Cascade control )
-    {
-        return new CascadeDecorator( codec, control );
+        return new CascadeImpl();
     }
 }

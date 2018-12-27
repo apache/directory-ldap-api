@@ -19,15 +19,15 @@
  */
 package org.apache.directory.api.ldap.extras.controls.ad_impl;
 
-
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncResponse;
 import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncResponseFlag;
+import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncResponseImpl;
 import org.apache.directory.api.ldap.model.message.Control;
 
 
@@ -46,7 +46,7 @@ public class AdDirSyncResponseFactory extends AbstractControlFactory<AdDirSyncRe
      */
     public AdDirSyncResponseFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, AdDirSyncResponse.OID );
     }
 
 
@@ -54,29 +54,9 @@ public class AdDirSyncResponseFactory extends AbstractControlFactory<AdDirSyncRe
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public AdDirSyncResponse newControl()
     {
-        return AdDirSyncResponse.OID;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<AdDirSyncResponse> newCodecControl()
-    {
-        return new AdDirSyncResponseDecorator( codec );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<AdDirSyncResponse> newCodecControl( AdDirSyncResponse control )
-    {
-        return new AdDirSyncResponseDecorator( codec, control );
+        return new AdDirSyncResponseImpl();
     }
 
 
@@ -100,5 +80,15 @@ public class AdDirSyncResponseFactory extends AbstractControlFactory<AdDirSyncRe
 
         // Encode the SEQ
         BerValue.encodeSequence( buffer, start );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void decodeValue( Control control, byte[] controlBytes ) throws DecoderException
+    {
+        decodeValue( new AdDirSyncResponseContainer( control ), control, controlBytes );
     }
 }

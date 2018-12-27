@@ -24,9 +24,8 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
-import org.apache.directory.api.ldap.codec.decorators.DeleteRequestDecorator;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.DeleteRequest;
 import org.apache.directory.api.ldap.model.message.DeleteRequestImpl;
@@ -48,7 +47,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitDelRequest extends GrammarAction<LdapMessageContainer<DeleteRequestDecorator>>
+public class InitDelRequest extends GrammarAction<LdapMessageContainerDirect<DeleteRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitDelRequest.class );
@@ -66,23 +65,18 @@ public class InitDelRequest extends GrammarAction<LdapMessageContainer<DeleteReq
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainer<DeleteRequestDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<DeleteRequest> container ) throws DecoderException
     {
         // Create the DeleteRequest LdapMessage instance and store it in the container
-        DeleteRequest internaldelRequest = new DeleteRequestImpl();
-        internaldelRequest.setMessageId( container.getMessageId() );
-        DeleteRequestDecorator delRequest = new DeleteRequestDecorator(
-            container.getLdapCodecService(), internaldelRequest );
+        DeleteRequest delRequest = new DeleteRequestImpl();
+        delRequest.setMessageId( container.getMessageId() );
         container.setMessage( delRequest );
 
         // And store the Dn into it
         // Get the Value and store it in the DelRequest
         TLV tlv = container.getCurrentTLV();
 
-        // We have to handle the special case of a 0 length matched
-        // Dn
-        Dn entry;
-
+        // We have to handle the special case of a 0 length matchedDN
         if ( tlv.getLength() == 0 )
         {
             // This will generate a PROTOCOL_ERROR
@@ -95,28 +89,27 @@ public class InitDelRequest extends GrammarAction<LdapMessageContainer<DeleteReq
 
             try
             {
-                entry = new Dn( dnStr );
+                Dn entry = new Dn( dnStr );
+                delRequest.setName( entry );
             }
             catch ( LdapInvalidDnException ine )
             {
-                String msg = I18n.err( I18n.ERR_05120_INVALID_DELETE_DN, dnStr, Strings.dumpBytes( dnBytes ), ine
-                    .getLocalizedMessage() );
+                String msg = I18n.err( I18n.ERR_05120_INVALID_DELETE_DN, dnStr, 
+                    Strings.dumpBytes( dnBytes ), ine.getLocalizedMessage() );
                 LOG.error( msg );
 
                 DeleteResponseImpl response = new DeleteResponseImpl( delRequest.getMessageId() );
                 throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_DN_SYNTAX,
                     Dn.EMPTY_DN, ine );
             }
+        }
 
-            delRequest.setName( entry );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_05124_DELETING_DN, delRequest.getName() ) );
         }
 
         // We can have an END transition
         container.setGrammarEndAllowed( true );
-
-        if ( LOG.isDebugEnabled() )
-        {
-            LOG.debug( I18n.msg( I18n.MSG_05124_DELETING_DN, entry ) );
-        }
     }
 }

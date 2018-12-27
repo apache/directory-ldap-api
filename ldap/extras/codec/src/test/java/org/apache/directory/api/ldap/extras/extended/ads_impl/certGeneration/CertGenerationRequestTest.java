@@ -23,15 +23,12 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-import java.nio.ByteBuffer;
-
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
-import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration.CertGenerationContainer;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration.CertGenerationRequestDecorator;
+import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationRequest;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -49,7 +46,13 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class CertGenerationRequestTest extends AbstractCodecServiceTest
 {
-
+    @Before
+    public void init()
+    {
+        codec.registerExtendedRequest( new CertGenerationFactory( codec ) );
+    }
+    
+    
     /**
      * test the decode operation
      */
@@ -59,11 +62,7 @@ public class CertGenerationRequestTest extends AbstractCodecServiceTest
         String dn = "uid=admin,ou=system";
         String keyAlgo = "RSA";
 
-        Asn1Decoder decoder = new Asn1Decoder();
-
-        ByteBuffer bb = ByteBuffer.allocate( 0x46 );
-
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x44,             // CertGenerateObject ::= SEQUENCE {
                   0x04, 0x13,           //      target OCTET STRING,
@@ -77,135 +76,98 @@ public class CertGenerationRequestTest extends AbstractCodecServiceTest
                     'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
                   0x04, 0x03,           //      keyAlgorithm OCTET STRING
                     'R', 'S', 'A'
-            } );
+            };
 
-        bb.flip();
+        CertGenerationFactory factory = ( CertGenerationFactory ) codec.getExtendedRequestFactories().
+            get( CertGenerationRequest.EXTENSION_OID );
+        CertGenerationRequest certGenerationRequest = ( CertGenerationRequest ) factory.newRequest( bb );
 
-        CertGenerationContainer container = new CertGenerationContainer();
-
-        decoder.decode( bb, container );
-
-        CertGenerationRequestDecorator req = container.getCertGenerationRequest();
-        assertEquals( dn, req.getTargetDN() );
-        assertEquals( dn, req.getIssuerDN() );
-        assertEquals( dn, req.getSubjectDN() );
-        assertEquals( keyAlgo, req.getKeyAlgorithm() );
-
-        assertEquals( 0x46, req.computeLengthInternal() );
-
-        // Check the encoding
-        ByteBuffer encodedBuf = req.encodeInternal();
-
-        assertArrayEquals( bb.array(), encodedBuf.array() );
+        assertEquals( dn, certGenerationRequest.getTargetDN() );
+        assertEquals( dn, certGenerationRequest.getIssuerDN() );
+        assertEquals( dn, certGenerationRequest.getSubjectDN() );
+        assertEquals( keyAlgo, certGenerationRequest.getKeyAlgorithm() );
 
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        CertGenerationFactory factory = new CertGenerationFactory( codec );
-        factory.encodeValue( asn1Buffer, req );
-        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
+
+        factory.encodeValue( asn1Buffer, certGenerationRequest );
+        
+        assertArrayEquals( bb,  asn1Buffer.getBytes().array() );
     }
 
 
     @Test( expected=DecoderException.class )
     public void testCertGenerationDecodeEmptyTargetDN() throws DecoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-
-        ByteBuffer bb = ByteBuffer.allocate( 5 );
-
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
-                0x30, 0x03, // CertGenerateObject ::= SEQUENCE {
-                0x04, 0x01,
-                  ' ' 
-            } ); // empty targetDN value
+                0x30, 0x03,         // CertGenerateObject ::= SEQUENCE {
+                  0x04, 0x01,       // empty targetDN value
+                    ' ' 
+            }; 
 
-        bb.flip();
-
-        CertGenerationContainer container = new CertGenerationContainer();
-
-        decoder.decode( bb, container );
+        CertGenerationFactory factory = ( CertGenerationFactory ) codec.getExtendedRequestFactories().
+            get( CertGenerationRequest.EXTENSION_OID );
+        factory.newRequest( bb );
     }
 
 
     @Test( expected=DecoderException.class )
     public void testCertGenerationDecodeInvalidTargetDN() throws DecoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-
-        ByteBuffer bb = ByteBuffer.allocate( 0x08 );
-
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x06,                 // CertGenerateObject ::= SEQUENCE {
-                  0x04, 0x04,
-                  '=', 's', 'y', 's' } );   // invalidtargetDN value
+                  0x04, 0x04,               // invalidtargetDN value
+                    '=', 's', 'y', 's' 
+            };   
 
-        bb.flip();
-
-        CertGenerationContainer container = new CertGenerationContainer();
-
-        decoder.decode( bb, container );
+        CertGenerationFactory factory = ( CertGenerationFactory ) codec.getExtendedRequestFactories().
+            get( CertGenerationRequest.EXTENSION_OID );
+        factory.newRequest( bb );
     }
 
 
     @Test( expected=DecoderException.class )
     public void testCertGenerationDecodeEmptyIssuerDN() throws DecoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-
-        ByteBuffer bb = ByteBuffer.allocate( 11 );
-
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x09,             // CertGenerateObject ::= SEQUENCE {
                   0x04, 0x04,           // target Dn string
                     'c', 'n', '=', 'x', 
                   0x04, 0x01,           // empty issuer Dn
                     ' ' 
-            } ); 
+            }; 
 
-        CertGenerationContainer container = new CertGenerationContainer();
-        bb.flip();
-
-        decoder.decode( bb, container );
+        CertGenerationFactory factory = ( CertGenerationFactory ) codec.getExtendedRequestFactories().
+            get( CertGenerationRequest.EXTENSION_OID );
+        factory.newRequest( bb );
     }
 
 
     @Test( expected=DecoderException.class )
     public void testCertGenerationDecodeInvalidIssuerDN() throws DecoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-
-        ByteBuffer bb = ByteBuffer.allocate( 11 );
-
-        bb = ByteBuffer.allocate( 12 );
-
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x10,             // CertGenerateObject ::= SEQUENCE {
                   0x04, 0x04,           // target Dn string
                     'c', 'n', '=', 'x', 
                   0x04, 0x02,           // empty issuer Dn
                     '=', 'x' 
-            } ); 
+            }; 
 
-        bb.flip();
-
-        CertGenerationContainer container = new CertGenerationContainer();
-
-        decoder.decode( bb, container );
+        CertGenerationFactory factory = ( CertGenerationFactory ) codec.getExtendedRequestFactories().
+            get( CertGenerationRequest.EXTENSION_OID );
+        factory.newRequest( bb );
     }
 
 
     @Test( expected=DecoderException.class )
     public void testCertGenerationDecodeEmptySubjectDN() throws DecoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-
-        ByteBuffer bb = ByteBuffer.allocate( 17 );
-
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x15,                 // CertGenerateObject ::= SEQUENCE {
                   0x04, 0x04,               // target Dn string
@@ -214,23 +176,18 @@ public class CertGenerationRequestTest extends AbstractCodecServiceTest
                     'c', 'n', '=', 'x', 
                   0x04, 0x01,               // empty subject Dn
                     ' ' 
-            } ); 
+            }; 
 
-        CertGenerationContainer container = new CertGenerationContainer();
-        bb.flip();
-
-        decoder.decode( bb, container );
+        CertGenerationFactory factory = ( CertGenerationFactory ) codec.getExtendedRequestFactories().
+            get( CertGenerationRequest.EXTENSION_OID );
+        factory.newRequest( bb );
     }
 
 
     @Test( expected=DecoderException.class )
     public void testCertGenerationDecodeInvalidSubjectDN() throws DecoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-
-        ByteBuffer bb = ByteBuffer.allocate( 18 );
-
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x16,                 // CertGenerateObject ::= SEQUENCE {
                   0x04, 0x04,               // target Dn string
@@ -239,31 +196,24 @@ public class CertGenerationRequestTest extends AbstractCodecServiceTest
                     'c', 'n', '=', 'x', 
                   0x04, 0x02,               // invalid subject Dn
                     '=', 'x' 
-            } );
+            };
 
-        bb.flip();
-
-        CertGenerationContainer container = new CertGenerationContainer();
-        decoder.decode( bb, container );
+        CertGenerationFactory factory = ( CertGenerationFactory ) codec.getExtendedRequestFactories().
+            get( CertGenerationRequest.EXTENSION_OID );
+        factory.newRequest( bb );
     }
 
 
     @Test( expected=DecoderException.class )
     public void testDecodeEmptySequence() throws DecoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-
-        ByteBuffer bb = ByteBuffer.allocate( 2 );
-
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x00       // CertGenerateObject ::= SEQUENCE { 
-            } );
+            };
 
-        CertGenerationContainer container = new CertGenerationContainer();
-        bb.flip();
-
-        decoder.decode( bb, container );
-        // The PDU with an empty sequence is not allowed
+        CertGenerationFactory factory = ( CertGenerationFactory ) codec.getExtendedRequestFactories().
+            get( CertGenerationRequest.EXTENSION_OID );
+        factory.newRequest( bb );
     }
 }

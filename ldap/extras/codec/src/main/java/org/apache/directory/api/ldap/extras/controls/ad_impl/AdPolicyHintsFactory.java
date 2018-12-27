@@ -20,13 +20,14 @@
 package org.apache.directory.api.ldap.extras.controls.ad_impl;
 
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.controls.ad.AdPolicyHints;
+import org.apache.directory.api.ldap.extras.controls.ad.AdPolicyHintsImpl;
 import org.apache.directory.api.ldap.model.message.Control;
 
 
@@ -44,37 +45,18 @@ public class AdPolicyHintsFactory extends AbstractControlFactory<AdPolicyHints>
      */
     public AdPolicyHintsFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, AdPolicyHints.OID );
     }
+
 
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public AdPolicyHints newControl()
     {
-        return AdPolicyHints.OID;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<AdPolicyHints> newCodecControl()
-    {
-        return new AdPolicyHintsDecorator( codec );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<AdPolicyHints> newCodecControl( AdPolicyHints control )
-    {
-        return new AdPolicyHintsDecorator( codec, control );
+        return new AdPolicyHintsImpl();
     }
 
 
@@ -91,5 +73,15 @@ public class AdPolicyHintsFactory extends AbstractControlFactory<AdPolicyHints>
 
         // Encode the SEQ
         BerValue.encodeSequence( buffer, start );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void decodeValue( Control control, byte[] controlBytes ) throws DecoderException
+    {
+        decodeValue( new AdPolicyHintsContainer( control ), control, controlBytes );
     }
 }

@@ -33,8 +33,8 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValue;
-import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncDoneValueDecorator;
 import org.apache.directory.api.util.Strings;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -52,14 +52,10 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class SyncDoneValueControlTest extends AbstractCodecServiceTest
 {
-    private void testReverseEncoding( SyncDoneValue syncDoneValue, ByteBuffer bb )
+    @Before
+    public void init()
     {
-        // Test reverse encoding
-        Asn1Buffer asn1Buffer = new Asn1Buffer();
-        
-        SyncDoneValueFactory factory = new SyncDoneValueFactory( codec );
-        factory.encodeValue( asn1Buffer, syncDoneValue );
-        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
+        codec.registerResponseControl( new SyncDoneValueFactory( codec ) );
     }
     
     
@@ -77,20 +73,20 @@ public class SyncDoneValueControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        SyncDoneValue decorator = new SyncDoneValueDecorator( codec );
-
-        SyncDoneValue syncDoneValue = ( SyncDoneValue ) ( ( SyncDoneValueDecorator ) decorator ).decode( bb.array() );
+        SyncDoneValueFactory factory = ( SyncDoneValueFactory ) codec.getResponseControlFactories().
+            get( SyncDoneValue.OID );
+        SyncDoneValue syncDoneValue = factory.newControl();
+        factory.decodeValue( syncDoneValue, bb.array() );
 
         assertEquals( "xkcd", Strings.utf8ToString( syncDoneValue.getCookie() ) );
         assertTrue( syncDoneValue.isRefreshDeletes() );
 
-        // test encoding
-        ByteBuffer buffer = ( ( SyncDoneValueDecorator ) syncDoneValue ).encode( ByteBuffer
-            .allocate( ( ( SyncDoneValueDecorator ) syncDoneValue ).computeLength() ) );
-        assertArrayEquals( bb.array(), buffer.array() );
-        
         // Test reverse encoding
-        testReverseEncoding( syncDoneValue, bb );
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        
+        factory.encodeValue( asn1Buffer, syncDoneValue );
+
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -108,20 +104,20 @@ public class SyncDoneValueControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        SyncDoneValue decorator = new SyncDoneValueDecorator( codec );
-
-        SyncDoneValue syncDoneValue = ( SyncDoneValue ) ( ( SyncDoneValueDecorator ) decorator ).decode( bb.array() );
+        SyncDoneValueFactory factory = ( SyncDoneValueFactory ) codec.getResponseControlFactories().
+            get( SyncDoneValue.OID );
+        SyncDoneValue syncDoneValue = factory.newControl();
+        factory.decodeValue( syncDoneValue, bb.array() );
 
         assertNull( syncDoneValue.getCookie() );
         assertTrue( syncDoneValue.isRefreshDeletes() );
 
-        // test encoding
-        ByteBuffer buffer = ( ( SyncDoneValueDecorator ) syncDoneValue ).encode( ByteBuffer
-            .allocate( ( ( SyncDoneValueDecorator ) syncDoneValue ).computeLength() ) );
-        assertArrayEquals( bb.array(), buffer.array() );
-        
         // Test reverse encoding
-        testReverseEncoding( syncDoneValue, bb );
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        
+        factory.encodeValue( asn1Buffer, syncDoneValue );
+
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -137,15 +133,20 @@ public class SyncDoneValueControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        SyncDoneValue decorator = new SyncDoneValueDecorator( codec );
-
-        SyncDoneValue syncDoneValue = ( SyncDoneValue ) ( ( SyncDoneValueDecorator ) decorator ).decode( bb.array() );
+        SyncDoneValueFactory factory = ( SyncDoneValueFactory ) codec.getResponseControlFactories().
+            get( SyncDoneValue.OID );
+        SyncDoneValue syncDoneValue = factory.newControl();
+        factory.decodeValue( syncDoneValue, bb.array() );
 
         assertNull( syncDoneValue.getCookie() );
         assertFalse( syncDoneValue.isRefreshDeletes() );
         
         // Test reverse encoding
-        testReverseEncoding( syncDoneValue, bb );
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        
+        factory.encodeValue( asn1Buffer, syncDoneValue );
+
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -163,9 +164,10 @@ public class SyncDoneValueControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        SyncDoneValue decorator = new SyncDoneValueDecorator( codec );
-
-        SyncDoneValue syncDoneValue = ( SyncDoneValue ) ( ( SyncDoneValueDecorator ) decorator ).decode( bb.array() );
+        SyncDoneValueFactory factory = ( SyncDoneValueFactory ) codec.getResponseControlFactories().
+            get( SyncDoneValue.OID );
+        SyncDoneValue syncDoneValue = factory.newControl();
+        factory.decodeValue( syncDoneValue, bb.array() );
 
         assertEquals( "", Strings.utf8ToString( syncDoneValue.getCookie() ) );
         assertFalse( syncDoneValue.isRefreshDeletes() );
@@ -178,11 +180,11 @@ public class SyncDoneValueControlTest extends AbstractCodecServiceTest
                 0x30, 0x00
             }); 
 
-       ByteBuffer buffer = ( ( SyncDoneValueDecorator ) syncDoneValue ).encode( ByteBuffer
-            .allocate( ( ( SyncDoneValueDecorator ) syncDoneValue ).computeLength() ) );
-        assertArrayEquals( bb.array(), buffer.array() );
-        
         // Test reverse encoding
-        testReverseEncoding( syncDoneValue, bb );
+        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        
+        factory.encodeValue( asn1Buffer, syncDoneValue );
+
+        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 }

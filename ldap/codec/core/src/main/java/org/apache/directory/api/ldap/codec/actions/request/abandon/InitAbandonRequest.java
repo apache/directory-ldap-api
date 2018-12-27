@@ -27,8 +27,7 @@ import org.apache.directory.api.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.AbandonRequestDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.model.message.AbandonRequest;
 import org.apache.directory.api.ldap.model.message.AbandonRequestImpl;
 import org.apache.directory.api.util.Strings;
@@ -44,7 +43,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitAbandonRequest extends GrammarAction<LdapMessageContainer<AbandonRequestDecorator>>
+public class InitAbandonRequest extends GrammarAction<LdapMessageContainerDirect<AbandonRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitAbandonRequest.class );
@@ -63,13 +62,11 @@ public class InitAbandonRequest extends GrammarAction<LdapMessageContainer<Aband
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainer<AbandonRequestDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<AbandonRequest> container ) throws DecoderException
     {
         // Create the AbandonRequest LdapMessage instance and store it in the container
-        AbandonRequest internalAbandonRequest = new AbandonRequestImpl();
-        internalAbandonRequest.setMessageId( container.getMessageId() );
-        AbandonRequestDecorator abandonRequest = new AbandonRequestDecorator(
-            container.getLdapCodecService(), internalAbandonRequest );
+        AbandonRequest abandonRequest = new AbandonRequestImpl();
+        abandonRequest.setMessageId( container.getMessageId() );
         container.setMessage( abandonRequest );
 
         // The current TLV should be a integer

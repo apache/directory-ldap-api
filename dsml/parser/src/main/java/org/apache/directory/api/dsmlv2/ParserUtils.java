@@ -29,12 +29,12 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.dsmlv2.actions.ReadSoapHeader;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml.Processing;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml.ResponseOrder;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.ldif.LdifUtils;
@@ -245,23 +245,18 @@ public final class ParserUtils
                     controlElement.addAttribute( "criticality", "true" );
                 }
 
-                byte[] value;
+                Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-                if ( control instanceof CodecControl<?> )
+                if ( isRequest )
                 {
-                    value = ( ( org.apache.directory.api.ldap.codec.api.CodecControl<?> ) control ).getValue();
+                    codec.getRequestControlFactories().get( control.getOid() ).encodeValue( asn1Buffer, control );
                 }
                 else
                 {
-                    if ( isRequest )
-                    {
-                        value = codec.newRequestControl( control ).getValue();
-                    }
-                    else
-                    {
-                        value = codec.newResponseControl( control ).getValue();
-                    }
+                    codec.getResponseControlFactories().get( control.getOid() ).encodeValue( asn1Buffer, control );
                 }
+                
+               byte[] value = asn1Buffer.getBytes().array();
 
                 if ( value != null )
                 {

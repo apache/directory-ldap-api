@@ -25,15 +25,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.nio.ByteBuffer;
-
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
-import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionRequest;
 import org.apache.directory.api.util.Strings;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -50,24 +48,27 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class EndTransactionRequestTest extends AbstractCodecServiceTest
 {
+    @Before
+    public void init()
+    {
+        codec.registerExtendedRequest( new EndTransactionFactory( codec ) );
+    }
+    
+    
     /**
      * Test the decoding of a EndTransactionRequest with nothing in it
      */
     @Test( expected=DecoderException.class)
     public void testDecodeEndTransactionRequestEmpty() throws DecoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x02 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x00, // EndTransactionRequest ::= SEQUENCE {
-            } );
+            };
         
-        bb.flip();
-
-        EndTransactionRequestContainer container = new EndTransactionRequestContainer();
-
-        decoder.decode( bb, container );
+        EndTransactionFactory factory = ( EndTransactionFactory ) codec.getExtendedRequestFactories().
+            get( EndTransactionRequest.EXTENSION_OID );
+        factory.newRequest( bb );
     }
 
 
@@ -77,19 +78,15 @@ public class EndTransactionRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testEndTransactionRequestCommitNoIdentifier() throws DecoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x05 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x03,              // EndTransactionRequest ::= SEQUENCE {
                   0x01, 0x01, 0x00       // Commit, TRUE
-            } );
+            };
 
-        bb.flip();
-
-        EndTransactionRequestContainer container = new EndTransactionRequestContainer();
-
-        decoder.decode( bb, container );
+        EndTransactionFactory factory = ( EndTransactionFactory ) codec.getExtendedRequestFactories().
+            get( EndTransactionRequest.EXTENSION_OID );
+        factory.newRequest( bb );
     }
 
 
@@ -100,37 +97,25 @@ public class EndTransactionRequestTest extends AbstractCodecServiceTest
     @Test
     public void testEndTransactionRequestNoCommitIdentifier() throws DecoderException, EncoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x08 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x06,                       // EndTransactionRequest ::= SEQUENCE {
                   0x04, 0x04, 't', 'e', 's', 't'  // identifier (test)
-            } );
+            };
 
-        bb.flip();
+        EndTransactionFactory factory = ( EndTransactionFactory ) codec.getExtendedRequestFactories().
+            get( EndTransactionRequest.EXTENSION_OID );
+        EndTransactionRequest endTransactionRequest = ( EndTransactionRequest ) factory.newRequest( bb );
 
-        EndTransactionRequestContainer container = new EndTransactionRequestContainer();
-
-        decoder.decode( bb, container );
-        
-        EndTransactionRequest endTransactionRequest = container.getEndTransactionRequest();
         assertTrue( endTransactionRequest.getCommit() );
         assertEquals( "test", Strings.utf8ToString( endTransactionRequest.getTransactionId() ) );
 
-        // Check the length
-        assertEquals( 0x08, ( ( EndTransactionRequestDecorator ) endTransactionRequest ).computeLengthInternal() );
-
-        // Check the encoding
-        ByteBuffer bb1 = ( ( EndTransactionRequestDecorator ) endTransactionRequest ).encodeInternal();
-
-        assertArrayEquals( bb.array(), bb1.array() );
-        
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        EndTransactionFactory factory = new EndTransactionFactory( codec );
+
         factory.encodeValue( asn1Buffer, endTransactionRequest );
-        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
+        
+        assertArrayEquals( bb,  asn1Buffer.getBytes().array() );
     }
 
 
@@ -141,38 +126,26 @@ public class EndTransactionRequestTest extends AbstractCodecServiceTest
     @Test
     public void testEndTransactionRequesoCommitIdentifier() throws DecoderException, EncoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x0B );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x09,                       // EndTransactionRequest ::= SEQUENCE {
                   0x01, 0x01, 0x00,               // Commit, FALSE
                   0x04, 0x04, 't', 'e', 's', 't'  // identifier (test)
-            } );
+            };
 
-        bb.flip();
+        EndTransactionFactory factory = ( EndTransactionFactory ) codec.getExtendedRequestFactories().
+            get( EndTransactionRequest.EXTENSION_OID );
+        EndTransactionRequest endTransactionRequest = ( EndTransactionRequest ) factory.newRequest( bb );
 
-        EndTransactionRequestContainer container = new EndTransactionRequestContainer();
-
-        decoder.decode( bb, container );
-        
-        EndTransactionRequest endTransactionRequest = container.getEndTransactionRequest();
         assertFalse( endTransactionRequest.getCommit() );
         assertEquals( "test", Strings.utf8ToString( endTransactionRequest.getTransactionId() ) );
 
-        // Check the length
-        assertEquals( 0x0B, ( ( EndTransactionRequestDecorator ) endTransactionRequest ).computeLengthInternal() );
-
-        // Check the encoding
-        ByteBuffer bb1 = ( ( EndTransactionRequestDecorator ) endTransactionRequest ).encodeInternal();
-
-        assertArrayEquals( bb.array(), bb1.array() );
-        
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        EndTransactionFactory factory = new EndTransactionFactory( codec );
+
         factory.encodeValue( asn1Buffer, endTransactionRequest );
-        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
+
+        assertArrayEquals( bb,  asn1Buffer.getBytes().array() );
     }
 
 
@@ -183,37 +156,25 @@ public class EndTransactionRequestTest extends AbstractCodecServiceTest
     @Test
     public void testEndTransactionRequesoCommitEmptyIdentifier() throws DecoderException, EncoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x07 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x05,                       // EndTransactionRequest ::= SEQUENCE {
                   0x01, 0x01, 0x00,               // Commit, FALSE
                   0x04, 0x00                      // identifier (empty)
-            } );
+            };
 
-        bb.flip();
+        EndTransactionFactory factory = ( EndTransactionFactory ) codec.getExtendedRequestFactories().
+            get( EndTransactionRequest.EXTENSION_OID );
+        EndTransactionRequest endTransactionRequest = ( EndTransactionRequest ) factory.newRequest( bb );
 
-        EndTransactionRequestContainer container = new EndTransactionRequestContainer();
-
-        decoder.decode( bb, container );
-        
-        EndTransactionRequest endTransactionRequest = container.getEndTransactionRequest();
         assertFalse( endTransactionRequest.getCommit() );
         assertEquals( 0, endTransactionRequest.getTransactionId().length );
 
-        // Check the length
-        assertEquals( 0x07, ( ( EndTransactionRequestDecorator ) endTransactionRequest ).computeLengthInternal() );
-
-        // Check the encoding
-        ByteBuffer bb1 = ( ( EndTransactionRequestDecorator ) endTransactionRequest ).encodeInternal();
-
-        assertArrayEquals( bb.array(), bb1.array() );
-        
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        EndTransactionFactory factory = new EndTransactionFactory( codec );
+
         factory.encodeValue( asn1Buffer, endTransactionRequest );
-        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
+
+        assertArrayEquals( bb,  asn1Buffer.getBytes().array() );
     }
 }

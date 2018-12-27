@@ -21,7 +21,9 @@ package org.apache.directory.api.ldap.extras.controls.syncrepl_impl;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
+import org.apache.directory.api.ldap.codec.api.ControlContainer;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateValue;
+import org.apache.directory.api.ldap.model.message.Control;
 
 
 /**
@@ -29,31 +31,17 @@ import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStat
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SyncStateValueContainer extends AbstractContainer
+public class SyncStateValueContainer extends AbstractContainer implements ControlContainer
 {
     /** SyncStateValueControl */
-    private SyncStateValue control;
-
-
-    /**
-     * Creates a new SyncStateValueControlContainer object. We will store one grammar,
-     * it's enough ...
-     */
-    public SyncStateValueContainer()
-    {
-        super();
-        setGrammar( SyncStateValueGrammar.getInstance() );
-        setTransition( SyncStateValueStatesEnum.START_STATE );
-    }
-
+    private Control control;
 
     /**
-     * Creates a new SyncStateValueControlContainer object. We will store one grammar,
-     * it's enough ...
+     * Creates a new SyncStateValueControlContainer object. 
      * 
      * @param control The control to store
      */
-    public SyncStateValueContainer( SyncStateValue control )
+    public SyncStateValueContainer( Control control )
     {
         super();
         this.control = control;
@@ -65,9 +53,9 @@ public class SyncStateValueContainer extends AbstractContainer
     /**
      * @return Returns the syncStateValue control.
      */
-    public SyncStateValue getSyncStateValueControl()
+    public SyncStateValue getSyncStateValue()
     {
-        return control;
+        return ( SyncStateValue ) control;
     }
 
 
@@ -77,7 +65,7 @@ public class SyncStateValueContainer extends AbstractContainer
      * 
      * @param control the SyncStateValueControl to set.
      */
-    public void setSyncStateValueControl( SyncStateValue control )
+    public void setControl( Control control )
     {
         this.control = control;
     }

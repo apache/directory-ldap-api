@@ -23,8 +23,7 @@ package org.apache.directory.api.ldap.codec.actions.request.bind;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.BindRequestDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.model.message.BindRequest;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -40,7 +39,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreSaslMechanism extends GrammarAction<LdapMessageContainer<BindRequestDecorator>>
+public class StoreSaslMechanism extends GrammarAction<LdapMessageContainerDirect<BindRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreSaslMechanism.class );
@@ -58,7 +57,7 @@ public class StoreSaslMechanism extends GrammarAction<LdapMessageContainer<BindR
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainer<BindRequestDecorator> container )
+    public void action( LdapMessageContainerDirect<BindRequest> container )
     {
         BindRequest bindRequestMessage = container.getMessage();
         TLV tlv = container.getCurrentTLV();

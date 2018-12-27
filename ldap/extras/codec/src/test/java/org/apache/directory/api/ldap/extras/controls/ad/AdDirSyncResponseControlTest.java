@@ -30,7 +30,6 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
-import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncResponseDecorator;
 import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncResponseFactory;
 import org.apache.directory.api.util.Strings;
 import org.junit.Before;
@@ -74,27 +73,22 @@ public class AdDirSyncResponseControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        AdDirSyncResponse decorator = new AdDirSyncResponseDecorator( codec );
-
-        AdDirSyncResponse adDirSync = ( AdDirSyncResponse ) ( ( AdDirSyncResponseDecorator ) decorator ).decode( bb.array() );
+        AdDirSyncResponseFactory factory = ( AdDirSyncResponseFactory ) codec.getRequestControlFactories().
+            get( AdDirSyncResponse.OID );
+        AdDirSyncResponse adDirSyncResponse = factory.newControl();
+        factory.decodeValue( adDirSyncResponse, bb.array() );
 
         assertEquals( EnumSet.of(
             AdDirSyncResponseFlag.LDAP_DIRSYNC_OBJECT_SECURITY,
             AdDirSyncResponseFlag.LDAP_DIRSYNC_ANCESTORS_FIRST_ORDER ),
-            adDirSync.getFlags() );
-        assertEquals( 0, adDirSync.getMaxReturnLength() );
-        assertEquals( "xkcd", Strings.utf8ToString( adDirSync.getCookie() ) );
-
-        // test encoding
-        ByteBuffer buffer = ( ( AdDirSyncResponseDecorator ) adDirSync ).encode( ByteBuffer
-            .allocate( ( ( AdDirSyncResponseDecorator ) adDirSync ).computeLength() ) );
-        assertArrayEquals( bb.array(), buffer.array() );
+            adDirSyncResponse.getFlags() );
+        assertEquals( 0, adDirSyncResponse.getMaxReturnLength() );
+        assertEquals( "xkcd", Strings.utf8ToString( adDirSyncResponse.getCookie() ) );
 
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        AdDirSyncResponseFactory factory = ( AdDirSyncResponseFactory ) codec.getRequestControlFactories().get( AdDirSyncResponse.OID );
-        factory.encodeValue( asn1Buffer, adDirSync );
+        factory.encodeValue( asn1Buffer, adDirSyncResponse );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
@@ -115,24 +109,19 @@ public class AdDirSyncResponseControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        AdDirSyncResponse decorator = new AdDirSyncResponseDecorator( codec );
+        AdDirSyncResponseFactory factory = ( AdDirSyncResponseFactory ) codec.getRequestControlFactories().
+            get( AdDirSyncResponse.OID );
+        AdDirSyncResponse adDirSyncResponse = factory.newControl();
+        factory.decodeValue( adDirSyncResponse, bb.array() );
 
-        AdDirSyncResponse adDirSync = ( AdDirSyncResponse ) ( ( AdDirSyncResponseDecorator ) decorator ).decode( bb.array() );
-
-        assertEquals( EnumSet.of( AdDirSyncResponseFlag.LDAP_DIRSYNC_OBJECT_SECURITY ), adDirSync.getFlags() );
-        assertEquals( 0, adDirSync.getMaxReturnLength() );
-        assertEquals( "", Strings.utf8ToString( adDirSync.getCookie() ) );
-
-        // test encoding
-        ByteBuffer buffer = ( ( AdDirSyncResponseDecorator ) adDirSync ).encode( ByteBuffer
-            .allocate( ( ( AdDirSyncResponseDecorator ) adDirSync ).computeLength() ) );
-        assertArrayEquals( bb.array(), buffer.array() );
+        assertEquals( EnumSet.of( AdDirSyncResponseFlag.LDAP_DIRSYNC_OBJECT_SECURITY ), adDirSyncResponse.getFlags() );
+        assertEquals( 0, adDirSyncResponse.getMaxReturnLength() );
+        assertEquals( "", Strings.utf8ToString( adDirSyncResponse.getCookie() ) );
 
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        AdDirSyncResponseFactory factory = ( AdDirSyncResponseFactory ) codec.getRequestControlFactories().get( AdDirSyncResponse.OID );
-        factory.encodeValue( asn1Buffer, adDirSync );
+        factory.encodeValue( asn1Buffer, adDirSyncResponse );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
@@ -152,9 +141,10 @@ public class AdDirSyncResponseControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        AdDirSyncResponse decorator = new AdDirSyncResponseDecorator( codec );
-
-        ( ( AdDirSyncResponseDecorator ) decorator ).decode( bb.array() );
+        AdDirSyncResponseFactory factory = ( AdDirSyncResponseFactory ) codec.getRequestControlFactories().
+            get( AdDirSyncResponse.OID );
+        AdDirSyncResponse adDirSyncResponse = factory.newControl();
+        factory.decodeValue( adDirSyncResponse, bb.array() );
     }
 
 
@@ -172,9 +162,10 @@ public class AdDirSyncResponseControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        AdDirSyncResponse decorator = new AdDirSyncResponseDecorator( codec );
-
-        ( ( AdDirSyncResponseDecorator ) decorator ).decode( bb.array() );
+        AdDirSyncResponseFactory factory = ( AdDirSyncResponseFactory ) codec.getRequestControlFactories().
+            get( AdDirSyncResponse.OID );
+        AdDirSyncResponse adDirSyncResponse = factory.newControl();
+        factory.decodeValue( adDirSyncResponse, bb.array() );
     }
 
 
@@ -190,8 +181,9 @@ public class AdDirSyncResponseControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        AdDirSyncResponse decorator = new AdDirSyncResponseDecorator( codec );
-
-        ( ( AdDirSyncResponseDecorator ) decorator ).decode( bb.array() );
+        AdDirSyncResponseFactory factory = ( AdDirSyncResponseFactory ) codec.getRequestControlFactories().
+            get( AdDirSyncResponse.OID );
+        AdDirSyncResponse adDirSyncResponse = factory.newControl();
+        factory.decodeValue( adDirSyncResponse, bb.array() );
     }
 }

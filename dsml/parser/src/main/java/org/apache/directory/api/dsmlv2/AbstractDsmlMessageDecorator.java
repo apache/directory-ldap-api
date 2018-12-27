@@ -27,7 +27,6 @@ import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
-import org.apache.directory.api.ldap.model.message.Request;
 
 
 /**
@@ -143,15 +142,7 @@ public abstract class AbstractDsmlMessageDecorator<M extends Message>
         }
         else
         {
-            if ( this instanceof Request )
-            {
-                decorator = new DsmlControl<>( codec, codec.newRequestControl( control ) );
-            }
-            else
-            {
-                decorator = new DsmlControl<>( codec, codec.newResponseControl( control ) );
-            }
-
+            decorator = new DsmlControl( codec, control );
             decorated = control;
         }
 

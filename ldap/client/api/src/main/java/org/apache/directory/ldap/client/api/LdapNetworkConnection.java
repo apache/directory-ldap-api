@@ -55,13 +55,13 @@ import javax.security.sasl.SaslClient;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.codec.api.BinaryAttributeDetector;
 import org.apache.directory.api.ldap.codec.api.DefaultConfigurableBinaryAttributeDetector;
+import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.codec.api.LdapDecoder;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.api.MessageEncoderException;
 import org.apache.directory.api.ldap.codec.api.SchemaBinaryAttributeDetector;
 import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequestImpl;
@@ -81,6 +81,7 @@ import org.apache.directory.api.ldap.model.exception.LdapAuthenticationException
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.exception.LdapNoPermissionException;
+import org.apache.directory.api.ldap.model.exception.LdapNoSuchObjectException;
 import org.apache.directory.api.ldap.model.exception.LdapOperationException;
 import org.apache.directory.api.ldap.model.exception.LdapOtherException;
 import org.apache.directory.api.ldap.model.exception.LdapTlsHandshakeException;
@@ -112,6 +113,7 @@ import org.apache.directory.api.ldap.model.message.ModifyDnResponse;
 import org.apache.directory.api.ldap.model.message.ModifyRequest;
 import org.apache.directory.api.ldap.model.message.ModifyRequestImpl;
 import org.apache.directory.api.ldap.model.message.ModifyResponse;
+import org.apache.directory.api.ldap.model.message.OpaqueExtendedRequest;
 import org.apache.directory.api.ldap.model.message.Request;
 import org.apache.directory.api.ldap.model.message.Response;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
@@ -892,8 +894,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         // Store the container into the session if we don't have one
         @SuppressWarnings("unchecked")
-        LdapMessageContainer<AbstractMessageDecorator<? extends Message>> container =
-            ( LdapMessageContainer<AbstractMessageDecorator<? extends Message>> ) ldapSession
+        LdapMessageContainerDirect<? extends Message> container =
+            ( LdapMessageContainerDirect<? extends Message> ) ldapSession
                 .getAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR );
 
         if ( container != null )
@@ -913,7 +915,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             }
 
             ldapSession.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR,
-                new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec, atDetector ) );
+                new LdapMessageContainerDirect<Message>( codec, atDetector ) );
         }
 
         // Initialize the MessageId
@@ -3897,9 +3899,26 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     @Override
     public ExtendedResponse extended( Oid oid, byte[] value ) throws LdapException
     {
-        ExtendedRequest extendedRequest =
-            LdapApiServiceFactory.getSingleton().newExtendedRequest( oid.toString(), value );
-        return extended( extendedRequest );
+        Map<String, ExtendedOperationFactory> factories = LdapApiServiceFactory.getSingleton().getExtendedRequestFactories();
+        String oidStr = oid.toString();
+        
+        ExtendedOperationFactory factory = factories.get( oidStr );
+        
+        if ( factory != null )
+        {
+            try
+            {            
+                return extended( factory.newRequest( value ) );
+            }
+            catch ( DecoderException de )
+            {
+                throw new LdapNoSuchObjectException( de.getMessage() );
+            }
+        }
+        else
+        {
+            return extended( new OpaqueExtendedRequest( oidStr, value ) );
+        }
     }
 
 
@@ -3966,7 +3985,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             }
 
             // Decode the payload now
-            return codec.decorate( response );
+            return response;
         }
         catch ( Exception ie )
         {
@@ -4014,7 +4033,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         addToFutureMap( newId, extendedFuture );
 
         // Send the request to the server
-        writeRequest( codec.decorate( extendedRequest ) );
+        writeRequest( extendedRequest );
 
         // Ok, done return the future
         return extendedFuture;
@@ -4277,7 +4296,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             // Change the container's BinaryDetector
             ldapSession.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR,
-                new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec,
+                new LdapMessageContainerDirect<>( codec,
                     new SchemaBinaryAttributeDetector( schemaManager ) ) );
 
         }
@@ -4539,8 +4558,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     public void sessionCreated( IoSession session ) throws Exception
     {
         // Last, store the message container
-        LdapMessageContainer<? extends AbstractMessageDecorator<Message>> ldapMessageContainer =
-            new LdapMessageContainer<>(
+        LdapMessageContainerDirect<Message> ldapMessageContainer =
+            new LdapMessageContainerDirect<>(
                 codec, config.getBinaryAttributeDetector() );
 
         session.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR, ldapMessageContainer );

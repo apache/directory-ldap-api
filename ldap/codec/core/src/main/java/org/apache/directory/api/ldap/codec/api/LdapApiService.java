@@ -25,14 +25,9 @@ import java.util.Map;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
-import org.apache.directory.api.asn1.ber.Asn1Container;
-import org.apache.directory.api.ldap.codec.decorators.ExtendedRequestDecorator;
-import org.apache.directory.api.ldap.codec.decorators.ExtendedResponseDecorator;
-import org.apache.directory.api.ldap.codec.decorators.IntermediateResponseDecorator;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
-import org.apache.directory.api.ldap.model.message.IntermediateResponse;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
 
 
@@ -113,42 +108,6 @@ public interface LdapApiService
      * @return The unregistered control factory
      */
     ControlFactory<?> unregisterResponseControl( String oid );
-
-
-    /**
-     * Creates a new request codec control decorator of the specified type.
-     *
-     * @param oid The OID of the new control to create.
-     * @return The newly created codec control.
-     */
-    CodecControl<? extends Control> newRequestControl( String oid );
-
-
-    /**
-     * Creates a new response codec control decorator of the specified type.
-     *
-     * @param oid The OID of the new control to create.
-     * @return The newly created codec control.
-     */
-    CodecControl<? extends Control> newResponseControl( String oid );
-
-
-    /**
-     * Creates a new request codec control decorator for the provided control.
-     *
-     * @param control The control the codec control is generated for.
-     * @return The newly created codec control.
-     */
-    CodecControl<? extends Control> newRequestControl( Control control );
-
-
-    /**
-     * Creates a new response codec control decorator for the provided control.
-     *
-     * @param control The control the codec control is generated for.
-     * @return The newly created codec control.
-     */
-    CodecControl<? extends Control> newResponseControl( Control control );
 
 
     /**
@@ -397,81 +356,4 @@ public interface LdapApiService
      * none had been set earlier.
      */
     ProtocolCodecFactory registerProtocolCodecFactory( ProtocolCodecFactory factory );
-
-
-    /**
-     * Creates a new MessageContainer.
-     *
-     * @return The newly created LDAP MessageContainer instance.
-     */
-    Asn1Container newMessageContainer();
-
-
-    /**
-     * Create an instance of a ExtendedResponse, knowing its OID. Inject the payload
-     * into it.
-     *
-     * @param responseName The extendedRespose OID
-     * @param messageId The original message ID
-     * @param serializedResponse The serialized response payload
-     * @param <E> The extended response type
-     * @return The extendedResponse instance
-     *
-     * @throws DecoderException If the payload is incorrect
-     */
-    <E extends ExtendedResponse> E newExtendedResponse( String responseName, int messageId, byte[] serializedResponse )
-        throws DecoderException;
-
-
-    /**
-     * Creates a new ExtendedRequest instance.
-     *
-     * @param oid the extended request's object identifier
-     * @param value the encoded value of the extended request
-     * @return The new extended request
-     */
-    ExtendedRequest newExtendedRequest( String oid, byte[] value );
-
-
-    /**
-     * Create an instance of a IntermediateResponse, knowing its OID. Inject the payload
-     * into it.
-     *
-     * @param responseName The intermediateRespose OID
-     * @param messageId The original message ID
-     * @param serializedResponse The serialized response payload
-     * @param <I> The intermediate response type
-     * @return The intermediateResponse instance
-     *
-     * @throws DecoderException If the payload is incorrect
-     */
-    <I extends IntermediateResponse> I newIntermediateResponse( String responseName, int messageId, byte[] serializedResponse )
-        throws DecoderException;
-
-
-    /**
-     * Decorates an extended request message, ie encapsulate it into a class that do the encoding/decoding
-     *
-     * @param decoratedMessage The extended request to decorate
-     * @return The decorated extended request
-     */
-    ExtendedRequestDecorator<?> decorate( ExtendedRequest decoratedMessage );
-
-
-    /**
-     * Decorates an extended response message, ie encapsulate it into a class that do the encoding/decoding
-     *
-     * @param decoratedMessage The extended response to decorate
-     * @return The decorated extended response
-     */
-    ExtendedResponseDecorator<?> decorate( ExtendedResponse decoratedMessage );
-
-
-    /**
-     * Decorates an intermediate response message, ie encapsulate it into a class that do the encoding/decoding
-     *
-     * @param decoratedMessage The intermediate response to decorate
-     * @return The decorated intermediate response
-     */
-    IntermediateResponseDecorator<?> decorate( IntermediateResponse decoratedMessage );
 }

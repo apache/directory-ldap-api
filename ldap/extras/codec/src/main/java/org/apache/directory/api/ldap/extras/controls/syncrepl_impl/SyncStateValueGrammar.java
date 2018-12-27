@@ -122,7 +122,7 @@ public final class SyncStateValueGrammar extends AbstractGrammar<SyncStateValueC
                             LOG.debug( I18n.msg( I18n.MSG_08105_SYNC_STATE_TYPE, syncStateTypeEnum ) );
                         }
 
-                        container.getSyncStateValueControl().setSyncStateType( syncStateTypeEnum );
+                        container.getSyncStateValue().setSyncStateType( syncStateTypeEnum );
 
                         // move on to the entryUUID transition
                         container.setGrammarEndAllowed( false );
@@ -161,7 +161,7 @@ public final class SyncStateValueGrammar extends AbstractGrammar<SyncStateValueC
                         LOG.debug( I18n.msg( I18n.MSG_08106_ENTRY_UUID, Strings.dumpBytes( entryUUID ) ) );
                     }
 
-                    container.getSyncStateValueControl().setEntryUUID( entryUUID );
+                    container.getSyncStateValue().setEntryUUID( entryUUID );
 
                     // We can have an END transition
                     container.setGrammarEndAllowed( true );
@@ -193,7 +193,7 @@ public final class SyncStateValueGrammar extends AbstractGrammar<SyncStateValueC
                         LOG.debug( I18n.msg( I18n.MSG_08000_COOKIE, Strings.dumpBytes( cookie ) ) );
                     }
 
-                    container.getSyncStateValueControl().setCookie( cookie );
+                    container.getSyncStateValue().setCookie( cookie );
 
                     // terminal state
                     container.setGrammarEndAllowed( true );

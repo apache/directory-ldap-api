@@ -20,17 +20,13 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.startTls;
 
 
-import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
-import org.apache.directory.api.ldap.codec.decorators.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequest;
 import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequestImpl;
 import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsResponse;
 import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsResponseImpl;
-import org.apache.directory.api.ldap.model.message.ExtendedRequest;
-import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 
 
 /**
@@ -48,7 +44,7 @@ public class StartTlsFactory extends AbstractExtendedOperationFactory
      */
     public StartTlsFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, StartTlsRequest.EXTENSION_OID );
     }
 
 
@@ -66,13 +62,9 @@ public class StartTlsFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public StartTlsResponse newResponse( byte[] encodedValue ) throws DecoderException
+    public StartTlsRequest newRequest()
     {
-        StartTlsResponseDecorator response = new StartTlsResponseDecorator( codec,
-            new StartTlsResponseImpl() );
-        response.setResponseValue( encodedValue );
-        
-        return response;
+        return new StartTlsRequestImpl();
     }
 
 
@@ -80,60 +72,8 @@ public class StartTlsFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public StartTlsRequest newRequest( byte[] value )
+    public StartTlsResponse newResponse()
     {
-        StartTlsRequestDecorator req = new StartTlsRequestDecorator( codec, new StartTlsRequestImpl() );
-
-        if ( value != null )
-        {
-            req.setRequestValue( value );
-        }
-
-        return req;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public StartTlsRequestDecorator decorate( ExtendedRequest modelRequest )
-    {
-        if ( modelRequest instanceof StartTlsRequestDecorator )
-        {
-            return ( StartTlsRequestDecorator ) modelRequest;
-        }
-
-        return new StartTlsRequestDecorator( codec, ( StartTlsRequest ) modelRequest );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public StartTlsResponseDecorator decorate( ExtendedResponse decoratedResponse )
-    {
-        if ( decoratedResponse instanceof StartTlsResponseDecorator )
-        {
-            return ( StartTlsResponseDecorator ) decoratedResponse;
-        }
-
-        if ( decoratedResponse instanceof StartTlsResponse )
-        {
-            return new StartTlsResponseDecorator( codec, ( StartTlsResponse ) decoratedResponse );
-        }
-
-        // It's an opaque extended operation
-        @SuppressWarnings("unchecked")
-        ExtendedResponseDecorator<ExtendedResponse> response = ( ExtendedResponseDecorator<ExtendedResponse> ) decoratedResponse;
-
-        // Decode the response, as it's an opaque operation
-        StartTlsResponse startTlsResponse = new StartTlsResponseImpl( response.getMessageId() );
-        
-        startTlsResponse.getLdapResult().setResultCode( response.getLdapResult().getResultCode() );
-        startTlsResponse.getLdapResult().setDiagnosticMessage( response.getLdapResult().getDiagnosticMessage() );
-
-        return new StartTlsResponseDecorator( codec, startTlsResponse );
+        return new StartTlsResponseImpl();
     }
 }

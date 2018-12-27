@@ -23,7 +23,6 @@ package org.apache.directory.api.ldap.codec;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -33,11 +32,8 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.AbandonRequestDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.AbandonRequest;
 import org.apache.directory.api.ldap.model.message.AbandonRequestImpl;
@@ -47,7 +43,6 @@ import org.apache.directory.api.ldap.model.message.controls.Cascade;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
 import org.apache.directory.api.ldap.model.message.controls.PagedResults;
 import org.apache.directory.api.ldap.model.message.controls.SortRequest;
-import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -119,8 +114,8 @@ public class LdapControlTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessageContainer Container
-        LdapMessageContainer<AbandonRequestDecorator> ldapMessageContainer =
-            new LdapMessageContainer<AbandonRequestDecorator>( codec );
+        LdapMessageContainerDirect<AbandonRequest> ldapMessageContainer =
+            new LdapMessageContainerDirect<>( codec );
 
         // Decode the PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -140,34 +135,28 @@ public class LdapControlTest extends AbstractCodecServiceTest
 
         assertEquals( 4, controls.size() );
 
-        CodecControl<? extends Control> control = ( CodecControl<?> ) controls
-            .get( "1.2.840.113556.1.4.473" );
+        Control control = controls.get( "1.2.840.113556.1.4.473" );
         assertEquals( "1.2.840.113556.1.4.473", control.getOid() );
         assertTrue( control instanceof SortRequest );
-        assertEquals( "0x30 0x0F 0x30 0x07 0x04 0x02 0x63 0x6E 0x81 0x01 0xFF 0x30 0x04 0x04 0x02 0x73 0x6E ", 
-            Strings.dumpBytes( control.getValue() ) );
         assertTrue( control.isCritical() );
         assertEquals( 2, ( ( SortRequest ) control ).getSortKeys().size() );
         internalAbandonRequest.addControl( control );
 
-        control = ( CodecControl<?> ) controls.get( "1.2.840.113556.1.4.319" );
+        control = controls.get( "1.2.840.113556.1.4.319" );
         assertEquals( "1.2.840.113556.1.4.319", control.getOid() );
         assertTrue( control instanceof PagedResults );
-        assertEquals( "0x30 0x09 0x02 0x01 0x10 0x04 0x04 0x74 0x74 0x74 0x74 ", Strings.dumpBytes( control.getValue() ) );
         assertFalse( control.isCritical() );
         internalAbandonRequest.addControl( control );
 
-        control = ( CodecControl<?> ) controls.get( "2.16.840.1.113730.3.4.2" );
+        control = controls.get( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
         assertTrue( control instanceof ManageDsaIT );
-        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
         assertTrue( control.isCritical() );
         internalAbandonRequest.addControl( control );
 
-        control = ( CodecControl<?> ) controls.get( "1.3.6.1.4.1.18060.0.0.1" );
+        control = controls.get( "1.3.6.1.4.1.18060.0.0.1" );
         assertEquals( "1.3.6.1.4.1.18060.0.0.1", control.getOid() );
         assertTrue( control instanceof Cascade );
-        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
         assertFalse( control.isCritical() );
         internalAbandonRequest.addControl( control );
 
@@ -209,8 +198,8 @@ public class LdapControlTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessageContainer Container
-        LdapMessageContainer<AbandonRequestDecorator> ldapMessageContainer =
-            new LdapMessageContainer<AbandonRequestDecorator>( codec );
+        LdapMessageContainerDirect<AbandonRequest> ldapMessageContainer =
+            new LdapMessageContainerDirect<>( codec );
 
         // Decode the PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -250,8 +239,8 @@ public class LdapControlTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a Request with null OID controls
      */
-    @Test
-    public void testDecodeRequestWithControlsNullOID()
+    @Test( expected=DecoderException.class )
+    public void testDecodeRequestWithControlsNullOID() throws DecoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -273,29 +262,18 @@ public class LdapControlTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessageContainer Container
-        Asn1Container ldapMessageContainer =
-            new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
+        Asn1Container ldapMessageContainer = new LdapMessageContainerDirect<Message>( codec );
 
         // Decode the PDU
-        try
-        {
-            ldapDecoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( true );
-            return;
-        }
-
-        fail( "We should not reach this point" );
+        ldapDecoder.decode( stream, ldapMessageContainer );
     }
 
 
     /**
      * Test the decoding of a Request with bad OID controls
      */
-    @Test
-    public void testDecodeRequestWithControlsBadOID()
+    @Test( expected=DecoderException.class )
+    public void testDecodeRequestWithControlsBadOID() throws DecoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -319,29 +297,18 @@ public class LdapControlTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessageContainer Container
-        Asn1Container ldapMessageContainer =
-            new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
+        Asn1Container ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         // Decode the PDU
-        try
-        {
-            ldapDecoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( true );
-            return;
-        }
-
-        fail( "We should not reach this point" );
+        ldapDecoder.decode( stream, ldapMessageContainer );
     }
 
 
     /**
      * Test the decoding of a Request with bad criticality
      */
-    @Test
-    public void testDecodeRequestWithControlsBadCriticality()
+    @Test( expected=DecoderException.class )
+    public void testDecodeRequestWithControlsBadCriticality() throws DecoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -364,20 +331,9 @@ public class LdapControlTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessageContainer Container
-        Asn1Container ldapMessageContainer =
-            new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
+        Asn1Container ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         // Decode the PDU
-        try
-        {
-            ldapDecoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( true );
-            return;
-        }
-
-        fail( "We should not reach this point" );
+        ldapDecoder.decode( stream, ldapMessageContainer );
     }
 }

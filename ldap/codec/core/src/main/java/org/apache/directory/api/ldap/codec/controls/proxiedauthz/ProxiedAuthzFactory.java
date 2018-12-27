@@ -20,13 +20,14 @@
 package org.apache.directory.api.ldap.codec.controls.proxiedauthz;
 
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.ProxiedAuthz;
+import org.apache.directory.api.ldap.model.message.controls.ProxiedAuthzImpl;
 import org.apache.directory.api.util.Strings;
 
 
@@ -45,7 +46,7 @@ public class ProxiedAuthzFactory extends AbstractControlFactory<ProxiedAuthz>
      */
     public ProxiedAuthzFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, ProxiedAuthz.OID );
     }
 
 
@@ -53,32 +54,15 @@ public class ProxiedAuthzFactory extends AbstractControlFactory<ProxiedAuthz>
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public ProxiedAuthz newControl()
     {
-        return ProxiedAuthz.OID;
+        return new ProxiedAuthzImpl();
     }
 
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    public CodecControl<ProxiedAuthz> newCodecControl()
-    {
-        return new ProxiedAuthzDecorator( codec );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<ProxiedAuthz> newCodecControl( ProxiedAuthz control )
-    {
-        return new ProxiedAuthzDecorator( codec, control );
-    }
-
-
     @Override
     public void encodeValue( Asn1Buffer buffer, Control control )
     {
@@ -87,6 +71,22 @@ public class ProxiedAuthzFactory extends AbstractControlFactory<ProxiedAuthz>
         if ( authzId != null )
         {
             buffer.put( authzId );
+        }
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void decodeValue( Control control, byte[] controlBytes ) throws DecoderException
+    {
+        try
+        {
+            ( ( ProxiedAuthz ) control ).setAuthzId( Strings.utf8ToString( controlBytes ) );
+        }
+        catch ( RuntimeException re )
+        {
+            throw new DecoderException( re.getMessage() );
         }
     }
 }

@@ -23,9 +23,10 @@ package org.apache.directory.api.ldap.codec.actions.request.add;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.AddRequestDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.message.AddRequest;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AddAttributeValue extends GrammarAction<LdapMessageContainer<AddRequestDecorator>>
+public class AddAttributeValue extends GrammarAction<LdapMessageContainerDirect<AddRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( AddAttributeValue.class );
@@ -60,9 +61,9 @@ public class AddAttributeValue extends GrammarAction<LdapMessageContainer<AddReq
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainer<AddRequestDecorator> container )
+    public void action( LdapMessageContainerDirect<AddRequest> container )
     {
-        AddRequestDecorator addRequest = container.getMessage();
+        Attribute currentAttribute = container.getCurrentAttribute();
 
         TLV tlv = container.getCurrentTLV();
 
@@ -73,11 +74,11 @@ public class AddAttributeValue extends GrammarAction<LdapMessageContainer<AddReq
         {
             if ( tlv.getLength() == 0 )
             {
-                addRequest.addAttributeValue( "" );
+                currentAttribute.add( "" );
             }
             else
             {
-                if ( container.isBinary( addRequest.getCurrentAttributeType() ) )
+                if ( container.isBinary( currentAttribute.getId() ) )
                 {
                     value = tlv.getValue().getData();
 
@@ -86,7 +87,7 @@ public class AddAttributeValue extends GrammarAction<LdapMessageContainer<AddReq
                         LOG.debug( I18n.msg( I18n.MSG_05112_ADDING_VALUE, Strings.dumpBytes( ( byte[] ) value ) ) );
                     }
 
-                    addRequest.addAttributeValue( ( byte[] ) value );
+                    currentAttribute.add( ( byte[] ) value );
                 }
                 else
                 {
@@ -97,7 +98,7 @@ public class AddAttributeValue extends GrammarAction<LdapMessageContainer<AddReq
                         LOG.debug( I18n.msg( I18n.MSG_05112_ADDING_VALUE, value ) );
                     }
 
-                    addRequest.addAttributeValue( ( String ) value );
+                    currentAttribute.add( ( String ) value );
                 }
             }
         }

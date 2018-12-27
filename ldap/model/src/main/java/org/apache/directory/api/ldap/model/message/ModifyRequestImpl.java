@@ -464,7 +464,8 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
 
         if ( mods != null )
         {
-
+            sb.append( "        Modifications : \n" );
+            
             for ( int i = 0; i < mods.size(); i++ )
             {
 
@@ -491,13 +492,14 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
                         throw new IllegalArgumentException( I18n.err( I18n.ERR_13515_UNEXPECTED_MOD_OP, modification.getOperation() ) );
                 }
 
-                sb.append( "                Modification\n" );
+                sb.append( "                Modification : " );
                 sb.append( modification.getAttribute() );
+                sb.append( "\n" );
             }
         }
 
         // The controls
-        sb.append( super.toString() );
+        //sb.append( super.toString() );
 
         return super.toString( sb.toString() );
     }

@@ -35,18 +35,16 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
-import org.apache.directory.api.ldap.codec.decorators.BindRequestDecorator;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.BindRequest;
 import org.apache.directory.api.ldap.model.message.BindResponseImpl;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -190,7 +188,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<BindRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode the BindRequest PDU
         ldapDecoder.decode( stream, container );
@@ -242,7 +240,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<BindRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode the BindRequest PDU
         try
@@ -292,7 +290,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        Asn1Container container = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
+        Asn1Container container = new LdapMessageContainerDirect<BindRequest>( codec );
 
         // Decode the BindRequest PDU
         ldapDecoder.decode( stream, container );
@@ -326,7 +324,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<BindRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode the BindRequest PDU
         ldapDecoder.decode( stream, container );
@@ -382,7 +380,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<BindRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode the BindRequest PDU
         ldapDecoder.decode( stream, container );
@@ -444,7 +442,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<BindRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode the BindRequest PDU
         ldapDecoder.decode( stream, container );
@@ -505,7 +503,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<BindRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode the BindRequest PDU
         ldapDecoder.decode( stream, container );
@@ -548,7 +546,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<BindRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a BindRequest message
         ldapDecoder.decode( stream, container );
@@ -575,7 +573,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<BindRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a BindRequest message
         ldapDecoder.decode( stream, container );
@@ -602,7 +600,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<BindRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a BindRequest message
         ldapDecoder.decode( stream, container );
@@ -629,7 +627,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<BindRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a BindRequest message
         ldapDecoder.decode( stream, container );
@@ -656,7 +654,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<BindRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a BindRequest message
         ldapDecoder.decode( stream, container );
@@ -683,7 +681,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<BindRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a BindRequest message
         ldapDecoder.decode( stream, container );
@@ -711,7 +709,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<BindRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a BindRequest message
         ldapDecoder.decode( stream, container );
@@ -740,7 +738,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<BindRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode the BindRequest PDU
         ldapDecoder.decode( stream, container );
@@ -785,7 +783,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<BindRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a BindRequest message
         try
@@ -830,7 +828,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<BindRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode the BindRequest PDU
         ldapDecoder.decode( stream, container );
@@ -920,7 +918,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<BindRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode the BindRequest PDU
         ldapDecoder.decode( stream, container );
@@ -985,7 +983,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<BindRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode the BindRequest PDU
         ldapDecoder.decode( stream, container );
@@ -1005,11 +1003,9 @@ public class BindRequestTest extends AbstractCodecServiceTest
 
         assertEquals( 1, controls.size() );
 
-        @SuppressWarnings("unchecked")
-        CodecControl<Control> control = ( CodecControl<Control> ) controls
-            .get( "2.16.840.1.113730.3.4.2" );
+        Control control = controls .get( "2.16.840.1.113730.3.4.2" );
+        assertTrue( control instanceof ManageDsaIT );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
@@ -1062,7 +1058,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<BindRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode the BindRequest PDU
         ldapDecoder.decode( stream, container );
@@ -1082,11 +1078,9 @@ public class BindRequestTest extends AbstractCodecServiceTest
 
         assertEquals( 1, controls.size() );
 
-        @SuppressWarnings("unchecked")
-        CodecControl<Control> control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) controls
-            .get( "2.16.840.1.113730.3.4.2" );
+        Control control = controls.get( "2.16.840.1.113730.3.4.2" );
+        assertTrue( control instanceof ManageDsaIT );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();

@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
+import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionRequest;
 
 
 /**
@@ -31,8 +32,7 @@ import org.apache.directory.api.asn1.ber.AbstractContainer;
 public class EndTransactionRequestContainer extends AbstractContainer
 {
     /** EndTransactionRequest decorator*/
-    private EndTransactionRequestDecorator endTransactionRequest;
-
+    private EndTransactionRequest endTransactionRequest;
 
     /**
      * Creates a new EndTransactionRequestContainer object. We will store one
@@ -49,7 +49,7 @@ public class EndTransactionRequestContainer extends AbstractContainer
     /**
      * @return Returns the EndTransactionRequest instance.
      */
-    public EndTransactionRequestDecorator getEndTransactionRequest()
+    public EndTransactionRequest getEndTransactionRequest()
     {
         return endTransactionRequest;
     }
@@ -61,9 +61,9 @@ public class EndTransactionRequestContainer extends AbstractContainer
      * 
      * @param endTransactionRequestDecorator the EndTransactionRequest to set.
      */
-    public void setEndTransactionRequest( EndTransactionRequestDecorator endTransactionRequestDecorator )
+    public void setEndTransactionRequest( EndTransactionRequest endTransactionRequest )
     {
-        this.endTransactionRequest = endTransactionRequestDecorator;
+        this.endTransactionRequest = endTransactionRequest;
     }
 
 

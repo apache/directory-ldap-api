@@ -46,7 +46,7 @@ public class StoreTimeBeforeExpiration extends AbstractReadInteger<PasswordPolic
     @Override
     protected void setIntegerValue( int value, PasswordPolicyResponseContainer ppolicyContainer )
     {
-        ppolicyContainer.getPasswordPolicyResponseControl().setTimeBeforeExpiration( value );
+        ppolicyContainer.getPasswordPolicyResponse().setTimeBeforeExpiration( value );
 
         ppolicyContainer.setGrammarEndAllowed( true );
     }

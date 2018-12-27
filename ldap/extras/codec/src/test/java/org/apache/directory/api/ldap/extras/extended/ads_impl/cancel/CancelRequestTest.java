@@ -24,17 +24,12 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.cancel;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-import java.nio.ByteBuffer;
-
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
-import org.apache.directory.api.asn1.ber.Asn1Container;
-import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.cancel.CancelContainer;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.cancel.CancelDecoder;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.cancel.CancelRequestDecorator;
+import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequest;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -51,42 +46,35 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class CancelRequestTest extends AbstractCodecServiceTest
 {
+    @Before
+    public void init()
+    {
+        codec.registerExtendedRequest( new CancelFactory( codec ) );
+    }
+    
+    
     /**
      * Test the normal Cancel message
      */
     @Test
     public void testDecodeCancel() throws DecoderException, EncoderException
     {
-        Asn1Decoder cancelDecoder = new CancelDecoder();
-
-        ByteBuffer stream = ByteBuffer.allocate( 0x05 );
-
-        stream.put( new byte[]
+        byte[] stream = new byte[]
             {
                 0x30, 0x03,
                   0x02, 0x01, 0x01
-            } ).flip();
+            };
 
-        // Allocate a Cancel Container
-        Asn1Container cancelContainer = new CancelContainer();
+        CancelFactory factory = ( CancelFactory ) codec.getExtendedRequestFactories().
+            get( CancelRequest.EXTENSION_OID );
+        CancelRequest cancelRequest = ( CancelRequest ) factory.newRequest( stream );
 
-        // Decode a Cancel message
-        cancelDecoder.decode( stream, cancelContainer );
+        assertEquals( 1, cancelRequest.getCancelId() );
 
-        CancelRequestDecorator cancel = ( ( CancelContainer ) cancelContainer ).getCancel();
-
-        assertEquals( 1, cancel.getCancelId() );
-
-        // Check the encoding
-        ByteBuffer bb = cancel.encodeInternal();
-
-        assertArrayEquals( stream.array(), bb.array() );
-        
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        CancelFactory factory = new CancelFactory( codec );
-        factory.encodeValue( asn1Buffer, cancel );
-        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
+        factory.encodeValue( asn1Buffer, cancelRequest );
+        assertArrayEquals( stream,  asn1Buffer.getBytes().array() );
     }
 
 
@@ -96,20 +84,14 @@ public class CancelRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeCancelNoCancelId() throws DecoderException
     {
-        Asn1Decoder cancelDecoder = new CancelDecoder();
-
-        ByteBuffer stream = ByteBuffer.allocate( 0x02 );
-
-        stream.put( new byte[]
+        byte[] stream = new byte[]
             {
                 0x30, 0x00
-            } ).flip();
+            };
 
-        // Allocate a Cancel Container
-        Asn1Container cancelContainer = new CancelContainer();
-
-        // Decode a Cancel message
-        cancelDecoder.decode( stream, cancelContainer );
+        CancelFactory factory = ( CancelFactory ) codec.getExtendedRequestFactories().
+            get( CancelRequest.EXTENSION_OID );
+        factory.newRequest( stream );
     }
 
 
@@ -119,21 +101,15 @@ public class CancelRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeCancelEmptyCancelId() throws DecoderException
     {
-        Asn1Decoder cancelDecoder = new CancelDecoder();
-
-        ByteBuffer stream = ByteBuffer.allocate( 0x04 );
-
-        stream.put( new byte[]
+        byte[] stream = new byte[]
             {
                 0x30, 0x02,
                   0x02, 0x00
-            } ).flip();
+            };
 
-        // Allocate a Cancel Container
-        Asn1Container cancelContainer = new CancelContainer();
-
-        // Decode a Cancel message
-        cancelDecoder.decode( stream, cancelContainer );
+        CancelFactory factory = ( CancelFactory ) codec.getExtendedRequestFactories().
+            get( CancelRequest.EXTENSION_OID );
+        factory.newRequest( stream );
     }
 
 
@@ -143,23 +119,16 @@ public class CancelRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeCancelBadCancelId() throws DecoderException
     {
-        Asn1Decoder cancelDecoder = new CancelDecoder();
-
-        ByteBuffer stream = ByteBuffer.allocate( 0x08 );
-
-        stream.put( new byte[]
+        byte[] stream = new byte[]
             {
                 0x30, 0x06,
                   0x02, 0x04, 
                     ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF
-            } ).flip();
+            };
 
-        // Allocate a Cancel Container
-        Asn1Container cancelContainer = new CancelContainer();
-
-        // Decode a Cancel message
-
-        cancelDecoder.decode( stream, cancelContainer );
+        CancelFactory factory = ( CancelFactory ) codec.getExtendedRequestFactories().
+            get( CancelRequest.EXTENSION_OID );
+        factory.newRequest( stream );
     }
 
 
@@ -169,21 +138,15 @@ public class CancelRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeCancelMoreThanOneCancelId() throws DecoderException
     {
-        Asn1Decoder cancelDecoder = new CancelDecoder();
-
-        ByteBuffer stream = ByteBuffer.allocate( 0x08 );
-
-        stream.put( new byte[]
+        byte[] stream = new byte[]
             {
                 0x30, 0x06,
                   0x02, 0x01, 0x01,
                   0x02, 0x01, 0x02
-            } ).flip();
+            };
 
-        // Allocate a Cancel Container
-        Asn1Container cancelContainer = new CancelContainer();
-
-        // Decode a Cancel message
-        cancelDecoder.decode( stream, cancelContainer );
+        CancelFactory factory = ( CancelFactory ) codec.getExtendedRequestFactories().
+            get( CancelRequest.EXTENSION_OID );
+        factory.newRequest( stream );
     }
 }

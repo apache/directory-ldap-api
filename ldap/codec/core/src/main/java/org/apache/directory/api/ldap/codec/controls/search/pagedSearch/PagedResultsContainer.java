@@ -21,7 +21,8 @@ package org.apache.directory.api.ldap.codec.controls.search.pagedSearch;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
-import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.ControlContainer;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.PagedResults;
 
 
@@ -30,68 +31,23 @@ import org.apache.directory.api.ldap.model.message.controls.PagedResults;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PagedResultsContainer extends AbstractContainer
+public class PagedResultsContainer extends AbstractContainer implements ControlContainer
 {
     /** PagedSearchControl */
-    private PagedResultsDecorator control;
-
-    private LdapApiService codec;
-
-
-    /**
-     * Creates a new PagedSearchControl container object. We will store one grammar,
-     * it's enough ...
-     * @param codec The encoder decoder for this container
-     */
-    public PagedResultsContainer( LdapApiService codec )
-    {
-        super();
-        this.codec = codec;
-        setGrammar( PagedResultsGrammar.getInstance() );
-        setTransition( PagedResultsStates.START_STATE );
-    }
-
+    private Control control;
 
     /**
      * Creates a new PagedSearchControl container object to contain a PagedResults
-     * Control, which is optionally decorated if is not a decorator already. If it
-     * is a decorator then it is used as the decorator for this container.
+     * Control.
      *
-     * @param codec The encoder decoder for this container
-     * @param control A PagedResults Control to optionally be wrapped.
+     * @param control A PagedResults Control to store
      */
-    public PagedResultsContainer( LdapApiService codec, PagedResults control )
+    public PagedResultsContainer( Control control )
     {
-        this( codec );
-        decorate( control );
-    }
-
-
-    /**
-     * @return Returns the paged search control.
-     */
-    public PagedResultsDecorator getDecorator()
-    {
-
-        return control;
-    }
-
-
-    /**
-     * Decorate the PageResult control
-     * 
-     * @param control The PageResult control instance
-     */
-    public void decorate( PagedResults control )
-    {
-        if ( control instanceof PagedResultsDecorator )
-        {
-            this.control = ( PagedResultsDecorator ) control;
-        }
-        else
-        {
-            this.control = new PagedResultsDecorator( codec, control );
-        }
+        super();
+        setGrammar( PagedResultsGrammar.getInstance() );
+        setTransition( PagedResultsStates.START_STATE );
+        this.control = control;
     }
 
 
@@ -101,9 +57,19 @@ public class PagedResultsContainer extends AbstractContainer
      * 
      * @param control the PagedSearchControl to set.
      */
-    public void setPagedSearchControl( PagedResultsDecorator control )
+    @Override
+    public void setControl( Control control )
     {
         this.control = control;
+    }
+
+
+    /**
+     * @return the control
+     */
+    public PagedResults getPagedResults()
+    {
+        return ( PagedResults ) control;
     }
 
 

@@ -155,7 +155,6 @@
               org.apache.directory.api.ldap.aci;version=${project.version},
               org.apache.directory.api.ldap.aci.protectedItem;version=${project.version},
               org.apache.directory.api.ldap.codec.api;version=${project.version},
-              org.apache.directory.api.ldap.codec.decorators;version=${project.version},
               org.apache.directory.api.ldap.extras.controls.ppolicy_impl;version=${project.version},
               org.apache.directory.api.ldap.extras.controls.ppolicy;version=${project.version},
               org.apache.directory.api.ldap.extras.controls.vlv_impl;version=${project.version},

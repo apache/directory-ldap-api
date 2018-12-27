@@ -24,9 +24,8 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
-import org.apache.directory.api.ldap.codec.decorators.CompareRequestDecorator;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.CompareRequest;
 import org.apache.directory.api.ldap.model.message.CompareResponseImpl;
@@ -46,7 +45,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreCompareRequestEntryName extends GrammarAction<LdapMessageContainer<CompareRequestDecorator>>
+public class StoreCompareRequestEntryName extends GrammarAction<LdapMessageContainerDirect<CompareRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreCompareRequestEntryName.class );
@@ -64,16 +63,14 @@ public class StoreCompareRequestEntryName extends GrammarAction<LdapMessageConta
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainer<CompareRequestDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<CompareRequest> container ) throws DecoderException
     {
         CompareRequest compareRequest = container.getMessage();
 
         // Get the Value and store it in the CompareRequest
         TLV tlv = container.getCurrentTLV();
-        Dn entry;
 
-        // We have to handle the special case of a 0 length matched
-        // Dn
+        // We have to handle the special case of a 0 length matched Dn
         if ( tlv.getLength() == 0 )
         {
             // This will generate a PROTOCOL_ERROR
@@ -86,7 +83,8 @@ public class StoreCompareRequestEntryName extends GrammarAction<LdapMessageConta
 
             try
             {
-                entry = new Dn( dnStr );
+                Dn entry = new Dn( dnStr );
+                compareRequest.setName( entry );
             }
             catch ( LdapInvalidDnException ine )
             {
@@ -97,13 +95,11 @@ public class StoreCompareRequestEntryName extends GrammarAction<LdapMessageConta
                 throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_DN_SYNTAX,
                     Dn.EMPTY_DN, ine );
             }
-
-            compareRequest.setName( entry );
         }
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( I18n.msg( I18n.MSG_05123_COMPARING_DN, entry ) );
+            LOG.debug( I18n.msg( I18n.MSG_05123_COMPARING_DN, compareRequest.getName() ) );
         }
     }
 }

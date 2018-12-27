@@ -452,7 +452,7 @@ public final class CodecFactoryUtil
     public static void loadStockIntermediateResponses(
         Map<String, IntermediateOperationFactory> intermediateResponseFactories, LdapApiService apiService )
     {
-        SyncInfoValueFactory syncInfoValueFactory = new SyncInfoValueFactory( apiService );
+        SyncInfoValueFactory syncInfoValueFactory = new SyncInfoValueFactory();
         intermediateResponseFactories.put( syncInfoValueFactory.getOid(), syncInfoValueFactory );
 
         if ( LOG.isInfoEnabled() )

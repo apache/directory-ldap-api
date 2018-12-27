@@ -116,7 +116,7 @@ public final class PagedResultsGrammar extends AbstractGrammar<PagedResultsConta
                                 LOG.debug( I18n.msg( I18n.MSG_05303_SIZE, size ) );
                             }
 
-                            container.getDecorator().setSize( size );
+                            container.getPagedResults().setSize( size );
                         }
                         catch ( IntegerDecoderException ide )
                         {
@@ -147,11 +147,11 @@ public final class PagedResultsGrammar extends AbstractGrammar<PagedResultsConta
 
                         if ( container.getCurrentTLV().getLength() == 0 )
                         {
-                            container.getDecorator().setCookie( Strings.EMPTY_BYTES );
+                            container.getPagedResults().setCookie( Strings.EMPTY_BYTES );
                         }
                         else
                         {
-                            container.getDecorator().setCookie( value.getData() );
+                            container.getPagedResults().setCookie( value.getData() );
                         }
 
                         // We can have an END transition

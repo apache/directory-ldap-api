@@ -21,8 +21,9 @@ package org.apache.directory.api.ldap.extras.controls.ad_impl;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
-import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.ControlContainer;
 import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncResponse;
+import org.apache.directory.api.ldap.model.message.Control;
 
 
 /**
@@ -31,39 +32,19 @@ import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AdDirSyncResponseContainer extends AbstractContainer
+public class AdDirSyncResponseContainer extends AbstractContainer implements ControlContainer
 {
     /** adDirSync */
-    private AdDirSyncResponse control;
-
-    private LdapApiService codec;
-
-
-    /**
-     * Creates a new AdDirSyncResponseControl Container object.
-     *
-     * @param codec The LDAP Service to use
-     */
-    public AdDirSyncResponseContainer( LdapApiService codec )
-    {
-        super();
-        this.codec = codec;
-        this.control = new AdDirSyncResponseDecorator( codec );
-        setGrammar( AdDirSyncResponseGrammar.getInstance() );
-        setTransition( AdDirSyncResponseStatesEnum.START_STATE );
-    }
-
+    private Control control;
 
     /**
      * Creates a new AdDirSyncResponseControl object.
      *
-     * @param codec The LDAP Service to use
-     * @param control The AdDirSyncResponse control to decorate
+     * @param control The AdDirSyncResponse control to store
      */
-    public AdDirSyncResponseContainer( LdapApiService codec, AdDirSyncResponse control )
+    public AdDirSyncResponseContainer( Control control )
     {
         super();
-        this.codec = codec;
         this.control = control;
         setGrammar( AdDirSyncResponseGrammar.getInstance() );
         setTransition( AdDirSyncResponseStatesEnum.START_STATE );
@@ -75,28 +56,19 @@ public class AdDirSyncResponseContainer extends AbstractContainer
      */
     public AdDirSyncResponse getAdDirSyncResponseControl()
     {
-        return control;
+        return ( AdDirSyncResponse ) control;
     }
 
 
     /**
-     * Set a AdDirSyncResponseControlCodec Object into the container. It will be completed
+     * Set a AdDirSyncResponse Control into the container. It will be completed
      * by the ldapDecoder.
      *
-     * @param control the AdDirSyncResponseControlCodec to set.
+     * @param control the AdDirSyncResponse Control to set.
      */
-    public void setAdDirSyncControl( AdDirSyncResponse control )
+    public void setControl( Control control )
     {
         this.control = control;
-    }
-
-
-    /**
-     * @return The LdapAPi service instance
-     */
-    public LdapApiService getCodecService()
-    {
-        return codec;
     }
 
 

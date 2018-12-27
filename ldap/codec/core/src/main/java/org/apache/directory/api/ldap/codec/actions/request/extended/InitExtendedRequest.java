@@ -22,8 +22,8 @@ package org.apache.directory.api.ldap.codec.actions.request.extended;
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.ExtendedRequestDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitExtendedRequest extends GrammarAction<LdapMessageContainer<ExtendedRequestDecorator<?>>>
+public class InitExtendedRequest extends GrammarAction<LdapMessageContainerDirect<ExtendedRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitExtendedRequest.class );
@@ -55,7 +55,7 @@ public class InitExtendedRequest extends GrammarAction<LdapMessageContainer<Exte
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainer<ExtendedRequestDecorator<?>> container )
+    public void action( LdapMessageContainerDirect<ExtendedRequest> container )
     {
         /*
          * It is the responsibility of the LdapCodecService to instantiate new

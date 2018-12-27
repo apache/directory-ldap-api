@@ -45,6 +45,6 @@ public class StoreTargetPosition extends AbstractReadInteger<VirtualListViewResp
     @Override
     protected void setIntegerValue( int value, VirtualListViewResponseContainer vlvContainer )
     {
-        vlvContainer.getDecorator().setTargetPosition( value );
+        vlvContainer.getVirtualListViewResponse().setTargetPosition( value );
     }
 }

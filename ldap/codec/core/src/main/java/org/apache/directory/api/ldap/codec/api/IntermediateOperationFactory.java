@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.codec.api;
 
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.model.message.IntermediateResponse;
 
@@ -41,23 +42,20 @@ public interface IntermediateOperationFactory
 
 
     /**
-     * Returns a new {@link IntermediateResponse} with the following encoded value.
+     * Returns a new {@link IntermediateResponse} with no value.
      * 
-     * @param value the encoded value
-     * @return the decorator for the extended response type
+     * @return the extended response type
      */
-    IntermediateResponse newResponse( byte[] value );
+    IntermediateResponse newResponse();
 
 
     /**
-     * Decorates an IntermediateResponse which may or may not be of the expected 
-     * type. The factory implementor must check and handle appropriately.
-     *
-     * @param decoratedMessage the message to be decorated.
-     * @return The decorated message 
+     * Returns a new {@link IntermediateResponse} with the following encoded value.
+     * 
+     * @param value the encoded value
+     * @return the extended response type
      */
-    IntermediateResponse decorate( IntermediateResponse decoratedMessage );
-    
+    IntermediateResponse newResponse( byte[] value );
 
 
     /**
@@ -67,4 +65,13 @@ public interface IntermediateOperationFactory
      * @param IntermediateResponse The IntermediateResponse Operation to encode
      */
     void encodeValue( Asn1Buffer buffer, IntermediateResponse intermediateResponse );
+
+
+    /**
+     * Decode the value part of the intermediate response operation.
+     *
+     * @param IntermediateResponse The IntermediateResponse Operation to feed
+     * @param responseValue The response bvalue to decode
+     */
+    void decodeValue( IntermediateResponse intermediateResponse, byte[] responseValue ) throws DecoderException;
 }

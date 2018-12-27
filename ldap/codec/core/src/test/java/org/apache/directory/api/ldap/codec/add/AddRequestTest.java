@@ -34,11 +34,9 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
-import org.apache.directory.api.ldap.codec.decorators.AddRequestDecorator;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
@@ -114,7 +112,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<AddRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<AddRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a AddRequest message
         ldapDecoder.decode( stream, container );
@@ -205,7 +203,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<AddRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<AddRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a AddRequest message
         ldapDecoder.decode( stream, container );
@@ -252,7 +250,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<AddRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<AddRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a AddRequest message
         try
@@ -315,7 +313,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<AddRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<AddRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a AddRequest message
         try
@@ -362,7 +360,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<AddRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<AddRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a AddRequest message
         ldapDecoder.decode( stream, container );
@@ -397,7 +395,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<AddRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<AddRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a AddRequest message
         ldapDecoder.decode( stream, container );
@@ -433,7 +431,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<AddRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<AddRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a AddRequest message
         try
@@ -483,7 +481,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<AddRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<AddRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a AddRequest message
         ldapDecoder.decode( stream, container );
@@ -521,7 +519,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<AddRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<AddRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a AddRequest message
         ldapDecoder.decode( stream, container );
@@ -560,7 +558,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<AddRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<AddRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a AddRequest message
         ldapDecoder.decode( stream, container );
@@ -636,7 +634,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<AddRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<AddRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a AddRequest message
         ldapDecoder.decode( stream, container );
@@ -667,11 +665,9 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         assertTrue( addRequest.hasControl( "2.16.840.1.113730.3.4.2" ) );
 
-        @SuppressWarnings("unchecked")
-        CodecControl<Control> control = ( CodecControl<Control> ) controls.get( "2.16.840.1.113730.3.4.2" );
+        Control control = controls.get( "2.16.840.1.113730.3.4.2" );
         assertTrue( control instanceof ManageDsaIT );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();

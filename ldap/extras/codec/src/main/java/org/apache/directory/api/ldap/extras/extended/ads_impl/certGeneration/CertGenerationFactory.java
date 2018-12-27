@@ -20,7 +20,10 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration;
 
 
+import java.nio.ByteBuffer;
+
 import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
@@ -31,7 +34,6 @@ import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerati
 import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationResponse;
 import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationResponseImpl;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
-import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 
 
 /**
@@ -49,7 +51,7 @@ public class CertGenerationFactory extends AbstractExtendedOperationFactory
      */
     public CertGenerationFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, CertGenerationRequest.EXTENSION_OID );
     }
 
 
@@ -57,9 +59,11 @@ public class CertGenerationFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public CertGenerationRequest newRequest()
     {
-        return CertGenerationRequest.EXTENSION_OID;
+        CertGenerationRequest certGenerationRequest = new CertGenerationRequestImpl();
+
+        return certGenerationRequest;
     }
 
 
@@ -67,13 +71,12 @@ public class CertGenerationFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public CertGenerationResponse newResponse( byte[] encodedValue ) throws DecoderException
+    public CertGenerationRequest newRequest( byte[] encodedValue ) throws DecoderException
     {
-        CertGenerationResponseDecorator response = new CertGenerationResponseDecorator( codec,
-            new CertGenerationResponseImpl() );
-        response.setResponseValue( encodedValue );
+        CertGenerationRequest certGenerationRequest = new CertGenerationRequestImpl();
+        decodeValue( certGenerationRequest, encodedValue );
 
-        return response;
+        return certGenerationRequest;
     }
 
 
@@ -81,11 +84,9 @@ public class CertGenerationFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public CertGenerationRequest newRequest( byte[] value )
+    public CertGenerationResponse newResponse()
     {
-        CertGenerationRequestDecorator req = new CertGenerationRequestDecorator( codec, new CertGenerationRequestImpl() );
-        req.setRequestValue( value );
-        return req;
+        return new CertGenerationResponseImpl();
     }
 
 
@@ -93,29 +94,12 @@ public class CertGenerationFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public CertGenerationRequestDecorator decorate( ExtendedRequest modelRequest )
+    public void decodeValue( ExtendedRequest extendedRequest, byte[] requestValue ) throws DecoderException
     {
-        if ( modelRequest instanceof CertGenerationRequestDecorator )
-        {
-            return ( CertGenerationRequestDecorator ) modelRequest;
-        }
-
-        return new CertGenerationRequestDecorator( codec, ( CertGenerationRequest ) modelRequest );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CertGenerationResponseDecorator decorate( ExtendedResponse decoratedMessage )
-    {
-        if ( decoratedMessage instanceof CertGenerationResponseDecorator )
-        {
-            return ( CertGenerationResponseDecorator ) decoratedMessage;
-        }
-
-        return new CertGenerationResponseDecorator( codec, ( CertGenerationResponse ) decoratedMessage );
+        ByteBuffer bb = ByteBuffer.wrap( requestValue );
+        CertGenerationRequestContainer container = new CertGenerationRequestContainer();
+        container.setCertGenerationRequest( ( CertGenerationRequest ) extendedRequest ); 
+        new Asn1Decoder().decode( bb, container );
     }
 
 

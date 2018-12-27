@@ -23,10 +23,10 @@ package org.apache.directory.api.ldap.codec.actions.request.search.filter;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.search.ExtensibleMatchFilter;
 import org.apache.directory.api.ldap.model.entry.Value;
+import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +45,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreMatchValue extends GrammarAction<LdapMessageContainer<SearchRequestDecorator>>
+public class StoreMatchValue extends GrammarAction<LdapMessageContainerDirect<SearchRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreMatchValue.class );
@@ -62,20 +62,18 @@ public class StoreMatchValue extends GrammarAction<LdapMessageContainer<SearchRe
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<SearchRequestDecorator> container )
+    public void action( LdapMessageContainerDirect<SearchRequest> container )
     {
-        SearchRequestDecorator decorator = container.getMessage();
-
         TLV tlv = container.getCurrentTLV();
 
         // Store the value.
-        ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter ) decorator.getTerminalFilter();
+        ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter ) container.getTerminalFilter();
 
         byte[] value = tlv.getValue().getData();
         extensibleMatchFilter.setMatchValue( new Value( value ) );
 
         // unstack the filters if needed
-        decorator.unstackFilters( container );
+        container.unstackFilters();
 
         if ( LOG.isDebugEnabled() )
         {

@@ -497,7 +497,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
         }
 
         Class<?>[] types = new Class<?>[]
-            { LdapApiService.class };
+            {};
 
         // note, trimming whitespace doesn't hurt as it is a class name and
         // helps DI containers that use xml config as xml ignores whitespace
@@ -507,7 +507,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
         Constructor<?> constructor = clazz.getConstructor( types );
 
         IntermediateOperationFactory factory = ( IntermediateOperationFactory ) constructor
-            .newInstance( this );
+            .newInstance();
         getIntermediateResponseFactories().put( factory.getOid(), factory );
 
         if ( LOG.isInfoEnabled() )

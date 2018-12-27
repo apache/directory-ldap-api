@@ -35,7 +35,6 @@ import org.apache.directory.api.ldap.codec.actions.response.bind.InitBindRespons
 import org.apache.directory.api.ldap.codec.actions.response.search.done.InitSearchResultDone;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
-import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
 import org.apache.directory.api.ldap.codec.search.AndFilter;
 import org.apache.directory.api.ldap.codec.search.SubstringFilter;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
@@ -74,8 +73,7 @@ public class ApiLdapCodecCoreOsgiTest extends ApiOsgiTestBase
         new AndFilter();
         new SubstringFilter();
 
-        SearchRequest decoratedMessage = new SearchRequestImpl();
-        new SearchRequestDecorator( ldapApiService, decoratedMessage );
+        new SearchRequestImpl();
     }
 
 

@@ -28,8 +28,7 @@ import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.model.message.AliasDerefMode;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.slf4j.Logger;
@@ -50,7 +49,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreSearchRequestDerefAlias extends GrammarAction<LdapMessageContainer<SearchRequestDecorator>>
+public class StoreSearchRequestDerefAlias extends GrammarAction<LdapMessageContainerDirect<SearchRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreSearchRequestDerefAlias.class );
@@ -67,20 +66,20 @@ public class StoreSearchRequestDerefAlias extends GrammarAction<LdapMessageConta
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<SearchRequestDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<SearchRequest> container ) throws DecoderException
     {
-        SearchRequest searchRequest = container.getMessage().getDecorated();
+        SearchRequest searchRequest = container.getMessage();
 
         TLV tlv = container.getCurrentTLV();
 
         // We have to check that this is a correct derefAliases
         BerValue value = tlv.getValue();
-        int derefAliases = 0;
 
         try
         {
-            derefAliases = IntegerDecoder.parse( value, LdapCodecConstants.NEVER_DEREF_ALIASES,
+            int derefAliases = IntegerDecoder.parse( value, LdapCodecConstants.NEVER_DEREF_ALIASES,
                 LdapCodecConstants.DEREF_ALWAYS );
+            searchRequest.setDerefAliases( AliasDerefMode.getDerefMode( derefAliases ) );
         }
         catch ( IntegerDecoderException ide )
         {
@@ -89,25 +88,24 @@ public class StoreSearchRequestDerefAlias extends GrammarAction<LdapMessageConta
             throw new DecoderException( msg, ide );
         }
 
-        searchRequest.setDerefAliases( AliasDerefMode.getDerefMode( derefAliases ) );
 
         if ( LOG.isDebugEnabled() )
         {
-            switch ( derefAliases )
+            switch ( searchRequest.getDerefAliases() )
             {
-                case LdapCodecConstants.NEVER_DEREF_ALIASES:
+                case NEVER_DEREF_ALIASES:
                     LOG.debug( I18n.msg( I18n.MSG_05161_HANDLING_OBJECT_STRATEGY, "NEVER_DEREF_ALIASES" ) );
                     break;
 
-                case LdapCodecConstants.DEREF_IN_SEARCHING:
+                case DEREF_IN_SEARCHING:
                     LOG.debug( I18n.msg( I18n.MSG_05161_HANDLING_OBJECT_STRATEGY, "DEREF_IN_SEARCHING" ) );
                     break;
 
-                case LdapCodecConstants.DEREF_FINDING_BASE_OBJ:
+                case DEREF_FINDING_BASE_OBJ:
                     LOG.debug( I18n.msg( I18n.MSG_05161_HANDLING_OBJECT_STRATEGY, "DEREF_FINDING_BASE_OBJ" ) );
                     break;
 
-                case LdapCodecConstants.DEREF_ALWAYS:
+                case DEREF_ALWAYS:
                     LOG.debug( I18n.msg( I18n.MSG_05161_HANDLING_OBJECT_STRATEGY, "DEREF_ALWAYS" ) );
                     break;
 

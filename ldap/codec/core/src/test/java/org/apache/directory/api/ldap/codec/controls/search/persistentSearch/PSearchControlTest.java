@@ -28,11 +28,9 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.controls.ChangeType;
 import org.apache.directory.api.ldap.model.message.controls.PersistentSearch;
-import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -65,23 +63,19 @@ public class PSearchControlTest extends AbstractCodecServiceTest
                 0x01, 0x01, 0x00        // returnECs BOOLEAN
         } );
 
-        String expected = Strings.dumpBytes( bb.array() );
         bb.flip();
 
-        PersistentSearchDecorator decorator = new PersistentSearchDecorator( codec );
-        PersistentSearch ctrl = decorator.getDecorated();
+        PersistentSearchFactory factory = ( PersistentSearchFactory ) codec.getRequestControlFactories().
+            get( PersistentSearch.OID );
+        PersistentSearch ctrl = factory.newControl();
+        factory.decodeValue( ctrl, bb.array() );
+
         ctrl.setChangesOnly( false );
         ctrl.setReturnECs( false );
         ctrl.setChangeTypes( 1 );
-        bb = decorator.encode( ByteBuffer.allocate( decorator.computeLength() ) );
-        String decoded = Strings.dumpBytes( bb.array() );
-        assertEquals( expected, decoded );
 
         // Test reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-
-        ControlFactory<PersistentSearch> factory =
-            ( ControlFactory<PersistentSearch> )codec.getRequestControlFactories().get( PersistentSearch.OID );
 
         factory.encodeValue( asn1Buffer, ctrl );
 
@@ -105,9 +99,10 @@ public class PSearchControlTest extends AbstractCodecServiceTest
         } );
         bb.flip();
 
-        PersistentSearchDecorator decorator = new PersistentSearchDecorator( codec );
-
-        PersistentSearch ctrl = ( PersistentSearch ) decorator.decode( bb.array() );
+        PersistentSearchFactory factory = ( PersistentSearchFactory ) codec.getRequestControlFactories().
+            get( PersistentSearch.OID );
+        PersistentSearch ctrl = factory.newControl();
+        factory.decodeValue( ctrl, bb.array() );
 
         int changeTypes = ctrl.getChangeTypes();
         assertTrue( ChangeType.ADD.presentIn( changeTypes ) );
@@ -117,9 +112,6 @@ public class PSearchControlTest extends AbstractCodecServiceTest
 
         // Test reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-
-        ControlFactory<PersistentSearch> factory =
-            ( ControlFactory<PersistentSearch> )codec.getRequestControlFactories().get( PersistentSearch.OID );
 
         factory.encodeValue( asn1Buffer, ctrl );
 
@@ -144,9 +136,10 @@ public class PSearchControlTest extends AbstractCodecServiceTest
         } );
         bb.flip();
 
-        PersistentSearchDecorator decorator = new PersistentSearchDecorator( codec );
-
-        decorator.decode( bb.array() );
+        PersistentSearchFactory factory = ( PersistentSearchFactory ) codec.getRequestControlFactories().
+            get( PersistentSearch.OID );
+        PersistentSearch ctrl = factory.newControl();
+        factory.decodeValue( ctrl, bb.array() );
     }
 
 
@@ -167,9 +160,10 @@ public class PSearchControlTest extends AbstractCodecServiceTest
         } );
         bb.flip();
 
-        PersistentSearchDecorator decorator = new PersistentSearchDecorator( codec );
-
-        decorator.decode( bb.array() );
+        PersistentSearchFactory factory = ( PersistentSearchFactory ) codec.getRequestControlFactories().
+            get( PersistentSearch.OID );
+        PersistentSearch ctrl = factory.newControl();
+        factory.decodeValue( ctrl, bb.array() );
     }
 
 
@@ -186,9 +180,10 @@ public class PSearchControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        PersistentSearchDecorator decorator = new PersistentSearchDecorator( codec );
-
-        decorator.decode( bb.array() );
+        PersistentSearchFactory factory = ( PersistentSearchFactory ) codec.getRequestControlFactories().
+            get( PersistentSearch.OID );
+        PersistentSearch ctrl = factory.newControl();
+        factory.decodeValue( ctrl, bb.array() );
     }
 
 
@@ -207,9 +202,10 @@ public class PSearchControlTest extends AbstractCodecServiceTest
         } );
         bb.flip();
 
-        PersistentSearchDecorator decorator = new PersistentSearchDecorator( codec );
-
-        decorator.decode( bb.array() );
+        PersistentSearchFactory factory = ( PersistentSearchFactory ) codec.getRequestControlFactories().
+            get( PersistentSearch.OID );
+        PersistentSearch ctrl = factory.newControl();
+        factory.decodeValue( ctrl, bb.array() );
     }
 
 
@@ -228,9 +224,10 @@ public class PSearchControlTest extends AbstractCodecServiceTest
         } );
         bb.flip();
 
-        PersistentSearchDecorator decorator = new PersistentSearchDecorator( codec );
-
-        decorator.decode( bb.array() );
+        PersistentSearchFactory factory = ( PersistentSearchFactory ) codec.getRequestControlFactories().
+            get( PersistentSearch.OID );
+        PersistentSearch ctrl = factory.newControl();
+        factory.decodeValue( ctrl, bb.array() );
     }
 
 
@@ -249,8 +246,9 @@ public class PSearchControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        PersistentSearchDecorator decorator = new PersistentSearchDecorator( codec );
-
-        decorator.decode( bb.array() );
+        PersistentSearchFactory factory = ( PersistentSearchFactory ) codec.getRequestControlFactories().
+            get( PersistentSearch.OID );
+        PersistentSearch ctrl = factory.newControl();
+        factory.decodeValue( ctrl, bb.array() );
     }
 }

@@ -19,6 +19,11 @@
  */
 package org.apache.directory.api.ldap.codec.api;
 
+import java.nio.ByteBuffer;
+
+import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.ber.Asn1Container;
+import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.model.message.Control;
 
@@ -32,6 +37,9 @@ public abstract class AbstractControlFactory<C extends Control> implements Contr
 {
     /** The LDAP codec responsible for encoding and decoding ManageDsaIT Control */
     protected LdapApiService codec;
+    
+    /** The control's OID */
+    protected String oid;
 
     /**
      *
@@ -39,11 +47,21 @@ public abstract class AbstractControlFactory<C extends Control> implements Contr
      *
      * @param codec The LdapApiSevice instance
      */
-    protected AbstractControlFactory( LdapApiService codec )
+    protected AbstractControlFactory( LdapApiService codec, String oid )
     {
         this.codec = codec;
+        this.oid = oid;
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getOid()
+    {
+        return oid;
+    }
 
     /**
      * {@inheritDoc}
@@ -54,4 +72,25 @@ public abstract class AbstractControlFactory<C extends Control> implements Contr
         // Nothing to do by default
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void decodeValue( Control control, byte[] controlBytes ) throws DecoderException
+    {
+        // Nothing to do by default
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void decodeValue( ControlContainer container, Control control, byte[] controlBytes ) throws DecoderException
+    {
+        ByteBuffer buffer = ByteBuffer.wrap( controlBytes );
+        container.setControl( control );
+        new Asn1Decoder().decode( buffer, ( Asn1Container ) container );
+    }
 }

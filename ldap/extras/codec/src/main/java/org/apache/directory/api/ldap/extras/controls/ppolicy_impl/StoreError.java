@@ -53,7 +53,7 @@ public class StoreError<C extends Asn1Container> extends AbstractReadInteger<C>
         PasswordPolicyResponseContainer ppolicyContainer = ( PasswordPolicyResponseContainer ) container;
 
         PasswordPolicyErrorEnum error = PasswordPolicyErrorEnum.get( value );
-        ppolicyContainer.getPasswordPolicyResponseControl().setPasswordPolicyError( error );
+        ppolicyContainer.getPasswordPolicyResponse().setPasswordPolicyError( error );
 
         ppolicyContainer.setGrammarEndAllowed( true );
     }

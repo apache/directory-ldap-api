@@ -46,6 +46,6 @@ public class StoreOffset extends AbstractReadInteger<VirtualListViewRequestConta
     @Override
     protected void setIntegerValue( int value, VirtualListViewRequestContainer vlvContainer )
     {
-        vlvContainer.getDecorator().setOffset( value );
+        vlvContainer.getVirtualListViewRequest().setOffset( value );
     }
 }

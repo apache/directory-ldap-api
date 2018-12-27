@@ -23,15 +23,16 @@ package org.apache.directory.api.ldap.codec.controls.sort;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.SortKey;
 import org.apache.directory.api.ldap.model.message.controls.SortRequest;
+import org.apache.directory.api.ldap.model.message.controls.SortRequestImpl;
 import org.apache.directory.api.util.Strings;
 
 
@@ -49,14 +50,14 @@ public class SortRequestFactory extends AbstractControlFactory<SortRequest>
     /** ASN.1 BER tag for the backward ordering rule */
     public static final int REVERSE_ORDER_TAG = 0x81;
 
-    /**
+    /** 
      * Creates a new instance of SortRequestFactory.
      *
      * @param codec The LDAP codec.
      */
     public SortRequestFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, SortRequest.OID );
     }
 
 
@@ -64,29 +65,9 @@ public class SortRequestFactory extends AbstractControlFactory<SortRequest>
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public SortRequest newControl()
     {
-        return SortRequest.OID;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<SortRequest> newCodecControl()
-    {
-        return new SortRequestDecorator( codec );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<SortRequest> newCodecControl( SortRequest control )
-    {
-        return new SortRequestDecorator( codec, control );
+        return new SortRequestImpl();
     }
 
 
@@ -129,6 +110,7 @@ public class SortRequestFactory extends AbstractControlFactory<SortRequest>
         }
     }
 
+    
     /**
      * {@inheritDoc}
      */
@@ -146,5 +128,15 @@ public class SortRequestFactory extends AbstractControlFactory<SortRequest>
 
         // The overall sequence
         BerValue.encodeSequence( buffer, start );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void decodeValue( Control control, byte[] controlBytes ) throws DecoderException
+    {
+        decodeValue( new SortRequestContainer( control ), control, controlBytes );
     }
 }

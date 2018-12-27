@@ -31,18 +31,16 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
-import org.apache.directory.api.ldap.codec.decorators.DeleteRequestDecorator;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.DeleteRequest;
 import org.apache.directory.api.ldap.model.message.DeleteResponseImpl;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.api.util.Strings;
+import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -83,7 +81,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<DeleteRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<DeleteRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a DelRequest PDU
         ldapDecoder.decode( stream, container );
@@ -127,7 +125,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<DeleteRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<DeleteRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a DelRequest PDU
         try
@@ -169,7 +167,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<DeleteRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<DeleteRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a DelRequest PDU
         ldapDecoder.decode( stream, container );
@@ -205,7 +203,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<DeleteRequestDecorator> container = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<DeleteRequest> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a DelRequest PDU
         ldapDecoder.decode( stream, container );
@@ -221,11 +219,9 @@ public class DelRequestTest extends AbstractCodecServiceTest
 
         assertEquals( 1, controls.size() );
 
-        @SuppressWarnings("unchecked")
-        CodecControl<Control> control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) controls
-            .get( "2.16.840.1.113730.3.4.2" );
+        Control control = controls.get( "2.16.840.1.113730.3.4.2" );
+        assertTrue( control instanceof ManageDsaIT );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();

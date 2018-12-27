@@ -28,11 +28,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.nio.ByteBuffer;
-
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
-import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
@@ -76,6 +73,7 @@ public class EndTransactionResponseTest extends AbstractCodecServiceTest
         codec = LdapApiServiceFactory.getSingleton();
         codec.registerResponseControl( new SyncDoneValueFactory( codec ) );
         codec.registerResponseControl( new SyncStateValueFactory( codec ) );
+        codec.registerExtendedResponse( new EndTransactionFactory( codec ) );
     }
     
     
@@ -85,18 +83,14 @@ public class EndTransactionResponseTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class)
     public void testDecodeEndTransactionResponseEmpty() throws DecoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x02 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x00, // EndTransactionResponse ::= SEQUENCE {
-            } );
-        
-        bb.flip();
+            };
 
-        EndTransactionResponseContainer container = new EndTransactionResponseContainer();
-
-        decoder.decode( bb, container );
+        EndTransactionFactory factory = ( EndTransactionFactory ) codec.getExtendedResponseFactories().
+            get( EndTransactionResponse.EXTENSION_OID );
+        factory.newRequest( bb );
     }
 
 
@@ -106,36 +100,25 @@ public class EndTransactionResponseTest extends AbstractCodecServiceTest
     @Test
     public void testEndTransactionResponseMessageId() throws DecoderException, EncoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x05 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x03,              // EndTransactionResponse ::= SEQUENCE {
                   0x02, 0x01, 0x04       // MessageId
-            } );
+            };
 
-        bb.flip();
-        EndTransactionResponseContainer container = new EndTransactionResponseContainer();
+        EndTransactionFactory factory = ( EndTransactionFactory ) codec.getExtendedResponseFactories().
+            get( EndTransactionResponse.EXTENSION_OID );
+        EndTransactionResponse endTransactionResponse = ( EndTransactionResponse ) factory.newResponse( bb );
 
-        decoder.decode( bb, container );
-        
-        EndTransactionResponse endTransactionResponse = container.getEndTransactionResponse();
         assertEquals( 4, endTransactionResponse.getFailedMessageId() );
         assertEquals( 0, endTransactionResponse.getUpdateControls().size() );
 
-        // Check the length
-        assertEquals( 0x05, ( ( EndTransactionResponseDecorator ) endTransactionResponse ).computeLengthInternal() );
-
-        // Check the encoding
-        ByteBuffer bb1 = ( ( EndTransactionResponseDecorator ) endTransactionResponse ).encodeInternal();
-
-        assertArrayEquals( bb.array(), bb1.array() );
-        
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        EndTransactionFactory factory = new EndTransactionFactory( codec );
+
         factory.encodeValue( asn1Buffer, endTransactionResponse );
-        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
+
+        assertArrayEquals( bb, asn1Buffer.getBytes().array() );
     }
 
 
@@ -145,9 +128,7 @@ public class EndTransactionResponseTest extends AbstractCodecServiceTest
     @Test
     public void testEndTransactionResponseUpdateControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x12D );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, (byte)0x82, 0x01, 0x29,         // EndTransactionResponse ::= SEQUENCE {
                   0x30, (byte)0x82, 0x01, 0x25,       // UpdateControls
@@ -229,14 +210,12 @@ public class EndTransactionResponseTest extends AbstractCodecServiceTest
                             0x30, 0x06,
                               0x04, 0x04,
                                't', 't', 't', 't',
-        } );
-
-        bb.flip();
-        EndTransactionResponseContainer container = new EndTransactionResponseContainer();
-
-        decoder.decode( bb, container );
+        };
         
-        EndTransactionResponse endTransactionResponse = container.getEndTransactionResponse();
+        EndTransactionFactory factory = ( EndTransactionFactory ) codec.getExtendedResponseFactories().
+            get( EndTransactionResponse.EXTENSION_OID );
+        EndTransactionResponse endTransactionResponse = ( EndTransactionResponse ) factory.newResponse( bb );
+
         assertEquals( -1, endTransactionResponse.getFailedMessageId() );
         assertEquals( 2, endTransactionResponse.getUpdateControls().size() );
         
@@ -324,18 +303,11 @@ public class EndTransactionResponseTest extends AbstractCodecServiceTest
             }
         }
 
-        // Check the length
-        assertEquals( 0x12D, ( ( EndTransactionResponseDecorator ) endTransactionResponse ).computeLengthInternal() );
-
-        // Check the encoding
-        ByteBuffer bb1 = ( ( EndTransactionResponseDecorator ) endTransactionResponse ).encodeInternal();
-
-        assertArrayEquals( bb.array(), bb1.array() );
-        
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        EndTransactionFactory factory = new EndTransactionFactory( codec );
+
         factory.encodeValue( asn1Buffer, endTransactionResponse );
-        assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
+
+        assertArrayEquals( bb, asn1Buffer.getBytes().array() );
     }
 }

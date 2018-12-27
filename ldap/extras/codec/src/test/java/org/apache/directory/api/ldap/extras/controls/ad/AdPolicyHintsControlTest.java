@@ -29,7 +29,6 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
-import org.apache.directory.api.ldap.extras.controls.ad_impl.AdPolicyHintsDecorator;
 import org.apache.directory.api.ldap.extras.controls.ad_impl.AdPolicyHintsFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,9 +67,10 @@ public class AdPolicyHintsControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        AdPolicyHints decorator = new AdPolicyHintsDecorator( codec );
-
-        ( ( AdPolicyHintsDecorator ) decorator ).decode( bb.array() );
+        AdPolicyHintsFactory factory = ( AdPolicyHintsFactory ) codec.getRequestControlFactories().
+            get( AdPolicyHints.OID );
+        AdPolicyHints adPolicyHints = factory.newControl();
+        factory.decodeValue( adPolicyHints, bb.array() );
     }
 
 
@@ -87,9 +87,10 @@ public class AdPolicyHintsControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        AdPolicyHints decorator = new AdPolicyHintsDecorator( codec );
-
-        ( ( AdPolicyHintsDecorator ) decorator ).decode( bb.array() );
+        AdPolicyHintsFactory factory = ( AdPolicyHintsFactory ) codec.getRequestControlFactories().
+            get( AdPolicyHints.OID );
+        AdPolicyHints adPolicyHints = factory.newControl();
+        factory.decodeValue( adPolicyHints, bb.array() );
     }
 
 
@@ -106,21 +107,16 @@ public class AdPolicyHintsControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        AdPolicyHints decorator = new AdPolicyHintsDecorator( codec );
-
-        AdPolicyHints adPolicyHints = ( AdPolicyHints ) ( ( AdPolicyHintsDecorator ) decorator ).decode( bb.array() );
+        AdPolicyHintsFactory factory = ( AdPolicyHintsFactory ) codec.getRequestControlFactories().
+            get( AdPolicyHints.OID );
+        AdPolicyHints adPolicyHints = factory.newControl();
+        factory.decodeValue( adPolicyHints, bb.array() );
         
         assertEquals( 1, adPolicyHints.getFlags() );
-
-        // test encoding
-        ByteBuffer buffer = ( ( AdPolicyHintsDecorator ) adPolicyHints ).encode( ByteBuffer
-            .allocate( ( ( AdPolicyHintsDecorator ) adPolicyHints ).computeLength() ) );
-        assertArrayEquals( bb.array(), buffer.array() );
 
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        AdPolicyHintsFactory factory = ( AdPolicyHintsFactory ) codec.getRequestControlFactories().get( AdPolicyHints.OID );
         factory.encodeValue( asn1Buffer, adPolicyHints );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
@@ -140,21 +136,16 @@ public class AdPolicyHintsControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        AdPolicyHints decorator = new AdPolicyHintsDecorator( codec );
-
-        AdPolicyHints adPolicyHints = ( AdPolicyHints ) ( ( AdPolicyHintsDecorator ) decorator ).decode( bb.array() );
+        AdPolicyHintsFactory factory = ( AdPolicyHintsFactory ) codec.getRequestControlFactories().
+            get( AdPolicyHints.OID );
+        AdPolicyHints adPolicyHints = factory.newControl();
+        factory.decodeValue( adPolicyHints, bb.array() );
         
         assertEquals( 0, adPolicyHints.getFlags() );
-
-        // test encoding
-        ByteBuffer buffer = ( ( AdPolicyHintsDecorator ) adPolicyHints ).encode( ByteBuffer
-            .allocate( ( ( AdPolicyHintsDecorator ) adPolicyHints ).computeLength() ) );
-        assertArrayEquals( bb.array(), buffer.array() );
 
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        AdPolicyHintsFactory factory = ( AdPolicyHintsFactory ) codec.getRequestControlFactories().get( AdPolicyHints.OID );
         factory.encodeValue( asn1Buffer, adPolicyHints );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );

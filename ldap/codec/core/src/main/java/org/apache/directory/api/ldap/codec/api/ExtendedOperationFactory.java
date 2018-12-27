@@ -22,7 +22,6 @@ package org.apache.directory.api.ldap.codec.api;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.codec.decorators.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 
@@ -45,21 +44,29 @@ public interface ExtendedOperationFactory
 
 
     /**
-     * Returns a new {@link ExtendedRequestDecorator} with the following encoded value.
+     * Returns a new {@link ExtendedRequest} with no value
      * 
-     * @param value the encoded value
      * @return the decorator for the extended request type
      */
-    ExtendedRequest newRequest( byte[] value );
+    ExtendedRequest newRequest();
 
 
     /**
-     * Decorates a non-decorated request.
-     *
-     * @param modelRequest the non decorated model request
-     * @return the decorated model request
+     * Returns a new {@link ExtendedRequest} with the following encoded value.
+     * 
+     * @param value the encoded value
+     * @return the decorator for the extended request type
+     * @throws DecoderException If we can't decode the response
      */
-    ExtendedRequest decorate( ExtendedRequest modelRequest );
+    ExtendedRequest newRequest( byte[] value ) throws DecoderException;
+
+
+    /**
+     * Creates a new ExtendedResponse, for the ExtendedRequest with no value
+     * 
+     * @return The new ExtendedResponse.
+     */
+    ExtendedResponse newResponse() throws DecoderException;
 
 
     /**
@@ -74,16 +81,6 @@ public interface ExtendedOperationFactory
 
 
     /**
-     * Decorates an ExtendedResponse which may or may not be of the expected 
-     * type. The factory implementor must check and handle appropriately.
-     *
-     * @param decoratedMessage the message to be decorated.
-     * @return The decorated message 
-     */
-    ExtendedResponse decorate( ExtendedResponse decoratedMessage );
-
-
-    /**
      * Encode the value part of the extended request operation.
      *
      * @param buffer The buffer into which to put the encoded value
@@ -93,10 +90,28 @@ public interface ExtendedOperationFactory
 
 
     /**
+     * Decode the value part of the extended request operation.
+     *
+     * @param extendedRequest The ExtendedRequest Operation to feed
+     * @param requestValue The request value to decode
+     */
+    void decodeValue( ExtendedRequest extendedRequest, byte[] requestValue ) throws DecoderException;
+
+
+    /**
      * Encode the value part of the extended response operation.
      *
      * @param buffer The buffer into which to put the encoded value
      * @param extendedResponse The ExtendedResponse Operation to encode
      */
     void encodeValue( Asn1Buffer buffer, ExtendedResponse extendedResponse );
+
+
+    /**
+     * Decode the value part of the extended response operation.
+     *
+     * @param extendedResponse The ExtendedResponse Operation to feed
+     * @param responseValue The response value to decode
+     */
+    void decodeValue( ExtendedResponse extendedResponse, byte[] responseValue ) throws DecoderException;
 }

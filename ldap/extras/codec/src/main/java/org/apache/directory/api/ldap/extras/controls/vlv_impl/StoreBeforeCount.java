@@ -46,6 +46,6 @@ public class StoreBeforeCount extends AbstractReadInteger<VirtualListViewRequest
     @Override
     protected void setIntegerValue( int value, VirtualListViewRequestContainer vlvContainer )
     {
-        vlvContainer.getDecorator().setBeforeCount( value );
+        vlvContainer.getVirtualListViewRequest().setBeforeCount( value );
     }
 }

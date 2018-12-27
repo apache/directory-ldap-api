@@ -22,8 +22,8 @@ package org.apache.directory.api.ldap.codec.actions.response.search.reference;
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.SearchResultReferenceDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.model.message.SearchResultReference;
 import org.apache.directory.api.ldap.model.message.SearchResultReferenceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitSearchResultReference extends GrammarAction<LdapMessageContainer<SearchResultReferenceDecorator>>
+public class InitSearchResultReference extends GrammarAction<LdapMessageContainerDirect<SearchResultReference>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitSearchResultReference.class );
@@ -55,11 +55,10 @@ public class InitSearchResultReference extends GrammarAction<LdapMessageContaine
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<SearchResultReferenceDecorator> container )
+    public void action( LdapMessageContainerDirect<SearchResultReference> container )
     {
         // Now, we can allocate the SearchResultReference Object
-        SearchResultReferenceDecorator searchResultReference = new SearchResultReferenceDecorator(
-            container.getLdapCodecService(), new SearchResultReferenceImpl( container.getMessageId() ) );
+        SearchResultReference searchResultReference = new SearchResultReferenceImpl( container.getMessageId() );
         container.setMessage( searchResultReference );
 
         if ( LOG.isDebugEnabled() )

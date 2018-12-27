@@ -25,8 +25,8 @@ import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.IntermediateResponseDecorator;
+import org.apache.directory.api.ldap.codec.api.IntermediateOperationFactory;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.model.message.IntermediateResponse;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreIntermediateResponseName extends GrammarAction<LdapMessageContainer<IntermediateResponseDecorator<?>>>
+public class StoreIntermediateResponseName extends GrammarAction<LdapMessageContainerDirect<IntermediateResponse>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreIntermediateResponseName.class );
@@ -58,7 +58,7 @@ public class StoreIntermediateResponseName extends GrammarAction<LdapMessageCont
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<IntermediateResponseDecorator<?>> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<IntermediateResponse> container ) throws DecoderException
     {
         // We can get the IntermediateResponse Object
         IntermediateResponse intermediateResponse = container.getMessage();
@@ -79,12 +79,27 @@ public class StoreIntermediateResponseName extends GrammarAction<LdapMessageCont
         {
             byte[] responseNameBytes = tlv.getValue().getData();
 
+            // Check if the OID is valid
             String oidStr = Strings.utf8ToString( responseNameBytes );
 
             if ( Oid.isOid( oidStr ) )
             {
-                Oid.isOid( oidStr );
-                intermediateResponse.setResponseName( oidStr );
+                // Get the factory
+                IntermediateOperationFactory intermediateFactory = 
+                    container.getLdapCodecService().getIntermediateResponseFactories().get( oidStr );
+                
+                if ( intermediateFactory != null )
+                {
+                    // Ok, let's create the new operation, which will replace
+                    // the one created during the init phase
+                    container.setMessage( intermediateFactory.newResponse() );
+                    container.setIntermediateFactory( intermediateFactory );
+                }
+                else
+                {
+                    // We simply store the OID in teh existing message
+                    intermediateResponse.setResponseName( oidStr );
+                }
             }
             else
             {

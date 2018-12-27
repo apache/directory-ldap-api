@@ -34,7 +34,6 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.controls.ChangeType;
 import org.apache.directory.api.ldap.model.message.controls.EntryChange;
 import org.apache.directory.api.ldap.model.name.Dn;
-import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -70,9 +69,10 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        EntryChangeDecorator decorator = new EntryChangeDecorator( codec );
-
-        EntryChange entryChange = ( EntryChange ) decorator.decode( bb.array() );
+        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( 
+            EntryChange.OID );
+        EntryChange entryChange = factory.newControl();
+        factory.decodeValue( entryChange, bb.array() );
 
         assertEquals( ChangeType.MODDN, entryChange.getChangeType() );
         assertEquals( "a=b", entryChange.getPreviousDn().toString() );
@@ -81,7 +81,6 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( EntryChange.OID );
         factory.encodeValue( asn1Buffer, entryChange );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
@@ -108,9 +107,10 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        EntryChangeDecorator decorator = new EntryChangeDecorator( codec );
-
-        EntryChange entryChange = ( EntryChange ) decorator.decode( bb.array() );
+        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( 
+            EntryChange.OID );
+        EntryChange entryChange = factory.newControl();
+        factory.decodeValue( entryChange, bb.array() );
 
         assertEquals( ChangeType.MODDN, entryChange.getChangeType() );
         assertEquals( "a=b", entryChange.getPreviousDn().toString() );
@@ -119,7 +119,6 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( EntryChange.OID );
         factory.encodeValue( asn1Buffer, entryChange );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
@@ -144,9 +143,10 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        EntryChangeDecorator decorator = new EntryChangeDecorator( codec );
-
-        EntryChange entryChange = ( EntryChange ) decorator.decode( bb.array() );
+        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( 
+            EntryChange.OID );
+        EntryChange entryChange = factory.newControl();
+        factory.decodeValue( entryChange, bb.array() );
 
         assertEquals( ChangeType.ADD, entryChange.getChangeType() );
         assertNull( entryChange.getPreviousDn() );
@@ -155,7 +155,6 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( EntryChange.OID );
         factory.encodeValue( asn1Buffer, entryChange );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
@@ -184,9 +183,10 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        EntryChangeDecorator decorator = new EntryChangeDecorator( codec );
-
-        decorator.decode( bb.array() );
+        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( 
+            EntryChange.OID );
+        EntryChange entryChange = factory.newControl();
+        factory.decodeValue( entryChange, bb.array() );
     }
 
 
@@ -207,18 +207,18 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        EntryChangeDecorator decorator = new EntryChangeDecorator( codec );
-
-        EntryChange entryChange = ( EntryChange ) decorator.decode( bb.array() );
+        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( 
+            EntryChange.OID );
+        EntryChange entryChange = factory.newControl();
+        factory.decodeValue( entryChange, bb.array() );
 
         assertEquals( ChangeType.ADD, entryChange.getChangeType() );
         assertNull( entryChange.getPreviousDn() );
-        assertEquals( EntryChangeDecorator.UNDEFINED_CHANGE_NUMBER, entryChange.getChangeNumber() );
+        assertEquals( EntryChange.UNDEFINED_CHANGE_NUMBER, entryChange.getChangeNumber() );
 
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( EntryChange.OID );
         factory.encodeValue( asn1Buffer, entryChange );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
@@ -243,9 +243,10 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        EntryChangeDecorator decorator = new EntryChangeDecorator( codec );
-
-        decorator.decode( bb.array() );
+        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( 
+            EntryChange.OID );
+        EntryChange entryChange = factory.newControl();
+        factory.decodeValue( entryChange, bb.array() );
     }
 
 
@@ -270,9 +271,10 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        EntryChangeDecorator decorator = new EntryChangeDecorator( codec );
-
-        decorator.decode( bb.array() );
+        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( 
+            EntryChange.OID );
+        EntryChange entryChange = factory.newControl();
+        factory.decodeValue( entryChange, bb.array() );
     }
 
 
@@ -294,23 +296,20 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
                   0x02, 0x01, 0x10,         //     changeNumber INTEGER OPTIONAL -- if supported
             } );
 
-        String expected = Strings.dumpBytes( bb.array() );
         bb.flip();
 
-        EntryChangeDecorator decorator = new EntryChangeDecorator( codec );
+        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( 
+            EntryChange.OID );
+        EntryChange entryChange = factory.newControl();
+        factory.decodeValue( entryChange, bb.array() );
 
-        EntryChange entryChange = decorator.getDecorated();
         entryChange.setChangeType( ChangeType.MODDN );
         entryChange.setChangeNumber( 16 );
         entryChange.setPreviousDn( new Dn( "a=b" ) );
-        bb = decorator.encode( ByteBuffer.allocate( decorator.computeLength() ) );
-        String decoded = Strings.dumpBytes( bb.array() );
-        assertEquals( expected, decoded );
 
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( EntryChange.OID );
         factory.encodeValue( asn1Buffer, entryChange );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
@@ -336,24 +335,20 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
                     0x12, 0x34, 0x56, 0x78, ( byte ) 0x9a, ( byte ) 0xbc, ( byte ) 0xde
             } );
 
-        String expected = Strings.dumpBytes( bb.array() );
         bb.flip();
 
-        EntryChangeDecorator decorator = new EntryChangeDecorator( codec );
-
-        EntryChange entryChange = decorator.getDecorated();
+        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( 
+            EntryChange.OID );
+        EntryChange entryChange = factory.newControl();
+        factory.decodeValue( entryChange, bb.array() );
 
         entryChange.setChangeType( ChangeType.MODDN );
         entryChange.setChangeNumber( 5124095576030430L );
         entryChange.setPreviousDn( new Dn( "a=b" ) );
-        bb = decorator.encode( ByteBuffer.allocate( decorator.computeLength() ) );
-        String decoded = Strings.dumpBytes( bb.array() );
-        assertEquals( expected, decoded );
 
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( EntryChange.OID );
         factory.encodeValue( asn1Buffer, entryChange );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );

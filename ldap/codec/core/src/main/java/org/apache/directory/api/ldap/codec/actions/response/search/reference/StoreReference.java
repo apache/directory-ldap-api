@@ -24,8 +24,7 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.SearchResultReferenceDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.model.exception.LdapURLEncodingException;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.message.ReferralImpl;
@@ -44,7 +43,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreReference extends GrammarAction<LdapMessageContainer<SearchResultReferenceDecorator>>
+public class StoreReference extends GrammarAction<LdapMessageContainerDirect<SearchResultReference>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreReference.class );
@@ -61,7 +60,7 @@ public class StoreReference extends GrammarAction<LdapMessageContainer<SearchRes
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<SearchResultReferenceDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<SearchResultReference> container ) throws DecoderException
     {
         SearchResultReference searchResultReference = container.getMessage();
 

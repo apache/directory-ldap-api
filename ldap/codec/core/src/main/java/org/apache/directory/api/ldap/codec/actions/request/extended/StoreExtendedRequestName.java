@@ -25,9 +25,11 @@ import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.ExtendedRequestDecorator;
+import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
+import org.apache.directory.api.ldap.model.message.OpaqueExtendedRequest;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +44,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer<ExtendedRequestDecorator<?>>>
+public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainerDirect<ExtendedRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreExtendedRequestName.class );
@@ -60,11 +62,12 @@ public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainer<ExtendedRequestDecorator<?>> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<ExtendedRequest> container ) throws DecoderException
     {
-        ExtendedRequest req;
-
-        // Get the Value and store it in the ExtendedRequest
+        // Get the Name and store it in the ExtendedRequest. That will
+        // allow us to find the proper extended request instance, if it's 
+        // already declared. Otherwise, we will use a default ExtendedRequest
+        // in which the value will be stored un-decoded.
         TLV tlv = container.getCurrentTLV();
 
         // We have to handle the special case of a 0 length matched
@@ -79,30 +82,49 @@ public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer
         else
         {
             byte[] requestNameBytes = tlv.getValue().getData();
+            String requestName = Strings.utf8ToString( requestNameBytes );
 
             try
             {
-                String requestName = Strings.utf8ToString( requestNameBytes );
-
+                // Check the OID first, if it's invalid, reject the operation
                 if ( !Oid.isOid( requestName ) )
                 {
-
                     String msg = I18n.err( I18n.ERR_05121_INVALID_REQUEST_NAME_OID,
-                        Strings.utf8ToString( requestNameBytes ), Strings.dumpBytes( requestNameBytes ) );
+                        requestName, Strings.dumpBytes( requestNameBytes ) );
                     LOG.error( msg );
 
                     // throw an exception, we will get a PROTOCOL_ERROR
                     throw new DecoderException( msg );
                 }
 
-                req = container.getLdapCodecService().newExtendedRequest( requestName, null );
-                req.setMessageId( container.getMessageId() );
-                container.setMessage( container.getLdapCodecService().decorate( req ) );
+                // Get the extended request factory from the LdapApiService, if it's registered
+                LdapApiService codec = container.getLdapCodecService();
+                ExtendedOperationFactory factory = codec.getExtendedRequestFactories().get( requestName );
+                ExtendedRequest extendedRequest;
+                
+                if ( factory == null )
+                {
+                    // Create a default extended request operation
+                    extendedRequest = new OpaqueExtendedRequest();
+                }
+                else
+                {
+                    // Create the extended request
+                    extendedRequest = factory.newRequest();
+                }
+
+                extendedRequest.setMessageId( container.getMessageId() );
+                container.setMessage( extendedRequest );
+
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.msg( I18n.MSG_05126_OID_READ, extendedRequest.getRequestName() ) );
+                }
             }
             catch ( DecoderException de )
             {
                 String msg = I18n.err( I18n.ERR_05121_INVALID_REQUEST_NAME_OID,
-                    Strings.utf8ToString( requestNameBytes ), Strings.dumpBytes( requestNameBytes ) );
+                    requestName, Strings.dumpBytes( requestNameBytes ) );
                 LOG.error( I18n.err( I18n.ERR_05114_ERROR_MESSAGE, msg, de.getMessage() ) );
 
                 // Rethrow the exception, we will get a PROTOCOL_ERROR
@@ -112,10 +134,5 @@ public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer
 
         // We can have an END transition
         container.setGrammarEndAllowed( true );
-
-        if ( LOG.isDebugEnabled() )
-        {
-            LOG.debug( I18n.msg( I18n.MSG_05126_OID_READ, req.getRequestName() ) );
-        }
     }
 }

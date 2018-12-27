@@ -21,7 +21,8 @@ package org.apache.directory.api.ldap.codec.controls.sort;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
-import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.ControlContainer;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.SortKey;
 import org.apache.directory.api.ldap.model.message.controls.SortRequest;
 
@@ -31,76 +32,42 @@ import org.apache.directory.api.ldap.model.message.controls.SortRequest;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SortRequestContainer extends AbstractContainer
+public class SortRequestContainer extends AbstractContainer implements ControlContainer
 {
     /** the sort request control decorator */
-    private SortRequestDecorator control;
-
-    /** the LDAP codec */
-    private LdapApiService codec;
+    private Control control;
 
     /** current key that is being decoded */
     private SortKey currentKey;
 
-
     /**
      * Creates a new instance of SortRequestContainer.
      *
-     * @param codec the LDAP codec
-     */
-    public SortRequestContainer( LdapApiService codec )
-    {
-        super();
-        this.codec = codec;
-        setGrammar( SortRequestGrammar.getInstance() );
-        setTransition( SortRequestStates.START_STATE );
-    }
-
-
-    /**
-     * Creates a new instance of SortRequestContainer.
-     *
-     * @param codec the LDAP codec
      * @param control the sort request control
      */
-    public SortRequestContainer( LdapApiService codec, SortRequest control )
+    public SortRequestContainer( Control control )
     {
-        this( codec );
-        decorate( control );
-    }
-
-
-    /**
-     * Decorate a SortRequest control
-     * 
-     * @param control The control to decorate
-     */
-    public void decorate( SortRequest control )
-    {
-        if ( control instanceof SortRequestDecorator )
-        {
-            this.control = ( SortRequestDecorator ) control;
-        }
-        else
-        {
-            this.control = new SortRequestDecorator( codec, control );
-        }
+        super();
+        setGrammar( SortRequestGrammar.getInstance() );
+        setTransition( SortRequestStates.START_STATE );
+        this.control = control;
     }
 
 
     /**
      * @return the control
      */
-    public SortRequestDecorator getControl()
+    public SortRequest getControl()
     {
-        return control;
+        return ( SortRequest ) control;
     }
 
 
     /**
      * @param control the control to set
      */
-    public void setControl( SortRequestDecorator control )
+    public void setControl( Control
+        control )
     {
         this.control = control;
     }
@@ -133,5 +100,4 @@ public class SortRequestContainer extends AbstractContainer
     {
         this.currentKey = currentKey;
     }
-
 }

@@ -21,7 +21,8 @@ package org.apache.directory.api.ldap.codec.controls.sort;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
-import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.ControlContainer;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.SortResponse;
 
 
@@ -30,73 +31,38 @@ import org.apache.directory.api.ldap.model.message.controls.SortResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SortResponseContainer extends AbstractContainer
+public class SortResponseContainer extends AbstractContainer implements ControlContainer
 {
     /** the decorator instance of sort response control */
-    private SortResponseDecorator control;
-
-    /** LDAP codec */
-    private LdapApiService codec;
-
+    private Control control;
 
     /**
      * Creates a new instance of SortResponseContainer.
      *
-     * @param codec the LDAP codec
-     */
-    public SortResponseContainer( LdapApiService codec )
-    {
-        super();
-        this.codec = codec;
-        setGrammar( SortResponseGrammar.getInstance() );
-        setTransition( SortResponseStates.START_STATE );
-    }
-
-
-    /**
-     * Creates a new instance of SortResponseContainer.
-     *
-     * @param codec the LDAP codec
      * @param control the sort response control
      */
-    public SortResponseContainer( LdapApiService codec, SortResponse control )
+    public SortResponseContainer( Control control )
     {
-        this( codec );
-        decorate( control );
-    }
-
-
-    /**
-     * Decorate the SortResponse control
-     * 
-     * @param control The Sort Response control to decorate
-     */
-    public void decorate( SortResponse control )
-    {
-        if ( control instanceof SortResponseDecorator )
-        {
-            this.control = ( SortResponseDecorator ) control;
-        }
-        else
-        {
-            this.control = new SortResponseDecorator( codec, control );
-        }
+        super();
+        setGrammar( SortResponseGrammar.getInstance() );
+        setTransition( SortResponseStates.START_STATE );
+        this.control = control;
     }
 
 
     /**
      * @return the control
      */
-    public SortResponseDecorator getControl()
+    public SortResponse getControl()
     {
-        return control;
+        return ( SortResponse ) control;
     }
 
 
     /**
      * @param control the control to set
      */
-    public void setControl( SortResponseDecorator control )
+    public void setControl( Control control )
     {
         this.control = control;
     }
@@ -111,5 +77,4 @@ public class SortResponseContainer extends AbstractContainer
         super.clean();
         control = null;
     }
-
 }

@@ -20,11 +20,12 @@
 package org.apache.directory.api.ldap.codec.actions.response.intermediate;
 
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.IntermediateResponseDecorator;
+import org.apache.directory.api.ldap.codec.api.IntermediateOperationFactory;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.model.message.IntermediateResponse;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -41,7 +42,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreIntermediateResponseValue extends GrammarAction<LdapMessageContainer<IntermediateResponseDecorator<?>>>
+public class StoreIntermediateResponseValue extends GrammarAction<LdapMessageContainerDirect<IntermediateResponse>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreIntermediateResponseValue.class );
@@ -58,7 +59,7 @@ public class StoreIntermediateResponseValue extends GrammarAction<LdapMessageCon
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<IntermediateResponseDecorator<?>> container )
+    public void action( LdapMessageContainerDirect<IntermediateResponse> container ) throws DecoderException
     {
         // We can get the IntermediateResponse Object
         IntermediateResponse intermediateResponse = container.getMessage();
@@ -68,13 +69,19 @@ public class StoreIntermediateResponseValue extends GrammarAction<LdapMessageCon
 
         // We have to handle the special case of a 0 length matched
         // value
-        if ( tlv.getLength() == 0 )
+        if ( tlv.getLength() >= 0 )
         {
-            intermediateResponse.setResponseValue( Strings.EMPTY_BYTES );
-        }
-        else
-        {
-            intermediateResponse.setResponseValue( tlv.getValue().getData() );
+            // let's decode
+            IntermediateOperationFactory intermediateFactory = container.getIntermediateFactory();
+            
+            if ( intermediateFactory != null )
+            {
+                intermediateFactory.decodeValue( intermediateResponse, tlv.getValue().getData() );
+            }
+            else
+            {
+                intermediateResponse.setResponseValue( tlv.getValue().getData() );
+            }
         }
 
         // We can have an END transition

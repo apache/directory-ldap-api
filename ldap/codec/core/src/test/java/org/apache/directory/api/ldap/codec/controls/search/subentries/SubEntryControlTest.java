@@ -21,19 +21,15 @@ package org.apache.directory.api.ldap.codec.controls.search.subentries;
 
 
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.controls.Subentries;
-import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -63,22 +59,12 @@ public class SubEntryControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SubentriesDecorator decorator = new SubentriesDecorator( codec );
-
-        Subentries subentries = ( Subentries ) decorator.decode( bb.array() );
-
-        assertTrue( subentries.isVisible() );
-
-        // test encoding
-        ByteBuffer buffer = decorator.encode( ByteBuffer.allocate( decorator.computeLength() ) );
-        String expected = Strings.dumpBytes( bb.array() );
-        String decoded = Strings.dumpBytes( buffer.array() );
-        assertEquals( expected, decoded );
+        SubentriesFactory factory = ( SubentriesFactory ) codec.getRequestControlFactories().get( Subentries.OID );
+        Subentries subentries = factory.newControl();
+        factory.decodeValue( subentries, bb.array() );
 
         // Test reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-
-        ControlFactory<Subentries> factory = ( ControlFactory<Subentries> )codec.getRequestControlFactories().get( Subentries.OID );
 
         factory.encodeValue( asn1Buffer, subentries );
 
@@ -99,22 +85,14 @@ public class SubEntryControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SubentriesDecorator decorator = new SubentriesDecorator( codec );
-
-        Subentries subentries = ( Subentries ) decorator.decode( bb.array() );
+        SubentriesFactory factory = ( SubentriesFactory ) codec.getRequestControlFactories().get( Subentries.OID );
+        Subentries subentries = factory.newControl();
+        factory.decodeValue( subentries, bb.array() );
 
         assertFalse( subentries.isVisible() );
 
-        // test encoding
-        ByteBuffer buffer = decorator.encode( ByteBuffer.allocate( decorator.computeLength() ) );
-        String expected = Strings.dumpBytes( bb.array() );
-        String decoded = Strings.dumpBytes( buffer.array() );
-        assertEquals( expected, decoded );
-
         // Test reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-
-        ControlFactory<Subentries> factory = ( ControlFactory<Subentries> )codec.getRequestControlFactories().get( Subentries.OID );
 
         factory.encodeValue( asn1Buffer, subentries );
 
@@ -138,9 +116,9 @@ public class SubEntryControlTest extends AbstractCodecServiceTest
         bb.flip();
 
         // Allocate a LdapMessage Container
-        SubentriesDecorator decorator = new SubentriesDecorator( codec );
-
-        decorator.decode( bb.array() );
+        SubentriesFactory factory = ( SubentriesFactory ) codec.getRequestControlFactories().get( Subentries.OID );
+        Subentries subentries = factory.newControl();
+        factory.decodeValue( subentries, bb.array() );
     }
 
 
@@ -160,8 +138,8 @@ public class SubEntryControlTest extends AbstractCodecServiceTest
         bb.flip();
 
         // Allocate a LdapMessage Container
-        SubentriesDecorator decorator = new SubentriesDecorator( codec );
-
-        decorator.decode( bb.array() );
+        SubentriesFactory factory = ( SubentriesFactory ) codec.getRequestControlFactories().get( Subentries.OID );
+        Subentries subentries = factory.newControl();
+        factory.decodeValue( subentries, bb.array() );
     }
 }

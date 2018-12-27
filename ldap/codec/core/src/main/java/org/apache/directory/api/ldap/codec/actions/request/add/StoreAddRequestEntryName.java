@@ -24,10 +24,10 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
-import org.apache.directory.api.ldap.codec.decorators.AddRequestDecorator;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.message.AddRequest;
 import org.apache.directory.api.ldap.model.message.AddResponseImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -45,7 +45,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreAddRequestEntryName extends GrammarAction<LdapMessageContainer<AddRequestDecorator>>
+public class StoreAddRequestEntryName extends GrammarAction<LdapMessageContainerDirect<AddRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreAddRequestEntryName.class );
@@ -64,9 +64,9 @@ public class StoreAddRequestEntryName extends GrammarAction<LdapMessageContainer
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainer<AddRequestDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<AddRequest> container ) throws DecoderException
     {
-        AddRequestDecorator addRequest = container.getMessage();
+        AddRequest addRequest = container.getMessage();
 
         TLV tlv = container.getCurrentTLV();
 
@@ -85,13 +85,13 @@ public class StoreAddRequestEntryName extends GrammarAction<LdapMessageContainer
         }
         else
         {
-            Dn entryDn = null;
             byte[] dnBytes = tlv.getValue().getData();
             String dnStr = Strings.utf8ToString( dnBytes );
 
             try
             {
-                entryDn = new Dn( dnStr );
+                Dn entryDn = new Dn( dnStr );
+                addRequest.setEntryDn( entryDn );
             }
             catch ( LdapInvalidDnException ine )
             {
@@ -103,7 +103,6 @@ public class StoreAddRequestEntryName extends GrammarAction<LdapMessageContainer
                     Dn.EMPTY_DN, ine );
             }
 
-            addRequest.setEntryDn( entryDn );
         }
 
         if ( LOG.isDebugEnabled() )

@@ -45,4 +45,12 @@ public interface PasswordModifyResponse extends ExtendedResponse
      * @return The generated password or null
      */
     byte[] getGenPassword();
+
+
+    /**
+     * Set the generated password
+     * 
+     * @param The generated password to set
+     */
+    void setGenPassword( byte[] genPassword );
 }

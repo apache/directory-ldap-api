@@ -21,7 +21,6 @@ package org.apache.directory.api.ldap.extras.intermediate.syncrepl_impl;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
-import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValue;
 
 
@@ -35,37 +34,15 @@ public class SyncInfoValueContainer extends AbstractContainer
     /** SyncInfoValue */
     private SyncInfoValue syncInfoValue;
 
-    /** The LDAP Service instance */
-    private LdapApiService codec;
-
 
     /**
-     * Creates a new SyncInfoValueContainer object. We will store one grammar,
-     * it's enough ...
+     * Creates a new SyncInfoValueContainer object.
      * 
-     * @param codec The LDAP Service to use
+     * @param syncInfoValue The syncInfoValue to store
      */
-    public SyncInfoValueContainer( LdapApiService codec )
+    public SyncInfoValueContainer( SyncInfoValue syncInfoValue )
     {
         super();
-        this.codec = codec;
-        this.syncInfoValue = new SyncInfoValueDecorator( codec );
-        setGrammar( SyncInfoValueGrammar.getInstance() );
-        setTransition( SyncInfoValueStatesEnum.START_STATE );
-    }
-
-
-    /**
-     * Creates a new SyncInfoValueContainer object. We will store one grammar,
-     * it's enough ...
-     * 
-     * @param codec The LDAP Service to use
-     * @param syncInfoValue The syncInfoValue to decorate
-     */
-    public SyncInfoValueContainer( LdapApiService codec, SyncInfoValue syncInfoValue )
-    {
-        super();
-        this.codec = codec;
         this.syncInfoValue = syncInfoValue;
         setGrammar( SyncInfoValueGrammar.getInstance() );
         setTransition( SyncInfoValueStatesEnum.START_STATE );
@@ -90,15 +67,6 @@ public class SyncInfoValueContainer extends AbstractContainer
     public void setSyncInfoValue( SyncInfoValue syncInfoValue )
     {
         this.syncInfoValue = syncInfoValue;
-    }
-
-
-    /**
-     * @return The LDAP API service
-     */
-    public LdapApiService getCodecService()
-    {
-        return codec;
     }
 
 

@@ -54,11 +54,11 @@ public class StoreAssertionValue extends GrammarAction<VirtualListViewRequestCon
         {
             byte[] assertionValue = tlv.getValue().getData();
 
-            vlvContainer.getDecorator().setAssertionValue( assertionValue );
+            vlvContainer.getVirtualListViewRequest().setAssertionValue( assertionValue );
         }
         else
         {
-            vlvContainer.getDecorator().setAssertionValue( Strings.EMPTY_BYTES );
+            vlvContainer.getVirtualListViewRequest().setAssertionValue( Strings.EMPTY_BYTES );
         }
 
         // The last element is optional, we can quit here

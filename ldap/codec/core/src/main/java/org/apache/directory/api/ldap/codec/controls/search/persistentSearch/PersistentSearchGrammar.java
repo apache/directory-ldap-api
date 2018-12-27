@@ -119,7 +119,7 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
                                 LOG.debug( I18n.msg( I18n.MSG_05304_CHANGE_TYPES, changeTypes ) );
                             }
 
-                            container.getPersistentSearchDecorator().setChangeTypes( changeTypes );
+                            container.getPersistentSearch().setChangeTypes( changeTypes );
                         }
                         catch ( IntegerDecoderException ide )
                         {
@@ -157,7 +157,7 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
                                 LOG.debug( I18n.msg( I18n.MSG_05305_CHANGES_ONLY, changesOnly ) );
                             }
 
-                            container.getPersistentSearchDecorator().setChangesOnly( changesOnly );
+                            container.getPersistentSearch().setChangesOnly( changesOnly );
                         }
                         catch ( BooleanDecoderException bde )
                         {
@@ -195,7 +195,7 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
                                 LOG.debug( I18n.msg( I18n.MSG_05306_RETURN_ECS, returnECs ) );
                             }
 
-                            container.getPersistentSearchDecorator().setReturnECs( returnECs );
+                            container.getPersistentSearch().setReturnECs( returnECs );
 
                             // We can have an END transition
                             container.setGrammarEndAllowed( true );

@@ -24,8 +24,8 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.AddResponseDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.model.message.AddResponse;
 import org.apache.directory.api.ldap.model.message.AddResponseImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitAddResponse extends GrammarAction<LdapMessageContainer<AddResponseDecorator>>
+public class InitAddResponse extends GrammarAction<LdapMessageContainerDirect<AddResponse>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitAddResponse.class );
@@ -57,11 +57,10 @@ public class InitAddResponse extends GrammarAction<LdapMessageContainer<AddRespo
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<AddResponseDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<AddResponse> container ) throws DecoderException
     {
         // Now, we can allocate the AddResponse Object
-        AddResponseDecorator addResponse = new AddResponseDecorator(
-            container.getLdapCodecService(), new AddResponseImpl( container.getMessageId() ) );
+        AddResponse addResponse = new AddResponseImpl( container.getMessageId() );
         container.setMessage( addResponse );
 
         // We will check that the request is not null

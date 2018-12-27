@@ -47,7 +47,7 @@ public class StoreVirtualListViewResult extends AbstractReadInteger<VirtualListV
     protected void setIntegerValue( int value, VirtualListViewResponseContainer vlvContainer )
     {
         VirtualListViewResultCode code = VirtualListViewResultCode.get( value );
-        vlvContainer.getDecorator().setVirtualListViewResult( code );
+        vlvContainer.getVirtualListViewResponse().setVirtualListViewResult( code );
 
         vlvContainer.setGrammarEndAllowed( true );
     }

@@ -21,7 +21,6 @@ package org.apache.directory.api.ldap.codec.controls.manageDsaIT;
 
 
 import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
@@ -43,7 +42,7 @@ public class ManageDsaITFactory extends AbstractControlFactory<ManageDsaIT>
      */
     public ManageDsaITFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, ManageDsaIT.OID );
     }
 
 
@@ -51,28 +50,8 @@ public class ManageDsaITFactory extends AbstractControlFactory<ManageDsaIT>
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public ManageDsaIT newControl()
     {
-        return ManageDsaIT.OID;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<ManageDsaIT> newCodecControl()
-    {
-        return new ManageDsaITDecorator( codec, new ManageDsaITImpl() );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<ManageDsaIT> newCodecControl( ManageDsaIT control )
-    {
-        return new ManageDsaITDecorator( codec, control );
+        return new ManageDsaITImpl();
     }
 }

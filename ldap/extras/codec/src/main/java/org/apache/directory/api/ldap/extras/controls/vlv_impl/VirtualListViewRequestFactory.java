@@ -21,13 +21,14 @@
 package org.apache.directory.api.ldap.extras.controls.vlv_impl;
 
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewRequest;
+import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewRequestImpl;
 import org.apache.directory.api.ldap.model.message.Control;
 
 
@@ -45,7 +46,7 @@ public class VirtualListViewRequestFactory extends AbstractControlFactory<Virtua
      */
     public VirtualListViewRequestFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, VirtualListViewRequest.OID );
     }
 
 
@@ -53,29 +54,9 @@ public class VirtualListViewRequestFactory extends AbstractControlFactory<Virtua
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public VirtualListViewRequest newControl()
     {
-        return VirtualListViewRequest.OID;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<VirtualListViewRequest> newCodecControl()
-    {
-        return new VirtualListViewRequestDecorator( codec );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<VirtualListViewRequest> newCodecControl( VirtualListViewRequest control )
-    {
-        return new VirtualListViewRequestDecorator( codec, control );
+        return new VirtualListViewRequestImpl( );
     }
 
 
@@ -123,5 +104,15 @@ public class VirtualListViewRequestFactory extends AbstractControlFactory<Virtua
         
         // The sequence
         BerValue.encodeSequence( buffer, start );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void decodeValue( Control control, byte[] controlBytes ) throws DecoderException
+    {
+        decodeValue( new VirtualListViewRequestContainer( control ), control, controlBytes );
     }
 }

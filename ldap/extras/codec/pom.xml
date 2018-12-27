@@ -132,7 +132,6 @@
               org.apache.directory.api.asn1.ber.tlv;version=${project.version},
               org.apache.directory.api.i18n;version=${project.version},
               org.apache.directory.api.ldap.codec.api;version=${project.version},
-              org.apache.directory.api.ldap.codec.decorators;version=${project.version},
               org.apache.directory.api.ldap.codec.osgi;version=${project.version},
               org.apache.directory.api.ldap.extras.controls;version=${project.version},
               org.apache.directory.api.ldap.extras.controls.ad;version=${project.version},

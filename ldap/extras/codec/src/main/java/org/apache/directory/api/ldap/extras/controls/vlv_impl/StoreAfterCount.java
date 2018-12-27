@@ -46,6 +46,6 @@ public class StoreAfterCount extends AbstractReadInteger<VirtualListViewRequestC
     @Override
     protected void setIntegerValue( int value, VirtualListViewRequestContainer vlvContainer )
     {
-        vlvContainer.getDecorator().setAfterCount( value );
+        vlvContainer.getVirtualListViewRequest().setAfterCount( value );
     }
 }

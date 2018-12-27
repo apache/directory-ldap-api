@@ -128,6 +128,11 @@ public class SyncInfoValueImpl extends IntermediateResponseImpl implements SyncI
     @Override
     public List<byte[]> getSyncUUIDs()
     {
+        if ( syncUUIDs == null )
+        {
+            syncUUIDs = new ArrayList<>();
+        }
+        
         return syncUUIDs;
     }
 

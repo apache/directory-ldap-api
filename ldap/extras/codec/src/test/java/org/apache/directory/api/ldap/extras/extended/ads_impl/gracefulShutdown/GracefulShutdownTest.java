@@ -23,15 +23,12 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-import java.nio.ByteBuffer;
-
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
-import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownContainer;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownRequestDecorator;
+import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownRequest;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -48,45 +45,41 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class GracefulShutdownTest extends AbstractCodecServiceTest
 {
+    @Before
+    public void init()
+    {
+        codec.registerExtendedRequest( new GracefulShutdownFactory( codec ) );
+    }
+
+    
     /**
      * Test the decoding of a GracefulShutdown
      */
     @Test
     public void testDecodeGracefulShutdownSuccess() throws DecoderException, EncoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x08 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x06,                 // GracefulShutdown ::= SEQUENCE {
                   0x02, 0x01, 0x01,         // timeOffline INTEGER (0..720) DEFAULT 0,
                   ( byte ) 0x80, 0x01, 0x01 // delay INTEGER (0..86400) DEFAULT 0
                                             // }
-            } );
+            };
 
-        bb.flip();
+        GracefulShutdownFactory factory = ( GracefulShutdownFactory ) codec.getExtendedRequestFactories().
+            get( GracefulShutdownRequest.EXTENSION_OID );
+        GracefulShutdownRequest gracefulShutdownRequest = 
+            ( GracefulShutdownRequest ) factory.newRequest( bb );
 
-        GracefulShutdownContainer container = new GracefulShutdownContainer();
-
-        decoder.decode( bb, container );
-
-        GracefulShutdownRequestDecorator gracefulShutdownRequest = container.getGracefulShutdownRequest();
         assertEquals( 1, gracefulShutdownRequest.getTimeOffline() );
         assertEquals( 1, gracefulShutdownRequest.getDelay() );
 
-        // Check the length
-        assertEquals( 0x08, gracefulShutdownRequest.computeLengthInternal() );
-
-        // Check the encoding
-        ByteBuffer bb1 = gracefulShutdownRequest.encodeInternal();
-
-        assertArrayEquals( bb.array(), bb1.array() );
-
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        GracefulShutdownFactory factory = new GracefulShutdownFactory( codec );
+
         factory.encodeValue( asn1Buffer, gracefulShutdownRequest );
-        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
+
+        assertArrayEquals( bb,  asn1Buffer.getBytes().array() );
     }
 
 
@@ -96,37 +89,26 @@ public class GracefulShutdownTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeGracefulShutdownTimeOffline() throws DecoderException, EncoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x05 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x03,             // GracefulShutdown ::= SEQUENCE {
                   0x02, 0x01, 0x01      // timeOffline INTEGER (0..720) DEFAULT 0,
-        } );
+        };
 
-        bb.flip();
+        GracefulShutdownFactory factory = ( GracefulShutdownFactory ) codec.getExtendedRequestFactories().
+            get( GracefulShutdownRequest.EXTENSION_OID );
+        GracefulShutdownRequest gracefulShutdownRequest = 
+            ( GracefulShutdownRequest ) factory.newRequest( bb );
 
-        GracefulShutdownContainer container = new GracefulShutdownContainer();
-
-        decoder.decode( bb, container );
-
-        GracefulShutdownRequestDecorator gracefulShutdownRequest = container.getGracefulShutdownRequest();
         assertEquals( 1, gracefulShutdownRequest.getTimeOffline() );
         assertEquals( 0, gracefulShutdownRequest.getDelay() );
 
-        // Check the length
-        assertEquals( 0x05, gracefulShutdownRequest.computeLengthInternal() );
-
-        // Check the encoding
-        ByteBuffer bb1 = gracefulShutdownRequest.encodeInternal();
-
-        assertArrayEquals( bb.array(), bb1.array() );
-
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        GracefulShutdownFactory factory = new GracefulShutdownFactory( codec );
+
         factory.encodeValue( asn1Buffer, gracefulShutdownRequest );
-        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
+
+        assertArrayEquals( bb,  asn1Buffer.getBytes().array() );
     }
 
 
@@ -136,37 +118,26 @@ public class GracefulShutdownTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeGracefulShutdownDelay() throws DecoderException, EncoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x05 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x03,                 // GracefulShutdown ::= SEQUENCE {
                   ( byte ) 0x80, 0x01, 0x01 // delay INTEGER (0..86400) DEFAULT 0
-            } );
+            };
 
-        bb.flip();
+        GracefulShutdownFactory factory = ( GracefulShutdownFactory ) codec.getExtendedRequestFactories().
+            get( GracefulShutdownRequest.EXTENSION_OID );
+        GracefulShutdownRequest gracefulShutdownRequest = 
+            ( GracefulShutdownRequest ) factory.newRequest( bb );
 
-        GracefulShutdownContainer container = new GracefulShutdownContainer();
-
-        decoder.decode( bb, container );
-
-        GracefulShutdownRequestDecorator gracefulShutdownRequest = container.getGracefulShutdownRequest();
         assertEquals( 0, gracefulShutdownRequest.getTimeOffline() );
         assertEquals( 1, gracefulShutdownRequest.getDelay() );
 
-        // Check the length
-        assertEquals( 0x05, gracefulShutdownRequest.computeLengthInternal() );
-
-        // Check the encoding
-        ByteBuffer bb1 = gracefulShutdownRequest.encodeInternal();
-
-        assertArrayEquals( bb.array(), bb1.array() );
-
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        GracefulShutdownFactory factory = new GracefulShutdownFactory( codec );
+
         factory.encodeValue( asn1Buffer, gracefulShutdownRequest );
-        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
+        
+        assertArrayEquals( bb,  asn1Buffer.getBytes().array() );
     }
 
 
@@ -176,36 +147,25 @@ public class GracefulShutdownTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeGracefulShutdownEmpty() throws DecoderException, EncoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x02 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x00 // GracefulShutdown ::= SEQUENCE {
-            } );
+            };
 
-        bb.flip();
+        GracefulShutdownFactory factory = ( GracefulShutdownFactory ) codec.getExtendedRequestFactories().
+            get( GracefulShutdownRequest.EXTENSION_OID );
+        GracefulShutdownRequest gracefulShutdownRequest = 
+            ( GracefulShutdownRequest ) factory.newRequest( bb );
 
-        GracefulShutdownContainer container = new GracefulShutdownContainer();
-
-        decoder.decode( bb, container );
-
-        GracefulShutdownRequestDecorator gracefulShutdownRequest = container.getGracefulShutdownRequest();
         assertEquals( 0, gracefulShutdownRequest.getTimeOffline() );
         assertEquals( 0, gracefulShutdownRequest.getDelay() );
 
-        // Check the length
-        assertEquals( 0x02, gracefulShutdownRequest.computeLengthInternal() );
-
-        // Check the encoding
-        ByteBuffer bb1 = gracefulShutdownRequest.encodeInternal();
-
-        assertArrayEquals( bb.array(), bb1.array() );
-
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        GracefulShutdownFactory factory = new GracefulShutdownFactory( codec );
+
         factory.encodeValue( asn1Buffer, gracefulShutdownRequest );
-        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
+
+        assertArrayEquals( bb,  asn1Buffer.getBytes().array() );
     }
 
 
@@ -215,37 +175,26 @@ public class GracefulShutdownTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeGracefulShutdownDelayHigh() throws DecoderException, EncoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x06 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x04,                                 // GracefulShutdown ::= SEQUENCE {
                   ( byte ) 0x80, 0x02, 0x01, ( byte ) 0xF4  // delay INTEGER (0..86400) DEFAULT 0
-            } );
+            };
 
-        bb.flip();
+        GracefulShutdownFactory factory = ( GracefulShutdownFactory ) codec.getExtendedRequestFactories().
+            get( GracefulShutdownRequest.EXTENSION_OID );
+        GracefulShutdownRequest gracefulShutdownRequest = 
+            ( GracefulShutdownRequest ) factory.newRequest( bb );
 
-        GracefulShutdownContainer container = new GracefulShutdownContainer();
-
-        decoder.decode( bb, container );
-
-        GracefulShutdownRequestDecorator gracefulShutdownRequest = container.getGracefulShutdownRequest();
         assertEquals( 0, gracefulShutdownRequest.getTimeOffline() );
         assertEquals( 500, gracefulShutdownRequest.getDelay() );
 
-        // Check the length
-        assertEquals( 0x06, gracefulShutdownRequest.computeLengthInternal() );
-
-        // Check the encoding
-        ByteBuffer bb1 = gracefulShutdownRequest.encodeInternal();
-
-        assertArrayEquals( bb.array(), bb1.array() );
-
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        GracefulShutdownFactory factory = new GracefulShutdownFactory( codec );
+
         factory.encodeValue( asn1Buffer, gracefulShutdownRequest );
-        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
+
+        assertArrayEquals( bb,  asn1Buffer.getBytes().array() );
     }
 
 
@@ -255,37 +204,26 @@ public class GracefulShutdownTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeGracefulShutdownDelay32767() throws DecoderException, EncoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x06 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x04,                                 // GracefulShutdown ::= SEQUENCE {
                   ( byte ) 0x80, 0x02, 0x7F, ( byte ) 0xFF  // delay INTEGER (0..86400) DEFAULT 0
-            } );
+            };
 
-        bb.flip();
+        GracefulShutdownFactory factory = ( GracefulShutdownFactory ) codec.getExtendedRequestFactories().
+            get( GracefulShutdownRequest.EXTENSION_OID );
+        GracefulShutdownRequest gracefulShutdownRequest = 
+            ( GracefulShutdownRequest ) factory.newRequest( bb );
 
-        GracefulShutdownContainer container = new GracefulShutdownContainer();
-
-        decoder.decode( bb, container );
-
-        GracefulShutdownRequestDecorator gracefulShutdownRequest = container.getGracefulShutdownRequest();
         assertEquals( 0, gracefulShutdownRequest.getTimeOffline() );
         assertEquals( 32767, gracefulShutdownRequest.getDelay() );
 
-        // Check the length
-        assertEquals( 0x06, gracefulShutdownRequest.computeLengthInternal() );
-
-        // Check the encoding
-        ByteBuffer bb1 = gracefulShutdownRequest.encodeInternal();
-
-        assertArrayEquals( bb.array(), bb1.array() );
-
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        GracefulShutdownFactory factory = new GracefulShutdownFactory( codec );
+
         factory.encodeValue( asn1Buffer, gracefulShutdownRequest );
-        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
+
+        assertArrayEquals( bb,  asn1Buffer.getBytes().array() );
     }
 
 
@@ -295,38 +233,27 @@ public class GracefulShutdownTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeGracefulShutdownDelay32768() throws DecoderException, EncoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x07 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x05,             // GracefulShutdown ::= SEQUENCE {
                                         // delay INTEGER (0..86400) DEFAULT 0
                 ( byte ) 0x80, 0x03, 0x00, ( byte ) 0x80, ( byte ) 0x00 
-            } );
+            };
 
-        bb.flip();
+        GracefulShutdownFactory factory = ( GracefulShutdownFactory ) codec.getExtendedRequestFactories().
+            get( GracefulShutdownRequest.EXTENSION_OID );
+        GracefulShutdownRequest gracefulShutdownRequest = 
+            ( GracefulShutdownRequest ) factory.newRequest( bb );
 
-        GracefulShutdownContainer container = new GracefulShutdownContainer();
-
-        decoder.decode( bb, container );
-
-        GracefulShutdownRequestDecorator gracefulShutdownRequest = container.getGracefulShutdownRequest();
         assertEquals( 0, gracefulShutdownRequest.getTimeOffline() );
         assertEquals( 32768, gracefulShutdownRequest.getDelay() );
 
-        // Check the length
-        assertEquals( 0x07, gracefulShutdownRequest.computeLengthInternal() );
-
-        // Check the encoding
-        ByteBuffer bb1 = gracefulShutdownRequest.encodeInternal();
-
-        assertArrayEquals( bb.array(), bb1.array() );
-
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        GracefulShutdownFactory factory = new GracefulShutdownFactory( codec );
+
         factory.encodeValue( asn1Buffer, gracefulShutdownRequest );
-        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
+
+        assertArrayEquals( bb,  asn1Buffer.getBytes().array() );
     }
 
 
@@ -338,18 +265,15 @@ public class GracefulShutdownTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeGracefulShutdownTimeOfflineOffLimit() throws DecoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x06 );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x04,                         // GracefulShutdown ::= SEQUENCE {
                   0x02, 0x02, 0x03, ( byte ) 0xE8   // timeOffline INTEGER (0..720) DEFAULT 0,
-            } );
-        bb.flip();
+            };
 
-        GracefulShutdownContainer container = new GracefulShutdownContainer();
-
-        decoder.decode( bb, container );
+        GracefulShutdownFactory factory = ( GracefulShutdownFactory ) codec.getExtendedRequestFactories().
+            get( GracefulShutdownRequest.EXTENSION_OID );
+        factory.newRequest( bb );
     }
 
 
@@ -359,19 +283,16 @@ public class GracefulShutdownTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeGracefulShutdownDelayOffLimit() throws DecoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x0b );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x05,                     // GracefulShutdown ::= SEQUENCE {
                                                 // delay INTEGER (0..86400) DEFAULT 0
                   ( byte ) 0x80, 0x03, 0x01, ( byte ) 0x86, ( byte ) 0xA0 
-            } );
-        bb.flip();
+            };
 
-        GracefulShutdownContainer container = new GracefulShutdownContainer();
-
-        decoder.decode( bb, container );
+        GracefulShutdownFactory factory = ( GracefulShutdownFactory ) codec.getExtendedRequestFactories().
+            get( GracefulShutdownRequest.EXTENSION_OID );
+        factory.newRequest( bb );
     }
 
 
@@ -381,18 +302,15 @@ public class GracefulShutdownTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeGracefulShutdownTimeOfflineEmpty() throws DecoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x0b );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x02,         // GracefulShutdown ::= SEQUENCE {
                   0x02, 0x00        // timeOffline INTEGER (0..720) DEFAULT 0,
-        } );
-        bb.flip();
+        };
 
-        GracefulShutdownContainer container = new GracefulShutdownContainer();
-
-        decoder.decode( bb, container );
+        GracefulShutdownFactory factory = ( GracefulShutdownFactory ) codec.getExtendedRequestFactories().
+            get( GracefulShutdownRequest.EXTENSION_OID );
+        factory.newRequest( bb );
     }
 
 
@@ -402,17 +320,14 @@ public class GracefulShutdownTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeGracefulShutdownDelayEmpty() throws DecoderException
     {
-        Asn1Decoder decoder = new Asn1Decoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x0b );
-        bb.put( new byte[]
+        byte[] bb = new byte[]
             { 
                 0x30, 0x02,                 // GracefulShutdown ::= SEQUENCE {
                   ( byte ) 0x80, 0x00       // delay INTEGER (0..86400) DEFAULT 0
-            } );
-        bb.flip();
+            };
 
-        GracefulShutdownContainer container = new GracefulShutdownContainer();
-
-        decoder.decode( bb, container );
+        GracefulShutdownFactory factory = ( GracefulShutdownFactory ) codec.getExtendedRequestFactories().
+            get( GracefulShutdownRequest.EXTENSION_OID );
+        factory.newRequest( bb );
     }
 }

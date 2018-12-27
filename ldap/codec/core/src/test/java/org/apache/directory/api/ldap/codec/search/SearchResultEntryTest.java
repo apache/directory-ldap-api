@@ -32,18 +32,15 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.SearchResultEntryDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.entry.Attribute;
-import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchResultEntry;
-import org.apache.directory.api.ldap.model.message.SearchResultEntryImpl;
+import org.apache.directory.api.ldap.model.message.controls.EntryChange;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -95,12 +92,11 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                             'o', 'r', 'g', 'a', 'n', 'i', 'z', 'a', 't', 'i', 'o', 'n', 'a', 'l', 'U', 'n', 'i', 't',
              } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
-            new LdapMessageContainer<SearchResultEntryDecorator>( codec );
+        LdapMessageContainerDirect<SearchResultEntry> ldapMessageContainer =
+            new LdapMessageContainerDirect<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -123,26 +119,10 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
             assertTrue( attribute.contains( "organizationalUnit" ) );
         }
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchResultEntry );
-
-        // Check the length
-        assertEquals( 0x50, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
-
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        SearchResultEntry response = new SearchResultEntryImpl( searchResultEntry.getMessageId() );
-        response.setEntry( new DefaultEntry(
-            "ou=contacts,dc=iktek,dc=com",
-            "objectClass", "top",
-            "objectClass", "organizationalUnit" ) );
-
-        LdapEncoder.encodeMessageReverse( buffer, codec, response );
+        LdapEncoder.encodeMessageReverse( buffer, codec, searchResultEntry );
 
         assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
     }
@@ -193,8 +173,8 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
-            new LdapMessageContainer<SearchResultEntryDecorator>( codec );
+        LdapMessageContainerDirect<SearchResultEntry> ldapMessageContainer =
+            new LdapMessageContainerDirect<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -222,29 +202,15 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
             assertTrue( attribute.contains( "organizationalUnit" ) );
         }
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchResultEntry );
-
-        // Check the length
-        assertEquals( 0x7B, bb.limit() );
-
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        SearchResultEntry response = new SearchResultEntryImpl( searchResultEntry.getMessageId() );
-        response.setEntry( new DefaultEntry(
-            "ou=contacts,dc=iktek,dc=com",
-            "objectClass", "top",
-            "objectClass", "organizationalUnit",
-            "objectClass2", "top",
-            "objectClass2", "organizationalUnit" ) );
-
-        ByteBuffer result = LdapEncoder.encodeMessageReverse( buffer, codec, response );
+        ByteBuffer result = LdapEncoder.encodeMessageReverse( buffer, codec, searchResultEntry );
 
         // We can't compare the encodings, the order of the attributes has
         // changed
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer2 =
-            new LdapMessageContainer<SearchResultEntryDecorator>( codec );
+        LdapMessageContainerDirect<SearchResultEntry> ldapMessageContainer2 =
+            new LdapMessageContainerDirect<>( codec );
 
         ldapDecoder.decode( result, ldapMessageContainer2 );
 
@@ -295,12 +261,11 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                   0x02, 0x01, 0x03 // messageID MessageID ...
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
-            new LdapMessageContainer<SearchResultEntryDecorator>( codec );
+        LdapMessageContainerDirect<SearchResultEntry> ldapMessageContainer =
+            new LdapMessageContainerDirect<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -332,37 +297,17 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         assertEquals( 0x01, stream.get( stream.position() + 3 ) );
         assertEquals( 0x03, stream.get( stream.position() + 4 ) );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchResultEntry );
-
-        // Check the length
-        assertEquals( 0x61, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        // We have to suppress the last 5 chars from the decodedPDU, as they
-        // belongs to the next message.
-        assertEquals( encodedPdu, decodedPdu.substring( 0, 0x61 * 5 ) );
-
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        SearchResultEntry response = new SearchResultEntryImpl( searchResultEntry.getMessageId() );
-        response.setEntry( new DefaultEntry(
-            "uid=admin,ou=system",
-            "objectClass", "top",
-            "objectClass", "person",
-            "objectClass", "organizationalPerson",
-            "objectClass", "inetOrgPerson" ) );
-
-        ByteBuffer result = LdapEncoder.encodeMessageReverse( buffer, codec, response );
+        LdapEncoder.encodeMessageReverse( buffer, codec, searchResultEntry );
 
         // We can't compare the encodings, the order of the attributes has
         // changed
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer2 =
-            new LdapMessageContainer<SearchResultEntryDecorator>( codec );
+        LdapMessageContainerDirect<SearchResultEntry> ldapMessageContainer2 =
+            new LdapMessageContainerDirect<>( codec );
 
-        ldapDecoder.decode( result, ldapMessageContainer2 );
+        ldapDecoder.decode( buffer.getBytes(), ldapMessageContainer2 );
 
         assertEquals( searchResultEntry.getEntry(), ldapMessageContainer2.getMessage().getEntry() );
         assertEquals( searchResultEntry.getObjectName(), ldapMessageContainer2.getMessage().getObjectName() );
@@ -393,8 +338,8 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
-            new LdapMessageContainer<SearchResultEntryDecorator>( codec );
+        LdapMessageContainerDirect<SearchResultEntry> ldapMessageContainer =
+            new LdapMessageContainerDirect<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
     }
@@ -425,8 +370,8 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
-            new LdapMessageContainer<SearchResultEntryDecorator>( codec );
+        LdapMessageContainerDirect<SearchResultEntry> ldapMessageContainer =
+            new LdapMessageContainerDirect<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
     }
@@ -458,8 +403,8 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
-            new LdapMessageContainer<SearchResultEntryDecorator>( codec );
+        LdapMessageContainerDirect<SearchResultEntry> ldapMessageContainer =
+            new LdapMessageContainerDirect<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
     }
@@ -491,12 +436,11 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                     0x30, 0x00
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
-            new LdapMessageContainer<SearchResultEntryDecorator>( codec );
+        LdapMessageContainerDirect<SearchResultEntry> ldapMessageContainer =
+            new LdapMessageContainerDirect<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -509,23 +453,10 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
 
         assertEquals( 0, entry.size() );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchResultEntry );
-
-        // Check the length
-        assertEquals( 0x26, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
-
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        SearchResultEntry response = new SearchResultEntryImpl( searchResultEntry.getMessageId() );
-        response.setEntry( new DefaultEntry( "ou=contacts,dc=iktek,dc=com" ) );
-
-        LdapEncoder.encodeMessageReverse( buffer, codec, response );
+        LdapEncoder.encodeMessageReverse( buffer, codec, searchResultEntry );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
@@ -561,8 +492,8 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
-            new LdapMessageContainer<SearchResultEntryDecorator>( codec );
+        LdapMessageContainerDirect<SearchResultEntry> ldapMessageContainer =
+            new LdapMessageContainerDirect<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
     }
@@ -604,8 +535,8 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
-            new LdapMessageContainer<SearchResultEntryDecorator>( codec );
+        LdapMessageContainerDirect<SearchResultEntry> ldapMessageContainer =
+            new LdapMessageContainerDirect<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
     }
@@ -642,8 +573,8 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
-            new LdapMessageContainer<SearchResultEntryDecorator>( codec );
+        LdapMessageContainerDirect<SearchResultEntry> ldapMessageContainer =
+            new LdapMessageContainerDirect<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
     }
@@ -681,8 +612,8 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
-            new LdapMessageContainer<SearchResultEntryDecorator>( codec );
+        LdapMessageContainerDirect<SearchResultEntry> ldapMessageContainer =
+            new LdapMessageContainerDirect<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
     }
@@ -718,12 +649,11 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                         0x31, 0x00
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
-            new LdapMessageContainer<SearchResultEntryDecorator>( codec );
+        LdapMessageContainerDirect<SearchResultEntry> ldapMessageContainer =
+            new LdapMessageContainerDirect<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -744,37 +674,12 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
             assertEquals( 0, attribute.size() );
         }
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchResultEntry );
-
-        // Check the length
-        assertEquals( 0x37, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
-
         // Check encode reverse
-        /*
         Asn1Buffer buffer = new Asn1Buffer();
 
-        SearchResultEntry response = new SearchResultEntryImpl( searchResultEntry.getMessageId() );
-        response.setEntry( new DefaultEntry(
-            "ou=contacts,dc=iktek,dc=com", new DefaultAttribute( "objectClass", ( String ) null ) ) );
+        ByteBuffer result = LdapEncoder.encodeMessageReverse( buffer, codec, searchResultEntry );
 
-        ByteBuffer result = LdapEncoder.encodeMessageReverse( buffer, codec, response );
-
-        // We can't compare the encodings, the order of the attributes has
-        // changed
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer2 =
-            new LdapMessageContainer<SearchResultEntryDecorator>( codec );
-
-        ldapDecoder.decode( result, ldapMessageContainer2 );
-
-        assertEquals( searchResultEntry.getEntry(), ldapMessageContainer2.getMessage().getEntry() );
-        assertEquals( searchResultEntry.getObjectName(), ldapMessageContainer2.getMessage().getObjectName() );
-        */
-
+        assertArrayEquals( stream.array(), result.array() );
     }
 
 
@@ -812,12 +717,11 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                       0x31, 0x00
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
-            new LdapMessageContainer<SearchResultEntryDecorator>( codec );
+        LdapMessageContainerDirect<SearchResultEntry> ldapMessageContainer =
+            new LdapMessageContainerDirect<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -838,15 +742,13 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         assertEquals( Strings.toLowerCaseAscii( "objectClazz" ), Strings.toLowerCaseAscii( attribute.getUpId() ) );
         assertEquals( 0, attribute.size() );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchResultEntry );
 
-        // Check the length
-        assertEquals( 0x48, bb.limit() );
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
 
-        String encodedPdu = Strings.dumpBytes( bb.array() );
+        ByteBuffer result = LdapEncoder.encodeMessageReverse( buffer, codec, searchResultEntry );
 
-        assertEquals( encodedPdu.length(), decodedPdu.length() );
+        assertArrayEquals( stream.array(), result.array() );
     }
 
 
@@ -858,11 +760,11 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
-        ByteBuffer stream = ByteBuffer.allocate( 0x54 );
+        ByteBuffer stream = ByteBuffer.allocate( 0x5B );
 
         stream.put( new byte[]
             {
-                0x30, 0x52,                     // LDAPMessage ::=SEQUENCE {
+                0x30, 0x59,                     // LDAPMessage ::=SEQUENCE {
                   0x02, 0x01, 0x01,             // messageID MessageID
                   0x64, 0x30,                   // CHOICE { ..., searchResEntry SearchResultEntry,
                                                 // ...
@@ -878,19 +780,22 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                         0x04, 0x0b,             // type AttributeDescription,
                           'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 's', 's',
                         0x31, 0x00,
-                    ( byte ) 0xA0, 0x1B,        // A control
-                      0x30, 0x19,
-                        0x04, 0x17,
-                          '2', '.', '1', '6', '.', '8', '4', '0', '.', '1', '.',
-                          '1', '1', '3', '7', '3', '0', '.', '3', '.', '4', '.', '2'
+                  ( byte ) 0xA0, 0x22,          // A control
+                    0x30, 0x20,
+                      0x04, 0x17,               // EntryChange response control
+                        '2', '.', '1', '6', '.', '8', '4', '0', '.', '1', '.', 
+                        '1', '1', '3', '7', '3', '0', '.', '3', '.', '4', '.', '7',
+                      0x04, 0x05,               // Control value
+                        0x30, 0x03,             // EntryChangeNotification ::= SEQUENCE {
+                          0x0A, 0x01, 0x01      //     changeType ENUMERATED {
+                                                //         add             (1),
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
-            new LdapMessageContainer<SearchResultEntryDecorator>( codec );
+        LdapMessageContainerDirect<SearchResultEntry> ldapMessageContainer =
+            new LdapMessageContainerDirect<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -917,21 +822,16 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
 
         assertEquals( 1, controls.size() );
 
-        @SuppressWarnings("unchecked")
-        CodecControl<Control> control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) controls
-            .get( "2.16.840.1.113730.3.4.2" );
-        assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
+        Control control = controls.get( "2.16.840.1.113730.3.4.7" );
+        assertEquals( "2.16.840.1.113730.3.4.7", control.getOid() );
+        assertTrue( control instanceof EntryChange );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchResultEntry );
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
 
-        // Check the length
-        assertEquals( 0x54, bb.limit() );
+        ByteBuffer result = LdapEncoder.encodeMessageReverse( buffer, codec, searchResultEntry );
 
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
+        assertArrayEquals( stream.array(), result.array() );
     }
 
 
@@ -967,12 +867,11 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                         0x04, 0x00              // AttributeValue ::= OCTET STRING
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
-            new LdapMessageContainer<SearchResultEntryDecorator>( codec );
+        LdapMessageContainerDirect<SearchResultEntry> ldapMessageContainer =
+            new LdapMessageContainerDirect<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -994,25 +893,10 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
             assertTrue( attribute.contains( "" ) );
         }
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchResultEntry );
-
-        // Check the length
-        assertEquals( 0x39, bb.limit() );
-
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
-
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        SearchResultEntry response = new SearchResultEntryImpl( searchResultEntry.getMessageId() );
-        response.setEntry( new DefaultEntry(
-            "ou=contacts,dc=iktek,dc=com",
-            "objectClass", "" ) );
-
-        ByteBuffer result = LdapEncoder.encodeMessageReverse( buffer, codec, response );
+        ByteBuffer result = LdapEncoder.encodeMessageReverse( buffer, codec, searchResultEntry );
 
         assertArrayEquals( stream.array(), result.array() );
     }
@@ -1027,11 +911,11 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
-        ByteBuffer stream = ByteBuffer.allocate( 0x56 );
+        ByteBuffer stream = ByteBuffer.allocate( 0x5D );
 
         stream.put( new byte[]
             {
-                0x30, 0x54,                     // LDAPMessage ::=SEQUENCE {
+                0x30, 0x5B,                     // LDAPMessage ::=SEQUENCE {
                   0x02, 0x01, 0x01,             // messageID MessageID
                   0x64, 0x32,                   // CHOICE { ..., searchResEntry SearchResultEntry,
                                                 // ...
@@ -1048,19 +932,22 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                           'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 's', 's',
                         0x31, 0x02,             // vals SET OF AttributeValue }
                           0x04, 0x00,           // AttributeValue ::= OCTET STRING
-                    ( byte ) 0xA0, 0x1B,    // A control
-                      0x30, 0x19,
-                        0x04, 0x17,
-                          '2', '.', '1', '6', '.', '8', '4', '0', '.', '1', '.',
-                          '1', '1', '3', '7', '3', '0', '.', '3', '.', '4', '.', '2'
+                  ( byte ) 0xA0, 0x22,          // A control
+                    0x30, 0x20,
+                      0x04, 0x17,               // EntryChange response control
+                        '2', '.', '1', '6', '.', '8', '4', '0', '.', '1', '.', 
+                        '1', '1', '3', '7', '3', '0', '.', '3', '.', '4', '.', '7',
+                      0x04, 0x05,               // Control value
+                        0x30, 0x03,             // EntryChangeNotification ::= SEQUENCE {
+                          0x0A, 0x01, 0x01      //     changeType ENUMERATED {
+                                                //         add             (1),
             } );
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
-            new LdapMessageContainer<SearchResultEntryDecorator>( codec );
+        LdapMessageContainerDirect<SearchResultEntry> ldapMessageContainer =
+            new LdapMessageContainerDirect<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -1087,20 +974,15 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
 
         assertEquals( 1, controls.size() );
 
-        @SuppressWarnings("unchecked")
-        CodecControl<Control> control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) controls
-            .get( "2.16.840.1.113730.3.4.2" );
-        assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
+        Control control = controls.get( "2.16.840.1.113730.3.4.7" );
+        assertEquals( "2.16.840.1.113730.3.4.7", control.getOid() );
+        assertTrue( control instanceof EntryChange );
 
-        // Check the encoding
-        ByteBuffer bb = LdapEncoder.encodeMessage( codec, searchResultEntry );
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
 
-        // Check the length
-        assertEquals( 0x56, bb.limit() );
+        ByteBuffer result = LdapEncoder.encodeMessageReverse( buffer, codec, searchResultEntry );
 
-        String encodedPdu = Strings.dumpBytes( bb.array() );
-
-        assertEquals( encodedPdu, decodedPdu );
+        assertArrayEquals( stream.array(), result.array() );
     }
 }

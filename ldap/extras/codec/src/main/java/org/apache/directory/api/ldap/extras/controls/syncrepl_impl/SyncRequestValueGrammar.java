@@ -129,7 +129,7 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
                                 LOG.debug( I18n.msg( I18n.MSG_08100_MODE, modeEnum ) );
                             }
 
-                            container.getSyncRequestValueControl().setMode( modeEnum );
+                            container.getSyncRequestValue().setMode( modeEnum );
 
                             // We can have an END transition
                             container.setGrammarEndAllowed( true );
@@ -168,7 +168,7 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
                             LOG.debug( I18n.msg( I18n.MSG_08000_COOKIE, Strings.dumpBytes( cookie ) ) );
                         }
 
-                        container.getSyncRequestValueControl().setCookie( cookie );
+                        container.getSyncRequestValue().setCookie( cookie );
 
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
@@ -202,7 +202,7 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
                                 LOG.debug( I18n.msg( I18n.MSG_08104_RELOAD_HINT, reloadHint ) );
                             }
 
-                            container.getSyncRequestValueControl().setReloadHint( reloadHint );
+                            container.getSyncRequestValue().setReloadHint( reloadHint );
 
                             // We can have an END transition
                             container.setGrammarEndAllowed( true );
@@ -243,7 +243,7 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
                                 LOG.debug( I18n.msg( I18n.MSG_08104_RELOAD_HINT, reloadHint ) );
                             }
 
-                            container.getSyncRequestValueControl().setReloadHint( reloadHint );
+                            container.getSyncRequestValue().setReloadHint( reloadHint );
 
                             // We can have an END transition
                             container.setGrammarEndAllowed( true );

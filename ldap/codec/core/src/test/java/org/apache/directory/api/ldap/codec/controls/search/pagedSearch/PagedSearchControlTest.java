@@ -22,7 +22,6 @@ package org.apache.directory.api.ldap.codec.controls.search.pagedSearch;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.nio.ByteBuffer;
@@ -67,30 +66,18 @@ public class PagedSearchControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        PagedResultsDecorator decorator = new PagedResultsDecorator( codec );
-
-        PagedResults pagedSearch = ( PagedResults ) decorator.decode( bb.array() );
+        PagedResultsFactory factory = ( PagedResultsFactory ) codec.getResponseControlFactories().get( PagedResults.OID );
+        PagedResults pagedSearch = factory.newControl();
+        factory.decodeValue( pagedSearch, bb.array() );
 
         assertEquals( 32, pagedSearch.getSize() );
-        assertTrue( Arrays.equals( Strings.getBytesUtf8( "test" ),
-            pagedSearch.getCookie() ) );
-
-        bb.flip();
-
-        PagedResultsDecorator ctrl = new PagedResultsDecorator( codec );
-        ctrl.setSize( 32 );
-        ctrl.setCookie( Strings.getBytesUtf8( "test" ) );
-
-        ByteBuffer buffer = ctrl.encode( ByteBuffer.allocate( ctrl.computeLength() ) );
-        String decoded = Strings.dumpBytes( buffer.array() );
-        String expected = Strings.dumpBytes( bb.array() );
-        assertEquals( expected, decoded );
+        assertArrayEquals( Strings.getBytesUtf8( "test" ),
+            pagedSearch.getCookie() );
 
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        PagedResultsFactory factory = ( PagedResultsFactory ) codec.getRequestControlFactories().get( PagedResults.OID );
-        factory.encodeValue( asn1Buffer, ctrl );
+        factory.encodeValue( asn1Buffer, pagedSearch );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
@@ -110,9 +97,9 @@ public class PagedSearchControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        PagedResultsDecorator decorator = new PagedResultsDecorator( codec );
-
-        decorator.decode( bb.array() );
+        PagedResultsFactory factory = ( PagedResultsFactory ) codec.getResponseControlFactories().get( PagedResults.OID );
+        PagedResults pagedSearch = factory.newControl();
+        factory.decodeValue( pagedSearch, bb.array() );
     }
 
 
@@ -131,9 +118,9 @@ public class PagedSearchControlTest extends AbstractCodecServiceTest
         } );
         bb.flip();
 
-        PagedResultsDecorator decorator = new PagedResultsDecorator( codec );
-
-        decorator.decode( bb.array() );
+        PagedResultsFactory factory = ( PagedResultsFactory ) codec.getResponseControlFactories().get( PagedResults.OID );
+        PagedResults pagedSearch = factory.newControl();
+        factory.decodeValue( pagedSearch, bb.array() );
     }
 
 
@@ -150,9 +137,9 @@ public class PagedSearchControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        PagedResultsDecorator decorator = new PagedResultsDecorator( codec );
-
-        decorator.decode( bb.array() );
+        PagedResultsFactory factory = ( PagedResultsFactory ) codec.getResponseControlFactories().get( PagedResults.OID );
+        PagedResults pagedSearch = factory.newControl();
+        factory.decodeValue( pagedSearch, bb.array() );
     }
 
 
@@ -172,32 +159,28 @@ public class PagedSearchControlTest extends AbstractCodecServiceTest
         } );
         bb.flip();
 
-        PagedResultsDecorator decorator = new PagedResultsDecorator( codec );
-
-        PagedResults pagedSearch = ( PagedResults ) decorator.decode( bb.array() );
+        PagedResultsFactory factory = ( PagedResultsFactory ) codec.getResponseControlFactories().get( PagedResults.OID );
+        PagedResults pagedSearch = factory.newControl();
+        factory.decodeValue( pagedSearch, bb.array() );
 
         assertEquals( Integer.MAX_VALUE, pagedSearch.getSize() );
         assertTrue( Arrays.equals( Strings.getBytesUtf8( "test" ),
             pagedSearch.getCookie() ) );
 
-        bb.flip();
-
-        PagedResultsDecorator ctrl = new PagedResultsDecorator( codec );
-        ctrl.setSize( -1 );
-        ctrl.setCookie( Strings.getBytesUtf8( "test" ) );
-
-        ByteBuffer buffer = ctrl.encode( ByteBuffer.allocate( ctrl.computeLength() ) );
-        String decoded = Strings.dumpBytes( buffer.array() );
-        String expected = Strings.dumpBytes( bb.array() );
-        assertEquals( expected, decoded );
-
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        PagedResultsFactory factory = ( PagedResultsFactory ) codec.getResponseControlFactories().get( PagedResults.OID );
-        factory.encodeValue( asn1Buffer, ctrl );
+        factory.encodeValue( asn1Buffer, pagedSearch );
 
-        assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
+        assertArrayEquals( 
+            new byte[]
+                {
+                    0x30, 0x0C,
+                      0x02, 0x04, 
+                        0x7F, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF,
+                      0x04, 0x04,
+                        0x74, 0x65, 0x73, 0x74
+                },  asn1Buffer.getBytes().array() );
     }
 
 
@@ -217,9 +200,9 @@ public class PagedSearchControlTest extends AbstractCodecServiceTest
         } );
         bb.flip();
 
-        PagedResultsDecorator decorator = new PagedResultsDecorator( codec );
-
-        decorator.decode( bb.array() );
+        PagedResultsFactory factory = ( PagedResultsFactory ) codec.getResponseControlFactories().get( PagedResults.OID );
+        PagedResults pagedSearch = factory.newControl();
+        factory.decodeValue( pagedSearch, bb.array() );
     }
 
 
@@ -238,27 +221,17 @@ public class PagedSearchControlTest extends AbstractCodecServiceTest
         } );
         bb.flip();
 
-        PagedResultsDecorator decorator = new PagedResultsDecorator( codec );
-
-        PagedResults pagedSearch = ( PagedResults ) decorator.decode( bb.array() );
+        PagedResultsFactory factory = ( PagedResultsFactory ) codec.getResponseControlFactories().get( PagedResults.OID );
+        PagedResults pagedSearch = factory.newControl();
+        factory.decodeValue( pagedSearch, bb.array() );
 
         assertEquals( 32, pagedSearch.getSize() );
-        assertNull( pagedSearch.getCookie() );
-
-        PagedResultsDecorator ctrl = new PagedResultsDecorator( codec );
-        ctrl.setSize( 32 );
-        ctrl.setCookie( null );
-
-        ByteBuffer buffer = ctrl.encode( ByteBuffer.allocate( ctrl.computeLength() ) );
-        String decoded = Strings.dumpBytes( buffer.array() );
-        String expected = Strings.dumpBytes( bb.array() );
-        assertEquals( expected, decoded );
+        assertArrayEquals( Strings.EMPTY_BYTES, pagedSearch.getCookie() );
 
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        PagedResultsFactory factory = ( PagedResultsFactory ) codec.getResponseControlFactories().get( PagedResults.OID );
-        factory.encodeValue( asn1Buffer, ctrl );
+        factory.encodeValue( asn1Buffer, pagedSearch );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }

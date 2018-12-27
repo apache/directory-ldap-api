@@ -20,13 +20,14 @@
 package org.apache.directory.api.ldap.extras.controls.ad_impl;
 
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncRequest;
+import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncRequestImpl;
 import org.apache.directory.api.ldap.model.message.Control;
 
 
@@ -45,7 +46,7 @@ public class AdDirSyncRequestFactory extends AbstractControlFactory<AdDirSyncReq
      */
     public AdDirSyncRequestFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, AdDirSyncRequest.OID );
     }
 
 
@@ -53,29 +54,9 @@ public class AdDirSyncRequestFactory extends AbstractControlFactory<AdDirSyncReq
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public AdDirSyncRequest newControl()
     {
-        return AdDirSyncRequest.OID;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<AdDirSyncRequest> newCodecControl()
-    {
-        return new AdDirSyncRequestDecorator( codec );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<AdDirSyncRequest> newCodecControl( AdDirSyncRequest control )
-    {
-        return new AdDirSyncRequestDecorator( codec, control );
+        return new AdDirSyncRequestImpl();
     }
 
 
@@ -99,5 +80,15 @@ public class AdDirSyncRequestFactory extends AbstractControlFactory<AdDirSyncReq
 
         // Encode the SEQ
         BerValue.encodeSequence( buffer, start );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void decodeValue( Control control, byte[] controlBytes ) throws DecoderException
+    {
+        decodeValue( new AdDirSyncRequestContainer( control ), control, controlBytes );
     }
 }

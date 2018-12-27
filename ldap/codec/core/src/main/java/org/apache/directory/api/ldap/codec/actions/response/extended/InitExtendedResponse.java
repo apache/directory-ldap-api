@@ -22,9 +22,9 @@ package org.apache.directory.api.ldap.codec.actions.response.extended;
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.ExtendedResponseDecorator;
-import org.apache.directory.api.ldap.model.message.ExtendedResponseImpl;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.model.message.ExtendedResponse;
+import org.apache.directory.api.ldap.model.message.OpaqueExtendedResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitExtendedResponse extends GrammarAction<LdapMessageContainer<ExtendedResponseDecorator<?>>>
+public class InitExtendedResponse extends GrammarAction<LdapMessageContainerDirect<ExtendedResponse>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitExtendedResponse.class );
@@ -55,11 +55,13 @@ public class InitExtendedResponse extends GrammarAction<LdapMessageContainer<Ext
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<ExtendedResponseDecorator<?>> container )
+    public void action( LdapMessageContainerDirect<ExtendedResponse> container )
     {
         // Now, we can allocate the ExtendedResponse Object ( a generic one)
-        ExtendedResponseDecorator<?> extendedResponse = new ExtendedResponseDecorator<>(
-            container.getLdapCodecService(), new ExtendedResponseImpl( container.getMessageId() ) );
+        // We can't wait as we may have an extended response with no OID,
+        // and not value either.
+        ExtendedResponse extendedResponse = new OpaqueExtendedResponse();
+        extendedResponse.setMessageId( container.getMessageId() );
         container.setMessage( extendedResponse );
 
         if ( LOG.isDebugEnabled() )

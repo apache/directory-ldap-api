@@ -32,15 +32,11 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.UnbindRequestDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.UnbindRequest;
-import org.apache.directory.api.ldap.model.message.UnbindRequestImpl;
-import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -75,7 +71,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
+        Asn1Container ldapMessageContainer = new LdapMessageContainerDirect<Message>( codec );
 
         // Decode a BindRequest PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -101,7 +97,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
+        Asn1Container ldapMessageContainer = new LdapMessageContainerDirect<Message>( codec );
 
         // Decode a BindRequest PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -127,7 +123,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
+        Asn1Container ldapMessageContainer = new LdapMessageContainerDirect<Message>( codec );
 
         // Decode a BindRequest PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -154,7 +150,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
+        Asn1Container ldapMessageContainer = new LdapMessageContainerDirect<Message>( codec );
 
         // Decode a BindRequest PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -185,7 +181,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
             stream.flip();
 
             // Allocate a LdapMessage Container
-            Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
+            Asn1Container ldapMessageContainer = new LdapMessageContainerDirect<Message>( codec );
 
             // Decode a BindRequest PDU
             try
@@ -265,18 +261,13 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<UnbindRequestDecorator> container =
-            new LdapMessageContainer<UnbindRequestDecorator>( codec );
+        LdapMessageContainerDirect<UnbindRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
+ 
+        ldapDecoder.decode( stream, ldapMessageContainer );
 
-        ldapDecoder.decode( stream, container );
+        Message unbindRequest = ldapMessageContainer.getMessage();
 
-        Message message = container.getMessage();
-
-        assertEquals( 500, message.getMessageId() );
-
-        // Check the length
-        UnbindRequest unbindRequest = new UnbindRequestImpl();
-        unbindRequest.setMessageId( message.getMessageId() );
+        assertEquals( 500, unbindRequest.getMessageId() );
 
         // Check the reverse encoding
         Asn1Buffer buffer = new Asn1Buffer();

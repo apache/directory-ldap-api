@@ -46,7 +46,7 @@ public class StoreContentCount extends AbstractReadInteger<VirtualListViewReques
     @Override
     protected void setIntegerValue( int value, VirtualListViewRequestContainer vlvContainer )
     {
-        vlvContainer.getDecorator().setContentCount( value );
+        vlvContainer.getVirtualListViewRequest().setContentCount( value );
 
         // The last element is optional, we can quit here
         vlvContainer.setGrammarEndAllowed( true );

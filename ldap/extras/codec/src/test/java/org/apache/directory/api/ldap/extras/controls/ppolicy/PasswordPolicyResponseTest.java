@@ -31,7 +31,6 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
-import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyResponseDecorator;
 import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyResponseFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +46,7 @@ public class PasswordPolicyResponseTest extends AbstractCodecServiceTest
     @Before
     public void init()
     {
-        codec.registerRequestControl( new PasswordPolicyResponseFactory( codec ) );
+        codec.registerResponseControl( new PasswordPolicyResponseFactory( codec ) );
     }
 
     
@@ -67,21 +66,19 @@ public class PasswordPolicyResponseTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        PasswordPolicyResponseDecorator control = new PasswordPolicyResponseDecorator( codec );
-        PasswordPolicyResponse passwordPolicy = ( PasswordPolicyResponse ) control.decode( bb.array() );
+        PasswordPolicyResponseFactory factory = ( PasswordPolicyResponseFactory ) codec.getResponseControlFactories().
+            get( PasswordPolicyResponse.OID );
+        PasswordPolicyResponse passwordPolicyResponse = factory.newControl();
+        factory.decodeValue( passwordPolicyResponse, bb.array() );
 
-        assertEquals( 1, passwordPolicy.getTimeBeforeExpiration() );
-        assertEquals( 1, passwordPolicy.getPasswordPolicyError().getValue() );
 
-        ByteBuffer encoded = ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).encode(
-            ByteBuffer.allocate( ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).computeLength() ) );
-        assertArrayEquals( bb.array(), encoded.array() );
-        
+        assertEquals( 1, passwordPolicyResponse.getTimeBeforeExpiration() );
+        assertEquals( 1, passwordPolicyResponse.getPasswordPolicyError().getValue() );
+
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        PasswordPolicyResponseFactory factory = ( PasswordPolicyResponseFactory ) codec.getRequestControlFactories().get( PasswordPolicyResponse.OID );
-        factory.encodeValue( asn1Buffer, passwordPolicy );
+        factory.encodeValue( asn1Buffer, passwordPolicyResponse );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
 
@@ -104,21 +101,18 @@ public class PasswordPolicyResponseTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        PasswordPolicyResponseDecorator control = new PasswordPolicyResponseDecorator( codec );
-        PasswordPolicyResponse passwordPolicy = ( PasswordPolicyResponse ) control.decode( bb.array() );
+        PasswordPolicyResponseFactory factory = ( PasswordPolicyResponseFactory ) codec.getResponseControlFactories().
+            get( PasswordPolicyResponse.OID );
+        PasswordPolicyResponse passwordPolicyResponse = factory.newControl();
+        factory.decodeValue( passwordPolicyResponse, bb.array() );
 
-        assertEquals( 1, passwordPolicy.getGraceAuthNRemaining() );
-        assertEquals( 1, passwordPolicy.getPasswordPolicyError().getValue() );
+        assertEquals( 1, passwordPolicyResponse.getGraceAuthNRemaining() );
+        assertEquals( 1, passwordPolicyResponse.getPasswordPolicyError().getValue() );
 
-        ByteBuffer encoded = ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).encode(
-            ByteBuffer.allocate( ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).computeLength() ) );
-        assertArrayEquals( bb.array(), encoded.array() );
-        
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        PasswordPolicyResponseFactory factory = ( PasswordPolicyResponseFactory ) codec.getRequestControlFactories().get( PasswordPolicyResponse.OID );
-        factory.encodeValue( asn1Buffer, passwordPolicy );
+        factory.encodeValue( asn1Buffer, passwordPolicyResponse );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
@@ -138,20 +132,17 @@ public class PasswordPolicyResponseTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        PasswordPolicyResponseDecorator control = new PasswordPolicyResponseDecorator( codec );
-        PasswordPolicyResponse passwordPolicy = ( PasswordPolicyResponse ) control.decode( bb.array() );
+        PasswordPolicyResponseFactory factory = ( PasswordPolicyResponseFactory ) codec.getResponseControlFactories().
+            get( PasswordPolicyResponse.OID );
+        PasswordPolicyResponse passwordPolicyResponse = factory.newControl();
+        factory.decodeValue( passwordPolicyResponse, bb.array() );
 
-        assertEquals( 1, passwordPolicy.getTimeBeforeExpiration() );
+        assertEquals( 1, passwordPolicyResponse.getTimeBeforeExpiration() );
 
-        ByteBuffer encoded = ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).encode(
-            ByteBuffer.allocate( ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).computeLength() ) );
-        assertArrayEquals( bb.array(), encoded.array() );
-        
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        PasswordPolicyResponseFactory factory = ( PasswordPolicyResponseFactory ) codec.getRequestControlFactories().get( PasswordPolicyResponse.OID );
-        factory.encodeValue( asn1Buffer, passwordPolicy );
+        factory.encodeValue( asn1Buffer, passwordPolicyResponse );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
@@ -171,20 +162,17 @@ public class PasswordPolicyResponseTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        PasswordPolicyResponseDecorator control = new PasswordPolicyResponseDecorator( codec );
-        PasswordPolicyResponse passwordPolicy = ( PasswordPolicyResponse ) control.decode( bb.array() );
+        PasswordPolicyResponseFactory factory = ( PasswordPolicyResponseFactory ) codec.getResponseControlFactories().
+            get( PasswordPolicyResponse.OID );
+        PasswordPolicyResponse passwordPolicyResponse = factory.newControl();
+        factory.decodeValue( passwordPolicyResponse, bb.array() );
 
-        assertEquals( 1, passwordPolicy.getGraceAuthNRemaining() );
+        assertEquals( 1, passwordPolicyResponse.getGraceAuthNRemaining() );
 
-        ByteBuffer encoded = ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).encode(
-            ByteBuffer.allocate( ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).computeLength() ) );
-        assertArrayEquals( bb.array(), encoded.array() );
-        
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        PasswordPolicyResponseFactory factory = ( PasswordPolicyResponseFactory ) codec.getRequestControlFactories().get( PasswordPolicyResponse.OID );
-        factory.encodeValue( asn1Buffer, passwordPolicy );
+        factory.encodeValue( asn1Buffer, passwordPolicyResponse );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
@@ -204,20 +192,17 @@ public class PasswordPolicyResponseTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        PasswordPolicyResponseDecorator control = new PasswordPolicyResponseDecorator( codec );
-        PasswordPolicyResponse passwordPolicy = ( PasswordPolicyResponse ) control.decode( bb.array() );
+        PasswordPolicyResponseFactory factory = ( PasswordPolicyResponseFactory ) codec.getResponseControlFactories().
+            get( PasswordPolicyResponse.OID );
+        PasswordPolicyResponse passwordPolicyResponse = factory.newControl();
+        factory.decodeValue( passwordPolicyResponse, bb.array() );
 
-        assertEquals( 1, passwordPolicy.getPasswordPolicyError().getValue() );
+        assertEquals( 1, passwordPolicyResponse.getPasswordPolicyError().getValue() );
 
-        ByteBuffer encoded = ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).encode(
-            ByteBuffer.allocate( ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).computeLength() ) );
-        assertArrayEquals( bb.array(), encoded.array() );
-        
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        PasswordPolicyResponseFactory factory = ( PasswordPolicyResponseFactory ) codec.getRequestControlFactories().get( PasswordPolicyResponse.OID );
-        factory.encodeValue( asn1Buffer, passwordPolicy );
+        factory.encodeValue( asn1Buffer, passwordPolicyResponse );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }
@@ -235,20 +220,17 @@ public class PasswordPolicyResponseTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        PasswordPolicyResponseDecorator control = new PasswordPolicyResponseDecorator( codec );
-        PasswordPolicyResponse passwordPolicy = ( PasswordPolicyResponse ) control.decode( bb.array() );
+        PasswordPolicyResponseFactory factory = ( PasswordPolicyResponseFactory ) codec.getResponseControlFactories().
+            get( PasswordPolicyResponse.OID );
+        PasswordPolicyResponse passwordPolicyResponse = factory.newControl();
+        factory.decodeValue( passwordPolicyResponse, bb.array() );
 
-        assertNotNull( passwordPolicy );
+        assertNotNull( passwordPolicyResponse );
 
-        ByteBuffer encoded = ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).encode(
-            ByteBuffer.allocate( ( ( PasswordPolicyResponseDecorator ) passwordPolicy ).computeLength() ) );
-        assertArrayEquals( bb.array(), encoded.array() );
-        
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
-        PasswordPolicyResponseFactory factory = ( PasswordPolicyResponseFactory ) codec.getRequestControlFactories().get( PasswordPolicyResponse.OID );
-        factory.encodeValue( asn1Buffer, passwordPolicy );
+        factory.encodeValue( asn1Buffer, passwordPolicyResponse );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
     }

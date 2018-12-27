@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.codec.api;
 
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.model.message.Control;
 
@@ -43,22 +44,11 @@ public interface ControlFactory<C extends Control>
 
 
     /**
-     * Creates and returns a decorated version of the Control.
+     * Creates and returns a version of the Control.
      *
      * @return The {@link CodecControl} decorated version of the Control.
      */
-    CodecControl<C> newCodecControl();
-
-
-    /**
-     * Decorates an existing control. Implementors should check to make sure
-     * the supplied Control has not already been decorated to prevent needless
-     * decorator nesting.
-     *
-     * @param control The {@link Control} to be decorated.
-     * @return The decorator wrapping the Control.
-     */
-    CodecControl<C> newCodecControl( C control );
+    Control newControl();
 
 
     /**
@@ -68,4 +58,25 @@ public interface ControlFactory<C extends Control>
      * @param control The control to encode
      */
     void encodeValue( Asn1Buffer buffer, Control control );
+    
+    
+
+
+    /**
+     * Decode a Control's value. It will feed the Control.
+     * 
+     *  @param container The Asn1Container containing the control to feed
+     *  @param control The control to feed
+     *  @param controlBytes The data to decode
+     */
+    void decodeValue( ControlContainer container, Control control, byte[] controlBytes ) throws DecoderException;
+    
+    
+    /**
+     * Decode a Control's value. It will feed the Control.
+     * 
+     *  @param control The control to feed
+     *  @param controlBytes The data to decode
+     */
+    void decodeValue( Control control, byte[] controlBytes ) throws DecoderException;
 }

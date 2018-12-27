@@ -24,9 +24,9 @@ import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.AttributeValueAssertion;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.search.AttributeValueAssertionFilter;
+import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitAssertionValueFilter extends GrammarAction<LdapMessageContainer<SearchRequestDecorator>>
+public class InitAssertionValueFilter extends GrammarAction<LdapMessageContainerDirect<SearchRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitAssertionValueFilter.class );
@@ -54,17 +54,15 @@ public class InitAssertionValueFilter extends GrammarAction<LdapMessageContainer
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<SearchRequestDecorator> container )
+    public void action( LdapMessageContainerDirect<SearchRequest> container )
     {
-        SearchRequestDecorator searchRequestDecorator = container.getMessage();
-
         TLV tlv = container.getCurrentTLV();
 
         // The value can be null.
         byte[] assertion = tlv.getValue().getData();
         
         AttributeValueAssertionFilter terminalFilter = ( AttributeValueAssertionFilter )
-            searchRequestDecorator.getTerminalFilter();
+            container.getTerminalFilter();
         AttributeValueAssertion attributeValueAssertion = terminalFilter.getAssertion();
 
         if ( assertion == null )
@@ -78,7 +76,7 @@ public class InitAssertionValueFilter extends GrammarAction<LdapMessageContainer
 
         // We now have to get back to the nearest filter which is
         // not terminal.
-        searchRequestDecorator.unstackFilters( container );
+        container.unstackFilters();
 
         if ( LOG.isDebugEnabled() )
         {

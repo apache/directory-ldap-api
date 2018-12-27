@@ -25,11 +25,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.nio.ByteBuffer;
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.controls.ProxiedAuthz;
-import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -50,7 +49,7 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
      * Test the decoding of a ProxiedAuthzControl with a DN user
      */
     @Test
-    public void testDecodeProxiedAuthzControlDnSuccess() throws Exception
+    public void testDecodeProxiedAuthzControlDnSuccess() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x14 );
         bb.put( new byte[]
@@ -59,20 +58,18 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
                 'd', 'n', ':', 'd', 'c', '=', 'e', 'x', 'a', 'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm'
             } );
         bb.flip();
+        
+        ProxiedAuthzFactory factory = ( ProxiedAuthzFactory ) codec.getRequestControlFactories().
+            get( ProxiedAuthz.OID );
+        ProxiedAuthz control = factory.newControl();
+        factory.decodeValue( control, bb.array() );
 
-        ProxiedAuthzDecorator decorator = new ProxiedAuthzDecorator( codec );
-
-        ProxiedAuthz proxiedAuthz = ( ProxiedAuthz ) decorator.decode( bb.array() );
-
-        assertEquals( "dn:dc=example,dc=com", proxiedAuthz.getAuthzId() );
+        assertEquals( "dn:dc=example,dc=com", control.getAuthzId() );
 
         // test reverse encoding
         Asn1Buffer buffer = new Asn1Buffer();
 
-        ControlFactory<ProxiedAuthz> factory =
-            ( ControlFactory<ProxiedAuthz> ) codec.getRequestControlFactories().get( ProxiedAuthz.OID );
-
-        factory.encodeValue( buffer, proxiedAuthz );
+        factory.encodeValue( buffer, control );
 
         assertArrayEquals( bb.array(), buffer.getBytes().array() );
     }
@@ -82,7 +79,7 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
      * Test the decoding of a ProxiedAuthzControl with a normal user
      */
     @Test
-    public void testDecodeProxiedAuthzControlUSuccess() throws Exception
+    public void testDecodeProxiedAuthzControlUSuccess() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0C );
         bb.put( new byte[]
@@ -92,19 +89,17 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        ProxiedAuthzDecorator decorator = new ProxiedAuthzDecorator( codec );
+        ProxiedAuthzFactory factory = ( ProxiedAuthzFactory ) codec.getRequestControlFactories().
+            get( ProxiedAuthz.OID );
+        ProxiedAuthz control = factory.newControl();
+        factory.decodeValue( control, bb.array() );
 
-        ProxiedAuthz proxiedAuthz = ( ProxiedAuthz ) decorator.decode( bb.array() );
-
-        assertEquals( "u:el\u00e9charny", proxiedAuthz.getAuthzId() );
+        assertEquals( "u:el\u00e9charny", control.getAuthzId() );
 
         // test reverse encoding
         Asn1Buffer buffer = new Asn1Buffer();
 
-        ControlFactory<ProxiedAuthz> factory =
-            ( ControlFactory<ProxiedAuthz> ) codec.getRequestControlFactories().get( ProxiedAuthz.OID );
-
-        factory.encodeValue( buffer, proxiedAuthz );
+        factory.encodeValue( buffer, control );
 
         assertArrayEquals( bb.array(), buffer.getBytes().array() );
     }
@@ -114,7 +109,7 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
      * Test the decoding of a ProxiedAuthzControl with a anonymous user
      */
     @Test
-    public void testDecodeProxiedAuthzControlAnonymousSuccess() throws Exception
+    public void testDecodeProxiedAuthzControlAnonymousSuccess() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x00 );
         bb.put( new byte[]
@@ -123,19 +118,17 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        ProxiedAuthzDecorator decorator = new ProxiedAuthzDecorator( codec );
+        ProxiedAuthzFactory factory = ( ProxiedAuthzFactory ) codec.getRequestControlFactories().
+            get( ProxiedAuthz.OID );
+        ProxiedAuthz control = factory.newControl();
+        factory.decodeValue( control, bb.array() );
 
-        ProxiedAuthz proxiedAuthz = ( ProxiedAuthz ) decorator.decode( bb.array() );
-
-        assertEquals( "", proxiedAuthz.getAuthzId() );
+        assertEquals( "", control.getAuthzId() );
 
         // test reverse encoding
         Asn1Buffer buffer = new Asn1Buffer();
 
-        ControlFactory<ProxiedAuthz> factory =
-            ( ControlFactory<ProxiedAuthz> ) codec.getRequestControlFactories().get( ProxiedAuthz.OID );
-
-        factory.encodeValue( buffer, proxiedAuthz );
+        factory.encodeValue( buffer, control );
 
         assertArrayEquals( bb.array(), buffer.getBytes().array() );
     }
@@ -144,8 +137,8 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a ProxiedAuthzControl with a wrong DN user
      */
-    @Test( expected = RuntimeException.class)
-    public void testDecodeProxiedAuthzControlWrongDn() throws Exception
+    @Test( expected = DecoderException.class)
+    public void testDecodeProxiedAuthzControlWrongDn() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x10 );
         bb.put( new byte[]
@@ -155,17 +148,18 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        ProxiedAuthzDecorator decorator = new ProxiedAuthzDecorator( codec );
-
-        decorator.decode( bb.array() );
+        ProxiedAuthzFactory factory = ( ProxiedAuthzFactory ) codec.getRequestControlFactories().
+            get( ProxiedAuthz.OID );
+        ProxiedAuthz control = factory.newControl();
+        factory.decodeValue( control, bb.array() );
     }
 
 
     /**
      * Test the decoding of a ProxiedAuthzControl with a wrong user
      */
-    @Test( expected = RuntimeException.class)
-    public void testDecodeProxiedAuthzControlWrongAuthzId() throws Exception
+    @Test( expected = DecoderException.class )
+    public void testDecodeProxiedAuthzControlWrongAuthzId() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x08 );
         bb.put( new byte[]
@@ -175,9 +169,10 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        ProxiedAuthzDecorator decorator = new ProxiedAuthzDecorator( codec );
-
-        decorator.decode( bb.array() );
+        ProxiedAuthzFactory factory = ( ProxiedAuthzFactory ) codec.getRequestControlFactories().
+            get( ProxiedAuthz.OID );
+        ProxiedAuthz control = factory.newControl();
+        factory.decodeValue( control, bb.array() );
     }
 
 
@@ -185,7 +180,7 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
      * Test encoding of a ProxiedAuthzControl.
      */
     @Test
-    public void testEncodeProxiedDnAuthzControl() throws Exception
+    public void testEncodeProxiedDnAuthzControl() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x14 );
         bb.put( new byte[]
@@ -194,24 +189,17 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
                   'd', 'n', ':', 'd', 'c', '=', 'e', 'x', 'a', 'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm'
             } );
 
-        String expected = Strings.dumpBytes( bb.array() );
         bb.flip();
 
-        ProxiedAuthzDecorator decorator = new ProxiedAuthzDecorator( codec );
-
-        ProxiedAuthz proxiedAuthz = decorator.getDecorated();
-        proxiedAuthz.setAuthzId( "dn:dc=example,dc=com" );
-        bb = decorator.encode( ByteBuffer.allocate( decorator.computeLength() ) );
-        String decoded = Strings.dumpBytes( bb.array() );
-        assertEquals( expected, decoded );
+        ProxiedAuthzFactory factory = ( ProxiedAuthzFactory ) codec.getRequestControlFactories().
+            get( ProxiedAuthz.OID );
+        ProxiedAuthz control = factory.newControl();
+        factory.decodeValue( control, bb.array() );
 
         // test reverse encoding
         Asn1Buffer buffer = new Asn1Buffer();
 
-        ControlFactory<ProxiedAuthz> factory =
-            ( ControlFactory<ProxiedAuthz> ) codec.getRequestControlFactories().get( ProxiedAuthz.OID );
-
-        factory.encodeValue( buffer, proxiedAuthz );
+        factory.encodeValue( buffer, control );
 
         assertArrayEquals( bb.array(), buffer.getBytes().array() );
     }
@@ -221,7 +209,7 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
      * Test encoding of a ProxiedAuthzControl.
      */
     @Test
-    public void testEncodeProxiedUserAuthzControl() throws Exception
+    public void testEncodeProxiedUserAuthzControl() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0C );
         bb.put( new byte[]
@@ -230,24 +218,17 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
                 'u', ':', 'e', 'l', (byte)0xc3, (byte)0xa9, 'c', 'h', 'a', 'r', 'n', 'y'
             } );
 
-        String expected = Strings.dumpBytes( bb.array() );
         bb.flip();
 
-        ProxiedAuthzDecorator decorator = new ProxiedAuthzDecorator( codec );
-
-        ProxiedAuthz proxiedAuthz = decorator.getDecorated();
-        proxiedAuthz.setAuthzId( "u:el\u00e9charny" );
-        bb = decorator.encode( ByteBuffer.allocate( decorator.computeLength() ) );
-        String decoded = Strings.dumpBytes( bb.array() );
-        assertEquals( expected, decoded );
+        ProxiedAuthzFactory factory = ( ProxiedAuthzFactory ) codec.getRequestControlFactories().
+            get( ProxiedAuthz.OID );
+        ProxiedAuthz control = factory.newControl();
+        factory.decodeValue( control, bb.array() );
 
         // test reverse encoding
         Asn1Buffer buffer = new Asn1Buffer();
-
-        ControlFactory<ProxiedAuthz> factory =
-            ( ControlFactory<ProxiedAuthz> ) codec.getRequestControlFactories().get( ProxiedAuthz.OID );
-
-        factory.encodeValue( buffer, proxiedAuthz );
+        
+        factory.encodeValue( buffer, control );
 
         assertArrayEquals( bb.array(), buffer.getBytes().array() );
     }
@@ -257,7 +238,7 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
      * Test encoding of a ProxiedAuthzControl.
      */
     @Test
-    public void testEncodeProxiedAnonymousAuthzControl() throws Exception
+    public void testEncodeProxiedAnonymousAuthzControl() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x00 );
         bb.put( new byte[]
@@ -265,24 +246,18 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
                 // ProxiedAuthzNotification ::= anonymous
             } );
 
-        String expected = Strings.dumpBytes( bb.array() );
         bb.flip();
 
-        ProxiedAuthzDecorator decorator = new ProxiedAuthzDecorator( codec );
+        ProxiedAuthzFactory factory = ( ProxiedAuthzFactory ) codec.getRequestControlFactories().
+            get( ProxiedAuthz.OID );
+        ProxiedAuthz control = factory.newControl();
+        factory.decodeValue( control, bb.array() );
 
-        ProxiedAuthz proxiedAuthz = decorator.getDecorated();
-        proxiedAuthz.setAuthzId( "" );
-        bb = decorator.encode( ByteBuffer.allocate( decorator.computeLength() ) );
-        String decoded = Strings.dumpBytes( bb.array() );
-        assertEquals( expected, decoded );
 
         // test reverse encoding
         Asn1Buffer buffer = new Asn1Buffer();
 
-        ControlFactory<ProxiedAuthz> factory =
-            ( ControlFactory<ProxiedAuthz> ) codec.getRequestControlFactories().get( ProxiedAuthz.OID );
-
-        factory.encodeValue( buffer, proxiedAuthz );
+        factory.encodeValue( buffer, control );
 
         assertArrayEquals( bb.array(), buffer.getBytes().array() );
     }

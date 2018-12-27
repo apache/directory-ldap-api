@@ -24,9 +24,8 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
-import org.apache.directory.api.ldap.codec.decorators.ModifyDnRequestDecorator;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.ModifyDnRequest;
 import org.apache.directory.api.ldap.model.message.ModifyDnResponseImpl;
@@ -50,7 +49,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreModifyDnRequestNewRdn extends GrammarAction<LdapMessageContainer<ModifyDnRequestDecorator>>
+public class StoreModifyDnRequestNewRdn extends GrammarAction<LdapMessageContainerDirect<ModifyDnRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreModifyDnRequestNewRdn.class );
@@ -68,7 +67,7 @@ public class StoreModifyDnRequestNewRdn extends GrammarAction<LdapMessageContain
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainer<ModifyDnRequestDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<ModifyDnRequest> container ) throws DecoderException
     {
         ModifyDnRequest modifyDnRequest = container.getMessage();
 
@@ -77,8 +76,6 @@ public class StoreModifyDnRequestNewRdn extends GrammarAction<LdapMessageContain
 
         // We have to handle the special case of a 0 length matched
         // newDN
-        Rdn newRdn;
-
         if ( tlv.getLength() == 0 )
         {
             String msg = I18n.err( I18n.ERR_05126_RDN_MUST_NOT_BE_NULL );
@@ -96,7 +93,8 @@ public class StoreModifyDnRequestNewRdn extends GrammarAction<LdapMessageContain
             try
             {
                 Dn dn = new Dn( dnStr );
-                newRdn = dn.getRdn( dn.size() - 1 );
+                Rdn newRdn = dn.getRdn( dn.size() - 1 );
+                modifyDnRequest.setNewRdn( newRdn );
             }
             catch ( LdapInvalidDnException ine )
             {
@@ -107,13 +105,11 @@ public class StoreModifyDnRequestNewRdn extends GrammarAction<LdapMessageContain
                 throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_DN_SYNTAX,
                     modifyDnRequest.getName(), ine );
             }
-
-            modifyDnRequest.setNewRdn( newRdn );
         }
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( I18n.msg( I18n.MSG_05138_MODIFYING_WITH_NEW_RDN, newRdn ) );
+            LOG.debug( I18n.msg( I18n.MSG_05138_MODIFYING_WITH_NEW_RDN, modifyDnRequest.getNewRdn() ) );
         }
     }
 }

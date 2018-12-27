@@ -21,8 +21,9 @@ package org.apache.directory.api.ldap.extras.controls.ad_impl;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
-import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.ControlContainer;
 import org.apache.directory.api.ldap.extras.controls.ad.AdPolicyHints;
+import org.apache.directory.api.ldap.model.message.Control;
 
 
 /**
@@ -30,64 +31,31 @@ import org.apache.directory.api.ldap.extras.controls.ad.AdPolicyHints;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AdPolicyHintsContainer extends AbstractContainer
+public class AdPolicyHintsContainer extends AbstractContainer implements ControlContainer
 {
-    private AdPolicyHintsDecorator control;
-
-    private LdapApiService codec;
-
+    /** adPolicyHints request control */
+    private Control control;
 
     /**
      * Creates a new AdPolicyHintsContainer instance
      *
-     * @param codec The LDAP Service to use
+     * @param control The AdPolicyHints control to store
      */
-    public AdPolicyHintsContainer( LdapApiService codec )
+    public AdPolicyHintsContainer( Control control )
     {
         super();
-        this.codec = codec;
         setGrammar( AdPolicyHintsGrammar.getInstance() );
         setTransition( AdPolicyHintsStates.START_STATE );
-    }
-
-
-    /**
-     * Creates a new AdPolicyHintsContainer instance
-     *
-     * @param control The AdPolicyHints control
-     * @param codec The LDAP Service to use
-     */
-    public AdPolicyHintsContainer( AdPolicyHintsDecorator control, LdapApiService codec )
-    {
-        this( codec );
-        decorate( control );
+        this.control = control;
     }
 
 
     /**
      * @return The AdPolicyHints control
      */
-    public AdPolicyHintsDecorator getDecorator()
+    public AdPolicyHints getAdPolicyHints()
     {
-        return control;
-    }
-
-
-    /**
-     * Decorate the AdPolicyHints control
-     *
-     * @param control The control to decorate
-     */
-    public void decorate( AdPolicyHints control )
-    {
-        if ( control instanceof AdPolicyHintsDecorator )
-        {
-            this.control = ( AdPolicyHintsDecorator ) control;
-        }
-        else
-        {
-            this.control = new AdPolicyHintsDecorator( codec, control );
-        }
+        return ( AdPolicyHints ) control;
     }
 
 
@@ -96,7 +64,7 @@ public class AdPolicyHintsContainer extends AbstractContainer
      *
      * @param control The AdPolicyHints control
      */
-    public void setAdPolicyHintsRequestControl( AdPolicyHintsDecorator control )
+    public void setControl( Control control )
     {
         this.control = control;
     }

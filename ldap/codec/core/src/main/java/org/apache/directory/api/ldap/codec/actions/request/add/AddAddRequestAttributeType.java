@@ -24,10 +24,12 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
-import org.apache.directory.api.ldap.codec.decorators.AddRequestDecorator;
+import org.apache.directory.api.ldap.model.entry.Attribute;
+import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.message.AddRequest;
 import org.apache.directory.api.ldap.model.message.AddResponseImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.util.Strings;
@@ -44,7 +46,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AddAddRequestAttributeType extends GrammarAction<LdapMessageContainer<AddRequestDecorator>>
+public class AddAddRequestAttributeType extends GrammarAction<LdapMessageContainerDirect<AddRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( AddAddRequestAttributeType.class );
@@ -62,9 +64,9 @@ public class AddAddRequestAttributeType extends GrammarAction<LdapMessageContain
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainer<AddRequestDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<AddRequest> container ) throws DecoderException
     {
-        AddRequestDecorator addRequest = container.getMessage();
+        AddRequest addRequest = container.getMessage();
 
         TLV tlv = container.getCurrentTLV();
 
@@ -84,7 +86,15 @@ public class AddAddRequestAttributeType extends GrammarAction<LdapMessageContain
 
         try
         {
-            addRequest.addAttributeType( type );
+            Attribute attribute = addRequest.getEntry().get( type );
+            
+            if ( attribute == null )
+            {
+                attribute = new DefaultAttribute( type );
+                addRequest.getEntry().add( attribute );
+            }
+            
+            container.setCurrentAttribute( attribute );
         }
         catch ( LdapException ne )
         {

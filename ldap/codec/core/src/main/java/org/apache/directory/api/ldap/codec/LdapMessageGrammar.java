@@ -27,17 +27,13 @@ import static org.apache.directory.api.asn1.ber.tlv.UniversalTag.OCTET_STRING;
 import static org.apache.directory.api.asn1.ber.tlv.UniversalTag.SEQUENCE;
 import static org.apache.directory.api.asn1.ber.tlv.UniversalTag.SET;
 
-import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.actions.CheckNotNullLength;
 import org.apache.directory.api.asn1.ber.grammar.AbstractGrammar;
 import org.apache.directory.api.asn1.ber.grammar.Grammar;
-import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.grammar.GrammarTransition;
-import org.apache.directory.api.asn1.ber.tlv.TLV;
-import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.actions.AllowGrammarEnd;
 import org.apache.directory.api.ldap.codec.actions.CheckLengthNotNull;
-import org.apache.directory.api.ldap.codec.actions.controls.AddControl;
+import org.apache.directory.api.ldap.codec.actions.controls.StoreControlName;
 import org.apache.directory.api.ldap.codec.actions.controls.InitControls;
 import org.apache.directory.api.ldap.codec.actions.controls.StoreControlCriticality;
 import org.apache.directory.api.ldap.codec.actions.controls.StoreControlValue;
@@ -88,7 +84,6 @@ import org.apache.directory.api.ldap.codec.actions.request.search.StoreSearchReq
 import org.apache.directory.api.ldap.codec.actions.request.search.StoreSearchRequestSizeLimit;
 import org.apache.directory.api.ldap.codec.actions.request.search.StoreSearchRequestTimeLimit;
 import org.apache.directory.api.ldap.codec.actions.request.search.StoreSearchRequestTypesOnly;
-import org.apache.directory.api.ldap.codec.actions.request.search.StoreTypeMatchingRule;
 import org.apache.directory.api.ldap.codec.actions.request.search.filter.InitAndFilter;
 import org.apache.directory.api.ldap.codec.actions.request.search.filter.InitApproxMatchFilter;
 import org.apache.directory.api.ldap.codec.actions.request.search.filter.InitAssertionValueFilter;
@@ -106,7 +101,9 @@ import org.apache.directory.api.ldap.codec.actions.request.search.filter.StoreFi
 import org.apache.directory.api.ldap.codec.actions.request.search.filter.StoreInitial;
 import org.apache.directory.api.ldap.codec.actions.request.search.filter.StoreMatchValue;
 import org.apache.directory.api.ldap.codec.actions.request.search.filter.StoreMatchingRuleDnAttributes;
+import org.apache.directory.api.ldap.codec.actions.request.search.filter.StoreMatchingRuleId;
 import org.apache.directory.api.ldap.codec.actions.request.search.filter.StoreSubstringFilterType;
+import org.apache.directory.api.ldap.codec.actions.request.search.filter.StoreMatchingRuleType;
 import org.apache.directory.api.ldap.codec.actions.request.unbind.InitUnbindRequest;
 import org.apache.directory.api.ldap.codec.actions.response.add.InitAddResponse;
 import org.apache.directory.api.ldap.codec.actions.response.bind.InitBindResponse;
@@ -128,13 +125,10 @@ import org.apache.directory.api.ldap.codec.actions.response.search.entry.StoreSe
 import org.apache.directory.api.ldap.codec.actions.response.search.entry.StoreSearchResultEntryObjectName;
 import org.apache.directory.api.ldap.codec.actions.response.search.reference.InitSearchResultReference;
 import org.apache.directory.api.ldap.codec.actions.response.search.reference.StoreReference;
-import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
-import org.apache.directory.api.ldap.codec.search.ExtensibleMatchFilter;
-import org.apache.directory.api.ldap.model.message.Message;
-import org.apache.directory.api.util.Strings;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.model.message.AbstractMessage;
+import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -147,13 +141,13 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public final class LdapMessageGrammar extends
-    AbstractGrammar<LdapMessageContainer<AbstractMessageDecorator<? extends Message>>>
+    AbstractGrammar<LdapMessageContainerDirect<AbstractMessage>>
 {
     /** The logger */
     static final Logger LOG = LoggerFactory.getLogger( LdapMessageGrammar.class );
 
     /** The instance of grammar. LdapMessageGrammar is a singleton */
-    private static Grammar<LdapMessageContainer<AbstractMessageDecorator<? extends Message>>> instance =
+    private static Grammar<LdapMessageContainerDirect<AbstractMessage>> instance =
         new LdapMessageGrammar();
 
 
@@ -182,7 +176,7 @@ public final class LdapMessageGrammar extends
         //
         // We will just check that the length is not null
         super.transitions[LdapStatesEnum.START_STATE.ordinal()][SEQUENCE.getValue()] =
-            new GrammarTransition<LdapMessageContainer<AbstractMessageDecorator<? extends Message>>>(
+            new GrammarTransition(
                 LdapStatesEnum.START_STATE,
                 LdapStatesEnum.LDAP_MESSAGE_STATE,
                 SEQUENCE,
@@ -202,7 +196,7 @@ public final class LdapMessageGrammar extends
         // The message ID will be temporarily stored in the container, because we can't store it
         // into an object.
         super.transitions[LdapStatesEnum.LDAP_MESSAGE_STATE.ordinal()][INTEGER.getValue()] =
-            new GrammarTransition<LdapMessageContainer<AbstractMessageDecorator<? extends Message>>>(
+            new GrammarTransition(
                 LdapStatesEnum.LDAP_MESSAGE_STATE,
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 INTEGER,
@@ -2260,7 +2254,7 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.CONTROL_STATE,
                 LdapStatesEnum.CONTROL_TYPE_STATE,
                 OCTET_STRING,
-                new AddControl() );
+                new StoreControlName() );
 
         // ============================================================================================
         // Transition from ControlType to Control Criticality
@@ -3783,7 +3777,7 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.TYPE_SUBSTRING_STATE,
                 LdapStatesEnum.SUBSTRINGS_STATE,
                 SEQUENCE,
-                new CheckNotNullLength<LdapMessageContainer<SearchRequestDecorator>>() );
+                new CheckNotNullLength<LdapMessageContainerDirect<SearchRequest>>() );
 
         // --------------------------------------------------------------------------------------------
         // Transition from substrings to Initial
@@ -4853,34 +4847,8 @@ public final class LdapMessageGrammar extends
         // Store the matching rule ID
         super.transitions[LdapStatesEnum.EXTENSIBLE_MATCH_STATE.ordinal()][LdapCodecConstants.MATCHING_RULE_ID_TAG] = new GrammarTransition(
             LdapStatesEnum.EXTENSIBLE_MATCH_STATE, LdapStatesEnum.MATCHING_RULE_STATE,
-            LdapCodecConstants.MATCHING_RULE_ID_TAG, new GrammarAction<LdapMessageContainer<SearchRequestDecorator>>(
-                "Store matching rule Value" )
-            {
-                @Override
-                public void action( LdapMessageContainer<SearchRequestDecorator> container ) throws DecoderException
-                {
-                    SearchRequestDecorator searchRequest = container.getMessage();
-
-                    TLV tlv = container.getCurrentTLV();
-
-                    // Store the value.
-                    ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter )
-                        searchRequest.getTerminalFilter();
-
-                    if ( tlv.getLength() == 0 )
-                    {
-                        String msg = I18n.err( I18n.ERR_05001_EMPTY_MATCHING_RULE );
-                        LOG.error( msg );
-
-                        // It will generate a PROTOCOL_ERROR
-                        throw new DecoderException( msg );
-                    }
-                    else
-                    {
-                        extensibleMatchFilter.setMatchingRule( Strings.utf8ToString( tlv.getValue().getData() ) );
-                    }
-                }
-            } );
+            LdapCodecConstants.MATCHING_RULE_ID_TAG, 
+            new StoreMatchingRuleId() );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Extensible Match to type matching rule
@@ -4900,7 +4868,7 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.EXTENSIBLE_MATCH_STATE,
                 LdapStatesEnum.TYPE_MATCHING_RULE_STATE,
                 LdapCodecConstants.MATCHING_RULE_TYPE_TAG,
-                new StoreTypeMatchingRule() );
+                new StoreMatchingRuleType() );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Extensible Match to match value
@@ -4942,7 +4910,7 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MATCHING_RULE_STATE,
                 LdapStatesEnum.TYPE_MATCHING_RULE_STATE,
                 LdapCodecConstants.MATCHING_RULE_TYPE_TAG,
-                new StoreTypeMatchingRule() );
+                new StoreMatchingRuleType() );
 
         // --------------------------------------------------------------------------------------------
         // Transition from matching rule to match value

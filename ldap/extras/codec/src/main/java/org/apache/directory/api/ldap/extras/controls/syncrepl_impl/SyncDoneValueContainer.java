@@ -21,8 +21,9 @@ package org.apache.directory.api.ldap.extras.controls.syncrepl_impl;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
-import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.ControlContainer;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValue;
+import org.apache.directory.api.ldap.model.message.Control;
 
 
 /**
@@ -31,39 +32,19 @@ import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneV
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SyncDoneValueContainer extends AbstractContainer
+public class SyncDoneValueContainer extends AbstractContainer implements ControlContainer
 {
     /** syncDoneValue*/
-    private SyncDoneValue control;
-
-    private LdapApiService codec;
-
+    private Control control;
 
     /**
      * Creates a new SyncDoneValueControlContainer object.
      *
-     * @param codec The LDAP Service to use
+     * @param control The control to store
      */
-    public SyncDoneValueContainer( LdapApiService codec )
+    public SyncDoneValueContainer( Control control )
     {
         super();
-        this.codec = codec;
-        this.control = new SyncDoneValueDecorator( codec );
-        setGrammar( SyncDoneValueGrammar.getInstance() );
-        setTransition( SyncDoneValueStatesEnum.START_STATE );
-    }
-
-
-    /**
-     * Creates a new SyncDoneValueControlContainer object.
-     *
-     * @param codec The LDAP Service to use
-     * @param control The control to decorate
-     */
-    public SyncDoneValueContainer( LdapApiService codec, SyncDoneValue control )
-    {
-        super();
-        this.codec = codec;
         this.control = control;
         setGrammar( SyncDoneValueGrammar.getInstance() );
         setTransition( SyncDoneValueStatesEnum.START_STATE );
@@ -73,9 +54,9 @@ public class SyncDoneValueContainer extends AbstractContainer
     /**
      * @return the SyncDoneValueControlCodec object
      */
-    public SyncDoneValue getSyncDoneValueControl()
+    public SyncDoneValue getSyncDoneValue()
     {
-        return control;
+        return ( SyncDoneValue ) control;
     }
 
 
@@ -85,18 +66,9 @@ public class SyncDoneValueContainer extends AbstractContainer
      * 
      * @param control the SyncDoneValueControlCodec to set.
      */
-    public void setSyncDoneValueControl( SyncDoneValue control )
+    public void setControl( Control control )
     {
         this.control = control;
-    }
-
-
-    /**
-     * @return The LDAP API service
-     */
-    public LdapApiService getCodecService()
-    {
-        return codec;
     }
 
 
@@ -109,5 +81,4 @@ public class SyncDoneValueContainer extends AbstractContainer
         super.clean();
         control = null;
     }
-
 }

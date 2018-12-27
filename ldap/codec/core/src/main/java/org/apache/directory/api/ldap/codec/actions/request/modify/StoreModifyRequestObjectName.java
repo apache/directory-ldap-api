@@ -24,9 +24,8 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
-import org.apache.directory.api.ldap.codec.decorators.ModifyRequestDecorator;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.ModifyRequest;
 import org.apache.directory.api.ldap.model.message.ModifyResponseImpl;
@@ -46,7 +45,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreModifyRequestObjectName extends GrammarAction<LdapMessageContainer<ModifyRequestDecorator>>
+public class StoreModifyRequestObjectName extends GrammarAction<LdapMessageContainerDirect<ModifyRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreModifyRequestObjectName.class );
@@ -64,10 +63,9 @@ public class StoreModifyRequestObjectName extends GrammarAction<LdapMessageConta
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainer<ModifyRequestDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<ModifyRequest> container ) throws DecoderException
     {
-        ModifyRequestDecorator modifyRequestDecorator = container.getMessage();
-        ModifyRequest modifyRequest = modifyRequestDecorator.getDecorated();
+        ModifyRequest modifyRequest = container.getMessage();
 
         TLV tlv = container.getCurrentTLV();
 
@@ -76,7 +74,7 @@ public class StoreModifyRequestObjectName extends GrammarAction<LdapMessageConta
         // Store the value.
         if ( tlv.getLength() == 0 )
         {
-            ( modifyRequestDecorator.getDecorated() ).setName( object );
+            modifyRequest.setName( object );
         }
         else
         {

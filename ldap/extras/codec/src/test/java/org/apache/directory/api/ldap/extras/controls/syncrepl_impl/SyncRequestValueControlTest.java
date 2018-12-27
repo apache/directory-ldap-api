@@ -32,9 +32,8 @@ import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.extras.controls.SynchronizationModeEnum;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncRequest.SyncRequestValue;
-import org.apache.directory.api.ldap.extras.controls.syncrepl.syncRequest.SyncRequestValueImpl;
-import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncRequestValueDecorator;
 import org.apache.directory.api.util.Strings;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -51,6 +50,13 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class SyncRequestValueControlTest extends AbstractCodecServiceTest
 {
+    @Before
+    public void init()
+    {
+        codec.registerRequestControl( new SyncRequestValueFactory( codec ) );
+    }
+    
+    
     private void testReverseEncoding( SyncRequestValue syncRequestValue, ByteBuffer bb )
     {
         // Test reverse encoding
@@ -71,14 +77,12 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
                 0x30, 0x03, 
                   0x0A, 0x01, 0x01
             } );
-        SyncRequestValue syncRequestValue = new SyncRequestValueImpl();
-        syncRequestValue.setMode( SynchronizationModeEnum.REFRESH_ONLY );
+
+        SyncRequestValueFactory factory = ( SyncRequestValueFactory ) codec.getRequestControlFactories().
+            get( SyncRequestValue.OID );
+        SyncRequestValue syncRequestValue = factory.newControl();
+        factory.decodeValue( syncRequestValue, bb.array() );
         
-        SyncRequestValueDecorator decorator = new SyncRequestValueDecorator( codec, syncRequestValue );
-        
-        ByteBuffer buffer = decorator.encode( ByteBuffer.allocate( decorator.computeLength() ) );
-        
-        assertArrayEquals( bb.array(), buffer.array() );
         
         // Test reverse encoding
         testReverseEncoding( syncRequestValue, bb );
@@ -105,16 +109,16 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
         
         bb.flip();
 
-        SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
-
-        SyncRequestValue syncRequestValue = ( SyncRequestValue ) ( ( SyncRequestValueDecorator ) decorator ).decode( bb
-            .array() );
+        SyncRequestValueFactory factory = ( SyncRequestValueFactory ) codec.getRequestControlFactories().
+            get( SyncRequestValue.OID );
+        SyncRequestValue syncRequestValue = factory.newControl();
+        factory.decodeValue( syncRequestValue, bb.array() );
 
         assertEquals( SynchronizationModeEnum.REFRESH_ONLY, syncRequestValue.getMode() );
         assertEquals( "abc", Strings.utf8ToString( syncRequestValue.getCookie() ) );
         assertEquals( false, syncRequestValue.isReloadHint() );
 
-        // Check the encoding
+        // Test reverse encoding
         bb = ByteBuffer.allocate( 0x0A );
         bb.put( new byte[]
             {
@@ -127,11 +131,6 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        ByteBuffer buffer = ( ( SyncRequestValueDecorator ) syncRequestValue ).encode( ByteBuffer
-            .allocate( ( ( SyncRequestValueDecorator ) syncRequestValue ).computeLength() ) );
-        assertArrayEquals( bb.array(), buffer.array() );
-        
-        // Test reverse encoding
         testReverseEncoding( syncRequestValue, bb );
     }
 
@@ -155,18 +154,18 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
-
-        SyncRequestValue syncRequestValue = ( SyncRequestValue ) ( ( SyncRequestValueDecorator ) decorator ).decode( bb
-            .array() );
+        SyncRequestValueFactory factory = ( SyncRequestValueFactory ) codec.getRequestControlFactories().
+            get( SyncRequestValue.OID );
+        SyncRequestValue syncRequestValue = factory.newControl();
+        factory.decodeValue( syncRequestValue, bb.array() );
 
         assertEquals( SynchronizationModeEnum.REFRESH_AND_PERSIST, syncRequestValue.getMode() );
         assertEquals( "abc", Strings.utf8ToString( syncRequestValue.getCookie() ) );
         assertEquals( false, syncRequestValue.isReloadHint() );
 
-        // Check the encoding
-        ByteBuffer buffer = ByteBuffer.allocate( 0x0A );
-        buffer.put( new byte[]
+        // Test reverse encoding
+        bb = ByteBuffer.allocate( 0x0A );
+        bb.put( new byte[]
             {
                 0x30, 0x08,                 // syncRequestValue ::= SEQUENCE {
                   0x0A, 0x01, 0x03,         //     mode ENUMERATED {
@@ -175,13 +174,8 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
                   0x04, 0x03,
                     'a', 'b', 'c'           //     cookie syncCookie OPTIONAL,
             } );
-        buffer.flip();
-
-        bb = ( ( SyncRequestValueDecorator ) syncRequestValue ).encode( ByteBuffer
-            .allocate( ( ( SyncRequestValueDecorator ) syncRequestValue ).computeLength() ) );
-        assertArrayEquals( bb.array(), buffer.array() );
+        bb.flip();
         
-        // Test reverse encoding
         testReverseEncoding( syncRequestValue, bb );
     }
 
@@ -203,16 +197,16 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
-
-        SyncRequestValue syncRequestValue = ( SyncRequestValue ) ( ( SyncRequestValueDecorator ) decorator ).decode( bb
-            .array() );
+        SyncRequestValueFactory factory = ( SyncRequestValueFactory ) codec.getRequestControlFactories().
+            get( SyncRequestValue.OID );
+        SyncRequestValue syncRequestValue = factory.newControl();
+        factory.decodeValue( syncRequestValue, bb.array() );
 
         assertEquals( SynchronizationModeEnum.REFRESH_AND_PERSIST, syncRequestValue.getMode() );
         assertNull( syncRequestValue.getCookie() );
         assertEquals( false, syncRequestValue.isReloadHint() );
 
-        // Check the encoding
+        // Test reverse encoding
         bb = ByteBuffer.allocate( 0x05 );
         bb.put( new byte[]
             {
@@ -223,11 +217,6 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        ByteBuffer buffer = ( ( SyncRequestValueDecorator ) syncRequestValue ).encode( ByteBuffer
-            .allocate( ( ( SyncRequestValueDecorator ) syncRequestValue ).computeLength() ) );
-        assertArrayEquals( bb.array(), buffer.array() );
-        
-        // Test reverse encoding
         testReverseEncoding( syncRequestValue, bb );
     }
 
@@ -250,20 +239,15 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
         } );
         bb.flip();
 
-        SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
-
-        SyncRequestValue syncRequestValue = ( SyncRequestValue ) ( ( SyncRequestValueDecorator ) decorator )
-            .decode( bb.array() );
+        SyncRequestValueFactory factory = ( SyncRequestValueFactory ) codec.getRequestControlFactories().
+            get( SyncRequestValue.OID );
+        SyncRequestValue syncRequestValue = factory.newControl();
+        factory.decodeValue( syncRequestValue, bb.array() );
 
         assertEquals( SynchronizationModeEnum.REFRESH_AND_PERSIST, syncRequestValue.getMode() );
         assertNull( syncRequestValue.getCookie() );
         assertEquals( true, syncRequestValue.isReloadHint() );
 
-        // Check the encoding
-        ByteBuffer buffer = ( ( SyncRequestValueDecorator ) syncRequestValue ).encode( ByteBuffer
-            .allocate( ( ( SyncRequestValueDecorator ) syncRequestValue ).computeLength() ) );
-        assertArrayEquals( bb.array(), buffer.array() );
-        
         // Test reverse encoding
         testReverseEncoding( syncRequestValue, bb );
     }
@@ -286,20 +270,15 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
-
-        SyncRequestValue syncRequestValue = ( SyncRequestValue ) ( ( SyncRequestValueDecorator ) decorator ).decode( bb
-            .array() );
+        SyncRequestValueFactory factory = ( SyncRequestValueFactory ) codec.getRequestControlFactories().
+            get( SyncRequestValue.OID );
+        SyncRequestValue syncRequestValue = factory.newControl();
+        factory.decodeValue( syncRequestValue, bb.array() );
 
         assertEquals( SynchronizationModeEnum.REFRESH_AND_PERSIST, syncRequestValue.getMode() );
         assertNull( syncRequestValue.getCookie() );
         assertEquals( false, syncRequestValue.isReloadHint() );
 
-        // Check the encoding
-        ByteBuffer buffer = ( ( SyncRequestValueDecorator ) syncRequestValue ).encode( ByteBuffer
-            .allocate( ( ( SyncRequestValueDecorator ) syncRequestValue ).computeLength() ) );
-        assertArrayEquals( bb.array(), buffer.array() );
-        
         // Test reverse encoding
         testReverseEncoding( syncRequestValue, bb );
     }
@@ -323,20 +302,15 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
         } );
         bb.flip();
 
-        SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
-
-        SyncRequestValue syncRequestValue = ( SyncRequestValue ) ( ( SyncRequestValueDecorator ) decorator ).decode( bb
-            .array() );
+        SyncRequestValueFactory factory = ( SyncRequestValueFactory ) codec.getRequestControlFactories().
+            get( SyncRequestValue.OID );
+        SyncRequestValue syncRequestValue = factory.newControl();
+        factory.decodeValue( syncRequestValue, bb.array() );
 
         assertEquals( SynchronizationModeEnum.REFRESH_AND_PERSIST, syncRequestValue.getMode() );
         assertEquals( "abc", Strings.utf8ToString( syncRequestValue.getCookie() ) );
         assertEquals( false, syncRequestValue.isReloadHint() );
 
-        // Check the encoding
-        ByteBuffer buffer = ( ( SyncRequestValueDecorator ) syncRequestValue ).encode( ByteBuffer
-            .allocate( ( ( SyncRequestValueDecorator ) syncRequestValue ).computeLength() ) );
-        assertArrayEquals( bb.array(), buffer.array() );
-        
         // Test reverse encoding
         testReverseEncoding( syncRequestValue, bb );
     }
@@ -359,16 +333,16 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
-
-        SyncRequestValue syncRequestValue = ( SyncRequestValue ) ( ( SyncRequestValueDecorator ) decorator ).decode( bb
-            .array() );
+        SyncRequestValueFactory factory = ( SyncRequestValueFactory ) codec.getRequestControlFactories().
+            get( SyncRequestValue.OID );
+        SyncRequestValue syncRequestValue = factory.newControl();
+        factory.decodeValue( syncRequestValue, bb.array() );
 
         assertEquals( SynchronizationModeEnum.REFRESH_AND_PERSIST, syncRequestValue.getMode() );
         assertEquals( "", Strings.utf8ToString( syncRequestValue.getCookie() ) );
         assertEquals( false, syncRequestValue.isReloadHint() );
 
-        // Check the encoding
+        // Test reverse encoding
         bb = ByteBuffer.allocate( 0x05 );
         bb.put( new byte[]
             {
@@ -378,12 +352,7 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
                                             //     }
             } );
         bb.flip();
-
-        ByteBuffer buffer = ( ( SyncRequestValueDecorator ) syncRequestValue ).encode( ByteBuffer
-            .allocate( ( ( SyncRequestValueDecorator ) syncRequestValue ).computeLength() ) );
-        assertArrayEquals( bb.array(), buffer.array() );
         
-        // Test reverse encoding
         testReverseEncoding( syncRequestValue, bb );
     }
 
@@ -401,9 +370,10 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
-
-        ( ( SyncRequestValueDecorator ) decorator ).decode( bb.array() );
+        SyncRequestValueFactory factory = ( SyncRequestValueFactory ) codec.getRequestControlFactories().
+            get( SyncRequestValue.OID );
+        SyncRequestValue syncRequestValue = factory.newControl();
+        factory.decodeValue( syncRequestValue, bb.array() );
     }
 
 
@@ -422,8 +392,9 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
-
-        ( ( SyncRequestValueDecorator ) decorator ).decode( bb.array() );
+        SyncRequestValueFactory factory = ( SyncRequestValueFactory ) codec.getRequestControlFactories().
+            get( SyncRequestValue.OID );
+        SyncRequestValue syncRequestValue = factory.newControl();
+        factory.decodeValue( syncRequestValue, bb.array() );
     }
 }

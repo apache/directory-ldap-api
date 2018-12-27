@@ -21,77 +21,41 @@ package org.apache.directory.api.ldap.codec.controls.search.persistentSearch;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
-import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.ControlContainer;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.PersistentSearch;
 
 
 /**
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PersistentSearchContainer extends AbstractContainer
+public class PersistentSearchContainer extends AbstractContainer implements ControlContainer
 {
     /** PSearchControl */
-    private PersistentSearchDecorator decorator;
-
-    private LdapApiService codec;
-
-
-    /**
-     * Creates a new PSearchControlContainer object. We will store one grammar,
-     * it's enough ...
-     * 
-     * @param codec The LDAP service instance
-     */
-    public PersistentSearchContainer( LdapApiService codec )
-    {
-        super();
-        this.codec = codec;
-        setGrammar( PersistentSearchGrammar.getInstance() );
-        setTransition( PersistentSearchStates.START_STATE );
-    }
-
+    private Control control;
 
     /**
      * Creates a new PSearchControlContainer object pre-populated with a
-     * decorator wrapping the supplied control, or using the supplied control if
-     * it already is a decorator.
+     * PersistentSearch control
      *
-     * @param codec The LDAP service instance
-     * @param control The PersistentSearch Control or a decorating wrapper.
+     * @param control The PersistentSearch Control.
      */
-    public PersistentSearchContainer( LdapApiService codec, PersistentSearch control )
+    public PersistentSearchContainer( Control control )
     {
-        this( codec );
-        decorate( control );
-    }
-
-
-    /**
-     * Conditionally decorates a control if is not a decorator already.
-     *
-     * @param control The PersistentSearch Control to decorate if it already is not
-     * a decorator, if it is then the object is set as this container's decorator.
-     */
-    public void decorate( PersistentSearch control )
-    {
-        if ( control instanceof PersistentSearchDecorator )
-        {
-            this.decorator = ( PersistentSearchDecorator ) control;
-        }
-        else
-        {
-            this.decorator = new PersistentSearchDecorator( codec, control );
-        }
+        super();
+        setGrammar( PersistentSearchGrammar.getInstance() );
+        setTransition( PersistentSearchStates.START_STATE );
+        this.control = control;
     }
 
 
     /**
      * @return Returns the persistent search decorator.
      */
-    public PersistentSearchDecorator getPersistentSearchDecorator()
+    public PersistentSearch getPersistentSearch()
     {
 
-        return decorator;
+        return ( PersistentSearch ) control;
     }
 
 
@@ -101,9 +65,9 @@ public class PersistentSearchContainer extends AbstractContainer
      * 
      * @param decorator the PSearchControl to set.
      */
-    public void setPersistentSearchDecorator( PersistentSearchDecorator decorator )
+    public void setControl( Control control )
     {
-        this.decorator = decorator;
+        this.control = control;
     }
 
 
@@ -114,6 +78,6 @@ public class PersistentSearchContainer extends AbstractContainer
     public void clean()
     {
         super.clean();
-        decorator = null;
+        control = null;
     }
 }

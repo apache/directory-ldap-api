@@ -19,6 +19,7 @@
  */
 package org.apache.directory.api.ldap.codec.api;
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
@@ -32,16 +33,51 @@ public abstract class AbstractExtendedOperationFactory implements ExtendedOperat
 {
     /** The LDAP codec responsible for encoding and decoding */
     protected LdapApiService codec;
+    
+    /** The extended operation OID */
+    protected String oid;
 
     /**
      *
      * Creates a new instance of AbstractExtendedOperationFactory.
      *
      * @param codec The LdapApiService instance
+     * @param oid The extended operation OID
      */
-    protected AbstractExtendedOperationFactory( LdapApiService codec )
+    protected AbstractExtendedOperationFactory( LdapApiService codec, String oid )
     {
         this.codec = codec;
+        this.oid = oid;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getOid()
+    {
+        return oid;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExtendedRequest newRequest( byte[] value ) throws DecoderException
+    {
+        return null;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExtendedResponse newResponse( byte[] value ) throws DecoderException
+    {
+        return null;
     }
 
 
@@ -59,7 +95,27 @@ public abstract class AbstractExtendedOperationFactory implements ExtendedOperat
      * {@inheritDoc}
      */
     @Override
+    public void decodeValue( ExtendedRequest extendedRequest, byte[] requestValue ) throws DecoderException
+    {
+        // Nothing to do by default
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void encodeValue( Asn1Buffer buffer, ExtendedResponse extendedResponse )
+    {
+        // Nothing to do by default
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void decodeValue( ExtendedResponse extendedResponse, byte[] responseValue ) throws DecoderException
     {
         // Nothing to do by default
     }

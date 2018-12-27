@@ -20,14 +20,15 @@
 package org.apache.directory.api.ldap.codec.controls.search.pagedSearch;
 
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.PagedResults;
+import org.apache.directory.api.ldap.model.message.controls.PagedResultsImpl;
 
 
 /**
@@ -45,7 +46,7 @@ public class PagedResultsFactory extends AbstractControlFactory<PagedResults>
      */
     public PagedResultsFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, PagedResults.OID );
     }
 
 
@@ -53,29 +54,9 @@ public class PagedResultsFactory extends AbstractControlFactory<PagedResults>
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public PagedResults newControl()
     {
-        return PagedResults.OID;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<PagedResults> newCodecControl()
-    {
-        return new PagedResultsDecorator( codec );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<PagedResults> newCodecControl( PagedResults control )
-    {
-        return new PagedResultsDecorator( codec, control );
+        return new PagedResultsImpl();
     }
 
 
@@ -95,5 +76,15 @@ public class PagedResultsFactory extends AbstractControlFactory<PagedResults>
 
         // The sequence
         BerValue.encodeSequence( buffer, start );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void decodeValue( Control control, byte[] controlBytes ) throws DecoderException
+    {
+        decodeValue( new PagedResultsContainer( control ), control, controlBytes );
     }
 }

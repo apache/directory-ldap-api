@@ -28,12 +28,12 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.ber.tlv.TLVStateEnum;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapDecoder;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
 import org.apache.directory.api.ldap.model.constants.Loggers;
 import org.apache.directory.api.ldap.model.exception.ResponseCarryingMessageException;
+import org.apache.directory.api.ldap.model.message.AbstractMessage;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.util.Strings;
 import org.apache.mina.core.buffer.IoBuffer;
@@ -74,8 +74,8 @@ public class LdapProtocolDecoder implements ProtocolDecoder
     public void decode( IoSession session, IoBuffer in, ProtocolDecoderOutput out ) throws Exception
     {
         @SuppressWarnings("unchecked")
-        LdapMessageContainer<AbstractMessageDecorator<? extends Message>> messageContainer =
-            ( LdapMessageContainer<AbstractMessageDecorator<? extends Message>> )
+        LdapMessageContainerDirect<AbstractMessage> messageContainer =
+            ( LdapMessageContainerDirect<AbstractMessage> )
             session.getAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR );
 
         if ( session.containsAttribute( LdapDecoder.MAX_PDU_SIZE_ATTR ) )
@@ -108,7 +108,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
      * @param decodedMessages The list of decoded messages
      * @throws DecoderException If the decoding failed
      */
-    private void decode( ByteBuffer buffer, LdapMessageContainer<AbstractMessageDecorator<? extends Message>> messageContainer,
+    private void decode( ByteBuffer buffer, LdapMessageContainerDirect<AbstractMessage> messageContainer,
         List<Message> decodedMessages ) throws DecoderException
     {
         buffer.mark();

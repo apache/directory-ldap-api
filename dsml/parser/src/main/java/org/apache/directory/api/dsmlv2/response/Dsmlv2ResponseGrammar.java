@@ -41,7 +41,7 @@ import org.apache.directory.api.dsmlv2.ParserUtils;
 import org.apache.directory.api.dsmlv2.Tag;
 import org.apache.directory.api.dsmlv2.response.ErrorResponse.ErrorResponseType;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
+import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.exception.LdapURLEncodingException;
@@ -2098,7 +2098,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
     private void createAndAddControl( Dsmlv2Container container,
         AbstractDsmlMessageDecorator<? extends Message> parent ) throws XmlPullParserException
     {
-        CodecControl<? extends Control> control;
+        Control control;
 
         XmlPullParser xpp = container.getParser();
 
@@ -2114,7 +2114,18 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 throw new XmlPullParserException( I18n.err( I18n.ERR_03006_INCORRECT_TYPE_ATTRIBUTE_VALUE ), xpp, null );
             }
 
-            control = container.getLdapCodecService().newResponseControl( new OpaqueControl( attributeValue ) );
+            ControlFactory<? extends Control> factory = container.getLdapCodecService().
+                getRequestControlFactories().get( attributeValue );
+            
+            if ( factory == null )
+            {
+                control = new OpaqueControl( attributeValue );
+            }
+            else
+            {
+                control = factory.newControl();
+            }
+            
             parent.addControl( control );
         }
         else

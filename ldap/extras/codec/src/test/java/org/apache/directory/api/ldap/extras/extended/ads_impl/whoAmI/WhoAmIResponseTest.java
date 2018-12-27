@@ -30,12 +30,11 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
-import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIResponse;
-import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIResponseImpl;
 import org.apache.directory.api.util.Strings;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -52,36 +51,37 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class WhoAmIResponseTest extends AbstractCodecServiceTest
 {
+    @Before
+    public void init()
+    {
+        codec.registerExtendedResponse( new WhoAmIFactory( codec ) );
+    }
+
+    
     /**
      * Test the normal WhoAmI response message
      */
     @Test
     public void testDecodeWhoAmINull() throws DecoderException, EncoderException
     {
-        Asn1Decoder whoAmIResponseDecoder = new WhoAmIResponseDecoder();
-
         ByteBuffer bb = ByteBuffer.allocate( 0x00 );
 
         bb.put( new byte[]
             {} ).flip();
 
-        Strings.dumpBytes( bb.array() );
-
-        // Allocate a WhoAmI Container
-        WhoAmIResponseContainer whoAmIResponseContainer = new WhoAmIResponseContainer();
-        whoAmIResponseContainer.setWhoAmIResponse( new WhoAmIResponseImpl() );
-
         // Decode a WhoAmI message
-        whoAmIResponseDecoder.decode( bb, whoAmIResponseContainer );
-
-        WhoAmIResponse whoAmIResponse = whoAmIResponseContainer.getWhoAmIResponse();
+        WhoAmIFactory factory = ( WhoAmIFactory ) codec.getExtendedResponseFactories().
+            get( WhoAmIResponse.EXTENSION_OID );
+        WhoAmIResponse whoAmIResponse = factory.newResponse();
+        factory.decodeValue( whoAmIResponse, bb.array() );
 
         assertNull( whoAmIResponse.getAuthzId() );
         
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        WhoAmIFactory factory = new WhoAmIFactory( codec );
+
         factory.encodeValue( asn1Buffer, whoAmIResponse );
+        
         assertArrayEquals( bb.array(), asn1Buffer.getBytes().array() );
     }
 
@@ -92,8 +92,6 @@ public class WhoAmIResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeWhoAmINoWhoAmIAuthzIdDN() throws DecoderException, EncoderException
     {
-        Asn1Decoder whoAmIResponseDecoder = new WhoAmIResponseDecoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x0C );
 
         stream.put( new byte[]
@@ -101,14 +99,11 @@ public class WhoAmIResponseTest extends AbstractCodecServiceTest
                 'd', 'n', ':', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm'
             } ).flip();
 
-        // Allocate a WhoAmI Container
-        WhoAmIResponseContainer whoAmIResponseContainer = new WhoAmIResponseContainer();
-        whoAmIResponseContainer.setWhoAmIResponse( new WhoAmIResponseImpl() );
-
         // Decode a WhoAmI message
-        whoAmIResponseDecoder.decode( stream, whoAmIResponseContainer );
-        
-        WhoAmIResponse whoAmIResponse = whoAmIResponseContainer.getWhoAmIResponse();
+        WhoAmIFactory factory = ( WhoAmIFactory ) codec.getExtendedResponseFactories().
+            get( WhoAmIResponse.EXTENSION_OID );
+        WhoAmIResponse whoAmIResponse = factory.newResponse();
+        factory.decodeValue( whoAmIResponse, stream.array() );
 
         assertNotNull( whoAmIResponse.getAuthzId() );
         assertEquals( "dn:ou=system", Strings.utf8ToString( whoAmIResponse.getAuthzId() ) );
@@ -116,9 +111,10 @@ public class WhoAmIResponseTest extends AbstractCodecServiceTest
 
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        WhoAmIFactory factory = new WhoAmIFactory( codec );
+
         factory.encodeValue( asn1Buffer, whoAmIResponse );
-        assertArrayEquals( stream.array(), asn1Buffer.getBytes().array() );
+
+       assertArrayEquals( stream.array(), asn1Buffer.getBytes().array() );
     }
 
 
@@ -128,8 +124,6 @@ public class WhoAmIResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeWhoAmINoWhoAmIAuthzIdUserId() throws DecoderException, EncoderException
     {
-        Asn1Decoder whoAmIResponseDecoder = new WhoAmIResponseDecoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
         stream.put( new byte[]
@@ -137,21 +131,19 @@ public class WhoAmIResponseTest extends AbstractCodecServiceTest
                 'u', ':', 't', 'e', 's', 't', 0x00
             } ).flip();
 
-        // Allocate a WhoAmI Container
-        WhoAmIResponseContainer whoAmIResponseContainer = new WhoAmIResponseContainer();
-        whoAmIResponseContainer.setWhoAmIResponse( new WhoAmIResponseImpl() );
-
         // Decode a WhoAmI message
-        whoAmIResponseDecoder.decode( stream, whoAmIResponseContainer );
-        
-        WhoAmIResponse whoAmIResponse = whoAmIResponseContainer.getWhoAmIResponse();
+        WhoAmIFactory factory = ( WhoAmIFactory ) codec.getExtendedResponseFactories().
+            get( WhoAmIResponse.EXTENSION_OID );
+        WhoAmIResponse whoAmIResponse = factory.newResponse();
+        factory.decodeValue( whoAmIResponse, stream.array() );
 
         assertNotNull( whoAmIResponse.getAuthzId() );
 
         // Check the reverse encoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
-        WhoAmIFactory factory = new WhoAmIFactory( codec );
+
         factory.encodeValue( asn1Buffer, whoAmIResponse );
+
         assertArrayEquals( stream.array(), asn1Buffer.getBytes().array() );
     }
 }

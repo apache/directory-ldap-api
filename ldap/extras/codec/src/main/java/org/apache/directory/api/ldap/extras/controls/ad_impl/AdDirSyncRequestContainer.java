@@ -21,8 +21,9 @@ package org.apache.directory.api.ldap.extras.controls.ad_impl;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
-import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.ControlContainer;
 import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncRequest;
+import org.apache.directory.api.ldap.model.message.Control;
 
 
 /**
@@ -31,39 +32,20 @@ import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncRequest;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AdDirSyncRequestContainer extends AbstractContainer
+public class AdDirSyncRequestContainer extends AbstractContainer implements ControlContainer
 {
     /** adDirSync request */
-    private AdDirSyncRequest control;
-
-    private LdapApiService codec;
-
-
-    /**
-     * Creates a new AdDirSyncRequestControl Container object.
-     *
-     * @param codec The LDAP Service to use
-     */
-    public AdDirSyncRequestContainer( LdapApiService codec )
-    {
-        super();
-        this.codec = codec;
-        this.control = new AdDirSyncRequestDecorator( codec );
-        setGrammar( AdDirSyncRequestGrammar.getInstance() );
-        setTransition( AdDirSyncRequestStatesEnum.START_STATE );
-    }
+    private Control control;
 
 
     /**
      * Creates a new AdDirSyncRequestControl object.
      *
-     * @param codec The LDAP Service to use
-     * @param control The AdDirSyncRequest control to decorate
+     * @param control The AdDirSyncRequest control to store
      */
-    public AdDirSyncRequestContainer( LdapApiService codec, AdDirSyncRequest control )
+    public AdDirSyncRequestContainer( Control control )
     {
         super();
-        this.codec = codec;
         this.control = control;
         setGrammar( AdDirSyncRequestGrammar.getInstance() );
         setTransition( AdDirSyncRequestStatesEnum.START_STATE );
@@ -73,9 +55,9 @@ public class AdDirSyncRequestContainer extends AbstractContainer
     /**
      * @return the AdDirSyncRequestControlCodec object
      */
-    public AdDirSyncRequest getAdDirSyncRequestControl()
+    public AdDirSyncRequest getAdDirSyncRequest()
     {
-        return control;
+        return ( AdDirSyncRequest ) control;
     }
 
 
@@ -85,18 +67,10 @@ public class AdDirSyncRequestContainer extends AbstractContainer
      *
      * @param control the AdDirSyncRequestControlCodec to set.
      */
-    public void setAdDirSyncRequestControl( AdDirSyncRequest control )
+    @Override
+    public void setControl( Control control )
     {
         this.control = control;
-    }
-
-
-    /**
-     * @return The LdapAPi service instance
-     */
-    public LdapApiService getCodecService()
-    {
-        return codec;
     }
 
 

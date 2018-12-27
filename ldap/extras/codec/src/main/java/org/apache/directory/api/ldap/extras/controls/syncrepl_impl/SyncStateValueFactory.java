@@ -20,13 +20,14 @@
 package org.apache.directory.api.ldap.extras.controls.syncrepl_impl;
 
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractControlFactory;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateValue;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateValueImpl;
 import org.apache.directory.api.ldap.model.message.Control;
 
 
@@ -45,7 +46,7 @@ public class SyncStateValueFactory extends AbstractControlFactory<SyncStateValue
      */
     public SyncStateValueFactory( LdapApiService codec )
     {
-        super( codec );
+        super( codec, SyncStateValue.OID );
     }
 
 
@@ -53,29 +54,9 @@ public class SyncStateValueFactory extends AbstractControlFactory<SyncStateValue
      * {@inheritDoc}
      */
     @Override
-    public String getOid()
+    public SyncStateValue newControl()
     {
-        return SyncStateValue.OID;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<SyncStateValue> newCodecControl()
-    {
-        return new SyncStateValueDecorator( codec );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CodecControl<SyncStateValue> newCodecControl( SyncStateValue control )
-    {
-        return new SyncStateValueDecorator( codec, control );
+        return new SyncStateValueImpl();
     }
 
 
@@ -102,5 +83,15 @@ public class SyncStateValueFactory extends AbstractControlFactory<SyncStateValue
         
         // The sequence
         BerValue.encodeSequence( buffer, start );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void decodeValue( Control control, byte[] controlBytes ) throws DecoderException
+    {
+        decodeValue( new SyncStateValueContainer( control ), control, controlBytes );
     }
 }

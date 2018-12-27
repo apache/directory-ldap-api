@@ -46,7 +46,7 @@ public class StoreGraceAuthNRemaining extends AbstractReadInteger<PasswordPolicy
     @Override
     protected void setIntegerValue( int value, PasswordPolicyResponseContainer ppolicyContainer )
     {
-        ppolicyContainer.getPasswordPolicyResponseControl().setGraceAuthNRemaining( value );
+        ppolicyContainer.getPasswordPolicyResponse().setGraceAuthNRemaining( value );
 
         ppolicyContainer.setGrammarEndAllowed( true );
     }

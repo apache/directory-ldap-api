@@ -20,23 +20,24 @@
 package org.apache.directory.api.ldap.codec;
 
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.api.asn1.DecoderException;
-import org.apache.directory.api.asn1.ber.Asn1Container;
+import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.ber.tlv.TLVStateEnum;
-import org.apache.directory.api.ldap.codec.api.AbstractMessageDecorator;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.LdapDecoder;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
+import org.apache.directory.api.ldap.codec.api.LdapEncoder;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
-import org.apache.directory.api.ldap.codec.decorators.BindRequestDecorator;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.exception.ResponseCarryingMessageException;
 import org.apache.directory.api.ldap.model.message.BindRequest;
@@ -83,7 +84,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
      * @param decodedMessages The list of decoded messages
      * @throws Exception If the decoding failed
      */
-    private void decode( ByteBuffer buffer, LdapMessageContainer<AbstractMessageDecorator<? extends Message>> messageContainer,
+    private void decode( ByteBuffer buffer, LdapMessageContainerDirect<Message> messageContainer,
         List<Message> decodedMessages ) throws DecoderException
     {
         buffer.mark();
@@ -130,11 +131,10 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
      * Test the decoding of a full PDU
      */
     @Test
-    public void testDecodeFull() throws DecoderException
+    public void testDecodeFull() throws DecoderException, EncoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
-        LdapMessageContainer<AbstractMessageDecorator<? extends Message>> container =
-            new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
+        LdapMessageContainerDirect<Message> container = new LdapMessageContainerDirect<>( codec );
 
         ByteBuffer stream = ByteBuffer.allocate( 0x35 );
         stream.put( new byte[]
@@ -169,6 +169,13 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         assertEquals( "uid=akarasulu,dc=example,dc=com", bindRequest.getName().toString() );
         assertTrue( bindRequest.isSimple() );
         assertEquals( "password", Strings.utf8ToString( bindRequest.getCredentials() ) );
+        
+        // Check the revert encoder
+        Asn1Buffer buffer = new Asn1Buffer();
+        
+        LdapEncoder.encodeMessageReverse( buffer, codec, bindRequest );
+
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
 
@@ -176,10 +183,9 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
      * Test the decoding of two messages in a PDU
      */
     @Test
-    public void testDecode2Messages() throws DecoderException
+    public void testDecode2Messages() throws DecoderException, EncoderException
     {
-        LdapMessageContainer<AbstractMessageDecorator<? extends Message>> container =
-            new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
+        LdapMessageContainerDirect<Message> container = new LdapMessageContainerDirect<>( codec );
 
         IoSession dummySession = new DummySession();
         dummySession.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR, container );
@@ -246,7 +252,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
      * Test the decoding of a partial PDU
      */
     @Test
-    public void testDecodePartial() throws DecoderException
+    public void testDecodePartial() throws DecoderException, EncoderException
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -265,7 +271,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<BindRequestDecorator>( codec );
+        LdapMessageContainerDirect<Message> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a BindRequest PDU
         ldapDecoder.decode( stream, container );
@@ -273,12 +279,13 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         assertEquals( TLVStateEnum.VALUE_STATE_PENDING, container.getState() );
 
         // Check the decoded PDU
-        BindRequest bindRequest = container.getMessage();
+        Message message = container.getMessage();
 
-        assertEquals( 1, bindRequest.getMessageId() );
-        assertTrue( bindRequest.isVersion3() );
-        assertEquals( null, bindRequest.getName() );
-        assertTrue( bindRequest.isSimple() );
+        assertEquals( 1, message.getMessageId() );
+        assertTrue( message instanceof BindRequest );
+        assertTrue( ( ( BindRequest ) message ).isVersion3() );
+        assertNull( ( ( BindRequest ) message ).getName() );
+        assertTrue( ( ( BindRequest ) message ).isSimple() );
     }
 
 
@@ -286,9 +293,8 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
      * Test the decoding of a splitted PDU
      */
     @Test
-    public void testDecodeSplittedPDU() throws DecoderException
+    public void testDecodeSplittedPDU() throws DecoderException, EncoderException
     {
-
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 16 );
@@ -306,7 +312,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindRequestDecorator> container = new LdapMessageContainer<BindRequestDecorator>( codec );
+        LdapMessageContainerDirect<Message> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a BindRequest PDU first block of data
         ldapDecoder.decode( stream, container );
@@ -336,13 +342,39 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         assertEquals( container.getState(), TLVStateEnum.PDU_DECODED );
 
         // Check the decoded PDU
-        BindRequest bindRequest = container.getMessage();
+        BindRequest bindRequest = ( BindRequest ) container.getMessage();
 
         assertEquals( 1, bindRequest.getMessageId() );
         assertTrue( bindRequest.isVersion3() );
         assertEquals( "uid=akarasulu,dc=example,dc=com", bindRequest.getName().toString() );
         assertTrue( bindRequest.isSimple() );
         assertEquals( "password", Strings.utf8ToString( bindRequest.getCredentials() ) );
+        
+        // Check the revert encoder
+        Asn1Buffer buffer = new Asn1Buffer();
+        
+        LdapEncoder.encodeMessageReverse( buffer, codec, bindRequest );
+
+        assertArrayEquals( 
+            new byte[]
+                { 
+                    0x30, 0x33,                 // LDAPMessage ::=SEQUENCE {
+                      0x02, 0x01, 0x01,         // messageID MessageID
+                      0x60, 0x2E,               // CHOICE { ..., bindRequest BindRequest, ...
+                                                // BindRequest ::= APPLICATION[0] SEQUENCE {
+                        0x02, 0x01, 0x03,       // version INTEGER (1..127),
+                        0x04, 0x1F,             // name LDAPDN,
+                          'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 
+                          'a', 's', 'u', 'l', 'u', ',', 'd', 'c', 
+                          '=', 'e', 'x', 'a', 'm', 'p', 'l', 'e', 
+                          ',', 'd', 'c', '=', 'c', 'o', 'm',
+                        ( byte ) 0x80, 0x08,    // authentication
+                                                // AuthenticationChoice
+                                                // AuthenticationChoice ::= CHOICE { simple [0] OCTET STRING,
+                                                // ...
+                          'p', 'a', 's', 's', 'w', 'o', 'r', 'd' 
+
+                }, buffer.getBytes().array() );
     }
 
 
@@ -350,8 +382,8 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
      * Test the decoding of a PDU with a bad Length. The first TLV has a length
      * of 0x32 when the PDU is 0x33 bytes long.
      */
-    @Test
-    public void testDecodeBadLengthTooSmall()
+    @Test( expected=DecoderException.class )
+    public void testDecodeBadLengthTooSmall() throws DecoderException
     {
 
         Asn1Decoder ldapDecoder = new Asn1Decoder();
@@ -380,23 +412,10 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<AbstractMessageDecorator<? extends Message>> ldapMessageContainer =
-            new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
+        LdapMessageContainerDirect<Message> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a BindRequest PDU
-        try
-        {
-            ldapDecoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            assertEquals(
-                "ERR_01003_VALUE_LENGTH_ABOVE_EXPECTED_LENGTH The current Value length 48 is above the expected length 47",
-                de.getMessage() );
-            return;
-        }
-
-        fail( "Should never reach this point.." );
+        ldapDecoder.decode( stream, container );
     }
 
 
@@ -404,8 +423,8 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
      * Test the decoding of a PDU with a bad primitive Length. The second TLV
      * has a length of 0x02 when the PDU is 0x01 bytes long.
      */
-    @Test
-    public void testDecodeBadPrimitiveLengthTooBig()
+    @Test( expected=DecoderException.class )
+    public void testDecodeBadPrimitiveLengthTooBig() throws DecoderException
     {
 
         Asn1Decoder ldapDecoder = new Asn1Decoder();
@@ -432,30 +451,18 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        Asn1Container ldapMessageContainer =
-            new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
+        LdapMessageContainerDirect<Message> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a BindRequest PDU
-        try
-        {
-            ldapDecoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            assertEquals( "ERR_01200_BAD_TRANSITION_FROM_STATE Bad transition from state MESSAGE_ID_STATE, tag 0x2E",
-                de.getMessage() );
-            return;
-        }
-
-        fail( "Should never reach this point." );
+        ldapDecoder.decode( stream, container );
     }
 
 
     /**
      * Test the decoding of a PDU with a bad tag.
      */
-    @Test
-    public void testDecodeBadTagTransition()
+    @Test( expected=DecoderException.class )
+    public void testDecodeBadTagTransition() throws DecoderException
     {
 
         Asn1Decoder ldapDecoder = new Asn1Decoder();
@@ -481,21 +488,10 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
+        LdapMessageContainerDirect<Message> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a BindRequest PDU
-        try
-        {
-            ldapDecoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            assertEquals( "ERR_01200_BAD_TRANSITION_FROM_STATE Bad transition from state MESSAGE_ID_STATE, tag 0x2D",
-                de.getMessage() );
-            return;
-        }
-
-        fail( "Should never reach this point." );
+        ldapDecoder.decode( stream, container );
     }
 
 
@@ -520,12 +516,12 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        Asn1Container ldapMessageContainer = new LdapMessageContainer<AbstractMessageDecorator<? extends Message>>( codec );
+        LdapMessageContainerDirect<Message> container = new LdapMessageContainerDirect<>( codec );
 
         // Decode a BindRequest PDU first block of data
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        ldapDecoder.decode( stream, container );
 
-        assertEquals( TLVStateEnum.LENGTH_STATE_PENDING, ldapMessageContainer.getState() );
+        assertEquals( TLVStateEnum.LENGTH_STATE_PENDING, container.getState() );
 
         // Second block of data
         stream = ByteBuffer.allocate( 1 );
@@ -537,11 +533,11 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Decode a BindRequest PDU second block of data
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        ldapDecoder.decode( stream, container );
 
-        assertEquals( TLVStateEnum.TAG_STATE_START, ldapMessageContainer.getState() );
+        assertEquals( TLVStateEnum.TAG_STATE_START, container.getState() );
 
         // Check the decoded length
-        assertEquals( 384, ldapMessageContainer.getCurrentTLV().getLength() );
+        assertEquals( 384, container.getCurrentTLV().getLength() );
     }
 }

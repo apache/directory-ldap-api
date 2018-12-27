@@ -21,50 +21,40 @@ package org.apache.directory.api.ldap.codec.controls.search.subentries;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
+import org.apache.directory.api.ldap.codec.api.ControlContainer;
+import org.apache.directory.api.ldap.model.message.Control;
+import org.apache.directory.api.ldap.model.message.controls.Subentries;
 
 
 /**
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SubentriesContainer extends AbstractContainer
+public class SubentriesContainer extends AbstractContainer implements ControlContainer
 {
-    /** PSearchControl */
-    private SubentriesDecorator decorator;
-
+    /** Subentries Control */
+    private Control control;
 
     /**
-     * Creates a new SubEntryControlContainer object.
+     * Creates a new SubEntryControlContainer object, pre-populating it with the
+     * supplied Subentries control.
+     *
+     * @param control The Subentries Control to add to this container
      */
-    public SubentriesContainer()
+    public SubentriesContainer( Control control )
     {
         super();
         setGrammar( SubentriesGrammar.getInstance() );
         setTransition( SubentriesStates.START_STATE );
-    }
-
-
-    /**
-     * Creates a new SubEntryControlContainer object, pre-populating it with the
-     * supplied Subentries control, and optionally wrapping it with a decorator
-     * if it is not a decorator instance.
-     *
-     * @param control The Subentries Control to decorate and add to this
-     * container, or if the Control already is a ControlDecorator it is directly
-     * added.
-     */
-    public SubentriesContainer( SubentriesDecorator control )
-    {
-        this();
-        this.decorator = control;
+        this.control = control;
     }
 
 
     /**
      * @return Returns the persistent search control.
      */
-    public SubentriesDecorator getSubentriesControl()
+    public Subentries getSubentriesControl()
     {
-        return decorator;
+        return ( Subentries ) control;
     }
 
 
@@ -72,11 +62,11 @@ public class SubentriesContainer extends AbstractContainer
      * Set a SubEntryControl Object into the container. It will be completed by
      * the ldapDecoder.
      * 
-     * @param decorator the SubEntryControl to set.
+     * @param control the SubEntryControl to set.
      */
-    public void setSubentriesDecorator( SubentriesDecorator decorator )
+    public void setControl( Control control )
     {
-        this.decorator = decorator;
+        this.control = control;
     }
 
 
@@ -87,6 +77,6 @@ public class SubentriesContainer extends AbstractContainer
     public void clean()
     {
         super.clean();
-        decorator = null;
+        control = null;
     }
 }

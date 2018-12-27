@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
@@ -40,7 +39,7 @@ public class ControlsContainer extends AbstractContainer
     private List<Control> controls = new ArrayList<>();
     
     /** The current control */
-    private CodecControl<?> currentControl;
+    private Control currentControl;
     
     /** The control factory */
     private ControlFactory<?> factory;
@@ -74,7 +73,7 @@ public class ControlsContainer extends AbstractContainer
     /**
      * @return the currentControl
      */
-    public CodecControl<?> getCurrentControl()
+    public Control getCurrentControl()
     {
         return currentControl;
     }
@@ -83,7 +82,7 @@ public class ControlsContainer extends AbstractContainer
     /**
      * @param currentControl the currentControl to set
      */
-    public void setCurrentControl( CodecControl<?> currentControl )
+    public void setCurrentControl( Control currentControl )
     {
         this.currentControl = currentControl;
     }

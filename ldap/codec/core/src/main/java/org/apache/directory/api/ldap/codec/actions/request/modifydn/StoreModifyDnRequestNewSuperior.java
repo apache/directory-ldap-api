@@ -24,9 +24,8 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
-import org.apache.directory.api.ldap.codec.decorators.ModifyDnRequestDecorator;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.ModifyDnRequest;
 import org.apache.directory.api.ldap.model.message.ModifyDnResponseImpl;
@@ -46,7 +45,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreModifyDnRequestNewSuperior extends GrammarAction<LdapMessageContainer<ModifyDnRequestDecorator>>
+public class StoreModifyDnRequestNewSuperior extends GrammarAction<LdapMessageContainerDirect<ModifyDnRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreModifyDnRequestNewSuperior.class );
@@ -64,7 +63,7 @@ public class StoreModifyDnRequestNewSuperior extends GrammarAction<LdapMessageCo
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainer<ModifyDnRequestDecorator> container ) throws DecoderException
+    public void action( LdapMessageContainerDirect<ModifyDnRequest> container ) throws DecoderException
     {
         ModifyDnRequest modifyDnRequest = container.getMessage();
 
@@ -73,8 +72,6 @@ public class StoreModifyDnRequestNewSuperior extends GrammarAction<LdapMessageCo
 
         // We have to handle the special case of a 0 length matched
         // Dn
-        Dn newSuperior = Dn.EMPTY_DN;
-
         if ( tlv.getLength() == 0 )
         {
 
@@ -91,7 +88,7 @@ public class StoreModifyDnRequestNewSuperior extends GrammarAction<LdapMessageCo
                 }
             }
 
-            modifyDnRequest.setNewSuperior( newSuperior );
+            modifyDnRequest.setNewSuperior( Dn.EMPTY_DN );
         }
         else
         {
@@ -100,7 +97,8 @@ public class StoreModifyDnRequestNewSuperior extends GrammarAction<LdapMessageCo
 
             try
             {
-                newSuperior = new Dn( dnStr );
+                Dn newSuperior = new Dn( dnStr );
+                modifyDnRequest.setNewSuperior( newSuperior );
             }
             catch ( LdapInvalidDnException ine )
             {
@@ -111,8 +109,6 @@ public class StoreModifyDnRequestNewSuperior extends GrammarAction<LdapMessageCo
                 throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_DN_SYNTAX,
                     modifyDnRequest.getName(), ine );
             }
-
-            modifyDnRequest.setNewSuperior( newSuperior );
         }
 
         // We can have an END transition
@@ -120,7 +116,7 @@ public class StoreModifyDnRequestNewSuperior extends GrammarAction<LdapMessageCo
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( I18n.msg( I18n.MSG_05140_NEW_SUPERIOR_DN, newSuperior ) );
+            LOG.debug( I18n.msg( I18n.MSG_05140_NEW_SUPERIOR_DN, modifyDnRequest.getNewSuperior() ) );
         }
     }
 }

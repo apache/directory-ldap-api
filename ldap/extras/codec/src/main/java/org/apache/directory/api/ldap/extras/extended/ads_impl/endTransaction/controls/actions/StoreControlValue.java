@@ -25,8 +25,9 @@ import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
+import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction.controls.ControlsContainer;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,31 +63,37 @@ public class StoreControlValue extends GrammarAction<ControlsContainer>
      * {@inheritDoc}
      */
     @Override
-    public void action( ControlsContainer container )
+    public void action( ControlsContainer container ) throws DecoderException
     {
         TLV tlv = container.getCurrentTLV();
 
-        CodecControl<?> control = container.getCurrentControl();
+        Control control = container.getCurrentControl();
+        ControlFactory<?> controlFactory = container.getFactory();
 
         // Get the current control
         BerValue value = tlv.getValue();
 
         // Store the value - have to handle the special case of a 0 length value
-        if ( tlv.getLength() == 0 )
+        try
         {
-            control.setValue( Strings.EMPTY_BYTES );
+            if ( tlv.getLength() == 0 )
+            {
+                controlFactory.decodeValue( control, Strings.EMPTY_BYTES );
+            }
+            else
+            {
+                controlFactory.decodeValue( control, value.getData() );
+            }
         }
-        else
+        catch ( DecoderException de )
         {
-            try
-            {
-                control.decode( value.getData() );
-            }
-            catch ( DecoderException e )
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            String message = I18n.err( I18n.ERR_08109_BAD_CONTROL_VALUE, 
+                Strings.dumpBytes( value.getData() ) );
+            LOG.error( message );
+
+            // This will generate a PROTOCOL_ERROR
+            throw new DecoderException( message, de );
+            
         }
 
         // We can have an END transition
@@ -94,7 +101,7 @@ public class StoreControlValue extends GrammarAction<ControlsContainer>
 
         if ( LOG.isDebugEnabled() )
         {
-            LOG.debug( I18n.msg( I18n.MSG_08203_CONTROL_VALUE, Strings.dumpBytes( control.getValue() ) ) );
+            LOG.debug( I18n.msg( I18n.MSG_08203_CONTROL_VALUE, Strings.dumpBytes( value.getData() ) ) );
         }
     }
 }

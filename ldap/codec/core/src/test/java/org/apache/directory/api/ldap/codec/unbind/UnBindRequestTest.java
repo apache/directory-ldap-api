@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.codec.unbind;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -30,14 +31,12 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.codec.decorators.UnbindRequestDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.UnbindRequest;
-import org.apache.directory.api.util.Strings;
+import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -72,7 +71,7 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<UnbindRequestDecorator> ldapMessageContainer = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<UnbindRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -114,7 +113,7 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<UnbindRequestDecorator> ldapMessageContainer = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<UnbindRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -127,11 +126,9 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
 
         assertEquals( 1, controls.size() );
 
-        @SuppressWarnings("unchecked")
-        CodecControl<Control> control = ( CodecControl<Control> ) controls
-            .get( "2.16.840.1.113730.3.4.2" );
+        Control control = controls.get( "2.16.840.1.113730.3.4.2" );
+        assertTrue( control instanceof ManageDsaIT );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
@@ -162,7 +159,7 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<UnbindRequestDecorator> ldapMessageContainer = new LdapMessageContainer<>( codec );
+        LdapMessageContainerDirect<UnbindRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
 
         // Decode a UnbindRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
