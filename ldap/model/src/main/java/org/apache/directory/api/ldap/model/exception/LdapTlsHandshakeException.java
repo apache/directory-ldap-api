@@ -20,14 +20,6 @@
 package org.apache.directory.api.ldap.model.exception;
 
 
-import java.security.cert.CertPathBuilderException;
-import java.security.cert.CertPathValidatorException;
-import java.security.cert.CertificateExpiredException;
-import java.security.cert.CertificateNotYetValidException;
-
-import org.apache.commons.lang3.exception.ExceptionUtils;
-
-
 /**
  * A LdapTlsException is thrown if the SSL/TLS handshake failed.
  * 
@@ -37,8 +29,7 @@ public class LdapTlsHandshakeException extends LdapException
 {
     private static final long serialVersionUID = 1L;
 
-    private Throwable rootCause;
-    private String reasonPhrase;
+    private LdapTlsHandshakeFailCause failCause;
 
 
     /**
@@ -50,36 +41,13 @@ public class LdapTlsHandshakeException extends LdapException
     public LdapTlsHandshakeException( String message, Throwable cause )
     {
         super( message, cause );
-        classify();
+        this.failCause = LdapTlsHandshakeExceptionClassifier.classify( cause, null );
     }
 
 
-    private void classify()
+    public LdapTlsHandshakeFailCause getFailCause()
     {
-        rootCause = ExceptionUtils.getRootCause( getCause() );
-
-        if ( rootCause instanceof CertificateExpiredException )
-        {
-            this.reasonPhrase = "Certificate expired";
-        }
-        else if ( rootCause instanceof CertificateNotYetValidException )
-        {
-            this.reasonPhrase = "Certificate not yet valid";
-        }
-        else if ( rootCause instanceof CertPathBuilderException )
-        {
-            this.reasonPhrase = "Failed to build certification path";
-        }
-        else if ( rootCause instanceof CertPathValidatorException )
-        {
-            CertPathValidatorException cpve = ( CertPathValidatorException ) rootCause;
-            cpve.getReason();
-            this.reasonPhrase = "Failed to verify certification path";
-        }
-        else
-        {
-            this.reasonPhrase = "Unspecified";
-        }
+        return failCause;
     }
 
 
@@ -88,7 +56,8 @@ public class LdapTlsHandshakeException extends LdapException
     {
         String message = super.getMessage();
 
-        message += ", reason: " + reasonPhrase;
+        message += ", reason: " + failCause.getReasonPhrase();
+        Throwable rootCause = failCause.getRootCause();
         if ( rootCause != null && rootCause != this )
         {
             message += ": " + rootCause.getMessage();
@@ -97,15 +66,4 @@ public class LdapTlsHandshakeException extends LdapException
         return message;
     }
 
-
-    public String getReasonPhrase()
-    {
-        return reasonPhrase;
-    }
-
-
-    public Throwable getRootCause()
-    {
-        return rootCause;
-    }
 }
