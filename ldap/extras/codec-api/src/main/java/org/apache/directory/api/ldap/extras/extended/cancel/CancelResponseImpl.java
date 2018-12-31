@@ -21,7 +21,7 @@ package org.apache.directory.api.ldap.extras.extended.cancel;
 
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.model.message.ExtendedResponseImpl;
+import org.apache.directory.api.ldap.model.message.AbstractExtendedResponse;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 
 
@@ -31,7 +31,7 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CancelResponseImpl extends ExtendedResponseImpl implements CancelResponse
+public class CancelResponseImpl extends AbstractExtendedResponse implements CancelResponse
 {
     /**
      * Create a new CancelResponse object

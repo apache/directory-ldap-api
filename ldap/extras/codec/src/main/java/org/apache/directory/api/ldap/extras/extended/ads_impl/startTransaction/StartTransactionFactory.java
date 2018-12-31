@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.startTransaction;
 
 
+import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
@@ -27,6 +28,7 @@ import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTrans
 import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionRequestImpl;
 import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionResponse;
 import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionResponseImpl;
+import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 
 
 /**
@@ -65,5 +67,31 @@ public class StartTransactionFactory extends AbstractExtendedOperationFactory
     public StartTransactionResponse newResponse()
     {
         return new StartTransactionResponseImpl();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public StartTransactionResponse newResponse( byte[] encodedValue )
+    {
+        return new StartTransactionResponseImpl( encodedValue );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void encodeValue( Asn1Buffer buffer, ExtendedResponse extendedResponse )
+    {
+        // This is a hack !!! We remove the response name from the response
+        // because it has only be added to find the factory, but we don't want it
+        // top be injected in the encoded PDU...
+        extendedResponse.setResponseName( null );
+        
+        // Now, encode the TransactiuonID
+        buffer.put( ( ( StartTransactionResponse ) extendedResponse  ).getTransactionId() );
     }
 }

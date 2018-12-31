@@ -20,6 +20,8 @@
 package org.apache.directory.ldap.client.api.future;
 
 
+import org.apache.directory.api.ldap.model.message.ExtendedRequest;
+import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.api.ldap.model.message.Response;
 import org.apache.directory.ldap.client.api.LdapConnection;
 
@@ -31,6 +33,11 @@ import org.apache.directory.ldap.client.api.LdapConnection;
  */
 public class ExtendedFuture extends MultipleResponseFuture<Response>
 {
+    /** 
+     * The extendedRequest : we need it to find which request is associated 
+     * with a response, when this response has no name */
+    ExtendedRequest extendedRequest;
+    
     /**
      * Creates a new instance of ExtendedFuture.
      *
@@ -40,6 +47,42 @@ public class ExtendedFuture extends MultipleResponseFuture<Response>
     public ExtendedFuture( LdapConnection connection, int messageId )
     {
         super( connection, messageId );
+    }
+
+
+    /**
+     * @return the extendedRequest
+     */
+    public ExtendedRequest getExtendedRequest()
+    {
+        return extendedRequest;
+    }
+
+
+    /**
+     * @param extendedRequest the extendedRequest to set
+     */
+    public void setExtendedRequest( ExtendedRequest extendedRequest )
+    {
+        this.extendedRequest = extendedRequest;
+    }
+
+
+    /**
+     * Set the associated Response in this Future
+     * 
+     * @param response The response to add into the Future
+     * @throws InterruptedException if the operation has been cancelled by client
+     */
+    public void set( ExtendedResponse response ) throws InterruptedException
+    {
+        if ( response.getResponseName() == null )
+        {
+            // Feed the response with the request's OID 
+            response.setResponseName( extendedRequest.getRequestName() );
+        }
+        
+        queue.add( response );
     }
 
 

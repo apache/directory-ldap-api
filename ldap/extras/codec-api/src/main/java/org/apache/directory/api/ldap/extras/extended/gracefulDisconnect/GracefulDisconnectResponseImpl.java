@@ -21,7 +21,7 @@ package org.apache.directory.api.ldap.extras.extended.gracefulDisconnect;
 
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.model.message.ExtendedResponseImpl;
+import org.apache.directory.api.ldap.model.message.AbstractExtendedResponse;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.message.ReferralImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
@@ -36,7 +36,7 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class GracefulDisconnectResponseImpl extends ExtendedResponseImpl implements GracefulDisconnectResponse
+public class GracefulDisconnectResponseImpl extends AbstractExtendedResponse implements GracefulDisconnectResponse
 {
     /** Offline time after disconnection */
     private int timeOffline;
@@ -77,19 +77,6 @@ public class GracefulDisconnectResponseImpl extends ExtendedResponseImpl impleme
         ldapResult.setDiagnosticMessage( buf.toString() );
         ldapResult.setMatchedDn( null );
         ldapResult.setResultCode( ResultCodeEnum.UNAVAILABLE );
-    }
-
-
-    /**
-     * Gets the OID uniquely identifying this extended response (a.k.a. its
-     * name).
-     * 
-     * @return the OID of the extended response type.
-     */
-    @Override
-    public String getResponseName()
-    {
-        return EXTENSION_OID;
     }
 
 

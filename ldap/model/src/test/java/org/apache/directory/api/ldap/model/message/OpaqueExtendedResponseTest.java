@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,13 +37,13 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
- * TestCase for the ExtendedResponseImpl class.
+ * TestCase for the ExtendedResponse class.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class ExtendedResponseImplTest
+public class OpaqueExtendedResponseTest
 {
     private static final Map<String, Control> EMPTY_CONTROL_MAP = new HashMap<String, Control>();
 
@@ -52,10 +53,10 @@ public class ExtendedResponseImplTest
      * 
      * @return a populated ExtendedResponseImpl stub
      */
-    private ExtendedResponseImpl createStub()
+    private ExtendedResponse createStub()
     {
         // Construct the Search response to test with results and referrals
-        ExtendedResponseImpl response = new ExtendedResponseImpl( 45 );
+        ExtendedResponse response = new OpaqueExtendedResponse( 45 );
         response.setResponseName( "1.1.1.1" );
         LdapResult result = response.getLdapResult();
 
@@ -84,7 +85,7 @@ public class ExtendedResponseImplTest
     @Test
     public void testEqualsSameObj()
     {
-        ExtendedResponseImpl resp = createStub();
+        ExtendedResponse resp = createStub();
         assertTrue( resp.equals( resp ) );
     }
 
@@ -95,8 +96,8 @@ public class ExtendedResponseImplTest
     @Test
     public void testEqualsExactCopy()
     {
-        ExtendedResponseImpl resp0 = createStub();
-        ExtendedResponseImpl resp1 = createStub();
+        ExtendedResponse resp0 = createStub();
+        ExtendedResponse resp1 = createStub();
         assertTrue( resp0.equals( resp1 ) );
         assertTrue( resp1.equals( resp0 ) );
     }
@@ -104,116 +105,23 @@ public class ExtendedResponseImplTest
 
     /**
      * Tests for equality using different stub implementations.
+     * @throws LdapInvalidDnException 
      */
     @Test
-    public void testEqualsDiffImpl()
+    public void testEqualsDiffImpl() throws LdapInvalidDnException
     {
-        ExtendedResponseImpl resp0 = createStub();
-        ExtendedResponse resp1 = new ExtendedResponse()
-        {
-            public String getResponseName()
-            {
-                return "1.1.1.1";
-            }
-
-
-            public void setResponseName( String oid )
-            {
-            }
-
-
-            public LdapResult getLdapResult()
-            {
-                LdapResultImpl result = new LdapResultImpl();
-
-                try
-                {
-                    result.setMatchedDn( new Dn( "dc=example,dc=com" ) );
-                }
-                catch ( LdapException ine )
-                {
-                    // do nothing
-                }
-
-                result.setResultCode( ResultCodeEnum.SUCCESS );
-                ReferralImpl refs = new ReferralImpl();
-                refs.addLdapUrl( "ldap://someserver.com" );
-                refs.addLdapUrl( "ldap://apache.org" );
-                refs.addLdapUrl( "ldap://another.net" );
-                result.setReferral( refs );
-
-                return result;
-            }
-
-
-            public MessageTypeEnum getType()
-            {
-                return MessageTypeEnum.EXTENDED_RESPONSE;
-            }
-
-
-            public Map<String, Control> getControls()
-            {
-                return EMPTY_CONTROL_MAP;
-            }
-
-
-            public ExtendedResponse addControl( Control control )
-            {
-                return this;
-            }
-
-
-            public ExtendedResponse removeControl( Control control )
-            {
-                return this;
-            }
-
-
-            public int getMessageId()
-            {
-                return 45;
-            }
-
-
-            public Object get( Object a_key )
-            {
-                return null;
-            }
-
-
-            public Object put( Object a_key, Object a_value )
-            {
-                return null;
-            }
-
-
-            public ExtendedResponse addAllControls( Control[] controls )
-            {
-                return this;
-            }
-
-
-            public boolean hasControl( String oid )
-            {
-                return false;
-            }
-
-
-            public Control getControl( String oid )
-            {
-                return null;
-            }
-
-
-            public ExtendedResponse setMessageId( int messageId )
-            {
-                return this;
-            }
-        };
+        ExtendedResponse resp0 = createStub();
+        ExtendedResponse resp1 = new OpaqueExtendedResponse( 45, "1.1.1.1" );
+        resp1.getLdapResult().setMatchedDn( new Dn( "dc=example,dc=com" ) );
+        resp1.getLdapResult().setResultCode( ResultCodeEnum.SUCCESS );
+        ReferralImpl refs = new ReferralImpl();
+        refs.addLdapUrl( "ldap://someserver.com" );
+        refs.addLdapUrl( "ldap://apache.org" );
+        refs.addLdapUrl( "ldap://another.net" );
+        resp1.getLdapResult().setReferral( refs );
 
         assertTrue( resp0.equals( resp1 ) );
-        assertFalse( resp1.equals( resp0 ) );
+        assertTrue( resp1.equals( resp0 ) );
     }
 
 
@@ -223,7 +131,7 @@ public class ExtendedResponseImplTest
     @Test
     public void testHashCodeSameObj()
     {
-        ExtendedResponseImpl resp = createStub();
+        ExtendedResponse resp = createStub();
         assertTrue( resp.hashCode() == resp.hashCode() );
     }
 
@@ -234,8 +142,8 @@ public class ExtendedResponseImplTest
     @Test
     public void testHashCodeExactCopy()
     {
-        ExtendedResponseImpl resp0 = createStub();
-        ExtendedResponseImpl resp1 = createStub();
+        ExtendedResponse resp0 = createStub();
+        ExtendedResponse resp1 = createStub();
         assertTrue( resp0.hashCode() == resp1.hashCode() );
     }
 
@@ -246,8 +154,8 @@ public class ExtendedResponseImplTest
     @Test
     public void testNotEqualsDiffIds()
     {
-        ExtendedResponseImpl resp0 = new ExtendedResponseImpl( 3 );
-        ExtendedResponseImpl resp1 = new ExtendedResponseImpl( 4 );
+        ExtendedResponse resp0 = new OpaqueExtendedResponse( 3 );
+        ExtendedResponse resp1 = new OpaqueExtendedResponse( 4 );
 
         assertFalse( resp0.equals( resp1 ) );
         assertFalse( resp1.equals( resp0 ) );
@@ -260,9 +168,9 @@ public class ExtendedResponseImplTest
     @Test
     public void testNotEqualsDiffNames()
     {
-        ExtendedResponseImpl resp0 = createStub();
+        ExtendedResponse resp0 = createStub();
         resp0.setResponseName( "1.2.3.4" );
-        ExtendedResponseImpl resp1 = createStub();
+        ExtendedResponse resp1 = createStub();
         resp1.setResponseName( "1.2.3.4.5" );
 
         assertFalse( resp0.equals( resp1 ) );

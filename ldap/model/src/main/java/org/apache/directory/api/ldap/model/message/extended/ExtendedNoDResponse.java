@@ -21,7 +21,7 @@ package org.apache.directory.api.ldap.model.message.extended;
 
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.model.message.ExtendedResponseImpl;
+import org.apache.directory.api.ldap.model.message.AbstractExtendedResponse;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.util.Strings;
 
@@ -31,7 +31,7 @@ import org.apache.directory.api.util.Strings;
  * disconnection for the Extended response. 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public final class ExtendedNoDResponse extends ExtendedResponseImpl
+public final class ExtendedNoDResponse extends AbstractExtendedResponse
 {
     /** The serial version UID */
     static final long serialVersionUID = 2L;
@@ -92,18 +92,5 @@ public final class ExtendedNoDResponse extends ExtendedResponseImpl
     public byte[] getResponse()
     {
         return Strings.EMPTY_BYTES;
-    }
-
-
-    /**
-     * Gets the OID uniquely identifying this extended response (a.k.a. its
-     * name).
-     * 
-     * @return the OID of the extended response type.
-     */
-    @Override
-    public String getResponseName()
-    {
-        return EXTENSION_OID;
     }
 }

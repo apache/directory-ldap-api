@@ -176,6 +176,11 @@ public class PasswordModifyFactory extends AbstractExtendedOperationFactory
     @Override
     public void encodeValue( Asn1Buffer buffer, ExtendedResponse extendedResponse )
     {
+        // This is a hack !!! We remove the response name from the response
+        // because it has only be added to find the factory, but we don't want it
+        // top be injected in the encoded PDU...
+        extendedResponse.setResponseName( null );
+
         int start  = buffer.getPos();
         
         // The gen password

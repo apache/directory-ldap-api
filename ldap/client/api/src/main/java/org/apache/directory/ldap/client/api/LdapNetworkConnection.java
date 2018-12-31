@@ -113,6 +113,7 @@ import org.apache.directory.api.ldap.model.message.ModifyRequest;
 import org.apache.directory.api.ldap.model.message.ModifyRequestImpl;
 import org.apache.directory.api.ldap.model.message.ModifyResponse;
 import org.apache.directory.api.ldap.model.message.OpaqueExtendedRequest;
+import org.apache.directory.api.ldap.model.message.OpaqueExtendedResponse;
 import org.apache.directory.api.ldap.model.message.Request;
 import org.apache.directory.api.ldap.model.message.Response;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
@@ -1482,6 +1483,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             // Catch all other exceptions
             LOG.error( NO_RESPONSE_ERROR, ie );
+            
             throw new LdapException( NO_RESPONSE_ERROR, ie );
         }
     }
@@ -2644,6 +2646,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                         LOG.debug( I18n.msg( I18n.MSG_04117_EXTENDED_FAILED, extendedResponse ) );
                     }
                 }
+                
+                extendedResponse = handleOpaqueResponse( extendedResponse, extendedFuture );
 
                 // Store the response into the future
                 extendedFuture.set( extendedResponse );
@@ -2808,6 +2812,37 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         }
     }
 
+    
+    private ExtendedResponse handleOpaqueResponse( ExtendedResponse extendedResponse, ExtendedFuture extendedFuture ) 
+        throws DecoderException
+    {
+        if ( ( extendedResponse instanceof OpaqueExtendedResponse ) 
+            && ( Strings.isEmpty( extendedResponse.getResponseName() ) ) ) 
+        {
+            ExtendedOperationFactory factory = codec.getExtendedResponseFactories().
+                get( extendedFuture.getExtendedRequest().getRequestName() );
+            
+            ExtendedResponse response = factory.newResponse( ( ( OpaqueExtendedResponse ) extendedResponse ).getResponseValue() );
+            
+            // Copy the controls
+            for ( Control control : extendedResponse.getControls().values() )
+            {
+                response.addControl( control );
+            }
+            
+            // copy the LDAPResult
+            response.getLdapResult().setDiagnosticMessage( extendedResponse.getLdapResult().getDiagnosticMessage() );
+            response.getLdapResult().setMatchedDn( extendedResponse.getLdapResult().getMatchedDn() );
+            response.getLdapResult().setReferral( extendedResponse.getLdapResult().getReferral() );
+            response.getLdapResult().setResultCode( extendedResponse.getLdapResult().getResultCode() );
+            
+            return response;
+        }
+        else
+        {
+            return extendedResponse;
+        }
+    }
 
     /**
      * {@inheritDoc}
@@ -3901,8 +3936,15 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( factory != null )
         {
             try
-            {            
-                return extended( factory.newRequest( value ) );
+            {
+                if ( value == null )
+                {
+                    return extended( factory.newRequest() );
+                }
+                else
+                {
+                    return extended( factory.newRequest( value ) );
+                }
             }
             catch ( DecoderException de )
             {
@@ -4024,6 +4066,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         extendedRequest.setMessageId( newId );
         ExtendedFuture extendedFuture = new ExtendedFuture( this, newId );
+        extendedFuture.setExtendedRequest( extendedRequest );
         addToFutureMap( newId, extendedFuture );
 
         // Send the request to the server
@@ -4450,25 +4493,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     public LdapConnectionConfig getConfig()
     {
         return config;
-    }
-
-
-    private void addControls( Message codec, Message message )
-    {
-        Map<String, Control> controls = codec.getControls();
-
-        if ( controls != null )
-        {
-            for ( Control cc : controls.values() )
-            {
-                if ( cc == null )
-                {
-                    continue;
-                }
-
-                message.addControl( cc );
-            }
-        }
     }
 
 

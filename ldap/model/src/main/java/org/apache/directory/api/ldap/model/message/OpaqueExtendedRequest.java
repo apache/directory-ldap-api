@@ -39,7 +39,7 @@ public class OpaqueExtendedRequest extends AbstractRequest implements ExtendedRe
     private byte[] requestValue;
 
     /** The associated response */
-    protected ExtendedResponseImpl response;
+    protected ExtendedResponse response;
 
 
     /**
@@ -191,7 +191,7 @@ public class OpaqueExtendedRequest extends AbstractRequest implements ExtendedRe
     {
         if ( response == null )
         {
-            response = new ExtendedResponseImpl( getMessageId() );
+            response = new OpaqueExtendedResponse( getMessageId() );
         }
 
         return response;

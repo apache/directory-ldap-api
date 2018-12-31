@@ -20,7 +20,7 @@
 package org.apache.directory.api.ldap.extras.extended.storedProcedure;
 
 
-import org.apache.directory.api.ldap.model.message.ExtendedResponseImpl;
+import org.apache.directory.api.ldap.model.message.AbstractExtendedResponse;
 
 
 /**
@@ -29,7 +29,7 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponseImpl;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoredProcedureResponseImpl extends ExtendedResponseImpl implements StoredProcedureResponse
+public class StoredProcedureResponseImpl extends AbstractExtendedResponse implements StoredProcedureResponse
 {
     /**
      * Instantiates a new stored procedure response.

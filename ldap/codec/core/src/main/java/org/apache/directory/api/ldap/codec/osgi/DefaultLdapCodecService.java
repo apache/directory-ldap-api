@@ -349,10 +349,25 @@ public class DefaultLdapCodecService implements LdapApiService
     {
         // We don't know if it's a request or a response control. Test with request contriols
         ControlFactory<?> factory = requestControlFactories.get( control.getOid() );
-        Asn1Buffer asn1Buffer = new Asn1Buffer();
-        factory.encodeValue( asn1Buffer, control );
-
-        return new BasicControl( control.getOid(), control.isCritical(), asn1Buffer.getBytes().array() );
+        
+        if ( factory == null )
+        {
+            if ( control instanceof OpaqueControl )
+            {
+                return new BasicControl( control.getOid(), control.isCritical(), ( ( OpaqueControl ) control ).getEncodedValue() );
+            }
+            else
+            {
+                return new BasicControl( control.getOid(), control.isCritical(), null );
+            }
+        }
+        else
+        {
+            Asn1Buffer asn1Buffer = new Asn1Buffer();
+            factory.encodeValue( asn1Buffer, control );
+    
+            return new BasicControl( control.getOid(), control.isCritical(), asn1Buffer.getBytes().array() );
+        }
     }
 
 

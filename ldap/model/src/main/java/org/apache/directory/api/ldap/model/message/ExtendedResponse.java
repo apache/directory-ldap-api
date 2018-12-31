@@ -44,12 +44,4 @@ public interface ExtendedResponse extends ResultResponse
      * @param oid the OID of the extended response type.
      */
     void setResponseName( String oid );
-    
-    
-    /**
-     * Gets the response value, if any.
-     * 
-     * @return The byte[] containing the value, or null if we have none. 
-     */
-    //byte[] getResponseValue();
 }

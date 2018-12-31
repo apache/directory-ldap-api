@@ -20,7 +20,7 @@
 package org.apache.directory.api.ldap.extras.extended.startTls;
 
 
-import org.apache.directory.api.ldap.model.message.ExtendedResponseImpl;
+import org.apache.directory.api.ldap.model.message.AbstractExtendedResponse;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 
 
@@ -29,7 +29,7 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StartTlsResponseImpl extends ExtendedResponseImpl implements StartTlsResponse
+public class StartTlsResponseImpl extends AbstractExtendedResponse implements StartTlsResponse
 {
     /**
      * Create a new instance for the StartTls response

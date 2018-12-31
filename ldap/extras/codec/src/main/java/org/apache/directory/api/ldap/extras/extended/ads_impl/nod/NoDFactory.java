@@ -17,34 +17,33 @@
  *   under the License.
  *
  */
-package org.apache.directory.api.ldap.extras.extended.ads_impl.startTls;
+package org.apache.directory.api.ldap.extras.extended.ads_impl.nod;
 
 
 import org.apache.directory.api.ldap.codec.api.AbstractExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequest;
-import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequestImpl;
-import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsResponse;
-import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsResponseImpl;
+import org.apache.directory.api.ldap.model.message.ExtendedRequest;
+import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.api.ldap.model.message.extended.NoticeOfDisconnect;
 
 
 /**
- * An {@link ExtendedOperationFactory} for creating SartTls extended reques/response 
+ * An {@link ExtendedOperationFactory} for creating NoticeOfDisconnect extended response 
  * pairs.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StartTlsFactory extends AbstractExtendedOperationFactory
+public class NoDFactory extends AbstractExtendedOperationFactory
 {
     /**
-     * Creates a new instance of StartTlsFactory.
+     * Creates a new instance of NoDFactory.
      *
      * @param codec The codec for this factory.
      */
-    public StartTlsFactory( LdapApiService codec )
+    public NoDFactory( LdapApiService codec )
     {
-        super( codec, StartTlsRequest.EXTENSION_OID );
+        super( codec, NoticeOfDisconnect.EXTENSION_OID );
     }
 
 
@@ -52,18 +51,15 @@ public class StartTlsFactory extends AbstractExtendedOperationFactory
      * {@inheritDoc}
      */
     @Override
-    public StartTlsRequest newRequest()
+    public NoticeOfDisconnect newResponse()
     {
-        return new StartTlsRequestImpl();
+        return NoticeOfDisconnect.createNoticeOfDisconnect( ResultCodeEnum.PROTOCOL_ERROR );
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public StartTlsResponse newResponse()
+    public ExtendedRequest newRequest()
     {
-        return new StartTlsResponseImpl();
+        return null;
     }
 }

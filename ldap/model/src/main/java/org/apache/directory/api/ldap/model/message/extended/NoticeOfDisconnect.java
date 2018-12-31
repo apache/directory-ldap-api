@@ -21,7 +21,7 @@ package org.apache.directory.api.ldap.model.message.extended;
 
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.model.message.ExtendedResponseImpl;
+import org.apache.directory.api.ldap.model.message.AbstractExtendedResponse;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.util.Strings;
 
@@ -102,7 +102,7 @@ import org.apache.directory.api.util.Strings;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public final class NoticeOfDisconnect extends ExtendedResponseImpl
+public final class NoticeOfDisconnect extends AbstractExtendedResponse
 {
     /** The OID of the NotiveOfDisconnect extended operation. */
     public static final String EXTENSION_OID = "1.3.6.1.4.1.1466.20036";
@@ -147,6 +147,39 @@ public final class NoticeOfDisconnect extends ExtendedResponseImpl
         super.getLdapResult().setMatchedDn( null );
         super.getLdapResult().setResultCode( rcode );
     }
+    
+    
+    /**
+     * Create a NoD associated with a result code enum
+     *
+     * @param rcode The result code
+     * @return The created NoticeOfDisconnect
+     */
+    public static NoticeOfDisconnect createNoticeOfDisconnect( ResultCodeEnum rcode )
+    {
+        NoticeOfDisconnect nod;
+        
+        switch ( rcode )
+        {
+            case UNAVAILABLE:
+                nod = UNAVAILABLE;
+                
+            case PROTOCOL_ERROR:
+                nod = PROTOCOLERROR;
+                
+            case STRONG_AUTH_REQUIRED:
+                nod = STRONGAUTHREQUIRED;
+                
+            default:
+                nod = new NoticeOfDisconnect( rcode );
+        }
+        
+        nod.getLdapResult().setDiagnosticMessage( rcode.toString() + ": The server will disconnect!" );
+        nod.getLdapResult().setMatchedDn( null );
+        nod.getLdapResult().setResultCode( rcode );
+        
+        return nod;
+    }
 
 
     // ------------------------------------------------------------------------
@@ -172,19 +205,6 @@ public final class NoticeOfDisconnect extends ExtendedResponseImpl
     public void setResponse( byte[] value )
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_13505_HARDCODED_ZERO_LENGTH_RESPONSE ) );
-    }
-
-
-    /**
-     * Gets the OID uniquely identifying this extended response (a.k.a. its
-     * name).
-     * 
-     * @return the OID of the extended response type.
-     */
-    @Override
-    public String getResponseName()
-    {
-        return EXTENSION_OID;
     }
 
 

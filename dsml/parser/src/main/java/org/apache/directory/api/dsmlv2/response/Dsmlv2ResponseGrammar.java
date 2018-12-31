@@ -51,11 +51,11 @@ import org.apache.directory.api.ldap.model.message.CompareResponseImpl;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.DeleteResponseImpl;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
-import org.apache.directory.api.ldap.model.message.ExtendedResponseImpl;
 import org.apache.directory.api.ldap.model.message.LdapResult;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.ModifyDnResponseImpl;
 import org.apache.directory.api.ldap.model.message.ModifyResponseImpl;
+import org.apache.directory.api.ldap.model.message.OpaqueExtendedResponse;
 import org.apache.directory.api.ldap.model.message.ReferralImpl;
 import org.apache.directory.api.ldap.model.message.Response;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
@@ -459,13 +459,13 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             if ( attributeValue != null )
             {
                 extendedResponse = new ExtendedResponseDsml(
-                    container.getLdapCodecService(), new ExtendedResponseImpl(
+                    container.getLdapCodecService(), new OpaqueExtendedResponse(
                         ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) ) );
             }
             else
             {
                 extendedResponse = new ExtendedResponseDsml(
-                    container.getLdapCodecService(), new ExtendedResponseImpl( -1 ) );
+                    container.getLdapCodecService(), new OpaqueExtendedResponse( -1 ) );
             }
 
             container.getBatchResponse().addResponse( extendedResponse );

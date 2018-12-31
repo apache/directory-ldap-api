@@ -103,7 +103,7 @@ public class StoreExtendedResponseName extends GrammarAction<LdapMessageContaine
                 
                 if ( factory != null )
                 {
-                    // Create the extended request
+                    // Create the extended response
                     extendedResponse = factory.newResponse();
 
                     // Move the LDAPResult in the newly created response

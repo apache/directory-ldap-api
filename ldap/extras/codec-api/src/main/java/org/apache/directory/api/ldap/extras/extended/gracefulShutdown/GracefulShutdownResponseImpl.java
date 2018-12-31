@@ -21,7 +21,7 @@ package org.apache.directory.api.ldap.extras.extended.gracefulShutdown;
 
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.model.message.ExtendedResponseImpl;
+import org.apache.directory.api.ldap.model.message.AbstractExtendedResponse;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 
 
@@ -32,7 +32,7 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class GracefulShutdownResponseImpl extends ExtendedResponseImpl implements GracefulShutdownResponse
+public class GracefulShutdownResponseImpl extends AbstractExtendedResponse implements GracefulShutdownResponse
 {
     /**
      * Instantiates a new graceful shutdown response.
@@ -92,18 +92,6 @@ public class GracefulShutdownResponseImpl extends ExtendedResponseImpl implement
     // ------------------------------------------------------------------------
     // ExtendedResponse Interface Method Implementations
     // ------------------------------------------------------------------------
-
-    /**
-     * Gets the OID uniquely identifying this extended response (a.k.a. its
-     * name).
-     * 
-     * @return the OID of the extended response type.
-     */
-    @Override
-    public String getResponseName()
-    {
-        return EXTENSION_OID;
-    }
 
 
     /**

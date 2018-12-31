@@ -28,13 +28,10 @@ import org.apache.directory.api.util.Strings;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class OpaqueExtendedResponse extends AbstractResultResponse implements ExtendedResponse
+public class OpaqueExtendedResponse extends AbstractExtendedResponse
 {
     static final long serialVersionUID = 7916990159044177480L;
 
-    /** Extended response's Object Identifier or <b>responseName</b> */
-    private String oid;
-    
     /** Extended response value as an opaque byte array */
     private byte[] responseValue;
 
@@ -45,81 +42,47 @@ public class OpaqueExtendedResponse extends AbstractResultResponse implements Ex
      */
     public OpaqueExtendedResponse()
     {
-        super( -1, MessageTypeEnum.EXTENDED_RESPONSE );
+        super( -1 );
     }
 
 
-    // -----------------------------------------------------------------------
-    // ExtendedRequest Interface Method Implementations
-    // -----------------------------------------------------------------------
-
     /**
-     * Gets the Object Identifier corresponding to the extended response type.
-     * This is the <b>responseName</b> portion of the ext. req. PDU.
+     * Creates an ExtendedResponse implementing object used to perform
+     * extended protocol operation on the server.
      * 
-     * @return the dotted-decimal representation as a String of the OID
+     * @param messageId the messageID
      */
-    @Override
-    public String getResponseName()
+    public OpaqueExtendedResponse( int messageId )
     {
-        return oid;
+        super( messageId );
     }
 
 
     /**
-     * Sets the Object Identifier corresponding to the extended response type.
+     * Creates an ExtendedResponse implementing object used to perform
+     * extended protocol operation on the server.
      * 
-     * @param newOid the dotted-decimal representation as a String of the OID
+     * @param responseName The extended response OID
      */
-    @Override
-    public void setResponseName( String newOid )
+    public OpaqueExtendedResponse( String responseName )
     {
-        this.oid = newOid;
+        super( -1, responseName );
     }
 
 
     /**
-     * {@inheritDoc}
+     * Creates an ExtendedResponse implementing object used to perform
+     * extended protocol operation on the server.
+     * 
+     * @param messageId the messageID
+     * @param responseName The extended response OID
      */
-    @Override
-    public ExtendedResponse setMessageId( int messageId )
+    public OpaqueExtendedResponse( int messageId, String responseName )
     {
-        super.setMessageId( messageId );
-
-        return this;
+        super( messageId, responseName );
     }
 
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ExtendedResponse addControl( Control control )
-    {
-        return ( ExtendedResponse ) super.addControl( control );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ExtendedResponse addAllControls( Control[] controls )
-    {
-        return ( ExtendedResponse ) super.addAllControls( controls );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ExtendedResponse removeControl( Control control )
-    {
-        return ( ExtendedResponse ) super.removeControl( control );
-    }
-
-
+    
     // ------------------------------------------------------------------------
     // SingleReplyRequest Interface Method Implementations
     // ------------------------------------------------------------------------
@@ -152,9 +115,9 @@ public class OpaqueExtendedResponse extends AbstractResultResponse implements Ex
         
         hash = hash * 17 + super.hashCode();
 
-        if ( oid != null )
+        if ( responseName != null )
         {
-            hash = hash * 17 + oid.hashCode();
+            hash = hash * 17 + responseName.hashCode();
         }
         
         if ( responseValue != null )
@@ -195,8 +158,8 @@ public class OpaqueExtendedResponse extends AbstractResultResponse implements Ex
 
         OpaqueExtendedResponse extendedRequest = ( OpaqueExtendedResponse ) obj;
 
-        if ( ( ( oid != null ) && !oid.equals( extendedRequest.oid ) )
-            || ( ( oid == null ) && ( extendedRequest.oid != null ) ) )
+        if ( ( ( responseName != null ) && !responseName.equals( extendedRequest.responseName ) )
+            || ( ( responseName == null ) && ( extendedRequest.responseName != null ) ) )
         {
             return false;
         }
@@ -216,7 +179,7 @@ public class OpaqueExtendedResponse extends AbstractResultResponse implements Ex
         StringBuilder sb = new StringBuilder();
 
         sb.append( "    Extended response\n" );
-        sb.append( "        Response name :  '" ).append( oid ).append( "'\n" );
+        sb.append( "        Response name :  '" ).append( responseName ).append( "'\n" );
         sb.append( "        Response value : '" ).append( Strings.dumpBytes( responseValue ) ).append( "'\n" );
 
         return super.toString( sb.toString() );

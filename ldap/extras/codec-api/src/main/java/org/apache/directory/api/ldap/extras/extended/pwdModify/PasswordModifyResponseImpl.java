@@ -20,7 +20,7 @@
 package org.apache.directory.api.ldap.extras.extended.pwdModify;
 
 
-import org.apache.directory.api.ldap.model.message.ExtendedResponseImpl;
+import org.apache.directory.api.ldap.model.message.AbstractExtendedResponse;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.util.Strings;
 
@@ -35,7 +35,7 @@ import org.apache.directory.api.util.Strings;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PasswordModifyResponseImpl extends ExtendedResponseImpl implements PasswordModifyResponse
+public class PasswordModifyResponseImpl extends AbstractExtendedResponse implements PasswordModifyResponse
 {
     /** The generated password */
     private byte[] genPassword;
@@ -49,7 +49,7 @@ public class PasswordModifyResponseImpl extends ExtendedResponseImpl implements 
      */
     public PasswordModifyResponseImpl( int messageId, ResultCodeEnum rcode, String diagnosticMessage )
     {
-        super( messageId, null );
+        super( messageId, PasswordModifyResponse.EXTENSION_OID );
 
         super.getLdapResult().setMatchedDn( null );
         super.getLdapResult().setResultCode( rcode );
@@ -64,7 +64,7 @@ public class PasswordModifyResponseImpl extends ExtendedResponseImpl implements 
      */
     public PasswordModifyResponseImpl( int messageId, ResultCodeEnum rcode )
     {
-        super( messageId, null );
+        super( messageId, PasswordModifyResponse.EXTENSION_OID );
 
         super.getLdapResult().setMatchedDn( null );
         super.getLdapResult().setResultCode( rcode );
@@ -78,7 +78,7 @@ public class PasswordModifyResponseImpl extends ExtendedResponseImpl implements 
      */
     public PasswordModifyResponseImpl( int messageId )
     {
-        super( messageId, null );
+        super( messageId, PasswordModifyResponse.EXTENSION_OID );
         super.getLdapResult().setMatchedDn( null );
         super.getLdapResult().setResultCode( ResultCodeEnum.SUCCESS );
     }
@@ -89,7 +89,7 @@ public class PasswordModifyResponseImpl extends ExtendedResponseImpl implements 
      */
     public PasswordModifyResponseImpl()
     {
-        super( null );
+        super( PasswordModifyResponse.EXTENSION_OID );
         super.getLdapResult().setMatchedDn( null );
         super.getLdapResult().setResultCode( ResultCodeEnum.SUCCESS );
     }

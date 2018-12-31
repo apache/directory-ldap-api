@@ -21,11 +21,11 @@ package org.apache.directory.api.ldap.model.message;
 
 
 /**
- * A simple ExtendedResponse implementation.
+ * An Abstract ExtendedResponse implementation.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ExtendedResponseImpl extends AbstractResultResponse implements ExtendedResponse
+public abstract class AbstractExtendedResponse extends AbstractResultResponse implements ExtendedResponse
 {
     static final long serialVersionUID = -6646752766410531060L;
 
@@ -40,7 +40,7 @@ public class ExtendedResponseImpl extends AbstractResultResponse implements Exte
      * 
      * @param responseName the ExtendedResponse's name
      */
-    public ExtendedResponseImpl( String responseName )
+    public AbstractExtendedResponse( String responseName )
     {
         super( -1, TYPE );
         this.responseName = responseName;
@@ -53,7 +53,7 @@ public class ExtendedResponseImpl extends AbstractResultResponse implements Exte
      * @param id the session unique message id
      * @param responseName the ExtendedResponse's name
      */
-    public ExtendedResponseImpl( final int id, String responseName )
+    public AbstractExtendedResponse( final int id, String responseName )
     {
         super( id, TYPE );
         this.responseName = responseName;
@@ -65,7 +65,7 @@ public class ExtendedResponseImpl extends AbstractResultResponse implements Exte
      * 
      * @param id the session unique message id
      */
-    public ExtendedResponseImpl( int id )
+    public AbstractExtendedResponse( int id )
     {
         super( id, TYPE );
     }

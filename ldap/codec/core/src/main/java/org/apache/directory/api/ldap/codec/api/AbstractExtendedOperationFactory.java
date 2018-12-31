@@ -23,6 +23,8 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A Factory to encode Extended Request and Response messages
@@ -31,6 +33,9 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
  */
 public abstract class AbstractExtendedOperationFactory implements ExtendedOperationFactory
 {
+    /** logger for reporting errors that might not be handled properly upstream */
+    protected  static final Logger LOG = LoggerFactory.getLogger( AbstractExtendedOperationFactory.class );
+    
     /** The LDAP codec responsible for encoding and decoding */
     protected LdapApiService codec;
     

@@ -23,7 +23,7 @@ package org.apache.directory.api.ldap.extras.extended.endTransaction;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.api.ldap.model.message.ExtendedResponseImpl;
+import org.apache.directory.api.ldap.model.message.AbstractExtendedResponse;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 
 
@@ -54,7 +54,7 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class EndTransactionResponseImpl extends ExtendedResponseImpl implements EndTransactionResponse
+public class EndTransactionResponseImpl extends AbstractExtendedResponse implements EndTransactionResponse
 {
     /** The faulty Message ID, if any */
     private int failedMessageId = -1;
@@ -107,19 +107,6 @@ public class EndTransactionResponseImpl extends ExtendedResponseImpl implements 
         super( EndTransactionRequest.EXTENSION_OID );
         super.getLdapResult().setMatchedDn( null );
         super.getLdapResult().setResultCode( ResultCodeEnum.SUCCESS );
-    }
-
-
-    /**
-     * Gets the OID uniquely identifying this extended response (a.k.a. its
-     * name). It's a null value for the Cancel response
-     * 
-     * @return the OID of the extended response type.
-     */
-    @Override
-    public String getResponseName()
-    {
-        return "";
     }
     
     

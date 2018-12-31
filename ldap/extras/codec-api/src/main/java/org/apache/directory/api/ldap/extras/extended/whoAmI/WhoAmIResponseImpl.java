@@ -20,7 +20,7 @@
 package org.apache.directory.api.ldap.extras.extended.whoAmI;
 
 
-import org.apache.directory.api.ldap.model.message.ExtendedResponseImpl;
+import org.apache.directory.api.ldap.model.message.AbstractExtendedResponse;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
@@ -35,7 +35,7 @@ import org.apache.directory.api.util.Strings;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class WhoAmIResponseImpl extends ExtendedResponseImpl implements WhoAmIResponse
+public class WhoAmIResponseImpl extends AbstractExtendedResponse implements WhoAmIResponse
 {
     /** The authzid */
     private byte[] authzId;

@@ -69,6 +69,7 @@ import org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration.Cer
 import org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction.EndTransactionFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownFactory;
+import org.apache.directory.api.ldap.extras.extended.ads_impl.nod.NoDFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.startTls.StartTlsFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.startTransaction.StartTransactionFactory;
@@ -388,9 +389,18 @@ public final class CodecFactoryUtil
         extendendRequestFactories.put( gracefulShutdownFactory.getOid(), gracefulShutdownFactory );
         extendendResponseFactories.put( gracefulShutdownFactory.getOid(), gracefulShutdownFactory );
 
+        
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06001_REGISTERED_EXTENDED_OP_FACTORY, gracefulShutdownFactory.getOid() ) );
+        }
+
+        NoDFactory noticeOfDisconnectFactory = new NoDFactory( apiService );
+        extendendResponseFactories.put( noticeOfDisconnectFactory.getOid(), noticeOfDisconnectFactory );
+
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( I18n.msg( I18n.MSG_06001_REGISTERED_EXTENDED_OP_FACTORY, noticeOfDisconnectFactory.getOid() ) );
         }
 
         PasswordModifyFactory passwordModifyFactory = new PasswordModifyFactory( apiService );

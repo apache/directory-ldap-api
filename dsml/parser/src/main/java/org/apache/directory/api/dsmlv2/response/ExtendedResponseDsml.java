@@ -24,8 +24,8 @@ import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.dsmlv2.ParserUtils;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
-import org.apache.directory.api.ldap.model.message.ExtendedResponseImpl;
 import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
+import org.apache.directory.api.ldap.model.message.OpaqueExtendedResponse;
 import org.apache.directory.api.util.Strings;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
@@ -52,7 +52,7 @@ public class ExtendedResponseDsml extends AbstractResultResponseDsml<ExtendedRes
      */
     public ExtendedResponseDsml( LdapApiService codec )
     {
-        super( codec, new ExtendedResponseImpl( "" ) );
+        super( codec, new OpaqueExtendedResponse( "" ) );
     }
 
 
