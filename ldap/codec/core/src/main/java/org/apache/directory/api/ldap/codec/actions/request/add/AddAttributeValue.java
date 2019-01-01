@@ -23,7 +23,7 @@ package org.apache.directory.api.ldap.codec.actions.request.add;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.AddRequest;
@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AddAttributeValue extends GrammarAction<LdapMessageContainerDirect<AddRequest>>
+public class AddAttributeValue extends GrammarAction<LdapMessageContainer<AddRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( AddAttributeValue.class );
@@ -61,7 +61,7 @@ public class AddAttributeValue extends GrammarAction<LdapMessageContainerDirect<
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainerDirect<AddRequest> container )
+    public void action( LdapMessageContainer<AddRequest> container )
     {
         Attribute currentAttribute = container.getCurrentAttribute();
 

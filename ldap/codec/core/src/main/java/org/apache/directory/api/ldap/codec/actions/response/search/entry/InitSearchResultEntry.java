@@ -21,7 +21,7 @@ package org.apache.directory.api.ldap.codec.actions.response.search.entry;
 
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.message.SearchResultEntry;
 import org.apache.directory.api.ldap.model.message.SearchResultEntryImpl;
 
@@ -34,7 +34,7 @@ import org.apache.directory.api.ldap.model.message.SearchResultEntryImpl;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitSearchResultEntry extends GrammarAction<LdapMessageContainerDirect<SearchResultEntry>>
+public class InitSearchResultEntry extends GrammarAction<LdapMessageContainer<SearchResultEntry>>
 {
     /**
      * Instantiates a new action.
@@ -48,7 +48,7 @@ public class InitSearchResultEntry extends GrammarAction<LdapMessageContainerDir
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainerDirect<SearchResultEntry> container )
+    public void action( LdapMessageContainer<SearchResultEntry> container )
     {
         // Now, we can allocate the SearchResultEntry Object
         SearchResultEntry searchResultEntry = new SearchResultEntryImpl( container.getMessageId() );

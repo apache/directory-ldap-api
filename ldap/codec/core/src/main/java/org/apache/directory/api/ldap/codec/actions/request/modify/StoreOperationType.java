@@ -27,7 +27,7 @@ import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.message.ModifyRequest;
@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreOperationType extends GrammarAction<LdapMessageContainerDirect<ModifyRequest>>
+public class StoreOperationType extends GrammarAction<LdapMessageContainer<ModifyRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreOperationType.class );
@@ -65,7 +65,7 @@ public class StoreOperationType extends GrammarAction<LdapMessageContainerDirect
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainerDirect<ModifyRequest> container ) throws DecoderException
+    public void action( LdapMessageContainer<ModifyRequest> container ) throws DecoderException
     {
         ModifyRequest modifyRequest = container.getMessage();
         TLV tlv = container.getCurrentTLV();

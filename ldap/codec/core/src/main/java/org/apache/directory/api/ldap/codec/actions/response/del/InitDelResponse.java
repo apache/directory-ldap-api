@@ -22,7 +22,7 @@ package org.apache.directory.api.ldap.codec.actions.response.del;
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.message.DeleteResponse;
 import org.apache.directory.api.ldap.model.message.DeleteResponseImpl;
 import org.slf4j.Logger;
@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitDelResponse extends GrammarAction<LdapMessageContainerDirect<DeleteResponse>>
+public class InitDelResponse extends GrammarAction<LdapMessageContainer<DeleteResponse>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitDelResponse.class );
@@ -55,7 +55,7 @@ public class InitDelResponse extends GrammarAction<LdapMessageContainerDirect<De
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainerDirect<DeleteResponse> container )
+    public void action( LdapMessageContainer<DeleteResponse> container )
     {
         // Now, we can allocate the DelResponse Object
         DeleteResponse delResponse = new DeleteResponseImpl( container.getMessageId() );

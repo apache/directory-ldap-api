@@ -24,7 +24,7 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AddAttributeType extends GrammarAction<LdapMessageContainerDirect<SearchResultEntry>>
+public class AddAttributeType extends GrammarAction<LdapMessageContainer<SearchResultEntry>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( AddAttributeType.class );
@@ -64,7 +64,7 @@ public class AddAttributeType extends GrammarAction<LdapMessageContainerDirect<S
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainerDirect<SearchResultEntry> container ) throws DecoderException
+    public void action( LdapMessageContainer<SearchResultEntry> container ) throws DecoderException
     {
         SearchResultEntry searchResultEntry = container.getMessage();
 

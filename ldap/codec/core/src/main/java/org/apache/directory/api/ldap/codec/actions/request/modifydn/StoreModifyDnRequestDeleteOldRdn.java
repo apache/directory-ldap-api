@@ -27,7 +27,7 @@ import org.apache.directory.api.asn1.ber.tlv.BooleanDecoder;
 import org.apache.directory.api.asn1.ber.tlv.BooleanDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.message.ModifyDnRequest;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreModifyDnRequestDeleteOldRdn extends GrammarAction<LdapMessageContainerDirect<ModifyDnRequest>>
+public class StoreModifyDnRequestDeleteOldRdn extends GrammarAction<LdapMessageContainer<ModifyDnRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreModifyDnRequestDeleteOldRdn.class );
@@ -62,7 +62,7 @@ public class StoreModifyDnRequestDeleteOldRdn extends GrammarAction<LdapMessageC
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainerDirect<ModifyDnRequest> container ) throws DecoderException
+    public void action( LdapMessageContainer<ModifyDnRequest> container ) throws DecoderException
     {
         ModifyDnRequest modifyDnRequest = container.getMessage();
 

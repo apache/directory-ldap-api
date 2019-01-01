@@ -126,7 +126,7 @@ import org.apache.directory.api.ldap.codec.actions.response.search.entry.StoreSe
 import org.apache.directory.api.ldap.codec.actions.response.search.reference.InitSearchResultReference;
 import org.apache.directory.api.ldap.codec.actions.response.search.reference.StoreReference;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.message.AbstractMessage;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.slf4j.Logger;
@@ -141,13 +141,13 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public final class LdapMessageGrammar extends
-    AbstractGrammar<LdapMessageContainerDirect<AbstractMessage>>
+    AbstractGrammar<LdapMessageContainer<AbstractMessage>>
 {
     /** The logger */
     static final Logger LOG = LoggerFactory.getLogger( LdapMessageGrammar.class );
 
     /** The instance of grammar. LdapMessageGrammar is a singleton */
-    private static Grammar<LdapMessageContainerDirect<AbstractMessage>> instance =
+    private static Grammar<LdapMessageContainer<AbstractMessage>> instance =
         new LdapMessageGrammar();
 
 
@@ -3777,7 +3777,7 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.TYPE_SUBSTRING_STATE,
                 LdapStatesEnum.SUBSTRINGS_STATE,
                 SEQUENCE,
-                new CheckNotNullLength<LdapMessageContainerDirect<SearchRequest>>() );
+                new CheckNotNullLength<LdapMessageContainer<SearchRequest>>() );
 
         // --------------------------------------------------------------------------------------------
         // Transition from substrings to Initial

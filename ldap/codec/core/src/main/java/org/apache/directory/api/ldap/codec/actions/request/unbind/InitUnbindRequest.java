@@ -24,7 +24,7 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.message.UnbindRequest;
 import org.apache.directory.api.ldap.model.message.UnbindRequestImpl;
 import org.slf4j.Logger;
@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitUnbindRequest extends GrammarAction<LdapMessageContainerDirect<UnbindRequest>>
+public class InitUnbindRequest extends GrammarAction<LdapMessageContainer<UnbindRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitUnbindRequest.class );
@@ -57,7 +57,7 @@ public class InitUnbindRequest extends GrammarAction<LdapMessageContainerDirect<
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainerDirect<UnbindRequest> container ) throws DecoderException
+    public void action( LdapMessageContainer<UnbindRequest> container ) throws DecoderException
     {
         // Create the UnbindRequest LdapMessage instance and store it in the container
         UnbindRequest unbindRequest = new UnbindRequestImpl();

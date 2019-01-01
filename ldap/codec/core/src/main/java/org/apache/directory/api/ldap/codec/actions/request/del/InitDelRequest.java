@@ -24,7 +24,7 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.DeleteRequest;
@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitDelRequest extends GrammarAction<LdapMessageContainerDirect<DeleteRequest>>
+public class InitDelRequest extends GrammarAction<LdapMessageContainer<DeleteRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitDelRequest.class );
@@ -65,7 +65,7 @@ public class InitDelRequest extends GrammarAction<LdapMessageContainerDirect<Del
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainerDirect<DeleteRequest> container ) throws DecoderException
+    public void action( LdapMessageContainer<DeleteRequest> container ) throws DecoderException
     {
         // Create the DeleteRequest LdapMessage instance and store it in the container
         DeleteRequest delRequest = new DeleteRequestImpl();

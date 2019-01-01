@@ -38,7 +38,7 @@ import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.ber.tlv.TLVStateEnum;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
@@ -186,7 +186,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -329,7 +329,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -469,7 +469,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -586,7 +586,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -699,8 +699,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -815,8 +815,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -924,8 +924,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -1076,8 +1076,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         ByteBuffer streamJava5 = ByteBuffer.allocate( asn1BERJava5.length );
         streamJava5.put( asn1BERJava5 );
 
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( streamJava6, ldapMessageContainer );
 
@@ -1207,8 +1207,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -1319,8 +1319,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.put( asn1BER );
         stream.flip();
 
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -1381,8 +1381,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -1410,8 +1410,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -1491,8 +1491,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a SearchRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -1639,8 +1639,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         try
         {
@@ -1683,8 +1683,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -1760,8 +1760,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
     }
@@ -1792,8 +1792,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -1869,8 +1869,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
     }
@@ -1902,8 +1902,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -1978,8 +1978,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
     }
@@ -2012,8 +2012,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -2093,8 +2093,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
     }
@@ -2128,8 +2128,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -2165,8 +2165,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -2202,8 +2202,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -2239,8 +2239,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -2276,8 +2276,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -2313,8 +2313,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -2350,8 +2350,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -2390,8 +2390,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -2433,8 +2433,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -2509,8 +2509,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -2584,8 +2584,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -2647,8 +2647,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -2686,8 +2686,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -2725,8 +2725,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -2767,8 +2767,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -2817,8 +2817,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -2913,8 +2913,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -2997,8 +2997,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -3096,8 +3096,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -3194,8 +3194,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -3300,8 +3300,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -3413,8 +3413,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -3531,8 +3531,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -3656,8 +3656,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -3777,8 +3777,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -3903,8 +3903,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -4027,8 +4027,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -4124,8 +4124,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -4192,8 +4192,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -4287,8 +4287,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -4379,7 +4379,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 

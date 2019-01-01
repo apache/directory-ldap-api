@@ -22,7 +22,7 @@ package org.apache.directory.api.ldap.codec.actions.response.modify;
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.message.ModifyResponse;
 import org.apache.directory.api.ldap.model.message.ModifyResponseImpl;
 import org.slf4j.Logger;
@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitModifyResponse extends GrammarAction<LdapMessageContainerDirect<ModifyResponse>>
+public class InitModifyResponse extends GrammarAction<LdapMessageContainer<ModifyResponse>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitModifyResponse.class );
@@ -55,7 +55,7 @@ public class InitModifyResponse extends GrammarAction<LdapMessageContainerDirect
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainerDirect<ModifyResponse> container )
+    public void action( LdapMessageContainer<ModifyResponse> container )
     {
         // Now, we can allocate the ModifyResponse Object
         ModifyResponse modifyResponse = new ModifyResponseImpl( container.getMessageId() );

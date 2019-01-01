@@ -23,7 +23,7 @@ package org.apache.directory.api.ldap.codec.actions.ldapResult;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.message.LdapResult;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.util.Strings;
@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreErrorMessage extends GrammarAction<LdapMessageContainerDirect<Message>>
+public class StoreErrorMessage extends GrammarAction<LdapMessageContainer<Message>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreErrorMessage.class );
@@ -60,7 +60,7 @@ public class StoreErrorMessage extends GrammarAction<LdapMessageContainerDirect<
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainerDirect<Message> container )
+    public void action( LdapMessageContainer<Message> container )
     {
         // Get the Value and store it in the BindResponse
         TLV tlv = container.getCurrentTLV();

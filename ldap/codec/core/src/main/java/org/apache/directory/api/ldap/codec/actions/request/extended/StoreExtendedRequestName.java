@@ -27,7 +27,7 @@ import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.OpaqueExtendedRequest;
 import org.apache.directory.api.util.Strings;
@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainerDirect<ExtendedRequest>>
+public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer<ExtendedRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreExtendedRequestName.class );
@@ -62,7 +62,7 @@ public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainerDirect<ExtendedRequest> container ) throws DecoderException
+    public void action( LdapMessageContainer<ExtendedRequest> container ) throws DecoderException
     {
         // Get the Name and store it in the ExtendedRequest. That will
         // allow us to find the proper extended request instance, if it's 

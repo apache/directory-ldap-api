@@ -21,7 +21,7 @@ package org.apache.directory.api.ldap.codec.actions.response.bind;
 
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.message.BindResponse;
 import org.apache.directory.api.ldap.model.message.BindResponseImpl;
 
@@ -34,7 +34,7 @@ import org.apache.directory.api.ldap.model.message.BindResponseImpl;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitBindResponse extends GrammarAction<LdapMessageContainerDirect<BindResponse>>
+public class InitBindResponse extends GrammarAction<LdapMessageContainer<BindResponse>>
 {
     /**
      * Instantiates a new action.
@@ -48,7 +48,7 @@ public class InitBindResponse extends GrammarAction<LdapMessageContainerDirect<B
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainerDirect<BindResponse> container )
+    public void action( LdapMessageContainer<BindResponse> container )
     {
         // Now, we can allocate the BindResponse Object
         BindResponse bindResponse = new BindResponseImpl( container.getMessageId() );

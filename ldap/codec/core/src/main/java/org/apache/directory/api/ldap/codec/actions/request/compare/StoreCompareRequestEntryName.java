@@ -24,7 +24,7 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.CompareRequest;
@@ -45,7 +45,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreCompareRequestEntryName extends GrammarAction<LdapMessageContainerDirect<CompareRequest>>
+public class StoreCompareRequestEntryName extends GrammarAction<LdapMessageContainer<CompareRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreCompareRequestEntryName.class );
@@ -63,7 +63,7 @@ public class StoreCompareRequestEntryName extends GrammarAction<LdapMessageConta
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainerDirect<CompareRequest> container ) throws DecoderException
+    public void action( LdapMessageContainer<CompareRequest> container ) throws DecoderException
     {
         CompareRequest compareRequest = container.getMessage();
 

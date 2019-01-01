@@ -21,7 +21,7 @@ package org.apache.directory.api.ldap.codec.actions;
 
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.message.Message;
 
 
@@ -30,7 +30,7 @@ import org.apache.directory.api.ldap.model.message.Message;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AllowGrammarEnd extends GrammarAction<LdapMessageContainerDirect<Message>>
+public class AllowGrammarEnd extends GrammarAction<LdapMessageContainer<Message>>
 {
     /**
      * Instantiates a new value action.
@@ -44,7 +44,7 @@ public class AllowGrammarEnd extends GrammarAction<LdapMessageContainerDirect<Me
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainerDirect<Message> container )
+    public void action( LdapMessageContainer<Message> container )
     {
         container.setGrammarEndAllowed( true );
     }

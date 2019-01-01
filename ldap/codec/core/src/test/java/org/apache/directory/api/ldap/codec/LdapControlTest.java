@@ -33,7 +33,7 @@ import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.AbandonRequest;
 import org.apache.directory.api.ldap.model.message.AbandonRequestImpl;
@@ -114,8 +114,8 @@ public class LdapControlTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessageContainer Container
-        LdapMessageContainerDirect<AbandonRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<AbandonRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode the PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -198,8 +198,8 @@ public class LdapControlTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessageContainer Container
-        LdapMessageContainerDirect<AbandonRequest> ldapMessageContainer =
-            new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<AbandonRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
 
         // Decode the PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -262,7 +262,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessageContainer Container
-        Asn1Container ldapMessageContainer = new LdapMessageContainerDirect<Message>( codec );
+        Asn1Container ldapMessageContainer = new LdapMessageContainer<Message>( codec );
 
         // Decode the PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -297,7 +297,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessageContainer Container
-        Asn1Container ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
+        Asn1Container ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode the PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -331,7 +331,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessageContainer Container
-        Asn1Container ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
+        Asn1Container ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode the PDU
         ldapDecoder.decode( stream, ldapMessageContainer );

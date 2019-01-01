@@ -32,7 +32,7 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.Control;
@@ -81,7 +81,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<DeleteRequest> container = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<DeleteRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a DelRequest PDU
         ldapDecoder.decode( stream, container );
@@ -125,7 +125,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<DeleteRequest> container = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<DeleteRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a DelRequest PDU
         try
@@ -167,7 +167,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<DeleteRequest> container = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<DeleteRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a DelRequest PDU
         ldapDecoder.decode( stream, container );
@@ -203,7 +203,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<DeleteRequest> container = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<DeleteRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a DelRequest PDU
         ldapDecoder.decode( stream, container );

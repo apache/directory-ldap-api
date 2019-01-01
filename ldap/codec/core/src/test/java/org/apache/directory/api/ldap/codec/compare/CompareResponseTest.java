@@ -32,7 +32,7 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.CompareResponse;
 import org.apache.directory.api.ldap.model.message.Control;
@@ -84,7 +84,7 @@ public class CompareResponseTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<CompareResponse> container = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<CompareResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode the CompareResponse PDU
         ldapDecoder.decode( stream, container );
@@ -144,7 +144,7 @@ public class CompareResponseTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<CompareResponse> container = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<CompareResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode the CompareResponse PDU
         ldapDecoder.decode( stream, container );
@@ -196,7 +196,7 @@ public class CompareResponseTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<CompareResponse> container = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<CompareResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode a CompareResponse message
         ldapDecoder.decode( stream, container );

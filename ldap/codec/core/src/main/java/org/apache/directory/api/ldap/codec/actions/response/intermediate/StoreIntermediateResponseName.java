@@ -26,7 +26,7 @@ import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.IntermediateOperationFactory;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.IntermediateResponse;
 import org.apache.directory.api.ldap.model.message.LdapResult;
@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreIntermediateResponseName extends GrammarAction<LdapMessageContainerDirect<IntermediateResponse>>
+public class StoreIntermediateResponseName extends GrammarAction<LdapMessageContainer<IntermediateResponse>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreIntermediateResponseName.class );
@@ -60,7 +60,7 @@ public class StoreIntermediateResponseName extends GrammarAction<LdapMessageCont
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainerDirect<IntermediateResponse> container ) throws DecoderException
+    public void action( LdapMessageContainer<IntermediateResponse> container ) throws DecoderException
     {
         // We can get the IntermediateResponse Object
         IntermediateResponse intermediateResponse = container.getMessage();

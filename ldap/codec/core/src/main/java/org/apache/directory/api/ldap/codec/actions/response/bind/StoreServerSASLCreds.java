@@ -23,7 +23,7 @@ package org.apache.directory.api.ldap.codec.actions.response.bind;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.message.BindResponse;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreServerSASLCreds extends GrammarAction<LdapMessageContainerDirect<BindResponse>>
+public class StoreServerSASLCreds extends GrammarAction<LdapMessageContainer<BindResponse>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreServerSASLCreds.class );
@@ -56,7 +56,7 @@ public class StoreServerSASLCreds extends GrammarAction<LdapMessageContainerDire
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainerDirect<BindResponse> container )
+    public void action( LdapMessageContainer<BindResponse> container )
     {
         // Get the Value and store it in the BindRequest
         TLV tlv = container.getCurrentTLV();

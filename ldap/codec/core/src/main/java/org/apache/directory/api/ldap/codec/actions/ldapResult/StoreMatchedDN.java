@@ -24,7 +24,7 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.LdapResult;
 import org.apache.directory.api.ldap.model.message.Message;
@@ -46,7 +46,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreMatchedDN extends GrammarAction<LdapMessageContainerDirect<Message>>
+public class StoreMatchedDN extends GrammarAction<LdapMessageContainer<Message>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreMatchedDN.class );
@@ -64,7 +64,7 @@ public class StoreMatchedDN extends GrammarAction<LdapMessageContainerDirect<Mes
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainerDirect<Message> container ) throws DecoderException
+    public void action( LdapMessageContainer<Message> container ) throws DecoderException
     {
         // Get the Value and store it in the BindResponse
         TLV tlv = container.getCurrentTLV();

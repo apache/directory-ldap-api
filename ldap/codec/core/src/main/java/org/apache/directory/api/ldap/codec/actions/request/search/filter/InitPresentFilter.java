@@ -24,7 +24,7 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.search.PresentFilter;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.apache.directory.api.util.Strings;
@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitPresentFilter extends GrammarAction<LdapMessageContainerDirect<SearchRequest>>
+public class InitPresentFilter extends GrammarAction<LdapMessageContainer<SearchRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitPresentFilter.class );
@@ -55,7 +55,7 @@ public class InitPresentFilter extends GrammarAction<LdapMessageContainerDirect<
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainerDirect<SearchRequest> container ) throws DecoderException
+    public void action( LdapMessageContainer<SearchRequest> container ) throws DecoderException
     {
         TLV tlv = container.getCurrentTLV();
 

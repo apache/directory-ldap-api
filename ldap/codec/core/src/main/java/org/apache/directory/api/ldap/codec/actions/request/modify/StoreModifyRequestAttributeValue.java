@@ -23,7 +23,7 @@ package org.apache.directory.api.ldap.codec.actions.request.modify;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.ModifyRequest;
@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreModifyRequestAttributeValue extends GrammarAction<LdapMessageContainerDirect<ModifyRequest>>
+public class StoreModifyRequestAttributeValue extends GrammarAction<LdapMessageContainer<ModifyRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreModifyRequestAttributeValue.class );
@@ -55,7 +55,7 @@ public class StoreModifyRequestAttributeValue extends GrammarAction<LdapMessageC
      * {@inheritDoc}
      */
     @Override
-    public void action( LdapMessageContainerDirect<ModifyRequest> container )
+    public void action( LdapMessageContainer<ModifyRequest> container )
     {
         TLV tlv = container.getCurrentTLV();
 

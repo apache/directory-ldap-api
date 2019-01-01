@@ -24,7 +24,7 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.search.AttributeValueAssertionFilter;
 import org.apache.directory.api.ldap.codec.search.Filter;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitApproxMatchFilter extends GrammarAction<LdapMessageContainerDirect<SearchRequest>>
+public class InitApproxMatchFilter extends GrammarAction<LdapMessageContainer<SearchRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitApproxMatchFilter.class );
@@ -54,7 +54,7 @@ public class InitApproxMatchFilter extends GrammarAction<LdapMessageContainerDir
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainerDirect<SearchRequest> container ) throws DecoderException
+    public void action( LdapMessageContainer<SearchRequest> container ) throws DecoderException
     {
         // We can allocate the Attribute Value Assertion
         Filter filter = new AttributeValueAssertionFilter( container.getCurrentTLV().getId(),

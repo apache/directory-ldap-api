@@ -23,7 +23,7 @@ package org.apache.directory.api.ldap.codec.actions.response.search.entry;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.SearchResultEntry;
@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreSearchResultAttributeValue extends GrammarAction<LdapMessageContainerDirect<SearchResultEntry>>
+public class StoreSearchResultAttributeValue extends GrammarAction<LdapMessageContainer<SearchResultEntry>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreSearchResultAttributeValue.class );
@@ -60,7 +60,7 @@ public class StoreSearchResultAttributeValue extends GrammarAction<LdapMessageCo
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainerDirect<SearchResultEntry> container )
+    public void action( LdapMessageContainer<SearchResultEntry> container )
     {
         Attribute currentAttribute = container.getCurrentAttribute();
 

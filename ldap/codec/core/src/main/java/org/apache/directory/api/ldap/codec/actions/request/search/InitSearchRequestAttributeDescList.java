@@ -28,7 +28,7 @@ import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.AttributeValueAssertion;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.search.AndFilter;
 import org.apache.directory.api.ldap.codec.search.AttributeValueAssertionFilter;
 import org.apache.directory.api.ldap.codec.search.ConnectorFilter;
@@ -70,7 +70,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitSearchRequestAttributeDescList extends GrammarAction<LdapMessageContainerDirect<SearchRequest>>
+public class InitSearchRequestAttributeDescList extends GrammarAction<LdapMessageContainer<SearchRequest>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitSearchRequestAttributeDescList.class );
@@ -225,7 +225,7 @@ public class InitSearchRequestAttributeDescList extends GrammarAction<LdapMessag
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainerDirect<SearchRequest> container ) throws DecoderException
+    public void action( LdapMessageContainer<SearchRequest> container ) throws DecoderException
     {
         // Here, we have to inject the decoded filter into the SearchRequest
         SearchRequest searchRequest = container.getMessage();

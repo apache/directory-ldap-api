@@ -24,7 +24,7 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.message.CompareResponse;
 import org.apache.directory.api.ldap.model.message.CompareResponseImpl;
 import org.slf4j.Logger;
@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InitCompareResponse extends GrammarAction<LdapMessageContainerDirect<CompareResponse>>
+public class InitCompareResponse extends GrammarAction<LdapMessageContainer<CompareResponse>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitCompareResponse.class );
@@ -57,7 +57,7 @@ public class InitCompareResponse extends GrammarAction<LdapMessageContainerDirec
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainerDirect<CompareResponse> container ) throws DecoderException
+    public void action( LdapMessageContainer<CompareResponse> container ) throws DecoderException
     {
         // Now, we can allocate the CompareResponse Object
         CompareResponse compareResponse = new CompareResponseImpl( container.getMessageId() );

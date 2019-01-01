@@ -70,7 +70,7 @@ public class LdapDecoder
      * @return return The decoded message
      * @throws DecoderException If the decoding failed
      */
-    public Message decode( InputStream in, LdapMessageContainerDirect<? extends Message> container )
+    public Message decode( InputStream in, LdapMessageContainer<? extends Message> container )
         throws DecoderException
     {
         try

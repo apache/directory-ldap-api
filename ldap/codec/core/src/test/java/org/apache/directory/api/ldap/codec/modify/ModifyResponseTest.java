@@ -32,7 +32,7 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ModifyResponse;
@@ -83,7 +83,7 @@ public class ModifyResponseTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<ModifyResponse> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<ModifyResponse> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a ModifyResponse PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -143,7 +143,7 @@ public class ModifyResponseTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<ModifyResponse> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<ModifyResponse> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a ModifyResponse PDU
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -194,7 +194,7 @@ public class ModifyResponseTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<ModifyResponse> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<ModifyResponse> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a ModifyResponse message
         ldapDecoder.decode( stream, ldapMessageContainer );

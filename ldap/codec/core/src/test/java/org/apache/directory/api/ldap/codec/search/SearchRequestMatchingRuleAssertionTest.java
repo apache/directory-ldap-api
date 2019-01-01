@@ -37,7 +37,7 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
-import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -149,7 +149,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         ldapDecoder.decode( stream, ldapMessageContainer );
 
@@ -211,7 +211,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
 
@@ -252,7 +252,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -292,7 +292,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -333,7 +333,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -406,7 +406,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -466,7 +466,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -507,7 +507,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -548,7 +548,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
@@ -589,7 +589,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainerDirect<SearchRequest> ldapMessageContainer = new LdapMessageContainerDirect<>( codec );
+        LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
         ldapDecoder.decode( stream, ldapMessageContainer );
