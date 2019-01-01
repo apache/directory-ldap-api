@@ -26,11 +26,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.codec.StockCodecFactoryUtil;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.IntermediateOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
+import org.apache.directory.api.ldap.extras.ExtrasCodecFactoryUtil;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.util.Strings;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
@@ -195,11 +197,10 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
         List<String> responseControls, List<String> extendedOperations,
         List<String> intermediateResponses ) throws Exception
     {
-        CodecFactoryUtil.loadStockControls( getRequestControlFactories(), getResponseControlFactories(), this );
-
-        CodecFactoryUtil.loadStockExtendedOperations( getExtendedRequestFactories(), getExtendedResponseFactories(), this );
-
-        CodecFactoryUtil.loadStockIntermediateResponses( getIntermediateResponseFactories(), this );
+        StockCodecFactoryUtil.loadStockControls( this );
+        ExtrasCodecFactoryUtil.loadExtrasControls( this );
+        ExtrasCodecFactoryUtil.loadExtrasExtendedOperations( this );
+        ExtrasCodecFactoryUtil.loadExtrasIntermediateResponses( this );
 
         // Load the controls
         loadControls( requestControls, getRequestControlFactories() );

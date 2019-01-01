@@ -17,7 +17,7 @@
  *   under the License.
  *
  */
-package org.apache.directory.api.ldap.codec.standalone;
+package org.apache.directory.api.ldap.extras;
 
 
 import java.util.Map;
@@ -27,15 +27,6 @@ import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.IntermediateOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.controls.cascade.CascadeFactory;
-import org.apache.directory.api.ldap.codec.controls.manageDsaIT.ManageDsaITFactory;
-import org.apache.directory.api.ldap.codec.controls.proxiedauthz.ProxiedAuthzFactory;
-import org.apache.directory.api.ldap.codec.controls.search.entryChange.EntryChangeFactory;
-import org.apache.directory.api.ldap.codec.controls.search.pagedSearch.PagedResultsFactory;
-import org.apache.directory.api.ldap.codec.controls.search.persistentSearch.PersistentSearchFactory;
-import org.apache.directory.api.ldap.codec.controls.search.subentries.SubentriesFactory;
-import org.apache.directory.api.ldap.codec.controls.sort.SortRequestFactory;
-import org.apache.directory.api.ldap.codec.controls.sort.SortResponseFactory;
 import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncRequest;
 import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncResponse;
 import org.apache.directory.api.ldap.extras.controls.ad.AdPolicyHints;
@@ -76,15 +67,7 @@ import org.apache.directory.api.ldap.extras.extended.ads_impl.startTransaction.S
 import org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.whoAmI.WhoAmIFactory;
 import org.apache.directory.api.ldap.extras.intermediate.syncrepl_impl.SyncInfoValueFactory;
-import org.apache.directory.api.ldap.model.message.controls.Cascade;
-import org.apache.directory.api.ldap.model.message.controls.EntryChange;
-import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
-import org.apache.directory.api.ldap.model.message.controls.PagedResults;
-import org.apache.directory.api.ldap.model.message.controls.PersistentSearch;
-import org.apache.directory.api.ldap.model.message.controls.ProxiedAuthz;
-import org.apache.directory.api.ldap.model.message.controls.SortRequest;
-import org.apache.directory.api.ldap.model.message.controls.SortResponse;
-import org.apache.directory.api.ldap.model.message.controls.Subentries;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -94,108 +77,29 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public final class CodecFactoryUtil
+public final class ExtrasCodecFactoryUtil
 {
-    private static final Logger LOG = LoggerFactory.getLogger( CodecFactoryUtil.class );
+    private static final Logger LOG = LoggerFactory.getLogger( ExtrasCodecFactoryUtil.class );
 
 
-    private CodecFactoryUtil()
+    private ExtrasCodecFactoryUtil()
     {
     }
 
 
     /**
-     * Loads the Controls implement out of the box in the codec.
+     * Loads the extras controls.
      *
      * @param requestControlFactories The Request Control factories to use
      * @param responseControlFactories The Response Control factories to use
      * @param apiService The LDAP Service instance to use
      */
-    public static void loadStockControls( Map<String, ControlFactory<?>> requestControlFactories,
-        Map<String, ControlFactory<?>> responseControlFactories, LdapApiService apiService )
+    public static void loadExtrasControls( LdapApiService apiService )
     {
-        // Standard controls
-        // Cascade
-        ControlFactory<Cascade> cascadeFactory = new CascadeFactory( apiService );
-        requestControlFactories.put( cascadeFactory.getOid(), cascadeFactory );
-
-        if ( LOG.isInfoEnabled() )
-        {
-            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, cascadeFactory.getOid() ) );
-        }
-
-        // EntryChange
-        ControlFactory<EntryChange> entryChangeFactory = new EntryChangeFactory( apiService );
-        responseControlFactories.put( entryChangeFactory.getOid(), entryChangeFactory );
-
-        if ( LOG.isInfoEnabled() )
-        {
-            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, entryChangeFactory.getOid() ) );
-        }
-
-        // ManageDsaIT
-        ControlFactory<ManageDsaIT> manageDsaITFactory = new ManageDsaITFactory( apiService );
-        requestControlFactories.put( manageDsaITFactory.getOid(), manageDsaITFactory );
-
-        if ( LOG.isInfoEnabled() )
-        {
-            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, manageDsaITFactory.getOid() ) );
-        }
-
-        // pagedResults (both a request and response control)
-        ControlFactory<PagedResults> pagedResultsFactory = new PagedResultsFactory( apiService );
-        requestControlFactories.put( pagedResultsFactory.getOid(), pagedResultsFactory );
-        responseControlFactories.put( pagedResultsFactory.getOid(), pagedResultsFactory );
-
-        if ( LOG.isInfoEnabled() )
-        {
-            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, pagedResultsFactory.getOid() ) );
-        }
-
-        // PersistentSearch
-        ControlFactory<PersistentSearch> persistentSearchFactory = new PersistentSearchFactory( apiService );
-        requestControlFactories.put( persistentSearchFactory.getOid(), persistentSearchFactory );
-
-        if ( LOG.isInfoEnabled() )
-        {
-            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, persistentSearchFactory.getOid() ) );
-        }
-
-        // Proxied
-        ControlFactory<ProxiedAuthz> proxiedAuthzFactory = new ProxiedAuthzFactory( apiService );
-        requestControlFactories .put( proxiedAuthzFactory.getOid(), proxiedAuthzFactory );
-
-        if ( LOG.isInfoEnabled() )
-        {
-            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, proxiedAuthzFactory.getOid() ) );
-        }
-
-        // SortRequest
-        ControlFactory<SortRequest> sortRequestFactory = new SortRequestFactory( apiService );
-        requestControlFactories.put( sortRequestFactory.getOid(), sortRequestFactory );
-
-        if ( LOG.isInfoEnabled() )
-        {
-            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, sortRequestFactory.getOid() ) );
-        }
-
-        // SortResponse
-        ControlFactory<SortResponse> sortResponseFactory = new SortResponseFactory( apiService );
-        responseControlFactories.put( sortResponseFactory.getOid(), sortResponseFactory );
-
-        if ( LOG.isInfoEnabled() )
-        {
-            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, sortResponseFactory.getOid() ) );
-        }
-
-        // Subentries
-        ControlFactory<Subentries> subentriesFactory = new SubentriesFactory( apiService );
-        requestControlFactories.put( subentriesFactory.getOid(), subentriesFactory );
-
-        if ( LOG.isInfoEnabled() )
-        {
-            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, subentriesFactory.getOid() ) );
-        }
+        Map<String, ControlFactory<? extends Control>> requestControlFactories = apiService
+            .getRequestControlFactories();
+        Map<String, ControlFactory<? extends Control>> responseControlFactories = apiService
+            .getResponseControlFactories();
 
         // Extra controls
         // AdDirSync request
@@ -331,7 +235,7 @@ public final class CodecFactoryUtil
 
 
     /**
-     * Load the standard extended operations :
+     * Load the extras extended operations :
      * <ul>
      * <li>cancel</li>
      * <li>certGeneration</li>
@@ -347,13 +251,14 @@ public final class CodecFactoryUtil
      * @param extendendOperationsFactories The map of extended operation factories
      * @param apiService The LdapApiService to use
      */
-    public static void loadStockExtendedOperations(
-        Map<String, ExtendedOperationFactory> extendendRequestFactories, 
-        Map<String, ExtendedOperationFactory> extendendResponseFactories, LdapApiService apiService )
+    public static void loadExtrasExtendedOperations( LdapApiService apiService )
     {
+        Map<String, ExtendedOperationFactory> extendedRequestFactories = apiService.getExtendedRequestFactories();
+        Map<String, ExtendedOperationFactory> extendedResponseFactories = apiService.getExtendedResponseFactories();
+        
         CancelFactory cancelFactory = new CancelFactory( apiService );
-        extendendRequestFactories.put( cancelFactory.getOid(), cancelFactory );
-        extendendResponseFactories.put( cancelFactory.getOid(), cancelFactory );
+        extendedRequestFactories.put( cancelFactory.getOid(), cancelFactory );
+        extendedResponseFactories.put( cancelFactory.getOid(), cancelFactory );
 
         if ( LOG.isInfoEnabled() )
         {
@@ -361,8 +266,8 @@ public final class CodecFactoryUtil
         }
 
         CertGenerationFactory certGenerationFactory = new CertGenerationFactory( apiService );
-        extendendRequestFactories.put( certGenerationFactory.getOid(), certGenerationFactory );
-        extendendResponseFactories.put( certGenerationFactory.getOid(), certGenerationFactory );
+        extendedRequestFactories.put( certGenerationFactory.getOid(), certGenerationFactory );
+        extendedResponseFactories.put( certGenerationFactory.getOid(), certGenerationFactory );
 
         if ( LOG.isInfoEnabled() )
         {
@@ -370,8 +275,8 @@ public final class CodecFactoryUtil
         }
 
         EndTransactionFactory endTransactionFactory = new EndTransactionFactory( apiService );
-        extendendRequestFactories.put( endTransactionFactory.getOid(), endTransactionFactory );
-        extendendResponseFactories.put( endTransactionFactory.getOid(), endTransactionFactory );
+        extendedRequestFactories.put( endTransactionFactory.getOid(), endTransactionFactory );
+        extendedResponseFactories.put( endTransactionFactory.getOid(), endTransactionFactory );
 
         if ( LOG.isInfoEnabled() )
         {
@@ -379,7 +284,7 @@ public final class CodecFactoryUtil
         }
 
         GracefulDisconnectFactory gracefulDisconnectFactory = new GracefulDisconnectFactory( apiService );
-        extendendResponseFactories.put( gracefulDisconnectFactory.getOid(), gracefulDisconnectFactory );
+        extendedResponseFactories.put( gracefulDisconnectFactory.getOid(), gracefulDisconnectFactory );
 
         if ( LOG.isInfoEnabled() )
         {
@@ -387,8 +292,8 @@ public final class CodecFactoryUtil
         }
 
         GracefulShutdownFactory gracefulShutdownFactory = new GracefulShutdownFactory( apiService );
-        extendendRequestFactories.put( gracefulShutdownFactory.getOid(), gracefulShutdownFactory );
-        extendendResponseFactories.put( gracefulShutdownFactory.getOid(), gracefulShutdownFactory );
+        extendedRequestFactories.put( gracefulShutdownFactory.getOid(), gracefulShutdownFactory );
+        extendedResponseFactories.put( gracefulShutdownFactory.getOid(), gracefulShutdownFactory );
 
         
         if ( LOG.isInfoEnabled() )
@@ -397,7 +302,7 @@ public final class CodecFactoryUtil
         }
 
         NoDFactory noticeOfDisconnectFactory = new NoDFactory( apiService );
-        extendendResponseFactories.put( noticeOfDisconnectFactory.getOid(), noticeOfDisconnectFactory );
+        extendedResponseFactories.put( noticeOfDisconnectFactory.getOid(), noticeOfDisconnectFactory );
 
         if ( LOG.isInfoEnabled() )
         {
@@ -405,8 +310,8 @@ public final class CodecFactoryUtil
         }
 
         PasswordModifyFactory passwordModifyFactory = new PasswordModifyFactory( apiService );
-        extendendRequestFactories.put( passwordModifyFactory.getOid(), passwordModifyFactory );
-        extendendResponseFactories.put( passwordModifyFactory.getOid(), passwordModifyFactory );
+        extendedRequestFactories.put( passwordModifyFactory.getOid(), passwordModifyFactory );
+        extendedResponseFactories.put( passwordModifyFactory.getOid(), passwordModifyFactory );
 
         if ( LOG.isInfoEnabled() )
         {
@@ -414,8 +319,8 @@ public final class CodecFactoryUtil
         }
 
         StartTlsFactory startTlsFactory = new StartTlsFactory( apiService );
-        extendendRequestFactories.put( startTlsFactory.getOid(), startTlsFactory );
-        extendendResponseFactories.put( startTlsFactory.getOid(), startTlsFactory );
+        extendedRequestFactories.put( startTlsFactory.getOid(), startTlsFactory );
+        extendedResponseFactories.put( startTlsFactory.getOid(), startTlsFactory );
 
         if ( LOG.isInfoEnabled() )
         {
@@ -423,8 +328,8 @@ public final class CodecFactoryUtil
         }
 
         StartTransactionFactory startTransactionFactory = new StartTransactionFactory( apiService );
-        extendendRequestFactories.put( startTransactionFactory.getOid(), startTransactionFactory );
-        extendendResponseFactories.put( startTransactionFactory.getOid(), startTransactionFactory );
+        extendedRequestFactories.put( startTransactionFactory.getOid(), startTransactionFactory );
+        extendedResponseFactories.put( startTransactionFactory.getOid(), startTransactionFactory );
 
         if ( LOG.isInfoEnabled() )
         {
@@ -432,8 +337,8 @@ public final class CodecFactoryUtil
         }
 
         StoredProcedureFactory storedProcedureFactory = new StoredProcedureFactory( apiService );
-        extendendRequestFactories.put( storedProcedureFactory.getOid(), storedProcedureFactory );
-        extendendResponseFactories.put( storedProcedureFactory.getOid(), storedProcedureFactory );
+        extendedRequestFactories.put( storedProcedureFactory.getOid(), storedProcedureFactory );
+        extendedResponseFactories.put( storedProcedureFactory.getOid(), storedProcedureFactory );
 
         if ( LOG.isInfoEnabled() )
         {
@@ -441,8 +346,8 @@ public final class CodecFactoryUtil
         }
 
         WhoAmIFactory whoAmIFactory = new WhoAmIFactory( apiService );
-        extendendRequestFactories.put( whoAmIFactory.getOid(), whoAmIFactory );
-        extendendResponseFactories.put( whoAmIFactory.getOid(), whoAmIFactory );
+        extendedRequestFactories.put( whoAmIFactory.getOid(), whoAmIFactory );
+        extendedResponseFactories.put( whoAmIFactory.getOid(), whoAmIFactory );
 
         if ( LOG.isInfoEnabled() )
         {
@@ -452,7 +357,7 @@ public final class CodecFactoryUtil
 
 
     /**
-     * Load the standard intermediate responses :
+     * Load the extras intermediate responses :
      * <ul>
      * <li>syncInfovalue</li>
      * </ul>
@@ -460,9 +365,11 @@ public final class CodecFactoryUtil
      * @param intermediateResponseFactories The map of intermediate response factories
      * @param apiService The LdapApiService to use
      */
-    public static void loadStockIntermediateResponses(
-        Map<String, IntermediateOperationFactory> intermediateResponseFactories, LdapApiService apiService )
+    public static void loadExtrasIntermediateResponses( LdapApiService apiService )
     {
+        Map<String, IntermediateOperationFactory> intermediateResponseFactories = apiService
+            .getIntermediateResponseFactories();
+
         SyncInfoValueFactory syncInfoValueFactory = new SyncInfoValueFactory();
         intermediateResponseFactories.put( syncInfoValueFactory.getOid(), syncInfoValueFactory );
 

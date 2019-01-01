@@ -29,8 +29,13 @@ import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyRequest;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponse;
 import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequest;
+import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsResponse;
+import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValue;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
+import org.apache.directory.api.ldap.model.message.ExtendedResponse;
+import org.apache.directory.api.ldap.model.message.IntermediateResponse;
+import org.apache.directory.api.ldap.model.message.extended.NoticeOfDisconnect;
 
 
 public class ApiLdapExtrasCodecOsgiTest extends ApiOsgiTestBase
@@ -50,19 +55,35 @@ public class ApiLdapExtrasCodecOsgiTest extends ApiOsgiTestBase
     @Override
     protected void useBundleClasses() throws Exception
     {
-        Control ppRequest = ldapApiService.getRequestControlFactories().
-            get( PasswordPolicyRequest.OID ).newControl();
+        Control ppRequest = ldapApiService.getRequestControlFactories()
+            .get( PasswordPolicyRequest.OID ).newControl();
         assertNotNull( ppRequest );
         assertTrue( ppRequest instanceof PasswordPolicyRequest );
 
-        Control ppResponse = ldapApiService.getResponseControlFactories().
-            get( PasswordPolicyResponse.OID ).newControl();
-        
+        Control ppResponse = ldapApiService.getResponseControlFactories()
+            .get( PasswordPolicyResponse.OID ).newControl();
         assertNotNull( ppResponse );
         assertTrue( ppResponse instanceof PasswordPolicyResponse );
 
-        ExtendedRequest extendedRequest = ldapApiService.getExtendedRequestFactories().get( StartTlsRequest.EXTENSION_OID ).newRequest();
-        assertNotNull( extendedRequest );
-        assertTrue( extendedRequest instanceof StartTlsRequest );
+        ExtendedRequest startTlsRequest = ldapApiService.getExtendedRequestFactories()
+            .get( StartTlsRequest.EXTENSION_OID ).newRequest();
+        assertNotNull( startTlsRequest );
+        assertTrue( startTlsRequest instanceof StartTlsRequest );
+
+        ExtendedResponse startTlsResponse = ldapApiService.getExtendedResponseFactories()
+            .get( StartTlsRequest.EXTENSION_OID ).newResponse();
+        assertNotNull( startTlsResponse );
+        assertTrue( startTlsResponse instanceof StartTlsResponse );
+
+        ExtendedResponse noticeOfDisconnectResponse = ldapApiService.getExtendedResponseFactories()
+            .get( NoticeOfDisconnect.EXTENSION_OID ).newResponse();
+        assertNotNull( noticeOfDisconnectResponse );
+        assertTrue( noticeOfDisconnectResponse instanceof NoticeOfDisconnect );
+
+        IntermediateResponse syncInfoResponse = ldapApiService.getIntermediateResponseFactories()
+            .get( SyncInfoValue.OID ).newResponse();
+        assertNotNull( syncInfoResponse );
+        assertTrue( syncInfoResponse instanceof SyncInfoValue );
     }
+
 }

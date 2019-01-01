@@ -20,56 +20,10 @@
 package org.apache.directory.api.ldap.extras;
 
 
-import org.apache.directory.api.ldap.codec.api.ControlFactory;
+import java.util.ArrayList;
+
+import org.apache.directory.api.ldap.codec.StockCodecFactoryUtil;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncRequest;
-import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncResponse;
-import org.apache.directory.api.ldap.extras.controls.ad.AdPolicyHints;
-import org.apache.directory.api.ldap.extras.controls.ad.AdShowDeleted;
-import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncRequestFactory;
-import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncResponseFactory;
-import org.apache.directory.api.ldap.extras.controls.ad_impl.AdPolicyHintsFactory;
-import org.apache.directory.api.ldap.extras.controls.ad_impl.AdShowDeletedFactory;
-import org.apache.directory.api.ldap.extras.controls.changeNotifications.ChangeNotifications;
-import org.apache.directory.api.ldap.extras.controls.changeNotifications_impl.ChangeNotificationsFactory;
-import org.apache.directory.api.ldap.extras.controls.permissiveModify.PermissiveModify;
-import org.apache.directory.api.ldap.extras.controls.permissiveModify_impl.PermissiveModifyFactory;
-import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyRequest;
-import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponse;
-import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyRequestFactory;
-import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyResponseFactory;
-import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValue;
-import org.apache.directory.api.ldap.extras.controls.syncrepl.syncRequest.SyncRequestValue;
-import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateValue;
-import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncDoneValueFactory;
-import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory;
-import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory;
-import org.apache.directory.api.ldap.extras.controls.transaction.TransactionSpecification;
-import org.apache.directory.api.ldap.extras.controls.transaction_impl.TransactionSpecificationFactory;
-import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewRequest;
-import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewResponse;
-import org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewRequestFactory;
-import org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewResponseFactory;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.cancel.CancelFactory;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration.CertGenerationFactory;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction.EndTransactionFactory;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectFactory;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownFactory;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyFactory;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.startTls.StartTlsFactory;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.startTransaction.StartTransactionFactory;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureFactory;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.whoAmI.WhoAmIFactory;
-import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequest;
-import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationRequest;
-import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionRequest;
-import org.apache.directory.api.ldap.extras.extended.gracefulDisconnect.GracefulDisconnectResponse;
-import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownRequest;
-import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyRequest;
-import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequest;
-import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionRequest;
-import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequest;
-import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIRequest;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -104,8 +58,10 @@ public class ExtrasBundleActivator implements BundleActivator
         public LdapApiService addingService( ServiceReference<LdapApiService> reference )
         {
             LdapApiService ldapApiService = context.getService( reference );
-            registerExtrasControls( ldapApiService );
-            registerExtrasExtendedOps( ldapApiService );
+            StockCodecFactoryUtil.loadStockControls( ldapApiService );
+            ExtrasCodecFactoryUtil.loadExtrasControls( ldapApiService );
+            ExtrasCodecFactoryUtil.loadExtrasExtendedOperations( ldapApiService );
+            ExtrasCodecFactoryUtil.loadExtrasIntermediateResponses( ldapApiService );
             return ldapApiService;
         }
 
@@ -119,140 +75,31 @@ public class ExtrasBundleActivator implements BundleActivator
         @Override
         public void removedService( ServiceReference<LdapApiService> reference, LdapApiService ldapApiService )
         {
-            unregisterExtrasControls( ldapApiService );
-            unregisterExtrasExtendedOps( ldapApiService );
-        }
-
-
-        /**
-         * Registers all the extras extended operations present in this control pack.
-         *
-         * @param codec The codec service.
-         */
-        private void registerExtrasExtendedOps( LdapApiService codec )
-        {
-            // --------------------------------------------------------------------
-            // Register Extended Request Factories
-            // --------------------------------------------------------------------
-            CancelFactory cancelFactory = new CancelFactory( codec );
-            codec.registerExtendedRequest( cancelFactory );
-
-            CertGenerationFactory certGenerationFactory = new CertGenerationFactory( codec );
-            codec.registerExtendedRequest( certGenerationFactory );
-
-            EndTransactionFactory endTransactionFactory = new EndTransactionFactory( codec );
-            codec.registerExtendedRequest( endTransactionFactory );
-
-            GracefulDisconnectFactory gracefulDisconnectFactory = new GracefulDisconnectFactory( codec );
-            codec.registerExtendedRequest( gracefulDisconnectFactory );
-
-            GracefulShutdownFactory gracefulShutdownFactory = new GracefulShutdownFactory( codec );
-            codec.registerExtendedRequest( gracefulShutdownFactory );
-
-            PasswordModifyFactory passwordModifyFactory = new PasswordModifyFactory( codec );
-            codec.registerExtendedRequest( passwordModifyFactory );
-
-            StartTlsFactory startTlsFactory = new StartTlsFactory( codec );
-            codec.registerExtendedRequest( startTlsFactory );
-
-            StartTransactionFactory startTransactionFactory = new StartTransactionFactory( codec );
-            codec.registerExtendedRequest( startTransactionFactory );
-
-            StoredProcedureFactory storedProcedureFactory = new StoredProcedureFactory( codec );
-            codec.registerExtendedRequest( storedProcedureFactory );
-
-            WhoAmIFactory whoAmIFactory = new WhoAmIFactory( codec );
-            codec.registerExtendedRequest( whoAmIFactory );
-        }
-
-
-        private void unregisterExtrasControls( LdapApiService codec )
-        {
             // Request controls
-            codec.unregisterRequestControl( AdDirSyncRequest.OID );
-            codec.unregisterRequestControl( AdPolicyHints.OID );
-            codec.unregisterRequestControl( AdShowDeleted.OID );
-            codec.unregisterRequestControl( ChangeNotifications.OID );
-            codec.unregisterRequestControl( PasswordPolicyRequest.OID );
-            codec.unregisterRequestControl( PermissiveModify.OID );
-            codec.unregisterRequestControl( SyncRequestValue.OID );
-            codec.unregisterRequestControl( TransactionSpecification.OID );
-            codec.unregisterRequestControl( VirtualListViewRequest.OID );
-
+            for ( String oid : new ArrayList<>( ldapApiService.getRequestControlFactories().keySet() ) )
+            {
+                ldapApiService.unregisterRequestControl( oid );
+            }
             // Response controls
-            codec.unregisterResponseControl( AdDirSyncRequest.OID );
-            codec.unregisterResponseControl( PasswordPolicyRequest.OID );
-            codec.unregisterResponseControl( SyncDoneValue.OID );
-            codec.unregisterResponseControl( SyncStateValue.OID );
-            codec.unregisterResponseControl( VirtualListViewResponse.OID );
-        }
-
-
-        private void unregisterExtrasExtendedOps( LdapApiService codec )
-        {
-            codec.unregisterExtendedRequest( CancelRequest.EXTENSION_OID );
-            codec.unregisterExtendedRequest( CertGenerationRequest.EXTENSION_OID );
-            codec.unregisterExtendedRequest( EndTransactionRequest.EXTENSION_OID );
-            codec.unregisterExtendedRequest( GracefulShutdownRequest.EXTENSION_OID );
-            codec.unregisterExtendedRequest( GracefulDisconnectResponse.EXTENSION_OID );
-            codec.unregisterExtendedRequest( PasswordModifyRequest.EXTENSION_OID );
-            codec.unregisterExtendedRequest( StartTlsRequest.EXTENSION_OID );
-            codec.unregisterExtendedRequest( StartTransactionRequest.EXTENSION_OID );
-            codec.unregisterExtendedRequest( StoredProcedureRequest.EXTENSION_OID );
-            codec.unregisterExtendedRequest( WhoAmIRequest.EXTENSION_OID );
-        }
-
-
-        /**
-         * Registers all the extras controls present in this control pack.
-         *
-         * @param codec The codec service.
-         */
-        private void registerExtrasControls( LdapApiService codec )
-        {
-            ControlFactory<AdDirSyncRequest> adDirSyncRequestFactory = new AdDirSyncRequestFactory( codec );
-            codec.registerRequestControl( adDirSyncRequestFactory );
-
-            ControlFactory<AdDirSyncResponse> adDirSyncResponseFactory = new AdDirSyncResponseFactory( codec );
-            codec.registerResponseControl( adDirSyncResponseFactory );
-
-            ControlFactory<AdPolicyHints> adPolicyHintsFactory = new AdPolicyHintsFactory( codec );
-            codec.registerRequestControl( adPolicyHintsFactory );
-
-            ControlFactory<AdShowDeleted> adShowDeletedFactory = new AdShowDeletedFactory( codec );
-            codec.registerRequestControl( adShowDeletedFactory );
-
-            ControlFactory<ChangeNotifications> changeNotificationsFactory = new ChangeNotificationsFactory( codec );
-            codec.registerRequestControl( changeNotificationsFactory );
-            codec.registerResponseControl( changeNotificationsFactory );
-
-            ControlFactory<PasswordPolicyRequest> passwordPolicyRequestFactory = new PasswordPolicyRequestFactory( codec );
-            codec.registerRequestControl( passwordPolicyRequestFactory );
-
-            ControlFactory<PasswordPolicyResponse> passwordPolicyResponseFactory = new PasswordPolicyResponseFactory( codec );
-            codec.registerResponseControl( passwordPolicyResponseFactory );
-
-            ControlFactory<PermissiveModify> permissiveModifyFactory = new PermissiveModifyFactory( codec );
-            codec.registerRequestControl( permissiveModifyFactory );
-
-            ControlFactory<SyncDoneValue> syncDoneValuefactory = new SyncDoneValueFactory( codec );
-            codec.registerResponseControl( syncDoneValuefactory );
-
-            ControlFactory<SyncRequestValue> syncRequestValueFactory = new SyncRequestValueFactory( codec );
-            codec.registerRequestControl( syncRequestValueFactory );
-
-            ControlFactory<SyncStateValue> syncStateValuefactory = new SyncStateValueFactory( codec );
-            codec.registerResponseControl( syncStateValuefactory );
-
-            ControlFactory<TransactionSpecification> transactionSpecificationfactory = new TransactionSpecificationFactory( codec );
-            codec.registerRequestControl( transactionSpecificationfactory );
-
-            ControlFactory<VirtualListViewRequest> virtualListViewRequestFactory = new VirtualListViewRequestFactory( codec );
-            codec.registerRequestControl( virtualListViewRequestFactory );
-
-            ControlFactory<VirtualListViewResponse> virtualListViewResponseFactory = new VirtualListViewResponseFactory(
-                codec );
-            codec.registerResponseControl( virtualListViewResponseFactory );
+            for ( String oid : new ArrayList<>( ldapApiService.getResponseControlFactories().keySet() ) )
+            {
+                ldapApiService.unregisterResponseControl( oid );
+            }
+            // Extended requests
+            for ( String oid : new ArrayList<>( ldapApiService.getExtendedRequestFactories().keySet() ) )
+            {
+                ldapApiService.unregisterExtendedRequest( oid );
+            }
+            // Extended responses
+            for ( String oid : new ArrayList<>( ldapApiService.getExtendedResponseFactories().keySet() ) )
+            {
+                ldapApiService.unregisterExtendedResponse( oid );
+            }
+            // Intermediate responses
+            for ( String oid : new ArrayList<>( ldapApiService.getIntermediateResponseFactories().keySet() ) )
+            {
+                ldapApiService.unregisterIntermediateResponse( oid );
+            }
         }
     }
 
