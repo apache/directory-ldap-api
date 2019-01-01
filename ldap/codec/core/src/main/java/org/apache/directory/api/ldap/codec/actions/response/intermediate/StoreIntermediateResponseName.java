@@ -27,7 +27,9 @@ import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.IntermediateOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainerDirect;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.IntermediateResponse;
+import org.apache.directory.api.ldap.model.message.LdapResult;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,7 +94,23 @@ public class StoreIntermediateResponseName extends GrammarAction<LdapMessageCont
                 {
                     // Ok, let's create the new operation, which will replace
                     // the one created during the init phase
-                    container.setMessage( intermediateFactory.newResponse() );
+                    IntermediateResponse newIntermediateResponse = intermediateFactory.newResponse();
+                    newIntermediateResponse.setMessageId( intermediateResponse.getMessageId() );
+                    
+                    // Copy the LdapResult 
+                    LdapResult ldapResult = intermediateResponse.getLdapResult();
+                    newIntermediateResponse.getLdapResult().setDiagnosticMessage( ldapResult.getDiagnosticMessage() );
+                    newIntermediateResponse.getLdapResult().setMatchedDn( ldapResult.getMatchedDn() );
+                    newIntermediateResponse.getLdapResult().setReferral( ldapResult.getReferral() );
+                    newIntermediateResponse.getLdapResult().setResultCode( ldapResult.getResultCode() );
+                    
+                    // Copy the controls
+                    for ( Control control : intermediateResponse.getControls().values() )
+                    {
+                        newIntermediateResponse.addControl( control );
+                    }
+                    
+                    container.setMessage( newIntermediateResponse );
                     container.setIntermediateFactory( intermediateFactory );
                 }
                 else

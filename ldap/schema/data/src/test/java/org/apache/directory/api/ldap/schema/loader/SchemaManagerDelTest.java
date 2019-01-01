@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.directory.api.util.FileUtils;
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapProtocolErrorException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
@@ -228,7 +229,7 @@ public class SchemaManagerDelTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
-        attributeType.setEqualityOid( "2.5.13.1" );
+        attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
 
@@ -512,7 +513,7 @@ public class SchemaManagerDelTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         // AT with OID 2.5.18.4 has syntax 1.3.6.1.4.1.1466.115.121.1.12 which is used by MR 2.5.13.1
-        MatchingRule mr = new MatchingRule( "2.5.13.1" );
+        MatchingRule mr = new MatchingRule( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         assertFalse( schemaManager.delete( mr ) );
 
         assertEquals( mrSize, schemaManager.getMatchingRuleRegistry().size() );

@@ -292,6 +292,7 @@ public final class CodecFactoryUtil
         // SyncStateValue
         ControlFactory<SyncStateValue> syncStateValueFactory = new SyncStateValueFactory( apiService );
         requestControlFactories.put( syncStateValueFactory.getOid(), syncStateValueFactory );
+        responseControlFactories.put( syncStateValueFactory.getOid(), syncStateValueFactory );
 
         if ( LOG.isInfoEnabled() )
         {

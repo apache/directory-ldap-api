@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.directory.api.util.FileUtils;
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
@@ -221,7 +222,7 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
-        attributeType.setEqualityOid( "2.5.13.1" );
+        attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
 
@@ -251,7 +252,7 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
-        attributeType.setEqualityOid( "2.5.13.1" );
+        attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
         attributeType.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
@@ -279,7 +280,7 @@ public class SchemaManagerAddTest
 
         // Create the collective attribute first
         MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
-        attributeType.setEqualityOid( "2.5.13.1" );
+        attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
         attributeType.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
@@ -295,7 +296,7 @@ public class SchemaManagerAddTest
 
         // Now try to create an AT which is a subtype of teh create collective attribute
         MutableAttributeType subType = new MutableAttributeType( "1.1.1" );
-        subType.setEqualityOid( "2.5.13.1" );
+        subType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         subType.setOrderingOid( null );
         subType.setSubstringOid( null );
         subType.setSuperiorOid( "1.1.0" );
@@ -323,7 +324,7 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
-        attributeType.setEqualityOid( "2.5.13.1" );
+        attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
         attributeType.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
@@ -356,7 +357,7 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
-        attributeType.setEqualityOid( "2.5.13.1" );
+        attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
         attributeType.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
@@ -390,7 +391,7 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
-        attributeType.setEqualityOid( "2.5.13.1" );
+        attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
         attributeType.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
@@ -423,7 +424,7 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
-        attributeType.setEqualityOid( "2.5.13.1" );
+        attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
         attributeType.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
@@ -572,9 +573,9 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
-        attributeType.setEqualityOid( "2.5.13.1" );
-        attributeType.setOrderingOid( "2.5.13.1" );
-        attributeType.setSubstringOid( "2.5.13.1" );
+        attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
+        attributeType.setOrderingOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
+        attributeType.setSubstringOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
         attributeType.setUsage( UsageEnum.USER_APPLICATIONS );
 
@@ -598,9 +599,9 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         MutableAttributeType attributeType = new MutableAttributeType( "2.5.18.4" );
-        attributeType.setEqualityOid( "2.5.13.1" );
-        attributeType.setOrderingOid( "2.5.13.1" );
-        attributeType.setSubstringOid( "2.5.13.1" );
+        attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
+        attributeType.setOrderingOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
+        attributeType.setSubstringOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
 
         // It should fail
         assertFalse( schemaManager.add( attributeType ) );
@@ -633,9 +634,9 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         MutableAttributeType attributeType = new MutableAttributeType( "1.1.1.0" );
-        attributeType.setEqualityOid( "2.5.13.1" );
-        attributeType.setOrderingOid( "2.5.13.1" );
-        attributeType.setSubstringOid( "2.5.13.1" );
+        attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
+        attributeType.setOrderingOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
+        attributeType.setSubstringOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
         attributeType.setNames( "Test", "cn" );
 
@@ -667,9 +668,9 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         MutableAttributeType attributeType = new MutableAttributeType( "1.1.1.0" );
-        attributeType.setEqualityOid( "2.5.13.1" );
-        attributeType.setOrderingOid( "2.5.13.1" );
-        attributeType.setSubstringOid( "2.5.13.1" );
+        attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
+        attributeType.setOrderingOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
+        attributeType.setSubstringOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
         attributeType.setNames( "Test", "referral" );
 
@@ -719,7 +720,7 @@ public class SchemaManagerAddTest
         AttributeType result = schemaManager.lookupAttributeTypeRegistry( "1.1.0" );
 
         assertEquals( "1.3.6.1.4.1.1466.115.121.1.12", result.getSyntaxOid() );
-        assertEquals( "2.5.13.1", result.getEqualityOid() );
+        assertEquals( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID, result.getEqualityOid() );
         assertEquals( atrSize + 1, schemaManager.getAttributeTypeRegistry().size() );
         assertEquals( goidSize + 1, schemaManager.getGlobalOidRegistry().size() );
     }
