@@ -163,15 +163,19 @@ public final class NoticeOfDisconnect extends AbstractExtendedResponse
         {
             case UNAVAILABLE:
                 nod = UNAVAILABLE;
+                break;
                 
             case PROTOCOL_ERROR:
                 nod = PROTOCOLERROR;
+                break;
                 
             case STRONG_AUTH_REQUIRED:
                 nod = STRONGAUTHREQUIRED;
+                break;
                 
             default:
                 nod = new NoticeOfDisconnect( rcode );
+                break;
         }
         
         nod.getLdapResult().setDiagnosticMessage( rcode.toString() + ": The server will disconnect!" );

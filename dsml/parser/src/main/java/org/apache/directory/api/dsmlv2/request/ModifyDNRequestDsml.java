@@ -143,39 +143,6 @@ public class ModifyDNRequestDsml
 
 
     /**
-     * Set the flag to delete the old Rdn
-     * 
-     * @param deleteOldRDN The deleteOldRDN to set.
-     */
-    public void setDeleteOldRDN( boolean deleteOldRDN )
-    {
-        getDecorated().setDeleteOldRdn( deleteOldRDN );
-    }
-
-
-    /**
-     * Get the new Rdn
-     * 
-     * @return Returns the newRDN.
-     */
-    public Rdn getNewRDN()
-    {
-        return getDecorated().getNewRdn();
-    }
-
-
-    /**
-     * Set the new Rdn
-     * 
-     * @param newRdn The newRdn to set.
-     */
-    public void setNewRDN( Rdn newRdn )
-    {
-        getDecorated().setNewRdn( newRdn );
-    }
-
-
-    /**
      * Get the newSuperior
      * 
      * @return Returns the newSuperior.

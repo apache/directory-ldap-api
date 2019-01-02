@@ -63,7 +63,8 @@ public class StartTransactionResponseImpl extends AbstractExtendedResponse imple
         {
             case SUCCESS:
                 this.transactionId = Strings.copy( transactionId );
-                // pass through ...
+                break;
+                
             case CANCELED:
             case CANNOT_CANCEL:
             case NO_SUCH_OPERATION:

@@ -73,23 +73,21 @@ public abstract class MultipleResponseFuture<R extends Response> implements Resp
     @Override
     public boolean cancel( boolean mayInterruptIfRunning )
     {
-        if ( cancelled )
+        if ( !cancelled )
         {
-            return cancelled;
+            // set the cancel flag first
+            cancelled = true;
+        
+            // Send an abandonRequest only if this future exists
+            if ( !connection.isRequestCompleted( messageId ) )
+            {
+                connection.abandon( messageId );
+            }
+        
+            // then clear the queue, cause the might be some incoming messages before this abandon request
+            // hits the server
+            queue.clear();
         }
-
-        // set the cancel flag first
-        cancelled = true;
-
-        // Send an abandonRequest only if this future exists
-        if ( !connection.isRequestCompleted( messageId ) )
-        {
-            connection.abandon( messageId );
-        }
-
-        // then clear the queue, cause the might be some incoming messages before this abandon request
-        // hits the server
-        queue.clear();
 
         return cancelled;
     }

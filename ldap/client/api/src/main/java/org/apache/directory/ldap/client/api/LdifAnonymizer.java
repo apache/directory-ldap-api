@@ -533,120 +533,121 @@ public class LdifAnonymizer
             return;
         }
         
-        LdifReader ldifReader = new LdifReader( inputFile, schemaManager );
-        int count = 0;
-        List<LdifEntry> errors = new ArrayList<>();
-        List<String> errorTexts = new ArrayList<>();
-
-        try
+        try ( LdifReader ldifReader = new LdifReader( inputFile, schemaManager ) )
         {
-            for ( LdifEntry ldifEntry : ldifReader )
+            int count = 0;
+            List<LdifEntry> errors = new ArrayList<>();
+            List<String> errorTexts = new ArrayList<>();
+    
+            try
             {
-                count++;
-                
-                try
+                for ( LdifEntry ldifEntry : ldifReader )
                 {
-                    if ( ldifEntry.isEntry() && !ldifEntry.isChangeAdd() )
+                    count++;
+                    
+                    try
                     {
-                        // process a full entry. Add changes aren't processed here.
-                        Entry newEntry = anonymizeEntry( ldifEntry );
+                        if ( ldifEntry.isEntry() && !ldifEntry.isChangeAdd() )
+                        {
+                            // process a full entry. Add changes aren't processed here.
+                            Entry newEntry = anonymizeEntry( ldifEntry );
+                            
+                            writer.write( LdifUtils.convertToLdif( newEntry ) );
+                            writer.write( "\n" );
+                        }
+                        else if ( ldifEntry.isChangeDelete() )
+                        {
+                            // A Delete operation
+                            LdifEntry newLdifEntry = anonymizeChangeDelete( ldifEntry );
+    
+                            if ( ldifEntry != null )
+                            {
+                                writer.write( newLdifEntry.toString() );
+                                writer.write( "\n" );
+                            }
+                        }
+                        else if ( ldifEntry.isChangeAdd() )
+                        {
+                            // A Add operation
+                            LdifEntry newLdifEntry = anonymizeChangeAdd( ldifEntry );
+    
+                            if ( ldifEntry != null )
+                            {
+                                writer.write( newLdifEntry.toString() );
+                                writer.write( "\n" );
+                            }
+                        }
+                        else if ( ldifEntry.isChangeModify() )
+                        {
+                            // A Modify operation
+                            LdifEntry newLdifEntry = anonymizeChangeModify( ldifEntry );
+    
+                            if ( ldifEntry != null )
+                            {
+                                writer.write( newLdifEntry.toString() );
+                                writer.write( "\n" );
+                            }
+                        }
+                        else if ( ldifEntry.isChangeModDn() ||  ldifEntry.isChangeModRdn() )
+                        {
+                            // A MODDN operation
+                            LdifEntry newLdifEntry = anonymizeChangeModDn( ldifEntry );
+    
+                            if ( ldifEntry != null )
+                            {
+                                writer.write( newLdifEntry.toString() );
+                                writer.write( "\n" );
+                            }
+                        }
+    
+                        System.out.print( '.' );
                         
-                        writer.write( LdifUtils.convertToLdif( newEntry ) );
-                        writer.write( "\n" );
-                    }
-                    else if ( ldifEntry.isChangeDelete() )
-                    {
-                        // A Delete operation
-                        LdifEntry newLdifEntry = anonymizeChangeDelete( ldifEntry );
-
-                        if ( ldifEntry != null )
+                        if ( count % 100  == 0 )
                         {
-                            writer.write( newLdifEntry.toString() );
-                            writer.write( "\n" );
+                            println();
                         }
                     }
-                    else if ( ldifEntry.isChangeAdd() )
+                    catch ( Exception e )
                     {
-                        // A Add operation
-                        LdifEntry newLdifEntry = anonymizeChangeAdd( ldifEntry );
-
-                        if ( ldifEntry != null )
+                        System.out.print( '*' );
+    
+                        if ( count % 100  == 0 )
                         {
-                            writer.write( newLdifEntry.toString() );
-                            writer.write( "\n" );
+                            println();
                         }
-                    }
-                    else if ( ldifEntry.isChangeModify() )
-                    {
-                        // A Modify operation
-                        LdifEntry newLdifEntry = anonymizeChangeModify( ldifEntry );
-
-                        if ( ldifEntry != null )
-                        {
-                            writer.write( newLdifEntry.toString() );
-                            writer.write( "\n" );
-                        }
-                    }
-                    else if ( ldifEntry.isChangeModDn() ||  ldifEntry.isChangeModRdn() )
-                    {
-                        // A MODDN operation
-                        LdifEntry newLdifEntry = anonymizeChangeModDn( ldifEntry );
-
-                        if ( ldifEntry != null )
-                        {
-                            writer.write( newLdifEntry.toString() );
-                            writer.write( "\n" );
-                        }
-                    }
-
-                    System.out.print( '.' );
-                    
-                    if ( count % 100  == 0 )
-                    {
-                        println();
+                        
+                        errors.add( ldifEntry );
+                        errorTexts.add( e.getMessage() );
                     }
                 }
-                catch ( Exception e )
-                {
-                    System.out.print( '*' );
-
-                    if ( count % 100  == 0 )
-                    {
-                        println();
-                    }
-                    
-                    errors.add( ldifEntry );
-                    errorTexts.add( e.getMessage() );
-                }
-            }
-
-            println();
-            
-            if ( !errors.isEmpty() )
-            {
-                println( "There are " + errors.size() + " bad entries" );
-                int i = 0;
+    
+                println();
                 
-                for ( LdifEntry ldifEntry : errors )
+                if ( !errors.isEmpty() )
                 {
-                    println( "---------------------------------------------------" );
-                    println( "error : " + errorTexts.get( i ) );
-                    println( ldifEntry.getDn().toString() );
-                    i++;
+                    println( "There are " + errors.size() + " bad entries" );
+                    int i = 0;
+                    
+                    for ( LdifEntry ldifEntry : errors )
+                    {
+                        println( "---------------------------------------------------" );
+                        println( "error : " + errorTexts.get( i ) );
+                        println( ldifEntry.getDn().toString() );
+                        i++;
+                    }
                 }
             }
-        }
-        finally
-        {
-            println();
-
-            if ( !errors.isEmpty() )
+            finally
             {
-                println( "There are " + errors.size() + " bad entries" );
+                println();
+    
+                if ( !errors.isEmpty() )
+                {
+                    println( "There are " + errors.size() + " bad entries" );
+                }
+                    
+                println( "Nb entries : " + count ); 
             }
-                
-            println( "Nb entries : " + count ); 
-            ldifReader.close();
         }
     }
     

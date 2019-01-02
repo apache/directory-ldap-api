@@ -55,10 +55,11 @@ public class VirtualListViewRequestImpl extends AbstractControl implements Virtu
     /** The assertionValue */
     private byte[] assertionValue;
 
-    /** A flag used for the target. It default to OFFSET */
-    private boolean targetType = OFFSET;
+    private static final boolean OFFSET_CHOICE = true;
 
-    private static final boolean OFFSET = true;
+    /** A flag used for the target. It default to OFFSET */
+    private boolean targetType = OFFSET_CHOICE;
+
     private static final boolean ASSERTION_VALUE = false;
 
 
@@ -128,7 +129,7 @@ public class VirtualListViewRequestImpl extends AbstractControl implements Virtu
     public void setOffset( int offset )
     {
         this.offset = offset;
-        targetType = OFFSET;
+        targetType = OFFSET_CHOICE;
     }
 
 
@@ -199,7 +200,7 @@ public class VirtualListViewRequestImpl extends AbstractControl implements Virtu
     @Override
     public boolean hasOffset()
     {
-        return targetType == OFFSET;
+        return targetType == OFFSET_CHOICE;
     }
 
 
@@ -280,7 +281,7 @@ public class VirtualListViewRequestImpl extends AbstractControl implements Virtu
         sb.append( "        afterCount   : '" ).append( afterCount ).append( "'\n" );
         sb.append( "        target : \n" );
 
-        if ( targetType == OFFSET )
+        if ( targetType == OFFSET_CHOICE )
         {
             sb.append( "            offset   : '" ).append( offset ).append( "'\n" );
             sb.append( "            contentCount   : '" ).append( contentCount ).append( "'\n" );

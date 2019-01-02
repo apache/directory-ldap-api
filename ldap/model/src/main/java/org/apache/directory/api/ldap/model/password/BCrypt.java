@@ -884,7 +884,7 @@ public class BCrypt
      * 2**log_rounds.
      * @return an encoded salt value
      */
-    public static String gensalt( int logRounds )
+    public static String genSalt( int logRounds )
     {
         return genSalt( logRounds, new SecureRandom() );
     }
@@ -898,7 +898,7 @@ public class BCrypt
      */
     public static String genSalt()
     {
-        return gensalt( GENSALT_DEFAULT_LOG2_ROUNDS );
+        return genSalt( GENSALT_DEFAULT_LOG2_ROUNDS );
     }
 
 

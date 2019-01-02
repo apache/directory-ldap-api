@@ -255,7 +255,7 @@ public class DefaultLdapCodecService implements LdapApiService
     @Override
     public boolean isControlRegistered( String oid )
     {
-        return requestControlFactories.containsKey( oid ) | responseControlFactories.containsKey( oid );
+        return requestControlFactories.containsKey( oid ) || responseControlFactories.containsKey( oid );
     }
 
 

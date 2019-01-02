@@ -1411,8 +1411,9 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                                 {
                                     // '#' are allowed if not in first position
                                     bytes[pos++] = '#';
-                                    break;
                                 }
+                                
+                                break;
 
                             case ' ':
                                 if ( ( i == 0 ) || ( i == chars.length - 1 ) )

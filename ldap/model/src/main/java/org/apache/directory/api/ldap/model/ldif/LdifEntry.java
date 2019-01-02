@@ -244,12 +244,11 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
         }
 
         // Now, parse the Ldif and convert it to a LdifEntry
-        LdifReader reader = new LdifReader();
-        List<LdifEntry> ldifEntries = reader.parseLdif( sb.toString() );
-
-        try
+        List<LdifEntry> ldifEntries = null;
+        
+        try ( LdifReader reader = new LdifReader() )
         {
-            reader.close();
+            ldifEntries = reader.parseLdif( sb.toString() );
         }
         catch ( IOException e )
         {
