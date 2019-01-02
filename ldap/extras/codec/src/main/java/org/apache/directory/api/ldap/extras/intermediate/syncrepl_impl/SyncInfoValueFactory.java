@@ -187,6 +187,6 @@ public class SyncInfoValueFactory implements IntermediateOperationFactory
     {
         ByteBuffer buffer = ByteBuffer.wrap( responseValue );
         SyncInfoValueContainer container = new SyncInfoValueContainer( ( SyncInfoValue ) intermediateResponse );
-        new Asn1Decoder().decode( buffer, ( Asn1Container ) container );
+        Asn1Decoder.decode( buffer, ( Asn1Container ) container );
     }
 }

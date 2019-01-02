@@ -60,8 +60,6 @@ public class CompareResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeCompareResponseSuccess() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x0E );
 
         stream.put( new byte[]
@@ -87,7 +85,7 @@ public class CompareResponseTest extends AbstractCodecServiceTest
         LdapMessageContainer<CompareResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode the CompareResponse PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded CompareResponse PDU
         CompareResponse compareResponse = container.getMessage();
@@ -112,8 +110,6 @@ public class CompareResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeCompareResponseSuccessWithControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x32 );
 
         stream.put( new byte[]
@@ -147,7 +143,7 @@ public class CompareResponseTest extends AbstractCodecServiceTest
         LdapMessageContainer<CompareResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode the CompareResponse PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded CompareResponse PDU
         CompareResponse compareResponse = container.getMessage();
@@ -181,8 +177,6 @@ public class CompareResponseTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeCompareResponseEmptyResult() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
         stream.put( new byte[]
@@ -199,6 +193,6 @@ public class CompareResponseTest extends AbstractCodecServiceTest
         LdapMessageContainer<CompareResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode a CompareResponse message
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 }

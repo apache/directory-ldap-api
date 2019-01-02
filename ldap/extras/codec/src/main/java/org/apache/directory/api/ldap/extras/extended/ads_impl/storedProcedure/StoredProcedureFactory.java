@@ -100,7 +100,7 @@ public class StoredProcedureFactory extends AbstractExtendedOperationFactory
         ByteBuffer bb = ByteBuffer.wrap( requestValue );
         StoredProcedureRequestContainer container = new StoredProcedureRequestContainer();
         container.setStoredProcedureRequest( ( StoredProcedureRequest ) extendedRequest ); 
-        new Asn1Decoder().decode( bb, container );
+        Asn1Decoder.decode( bb, container );
     }
 
     

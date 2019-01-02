@@ -60,8 +60,6 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeIntermediateResponseSuccess() throws EncoderException, DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x1D );
 
         stream.put( new byte[]
@@ -85,7 +83,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode the IntermediateResponse PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         // Check the decoded IntermediateResponse PDU
         IntermediateResponse intermediateResponse = ldapMessageContainer.getMessage();
@@ -109,8 +107,6 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeIntermediateResponseWithControls() throws EncoderException, DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x44 );
 
         stream.put( new byte[]
@@ -144,7 +140,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode the IntermediateResponse PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         // Check the decoded IntermediateResponse PDU
         IntermediateResponse intermediateResponse = ldapMessageContainer.getMessage();
@@ -181,8 +177,6 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeIntermediateResponseNoValueWithControls() throws EncoderException, DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x3D );
 
         stream.put( new byte[]
@@ -215,7 +209,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode the IntermediateResponse PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         // Check the decoded IntermediateResponse PDU
         IntermediateResponse intermediateResponse = ldapMessageContainer.getMessage();
@@ -251,8 +245,6 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeIntermediateResponseEmpty() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
         stream.put( new byte[]
@@ -270,7 +262,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a IntermediateResponse PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -280,8 +272,6 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeEmptyOID() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x09 );
 
         stream.put( new byte[]
@@ -300,7 +290,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a IntermediateResponse PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -310,8 +300,6 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeExtendedBadRequestName() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x16 );
 
         stream.put( new byte[]
@@ -332,7 +320,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a IntermediateResponse PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -342,8 +330,6 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeIntermediateResponseName() throws EncoderException, DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x16 );
 
         stream.put( new byte[]
@@ -376,7 +362,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode the IntermediateResponse PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         // Check the decoded IntermediateResponse PDU
         IntermediateResponse intermediateResponse = ldapMessageContainer.getMessage();
@@ -399,8 +385,6 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeIntermediateResponseEmptyValue() throws EncoderException, DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x18 );
 
         stream.put( new byte[]
@@ -424,7 +408,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode the IntermediateResponse PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         // Check the decoded IntermediateResponse PDU
         IntermediateResponse intermediateResponse = ldapMessageContainer.getMessage();
@@ -459,8 +443,6 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeIntermediateResponseNoName() throws EncoderException, DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x0E );
 
         stream.put( new byte[]
@@ -481,7 +463,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode the IntermediateResponse PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         // Check the decoded IntermediateResponse PDU
         IntermediateResponse intermediateResponse = ldapMessageContainer.getMessage();
@@ -505,8 +487,6 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeIntermediateResponseNoValue() throws EncoderException, DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x16 );
 
         stream.put( new byte[]
@@ -528,7 +508,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode the IntermediateResponse PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         // Check the decoded IntermediateResponse PDU
         IntermediateResponse intermediateResponse = ldapMessageContainer.getMessage();

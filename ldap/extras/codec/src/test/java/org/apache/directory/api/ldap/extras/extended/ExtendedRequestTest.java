@@ -72,8 +72,6 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeExtendedRequestSuccess() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x1B );
 
         stream.put( new byte[]
@@ -97,7 +95,7 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<ExtendedRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the ExtendedRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded ExtendedRequest PDU
         ExtendedRequest extendedRequest = container.getMessage();
@@ -125,8 +123,6 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeExtendedRequestWithControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x38 );
 
         stream.put( new byte[]
@@ -155,7 +151,7 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<ExtendedRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the ExtendedRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded ExtendedRequest PDU
         ExtendedRequest extendedRequest = container.getMessage();
@@ -193,8 +189,6 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeExtendedRequestNoValueWithControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x3C );
 
         stream.put( new byte[]
@@ -221,7 +215,7 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<ExtendedRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the ExtendedRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded ExtendedRequest PDU
         ExtendedRequest extendedRequest = container.getMessage();
@@ -257,8 +251,6 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeExtendedRequestEmpty() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
         stream.put( new byte[]
@@ -275,7 +267,7 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<ExtendedRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the ExtendedRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -285,8 +277,6 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeEmptyOID() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x09 );
 
         stream.put( new byte[]
@@ -304,7 +294,7 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<ExtendedRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the ExtendedRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -314,8 +304,6 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeExtendedBadRequestName() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x1F );
 
         stream.put( new byte[]
@@ -336,7 +324,7 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<ExtendedRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the ExtendedRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -346,8 +334,6 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeExtendedRequestName() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x1F );
 
         stream.put( new byte[]
@@ -368,7 +354,7 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<ExtendedRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the ExtendedRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded ExtendedRequest PDU
         ExtendedRequest extendedRequest = container.getMessage();
@@ -394,8 +380,6 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeExtendedRequestEmptyNoValue() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x21 );
 
         stream.put( new byte[]
@@ -418,7 +402,7 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<ExtendedRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the ExtendedRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded ExtendedRequest PDU
         ExtendedRequest extendedRequest = container.getMessage();

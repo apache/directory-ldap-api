@@ -121,12 +121,11 @@ public class EndTransactionResponseContainer extends AbstractContainer
     {
         ByteBuffer bb = ByteBuffer.wrap( controlsBytes );
         ControlsContainer container = new ControlsContainer();
-        Asn1Decoder decoder = new Asn1Decoder();
         
         // Loop on all the contained controls
         while ( bb.hasRemaining() )
         {
-            decoder.decode( bb, container );
+            Asn1Decoder.decode( bb, container );
             container.setState( TLVStateEnum.TAG_STATE_START );
             container.setTransition( ControlsStates.START_STATE );
         }

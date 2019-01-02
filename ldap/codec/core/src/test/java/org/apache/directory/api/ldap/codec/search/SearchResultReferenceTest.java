@@ -65,8 +65,6 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeSearchResultReferenceSuccess() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x3d8 );
 
         String[] ldapUrls = new String[]
@@ -116,7 +114,7 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultReference> ldapMessageContainer = 
             new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchResultReference searchResultReference = ldapMessageContainer.getMessage();
 
@@ -162,8 +160,6 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeSearchResultReferenceSuccessWithControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x3FC );
 
         String[] ldapUrls = new String[]
@@ -233,7 +229,7 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         ldapMessageContainer.clean();
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         stream.flip();
 
@@ -290,8 +286,6 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeSearchResultReferenceNoReference() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
         stream.put( new byte[]
@@ -310,7 +304,7 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a SearchResultReference message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -320,8 +314,6 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeSearchResultReferenceOneReference() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x11 );
 
         stream.put( new byte[]
@@ -340,7 +332,7 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultReference> ldapMessageContainer = 
             new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchResultReference searchResultReference = ldapMessageContainer.getMessage();
 

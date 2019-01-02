@@ -105,7 +105,6 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeSearchRequestSubstringInitialAny() throws DecoderException, EncoderException, LdapException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x64 );
         stream.put( new byte[]
@@ -152,7 +151,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         // Allocate a BindRequest Container
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchRequest searchRequest = ldapMessageContainer.getMessage();
 
@@ -197,7 +196,6 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
     public void testDecodeSearchRequestSubstringInitialAnyWithControls()
         throws DecoderException, EncoderException, LdapException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x0081 );
         stream.put( new byte[]
@@ -249,7 +247,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         // Allocate a BindRequest Container
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchRequest searchRequest = ldapMessageContainer.getMessage();
 
@@ -302,7 +300,6 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeSearchRequestSubstringAny() throws DecoderException, EncoderException, LdapException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x64 );
         stream.put( new byte[]
@@ -349,7 +346,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         // Allocate a BindRequest Container
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchRequest searchRequest = ldapMessageContainer.getMessage();
 
@@ -395,7 +392,6 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeSearchRequestSubstringAnyFinal() throws DecoderException, EncoderException, LdapException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x67 );
         stream.put( new byte[]
@@ -444,7 +440,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         // Allocate a BindRequest Container
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchRequest searchRequest = ldapMessageContainer.getMessage();
 
@@ -491,7 +487,6 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
     public void testDecodeSearchRequestSubstringInitialAnyFinal()
         throws DecoderException, EncoderException, LdapException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x6A );
         stream.put( new byte[]
@@ -542,7 +537,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         // Allocate a BindRequest Container
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchRequest searchRequest = ldapMessageContainer.getMessage();
 
@@ -589,7 +584,6 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
     public void testDecodeSearchRequestSubstringInitialAnyAnyFinal()
         throws DecoderException, EncoderException, LdapException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x67 );
         stream.put( new byte[]
@@ -638,7 +632,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         // Allocate a BindRequest Container
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchRequest searchRequest = ldapMessageContainer.getMessage();
 
@@ -683,7 +677,6 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeSearchRequestSubstringAnyAnyFinal() throws DecoderException, EncoderException, LdapException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x6A );
         stream.put( new byte[]
@@ -734,7 +727,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         // Allocate a BindRequest Container
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchRequest searchRequest = ldapMessageContainer.getMessage();
 
@@ -782,7 +775,6 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeSearchRequestSubstringInitialAnyAny() throws DecoderException, EncoderException, LdapException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x67 );
         stream.put( new byte[]
@@ -831,7 +823,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         // Allocate a BindRequest Container
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchRequest searchRequest = ldapMessageContainer.getMessage();
 
@@ -876,7 +868,6 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeSearchRequestSubstringAnyAnyAny() throws DecoderException, EncoderException, LdapException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x6A );
         stream.put( new byte[]
@@ -927,7 +918,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         // Allocate a BindRequest Container
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchRequest searchRequest = ldapMessageContainer.getMessage();
 
@@ -975,7 +966,6 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeSearchRequestSubstringFinal() throws DecoderException, EncoderException, LdapException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x67 );
         stream.put( new byte[]
@@ -1022,7 +1012,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         // Allocate a BindRequest Container
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchRequest searchRequest = ldapMessageContainer.getMessage();
 
@@ -1092,8 +1082,6 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x00
             };
 
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
         stream.flip();
@@ -1102,7 +1090,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -1139,8 +1127,6 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x00
             };
 
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
         stream.flip();
@@ -1149,7 +1135,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -1187,8 +1173,6 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x00
             };
 
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
         stream.flip();
@@ -1197,7 +1181,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -1236,8 +1220,6 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x00
             };
 
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
         stream.flip();
@@ -1246,7 +1228,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -1286,8 +1268,6 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x00
             };
 
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
         stream.flip();
@@ -1296,7 +1276,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -1336,8 +1316,6 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x00
             };
 
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
         stream.flip();
@@ -1346,7 +1324,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -1386,8 +1364,6 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x00
             };
 
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
         stream.flip();
@@ -1396,7 +1372,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -1439,8 +1415,6 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x00
             };
 
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
         stream.flip();
@@ -1449,7 +1423,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -1492,8 +1466,6 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x00
             };
 
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
         stream.flip();
@@ -1502,7 +1474,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -1545,8 +1517,6 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x00
             };
 
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
         stream.flip();
@@ -1555,7 +1525,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -1597,8 +1567,6 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x00
             };
 
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
         stream.flip();
@@ -1607,7 +1575,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -1649,8 +1617,6 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x00
             };
 
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
         stream.flip();
@@ -1659,6 +1625,6 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 }

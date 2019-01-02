@@ -68,7 +68,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeBindRequestSimpleNoControlsPerf()
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
+        Asn1Decoder Asn1Decoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x52 );
         stream.put( new byte[]
@@ -104,14 +104,14 @@ public class BindRequestTest extends AbstractCodecServiceTest
             long t0 = System.currentTimeMillis();
             for ( int i = 0; i < 10000; i++ )
             {
-                ldapDecoder.decode( stream, container );
+                Asn1Decoder.decode( stream, container );
                 container).clean();
                 stream.flip();
             }
             long t1 = System.currentTimeMillis();
             System.out.println( "Delta = " + ( t1 - t0 ) );
 
-            ldapDecoder.decode( stream, container );
+            Asn1Decoder.decode( stream, container );
         }
         catch ( DecoderException de )
         {
@@ -166,8 +166,6 @@ public class BindRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeBindRequestSimpleWithControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x35 );
         stream.put( new byte[]
             {
@@ -191,7 +189,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the BindRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded BindRequest
         BindRequest bindRequest = container.getMessage();
@@ -218,8 +216,6 @@ public class BindRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeBindRequestBadDN() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x35 );
         stream.put( new byte[]
             {
@@ -245,7 +241,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         // Decode the BindRequest PDU
         try
         {
-            ldapDecoder.decode( stream, container );
+            Asn1Decoder.decode( stream, container );
 
             BindRequest bindRequest = container.getMessage();
             assertNull( bindRequest.getDn() );
@@ -271,8 +267,6 @@ public class BindRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeBindRequestSimpleNoName() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x15 );
         stream.put( new byte[]
             {
@@ -293,7 +287,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         Asn1Container container = new LdapMessageContainer<BindRequest>( codec );
 
         // Decode the BindRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -304,8 +298,6 @@ public class BindRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeBindRequestSimpleEmptyName() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x16 );
         stream.put( new byte[]
             {
@@ -327,7 +319,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the BindRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded BindRequest
         BindRequest bindRequest = container.getMessage();
@@ -354,8 +346,6 @@ public class BindRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeBindRequestSaslNoCredsNoControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x3A );
         stream.put( new byte[]
             {
@@ -383,7 +373,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the BindRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded BindRequest
         BindRequest bindRequest = container.getMessage();
@@ -410,8 +400,6 @@ public class BindRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeBindRequestSaslCredsNoControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x42 );
         stream.put( new byte[]
             {
@@ -445,7 +433,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the BindRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded BindRequest
         BindRequest bindRequest = container.getMessage();
@@ -473,8 +461,6 @@ public class BindRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeBindRequestSaslNoNameCredsNoControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x23 );
         stream.put( new byte[]
             {
@@ -506,7 +492,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the BindRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded BindRequest
         BindRequest bindRequest = container.getMessage();
@@ -533,8 +519,6 @@ public class BindRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeBindRequestEmptyBody() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
         stream.put( new byte[]
             {
@@ -549,7 +533,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest message
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -559,8 +543,6 @@ public class BindRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeBindRequestEmptyVersion() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x09 );
         stream.put( new byte[]
             {
@@ -576,7 +558,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest message
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -586,8 +568,6 @@ public class BindRequestTest extends AbstractCodecServiceTest
     @Test( expected= DecoderException.class )
     public void testDecodeBindRequestBadVersion0() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x0A );
         stream.put( new byte[]
             {
@@ -603,7 +583,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest message
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -613,8 +593,6 @@ public class BindRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeBindRequestBadVersion4() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x0A );
         stream.put( new byte[]
             {
@@ -630,7 +608,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest message
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -640,8 +618,6 @@ public class BindRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeBindRequestBadVersion128() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x0C );
         stream.put( new byte[]
             {
@@ -657,7 +633,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest message
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -667,8 +643,6 @@ public class BindRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeBindRequestNoName() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x0A );
         stream.put( new byte[]
             {
@@ -684,7 +658,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest message
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -694,8 +668,6 @@ public class BindRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeBindRequestEmptyName() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x0C );
         stream.put( new byte[]
             {
@@ -712,7 +684,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest message
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -722,8 +694,6 @@ public class BindRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeBindRequestEmptySimple() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x0E );
         stream.put( new byte[]
             {
@@ -741,7 +711,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the BindRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded BindRequest
         BindRequest bindRequest = container.getMessage();
@@ -767,8 +737,6 @@ public class BindRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeBindRequestEmptySasl() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x0E );
         stream.put( new byte[]
             {
@@ -788,7 +756,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         // Decode a BindRequest message
         try
         {
-            ldapDecoder.decode( stream, container );
+            Asn1Decoder.decode( stream, container );
         }
         catch ( DecoderException de )
         {
@@ -811,8 +779,6 @@ public class BindRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeBindRequestEmptyMechanism() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x10 );
         stream.put( new byte[]
             {
@@ -831,7 +797,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the BindRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded BindRequest
         BindRequest bindRequest = container.getMessage();
@@ -857,8 +823,6 @@ public class BindRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeBindRequestBadMechanism()
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x11 );
         stream.put( new byte[]
             {
@@ -879,7 +843,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         // Decode the BindRequest PDU
         try
         {
-            ldapDecoder.decode( stream, container );
+            Asn1Decoder.decode( stream, container );
         }
         catch ( DecoderException de )
         {
@@ -900,8 +864,6 @@ public class BindRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeBindRequestEmptyCredentials() throws EncoderException, DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x12 );
         stream.put( new byte[]
             {
@@ -921,7 +883,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the BindRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded BindRequest
         BindRequest bindRequest = container.getMessage();
@@ -960,8 +922,6 @@ public class BindRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeBindRequestEmptyCredentialsWithControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x2F );
         stream.put( new byte[]
             {
@@ -986,7 +946,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the BindRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded BindRequest
         BindRequest bindRequest = container.getMessage();
@@ -1036,8 +996,6 @@ public class BindRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeBindRequestEmptyMechanismWithControls() throws EncoderException, DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x2D );
         stream.put( new byte[]
             {
@@ -1061,7 +1019,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the BindRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded BindRequest
         BindRequest bindRequest = container.getMessage();

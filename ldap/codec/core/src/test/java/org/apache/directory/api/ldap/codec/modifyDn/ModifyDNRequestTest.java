@@ -63,8 +63,6 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeModifyDNRequestSuccess() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x48 );
 
         stream.put( new byte[]
@@ -90,7 +88,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
         // Allocate a ModifyRequest Container
         LdapMessageContainer<ModifyDnRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         ModifyDnRequest modifyDnRequest = ldapMessageContainer.getMessage();
 
@@ -115,8 +113,6 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeModifyDNRequestBadDN() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x48 );
 
         stream.put( new byte[]
@@ -144,7 +140,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
 
         try
         {
-            ldapDecoder.decode( stream, ldapMessageContainer );
+            Asn1Decoder.decode( stream, ldapMessageContainer );
         }
         catch ( DecoderException de )
         {
@@ -165,8 +161,6 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeModifyDNRequestBadRDN() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x48 );
 
         stream.put( new byte[]
@@ -194,7 +188,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
 
         try
         {
-            ldapDecoder.decode( stream, ldapMessageContainer );
+            Asn1Decoder.decode( stream, ldapMessageContainer );
         }
         catch ( DecoderException de )
         {
@@ -215,8 +209,6 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeModifyDNRequestBadNewSuperior() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x48 );
 
         stream.put( new byte[]
@@ -244,7 +236,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
 
         try
         {
-            ldapDecoder.decode( stream, ldapMessageContainer );
+            Asn1Decoder.decode( stream, ldapMessageContainer );
         }
         catch ( DecoderException de )
         {
@@ -265,8 +257,6 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeModifyDNRequestSuccessWithControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x65 );
 
         stream.put( new byte[]
@@ -297,7 +287,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
         // Allocate a ModifyRequest Container
         LdapMessageContainer<ModifyDnRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         ModifyDnRequest modifyDnRequest = ldapMessageContainer.getMessage();
 
@@ -331,8 +321,6 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeModifyDNRequestWithoutSuperior() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x3D );
 
         stream.put( new byte[]
@@ -357,7 +345,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
         // Allocate a ModifyRequest Container
         LdapMessageContainer<ModifyDnRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         ModifyDnRequest modifyDnRequest = ldapMessageContainer.getMessage();
 
@@ -381,8 +369,6 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeModifyDNRequestWithoutSuperiorWithControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x5A );
 
         stream.put( new byte[]
@@ -413,7 +399,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
         // Allocate a ModifyRequest Container
         LdapMessageContainer<ModifyDnRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         ModifyDnRequest modifyDnRequest = ldapMessageContainer.getMessage();
 
@@ -450,8 +436,6 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeModifyDNRequestEmptyBody() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
         stream.put( new byte[]
@@ -468,7 +452,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<ModifyDnRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a ModifyDNRequest PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -478,8 +462,6 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeModifyDNRequestEmptyEntry() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x09 );
 
         stream.put( new byte[]
@@ -497,7 +479,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<ModifyDnRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a ModifyDNRequest PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -507,8 +489,6 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeModifyDNRequestEmptyNewRdn() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x2D );
 
         stream.put( new byte[]
@@ -530,7 +510,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<ModifyDnRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a ModifyDNRequest PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -540,8 +520,6 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeModifyDNRequestEmptyDeleteOldRdnn() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x3C );
 
         stream.put( new byte[]
@@ -565,6 +543,6 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<ModifyDnRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a ModifyDNRequest PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 }

@@ -64,8 +64,6 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeSearchResultEntrySuccess() throws DecoderException, EncoderException, LdapException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x50 );
 
         stream.put( new byte[]
@@ -98,7 +96,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchResultEntry searchResultEntry = ldapMessageContainer.getMessage();
 
@@ -134,8 +132,6 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeSearchResultEntry2AttrsSuccess() throws DecoderException, EncoderException, LdapException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x7b );
 
         stream.put( new byte[]
@@ -176,7 +172,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchResultEntry searchResultEntry = ldapMessageContainer.getMessage();
 
@@ -212,7 +208,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer2 =
             new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( result, ldapMessageContainer2 );
+        Asn1Decoder.decode( result, ldapMessageContainer2 );
 
         assertEquals( searchResultEntry.getEntry(), ldapMessageContainer2.getMessage().getEntry() );
         assertEquals( searchResultEntry.getObjectName(), ldapMessageContainer2.getMessage().getObjectName() );
@@ -226,8 +222,6 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeSearchResultEntrySuccessWithFollowingMessage() throws DecoderException, EncoderException, LdapException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x66 );
 
         stream.put( new byte[]
@@ -267,7 +261,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchResultEntry searchResultEntry = ldapMessageContainer.getMessage();
 
@@ -307,7 +301,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer2 =
             new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( buffer.getBytes(), ldapMessageContainer2 );
+        Asn1Decoder.decode( buffer.getBytes(), ldapMessageContainer2 );
 
         assertEquals( searchResultEntry.getEntry(), ldapMessageContainer2.getMessage().getEntry() );
         assertEquals( searchResultEntry.getObjectName(), ldapMessageContainer2.getMessage().getObjectName() );
@@ -322,8 +316,6 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeSearchResultEntryEmpty() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
         stream.put( new byte[]
@@ -341,7 +333,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -351,8 +343,6 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeSearchResultEntryEmptyObjectName() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x09 );
 
         stream.put( new byte[]
@@ -373,7 +363,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -383,8 +373,6 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeSearchResultEntryObjectNameAlone() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x24 );
 
         stream.put( new byte[]
@@ -406,7 +394,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -416,8 +404,6 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeSearchResultEntryEmptyAttributes() throws DecoderException, EncoderException, LdapException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x26 );
 
         stream.put( new byte[]
@@ -442,7 +428,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchResultEntry searchResultEntry = ldapMessageContainer.getMessage();
 
@@ -468,8 +454,6 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeSearchResultEntryEmptyAttributeList() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x28 );
 
         stream.put( new byte[]
@@ -495,7 +479,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -506,8 +490,6 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeSearchResultEntryEmptyAttributeListWithControls() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x45 );
 
         stream.put( new byte[]
@@ -538,7 +520,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -548,8 +530,6 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeSearchResultEntryEmptyType() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x2A );
 
         stream.put( new byte[]
@@ -576,7 +556,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -586,8 +566,6 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeSearchResultEntryTypeAlone() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x35 );
 
         stream.put( new byte[]
@@ -615,7 +593,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -625,8 +603,6 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeSearchResultEntryEmptyVals() throws DecoderException, EncoderException, LdapException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x37 );
 
         stream.put( new byte[]
@@ -655,7 +631,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchResultEntry searchResultEntry = ldapMessageContainer.getMessage();
 
@@ -689,8 +665,6 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeSearchResultEntryEmptyVals2() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x48 );
 
         stream.put( new byte[]
@@ -723,7 +697,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchResultEntry searchResultEntry = ldapMessageContainer.getMessage();
 
@@ -758,8 +732,6 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeSearchResultEntryEmptyValsWithControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x5B );
 
         stream.put( new byte[]
@@ -797,7 +769,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchResultEntry searchResultEntry = ldapMessageContainer.getMessage();
 
@@ -842,8 +814,6 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
     public void testDecodeSearchResultEntryEmptyAttributeValue()
         throws DecoderException, EncoderException, LdapException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x39 );
 
         stream.put( new byte[]
@@ -873,7 +843,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchResultEntry searchResultEntry = ldapMessageContainer.getMessage();
 
@@ -909,8 +879,6 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeSearchResultEntryEmptyAttributeValueWithControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x5D );
 
         stream.put( new byte[]
@@ -949,7 +917,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchResultEntry searchResultEntry = ldapMessageContainer.getMessage();
 

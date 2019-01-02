@@ -60,8 +60,6 @@ public class ModifyResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeModifyResponseSuccess() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x0E );
 
         stream.put( new byte[]
@@ -86,7 +84,7 @@ public class ModifyResponseTest extends AbstractCodecServiceTest
         LdapMessageContainer<ModifyResponse> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a ModifyResponse PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         // Check the decoded ModifyResponse PDU
         ModifyResponse modifyResponse = ldapMessageContainer.getMessage();
@@ -111,8 +109,6 @@ public class ModifyResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeModifyResponseSuccessWithControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x32 );
 
         stream.put( new byte[]
@@ -146,7 +142,7 @@ public class ModifyResponseTest extends AbstractCodecServiceTest
         LdapMessageContainer<ModifyResponse> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a ModifyResponse PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         // Check the decoded ModifyResponse PDU
         ModifyResponse modifyResponse = ldapMessageContainer.getMessage();
@@ -180,8 +176,6 @@ public class ModifyResponseTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeModifyResponseEmptyResult() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
         stream.put( new byte[]
@@ -197,6 +191,6 @@ public class ModifyResponseTest extends AbstractCodecServiceTest
         LdapMessageContainer<ModifyResponse> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a ModifyResponse message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 }

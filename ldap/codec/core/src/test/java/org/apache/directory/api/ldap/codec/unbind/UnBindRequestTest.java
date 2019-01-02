@@ -57,8 +57,6 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeUnBindRequestNoControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
         stream.put( new byte[]
             {
@@ -73,7 +71,7 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
         // Allocate a BindRequest Container
         LdapMessageContainer<UnbindRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         UnbindRequest unbindRequest = ldapMessageContainer.getMessage();
 
@@ -94,8 +92,6 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeUnBindRequestWithControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x24 );
         stream.put( new byte[]
             {
@@ -115,7 +111,7 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
         // Allocate a BindRequest Container
         LdapMessageContainer<UnbindRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         UnbindRequest unbindRequest = ldapMessageContainer.getMessage();
 
@@ -145,8 +141,6 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeUnBindRequestNotNull() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x09 );
         stream.put( new byte[]
             {
@@ -162,6 +156,6 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<UnbindRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a UnbindRequest message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 }

@@ -60,8 +60,6 @@ public class LdapControlTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeRequestWithControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x9C );
         stream.put( new byte[]
             {
@@ -118,7 +116,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode the PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         // Check that everything is OK
         AbandonRequest abandonRequest = ldapMessageContainer.getMessage();
@@ -169,7 +167,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
 
         // Don't check the PDU, as control are in a Map, and can be in a different order
         // So we decode the generated PDU, and we compare it with the initial message
-        ldapDecoder.decode( bb, ldapMessageContainer );
+        Asn1Decoder.decode( bb, ldapMessageContainer );
 
         AbandonRequest abandonRequest2 = ldapMessageContainer.getMessage();
 
@@ -183,8 +181,6 @@ public class LdapControlTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeRequestWithEmptyControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x0A );
         stream.put( new byte[]
             {
@@ -202,7 +198,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode the PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         // Check that everything is OK
         AbandonRequest abandonRequest = ldapMessageContainer.getMessage();
@@ -228,7 +224,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
 
         // Don't check the PDU, as control are in a Map, and can be in a different order
         // So we decode the generated PDU, and we compare it with the initial message
-        ldapDecoder.decode( bb, ldapMessageContainer );
+        Asn1Decoder.decode( bb, ldapMessageContainer );
 
         AbandonRequest abandonRequest2 = ldapMessageContainer.getMessage();
 
@@ -242,8 +238,6 @@ public class LdapControlTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeRequestWithControlsNullOID() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x19 );
         stream.put( new byte[]
             {
@@ -265,7 +259,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
         Asn1Container ldapMessageContainer = new LdapMessageContainer<Message>( codec );
 
         // Decode the PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -275,8 +269,6 @@ public class LdapControlTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeRequestWithControlsBadOID() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x20 );
         stream.put( new byte[]
             {
@@ -300,7 +292,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
         Asn1Container ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode the PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -310,8 +302,6 @@ public class LdapControlTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeRequestWithControlsBadCriticality() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x25 );
         stream.put( new byte[]
             {
@@ -334,6 +324,6 @@ public class LdapControlTest extends AbstractCodecServiceTest
         Asn1Container ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode the PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 }

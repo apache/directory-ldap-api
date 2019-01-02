@@ -91,6 +91,6 @@ public abstract class AbstractControlFactory<C extends Control> implements Contr
     {
         ByteBuffer buffer = ByteBuffer.wrap( controlBytes );
         container.setControl( control );
-        new Asn1Decoder().decode( buffer, ( Asn1Container ) container );
+        Asn1Decoder.decode( buffer, ( Asn1Container ) container );
     }
 }

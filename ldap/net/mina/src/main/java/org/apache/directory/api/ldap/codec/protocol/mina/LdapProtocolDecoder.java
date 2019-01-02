@@ -54,16 +54,11 @@ public class LdapProtocolDecoder implements ProtocolDecoder
     /** The logger */
     private static final Logger CODEC_LOG = LoggerFactory.getLogger( Loggers.CODEC_LOG.getName() );
 
-    /** The ASN 1 decoder instance */
-    private Asn1Decoder asn1Decoder;
-
-
     /**
      * Creates a new instance of LdapProtocolEncoder.
      */
     public LdapProtocolDecoder()
     {
-        asn1Decoder = new Asn1Decoder();
     }
 
 
@@ -139,7 +134,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
                     }
                 }
 
-                asn1Decoder.decode( buffer, messageContainer );
+                Asn1Decoder.decode( buffer, messageContainer );
 
                 if ( messageContainer.getState() == TLVStateEnum.PDU_DECODED )
                 {

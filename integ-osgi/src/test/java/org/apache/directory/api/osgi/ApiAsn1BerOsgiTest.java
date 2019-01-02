@@ -22,7 +22,6 @@ package org.apache.directory.api.osgi;
 
 import org.apache.directory.api.asn1.actions.CheckNotNullLength;
 import org.apache.directory.api.asn1.ber.Asn1Container;
-import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 
@@ -41,9 +40,7 @@ public class ApiAsn1BerOsgiTest extends ApiOsgiTestBase
     protected void useBundleClasses() throws Exception
     {
         new CheckNotNullLength<Asn1Container>();
-        new Asn1Decoder().getMaxLengthLength();
         new BerValue().init( 5 );
         new TLV( 1 ).getValue();
     }
-
 }

@@ -64,8 +64,6 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeAbandonRequestWithControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x9C );
         stream.put( new byte[]
             {
@@ -121,7 +119,7 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<AbandonRequest>  container = new LdapMessageContainer<>( codec );
 
         // Decode the PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check that everything is OK
         AbandonRequest abandonRequest = container.getMessage();
@@ -172,7 +170,7 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
             new LdapMessageContainer<> ( codec );
 
         // Decode the PDU
-        ldapDecoder.decode( buffer.getBytes(), ldapMessageContainer2 );
+        Asn1Decoder.decode( buffer.getBytes(), ldapMessageContainer2 );
 
         // Check that everything is OK
         AbandonRequest abandonRequest3 = container.getMessage();
@@ -187,8 +185,6 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeAbandonRequestNoControlsHighMessageId() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x0A );
         stream.put( new byte[]
             {
@@ -205,7 +201,7 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<AbandonRequest>  container = new LdapMessageContainer<>( codec );
 
         // Decode the PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check that everything is OK
         AbandonRequest abandonRequest = container.getMessage();
@@ -232,8 +228,6 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeAbandonRequestNoMessageId() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x0A );
         stream.put( new byte[]
             {
@@ -249,7 +243,7 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<AbandonRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -259,8 +253,6 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeAbandonRequestBadMessageId() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x0B );
         stream.put( new byte[]
             {
@@ -276,6 +268,6 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<AbandonRequest>  container = new LdapMessageContainer<>( codec );
 
         // Decode the PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 }

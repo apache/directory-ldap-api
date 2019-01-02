@@ -99,7 +99,7 @@ public class CertGenerationFactory extends AbstractExtendedOperationFactory
         ByteBuffer bb = ByteBuffer.wrap( requestValue );
         CertGenerationRequestContainer container = new CertGenerationRequestContainer();
         container.setCertGenerationRequest( ( CertGenerationRequest ) extendedRequest ); 
-        new Asn1Decoder().decode( bb, container );
+        Asn1Decoder.decode( bb, container );
     }
 
 

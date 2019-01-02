@@ -60,8 +60,6 @@ public class DelResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeDelResponseSuccess() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x2D );
 
         stream.put( new byte[]
@@ -89,7 +87,7 @@ public class DelResponseTest extends AbstractCodecServiceTest
         LdapMessageContainer<DeleteResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode the DelResponse PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded DelResponse PDU
         DeleteResponse delResponse = container.getMessage();
@@ -114,8 +112,6 @@ public class DelResponseTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeDelResponseEmptyResult() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
         stream.put( new byte[]
@@ -131,7 +127,7 @@ public class DelResponseTest extends AbstractCodecServiceTest
         LdapMessageContainer<DeleteResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode a DelResponse message
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -141,8 +137,6 @@ public class DelResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeDelResponseSuccessWithControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x51 );
 
         stream.put( new byte[]
@@ -178,7 +172,7 @@ public class DelResponseTest extends AbstractCodecServiceTest
         LdapMessageContainer<DeleteResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode the DelResponse PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded DelResponse PDU
         DeleteResponse delResponse = container.getMessage();

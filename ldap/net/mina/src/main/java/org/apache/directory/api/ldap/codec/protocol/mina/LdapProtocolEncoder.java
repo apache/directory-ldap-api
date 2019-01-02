@@ -85,7 +85,7 @@ public class LdapProtocolEncoder implements ProtocolEncoder
         }
         catch ( EncoderException e )
         {
-            e.printStackTrace();
+            CODEC_LOG.error( I18n.err( I18n.ERR_14000_ERROR_ENCODING_MESSAGE, message, e.getMessage() ) );
             throw e;
         }
         

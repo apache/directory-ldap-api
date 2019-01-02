@@ -63,8 +63,6 @@ public class LdapResultTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeAddResponseEmptyResultCode() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x10 );
 
         stream.put( new byte[]
@@ -81,7 +79,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode a AddResponse message
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -91,8 +89,6 @@ public class LdapResultTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeAddResponseEmptyResultCodeAbove90() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x0A );
 
         stream.put( new byte[]
@@ -109,7 +105,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode a AddResponse message
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -119,8 +115,6 @@ public class LdapResultTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeAddResponseEmptyResultCodesOK() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x0E );
 
         byte[] buffer = new byte[]
@@ -143,7 +137,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
             LdapMessageContainer<AddResponse> container = new LdapMessageContainer<>( codec );
 
             // Decode a AddResponse PDU
-            ldapDecoder.decode( stream, container );
+            Asn1Decoder.decode( stream, container );
 
             stream.clear();
         }
@@ -158,8 +152,6 @@ public class LdapResultTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeAddResponseEmptyResultCodeNoMatchedDN() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x0A );
 
         stream.put( new byte[]
@@ -176,7 +168,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode a AddResponse message
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -186,8 +178,6 @@ public class LdapResultTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeAddResponseEmptyResultCodeNoErrorMsg() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x0C );
 
         stream.put( new byte[]
@@ -205,7 +195,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode a AddResponse message
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -215,8 +205,6 @@ public class LdapResultTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeAddResponseEmptyResultCodeOK() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x0E );
 
         stream.put( new byte[]
@@ -235,7 +223,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode the AddResponse PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded AddResponse
         AddResponse addResponse = container.getMessage();
@@ -263,8 +251,6 @@ public class LdapResultTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeAddResponseEmptyResultCodeOKReferral() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x1A );
 
         stream.put( new byte[]
@@ -286,7 +272,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode the AddResponse PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded AddResponse
         AddResponse addResponse = container.getMessage();
@@ -326,8 +312,6 @@ public class LdapResultTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeAddResponseEmptyResultCodeOKReferrals() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x24 );
 
         stream.put( new byte[]
@@ -351,7 +335,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode the AddResponse PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded AddResponse
         AddResponse addResponse = container.getMessage();
@@ -398,8 +382,6 @@ public class LdapResultTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeAddResponseEmptyResultCodeEmptyReferral() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x1C );
 
         stream.put( new byte[]
@@ -422,7 +404,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode the AddResponse PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded AddResponse
         AddResponse addResponse = container.getMessage();
@@ -474,8 +456,6 @@ public class LdapResultTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeAddResponseEmptyResultCodeEmptyReferrals() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x10 );
 
         stream.put( new byte[]
@@ -495,6 +475,6 @@ public class LdapResultTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode the AddResponse PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 }

@@ -122,7 +122,7 @@ public class EndTransactionFactory extends AbstractExtendedOperationFactory
         ByteBuffer bb = ByteBuffer.wrap( requestValue );
         EndTransactionRequestContainer container = new EndTransactionRequestContainer();
         container.setEndTransactionRequest( ( EndTransactionRequest ) extendedRequest ); 
-        new Asn1Decoder().decode( bb, container );
+        Asn1Decoder.decode( bb, container );
     }
 
 
@@ -135,7 +135,7 @@ public class EndTransactionFactory extends AbstractExtendedOperationFactory
         ByteBuffer bb = ByteBuffer.wrap( requestValue );
         EndTransactionResponseContainer container = new EndTransactionResponseContainer();
         container.setEndTransactionResponse( ( EndTransactionResponse ) extendedResponse ); 
-        new Asn1Decoder().decode( bb, container );
+        Asn1Decoder.decode( bb, container );
     }
 
 

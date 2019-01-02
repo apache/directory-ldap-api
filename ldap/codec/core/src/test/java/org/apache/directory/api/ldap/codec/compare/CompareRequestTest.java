@@ -64,8 +64,6 @@ public class CompareRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeCompareRequestSuccess() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x38 );
 
         stream.put( new byte[]
@@ -92,7 +90,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<CompareRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the CompareRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded CompareRequest PDU
         CompareRequest compareRequest = container.getMessage();
@@ -117,8 +115,6 @@ public class CompareRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeCompareRequestEmptyRequest() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
         stream.put( new byte[]
@@ -135,7 +131,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<CompareRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the CompareRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -145,8 +141,6 @@ public class CompareRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeCompareRequestEmptyEntry() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x18 );
 
         stream.put( new byte[]
@@ -170,7 +164,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<CompareRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the CompareRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -180,8 +174,6 @@ public class CompareRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeCompareRequestEmptyAVA() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x2B );
 
         stream.put( new byte[]
@@ -204,7 +196,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<CompareRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the CompareRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -214,8 +206,6 @@ public class CompareRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeCompareRequestInvalidDN() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x2B );
 
         stream.put( new byte[]
@@ -240,7 +230,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         // Decode the CompareRequest PDU
         try
         {
-            ldapDecoder.decode( stream, container );
+            Asn1Decoder.decode( stream, container );
             fail( "We should never reach this point !!!" );
         }
         catch ( DecoderException de )
@@ -262,8 +252,6 @@ public class CompareRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeCompareRequestEmptyAttributeDesc() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x2D );
 
         stream.put( new byte[]
@@ -289,7 +277,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         // Decode the CompareRequest PDU
         try
         {
-            ldapDecoder.decode( stream, container );
+            Asn1Decoder.decode( stream, container );
             fail( "We should never reach this point !!!" );
         }
         catch ( DecoderException de )
@@ -311,8 +299,6 @@ public class CompareRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeCompareRequestEmptyAttributeValue() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x33 );
 
         stream.put( new byte[]
@@ -338,7 +324,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<CompareRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the CompareRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded CompareRequest PDU
         CompareRequest compareRequest = container.getMessage();
@@ -363,8 +349,6 @@ public class CompareRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeCompareRequestWithControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x55 );
 
         stream.put( new byte[]
@@ -396,7 +380,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<CompareRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the CompareRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded CompareRequest PDU
         CompareRequest compareRequest = container.getMessage();

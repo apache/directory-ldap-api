@@ -115,7 +115,7 @@ public class PasswordModifyFactory extends AbstractExtendedOperationFactory
         ByteBuffer bb = ByteBuffer.wrap( requestValue );
         PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
         container.setPasswordModifyRequest( ( PasswordModifyRequest ) extendedRequest ); 
-        new Asn1Decoder().decode( bb, container );
+        Asn1Decoder.decode( bb, container );
     }
 
 
@@ -166,7 +166,7 @@ public class PasswordModifyFactory extends AbstractExtendedOperationFactory
         ByteBuffer bb = ByteBuffer.wrap( responseValue );
         PasswordModifyResponseContainer container = new PasswordModifyResponseContainer();
         container.setPasswordModifyResponse( ( PasswordModifyResponse ) extendedResponse ); 
-        new Asn1Decoder().decode( bb, container );
+        Asn1Decoder.decode( bb, container );
     }
 
 

@@ -63,8 +63,6 @@ public class DelRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeDelRequestSuccess() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x27 );
 
         stream.put( new byte[]
@@ -84,7 +82,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<DeleteRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a DelRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded DelRequest PDU
         DeleteRequest delRequest = container.getMessage();
@@ -107,8 +105,6 @@ public class DelRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeDelRequestBadDN() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x27 );
 
         stream.put( new byte[]
@@ -130,7 +126,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
         // Decode a DelRequest PDU
         try
         {
-            ldapDecoder.decode( stream, container );
+            Asn1Decoder.decode( stream, container );
         }
         catch ( DecoderException de )
         {
@@ -151,8 +147,6 @@ public class DelRequestTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeDelRequestEmpty() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
         stream.put( new byte[]
@@ -170,7 +164,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<DeleteRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a DelRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -180,8 +174,6 @@ public class DelRequestTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeDelRequestSuccessWithControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x44 );
 
         stream.put( new byte[]
@@ -206,7 +198,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<DeleteRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a DelRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded DelRequest PDU
         DeleteRequest delRequest = container.getMessage();

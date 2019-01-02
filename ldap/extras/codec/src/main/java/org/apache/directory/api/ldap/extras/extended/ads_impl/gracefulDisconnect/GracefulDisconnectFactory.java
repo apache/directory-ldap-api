@@ -99,7 +99,7 @@ public class GracefulDisconnectFactory extends AbstractExtendedOperationFactory
         ByteBuffer bb = ByteBuffer.wrap( requestValue );
         GracefulDisconnectResponseContainer container = new GracefulDisconnectResponseContainer();
         container.setGracefulDisconnectResponse( ( GracefulDisconnectResponse ) extendedResponse ); 
-        new Asn1Decoder().decode( bb, container );
+        Asn1Decoder.decode( bb, container );
     }
 
     

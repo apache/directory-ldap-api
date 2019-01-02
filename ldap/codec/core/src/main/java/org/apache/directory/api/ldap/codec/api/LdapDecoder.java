@@ -42,9 +42,6 @@ public class LdapDecoder
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( LdapDecoder.class );
 
-    /** The ASN 1 decoder instance */
-    private Asn1Decoder asn1Decoder;
-
     /** The name of the LdapSession's attribute for the LDAP container used during the decoding */
     public static final String MESSAGE_CONTAINER_ATTR = "LDAP-container";
 
@@ -57,7 +54,6 @@ public class LdapDecoder
      */
     public LdapDecoder()
     {
-        asn1Decoder = new Asn1Decoder();
     }
 
 
@@ -88,7 +84,7 @@ public class LdapDecoder
                     break;
                 }
 
-                asn1Decoder.decode( ByteBuffer.wrap( buf, 0, amount ), container );
+                Asn1Decoder.decode( ByteBuffer.wrap( buf, 0, amount ), container );
             }
         }
         catch ( Exception e )

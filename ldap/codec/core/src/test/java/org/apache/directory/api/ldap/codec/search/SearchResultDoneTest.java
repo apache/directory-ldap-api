@@ -61,7 +61,6 @@ public class SearchResultDoneTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeSearchResultDoneSuccess() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x0E );
 
@@ -86,7 +85,7 @@ public class SearchResultDoneTest extends AbstractCodecServiceTest
         // Allocate a SearchResultDone Container
         LdapMessageContainer<SearchResultDone> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchResultDone searchResultDone = ldapMessageContainer.getMessage();
 
@@ -110,7 +109,6 @@ public class SearchResultDoneTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeSearchResultDoneSuccessWithControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x3C );
 
@@ -146,7 +144,7 @@ public class SearchResultDoneTest extends AbstractCodecServiceTest
         // Allocate a BindRequest Container
         LdapMessageContainer<SearchResultDone> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchResultDone searchResultDone = ldapMessageContainer.getMessage();
 
@@ -184,7 +182,6 @@ public class SearchResultDoneTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeSearchResultDoneEmptyResult() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
@@ -201,7 +198,7 @@ public class SearchResultDoneTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultDone> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchResultDone message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -211,7 +208,6 @@ public class SearchResultDoneTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeSearchResultDoneEsyncRefresh() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x0F );
 
@@ -236,7 +232,7 @@ public class SearchResultDoneTest extends AbstractCodecServiceTest
         // Allocate a SearchResultDone Container
         LdapMessageContainer<SearchResultDone> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchResultDone searchResultDone = ldapMessageContainer.getMessage();
 

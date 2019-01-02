@@ -62,17 +62,6 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class LdapDecoderTest extends AbstractCodecServiceTest
 {
-    /** The ASN 1 decoder instance */
-    private static Asn1Decoder asn1Decoder;
-
-
-    @BeforeClass
-    public static void init()
-    {
-        asn1Decoder = new Asn1Decoder();
-    }
-
-
     /**
      * Decode an incoming buffer into LDAP messages. The result can be 0, 1 or many
      * LDAP messages, which will be stored into the array the caller has created.
@@ -93,7 +82,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         {
             try
             {
-                asn1Decoder.decode( buffer, messageContainer );
+                Asn1Decoder.decode( buffer, messageContainer );
 
                 if ( messageContainer.getState() == TLVStateEnum.PDU_DECODED )
                 {
@@ -133,7 +122,6 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeFull() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
         LdapMessageContainer<Message> container = new LdapMessageContainer<>( codec );
 
         ByteBuffer stream = ByteBuffer.allocate( 0x35 );
@@ -157,7 +145,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Decode a BindRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         assertEquals( TLVStateEnum.PDU_DECODED, container.getState() );
 
@@ -254,8 +242,6 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
     @Test
     public void testDecodePartial() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 16 );
         stream.put( new byte[]
             {
@@ -274,7 +260,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         LdapMessageContainer<Message> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         assertEquals( TLVStateEnum.VALUE_STATE_PENDING, container.getState() );
 
@@ -295,8 +281,6 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeSplittedPDU() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 16 );
         stream.put( new byte[]
             { 
@@ -315,7 +299,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         LdapMessageContainer<Message> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest PDU first block of data
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         assertEquals( TLVStateEnum.VALUE_STATE_PENDING, container.getState() );
 
@@ -337,7 +321,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Decode a BindRequest PDU second block of data
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         assertEquals( container.getState(), TLVStateEnum.PDU_DECODED );
 
@@ -385,9 +369,6 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeBadLengthTooSmall() throws DecoderException
     {
-
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x35 );
         stream.put( new byte[]
             {
@@ -415,7 +396,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         LdapMessageContainer<Message> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -426,9 +407,6 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeBadPrimitiveLengthTooBig() throws DecoderException
     {
-
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x35 );
         stream.put( new byte[]
             {
@@ -454,7 +432,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         LdapMessageContainer<Message> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -464,9 +442,6 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeBadTagTransition() throws DecoderException
     {
-
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x35 );
         stream.put( new byte[]
             {
@@ -491,7 +466,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         LdapMessageContainer<Message> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -504,9 +479,6 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeSplittedLength() throws DecoderException
     {
-
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 3 );
         stream.put( new byte[]
             {
@@ -519,7 +491,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         LdapMessageContainer<Message> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest PDU first block of data
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         assertEquals( TLVStateEnum.LENGTH_STATE_PENDING, container.getState() );
 
@@ -533,7 +505,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         stream.flip();
 
         // Decode a BindRequest PDU second block of data
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         assertEquals( TLVStateEnum.TAG_STATE_START, container.getState() );
 

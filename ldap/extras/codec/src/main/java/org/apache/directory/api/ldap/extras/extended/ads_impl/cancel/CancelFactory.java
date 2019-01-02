@@ -97,7 +97,7 @@ public class CancelFactory extends AbstractExtendedOperationFactory
         ByteBuffer bb = ByteBuffer.wrap( requestValue );
         CancelRequestContainer container = new CancelRequestContainer();
         container.setCancelRequest( ( CancelRequest ) extendedRequest ); 
-        new Asn1Decoder().decode( bb, container );
+        Asn1Decoder.decode( bb, container );
     }
 
 

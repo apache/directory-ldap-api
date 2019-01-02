@@ -103,7 +103,6 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
     @Test
     public void testDecodeSearchRequestExtensibleMatch() throws DecoderException, EncoderException, LdapException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
 
         ByteBuffer stream = ByteBuffer.allocate( 0x63 );
         stream.put( new byte[]
@@ -151,7 +150,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         // Allocate a BindRequest Container
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchRequest searchRequest = ldapMessageContainer.getMessage();
 
@@ -204,8 +203,6 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
                     0x04, 0x00
             };
 
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
         stream.flip();
@@ -215,7 +212,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
 
         // Decode a SearchRequest message
 
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -245,8 +242,6 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
                       0x04, 0x00
             };
 
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
         stream.flip();
@@ -255,7 +250,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -285,8 +280,6 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
                       0x04, 0x00
             };
 
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
         stream.flip();
@@ -295,7 +288,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -326,8 +319,6 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
                     0x30, 0x00                  // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
             };
 
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
         stream.flip();
@@ -336,7 +327,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         SearchRequest searchRequest = ldapMessageContainer.getMessage();
 
@@ -399,8 +390,6 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
                       0x04, 0x00
             };
 
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
         stream.flip();
@@ -409,7 +398,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -459,8 +448,6 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
                         'a', 't', 't', 'r', '2',    // AttributeDescription ::= LDAPString
             };
 
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
         stream.flip();
@@ -469,7 +456,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -500,8 +487,6 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
                       0x04, 0x00
             };
 
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
         stream.flip();
@@ -510,7 +495,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -541,8 +526,6 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
                     0x04, 0x00
                 };
 
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
         stream.flip();
@@ -551,7 +534,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -582,8 +565,6 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
                       0x04, 0x00
             };
 
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
         stream.flip();
@@ -592,6 +573,6 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 }

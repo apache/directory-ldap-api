@@ -59,9 +59,6 @@ public class LdapMessageTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeMessageLengthNull() throws DecoderException
     {
-
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x02 );
         stream.put( new byte[]
             {
@@ -74,7 +71,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         Asn1Container ldapMessageContainer = new LdapMessageContainer<Message>( codec );
 
         // Decode a BindRequest PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -84,9 +81,6 @@ public class LdapMessageTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeMessageIdLengthNull() throws DecoderException
     {
-
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x04 );
         stream.put( new byte[]
             {
@@ -100,7 +94,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         Asn1Container ldapMessageContainer = new LdapMessageContainer<Message>( codec );
 
         // Decode a BindRequest PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -110,9 +104,6 @@ public class LdapMessageTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeMessageIdMinusOne() throws DecoderException
     {
-
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x05 );
         stream.put( new byte[]
             {
@@ -126,7 +117,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         Asn1Container ldapMessageContainer = new LdapMessageContainer<Message>( codec );
 
         // Decode a BindRequest PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -136,9 +127,6 @@ public class LdapMessageTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeMessageIdMaxInt() throws DecoderException
     {
-
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x08 );
         stream.put( new byte[]
             {
@@ -153,7 +141,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         Asn1Container ldapMessageContainer = new LdapMessageContainer<Message>( codec );
 
         // Decode a BindRequest PDU
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
     }
 
 
@@ -169,9 +157,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
                   0x02, 0x01, 0x01,                 // messageID MessageID = 1
                   0x42, 0x00                        // ProtocolOp
             };
-
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
+        
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
         for ( int i = 0; i < 256; i++ )
@@ -186,7 +172,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
             // Decode a BindRequest PDU
             try
             {
-                ldapDecoder.decode( stream, ldapMessageContainer );
+                Asn1Decoder.decode( stream, ldapMessageContainer );
             }
             catch ( DecoderException de )
             {
@@ -247,8 +233,6 @@ public class LdapMessageTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeUnBindRequestNoControls() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x08 );
         stream.put( new byte[]
             {
@@ -263,7 +247,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         // Allocate a BindRequest Container
         LdapMessageContainer<UnbindRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
  
-        ldapDecoder.decode( stream, ldapMessageContainer );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
 
         Message unbindRequest = ldapMessageContainer.getMessage();
 

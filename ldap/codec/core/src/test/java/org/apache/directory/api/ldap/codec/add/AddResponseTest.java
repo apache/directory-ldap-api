@@ -58,8 +58,6 @@ public class AddResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeAddResponseSuccess() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x0E );
 
         stream.put( new byte[]
@@ -84,7 +82,7 @@ public class AddResponseTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode the AddResponse PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded AddResponse
         AddResponse addResponse = container.getMessage();
@@ -109,8 +107,6 @@ public class AddResponseTest extends AbstractCodecServiceTest
     @Test( expected=DecoderException.class )
     public void testDecodeAddResponseEmptyResult() throws DecoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x0E );
 
         stream.put( new byte[]
@@ -126,7 +122,7 @@ public class AddResponseTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode a AddResponse message
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
     }
 
 
@@ -136,8 +132,6 @@ public class AddResponseTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeAddResponseSuccessWithControl() throws DecoderException, EncoderException
     {
-        Asn1Decoder ldapDecoder = new Asn1Decoder();
-
         ByteBuffer stream = ByteBuffer.allocate( 0x32 );
 
         stream.put( new byte[]
@@ -171,7 +165,7 @@ public class AddResponseTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode the AddResponse PDU
-        ldapDecoder.decode( stream, container );
+        Asn1Decoder.decode( stream, container );
 
         // Check the decoded AddResponse
         AddResponse addResponse = container.getMessage();

@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
 */
-public class Asn1Decoder implements TLVBerDecoderMBean
+public final class Asn1Decoder implements TLVBerDecoderMBean
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( Asn1Decoder.class );
@@ -64,7 +64,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
     /**
      * A public constructor of an Asn1 Decoder.
      */
-    public Asn1Decoder()
+    private Asn1Decoder()
     {
         indefiniteLengthAllowed = false;
         maxLengthLength = 1;
@@ -81,7 +81,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
      * @return <code>true</code> if there are more bytes to read, <code>false
      * </code> otherwise
      */
-    private boolean treatTagStartState( ByteBuffer stream, Asn1Container container )
+    private static  boolean treatTagStartState( ByteBuffer stream, Asn1Container container )
     {
         if ( stream.hasRemaining() )
         {
@@ -120,7 +120,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
      * 
      * @param container The container
      */
-    private void dumpTLVTree( Asn1Container container )
+    private static void dumpTLVTree( Asn1Container container )
     {
         StringBuilder sb = new StringBuilder();
         TLV current = container.getCurrentTLV();
@@ -150,7 +150,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
      * @param container The container
      * @return <code>true</code> if the TLV has been decoded
      */
-    private boolean isTLVDecoded( Asn1Container container )
+    private static boolean isTLVDecoded( Asn1Container container )
     {
         TLV current = container.getCurrentTLV();
         TLV parent = current.getParent();
@@ -189,7 +189,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
      * </code> otherwise
      * @throws DecoderException Thrown if anything went wrong
      */
-    private boolean treatLengthStartState( ByteBuffer stream, Asn1Container container ) throws DecoderException
+    private static boolean treatLengthStartState( ByteBuffer stream, Asn1Container container ) throws DecoderException
     {
         if ( stream.hasRemaining() )
         {
@@ -247,7 +247,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
      * @return <code>true</code> if there are more bytes to read, <code>false
      * </code> otherwise
      */
-    private boolean treatLengthPendingState( ByteBuffer stream, Asn1Container container )
+    private static boolean treatLengthPendingState( ByteBuffer stream, Asn1Container container )
     {
         if ( stream.hasRemaining() )
         {
@@ -302,7 +302,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
      * @param tlv The current TLV.
      * @return A string which represent the expected length stack.
      */
-    private String getParentLength( TLV tlv )
+    private static String getParentLength( TLV tlv )
     {
         StringBuilder buffer = new StringBuilder();
 
@@ -335,7 +335,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
      * the result and other informations.
      * @throws DecoderException Thrown if anything went wrong
      */
-    private void treatLengthEndState( Asn1Container container ) throws DecoderException
+    private static void treatLengthEndState( Asn1Container container ) throws DecoderException
     {
         TLV tlv = container.getCurrentTLV();
 
@@ -508,7 +508,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
      * @return <code>true</code> if there are more bytes to read, <code>false
      * </code> otherwise
      */
-    private boolean treatValueStartState( ByteBuffer stream, Asn1Container container )
+    private static  boolean treatValueStartState( ByteBuffer stream, Asn1Container container )
     {
         TLV currentTlv = container.getCurrentTLV();
 
@@ -553,7 +553,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
      * value has been decoded, <code>END</code> if whe still need to get some
      * more bytes.
      */
-    private boolean treatValuePendingState( ByteBuffer stream, Asn1Container container )
+    private static boolean treatValuePendingState( ByteBuffer stream, Asn1Container container )
     {
         TLV currentTlv = container.getCurrentTLV();
 
@@ -593,7 +593,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
      * @throws DecoderException Thrown if anything went wrong
      */
     @SuppressWarnings("unchecked")
-    private boolean treatTLVDoneState( ByteBuffer stream, Asn1Container container ) throws DecoderException
+    private static boolean treatTLVDoneState( ByteBuffer stream, Asn1Container container ) throws DecoderException
     {
         if ( LOG.isDebugEnabled() )
         {
@@ -646,7 +646,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
      * and other elements.
      * @throws DecoderException Thrown if anything went wrong!
      */
-    public void decode( ByteBuffer stream, Asn1Container container ) throws DecoderException
+    public static void decode( ByteBuffer stream, Asn1Container container ) throws DecoderException
     {
         /*
          * We have to deal with the current state. This is an infinite loop,
@@ -814,54 +814,9 @@ public class Asn1Decoder implements TLVBerDecoderMBean
      * {@inheritDoc}
      */
     @Override
-    public void disallowIndefiniteLength()
-    {
-        this.indefiniteLengthAllowed = false;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void allowIndefiniteLength()
-    {
-        this.indefiniteLengthAllowed = true;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public boolean isIndefiniteLengthAllowed()
     {
 
         return indefiniteLengthAllowed;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setMaxLengthLength( int maxLengthLength ) throws DecoderException
-    {
-        if ( ( this.indefiniteLengthAllowed ) && ( maxLengthLength > 126 ) )
-        {
-            throw new DecoderException( I18n.err( I18n.ERR_01006_LENGTH_TOO_LONG_FOR_DEFINITE_FORM ) );
-        }
-
-        this.maxLengthLength = maxLengthLength;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setMaxTagLength( int maxTagLength )
-    {
-        this.maxTagLength = maxTagLength;
     }
 }
