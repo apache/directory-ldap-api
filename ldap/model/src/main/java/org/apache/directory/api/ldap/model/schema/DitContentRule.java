@@ -594,6 +594,20 @@ public class DitContentRule extends AbstractSchemaObject
         return copy;
     }
 
+    
+    /**
+     * @see Object#equals(Object)
+     */
+    @Override
+    public int hashCode()
+    {
+        int hash = h;
+        
+        // TODO: complete this method
+     
+        return hash;
+    }
+
 
     /**
      * @see Object#equals(Object)

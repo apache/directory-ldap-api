@@ -259,6 +259,25 @@ public class LdapSyntax extends AbstractSchemaObject
         return copy;
     }
 
+    
+    /**
+     * @see Object#equals(Object)
+     */
+    @Override
+    public int hashCode()
+    {
+        int hash = h;
+        
+        hash = hash * 17 + ( isHumanReadable ? 1 : 0 );
+        
+        if ( syntaxChecker != null )
+        {
+            hash = hash * 17 + syntaxChecker.hashCode();
+        }
+        
+        return hash;
+    }
+    
 
     /**
      * {@inheritDoc}

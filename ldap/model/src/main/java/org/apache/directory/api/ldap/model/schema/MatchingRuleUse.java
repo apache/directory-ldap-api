@@ -240,6 +240,41 @@ public class MatchingRuleUse extends AbstractSchemaObject
         return copy;
     }
 
+    
+    /**
+     * @see Object#equals(Object)
+     */
+    @Override
+    public int hashCode()
+    {
+        int hash = h;
+     
+        if ( applicableAttributeOids != null )
+        {
+            int tempHash = 0;
+            
+            for ( String oid : applicableAttributeOids )
+            {
+                tempHash += oid.hashCode();
+            }
+            
+            hash = hash * 17 + tempHash;
+        }
+        
+        if ( applicableAttributes != null )
+        {
+            int tempHash = 0;
+
+            for ( AttributeType attributeType : applicableAttributes )
+            {
+                tempHash += attributeType.hashCode();
+            }
+
+            hash = hash * 17 + tempHash;
+        }
+
+        return hash;
+    }
 
     /**
      * @see Object#equals(Object)

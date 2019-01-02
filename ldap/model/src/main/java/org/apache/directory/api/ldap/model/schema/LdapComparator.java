@@ -63,6 +63,23 @@ public abstract class LdapComparator<T> extends LoadableSchemaObject implements 
     {
         // Do nothing (general case).
     }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode()
+    {
+        int hash = h;
+        
+        if ( normalizer != null )
+        {
+            hash = hash * 17 + normalizer.hashCode();
+        }
+        
+        return hash;
+    }
 
 
     /**
@@ -75,8 +92,23 @@ public abstract class LdapComparator<T> extends LoadableSchemaObject implements 
         {
             return false;
         }
-
-        return o instanceof LdapComparator<?>;
+        
+        if ( !( o instanceof LdapComparator<?> ) )
+        {
+            return false;
+        }
+        
+        LdapComparator<?> that = ( LdapComparator<?> ) o; 
+        
+        // Compare the normalizer
+        if ( normalizer != null )
+        {
+            return normalizer.equals( that.getNormalizer() );
+        }
+        else 
+        {
+            return that.getNormalizer() == null;
+        }
     }
     
     

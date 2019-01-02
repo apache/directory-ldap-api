@@ -274,6 +274,49 @@ public class ObjectClass extends AbstractSchemaObject
         return copy;
     }
 
+    
+    /**
+     * @see Object#equals(Object)
+     */
+    @Override
+    public int hashCode()
+    {
+        int hash = h;
+        
+        hash = hash * 17 + objectClassType.getValue();
+        
+        // As the elements aren't sorted, we don't iterate on 
+        // them and add the computed hashcode to the global hashcode
+        int tempHash = 0;
+        
+        for ( String oid : superiorOids )
+        {
+            tempHash += oid.hashCode();
+        }
+        
+        hash = hash * 17 + tempHash;
+        
+        tempHash = 0;
+        
+        for ( String may : mayAttributeTypeOids )
+        {
+            tempHash += may.hashCode();
+        }
+     
+        hash = hash * 17 + tempHash;
+        
+        tempHash = 0;
+
+        for ( String must : mustAttributeTypeOids )
+        {
+            tempHash += must.hashCode();
+        }
+     
+        hash = hash * 17 + tempHash;
+
+        return hash;
+    }
+    
 
     /**
      * @see Object#equals(Object)
@@ -330,18 +373,18 @@ public class ObjectClass extends AbstractSchemaObject
         }
 
         // One way
-        for ( ObjectClass oid : superiors )
+        for ( ObjectClass superior : superiors )
         {
-            if ( !that.superiors.contains( oid ) )
+            if ( !that.superiors.contains( superior ) )
             {
                 return false;
             }
         }
 
         // The other way
-        for ( ObjectClass oid : that.superiors )
+        for ( ObjectClass superior : that.superiors )
         {
-            if ( !superiors.contains( oid ) )
+            if ( !superiors.contains( superior ) )
             {
                 return false;
             }

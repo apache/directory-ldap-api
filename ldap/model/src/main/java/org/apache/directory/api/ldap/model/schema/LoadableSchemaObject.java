@@ -130,6 +130,23 @@ public abstract class LoadableSchemaObject extends AbstractSchemaObject
     {
         return null;
     }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode()
+    {
+        int hash = h;
+        
+        if ( fqcn != null )
+        {
+            hash = hash * 17 + fqcn.hashCode();
+        }
+        
+        return hash;
+    }
 
 
     /**

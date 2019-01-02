@@ -178,6 +178,34 @@ public class MatchingRule extends AbstractSchemaObject
         return copy;
     }
 
+    
+    /**
+     * @see Object#equals(Object)
+     */
+    @Override
+    public int hashCode()
+    {
+        int hash = h;
+        
+        if ( ldapComparator != null )
+        {
+            hash = hash * 37 + ldapComparator.hashCode();
+        }
+        
+        if ( ldapSyntax != null )
+        {
+            hash = hash * 37 + ldapSyntax.hashCode();
+        }
+        
+        if ( normalizer != null )
+        {
+            hash = hash * 37 + normalizer.hashCode();
+        }
+        
+
+        
+        return hash;
+    }
 
     /**
      * @see Object#equals(Object)

@@ -246,6 +246,37 @@ public class DitStructureRule extends AbstractSchemaObject
         return copy;
     }
 
+    
+    /**
+     * @see Object#equals(Object)
+     */
+    @Override
+    public int hashCode()
+    {
+        int hash = h;
+        
+        hash = hash * 17 + ruleId;
+        
+        if ( form != null )
+        {
+            hash = hash * 17 + form.hashCode();
+        }
+        
+        if ( superRules != null )
+        {
+            int tempHash = 0;
+            
+            for ( int superRule : superRules )
+            {
+                tempHash += superRule;
+            }
+            
+            hash = hash * 17 + tempHash;
+        }
+        
+        return hash;
+    }
+
 
     /**
      * {@inheritDoc}

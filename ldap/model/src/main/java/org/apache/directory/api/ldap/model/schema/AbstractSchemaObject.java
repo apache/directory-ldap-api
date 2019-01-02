@@ -929,10 +929,14 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         // The Names, if any
         if ( ( names != null ) && !names.isEmpty() )
         {
+            int tempHash = 0;
+            
             for ( String name : names )
             {
-                hash += hash * 17 + name.hashCode();
+                tempHash *= name.hashCode();
             }
+            
+            hash = hash * 17 + tempHash;
         }
 
         // The schemaName if any
@@ -950,21 +954,32 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         }
 
         // The extensions, if any
+        // Because the extensions and their values are stored un-ordered
+        // we have to be careful when computing the hashcode so that it does
+        // not depend on the extensions/values order
+        int tempHash = 0;
+        
         for ( Map.Entry<String, List<String>> entry : extensions.entrySet() )
         {
             String key = entry.getKey();
-            hash += hash * 17 + key.hashCode();
+            int tempHash2 = key.hashCode();
 
             List<String> values = entry.getValue();
 
             if ( values != null )
             {
+                int tempHash3 = 0;
+                
                 for ( String value : values )
                 {
-                    hash += hash * 17 + value.hashCode();
+                    tempHash3 += value.hashCode();
                 }
+
+                tempHash += tempHash2 * tempHash3;
             }
         }
+        
+        hash = hash * 17 + tempHash;
         
         h = hash;
     }
