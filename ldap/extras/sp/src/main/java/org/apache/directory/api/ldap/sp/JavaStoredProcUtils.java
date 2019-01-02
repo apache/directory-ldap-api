@@ -75,24 +75,17 @@ public final class JavaStoredProcUtils
         int lastDot = fullClassName.lastIndexOf( '.' );
         String classFileName = fullClassName.substring( lastDot + 1 ) + ".class";
         URL url = clazz.getResource( classFileName );
-        InputStream in;
-
+        InputStream in = null;
+        
         try
         {
             in = url.openStream();
-        }
-        catch ( IOException ioe )
-        {
-            NamingException ne = new NamingException();
-            ne.setRootCause( ioe );
-            throw ne;
-        }
+            File file = new File( url.toURI() );
+            int size = ( int ) file.length();
+            byte[] buf = new byte[size];
+            in.read( buf );
 
-        File file;
-
-        try
-        {
-            file = new File( url.toURI() );
+            return buf;
         }
         catch ( URISyntaxException urie )
         {
@@ -100,26 +93,19 @@ public final class JavaStoredProcUtils
             ne.setRootCause( urie );
             throw ne;
         }
-
-        int size = ( int ) file.length();
-        byte[] buf = new byte[size];
-
-        try
-        {
-            in.read( buf );
-        }
-        catch ( IOException e )
+        catch ( IOException ioe )
         {
             NamingException ne = new NamingException();
-            ne.setRootCause( e );
+            ne.setRootCause( ioe );
             throw ne;
         }
         finally
         {
-            IOUtils.closeQuietly( in );
+            if ( in != null )
+            {
+                IOUtils.closeQuietly( in );
+            }
         }
-
-        return buf;
     }
 
 

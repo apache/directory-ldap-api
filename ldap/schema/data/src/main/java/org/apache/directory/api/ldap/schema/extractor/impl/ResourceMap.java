@@ -227,23 +227,26 @@ public final class ResourceMap
                 try
                 {
                     index = indexes.nextElement();
-                    InputStream in = index.openStream();
-                    BufferedReader reader = new BufferedReader( new InputStreamReader( in, StandardCharsets.UTF_8 ) );
-                    String line = reader.readLine();
-
-                    while ( line != null )
+                    
+                    try ( InputStream in = index.openStream() )
                     {
-                        boolean accept = pattern.matcher( line ).matches();
-
-                        if ( accept )
+                        try ( BufferedReader reader = new BufferedReader( new InputStreamReader( in, StandardCharsets.UTF_8 ) ) )
                         {
-                            map.put( line, Boolean.TRUE );
-                        }
-
-                        line = reader.readLine();
+                            String line = reader.readLine();
+            
+                            while ( line != null )
+                            {
+                                boolean accept = pattern.matcher( line ).matches();
+            
+                                if ( accept )
+                                {
+                                    map.put( line, Boolean.TRUE );
+                                }
+            
+                                line = reader.readLine();
+                            }
+                        }        
                     }
-
-                    reader.close();
                 }
                 catch ( IOException ioe )
                 {

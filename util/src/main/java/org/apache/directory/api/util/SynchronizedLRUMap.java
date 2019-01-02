@@ -51,8 +51,11 @@ public final class SynchronizedLRUMap extends SequencedHashMap implements Extern
     // without changing the format, we can still deserialize properly.
     private static final long serialVersionUID = 2197433140769957051L;
 
+    /** Maximum size */
     private int maximumSize = 0;
 
+    /** Default maximum size */
+    protected static final int DEFAULT_MAX_SIZE = 100;
 
     /**
      * Default constructor, primarily for the purpose of de-externalization.
@@ -61,7 +64,7 @@ public final class SynchronizedLRUMap extends SequencedHashMap implements Extern
      */
     public SynchronizedLRUMap()
     {
-        this( 100 );
+        this( DEFAULT_MAX_SIZE );
     }
 
 
@@ -70,13 +73,12 @@ public final class SynchronizedLRUMap extends SequencedHashMap implements Extern
      * capacity is achieved, subsequent gets and puts will push keys out of the
      * map. See .
      * 
-     * @param i
-     *            Maximum capacity of the LRUMap
+     * @param maxSize Maximum capacity of the LRUMap
      */
-    public SynchronizedLRUMap( int i )
+    public SynchronizedLRUMap( int maxSize )
     {
-        super( i );
-        maximumSize = i;
+        super( maxSize );
+        maximumSize = maxSize;
     }
 
 
@@ -88,8 +90,7 @@ public final class SynchronizedLRUMap extends SequencedHashMap implements Extern
      * over keys, values, etc. is currently unsupported.
      * </p>
      * 
-     * @param key
-     *            Key to retrieve
+     * @param key Key to retrieve
      * @return Returns the value. Returns null if the key has a null value <i>or</i>
      *         if the key has no value.
      */
@@ -103,6 +104,7 @@ public final class SynchronizedLRUMap extends SequencedHashMap implements Extern
 
         Object value = remove( key );
         super.put( key, value );
+        
         return value;
     }
 
@@ -117,43 +119,22 @@ public final class SynchronizedLRUMap extends SequencedHashMap implements Extern
      * for removeLRU() for more details.)
      * </p>
      * 
-     * @param key
-     *            Key of the Object to add.
-     * @param value
-     *            Object to add
+     * @param key Key of the Object to add.
+     * @param value Object to add
      * @return Former value of the key
      */
     @Override
-    public Object put( Object key, Object value )
+    public synchronized Object put( Object key, Object value )
     {
-
-        int mapSize = size();
-        Object retval;
-
-        if ( mapSize >= maximumSize )
+        // don't retire LRU if you are just
+        // updating an existing key
+        if ( ( maximumSize <= size() ) && ( !containsKey( key ) ) )
         {
-            synchronized ( this )
-            {
-                // don't retire LRU if you are just
-                // updating an existing key
-                if ( !containsKey( key ) )
-                {
-                    // lets retire the least recently used item in the cache
-                    removeLRU();
-                }
-
-                retval = super.put( key, value );
-            }
-        }
-        else
-        {
-            synchronized ( this )
-            {
-                retval = super.put( key, value );
-            }
+            // lets retire the least recently used item in the cache
+            removeLRU();
         }
 
-        return retval;
+        return super.put( key, value );
     }
 
 
@@ -172,14 +153,12 @@ public final class SynchronizedLRUMap extends SequencedHashMap implements Extern
     }
 
 
-    // Properties
-    // -------------------------------------------------------------------------
     /**
      * Getter for property maximumSize.
      * 
      * @return Value of property maximumSize.
      */
-    public int getMaximumSize()
+    public synchronized int getMaximumSize()
     {
         return maximumSize;
     }
@@ -188,19 +167,15 @@ public final class SynchronizedLRUMap extends SequencedHashMap implements Extern
     /**
      * Setter for property maximumSize.
      * 
-     * @param maximumSize
-     *            New value of property maximumSize.
+     * @param maximumSize New value of property maximumSize.
      */
-    public void setMaximumSize( int maximumSize )
+    public synchronized void setMaximumSize( int maximumSize )
     {
-        synchronized ( this )
-        {
-            this.maximumSize = maximumSize;
+        this.maximumSize = maximumSize;
 
-            while ( size() > maximumSize )
-            {
-                removeLRU();
-            }
+        while ( size() > maximumSize )
+        {
+            removeLRU();
         }
     }
 }

@@ -2122,7 +2122,7 @@ public class DefaultSchemaManager implements SchemaManager
                 // Remove the cloned registries
                 clonedRegistries.clear();
 
-                // If we didn't get any error, apply the addition to the real retistries
+                // If we didn't get any error, apply the addition to the real registries
                 if ( !errorHandler.wasError() )
                 {
                     // Copy again as the clonedRegistries clear has removed the previous copy

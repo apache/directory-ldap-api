@@ -121,29 +121,25 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
             if ( pat.matcher( file ).matches() )
             {
                 URL resource = getResource( file, "schema LDIF file" );
-                InputStream in = resource.openStream();
 
-                try
+                try ( InputStream in = resource.openStream() )
                 {
-                    LdifReader reader = new LdifReader( in );
-                    LdifEntry entry = reader.next();
-                    reader.close();
-                    Schema schema = getSchema( entry.getEntry() );
-                    schemaMap.put( schema.getSchemaName(), schema );
-
-                    if ( LOG.isDebugEnabled() )
+                    try ( LdifReader reader = new LdifReader( in ) )
                     {
-                        LOG.debug( I18n.msg( I18n.MSG_16007_SCHEMA_INITIALIZED, schema ) );
+                        LdifEntry entry = reader.next();
+                        Schema schema = getSchema( entry.getEntry() );
+                        schemaMap.put( schema.getSchemaName(), schema );
+    
+                        if ( LOG.isDebugEnabled() )
+                        {
+                            LOG.debug( I18n.msg( I18n.MSG_16007_SCHEMA_INITIALIZED, schema ) );
+                        }
                     }
                 }
                 catch ( LdapException le )
                 {
                     LOG.error( I18n.err( I18n.ERR_16009_LDIF_LOAD_FAIL, file ), le );
                     throw le;
-                }
-                finally
-                {
-                    in.close();
                 }
             }
         }

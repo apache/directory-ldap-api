@@ -129,34 +129,28 @@ public final class SchemaToLdif
      */
     private static void generate( Schema schema ) throws Exception
     {
-        if ( schema == null )
+        try ( InputStream in = schema.getInput() )
         {
-            LOG.error( I18n.err( I18n.ERR_15001_NULL_SCHEMA ) );
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_15005_NO_PROPERTY ) );
+            try ( Writer out = schema.getOutput() )
+            {
+                // First parse the schema
+                SchemaParser parser = new SchemaParser();
+                List<SchemaElement> elements = parser.parse( in );
+        
+                // Start with the header (apache licence)
+                out.write( HEADER );
+        
+                // Iterate through each schema elemnts
+                for ( SchemaElement element : elements )
+                {
+                    out.write( element.toLdif( schema.getName() ) );
+        
+                    out.write( '\n' );
+                }
+        
+                // Done. Flush the result and close the reader and writer
+                out.flush();
+            }
         }
-
-        InputStream in = schema.getInput();
-        Writer out = schema.getOutput();
-
-        // First parse the schema
-        SchemaParser parser = new SchemaParser();
-        List<SchemaElement> elements = parser.parse( in );
-
-        // Start with the header (apache licence)
-        out.write( HEADER );
-
-        // Iterate through each schema elemnts
-        for ( SchemaElement element : elements )
-        {
-            out.write( element.toLdif( schema.getName() ) );
-
-            out.write( '\n' );
-        }
-
-        // Done. Flush the result and close the reader and writer
-        out.flush();
-
-        out.close();
-        in.close();
     }
 }
