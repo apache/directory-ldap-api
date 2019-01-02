@@ -251,7 +251,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
         AddResponse response = new AddResponseImpl( addResponse.getMessageId() );
         response.getLdapResult().setResultCode( ResultCodeEnum.SUCCESS );
 
-        ByteBuffer result = LdapEncoder.encodeMessageReverse( buffer, codec, response );
+        ByteBuffer result = LdapEncoder.encodeMessage( buffer, codec, response );
 
         assertArrayEquals( stream.array(), result.array() );
     }
@@ -314,7 +314,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
         response.getLdapResult().setReferral( referralResult );
         response.getLdapResult().setResultCode( ResultCodeEnum.REFERRAL );
 
-        ByteBuffer result = LdapEncoder.encodeMessageReverse( buffer, codec, response );
+        ByteBuffer result = LdapEncoder.encodeMessage( buffer, codec, response );
 
         assertArrayEquals( stream.array(), result.array() );
     }
@@ -385,7 +385,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
         response.getLdapResult().setReferral( referralResult );
         response.getLdapResult().setResultCode( ResultCodeEnum.REFERRAL );
 
-        ByteBuffer result = LdapEncoder.encodeMessageReverse( buffer, codec, response );
+        ByteBuffer result = LdapEncoder.encodeMessage( buffer, codec, response );
 
         assertArrayEquals( stream.array(), result.array() );
     }
@@ -461,7 +461,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
         response.getLdapResult().setReferral( referralResult );
         response.getLdapResult().setResultCode( ResultCodeEnum.REFERRAL );
 
-        ByteBuffer result = LdapEncoder.encodeMessageReverse( buffer, codec, response );
+        ByteBuffer result = LdapEncoder.encodeMessage( buffer, codec, response );
 
         assertArrayEquals( stream.array(), result.array() );
     }

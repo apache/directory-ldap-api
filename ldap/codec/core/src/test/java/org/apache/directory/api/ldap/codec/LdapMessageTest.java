@@ -272,7 +272,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         // Check the reverse encoding
         Asn1Buffer buffer = new Asn1Buffer();
 
-        ByteBuffer result = LdapEncoder.encodeMessageReverse( buffer, codec, unbindRequest );
+        ByteBuffer result = LdapEncoder.encodeMessage( buffer, codec, unbindRequest );
 
         assertArrayEquals( stream.array(), result.array() );
     }

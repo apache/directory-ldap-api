@@ -177,7 +177,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
         request.setEntry( addRequest.getEntry() );
         request.setMessageId( addRequest.getMessageId() );
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, request );
+        LdapEncoder.encodeMessage( buffer, codec, request );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
@@ -589,7 +589,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
         request.setEntry( addRequest.getEntry() );
         request.setMessageId( addRequest.getMessageId() );
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, request );
+        LdapEncoder.encodeMessage( buffer, codec, request );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
@@ -677,7 +677,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
         request.setMessageId( addRequest.getMessageId() );
         request.addControl( new ManageDsaITImpl() );
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, request );
+        LdapEncoder.encodeMessage( buffer, codec, request );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
         
@@ -689,7 +689,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
         request2.setMessageId( addRequest.getMessageId() );
         request2.addControl( new ManageDsaITImpl() );
 
-        LdapEncoder.encodeMessageReverse( asn1Buffer, codec, request2 );
+        LdapEncoder.encodeMessage( asn1Buffer, codec, request2 );
 
         assertArrayEquals( stream.array(), asn1Buffer.getBytes().array() );
     }

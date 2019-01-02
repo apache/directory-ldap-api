@@ -174,7 +174,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, searchRequest );
+        LdapEncoder.encodeMessage( buffer, codec, searchRequest );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
@@ -365,7 +365,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, searchRequest );
+        LdapEncoder.encodeMessage( buffer, codec, searchRequest );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }

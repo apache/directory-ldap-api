@@ -165,7 +165,7 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
 
         // Check reverse encoding
         Asn1Buffer buffer = new Asn1Buffer();
-        LdapEncoder.encodeMessageReverse( buffer, codec, internalAbandonRequest );
+        LdapEncoder.encodeMessage( buffer, codec, internalAbandonRequest );
 
         // Check that the decoded messages are equals
         LdapMessageContainer<AbandonRequest>  ldapMessageContainer2 =
@@ -220,7 +220,7 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
 
         // Check the reverse encoding
         Asn1Buffer buffer = new Asn1Buffer();
-        LdapEncoder.encodeMessageReverse( buffer, codec, internalAbandonRequest );
+        LdapEncoder.encodeMessage( buffer, codec, internalAbandonRequest );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }

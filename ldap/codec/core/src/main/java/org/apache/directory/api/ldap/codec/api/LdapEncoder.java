@@ -20,15 +20,12 @@
 package org.apache.directory.api.ldap.codec.api;
 
 
-import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
-import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.i18n.I18n;
@@ -55,9 +52,7 @@ import org.apache.directory.api.ldap.codec.factory.SearchResultReferenceFactory;
 import org.apache.directory.api.ldap.codec.factory.UnbindRequestFactory;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
-import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.message.Request;
-import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -73,79 +68,6 @@ public final class LdapEncoder
     private LdapEncoder()
     {
         // Nothing to do
-    }
-
-    /**
-     * Compute the control's encoded length
-     *
-     * @param control The control to compute
-     * @return the encoded control length
-     */
-    public static int computeControlLength( Control control )
-    {
-        // First, compute the control's value length
-        int controlValueLength = ( ( CodecControl<?> ) control ).computeLength();
-
-        // Now, compute the envelop length
-        // The OID
-        int oidLengh = Strings.getBytesUtf8( control.getOid() ).length;
-        int controlLength = 1 + TLV.getNbBytes( oidLengh ) + oidLengh;
-
-        // The criticality, only if true
-        if ( control.isCritical() )
-        {
-            // Always 3 for a boolean
-            controlLength += 1 + 1 + 1;
-        }
-
-        if ( controlValueLength != 0 )
-        {
-            controlLength += 1 + TLV.getNbBytes( controlValueLength ) + controlValueLength;
-        }
-
-        return controlLength;
-    }
-
-
-    /**
-     * Encode a control to a byte[]
-     *
-     * @param buffer The buffer that will contain the encoded control
-     * @param control The control to encode
-     * @return The control encoded in a byte[]
-     * @throws EncoderException If the encoding failed
-     */
-    public static ByteBuffer encodeControl( ByteBuffer buffer, Control control ) throws EncoderException
-    {
-        if ( buffer == null )
-        {
-            throw new EncoderException( I18n.err( I18n.ERR_08000_CANNOT_PUT_A_PDU_IN_NULL_BUFFER ) );
-        }
-
-        try
-        {
-            // The LdapMessage Sequence
-            buffer.put( UniversalTag.SEQUENCE.getValue() );
-
-            // The length has been calculated by the computeLength method
-            int controlLength = computeControlLength( control );
-            buffer.put( TLV.getBytes( controlLength ) );
-        }
-        catch ( BufferOverflowException boe )
-        {
-            throw new EncoderException( I18n.err( I18n.ERR_08212_PDU_BUFFER_TOO_SMALL ), boe );
-        }
-
-        // The control type
-        BerValue.encode( buffer, Strings.getBytesUtf8( control.getOid() ) );
-
-        // The control criticality, if true
-        if ( control.isCritical() )
-        {
-            BerValue.encode( buffer, control.isCritical() );
-        }
-
-        return buffer;
     }
 
 
@@ -167,7 +89,7 @@ public final class LdapEncoder
      * @return The control encoded in a byte[]
      * @throws EncoderException If the encoding failed
      */
-    private static void encodeControlsReverse( Asn1Buffer buffer, LdapApiService codec,
+    private static void encodeControls( Asn1Buffer buffer, LdapApiService codec,
         Map<String, Control> controls, Iterator<String> iterator, boolean isRequest ) throws EncoderException
     {
         if ( iterator.hasNext() )
@@ -176,7 +98,7 @@ public final class LdapEncoder
             Control control = controls.get( iterator.next() );
 
             // Encode the remaining controls recursively
-            encodeControlsReverse( buffer, codec, controls, iterator, isRequest );
+            encodeControls( buffer, codec, controls, iterator, isRequest );
 
             // Fetch the control's factory from the LdapApiService
             ControlFactory<?> controlFactory;
@@ -347,7 +269,7 @@ public final class LdapEncoder
      * @return A ByteBuffer that contains the PDU
      * @throws EncoderException If anything goes wrong.
      */
-    public static ByteBuffer encodeMessageReverse( Asn1Buffer buffer, LdapApiService codec, Message message ) throws EncoderException
+    public static ByteBuffer encodeMessage( Asn1Buffer buffer, LdapApiService codec, Message message ) throws EncoderException
     {
         int start = buffer.getPos();
 
@@ -356,7 +278,7 @@ public final class LdapEncoder
 
         if ( ( controls != null ) && ( controls.size() > 0 ) )
         {
-            encodeControlsReverse( buffer, codec, controls, controls.keySet().iterator(), message instanceof Request );
+            encodeControls( buffer, codec, controls, controls.keySet().iterator(), message instanceof Request );
 
             // The controls tag
             BerValue.encodeSequence( buffer, ( byte ) LdapCodecConstants.CONTROLS_TAG, start );
@@ -372,72 +294,5 @@ public final class LdapEncoder
         BerValue.encodeSequence( buffer );
 
         return buffer.getBytes();
-    }
-
-
-    /**
-     * Encode the Referral message to a PDU.
-     *
-     * @param buffer The buffer where to put the PDU
-     * @param referral The referral to encode
-     * @exception EncoderException If the encoding failed
-     */
-    public static void encodeReferral( ByteBuffer buffer, Referral referral ) throws EncoderException
-    {
-        Collection<byte[]> ldapUrlsBytes = referral.getLdapUrlsBytes();
-
-        if ( ( ldapUrlsBytes != null ) && ( !ldapUrlsBytes.isEmpty() ) )
-        {
-            // Encode the referrals sequence
-            // The referrals length MUST have been computed before !
-            buffer.put( ( byte ) LdapCodecConstants.LDAP_RESULT_REFERRAL_SEQUENCE_TAG );
-            buffer.put( TLV.getBytes( referral.getReferralLength() ) );
-
-            // Each referral
-            for ( byte[] ldapUrlBytes : ldapUrlsBytes )
-            {
-                // Encode the current referral
-                BerValue.encode( buffer, ldapUrlBytes );
-            }
-        }
-    }
-
-
-    /**
-     * Compute the referral's encoded length
-     * @param referral The referral to encode
-     * @return The length of the encoded PDU
-     */
-    public static int computeReferralLength( Referral referral )
-    {
-        if ( referral != null )
-        {
-            Collection<String> ldapUrls = referral.getLdapUrls();
-
-            if ( ( ldapUrls != null ) && ( !ldapUrls.isEmpty() ) )
-            {
-                int referralLength = 0;
-
-                // Each referral
-                for ( String ldapUrl : ldapUrls )
-                {
-                    byte[] ldapUrlBytes = Strings.getBytesUtf8( ldapUrl );
-                    referralLength += 1 + TLV.getNbBytes( ldapUrlBytes.length ) + ldapUrlBytes.length;
-                    referral.addLdapUrlBytes( ldapUrlBytes );
-                }
-
-                referral.setReferralLength( referralLength );
-
-                return referralLength;
-            }
-            else
-            {
-                return 0;
-            }
-        }
-        else
-        {
-            return 0;
-        }
     }
 }

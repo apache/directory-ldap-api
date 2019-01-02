@@ -113,7 +113,7 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, cancelRequest );
+        LdapEncoder.encodeMessage( buffer, codec, cancelRequest );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
@@ -180,7 +180,7 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, cancelRequest );
+        LdapEncoder.encodeMessage( buffer, codec, cancelRequest );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
@@ -245,7 +245,7 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, startTlsRequest );
+        LdapEncoder.encodeMessage( buffer, codec, startTlsRequest );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
@@ -382,7 +382,7 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, startTlsRequest );
+        LdapEncoder.encodeMessage( buffer, codec, startTlsRequest );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
@@ -432,7 +432,7 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, startTlsRequest );
+        LdapEncoder.encodeMessage( buffer, codec, startTlsRequest );
 
         assertArrayEquals( 
             new byte[]

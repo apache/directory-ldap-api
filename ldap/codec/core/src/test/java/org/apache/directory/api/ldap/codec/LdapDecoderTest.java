@@ -173,7 +173,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         // Check the revert encoder
         Asn1Buffer buffer = new Asn1Buffer();
         
-        LdapEncoder.encodeMessageReverse( buffer, codec, bindRequest );
+        LdapEncoder.encodeMessage( buffer, codec, bindRequest );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
@@ -353,7 +353,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         // Check the revert encoder
         Asn1Buffer buffer = new Asn1Buffer();
         
-        LdapEncoder.encodeMessageReverse( buffer, codec, bindRequest );
+        LdapEncoder.encodeMessage( buffer, codec, bindRequest );
 
         assertArrayEquals( 
             new byte[]

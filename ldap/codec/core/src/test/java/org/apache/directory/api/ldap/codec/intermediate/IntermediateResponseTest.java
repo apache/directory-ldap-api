@@ -97,7 +97,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, intermediateResponse );
+        LdapEncoder.encodeMessage( buffer, codec, intermediateResponse );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
@@ -168,7 +168,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, intermediateResponse );
+        LdapEncoder.encodeMessage( buffer, codec, intermediateResponse );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
@@ -239,7 +239,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, intermediateResponse );
+        LdapEncoder.encodeMessage( buffer, codec, intermediateResponse );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
@@ -387,7 +387,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, intermediateResponse );
+        LdapEncoder.encodeMessage( buffer, codec, intermediateResponse );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
@@ -437,7 +437,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, intermediateResponse );
+        LdapEncoder.encodeMessage( buffer, codec, intermediateResponse );
 
         assertArrayEquals( 
             new byte[]
@@ -493,7 +493,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, intermediateResponse );
+        LdapEncoder.encodeMessage( buffer, codec, intermediateResponse );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
@@ -540,7 +540,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, intermediateResponse );
+        LdapEncoder.encodeMessage( buffer, codec, intermediateResponse );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }

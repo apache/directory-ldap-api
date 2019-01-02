@@ -162,7 +162,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
 
         // Check the encoding
         Asn1Buffer buffer = new Asn1Buffer();
-        ByteBuffer bb = LdapEncoder.encodeMessageReverse( buffer, codec, internalAbandonRequest );
+        ByteBuffer bb = LdapEncoder.encodeMessage( buffer, codec, internalAbandonRequest );
 
         // Check the length
         assertEquals( 0x9C, bb.limit() );
@@ -221,7 +221,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
 
         // Check the encoding
         Asn1Buffer buffer = new Asn1Buffer();
-        ByteBuffer bb = LdapEncoder.encodeMessageReverse( buffer, codec, internalAbandonRequest );
+        ByteBuffer bb = LdapEncoder.encodeMessage( buffer, codec, internalAbandonRequest );
 
         // Check the length, which should be 2 bytes shorter, as we don't encode teh empty control
         assertEquals( 0x08, bb.limit() );

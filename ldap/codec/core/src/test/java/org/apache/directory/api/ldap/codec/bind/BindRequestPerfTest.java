@@ -89,7 +89,7 @@ public class BindRequestPerfTest extends AbstractCodecServiceTest
             for ( int i = 0; i < nbLoops; i++ )
             {
                 // Check the encoding
-                LdapEncoder.encodeMessageReverse( buffer, codec, bindRequest );
+                LdapEncoder.encodeMessage( buffer, codec, bindRequest );
                 buffer.clear();
             }
 

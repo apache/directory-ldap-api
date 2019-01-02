@@ -81,7 +81,7 @@ public class LdapProtocolEncoder implements ProtocolEncoder
         
         try
         { 
-            LdapEncoder.encodeMessageReverse( asn1Buffer, codec, ( Message ) message );
+            LdapEncoder.encodeMessage( asn1Buffer, codec, ( Message ) message );
         }
         catch ( EncoderException e )
         {

@@ -95,7 +95,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, delRequest );
+        LdapEncoder.encodeMessage( buffer, codec, delRequest );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
@@ -226,7 +226,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, delRequest );
+        LdapEncoder.encodeMessage( buffer, codec, delRequest );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }

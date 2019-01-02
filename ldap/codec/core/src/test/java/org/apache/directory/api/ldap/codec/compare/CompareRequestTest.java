@@ -105,7 +105,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, compareRequest );
+        LdapEncoder.encodeMessage( buffer, codec, compareRequest );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
@@ -351,7 +351,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, compareRequest );
+        LdapEncoder.encodeMessage( buffer, codec, compareRequest );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
@@ -418,7 +418,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         // Check the encoding
         Asn1Buffer buffer = new Asn1Buffer();
 
-        LdapEncoder.encodeMessageReverse( buffer, codec, compareRequest );
+        LdapEncoder.encodeMessage( buffer, codec, compareRequest );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
