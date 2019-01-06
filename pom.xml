@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
-    <version>43</version>
+    <version>44-SNAPSHOT</version>
     <relativePath />
   </parent>
 
@@ -41,7 +41,7 @@
     <!-- Set versions for depending projects -->
     <skin.version>1.0.3</skin.version>
     <org.apache.directory.junit.junit-addons.version>2.0.0</org.apache.directory.junit.junit-addons.version>
-    <org.apache.directory.checkstyle-configuration.version>0.3</org.apache.directory.checkstyle-configuration.version>
+    <org.apache.directory.checkstyle-configuration.version>2.0.0</org.apache.directory.checkstyle-configuration.version>
     
     <!-- Set versions for depending jars -->
     <antlr.version>2.7.7</antlr.version>
@@ -57,7 +57,7 @@
     <mina.core.version>2.0.18</mina.core.version>
     <org.osgi.core.version>6.0.0</org.osgi.core.version>
     <org.apache.felix.version>6.0.1</org.apache.felix.version>
-    <pax-exam.version>4.12.0</pax-exam.version>
+    <pax-exam.version>4.13.1</pax-exam.version>
     <pax-url.version>2.5.4</pax-url.version>
     <slf4j.api.version>1.7.25</slf4j.api.version>
     <slf4j.api.bundleversion>"$«range;[==,=+)»"</slf4j.api.bundleversion>
@@ -278,13 +278,13 @@
           <dependency>
             <groupId>org.apache.maven.wagon</groupId>
             <artifactId>wagon-ssh</artifactId>
-            <version>2.1</version>
+            <version>3.2.0</version>
           </dependency>
           <!-- Add support for 'scpexe' -->
           <dependency>
             <groupId>org.apache.maven.wagon</groupId>
             <artifactId>wagon-ssh-external</artifactId>
-            <version>2.1</version>
+            <version>3.2.0</version>
           </dependency>
           <!-- Needed for mvn site to work.-->
           <dependency>

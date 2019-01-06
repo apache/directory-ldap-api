@@ -49,9 +49,12 @@ public class LdapProtocolEncoder implements ProtocolEncoder
     /** logger for reporting errors that might not be handled properly upstream */
     private static final Logger CODEC_LOG = LoggerFactory.getLogger( Loggers.CODEC_LOG.getName() );
 
-
+    /** The LDAP API Service instance */
     private LdapApiService codec;
-
+    
+    /** A thread local storage used to store the Asn1Buffer instance */
+    private ThreadLocal<Asn1Buffer> threadLocalStorage = new ThreadLocal<>();
+    
     /**
      * Creates a new instance of LdapProtocolEncoder.
      */
@@ -77,22 +80,33 @@ public class LdapProtocolEncoder implements ProtocolEncoder
     @Override
     public void encode( IoSession session, Object message, ProtocolEncoderOutput out ) throws Exception
     {
-        Asn1Buffer asn1Buffer = new Asn1Buffer();
+        Asn1Buffer asn1Buffer = threadLocalStorage.get();
+        
+        if ( asn1Buffer == null )
+        {
+            asn1Buffer = new Asn1Buffer();
+            threadLocalStorage.set( asn1Buffer );
+        }
+
+        ByteBuffer encoded;
         
         try
         { 
             LdapEncoder.encodeMessage( asn1Buffer, codec, ( Message ) message );
+            encoded = asn1Buffer.getBytes();
         }
         catch ( EncoderException e )
         {
             CODEC_LOG.error( I18n.err( I18n.ERR_14000_ERROR_ENCODING_MESSAGE, message, e.getMessage() ) );
             throw e;
         }
-        
-        ByteBuffer encoded = asn1Buffer.getBytes();
+        finally 
+        {
+            asn1Buffer.clear();
+        }
         
         IoBuffer ioBuffer = IoBuffer.wrap( encoded );
-
+    
         if ( CODEC_LOG.isDebugEnabled() )
         {
             byte[] dumpBuffer = new byte[encoded.limit()];

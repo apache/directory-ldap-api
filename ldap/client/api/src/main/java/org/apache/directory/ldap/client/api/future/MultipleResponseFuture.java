@@ -110,6 +110,7 @@ public abstract class MultipleResponseFuture<R extends Response> implements Resp
      * @param response The response to add into the Future
      * @throws InterruptedException if the operation has been cancelled by client
      */
+    @Override
     public void set( R response ) throws InterruptedException
     {
         queue.add( response );

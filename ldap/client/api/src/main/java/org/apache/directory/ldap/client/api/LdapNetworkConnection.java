@@ -163,8 +163,6 @@ import org.apache.directory.ldap.client.api.future.SearchFuture;
 import org.apache.mina.core.filterchain.IoFilter;
 import org.apache.mina.core.future.CloseFuture;
 import org.apache.mina.core.future.ConnectFuture;
-import org.apache.mina.core.future.IoFuture;
-import org.apache.mina.core.future.IoFutureListener;
 import org.apache.mina.core.future.WriteFuture;
 import org.apache.mina.core.service.IoConnector;
 import org.apache.mina.core.session.IoSession;
@@ -822,10 +820,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         CloseFuture closeFuture = connectionFuture.getSession().getCloseFuture();
 
         // Add a listener to close the session in the session.
-        closeFuture.addListener( new IoFutureListener<IoFuture>()
-        {
-            @Override
-            public void operationComplete( IoFuture future )
+        closeFuture.addListener( future -> 
             {
                 // Process all the waiting operations and cancel them
                 if ( LOG.isDebugEnabled() )
@@ -886,8 +881,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 }
 
                 futureMap.clear();
-            }
-        } );
+            } );
 
         // Get back the session
         ldapSession = connectionFuture.getSession();
@@ -1237,7 +1231,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         else
         {
             // this shouldn't happen
-            LOG.warn( I18n.msg( I18n.MSG_04165_NO_FUTURE_ASSOCIATED_TO_MSG_ID_COMPLETED, abandonId ) );
+            if ( LOG.isWarnEnabled() )
+            {
+                LOG.warn( I18n.msg( I18n.MSG_04165_NO_FUTURE_ASSOCIATED_TO_MSG_ID_COMPLETED, abandonId ) );
+            }
         }
     }
 
@@ -2461,6 +2458,305 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
 
     /**
+     * Process the AddResponse received from the server
+     */
+    private void addReceived( AddResponse addResponse, AddFuture addFuture, int responseId ) throws InterruptedException
+    {
+        // remove the listener from the listener map
+        if ( LOG.isDebugEnabled() )
+        {
+            if ( addResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
+            {
+                // Everything is fine, return the response
+                LOG.debug( I18n.msg( I18n.MSG_04108_ADD_SUCCESSFUL, addResponse ) );
+            }
+            else
+            {
+                // We have had an error
+                LOG.debug( I18n.msg( I18n.MSG_04107_ADD_FAILED, addResponse ) );
+            }
+        }
+
+        // Store the response into the future
+        addFuture.set( addResponse );
+
+        // Remove the future from the map
+        removeFromFutureMaps( responseId );
+    }
+
+
+    /**
+     * Process the BindResponse received from the server
+     */
+    private void bindReceived( BindResponse bindResponse, BindFuture bindFuture, int responseId ) throws InterruptedException
+    {
+        // remove the listener from the listener map
+        if ( bindResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
+        {
+            authenticated.set( true );
+
+            // Everything is fine, return the response
+            if ( LOG.isDebugEnabled() )
+            { 
+                LOG.debug( I18n.msg( I18n.MSG_04101_BIND_SUCCESSFUL, bindResponse ) );
+            }
+        }
+        else
+        {
+            // We have had an error
+            if ( LOG.isDebugEnabled() )
+            { 
+                LOG.debug( I18n.msg( I18n.MSG_04100_BIND_FAIL, bindResponse ) );
+            }
+        }
+
+        // Store the response into the future
+        bindFuture.set( bindResponse );
+
+        // Remove the future from the map
+        removeFromFutureMaps( responseId );
+    }
+
+
+    /**
+     * Process the CompareResponse received from the server
+     */
+    private void compareReceived( CompareResponse compareResponse, CompareFuture compareFuture, int responseId ) throws InterruptedException
+    {
+        // remove the listener from the listener map
+        if ( LOG.isDebugEnabled() )
+        {
+            if ( compareResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
+            {
+                // Everything is fine, return the response
+                LOG.debug( I18n.msg( I18n.MSG_04114_COMPARE_SUCCESSFUL, compareResponse ) );
+            }
+            else
+            {
+                // We have had an error
+                LOG.debug( I18n.msg( I18n.MSG_04113_COMPARE_FAILED, compareResponse ) );
+            }
+        }
+
+        // Store the response into the future
+        compareFuture.set( compareResponse );
+
+        // Remove the future from the map
+        removeFromFutureMaps( responseId );
+    }
+
+
+    /**
+     * Process the DeleteResponse received from the server
+     */
+    private void deleteReceived( DeleteResponse deleteResponse, DeleteFuture deleteFuture, int responseId ) throws InterruptedException
+    {
+        if ( LOG.isDebugEnabled() )
+        {
+            if ( deleteResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
+            {
+                // Everything is fine, return the response
+                LOG.debug( I18n.msg( I18n.MSG_04116_DELETE_SUCCESSFUL, deleteResponse ) );
+            }
+            else
+            {
+                // We have had an error
+                LOG.debug( I18n.msg( I18n.MSG_04115_DELETE_FAILED, deleteResponse ) );
+            }
+        }
+
+        // Store the response into the future
+        deleteFuture.set( deleteResponse );
+
+        // Remove the future from the map
+        removeFromFutureMaps( responseId );
+    }
+
+
+    /**
+     * Process the ExtendedResponse received from the server
+     */
+    private void extendedReceived( ExtendedResponse extendedResponse, ExtendedFuture extendedFuture, int responseId ) 
+        throws InterruptedException, DecoderException
+    {
+        if ( LOG.isDebugEnabled() )
+        {
+            if ( extendedResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
+            {
+                // Everything is fine, return the response
+                LOG.debug( I18n.msg( I18n.MSG_04118_EXTENDED_SUCCESSFUL, extendedResponse ) );
+            }
+            else
+            {
+                // We have had an error
+                LOG.debug( I18n.msg( I18n.MSG_04117_EXTENDED_FAILED, extendedResponse ) );
+            }
+        }
+        
+        extendedResponse = handleOpaqueResponse( extendedResponse, extendedFuture );
+
+        // Store the response into the future
+        extendedFuture.set( extendedResponse );
+
+        // Remove the future from the map
+        removeFromFutureMaps( responseId );
+    }
+
+
+    /**
+     * Process the IntermediateResponse received from the server
+     */
+    private void intermediateReceived( IntermediateResponse intermediateResponse, ResponseFuture<? extends Response> responseFuture ) 
+        throws InterruptedException
+    {
+        // Store the response into the future
+        if ( responseFuture instanceof SearchFuture )
+        {
+            ( ( SearchFuture ) responseFuture ).set( intermediateResponse );
+        }
+        else if ( responseFuture instanceof ExtendedFuture )
+        {
+            ( ( ExtendedFuture ) responseFuture ).set( intermediateResponse );
+        }
+        else
+        {
+            // currently we only support IR for search and extended operations
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04111_UNKNOWN_RESPONSE_FUTURE_TYPE,
+                responseFuture.getClass().getName() ) );
+        }
+
+        // Do not remove the future from the map, that's done when receiving search result done
+    }
+
+
+    /**
+     * Process the ModifyResponse received from the server
+     */
+    private void modifyReceived( ModifyResponse modifyResponse, ModifyFuture modifyFuture, int responseId ) 
+        throws InterruptedException
+    {
+        if ( LOG.isDebugEnabled() )
+        {
+            if ( modifyResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
+            {
+                // Everything is fine, return the response
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_04123_MODIFY_SUCCESSFUL, modifyResponse ) );
+                }
+            }
+            else
+            {
+                // We have had an error
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_04122_MODIFY_FAILED, modifyResponse ) );
+                }
+            }
+        }
+
+        // Store the response into the future
+        modifyFuture.set( modifyResponse );
+
+        // Remove the future from the map
+        removeFromFutureMaps( responseId );
+    }
+
+
+    /**
+     * Process the ModifyDnResponse received from the server
+     */
+    private void modifyDnReceived( ModifyDnResponse modifyDnResponse, ModifyDnFuture modifyDnFuture, int responseId ) 
+        throws InterruptedException
+    {
+        if ( LOG.isDebugEnabled() )
+        {
+            if ( modifyDnResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
+            {
+                // Everything is fine, return the response
+                LOG.debug( I18n.msg( I18n.MSG_04125_MODIFYDN_SUCCESSFUL, modifyDnResponse ) );
+            }
+            else
+            {
+                // We have had an error
+                LOG.debug( I18n.msg( I18n.MSG_04124_MODIFYDN_FAILED, modifyDnResponse ) );
+            }
+        }
+
+        // Store the response into the future
+        modifyDnFuture.set( modifyDnResponse );
+
+        // Remove the future from the map
+        removeFromFutureMaps( responseId );
+    }
+
+
+    /**
+     * Process the SearchResultDone received from the server
+     */
+    private void searchResultDoneReceived( SearchResultDone searchResultDone, SearchFuture searchFuture, 
+        int responseId ) throws InterruptedException
+    {
+        if ( LOG.isDebugEnabled() )
+        {
+            if ( searchResultDone.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
+            {
+                // Everything is fine, return the response
+                LOG.debug( I18n.msg( I18n.MSG_04131_SEARCH_SUCCESSFUL, searchResultDone ) );
+            }
+            else
+            {
+                // We have had an error
+                LOG.debug( I18n.msg( I18n.MSG_04129_SEARCH_FAILED, searchResultDone ) );
+            }
+        }
+
+        // Store the response into the future
+        searchFuture.set( searchResultDone );
+
+        // Remove the future from the map
+        removeFromFutureMaps( responseId );
+    }
+
+
+    /**
+     * Process the SearchResultEntry received from the server
+     */
+    private void searchResultEntryReceived( SearchResultEntry searchResultEntry, SearchFuture searchFuture ) 
+        throws InterruptedException, LdapException
+    {
+        if ( schemaManager != null )
+        {
+            searchResultEntry.setEntry( new DefaultEntry( schemaManager, searchResultEntry.getEntry() ) );
+        }
+
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_04128_SEARCH_ENTRY_FOUND, searchResultEntry ) );
+        }
+
+        // Store the response into the future
+        searchFuture.set( searchResultEntry );
+    }
+    
+    
+    /**
+     * Process the SearchResultEntry received from the server
+     */
+    private void searchResultReferenceReceived( SearchResultReference searchResultReference, SearchFuture searchFuture ) 
+        throws InterruptedException, LdapException
+    {
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( I18n.msg( I18n.MSG_04130_SEARCH_REFERENCE_FOUND, searchResultReference ) );
+        }
+
+        // Store the response into the future
+        searchFuture.set( searchResultReference );
+    }
+    
+
+    /**
      * Handle the incoming LDAP messages. This is where we feed the cursor for search
      * requests, or call the listener.
      *
@@ -2472,18 +2768,18 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     public void messageReceived( IoSession session, Object message ) throws Exception
     {
         // Feed the response and store it into the session
-        Message response = ( Message ) message;
+        Response response = ( Response ) message;
 
         if ( LOG.isDebugEnabled() )
         {
             LOG.debug( I18n.msg( I18n.MSG_04142_MESSAGE_RECEIVED, response ) );
         }
         
-        int messageId = response.getMessageId();
+        int responseId = response.getMessageId();
 
         // this check is necessary to prevent adding an abandoned operation's
         // result(s) to corresponding queue
-        ResponseFuture<? extends Response> responseFuture = peekFromFutureMap( messageId );
+        ResponseFuture<? extends Response> responseFuture = peekFromFutureMap( responseId );
 
         boolean isNoD = isNoticeOfDisconnect( response );
 
@@ -2491,7 +2787,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             if ( LOG.isInfoEnabled() )
             {
-                LOG.info( I18n.msg( I18n.MSG_04166_NO_FUTURE_ASSOCIATED_TO_MSG_ID_IGNORING, messageId ) );
+                LOG.info( I18n.msg( I18n.MSG_04166_NO_FUTURE_ASSOCIATED_TO_MSG_ID_IGNORING, responseId ) );
             }
             
             return;
@@ -2508,302 +2804,57 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         switch ( response.getType() )
         {
             case ADD_RESPONSE:
-                // Transform the response
-                AddResponse addResponse = ( AddResponse ) response;
-
-                AddFuture addFuture = ( AddFuture ) responseFuture;
-
-                // remove the listener from the listener map
-                if ( LOG.isDebugEnabled() )
-                {
-                    if ( addResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
-                    {
-                        // Everything is fine, return the response
-                        LOG.debug( I18n.msg( I18n.MSG_04108_ADD_SUCCESSFUL, addResponse ) );
-                    }
-                    else
-                    {
-                        // We have had an error
-                        LOG.debug( I18n.msg( I18n.MSG_04107_ADD_FAILED, addResponse ) );
-                    }
-                }
-
-                // Store the response into the future
-                addFuture.set( addResponse );
-
-                // Remove the future from the map
-                removeFromFutureMaps( messageId );
+                addReceived( ( AddResponse ) response, ( AddFuture ) responseFuture, responseId );
 
                 break;
 
             case BIND_RESPONSE:
-                // Transform the response
-                BindResponse bindResponse = ( BindResponse ) response;
-
-                BindFuture bindFuture = ( BindFuture ) responseFuture;
-
-                // remove the listener from the listener map
-                if ( bindResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
-                {
-                    authenticated.set( true );
-
-                    // Everything is fine, return the response
-                    if ( LOG.isDebugEnabled() )
-                    { 
-                        LOG.debug( I18n.msg( I18n.MSG_04101_BIND_SUCCESSFUL, bindResponse ) );
-                    }
-                }
-                else
-                {
-                    // We have had an error
-                    if ( LOG.isDebugEnabled() )
-                    { 
-                        LOG.debug( I18n.msg( I18n.MSG_04100_BIND_FAIL, bindResponse ) );
-                    }
-                }
-
-                // Store the response into the future
-                bindFuture.set( bindResponse );
-
-                // Remove the future from the map
-                removeFromFutureMaps( messageId );
+                bindReceived( ( BindResponse ) response, ( BindFuture ) responseFuture, responseId );
 
                 break;
 
             case COMPARE_RESPONSE:
-                // Transform the response
-                CompareResponse compareResponse = ( CompareResponse ) response;
-
-                CompareFuture compareFuture = ( CompareFuture ) responseFuture;
-
-                // remove the listener from the listener map
-                if ( LOG.isDebugEnabled() )
-                {
-                    if ( compareResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
-                    {
-                        // Everything is fine, return the response
-                        LOG.debug( I18n.msg( I18n.MSG_04114_COMPARE_SUCCESSFUL, compareResponse ) );
-                    }
-                    else
-                    {
-                        // We have had an error
-                        LOG.debug( I18n.msg( I18n.MSG_04113_COMPARE_FAILED, compareResponse ) );
-                    }
-                }
-
-                // Store the response into the future
-                compareFuture.set( compareResponse );
-
-                // Remove the future from the map
-                removeFromFutureMaps( messageId );
+                compareReceived( ( CompareResponse ) response, ( CompareFuture ) responseFuture, responseId );
 
                 break;
 
             case DEL_RESPONSE:
-                // Transform the response
-                DeleteResponse deleteResponse = ( DeleteResponse ) response;
-
-                DeleteFuture deleteFuture = ( DeleteFuture ) responseFuture;
-
-                if ( LOG.isDebugEnabled() )
-                {
-                    if ( deleteResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
-                    {
-                        // Everything is fine, return the response
-                        LOG.debug( I18n.msg( I18n.MSG_04116_DELETE_SUCCESSFUL, deleteResponse ) );
-                    }
-                    else
-                    {
-                        // We have had an error
-                        LOG.debug( I18n.msg( I18n.MSG_04115_DELETE_FAILED, deleteResponse ) );
-                    }
-                }
-
-                // Store the response into the future
-                deleteFuture.set( deleteResponse );
-
-                // Remove the future from the map
-                removeFromFutureMaps( messageId );
+                deleteReceived( ( DeleteResponse ) response, ( DeleteFuture ) responseFuture, responseId );
 
                 break;
 
             case EXTENDED_RESPONSE:
-                // Transform the response
-                ExtendedResponse extendedResponse = ( ExtendedResponse ) response;
-
-                ExtendedFuture extendedFuture = ( ExtendedFuture ) responseFuture;
-
-                if ( LOG.isDebugEnabled() )
-                {
-                    if ( extendedResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
-                    {
-                        // Everything is fine, return the response
-                        LOG.debug( I18n.msg( I18n.MSG_04118_EXTENDED_SUCCESSFUL, extendedResponse ) );
-                    }
-                    else
-                    {
-                        // We have had an error
-                        LOG.debug( I18n.msg( I18n.MSG_04117_EXTENDED_FAILED, extendedResponse ) );
-                    }
-                }
-                
-                extendedResponse = handleOpaqueResponse( extendedResponse, extendedFuture );
-
-                // Store the response into the future
-                extendedFuture.set( extendedResponse );
-
-                // Remove the future from the map
-                removeFromFutureMaps( messageId );
+                extendedReceived( ( ExtendedResponse ) response, ( ExtendedFuture ) responseFuture, responseId );
 
                 break;
 
             case INTERMEDIATE_RESPONSE:
-                IntermediateResponse intermediateResponse = ( IntermediateResponse ) response;
-
-                // Store the response into the future
-                if ( responseFuture instanceof SearchFuture )
-                {
-                    ( ( SearchFuture ) responseFuture ).set( intermediateResponse );
-                }
-                else if ( responseFuture instanceof ExtendedFuture )
-                {
-                    ( ( ExtendedFuture ) responseFuture ).set( intermediateResponse );
-                }
-                else
-                {
-                    // currently we only support IR for search and extended operations
-                    throw new UnsupportedOperationException( I18n.err( I18n.ERR_04111_UNKNOWN_RESPONSE_FUTURE_TYPE,
-                        responseFuture.getClass().getName() ) );
-                }
-
-                // Do not remove the future from the map, that's done when receiving search result done
+                intermediateReceived( ( IntermediateResponse ) response, responseFuture );
 
                 break;
 
             case MODIFY_RESPONSE:
-                // Transform the response
-                ModifyResponse modifyResponse = ( ModifyResponse ) response;
-
-                ModifyFuture modifyFuture = ( ModifyFuture ) responseFuture;
-
-                if ( LOG.isDebugEnabled() )
-                {
-                    if ( modifyResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
-                    {
-                        // Everything is fine, return the response
-                        if ( LOG.isDebugEnabled() )
-                        { 
-                            LOG.debug( I18n.msg( I18n.MSG_04123_MODIFY_SUCCESSFUL, modifyResponse ) );
-                        }
-                    }
-                    else
-                    {
-                        // We have had an error
-                        if ( LOG.isDebugEnabled() )
-                        { 
-                            LOG.debug( I18n.msg( I18n.MSG_04122_MODIFY_FAILED, modifyResponse ) );
-                        }
-                    }
-                }
-
-                // Store the response into the future
-                modifyFuture.set( modifyResponse );
-
-                // Remove the future from the map
-                removeFromFutureMaps( messageId );
+                modifyReceived( ( ModifyResponse ) response, ( ModifyFuture ) responseFuture, responseId );
 
                 break;
 
             case MODIFYDN_RESPONSE:
-                // Transform the response
-                ModifyDnResponse modifyDnResponse = ( ModifyDnResponse ) response;
-
-                ModifyDnFuture modifyDnFuture = ( ModifyDnFuture ) responseFuture;
-
-                if ( LOG.isDebugEnabled() )
-                {
-                    if ( modifyDnResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
-                    {
-                        // Everything is fine, return the response
-                        LOG.debug( I18n.msg( I18n.MSG_04125_MODIFYDN_SUCCESSFUL, modifyDnResponse ) );
-                    }
-                    else
-                    {
-                        // We have had an error
-                        LOG.debug( I18n.msg( I18n.MSG_04124_MODIFYDN_FAILED, modifyDnResponse ) );
-                    }
-                }
-
-                // Store the response into the future
-                modifyDnFuture.set( modifyDnResponse );
-
-                // Remove the future from the map
-                removeFromFutureMaps( messageId );
+                modifyDnReceived( ( ModifyDnResponse ) response, ( ModifyDnFuture ) responseFuture, responseId );
 
                 break;
 
             case SEARCH_RESULT_DONE:
-                // Store the response into the responseQueue
-                SearchResultDone searchResultDone = ( SearchResultDone ) response;
-
-                SearchFuture searchFuture = ( SearchFuture ) responseFuture;
-
-                if ( LOG.isDebugEnabled() )
-                {
-                    if ( searchResultDone.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
-                    {
-                        // Everything is fine, return the response
-                        LOG.debug( I18n.msg( I18n.MSG_04131_SEARCH_SUCCESSFUL, searchResultDone ) );
-                    }
-                    else
-                    {
-                        // We have had an error
-                        LOG.debug( I18n.msg( I18n.MSG_04129_SEARCH_FAILED, searchResultDone ) );
-                    }
-                }
-
-                // Store the response into the future
-                searchFuture.set( searchResultDone );
-
-                // Remove the future from the map
-                removeFromFutureMaps( messageId );
+                searchResultDoneReceived( ( SearchResultDone ) response, ( SearchFuture ) responseFuture, responseId );
 
                 break;
 
             case SEARCH_RESULT_ENTRY:
-                // Store the response into the responseQueue
-                SearchResultEntry searchResultEntry = ( SearchResultEntry ) response;
-
-                if ( schemaManager != null )
-                {
-                    searchResultEntry.setEntry( new DefaultEntry( schemaManager, searchResultEntry.getEntry() ) );
-                }
-
-                searchFuture = ( SearchFuture ) responseFuture;
-
-                if ( LOG.isDebugEnabled() )
-                {
-                    LOG.debug( I18n.msg( I18n.MSG_04128_SEARCH_ENTRY_FOUND, searchResultEntry ) );
-                }
-
-                // Store the response into the future
-                searchFuture.set( searchResultEntry );
+                searchResultEntryReceived( ( SearchResultEntry ) response, ( SearchFuture ) responseFuture );
 
                 break;
 
             case SEARCH_RESULT_REFERENCE:
-                // Store the response into the responseQueue
-                SearchResultReference searchResultReference = ( SearchResultReference ) response;
-
-                searchFuture = ( SearchFuture ) responseFuture;
-
-                if ( LOG.isDebugEnabled() )
-                {
-                    LOG.debug( I18n.msg( I18n.MSG_04130_SEARCH_REFERENCE_FOUND, searchResultReference ) );
-                }
-
-                // Store the response into the future
-                searchFuture.set( searchResultReference );
+                searchResultReferenceReceived( ( SearchResultReference ) response, ( SearchFuture ) responseFuture );
 
                 break;
 
@@ -4999,16 +5050,13 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
                 Exception exception = ( Exception ) ldapSession.removeAttribute( EXCEPTION_KEY );
 
-                if ( exception != null )
+                if ( exception instanceof LdapException )
                 {
-                    if ( exception instanceof LdapException )
-                    {
-                        throw ( LdapException ) exception;
-                    }
-                    else
-                    {
-                        throw new InvalidConnectionException( exception.getMessage(), exception );
-                    }
+                    throw ( LdapException ) exception;
+                }
+                else if ( exception != null )
+                {
+                    throw new InvalidConnectionException( exception.getMessage(), exception );
                 }
 
                 throw new InvalidConnectionException( I18n.err( I18n.ERR_04160_SESSION_HAS_BEEN_CLOSED ) );
