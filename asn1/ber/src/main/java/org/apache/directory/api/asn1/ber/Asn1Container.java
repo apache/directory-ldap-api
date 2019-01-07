@@ -96,7 +96,7 @@ public interface Asn1Container
      *
      * @param grammar The grammar to set
      */
-    void setGrammar( Grammar<?> grammar );
+    void setGrammar( Grammar<? extends Asn1Container> grammar );
 
 
     /**
