@@ -450,7 +450,7 @@ public class AttributeTest
         for ( Value val : attr )
         {
             assertTrue( val instanceof Value );
-            assertEquals( values[pos++], val.getValue() );
+            assertEquals( values[pos++], val.getString() );
         }
     }
 
@@ -870,13 +870,13 @@ public class AttributeTest
         Attribute attr2 = new DefaultAttribute( "test" );
 
         attr2.add( "a", "b", "c" );
-        assertEquals( "a", attr2.get().getValue() );
+        assertEquals( "a", attr2.get().getString() );
 
         attr2.remove( "a" );
-        assertEquals( "b", attr2.get().getValue() );
+        assertEquals( "b", attr2.get().getString() );
 
         attr2.remove( "b" );
-        assertEquals( "c", attr2.get().getValue() );
+        assertEquals( "c", attr2.get().getString() );
 
         attr2.remove( "c" );
         assertNull( attr2.get() );
@@ -922,9 +922,9 @@ public class AttributeTest
         attr.add( "a", "b", "c" );
         iterator = attr.iterator();
         assertTrue( iterator.hasNext() );
-        assertEquals( "a", iterator.next().getValue() );
-        assertEquals( "b", iterator.next().getValue() );
-        assertEquals( "c", iterator.next().getValue() );
+        assertEquals( "a", iterator.next().getString() );
+        assertEquals( "b", iterator.next().getString() );
+        assertEquals( "c", iterator.next().getString() );
         assertFalse( iterator.hasNext() );
     }
 

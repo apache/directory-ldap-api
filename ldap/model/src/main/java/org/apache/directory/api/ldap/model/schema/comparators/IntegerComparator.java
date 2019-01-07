@@ -87,7 +87,7 @@ public class IntegerComparator extends LdapComparator<Object> implements Seriali
         }
         else if ( v1 instanceof Value )
         {
-            return compare( ( ( Value ) v1 ).getValue(), ( ( Value ) v2 ).getValue() ); 
+            return compare( ( ( Value ) v1 ).getString(), ( ( Value ) v2 ).getString() ); 
         }
         else 
         {

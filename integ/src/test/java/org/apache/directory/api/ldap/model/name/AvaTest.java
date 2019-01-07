@@ -240,9 +240,9 @@ public class AvaTest
             errors += "\nAva.getNormType fails '" + ava.getNormType() + "'";
         }
         
-        if ( !"Exemple + Rdn\u00E4 ".equals( ava.getValue().getValue().toString() ) )
+        if ( !"Exemple + Rdn\u00E4 ".equals( ava.getValue().getString().toString() ) )
         {
-            errors += "\nAva.getValue fails '" + ava.getValue().getValue().toString() + "'";
+            errors += "\nAva.getValue fails '" + ava.getValue().getString().toString() + "'";
         }
         
         if ( !"OU=Exemple \\+ Rdn\u00E4\\ ".equals( ava.getName() ) )
@@ -255,9 +255,9 @@ public class AvaTest
             errors += "\nAva.getUpType fails '" + ava.getType() + "'";
         }
         
-        if ( !"Exemple + Rdn\u00E4 ".equals( ava.getValue().getValue() ) )
+        if ( !"Exemple + Rdn\u00E4 ".equals( ava.getValue().getString() ) )
         {
-            errors += "\nAva.getUpValue fails '" + ava.getValue() .getValue() + "'";
+            errors += "\nAva.getUpValue fails '" + ava.getValue() .getString() + "'";
         }
         
         if ( !"OU=Exemple \\+ Rdn\u00E4\\ ".equals( ava.getEscaped() ) )
@@ -295,9 +295,9 @@ public class AvaTest
             errors += "\nAva.getNormType fails '" + ava.getNormType() + "'";
         }
         
-        if ( !"Exemple + Rdn+ ".equals( ava.getValue().getValue().toString() ) )
+        if ( !"Exemple + Rdn+ ".equals( ava.getValue().getString().toString() ) )
         {
-            errors += "\nAva.getValue fails '" + ava.getValue().getValue().toString() + "'";
+            errors += "\nAva.getValue fails '" + ava.getValue().getString().toString() + "'";
         }
         
         if ( !"OU=Exemple \\+ Rdn\\+\\ ".equals( ava.getName() ) )
@@ -310,9 +310,9 @@ public class AvaTest
             errors += "\nAva.getUpType fails '" + ava.getType() + "'";
         }
         
-        if ( !"Exemple + Rdn+ ".equals( ava.getValue().getValue() ) )
+        if ( !"Exemple + Rdn+ ".equals( ava.getValue().getString() ) )
         {
-            errors += "\nAva.getUpValue fails '" + ava.getValue().getValue() + "'";
+            errors += "\nAva.getUpValue fails '" + ava.getValue().getString() + "'";
         }
         
         if ( !"OU=Exemple \\+ Rdn\\+\\ ".equals( ava.getEscaped() ) )

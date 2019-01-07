@@ -552,7 +552,7 @@ public class SchemaAwareLdifReaderTest
         assertTrue( attr.contains( "app1" ) );
 
         attr = entry.get( "userPassword" );
-        assertEquals( "", attr.get().getValue() );
+        assertEquals( "", attr.get().getString() );
     }
 
 
@@ -594,7 +594,7 @@ public class SchemaAwareLdifReaderTest
         assertTrue( attr.contains( "app1" ) );
 
         attr = entry.get( "userPassword" );
-        assertEquals( "", attr.get().getValue() );
+        assertEquals( "", attr.get().getString() );
     }
 
 
@@ -636,7 +636,7 @@ public class SchemaAwareLdifReaderTest
         assertTrue( attr.contains( "app1" ) );
 
         attr = entry.get( "userPassword" );
-        assertEquals( "", attr.get().getValue() );
+        assertEquals( "", attr.get().getString() );
     }
 
 
@@ -677,7 +677,7 @@ public class SchemaAwareLdifReaderTest
         assertTrue( attr.contains( "app1" ) );
 
         attr = entry.get( "userPassword" );
-        assertEquals( "", attr.get().getValue() );
+        assertEquals( "", attr.get().getString() );
     }
 
 
@@ -719,7 +719,7 @@ public class SchemaAwareLdifReaderTest
         assertTrue( attr.contains( "app1" ) );
 
         attr = entry.get( "userPassword" );
-        assertEquals( "", attr.get().getValue() );
+        assertEquals( "", attr.get().getString() );
     }
 
 
@@ -2374,7 +2374,7 @@ public class SchemaAwareLdifReaderTest
             assertTrue( attr.contains( "app1" ) );
     
             attr = entry.get( "userPassword" );
-            assertEquals( "test", attr.get().getValue() );
+            assertEquals( "test", attr.get().getString() );
         }
     }
 

@@ -236,7 +236,7 @@ public class SchemaAwareAttributeTest
         Value value = attr.get();
 
         assertTrue( value instanceof Value );
-        assertEquals( "test", ( ( Value ) value ).getValue() );
+        assertEquals( "test", ( ( Value ) value ).getString() );
 
         // Add a binary value
         assertEquals( 0, attr.add( new byte[]
@@ -255,9 +255,9 @@ public class SchemaAwareAttributeTest
 
         for ( Value val : attr )
         {
-            if ( expected.contains( val.getValue() ) )
+            if ( expected.contains( val.getString() ) )
             {
-                expected.remove( val.getValue() );
+                expected.remove( val.getString() );
             }
             else
             {
@@ -290,9 +290,9 @@ public class SchemaAwareAttributeTest
 
         for ( Value val : attr )
         {
-            if ( expected.contains( val.getValue() ) )
+            if ( expected.contains( val.getString() ) )
             {
-                expected.remove( val.getValue() );
+                expected.remove( val.getString() );
             }
             else
             {
@@ -321,7 +321,7 @@ public class SchemaAwareAttributeTest
         Value value = attr.get();
 
         assertTrue( value instanceof Value );
-        assertNull( ( ( Value ) value ).getValue() );
+        assertNull( ( ( Value ) value ).getString() );
     }
 
 
@@ -1050,13 +1050,13 @@ public class SchemaAwareAttributeTest
         Attribute attr2 = new DefaultAttribute( "email", atEMail );
 
         attr2.add( "a", "b", "c" );
-        assertEquals( "a", attr2.get().getValue() );
+        assertEquals( "a", attr2.get().getString() );
 
         attr2.remove( "a" );
-        assertEquals( "b", attr2.get().getValue() );
+        assertEquals( "b", attr2.get().getString() );
 
         attr2.remove( "b" );
-        assertEquals( "c", attr2.get().getValue() );
+        assertEquals( "c", attr2.get().getString() );
 
         attr2.remove( "c" );
         assertNull( attr2.get() );
@@ -1102,9 +1102,9 @@ public class SchemaAwareAttributeTest
         attr.add( "a", "b", "c" );
         iterator = attr.iterator();
         assertTrue( iterator.hasNext() );
-        assertEquals( "a", iterator.next().getValue() );
-        assertEquals( "b", iterator.next().getValue() );
-        assertEquals( "c", iterator.next().getValue() );
+        assertEquals( "a", iterator.next().getString() );
+        assertEquals( "b", iterator.next().getString() );
+        assertEquals( "c", iterator.next().getString() );
         assertFalse( iterator.hasNext() );
     }
 
@@ -1490,7 +1490,7 @@ public class SchemaAwareAttributeTest
         for ( Value val : attr1 )
         {
             assertTrue( val instanceof Value );
-            assertEquals( values[pos++], val.getValue() );
+            assertEquals( values[pos++], val.getString() );
         }
     }
 

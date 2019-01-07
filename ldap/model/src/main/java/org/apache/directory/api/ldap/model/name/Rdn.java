@@ -843,7 +843,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 {
                     if ( ava.getValue() != null )
                     {
-                        return ava.getValue().getValue();
+                        return ava.getValue().getString();
                     }
                     else
                     {
@@ -864,7 +864,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                         {
                             if ( elem.getValue() != null )
                             {
-                                return elem.getValue().getValue();
+                                return elem.getValue().getString();
                             }
                             else
                             {
@@ -1176,10 +1176,10 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 return null;
 
             case 1:
-                return ava.getValue().getValue();
+                return ava.getValue().getString();
 
             default:
-                return avas.get( 0 ).getValue().getValue();
+                return avas.get( 0 ).getValue().getString();
         }
     }
 

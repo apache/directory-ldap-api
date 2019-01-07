@@ -625,7 +625,7 @@ public final class FilterParser
         {
             // We have a substring starting with a value : val*...
             // Set the initial value. It must be a String
-            String initialStr = initial.getValue();
+            String initialStr = initial.getString();
             node.setInitial( initialStr );
         }
 
@@ -647,7 +647,7 @@ public final class FilterParser
                 // this is the final
                 if ( !assertionValue.isNull() )
                 {
-                    String finalStr = assertionValue.getValue();
+                    String finalStr = assertionValue.getString();
                     node.setFinal( finalStr );
                 }
 
@@ -660,7 +660,7 @@ public final class FilterParser
                 // one consecutive '*' : do nothing in this case.
                 if ( !assertionValue.isNull() )
                 {
-                    String anyStr = assertionValue.getValue();
+                    String anyStr = assertionValue.getString();
                     node.addAny( anyStr );
                 }
 

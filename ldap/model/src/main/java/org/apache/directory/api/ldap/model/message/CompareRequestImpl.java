@@ -368,7 +368,7 @@ public Value getAssertionValue()
 
         if ( attrVal.isHumanReadable() )
         {
-            sb.append( attrVal.getValue() );
+            sb.append( attrVal.getString() );
         }
         else
         {

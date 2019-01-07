@@ -69,7 +69,7 @@ public class AttributeValueAssertion
             }
             else if ( object instanceof Value )
             {
-                return ( ( Value ) object ).getValue();
+                return ( ( Value ) object ).getString();
             }
             else
             {

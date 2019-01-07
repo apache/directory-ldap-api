@@ -96,7 +96,7 @@ public class IntegerAnonymizer extends AbstractAnonymizer<String>
                 }
                 else
                 {
-                    String strValue = value.getValue();
+                    String strValue = value.getString();
                     String newValue = computeNewIntegerValue( strValue );
     
                     try

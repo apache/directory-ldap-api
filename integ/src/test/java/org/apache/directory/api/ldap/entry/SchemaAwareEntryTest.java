@@ -312,7 +312,7 @@ public class SchemaAwareEntryTest
         Attribute attributeCN = entry.get( "cn" );
         assertEquals( 1, attributeCN.size() );
         assertNotNull( attributeCN.get() );
-        assertNull( attributeCN.get().getValue() );
+        assertNull( attributeCN.get().getString() );
 
         entry.add( "sn", "test", "test", "TEST" );
         assertEquals( 2, entry.size() );
@@ -339,7 +339,7 @@ public class SchemaAwareEntryTest
         Attribute attributeCN = entry.get( "cn" );
         assertEquals( 1, attributeCN.size() );
         assertNotNull( attributeCN.get() );
-        assertNull( attributeCN.get().getValue() );
+        assertNull( attributeCN.get().getString() );
 
         Value value1 = new Value( "test1" );
         Value value2 = new Value( "test2" );
@@ -855,7 +855,7 @@ public class SchemaAwareEntryTest
         assertEquals( 1, entry.size() );
         assertNotNull( "sn", entry.get( "sn" ) );
         assertEquals( 1, entry.get( "sn" ).size() );
-        assertNull( entry.get( "sn" ).get().getValue() );
+        assertNull( entry.get( "sn" ).get().getString() );
 
         entry.put( "ObjectClass", "top", "person", "top" );
         assertEquals( 2, entry.size() );
@@ -911,7 +911,7 @@ public class SchemaAwareEntryTest
         assertEquals( 1, entry.size() );
         assertNotNull( "sn", entry.get( "sn" ) );
         assertEquals( 1, entry.get( "sn" ).size() );
-        assertNull( entry.get( "sn" ).get().getValue() );
+        assertNull( entry.get( "sn" ).get().getString() );
 
         entry.clear();
 
@@ -932,7 +932,7 @@ public class SchemaAwareEntryTest
         assertEquals( 1, entry.size() );
         assertNotNull( "userpassword", entry.get( "userpassword" ) );
         assertEquals( 1, entry.get( "userpassword" ).size() );
-        assertNull( entry.get( "userpassword" ).get().getValue() );
+        assertNull( entry.get( "userpassword" ).get().getString() );
 
         entry.clear();
 
@@ -1051,7 +1051,7 @@ public class SchemaAwareEntryTest
         assertEquals( 2, entry.get( "cn" ).size() );
         assertTrue( entry.remove( "cn", "test1", "test3" ) );
         assertEquals( 1, entry.get( "cn" ).size() );
-        assertEquals( "test2", entry.get( "cn" ).get().getValue() );
+        assertEquals( "test2", entry.get( "cn" ).get().getString() );
 
         assertFalse( entry.remove( "cn", "test3" ) );
         assertFalse( entry.remove( "void", "whatever" ) );

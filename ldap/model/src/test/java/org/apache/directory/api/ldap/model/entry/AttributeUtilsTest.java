@@ -140,7 +140,7 @@ public class AttributeUtilsTest
 
         for ( Value value : attribute )
         {
-            String valueStr = value.getValue();
+            String valueStr = value.getString();
 
             assertTrue( expectedValues.contains( valueStr ) );
 
@@ -178,7 +178,7 @@ public class AttributeUtilsTest
 
         for ( Value value : cnAttr )
         {
-            String valueStr = value.getValue();
+            String valueStr = value.getString();
 
             assertTrue( expectedValues.contains( valueStr ) );
 
@@ -308,7 +308,7 @@ public class AttributeUtilsTest
             assertTrue( isFirst );
 
             isFirst = false;
-            assertEquals( "apache", value.getValue() );
+            assertEquals( "apache", value.getString() );
         }
     }
 
@@ -390,7 +390,7 @@ public class AttributeUtilsTest
 
         for ( Value value : modifiedAttr )
         {
-            String valueStr = value.getValue();
+            String valueStr = value.getString();
 
             assertTrue( expectedValues.contains( valueStr ) );
 

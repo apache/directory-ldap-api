@@ -2602,7 +2602,7 @@ public final class DefaultEntry implements Entry
             for ( Value value : objectClass )
             {
                 // Loop on all the values, and check if they are present
-                if ( !attribute.contains( value.getValue() ) )
+                if ( !attribute.contains( value.getString() ) )
                 {
                     return false;
                 }

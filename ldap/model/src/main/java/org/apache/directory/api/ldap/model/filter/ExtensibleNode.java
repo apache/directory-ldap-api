@@ -188,7 +188,7 @@ public class ExtensibleNode extends LeafNode
     {
         if ( value.isHumanReadable() )
         {
-            return escapeFilterValue( value.getValue() );
+            return escapeFilterValue( value.getString() );
         }
         else
         {

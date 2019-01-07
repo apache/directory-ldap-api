@@ -346,7 +346,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
 
         assertEquals( "test", extensibleNode.getMatchingRuleId() );
         assertNull( extensibleNode.getAttribute() );
-        assertEquals( "", extensibleNode.getValue().getValue() );
+        assertEquals( "", extensibleNode.getValue().getString() );
         assertFalse( extensibleNode.hasDnAttributes() );
 
         List<String> attributes = searchRequest.getAttributes();

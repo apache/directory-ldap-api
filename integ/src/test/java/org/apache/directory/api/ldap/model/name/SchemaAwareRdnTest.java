@@ -957,7 +957,7 @@ public class SchemaAwareRdnTest
         assertEquals( "cn=a\\#b", rdn.getAva().getName() );
         
         // Check the value
-        assertEquals( "a#b", rdn.getAva().getValue().getValue() );
+        assertEquals( "a#b", rdn.getAva().getValue().getString() );
     }
 
 

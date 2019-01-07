@@ -3798,7 +3798,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         if ( value.isHumanReadable() )
         {
-            compareRequest.setAssertionValue( value.getValue() );
+            compareRequest.setAssertionValue( value.getString() );
         }
         else
         {
@@ -4327,7 +4327,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         
         for ( Value value : attr )
         {
-            supportedControls.add( value.getValue() );
+            supportedControls.add( value.getString() );
         }
 
         return supportedControls;

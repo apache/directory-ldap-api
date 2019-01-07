@@ -175,9 +175,9 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         StringBuilder sb = new StringBuilder( upType );
         sb.append( '=' );
         
-        if ( ( value != null ) && ( value.getValue() != null ) )
+        if ( ( value != null ) && ( value.getString() != null ) )
         {
-            sb.append( value.getValue() );
+            sb.append( value.getString() );
         }
         
         upName = sb.toString();
@@ -534,9 +534,9 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         sb.append( upType );
         sb.append( '=' );
         
-        if ( ( value != null ) && ( value.getValue() != null ) )
+        if ( ( value != null ) && ( value.getString() != null ) )
         {
-            sb.append( value.getValue() );
+            sb.append( value.getString() );
         }
         
         upName = sb.toString();
@@ -574,7 +574,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         
         if ( value != null )
         {
-            sb.append( Rdn.escapeValue( value.getValue() ) );
+            sb.append( Rdn.escapeValue( value.getString() ) );
         }
         
         upName = sb.toString();
@@ -1541,7 +1541,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         {
             if ( schemaManager != null )
             {
-                if ( ( value.getValue() != null ) && value.getValue().equals( instance.value.getValue() ) )
+                if ( ( value.getString() != null ) && value.getString().equals( instance.value.getString() ) )
                 {
                     return true;
                 }
@@ -1559,8 +1559,8 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
                     
                     try
                     {
-                        return equalityMatchingRule.getLdapComparator().compare( normalizer.normalize( value.getValue() ),
-                            instance.value.getValue() ) == 0;
+                        return equalityMatchingRule.getLdapComparator().compare( normalizer.normalize( value.getString() ),
+                            instance.value.getString() ) == 0;
                     }
                     catch ( LdapException le )
                     {
@@ -1580,7 +1580,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
                     }
                     else
                     {
-                        return value.getValue().equals( instance.value.getValue() );
+                        return value.getString().equals( instance.value.getString() );
                     }
                 }
             }

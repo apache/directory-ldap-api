@@ -572,7 +572,7 @@ public class SearchRequestDsml
                 }
                 else
                 {
-                    newElement.addElement( VALUE ).setText( value.getValue() );
+                    newElement.addElement( VALUE ).setText( value.getString() );
                 }
             }
         }
@@ -602,12 +602,12 @@ public class SearchRequestDsml
                     element.getDocument().getRootElement().add( xsiNamespace );
 
                     Element valueElement = newElement.addElement( VALUE ).addText(
-                        ParserUtils.base64Encode( value.getValue() ) );
+                        ParserUtils.base64Encode( value.getString() ) );
                     valueElement.addAttribute( new QName( "type", xsiNamespace ), "xsd:" + ParserUtils.BASE64BINARY );
                 }
                 else
                 {
-                    newElement.addElement( VALUE ).setText( value.getValue() );
+                    newElement.addElement( VALUE ).setText( value.getString() );
                 }
             }
 

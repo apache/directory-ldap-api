@@ -136,7 +136,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
 
         for ( Value value : objectClasses )
         {
-            if ( MetaSchemaConstants.META_SCHEMA_OC.equalsIgnoreCase( value.getValue() ) )
+            if ( MetaSchemaConstants.META_SCHEMA_OC.equalsIgnoreCase( value.getString() ) )
             {
                 isSchema = true;
                 break;
@@ -185,7 +185,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
 
             for ( Value value : depsAttr )
             {
-                depsSet.add( value.getValue() );
+                depsSet.add( value.getString() );
             }
 
             dependencies = depsSet.toArray( StringConstants.EMPTY_STRINGS );

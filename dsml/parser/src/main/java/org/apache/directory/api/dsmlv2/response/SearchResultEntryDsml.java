@@ -157,7 +157,7 @@ public class SearchResultEntryDsml
 
             for ( Value value : attribute )
             {
-                if ( ParserUtils.needsBase64Encoding( value.getValue() ) )
+                if ( ParserUtils.needsBase64Encoding( value.getString() ) )
                 {
                     Namespace xsdNamespace = new Namespace( ParserUtils.XSD, ParserUtils.XML_SCHEMA_URI );
                     Namespace xsiNamespace = new Namespace( ParserUtils.XSI, ParserUtils.XML_SCHEMA_INSTANCE_URI );
@@ -171,13 +171,13 @@ public class SearchResultEntryDsml
                     }
 
                     Element valueElement = attributeElement.addElement( "value" ).addText(
-                        ParserUtils.base64Encode( value.getValue() ) );
+                        ParserUtils.base64Encode( value.getString() ) );
                     valueElement.addAttribute( new QName( "type", xsiNamespace ), ParserUtils.XSD + ":"
                         + ParserUtils.BASE64BINARY );
                 }
                 else
                 {
-                    attributeElement.addElement( "value" ).addText( value.getValue() );
+                    attributeElement.addElement( "value" ).addText( value.getString() );
                 }
             }
         }

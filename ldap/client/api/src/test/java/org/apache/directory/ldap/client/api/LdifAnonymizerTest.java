@@ -306,7 +306,7 @@ public class LdifAnonymizerTest
         
         for ( Value value : attribute )
         {
-            String str = value.getValue();
+            String str = value.getString();
             
             // We can only test the length and teh fact teh values are not equal (as the vale has been anonymized)
             assertTrue( values.contains( str ) );
@@ -402,7 +402,7 @@ public class LdifAnonymizerTest
         
         for ( Value value : attribute )
         {
-            String str = value.getValue();
+            String str = value.getString();
             
             // We can only test the length and the fact the values are not equal (as the vale has been anonymized)
             assertNotSame( 0, value.length() );

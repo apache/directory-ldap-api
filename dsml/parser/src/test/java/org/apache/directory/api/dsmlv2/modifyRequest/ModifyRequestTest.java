@@ -312,7 +312,7 @@ public class ModifyRequestTest extends AbstractTest
         Attribute attribute = modification.getAttribute();
 
         assertEquals( "directreport", attribute.getId() );
-        assertEquals( "CN=John Smith, DC=microsoft, DC=com", attribute.get().getValue() );
+        assertEquals( "CN=John Smith, DC=microsoft, DC=com", attribute.get().getString() );
     }
 
 
@@ -355,7 +355,7 @@ public class ModifyRequestTest extends AbstractTest
                 'a', 'r', 'n', 'y', ',', ' ', 'o', 'u', '=', 'p', 'e', 'o', 'p', 'l', 'e', ',', ' ', 'd', 'c', '=',
                 'e', 'x', 'a', 'm', 'p', 'l', 'e', ',', ' ', 'd', 'c', '=', 'c', 'o', 'm' }, StandardCharsets.UTF_8 );
 
-        assertEquals( expected, attribute.get().getValue() );
+        assertEquals( expected, attribute.get().getString() );
     }
 
 
@@ -394,7 +394,7 @@ public class ModifyRequestTest extends AbstractTest
         Attribute attribute = modification.getAttribute();
         assertEquals( "directreport", attribute.getId() );
 
-        assertEquals( "CN=John Smith, DC=microsoft, DC=com", attribute.get().getValue() );
+        assertEquals( "CN=John Smith, DC=microsoft, DC=com", attribute.get().getString() );
 
         modification = iter.next();
 
@@ -403,7 +403,7 @@ public class ModifyRequestTest extends AbstractTest
         assertEquals( "sn", attribute.getId() );
         assertEquals( ModificationOperation.REPLACE_ATTRIBUTE, modification.getOperation() );
 
-        assertEquals( "CN=Steve Jobs, DC=apple, DC=com", attribute.get().getValue() );
+        assertEquals( "CN=Steve Jobs, DC=apple, DC=com", attribute.get().getString() );
     }
 
 
@@ -649,7 +649,7 @@ public class ModifyRequestTest extends AbstractTest
         assertEquals( "directreport", attribute.getId() );
 
         assertEquals( 1, attribute.size() );
-        assertEquals( "", attribute.get().getValue() );
+        assertEquals( "", attribute.get().getString() );
     }
 
 

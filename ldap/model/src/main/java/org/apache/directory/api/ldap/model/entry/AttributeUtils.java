@@ -758,7 +758,7 @@ public final class AttributeUtils
             for ( Iterator<Value> valueIterator = attribute.iterator(); valueIterator.hasNext(); )
             {
                 Value value = valueIterator.next();
-                jndiAttribute.add( value.getValue() );
+                jndiAttribute.add( value.getString() );
             }
 
             return jndiAttribute;

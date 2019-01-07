@@ -150,9 +150,9 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         for ( Value value : attribute )
         {
-            assertTrue( vals.contains( value.getValue() ) );
+            assertTrue( vals.contains( value.getString() ) );
 
-            vals.remove( value.getValue() );
+            vals.remove( value.getString() );
         }
 
         attribute = entry.get( "attrs" );
@@ -163,9 +163,9 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         for ( Value value : attribute )
         {
-            assertTrue( vals.contains( value.getValue() ) );
+            assertTrue( vals.contains( value.getString() ) );
 
-            vals.remove( value.getValue() );
+            vals.remove( value.getString() );
         }
 
         // Check encode reverse
@@ -560,7 +560,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         for ( Value value : attribute )
         {
-            assertEquals( "", value.getValue() );
+            assertEquals( "", value.getString() );
         }
 
         // Check encode reverse
@@ -634,7 +634,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         for ( Value value : attribute )
         {
-            assertEquals( "", value.getValue() );
+            assertEquals( "", value.getString() );
         }
 
         // Check the Control

@@ -71,7 +71,7 @@ public final class SearchResultEntryFactory extends ResponseFactory
             // The value
             if ( value.isHumanReadable() )
             {
-                BerValue.encodeOctetString( buffer, value.getValue() );
+                BerValue.encodeOctetString( buffer, value.getString() );
             }
             else
             {

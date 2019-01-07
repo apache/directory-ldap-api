@@ -496,11 +496,12 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
 
     /**
      * Get the User Provided value. If the value is Human Readable, it will return
-     * a String, otherwise it returns null.
+     * the stored String, otherwise it will returns a String based on the bytes - which may be 
+     * invalid if the value is a pure binary -.
      *
      * @return The user provided value
      */
-    public String getValue()
+    public String getString()
     {
         if ( isHR )
         {
@@ -636,7 +637,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         if ( isHR )
         {
             // We need to prepare the String in this case
-            return syntaxChecker.isValidSyntax( getValue() );
+            return syntaxChecker.isValidSyntax( getString() );
         }
         else
         {

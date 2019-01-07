@@ -54,7 +54,7 @@ public class NumericNormalizer extends Normalizer implements PreparedNormalizer
      */
     public Value normalize( Value value ) throws LdapException
     {
-        String normalized = normalize( value.getValue() );
+        String normalized = normalize( value.getString() );
 
         return new Value( normalized );
     }

@@ -572,7 +572,7 @@ public class BinaryValueAttributeTypeTest
         byte[] normalized = sbv.getBytes();
 
         assertEquals( null, normalized );
-        assertEquals( "", sbv.getValue() );
+        assertEquals( "", sbv.getString() );
 
         Value sbvSer = deserializeValue( serializeValue( sbv ), at );
 

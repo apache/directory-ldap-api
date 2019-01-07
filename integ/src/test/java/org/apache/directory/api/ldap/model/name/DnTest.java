@@ -2511,7 +2511,7 @@ public class DnTest
         assertEquals( " cn = Amos\\,Tori ", dn1.getRdn().getName() );
         Ava atav1 = dn1.getRdn().getAva();
         assertEquals( "cn", atav1.getType() );
-        assertEquals( "Amos,Tori", atav1.getValue().getValue() );
+        assertEquals( "Amos,Tori", atav1.getValue().getString() );
 
         // antlr parser: hexstring with trailing spaces
         Dn dn3 = new Dn( " cn = #414243 , ou=system " );
@@ -2526,21 +2526,21 @@ public class DnTest
         assertEquals( " cn = \\41\\42\\43 ", dn4.getRdn().getName() );
         Ava atav4 = dn4.getRdn().getAva();
         assertEquals( "cn", atav4.getType() );
-        assertEquals( "ABC", atav4.getValue().getValue() );
+        assertEquals( "ABC", atav4.getValue().getString() );
 
         // antlr parser: quotestring with trailing spaces
         Dn dn5 = new Dn( " cn = \"ABC\" , ou=system " );
         assertEquals( " cn = \"ABC\" ", dn5.getRdn().getName() );
         Ava atav5 = dn5.getRdn().getAva();
         assertEquals( "cn", atav5.getType() );
-        assertEquals( "ABC", atav5.getValue() .getValue());
+        assertEquals( "ABC", atav5.getValue() .getString());
 
         // fast parser: string value with trailing spaces
         Dn dn2 = new Dn( " cn = Amos Tori , ou=system " );
         assertEquals( " cn = Amos Tori ", dn2.getRdn().getName() );
         Ava atav2 = dn2.getRdn().getAva();
         assertEquals( "cn", atav2.getType() );
-        assertEquals( "Amos Tori", atav2.getValue().getValue() );
+        assertEquals( "Amos Tori", atav2.getValue().getString() );
     }
 
 
@@ -2592,7 +2592,7 @@ public class DnTest
         assertEquals( "cn=loopback+ipHostNumber=127.0.0.1,ou=Hosts,dc=mygfs,dc=com", dn1.getEscaped() );
         assertEquals( "cn=loopback+ipHostNumber=127.0.0.1", dn1.getRdn().getName() );
         assertEquals( "cn=loopback+ipHostNumber=127.0.0.1", dn1.getRdn().getEscaped() );
-        assertEquals( "127.0.0.1", dn1.getRdn().getAva( "ipHostNumber" ).getValue().getValue() );
+        assertEquals( "127.0.0.1", dn1.getRdn().getAva( "ipHostNumber" ).getValue().getString() );
 
         // numeric OID with suffix
         Dn dn2 = new Dn( "cn=loopback+ipHostNumber=X127.0.0.1,ou=Hosts,dc=mygfs,dc=com" );
@@ -2637,10 +2637,10 @@ public class DnTest
 
         assertEquals( "ou=Example", atav.getEscaped() );
         assertEquals( "ou", atav.getNormType() );
-        assertEquals( "Example", atav.getValue().getValue() );
+        assertEquals( "Example", atav.getValue().getString() );
 
         assertEquals( "ou", atav.getType() );
-        assertEquals( "Example", atav.getValue().getValue() );
+        assertEquals( "Example", atav.getValue().getString() );
 
         assertEquals( "ou=Example", atav.getName() );
     }
@@ -2667,10 +2667,10 @@ public class DnTest
 
         assertEquals( "ou=Example", atav.getEscaped() );
         assertEquals( "ou", atav.getNormType() );
-        assertEquals( "Example", atav.getValue().getValue() );
+        assertEquals( "Example", atav.getValue().getString() );
 
         assertEquals( "ou", atav.getType() );
-        assertEquals( "Example", atav.getValue().getValue() );
+        assertEquals( "Example", atav.getValue().getString() );
 
         assertEquals( "  ou  =  Example ", atav.getName() );
 
@@ -2679,7 +2679,7 @@ public class DnTest
         // The second ATAV
         for ( Ava ava : rdn )
         {
-            if ( "Example".equals( ava.getValue().getValue() ) )
+            if ( "Example".equals( ava.getValue().getString() ) )
             {
                 // Skip the first one
                 continue;
@@ -2687,10 +2687,10 @@ public class DnTest
 
             assertEquals( "cn=TEST", ava.getEscaped() );
             assertEquals( "cn", ava.getNormType() );
-            assertEquals( "TEST", ava.getValue().getValue() );
+            assertEquals( "TEST", ava.getValue().getString() );
 
             assertEquals( "cn", ava.getType() );
-            assertEquals( "TEST", ava.getValue().getValue() );
+            assertEquals( "TEST", ava.getValue().getString() );
             assertEquals( " cn = TEST ", ava.getName() );
         }
     }
@@ -2716,10 +2716,10 @@ public class DnTest
 
         assertEquals( "ou=Ex\\+mple", atav.getEscaped() );
         assertEquals( "ou", atav.getNormType() );
-        assertEquals( "Ex+mple", atav.getValue().getValue() );
+        assertEquals( "Ex+mple", atav.getValue().getString() );
 
         assertEquals( "ou", atav.getType() );
-        assertEquals( "Ex+mple", atav.getValue().getValue() );
+        assertEquals( "Ex+mple", atav.getValue().getString() );
 
         assertEquals( "  ou  =  Ex\\+mple ", atav.getName() );
     }
@@ -2764,7 +2764,7 @@ public class DnTest
         assertEquals( "ou", rdn.getNormType() );
 
         assertEquals( "Ex+mple", rdn.getValue() );
-        assertEquals( "Ex+mple", rdn.getAva().getValue().getValue() );
+        assertEquals( "Ex+mple", rdn.getAva().getValue().getString() );
 
         // The first ATAV
         Ava atav = rdn.getAva();
@@ -2775,14 +2775,14 @@ public class DnTest
         assertEquals( "ou", atav.getNormType() );
         assertEquals( "OU", atav.getType() );
 
-        assertEquals( "Ex+mple", atav.getValue().getValue() );
+        assertEquals( "Ex+mple", atav.getValue().getString() );
 
         assertEquals( 2, rdn.size() );
 
         // The second ATAV
         for ( Ava ava : rdn )
         {
-            if ( "Ex+mple".equals( ava.getValue().getValue() ) )
+            if ( "Ex+mple".equals( ava.getValue().getString() ) )
             {
                 // Skip the first one
                 continue;
@@ -2794,7 +2794,7 @@ public class DnTest
             assertEquals( "cn", ava.getType() );
             assertEquals( "cn", ava.getNormType() );
 
-            assertEquals( "T+ST ", ava.getValue().getValue() );
+            assertEquals( "T+ST ", ava.getValue().getString() );
         }
 
         // ------------------------------------------------------------------
@@ -2823,14 +2823,14 @@ public class DnTest
         assertEquals( "ou", atav.getNormType() );
         assertEquals( "OU", atav.getType() );
 
-        assertEquals( "Ex+mple", atav.getValue().getValue() );
+        assertEquals( "Ex+mple", atav.getValue().getString() );
 
         assertEquals( 2, rdn.size() );
 
         // The second ATAV
         for ( Ava ava : rdn )
         {
-            if ( "Ex+mple".equals( ava.getValue().getValue() ) )
+            if ( "Ex+mple".equals( ava.getValue().getString() ) )
             {
                 // Skip the first one
                 continue;
@@ -2842,7 +2842,7 @@ public class DnTest
             assertEquals( "cn", ava.getType() );
             assertEquals( "cn", ava.getNormType() );
 
-            assertEquals( "T+ST ", ava.getValue().getValue() );
+            assertEquals( "T+ST ", ava.getValue().getString() );
         }
     }
 

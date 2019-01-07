@@ -158,8 +158,8 @@ public class StringValueTest
         Value sv2 = new Value( "" );
 
         assertNotSame( sv2, sv1 );
-        assertNull( sv1.getValue() );
-        assertEquals( "", sv2.getValue() );
+        assertNull( sv1.getString() );
+        assertEquals( "", sv2.getString() );
     }
 
 
@@ -176,14 +176,14 @@ public class StringValueTest
         sv1 = sv.clone();
 
         assertEquals( sv, sv1 );
-        assertEquals( "  This is    a   TEST  ", sv.getValue() );
+        assertEquals( "  This is    a   TEST  ", sv.getString() );
 
         sv = new Value( at, sv );
 
         assertNotSame( sv, sv1 );
-        assertEquals( "  This is    a   TEST  ", sv1.getValue() );
+        assertEquals( "  This is    a   TEST  ", sv1.getString() );
         assertEquals( 0, sv.compareTo( "  This is    a   TEST  " ) );
-        assertEquals( "  This is    a   TEST  ", sv.getValue() );
+        assertEquals( "  This is    a   TEST  ", sv.getString() );
         assertEquals( 0, sv.compareTo( " this  is  a  test " ) );
     }
 
@@ -212,7 +212,7 @@ public class StringValueTest
     {
         Value csv = new Value( ( String ) null );
 
-        assertNull( csv.getValue() );
+        assertNull( csv.getString() );
         assertFalse( csv.isSchemaAware() );
         assertTrue( csv.isValid( Ia5StringSyntaxChecker.INSTANCE ) );
         assertTrue( csv.isNull() );
@@ -228,8 +228,8 @@ public class StringValueTest
     {
         Value csv = new Value( "" );
 
-        assertNotNull( csv.getValue() );
-        assertEquals( "", csv.getValue() );
+        assertNotNull( csv.getString() );
+        assertEquals( "", csv.getString() );
         assertFalse( csv.isSchemaAware() );
         assertTrue( csv.isValid( Ia5StringSyntaxChecker.INSTANCE ) );
         assertFalse( csv.isNull() );
@@ -245,7 +245,7 @@ public class StringValueTest
     {
         Value csv = new Value( "test" );
 
-        assertEquals( "test", csv.getValue() );
+        assertEquals( "test", csv.getString() );
         assertFalse( csv.isSchemaAware() );
         assertTrue( csv.isValid( Ia5StringSyntaxChecker.INSTANCE ) );
         assertFalse( csv.isNull() );
@@ -254,16 +254,16 @@ public class StringValueTest
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#getValue()}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#getString()}.
      */
     @Test
     public void testGet()
     {
         Value sv = new Value( "test" );
-        assertEquals( "test", sv.getValue() );
+        assertEquals( "test", sv.getString() );
 
         Value sv2 = new Value( "" );
-        assertEquals( "", sv2.getValue() );
+        assertEquals( "", sv2.getString() );
     }
 
 
@@ -275,10 +275,10 @@ public class StringValueTest
     {
         Value sv = new Value( "test" );
 
-        assertEquals( "test", sv.getValue() );
+        assertEquals( "test", sv.getString() );
 
         Value sv2 = new Value( "" );
-        assertEquals( "", sv2.getValue() );
+        assertEquals( "", sv2.getString() );
     }
 
 
@@ -290,21 +290,21 @@ public class StringValueTest
     {
         Value sv = new Value( ( String ) null );
 
-        assertNull( sv.getValue() );
+        assertNull( sv.getString() );
         assertFalse( sv.isSchemaAware() );
         assertTrue( sv.isValid( Ia5StringSyntaxChecker.INSTANCE ) );
         assertTrue( sv.isNull() );
 
         sv = new Value( "" );
-        assertNotNull( sv.getValue() );
-        assertEquals( "", sv.getValue() );
+        assertNotNull( sv.getString() );
+        assertEquals( "", sv.getString() );
         assertFalse( sv.isSchemaAware() );
         assertTrue( sv.isValid( Ia5StringSyntaxChecker.INSTANCE ) );
         assertFalse( sv.isNull() );
 
         sv = new Value( "Test" );
-        assertNotNull( sv.getValue() );
-        assertEquals( "Test", sv.getValue() );
+        assertNotNull( sv.getString() );
+        assertEquals( "Test", sv.getString() );
         assertFalse( sv.isSchemaAware() );
         assertTrue( sv.isValid( Ia5StringSyntaxChecker.INSTANCE ) );
         assertFalse( sv.isNull() );
@@ -530,7 +530,7 @@ public class StringValueTest
 
         Value csvSer = deserializeValue( at, serializeValue( csv ) );
         assertNotSame( csv, csvSer );
-        assertEquals( csv.getValue(), csvSer.getValue() );
+        assertEquals( csv.getString(), csvSer.getString() );
         assertEquals( 0, csv.compareTo( csvSer ) );
         assertTrue( csvSer.isSchemaAware() );
     }
@@ -547,7 +547,7 @@ public class StringValueTest
 
         Value csvSer = deserializeValue( null, serializeValue( csv ) );
         assertNotSame( csv, csvSer );
-        assertEquals( csv.getValue(), csvSer.getValue() );
+        assertEquals( csv.getString(), csvSer.getString() );
         assertEquals( 0, csv.compareTo( csvSer ) );
         assertFalse( csvSer.isSchemaAware() );
     }
@@ -565,7 +565,7 @@ public class StringValueTest
 
         Value csvSer = deserializeValue( at, serializeValue( csv ) );
         assertNotSame( csv, csvSer );
-        assertEquals( csv.getValue(), csvSer.getValue() );
+        assertEquals( csv.getString(), csvSer.getString() );
         assertEquals( 0, csv.compareTo( csvSer ) );
         assertTrue( csvSer.isSchemaAware() );
     }
@@ -583,7 +583,7 @@ public class StringValueTest
 
         Value csvSer = deserializeValue( at, serializeValue( csv ) );
         assertNotSame( csv, csvSer );
-        assertEquals( csv.getValue(), csvSer.getValue() );
+        assertEquals( csv.getString(), csvSer.getString() );
         assertEquals( 0, csv.compareTo( csvSer ) );
         assertTrue( csvSer.isSchemaAware() );
     }
@@ -601,7 +601,7 @@ public class StringValueTest
 
         Value csvSer = deserializeValue( at, serializeValue( csv ) );
         assertNotSame( csv, csvSer );
-        assertEquals( csv.getValue(), csvSer.getValue() );
+        assertEquals( csv.getString(), csvSer.getString() );
         assertEquals( 0, csv.compareTo( csvSer ) );
         assertTrue( csvSer.isSchemaAware() );
     }
@@ -618,7 +618,7 @@ public class StringValueTest
 
         Value csvSer = deserializeValue( null, serializeValue( csv ) );
         assertNotSame( csv, csvSer );
-        assertEquals( csv.getValue(), csvSer.getValue() );
+        assertEquals( csv.getString(), csvSer.getString() );
         assertEquals( 0, csv.compareTo( csvSer ) );
         assertFalse( csvSer.isSchemaAware() );
     }

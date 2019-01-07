@@ -169,9 +169,9 @@ public class ModifyRequestDsml
 
                 for ( Value value : modification.getAttribute() )
                 {
-                    if ( value.getValue() != null )
+                    if ( value.getString() != null )
                     {
-                        if ( ParserUtils.needsBase64Encoding( value.getValue() ) )
+                        if ( ParserUtils.needsBase64Encoding( value.getString() ) )
                         {
                             Namespace xsdNamespace = new Namespace( "xsd", ParserUtils.XML_SCHEMA_URI );
                             Namespace xsiNamespace = new Namespace( "xsi", ParserUtils.XML_SCHEMA_INSTANCE_URI );
@@ -179,13 +179,13 @@ public class ModifyRequestDsml
                             element.getDocument().getRootElement().add( xsiNamespace );
 
                             Element valueElement = modElement.addElement( "value" ).addText(
-                                ParserUtils.base64Encode( value.getValue() ) );
+                                ParserUtils.base64Encode( value.getString() ) );
                             valueElement.addAttribute( new QName( "type", xsiNamespace ), "xsd:"
                                 + ParserUtils.BASE64BINARY );
                         }
                         else
                         {
-                            modElement.addElement( "value" ).setText( value.getValue() );
+                            modElement.addElement( "value" ).setText( value.getString() );
                         }
                     }
                 }

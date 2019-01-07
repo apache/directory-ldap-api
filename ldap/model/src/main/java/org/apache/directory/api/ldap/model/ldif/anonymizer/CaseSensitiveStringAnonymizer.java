@@ -100,7 +100,7 @@ public class CaseSensitiveStringAnonymizer extends AbstractAnonymizer<String>
                 }
                 else
                 {
-                    String strValue = value.getValue();
+                    String strValue = value.getString();
                     String newValue = computeNewValue( strValue );
                     
                     try

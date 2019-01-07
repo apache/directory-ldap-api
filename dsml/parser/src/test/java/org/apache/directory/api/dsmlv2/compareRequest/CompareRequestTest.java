@@ -328,7 +328,7 @@ public class CompareRequestTest extends AbstractTest
 
         assertEquals( "sn", compareRequest.getAttributeId() );
 
-        assertEquals( "Johnson", compareRequest.getAssertionValue().getValue() );
+        assertEquals( "Johnson", compareRequest.getAssertionValue().getString() );
     }
 
 
@@ -359,7 +359,7 @@ public class CompareRequestTest extends AbstractTest
 
         assertEquals( "sn", compareRequest.getAttributeId() );
 
-        assertEquals( "DSMLv2.0 rocks!!", compareRequest.getAssertionValue().getValue() );
+        assertEquals( "DSMLv2.0 rocks!!", compareRequest.getAssertionValue().getString() );
     }
 
 

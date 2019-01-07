@@ -418,7 +418,7 @@ public class LdifAnonymizer
             {
                 if ( anonymizer == null )
                 {
-                    anonymizedAva = new Ava( schemaManager, ava.getType(), value.getValue() );
+                    anonymizedAva = new Ava( schemaManager, ava.getType(), value.getString() );
                 }
                 else
                 {
@@ -444,7 +444,7 @@ public class LdifAnonymizer
         {
             if ( value.isHumanReadable() )
             {
-                anonymizedAva = new Ava( schemaManager, ava.getType(), anonymizedValue.getValue() );
+                anonymizedAva = new Ava( schemaManager, ava.getType(), anonymizedValue.getString() );
             }
             else
             {
@@ -693,7 +693,7 @@ public class LdifAnonymizer
                 
                 for ( Value dnValue : modification.getAttribute() )
                 {
-                    Dn dn = new Dn( schemaManager, dnValue.getValue() );
+                    Dn dn = new Dn( schemaManager, dnValue.getString() );
                     Dn newdDn = anonymizeDn( dn );
                     anonymizedValues[pos++] = new Value( newdDn.toString() );
                 }
@@ -753,7 +753,7 @@ public class LdifAnonymizer
             {
                 for ( Value dnValue : attribute )
                 {
-                    Dn dn = new Dn( schemaManager, dnValue.getValue() );
+                    Dn dn = new Dn( schemaManager, dnValue.getString() );
                     Dn newdDn = anonymizeDn( dn );
                     anonymizedAttribute.add( newdDn.toString() );
                 }
@@ -874,7 +874,7 @@ public class LdifAnonymizer
             {
                 for ( Value dnValue : attribute )
                 {
-                    Dn dn = new Dn( schemaManager, dnValue.getValue() );
+                    Dn dn = new Dn( schemaManager, dnValue.getString() );
                     Dn newdDn = anonymizeDn( dn );
                     newEntry.add( attributeType, newdDn.toString() );
                 }
@@ -885,7 +885,7 @@ public class LdifAnonymizer
                 for ( Value dnValue : attribute )
                 {
                     // Get rid of the # part (UID)
-                    String valueStr = dnValue.getValue();
+                    String valueStr = dnValue.getString();
                     int uidPos = valueStr.indexOf( '#' );
                     String uid = null;
                     

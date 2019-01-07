@@ -71,7 +71,7 @@ public final class ModifyRequestFactory implements Messagefactory
             // The value
             if ( value.isHumanReadable() )
             {
-                BerValue.encodeOctetString( buffer, value.getValue() );
+                BerValue.encodeOctetString( buffer, value.getString() );
             }
             else
             {
