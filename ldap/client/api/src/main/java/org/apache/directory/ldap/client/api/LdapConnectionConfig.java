@@ -21,12 +21,16 @@
 package org.apache.directory.ldap.client.api;
 
 
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.TrustManagerFactory;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.BinaryAttributeDetector;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.util.Network;
@@ -125,7 +129,22 @@ public class LdapConnectionConfig
      **/
     private void setDefaultTrustManager()
     {
-        trustManagers = new X509TrustManager[] { new NoVerificationTrustManager() };
+        String defaultAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+        
+        try
+        {
+            TrustManagerFactory tmf = TrustManagerFactory.getInstance( defaultAlgorithm );
+            tmf.init( ( KeyStore ) null );
+            trustManagers = tmf.getTrustManagers();
+        }
+        catch ( KeyStoreException kse )
+        {
+            LOG.error( I18n.err( I18n.ERR_04172_KEYSTORE_INIT_FAILURE ) );
+        }
+        catch ( NoSuchAlgorithmException nsae )
+        {
+            LOG.error( I18n.err( I18n.ERR_04173_ALGORITHM_NOT_FOUND, defaultAlgorithm ) );
+        }
     }
 
 
