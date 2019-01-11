@@ -140,10 +140,12 @@ public class LdapConnectionConfig
         catch ( KeyStoreException kse )
         {
             LOG.error( I18n.err( I18n.ERR_04172_KEYSTORE_INIT_FAILURE ) );
+            throw new RuntimeException( kse.getMessage(), kse );
         }
         catch ( NoSuchAlgorithmException nsae )
         {
             LOG.error( I18n.err( I18n.ERR_04173_ALGORITHM_NOT_FOUND, defaultAlgorithm ) );
+            throw new RuntimeException( nsae.getMessage(), nsae );
         }
     }
 
