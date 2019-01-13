@@ -73,7 +73,7 @@ pipeline {
             }
           }
           steps {
-            sh 'mvn -V clean verify'
+            sh 'mvn -V clean verify -DskipTests'
           }
           post {
             always {
