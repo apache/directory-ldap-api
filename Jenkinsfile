@@ -18,40 +18,23 @@
  */
 pipeline {
   agent none
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '3'))
+    timeout(time: 2, unit: 'HOURS')
+  }
+  triggers {
+    cron('@weekly')
+    pollSCM('@daily')
+  }
   stages {
-    stage ('Compile') {
+    stage ('Build and Test') {
       parallel {
-        stage ('Compile Java 8') {
+        stage ('Linux Java 8') {
           agent {
             docker {
-              image 'maven:3-jdk-8'
               label 'ubuntu'
-            }
-          }
-          steps {
-            sh 'mvn -V clean verify -DskipTests'
-          }
-        }
-        stage ('Compile Java 11') {
-          agent {
-            docker {
-              image 'maven:3-jdk-11'
-              label 'ubuntu'
-            }
-          }
-          steps {
-            sh 'mvn -V clean verify -DskipTests'
-          }
-        }
-      }
-    }
-    stage ('Test') {
-      parallel {
-        stage ('Test Java 8') {
-          agent {
-            docker {
-              image 'maven:3-jdk-8'
-              label 'ubuntu'
+              image 'apachedirectory/maven-build:jdk-8'
+              args '-v $HOME/.m2:/home/user/.m2'
             }
           }
           steps {
@@ -60,19 +43,81 @@ pipeline {
           post {
             always {
               junit '**/target/surefire-reports/*.xml'
+              deleteDir()
             }
           }
         }
-        stage ('Test Java 11') {
+        stage ('Linux Java 11') {
           agent {
             docker {
-              image 'maven:3-jdk-11'
               label 'ubuntu'
+              image 'apachedirectory/maven-build:jdk-11'
+              args '-v $HOME/.m2:/var/maven/.m2'
             }
           }
           steps {
             sh 'mvn -V clean verify'
           }
+          post {
+            always {
+              deleteDir()
+            }
+          }
+        }
+        stage ('Linux Java 12') {
+          agent {
+            docker {
+              label 'ubuntu'
+              image 'apachedirectory/maven-build:jdk-12'
+              args '-v $HOME/.m2:/var/maven/.m2'
+            }
+          }
+          steps {
+            sh 'mvn -V clean verify'
+          }
+          post {
+            always {
+              deleteDir()
+            }
+          }
+        }
+        stage ('Windows Java 8') {
+          agent {
+            label 'Windows'
+          }
+          steps {
+            bat '''
+            set JAVA_HOME=F:\\jenkins\\tools\\java\\latest1.8
+            set MAVEN_OPTS="-Xmx512m"
+            F:\\jenkins\\tools\\maven\\latest3\\bin\\mvn -V clean verify
+            '''
+          }
+          post {
+            always {
+              deleteDir()
+            }
+          }
+        }
+      }
+    }
+    stage ('Deploy') {
+      agent {
+        docker {
+          label 'ubuntu'
+          image 'apachedirectory/maven-build:jdk-8'
+          args '-v $HOME/.m2:/var/maven/.m2'
+        }
+      }
+      when {
+        beforeAgent true
+        branch 'master'
+      }
+      steps {
+        sh 'mvn -V clean deploy'
+      }
+      post {
+        always {
+          deleteDir()
         }
       }
     }
