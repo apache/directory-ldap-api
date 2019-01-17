@@ -40,7 +40,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class AttributeTypeTest
 {
-    private MutableAttributeType attributeType;
+    private AttributeType attributeType;
 
 
     /**
@@ -49,7 +49,7 @@ public class AttributeTypeTest
     @Before
     public void initAttributeTypes() throws Exception
     {
-        attributeType = new MutableAttributeType( "1.2.3.4" );
+        attributeType = new AttributeType( "1.2.3.4" );
         attributeType.setNames( "name1", "name2" );
         attributeType.setDescription( "description" );
         attributeType.setObsolete( false );

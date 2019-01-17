@@ -27,7 +27,6 @@ import org.apache.directory.api.ldap.model.exception.LdapSchemaExceptionCodes;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.SchemaErrorHandler;
 import org.apache.directory.api.ldap.model.schema.comparators.ComparableComparator;
@@ -64,7 +63,7 @@ public final class MatchingRuleHelper
      * @throws LdapException If the addition failed
      */
     @SuppressWarnings("rawtypes")
-    public static void addToRegistries( MutableMatchingRule matchingRule, SchemaErrorHandler errorHandler, Registries registries )
+    public static void addToRegistries( MatchingRule matchingRule, SchemaErrorHandler errorHandler, Registries registries )
         throws LdapException
     {
         if ( registries != null )

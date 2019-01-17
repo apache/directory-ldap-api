@@ -29,7 +29,7 @@ import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.registries.AttributeTypeRegistry;
 import org.apache.directory.api.ldap.model.schema.registries.DefaultAttributeTypeRegistry;
 import org.junit.Before;
@@ -59,7 +59,7 @@ public class AttributeTypeRegistryTest
     @Test
     public void testUnregister() throws LdapException
     {
-        MutableAttributeType at0 = new MutableAttributeType( "1.1" );
+        AttributeType at0 = new AttributeType( "1.1" );
         at0.addName( "t", "test", "Test", "T" );
         atRegistry.register( at0 );
 
@@ -84,7 +84,7 @@ public class AttributeTypeRegistryTest
     @Test
     public void testRegister() throws LdapException
     {
-        MutableAttributeType at0 = new MutableAttributeType( "1.1" );
+        AttributeType at0 = new AttributeType( "1.1" );
         at0.addName( "t", "test", "Test", "T" );
         atRegistry.register( at0 );
 

@@ -29,7 +29,6 @@ import org.apache.directory.api.ldap.model.exception.LdapSchemaExceptionCodes;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.api.ldap.model.schema.SchemaErrorHandler;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
 import org.apache.directory.api.ldap.model.schema.registries.AttributeTypeRegistry;
@@ -64,7 +63,7 @@ public final class AttributeTypeHelper
      * @param registries The Registries
      * @throws LdapException If the AttributeType is not valid
      */
-    public static void addToRegistries( MutableAttributeType attributeType, SchemaErrorHandler errorHandler, Registries registries ) throws LdapException
+    public static void addToRegistries( AttributeType attributeType, SchemaErrorHandler errorHandler, Registries registries ) throws LdapException
     {
         if ( registries != null )
         {
@@ -151,10 +150,10 @@ public final class AttributeTypeHelper
      * @param registries The Registries instance
      * @return <tt>true</tt> if the AttributeType superiors hierarchy is correct, or if we don't have any superior
      */
-    private static boolean buildSuperior( MutableAttributeType attributeType, SchemaErrorHandler errorHandler, 
+    private static boolean buildSuperior( AttributeType attributeType, SchemaErrorHandler errorHandler, 
             Registries registries )
     {
-        MutableAttributeType currentSuperior;
+        AttributeType currentSuperior;
         AttributeTypeRegistry attributeTypeRegistry = registries.getAttributeTypeRegistry();
         
         String superiorOid = attributeType.getSuperiorOid();
@@ -164,7 +163,7 @@ public final class AttributeTypeHelper
             // This AT has a superior
             try
             {
-                currentSuperior = ( MutableAttributeType ) attributeTypeRegistry.lookup( superiorOid );
+                currentSuperior = ( AttributeType ) attributeTypeRegistry.lookup( superiorOid );
             }
             catch ( Exception e )
             {
@@ -283,7 +282,7 @@ public final class AttributeTypeHelper
      * @param errorHandler The error handler
      * @param registries The Registries instance
      */
-    private static void buildSyntax( MutableAttributeType attributeType, SchemaErrorHandler errorHandler, 
+    private static void buildSyntax( AttributeType attributeType, SchemaErrorHandler errorHandler, 
             Registries registries )
     {
         String syntaxOid = attributeType.getSyntaxOid();
@@ -368,7 +367,7 @@ public final class AttributeTypeHelper
      * @param errorHandler The error handler
      * @param registries The Registries instance
      */
-    private static void buildEquality( MutableAttributeType attributeType, SchemaErrorHandler errorHandler, 
+    private static void buildEquality( AttributeType attributeType, SchemaErrorHandler errorHandler, 
             Registries registries )
     {
         String equalityOid = attributeType.getEqualityOid();
@@ -435,7 +434,7 @@ public final class AttributeTypeHelper
      * @param errorHandler The error handler
      * @param registries The Registries instance
      */
-    private static void buildSubstring( MutableAttributeType attributeType, SchemaErrorHandler errorHandler,
+    private static void buildSubstring( AttributeType attributeType, SchemaErrorHandler errorHandler,
             Registries registries )
     {
         String substringOid = attributeType.getSubstringOid();
@@ -499,7 +498,7 @@ public final class AttributeTypeHelper
      * @param errorHandler The error handler
      * @param registries The Registries instance
      */
-    private static void buildOrdering( MutableAttributeType attributeType, SchemaErrorHandler errorHandler, 
+    private static void buildOrdering( AttributeType attributeType, SchemaErrorHandler errorHandler, 
             Registries registries )
     {
         String orderingOid = attributeType.getOrderingOid();
@@ -599,7 +598,7 @@ public final class AttributeTypeHelper
      * @param attributeType The AttributeType to check
      * @param errorHandler The error handler
      */
-    private static void checkCollective( MutableAttributeType attributeType, SchemaErrorHandler errorHandler )
+    private static void checkCollective( AttributeType attributeType, SchemaErrorHandler errorHandler )
     {
         AttributeType superior = attributeType.getSuperior();
 

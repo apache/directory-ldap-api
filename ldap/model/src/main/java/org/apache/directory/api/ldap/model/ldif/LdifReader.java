@@ -54,7 +54,6 @@ import org.apache.directory.api.ldap.model.name.Ava;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.util.Base64;
 import org.apache.directory.api.util.Chars;
@@ -1027,7 +1026,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             // The attribute does not exist already, create a fake one 
             if ( ( schemaManager != null ) && schemaManager.isRelaxed() )
             {
-                MutableAttributeType newAttributeType = new MutableAttributeType( "1.3.6.1.4.1.18060.0.9999." + oidCounter++ );
+                AttributeType newAttributeType = new AttributeType( "1.3.6.1.4.1.18060.0.9999." + oidCounter++ );
                 newAttributeType.setNames( attributeType );
                 newAttributeType.setSyntax( schemaManager.getLdapSyntaxRegistry().get( SchemaConstants.DIRECTORY_STRING_SYNTAX ) );
                 schemaManager.add( newAttributeType );
@@ -1449,7 +1448,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                     && schemaManager.isRelaxed() )
                 {
                     // Not found : create a new one
-                    MutableAttributeType newAttributeType = new MutableAttributeType( "1.3.6.1.4.1.18060.0.9999." + oidCounter++ );
+                    AttributeType newAttributeType = new AttributeType( "1.3.6.1.4.1.18060.0.9999." + oidCounter++ );
                     newAttributeType.setNames( ava.getType() );
                     newAttributeType.setSyntax( schemaManager.getLdapSyntaxRegistry().get( SchemaConstants.DIRECTORY_STRING_SYNTAX ) );
                     schemaManager.add( newAttributeType );

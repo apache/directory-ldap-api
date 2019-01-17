@@ -44,7 +44,7 @@ public class SchemaObjectSorterTest
 
     private void addAttributeType( List<AttributeType> attributeTypes, String oid, String name, String superiorOid )
     {
-        MutableAttributeType at = new MutableAttributeType( oid );
+        AttributeType at = new AttributeType( oid );
         at.setNames( name );
         at.setSuperiorOid( superiorOid );
         attributeTypes.add( at );
@@ -143,7 +143,7 @@ public class SchemaObjectSorterTest
 
     private void addObjectClass( List<ObjectClass> objectClasses, String oid, String name, String... superiorOid )
     {
-        MutableObjectClass oc = new MutableObjectClass( oid );
+        ObjectClass oc = new ObjectClass( oid );
         oc.setNames( name );
         if ( superiorOid != null )
         {

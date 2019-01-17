@@ -45,11 +45,8 @@ import org.apache.directory.api.ldap.model.schema.DitStructureRule;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.MatchingRuleUse;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableMatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
-import org.apache.directory.api.ldap.model.schema.NameForm;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.NameForm;
 import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
@@ -78,7 +75,7 @@ public class OpenLdapSchemaParser
     private List<Object> schemaDescriptions = new ArrayList<>();
 
     /** The list of attribute type, initialized by splitParsedSchemaDescriptions() */
-    private List<MutableAttributeType> attributeTypes;
+    private List<AttributeType> attributeTypes;
 
     /** The list of object classes, initialized by splitParsedSchemaDescriptions()*/
     private List<ObjectClass> objectClasses;
@@ -517,7 +514,7 @@ public class OpenLdapSchemaParser
      * 
      * @return the attribute types
      */
-    public List<MutableAttributeType> getAttributeTypes()
+    public List<AttributeType> getAttributeTypes()
     {
         return attributeTypes;
     }
@@ -566,7 +563,7 @@ public class OpenLdapSchemaParser
             }
             else if ( obj instanceof AttributeType )
             {
-                MutableAttributeType attributeType = ( MutableAttributeType ) obj;
+                AttributeType attributeType = ( AttributeType ) obj;
 
                 attributeTypes.add( attributeType );
             }
@@ -593,7 +590,7 @@ public class OpenLdapSchemaParser
             }
 
             // apply object identifier macros to attribute types
-            for ( MutableAttributeType attributeType : attributeTypes )
+            for ( AttributeType attributeType : attributeTypes )
             {
                 attributeType.setOid( getResolveOid( attributeType.getOid() ) );
                 attributeType.setSyntaxOid( getResolveOid( attributeType.getSyntaxOid() ) );
@@ -2153,7 +2150,7 @@ public class OpenLdapSchemaParser
      * @param pos The position in the Schema
      * @throws LdapSchemaException If the schema is wrong
      */
-    private static void getNoidLenStrict( MutableAttributeType attributeType, PosSchema pos ) throws LdapSchemaException
+    private static void getNoidLenStrict( AttributeType attributeType, PosSchema pos ) throws LdapSchemaException
     {
         // Get the oid
         String oid = getOidStrict( pos );
@@ -2215,7 +2212,7 @@ public class OpenLdapSchemaParser
      * @param pos The position in the Schema
      * @throws LdapSchemaException If the schema is wrong
      */
-    private static void getNoidLenRelaxed( MutableAttributeType attributeType, PosSchema pos ) throws LdapSchemaException
+    private static void getNoidLenRelaxed( AttributeType attributeType, PosSchema pos ) throws LdapSchemaException
     {
         // Check for quotes
         boolean hasQuote = false;
@@ -2893,7 +2890,7 @@ public class OpenLdapSchemaParser
             throw new LdapSchemaException( I18n.err( I18n.ERR_13787_OID_EXPECTED, pos.lineNumber, pos.start ) );
         }
         
-        MutableAttributeType attributeType = new MutableAttributeType( oid );
+        AttributeType attributeType = new AttributeType( oid );
         boolean hasSup = false;
         boolean hasSyntax = false;
         int elementsSeen = 0;
@@ -3134,7 +3131,7 @@ public class OpenLdapSchemaParser
         // Now, the OID. 
         String oid = getOidAndMacroRelaxed( pos, objectIdentifierMacros );
         
-        MutableAttributeType attributeType = new MutableAttributeType( oid );
+        AttributeType attributeType = new AttributeType( oid );
         int elementsSeen = 0;
         
         while ( true )
@@ -4614,7 +4611,7 @@ public class OpenLdapSchemaParser
             throw new LdapSchemaException( I18n.err( I18n.ERR_13787_OID_EXPECTED, pos.lineNumber, pos.start ) );
         }
         
-        MutableMatchingRule matchingRule = new MutableMatchingRule( oid );
+        MatchingRule matchingRule = new MatchingRule( oid );
         int elementsSeen = 0;
         boolean hasSyntax = false;
         
@@ -4742,7 +4739,7 @@ public class OpenLdapSchemaParser
         // Now, the OID. 
         String oid = getOidAndMacroRelaxed( pos, objectIdentifierMacros );
         
-        MutableMatchingRule matchingRule = new MutableMatchingRule( oid );
+        MatchingRule matchingRule = new MatchingRule( oid );
         int elementsSeen = 0;
         
         while ( true )
@@ -5878,7 +5875,7 @@ public class OpenLdapSchemaParser
             throw new LdapSchemaException( I18n.err( I18n.ERR_13787_OID_EXPECTED, pos.lineNumber, pos.start ) );
         }
 
-        MutableObjectClass objectClass = new MutableObjectClass( oid );
+        ObjectClass objectClass = new ObjectClass( oid );
         int elementsSeen = 0;
         
         while ( true )
@@ -6050,7 +6047,7 @@ public class OpenLdapSchemaParser
         // Now, the numeric OID
         String oid = getOidAndMacroRelaxed( pos, objectIdentifierMacros );
         
-        MutableObjectClass objectClass = new MutableObjectClass( oid );
+        ObjectClass objectClass = new ObjectClass( oid );
         int elementsSeen = 0;
         
         while ( true )

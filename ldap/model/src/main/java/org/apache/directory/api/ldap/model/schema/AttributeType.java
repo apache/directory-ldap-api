@@ -19,6 +19,7 @@
  */
 package org.apache.directory.api.ldap.model.schema;
 
+import org.apache.directory.api.i18n.I18n;
 
 /**
  * An attributeType specification. attributeType specifications describe the
@@ -202,6 +203,22 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
 
     /**
+     * Tells if this AttributeType is Single Valued or not
+     *
+     * @param singleValued True if the AttributeType is single-valued
+     */
+    public void setSingleValued( boolean singleValued )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
+        }
+
+        this.isSingleValued = singleValued;
+    }
+
+
+    /**
      * Gets whether or not this AttributeType can be modified by a user.
      *
      * @return true if users can modify it, false if only the directory can.
@@ -213,6 +230,22 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
 
     /**
+     * Tells if this AttributeType can be modified by a user or not
+     *
+     * @param userModifiable The flag to set
+     */
+    public void setUserModifiable( boolean userModifiable )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
+        }
+
+        this.canUserModify = userModifiable;
+    }
+
+
+    /**
      * Gets whether or not this AttributeType is a collective attribute.
      *
      * @return true if the attribute is collective, false otherwise
@@ -220,6 +253,22 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     public boolean isCollective()
     {
         return isCollective;
+    }
+
+
+    /**
+     * Sets the collective flag
+     *
+     * @param collective The new value to set
+     */
+    public void setCollective( boolean collective )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
+        }
+
+        this.isCollective = collective;
     }
 
 
@@ -255,6 +304,29 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
 
     /**
+     * Sets the AttributeType usage, one of :
+     * <ul>
+     *   <li>USER_APPLICATIONS</li>
+     *   <li>DIRECTORY_OPERATION</li>
+     *   <li>DISTRIBUTED_OPERATION</li>
+     *   <li>DSA_OPERATION</li>
+     * </ul>
+     * 
+     * @see UsageEnum
+     * @param usage The AttributeType usage
+     */
+    public void setUsage( UsageEnum usage )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
+        }
+
+        this.usage = usage;
+    }
+
+
+    /**
      * Gets a length limit for this AttributeType.
      *
      * @return the length of the attribute
@@ -262,6 +334,23 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     public long getSyntaxLength()
     {
         return syntaxLength;
+    }
+
+
+    /**
+     * Sets the length limit of this AttributeType based on its associated
+     * syntax.
+     *
+     * @param length the new length to set
+     */
+    public void setSyntaxLength( long length )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
+        }
+
+        this.syntaxLength = length;
     }
 
 
@@ -284,6 +373,55 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     public String getSuperiorOid()
     {
         return superiorOid;
+    }
+
+
+    /**
+     * Sets the superior for this AttributeType
+     *
+     * @param superior The superior for this AttributeType
+     */
+    public void setSuperior( AttributeType superior )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
+        }
+
+        this.superior = superior;
+        this.superiorOid = superior.getOid();
+    }
+
+
+    /**
+     * Sets the superior oid for this AttributeType
+     *
+     * @param newSuperiorOid The superior oid for this AttributeType
+     */
+    public void setSuperior( String newSuperiorOid )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
+        }
+
+        this.superiorOid = newSuperiorOid;
+    }
+
+
+    /**
+     * Sets the superior AttributeType OID of this AttributeType
+     *
+     * @param superiorOid The superior AttributeType OID of this AttributeType
+     */
+    public void setSuperiorOid( String superiorOid )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
+        }
+
+        this.superiorOid = superiorOid;
     }
 
 
@@ -317,6 +455,23 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
 
     /**
+     * Sets the Syntax for this AttributeType
+     *
+     * @param syntax The Syntax for this AttributeType
+     */
+    public void setSyntax( LdapSyntax syntax )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
+        }
+
+        this.syntax = syntax;
+        this.syntaxOid = syntax.getOid();
+    }
+
+
+    /**
      * Gets the Syntax name for this AttributeType's values.
      *
      * @return the value syntax name
@@ -346,6 +501,22 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
 
     /**
+     * Sets the Syntax OID for this AttributeType
+     *
+     * @param syntaxOid The syntax OID for this AttributeType
+     */
+    public void setSyntaxOid( String syntaxOid )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
+        }
+
+        this.syntaxOid = syntaxOid;
+    }
+
+
+    /**
      * Gets the MatchingRule for this AttributeType used for equality matching.
      *
      * @return the equality matching rule
@@ -357,6 +528,23 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
 
     /**
+     * Sets the Equality MR for this AttributeType
+     *
+     * @param equality The Equality MR for this AttributeType
+     */
+    public void setEquality( MatchingRule equality )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
+        }
+
+        this.equality = equality;
+        this.equalityOid = equality.getOid();
+    }
+
+
+    /**
      * Gets the Equality OID for this AttributeType's values.
      *
      * @return the value Equality's OID
@@ -364,6 +552,22 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     public String getEqualityOid()
     {
         return equalityOid;
+    }
+
+
+    /**
+     * Sets the Equality OID for this AttributeType
+     *
+     * @param equalityOid The Equality OID for this AttributeType
+     */
+    public void setEqualityOid( String equalityOid )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
+        }
+
+        this.equalityOid = equalityOid;
     }
 
 
@@ -397,6 +601,23 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
 
     /**
+     * Sets the Ordering MR for this AttributeType
+     *
+     * @param ordering The Ordering MR for this AttributeType
+     */
+    public void setOrdering( MatchingRule ordering )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
+        }
+
+        this.ordering = ordering;
+        this.orderingOid = ordering.getOid();
+    }
+
+
+    /**
      * Gets the MatchingRule name for this AttributeType used for Ordering matching.
      *
      * @return the Ordering matching rule name
@@ -426,6 +647,22 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
 
     /**
+     * Sets the Ordering OID for this AttributeType
+     *
+     * @param orderingOid The Ordering OID for this AttributeType
+     */
+    public void setOrderingOid( String orderingOid )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
+        }
+
+        this.orderingOid = orderingOid;
+    }
+
+
+    /**
      * Gets the MatchingRule for this AttributeType used for Substr matching.
      *
      * @return the Substr matching rule
@@ -433,6 +670,23 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     public MatchingRule getSubstring()
     {
         return substring;
+    }
+
+
+    /**
+     * Sets the Substr MR for this AttributeType
+     *
+     * @param substring The Substr MR for this AttributeType
+     */
+    public void setSubstring( MatchingRule substring )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
+        }
+
+        this.substring = substring;
+        this.substringOid = substring.getOid();
     }
 
 
@@ -462,6 +716,22 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     public String getSubstringOid()
     {
         return substringOid;
+    }
+
+
+    /**
+     * Sets the Substr OID for this AttributeType
+     *
+     * @param substrOid The Substr OID for this AttributeType
+     */
+    public void setSubstringOid( String substrOid )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
+        }
+
+        this.substringOid = substrOid;
     }
 
 
@@ -573,7 +843,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     @Override
     public AttributeType copy()
     {
-        MutableAttributeType copy = new MutableAttributeType( oid );
+        AttributeType copy = new AttributeType( oid );
 
         // Copy the SchemaObject common data
         copy.copy( this );
@@ -829,5 +1099,23 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
         {
             return false;
         }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clear()
+    {
+        // Clear the common elements
+        super.clear();
+
+        // Clear the references
+        equality = null;
+        ordering = null;
+        substring = null;
+        superior = null;
+        syntax = null;
     }
 }

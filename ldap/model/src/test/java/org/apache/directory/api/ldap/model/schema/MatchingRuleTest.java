@@ -40,7 +40,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class MatchingRuleTest
 {
-    private MutableMatchingRule matchingRule;
+    private MatchingRule matchingRule;
 
 
     /**
@@ -49,7 +49,7 @@ public class MatchingRuleTest
     @Before
     public void initMatchingRules() throws Exception
     {
-        matchingRule = new MutableMatchingRule( "1.2.3.4" );
+        matchingRule = new MatchingRule( "1.2.3.4" );
         matchingRule.setNames( "name1", "name2" );
         matchingRule.setDescription( "description" );
         matchingRule.setObsolete( false );

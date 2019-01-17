@@ -47,13 +47,13 @@ import org.junit.Test;
 public class SchemaObjectRendererTest
 {
 
-    private MutableObjectClass objectClassSimple;
-    private MutableObjectClass objectClassComplex;
+    private ObjectClass objectClassSimple;
+    private ObjectClass objectClassComplex;
 
-    private MutableAttributeType attributeTypeSimple;
-    private MutableAttributeType attributeTypeComplex;
+    private AttributeType attributeTypeSimple;
+    private AttributeType attributeTypeComplex;
 
-    private MutableMatchingRule matchingRule;
+    private MatchingRule matchingRule;
     private MatchingRuleUse matchingRuleUse;
     private LdapSyntax ldapSyntax;
     private DitContentRule ditContentRule;
@@ -64,12 +64,12 @@ public class SchemaObjectRendererTest
     @Before
     public void setUp()
     {
-        objectClassSimple = new MutableObjectClass( "1.2.3.4" );
+        objectClassSimple = new ObjectClass( "1.2.3.4" );
         objectClassSimple.setNames( "name0" );
         objectClassSimple.setMustAttributeTypeOids( Arrays.asList( "att0" ) );
         objectClassSimple.setSchemaName( "dummy" );
 
-        objectClassComplex = new MutableObjectClass( "1.2.3.4" );
+        objectClassComplex = new ObjectClass( "1.2.3.4" );
         objectClassComplex.setNames( "name1", "name2" );
         objectClassComplex.setDescription( "description with 'quotes'" );
         objectClassComplex.setObsolete( true );
@@ -79,7 +79,7 @@ public class SchemaObjectRendererTest
         objectClassComplex.setMayAttributeTypeOids( Arrays.asList( "att3", "att4" ) );
         objectClassComplex.setSchemaName( "dummy" );
 
-        attributeTypeSimple = new MutableAttributeType( "1.2.3.4" );
+        attributeTypeSimple = new AttributeType( "1.2.3.4" );
         attributeTypeSimple.setNames( "name0" );
         attributeTypeSimple.setEqualityOid( "matchingRule0" );
         attributeTypeSimple.setSyntaxOid( "2.3.4.5" );
@@ -87,7 +87,7 @@ public class SchemaObjectRendererTest
         attributeTypeSimple.setCollective( true );
         attributeTypeSimple.setSchemaName( "dummy" );
 
-        attributeTypeComplex = new MutableAttributeType( "1.2.3.4" );
+        attributeTypeComplex = new AttributeType( "1.2.3.4" );
         attributeTypeComplex.setNames( "name1", "name2" );
         attributeTypeComplex.setDescription( "description with 'quotes'" );
         attributeTypeComplex.setObsolete( true );
@@ -100,7 +100,7 @@ public class SchemaObjectRendererTest
         attributeTypeComplex.setUsage( UsageEnum.DIRECTORY_OPERATION );
         attributeTypeComplex.setSchemaName( "dummy" );
 
-        matchingRule = new MutableMatchingRule( "1.2.3.4" );
+        matchingRule = new MatchingRule( "1.2.3.4" );
         matchingRule.setNames( "name0" );
         matchingRule.setDescription( "description with 'quotes'" );
         matchingRule.setObsolete( true );

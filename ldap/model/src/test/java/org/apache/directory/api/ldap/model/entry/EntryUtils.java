@@ -24,8 +24,7 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableMatchingRule;
+import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.PrepareString;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
@@ -45,7 +44,7 @@ public class EntryUtils
     /**
      * A local Syntax class for tests
      */
-    static class AT extends MutableAttributeType
+    static class AT extends AttributeType
     {
         private static final long serialVersionUID = 0L;
 
@@ -57,9 +56,9 @@ public class EntryUtils
     }
 
 
-    public static MutableMatchingRule matchingRuleFactory( String oid )
+    public static MatchingRule matchingRuleFactory( String oid )
     {
-        MutableMatchingRule matchingRule = new MutableMatchingRule( oid );
+        MatchingRule matchingRule = new MatchingRule( oid );
 
         return matchingRule;
     }
@@ -67,7 +66,7 @@ public class EntryUtils
     /**
      * A local MatchingRule class for tests
      */
-    static class MR extends MutableMatchingRule
+    static class MR extends MatchingRule
     {
         public static final long serialVersionUID = 1L;
 
@@ -105,7 +104,7 @@ public class EntryUtils
 
     /* no protection*/static AttributeType getCaseIgnoringAttributeNoNumbersType()
     {
-        MutableAttributeType attributeType = new MutableAttributeType( "1.1.3.1" );
+        AttributeType attributeType = new AttributeType( "1.1.3.1" );
         LdapSyntax syntax = new LdapSyntax( "1.1.1.1", "", true );
 
         syntax.setSyntaxChecker( new SyntaxChecker( "1.1.2.1" )
@@ -138,7 +137,7 @@ public class EntryUtils
             }
         } );
 
-        MutableMatchingRule matchingRule = new MutableMatchingRule( "1.1.2.1" );
+        MatchingRule matchingRule = new MatchingRule( "1.1.2.1" );
         matchingRule.setSyntax( syntax );
 
         matchingRule.setLdapComparator( new LdapComparator<String>( matchingRule.getOid() )
@@ -182,7 +181,7 @@ public class EntryUtils
 
     /* no protection*/static AttributeType getIA5StringAttributeType()
     {
-        MutableAttributeType attributeType = new MutableAttributeType( "1.1" );
+        AttributeType attributeType = new AttributeType( "1.1" );
         attributeType.addName( "1.1" );
         LdapSyntax syntax = new LdapSyntax( "1.1.1", "", true );
 
@@ -198,7 +197,7 @@ public class EntryUtils
             }
         } );
 
-        MutableMatchingRule matchingRule = new MutableMatchingRule( "1.1.2" );
+        MatchingRule matchingRule = new MatchingRule( "1.1.2" );
         matchingRule.setSyntax( syntax );
 
         matchingRule.setLdapComparator( new LdapComparator<String>( matchingRule.getOid() )
@@ -225,7 +224,7 @@ public class EntryUtils
 
     /* No protection */static AttributeType getBytesAttributeType()
     {
-        MutableAttributeType attributeType = new MutableAttributeType( "1.2" );
+        AttributeType attributeType = new AttributeType( "1.2" );
         LdapSyntax syntax = new LdapSyntax( "1.2.1", "", false );
 
         syntax.setSyntaxChecker( new SyntaxChecker( "1.2.1" )
@@ -239,7 +238,7 @@ public class EntryUtils
             }
         } );
 
-        MutableMatchingRule matchingRule = new MutableMatchingRule( "1.2.2" );
+        MatchingRule matchingRule = new MatchingRule( "1.2.2" );
         matchingRule.setSyntax( syntax );
 
         matchingRule.setLdapComparator( new ByteArrayComparator( "1.2.2" ) );

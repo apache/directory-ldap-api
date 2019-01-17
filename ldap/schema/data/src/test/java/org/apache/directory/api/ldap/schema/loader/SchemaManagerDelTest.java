@@ -38,7 +38,6 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
@@ -228,7 +227,7 @@ public class SchemaManagerDelTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
+        AttributeType attributeType = new AttributeType( "1.1.0" );
         attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -255,7 +254,7 @@ public class SchemaManagerDelTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableAttributeType attributeType = new MutableAttributeType( "generationQualifier" );
+        AttributeType attributeType = new AttributeType( "generationQualifier" );
         attributeType.setOid( "2.5.4.44" );
 
         // It should not fail
@@ -303,7 +302,7 @@ public class SchemaManagerDelTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         // Try to delete an AT which is contained by a disabled schema
-        MutableAttributeType attributeType = new MutableAttributeType( "gecos" );
+        AttributeType attributeType = new AttributeType( "gecos" );
         attributeType.setOid( "1.3.6.1.1.1.1.2" );
 
         // It should fail
@@ -551,7 +550,7 @@ public class SchemaManagerDelTest
         assertTrue( errors.get( 0 ) instanceof LdapProtocolErrorException );
 
         // Now delete the using AT : it should be OK
-        MutableAttributeType at = new MutableAttributeType( AT_OID );
+        AttributeType at = new AttributeType( AT_OID );
         assertTrue( schemaManager.delete( at ) );
 
         assertEquals( atrSize - 1, schemaManager.getAttributeTypeRegistry().size() );
@@ -945,7 +944,7 @@ public class SchemaManagerDelTest
         assertTrue( errors.get( 0 ) instanceof LdapProtocolErrorException );
 
         // Now delete the using AT : it should be OK
-        MutableAttributeType at = new MutableAttributeType( AT_OID );
+        AttributeType at = new AttributeType( AT_OID );
         assertTrue( schemaManager.delete( at ) );
 
         assertEquals( atrSize - 1, schemaManager.getAttributeTypeRegistry().size() );

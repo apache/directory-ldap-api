@@ -36,8 +36,7 @@ import java.util.Arrays;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableMatchingRule;
+import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.PrepareString;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
@@ -71,8 +70,8 @@ public class BinaryValueTest
     private static final byte[] BYTES_MOD = new byte[]
         { 0x11, 0x02, 0x03, 0x04 };
     private LdapSyntax s;
-    private MutableAttributeType at;
-    private MutableMatchingRule mr;
+    private AttributeType at;
+    private MatchingRule mr;
 
 
     /**
@@ -115,7 +114,7 @@ public class BinaryValueTest
             }
         } );
 
-        at = new MutableAttributeType( "1.1.3.1" );
+        at = new AttributeType( "1.1.3.1" );
         at.setEquality( mr );
         at.setOrdering( mr );
         at.setSubstring( mr );

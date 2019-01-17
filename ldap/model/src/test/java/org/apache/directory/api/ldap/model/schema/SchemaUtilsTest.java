@@ -33,8 +33,6 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.api.ldap.model.schema.SchemaUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -62,19 +60,19 @@ public class SchemaUtilsTest
 
     public static MatchingRule[] getMatchingRules()
     {
-        MutableMatchingRule[] mrs = new MutableMatchingRule[3];
+        MatchingRule[] mrs = new MatchingRule[3];
 
-        mrs[0] = new MutableMatchingRule( "2.5.13.2" );
+        mrs[0] = new MatchingRule( "2.5.13.2" );
         mrs[0].setSyntax( getSyntaxes()[1] );
         mrs[0].addName( "caseIgnoreMatch" );
         mrs[0].setDescription( "Ignores case in strings" );
 
-        mrs[1] = new MutableMatchingRule( "2.5.13.4" );
+        mrs[1] = new MatchingRule( "2.5.13.4" );
         mrs[0].setSyntax( getSyntaxes()[2] );
         mrs[1].addName( "caseIgnoreSubstringsMatch" );
         mrs[1].setDescription( "Ignores case in substrings" );
 
-        mrs[2] = new MutableMatchingRule( "2.5.13.1" );
+        mrs[2] = new MatchingRule( "2.5.13.1" );
         mrs[0].setSyntax( getSyntaxes()[0] );
         mrs[2].addName( "distinguishedNameMatch" );
         mrs[2].setDescription( "distinguishedNameMatch" );
@@ -85,9 +83,9 @@ public class SchemaUtilsTest
 
     public AttributeType[] getAttributeTypes()
     {
-        MutableAttributeType[] ats = new MutableAttributeType[5];
+        AttributeType[] ats = new AttributeType[5];
 
-        ats[0] = new MutableAttributeType( "2.5.4.41" );
+        ats[0] = new AttributeType( "2.5.4.41" );
         ats[0].addName( "name" );
         ats[0].setSyntax( getSyntaxes()[1] );
         ats[0].setSyntaxLength( 32768 );
@@ -95,24 +93,24 @@ public class SchemaUtilsTest
         ats[0].setSubstring( getMatchingRules()[1] );
 
         // ( 2.5.4.3 NAME 'cn' SUP name )
-        ats[1] = new MutableAttributeType( "2.5.4.3" );
+        ats[1] = new AttributeType( "2.5.4.3" );
         ats[1].addName( "cn", "commonName" );
 
-        ats[2] = new MutableAttributeType( "2.5.4.41" );
+        ats[2] = new AttributeType( "2.5.4.41" );
         ats[2].addName( "name" );
         ats[2].setSyntax( getSyntaxes()[1] );
         ats[2].setSyntaxLength( 32768 );
         ats[2].setEquality( getMatchingRules()[0] );
         ats[2].setSubstring( getMatchingRules()[1] );
 
-        ats[3] = new MutableAttributeType( "2.5.4.41" );
+        ats[3] = new AttributeType( "2.5.4.41" );
         ats[3].addName( "name" );
         ats[3].setSyntax( getSyntaxes()[1] );
         ats[3].setSyntaxLength( 32768 );
         ats[3].setEquality( getMatchingRules()[0] );
         ats[3].setSubstring( getMatchingRules()[1] );
 
-        ats[4] = new MutableAttributeType( "2.5.4.41" );
+        ats[4] = new AttributeType( "2.5.4.41" );
         ats[4].addName( "name" );
         ats[4].setSyntax( getSyntaxes()[1] );
         ats[4].setSyntaxLength( 32768 );

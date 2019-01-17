@@ -19,8 +19,7 @@
  */
 package org.apache.directory.api.ldap.model.schema;
 
-
-
+import org.apache.directory.api.i18n.I18n;
 
 /**
  * A matchingRule definition. MatchingRules associate a comparator and a
@@ -112,6 +111,23 @@ public class MatchingRule extends AbstractSchemaObject
 
 
     /**
+     * Sets the Syntax
+     *
+     * @param ldapSyntax The Syntax
+     */
+    public void setSyntax( LdapSyntax ldapSyntax )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
+        }
+
+        this.ldapSyntax = ldapSyntax;
+        this.ldapSyntaxOid = ldapSyntax.getOid();
+    }
+
+
+    /**
      * Gets the LdapSyntax OID used by this MatchingRule.
      * 
      * @return the LdapSyntax of this MatchingRule
@@ -119,6 +135,22 @@ public class MatchingRule extends AbstractSchemaObject
     public String getSyntaxOid()
     {
         return ldapSyntaxOid;
+    }
+
+
+    /**
+     * Sets the Syntax's OID
+     *
+     * @param oid The Syntax's OID
+     */
+    public void setSyntaxOid( String oid )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
+        }
+
+        this.ldapSyntaxOid = oid;
     }
 
 
@@ -133,6 +165,23 @@ public class MatchingRule extends AbstractSchemaObject
         return ldapComparator;
     }
 
+    /**
+     * Sets the LdapComparator
+     *
+     * @param ldapComparator The LdapComparator
+     */
+    @SuppressWarnings("unchecked")
+    public void setLdapComparator( LdapComparator<?> ldapComparator )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
+        }
+
+        this.ldapComparator = ( LdapComparator<? super Object> ) ldapComparator;
+    }
+
+
 
     /**
      * Gets the Normalizer enabling the use of this MatchingRule for EQUALITY
@@ -143,6 +192,22 @@ public class MatchingRule extends AbstractSchemaObject
     public Normalizer getNormalizer()
     {
         return normalizer;
+    }
+
+
+    /**
+     * Sets the Normalizer
+     *
+     * @param normalizer The Normalizer
+     */
+    public void setNormalizer( Normalizer normalizer )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_13700_CANNOT_MODIFY_LOCKED_SCHEMA_OBJECT, getName() ) );
+        }
+
+        this.normalizer = normalizer;
     }
 
 
@@ -162,7 +227,7 @@ public class MatchingRule extends AbstractSchemaObject
     @Override
     public MatchingRule copy()
     {
-        MatchingRule copy = new MutableMatchingRule( oid );
+        MatchingRule copy = new MatchingRule( oid );
 
         // Copy the SchemaObject common data
         copy.copy( this );
@@ -280,5 +345,21 @@ public class MatchingRule extends AbstractSchemaObject
         }
 
         return true;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clear()
+    {
+        // Clear the common elements
+        super.clear();
+
+        // Clear the references
+        ldapComparator = null;
+        ldapSyntax = null;
+        normalizer = null;
     }
 }

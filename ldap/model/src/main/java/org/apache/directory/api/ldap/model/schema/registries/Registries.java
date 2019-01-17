@@ -45,8 +45,6 @@ import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.LoadableSchemaObject;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.MatchingRuleUse;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.api.ldap.model.schema.NameForm;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
@@ -660,7 +658,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             switch ( schemaObject.getObjectType() )
             {
                 case ATTRIBUTE_TYPE:
-                    AttributeTypeHelper.addToRegistries( ( MutableAttributeType ) schemaObject, errorHandler, this );
+                    AttributeTypeHelper.addToRegistries( ( AttributeType ) schemaObject, errorHandler, this );
                     break;
 
                 case DIT_CONTENT_RULE:
@@ -676,7 +674,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     break;
 
                 case MATCHING_RULE:
-                    MatchingRuleHelper.addToRegistries( ( MutableMatchingRule ) schemaObject, errorHandler, this );
+                    MatchingRuleHelper.addToRegistries( ( MatchingRule ) schemaObject, errorHandler, this );
                     break;
 
                 case MATCHING_RULE_USE:

@@ -49,7 +49,7 @@ public class ObjectClassTest
     private ObjectClass objectClassACopy;
     private ObjectClass objectClassB;
     private ObjectClass objectClassC;
-    private MutableObjectClass objectClass;
+    private ObjectClass objectClass;
 
 
     /**
@@ -64,7 +64,7 @@ public class ObjectClassTest
         objectClassB = new ObjectClass( "aa" );
         objectClassC = new ObjectClass( "cc" );
 
-        objectClass = new MutableObjectClass( "1.2.3.4" );
+        objectClass = new ObjectClass( "1.2.3.4" );
         objectClass.setNames( "name1", "name2" );
         objectClass.setDescription( "description" );
         objectClass.setObsolete( false );

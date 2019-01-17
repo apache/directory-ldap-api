@@ -48,11 +48,8 @@ import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.LoadableSchemaObject;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableMatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
-import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
@@ -1010,7 +1007,7 @@ public class SchemaEntityFactory implements EntityFactory
             schema = schemaManager.getLoadedSchema( schemaName );
         }
 
-        MutableMatchingRule matchingRule = new MutableMatchingRule( oid );
+        MatchingRule matchingRule = new MatchingRule( oid );
 
         // The syntax field
         Attribute mSyntax = entry.get( MetaSchemaConstants.M_SYNTAX_AT );
@@ -1094,7 +1091,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // Create the ObjectClass instance
-        MutableObjectClass oc = new MutableObjectClass( oid );
+        ObjectClass oc = new ObjectClass( oid );
 
         // The Sup field
         Attribute mSuperiors = entry.get( MetaSchemaConstants.M_SUP_OBJECT_CLASS_AT );
@@ -1178,7 +1175,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // Create the new AttributeType
-        MutableAttributeType attributeType = new MutableAttributeType( oid );
+        AttributeType attributeType = new AttributeType( oid );
         
         if ( schemaManager.isRelaxed() )
         {

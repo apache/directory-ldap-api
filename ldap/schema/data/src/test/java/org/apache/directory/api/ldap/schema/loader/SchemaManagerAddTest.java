@@ -40,11 +40,8 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableMatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
-import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
@@ -221,7 +218,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
+        AttributeType attributeType = new AttributeType( "1.1.0" );
         attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -251,7 +248,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
+        AttributeType attributeType = new AttributeType( "1.1.0" );
         attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -279,7 +276,7 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         // Create the collective attribute first
-        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
+        AttributeType attributeType = new AttributeType( "1.1.0" );
         attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -295,7 +292,7 @@ public class SchemaManagerAddTest
         assertEquals( goidSize + 1, schemaManager.getGlobalOidRegistry().size() );
 
         // Now try to create an AT which is a subtype of teh create collective attribute
-        MutableAttributeType subType = new MutableAttributeType( "1.1.1" );
+        AttributeType subType = new AttributeType( "1.1.1" );
         subType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         subType.setOrderingOid( null );
         subType.setSubstringOid( null );
@@ -323,7 +320,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
+        AttributeType attributeType = new AttributeType( "1.1.0" );
         attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -356,7 +353,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
+        AttributeType attributeType = new AttributeType( "1.1.0" );
         attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -390,7 +387,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
+        AttributeType attributeType = new AttributeType( "1.1.0" );
         attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -423,7 +420,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
+        AttributeType attributeType = new AttributeType( "1.1.0" );
         attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -450,7 +447,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
+        AttributeType attributeType = new AttributeType( "1.1.0" );
         attributeType.setEqualityOid( "0.0" );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -482,7 +479,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
+        AttributeType attributeType = new AttributeType( "1.1.0" );
         attributeType.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.8 " );
         attributeType.setUsage( UsageEnum.USER_APPLICATIONS );
 
@@ -508,7 +505,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
+        AttributeType attributeType = new AttributeType( "1.1.0" );
         attributeType.setEqualityOid( null );
         attributeType.setOrderingOid( "0.0" );
         attributeType.setSubstringOid( null );
@@ -540,7 +537,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
+        AttributeType attributeType = new AttributeType( "1.1.0" );
         attributeType.setEqualityOid( null );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( "0.0" );
@@ -572,7 +569,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
+        AttributeType attributeType = new AttributeType( "1.1.0" );
         attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setOrderingOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setSubstringOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
@@ -598,7 +595,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableAttributeType attributeType = new MutableAttributeType( "2.5.18.4" );
+        AttributeType attributeType = new AttributeType( "2.5.18.4" );
         attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setOrderingOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setSubstringOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
@@ -633,7 +630,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableAttributeType attributeType = new MutableAttributeType( "1.1.1.0" );
+        AttributeType attributeType = new AttributeType( "1.1.1.0" );
         attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setOrderingOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setSubstringOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
@@ -667,7 +664,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableAttributeType attributeType = new MutableAttributeType( "1.1.1.0" );
+        AttributeType attributeType = new AttributeType( "1.1.1.0" );
         attributeType.setEqualityOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setOrderingOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
         attributeType.setSubstringOid( SchemaConstants.DISTINGUISHED_NAME_MATCH_MR_OID );
@@ -707,7 +704,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
+        AttributeType attributeType = new AttributeType( "1.1.0" );
         attributeType.setEqualityOid( null );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -736,7 +733,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
+        AttributeType attributeType = new AttributeType( "1.1.0" );
         attributeType.setEqualityOid( null );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -768,7 +765,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
+        AttributeType attributeType = new AttributeType( "1.1.0" );
         attributeType.setEqualityOid( null );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -800,7 +797,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
+        AttributeType attributeType = new AttributeType( "1.1.0" );
         attributeType.setEqualityOid( null );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -950,7 +947,7 @@ public class SchemaManagerAddTest
         int mrrSize = schemaManager.getMatchingRuleRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableMatchingRule matchingRule = new MutableMatchingRule( "1.1.0" );
+        MatchingRule matchingRule = new MatchingRule( "1.1.0" );
         matchingRule.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
 
         // It should not fail
@@ -1007,7 +1004,7 @@ public class SchemaManagerAddTest
         int mrrSize = schemaManager.getMatchingRuleRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableMatchingRule matchingRule = new MutableMatchingRule( "2.5.13.0" );
+        MatchingRule matchingRule = new MatchingRule( "2.5.13.0" );
         matchingRule.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
 
         // It should fail (oid already registered)
@@ -1040,7 +1037,7 @@ public class SchemaManagerAddTest
         int mrrSize = schemaManager.getMatchingRuleRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableMatchingRule matchingRule = new MutableMatchingRule( "1.1.0" );
+        MatchingRule matchingRule = new MatchingRule( "1.1.0" );
         matchingRule.setNames( "Test", "objectIdentifierMatch" );
         matchingRule.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
 
@@ -1068,7 +1065,7 @@ public class SchemaManagerAddTest
         int mrrSize = schemaManager.getMatchingRuleRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableMatchingRule matchingRule = new MutableMatchingRule( "1.1.0" );
+        MatchingRule matchingRule = new MatchingRule( "1.1.0" );
         matchingRule.setNames( "Test", "cn" );
         matchingRule.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
 
@@ -1101,7 +1098,7 @@ public class SchemaManagerAddTest
         int mrrSize = schemaManager.getMatchingRuleRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableMatchingRule matchingRule = new MutableMatchingRule( "1.1.0" );
+        MatchingRule matchingRule = new MatchingRule( "1.1.0" );
         matchingRule.setNames( "Test" );
         matchingRule.setSyntaxOid( "1.1.1" );
 
@@ -1130,7 +1127,7 @@ public class SchemaManagerAddTest
         int mrrSize = schemaManager.getMatchingRuleRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableMatchingRule matchingRule = new MutableMatchingRule( "1.1.0" );
+        MatchingRule matchingRule = new MatchingRule( "1.1.0" );
         matchingRule.setNames( "Test" );
         matchingRule.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
         matchingRule.setSchemaName( "bad" );
@@ -1392,7 +1389,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
+        ObjectClass objectClass = new ObjectClass( "1.1.1" );
         objectClass.addMayAttributeTypeOids( "cn", "none", "userPassword" );
 
         assertFalse( schemaManager.add( objectClass ) );
@@ -1419,7 +1416,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
+        ObjectClass objectClass = new ObjectClass( "1.1.1" );
         objectClass.addMustAttributeTypeOids( "cn", "none", "userPassword" );
 
         assertFalse( schemaManager.add( objectClass ) );
@@ -1446,7 +1443,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
+        ObjectClass objectClass = new ObjectClass( "1.1.1" );
         objectClass.addMayAttributeTypeOids( "cn", "ref", "commonName" );
 
         assertFalse( schemaManager.add( objectClass ) );
@@ -1471,7 +1468,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
+        ObjectClass objectClass = new ObjectClass( "1.1.1" );
         objectClass.addMustAttributeTypeOids( "cn", "ref", "2.5.4.3" );
 
         assertFalse( schemaManager.add( objectClass ) );
@@ -1496,7 +1493,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
+        ObjectClass objectClass = new ObjectClass( "1.1.1" );
         objectClass.addMustAttributeTypeOids( "cn", "ref" );
         objectClass.addMayAttributeTypeOids( "2.5.4.3" );
 
@@ -1525,7 +1522,7 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         // Check a addition in MUST
-        MutableObjectClass objectClassMust = new MutableObjectClass( "1.1.1" );
+        ObjectClass objectClassMust = new ObjectClass( "1.1.1" );
         objectClassMust.addMustAttributeTypeOids( "c-o", "ref" );
 
         // collective attribute in MUST : failure expected
@@ -1540,7 +1537,7 @@ public class SchemaManagerAddTest
         assertEquals( goidSize, schemaManager.getGlobalOidRegistry().size() );
 
         // Check an addition in MAY
-        MutableObjectClass objectClassMay = new MutableObjectClass( "1.1.1" );
+        ObjectClass objectClassMay = new ObjectClass( "1.1.1" );
         objectClassMay.addMayAttributeTypeOids( "c-o", "ref" );
 
         // collective attribute in MAY : failure expected
@@ -1569,7 +1566,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
+        ObjectClass objectClass = new ObjectClass( "1.1.1" );
         objectClass.setNames( "Test" );
         objectClass.setType( ObjectClassTypeEnum.STRUCTURAL );
         objectClass.addSuperiorOids( "alias", "referral", "top" );
@@ -1611,7 +1608,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
+        ObjectClass objectClass = new ObjectClass( "1.1.1" );
         objectClass.setNames( "Test" );
         objectClass.setType( ObjectClassTypeEnum.STRUCTURAL );
         objectClass.addSuperiorOids( "alias", "Test", "referral" );
@@ -1636,7 +1633,7 @@ public class SchemaManagerAddTest
         SchemaManager schemaManager = loadSystem();
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
-        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
+        ObjectClass objectClass = new ObjectClass( "1.1.1" );
 
         objectClass.setNames( "Test" );
         objectClass.setType( ObjectClassTypeEnum.STRUCTURAL );
@@ -1663,7 +1660,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
+        ObjectClass objectClass = new ObjectClass( "1.1.1" );
         objectClass.setNames( "Test" );
         objectClass.setType( ObjectClassTypeEnum.STRUCTURAL );
         objectClass.addSuperiorOids( "alias", "refessal" );
@@ -1689,7 +1686,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
+        ObjectClass objectClass = new ObjectClass( "1.1.1" );
         objectClass.setNames( "Test" );
         objectClass.setType( ObjectClassTypeEnum.ABSTRACT );
         objectClass.addSuperiorOids( "extensibleObject" );
@@ -1715,7 +1712,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
+        ObjectClass objectClass = new ObjectClass( "1.1.1" );
         objectClass.setNames( "Test" );
         objectClass.setType( ObjectClassTypeEnum.ABSTRACT );
         objectClass.addSuperiorOids( "referral" );
@@ -1741,7 +1738,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
+        ObjectClass objectClass = new ObjectClass( "1.1.1" );
         objectClass.setNames( "Test" );
         objectClass.setType( ObjectClassTypeEnum.AUXILIARY );
         objectClass.addSuperiorOids( "referral" );
@@ -1767,7 +1764,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
+        ObjectClass objectClass = new ObjectClass( "1.1.1" );
         objectClass.setNames( "Test" );
         objectClass.setType( ObjectClassTypeEnum.STRUCTURAL );
         objectClass.addSuperiorOids( "extensibleObject" );
@@ -1794,7 +1791,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
+        ObjectClass objectClass = new ObjectClass( "1.1.1" );
         objectClass.setNames( "Test" );
         objectClass.setType( ObjectClassTypeEnum.STRUCTURAL );
         objectClass.addSuperiorOids( "alias", "OpenLDAProotDSE" );
@@ -1837,7 +1834,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
+        ObjectClass objectClass = new ObjectClass( "1.1.1" );
         objectClass.setNames( "Test" );
         objectClass.setType( ObjectClassTypeEnum.STRUCTURAL );
         objectClass.addSuperiorOids( "alias", "OpenLDAProotDSE" );

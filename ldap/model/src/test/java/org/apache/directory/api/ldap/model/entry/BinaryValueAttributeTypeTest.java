@@ -38,8 +38,7 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableMatchingRule;
+import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.PrepareString;
 import org.apache.directory.api.ldap.model.schema.comparators.ByteArrayComparator;
@@ -70,8 +69,8 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 public class BinaryValueAttributeTypeTest
 {
     private LdapSyntax s;
-    private MutableAttributeType at;
-    private MutableMatchingRule mr;
+    private AttributeType at;
+    private MatchingRule mr;
 
     private static final byte[] BYTES1 = new byte[]
         { 0x01, 0x02, 0x03, 0x04 };
@@ -118,7 +117,7 @@ public class BinaryValueAttributeTypeTest
             }
         } );
 
-        at = new MutableAttributeType( "1.1.3.1" );
+        at = new AttributeType( "1.1.3.1" );
         at.setEquality( mr );
         at.setOrdering( mr );
         at.setSubstring( mr );
@@ -206,7 +205,7 @@ public class BinaryValueAttributeTypeTest
     public void testBadConstructor()
     {
         // create a AT with no syntax
-        MutableAttributeType attribute = new MutableAttributeType( "1.1.3.1" );
+        AttributeType attribute = new AttributeType( "1.1.3.1" );
 
         Value value = Value.createValue( attribute );
         assertTrue( value.isHumanReadable() );
