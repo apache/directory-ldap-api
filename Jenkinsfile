@@ -27,6 +27,23 @@ pipeline {
     pollSCM('@daily')
   }
   stages {
+    stage ('Debug') {
+      agent {
+        docker {
+          label 'ubuntu'
+          image 'apachedirectory/maven-build:jdk-8'
+          args '-v $HOME/.m2:/var/maven/.m2'
+        }
+      }
+      steps {
+        sh 'env'
+      }
+      post {
+        always {
+          deleteDir()
+        }
+      }
+    }
     stage ('Build and Test') {
       parallel {
         stage ('Linux Java 8') {
@@ -110,7 +127,7 @@ pipeline {
       }
       when {
         beforeAgent true
-        branch 'master'
+        branch 'origin/master'
       }
       steps {
         sh 'mvn -V clean deploy'
@@ -120,6 +137,13 @@ pipeline {
           deleteDir()
         }
       }
+    }
+  }
+  post {
+    failure {
+      mail to: 'notifications@directory.apache.org',
+      subject: "Jenkins pipeline failed: ${currentBuild.fullDisplayName}",
+      body: "Jenkins build URL: ${env.BUILD_URL}"
     }
   }
 }
