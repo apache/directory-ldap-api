@@ -125,10 +125,6 @@ pipeline {
           args '-v $HOME/.m2:/var/maven/.m2'
         }
       }
-      when {
-        beforeAgent true
-        branch 'origin/master'
-      }
       steps {
         sh 'mvn -V clean deploy'
       }
