@@ -119,14 +119,16 @@ pipeline {
     }
     stage ('Deploy') {
       agent {
-        docker {
-          label 'ubuntu'
-          image 'apachedirectory/maven-build:jdk-8'
-          args '-v $HOME/.m2:/var/maven/.m2'
-        }
+        label 'ubuntu'
       }
+      // https://cwiki.apache.org/confluence/display/INFRA/JDK+Installation+Matrix
+      // https://cwiki.apache.org/confluence/display/INFRA/Maven+Installation+Matrix
       steps {
-        sh 'mvn -V clean deploy'
+        sh '''
+        export JAVA_HOME=/home/jenkins/tools/java/latest1.8
+        export MAVEN_OPTS="-Xmx512m"
+        /home/jenkins/tools/maven/latest3/bin/mvn -V clean install source:jar deploy
+        '''
       }
       post {
         always {
