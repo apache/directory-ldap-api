@@ -61,7 +61,7 @@
     <commons.collections.version>4.2</commons.collections.version>
     <commons.lang.version>3.8.1</commons.lang.version>
     <commons.pool.version>2.6.0</commons.pool.version>
-    <dom4j.version>1.6.1</dom4j.version>
+    <dom4j.version>2.1.1</dom4j.version>
     <forbiddenapis.version>2.5</forbiddenapis.version>
     <junit.version>4.12</junit.version>
     <log4j.version>1.2.17</log4j.version>
@@ -592,7 +592,7 @@
       <dependency>
         <groupId>org.apache.servicemix.bundles</groupId>
         <artifactId>org.apache.servicemix.bundles.dom4j</artifactId>
-        <version>${dom4j.version}_5</version>
+        <version>${dom4j.version}_1</version>
       </dependency>
 
       <dependency>
