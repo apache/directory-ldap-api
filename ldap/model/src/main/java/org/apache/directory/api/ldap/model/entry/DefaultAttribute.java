@@ -130,6 +130,7 @@ public class DefaultAttribute implements Attribute, Cloneable
             catch ( LdapInvalidAttributeValueException liave )
             {
                 // Do nothing, it can't happen, there is no value
+                liave.printStackTrace();
             }
         }
     }
