@@ -1889,22 +1889,24 @@ public class DefaultAttribute implements Attribute, Cloneable
      */
     private void rehash()
     {
-        h = 37;
+        int hTmp = 37;
 
         if ( isHR != null )
         {
-            h = h * 17 + isHR.hashCode();
+            hTmp = hTmp * 17 + isHR.hashCode();
         }
 
         if ( id != null )
         {
-            h = h * 17 + id.hashCode();
+            hTmp = hTmp * 17 + id.hashCode();
         }
 
         if ( attributeType != null )
         {
-            h = h * 17 + attributeType.hashCode();
+            hTmp = hTmp * 17 + attributeType.hashCode();
         }
+        
+        h = hTmp;
     }
 
 

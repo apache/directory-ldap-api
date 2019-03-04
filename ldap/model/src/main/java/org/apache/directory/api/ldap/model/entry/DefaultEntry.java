@@ -546,8 +546,8 @@ public final class DefaultEntry implements Entry
      */
     private void rehash()
     {
-        h = 37;
-        h = h * 17 + dn.hashCode();
+        int hTmp = 37;
+        h = hTmp * 17 + dn.hashCode();
     }
 
 

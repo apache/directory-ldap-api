@@ -1470,10 +1470,10 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     {
         if ( h == 0 )
         {
-            h = 37;
+            int hTmp = 37;
 
-            h = h * 17 + ( normType != null ? normType.hashCode() : 0 );
-            h = h * 17 + ( value != null ? value.hashCode() : 0 );
+            hTmp = hTmp * 17 + ( normType != null ? normType.hashCode() : 0 );
+            h = hTmp * 17 + ( value != null ? value.hashCode() : 0 );
         }
 
         return h;

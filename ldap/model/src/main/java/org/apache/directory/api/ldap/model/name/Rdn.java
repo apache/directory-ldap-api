@@ -1730,7 +1730,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
     {
         if ( h == 0 )
         {
-            h = 37;
+            int hTmp = 37;
 
             switch ( nbAvas )
             {
@@ -1740,7 +1740,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
                 case 1:
                     // We have a single Ava
-                    h = h * 17 + ava.hashCode();
+                    h = hTmp * 17 + ava.hashCode();
                     break;
 
                 default:
@@ -1748,7 +1748,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
                     for ( Ava ata : avas )
                     {
-                        h = h * 17 + ata.hashCode();
+                        h = hTmp * 17 + ata.hashCode();
                     }
 
                     break;
