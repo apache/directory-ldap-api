@@ -85,8 +85,10 @@ public final class LdapEncoder
      *
      *
      * @param buffer The buffer that will contain the encoded control
-     * @param control The control to encode
-     * @return The control encoded in a byte[]
+     * @param codec The LdapApiService instance 
+     * @param controls The controls to encode
+     * @param iterator The Iterator instance we are processing
+     * @param isRequest A flag set to <tt>true</tt> if the LdapMessage is a request
      * @throws EncoderException If the encoding failed
      */
     private static void encodeControls( Asn1Buffer buffer, LdapApiService codec,
@@ -264,6 +266,7 @@ public final class LdapEncoder
      * LdapMessageLength = Length(0x30) + Length(L1) + L1
      * </pre>
      *
+     * @param buffer The Asn1Buffer instance in which we store the temporary result
      * @param codec The LdapApiService instance
      * @param message The message to encode
      * @return A ByteBuffer that contains the PDU

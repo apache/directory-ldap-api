@@ -59,7 +59,7 @@ public class EndTransactionRequestContainer extends AbstractContainer
      * Set a EndTransactionRequest Object into the container. It will be completed by
      * the ldapDecoder.
      * 
-     * @param endTransactionRequestDecorator the EndTransactionRequest to set.
+     * @param endTransactionRequest the EndTransactionRequest to set.
      */
     public void setEndTransactionRequest( EndTransactionRequest endTransactionRequest )
     {

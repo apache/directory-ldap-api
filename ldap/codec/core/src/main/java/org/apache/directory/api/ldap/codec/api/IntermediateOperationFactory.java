@@ -62,7 +62,7 @@ public interface IntermediateOperationFactory
      * Encode the value part of the intermediate response operation.
      *
      * @param buffer The buffer into which to put the encoded value
-     * @param IntermediateResponse The IntermediateResponse Operation to encode
+     * @param intermediateResponse The IntermediateResponse Operation to encode
      */
     void encodeValue( Asn1Buffer buffer, IntermediateResponse intermediateResponse );
 
@@ -70,8 +70,9 @@ public interface IntermediateOperationFactory
     /**
      * Decode the value part of the intermediate response operation.
      *
-     * @param IntermediateResponse The IntermediateResponse Operation to feed
-     * @param responseValue The response bvalue to decode
+     * @param intermediateResponse The IntermediateResponse Operation to feed
+     * @param responseValue The response value to decode
+     * @throws DecoderException If the value cannot be decoded
      */
     void decodeValue( IntermediateResponse intermediateResponse, byte[] responseValue ) throws DecoderException;
 }

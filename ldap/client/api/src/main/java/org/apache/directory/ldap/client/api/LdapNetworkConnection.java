@@ -2459,6 +2459,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     /**
      * Process the AddResponse received from the server
+     * 
+     * @param addResponse The AddResponse to process
+     * @param addFuture The AddFuture to feed
+     * @param responseId The associated request message ID
+     * @throws InterruptedException If the Future is interrupted
      */
     private void addReceived( AddResponse addResponse, AddFuture addFuture, int responseId ) throws InterruptedException
     {
@@ -2487,8 +2492,14 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     /**
      * Process the BindResponse received from the server
+     * 
+     * @param bindResponse The BindResponse to process
+     * @param bindFuture The BindFuture to feed
+     * @param responseId The associated request message ID
+     * @throws InterruptedException If the Future is interrupted
      */
-    private void bindReceived( BindResponse bindResponse, BindFuture bindFuture, int responseId ) throws InterruptedException
+    private void bindReceived( BindResponse bindResponse, BindFuture bindFuture, int responseId ) 
+        throws InterruptedException
     {
         // remove the listener from the listener map
         if ( bindResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
@@ -2520,8 +2531,14 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     /**
      * Process the CompareResponse received from the server
+     * 
+     * @param compareResponse The CompareResponse to process
+     * @param compareFuture The CompareFuture to feed
+     * @param responseId The associated request message ID
+     * @throws InterruptedException If the Future is interrupted
      */
-    private void compareReceived( CompareResponse compareResponse, CompareFuture compareFuture, int responseId ) throws InterruptedException
+    private void compareReceived( CompareResponse compareResponse, CompareFuture compareFuture, int responseId ) 
+       throws InterruptedException
     {
         // remove the listener from the listener map
         if ( LOG.isDebugEnabled() )
@@ -2548,8 +2565,14 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     /**
      * Process the DeleteResponse received from the server
+     * 
+     * @param deleteResponse The DeleteResponse to process
+     * @param deleteFuture The DeleteFuture to feed
+     * @param responseId The associated request message ID
+     * @throws InterruptedException If the Future is interrupted
      */
-    private void deleteReceived( DeleteResponse deleteResponse, DeleteFuture deleteFuture, int responseId ) throws InterruptedException
+    private void deleteReceived( DeleteResponse deleteResponse, DeleteFuture deleteFuture, int responseId ) 
+        throws InterruptedException
     {
         if ( LOG.isDebugEnabled() )
         {
@@ -2575,6 +2598,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     /**
      * Process the ExtendedResponse received from the server
+     * 
+     * @param extendedResponse The ExtendedResponse to process
+     * @param extendedFuture The ExtendedFuture to feed
+     * @param responseId The associated request message ID
+     * @throws InterruptedException If the Future is interrupted
+     * @throws DecoderException If the response cannot be decoded
      */
     private void extendedReceived( ExtendedResponse extendedResponse, ExtendedFuture extendedFuture, int responseId ) 
         throws InterruptedException, DecoderException
@@ -2605,6 +2634,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     /**
      * Process the IntermediateResponse received from the server
+     * 
+     * @param intermediateResponse The IntermediateResponse to process
+     * @param responseFuture The ResponseFuture to feed
+     * @throws InterruptedException If the Future is interrupted
      */
     private void intermediateReceived( IntermediateResponse intermediateResponse, ResponseFuture<? extends Response> responseFuture ) 
         throws InterruptedException
@@ -2631,6 +2664,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     /**
      * Process the ModifyResponse received from the server
+     * 
+     * @param modifyResponse The ModifyResponse to process
+     * @param modifyFuture The ModifyFuture to feed
+     * @param responseId The associated request message ID
+     * @throws InterruptedException If the Future is interrupted
      */
     private void modifyReceived( ModifyResponse modifyResponse, ModifyFuture modifyFuture, int responseId ) 
         throws InterruptedException
@@ -2665,6 +2703,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     /**
      * Process the ModifyDnResponse received from the server
+     * 
+     * @param modifyDnResponse The ModifyDnResponse to process
+     * @param modifyDnFuture The ModifyDnFuture to feed
+     * @param responseId The associated request message ID
+     * @throws InterruptedException If the Future is interrupted
      */
     private void modifyDnReceived( ModifyDnResponse modifyDnResponse, ModifyDnFuture modifyDnFuture, int responseId ) 
         throws InterruptedException
@@ -2693,6 +2736,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     /**
      * Process the SearchResultDone received from the server
+     * 
+     * @param searchResultDone The SearchResultDone to process
+     * @param searchFuture The SearchFuture to feed
+     * @param responseId The associated request message ID
+     * @throws InterruptedException If the Future is interrupted
      */
     private void searchResultDoneReceived( SearchResultDone searchResultDone, SearchFuture searchFuture, 
         int responseId ) throws InterruptedException
@@ -2721,6 +2769,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     /**
      * Process the SearchResultEntry received from the server
+     * 
+     * @param searchResultEntry The SearchResultEntry to process
+     * @param searchFuture The SearchFuture to feed
+     * @throws InterruptedException If the Future is interrupted
+     * @throws LdapException If we weren't able to create a new Entry
      */
     private void searchResultEntryReceived( SearchResultEntry searchResultEntry, SearchFuture searchFuture ) 
         throws InterruptedException, LdapException
@@ -2742,9 +2795,13 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     
     /**
      * Process the SearchResultEntry received from the server
+     * 
+     * @param searchResultReference The SearchResultReference to process
+     * @param searchFuture The SearchFuture to feed
+     * @throws InterruptedException If the Future is interrupted
      */
     private void searchResultReferenceReceived( SearchResultReference searchResultReference, SearchFuture searchFuture ) 
-        throws InterruptedException, LdapException
+        throws InterruptedException
     {
         if ( LOG.isDebugEnabled() )
         {

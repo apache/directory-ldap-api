@@ -65,6 +65,7 @@ public interface ExtendedOperationFactory
      * Creates a new ExtendedResponse, for the ExtendedRequest with no value
      * 
      * @return The new ExtendedResponse.
+     * @throws DecoderException If the response cannot be decoded
      */
     ExtendedResponse newResponse() throws DecoderException;
 
@@ -94,6 +95,7 @@ public interface ExtendedOperationFactory
      *
      * @param extendedRequest The ExtendedRequest Operation to feed
      * @param requestValue The request value to decode
+     * @throws DecoderException If the value cannot be decoded
      */
     void decodeValue( ExtendedRequest extendedRequest, byte[] requestValue ) throws DecoderException;
 
@@ -112,6 +114,7 @@ public interface ExtendedOperationFactory
      *
      * @param extendedResponse The ExtendedResponse Operation to feed
      * @param responseValue The response value to decode
+     * @throws DecoderException If the value cannot be decoded
      */
     void decodeValue( ExtendedResponse extendedResponse, byte[] responseValue ) throws DecoderException;
 }

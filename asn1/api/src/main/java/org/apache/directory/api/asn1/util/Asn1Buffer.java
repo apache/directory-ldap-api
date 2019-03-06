@@ -59,7 +59,9 @@ public class Asn1Buffer
 
 
     /**
-     * @return The current position in the buffer
+     * Set the current position in the buffer
+     * 
+     * @param pos The position to move the buffer to
      */
     public void setPos( int pos )
     {
@@ -106,6 +108,8 @@ public class Asn1Buffer
 
     /**
      * Extend the buffer
+     * 
+     * @param size The new buffer size
      */
     private void extend( int size )
     {

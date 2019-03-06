@@ -110,9 +110,9 @@ public final class LdapClientTrustStoreManager implements X509TrustManager, Seri
     /**
      * Determine if client certificate is to be trusted.
      *
-     * @param x509Chain
-     * @param authNType
-     * @throws CertificateException
+     * @param x509Chain The certificate chain
+     * @param authNType The key exchange algorithm being used
+     * @throws CertificateException If the trustManager cannot be found 
      */
     public synchronized void checkClientTrusted( X509Certificate[] x509Chain, String authNType ) throws CertificateException
     {
@@ -127,9 +127,9 @@ public final class LdapClientTrustStoreManager implements X509TrustManager, Seri
     /**
      * Determine if server certificate is to be trusted.
      *
-     * @param x509Chain
-     * @param authNType
-     * @throws CertificateException
+     * @param x509Chain The certificate chain
+     * @param authNType The key exchange algorithm being used
+     * @throws CertificateException If the trustManager cannot be found 
      */
     public synchronized void checkServerTrusted( X509Certificate[] x509Chain, String authNType ) throws
         CertificateException
@@ -344,7 +344,7 @@ public final class LdapClientTrustStoreManager implements X509TrustManager, Seri
      * Read the trust store off the classpath.
      *
      * @return handle to inputStream containing the trust store
-     * @throws CertificateException
+     * @throws CertificateException If the file cannot be found
      */
     private InputStream getTrustStoreInputStream() throws CertificateException
     {

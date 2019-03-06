@@ -68,6 +68,7 @@ public interface ControlFactory<C extends Control>
      *  @param container The Asn1Container containing the control to feed
      *  @param control The control to feed
      *  @param controlBytes The data to decode
+     *  @throws DecoderException If the value can't be decoded
      */
     void decodeValue( ControlContainer container, Control control, byte[] controlBytes ) throws DecoderException;
     
@@ -77,6 +78,7 @@ public interface ControlFactory<C extends Control>
      * 
      *  @param control The control to feed
      *  @param controlBytes The data to decode
+     *  @throws DecoderException If the value can't be decoded
      */
     void decodeValue( Control control, byte[] controlBytes ) throws DecoderException;
 }

@@ -56,7 +56,6 @@ public final class SearchResultEntryFactory extends ResponseFactory
      * 0x04 LL attributeValue
      * </pre>
      *
-     * @param codec The LdapApiService instance
      * @param buffer The buffer where to put the PDU
      * @param values The iterator on the values
      */

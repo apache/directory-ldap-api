@@ -46,6 +46,7 @@ public abstract class AbstractControlFactory<C extends Control> implements Contr
      * Creates a new instance of AbstractControlFactory.
      *
      * @param codec The LdapApiSevice instance
+     * @param oid The control's OID
      */
     protected AbstractControlFactory( LdapApiService codec, String oid )
     {

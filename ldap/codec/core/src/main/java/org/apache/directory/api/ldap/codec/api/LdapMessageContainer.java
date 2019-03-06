@@ -406,8 +406,6 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
      * is considered as terminated either if :
      *  - it's a final element (ie an element which cannot contains a Filter)
      *  - its current length equals its expected length.
-     *
-     * @param container The container being decoded
      */
     public void unstackFilters()
     {

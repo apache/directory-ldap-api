@@ -28,7 +28,7 @@ import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.OpaqueControl;
 
 /**
- * A codec {@link ControlFactory} implementation for {@link Opaque} controls.
+ * A codec {@link ControlFactory} implementation for opaque controls.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -39,7 +39,7 @@ public class OpaqueControlFactory extends AbstractControlFactory<Control>
      * Creates a new instance of OpaqueControlFactory.
      *
      * @param codec The LDAP codec.
-     * @param the control to create
+     * @param oid The Control's OID
      */
     public OpaqueControlFactory( LdapApiService codec, String oid )
     {

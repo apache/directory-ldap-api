@@ -90,6 +90,7 @@ public final class SearchRequestFactory implements Messagefactory
      *
      * @param buffer The buffer where to put the PDU
      * @param node The Branch filter to encode
+     * @param tag the ASN.1 type
      */
     private void encodeFilter( Asn1Buffer buffer, BranchNode node, byte tag )
     {
@@ -110,7 +111,7 @@ public final class SearchRequestFactory implements Messagefactory
 
     /**
      * Encode a SimpleNode.
-     * <pre>
+     * <br>
      * SimpleFilter :
      * <pre>
      * 0xA3/0xA5/0xA6/A8 LL
@@ -120,6 +121,7 @@ public final class SearchRequestFactory implements Messagefactory
      *
      * @param buffer The buffer where to put the PDU
      * @param node The Simple filter to encode
+     * @param tag the ASN.1 type
      */
     private void encodeFilter( Asn1Buffer buffer, SimpleNode<?> node, byte tag )
     {
@@ -157,7 +159,7 @@ public final class SearchRequestFactory implements Messagefactory
 
     /**
      * Encode a SubstringNode.
-     * <pre>
+     * <br>
      * Substrings Filter :
      * <pre>
      * 0xA4 LL
@@ -218,7 +220,6 @@ public final class SearchRequestFactory implements Messagefactory
 
     /**
      * Encode an ExtensibleNode.
-     * <pre>
      * <br>
      * ExtensibleMatch filter :
      * <pre>

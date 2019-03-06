@@ -188,7 +188,8 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
     /**
      * Creates a new instance of StandaloneLdapApiService.
      *
-     * @param controls The list of controls to store
+     * @param requestControls The list of request controls to store
+     * @param responseControls The list of response controls to store
      * @param extendedOperations The list of extended operations to store
      * @param intermediateResponses The list of intermediate responsess to store
      * @throws Exception If we had an issue with one of the two lists
@@ -242,6 +243,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
     /**
      * Parses the system properties to obtain the controls list.
      *
+     * @param type The control's type
      * @return A list of controls
      */
     private static List<String> getControlsFromSystemProperties( ControlType type )
@@ -348,6 +350,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      * Loads a list of controls from their FQCN.
      *
      * @param controlsList The list of controls to load
+     * @param controlFactories The set of control factories already loaded
      * @throws Exception if a control could not be loaded
      */
     private void loadControls( List<String> controlsList, Map<String, ControlFactory<? extends Control>> controlFactories )
@@ -368,6 +371,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      * Loads a control from its FQCN.
      *
      * @param controlFQCN The control FQCN
+     * @param controlFactories The set of control factories already loaded
      * @throws Exception If the control could not be loaded
      */
     private void loadControl( String controlFQCN, Map<String, ControlFactory<? extends Control>> controlFactories )

@@ -66,8 +66,6 @@ public final class StockCodecFactoryUtil
     /**
      * Loads the Controls implement out of the box in the codec.
      *
-     * @param requestControlFactories The Request Control factories to use
-     * @param responseControlFactories The Response Control factories to use
      * @param apiService The LDAP Service instance to use
      */
     public static void loadStockControls( LdapApiService apiService )

@@ -313,10 +313,10 @@
         <configuration>
           <show>private</show>
           <nohelp>true</nohelp>
-          <additionalOptions>
+          <!-- additionalOptions>
             <additionalOptions>-Xmaxwarns 1000</additionalOptions>
             <additionalOptions>-Xmaxerrs 1000</additionalOptions>
-          </additionalOptions>
+          </additionalOptions -->
         </configuration>
       </plugin>
 

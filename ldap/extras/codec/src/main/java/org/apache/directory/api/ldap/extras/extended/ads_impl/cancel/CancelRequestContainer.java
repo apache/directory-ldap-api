@@ -59,7 +59,7 @@ public class CancelRequestContainer extends AbstractContainer
      * Set a Cancel Object into the container. It will be completed
      * by the ldapDecoder.
      * 
-     * @param cancel the Cancel to set.
+     * @param cancelRequest the Cancel to set.
      */
     public void setCancelRequest( CancelRequest cancelRequest )
     {

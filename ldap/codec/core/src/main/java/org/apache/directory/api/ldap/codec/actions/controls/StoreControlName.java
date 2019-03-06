@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
  * <pre>
  * Control ::= SEQUENCE {
  *     controlType             LDAPOID,
- *     ...LdapMessageContainerDirect<Message>
+ *     ...LdapMessageContainerDirect&lt;Message&gt;
  * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>

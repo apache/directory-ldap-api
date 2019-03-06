@@ -50,7 +50,7 @@ public interface PasswordModifyResponse extends ExtendedResponse
     /**
      * Set the generated password
      * 
-     * @param The generated password to set
+     * @param genPassword The generated password to set
      */
     void setGenPassword( byte[] genPassword );
 }

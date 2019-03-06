@@ -43,8 +43,6 @@ public class SyncInfoValueFactory implements IntermediateOperationFactory
 {
     /**
      * Creates a new instance of SyncInfoValueFactory.
-     *
-     * @param codec The codec for this factory.
      */
     public SyncInfoValueFactory()
     {

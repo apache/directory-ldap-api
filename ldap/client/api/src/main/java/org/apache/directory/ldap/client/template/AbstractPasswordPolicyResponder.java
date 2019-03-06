@@ -70,7 +70,7 @@ public abstract class AbstractPasswordPolicyResponder implements PasswordPolicyR
      * <code>resultCode</code>.
      * 
      * @param resultResponse The result response
-     * @param passwordPolicy The password policy in use
+     * @param passwordPolicyResponse The password policy in use
      * @param resultCode The result
      * @return The created PasswordException
      */

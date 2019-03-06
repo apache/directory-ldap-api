@@ -226,6 +226,7 @@ public final class ParserUtils
      * @param codec The LDAP Service to use
      * @param element the element to add the Controls to
      * @param controls a List of Controls
+     * @param isRequest A flag set to <tt>true</tt> if teh LDapMessage is a request
      */
     public static void addControls( LdapApiService codec, Element element, Collection<Control> controls, boolean isRequest )
     {

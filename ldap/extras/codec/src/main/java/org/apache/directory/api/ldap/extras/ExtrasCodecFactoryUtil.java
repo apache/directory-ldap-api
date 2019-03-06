@@ -90,8 +90,6 @@ public final class ExtrasCodecFactoryUtil
     /**
      * Loads the extras controls.
      *
-     * @param requestControlFactories The Request Control factories to use
-     * @param responseControlFactories The Response Control factories to use
      * @param apiService The LDAP Service instance to use
      */
     public static void loadExtrasControls( LdapApiService apiService )
@@ -248,7 +246,6 @@ public final class ExtrasCodecFactoryUtil
      * <li>startTransaction</li>
      * </ul>
      *
-     * @param extendendOperationsFactories The map of extended operation factories
      * @param apiService The LdapApiService to use
      */
     public static void loadExtrasExtendedOperations( LdapApiService apiService )
@@ -362,7 +359,6 @@ public final class ExtrasCodecFactoryUtil
      * <li>syncInfovalue</li>
      * </ul>
      *
-     * @param intermediateResponseFactories The map of intermediate response factories
      * @param apiService The LdapApiService to use
      */
     public static void loadExtrasIntermediateResponses( LdapApiService apiService )

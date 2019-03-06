@@ -63,7 +63,7 @@ public class PersistentSearchContainer extends AbstractContainer implements Cont
      * Set a PSearchControl Object into the container. It will be completed by
      * the ldapDecoder.
      * 
-     * @param decorator the PSearchControl to set.
+     * @param control the PSearchControl to set.
      */
     public void setControl( Control control )
     {
