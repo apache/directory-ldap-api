@@ -38,7 +38,7 @@ public class DitContentRuleDescriptionSchemaParser extends AbstractSchemaParser<
      */
     public DitContentRuleDescriptionSchemaParser()
     {
-        super( DitContentRule.class, I18n.ERR_13833_CANNOT_PARSE_NULL_DCR, I18n.ERR_13834_DCR_PARSING_FAILURE, I18n.ERR_13385_DCR_DESC_PARSING_FAILURE );
+        super( DitContentRule.class, I18n.ERR_13833_CANNOT_PARSE_NULL_DCR, I18n.ERR_13834_DCR_PARSING_FAILURE, I18n.ERR_13835_DCR_DESC_PARSING_FAILURE );
     }
 
 

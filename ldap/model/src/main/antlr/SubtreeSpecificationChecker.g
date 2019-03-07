@@ -23,6 +23,7 @@ header
 
 package org.apache.directory.api.ldap.model.subtree;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.filter.ExprNode;
 import org.apache.directory.api.ldap.model.filter.LeafNode;
@@ -70,7 +71,7 @@ options
 // ----------------------------------------------------------------------------
 
 {
-    private static final Logger log = LoggerFactory.getLogger( AntlrSubtreeSpecificationChecker.class );
+    private static final Logger LOG = LoggerFactory.getLogger( AntlrSubtreeSpecificationCheckerLexer.class );
     
     private ComponentsMonitor subtreeSpecificationComponentsMonitor = null;
     
@@ -98,9 +99,7 @@ options
         }
         catch ( NumberFormatException e )
         {
-            throw new RecognitionException( "Value of INTEGER token " +
-                                            token.getText() +
-                                            " cannot be converted to an Integer" );
+            throw new RecognitionException( I18n.err( I18n.ERR_13900_INTEGER_TOKEN_NOT_INTEGER, token.getText() ) );
         }
         
         return i;
@@ -114,14 +113,14 @@ options
 
 wrapperEntryPoint
 {
-    log.debug( "entered wrapperEntryPoint()" );
+    LOG.debug( "entered wrapperEntryPoint()" );
 } :
     subtreeSpecification "end"
     ;
 
 subtreeSpecification
 {
-    log.debug( "entered subtreeSpecification()" );
+    LOG.debug( "entered subtreeSpecification()" );
     subtreeSpecificationComponentsMonitor = new OptionalComponentsMonitor( 
             new String [] { "base", "specificExclusions", "minimum", "maximum", "specificationFilter" } );
 }
@@ -134,7 +133,7 @@ subtreeSpecification
 
 subtreeSpecificationComponent
 {
-    log.debug( "entered subtreeSpecification()" );
+    LOG.debug( "entered subtreeSpecification()" );
 }
     :
     ss_base
@@ -161,12 +160,12 @@ subtreeSpecificationComponent
     exception
     catch [IllegalArgumentException e]
     {
-        throw new RecognitionException( e.getMessage() );
+        throw new RecognitionException( I18n.err( I18n.ERR_13901_MESSAGE, e.getMessage() ) );
     }
 
 ss_base
 {
-    log.debug( "entered ss_base()" );
+    LOG.debug( "entered ss_base()" );
 }
     :
     ID_base ( SP )+ distinguishedName
@@ -174,7 +173,7 @@ ss_base
 
 ss_specificExclusions
 {
-    log.debug( "entered ss_specificExclusions()" );
+    LOG.debug( "entered ss_specificExclusions()" );
 }
     :
     ID_specificExclusions ( SP )+ specificExclusions
@@ -182,7 +181,7 @@ ss_specificExclusions
 
 specificExclusions
 {
-    log.debug( "entered specificExclusions()" );
+    LOG.debug( "entered specificExclusions()" );
 }
     :
     OPEN_CURLY ( SP )*
@@ -194,7 +193,7 @@ specificExclusions
 
 specificExclusion
 {
-    log.debug( "entered specificExclusion()" );
+    LOG.debug( "entered specificExclusion()" );
 }
     :
     chopBefore | chopAfter
@@ -202,7 +201,7 @@ specificExclusion
 
 chopBefore
 {
-    log.debug( "entered chopBefore()" );
+    LOG.debug( "entered chopBefore()" );
 }
     :
     ID_chopBefore ( SP )* COLON ( SP )* distinguishedName
@@ -210,7 +209,7 @@ chopBefore
 
 chopAfter
 {
-    log.debug( "entered chopAfter()" );
+    LOG.debug( "entered chopAfter()" );
 }
     :
     ID_chopAfter ( SP )* COLON ( SP )* distinguishedName
@@ -218,7 +217,7 @@ chopAfter
 
 ss_minimum
 {
-    log.debug( "entered ss_minimum()" );
+    LOG.debug( "entered ss_minimum()" );
 }
     :
     ID_minimum ( SP )+ baseDistance
@@ -226,7 +225,7 @@ ss_minimum
 
 ss_maximum
 {
-    log.debug( "entered ss_maximum()" );
+    LOG.debug( "entered ss_maximum()" );
 }
     :
     ID_maximum ( SP )+ baseDistance
@@ -234,7 +233,7 @@ ss_maximum
 
 ss_specificationFilter
 {
-    log.debug( "entered ss_specificationFilter()" );
+    LOG.debug( "entered ss_specificationFilter()" );
 }
     :
     ID_specificationFilter 
@@ -248,7 +247,7 @@ ss_specificationFilter
     
 filter
 {
-    log.debug( "entered filter()" );
+    LOG.debug( "entered filter()" );
 }
     :
     ( filterToken:FILTER { FilterParser.parse( filterToken.getText() ); } )
@@ -256,30 +255,30 @@ filter
     exception
     catch [Exception e]
     {
-        throw new RecognitionException( "filterParser failed. " + e.getMessage() );
+        throw new RecognitionException( I18n.err( I18n.ERR_13902_FILTER_PARSER_FAILED, e.getMessage() ) );
     }
 
     
 distinguishedName
 {
-    log.debug( "entered distinguishedName()" );
+    LOG.debug( "entered distinguishedName()" );
 }
     :
     token:SAFEUTF8STRING
     {
         new Dn( token.getText() );
-        log.debug( "recognized a DistinguishedName: " + token.getText() );
+        LOG.debug( "recognized a DistinguishedName: " + token.getText() );
     }
     ;
     exception
     catch [Exception e]
     {
-        throw new RecognitionException( "dnParser failed for " + token.getText() + " " + e.getMessage() );
+        throw new RecognitionException( I18n.err( I18n.ERR_13903_DN_PARSER_FAILED, token.getText(), e.getMessage() ) );
     }
 
 baseDistance
 {
-    log.debug( "entered baseDistance()" );
+    LOG.debug( "entered baseDistance()" );
 }
     :
     token:INTEGER
@@ -290,20 +289,20 @@ baseDistance
 
 oid
 {
-    log.debug( "entered oid()" );
+    LOG.debug( "entered oid()" );
      Token token = null;
 }
     :
     { token = LT( 1 ); } // an interesting trick goes here ;-)
     ( DESCR | NUMERICOID )
     {
-        log.debug( "recognized an oid: " + token.getText() );
+        LOG.debug( "recognized an oid: " + token.getText() );
     }
     ;
 
 refinement
 {
-    log.debug( "entered refinement()" );
+    LOG.debug( "entered refinement()" );
 }
     :
     item | and | or | not
@@ -311,7 +310,7 @@ refinement
 
 item
 {
-    log.debug( "entered item()" );
+    LOG.debug( "entered item()" );
 }
     :
     ID_item ( SP )* COLON ( SP )* oid
@@ -319,7 +318,7 @@ item
 
 and
 {
-    log.debug( "entered and()" );
+    LOG.debug( "entered and()" );
 }
     :
     ID_and ( SP )* COLON ( SP )* refinements
@@ -327,7 +326,7 @@ and
 
 or
 {
-    log.debug( "entered or()" );
+    LOG.debug( "entered or()" );
 }
     :
     ID_or ( SP )* COLON ( SP )* refinements
@@ -335,7 +334,7 @@ or
 
 not
 {
-    log.debug( "entered not()" );
+    LOG.debug( "entered not()" );
 }
     :
     ID_not ( SP )* COLON ( SP )* refinement
@@ -343,7 +342,7 @@ not
 
 refinements
 {
-    log.debug( "entered refinements()" );
+    LOG.debug( "entered refinements()" );
 }
     :
     OPEN_CURLY ( SP )*
@@ -399,7 +398,7 @@ tokens
 //----------------------------------------------------------------------------
 
 {
-    private static final Logger log = LoggerFactory.getLogger( AntlrSubtreeSpecificationLexer.class );
+    private static final Logger LOG = LoggerFactory.getLogger( AntlrSubtreeSpecificationLexer.class );
 }
 
 
@@ -409,17 +408,17 @@ tokens
 
 SP : ' ';
 
-COLON : ':' { log.debug( "matched COLON(':')" ); } ;
+COLON : ':' { LOG.debug( "matched COLON(':')" ); } ;
 
-OPEN_CURLY : '{' { log.debug( "matched LBRACKET('{')" ); } ;
+OPEN_CURLY : '{' { LOG.debug( "matched LBRACKET('{')" ); } ;
 
-CLOSE_CURLY : '}' { log.debug( "matched RBRACKET('}')" ); } ;
+CLOSE_CURLY : '}' { LOG.debug( "matched RBRACKET('}')" ); } ;
 
-SEP : ',' { log.debug( "matched SEP(',')" ); } ;
+SEP : ',' { LOG.debug( "matched SEP(',')" ); } ;
 
-SAFEUTF8STRING : '"'! ( SAFEUTF8CHAR )* '"'! { log.debug( "matched SAFEUTF8CHAR: \"" + getText() + "\"" ); } ;
+SAFEUTF8STRING : '"'! ( SAFEUTF8CHAR )* '"'! { LOG.debug( "matched SAFEUTF8CHAR: \"" + getText() + "\"" ); } ;
 
-DESCR : ALPHA ( ALPHA | DIGIT | '-' )* { log.debug( "matched DESCR" ); } ;
+DESCR : ALPHA ( ALPHA | DIGIT | '-' )* { LOG.debug( "matched DESCR" ); } ;
 
 INTEGER_OR_NUMERICOID
     :
@@ -434,9 +433,9 @@ INTEGER_OR_NUMERICOID
     }
     ;
 
-protected INTEGER: DIGIT | ( LDIGIT ( DIGIT )+ ) { log.debug( "matched INTEGER: " + getText() ); } ;
+protected INTEGER: DIGIT | ( LDIGIT ( DIGIT )+ ) { LOG.debug( "matched INTEGER: " + getText() ); } ;
 
-protected NUMERICOID: INTEGER ( DOT INTEGER )+ { log.debug( "matched NUMERICOID: " + getText() ); } ;
+protected NUMERICOID: INTEGER ( DOT INTEGER )+ { LOG.debug( "matched NUMERICOID: " + getText() ); } ;
 
 protected DOT: '.' ;
 

@@ -29,6 +29,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.filter.ExprNode;
 import org.apache.directory.api.ldap.model.filter.LeafNode;
@@ -85,7 +86,7 @@ options
 // ----------------------------------------------------------------------------
 
 {
-    private static final Logger log = LoggerFactory.getLogger( AntlrSubtreeSpecificationParser.class );
+    private static final Logger LOG = LoggerFactory.getLogger( AntlrSubtreeSpecificationParser.class );
     
     private NormalizerMappingResolver resolver;
     
@@ -142,9 +143,7 @@ options
         }
         catch ( NumberFormatException e )
         {
-            throw new RecognitionException( "Value of INTEGER token " +
-                                            token.getText() +
-                                            " cannot be converted to an Integer" );
+            throw new RecognitionException( I18n.err( I18n.ERR_13900_INTEGER_TOKEN_NOT_INTEGER, token.getText() ) );
         }
         
         return i;
@@ -158,7 +157,7 @@ options
 
 wrapperEntryPoint returns [SubtreeSpecification ss]
 {
-    log.debug( "entered wrapperEntryPoint()" );
+    LOG.debug( "entered wrapperEntryPoint()" );
     ss = null;
     SubtreeSpecification tempSs = null;
 } :
@@ -170,7 +169,7 @@ wrapperEntryPoint returns [SubtreeSpecification ss]
 
 subtreeSpecification returns [SubtreeSpecification ss]
 {
-    log.debug( "entered subtreeSpecification()" );
+    LOG.debug( "entered subtreeSpecification()" );
     // clear out ss, ssModifier, subtreeSpecificationComponentsMonitor,
     // chopBeforeExclusions and chopAfterExclusions
     // in case something is left from the last parse
@@ -194,7 +193,7 @@ subtreeSpecification returns [SubtreeSpecification ss]
 
 subtreeSpecificationComponent
 {
-    log.debug( "entered subtreeSpecification()" );
+    LOG.debug( "entered subtreeSpecification()" );
 }
     :
     ss_base
@@ -221,12 +220,12 @@ subtreeSpecificationComponent
     exception
     catch [IllegalArgumentException e]
     {
-        throw new RecognitionException( e.getMessage() );
+        throw new RecognitionException( I18n.err( I18n.ERR_13901_MESSAGE, e.getMessage() ) );
     }
 
 ss_base
 {
-    log.debug( "entered ss_base()" );
+    LOG.debug( "entered ss_base()" );
     Dn base = null;
 }
     :
@@ -238,7 +237,7 @@ ss_base
 
 ss_specificExclusions
 {
-    log.debug( "entered ss_specificExclusions()" );
+    LOG.debug( "entered ss_specificExclusions()" );
 }
     :
     ID_specificExclusions ( SP )+ specificExclusions
@@ -250,7 +249,7 @@ ss_specificExclusions
 
 specificExclusions
 {
-    log.debug( "entered specificExclusions()" );
+    LOG.debug( "entered specificExclusions()" );
 }
     :
     OPEN_CURLY ( SP )*
@@ -262,7 +261,7 @@ specificExclusions
 
 specificExclusion
 {
-    log.debug( "entered specificExclusion()" );
+    LOG.debug( "entered specificExclusion()" );
 }
     :
     chopBefore | chopAfter
@@ -270,7 +269,7 @@ specificExclusion
 
 chopBefore
 {
-    log.debug( "entered chopBefore()" );
+    LOG.debug( "entered chopBefore()" );
     Dn chopBeforeExclusion = null;
 }
     :
@@ -282,7 +281,7 @@ chopBefore
 
 chopAfter
 {
-    log.debug( "entered chopAfter()" );
+    LOG.debug( "entered chopAfter()" );
     Dn chopAfterExclusion = null;
 }
     :
@@ -294,7 +293,7 @@ chopAfter
 
 ss_minimum
 {
-    log.debug( "entered ss_minimum()" );
+    LOG.debug( "entered ss_minimum()" );
     int minimum = 0;
 }
     :
@@ -306,7 +305,7 @@ ss_minimum
 
 ss_maximum
 {
-    log.debug( "entered ss_maximum()" );
+    LOG.debug( "entered ss_maximum()" );
     int maximum = 0;
 }
     :
@@ -318,7 +317,7 @@ ss_maximum
 
 ss_specificationFilter
 {
-    log.debug( "entered ss_specificationFilter()" );
+    LOG.debug( "entered ss_specificationFilter()" );
     ExprNode filterExpr = null;
 }
     :
@@ -335,7 +334,7 @@ ss_specificationFilter
     
 filter returns [ ExprNode filterExpr = null ]
 {
-    log.debug( "entered filter()" );
+    LOG.debug( "entered filter()" );
 }
     :
     ( filterToken:FILTER { filterExpr=FilterParser.parse( schemaManager, filterToken.getText() ); } )
@@ -343,12 +342,12 @@ filter returns [ ExprNode filterExpr = null ]
     exception
     catch [Exception e]
     {
-        throw new RecognitionException( "filterParser failed. " + e.getMessage() );
+        throw new RecognitionException( I18n.err( I18n.ERR_13902_FILTER_PARSER_FAILED, e.getMessage() ) );
     }
     
 distinguishedName returns [ Dn name ]
 {
-    log.debug( "entered distinguishedName()" );
+    LOG.debug( "entered distinguishedName()" );
     name = null;
 }
     :
@@ -356,18 +355,21 @@ distinguishedName returns [ Dn name ]
     {
         name = new Dn( schemaManager, token.getText() );
         
-        log.debug( "recognized a DistinguishedName: " + token.getText() );
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "recognized a DistinguishedName: {}", token.getText() );
+        }
     }
     ;
     exception
     catch [Exception e]
     {
-        throw new RecognitionException( "dnParser failed for " + token.getText() + " " + e.getMessage() );
+        throw new RecognitionException( I18n.err( I18n.ERR_13903_DN_PARSER_FAILED, token.getText(), e.getMessage() ) );
     }
 
 baseDistance returns [ int distance ]
 {
-    log.debug( "entered baseDistance()" );
+    LOG.debug( "entered baseDistance()" );
     distance = 0;
 }
     :
@@ -379,7 +381,7 @@ baseDistance returns [ int distance ]
 
 oid returns [ String result ]
 {
-    log.debug( "entered oid()" );
+    LOG.debug( "entered oid()" );
     result = null;
     Token token = null;
 }
@@ -388,13 +390,17 @@ oid returns [ String result ]
     ( DESCR | NUMERICOID )
     {
         result = token.getText();
-        log.debug( "recognized an oid: " + result );
+
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "recognized an oid: {}", result );
+        }
     }
     ;
 
 refinement returns [ ExprNode node ]
 {
-    log.debug( "entered refinement()" );
+    LOG.debug( "entered refinement()" );
     node = null;
 }
     :
@@ -403,7 +409,7 @@ refinement returns [ ExprNode node ]
 
 item returns [ LeafNode node ]
 {
-    log.debug( "entered item()" );
+    LOG.debug( "entered item()" );
     node = null;
     String oid = null;
     ObjectClass objectClass;
@@ -427,7 +433,7 @@ item returns [ LeafNode node ]
 
 and returns [ BranchNode node ]
 {
-    log.debug( "entered and()" );
+    LOG.debug( "entered and()" );
     node = null;
     List<ExprNode> children = null; 
 }
@@ -440,7 +446,7 @@ and returns [ BranchNode node ]
 
 or returns [ BranchNode node ]
 {
-    log.debug( "entered or()" );
+    LOG.debug( "entered or()" );
     node = null;
     List<ExprNode> children = null; 
 }
@@ -453,7 +459,7 @@ or returns [ BranchNode node ]
 
 not returns [ BranchNode node ]
 {
-    log.debug( "entered not()" );
+    LOG.debug( "entered not()" );
     node = null;
     ExprNode child = null;
 }
@@ -466,7 +472,7 @@ not returns [ BranchNode node ]
 
 refinements returns [ List<ExprNode> children ]
 {
-    log.debug( "entered refinements()" );
+    LOG.debug( "entered refinements()" );
     children = null;
     ExprNode child = null;
     List<ExprNode> tempChildren = new ArrayList<ExprNode>();
@@ -534,7 +540,7 @@ tokens
 //----------------------------------------------------------------------------
 
 {
-    private static final Logger log = LoggerFactory.getLogger( AntlrSubtreeSpecificationLexer.class );
+    private static final Logger LOG = LoggerFactory.getLogger( AntlrSubtreeSpecificationLexer.class );
 }
 
 
@@ -544,17 +550,53 @@ tokens
 
 SP : ' ';
 
-COLON : ':' { log.debug( "matched COLON(':')" ); } ;
+COLON : ':' 
+    {
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "matched COLON(':')" ); 
+        }
+    } ;
 
-OPEN_CURLY : '{' { log.debug( "matched LBRACKET('{')" ); } ;
+OPEN_CURLY : '{' 
+    {
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "matched LBRACKET('{')" );
+        }
+    };
 
-CLOSE_CURLY : '}' { log.debug( "matched RBRACKET('}')" ); } ;
+CLOSE_CURLY : '}' 
+    { 
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "matched RBRACKET('}')" ); 
+        }
+    } ;
 
-SEP : ',' { log.debug( "matched SEP(',')" ); } ;
+SEP : ',' 
+    { 
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "matched SEP(',')" ); 
+        }
+    } ;
 
-SAFEUTF8STRING : '"'! ( SAFEUTF8CHAR )* '"'! { log.debug( "matched SAFEUTF8CHAR: \"" + getText() + "\"" ); } ;
+SAFEUTF8STRING : '"'! ( SAFEUTF8CHAR )* '"'! 
+    { 
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "matched SAFEUTF8CHAR: \"{}\"", getText() ); 
+        }
+    } ;
 
-DESCR : ALPHA ( ALPHA | DIGIT | '-' )* { log.debug( "matched DESCR" ); } ;
+DESCR : ALPHA ( ALPHA | DIGIT | '-' )* 
+    { 
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "matched DESCR" ); 
+        }
+    } ;
 
 INTEGER_OR_NUMERICOID
     :
@@ -569,9 +611,21 @@ INTEGER_OR_NUMERICOID
     }
     ;
 
-protected INTEGER: DIGIT | ( LDIGIT ( DIGIT )+ ) { log.debug( "matched INTEGER: " + getText() ); } ;
+protected INTEGER: DIGIT | ( LDIGIT ( DIGIT )+ ) 
+    { 
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "matched INTEGER: {}", getText() ); 
+        }
+    } ;
 
-protected NUMERICOID: INTEGER ( DOT INTEGER )+ { log.debug( "matched NUMERICOID: " + getText() ); } ;
+protected NUMERICOID: INTEGER ( DOT INTEGER )+ 
+    { 
+        if ( LOG.isDebugEnabled() )
+        {
+            LOG.debug( "matched NUMERICOID: {}", getText() );
+        }
+    } ;
 
 protected DOT: '.' ;
 

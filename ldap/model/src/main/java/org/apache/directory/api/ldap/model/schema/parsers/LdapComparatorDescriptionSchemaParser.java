@@ -38,8 +38,8 @@ public class LdapComparatorDescriptionSchemaParser extends AbstractSchemaParser<
      */
     public LdapComparatorDescriptionSchemaParser()
     {
-        super( LdapComparatorDescription.class, I18n.ERR_13389_CANNOT_PARSE_NULL_COMP, I18n.ERR_13390_COMP_PARSING_FAILURE, 
-            I18n.ERR_13391_COMP_DESC_PARSING_FAILURE );
+        super( LdapComparatorDescription.class, I18n.ERR_13839_CANNOT_PARSE_NULL_COMP, I18n.ERR_13840_COMP_PARSING_FAILURE, 
+            I18n.ERR_13841_COMP_DESC_PARSING_FAILURE );
     }
 
 

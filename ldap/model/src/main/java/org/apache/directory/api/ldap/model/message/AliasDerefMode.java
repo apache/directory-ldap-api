@@ -182,7 +182,7 @@ public enum AliasDerefMode
                 return false;
 
             default:
-                throw new IllegalArgumentException( "Class has bug: check for valid enumeration values" );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13518_CLASS_INVALID_ENULM_VALUE ) );
         }
     }
 

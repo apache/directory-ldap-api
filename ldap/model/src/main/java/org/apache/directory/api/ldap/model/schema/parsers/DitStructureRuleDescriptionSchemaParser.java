@@ -39,7 +39,8 @@ public class DitStructureRuleDescriptionSchemaParser extends AbstractSchemaParse
      */
     public DitStructureRuleDescriptionSchemaParser()
     {
-        super( DitStructureRule.class, I18n.ERR_13386_CANNOT_PARSE_NULL_DSR, I18n.ERR_13387_DSR_PARSING_FAILURE, I18n.ERR_13388_DSR_DESC_PARSING_FAILURE );
+        super( DitStructureRule.class, I18n.ERR_13836_CANNOT_PARSE_NULL_DSR, I18n.ERR_13837_DSR_PARSING_FAILURE, 
+            I18n.ERR_13838_DSR_DESC_PARSING_FAILURE );
     }
 
 

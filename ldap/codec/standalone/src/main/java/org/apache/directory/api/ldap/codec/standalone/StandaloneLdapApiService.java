@@ -517,7 +517,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
 
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Registered pre-bundled Intermediate Response factory: {}", factory.getOid() );
+            LOG.info( I18n.msg( I18n.MSG_06007_REGISTRED_INTERMEDIATE_RESP_FACTORY, factory.getOid() ) );
         }
     }
 }

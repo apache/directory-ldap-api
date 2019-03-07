@@ -593,7 +593,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
                 break;
 
             default:
-                throw new IllegalArgumentException( "Unexpected aliasDerefMode " + aliasDerefMode );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13517_UNEXPECTED_ALIAS_DEREF_MODE, aliasDerefMode ) );
         }
 
         sb.append( '\n' );

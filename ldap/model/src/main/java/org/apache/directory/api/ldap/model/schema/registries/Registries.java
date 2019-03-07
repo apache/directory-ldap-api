@@ -1017,8 +1017,9 @@ public class Registries implements SchemaLoaderListener, Cloneable
         if ( comparator == null )
         {
             // Ok, no comparator, this is an error
-            LdapSchemaViolationException error = new LdapSchemaViolationException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                I18n.ERR_13413_MR_DOES_NOT_HAVE_A_COMP, matchingRule.getOid() ) );
+            LdapSchemaViolationException error = new LdapSchemaViolationException( 
+                ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, 
+                I18n.err( I18n.ERR_13863_MR_DOES_NOT_HAVE_A_COMP, matchingRule.getOid() ) );
             errorHandler.handle( LOG, error.getMessage(), error );
         }
     }
@@ -1097,8 +1098,9 @@ public class Registries implements SchemaLoaderListener, Cloneable
             {
                 // This is an error. if the AT does not have a Syntax,
                 // then it must have a superior, which syntax is get from.
-                LdapSchemaViolationException error = new LdapSchemaViolationException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                    I18n.ERR_13414_AT_DOES_NOT_HAVE_A_SUPERIOR_NOR_SYNTAX, attributeType.getOid() ) );
+                LdapSchemaViolationException error = new LdapSchemaViolationException( 
+                    ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, 
+                    I18n.err( I18n.ERR_13864_AT_DOES_NOT_HAVE_A_SUPERIOR_NOR_SYNTAX, attributeType.getOid() ) );
                 errorHandler.handle( LOG, error.getMessage(), error );
             }
         }

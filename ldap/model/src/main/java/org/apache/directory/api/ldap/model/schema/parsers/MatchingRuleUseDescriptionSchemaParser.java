@@ -39,7 +39,8 @@ public class MatchingRuleUseDescriptionSchemaParser extends AbstractSchemaParser
      */
     public MatchingRuleUseDescriptionSchemaParser()
     {
-        super( MatchingRuleUse.class, I18n.ERR_13398_CANNOT_PARSE_NULL_MRU, I18n.ERR_13399_MRU_PARSING_FAILURE, I18n.ERR_13400_MRU_DESC_PARSING_FAILURE );
+        super( MatchingRuleUse.class, I18n.ERR_13848_CANNOT_PARSE_NULL_MRU, I18n.ERR_13849_MRU_PARSING_FAILURE, 
+            I18n.ERR_13850_MRU_DESC_PARSING_FAILURE );
     }
 
 

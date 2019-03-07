@@ -39,7 +39,8 @@ public class NameFormDescriptionSchemaParser extends AbstractSchemaParser<NameFo
      */
     public NameFormDescriptionSchemaParser()
     {
-        super( NameForm.class, I18n.ERR_13401_CANNOT_PARSE_NULL_NF, I18n.ERR_13402_NF_PARSING_FAILURE, I18n.ERR_13403_NF_DESC_PARSING_FAILURE );
+        super( NameForm.class, I18n.ERR_13851_CANNOT_PARSE_NULL_NF, I18n.ERR_13852_NF_PARSING_FAILURE, 
+            I18n.ERR_13853_NF_DESC_PARSING_FAILURE );
     }
 
 

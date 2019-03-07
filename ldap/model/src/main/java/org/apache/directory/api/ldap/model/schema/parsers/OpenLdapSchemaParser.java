@@ -2818,7 +2818,7 @@ public class OpenLdapSchemaParser
         catch ( IOException | LdapSchemaException e )
         {
             // This exception is not passed as a cause in ParseException. Therefore at least log in, so it won't be lost.
-            LOG.trace( "Error parsing attribute type {}: {}", attributeTypeDescription, e.getMessage(), e );
+            LOG.trace( I18n.err( I18n.ERR_13865_ERROR_PARSING_AT, attributeTypeDescription, e.getMessage() ), e );
             throw new ParseException( e.getMessage(), 0 );
         }
     }
