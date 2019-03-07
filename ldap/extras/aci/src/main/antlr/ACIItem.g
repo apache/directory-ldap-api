@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Enumeration;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.filter.BranchNode;
 import org.apache.directory.api.ldap.model.filter.AndNode;
 import org.apache.directory.api.ldap.model.filter.OrNode;
@@ -116,7 +117,7 @@ tokens
 // ----------------------------------------------------------------------------
 
 {
-    private static final Logger log = LoggerFactory.getLogger( AntlrACIItemParser.class );
+    private static final Logger LOG = LoggerFactory.getLogger( AntlrACIItemParser.class );
     
     NameComponentNormalizer normalizer;
     
@@ -183,9 +184,8 @@ tokens
         }
         catch ( NumberFormatException e )
         {
-            throw new RecognitionException( "Value of INTEGER token " +
-                                            token.getText() +
-                                            " cannot be converted to an Integer" );
+            throw new RecognitionException( I18n.err( I18n.ERR_13900_INTEGER_TOKEN_NOT_INTEGER, 
+                                            token.getText() ) );
         }
         
         return i;
@@ -199,7 +199,7 @@ tokens
 
 wrapperEntryPoint returns [ ACIItem aciItem ]
 {
-    log.debug( "entered wrapperEntryPoint()" );
+    LOG.debug( "entered wrapperEntryPoint()" );
     aciItem = null;
 }
     :
@@ -208,7 +208,7 @@ wrapperEntryPoint returns [ ACIItem aciItem ]
 
 theACIItem returns [ ACIItem aciItem ]
 {
-    log.debug( "entered theACIItem()" );
+    LOG.debug( "entered theACIItem()" );
     aciItem = null;
     mainACIItemComponentsMonitor = new MandatoryComponentsMonitor( 
             new String [] { "identificationTag", "precedence", "authenticationLevel", "itemOrUserFirst" } );
@@ -221,8 +221,8 @@ theACIItem returns [ ACIItem aciItem ]
     {
         if ( !mainACIItemComponentsMonitor.finalStateValid() )
         {
-            throw new RecognitionException( "Missing mandatory ACIItem components: " 
-                    + mainACIItemComponentsMonitor.getRemainingComponents() );
+            throw new RecognitionException( I18n.err(I18n.ERR_07005_MISSING_MANDATORY_ACIITEM,
+                    mainACIItemComponentsMonitor.getRemainingComponents() ) );
         }
         
         if ( isItemFirstACIItem )
@@ -248,7 +248,7 @@ theACIItem returns [ ACIItem aciItem ]
     
 mainACIItemComponent
 {
-    log.debug( "entered mainACIItemComponent()" );
+    LOG.debug( "entered mainACIItemComponent()" );
 }
     :
     aci_identificationTag
@@ -276,7 +276,7 @@ mainACIItemComponent
     
 aci_identificationTag
 {
-    log.debug( "entered aci_identificationTag()" );
+    LOG.debug( "entered aci_identificationTag()" );
 }
     :
     ID_identificationTag ( SP )+ token:SAFEUTF8STRING
@@ -287,7 +287,7 @@ aci_identificationTag
 
 aci_precedence
 {
-    log.debug( "entered aci_precedence()" );
+    LOG.debug( "entered aci_precedence()" );
 }
     :
     precedence
@@ -299,7 +299,7 @@ aci_precedence
 
 precedence
 {
-    log.debug( "entered precedence()" );
+    LOG.debug( "entered precedence()" );
 }
     :
     ID_precedence ( SP )+ token:INTEGER
@@ -308,14 +308,14 @@ precedence
         
         if ( ( precedence < 0 ) || ( precedence > 255 ) )
         {
-            throw new RecognitionException( "Expecting INTEGER token having an Integer value between 0 and 255, found " + precedence );
+            throw new RecognitionException( I18n.err( I18n.ERR_07006_EXPECTING_INTEGER_TOKEN, precedence ) );
         }
     }
     ;
 
 aci_authenticationLevel
 {
-    log.debug( "entered aci_authenticationLevel()" );
+    LOG.debug( "entered aci_authenticationLevel()" );
 }
     :
     ID_authenticationLevel ( SP )+ authenticationLevel
@@ -323,7 +323,7 @@ aci_authenticationLevel
 
 authenticationLevel
 {
-    log.debug( "entered authenticationLevel()" );
+    LOG.debug( "entered authenticationLevel()" );
 }
     :
     ID_none
@@ -344,7 +344,7 @@ authenticationLevel
 
 aci_itemOrUserFirst
 {
-    log.debug( "entered aci_itemOrUserFirst()" );
+    LOG.debug( "entered aci_itemOrUserFirst()" );
 }
     :
     ID_itemOrUserFirst ( SP )+ itemOrUserFirst
@@ -352,7 +352,7 @@ aci_itemOrUserFirst
 
 itemOrUserFirst
 {
-    log.debug( "entered itemOrUserFirst()" );
+    LOG.debug( "entered itemOrUserFirst()" );
 }
     :
     itemFirst | userFirst
@@ -360,7 +360,7 @@ itemOrUserFirst
 
 itemFirst
 {
-    log.debug( "entered itemFirst()" );
+    LOG.debug( "entered itemFirst()" );
 }
     :
     ID_itemFirst ( SP )* COLON ( SP )*
@@ -374,7 +374,7 @@ itemFirst
 
 userFirst
 {
-    log.debug( "entered userFirst()" );
+    LOG.debug( "entered userFirst()" );
 }
     :
     ID_userFirst ( SP )* COLON ( SP )*
@@ -388,7 +388,7 @@ userFirst
 
 protectedItems
 {
-    log.debug( "entered protectedItems()" );
+    LOG.debug( "entered protectedItems()" );
     protectedItemsMap = new NoDuplicateKeysMap();
 }
     :
@@ -406,12 +406,12 @@ protectedItems
     exception
     catch [IllegalArgumentException e]
     {
-        throw new RecognitionException( "Protected Items cannot be duplicated. " + e.getMessage() );
+        throw new RecognitionException( I18n.err( I18n.ERR_07007_DUPLICATED_PROTECTED_ITEM, e.getMessage() ) );
     }
 
 protectedItem
 {
-    log.debug( "entered protectedItem()" );
+    LOG.debug( "entered protectedItem()" );
 }
     :
     entry
@@ -430,7 +430,7 @@ protectedItem
 
 entry
 {
-    log.debug( "entered entry()" );  
+    LOG.debug( "entered entry()" );  
 }
     :
     ID_entry
@@ -441,7 +441,7 @@ entry
 
 allUserAttributeTypes
 {
-    log.debug( "entered allUserAttributeTypes()" );
+    LOG.debug( "entered allUserAttributeTypes()" );
 }
     :
     ID_allUserAttributeTypes
@@ -452,7 +452,7 @@ allUserAttributeTypes
 
 attributeType
 {
-    log.debug( "entered attributeType()" );
+    LOG.debug( "entered attributeType()" );
     Set<AttributeType> attributeTypeSet = null;
 }
     :
@@ -464,7 +464,7 @@ attributeType
 
 allAttributeValues
 {
-    log.debug( "entered allAttributeValues()" );
+    LOG.debug( "entered allAttributeValues()" );
     Set<AttributeType> attributeTypeSet = null;
 }
     :
@@ -476,7 +476,7 @@ allAttributeValues
 
 allUserAttributeTypesAndValues
 {
-    log.debug( "entered allUserAttributeTypesAndValues()" );
+    LOG.debug( "entered allUserAttributeTypesAndValues()" );
 }
     :
     ID_allUserAttributeTypesAndValues
@@ -487,7 +487,7 @@ allUserAttributeTypesAndValues
 
 attributeValue
 {
-    log.debug( "entered attributeValue()" );
+    LOG.debug( "entered attributeValue()" );
     String attributeTypeAndValue = null;
     String attributeType = null;
     String attributeValue = null;
@@ -507,7 +507,7 @@ attributeValue
             attributeValue = DnUtils.getRdnValue( attributeTypeAndValue );
             
             attributeSet.add( new DefaultAttribute( attributeType, attributeValue ) );
-            log.debug( "An attributeTypeAndValue from the set: " + attributeType + "=" +  attributeValue);
+            LOG.debug( I18n.msg( I18n.MSG_07000_ATTRIBUTE_TYPE_AND_VALUE_FROM_SET, attributeType,  attributeValue ) );
         }
         
         protectedItemsMap.put( "attributeValue", new AttributeValueItem( attributeSet ) );
@@ -516,12 +516,12 @@ attributeValue
     exception
     catch [Exception e]
     {
-        throw new RecognitionException( "dnParser failed for " + token.getText() + " , " + e.getMessage() );
+        throw new RecognitionException( I18n.err( I18n.ERR_07008_DN_PARSER_FAILED, token.getText(), e.getMessage() ) );
     }
 
 selfValue
 {
-    log.debug( "entered selfValue()" );
+    LOG.debug( "entered selfValue()" );
     Set<AttributeType> attributeTypeSet = null;
 }
     :
@@ -533,7 +533,7 @@ selfValue
 
 rangeOfValues
 {
-    log.debug( "entered rangeOfValues()" );
+    LOG.debug( "entered rangeOfValues()" );
 }
     :
     token:RANGE_OF_VALUES_CANDIDATE
@@ -541,18 +541,18 @@ rangeOfValues
         protectedItemsMap.put( "rangeOfValues",
                 new RangeOfValuesItem(
                         FilterParser.parse( schemaManager, token.getText() ) ) );
-        log.debug( "filterParser parsed " + token.getText() );
+        LOG.debug( I18n.msg( I18n.MSG_07001_FILTER_SET_PARSED, token.getText() ) );
     }
     ;
     exception
     catch [Exception e]
     {
-        throw new RecognitionException( "filterParser failed. " + e.getMessage() );
+        throw new RecognitionException( I18n.err( I18n.MSG_07009_FILTER_PARSER_FAILED, e.getMessage() ) );
     }   
 
 maxValueCount
 {
-    log.debug( "entered maxValueCount()" );
+    LOG.debug( "entered maxValueCount()" );
     MaxValueCountElem maxValueCount = null;
     Set<MaxValueCountElem> maxValueCountSet = new HashSet<MaxValueCountElem>();
 }
@@ -576,7 +576,7 @@ maxValueCount
 
 aMaxValueCount returns [ MaxValueCountElem maxValueCount ]
 {
-    log.debug( "entered aMaxValueCount()" );
+    LOG.debug( "entered aMaxValueCount()" );
     maxValueCount = null;
     String oid = null;
     Token token = null;
@@ -618,7 +618,7 @@ aMaxValueCount returns [ MaxValueCountElem maxValueCount ]
 
 maxImmSub
 {
-    log.debug( "entered maxImmSub()" );
+    LOG.debug( "entered maxImmSub()" );
 }
     :
     ID_maxImmSub ( SP )+ token:INTEGER
@@ -632,7 +632,7 @@ maxImmSub
 
 restrictedBy
 {
-    log.debug( "entered restrictedBy()" );
+    LOG.debug( "entered restrictedBy()" );
     RestrictedByElem restrictedValue = null;
     Set<RestrictedByElem> restrictedBy = new HashSet<RestrictedByElem>();
 }
@@ -656,7 +656,7 @@ restrictedBy
 
 restrictedValue returns [ RestrictedByElem restrictedValue ]
 {
-    log.debug( "entered restrictedValue()" );
+    LOG.debug( "entered restrictedValue()" );
     String typeOid = null;
     String valuesInOid = null;
     restrictedValue = null;
@@ -699,7 +699,7 @@ restrictedValue returns [ RestrictedByElem restrictedValue ]
 
 attributeTypeSet returns [ Set<AttributeType> attributeTypeSet ]
 {
-    log.debug( "entered attributeTypeSet()" );
+    LOG.debug( "entered attributeTypeSet()" );
     String oid = null;
     attributeTypeSet = new HashSet<AttributeType>();
     AttributeType attributeType = null;
@@ -754,7 +754,7 @@ attributeTypeSet returns [ Set<AttributeType> attributeTypeSet ]
 
 classes
 {
-    log.debug( "entered classes()" );
+    LOG.debug( "entered classes()" );
     ExprNode classes = null;
 }
     :
@@ -766,7 +766,7 @@ classes
 
 itemPermissions
 {
-    log.debug( "entered itemPermissions()" );
+    LOG.debug( "entered itemPermissions()" );
     itemPermissions = new HashSet<ItemPermission>();
     ItemPermission itemPermission = null;
 }
@@ -788,7 +788,7 @@ itemPermissions
 
 itemPermission returns [ ItemPermission itemPermission ]
 {
-    log.debug( "entered itemPermission()" );
+    LOG.debug( "entered itemPermission()" );
     itemPermission = null;
     itemPermissionComponentsMonitor = new MandatoryAndOptionalComponentsMonitor( 
             new String [] { "userClasses", "grantsAndDenials" }, new String [] { "precedence" } );
@@ -801,8 +801,8 @@ itemPermission returns [ ItemPermission itemPermission ]
     {
         if ( !itemPermissionComponentsMonitor.finalStateValid() )
         {
-            throw new RecognitionException( "Missing mandatory itemPermission components: " 
-                    + itemPermissionComponentsMonitor.getRemainingComponents() );
+            throw new RecognitionException( I18n.err( I18n.ERR_07005_MISSING_MANDATORY_ACIITEM, 
+				itemPermissionComponentsMonitor.getRemainingComponents() ) );
         }
         
         itemPermission = new ItemPermission( precedence, grantsAndDenials, userClasses );
@@ -833,7 +833,7 @@ anyItemPermission
 
 grantsAndDenials
 {
-    log.debug( "entered grantsAndDenials()" );
+    LOG.debug( "entered grantsAndDenials()" );
     grantsAndDenials = new HashSet<GrantAndDenial>();
     GrantAndDenial grantAndDenial = null;
 }
@@ -844,14 +844,14 @@ grantsAndDenials
           {
               if ( !grantsAndDenials.add( grantAndDenial ))
               {
-                  throw new RecognitionException( "Duplicated GrantAndDenial bit: " + grantAndDenial );
+                  throw new RecognitionException( I18n.err( I18n.MSG_07010_DUPLICATED_GRANT_AND_DENIAL, grantAndDenial ) );
               }
           }
             ( SEP ( SP )* grantAndDenial = grantAndDenial ( SP )*
               {
                   if ( !grantsAndDenials.add( grantAndDenial ))
                   {
-                      throw new RecognitionException( "Duplicated GrantAndDenial bit: " + grantAndDenial );
+                      throw new RecognitionException( I18n.err( I18n.MSG_07010_DUPLICATED_GRANT_AND_DENIAL, grantAndDenial ) );
                   }
               }
             )*
@@ -861,7 +861,7 @@ grantsAndDenials
 
 grantAndDenial returns [ GrantAndDenial l_grantAndDenial ]
 {
-    log.debug( "entered grantAndDenialsBit()" );
+    LOG.debug( "entered grantAndDenialsBit()" );
     l_grantAndDenial = null;
 }
     :
@@ -899,7 +899,7 @@ grantAndDenial returns [ GrantAndDenial l_grantAndDenial ]
 
 userClasses
 {
-    log.debug( "entered userClasses()" );
+    LOG.debug( "entered userClasses()" );
     userClassesMap = new NoDuplicateKeysMap();
 }
     :
@@ -917,12 +917,12 @@ userClasses
     exception
     catch [IllegalArgumentException e]
     {
-        throw new RecognitionException( "User Classes cannot be duplicated. " + e.getMessage() );
+        throw new RecognitionException( I18n.err( I18n.MSG_07011_DUPLICATED_USER_CLASSES, e.getMessage() ) );
     }
 
 userClass
 {
-    log.debug( "entered userClasses()" );
+    LOG.debug( "entered userClasses()" );
 }
     :
     allUsers
@@ -935,7 +935,7 @@ userClass
 
 allUsers
 {
-    log.debug( "entered allUsers()" );
+    LOG.debug( "entered allUsers()" );
 }
     :
     ID_allUsers
@@ -946,7 +946,7 @@ allUsers
 
 thisEntry
 {
-    log.debug( "entered thisEntry()" );
+    LOG.debug( "entered thisEntry()" );
 }
     :
     ID_thisEntry
@@ -957,7 +957,7 @@ thisEntry
 
 parentOfEntry
 {
-    log.debug( "entered parentOfEntry()" );
+    LOG.debug( "entered parentOfEntry()" );
 }
     :
     ID_parentOfEntry
@@ -968,7 +968,7 @@ parentOfEntry
 
 name
 {
-    log.debug( "entered name()" );
+    LOG.debug( "entered name()" );
     Set<String> names = new HashSet<>();
     Dn distinguishedName = null;
 }
@@ -991,7 +991,7 @@ name
 
 userGroup
 {
-    log.debug( "entered userGroup()" );
+    LOG.debug( "entered userGroup()" );
     Set<String> userGroup = new HashSet<>();
     Dn distinguishedName = null;
 }
@@ -1014,7 +1014,7 @@ userGroup
 
 subtree
 {
-    log.debug( "entered subtree()" );
+    LOG.debug( "entered subtree()" );
     Set<SubtreeSpecification> subtrees = new HashSet<SubtreeSpecification>();
     SubtreeSpecification subtreeSpecification = null;    
 }
@@ -1037,7 +1037,7 @@ subtree
 
 userPermissions
 {
-    log.debug( "entered userPermissions()" );
+    LOG.debug( "entered userPermissions()" );
     userPermissions = new HashSet<UserPermission>();
     UserPermission userPermission = null;
 }
@@ -1059,7 +1059,7 @@ userPermissions
 
 userPermission returns [ UserPermission userPermission ]
 {
-    log.debug( "entered userPermission()" );
+    LOG.debug( "entered userPermission()" );
     userPermission = null;
     userPermissionComponentsMonitor = new MandatoryAndOptionalComponentsMonitor( 
              new String [] { "protectedItems", "grantsAndDenials" }, new String [] { "precedence" } );
@@ -1072,8 +1072,8 @@ userPermission returns [ UserPermission userPermission ]
      {
          if ( !userPermissionComponentsMonitor.finalStateValid() )
          {
-             throw new RecognitionException( "Missing mandatory userPermission components: " 
-                     + userPermissionComponentsMonitor.getRemainingComponents() );
+             throw new RecognitionException( I18n.err( I18n.ERR_07012_MISSING_MANDATORY_USER_PERMISSION,
+                     userPermissionComponentsMonitor.getRemainingComponents() ) );
          }
          
          userPermission = new UserPermission( precedence, grantsAndDenials, protectedItems );
@@ -1104,7 +1104,7 @@ anyUserPermission
 
 subtreeSpecification returns [SubtreeSpecification ss]
 {
-    log.debug( "entered subtreeSpecification()" );
+    LOG.debug( "entered subtreeSpecification()" );
     // clear out ss, ssModifier, chopBeforeExclusions and chopAfterExclusions
     // in case something is left from the last parse
     ss = null;
@@ -1126,7 +1126,7 @@ subtreeSpecification returns [SubtreeSpecification ss]
 
 subtreeSpecificationComponent
 {
-    log.debug( "entered subtreeSpecification()" );
+    LOG.debug( "entered subtreeSpecification()" );
 }
     :
     ss_base
@@ -1154,7 +1154,7 @@ subtreeSpecificationComponent
 
 ss_base
 {
-    log.debug( "entered ss_base()" );
+    LOG.debug( "entered ss_base()" );
     Dn base = null;
 }
     :
@@ -1166,7 +1166,7 @@ ss_base
 
 ss_specificExclusions
 {
-    log.debug( "entered ss_specificExclusions()" );
+    LOG.debug( "entered ss_specificExclusions()" );
 }
     :
     ID_specificExclusions ( SP )+ specificExclusions
@@ -1178,7 +1178,7 @@ ss_specificExclusions
 
 specificExclusions
 {
-    log.debug( "entered specificExclusions()" );
+    LOG.debug( "entered specificExclusions()" );
 }
     :
     OPEN_CURLY ( SP )*
@@ -1190,7 +1190,7 @@ specificExclusions
 
 specificExclusion
 {
-    log.debug( "entered specificExclusion()" );
+    LOG.debug( "entered specificExclusion()" );
 }
     :
     chopBefore | chopAfter
@@ -1198,7 +1198,7 @@ specificExclusion
 
 chopBefore
 {
-    log.debug( "entered chopBefore()" );
+    LOG.debug( "entered chopBefore()" );
     Dn chopBeforeExclusion = null;
 }
     :
@@ -1210,7 +1210,7 @@ chopBefore
 
 chopAfter
 {
-    log.debug( "entered chopAfter()" );
+    LOG.debug( "entered chopAfter()" );
     Dn chopAfterExclusion = null;
 }
     :
@@ -1222,7 +1222,7 @@ chopAfter
 
 ss_minimum
 {
-    log.debug( "entered ss_minimum()" );
+    LOG.debug( "entered ss_minimum()" );
     int minimum = 0;
 }
     :
@@ -1234,7 +1234,7 @@ ss_minimum
 
 ss_maximum
 {
-    log.debug( "entered ss_maximum()" );
+    LOG.debug( "entered ss_maximum()" );
     int maximum = 0;
 }
     :
@@ -1246,7 +1246,7 @@ ss_maximum
 
 distinguishedName returns [ Dn name ]
 {
-    log.debug( "entered distinguishedName()" );
+    LOG.debug( "entered distinguishedName()" );
     name = null;
 }
     :
@@ -1254,18 +1254,18 @@ distinguishedName returns [ Dn name ]
     {
         name = new Dn( schemaManager, token.getText() );
 
-        log.debug( "recognized a DistinguishedName: " + token.getText() );
+        LOG.debug( I18n.msg( I18n.MSG_07002_DN_PARSED, token.getText() ) );
     }
     ;
     exception
     catch [Exception e]
     {
-        throw new RecognitionException( "dnParser failed for " + token.getText() + " " + e.getMessage() );
+        throw new RecognitionException( I18n.err( I18n.ERR_07008_DN_PARSER_FAILED, token.getText(), e.getMessage() ) );
     }
 
 baseDistance returns [ int distance ]
 {
-    log.debug( "entered baseDistance()" );
+    LOG.debug( "entered baseDistance()" );
     distance = 0;
 }
     :
@@ -1277,7 +1277,7 @@ baseDistance returns [ int distance ]
 
 oid returns [ String result ]
 {
-    log.debug( "entered oid()" );
+    LOG.debug( "entered oid()" );
     result = null;
     Token token = null;
 }
@@ -1286,13 +1286,13 @@ oid returns [ String result ]
     ( DESCR | NUMERICOID )
     {
         result = token.getText();
-        log.debug( "recognized an oid: " + result );
+        LOG.debug( I18n.msg( I18n.MSG_07003_OID_PARSED, result ) );
     }
     ;
 
 refinement returns [ ExprNode node ]
 {
-    log.debug( "entered refinement()" );
+    LOG.debug( "entered refinement()" );
     node = null;
 }
     :
@@ -1301,7 +1301,7 @@ refinement returns [ ExprNode node ]
 
 item returns [ LeafNode node ]
 {
-    log.debug( "entered item()" );
+    LOG.debug( "entered item()" );
     node = null;
     String oid = null;
 }
@@ -1314,7 +1314,7 @@ item returns [ LeafNode node ]
 
 and returns [ BranchNode node ]
 {
-    log.debug( "entered and()" );
+    LOG.debug( "entered and()" );
     node = null;
     List<ExprNode> children = null; 
 }
@@ -1327,7 +1327,7 @@ and returns [ BranchNode node ]
 
 or returns [ BranchNode node ]
 {
-    log.debug( "entered or()" );
+    LOG.debug( "entered or()" );
     node = null;
     List<ExprNode> children = null; 
 }
@@ -1340,7 +1340,7 @@ or returns [ BranchNode node ]
 
 not returns [ BranchNode node ]
 {
-    log.debug( "entered not()" );
+    LOG.debug( "entered not()" );
     node = null;
     List<ExprNode> children = null;
 }
@@ -1353,7 +1353,7 @@ not returns [ BranchNode node ]
 
 refinements returns [ List<ExprNode> children ]
 {
-    log.debug( "entered refinements()" );
+    LOG.debug( "entered refinements()" );
     children = null;
     ExprNode child = null;
     List<ExprNode> tempChildren = new ArrayList<ExprNode>();
@@ -1495,7 +1495,7 @@ tokens
 // ----------------------------------------------------------------------------
 
 {
-    private static final Logger log = LoggerFactory.getLogger( AntlrACIItemLexer.class );
+    private static final Logger LOG = LoggerFactory.getLogger( AntlrACIItemLexer.class );
 }
 
 

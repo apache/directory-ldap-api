@@ -20,6 +20,7 @@
 package org.apache.directory.ldap.client.api;
 
 
+import org.apache.directory.api.i18n.I18n;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,7 +85,7 @@ public final class LdapClientTrustStoreManager implements X509TrustManager, Seri
         if ( trustStoreFile == null )
         {
             // Cannot continue, throw an unchecked exception:
-            throw new RuntimeException( "LdapClientTrustStoreManager constructor : input file name is null" );
+            throw new RuntimeException( I18n.err( I18n.ERR_04174_INPUT_FILE_NAME_NULL ) );
         }
         
         // contains the file name of a valid JSSE TrustStore found on classpath:
@@ -174,7 +175,7 @@ public final class LdapClientTrustStoreManager implements X509TrustManager, Seri
     {
         if ( LOG.isInfoEnabled() )
         {            
-            LOG.info( CLS_NM + ".getTrustManagers on classpath" );
+            LOG.info( I18n.msg( I18n.MSG_04176_TRUST_MANAGER_ON_CLASSPATH, CLS_NM ) );
         }
         
         return getTrustManagersOnClasspath( x509Chain );
@@ -212,7 +213,7 @@ public final class LdapClientTrustStoreManager implements X509TrustManager, Seri
             }
             catch ( IOException ioe )
             {
-                throw new CertificateException( "TrustStoreFile : file not found" );
+                throw new CertificateException( I18n.err( I18n.ERR_04175_TRUST_STORE_FILE_NULL ) );
             }
         }
         else
@@ -222,7 +223,7 @@ public final class LdapClientTrustStoreManager implements X509TrustManager, Seri
        
         if ( trustStoreInputStream == null )
         {
-            throw new CertificateException( "LdapClientTrustStoreManager.getTrustManagers : file not found" );
+            throw new CertificateException( I18n.err( I18n.ERR_04176_TRUST_MANAGER_NOT_FOUND ) );
         }
         try
         {
@@ -231,8 +232,7 @@ public final class LdapClientTrustStoreManager implements X509TrustManager, Seri
         catch ( IOException e )
         {
             // Eat this ioexception because it shouldn't be a problem, but log just in case:
-            LOG.warn( "LdapClientTrustStoreManager.getTrustManagers on input stream close "
-                    + "operation caught IOException={}", e.getMessage() );
+            LOG.warn( I18n.msg( I18n.MSG_04175_TRUST_MANAGER_IO_EXCEPTION, e.getMessage() ) );
         }
         
         return loadTrustManagers( getTrustStore() );
@@ -263,12 +263,11 @@ public final class LdapClientTrustStoreManager implements X509TrustManager, Seri
         }
         catch ( NoSuchAlgorithmException e )
         {
-            throw new CertificateException( "LdapClientTrustStoreManager.loadTrustManagers caught "
-                + "NoSuchAlgorithmException", e );
+            throw new CertificateException( I18n.err( I18n.ERR_04177_NO_SUCH_ALGORITHM ), e );
         }
         catch ( KeyStoreException e )
         {
-            throw new CertificateException( "LdapClientTrustStoreManager.loadTrustManagers caught KeyStoreException", e );
+            throw new CertificateException( I18n.err( I18n.ERR_04178_CANT_LOAD_KEY_STORE ), e );
         }
         
         return x509TrustManagers;
@@ -291,7 +290,7 @@ public final class LdapClientTrustStoreManager implements X509TrustManager, Seri
         }
         catch ( KeyStoreException e )
         {
-            throw new CertificateException( "LdapClientTrustStoreManager.getTrustManagers caught KeyStoreException", e );
+            throw new CertificateException( I18n.err( I18n.ERR_04178_CANT_LOAD_KEY_STORE ), e );
         }
         
         InputStream trustStoreInputStream = null;
@@ -311,12 +310,11 @@ public final class LdapClientTrustStoreManager implements X509TrustManager, Seri
         }
         catch ( NoSuchAlgorithmException e )
         {
-            throw new CertificateException( "LdapClientTrustStoreManager.getTrustManagers caught "
-                + "NoSuchAlgorithmException", e );
+            throw new CertificateException( I18n.err( I18n.ERR_04177_NO_SUCH_ALGORITHM ), e );
         }
         catch ( IOException e )
         {
-            throw new CertificateException( "LdapClientTrustStoreManager.getTrustManagers caught KeyStoreException", e );
+            throw new CertificateException( I18n.err( I18n.ERR_04178_CANT_LOAD_KEY_STORE ), e );
         }
         finally
         {
@@ -330,8 +328,7 @@ public final class LdapClientTrustStoreManager implements X509TrustManager, Seri
                 catch ( IOException e )
                 {
                     // Eat this ioexception because it shouldn't be a problem, but log just in case:
-                    LOG.warn( "LdapClientTrustStoreManager.getTrustStore finally block on input stream close "
-                        + "operation caught IOException={}", e.getMessage() );
+                    LOG.warn( I18n.err( I18n.ERR_04179_TRUST_STORE_CANT_BE_READ, e.getMessage() ) );
                 }
             }
         }
@@ -353,7 +350,7 @@ public final class LdapClientTrustStoreManager implements X509TrustManager, Seri
         
         if ( null == result )
         {
-            throw new CertificateException( "LdapClientTrustStoreManager.getTrustStoreInputStream file does not exist on fortress classpath" );
+            throw new CertificateException( I18n.err( I18n.ERR_04180_FILE_DOES_NOT_EXIST_ON_CLASSPATH ) );
         }
         
         return result;

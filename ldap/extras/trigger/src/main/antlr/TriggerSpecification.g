@@ -26,6 +26,7 @@ package org.apache.directory.api.ldap.trigger;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.NormalizerMappingResolver;
 import org.apache.directory.api.ldap.trigger.StoredProcedureOption;
@@ -438,7 +439,7 @@ distinguishedName returns [ Dn name ]
     exception
     catch [Exception e]
     {
-        throw new RecognitionException( "name parse failed for " + nameToken.getText() + " " + e.getMessage() );
+        throw new RecognitionException( I18n.err( I18n.ERR_11003_NAME_PARSE_FAILED, nameToken.getText(), e.getMessage() ) );
     }
 
 // -----------------------------------------------------------------------------
