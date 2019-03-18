@@ -4762,10 +4762,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             connect();
 
             checkSession();
-
-            IoFilter sslFilter = ldapSession.getFilterChain().get( SSL_FILTER_KEY );
-
-            if ( sslFilter != null )
+            
+            if ( ldapSession.isSecured() )
             {
                 if ( LOG.isDebugEnabled() )
                 { 
