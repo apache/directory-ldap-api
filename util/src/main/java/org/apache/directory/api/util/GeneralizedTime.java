@@ -121,18 +121,21 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     {
         /** Time format with minutes and seconds, excluding fraction. */
         YEAR_MONTH_DAY_HOUR_MIN_SEC,
+        
         /** Time format with minutes and seconds, including fraction. */
         YEAR_MONTH_DAY_HOUR_MIN_SEC_FRACTION,
 
         /** Time format with minutes, seconds are omitted, excluding fraction. */
         YEAR_MONTH_DAY_HOUR_MIN,
-        /** Time format with minutes seconds are omitted, including fraction. */
+        
+        /** Time format with minutes seconds are omitted, including fraction of a minute. */
         YEAR_MONTH_DAY_HOUR_MIN_FRACTION,
 
         /** Time format, minutes and seconds are omitted, excluding fraction. */
         YEAR_MONTH_DAY_HOUR,
-        /** Time format, minutes and seconds are omitted, including fraction. */
-        YEAR_MONTH_DAY_HOUR_FRACTION
+        
+        /** Time format, minutes and seconds are omitted, including fraction of an hour. */
+        YEAR_MONTH_DAY_HOUR_FRACTION;
     }
 
     /**
@@ -885,10 +888,10 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         else
         {
             // g-differential
-            TimeZone timeZone = clonedCalendar.getTimeZone();
-            int rawOffset = timeZone.getRawOffset();
-
-            if ( rawOffset < 0 )
+            int offset = clonedCalendar.get( Calendar.ZONE_OFFSET ) + clonedCalendar.get( Calendar.DST_OFFSET );
+            
+            
+            if ( offset < 0 )
             {
                 result[pos++] = '-';
             }
@@ -897,9 +900,9 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
                 result[pos++] = '+';
             }
 
-            rawOffset = Math.abs( rawOffset );
-            hour = rawOffset / ( 60 * 60 * 1000 );
-            int minute = ( rawOffset - ( hour * 60 * 60 * 1000 ) ) / ( 1000 * 60 );
+            offset = Math.abs( offset );
+            hour = offset / ( 60 * 60 * 1000 );
+            int minute = ( offset - ( hour * 60 * 60 * 1000 ) ) / ( 1000 * 60 );
 
             // The offset hour
             result[pos++] = ( byte ) ( ( hour / 10 ) + '0' );
