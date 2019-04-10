@@ -20,7 +20,7 @@ pipeline {
   agent none
   options {
     buildDiscarder(logRotator(numToKeepStr: '3'))
-    timeout(time: 2, unit: 'HOURS')
+    timeout(time: 8, unit: 'HOURS')
   }
   triggers {
     cron('@weekly')
@@ -28,6 +28,9 @@ pipeline {
   }
   stages {
     stage ('Debug') {
+      options {
+        timeout(time: 1, unit: 'HOURS')
+      }
       agent {
         docker {
           label 'ubuntu'
@@ -45,6 +48,9 @@ pipeline {
       }
     }
     stage ('Build and Test') {
+      options {
+        timeout(time: 2, unit: 'HOURS')
+      }
       parallel {
         stage ('Linux Java 8') {
           agent {
@@ -90,7 +96,7 @@ pipeline {
             }
           }
           steps {
-            sh 'mvn -V clean verify -DskipTests'
+            sh 'mvn -V clean verify'
           }
           post {
             always {
@@ -118,6 +124,9 @@ pipeline {
       }
     }
     stage ('Deploy') {
+      options {
+        timeout(time: 2, unit: 'HOURS')
+      }
       agent {
         label 'ubuntu'
       }
