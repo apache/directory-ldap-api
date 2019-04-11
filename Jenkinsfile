@@ -48,11 +48,11 @@ pipeline {
       }
     }
     stage ('Build and Test') {
-      options {
-        timeout(time: 2, unit: 'HOURS')
-      }
       parallel {
         stage ('Linux Java 8') {
+          options {
+            timeout(time: 2, unit: 'HOURS')
+          }
           agent {
             docker {
               label 'ubuntu'
@@ -71,6 +71,10 @@ pipeline {
           }
         }
         stage ('Linux Java 11') {
+          options {
+            timeout(time: 2, unit: 'HOURS')
+            retry(1)
+          }
           agent {
             docker {
               label 'ubuntu'
@@ -88,6 +92,9 @@ pipeline {
           }
         }
         stage ('Linux Java 12') {
+          options {
+            timeout(time: 2, unit: 'HOURS')
+          }
           agent {
             docker {
               label 'ubuntu'
@@ -105,6 +112,9 @@ pipeline {
           }
         }
         stage ('Windows Java 8') {
+          options {
+            timeout(time: 2, unit: 'HOURS')
+          }
           agent {
             label 'Windows'
           }
