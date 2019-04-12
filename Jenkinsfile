@@ -73,7 +73,6 @@ pipeline {
         stage ('Linux Java 11') {
           options {
             timeout(time: 2, unit: 'HOURS')
-            retry(1)
           }
           agent {
             docker {
