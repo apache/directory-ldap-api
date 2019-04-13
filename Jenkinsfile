@@ -57,7 +57,7 @@ pipeline {
             docker {
               label 'ubuntu'
               image 'apachedirectory/maven-build:jdk-8'
-              args '-v $HOME/.m2:/home/user/.m2'
+              args '-v $HOME/.m2:/var/maven/.m2'
             }
           }
           steps {
