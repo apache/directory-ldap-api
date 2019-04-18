@@ -28,6 +28,7 @@ import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
+import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.message.ModifyRequest;
 import org.apache.directory.api.ldap.model.message.ModifyResponseImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
@@ -93,6 +94,12 @@ public class AddModifyRequestAttribute extends GrammarAction<LdapMessageContaine
             Attribute currentAttribute = new DefaultAttribute( type );
             container.setCurrentAttribute( currentAttribute );
             container.getCurrentModification().setAttribute( currentAttribute );
+        }
+
+        // We can have an END transition if the operation was INCREMENT
+        if ( container.getCurrentModification().getOperation() == ModificationOperation.INCREMENT_ATTRIBUTE )
+        {
+            container.setGrammarEndAllowed( true );
         }
 
         if ( LOG.isDebugEnabled() )

@@ -2188,6 +2188,9 @@ public final class SchemaConstants
 
     // ---- Features ----------------------------------------------------------
     public static final String FEATURE_ALL_OPERATIONAL_ATTRIBUTES = "1.3.6.1.4.1.4203.1.5.1";
+    
+    // RFC 4525
+    public static final String FEATURE_MODIFY_INCREMENT = "1.3.6.1.1.14";
 
     // ----Administrative roles -----------------------------------------------
     // AutonomousArea

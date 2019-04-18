@@ -39,6 +39,7 @@ import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
@@ -837,7 +838,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
                 0x30, 0x33,             // LdapMessage
                   0x02, 0x01, 0x31,     // messageID MessageID
                   0x66, 0x2E,           // ModifyRequest
-                    0x04, 0x20,             // entry LDAPDN,
+                    0x04, 0x20,         // entry LDAPDN,
                       'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y',
                       ',', 'o', 'u', '=', 'u', 's', 'e', 'r', 's', ',',
                       'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
@@ -1053,6 +1054,134 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
 
         assertTrue( attributeValue.contains( "a" ) );
         assertTrue( attributeValue.contains( "b" ) );
+
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        LdapEncoder.encodeMessage( buffer, codec, modifyRequest );
+
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
+    }
+
+
+    /**
+     * Test the decoding of a ModifyRequest with an add operation, and a
+     * modification with a type and an empty vals
+     */
+    @Test
+    public void testDecodeModifyRequestAddOperationModificationIncrement()
+        throws DecoderException, EncoderException
+    {
+        ByteBuffer stream = ByteBuffer.allocate( 0x3D );
+
+        stream.put( new byte[]
+            {
+                0x30, 0x3B,             // LdapMessage
+                  0x02, 0x01, 0x31,     // messageID MessageID
+                  0x66, 0x36,           // ModifyRequest
+                    0x04, 0x20,         // entry LDAPDN,
+                      'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y',
+                      ',', 'o', 'u', '=', 'u', 's', 'e', 'r', 's', ',',
+                      'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                    0x30, 0x012,
+                      0x30, 0x10,
+                        0x0A, 0x01, 0x03,
+                        0x30, 0x0B,
+                           0x04, 0x09,
+                            'u', 'i', 'd', 'n', 'u', 'm', 'b', 'e', 'r',
+            } );
+
+        stream.flip();
+
+        // Allocate a LdapMessage Container
+        LdapMessageContainer<ModifyRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
+
+        // Decode a ModifyRequest PDU
+        Asn1Decoder.decode( stream, ldapMessageContainer );
+
+        // Check the decoded PDU
+        ModifyRequest modifyRequest = ldapMessageContainer.getMessage();
+
+        assertEquals( 49, modifyRequest.getMessageId() );
+        assertEquals( "cn=testModify,ou=users,ou=system", modifyRequest.getName().toString() );
+
+        Object[] modifications = modifyRequest.getModifications().toArray();
+
+        assertEquals( 1, modifications.length );
+
+        Modification modification = ( Modification ) modifications[0];
+        
+        assertEquals( ModificationOperation.INCREMENT_ATTRIBUTE, modification.getOperation() );
+        Attribute attributeValue = modification.getAttribute();
+
+        assertEquals( "uidnumber", Strings.toLowerCaseAscii( attributeValue.getUpId() ) );
+        assertEquals( 0, attributeValue.size() );
+
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        LdapEncoder.encodeMessage( buffer, codec, modifyRequest );
+
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
+    }
+
+
+    /**
+     * Test the decoding of a ModifyRequest with an add operation, and a
+     * modification with a type and an empty vals
+     */
+    @Test
+    public void testDecodeModifyRequestAddOperationModificationIncrementWithValue()
+        throws DecoderException, EncoderException
+    {
+        ByteBuffer stream = ByteBuffer.allocate( 0x42 );
+
+        stream.put( new byte[]
+            {
+                0x30, 0x40,             // LdapMessage
+                  0x02, 0x01, 0x31,     // messageID MessageID
+                  0x66, 0x3B,           // ModifyRequest
+                    0x04, 0x20,         // entry LDAPDN,
+                      'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y',
+                      ',', 'o', 'u', '=', 'u', 's', 'e', 'r', 's', ',',
+                      'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                    0x30, 0x017,
+                      0x30, 0x15,
+                        0x0A, 0x01, 0x03,
+                        0x30, 0x10,
+                           0x04, 0x09,
+                            'u', 'i', 'd', 'n', 'u', 'm', 'b', 'e', 'r',
+                           0x31, 0x03,
+                             0x04, 0x01,
+                               '3'
+            } );
+
+        stream.flip();
+
+        // Allocate a LdapMessage Container
+        LdapMessageContainer<ModifyRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
+
+        // Decode a ModifyRequest PDU
+        Asn1Decoder.decode( stream, ldapMessageContainer );
+
+        // Check the decoded PDU
+        ModifyRequest modifyRequest = ldapMessageContainer.getMessage();
+
+        assertEquals( 49, modifyRequest.getMessageId() );
+        assertEquals( "cn=testModify,ou=users,ou=system", modifyRequest.getName().toString() );
+
+        Object[] modifications = modifyRequest.getModifications().toArray();
+
+        assertEquals( 1, modifications.length );
+
+        Modification modification = ( Modification ) modifications[0];
+        
+        assertEquals( ModificationOperation.INCREMENT_ATTRIBUTE, modification.getOperation() );
+        Attribute attributeValue = modification.getAttribute();
+
+        assertEquals( "uidnumber", Strings.toLowerCaseAscii( attributeValue.getUpId() ) );
+        assertEquals( 1, attributeValue.size() );
+        assertEquals( "3", attributeValue.get().getString() );
 
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();

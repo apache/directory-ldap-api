@@ -205,6 +205,10 @@ public class ModifyRequestDsml
             {
                 modElement.addAttribute( "operation", "delete" );
             }
+            else if ( operation == ModificationOperation.INCREMENT_ATTRIBUTE )
+            {
+                modElement.addAttribute( "operation", "increment" );
+            }
         }
 
         return element;
@@ -417,6 +421,54 @@ public class ModifyRequestDsml
     public ModifyRequest replace( Attribute attr )
     {
         getDecorated().replace( attr );
+
+        return this;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ModifyRequest increment( Attribute attributeName )
+    {
+        getDecorated().increment( attributeName );
+
+        return this;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ModifyRequest increment( Attribute attributeName, int increment )
+    {
+        getDecorated().increment( attributeName, increment );
+
+        return this;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ModifyRequest increment( String attr )
+    {
+        getDecorated().increment( attr );
+
+        return this;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ModifyRequest increment( String attr, int increment )
+    {
+        getDecorated().increment( attr, increment );
 
         return this;
     }

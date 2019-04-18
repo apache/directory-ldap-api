@@ -406,6 +406,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
      * <li>ModificationOperation.ADD_ATTRIBUTE</li>
      * <li>ModificationOperation.REMOVE_ATTRIBUTE</li>
      * <li>ModificationOperation.REPLACE_ATTRIBUTE</li>
+     * <li>ModificationOperation.INCREMENT_ATTRIBUTE</li>
      * </ul>
      * 
      * @param attr The attribute to be added
@@ -429,6 +430,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
      * <li>ModificationOperation.ADD_ATTRIBUTE</li>
      * <li>ModificationOperation.REMOVE_ATTRIBUTE</li>
      * <li>ModificationOperation.REPLACE_ATTRIBUTE</li>
+     * <li>ModificationOperation.INCREMENT_ATTRIBUTE</li>
      * </ul>
      * 
      * @param id The attribute's ID
@@ -454,6 +456,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
      * <li>ModificationOperation.ADD_ATTRIBUTE</li>
      * <li>ModificationOperation.REMOVE_ATTRIBUTE</li>
      * <li>ModificationOperation.REPLACE_ATTRIBUTE</li>
+     * <li>ModificationOperation.INCREMENT_ATTRIBUTE</li>
      * </ul>
      * 
      * @param id The attribute's ID

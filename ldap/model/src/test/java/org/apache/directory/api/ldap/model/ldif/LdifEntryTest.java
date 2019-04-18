@@ -564,6 +564,76 @@ public class LdifEntryTest
 
 
     /**
+     * Test a Modify changeType LdifEntry with increment operation
+     */
+    @Test
+    public void testLdifEntryChangeTypeModifyIncrement() throws Exception
+    {
+        String ldif =
+            "changetype: modify\n" +
+                "increment: uidNumber\n" +
+                "-";
+
+        LdifEntry ldifEntry = new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
+
+        assertNotNull( ldifEntry );
+        assertEquals( ChangeType.Modify, ldifEntry.getChangeType() );
+        assertNull( ldifEntry.getEntry() );
+        assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldifEntry.getDn().getName() );
+        assertFalse( ldifEntry.hasControls() );
+        assertTrue( ldifEntry.isLdifChange() );
+
+        // Check the modification
+        assertNotNull( ldifEntry.getModifications() );
+
+        for ( Modification modification : ldifEntry.getModifications() )
+        {
+            assertEquals( ModificationOperation.INCREMENT_ATTRIBUTE, modification.getOperation() );
+            Attribute attribute = modification.getAttribute();
+
+            assertNotNull( attribute );
+            assertEquals( "uidnumber", attribute.getId() );
+        }
+    }
+
+
+    /**
+     * Test a Modify changeType LdifEntry with increment operation
+     */
+    @Test
+    public void testLdifEntryChangeTypeModifyIncrementNumber() throws Exception
+    {
+        String ldif =
+            "changetype: modify\n" +
+                "increment: uidNumber\n" +
+                "uidNumber: 3\n" +
+                "-";
+
+        LdifEntry ldifEntry = new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
+
+        assertNotNull( ldifEntry );
+        assertEquals( ChangeType.Modify, ldifEntry.getChangeType() );
+        assertNull( ldifEntry.getEntry() );
+        assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldifEntry.getDn().getName() );
+        assertFalse( ldifEntry.hasControls() );
+        assertTrue( ldifEntry.isLdifChange() );
+
+        // Check the modification
+        assertNotNull( ldifEntry.getModifications() );
+
+        for ( Modification modification : ldifEntry.getModifications() )
+        {
+            assertEquals( ModificationOperation.INCREMENT_ATTRIBUTE, modification.getOperation() );
+            Attribute attribute = modification.getAttribute();
+
+            assertNotNull( attribute );
+            assertEquals( "uidnumber", attribute.getId() );
+            assertEquals( "3", attribute.getString() );
+        }
+    }
+
+
+    /**
      * Test a Modify changeType LdifEntry with no operation
      */
     @Test(expected = LdapLdifException.class)

@@ -50,6 +50,8 @@ public final class LdapCodecConstants
 
     public static final int OPERATION_REPLACE = 2;
 
+    public static final int OPERATION_INCREMENT = 3;
+
     /** The filters */
     public static final int EQUALITY_MATCH_FILTER = 0;
 

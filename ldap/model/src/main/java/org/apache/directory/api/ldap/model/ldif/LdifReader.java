@@ -1114,6 +1114,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      * <pre>
      * &lt;changerecord&gt; ::= "changetype:" FILL "modify" SEP &lt;mod-spec&gt; &lt;mod-specs-e&gt;
      * &lt;mod-spec&gt; ::= "add:" &lt;mod-val&gt; | "delete:" &lt;mod-val-del&gt; | "replace:" &lt;mod-val&gt;
+     *                      | "increment:" &lt;mod-val&gt;
      * &lt;mod-specs-e&gt; ::= &lt;mod-spec&gt;
      * &lt;mod-specs-e&gt; | e
      * &lt;mod-val&gt; ::= FILL ATTRIBUTE-DESCRIPTION SEP ATTRVAL-SPEC &lt;attrval-specs-e&gt; "-" SEP
@@ -1214,6 +1215,30 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
                 modified = Strings.trim( line.substring( "replace:".length() ) );
                 modificationType = ModificationOperation.REPLACE_ATTRIBUTE;
+                
+                if ( schemaManager != null )
+                {
+                    AttributeType attributeType = schemaManager.getAttributeType( modified );
+                    attribute = new DefaultAttribute( modified, attributeType );
+                }
+                else
+                {
+                    attribute = new DefaultAttribute( modified );
+                }
+
+                state = ATTRVAL_SPEC_OR_SEP;
+            }
+            else if ( lowerLine.startsWith( "increment:" ) )
+            {
+                if ( ( state != MOD_SPEC ) && ( state != ATTRVAL_SPEC ) )
+                {
+                    String msg = I18n.err( I18n.ERR_13414_BAD_MODIFY_SEPARATOR_2, lineNumber );
+                    LOG.error( msg );
+                    throw new LdapLdifException( msg );
+                }
+
+                modified = Strings.trim( line.substring( "increment:".length() ) );
+                modificationType = ModificationOperation.INCREMENT_ATTRIBUTE;
                 
                 if ( schemaManager != null )
                 {

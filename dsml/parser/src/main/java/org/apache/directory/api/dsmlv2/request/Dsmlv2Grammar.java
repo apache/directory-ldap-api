@@ -956,6 +956,10 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 {
                     modifyRequest.setCurrentOperation( LdapCodecConstants.OPERATION_REPLACE );
                 }
+                else if ( "increment".equals( attributeValue ) )
+                {
+                    modifyRequest.setCurrentOperation( LdapCodecConstants.OPERATION_INCREMENT );
+                }
                 else
                 {
                     throw new XmlPullParserException( I18n.err( I18n.ERR_03040_UNKNOWN_OPERATION ), xpp, null );

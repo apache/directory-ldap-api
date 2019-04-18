@@ -23,7 +23,9 @@ package org.apache.directory.api.ldap.model.entry;
 /**
  * An enum storing the different modification operation which can be used
  * in a Modification. There is a one to one mapping with the DirContext.ADD_ATTRIBUTE,
- * DirContext.REMOVE_ATTRIBUTE, DirContext.REPLACE_ATTRIBUTE
+ * DirContext.REMOVE_ATTRIBUTE, DirContext.REPLACE_ATTRIBUTE.
+ * 
+ * We have added the INCREMENT operation (RFC 4525)
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -36,7 +38,10 @@ public enum ModificationOperation
     REMOVE_ATTRIBUTE(1),
     
     /** Replaced attribute value */
-    REPLACE_ATTRIBUTE(2);
+    REPLACE_ATTRIBUTE(2),
+    
+    /** Increment operation, RFC 4525 */
+    INCREMENT_ATTRIBUTE(3);
 
     /** Internal value */
     private int value;
@@ -83,6 +88,10 @@ public enum ModificationOperation
         {
             return REPLACE_ATTRIBUTE;
         }
+        else if ( value == INCREMENT_ATTRIBUTE.value )
+        {
+            return INCREMENT_ATTRIBUTE;
+        }
         else
         {
             return null;
@@ -107,6 +116,9 @@ public enum ModificationOperation
             case REMOVE_ATTRIBUTE:
                 return "remove";
 
+            case INCREMENT_ATTRIBUTE:
+                return "increment";
+                
             default:
                 return "";
         }

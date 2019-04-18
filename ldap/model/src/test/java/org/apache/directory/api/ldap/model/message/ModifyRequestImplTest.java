@@ -527,6 +527,30 @@ public class ModifyRequestImplTest
             {
                 return this;
             }
+            
+            
+            public ModifyRequest increment( Attribute attr )
+            {
+                return this;
+            }
+            
+            
+            public ModifyRequest increment( Attribute attr, int increment )
+            {
+                return this;
+            }
+            
+            
+            public ModifyRequest increment( String attributerName )
+            {
+                return this;
+            }
+            
+            
+            public ModifyRequest increment( String attributerName, int increment )
+            {
+                return this;
+            }
         };
 
         ModifyRequestImpl req1 = getRequest();

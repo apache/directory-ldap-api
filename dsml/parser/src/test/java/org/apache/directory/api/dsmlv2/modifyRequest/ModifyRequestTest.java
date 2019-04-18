@@ -317,6 +317,43 @@ public class ModifyRequestTest extends AbstractTest
 
 
     /**
+     * Test parsing of a request with a Modification element and Increment operation
+     * @throws NamingException
+     */
+    @Test
+    public void testRequestWith1ModificationIncrement() throws LdapException
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = newParser();
+
+            parser.setInput( ModifyRequestTest.class.getResource( "request_with_1_modification_increment.xml" ).openStream(),
+                "UTF-8" );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        ModifyRequest modifyRequest = ( ModifyRequest ) parser.getBatchRequest().getCurrentRequest();
+        Collection<Modification> modifications = modifyRequest.getModifications();
+        assertEquals( 1, modifications.size() );
+
+        Modification modification = modifications.iterator().next();
+
+        assertEquals( ModificationOperation.INCREMENT_ATTRIBUTE, modification.getOperation() );
+
+        Attribute attribute = modification.getAttribute();
+
+        assertEquals( "uidnumber", attribute.getId() );
+        assertEquals( "CN=John Smith, DC=microsoft, DC=com", attribute.get().getString() );
+    }
+
+
+    /**
      * Test parsing of a request with a Modification element with Base64 Value
      * @throws NamingException
      */

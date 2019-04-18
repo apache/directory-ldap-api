@@ -274,9 +274,59 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
      * {@inheritDoc}
      */
     @Override
-    public ModifyRequest remove( String attributerName )
+    public ModifyRequest remove( String attributeName )
     {
-        addModification( new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attributerName ) );
+        addModification( new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attributeName ) );
+
+        return this;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ModifyRequest increment( String attributeName )
+    {
+        addModification( new DefaultModification( ModificationOperation.INCREMENT_ATTRIBUTE, attributeName ) );
+
+        return this;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ModifyRequest increment( String attributeName, int increment )
+    {
+        addModification( new DefaultModification( ModificationOperation.INCREMENT_ATTRIBUTE, attributeName, 
+            Integer.toString( increment ) ) );
+
+        return this;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ModifyRequest increment( Attribute attr )
+    {
+        addModification( attr, ModificationOperation.INCREMENT_ATTRIBUTE );
+
+        return this;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ModifyRequest increment( Attribute attr, int increment )
+    {
+        addModification( new DefaultModification( ModificationOperation.INCREMENT_ATTRIBUTE, attr.getId(), 
+            Integer.toString( increment ) ) );
 
         return this;
     }

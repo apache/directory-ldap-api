@@ -221,7 +221,17 @@ public final class LdifRevertor
                         continue;
                     }
 
-                    reverseModification = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, previous );
+                    reverseModification = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, 
+                        previous );
+                    reverseModifications.add( 0, reverseModification );
+                    break;
+                    
+                case INCREMENT_ATTRIBUTE:
+                    mod = modification.getAttribute();
+                    previous = clonedEntry.get( mod.getId() );
+
+                    reverseModification = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
+                        previous );
                     reverseModifications.add( 0, reverseModification );
                     break;
 

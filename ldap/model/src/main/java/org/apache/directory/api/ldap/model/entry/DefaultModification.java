@@ -425,9 +425,22 @@ public class DefaultModification implements Modification
 
         sb.append( "Modification: " ).
             append( operation ).
-            append( "\n" ).
-            append( ", attribute : " ).
-            append( attribute );
+            append( ", [" ).
+            append( attribute.getId() );
+        
+        if ( attribute.size() == 0 )
+        {
+            if ( operation == ModificationOperation.INCREMENT_ATTRIBUTE )
+            { 
+                sb.append( " : 1" );
+            }
+        }
+        else
+        {
+            sb.append( " : " ).append( attribute );
+        }
+        
+        sb.append( "]" );
 
         return sb.toString();
     }

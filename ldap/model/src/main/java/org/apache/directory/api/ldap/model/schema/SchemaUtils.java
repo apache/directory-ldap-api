@@ -28,6 +28,7 @@ import java.util.UUID;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
@@ -116,6 +117,61 @@ public final class SchemaUtils
                         }
                     }
 
+                    break;
+                    
+                case INCREMENT_ATTRIBUTE:
+                    // The incremented attribute might not exist
+                    AttributeType attributeType = mod.getAttribute().getAttributeType();
+                    String incrementStr = mod.getAttribute().getString();
+                    int increment = 1;
+                    
+                    if ( !Strings.isEmpty( incrementStr ) )
+                    {
+                        try
+                        { 
+                            increment = Integer.parseInt( incrementStr );
+                        }
+                        catch ( NumberFormatException nfe )
+                        {
+                            throw new IllegalArgumentException( I18n.err( I18n.ERR_13866_MOD_INCREMENT_INVALID_VALUE,  
+                                attributeType.getName(), incrementStr ) );
+                        }
+                    }
+                    Attribute modified = targetEntry.get( attributeType );
+
+                    if ( !targetEntry.containsAttribute( attributeType ) )
+                    {
+                        throw new IllegalArgumentException( I18n.err( I18n.ERR_13867_MOD_INCREMENT_NO_ATTRIBUTE,  
+                            attributeType.getName() ) );
+                    }
+
+                    if ( !SchemaConstants.INTEGER_SYNTAX.equals( modified.getAttributeType().getSyntax().getOid() ) )
+                    {
+                        throw new IllegalArgumentException( I18n.err( I18n.ERR_13868_MOD_INCREMENT_NO_INT_ATTRIBUTE,  
+                            attributeType.getName() ) );
+                    }
+                    else
+                    {
+                        Value[] newValues = new Value[ modified.size() ];
+                        int i = 0;
+                        
+                        for ( Value value : modified )
+                        {
+                            int intValue = Integer.parseInt( value.getNormalized() );
+                            
+                            if ( intValue == Integer.MAX_VALUE )
+                            {
+                                throw new IllegalArgumentException( I18n.err( I18n.ERR_13869_MOD_INCREMENT_OVERFLOW,  
+                                    attributeType.getName(), intValue ) );
+                            }
+                            
+                            newValues[i++] = new Value( Integer.toString( intValue + increment ) );
+                            modified.remove( value );
+                        }
+                        
+                        modified.add( newValues );
+                    }
+                    
                     break;
 
                 default:

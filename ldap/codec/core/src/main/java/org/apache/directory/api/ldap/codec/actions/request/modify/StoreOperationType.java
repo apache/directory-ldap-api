@@ -30,6 +30,7 @@ import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.message.ModifyRequest;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -76,7 +77,8 @@ public class StoreOperationType extends GrammarAction<LdapMessageContainer<Modif
         try
         {
             // Store the current operation.
-            operation = IntegerDecoder.parse( tlv.getValue(), 0, 2 );
+            operation = IntegerDecoder.parse( tlv.getValue(), ModificationOperation.ADD_ATTRIBUTE.getValue(), 
+                ModificationOperation.INCREMENT_ATTRIBUTE.getValue() );
             Modification modification = new DefaultModification();
             modification.setOperation( operation );
             modifyRequest.addModification( modification );

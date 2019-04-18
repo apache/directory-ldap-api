@@ -46,7 +46,8 @@ import org.apache.directory.api.ldap.model.name.Dn;
  *                        operation       ENUMERATED {
  *                                                add     (0),
  *                                                delete  (1),
- *                                                replace (2) },
+ *                                                replace (2),
+ *                                                ... },
  *                        modification    AttributeTypeAndValues } }
  * 
  *        AttributeTypeAndValues ::= SEQUENCE {
@@ -92,6 +93,22 @@ import org.apache.directory.api.ldap.model.name.Dn;
  *  unlike the JNDI which is strictly for the client side.  From the JNDI we
  *  borrow good ideas and familiar signatures, interfaces and classes where we
  *  can.
+ *  
+ *  RFC 4525 suggest to add an operation in the enumeration:
+ *  
+ * <pre>
+ *        ModifyRequest ::= [APPLICATION 6] SEQUENCE {
+ *                object          LDAPDN,
+ *                modification    SEQUENCE OF SEQUENCE {
+ * 
+ *                        operation       ENUMERATED {
+ *                                                add       (0),
+ *                                                delete    (1),
+ *                                                replace   (2),
+ *                                                increment (3),
+ *                                                ... },
+ * </pre>
+ * 
  *  
  *  @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * 
@@ -264,6 +281,44 @@ public interface ModifyRequest extends SingleReplyRequest, AbandonableRequest
      * @return The ModifyRequest instance
      */
     ModifyRequest replace( Attribute attr );
+
+
+    /**
+     * marks a given attribute for increment by 1 in the target entry.
+     *
+     * @param attributeName the attribute to be incremented
+     * @return The ModifyRequest instance
+     */
+    ModifyRequest increment( String attributeName );
+
+
+    /**
+     * marks a given attribute for increment in the target entry.
+     *
+     * @param attributeName the attribute to be incremented
+     * @param increment The increment value (&gt;=1) 
+     * @return The ModifyRequest instance
+     */
+    ModifyRequest increment( String attributeName, int increment );
+
+
+    /**
+     * marks a given attribute for increment by 1 in the target entry.
+     *
+     * @param attr the attribute to be incremented
+     * @return The ModifyRequest instance
+     */
+    ModifyRequest increment( Attribute attr );
+
+
+    /**
+     * marks a given attribute for increment in the target entry.
+     *
+     * @param attr the attribute to be incremented
+     * @param increment The increment value (&gt;=1) 
+     * @return The ModifyRequest instance
+     */
+    ModifyRequest increment( Attribute attr,  int increment );
 
 
     /**

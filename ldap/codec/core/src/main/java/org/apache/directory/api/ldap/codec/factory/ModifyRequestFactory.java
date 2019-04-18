@@ -28,6 +28,7 @@ import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.ModifyRequest;
@@ -114,10 +115,15 @@ public final class ModifyRequestFactory implements Messagefactory
             if ( modification.getAttribute().size() != 0 )
             {
                 encodeValues( buffer, modification.getAttribute().iterator() );
-            }
 
-            // the value set
-            BerValue.encodeSet( buffer, start );
+                // the value set
+                BerValue.encodeSet( buffer, start );
+            }
+            else if ( modification.getOperation() != ModificationOperation.INCREMENT_ATTRIBUTE )
+            {
+                // the value set, if not a INCREMENT operation
+                BerValue.encodeSet( buffer, start );
+            }
 
             // The attribute type
             BerValue.encodeOctetString( buffer, attribute.getUpId() );
