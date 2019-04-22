@@ -2929,9 +2929,19 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             ExtendedOperationFactory factory = codec.getExtendedResponseFactories().
                 get( extendedFuture.getExtendedRequest().getRequestName() );
-            
-            ExtendedResponse response = factory.newResponse( ( ( OpaqueExtendedResponse ) extendedResponse ).getResponseValue() );
-            
+
+            byte[] responseValue = ( ( OpaqueExtendedResponse ) extendedResponse ).getResponseValue();
+
+            ExtendedResponse response;
+            if ( responseValue != null )
+            {
+                response = factory.newResponse( responseValue );
+            }
+            else
+            {
+                response = factory.newResponse();
+            }
+
             // Copy the controls
             for ( Control control : extendedResponse.getControls().values() )
             {
