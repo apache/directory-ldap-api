@@ -686,7 +686,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 
                     if ( !isSecured )
                     {
-                        Throwable cause = ( Throwable ) connectionFuture.getSession().getAttribute( EXCEPTION_KEY );
+                        Throwable cause = connectionFuture.getException();
+                        if ( cause == null && connectionFuture.getSession() != null )
+                        {
+                            cause = ( Throwable ) connectionFuture.getSession().getAttribute( EXCEPTION_KEY );
+                        }
                         throw new LdapTlsHandshakeException( I18n.err( I18n.ERR_04120_TLS_HANDSHAKE_ERROR ), cause );
                     }
                 }
