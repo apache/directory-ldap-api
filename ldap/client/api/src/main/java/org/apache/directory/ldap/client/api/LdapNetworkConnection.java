@@ -677,36 +677,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         while ( maxRetry > System.currentTimeMillis() && !interrupted )
         {
             connectionFuture = connector.connect( address );
-            
-            if ( config.isUseSsl() )
-            {
-                try
-                {
-                    boolean isSecured = handshakeFuture.get( timeout, TimeUnit.MILLISECONDS );
-                
-                    if ( !isSecured )
-                    {
-                        Throwable cause = connectionFuture.getException();
-                        if ( cause == null && connectionFuture.getSession() != null )
-                        {
-                            cause = ( Throwable ) connectionFuture.getSession().getAttribute( EXCEPTION_KEY );
-                        }
-                        throw new LdapTlsHandshakeException( I18n.err( I18n.ERR_04120_TLS_HANDSHAKE_ERROR ), cause );
-                    }
-                }
-                catch ( Exception e )
-                {
-                    if ( e instanceof LdapException )
-                    {
-                        throw ( LdapException ) e;
-                    }
 
-                    String msg = I18n.err( I18n.ERR_04122_SSL_CONTEXT_INIT_FAILURE );
-                    LOG.error( msg, e );
-                    throw new LdapException( msg, e );
-                }
-            }
-    
             boolean result = false;
 
             // Wait until it's established
@@ -817,7 +788,50 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 throw new InvalidConnectionException( I18n.err( I18n.ERR_04110_CANNOT_CONNECT_TO_SERVER, e.getMessage() ), e );
             }
 
-            return false;
+            // We didn't received anything : this is an error
+            if ( LOG.isErrorEnabled() )
+            {
+                LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Connect" ) );
+            }
+
+            throw new LdapException( TIME_OUT_ERROR );
+        }
+
+        if ( config.isUseSsl() )
+        {
+            try
+            {
+                boolean isSecured = handshakeFuture.get( timeout, TimeUnit.MILLISECONDS );
+
+                if ( !isSecured )
+                {
+                    // check for a specific cause
+                    Throwable cause = connectionFuture.getException();
+                    if ( cause == null && connectionFuture.getSession() != null )
+                    {
+                        cause = ( Throwable ) connectionFuture.getSession().getAttribute( EXCEPTION_KEY );
+                    }
+
+                    // if there is no cause assume timeout
+                    if ( cause == null )
+                    {
+                        throw new LdapException( TIME_OUT_ERROR );
+                    }
+
+                    throw new LdapTlsHandshakeException( I18n.err( I18n.ERR_04120_TLS_HANDSHAKE_ERROR ), cause );
+                }
+            }
+            catch ( Exception e )
+            {
+                if ( e instanceof LdapException )
+                {
+                    throw ( LdapException ) e;
+                }
+
+                String msg = I18n.err( I18n.ERR_04122_SSL_CONTEXT_INIT_FAILURE );
+                LOG.error( msg, e );
+                throw new LdapException( msg, e );
+            }
         }
 
         // Get the close future for this session
@@ -4147,6 +4161,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         }
         catch ( Exception ie )
         {
+            if ( ie instanceof LdapException )
+            {
+                throw ( LdapException ) ie;
+            }
+
             // Catch all other exceptions
             LOG.error( NO_RESPONSE_ERROR, ie );
 
