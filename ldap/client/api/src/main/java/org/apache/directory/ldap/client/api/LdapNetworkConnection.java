@@ -646,40 +646,20 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         }
     }
 
-
-     //-------------------------- The methods ---------------------------//
+    
     /**
-     * {@inheritDoc}
+     * Process the connect. 
      */
-    @Override
-    public boolean connect() throws LdapException
+    private ConnectFuture tryConnect() throws LdapException
     {
-        if ( ( ldapSession != null ) && connected.get() )
-        {
-            // No need to connect if we already have a connected session
-            return true;
-        }
-
-        // Create the connector if needed
-        if ( connector == null )
-        {
-            createConnector();
-        }
-
         // Build the connection address
         SocketAddress address = new InetSocketAddress( config.getLdapHost(), config.getLdapPort() );
-
-        // And create the connection future
         long maxRetry = System.currentTimeMillis() + timeout;
-        ConnectFuture connectionFuture = null;
-        boolean interrupted = false;
-        
-        while ( maxRetry > System.currentTimeMillis() && !interrupted )
+        ConnectFuture connectionFuture = connector.connect( address );
+        boolean result = false;
+
+        while ( maxRetry > System.currentTimeMillis() )
         {
-            connectionFuture = connector.connect( address );
-
-            boolean result = false;
-
             // Wait until it's established
             try
             {
@@ -689,15 +669,13 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             {
                 connector.dispose();
                 connector = null;
-
+    
                 if ( LOG.isDebugEnabled() )
                 {
                     LOG.debug( I18n.msg( I18n.MSG_04120_INTERRUPTED_WAITING_FOR_CONNECTION, 
                         config.getLdapHost(),
                         config.getLdapPort() ), e );
                 }
-                
-                interrupted = true;
                 
                 throw new LdapOtherException( e.getMessage(), e );
             }
@@ -706,11 +684,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 if ( result )
                 {
                     boolean isConnected = connectionFuture.isConnected();
-
+    
                     if ( !isConnected )
                     {
                         Throwable connectionException = connectionFuture.getException();
-
+    
                         if ( LOG.isDebugEnabled() )
                         {
                             if ( ( connectionException instanceof ConnectException )
@@ -720,10 +698,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                                 // We know that there was a permanent error such as "connection refused".
                                 LOG.debug( I18n.msg( I18n.MSG_04144_CONNECTION_ERROR, connectionFuture.getException().getMessage() ) );
                             }
-
+    
                             LOG.debug( I18n.msg( I18n.MSG_04143_CONNECTION_RETRYING ) );
                         }
-
+    
                         // Wait 500 ms and retry
                         try
                         {
@@ -732,15 +710,13 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                         catch ( InterruptedException e )
                         {
                             connector = null;
-
+    
                             if ( LOG.isDebugEnabled() )
                             {
                                 LOG.debug( I18n.msg( I18n.MSG_04120_INTERRUPTED_WAITING_FOR_CONNECTION, 
                                     config.getLdapHost(),
                                     config.getLdapPort() ), e );
                             }
-                            
-                            interrupted = true;
                             
                             throw new LdapOtherException( e.getMessage(), e );
                         }
@@ -752,159 +728,170 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 }
             }
         }
-
+        
         if ( connectionFuture == null )
         {
             connector.dispose();
             throw new InvalidConnectionException( I18n.err( I18n.ERR_04109_CANNOT_CONNECT ) );
         }
 
-        boolean isConnected = connectionFuture.isConnected();
+        return connectionFuture;
+    }
+    
+    
+    /**
+     * Close the connection and generate the appropriate exception
+     */
+    private void close( ConnectFuture connectionFuture ) throws LdapException
+    {
+        // disposing connector if not connected
+        close();
 
-        if ( !isConnected )
+        Throwable e = connectionFuture.getException();
+
+        if ( e != null )
         {
-            // disposing connector if not connected
-            try
+            // Special case for UnresolvedAddressException
+            // (most of the time no message is associated with this exception)
+            if ( ( e instanceof UnresolvedAddressException ) && ( e.getMessage() == null ) )
             {
-                close();
-            }
-            catch ( IOException ioe )
-            {
-                // Nothing to do
+                throw new InvalidConnectionException( I18n.err( I18n.ERR_04121_CANNOT_RESOLVE_HOSTNAME, config.getLdapHost() ), e );
             }
 
-            Throwable e = connectionFuture.getException();
-
-            if ( e != null )
-            {
-                // Special case for UnresolvedAddressException
-                // (most of the time no message is associated with this exception)
-                if ( ( e instanceof UnresolvedAddressException ) && ( e.getMessage() == null ) )
-                {
-                    throw new InvalidConnectionException( I18n.err( I18n.ERR_04121_CANNOT_RESOLVE_HOSTNAME, config.getLdapHost() ), e );
-                }
-
-                // Default case
-                throw new InvalidConnectionException( I18n.err( I18n.ERR_04110_CANNOT_CONNECT_TO_SERVER, e.getMessage() ), e );
-            }
-
-            // We didn't received anything : this is an error
-            if ( LOG.isErrorEnabled() )
-            {
-                LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Connect" ) );
-            }
-
-            throw new LdapException( TIME_OUT_ERROR );
+            // Default case
+            throw new InvalidConnectionException( I18n.err( I18n.ERR_04110_CANNOT_CONNECT_TO_SERVER, e.getMessage() ), e );
         }
 
-        if ( config.isUseSsl() )
+        // We didn't received anything : this is an error
+        if ( LOG.isErrorEnabled() )
         {
-            try
-            {
-                boolean isSecured = handshakeFuture.get( timeout, TimeUnit.MILLISECONDS );
-
-                if ( !isSecured )
-                {
-                    // check for a specific cause
-                    Throwable cause = connectionFuture.getException();
-                    if ( cause == null && connectionFuture.getSession() != null )
-                    {
-                        cause = ( Throwable ) connectionFuture.getSession().getAttribute( EXCEPTION_KEY );
-                    }
-
-                    // if there is no cause assume timeout
-                    if ( cause == null )
-                    {
-                        throw new LdapException( TIME_OUT_ERROR );
-                    }
-
-                    throw new LdapTlsHandshakeException( I18n.err( I18n.ERR_04120_TLS_HANDSHAKE_ERROR ), cause );
-                }
-            }
-            catch ( Exception e )
-            {
-                if ( e instanceof LdapException )
-                {
-                    throw ( LdapException ) e;
-                }
-
-                String msg = I18n.err( I18n.ERR_04122_SSL_CONTEXT_INIT_FAILURE );
-                LOG.error( msg, e );
-                throw new LdapException( msg, e );
-            }
+            LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Connect" ) );
         }
 
+        throw new LdapException( TIME_OUT_ERROR );
+    }
+    
+    
+    /**
+     * Verify that the connection has been secured, otherwise throw a meaningful exception
+     */
+    private void checkSecured( ConnectFuture connectionFuture ) throws LdapException
+    {
+        try
+        {
+            boolean isSecured = handshakeFuture.get( timeout, TimeUnit.MILLISECONDS );
+
+            if ( !isSecured )
+            {
+                // check for a specific cause
+                Throwable cause = connectionFuture.getException();
+                
+                if ( cause == null && connectionFuture.getSession() != null )
+                {
+                    cause = ( Throwable ) connectionFuture.getSession().getAttribute( EXCEPTION_KEY );
+                }
+
+                // if there is no cause assume timeout
+                if ( cause == null )
+                {
+                    throw new LdapException( TIME_OUT_ERROR );
+                }
+
+                throw new LdapTlsHandshakeException( I18n.err( I18n.ERR_04120_TLS_HANDSHAKE_ERROR ), cause );
+            }
+        }
+        catch ( Exception e )
+        {
+            if ( e instanceof LdapException )
+            {
+                throw ( LdapException ) e;
+            }
+
+            String msg = I18n.err( I18n.ERR_04122_SSL_CONTEXT_INIT_FAILURE );
+            LOG.error( msg, e );
+            throw new LdapException( msg, e );
+        }
+    }
+    
+    
+    /**
+     * Set a listener associated to the closeFuture
+     */
+    private void setCloseListener( ConnectFuture connectionFuture )
+    {
         // Get the close future for this session
         CloseFuture closeFuture = connectionFuture.getSession().getCloseFuture();
-
-        // Add a listener to close the session in the session.
+        
         closeFuture.addListener( future -> 
+        {
+            // Process all the waiting operations and cancel them
+            if ( LOG.isDebugEnabled() )
             {
-                // Process all the waiting operations and cancel them
+                LOG.debug( I18n.msg( I18n.MSG_04137_NOD_RECEIVED ) );
+            }
+
+            for ( ResponseFuture<?> responseFuture : futureMap.values() )
+            {
                 if ( LOG.isDebugEnabled() )
                 {
-                    LOG.debug( I18n.msg( I18n.MSG_04137_NOD_RECEIVED ) );
+                    LOG.debug( I18n.msg( I18n.MSG_04134_CLOSING, responseFuture ) );
                 }
 
-                for ( ResponseFuture<?> responseFuture : futureMap.values() )
+                responseFuture.cancel();
+
+                try
                 {
-                    if ( LOG.isDebugEnabled() )
+                    if ( responseFuture instanceof AddFuture )
                     {
-                        LOG.debug( I18n.msg( I18n.MSG_04134_CLOSING, responseFuture ) );
+                        ( ( AddFuture ) responseFuture ).set( AddNoDResponse.PROTOCOLERROR );
                     }
-
-                    responseFuture.cancel();
-
-                    try
+                    else if ( responseFuture instanceof BindFuture )
                     {
-                        if ( responseFuture instanceof AddFuture )
-                        {
-                            ( ( AddFuture ) responseFuture ).set( AddNoDResponse.PROTOCOLERROR );
-                        }
-                        else if ( responseFuture instanceof BindFuture )
-                        {
-                            ( ( BindFuture ) responseFuture ).set( BindNoDResponse.PROTOCOLERROR );
-                        }
-                        else if ( responseFuture instanceof CompareFuture )
-                        {
-                            ( ( CompareFuture ) responseFuture ).set( CompareNoDResponse.PROTOCOLERROR );
-                        }
-                        else if ( responseFuture instanceof DeleteFuture )
-                        {
-                            ( ( DeleteFuture ) responseFuture ).set( DeleteNoDResponse.PROTOCOLERROR );
-                        }
-                        else if ( responseFuture instanceof ExtendedFuture )
-                        {
-                            ( ( ExtendedFuture ) responseFuture ).set( ExtendedNoDResponse.PROTOCOLERROR );
-                        }
-                        else if ( responseFuture instanceof ModifyFuture )
-                        {
-                            ( ( ModifyFuture ) responseFuture ).set( ModifyNoDResponse.PROTOCOLERROR );
-                        }
-                        else if ( responseFuture instanceof ModifyDnFuture )
-                        {
-                            ( ( ModifyDnFuture ) responseFuture ).set( ModifyDnNoDResponse.PROTOCOLERROR );
-                        }
-                        else if ( responseFuture instanceof SearchFuture )
-                        {
-                            ( ( SearchFuture ) responseFuture ).set( SearchNoDResponse.PROTOCOLERROR );
-                        }
+                        ( ( BindFuture ) responseFuture ).set( BindNoDResponse.PROTOCOLERROR );
                     }
-                    catch ( InterruptedException e )
+                    else if ( responseFuture instanceof CompareFuture )
                     {
-                        LOG.error( I18n.err( I18n.ERR_04113_ERROR_PROCESSING_NOD, responseFuture ), e );
+                        ( ( CompareFuture ) responseFuture ).set( CompareNoDResponse.PROTOCOLERROR );
                     }
-
-                    futureMap.remove( messageId.get() );
+                    else if ( responseFuture instanceof DeleteFuture )
+                    {
+                        ( ( DeleteFuture ) responseFuture ).set( DeleteNoDResponse.PROTOCOLERROR );
+                    }
+                    else if ( responseFuture instanceof ExtendedFuture )
+                    {
+                        ( ( ExtendedFuture ) responseFuture ).set( ExtendedNoDResponse.PROTOCOLERROR );
+                    }
+                    else if ( responseFuture instanceof ModifyFuture )
+                    {
+                        ( ( ModifyFuture ) responseFuture ).set( ModifyNoDResponse.PROTOCOLERROR );
+                    }
+                    else if ( responseFuture instanceof ModifyDnFuture )
+                    {
+                        ( ( ModifyDnFuture ) responseFuture ).set( ModifyDnNoDResponse.PROTOCOLERROR );
+                    }
+                    else if ( responseFuture instanceof SearchFuture )
+                    {
+                        ( ( SearchFuture ) responseFuture ).set( SearchNoDResponse.PROTOCOLERROR );
+                    }
+                }
+                catch ( InterruptedException e )
+                {
+                    LOG.error( I18n.err( I18n.ERR_04113_ERROR_PROCESSING_NOD, responseFuture ), e );
                 }
 
-                futureMap.clear();
-            } );
+                futureMap.remove( messageId.get() );
+            }
 
-        // Get back the session
-        ldapSession = connectionFuture.getSession();
-
-        // Store the container into the session if we don't have one
+            futureMap.clear();
+        } );
+    }
+    
+    
+    /**
+     * Set the BinaryDetector instance in the session
+     */
+    private void setBinaryDetector()
+    {
         @SuppressWarnings("unchecked")
         LdapMessageContainer<? extends Message> container =
             ( LdapMessageContainer<? extends Message> ) ldapSession
@@ -929,6 +916,51 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             ldapSession.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR,
                 new LdapMessageContainer<Message>( codec, atDetector ) );
         }
+    }
+    
+
+    //-------------------------- The methods ---------------------------//
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean connect() throws LdapException
+    {
+        if ( ( ldapSession != null ) && connected.get() )
+        {
+            // No need to connect if we already have a connected session
+            return true;
+        }
+
+        // Create the connector if needed
+        if ( connector == null )
+        {
+            createConnector();
+        }
+
+        // And create the connection future
+        ConnectFuture connectionFuture = tryConnect();
+
+        // Check if we are good to go
+        if ( !connectionFuture.isConnected() )
+        {
+            close( connectionFuture );
+        }
+
+        // Check if we are secured if requested
+        if ( config.isUseSsl() )
+        {
+            checkSecured( connectionFuture );
+        }
+
+        // Add a listener to close the session in the session.
+        setCloseListener( connectionFuture );
+
+        // Get back the session
+        ldapSession = connectionFuture.getSession();
+
+        // Store the container into the session if we don't have one
+        setBinaryDetector();
 
         // Initialize the MessageId
         messageId.set( 0 );
@@ -942,7 +974,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * {@inheritDoc}
      */
     @Override
-    public void close() throws IOException
+    public void close()
     {
         // Close the session
         if ( ( ldapSession != null ) && connected.get() )
@@ -2366,15 +2398,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         clearMaps();
 
         //  We now have to close the session
-        try
-        {
-            close();
-        }
-        catch ( IOException e )
-        {
-            LOG.error( e.getMessage() );
-            throw new LdapException( e.getMessage() );
-        }
+        close();
 
         connected.set( false );
 
