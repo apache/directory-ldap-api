@@ -427,7 +427,10 @@ public class Dsmlv2Engine
         }
 
         // We can now write the tag, as we don't have an error
-        respWriter.write( batchResponseTag );
+        if ( respWriter != null )
+        {
+            respWriter.write( batchResponseTag );
+        }
 
         // (Request == null when there's no more request to process)
         while ( request != null )
