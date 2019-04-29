@@ -355,6 +355,8 @@ public class Dsmlv2Engine
             return;
         }
 
+        String batchResponseTag = null;
+
         if ( respWriter != null )
         {
             StringBuilder sb = new StringBuilder();
@@ -377,7 +379,7 @@ public class Dsmlv2Engine
             sb.append( batchRequest.getRequestID() );
             sb.append( "\">" );
 
-            respWriter.write( sb.toString() );
+            batchResponseTag = sb.toString();
         }
 
         // Processing each request:
@@ -417,6 +419,12 @@ public class Dsmlv2Engine
             }
 
             return;
+        }
+
+        // We can now write the tag, as we don't have an error
+        if ( respWriter != null )
+        {
+            respWriter.write( batchResponseTag );
         }
 
         // (Request == null when there's no more request to process)
