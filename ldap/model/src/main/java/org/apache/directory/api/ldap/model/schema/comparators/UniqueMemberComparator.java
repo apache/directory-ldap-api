@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.model.schema.comparators;
 
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -42,6 +43,8 @@ public class UniqueMemberComparator extends LdapComparator<String>
 
     /** A reference to the schema manager */
     private transient SchemaManager schemaManager;
+    
+    private transient ParsedDnComparator dnComparator = new ParsedDnComparator( SchemaConstants.ENTRY_DN_AT_OID );
 
 
     /**
@@ -72,14 +75,7 @@ public class UniqueMemberComparator extends LdapComparator<String>
                 Dn dn1 = getDn( dnstr1 );
                 Dn dn2 = getDn( dnstr2 );
 
-                if ( dn1.equals( dn2 ) )
-                {
-                    return 0;
-                }
-                else
-                {
-                    return -1;
-                }
+                return dnComparator.compare( dn1, dn2 );
             }
             catch ( LdapInvalidDnException ne )
             {
@@ -127,7 +123,7 @@ public class UniqueMemberComparator extends LdapComparator<String>
                 return -1;
             }
 
-            // This is an UID if the '#' is immediatly
+            // This is an UID if the '#' is immediately
             // followed by a BitString, except if the '#' is
             // on the last position
             String uid2 = dnstr2.substring( dash2 + 1 );
@@ -148,12 +144,14 @@ public class UniqueMemberComparator extends LdapComparator<String>
                 return 1;
             }
 
-            if ( dn1.equals( dn2 ) )
+            int dnResult = dnComparator.compare( dn1, dn2 );
+            
+            if ( dnResult == 0 )
             {
                 return uid1.compareTo( uid2 );
             }
 
-            return -1;
+            return dnResult;
         }
     }
 
