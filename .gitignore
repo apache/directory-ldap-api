@@ -13,4 +13,5 @@ eclipse-classes
 bin
 dependency-reduced-pom.xml
 META-INF
-
+# intellij idea folder
+.idea

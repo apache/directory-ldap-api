@@ -129,31 +129,36 @@ public class DefaultSchemaManager implements SchemaManager
     private SchemaErrorHandler errorHandler;
 
     /**
-     * Creates a new instance of DefaultSchemaManager with the default schema schemaLoader
+     * Creates a new instance of DefaultSchemaManager with LDIF based SchemaLoader,
+     * Strict schema validation
      */
     public DefaultSchemaManager()
     {
-        // Default to the the root (one schemaManager for all the entries
-        namingContext = Dn.ROOT_DSE;
-        registries = new Registries();
-        factory = new SchemaEntityFactory();
-        isRelaxed = STRICT;
-        setErrorHandler( new LoggingSchemaErrorHandler() );
-        
+        this( STRICT, jarLdifSchemaLoader().getAllSchemas() );
         try
         {
-            SchemaLoader schemaLoader = new JarLdifSchemaLoader();
-            
-            for ( Schema schema : schemaLoader.getAllSchemas() )
-            {
-                schemaMap.put( schema.getSchemaName(), schema );
-            }
-            
             loadAllEnabled();
+        }
+        catch ( LdapException e )
+        {
+            LOG.error( I18n.err( I18n.ERR_16077_SCHEMA_MANAGER_CANT_BE_LOADED, e.getMessage() ) );
+            throw new RuntimeException( e.getMessage() );
+        }
+    }
+
+    /*
+      Static helper factory Create LDIF based SchemaLoader
+      needed to handle checked exceptions
+     */
+    private static SchemaLoader jarLdifSchemaLoader()
+    {
+        try
+        {
+            return new JarLdifSchemaLoader();
         }
         catch ( LdapException | IOException e )
         {
-            LOG.error( I18n.err( I18n.ERR_16077_SCHEMA_MANAGER_CANT_BE_LOADED, e.getMessage() ) );
+            LOG.error( I18n.err( I18n.ERR_16080_SCHEMA_LOADER_CANT_BE_CREATED, e.getMessage() ) );
             throw new RuntimeException( e.getMessage() );
         }
     }
@@ -161,45 +166,26 @@ public class DefaultSchemaManager implements SchemaManager
     
     /**
      * Creates a new instance of DefaultSchemaManager with the default schema schemaLoader
+     * Strict schema validation
      * 
      * @param schemas The list of schema to load
      */
     public DefaultSchemaManager( Collection<Schema> schemas )
     {
-        // Default to the the root (one schemaManager for all the entries
-        namingContext = Dn.ROOT_DSE;
-        
-        for ( Schema schema : schemas )
-        {
-            schemaMap.put( schema.getSchemaName(), schema );
-        }
-        
-        registries = new Registries();
-        factory = new SchemaEntityFactory();
-        isRelaxed = STRICT;
-        setErrorHandler( new LoggingSchemaErrorHandler() );
+       this( STRICT, schemas );
     }
 
     
     /**
-     * Creates a new instance of DefaultSchemaManager with the default schema schemaLoader
-     * 
+     * Creates a new instance of DefaultSchemaManager with the given schemaLoader
+     *
+     * Schema validation strictness (i.e. relaxed/strict) controlled by the given schemaLoader
+     *
      * @param schemaLoader The schemaLoader containing the schemas to load
      */
     public DefaultSchemaManager( SchemaLoader schemaLoader )
     {
-        // Default to the the root (one schemaManager for all the entries
-        namingContext = Dn.ROOT_DSE;
-        
-        for ( Schema schema : schemaLoader.getAllSchemas() )
-        {
-            schemaMap.put( schema.getSchemaName(), schema );
-        }
-        
-        registries = new Registries();
-        factory = new SchemaEntityFactory();
-        isRelaxed = STRICT;
-        setErrorHandler( new LoggingSchemaErrorHandler() );
+        this( schemaLoader.isRelaxed(), schemaLoader.getAllSchemas() );
     }
     
 
