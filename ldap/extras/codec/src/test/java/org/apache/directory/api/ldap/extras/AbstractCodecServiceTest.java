@@ -31,5 +31,10 @@ import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
  */
 public abstract class AbstractCodecServiceTest
 {
-    protected static LdapApiService codec = new DefaultLdapCodecService();
+    protected static LdapApiService codec;
+
+    public static void initBase()
+    {
+        codec = new DefaultLdapCodecService();
+    }
 }

@@ -32,9 +32,10 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
+import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.cancel.CancelFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.startTls.StartTlsFactory;
 import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequest;
@@ -42,7 +43,7 @@ import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequest;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -53,11 +54,14 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @Execution( ExecutionMode.CONCURRENT)
-public class ExtendedRequestTest extends AbstractCodecServiceTest
+public class ExtendedRequestTest
 {
-    @BeforeEach
-    public void init()
+    private static LdapApiService codec;
+
+    @BeforeAll
+    public static void init()
     {
+        codec = new DefaultLdapCodecService();
         codec.getExtendedRequestFactories().put( "1.3.6.1.1.8", new CancelFactory( codec ) );
         codec.getExtendedRequestFactories().put( "1.3.6.1.4.1.1466.20037", new StartTlsFactory( codec ) );
     }

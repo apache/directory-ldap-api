@@ -32,8 +32,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
-import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
+import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValue;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateTypeEnum;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateValue;
@@ -46,7 +47,7 @@ import org.apache.directory.api.ldap.model.message.controls.PagedResults;
 import org.apache.directory.api.ldap.model.message.controls.SortResponse;
 import org.apache.directory.api.ldap.model.message.controls.SortResultCode;
 import org.apache.directory.api.util.Strings;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -57,17 +58,15 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @Execution( ExecutionMode.CONCURRENT)
-public class EndTransactionResponseTest extends AbstractCodecServiceTest
+public class EndTransactionResponseTest
 {
-    static
+    private static LdapApiService codec;
+
+    @BeforeAll
+    public static void init()
     {
+        codec = new DefaultLdapCodecService();
         LdapApiServiceFactory.initialize( codec );
-    }
-    
-    @BeforeEach
-    public void init()
-    {
-        codec = LdapApiServiceFactory.getSingleton();
         codec.registerResponseControl( new SyncDoneValueFactory( codec ) );
         codec.registerResponseControl( new SyncStateValueFactory( codec ) );
         codec.registerExtendedResponse( new EndTransactionFactory( codec ) );

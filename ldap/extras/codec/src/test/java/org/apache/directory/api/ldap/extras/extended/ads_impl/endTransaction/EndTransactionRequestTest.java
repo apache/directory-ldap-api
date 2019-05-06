@@ -29,10 +29,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
 import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionRequest;
 import org.apache.directory.api.util.Strings;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -43,11 +44,14 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @Execution( ExecutionMode.CONCURRENT)
-public class EndTransactionRequestTest extends AbstractCodecServiceTest
+public class EndTransactionRequestTest
 {
-    @BeforeEach
-    public void init()
+    private static LdapApiService codec;
+
+    @BeforeAll
+    public static void init()
     {
+        codec = new DefaultLdapCodecService();
         codec.registerExtendedRequest( new EndTransactionFactory( codec ) );
     }
     

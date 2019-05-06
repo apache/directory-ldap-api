@@ -32,9 +32,10 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
+import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectFactory;
 import org.apache.directory.api.ldap.extras.extended.gracefulDisconnect.GracefulDisconnectResponse;
 import org.apache.directory.api.ldap.model.message.Control;
@@ -43,7 +44,7 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.message.controls.PagedResults;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -54,11 +55,14 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @Execution( ExecutionMode.CONCURRENT)
-public class ExtendedResponseTest extends AbstractCodecServiceTest
+public class ExtendedResponseTest
 {
-    @BeforeEach
-    public void init()
+    private static LdapApiService codec;
+
+    @BeforeAll
+    public static void init()
     {
+        codec = new DefaultLdapCodecService();
         codec.getExtendedResponseFactories().put( "1.3.6.1.4.1.18060.0.1.5", new GracefulDisconnectFactory( codec ) );
     }
     

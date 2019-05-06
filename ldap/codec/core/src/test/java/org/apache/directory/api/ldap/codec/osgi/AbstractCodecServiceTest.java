@@ -20,8 +20,10 @@
 package org.apache.directory.api.ldap.codec.osgi;
 
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
-import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
 import org.apache.mina.filter.codec.ProtocolDecoder;
@@ -37,10 +39,8 @@ import org.junit.jupiter.api.BeforeEach;
 public abstract class AbstractCodecServiceTest
 {
     protected DefaultLdapCodecService codec;
-
-    /** The encoder instance */
-    protected static LdapEncoder encoder;
-
+    
+    private static Lock lock = new ReentrantLock();
 
     /**
      * Initialize the codec service
@@ -48,27 +48,36 @@ public abstract class AbstractCodecServiceTest
     @BeforeEach
     public void setupLdapCodecService()
     {
-        codec = new DefaultLdapCodecService();
+        lock.lock();
         
-        codec.registerProtocolCodecFactory( new ProtocolCodecFactory()
+        try
         {
-            @Override
-            public ProtocolEncoder getEncoder( IoSession session ) throws Exception
+            codec = new DefaultLdapCodecService();
+            
+            codec.registerProtocolCodecFactory( new ProtocolCodecFactory()
             {
-                return null;
-            }
-
-
-            @Override
-            public ProtocolDecoder getDecoder( IoSession session ) throws Exception
+                @Override
+                public ProtocolEncoder getEncoder( IoSession session ) throws Exception
+                {
+                    return null;
+                }
+    
+    
+                @Override
+                public ProtocolDecoder getDecoder( IoSession session ) throws Exception
+                {
+                    return null;
+                }
+            } );
+    
+            if ( LdapApiServiceFactory.isInitialized() == false )
             {
-                return null;
+                LdapApiServiceFactory.initialize( codec );
             }
-        } );
-
-        if ( LdapApiServiceFactory.isInitialized() == false )
+        }
+        finally
         {
-            LdapApiServiceFactory.initialize( codec );
+            lock.unlock();
         }
     }
 }

@@ -27,9 +27,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
 import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownRequest;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -40,11 +41,14 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @Execution( ExecutionMode.CONCURRENT)
-public class GracefulShutdownTest extends AbstractCodecServiceTest
+public class GracefulShutdownTest
 {
-    @BeforeEach
-    public void init()
+    private static LdapApiService codec;
+
+    @BeforeAll
+    public static void init()
     {
+        codec = new DefaultLdapCodecService();
         codec.registerExtendedRequest( new GracefulShutdownFactory( codec ) );
     }
 
